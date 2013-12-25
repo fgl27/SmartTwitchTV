@@ -1,0 +1,9 @@
+#SceneSceneBrowser {
+	position : absolute;
+	left : 0px;
+	top : 0px;
+	width : 1280px;
+	height : 720px;
+	background-color : #6441A5;
+	background-image : url('');
+}

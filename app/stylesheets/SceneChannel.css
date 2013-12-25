@@ -1,0 +1,9 @@
+#SceneSceneChannel {
+	position : absolute;
+	left : 0px;
+	top : 0px;
+	width : 1280px;
+	height : 720px;
+	background-color : rgba(0, 0, 0, 1.0);;
+	background-image : url('');
+}

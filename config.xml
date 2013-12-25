@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns="http://www.samsung.com/">
+  <cpname></cpname>
+  <cplogo></cplogo>
+  <cpauthjs></cpauthjs>
+  <ThumbIcon>icon/icon_106_87.png</ThumbIcon>
+  <BigThumbIcon>icon/icon_115_95.png</BigThumbIcon>
+  <ListIcon>icon/icon_85_70.png</ListIcon>
+  <BigListIcon>icon/icon_95_78.png</BigListIcon>
+  <category></category>
+  <autoUpdate>n</autoUpdate>
+  <ver>1.00</ver>
+  <mgrver></mgrver>
+  <fullwidget>y</fullwidget>
+  <type>user</type>
+  <srcctl>y</srcctl>
+  <ticker>n</ticker>
+  <childlock>n</childlock>
+  <videomute>n</videomute>
+  <dcont>y</dcont>
+  <widgetname>TwitchTV</widgetname>
+  <description></description>
+  <width>1280</width>
+  <height>720</height>
+  <author>
+    <name></name>
+    <email></email>
+    <link></link>
+    <organization></organization>
+  </author>
+</widget>

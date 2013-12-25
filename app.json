@@ -1,0 +1,9 @@
+{
+ "files": [],
+ "scenes": [
+  "SceneChannel",
+  "SceneBrowser"
+ ],
+ "theme": "base",
+ "modules": ["ime"]
+}
