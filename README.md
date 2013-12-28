@@ -6,6 +6,7 @@ Only tested on Samsung UE40F6400 so no guarantees.
 Stream lists filtered by game incoming.
 
 Installation
+==============
 To install the app you need to install any http server and put TwitchTV_X.XX_America_XXXXXXXX.zip and widgetlist.xml to a directory which is configured as its root.
 
 For example you can follow this manual and then put the files into DocumentRoot as it's called in the manual. You can check if you configured server correctly by typing http://127.0.0.1/widgetlist.xml in your browser - if everything is OK browser should start downloading this file from your local machine.
