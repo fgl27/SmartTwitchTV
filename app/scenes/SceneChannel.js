@@ -92,7 +92,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 		case sf.key.VOL_DOWN:
 			sf.service.setVolumeControl(true);
 			break;
-		case sf.key.VOL_MUTE:
+		case sf.key.MUTE:
 			sf.service.setVolumeControl(true);
 			break;
 		default:
