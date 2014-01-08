@@ -2,10 +2,16 @@ alert('SceneSceneBrowser.js loaded');
 
 SceneSceneBrowser.selectedChannel;
 
-SceneSceneBrowser.StreamsLimit = 100;
+SceneSceneBrowser.ItemsLimit = 100;
 SceneSceneBrowser.ColoumnsCount = 4;
 
-SceneSceneBrowser.streamsCount = 0;
+SceneSceneBrowser.MODE_ALL = 0;
+SceneSceneBrowser.MODE_GAMES = 1;
+SceneSceneBrowser.MODE_GAMES_STREAMS = 2;
+
+SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
+SceneSceneBrowser.gameSelected = null;
+SceneSceneBrowser.itemsCount = 0;
 SceneSceneBrowser.cursorX = 0;
 SceneSceneBrowser.cursorY = 0;
 
@@ -66,28 +72,87 @@ function httpGet(theUrl)
     return xmlHttp.responseText;
 }
 
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
+SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail, title, info)
+{
+	return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" align="center" data-channelname="' + data_name + '"></td>').html(
+			'<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+			<div class="stream_title">' + title + '</div> \
+			<div class="stream_info">' + info + '</div>');
+};
+
 SceneSceneBrowser.loadData = function()
 {
-	var offset = SceneSceneBrowser.streamsCount;
-	var responceText = httpGet('https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.StreamsLimit + '&offset=' + offset);
+	var offset = SceneSceneBrowser.itemsCount;
+	var responceText;
+	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+	{
+		responceText = httpGet('https://api.twitch.tv/kraken/games/top?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
+	}
+	else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
+	{
+		responceText = httpGet('https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
+	}
+	else
+	{
+		responceText = httpGet('https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
+	}
+	
 	var response = JSON.parse(responceText);
-	SceneSceneBrowser.streamsCount += SceneSceneBrowser.StreamsLimit;
+	
+	var response_items;
+	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+	{
+		response_items = response.top.length;
+	}
+	else
+	{
+		response_items = response.streams.length;
+	}
+	
+	SceneSceneBrowser.itemsCount += response_items;
+	
+	var response_rows = response_items / SceneSceneBrowser.ColoumnsCount;
+	if (response_items % SceneSceneBrowser.ColoumnsCount > 0)
+	{
+		response_rows++;
+	}
 	
 	var cursor = 0;
 		
-	for (var i = 0; i < response.streams.length / SceneSceneBrowser.ColoumnsCount; i++)
+	for (var i = 0; i < response_rows; i++)
 	{        
 		var row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
 		var row = $('<tr></tr>');
 		
-    	for (var t = 0; t < SceneSceneBrowser.ColoumnsCount; t++, cursor++)
+    	for (var t = 0; t < SceneSceneBrowser.ColoumnsCount && cursor < response_items; t++, cursor++)
     	{
-    		var stream = response.streams[cursor];
+    		var cell;
     		
-            var cell = $('<td id="cell_' + row_id + '_' + t + '" class="stream_cell" align="center" data-channelname="' + stream.channel.name + '"></td>').html(
-				'<img id="thumbnail_' + row_id + '_' + t + '" class="stream_thumbnail" src="' + stream.preview.medium + '"/> \
-				<div class="stream_title">' + stream.channel.status + '</div> \
-				<div class="stream_info">' + stream.channel.display_name + ' (' + stream.viewers +')</div>');
+    		if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+    		{
+    			var game = response.top[cursor];
+    			
+    			cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + ' Viewers' );
+    		}
+    		else
+    		{
+        		var stream = response.streams[cursor];
+        		
+        		cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name + ' (' + addCommas(stream.viewers) +')');
+    		}
             
             row.append(cell);
     	}
@@ -99,7 +164,7 @@ SceneSceneBrowser.loadData = function()
 SceneSceneBrowser.clean = function()
 {
 	$('#stream_table').empty();
-	SceneSceneBrowser.streamsCount = 0;
+	SceneSceneBrowser.itemsCount = 0;
 	SceneSceneBrowser.cursorX = 0;
 	SceneSceneBrowser.cursorY = 0;
 };
@@ -119,7 +184,7 @@ SceneSceneBrowser.removeFocus = function()
 
 SceneSceneBrowser.addFocus = function()
 {
-	if (SceneSceneBrowser.cursorY + 5 > SceneSceneBrowser.streamsCount / SceneSceneBrowser.ColoumnsCount)
+	if (SceneSceneBrowser.cursorY + 5 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)
 	{
 		SceneSceneBrowser.loadData();
 	}
@@ -133,13 +198,13 @@ SceneSceneBrowser.getCellsCount = function()
 {
 	return Math.min(
 			SceneSceneBrowser.ColoumnsCount,
-			SceneSceneBrowser.streamsCount - SceneSceneBrowser.cursorY * SceneSceneBrowser.ColoumnsCount);	
+			SceneSceneBrowser.itemsCount - SceneSceneBrowser.cursorY * SceneSceneBrowser.ColoumnsCount);	
 };
 
 SceneSceneBrowser.getRowsCount = function()
 {
-	var count = SceneSceneBrowser.streamsCount / SceneSceneBrowser.ColoumnsCount;
-	if (SceneSceneBrowser.streamsCount % SceneSceneBrowser.ColoumnsCount > 0)
+	var count = SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount;
+	if (SceneSceneBrowser.itemsCount % SceneSceneBrowser.ColoumnsCount > 0)
 	{
 		count++;
 	}
@@ -215,11 +280,21 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			SceneSceneBrowser.addFocus();
 			break;
 		case sf.key.ENTER:
-			SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
-	        $(window).scrollTop(0);
-			sf.scene.show('SceneChannel');
-			sf.scene.hide('SceneBrowser');
-			sf.scene.focus('SceneChannel');
+
+			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+			{	
+				SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+				SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
+				SceneSceneBrowser.refresh();
+			}
+			else
+			{
+				SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+				$(window).scrollTop(0);
+				sf.scene.show('SceneChannel');
+				sf.scene.hide('SceneBrowser');
+				sf.scene.focus('SceneChannel');
+			}
 			break;
 		case sf.key.VOL_UP:
 			sf.service.setVolumeControl(true);
@@ -229,6 +304,19 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			break;
 		case sf.key.MUTE:
 			sf.service.setVolumeControl(true);
+			break;
+		case sf.key.RED:
+			SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
+			SceneSceneBrowser.refresh();
+			break;
+		case sf.key.GREEN:
+			SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES;
+			SceneSceneBrowser.refresh();
+			break;
+		case sf.key.YELLOW:
+			break;
+		case sf.key.BLUE:
+			SceneSceneBrowser.refresh();
 			break;
 		default:
 			alert("handle default key event, key code(" + keyCode + ")");

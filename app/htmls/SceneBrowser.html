@@ -1,46 +1,76 @@
 <html>
 
-  <head>
-    <style type="text/css">
+  <style type="text/css">
       body
       {
         background-color: #6441A5;
         font-family: tahoma, verdana, arial, sans-serif;
-        font-size:11px;
-        font-style:normal;
-        font-variant:normal;
-        font-weight:normal;
-        letter-spacing:normal;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        letter-spacing: normal;
+      }
+
+      div.tip_icon
+      {
+        width: 42px;
+        height: 42px;
+        margin-right: 4px;
+        display: inline-block;
+        border-radius: 42px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+        color: white;
+        font-size: 22px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 42px;
+        text-shadow: 0px 0px 3px #000000;
+      }
+
+      div.tip_label
+      {
+        width: 72px;
+        height: 42px;
+        margin-right: 32px;
+        display: inline-block;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 20px;
+        text-shadow: 0px 0px 4px #000000;
+        vertical-align: middle;
+        line-height: 42px;
       }
 
       img.stream_thumbnail
       {
-        width:90%;
+        width: 90%;
         border: 7px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0px 0px 10px #000000;
       }
+      
       img.stream_thumbnail_focused
       {
-        width:90%;
+        width: 90%;
         border: 7px solid rgba(255, 255, 255, 0.85);
         box-shadow: 0px 0px 15px #000000;
       }
       
       td.stream_cell
       {
-      	padding-bottom: 1.5%;
-      	width: 25%;
+        padding-bottom: 1.5%;
+        width: 25%;
       }
 
       div.stream_title
       {
         padding-top: 1.5%;
         width: 90%;
+        text-align: left;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         color: rgba(255, 255, 255, 0.85);
-        font-size:170%;
+        font-size: 170%;
         text-shadow: 0px 0px 4px #000000;
       }
 
@@ -53,16 +83,27 @@
         text-overflow: ellipsis;
         overflow: hidden;
         color: rgba(255, 255, 255, 0.70);
-        font-size:200%;
+        font-size: 200%;
         text-shadow: 0px 0px 4px #000000;
       }
     </style>
   </head>
 
   <body>
-    <img width="8%" style="padding-left: 2%; padding-top: 1.0%; padding-bottom: 1.0%;" src="images/twitchlogo.png"/>
+    <img style="width: 8%; padding-left: 2%; padding-top: 1.0%; padding-bottom: 1.0%;" src="images/twitchlogo.png"/>
 
-    <table id="stream_table" style="width:100%; margin: 0px auto; border: 0; table-layout: fixed;">
+    <div style="float: right; padding-top: 2.0%;">
+      <div class="tip_icon" style="background-color: #ff3333">A</div>
+      <div class="tip_label">Channels</div>
+      <div class="tip_icon" style="background-color: #55d459">B</div>
+      <div class="tip_label">Games</div>
+      <div class="tip_icon" style="background-color: #eded00">C</div>
+      <div class="tip_label">Go to</div>
+      <div class="tip_icon" style="background-color: #3d81f2">D</div>
+      <div class="tip_label">Refresh</div>
+    </div>
+
+    <table id="stream_table" style="width: 100%; margin-top: 1%; border: 0; table-layout: fixed;">
 
     </table>
   </body>
