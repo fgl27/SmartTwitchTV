@@ -8,12 +8,15 @@ SceneSceneBrowser.ColoumnsCount = 4;
 SceneSceneBrowser.MODE_ALL = 0;
 SceneSceneBrowser.MODE_GAMES = 1;
 SceneSceneBrowser.MODE_GAMES_STREAMS = 2;
+SceneSceneBrowser.MODE_GO = 3;
 
 SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
 SceneSceneBrowser.gameSelected = null;
 SceneSceneBrowser.itemsCount = 0;
 SceneSceneBrowser.cursorX = 0;
 SceneSceneBrowser.cursorY = 0;
+
+SceneSceneBrowser.ime = null;
 
 var ScrollHelper =
 {
@@ -95,6 +98,12 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail
 
 SceneSceneBrowser.loadData = function()
 {
+	// Even though loading data after end is safe it is pointless and causes lag
+	if (SceneSceneBrowser.itemsCount % SceneSceneBrowser.ColoumnsCount != 0)
+	{
+		return;
+	}
+	
 	var offset = SceneSceneBrowser.itemsCount;
 	var responceText;
 	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
@@ -161,6 +170,46 @@ SceneSceneBrowser.loadData = function()
     }
 };
 
+SceneSceneBrowser.showTable = function()
+{
+	$("#streamname_frame").hide();
+	$("#stream_table").show();
+};
+
+SceneSceneBrowser.showInput = function()
+{
+	$("#stream_table").hide();
+	$("#streamname_frame").show();
+};
+
+SceneSceneBrowser.switchMode = function(mode)
+{
+	SceneSceneBrowser.mode = mode;
+	
+	SceneSceneBrowser.clean();
+	
+	if (mode == SceneSceneBrowser.MODE_ALL)
+	{
+		SceneSceneBrowser.showTable();
+		SceneSceneBrowser.refresh();
+	}
+	else if (mode == SceneSceneBrowser.MODE_GAMES)
+	{
+		SceneSceneBrowser.showTable();
+		SceneSceneBrowser.refresh();	
+	}
+	else if (mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
+	{
+		SceneSceneBrowser.showTable();
+		SceneSceneBrowser.refresh();
+	}
+	else if (mode == SceneSceneBrowser.MODE_GO)
+	{
+		SceneSceneBrowser.showInput();
+		SceneSceneBrowser.refreshInputFocus();
+	}
+};
+
 SceneSceneBrowser.clean = function()
 {
 	$('#stream_table').empty();
@@ -172,8 +221,12 @@ SceneSceneBrowser.clean = function()
 SceneSceneBrowser.refresh = function()
 {
 	SceneSceneBrowser.clean();
-	SceneSceneBrowser.loadData();
-	SceneSceneBrowser.addFocus();
+
+	if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
+	{
+		SceneSceneBrowser.loadData();
+		SceneSceneBrowser.addFocus();
+	}
 };
 
 
@@ -212,7 +265,35 @@ SceneSceneBrowser.getRowsCount = function()
 	return count;
 };
 
-function SceneSceneBrowser() {
+SceneSceneBrowser.refreshInputFocus = function()
+{
+    $('#streamname_input').removeClass('channelname');
+    $('#streamname_input').removeClass('channelname_focused');
+    $('#streamname_button').removeClass('button_go');
+    $('#streamname_button').removeClass('button_go_focused');
+    
+	if (SceneSceneBrowser.cursorY == 0)
+	{
+	    $('#streamname_input').addClass('channelname_focused');
+	    $('#streamname_button').addClass('button_go');
+	}
+	else
+	{
+	    $('#streamname_input').addClass('channelname');
+	    $('#streamname_button').addClass('button_go_focused');
+	}
+};
+
+SceneSceneBrowser.openStream = function()
+{
+	$(window).scrollTop(0);
+	sf.scene.show('SceneChannel');
+	sf.scene.hide('SceneBrowser');
+	sf.scene.focus('SceneChannel');
+};
+
+function SceneSceneBrowser()
+{
 
 };
 
@@ -221,6 +302,8 @@ SceneSceneBrowser.prototype.initialize = function () {
 	// this function will be called only once when the scene manager show this scene first time
 	// initialize the scene controls and styles, and initialize your variables here
 	// scene HTML and CSS will be loaded before this function is called
+	
+	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 };
 
 SceneSceneBrowser.prototype.handleShow = function (data) {
@@ -247,41 +330,80 @@ SceneSceneBrowser.prototype.handleBlur = function () {
 
 SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 	alert("SceneSceneBrowser.handleKeyDown(" + keyCode + ")");
-	
+
 	switch (keyCode) {
 		case sf.key.LEFT:
-			if (SceneSceneBrowser.cursorX > 0)
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
-				SceneSceneBrowser.removeFocus();
-				SceneSceneBrowser.cursorX--;
-				SceneSceneBrowser.addFocus();
+				if (SceneSceneBrowser.cursorX > 0)
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorX--;
+					SceneSceneBrowser.addFocus();
+				}
 			}
 			break;
 		case sf.key.RIGHT:
-			if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount() - 1)
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
-				SceneSceneBrowser.removeFocus();
-				SceneSceneBrowser.cursorX++;
-				SceneSceneBrowser.addFocus();
+				if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount() - 1)
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorX++;
+					SceneSceneBrowser.addFocus();
+				}
 			}
 			break;
 		case sf.key.UP:
-			if (SceneSceneBrowser.cursorY > 0)
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
-				SceneSceneBrowser.removeFocus();
-				SceneSceneBrowser.cursorY--;
-				SceneSceneBrowser.addFocus();
+				if (SceneSceneBrowser.cursorY > 0)
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorY--;
+					SceneSceneBrowser.addFocus();
+				}
+			}
+			else
+			{
+				SceneSceneBrowser.cursorY = 0;
+				SceneSceneBrowser.refreshInputFocus();
 			}
 			break;
 		case sf.key.DOWN:
-			if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount())
-			SceneSceneBrowser.removeFocus();
-			SceneSceneBrowser.cursorY++;
-			SceneSceneBrowser.addFocus();
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
+			{
+				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount())
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorY++;
+					SceneSceneBrowser.addFocus();
+				}
+			}
+			else
+			{
+				SceneSceneBrowser.cursorY = 1;
+				SceneSceneBrowser.refreshInputFocus();
+			}
 			break;
 		case sf.key.ENTER:
-
-			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO)
+			{
+				if (SceneSceneBrowser.cursorY == 0)
+				{
+					SceneSceneBrowser.ime = new IMEShell_Common();
+					SceneSceneBrowser.ime.inputboxID = 'streamname_input';
+				    SceneSceneBrowser.ime.inputTitle = 'Channel name';
+				    SceneSceneBrowser.ime.setOnCompleteFunc = onCompleteText;
+					SceneSceneBrowser.ime.onShow();
+				}
+				else
+				{
+					SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
+					SceneSceneBrowser.openStream();
+				}
+			}
+			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
 			{	
 				SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
 				SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
@@ -290,10 +412,14 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			else
 			{
 				SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
-				$(window).scrollTop(0);
-				sf.scene.show('SceneChannel');
-				sf.scene.hide('SceneBrowser');
-				sf.scene.focus('SceneChannel');
+				SceneSceneBrowser.openStream();
+			}
+			break;
+		case sf.key.RETURN:
+			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
+			{
+				sf.key.preventDefault();
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
 			}
 			break;
 		case sf.key.VOL_UP:
@@ -306,14 +432,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			sf.service.setVolumeControl(true);
 			break;
 		case sf.key.RED:
-			SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
-			SceneSceneBrowser.refresh();
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 			break;
 		case sf.key.GREEN:
-			SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES;
-			SceneSceneBrowser.refresh();
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
 			break;
 		case sf.key.YELLOW:
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
 			break;
 		case sf.key.BLUE:
 			SceneSceneBrowser.refresh();
@@ -323,3 +448,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			break;
 	}
 };
+
+function onCompleteText(string)
+{
+
+}
