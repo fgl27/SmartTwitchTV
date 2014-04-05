@@ -1,184 +1,224 @@
 <html>
 
-  <head>
-  	<style type="text/css">
-      body
-      {
-        background-color: #6441A5;
-        font-family: tahoma, verdana, arial, sans-serif;
-        font-size: 11px;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: normal;
-        letter-spacing: normal;
-      }
+<head>
+<style type="text/css">
+body {
+  background-color: #6441A5;
+  font-family: sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 100;
+  letter-spacing: normal;
+}
 
-      div.tip_icon
-      {
-        width: 42px;
-        height: 42px;
-        margin-right: 4px;
-        display: inline-block;
-        border-radius: 42px;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
-        color: white;
-        font-size: 22px;
-        text-align: center;
-        vertical-align: middle;
-        line-height: 42px;
-        text-shadow: 0px 0px 3px #000000;
-      }
+div.tip_icon {
+  width: 42px;
+  height: 42px;
+  margin-right: 4px;
+  display: inline-block;
+  border-radius: 42px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 42px;
+  text-shadow: 0px 0px 3px #000000;
+}
 
-      div.tip_label
-      {
-        width: 72px;
-        height: 42px;
-        margin-right: 32px;
-        display: inline-block;
-        color: rgba(255, 255, 255, 0.85);
-        font-size: 20px;
-        text-shadow: 0px 0px 4px #000000;
-        vertical-align: middle;
-        line-height: 42px;
-      }
+div.tip_label {
+  width: 72px;
+  height: 42px;
+  margin-right: 32px;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 20px;
+  text-shadow: 0px 0px 4px #000000;
+  vertical-align: middle;
+  line-height: 42px;
+}
 
-      img.stream_thumbnail
-      {
-        width: 90%;
-        border: 7px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0px 0px 10px #000000;
-      }
-      
-      img.stream_thumbnail_focused
-      {
-        width: 90%;
-        border: 7px solid rgba(255, 255, 255, 0.85);
-        box-shadow: 0px 0px 15px #000000;
-      }
-      
-      td.stream_cell
-      {
-        padding-bottom: 1.5%;
-        width: 25%;
-      }
+img.stream_thumbnail {
+  width: 90%;
+  border: 7px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 0px 10px #000000;
+}
 
-      div.stream_title
-      {
-        padding-top: 1.5%;
-        width: 90%;
-        text-align: left;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        color: rgba(255, 255, 255, 0.85);
-        font-size: 170%;
-        text-shadow: 0px 0px 4px #000000;
-      }
+img.stream_thumbnail_focused {
+  width: 90%;
+  border: 7px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0px 0px 15px #000000;
+}
 
-      div.stream_info
-      {
-        padding-top: 0.5%;
-        width: 90%;
-        text-align: left;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        color: rgba(255, 255, 255, 0.70);
-        font-size: 200%;
-        text-shadow: 0px 0px 4px #000000;
-      }
+td.stream_cell {
+  padding-bottom: 1.5%;
+  width: 25%;
+}
 
-      div.openchannel
-      {
-        width: 70%;
-        margin-top: 15%;
-        margin-left: 15%;
-      }
+div.stream_title {
+  padding-top: 1.5%;
+  width: 90%;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 170%;
+  text-shadow: 0px 0px 4px #000000;
+}
 
-      input.channelname
-      {
-        width: 100%;
-        height: 10%;
-        border-radius: 14px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-        color: black;
-        font-size: 430%;
-        text-align: center;
-        vertical-align: middle;
-        background-color: rgba(255, 255, 255, 0.8);
-      }
+div.stream_info {
+  padding-top: 0.5%;
+  width: 90%;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 200%;
+  text-shadow: 0px 0px 4px #000000;
+}
 
-      input.channelname_focused
-      {
-        width: 100%;
-        height: 8%;
-        border-radius: 14px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-        color: black;
-        font-size: 430%;
-        text-align: center;
-        vertical-align: middle;
-        background-color: rgba(255, 255, 255, 1.0);
-      }
+div.openchannel {
+  width: 70%;
+  margin-top: 15%;
+  margin-left: 15%;
+}
 
-      div.button_go
-      {
-        width: 15%;
-        height: 11%;
-        margin-top: 2%;
-        margin-left: 42.5%;
-        padding-top: 0.5%;
-        border-radius: 12px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-        color: black;
-        font-size: 470%;
-        text-align: center;
-        vertical-align: middle;
-        background-color: rgba(255, 255, 255, 0.45);
-      }
+input.channelname {
+  width: 100%;
+  height: 10%;
+  border-radius: 14px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
+  color: black;
+  font-size: 430%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(255, 255, 255, 0.8);
+}
 
-      div.button_go_focused
-      {
-        width: 15%;
-        height: 11%;
-        margin-top: 2%;
-        margin-left: 42.5%;
-        padding-top: 0.5%;
-        border-radius: 12px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-        color: black;
-        font-size: 470%;
-        text-align: center;
-        vertical-align: middle;
-        background-color: rgba(255, 255, 255, 1.0);
-      }
-    </style>
-  </head>
+input.channelname_focused {
+  width: 100%;
+  height: 8%;
+  border-radius: 14px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
+  color: black;
+  font-size: 430%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(255, 255, 255, 1.0);
+}
 
-  <body>
-		
-    <img style="width: 8%; padding-left: 2%; padding-top: 1.0%; padding-bottom: 1.0%;" src="images/twitchlogo.png"/>
+div.button_go {
+  width: 15%;
+  height: 11%;
+  margin-top: 2%;
+  margin-left: 42.5%;
+  padding-top: 0.5%;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
+  color: black;
+  font-size: 470%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(255, 255, 255, 0.45);
+}
 
-    <div style="float: right; padding-top: 2.0%;">
-      <div class="tip_icon" style="background-color: #ff3333">A</div>
-      <div class="tip_label">Channels</div>
-      <div class="tip_icon" style="background-color: #55d459">B</div>
-      <div class="tip_label">Games</div>
-      <div class="tip_icon" style="background-color: #eded00">C</div>
-      <div class="tip_label">Go to</div>
-      <div class="tip_icon" style="background-color: #3d81f2">D</div>
-      <div class="tip_label">Refresh</div>
-    </div>
+div.button_go_focused {
+  width: 15%;
+  height: 11%;
+  margin-top: 2%;
+  margin-left: 42.5%;
+  padding-top: 0.5%;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
+  color: black;
+  font-size: 470%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(255, 255, 255, 1.0);
+}
 
-    <table id="stream_table" style="width: 100%; margin-top: 1%; border: 0; table-layout: fixed;">
+.spinner {
+  margin: 120px auto 0;
+  width: 120px;
+  text-align: center;
+}
 
-    </table>
-    
-    <div id="streamname_frame" class="openchannel">
-      <input id="streamname_input" class="channelname" type="text" placeholder="Enter channel name.."/>
-      <div id="streamname_button" class="button_go">Go</div>
-    </div>
-    
-  </body>
+.spinner > div {
+  width: 28px;
+  height: 28px;
+  background-color: #FFFFFF;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+</style>
+</head>
+
+<body>
+
+	<img style="width: 8%; padding-left: 2%; padding-top: 1.0%; padding-bottom: 1.0%;" src="images/twitchlogo.png" />
+
+	<div style="float: right; padding-top: 2.0%;">
+		<div class="tip_icon" style="background-color: #ff3333">A</div>
+		<div class="tip_label">Channels</div>
+		<div class="tip_icon" style="background-color: #55d459">B</div>
+		<div class="tip_label">Games</div>
+		<div class="tip_icon" style="background-color: #eded00">C</div>
+		<div class="tip_label">Go to</div>
+		<div class="tip_icon" style="background-color: #3d81f2">D</div>
+		<div class="tip_label">Refresh</div>
+	</div>
+
+	<div id="dialog_loading" style="text-align: center; width: 70%; margin-top: 12%; margin-left: 15%;">
+		<div class="spinner" style="display: inline-block;">
+			<div class="bounce1"></div>
+			<div class="bounce2"></div>
+			<div class="bounce3"></div>
+		</div>
+		<div id="dialog_loading_text" style="display: inline-block; font-size: 300%; color: white;"></div>
+	</div>
+
+	<table id="stream_table" style="width: 100%; margin-top: 1%; border: 0; table-layout: fixed;">
+
+	</table>
+
+	<div id="streamname_frame" class="openchannel">
+		<input id="streamname_input" class="channelname" type="text" placeholder="Enter channel name.." />
+		<div id="streamname_button" class="button_go">Go</div>
+	</div>
+
+</body>
 
 </html>

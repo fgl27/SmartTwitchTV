@@ -18,6 +18,11 @@ SceneSceneBrowser.cursorY = 0;
 
 SceneSceneBrowser.ime = null;
 
+SceneSceneBrowser.loadingData = false;
+SceneSceneBrowser.loadingDataTryMax = 20;
+SceneSceneBrowser.loadingDataTry;
+SceneSceneBrowser.loadingDataTimeout;
+
 var ScrollHelper =
 {
     documentVerticalScrollPosition: function()
@@ -65,16 +70,6 @@ var ScrollHelper =
     }
 };
 
-function httpGet(theUrl)
-{
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl, false);
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
-}
-
 function addCommas(nStr)
 {
 	nStr += '';
@@ -96,33 +91,53 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail
 			<div class="stream_info">' + info + '</div>');
 };
 
-SceneSceneBrowser.loadData = function()
+SceneSceneBrowser.loadDataError = function()
 {
-	// Even though loading data after end is safe it is pointless and causes lag
-	if (SceneSceneBrowser.itemsCount % SceneSceneBrowser.ColoumnsCount != 0)
+	SceneSceneBrowser.loadingDataTry++;
+	if (SceneSceneBrowser.loadingDataTry < 15)
 	{
-		return;
-	}
-	
-	var offset = SceneSceneBrowser.itemsCount;
-	var responceText;
-	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
-	{
-		responceText = httpGet('https://api.twitch.tv/kraken/games/top?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
-	}
-	else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
-	{
-		responceText = httpGet('https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
+		if (SceneSceneBrowser.loadingDataTry < 10)
+		{
+			SceneSceneBrowser.loadingDataTimeout += 100;
+		}
+		else
+		{
+			switch (SceneSceneBrowser.loadingDataTry)
+			{
+			case 10:
+				SceneSceneBrowser.loadingDataTimeout = 5000;
+				break;
+			case 11:
+				SceneSceneBrowser.loadingDataTimeout = 10000;
+				break;
+			case 12:
+				SceneSceneBrowser.loadingDataTimeout = 30000;
+				break;
+			case 13:
+				SceneSceneBrowser.loadingDataTimeout = 60000;
+				break;
+			case 14:
+				SceneSceneBrowser.loadingDataTimeout = 300000;
+				break;
+			}
+		}
+		SceneSceneBrowser.loadDataRequest();
 	}
 	else
 	{
-		responceText = httpGet('https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset);
+		SceneSceneBrowser.loadingData = false;
+		SceneSceneBrowser.showDialog("Error: Unable to load stream data.");
 	}
+};
+
+SceneSceneBrowser.loadDataSuccess = function(responseText)
+{
+	SceneSceneBrowser.showDialog("Data downloaded.");
 	
-	var response = JSON.parse(responceText);
+	var response = JSON.parse(responseText);
 	
 	var response_items;
-	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+	if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES)
 	{
 		response_items = response.top.length;
 	}
@@ -131,6 +146,7 @@ SceneSceneBrowser.loadData = function()
 		response_items = response.streams.length;
 	}
 	
+	var offset = SceneSceneBrowser.itemsCount;
 	SceneSceneBrowser.itemsCount += response_items;
 	
 	var response_rows = response_items / SceneSceneBrowser.ColoumnsCount;
@@ -140,7 +156,7 @@ SceneSceneBrowser.loadData = function()
 	}
 	
 	var cursor = 0;
-		
+
 	for (var i = 0; i < response_rows; i++)
 	{        
 		var row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
@@ -168,45 +184,137 @@ SceneSceneBrowser.loadData = function()
 
         $('#stream_table').append(row);
     }
+	
+	SceneSceneBrowser.loadingData = false;
+	SceneSceneBrowser.showTable();
+	SceneSceneBrowser.addFocus();
+};
+
+SceneSceneBrowser.loadDataRequest = function()
+{
+	try
+	{
+		var dialog_title = "Retrieving stream data";
+		if (SceneSceneBrowser.loadingDataTry > 0)
+		{
+			dialog_title += " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
+		}
+		SceneSceneBrowser.showDialog(dialog_title);
+		
+		var xmlHttp = new XMLHttpRequest();
+		var theUrl;
+	    
+		var offset = SceneSceneBrowser.itemsCount;
+		if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES)
+		{
+			theUrl = 'https://api.twitch.tv/kraken/games/top?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+		}
+		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS)
+		{
+			theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+		}
+		else
+		{
+			theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+		}
+		
+		xmlHttp.ontimeout = function()
+		{
+			SceneSceneBrowser.loadDataError();
+		};
+		xmlHttp.onload = function()
+		{
+			if (xmlHttp.readyState === 4)
+			{ 
+				if (xmlHttp.status === 200)
+				{
+					try
+					{
+						SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
+					}
+					catch (err)
+					{
+						SceneSceneBrowser.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+					}
+					
+				}
+				else
+				{
+					SceneSceneBrowser.loadDataError();
+				}
+			}
+		};
+	    xmlHttp.open("GET", theUrl, true);
+		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+	    xmlHttp.send(null);
+	}
+	catch (error)
+	{
+		SceneSceneBrowser.loadDataError();
+	}
+};
+
+SceneSceneBrowser.loadData = function()
+{
+	// Even though loading data after end is safe it is pointless and causes lag
+	if ((SceneSceneBrowser.itemsCount % SceneSceneBrowser.ColoumnsCount != 0) || SceneSceneBrowser.loadingData)
+	{
+		return;
+	}
+	
+	SceneSceneBrowser.loadingData = true;
+	SceneSceneBrowser.loadingDataTry = 0;
+	SceneSceneBrowser.loadingDataTimeout = 500;
+	
+	SceneSceneBrowser.loadDataRequest();
+};
+
+SceneSceneBrowser.showDialog = function(title)
+{
+	$("#streamname_frame").hide();
+	$("#stream_table").hide();
+	$("#dialog_loading_text").text(title);
+	$("#dialog_loading").show();
 };
 
 SceneSceneBrowser.showTable = function()
 {
+	$("#dialog_loading").hide();
 	$("#streamname_frame").hide();
 	$("#stream_table").show();
 };
 
 SceneSceneBrowser.showInput = function()
 {
+	$("#dialog_loading").hide();
 	$("#stream_table").hide();
 	$("#streamname_frame").show();
 };
 
 SceneSceneBrowser.switchMode = function(mode)
 {
-	SceneSceneBrowser.mode = mode;
-	
-	SceneSceneBrowser.clean();
-	
-	if (mode == SceneSceneBrowser.MODE_ALL)
+	if (mode != SceneSceneBrowser.mode)
 	{
-		SceneSceneBrowser.showTable();
-		SceneSceneBrowser.refresh();
-	}
-	else if (mode == SceneSceneBrowser.MODE_GAMES)
-	{
-		SceneSceneBrowser.showTable();
-		SceneSceneBrowser.refresh();	
-	}
-	else if (mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
-	{
-		SceneSceneBrowser.showTable();
-		SceneSceneBrowser.refresh();
-	}
-	else if (mode == SceneSceneBrowser.MODE_GO)
-	{
-		SceneSceneBrowser.showInput();
-		SceneSceneBrowser.refreshInputFocus();
+		SceneSceneBrowser.mode = mode;
+		
+		if (mode == SceneSceneBrowser.MODE_ALL)
+		{
+			SceneSceneBrowser.refresh();
+		}
+		else if (mode == SceneSceneBrowser.MODE_GAMES)
+		{
+			SceneSceneBrowser.refresh();	
+		}
+		else if (mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
+		{
+			SceneSceneBrowser.refresh();
+		}
+		else if (mode == SceneSceneBrowser.MODE_GO)
+		{
+			SceneSceneBrowser.clean();
+			SceneSceneBrowser.showInput();
+			SceneSceneBrowser.refreshInputFocus();
+		}
 	}
 };
 
@@ -220,12 +328,11 @@ SceneSceneBrowser.clean = function()
 
 SceneSceneBrowser.refresh = function()
 {
-	SceneSceneBrowser.clean();
-
 	if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 	{
+		SceneSceneBrowser.clean();
+		
 		SceneSceneBrowser.loadData();
-		SceneSceneBrowser.addFocus();
 	}
 };
 
@@ -297,41 +404,62 @@ function SceneSceneBrowser()
 
 };
 
-SceneSceneBrowser.prototype.initialize = function () {
+SceneSceneBrowser.prototype.initialize = function ()
+{
 	alert("SceneSceneBrowser.initialize()");
 	// this function will be called only once when the scene manager show this scene first time
 	// initialize the scene controls and styles, and initialize your variables here
 	// scene HTML and CSS will be loaded before this function is called
 	
-	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+	SceneSceneBrowser.loadingData = false;
 };
 
-SceneSceneBrowser.prototype.handleShow = function (data) {
+SceneSceneBrowser.prototype.handleShow = function (data)
+{
 	alert("SceneSceneBrowser.handleShow()");
 	// this function will be called when the scene manager show this scene
 };
 
-SceneSceneBrowser.prototype.handleHide = function () {
+SceneSceneBrowser.prototype.handleHide = function ()
+{
 	alert("SceneSceneBrowser.handleHide()");
 	// this function will be called when the scene manager hide this scene
 	SceneSceneBrowser.clean();
 };
 
-SceneSceneBrowser.prototype.handleFocus = function () {
+SceneSceneBrowser.prototype.handleFocus = function ()
+{
 	alert("SceneSceneBrowser.handleFocus()");
 	// this function will be called when the scene manager focus this scene
 	SceneSceneBrowser.refresh();
 };
 
-SceneSceneBrowser.prototype.handleBlur = function () {
+SceneSceneBrowser.prototype.handleBlur = function ()
+{
 	alert("SceneSceneBrowser.handleBlur()");
 	// this function will be called when the scene manager move focus to another scene from this scene
 };
 
-SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
+SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
+{
 	alert("SceneSceneBrowser.handleKeyDown(" + keyCode + ")");
+	
+	if (keyCode == sf.key.RETURN)
+	{
+		if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData)
+		{
+			sf.key.preventDefault();
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+		}
+	}
+	
+	if (SceneSceneBrowser.loadingData)
+	{
+		return;
+	}
 
-	switch (keyCode) {
+	switch (keyCode)
+	{
 		case sf.key.LEFT:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
@@ -413,13 +541,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode) {
 			{
 				SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
 				SceneSceneBrowser.openStream();
-			}
-			break;
-		case sf.key.RETURN:
-			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
-			{
-				sf.key.preventDefault();
-				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
 			}
 			break;
 		case sf.key.VOL_UP:
