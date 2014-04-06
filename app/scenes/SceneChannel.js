@@ -2,7 +2,11 @@ alert('SceneSceneChannel.js loaded');
 
 SceneSceneChannel.Player = null;
 
-SceneSceneChannel.loadingData = false;
+SceneSceneChannel.STATE_LOADING_TOKEN = 0;
+SceneSceneChannel.STATE_LOADING_PLAYLIST = 1;
+SceneSceneChannel.STATE_PLAYING = 2;
+
+SceneSceneChannel.loadingState;
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
 SceneSceneChannel.loadingDataTimeout;
@@ -185,8 +189,8 @@ SceneSceneChannel.loadDataError = function()
 	}
 	else
 	{
-		SceneSceneChannel.loadingData = false;
-		SceneSceneChannel.showDialog("Error: Unable to load stream data.");
+		SceneSceneChannel.showDialog("Error: Unable to retrieve access token.");
+		sleep(3000, SceneSceneChannel.shutdownStream);
 	}
 };
 
@@ -197,9 +201,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 	var response = JSON.parse(responseText);
     var url = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
 	
-	SceneSceneChannel.loadingData = false;
-	
-    SceneSceneChannel.Player.Play(url + '|COMPONENT=HLS');  
+	SceneSceneChannel.Player.Play(url + '|COMPONENT=HLS');  
 };
 
 SceneSceneChannel.loadDataRequest = function()
@@ -254,7 +256,6 @@ SceneSceneChannel.loadDataRequest = function()
 
 SceneSceneChannel.loadData = function()
 {	
-	SceneSceneChannel.loadingData = true;
 	SceneSceneChannel.loadingDataTry = 0;
 	SceneSceneChannel.loadingDataTimeout = 500;
 	
