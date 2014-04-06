@@ -11,6 +11,10 @@ SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
 SceneSceneChannel.loadingDataTimeout;
 
+SceneSceneChannel.playingTryMax = 10;
+SceneSceneChannel.playingTry;
+SceneSceneChannel.playingUrl;
+
 function sleep(millis, callback) {
     setTimeout(function()
             { callback(); }
@@ -60,6 +64,8 @@ SceneSceneChannel.prototype.handleFocus = function () {
     
     SceneSceneChannel.Player.SetDisplayArea(0, 0, 1280, 720);
     
+    SceneSceneChannel.playingTry = 0;
+    
     SceneSceneChannel.loadData();
 };
 
@@ -102,8 +108,16 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 
 
 SceneSceneChannel.onConnectionFailed = function () {
-	SceneSceneChannel.showDialog("Connection failed.");
-	sleep(3000, SceneSceneChannel.shutdownStream);
+	if (SceneSceneChannel.playingTry++ < SceneSceneChannel.playingTryMax)
+	{
+		SceneSceneChannel.showDialog("Opening (" + SceneSceneChannel.playingTry + "/" + SceneSceneChannel.playingTryMax + ")");
+		SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
+	}
+	else
+	{
+		SceneSceneChannel.showDialog("Connection failed.");
+		sleep(3000, SceneSceneChannel.shutdownStream);
+	}
 };
 
 SceneSceneChannel.onAuthenticationFailed = function () {
@@ -199,9 +213,9 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 	SceneSceneChannel.showDialog("Opening");
 	
 	var response = JSON.parse(responseText);
-    var url = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
+	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
 	
-	SceneSceneChannel.Player.Play(url + '|COMPONENT=HLS');  
+	SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');  
 };
 
 SceneSceneChannel.loadDataRequest = function()
