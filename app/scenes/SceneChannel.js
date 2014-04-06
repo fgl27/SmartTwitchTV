@@ -2,19 +2,21 @@ alert('SceneSceneChannel.js loaded');
 
 SceneSceneChannel.Player = null;
 
+SceneSceneChannel.loadingData = false;
+SceneSceneChannel.loadingDataTryMax = 15;
+SceneSceneChannel.loadingDataTry;
+SceneSceneChannel.loadingDataTimeout;
+
+function sleep(millis, callback) {
+    setTimeout(function()
+            { callback(); }
+    , millis);
+}
+
+
 function SceneSceneChannel() {
 
 };
-
-function httpGet(theUrl)
-{
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl, false);
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
-}
 
 SceneSceneChannel.shutdownStream = function()
 {
@@ -29,10 +31,7 @@ SceneSceneChannel.shutdownStream = function()
 SceneSceneChannel.prototype.initialize = function ()
 {	
 	SceneSceneChannel.Player = document.getElementById('pluginObjectPlayer');
-    SceneSceneChannel.Player.SetDisplayArea(0, 0, 1280, 720);
 };
-
-
 
 SceneSceneChannel.prototype.handleShow = function (data) {
 	alert("SceneSceneChannel.handleShow()");
@@ -44,12 +43,6 @@ SceneSceneChannel.prototype.handleHide = function () {
 
 SceneSceneChannel.prototype.handleFocus = function () {
 	alert("SceneSceneChannel.handleFocus()");
-	
-	var channel = SceneSceneBrowser.selectedChannel;
-	
-    var responceText = httpGet('http://api.twitch.tv/api/channels/' + channel + '/access_token');
-	var response = JSON.parse(responceText);
-    var url = 'http://usher.twitch.tv/select/' + channel + '.json?type=any&nauthsig='+response.sig+'&nauth='+escape(response.token);
 
     SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';
     SceneSceneChannel.Player.OnAuthenticationFailed = 'SceneSceneChannel.onAuthenticationFailed';
@@ -60,8 +53,10 @@ SceneSceneChannel.prototype.handleFocus = function () {
     SceneSceneChannel.Player.OnBufferingComplete = 'SceneSceneChannel.onBufferingComplete';
     SceneSceneChannel.Player.OnBufferingStart = 'SceneSceneChannel.onBufferingStart';
     SceneSceneChannel.Player.OnBufferingProgress = 'SceneSceneChannel.onBufferingProgress';
-	
-    SceneSceneChannel.Player.Play(url + '|COMPONENT=HLS');  
+    
+    SceneSceneChannel.Player.SetDisplayArea(0, 0, 1280, 720);
+    
+    SceneSceneChannel.loadData();
 };
 
 SceneSceneChannel.prototype.handleBlur = function () {
@@ -103,23 +98,28 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 
 
 SceneSceneChannel.onConnectionFailed = function () {
-	SceneSceneChannel.shutdownStream();
+	SceneSceneChannel.showDialog("Connection failed.");
+	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onAuthenticationFailed = function () {
-	SceneSceneChannel.shutdownStream();
+	SceneSceneChannel.showDialog("Authentication failed.");
+	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onStreamNotFound = function () {
-	SceneSceneChannel.shutdownStream();
+	SceneSceneChannel.showDialog("Stream not found.");
+	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onNetworkDisconnected = function () {
-	SceneSceneChannel.shutdownStream();
+	SceneSceneChannel.showDialog("Network disconnected.");
+	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onRenderError = function (RenderErrorType) {
-	SceneSceneChannel.shutdownStream();
+	SceneSceneChannel.showDialog("Render error.");
+	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onRenderingComplete = function () {
@@ -127,12 +127,136 @@ SceneSceneChannel.onRenderingComplete = function () {
 };
 
 SceneSceneChannel.onBufferingStart = function () {
+	SceneSceneChannel.showDialog("Buffering");
 };
 
 SceneSceneChannel.onBufferingProgress = function (percent) {
+	SceneSceneChannel.showDialog("Buffering: " + percent + "%");
 };
 
 SceneSceneChannel.onBufferingComplete = function () {
+	SceneSceneChannel.showPlayer();
 };
 
 
+
+SceneSceneChannel.showDialog = function(title)
+{
+	$("#scene_channel_dialog_loading_text").text(title);
+	$("#scene_channel_dialog_loading").show();
+};
+
+SceneSceneChannel.showPlayer = function()
+{
+	$("#scene_channel_dialog_loading").hide();
+};
+
+SceneSceneChannel.loadDataError = function()
+{
+	SceneSceneChannel.loadingDataTry++;
+	if (SceneSceneChannel.loadingDataTry < SceneSceneChannel.loadingDataTryMax)
+	{
+		if (SceneSceneChannel.loadingDataTry < 10)
+		{
+			SceneSceneChannel.loadingDataTimeout += 100;
+		}
+		else
+		{
+			switch (SceneSceneChannel.loadingDataTry)
+			{
+			case 10:
+				SceneSceneChannel.loadingDataTimeout = 5000;
+				break;
+			case 11:
+				SceneSceneChannel.loadingDataTimeout = 10000;
+				break;
+			case 12:
+				SceneSceneChannel.loadingDataTimeout = 30000;
+				break;
+			case 13:
+				SceneSceneChannel.loadingDataTimeout = 60000;
+				break;
+			default:
+				SceneSceneChannel.loadingDataTimeout = 300000;
+				break;
+			}
+		}
+		SceneSceneChannel.loadDataRequest();
+	}
+	else
+	{
+		SceneSceneChannel.loadingData = false;
+		SceneSceneChannel.showDialog("Error: Unable to load stream data.");
+	}
+};
+
+SceneSceneChannel.loadDataSuccess = function(responseText)
+{
+	SceneSceneChannel.showDialog("Opening");
+	
+	var response = JSON.parse(responseText);
+    var url = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
+	
+	SceneSceneChannel.loadingData = false;
+	
+    SceneSceneChannel.Player.Play(url + '|COMPONENT=HLS');  
+};
+
+SceneSceneChannel.loadDataRequest = function()
+{
+	try
+	{
+		var dialog_title = "";
+		if (SceneSceneChannel.loadingDataTry > 0)
+		{
+			dialog_title = "Retrying (" + (SceneSceneChannel.loadingDataTry + 1) + "/" + SceneSceneChannel.loadingDataTryMax + ")";
+		}
+		SceneSceneChannel.showDialog(dialog_title);
+		
+		var xmlHttp = new XMLHttpRequest();
+		var theUrl = 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel + '/access_token';
+		
+		xmlHttp.ontimeout = function()
+		{
+			SceneSceneChannel.loadDataError();
+		};
+		xmlHttp.onload = function()
+		{
+			if (xmlHttp.readyState === 4)
+			{ 
+				if (xmlHttp.status === 200)
+				{
+					try
+					{
+						SceneSceneChannel.loadDataSuccess(xmlHttp.responseText);
+					}
+					catch (err)
+					{
+						SceneSceneChannel.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+					}
+					
+				}
+				else
+				{
+					SceneSceneChannel.loadDataError();
+				}
+			}
+		};
+	    xmlHttp.open("GET", theUrl, true);
+		xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
+	    xmlHttp.send(null);
+	}
+	catch (error)
+	{
+		SceneSceneChannel.loadDataError();
+	}
+};
+
+SceneSceneChannel.loadData = function()
+{	
+	SceneSceneChannel.loadingData = true;
+	SceneSceneChannel.loadingDataTry = 0;
+	SceneSceneChannel.loadingDataTimeout = 500;
+	
+	SceneSceneChannel.loadDataRequest();
+};

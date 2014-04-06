@@ -19,7 +19,7 @@ SceneSceneBrowser.cursorY = 0;
 SceneSceneBrowser.ime = null;
 
 SceneSceneBrowser.loadingData = false;
-SceneSceneBrowser.loadingDataTryMax = 20;
+SceneSceneBrowser.loadingDataTryMax = 15;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
 
@@ -83,6 +83,12 @@ function addCommas(nStr)
 	return x1 + x2;
 }
 
+function sleep(millis, callback) {
+    setTimeout(function()
+            { callback(); }
+    , millis);
+}
+
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail, title, info)
 {
 	return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" align="center" data-channelname="' + data_name + '"></td>').html(
@@ -94,7 +100,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail
 SceneSceneBrowser.loadDataError = function()
 {
 	SceneSceneBrowser.loadingDataTry++;
-	if (SceneSceneBrowser.loadingDataTry < 15)
+	if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax)
 	{
 		if (SceneSceneBrowser.loadingDataTry < 10)
 		{
@@ -116,7 +122,7 @@ SceneSceneBrowser.loadDataError = function()
 			case 13:
 				SceneSceneBrowser.loadingDataTimeout = 60000;
 				break;
-			case 14:
+			default:
 				SceneSceneBrowser.loadingDataTimeout = 300000;
 				break;
 			}
@@ -132,8 +138,6 @@ SceneSceneBrowser.loadDataError = function()
 
 SceneSceneBrowser.loadDataSuccess = function(responseText)
 {
-	SceneSceneBrowser.showDialog("Data downloaded.");
-	
 	var response = JSON.parse(responseText);
 	
 	var response_items;
@@ -186,18 +190,18 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
     }
 	
 	SceneSceneBrowser.loadingData = false;
-	SceneSceneBrowser.showTable();
 	SceneSceneBrowser.addFocus();
+	sleep(2000, SceneSceneBrowser.showTable);
 };
 
 SceneSceneBrowser.loadDataRequest = function()
 {
 	try
 	{
-		var dialog_title = "Retrieving stream data";
+		var dialog_title = "";
 		if (SceneSceneBrowser.loadingDataTry > 0)
 		{
-			dialog_title += " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
+			dialog_title = "Retrying (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
 		}
 		SceneSceneBrowser.showDialog(dialog_title);
 		
