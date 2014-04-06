@@ -9,6 +9,10 @@ body {
   font-variant: normal;
   font-weight: 100;
   letter-spacing: normal;
+  position: absolute;
+  z-index: 5;
+  margin: 0px;
+  padding: 0px;
 }
 
 div.tip_icon {
@@ -27,7 +31,7 @@ div.tip_icon {
 }
 
 div.tip_label {
-  width: 72px;
+  width: 86px;
   height: 42px;
   margin-right: 32px;
   display: inline-block;
@@ -63,7 +67,7 @@ div.stream_title {
   text-overflow: ellipsis;
   overflow: hidden;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 170%;
+  font-size: 150%;
   text-shadow: 0px 0px 4px #000000;
 }
 
@@ -75,7 +79,7 @@ div.stream_info {
   text-overflow: ellipsis;
   overflow: hidden;
   color: rgba(255, 255, 255, 0.70);
-  font-size: 200%;
+  font-size: 140%;
   text-shadow: 0px 0px 4px #000000;
 }
 
@@ -91,7 +95,7 @@ input.channelname {
   border-radius: 14px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
   color: black;
-  font-size: 430%;
+  font-size: 300%;
   text-align: center;
   vertical-align: middle;
   background-color: rgba(255, 255, 255, 0.8);
@@ -103,7 +107,7 @@ input.channelname_focused {
   border-radius: 14px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
   color: black;
-  font-size: 430%;
+  font-size: 300%;
   text-align: center;
   vertical-align: middle;
   background-color: rgba(255, 255, 255, 1.0);
@@ -118,7 +122,7 @@ div.button_go {
   border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
   color: black;
-  font-size: 470%;
+  font-size: 400%;
   text-align: center;
   vertical-align: middle;
   background-color: rgba(255, 255, 255, 0.45);
@@ -133,7 +137,7 @@ div.button_go_focused {
   border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
   color: black;
-  font-size: 470%;
+  font-size: 400%;
   text-align: center;
   vertical-align: middle;
   background-color: rgba(255, 255, 255, 1.0);
@@ -196,12 +200,12 @@ div.button_go_focused {
 		<div class="tip_icon" style="background-color: #55d459">B</div>
 		<div class="tip_label">Games</div>
 		<div class="tip_icon" style="background-color: #eded00">C</div>
-		<div class="tip_label">Go to</div>
+		<div class="tip_label">Open</div>
 		<div class="tip_icon" style="background-color: #3d81f2">D</div>
 		<div class="tip_label">Refresh</div>
 	</div>
 
-	<div id="dialog_loading" style="text-align: center; width: 70%; margin-top: 12%; margin-left: 15%;">
+	<div id="dialog_loading" style="text-align: center; width: 100%; margin-top: 12%;">
 		<div class="spinner" style="display: inline-block;">
 			<div class="bounce1"></div>
 			<div class="bounce2"></div>
@@ -215,7 +219,7 @@ div.button_go_focused {
 	</table>
 
 	<div id="streamname_frame" class="openchannel">
-		<input id="streamname_input" class="channelname" type="text" placeholder="Enter channel name.." />
+		<input id="streamname_input" class="channelname" type="text" placeholder="Enter channel name..." />
 		<div id="streamname_button" class="button_go">Go</div>
 	</div>
 

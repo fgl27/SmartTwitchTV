@@ -204,9 +204,7 @@ SceneSceneChannel.loadDataError = function()
 };
 
 SceneSceneChannel.loadDataSuccess = function(responseText)
-{
-	SceneSceneChannel.showDialog("Opening");
-	
+{	
 	var response = JSON.parse(responseText);
 	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
 	

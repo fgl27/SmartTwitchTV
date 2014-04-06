@@ -180,7 +180,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
     		{
         		var stream = response.streams[cursor];
         		
-        		cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name + ' (' + addCommas(stream.viewers) +')');
+        		cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, addCommas(stream.viewers) + ' viewers on ' + stream.channel.display_name);
     		}
             
             row.append(cell);
@@ -189,9 +189,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
         $('#stream_table').append(row);
     }
 	
-	SceneSceneBrowser.loadingData = false;
-	SceneSceneBrowser.addFocus();
-	sleep(2000, SceneSceneBrowser.showTable);
+	sleep(2000, function() {
+		SceneSceneBrowser.showTable();
+		SceneSceneBrowser.addFocus();
+		SceneSceneBrowser.loadingData = false;
+	});
 };
 
 SceneSceneBrowser.loadDataRequest = function()
@@ -286,6 +288,8 @@ SceneSceneBrowser.showTable = function()
 	$("#dialog_loading").hide();
 	$("#streamname_frame").hide();
 	$("#stream_table").show();
+    
+    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
 };
 
 SceneSceneBrowser.showInput = function()
@@ -454,6 +458,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 		{
 			sf.key.preventDefault();
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+			return;
 		}
 	}
 	
