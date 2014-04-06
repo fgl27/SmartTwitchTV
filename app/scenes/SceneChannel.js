@@ -2,11 +2,6 @@ alert('SceneSceneChannel.js loaded');
 
 SceneSceneChannel.Player = null;
 
-SceneSceneChannel.STATE_LOADING_TOKEN = 0;
-SceneSceneChannel.STATE_LOADING_PLAYLIST = 1;
-SceneSceneChannel.STATE_PLAYING = 2;
-
-SceneSceneChannel.loadingState;
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
 SceneSceneChannel.loadingDataTimeout;
