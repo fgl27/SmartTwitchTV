@@ -22,6 +22,7 @@ SceneSceneBrowser.loadingData = false;
 SceneSceneBrowser.loadingDataTryMax = 15;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
+SceneSceneBrowser.dataEnded = false;
 
 var ScrollHelper =
 {
@@ -102,13 +103,18 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail
 		infostyle = 'style="right: 20%;"';
 	}
 	
-	return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" align="center" data-channelname="' + data_name + '"></td>').html(
+	return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + data_name + '"></td>').html(
 			'<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
 			<div class="stream_text" ' + infostyle + '> \
 			<div class="stream_title">' + title + '</div> \
 			<div class="stream_info">' + info + '</div> \
             <div class="stream_info">' + info2 + '</div> \
             </div>');
+};
+
+SceneSceneBrowser.createCellEmpty = function()
+{
+	return $('<td class="stream_cell"></td>').html('');
 };
 
 SceneSceneBrowser.loadDataError = function()
@@ -164,6 +170,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
 		response_items = response.streams.length;
 	}
 	
+	if (response_items < SceneSceneBrowser.ItemsLimit)
+	{
+		SceneSceneBrowser.dataEnded = true;
+	}
+	
 	var offset = SceneSceneBrowser.itemsCount;
 	SceneSceneBrowser.itemsCount += response_items;
 	
@@ -175,12 +186,13 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
 	
 	var cursor = 0;
 
+	var t;
 	for (var i = 0; i < response_rows; i++)
 	{        
 		var row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
 		var row = $('<tr></tr>');
 		
-    	for (var t = 0; t < SceneSceneBrowser.ColoumnsCount && cursor < response_items; t++, cursor++)
+    	for (t = 0; t < SceneSceneBrowser.ColoumnsCount && cursor < response_items; t++, cursor++)
     	{
     		var cell;
     		
@@ -198,6 +210,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
     		}
             
             row.append(cell);
+    	}
+    	
+    	for (; t < SceneSceneBrowser.ColoumnsCount; t++)
+    	{
+            row.append(SceneSceneBrowser.createCellEmpty());
     	}
 
         $('#stream_table').append(row);
@@ -346,6 +363,7 @@ SceneSceneBrowser.clean = function()
 	SceneSceneBrowser.itemsCount = 0;
 	SceneSceneBrowser.cursorX = 0;
 	SceneSceneBrowser.cursorY = 0;
+	SceneSceneBrowser.dataEnded = false;
 };
 
 SceneSceneBrowser.refresh = function()
@@ -366,7 +384,8 @@ SceneSceneBrowser.removeFocus = function()
 
 SceneSceneBrowser.addFocus = function()
 {
-	if (SceneSceneBrowser.cursorY + 5 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)
+	if (SceneSceneBrowser.cursorY + 5 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount
+			&& !SceneSceneBrowser.dataEnded)
 	{
 		SceneSceneBrowser.loadData();
 	}
@@ -376,11 +395,11 @@ SceneSceneBrowser.addFocus = function()
     ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
 };
 
-SceneSceneBrowser.getCellsCount = function()
+SceneSceneBrowser.getCellsCount = function(posY)
 {
 	return Math.min(
 			SceneSceneBrowser.ColoumnsCount,
-			SceneSceneBrowser.itemsCount - SceneSceneBrowser.cursorY * SceneSceneBrowser.ColoumnsCount);	
+			SceneSceneBrowser.itemsCount - posY * SceneSceneBrowser.ColoumnsCount);	
 };
 
 SceneSceneBrowser.getRowsCount = function()
@@ -497,7 +516,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 		case sf.key.RIGHT:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
-				if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount() - 1)
+				if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY) - 1)
 				{
 					SceneSceneBrowser.removeFocus();
 					SceneSceneBrowser.cursorX++;
@@ -524,7 +543,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 		case sf.key.DOWN:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
-				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount())
+				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1
+						&& SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY + 1))
 				{
 					SceneSceneBrowser.removeFocus();
 					SceneSceneBrowser.cursorY++;
