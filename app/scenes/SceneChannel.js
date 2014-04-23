@@ -17,6 +17,8 @@ SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
 
 SceneSceneChannel.QualityAuto = "Auto";
 SceneSceneChannel.quality = "High";
+SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
+SceneSceneChannel.qualityPlayingIndex = 2;
 SceneSceneChannel.qualityIndex;
 SceneSceneChannel.qualities;
 
@@ -93,18 +95,18 @@ SceneSceneChannel.qualityDisplay = function()
 {
 	if (SceneSceneChannel.qualityIndex == 0)
 	{
-		$('#quality_arrow_up').show();
-		$('#quality_arrow_down').hide();
+		$('#quality_arrow_up').css({ 'opacity' : 0.2 });
+		$('#quality_arrow_down').css({ 'opacity' : 1.0 });
 	}
 	else if (SceneSceneChannel.qualityIndex == SceneSceneChannel.getQualitiesCount() - 1)
 	{
-		$('#quality_arrow_up').hide();
-		$('#quality_arrow_down').show();
+		$('#quality_arrow_up').css({ 'opacity' : 1.0 });
+		$('#quality_arrow_down').css({ 'opacity' : 0.2 });
 	}
 	else
 	{
-		$('#quality_arrow_up').show();
-		$('#quality_arrow_down').show();
+		$('#quality_arrow_up').css({ 'opacity' : 1.0 });
+		$('#quality_arrow_down').css({ 'opacity' : 1.0 });
 	}
 	
 	if (SceneSceneChannel.qualityIndex == 0)
@@ -147,11 +149,18 @@ SceneSceneChannel.prototype.handleFocus = function () {
     SceneSceneChannel.Player.OnBufferingProgress = 'SceneSceneChannel.onBufferingProgress';
     
     SceneSceneChannel.hidePanel();
+    $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
+	$("#stream_info_title").text("");
+	$("#stream_info_viewers").text("");
+	$("#stream_info_icon").attr("src", "");
+	SceneSceneChannel.updateStreamInfo();
     
-    SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 20000);
+    SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
     
     SceneSceneChannel.Player.SetDisplayArea(0, 0, 1280, 720);
     
+    SceneSceneChannel.tokenResponse = 0;
+    SceneSceneChannel.playlistResponse = 0;
     SceneSceneChannel.playingTry = 0;
     SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
     
@@ -164,74 +173,97 @@ SceneSceneChannel.prototype.handleBlur = function () {
 
 SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 	alert("SceneSceneChannel.handleKeyDown(" + keyCode + ")");
-
-	switch (keyCode) {
-		case sf.key.CH_UP:
-			if (SceneSceneChannel.qualityIndex > 0)
-			{
-				SceneSceneChannel.qualityIndex--;
-				SceneSceneChannel.qualityDisplay();
-			}
-			break;
-		case sf.key.CH_DOWN:
-			if (SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1)
-			{
-				SceneSceneChannel.qualityIndex++;
-				SceneSceneChannel.qualityDisplay();
-			}
-			break;
-		case sf.key.LEFT:
-			SceneSceneChannel.showPanel();
-			break;
-		case sf.key.RIGHT:
-			SceneSceneChannel.hidePanel();
-			break;
-		case sf.key.UP:
-			break;
-		case sf.key.DOWN:
-			break;
-		case sf.key.ENTER:
-			if (SceneSceneChannel.isPanelShown())
-			{
-				SceneSceneChannel.hidePanel();
-			}
-			else
-			{
-				SceneSceneChannel.showPanel();
-			}
-			break;
-		case sf.key.RETURN:
-			sf.key.preventDefault();
-			if (SceneSceneChannel.isPanelShown())
-			{
-				SceneSceneChannel.hidePanel();
-			}
-			else
-			{
+	if (SceneSceneChannel.state != SceneSceneChannel.STATE_PLAYING)
+	{
+		switch (keyCode) {
+			case sf.key.RETURN:
+				sf.key.preventDefault();
 				SceneSceneChannel.shutdownStream();
-			}
-			break;
-		case sf.key.VOL_UP:
-			sf.service.setVolumeControl(true);
-			break;
-		case sf.key.VOL_DOWN:
-			sf.service.setVolumeControl(true);
-			break;
-		case sf.key.MUTE:
-			sf.service.setVolumeControl(true);
-			break;
-		case sf.key.RED:
-			SceneSceneChannel.qualityChanged();
-			break;
-		case sf.key.GREEN:
-			break;
-		case sf.key.YELLOW:
-			break;
-		case sf.key.BLUE:
-			break;
-		default:
-			alert("handle default key event, key code(" + keyCode + ")");
-			break;
+				break;
+			case sf.key.VOL_UP:
+				sf.service.setVolumeControl(true);
+				break;
+			case sf.key.VOL_DOWN:
+				sf.service.setVolumeControl(true);
+				break;
+			case sf.key.MUTE:
+				sf.service.setVolumeControl(true);
+				break;
+		}
+	}
+	else
+	{
+		switch (keyCode) {
+			case sf.key.CH_UP:
+				if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0)
+				{
+					SceneSceneChannel.qualityIndex--;
+					SceneSceneChannel.qualityDisplay();
+				}
+				break;
+			case sf.key.CH_DOWN:
+				if (SceneSceneChannel.isPanelShown()
+						&& SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1)
+				{
+					SceneSceneChannel.qualityIndex++;
+					SceneSceneChannel.qualityDisplay();
+				}
+				break;
+			case sf.key.LEFT:
+				SceneSceneChannel.showPanel();
+				break;
+			case sf.key.RIGHT:
+				SceneSceneChannel.hidePanel();
+				break;
+			case sf.key.UP:
+				break;
+			case sf.key.DOWN:
+				break;
+			case sf.key.ENTER:
+				if (SceneSceneChannel.isPanelShown())
+				{
+					if (SceneSceneChannel.qualityIndex != SceneSceneChannel.qualityPlayingIndex)
+					{
+						SceneSceneChannel.qualityChanged();
+					}
+				}
+				else
+				{
+					SceneSceneChannel.showPanel();
+				}
+				break;
+			case sf.key.RETURN:
+				sf.key.preventDefault();
+				if (SceneSceneChannel.isPanelShown())
+				{
+					SceneSceneChannel.hidePanel();
+				}
+				else
+				{
+					SceneSceneChannel.shutdownStream();
+				}
+				break;
+			case sf.key.VOL_UP:
+				sf.service.setVolumeControl(true);
+				break;
+			case sf.key.VOL_DOWN:
+				sf.service.setVolumeControl(true);
+				break;
+			case sf.key.MUTE:
+				sf.service.setVolumeControl(true);
+				break;
+			case sf.key.RED:
+				break;
+			case sf.key.GREEN:
+				break;
+			case sf.key.YELLOW:
+				break;
+			case sf.key.BLUE:
+				break;
+			default:
+				alert("handle default key event, key code(" + keyCode + ")");
+				break;
+		}
 	}
 };
 
@@ -283,9 +315,9 @@ SceneSceneChannel.onBufferingComplete = function () {
 
 SceneSceneChannel.qualityChanged = function()
 {
+	SceneSceneChannel.showDialog("");
 	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token);
 	SceneSceneChannel.qualityIndex = 0;
-	SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
 	
 	for (var i = 0; i < SceneSceneChannel.qualities.length; i++)
 	{
@@ -296,6 +328,14 @@ SceneSceneChannel.qualityChanged = function()
 			break;
 		}
 	}
+	
+	if (SceneSceneChannel.qualityIndex == 0)
+	{
+		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
+	}
+
+	SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
+	SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
 
 	SceneSceneChannel.Player.Stop();
 	SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
@@ -312,9 +352,54 @@ SceneSceneChannel.showPlayer = function()
 	$("#scene_channel_dialog_loading").hide();
 };
 
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
 SceneSceneChannel.updateStreamInfo = function()
 {
+	var xmlHttp = new XMLHttpRequest();
 	
+	xmlHttp.ontimeout = function()
+	{
+
+	};
+	xmlHttp.onload = function()
+	{
+		if (xmlHttp.readyState === 4)
+		{ 
+			if (xmlHttp.status === 200)
+			{
+				try
+				{
+					var response = JSON.parse(xmlHttp.responseText);
+					$("#stream_info_title").text(response.stream.channel.status);
+					$("#stream_info_viewers").text(addCommas(response.stream.viewers) + ' Viewers');
+					$("#stream_info_icon").attr("src", response.stream.channel.logo);
+				}
+				catch (err)
+				{
+					
+				}
+				
+			}
+			else
+			{
+			}
+		}
+	};
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
+	xmlHttp.timeout = 10000;
+    xmlHttp.send(null);
 };
 
 SceneSceneChannel.showPanel = function()
@@ -326,6 +411,8 @@ SceneSceneChannel.showPanel = function()
 SceneSceneChannel.hidePanel = function()
 {
 	$("#scene_channel_panel").hide();
+	SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
+	SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
 };
 
 SceneSceneChannel.isPanelShown = function()
@@ -385,8 +472,8 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 	{
 		SceneSceneChannel.playlistResponse = responseText;
 		SceneSceneChannel.qualities = extractQualities(SceneSceneChannel.playlistResponse);
-		alert(SceneSceneChannel.qualities);
 		SceneSceneChannel.qualityChanged();
+		SceneSceneChannel.state = SceneSceneChannel.STATE_PLAYING;
 	} 
 };
 
@@ -409,7 +496,7 @@ SceneSceneChannel.loadDataRequest = function()
 		}
 		else
 		{
-			theUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token);
+			theUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true';
 		}
 		
 		xmlHttp.ontimeout = function()
