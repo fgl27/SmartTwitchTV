@@ -10,12 +10,66 @@ SceneSceneChannel.playingTryMax = 10;
 SceneSceneChannel.playingTry;
 SceneSceneChannel.playingUrl;
 
+SceneSceneChannel.STATE_LOADING_TOKEN = 0;
+SceneSceneChannel.STATE_LOADING_PLAYLIST = 1;
+SceneSceneChannel.STATE_PLAYING = 2;
+SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
+
+SceneSceneChannel.QualityAuto = "Auto";
+SceneSceneChannel.quality = "High";
+SceneSceneChannel.qualityIndex;
+SceneSceneChannel.qualities;
+
+SceneSceneChannel.tokenResponse;
+SceneSceneChannel.playlistResponse;
+
+SceneSceneChannel.streamInfoTimer = null;
+
+function extractStreamDeclarations(input)
+{
+  var result = [];
+
+  var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
+  var match;
+  while (match = myRegexp.exec(input))
+  {
+    result.push(match[0]);
+  }
+
+  return result;
+}
+function extractQualityFromStream(input)
+{
+  var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
+  var match = myRegexp.exec(input);
+
+  return match[1];
+}
+function extractUrlFromStream(input)
+{
+  var myRegexp = /#EXT-X-MEDIA:.*\n#EXT-X-STREAM-INF:.*\n(.+)/g;
+  var match = myRegexp.exec(input);
+
+  return match[1];
+}
+function extractQualities(input)
+{
+  var result = [ ];
+
+  var streams = extractStreamDeclarations(input);
+  for (var i = 0; i < streams.length; i++)
+  {
+    result.push({'id' : extractQualityFromStream(streams[i]), 'url' : extractUrlFromStream(streams[i])});
+  }
+
+  return result;
+}
+
 function sleep(millis, callback) {
     setTimeout(function()
             { callback(); }
     , millis);
 }
-
 
 function SceneSceneChannel() {
 
@@ -30,6 +84,40 @@ SceneSceneChannel.shutdownStream = function()
 	sf.scene.focus('SceneBrowser');
 };
 
+SceneSceneChannel.getQualitiesCount = function()
+{
+	return SceneSceneChannel.qualities.length + 1;
+};
+
+SceneSceneChannel.qualityDisplay = function()
+{
+	if (SceneSceneChannel.qualityIndex == 0)
+	{
+		$('#quality_arrow_up').show();
+		$('#quality_arrow_down').hide();
+	}
+	else if (SceneSceneChannel.qualityIndex == SceneSceneChannel.getQualitiesCount() - 1)
+	{
+		$('#quality_arrow_up').hide();
+		$('#quality_arrow_down').show();
+	}
+	else
+	{
+		$('#quality_arrow_up').show();
+		$('#quality_arrow_down').show();
+	}
+	
+	if (SceneSceneChannel.qualityIndex == 0)
+	{
+		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
+	}
+	else
+	{
+		SceneSceneChannel.quality = SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id;
+	}
+	
+	$('#quality_name').text(SceneSceneChannel.quality);
+};
 
 SceneSceneChannel.prototype.initialize = function ()
 {	
@@ -42,6 +130,7 @@ SceneSceneChannel.prototype.handleShow = function (data) {
 
 SceneSceneChannel.prototype.handleHide = function () {
 	alert("SceneSceneChannel.handleHide()");
+	window.clearInterval(SceneSceneChannel.streamInfoTimer);
 };
 
 SceneSceneChannel.prototype.handleFocus = function () {
@@ -57,9 +146,14 @@ SceneSceneChannel.prototype.handleFocus = function () {
     SceneSceneChannel.Player.OnBufferingStart = 'SceneSceneChannel.onBufferingStart';
     SceneSceneChannel.Player.OnBufferingProgress = 'SceneSceneChannel.onBufferingProgress';
     
+    SceneSceneChannel.hidePanel();
+    
+    SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 20000);
+    
     SceneSceneChannel.Player.SetDisplayArea(0, 0, 1280, 720);
     
     SceneSceneChannel.playingTry = 0;
+    SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
     
     SceneSceneChannel.loadData();
 };
@@ -72,19 +166,50 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 	alert("SceneSceneChannel.handleKeyDown(" + keyCode + ")");
 
 	switch (keyCode) {
+		case sf.key.CH_UP:
+			if (SceneSceneChannel.qualityIndex > 0)
+			{
+				SceneSceneChannel.qualityIndex--;
+				SceneSceneChannel.qualityDisplay();
+			}
+			break;
+		case sf.key.CH_DOWN:
+			if (SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1)
+			{
+				SceneSceneChannel.qualityIndex++;
+				SceneSceneChannel.qualityDisplay();
+			}
+			break;
 		case sf.key.LEFT:
+			SceneSceneChannel.showPanel();
 			break;
 		case sf.key.RIGHT:
+			SceneSceneChannel.hidePanel();
 			break;
 		case sf.key.UP:
 			break;
 		case sf.key.DOWN:
 			break;
 		case sf.key.ENTER:
+			if (SceneSceneChannel.isPanelShown())
+			{
+				SceneSceneChannel.hidePanel();
+			}
+			else
+			{
+				SceneSceneChannel.showPanel();
+			}
 			break;
 		case sf.key.RETURN:
 			sf.key.preventDefault();
-			SceneSceneChannel.shutdownStream();
+			if (SceneSceneChannel.isPanelShown())
+			{
+				SceneSceneChannel.hidePanel();
+			}
+			else
+			{
+				SceneSceneChannel.shutdownStream();
+			}
 			break;
 		case sf.key.VOL_UP:
 			sf.service.setVolumeControl(true);
@@ -94,6 +219,15 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 			break;
 		case sf.key.MUTE:
 			sf.service.setVolumeControl(true);
+			break;
+		case sf.key.RED:
+			SceneSceneChannel.qualityChanged();
+			break;
+		case sf.key.GREEN:
+			break;
+		case sf.key.YELLOW:
+			break;
+		case sf.key.BLUE:
 			break;
 		default:
 			alert("handle default key event, key code(" + keyCode + ")");
@@ -111,28 +245,23 @@ SceneSceneChannel.onConnectionFailed = function () {
 	else
 	{
 		SceneSceneChannel.showDialog("Connection failed.");
-		sleep(3000, SceneSceneChannel.shutdownStream);
 	}
 };
 
 SceneSceneChannel.onAuthenticationFailed = function () {
 	SceneSceneChannel.showDialog("Authentication failed.");
-	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onStreamNotFound = function () {
 	SceneSceneChannel.showDialog("Stream not found.");
-	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onNetworkDisconnected = function () {
 	SceneSceneChannel.showDialog("Network disconnected.");
-	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onRenderError = function (RenderErrorType) {
 	SceneSceneChannel.showDialog("Render error.");
-	sleep(3000, SceneSceneChannel.shutdownStream);
 };
 
 SceneSceneChannel.onRenderingComplete = function () {
@@ -152,6 +281,25 @@ SceneSceneChannel.onBufferingComplete = function () {
 };
 
 
+SceneSceneChannel.qualityChanged = function()
+{
+	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token);
+	SceneSceneChannel.qualityIndex = 0;
+	SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
+	
+	for (var i = 0; i < SceneSceneChannel.qualities.length; i++)
+	{
+		if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality)
+		{
+			SceneSceneChannel.qualityIndex = i + 1;
+			SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+			break;
+		}
+	}
+
+	SceneSceneChannel.Player.Stop();
+	SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
+};
 
 SceneSceneChannel.showDialog = function(title)
 {
@@ -162,6 +310,27 @@ SceneSceneChannel.showDialog = function(title)
 SceneSceneChannel.showPlayer = function()
 {
 	$("#scene_channel_dialog_loading").hide();
+};
+
+SceneSceneChannel.updateStreamInfo = function()
+{
+	
+};
+
+SceneSceneChannel.showPanel = function()
+{
+	SceneSceneChannel.qualityDisplay();
+	$("#scene_channel_panel").show();
+};
+
+SceneSceneChannel.hidePanel = function()
+{
+	$("#scene_channel_panel").hide();
+};
+
+SceneSceneChannel.isPanelShown = function()
+{
+	return $("#scene_channel_panel").is(":visible");
 };
 
 SceneSceneChannel.loadDataError = function()
@@ -199,16 +368,26 @@ SceneSceneChannel.loadDataError = function()
 	else
 	{
 		SceneSceneChannel.showDialog("Error: Unable to retrieve access token.");
-		sleep(3000, SceneSceneChannel.shutdownStream);
 	}
 };
 
 SceneSceneChannel.loadDataSuccess = function(responseText)
-{	
-	var response = JSON.parse(responseText);
-	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + response.sig + '&nauth=' + escape(response.token);
+{
+	SceneSceneChannel.showDialog("");
 	
-	SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');  
+	if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
+	{
+		SceneSceneChannel.tokenResponse = JSON.parse(responseText);
+		SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_PLAYLIST;
+		SceneSceneChannel.loadData();
+	}
+	else
+	{
+		SceneSceneChannel.playlistResponse = responseText;
+		SceneSceneChannel.qualities = extractQualities(SceneSceneChannel.playlistResponse);
+		alert(SceneSceneChannel.qualities);
+		SceneSceneChannel.qualityChanged();
+	} 
 };
 
 SceneSceneChannel.loadDataRequest = function()
@@ -223,7 +402,15 @@ SceneSceneChannel.loadDataRequest = function()
 		SceneSceneChannel.showDialog(dialog_title);
 		
 		var xmlHttp = new XMLHttpRequest();
-		var theUrl = 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel + '/access_token';
+		var theUrl;
+		if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
+		{
+			theUrl = 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel + '/access_token';
+		}
+		else
+		{
+			theUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token);
+		}
 		
 		xmlHttp.ontimeout = function()
 		{

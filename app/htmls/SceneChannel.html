@@ -62,14 +62,46 @@ body {
 </head>
 
 <body>
-	<div id="scene_channel_dialog_loading" style="position: absolute; z-index: 2; text-align: center; width: 100%; margin-top: 30%;">
-		<div class="spinner" style="display: inline-block;">
-			<div class="bounce1"></div>
-			<div class="bounce2"></div>
-			<div class="bounce3"></div>
-		</div>
-		<div id="scene_channel_dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
-	</div>
+  <div id="scene_channel_panel" style="position: absolute; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
+      <img style="width: 40%; padding-left: 10%; padding-top: 7%; padding-bottom: 1.5%;" src="images/twitchlogo.png"/>
+      <div style="margin: 0 auto; width: 80%; height: 8%; padding-left: 15%; padding-top: 10%; padding-bottom: 1.5%;">
+        <img style="display: inline-block; width: 20%;" src="http://static-cdn.jtvnw.net/jtv_user_pictures/starladder1-profile_image-7acfe4aa507436cb-300x300.jpeg"/>
+        <div style="text-align: center; color: white; vertical-align: top; display: inline-block; width: 65%; margin-top: 1%; margin-left: 2%;">
+          <div id="stream_info_name" style="font-size: 120%; padding-bottom: 5%;">Starladder1</div>
+          <div id="stream_info_viewer" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)">1000 Viewers</div>
+        </div>
+      </div>
+      <div style="width: 100%; height: 22.5%; background-color: #4c3082;">
+        <div id="stream_info_title" style="width: 80%; height: 45%; padding: 2%; margin: 0 auto; font-size: 110%; color: rgba(255, 255, 255, 0.9);">jgffjhfjhfjh</div>
+        <div style="width: 80%; height: 2px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.25);"></div>
+        <div style="width: 80%; height: 42px; line-height: 42px; margin: 0 auto; padding-top: 6%; font-size: 130%;">
+          <div style="display: inline-block; width: 80%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
+            <div style="width: 41%; text-align: center; display: inline-block; background-color: rgba(255, 255, 255, 0.35);">Quality</div>
+            <div id="quality_name" style="width: 52%; text-align: center; display: inline-block;"></div>
+          </div>
+          <div style="height: 42px; display: inline-block;">
+            <div style="display: inline-block; vertical-align: center;">
+              <div id="quality_arrow_up"
+                style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
+              <div id="quality_arrow_down"
+                style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
+            </div>
+            <div style="display: inline-block; color: rgba(255, 255, 255, 0.95);">P</div>
+          </div>
+        </div>
+      </div>
+      <div style="position: absolute; top: 50%; width: 100%; height: 50%; background-color: white;">
+      <!-- Future chat browser-->
+      </div>
+    </div>
+  <div id="scene_channel_dialog_loading" style="position: absolute; z-index: 3; text-align: center; width: 100%; margin-top: 32%;">
+    <div class="spinner" style="display: inline-block;">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <div id="scene_channel_dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+  </div>
 </body>
 
 </html>
