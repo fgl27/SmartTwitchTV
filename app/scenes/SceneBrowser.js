@@ -445,6 +445,17 @@ function SceneSceneBrowser()
 
 };
 
+SceneSceneBrowser.initLanguage = function ()
+{
+	//set correct labels
+	$('.label_channels').html(STR_CHANNELS);
+	$('.label_games').html(STR_GAMES);
+	$('.label_open').html(STR_OPEN);
+	$('.label_refresh').html(STR_REFRESH);
+	$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
+};
+
+
 SceneSceneBrowser.prototype.initialize = function ()
 {
 	alert("SceneSceneBrowser.initialize()");
@@ -452,8 +463,11 @@ SceneSceneBrowser.prototype.initialize = function ()
 	// initialize the scene controls and styles, and initialize your variables here
 	// scene HTML and CSS will be loaded before this function is called
 	
+	SceneSceneBrowser.initLanguage();
+	
 	SceneSceneBrowser.loadingData = false;
 };
+
 
 SceneSceneBrowser.prototype.handleShow = function (data)
 {
