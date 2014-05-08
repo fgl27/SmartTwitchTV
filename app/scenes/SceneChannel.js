@@ -121,8 +121,16 @@ SceneSceneChannel.qualityDisplay = function()
 	$('#quality_name').text(SceneSceneChannel.quality);
 };
 
+SceneSceneChannel.initLanguage = function ()
+{
+	//set correct labels
+	$('#label_quality').html(STR_QUALITY);
+};
+
 SceneSceneChannel.prototype.initialize = function ()
 {	
+	SceneSceneChannel.initLanguage();
+	
 	SceneSceneChannel.Player = document.getElementById('pluginObjectPlayer');
 };
 

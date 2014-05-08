@@ -6,6 +6,8 @@ var STR_REFRESH = "Refresh";
 
 var STR_PLACEHOLDER_OPEN = "Enter channel name...";
 
+var STR_QUALITY = "Quality";
+
 var STR_RETRYING = "Retrying";
 var STR_VIEWER = "Viewer";
 var STR_BUFFERING = "Buffering";
