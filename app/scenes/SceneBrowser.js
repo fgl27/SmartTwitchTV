@@ -234,7 +234,7 @@ SceneSceneBrowser.loadDataRequest = function()
 		var dialog_title = "";
 		if (SceneSceneBrowser.loadingDataTry > 0)
 		{
-			dialog_title = "Retrying (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
+			dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
 		}
 		SceneSceneBrowser.showDialog(dialog_title);
 		
