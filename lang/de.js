@@ -6,6 +6,8 @@ var STR_REFRESH = "Neu laden";
 
 var STR_PLACEHOLDER_OPEN = "Kanalnamen eingeben...";
 
+var STR_QUALITY = "Qualität";
+
 var STR_RETRYING = "Versuch"; 
 var STR_VIEWER = "Zuschauer";
 var STR_BUFFERING = "Puffer";
