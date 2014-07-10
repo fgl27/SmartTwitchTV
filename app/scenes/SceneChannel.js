@@ -145,6 +145,8 @@ SceneSceneChannel.prototype.handleHide = function () {
 
 SceneSceneChannel.prototype.handleFocus = function () {
 	alert("SceneSceneChannel.handleFocus()");
+	
+    sf.service.setScreenSaver(true, 100000);
 
     SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';
     SceneSceneChannel.Player.OnAuthenticationFailed = 'SceneSceneChannel.onAuthenticationFailed';
@@ -177,6 +179,8 @@ SceneSceneChannel.prototype.handleFocus = function () {
 
 SceneSceneChannel.prototype.handleBlur = function () {
 	alert("SceneSceneChannel.handleBlur()");
+	
+    sf.service.setScreenSaver(false);
 };
 
 SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
@@ -230,10 +234,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 			case sf.key.ENTER:
 				if (SceneSceneChannel.isPanelShown())
 				{
-					if (SceneSceneChannel.qualityIndex != SceneSceneChannel.qualityPlayingIndex)
-					{
-						SceneSceneChannel.qualityChanged();
-					}
+					SceneSceneChannel.qualityChanged();
 				}
 				else
 				{
@@ -391,7 +392,7 @@ SceneSceneChannel.updateStreamInfo = function()
 				{
 					var response = JSON.parse(xmlHttp.responseText);
 					$("#stream_info_title").text(response.stream.channel.status);
-					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + STR_VIEWER);
+					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
 					$("#stream_info_icon").attr("src", response.stream.channel.logo);
 				}
 				catch (err)

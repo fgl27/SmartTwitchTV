@@ -28,6 +28,11 @@ div.tip_icon {
   line-height: 42px;
 }
 
+div.tip_icon_active {
+  outline: 1px solid white;
+  outline-offset: 2px;
+}
+
 div.tip_label {
   width: 86px;
   height: 42px;
@@ -201,13 +206,13 @@ div.button_go_focused {
 	<img style="float: left; width: 8%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png"/>
 
 	<div style="float: right; padding-top: 3.0%;">
-		<div class="tip_icon" style="background-color: #ff3333">A</div>
+		<div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">A</div>
 		<div class="tip_label label_channels">STR_CHANNELS</div>
-		<div class="tip_icon" style="background-color: #55d459">B</div>
+		<div id="tip_icon_games"  class="tip_icon" style="background-color: #55d459">B</div>
 		<div class="tip_label label_games">STR_GAMES</div>
-		<div class="tip_icon" style="background-color: #eded00">C</div>
+		<div id="tip_icon_open"  class="tip_icon" style="background-color: #eded00">C</div>
 		<div class="tip_label label_open">STR_OPEN</div>
-		<div class="tip_icon" style="background-color: #3d81f2">D</div>
+		<div id="tip_icon_refresh"  class="tip_icon" style="background-color: #3d81f2">D</div>
 		<div class="tip_label label_refresh">STR_REFRESH</div>
 	</div>
 

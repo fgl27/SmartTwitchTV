@@ -5,12 +5,13 @@ SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.ItemsLimit = 100;
 SceneSceneBrowser.ColoumnsCount = 4;
 
+SceneSceneBrowser.MODE_NONE = -1;
 SceneSceneBrowser.MODE_ALL = 0;
 SceneSceneBrowser.MODE_GAMES = 1;
 SceneSceneBrowser.MODE_GAMES_STREAMS = 2;
 SceneSceneBrowser.MODE_GO = 3;
 
-SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
+SceneSceneBrowser.mode = SceneSceneBrowser.MODE_NONE;
 SceneSceneBrowser.gameSelected = null;
 SceneSceneBrowser.itemsCount = 0;
 SceneSceneBrowser.cursorX = 0;
@@ -335,21 +336,30 @@ SceneSceneBrowser.switchMode = function(mode)
 	if (mode != SceneSceneBrowser.mode)
 	{
 		SceneSceneBrowser.mode = mode;
+
+		$("#tip_icon_channels").removeClass('tip_icon_active');
+		$("#tip_icon_games").removeClass('tip_icon_active');
+		$("#tip_icon_open").removeClass('tip_icon_active');
+		$("#tip_icon_refresh").removeClass('tip_icon_active');
 		
 		if (mode == SceneSceneBrowser.MODE_ALL)
 		{
+			$("#tip_icon_channels").addClass('tip_icon_active');
 			SceneSceneBrowser.refresh();
 		}
 		else if (mode == SceneSceneBrowser.MODE_GAMES)
 		{
+			$("#tip_icon_games").addClass('tip_icon_active');
 			SceneSceneBrowser.refresh();	
 		}
 		else if (mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
 		{
+			$("#tip_icon_games").addClass('tip_icon_active');
 			SceneSceneBrowser.refresh();
 		}
 		else if (mode == SceneSceneBrowser.MODE_GO)
 		{
+			$("#tip_icon_open").addClass('tip_icon_active');
 			SceneSceneBrowser.clean();
 			SceneSceneBrowser.showInput();
 			SceneSceneBrowser.refreshInputFocus();
@@ -466,6 +476,8 @@ SceneSceneBrowser.prototype.initialize = function ()
 	SceneSceneBrowser.initLanguage();
 	
 	SceneSceneBrowser.loadingData = false;
+	
+	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 };
 
 
