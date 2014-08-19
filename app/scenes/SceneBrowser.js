@@ -159,7 +159,7 @@ SceneSceneBrowser.loadDataError = function()
 
 SceneSceneBrowser.loadDataSuccess = function(responseText)
 {
-	var response = JSON.parse(responseText);
+	var response = $.parseJSON(responseText);
 	
 	var response_items;
 	if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES)
@@ -260,6 +260,7 @@ SceneSceneBrowser.loadDataRequest = function()
 		{
 			SceneSceneBrowser.loadDataError();
 		};
+		xmlHttp.onreadystatechange = onload;
 		xmlHttp.onload = function()
 		{
 			if (xmlHttp.readyState === 4)

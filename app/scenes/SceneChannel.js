@@ -382,6 +382,7 @@ SceneSceneChannel.updateStreamInfo = function()
 	{
 
 	};
+	xmlHttp.onreadystatechange = onload;
 	xmlHttp.onload = function()
 	{
 		if (xmlHttp.readyState === 4)
@@ -390,7 +391,7 @@ SceneSceneChannel.updateStreamInfo = function()
 			{
 				try
 				{
-					var response = JSON.parse(xmlHttp.responseText);
+					var response = $.parseJSON(xmlHttp.responseText);
 					$("#stream_info_title").text(response.stream.channel.status);
 					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
 					$("#stream_info_icon").attr("src", response.stream.channel.logo);
