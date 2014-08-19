@@ -45,14 +45,27 @@ function extractQualityFromStream(input)
   var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
   var match = myRegexp.exec(input);
 
-  return match[1];
+	var quality;
+	if (match !== null) {
+		quality = match[1];
+	}
+	else {
+		var values = input.split("\n");
+		values = values[0].split(":");
+		values = values[1].split(",");
+		
+		var set = {};
+		for(var i = 0; i<values.length; i++) {
+			var value = values[i].split("=");
+			set[value[0]] = value[1].replace(/"/g, '');
+		}
+		quality = set.NAME;
+	}
+	return quality;
 }
 function extractUrlFromStream(input)
 {
-  var myRegexp = /#EXT-X-MEDIA:.*\n#EXT-X-STREAM-INF:.*\n(.+)/g;
-  var match = myRegexp.exec(input);
-
-  return match[1];
+	return input.split("\n")[2];
 }
 function extractQualities(input)
 {
@@ -61,7 +74,10 @@ function extractQualities(input)
   var streams = extractStreamDeclarations(input);
   for (var i = 0; i < streams.length; i++)
   {
-    result.push({'id' : extractQualityFromStream(streams[i]), 'url' : extractUrlFromStream(streams[i])});
+    result.push({
+        'id' : extractQualityFromStream(streams[i]),
+        'url' : extractUrlFromStream(streams[i])
+    });
   }
 
   return result;
