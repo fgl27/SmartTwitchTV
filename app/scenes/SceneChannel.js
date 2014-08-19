@@ -45,14 +45,27 @@ function extractQualityFromStream(input)
   var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
   var match = myRegexp.exec(input);
 
-  return match[1];
+	var quality;
+	if (match !== null) {
+		quality = match[1];
+	}
+	else {
+		var values = input.split("\n");
+		values = values[0].split(":");
+		values = values[1].split(",");
+		
+		var set = {};
+		for(var i = 0; i<values.length; i++) {
+			var value = values[i].split("=");
+			set[value[0]] = value[1].replace(/"/g, '');
+		}
+		quality = set.NAME;
+	}
+	return quality;
 }
 function extractUrlFromStream(input)
 {
-  var myRegexp = /#EXT-X-MEDIA:.*\n#EXT-X-STREAM-INF:.*\n(.+)/g;
-  var match = myRegexp.exec(input);
-
-  return match[1];
+	return input.split("\n")[2];
 }
 function extractQualities(input)
 {
@@ -61,7 +74,10 @@ function extractQualities(input)
   var streams = extractStreamDeclarations(input);
   for (var i = 0; i < streams.length; i++)
   {
-    result.push({'id' : extractQualityFromStream(streams[i]), 'url' : extractUrlFromStream(streams[i])});
+    result.push({
+        'id' : extractQualityFromStream(streams[i]),
+        'url' : extractUrlFromStream(streams[i])
+    });
   }
 
   return result;
@@ -390,7 +406,7 @@ SceneSceneChannel.updateStreamInfo = function()
 			{
 				try
 				{
-					var response = JSON.parse(xmlHttp.responseText);
+					var response = $.parseJSON(xmlHttp.responseText);
 					$("#stream_info_title").text(response.stream.channel.status);
 					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
 					$("#stream_info_icon").attr("src", response.stream.channel.logo);
@@ -406,6 +422,7 @@ SceneSceneChannel.updateStreamInfo = function()
 			}
 		}
 	};
+	xmlHttp.onreadystatechange = xmlHttp.onload;
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
 	xmlHttp.timeout = 10000;
     xmlHttp.send(null);
@@ -473,7 +490,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 	
 	if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
 	{
-		SceneSceneChannel.tokenResponse = JSON.parse(responseText);
+		SceneSceneChannel.tokenResponse = $.parseJSON(responseText);
 		SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_PLAYLIST;
 		SceneSceneChannel.loadData();
 	}
@@ -534,6 +551,7 @@ SceneSceneChannel.loadDataRequest = function()
 				}
 			}
 		};
+	    xmlHttp.onreadystatechange = xmlHttp.onload;
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
 	    xmlHttp.send(null);

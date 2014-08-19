@@ -159,7 +159,7 @@ SceneSceneBrowser.loadDataError = function()
 
 SceneSceneBrowser.loadDataSuccess = function(responseText)
 {
-	var response = JSON.parse(responseText);
+	var response = $.parseJSON(responseText);
 	
 	var response_items;
 	if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES)
@@ -282,6 +282,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 			}
 		};
+		xmlHttp.onreadystatechange = xmlHttp.onload;
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
 	    xmlHttp.send(null);
