@@ -46,10 +46,12 @@ function extractQualityFromStream(input)
   var match = myRegexp.exec(input);
 
 	var quality;
-	if (match !== null) {
+	if (match !== null)
+	{
 		quality = match[1];
 	}
-	else {
+	else
+	{
 		var values = input.split("\n");
 		values = values[0].split(":");
 		values = values[1].split(",");
@@ -301,7 +303,7 @@ SceneSceneChannel.onConnectionFailed = function () {
 	}
 	else
 	{
-		SceneSceneChannel.showDialog(STR_ERROR_CONNECTION_FAIL );
+		SceneSceneChannel.showDialog(STR_ERROR_CONNECTION_FAIL);
 	}
 };
 
@@ -398,7 +400,7 @@ SceneSceneChannel.updateStreamInfo = function()
 	{
 
 	};
-	xmlHttp.onload = function()
+	xmlHttp.onreadystatechange = function()
 	{
 		if (xmlHttp.readyState === 4)
 		{ 
@@ -422,7 +424,6 @@ SceneSceneChannel.updateStreamInfo = function()
 			}
 		}
 	};
-	xmlHttp.onreadystatechange = xmlHttp.onload;
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
 	xmlHttp.timeout = 10000;
     xmlHttp.send(null);
@@ -494,12 +495,12 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 		SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_PLAYLIST;
 		SceneSceneChannel.loadData();
 	}
-	else
+	else if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_PLAYLIST)
 	{
 		SceneSceneChannel.playlistResponse = responseText;
 		SceneSceneChannel.qualities = extractQualities(SceneSceneChannel.playlistResponse);
-		SceneSceneChannel.qualityChanged();
 		SceneSceneChannel.state = SceneSceneChannel.STATE_PLAYING;
+		SceneSceneChannel.qualityChanged();
 	} 
 };
 
@@ -527,9 +528,8 @@ SceneSceneChannel.loadDataRequest = function()
 		
 		xmlHttp.ontimeout = function()
 		{
-			SceneSceneChannel.loadDataError();
 		};
-		xmlHttp.onload = function()
+	    xmlHttp.onreadystatechange = function()
 		{
 			if (xmlHttp.readyState === 4)
 			{ 
@@ -551,7 +551,6 @@ SceneSceneChannel.loadDataRequest = function()
 				}
 			}
 		};
-	    xmlHttp.onreadystatechange = xmlHttp.onload;
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
 	    xmlHttp.send(null);

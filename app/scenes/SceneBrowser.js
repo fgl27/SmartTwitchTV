@@ -258,9 +258,9 @@ SceneSceneBrowser.loadDataRequest = function()
 		
 		xmlHttp.ontimeout = function()
 		{
-			SceneSceneBrowser.loadDataError();
+			
 		};
-		xmlHttp.onload = function()
+		xmlHttp.onreadystatechange = function()
 		{
 			if (xmlHttp.readyState === 4)
 			{ 
@@ -282,7 +282,6 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 			}
 		};
-		xmlHttp.onreadystatechange = xmlHttp.onload;
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
 	    xmlHttp.send(null);
