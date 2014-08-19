@@ -398,7 +398,7 @@ SceneSceneChannel.updateStreamInfo = function()
 	{
 
 	};
-	xmlHttp.onreadystatechange = onload;
+	xmlHttp.onreadystatechange = xmlHttp.onload;
 	xmlHttp.onload = function()
 	{
 		if (xmlHttp.readyState === 4)

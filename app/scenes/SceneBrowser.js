@@ -260,7 +260,6 @@ SceneSceneBrowser.loadDataRequest = function()
 		{
 			SceneSceneBrowser.loadDataError();
 		};
-		xmlHttp.onreadystatechange = onload;
 		xmlHttp.onload = function()
 		{
 			if (xmlHttp.readyState === 4)
@@ -283,6 +282,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 			}
 		};
+		xmlHttp.onreadystatechange = xmlHttp.onload;
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
 	    xmlHttp.send(null);
