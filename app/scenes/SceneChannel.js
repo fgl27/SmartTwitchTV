@@ -490,7 +490,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 	
 	if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
 	{
-		SceneSceneChannel.tokenResponse = JSON.parse(responseText);
+		SceneSceneChannel.tokenResponse = $.parseJSON(responseText);
 		SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_PLAYLIST;
 		SceneSceneChannel.loadData();
 	}
