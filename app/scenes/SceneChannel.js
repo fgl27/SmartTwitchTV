@@ -141,7 +141,6 @@ SceneSceneChannel.qualityDisplay = function()
 
 SceneSceneChannel.initLanguage = function ()
 {
-	//set correct labels
 	$('#label_quality').html(STR_QUALITY);
 };
 
@@ -225,6 +224,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 	{
 		switch (keyCode) {
 			case sf.key.CH_UP:
+			case sf.key.N1:
 				if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0)
 				{
 					SceneSceneChannel.qualityIndex--;
@@ -232,6 +232,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (keyCode) {
 				}
 				break;
 			case sf.key.CH_DOWN:
+			case sf.key.N4:
 				if (SceneSceneChannel.isPanelShown()
 						&& SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1)
 				{
