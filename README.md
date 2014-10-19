@@ -25,6 +25,3 @@ From the SmartHUB main screen, click the "Tools" button on the remote. Only from
 Contribution
 ==============
 If you made a fix for your TV please feel free to make a push request.
-
-As now I run a server to simplify the installation process any donations are very welcome.
-Paypal: samsung.smarttv.twitch@gmail.com
