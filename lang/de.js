@@ -13,7 +13,8 @@ var STR_VIEWER = "Zuschauer";
 var STR_BUFFERING = "Puffer";
 
 
-var STR_ERROR_RENDER = "Anzeige Fehler.";
+var STR_ERROR_RENDER_SOURCE = "Format not supported :(";
+var STR_ERROR_RENDER_FIXED = "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.";
 var STR_ERROR_NETWORK_DISCONNECT= "Netzwerk nicht erreichbar.";
 var STR_ERROR_STREAM_NOT_FOUND = "Stream nicht gefunden.";
 var STR_ERROR_AUTHENTICATION_FAIL = "Authentifizierung fehlgeschlagen.";

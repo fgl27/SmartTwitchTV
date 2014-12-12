@@ -318,10 +318,21 @@ SceneSceneChannel.onStreamNotFound = function () {
 
 SceneSceneChannel.onNetworkDisconnected = function () {
 	SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+	SceneSceneChannel.shutdownStream();
 };
 
-SceneSceneChannel.onRenderError = function (RenderErrorType) {
-	SceneSceneChannel.showDialog(STR_ERROR_RENDER);
+SceneSceneChannel.onRenderError = function (RenderErrorType)
+{
+	if (SceneSceneChannel.quality == "High"
+		|| SceneSceneChannel.quality == "Medium"
+		|| SceneSceneChannel.quality == "Low")
+	{
+		SceneSceneChannel.showDialog(STR_ERROR_RENDER_FIXED);
+	}
+	else
+	{
+		SceneSceneChannel.showDialog(STR_ERROR_RENDER_SOURCE);
+	}
 };
 
 SceneSceneChannel.onRenderingComplete = function () {
@@ -344,7 +355,7 @@ SceneSceneChannel.onBufferingComplete = function () {
 SceneSceneChannel.qualityChanged = function()
 {
 	SceneSceneChannel.showDialog("");
-	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token);
+	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token);
 	SceneSceneChannel.qualityIndex = 0;
 	
 	for (var i = 0; i < SceneSceneChannel.qualities.length; i++)
@@ -524,7 +535,7 @@ SceneSceneChannel.loadDataRequest = function()
 		}
 		else
 		{
-			theUrl = 'http://usher.twitch.tv/select/' + SceneSceneBrowser.selectedChannel + '.json?type=any&nauthsig=' + SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true';
+			theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true';
 		}
 		
 		xmlHttp.ontimeout = function()
