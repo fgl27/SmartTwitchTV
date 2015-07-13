@@ -6,5 +6,5 @@
  ],
  "theme": "base",
  "modules": ["ime"],
- "languages" : ["en",  "de", "ru", "es"]
+ "languages" : ["en",  "de", "ru", "es", "pt-br"]
 }
