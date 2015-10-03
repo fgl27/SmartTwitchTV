@@ -152,7 +152,7 @@ SceneSceneBrowser.loadDataError = function(reason)
 	}
 	else
 	{
-		reason = (typeof reason === 'undefined') ? 'Unknown' : reason;
+		reason = (typeof reason === "undefined") ? "Unknown" : reason;
 		SceneSceneBrowser.loadingData = false;
 		SceneSceneBrowser.showDialog("Unable to load stream data. Reason: " + reason);
 	}
@@ -279,7 +279,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 				else
 				{
-					SceneSceneBrowser.loadDataError('HTTP Status ' + xmlHttp.status);
+					SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status);
 				}
 			}
 		};
