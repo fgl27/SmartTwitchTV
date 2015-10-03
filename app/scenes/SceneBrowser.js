@@ -118,7 +118,7 @@ SceneSceneBrowser.createCellEmpty = function()
 	return $('<td class="stream_cell"></td>').html('');
 };
 
-SceneSceneBrowser.loadDataError = function()
+SceneSceneBrowser.loadDataError = function(reason)
 {
 	SceneSceneBrowser.loadingDataTry++;
 	if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax)
@@ -152,8 +152,9 @@ SceneSceneBrowser.loadDataError = function()
 	}
 	else
 	{
+		reason = (typeof reason === 'undefined') ? 'Unknown' : reason;
 		SceneSceneBrowser.loadingData = false;
-		SceneSceneBrowser.showDialog("Error: Unable to load stream data.");
+		SceneSceneBrowser.showDialog("Unable to load stream data. Reason: " + reason);
 	}
 };
 
@@ -278,7 +279,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 				else
 				{
-					SceneSceneBrowser.loadDataError();
+					SceneSceneBrowser.loadDataError('HTTP Status ' + xmlHttp.status);
 				}
 			}
 		};
@@ -288,7 +289,7 @@ SceneSceneBrowser.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneBrowser.loadDataError();
+		SceneSceneBrowser.loadDataError(error.message);
 	}
 };
 
