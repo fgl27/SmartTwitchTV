@@ -1,17 +1,36 @@
 smarttv-twitch
 ==============
+
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
+
+==============
+
+This is a try to upgrade smarttv-twitch so i can use it on my UN48j6300AGXZD Samsung TV, that has a Tizen OS.
+
+I didn't know anything about the SmartTV app. Lots of things i still don't know what they do, so i left then alone :) .
+Tried to use Caph.Scene because don't have more sf.scene on Tinzen. But i couldn't make it work. So i changed lots of things to make the app run.
+It's not the best way, but its working for me. Almost everything is working on the emulator and on my TV.
+Some handlers for errors on connections need to be fix (onConnectionFailed,onAuthenticationFailed,onStreamNotFound,onNetworkDisconnected);
+Didn't find anyway to use languagues. So it's just using en.js for now. 
+Put SceneBrowser.html and SceneChannel.html inside index.html, each one inside a div, and i toggle visibility off then when the app change betwen them.
+Moved CSS inside index.html too.
+Last time I tried to use on my TV, a scrollbar showed on the right side of the screen.
+And when you press UP and DOWN the screen don't update correctly, but if you press Left or Right it fix.  
+Still don't understand config.xml, so left lots of things there. Still need to clean it.
+
+
+- Added a timer on stream info.
+- Added Game name on stream info.
+- Added key_up and key_down to change quality of stream.
+
 
 Installation
 ==============
-On your TV, go to Menu->Smart Features->Samsung Account and type name "develop". 
 
-Then go to SmartHUB, click "More Apps" button, then click "Options" button and choose "IP Setting", enter '188.226.130.26' and finally choose "Start App Sync" option. TwitchTV app has to be installed now.
+How to install and run App in the TV
+http://107.22.233.36/TizenGuide/tizen3511/index.html
 
-For 2014 models "More apps" button might be absent, if so try: long press the enter button on any app, then the menu will pop up, select IP Settings, put in the IP, then long press enter again and then Start User Apps Sync.
-
-For models released before 2013 you might want to use these instructions instead:
-From the SmartHUB main screen, click the "Tools" button on the remote. Only from the "Tools" menu, navigate to "Settings", and from there to "Development". (You still have to be logged in as 'develop')
+https://github.com/mkvd/smarttv-twitch/issues/53#issuecomment-176191422
 
 Contribution
 ==============

@@ -1,5 +1,3 @@
-alert('SceneSceneBrowser.js loaded');
-
 SceneSceneBrowser.selectedChannel;
 
 SceneSceneBrowser.ItemsLimit = 100;
@@ -25,6 +23,18 @@ SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.dataEnded = false;
 
+tizen.tvinputdevice.registerKey("ChannelUp");
+tizen.tvinputdevice.registerKey("ChannelDown");
+tizen.tvinputdevice.registerKey("1");
+tizen.tvinputdevice.registerKey("4");
+tizen.tvinputdevice.registerKey("MediaPlayPause");
+tizen.tvinputdevice.registerKey("MediaPlay");
+tizen.tvinputdevice.registerKey("MediaPause");
+tizen.tvinputdevice.registerKey("MediaStop");
+tizen.tvinputdevice.registerKey("ColorF0Red");
+tizen.tvinputdevice.registerKey("ColorF1Green");
+tizen.tvinputdevice.registerKey("ColorF2Yellow");
+tizen.tvinputdevice.registerKey("ColorF3Blue");
 var ScrollHelper =
 {
     documentVerticalScrollPosition: function()
@@ -238,11 +248,12 @@ SceneSceneBrowser.loadDataRequest = function()
 		{
 			dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
 		}
+		
 		SceneSceneBrowser.showDialog(dialog_title);
 		
 		var xmlHttp = new XMLHttpRequest();
 		var theUrl;
-	    
+		
 		var offset = SceneSceneBrowser.itemsCount;
 		if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES)
 		{
@@ -446,9 +457,14 @@ SceneSceneBrowser.refreshInputFocus = function()
 SceneSceneBrowser.openStream = function()
 {
 	$(window).scrollTop(0);
-	sf.scene.show('SceneChannel');
-	sf.scene.hide('SceneBrowser');
-	sf.scene.focus('SceneChannel');
+
+	document.body.removeEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown);
+	document.body.addEventListener("keydown",SceneSceneChannel.prototype.handleKeyDown ,false);
+	
+	$("#scene1").hide(); //sf.scene.hide('SceneBrowser')
+	$("#scene2").show(); //sf.scene.show('SceneChannel');
+	$("#scene2").focus();//sf.scene.focus('SceneChannel'); //Check if still need
+	SceneSceneChannel.prototype.handleFocus();
 };
 
 function SceneSceneBrowser()
@@ -466,10 +482,10 @@ SceneSceneBrowser.initLanguage = function ()
 	$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
 };
 
-
-SceneSceneBrowser.prototype.initialize = function ()
-{
-	alert("SceneSceneBrowser.initialize()");
+window.onload = function () {
+    // TODO:: Do your initialization job
+	
+	console.log('SceneSceneBrowser.js loaded');
 	// this function will be called only once when the scene manager show this scene first time
 	// initialize the scene controls and styles, and initialize your variables here
 	// scene HTML and CSS will be loaded before this function is called
@@ -479,44 +495,46 @@ SceneSceneBrowser.prototype.initialize = function ()
 	SceneSceneBrowser.loadingData = false;
 	
 	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-};
+	document.body.addEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown ,false);
+	SceneSceneChannel.prototype.initialize();
+	$("#scene2").hide();
 
+};
 
 SceneSceneBrowser.prototype.handleShow = function (data)
 {
-	alert("SceneSceneBrowser.handleShow()");
+	console.log("SceneSceneBrowser.handleShow()");
 	// this function will be called when the scene manager show this scene
 };
 
 SceneSceneBrowser.prototype.handleHide = function ()
 {
-	alert("SceneSceneBrowser.handleHide()");
+	console.log("SceneSceneBrowser.handleHide()");
 	// this function will be called when the scene manager hide this scene
 	SceneSceneBrowser.clean();
 };
 
 SceneSceneBrowser.prototype.handleFocus = function ()
 {
-	alert("SceneSceneBrowser.handleFocus()");
+	console.log("SceneSceneBrowser.handleFocus()");
 	// this function will be called when the scene manager focus this scene
 	SceneSceneBrowser.refresh();
 };
 
 SceneSceneBrowser.prototype.handleBlur = function ()
 {
-	alert("SceneSceneBrowser.handleBlur()");
+	console.log("SceneSceneBrowser.handleBlur()");
 	// this function will be called when the scene manager move focus to another scene from this scene
 };
 
-SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
+SceneSceneBrowser.prototype.handleKeyDown = function (e)
 {
-	alert("SceneSceneBrowser.handleKeyDown(" + keyCode + ")");
-	
-	if (keyCode == sf.key.RETURN)
+	console.log("SceneSceneBrowser.handleKeyDown(" + e.keyCode + ")");	
+	if (e.keyCode == TvKeyCode.KEY_RETURN)
 	{
 		if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData)
 		{
-			sf.key.preventDefault();
+			//sf.key.preventDefault(); dont know what this did
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
 			return;
 		}
@@ -527,9 +545,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 		return;
 	}
 
-	switch (keyCode)
+	switch (e.keyCode)
 	{
-		case sf.key.LEFT:
+		case TvKeyCode.KEY_LEFT:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorX > 0)
@@ -540,7 +558,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 				}
 			}
 			break;
-		case sf.key.RIGHT:
+		case TvKeyCode.KEY_RIGHT:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY) - 1)
@@ -551,7 +569,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 				}
 			}
 			break;
-		case sf.key.UP:
+		case TvKeyCode.KEY_UP:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorY > 0)
@@ -567,7 +585,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 				SceneSceneBrowser.refreshInputFocus();
 			}
 			break;
-		case sf.key.DOWN:
+		case TvKeyCode.KEY_DOWN:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1
@@ -582,18 +600,24 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 			{
 				SceneSceneBrowser.cursorY = 1;
 				SceneSceneBrowser.refreshInputFocus();
+				SceneSceneBrowser.ime.blur();
 			}
 			break;
-		case sf.key.ENTER:
+		case TvKeyCode.KEY_ENTER:
 			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorY == 0)
 				{
-					SceneSceneBrowser.ime = new IMEShell_Common();
-					SceneSceneBrowser.ime.inputboxID = 'streamname_input';
-				    SceneSceneBrowser.ime.inputTitle = 'Channel name';
-				    SceneSceneBrowser.ime.setOnCompleteFunc = onCompleteText;
-					SceneSceneBrowser.ime.onShow();
+					SceneSceneBrowser.ime = document.querySelector('#streamname_input');;
+			        //This is how we handle input from IME
+					SceneSceneBrowser.ime.addEventListener('input');
+
+			        //This is how we handle end of IME composition
+					SceneSceneBrowser.ime.addEventListener('compositionend', function () {
+			            console.log('compositionend');});
+					
+					SceneSceneBrowser.ime.focus();
+					SceneSceneBrowser.isImeFocused = true;
 				}
 				else
 				{
@@ -613,29 +637,26 @@ SceneSceneBrowser.prototype.handleKeyDown = function (keyCode)
 				SceneSceneBrowser.openStream();
 			}
 			break;
-		case sf.key.VOL_UP:
-			sf.service.setVolumeControl(true);
+		case TvKeyCode.KEY_VOLUMEUP:
 			break;
-		case sf.key.VOL_DOWN:
-			sf.service.setVolumeControl(true);
+		case TvKeyCode.KEY_VOLUMEDOWN:
 			break;
-		case sf.key.MUTE:
-			sf.service.setVolumeControl(true);
+		case TvKeyCode.KEY_MUTE:
 			break;
-		case sf.key.RED:
+		case TvKeyCode.KEY_RED:
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 			break;
-		case sf.key.GREEN:
+		case TvKeyCode.KEY_GREEN:
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
 			break;
-		case sf.key.YELLOW:
+		case TvKeyCode.KEY_YELLOW:
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
 			break;
-		case sf.key.BLUE:
+		case TvKeyCode.KEY_BLUE:
 			SceneSceneBrowser.refresh();
 			break;
 		default:
-			alert("handle default key event, key code(" + keyCode + ")");
+			console.log("handle default key event, key code(" + keyCode + ")");
 			break;
 	}
 };

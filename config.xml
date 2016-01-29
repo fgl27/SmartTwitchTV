@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<widget xmlns="http://www.samsung.com/">
-  <cpname></cpname>
-  <cplogo></cplogo>
-  <cpauthjs></cpauthjs>
-  <ThumbIcon>icon/icon_106_87.png</ThumbIcon>
-  <BigThumbIcon>icon/icon_115_95.png</BigThumbIcon>
-  <ListIcon>icon/icon_85_70.png</ListIcon>
-  <BigListIcon>icon/icon_95_78.png</BigListIcon>
-  <category></category>
-  <autoUpdate>n</autoUpdate>
-  <ver>3.5</ver>
-  <mgrver></mgrver>
-  <fullwidget>y</fullwidget>
-  <type>user</type>
-  <srcctl>y</srcctl>
-  <ticker>n</ticker>
-  <childlock>n</childlock>
-  <videomute>n</videomute>
-  <dcont>y</dcont>
-  <widgetname>Twitch</widgetname>
-  <description></description>
-  <width>1280</width>
-  <height>720</height>
-  <author>
-    <name></name>
-    <email></email>
-    <link></link>
-    <organization></organization>
-  </author>
-</widget>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="https://github.com/mkvd/smarttv-twitch" version="3.6.0" viewmodes="maximized">
+    <access origin="*" subdomains="true"></access>
+    <tizen:application id="azXXxckbPT.WebBasicCzz" package="azXXxckbPT" required_version="2.2"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <feature name="http://tizen.org/feature/network.wifi"/>
+    <feature name="http://www.samsungdforum.com/feature/Keyboard"/>
+    <icon src="icon_117x117.png" height="117" width="117"/>
+    <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
+    <name>Twitch</name>
+    <preference name="cpname" value="" readonly="false"/>
+    <preference name="cplogo" value="" readonly="false"/>
+    <preference name="cpauthjs" value="" readonly="false"/>
+    <preference name="ThumbIcon" value="icon/icon_106_87.png" readonly="false"/>
+    <preference name="BigThumbIcon" value="icon/icon_115_95.png" readonly="false"/>
+    <preference name="ListIcon" value="icon/icon_85_70.png" readonly="false"/>
+    <preference name="BigListIcon" value="icon/icon_95_78.png" readonly="false"/>
+    <preference name="category" value="" readonly="false"/>
+    <preference name="autoUpdate" value="n" readonly="false"/>
+    <preference name="mgrver" value="" readonly="false"/>
+    <preference name="fullwidget" value="y" readonly="false"/>
+    <preference name="type" value="user" readonly="false"/>
+    <preference name="srcctl" value="y" readonly="false"/>
+    <preference name="ticker" value="n" readonly="false"/>
+    <preference name="childlock" value="n" readonly="false"/>
+    <preference name="videomute" value="n" readonly="false"/>
+    <preference name="dcont" value="y" readonly="false"/>
+    <preference name="widgetname" value="Twitch" readonly="false"/>
+    <preference name="description" value="" readonly="false"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.audio"/>
+    <tizen:profile name="tv-samsung-public"/>
+    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+    <tizen:setting context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/> //for 1280x720 resolution
+    </widget>
