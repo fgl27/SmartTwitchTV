@@ -28,6 +28,7 @@ tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("1");
 tizen.tvinputdevice.registerKey("4");
 tizen.tvinputdevice.registerKey("3");
+tizen.tvinputdevice.registerKey("6");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
 tizen.tvinputdevice.registerKey("MediaPlay");
 tizen.tvinputdevice.registerKey("MediaPause");
