@@ -27,6 +27,7 @@ tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("1");
 tizen.tvinputdevice.registerKey("4");
+tizen.tvinputdevice.registerKey("3");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
 tizen.tvinputdevice.registerKey("MediaPlay");
 tizen.tvinputdevice.registerKey("MediaPause");
@@ -574,9 +575,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			{
 				if (SceneSceneBrowser.cursorY > 0)
 				{
+					console.log("BeforeRemoveFocus()");
 					SceneSceneBrowser.removeFocus();
+					console.log("BeforecursorY--");
 					SceneSceneBrowser.cursorY--;
+					console.log("BeforeaddFocus()");
 					SceneSceneBrowser.addFocus();
+					console.log("After addFocus()");
 				}
 			}
 			else
@@ -586,6 +591,40 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			}
 			break;
 		case TvKeyCode.KEY_DOWN:
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
+			{
+				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1
+						&& SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY + 1))
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorY++;
+					SceneSceneBrowser.addFocus();
+				}
+			}
+			else
+			{
+				SceneSceneBrowser.cursorY = 1;
+				SceneSceneBrowser.refreshInputFocus();
+				SceneSceneBrowser.ime.blur();
+			}
+			break;
+		case TvKeyCode.KEY_3:
+			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
+			{
+				if (SceneSceneBrowser.cursorY > 0)
+				{
+					SceneSceneBrowser.removeFocus();
+					SceneSceneBrowser.cursorY--;
+					SceneSceneBrowser.addFocus();
+					}
+			}
+			else
+			{
+				SceneSceneBrowser.cursorY = 0;
+				SceneSceneBrowser.refreshInputFocus();
+			}
+			break;
+		case TvKeyCode.KEY_6:
 			if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 			{
 				if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1
