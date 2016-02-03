@@ -249,7 +249,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 		switch (e.keyCode) {
 			case TvKeyCode.KEY_RETURN:
 				console.log("KEY_RETURN");
-				//sf.key.preventDefault(); dont know what this do
+				e.preventDefault(); //prevent key to do default
 				SceneSceneChannel.shutdownStream();
 				break;
 			case TvKeyCode.KEY_VOLUMEUP:
@@ -307,7 +307,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 				}
 				break;
 			case TvKeyCode.KEY_RETURN:
-				//sf.key.preventDefault(); dont know what this do
+				e.preventDefault();//prevent key to do default
 				if (SceneSceneChannel.isPanelShown())
 				{
 					SceneSceneChannel.hidePanel();
