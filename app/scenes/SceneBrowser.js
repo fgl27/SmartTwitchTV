@@ -8,6 +8,7 @@ SceneSceneBrowser.MODE_ALL = 0;
 SceneSceneBrowser.MODE_GAMES = 1;
 SceneSceneBrowser.MODE_GAMES_STREAMS = 2;
 SceneSceneBrowser.MODE_GO = 3;
+SceneSceneBrowser.MODE_TOOLS = 3;
 
 SceneSceneBrowser.mode = SceneSceneBrowser.MODE_NONE;
 SceneSceneBrowser.gameSelected = null;
@@ -16,6 +17,7 @@ SceneSceneBrowser.cursorX = 0;
 SceneSceneBrowser.cursorY = 0;
 
 SceneSceneBrowser.ime = null;
+SceneSceneBrowser.ime2 = null;
 
 SceneSceneBrowser.loadingData = false;
 SceneSceneBrowser.loadingDataTryMax = 15;
@@ -25,6 +27,7 @@ SceneSceneBrowser.dataEnded = false;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
+tizen.tvinputdevice.registerKey("Tools");
 tizen.tvinputdevice.registerKey("1");
 tizen.tvinputdevice.registerKey("4");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
@@ -246,7 +249,7 @@ SceneSceneBrowser.loadDataRequest = function()
 		var dialog_title = "";
 		if (SceneSceneBrowser.loadingDataTry > 0)
 		{
-			dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
+			dialog_title = TIZEN_L10N.STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
 		}
 		
 		SceneSceneBrowser.showDialog(dialog_title);
@@ -323,6 +326,7 @@ SceneSceneBrowser.showDialog = function(title)
 {
 	$("#streamname_frame").hide();
 	$("#stream_table").hide();
+	$("#username_frame").hide();
 	$("#dialog_loading_text").text(title);
 	$("#dialog_loading").show();
 };
@@ -331,6 +335,7 @@ SceneSceneBrowser.showTable = function()
 {
 	$("#dialog_loading").hide();
 	$("#streamname_frame").hide();
+	$("#username_frame").hide();
 	$("#stream_table").show();
     
     ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
@@ -341,6 +346,13 @@ SceneSceneBrowser.showInput = function()
 	$("#dialog_loading").hide();
 	$("#stream_table").hide();
 	$("#streamname_frame").show();
+};
+
+SceneSceneBrowser.showInputTools = function()
+{
+	$("#dialog_loading").hide();
+	$("#stream_table").hide();
+	$("#usermname_frame").show();
 };
 
 SceneSceneBrowser.switchMode = function(mode)
@@ -375,6 +387,12 @@ SceneSceneBrowser.switchMode = function(mode)
 			SceneSceneBrowser.clean();
 			SceneSceneBrowser.showInput();
 			SceneSceneBrowser.refreshInputFocus();
+		}
+		else if (mode == SceneSceneBrowser.MODE_TOOLS)
+		{
+			SceneSceneBrowser.clean();
+			SceneSceneBrowser.showInputTools();
+			SceneSceneBrowser.refreshInputFocusTools();
 		}
 	}
 };
@@ -454,6 +472,25 @@ SceneSceneBrowser.refreshInputFocus = function()
 	}
 };
 
+SceneSceneBrowser.refreshInputFocusTools = function()
+{
+    $('#username_input').removeClass('channelname');
+    $('#username_input').removeClass('channelname_focused');
+    $('#username_button').removeClass('button_go');
+    $('#username_button').removeClass('button_go_focused');
+    
+	if (SceneSceneBrowser.cursorY == 0)
+	{
+	    $('#username_input').addClass('channelname_focused');
+	    $('#username_button').addClass('button_go');
+	}
+	else
+	{
+	    $('#username_input').addClass('channelname');
+	    $('#username_button').addClass('button_go_focused');
+	}
+};
+
 SceneSceneBrowser.openStream = function()
 {
 	$(window).scrollTop(0);
@@ -475,11 +512,11 @@ function SceneSceneBrowser()
 SceneSceneBrowser.initLanguage = function ()
 {
 	//set correct labels
-	$('.label_channels').html(STR_CHANNELS);
-	$('.label_games').html(STR_GAMES);
-	$('.label_open').html(STR_OPEN);
-	$('.label_refresh').html(STR_REFRESH);
-	$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
+	$('.label_channels').html(TIZEN_L10N.STR_CHANNELS);
+	$('.label_games').html(TIZEN_L10N.STR_GAMES);
+	$('.label_open').html(TIZEN_L10N.STR_OPEN);
+	$('.label_refresh').html(TIZEN_L10N.STR_REFRESH);
+	$('.label_placeholder_open').attr("placeholder", TIZEN_L10N.STR_PLACEHOLDER_OPEN);
 };
 
 window.onload = function () {
@@ -582,8 +619,16 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			}
 			else
 			{
-				SceneSceneBrowser.cursorY = 0;
-				SceneSceneBrowser.refreshInputFocus();
+				if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO)
+					{
+						SceneSceneBrowser.cursorY = 0;
+						SceneSceneBrowser.refreshInputFocus();
+					}
+				else{
+					SceneSceneBrowser.cursorY = 0;
+					SceneSceneBrowser.refreshInputFocusTools();
+				}
+				
 			}
 			break;
 		case TvKeyCode.KEY_DOWN:
@@ -600,9 +645,18 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			}
 			else
 			{
-				SceneSceneBrowser.cursorY = 1;
-				SceneSceneBrowser.refreshInputFocus();
-				SceneSceneBrowser.ime.blur();
+				if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO)
+				{
+					SceneSceneBrowser.cursorY = 1;
+					SceneSceneBrowser.refreshInputFocus();
+					SceneSceneBrowser.ime.blur();
+				}
+				else
+				{
+					SceneSceneBrowser.cursorY = 1;
+					SceneSceneBrowser.refreshInputFocusTools();
+					SceneSceneBrowser.ime2.blur();
+				}
 			}
 			break;
 		case TvKeyCode.KEY_ENTER:
@@ -627,6 +681,28 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 					SceneSceneBrowser.openStream();
 				}
 			}
+			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS)
+			{
+				if (SceneSceneBrowser.cursorY == 0)
+				{
+					SceneSceneBrowser.ime2 = document.querySelector('#username_input');;
+			        //This is how we handle input from IME
+					SceneSceneBrowser.ime2.addEventListener('input');
+
+			        //This is how we handle end of IME composition
+					SceneSceneBrowser.ime2.addEventListener('compositionend', function () {
+			            console.log('compositionend');});
+					
+					SceneSceneBrowser.ime2.focus();
+					SceneSceneBrowser.isIme2Focused = true;
+				}
+				else
+				{
+					SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
+					SceneSceneBrowser.openStream();
+				}
+			}
+			
 			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
 			{	
 				SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
@@ -653,6 +729,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			break;
 		case TvKeyCode.KEY_YELLOW:
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
+			break;
+		case TvKeyCode.KEY_TOOLS:
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
 			break;
 		case TvKeyCode.KEY_BLUE:
 			SceneSceneBrowser.refresh();

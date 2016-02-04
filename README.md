@@ -24,6 +24,21 @@ Still don't understand config.xml, so left lots of things there. Still need to c
 - Added key_up and key_down to change quality of stream.
 
 
+Change Log
+==============
+3.600
+- Added a timer on stream info.
+- Added Game name on stream info.
+- Added key_up and key_down to change quality of stream.
+
+3.6.1
+- Fixed KEY_UP and KEY_DOWN. Stopped them from doing default.
+- Added language support.(RU localization need test).
+- Added logo 512x423 - GlitchIcon_WhiteonPurple512x423.jpg
+- Started to add support for Follower
+- Added license to config.xml <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
+- Changed organization on index.html. Used Code Beautifier.
+
 Installation
 ==============
 

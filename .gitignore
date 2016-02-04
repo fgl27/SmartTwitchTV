@@ -5,3 +5,13 @@ lang/ru.js
 .sign/.manifest.tmp
 smarttv-twitch.wgt
 app.json
+index.html.old
+*.old
+lang/en.js
+lang/en.js
+lang.old/ru.js
+lang.old/pt-br.js
+lang.old/es.js
+lang.old/en.js
+lang.old/de.js
+smarttv-twitch.zip

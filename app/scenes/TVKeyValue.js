@@ -42,6 +42,7 @@ window.TvKeyCode =
 		"KEY_BLUE" : 406,//
 		"KEY_MENU" : 18,//
 		
-		"KEY_RETURN": 10009//
+		"KEY_RETURN": 10009,//
+		"KEY_TOOLS": 10135
 				
 }

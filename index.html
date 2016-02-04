@@ -1,304 +1,320 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=1280">
-		<title>Twitch</title>
-		<script type='text/javascript' src="jquery-1.11.0.js"></script>
-		
-	</head>
-	<style type="text/css">
-	
-			body {
-			  background-color: #090909;
-			  font-family: sans-serif;
-			  font-style: normal;
-			  font-variant: normal;
-			  font-weight: 100;
-			  letter-spacing: normal;
-			  position: absolute;
-			  z-index: 5;
-			  padding: 0px;
-			  margin: 0px;
-			}
-				
-			div.tip_icon {
-			  width: 42px;
-			  height: 42px;
-			  margin-right: 4px;
-			  display: inline-block;
-			  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
-			  color: white;
-			  font-size: 22px;
-			  text-align: center;
-			  vertical-align: middle;
-			  line-height: 42px;
-			}
-			
-			div.tip_icon_active {
-			  outline: 1px solid white;
-			  outline-offset: 2px;
-			}
-			
-			div.tip_label {
-			  width: 86px;
-			  height: 42px;
-			  margin-right: 32px;
-			  display: inline-block;
-			  color: white;
-			  font-size: 20px;
-			  vertical-align: middle;
-			  line-height: 42px;
-			}
-			
-			td.stream_cell {
-			  padding: 5px;
-			  position: relative;
-			  width: 25%;
-			}
-			
-			img.stream_thumbnail {
-			  width: 100%;
-			}
-			
-			img.stream_thumbnail_focused {
-			  outline: 3px solid white;
-			  outline-offset: 3px;
-			  width: 100%;
-			}
-			
-			div.stream_text {
-			  position: absolute;
-			  left: 5px;
-			  bottom: 5px;
-			  right: 20%;
-			  background-color: rgba(0, 0, 0, 0.5);
-			  padding: 2%;
-			}
-			
-			div.stream_title {
-			  width: 100%;
-			  text-align: left;
-			  white-space: nowrap;
-			  text-overflow: ellipsis;
-			  overflow: hidden;
-			  color: rgba(255, 255, 255, 0.95);
-			  font-weight: 100;
-			  font-size: 140%;
-			}
-			
-			div.stream_info {
-			  padding-top: 0.5%;
-			  width: 100%;
-			  text-align: left;
-			  white-space: nowrap;
-			  text-overflow: ellipsis;
-			  overflow: hidden;
-			  color: rgba(255, 255, 255, 0.70);
-			  font-weight: 100;
-			  font-size: 140%;
-			}
-			
-			div.openchannel {
-			  width: 70%;
-			  margin-top: 23%;
-			  margin-left: 15%;
-			}
-			
-			input.channelname {
-			  width: 100%;
-			  height: 80px;
-			  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-			  color: black;
-			  font-weight: 100;
-			  font-size: 200%;
-			  text-align: center;
-			  vertical-align: middle;
-			  background-color: rgba(255, 255, 255, 0.8);
-			}
-			
-			input.channelname_focused {
-			  width: 100%;
-			  height: 80px;
-			  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-			  color: black;
-			  font-weight: 100;
-			  font-size: 200%;
-			  text-align: center;
-			  vertical-align: middle;
-			  background-color: rgba(255, 255, 255, 1.0);
-			}
-			
-			div.button_go {
-			  width: 18%;
-			  height: 90px;
-			  margin-top: 2%;
-			  margin-left: 41%;
-			  padding-top: 0.5%;
-			  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-			  color: white;
-			  font-weight: 100;
-			  font-size: 170%;
-			  text-align: center;
-			  vertical-align: middle;
-			  line-height: 90px;
-			  background-color: #6441a5;
-			}
-			
-			div.button_go_focused {
-			  width: 18%;
-			  height: 90px;
-			  margin-top: 2%;
-			  margin-left: 41%;
-			  padding-top: 0.5%;
-			  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-			  color: white;
-			  font-weight: 100;
-			  font-size: 170%;
-			  text-align: center;
-			  vertical-align: middle;
-			  line-height: 90px;
-			  background-color: #7f53cf;
-			}
-			
-			.spinner {
-			  margin: 120px auto 0;
-			  width: 120px;
-			  text-align: center;
-			}
-			
-			.spinner > div {
-			  width: 28px;
-			  height: 28px;
-			  background-color: #FFFFFF;
-			
-			  border-radius: 100%;
-			  display: inline-block;
-			  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
-			  animation: bouncedelay 1.4s infinite ease-in-out;
-			  /* Prevent first frame from flickering when animation starts */
-			  -webkit-animation-fill-mode: both;
-			  animation-fill-mode: both;
-			}
-			
-						
-			.spinner .bounce1 {
-			  -webkit-animation-delay: -0.32s;
-			  animation-delay: -0.32s;
-			}
-			
-			.spinner .bounce2 {
-			  -webkit-animation-delay: -0.16s;
-			  animation-delay: -0.16s;
-			}
-			
-			@-webkit-keyframes bouncedelay {
-			  0%, 80%, 100% { -webkit-transform: scale(0.0) }
-			  40% { -webkit-transform: scale(1.0) }
-			}
-			
-			@keyframes bouncedelay {
-			  0%, 80%, 100% { 
-			    transform: scale(0.0);
-			    -webkit-transform: scale(0.0);
-			  } 40% { 
-			    transform: scale(1.0);
-			    -webkit-transform: scale(1.0);
-			  }
-			}
-			</style>
 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=1280" />
+    <title>Twitch</title>
+    <style type="text/css">
+        body {
+        			  background-color: #090909;
+        			  font-family: sans-serif;
+        			  font-style: normal;
+        			  font-variant: normal;
+        			  font-weight: 100;
+        			  letter-spacing: normal;
+        			  position: absolute;
+        			  z-index: 5;
+        			  padding: 0px;
+        			  margin: 0px;
+        			}
+        				
+        			div.tip_icon {
+        			  width: 42px;
+        			  height: 42px;
+        			  margin-right: 4px;
+        			  display: inline-block;
+        			  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+        			  color: white;
+        			  font-size: 22px;
+        			  text-align: center;
+        			  vertical-align: middle;
+        			  line-height: 42px;
+        			}
+        			
+        			div.tip_icon_active {
+        			  outline: 1px solid white;
+        			  outline-offset: 2px;
+        			}
+        			
+        			div.tip_label {
+        			  width: 86px;
+        			  height: 42px;
+        			  margin-right: 32px;
+        			  display: inline-block;
+        			  color: white;
+        			  font-size: 20px;
+        			  vertical-align: middle;
+        			  line-height: 42px;
+        			}
+        			
+        			td.stream_cell {
+        			  padding: 5px;
+        			  position: relative;
+        			  width: 25%;
+        			}
+        			
+        			img.stream_thumbnail {
+        			  width: 100%;
+        			}
+        			
+        			img.stream_thumbnail_focused {
+        			  outline: 3px solid white;
+        			  outline-offset: 3px;
+        			  width: 100%;
+        			}
+        			
+        			div.stream_text {
+        			  position: absolute;
+        			  left: 5px;
+        			  bottom: 5px;
+        			  right: 20%;
+        			  background-color: rgba(0, 0, 0, 0.5);
+        			  padding: 2%;
+        			}
+        			
+        			div.stream_title {
+        			  width: 100%;
+        			  text-align: left;
+        			  white-space: nowrap;
+        			  text-overflow: ellipsis;
+        			  overflow: hidden;
+        			  color: rgba(255, 255, 255, 0.95);
+        			  font-weight: 100;
+        			  font-size: 140%;
+        			}
+        			
+        			div.stream_info {
+        			  padding-top: 0.5%;
+        			  width: 100%;
+        			  text-align: left;
+        			  white-space: nowrap;
+        			  text-overflow: ellipsis;
+        			  overflow: hidden;
+        			  color: rgba(255, 255, 255, 0.70);
+        			  font-weight: 100;
+        			  font-size: 140%;
+        			}
+        			
+        			div.openchannel {
+        			  width: 70%;
+        			  margin-top: 23%;
+        			  margin-left: 15%;
+        			}
+        			
+        			input.channelname {
+        			  width: 100%;
+        			  height: 80px;
+        			  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
+        			  color: black;
+        			  font-weight: 100;
+        			  font-size: 200%;
+        			  text-align: center;
+        			  vertical-align: middle;
+        			  background-color: rgba(255, 255, 255, 0.8);
+        			}
+        			
+        			input.channelname_focused {
+        			  width: 100%;
+        			  height: 80px;
+        			  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
+        			  color: black;
+        			  font-weight: 100;
+        			  font-size: 200%;
+        			  text-align: center;
+        			  vertical-align: middle;
+        			  background-color: rgba(255, 255, 255, 1.0);
+        			}
+        			
+        			div.button_go {
+        			  width: 18%;
+        			  height: 90px;
+        			  margin-top: 2%;
+        			  margin-left: 41%;
+        			  padding-top: 0.5%;
+        			  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
+        			  color: white;
+        			  font-weight: 100;
+        			  font-size: 170%;
+        			  text-align: center;
+        			  vertical-align: middle;
+        			  line-height: 90px;
+        			  background-color: #6441a5;
+        			}
+        			
+        			div.button_go_focused {
+        			  width: 18%;
+        			  height: 90px;
+        			  margin-top: 2%;
+        			  margin-left: 41%;
+        			  padding-top: 0.5%;
+        			  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
+        			  color: white;
+        			  font-weight: 100;
+        			  font-size: 170%;
+        			  text-align: center;
+        			  vertical-align: middle;
+        			  line-height: 90px;
+        			  background-color: #7f53cf;
+        			}
+        			
+        			.spinner {
+        			  margin: 120px auto 0;
+        			  width: 120px;
+        			  text-align: center;
+        			}
+        			
+        			.spinner > div {
+        			  width: 28px;
+        			  height: 28px;
+        			  background-color: #FFFFFF;
+        			
+        			  border-radius: 100%;
+        			  display: inline-block;
+        			  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+        			  animation: bouncedelay 1.4s infinite ease-in-out;
+        			  /* Prevent first frame from flickering when animation starts */
+        			  -webkit-animation-fill-mode: both;
+        			  animation-fill-mode: both;
+        			}
+        			
+        						
+        			.spinner .bounce1 {
+        			  -webkit-animation-delay: -0.32s;
+        			  animation-delay: -0.32s;
+        			}
+        			
+        			.spinner .bounce2 {
+        			  -webkit-animation-delay: -0.16s;
+        			  animation-delay: -0.16s;
+        			}
+        			
+        			@-webkit-keyframes bouncedelay {
+        			  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+        			  40% { -webkit-transform: scale(1.0) }
+        			}
+        			
+        			@keyframes bouncedelay {
+        			  0%, 80%, 100% { 
+        			    transform: scale(0.0);
+        			    -webkit-transform: scale(0.0);
+        			  } 40% { 
+        			    transform: scale(1.0);
+        			    -webkit-transform: scale(1.0);
+        			  }
+        			}
+    </style>
+    <script type="text/javascript" src="jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="app/scenes/TVKeyValue.js"></script>
+    <!--   <script type="text/javascript" src="lang/en.js"></script>  -->
+    <script type="text/javascript" src="app/scenes/SceneBrowser.js"></script>
+    <script type="text/javascript" src="app/scenes/SceneChannel.js"></script>
+    <script src="$WEBAPIS/webapis/webapis.js"></script>
+    <script src="language.js"></script>
 </head>
-<script type="text/javascript" src="app/scenes/TVKeyValue.js"></script>
-<script type='text/javascript' src="lang/en.js"></script>  
-<script type='text/javascript' src="app/scenes/SceneBrowser.js"></script>
-<script type='text/javascript' src="app/scenes/SceneChannel.js"></script>
-<script src="$WEBAPIS/webapis/webapis.js"></script>
+
 <body>
-	
-	
-	<div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
-	background-image : url('')";>
-	<img style="float: left; width: 8%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png"/>
-
-	<div style="float: right; padding-top: 3.0%;">
-		<div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">A</div>
-		<div class="tip_label label_channels">STR_CHANNELS</div>
-		<div id="tip_icon_games"  class="tip_icon" style="background-color: #55d459">B</div>
-		<div class="tip_label label_games">STR_GAMES</div>
-		<div id="tip_icon_open"  class="tip_icon" style="background-color: #eded00">C</div>
-		<div class="tip_label label_open">STR_OPEN</div>
-		<div id="tip_icon_refresh"  class="tip_icon" style="background-color: #3d81f2">D</div>
-		<div class="tip_label label_refresh">STR_REFRESH</div>
-	</div>
-
-	<div id="dialog_loading" style="text-align: center; width: 100%; margin-top: 19%;">
-		<div class="spinner" style="display: inline-block;">
-			<div class="bounce1"></div>
-			<div class="bounce2"></div>
-			<div class="bounce3"></div>
-		</div>
-		<div id="dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
-	</div>
-
-	<table id="stream_table" style="width: 100%; padding-top: 4%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
-
-	</table>
-
-	<div id="streamname_frame" class="openchannel">
-		<input id="streamname_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_OPEN" />
-		<div id="streamname_button" class="button_go label_open">STR_OPEN</div>
-	</div>
-	</div>
-	
-	<div id="scene2" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
-	background-image : url('');">
-
-	<object id='av-player' type='application/avplayer' style="width:100%;height:100%;position: absolute;"></object>
-
-
-  <div id="scene_channel_panel" style="position: absolute; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
-      <img style="width: 40%; padding-left: 10%; padding-top: 7%; padding-bottom: 1.5%;" src="images/twitchlogo.png"/>
-      <div style="margin: 0 auto; width: 80%; height: 15%; padding-left: 15%; padding-top: 3%; padding-bottom: 1.5%;">
-        <img id="stream_info_icon" style="display: inline-block; width: 20%;" src=""/>
-        <div style="text-align: center; color: white; vertical-align: top; display: inline-block; width: 65%; margin-top: 1%; margin-left: 0%;">
-          <div id="stream_info_name" style="font-size: 120%; padding-bottom: 4%;"></div>
-          <div id="stream_info_game" style="font-size: 120%; padding-bottom: 4%;"></div>
-          <div id="stream_info_viewer" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
-          <div id="stream_info_currentTime" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
-        </div>
-      </div>
-      <div style="position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
-        <div style="width: 80%; height: 47%; text-align: center; vertical-align: middle; padding: 2%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);"><p id="stream_info_title"></p></div>
-        <div style="width: 80%; height: 42px; line-height: 42px; margin: 0 auto; padding-top: 3%; font-size: 130%;">
-          <div style="display: inline-block; width: 80%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
-            <div style="width: 41%; text-align: center; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">STR_QUALITY</div>
-            <div id="quality_name" style="width: 52%; text-align: center; display: inline-block;"></div>
-          </div>
-          <div style="height: 42px; display: inline-block;">
-            <div style="display: inline-block;">
-              <div id="quality_arrow_up"
-                style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
-              <div id="quality_arrow_down"
-                style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
+    <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
+	background-image : url('')" ;="">
+        <img style="float: left; width: 8%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png" />
+        <div style="float: right; padding-top: 3.0%;">
+            <div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">
+                A
             </div>
-            <div style="display: inline-block; color: rgba(255, 255, 255, 0.95);">P</div>
-          </div>
+            <div class="tip_label label_channels">
+                STR_CHANNELS
+            </div>
+            <div id="tip_icon_games" class="tip_icon" style="background-color: #55d459">
+                B
+            </div>
+            <div class="tip_label label_games">
+                STR_GAMES
+            </div>
+            <div id="tip_icon_open" class="tip_icon" style="background-color: #eded00">
+                C
+            </div>
+            <div class="tip_label label_open">
+                STR_OPEN
+            </div>
+            <div id="tip_icon_refresh" class="tip_icon" style="background-color: #3d81f2">
+                D
+            </div>
+            <div class="tip_label label_refresh">
+                STR_REFRESH
+            </div>
         </div>
-      </div>
-      <div style="position: absolute; top: 55%; width: 100%; height: 45%; background-color: white;">
-      <!-- Future chat browser-->
-      </div>
+        <div id="dialog_loading" style="text-align: center; width: 100%; margin-top: 19%;">
+            <div class="spinner" style="display: inline-block;">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+            <div id="dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+        </div>
+        <table id="stream_table" style="width: 100%; padding-top: 4%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
+        </table>
+        <div id="streamname_frame" class="openchannel">
+            <input id="streamname_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_OPEN" />
+            <div id="streamname_button" class="button_go label_open">
+                STR_OPEN
+            </div>
+        </div>
+        <div id="username_frame" class="openchannel">
+            <input id="username_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_TOOLS" />
+            <div id="username_button" class="button_go label_open">
+                STR_TOOLS
+            </div>
+        </div>
     </div>
-  <div id="scene_channel_dialog_loading" style="position: absolute; z-index: 3; text-align: center; width: 100%; margin-top: 32%;">
-    <div class="spinner" style="display: inline-block;">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
+    <div id="scene2" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
+	background-image : url('');">
+        <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
+        <div id="scene_channel_panel" style="position: absolute; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
+            <img style="width: 40%; padding-left: 10%; padding-top: 7%; padding-bottom: 1.5%;" src="images/twitchlogo.png" />
+            <div style="margin: 0 auto; width: 80%; height: 15%; padding-left: 15%; padding-top: 3%; padding-bottom: 1.5%;">
+                <img id="stream_info_icon" style="display: inline-block; width: 20%;" src="" />
+                <div style="text-align: center; color: white; vertical-align: top; display: inline-block; width: 65%; margin-top: 1%; margin-left: 0%;">
+                    <div id="stream_info_name" style="font-size: 120%; padding-bottom: 4%;"></div>
+                    <div id="stream_info_game" style="font-size: 120%; padding-bottom: 4%;"></div>
+                    <div id="stream_info_viewer" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
+                    <div id="stream_info_currentTime" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
+                </div>
+            </div>
+            <div style="position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
+                <div style="width: 80%; height: 47%; text-align: center; vertical-align: middle; padding: 2%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
+                    <p id="stream_info_title"></p>
+                </div>
+                <div style="width: 80%; height: 42px; line-height: 42px; margin: 0 auto; padding-top: 3%; font-size: 130%;">
+                    <div style="display: inline-block; width: 80%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
+                        <div style="width: 41%; text-align: center; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">
+                            STR_QUALITY
+                        </div>
+                        <div id="quality_name" style="width: 52%; text-align: center; display: inline-block;"></div>
+                    </div>
+                    <div style="height: 42px; display: inline-block;">
+                        <div style="display: inline-block;">
+                            <div id="quality_arrow_up" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
+                            <div id="quality_arrow_down" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
+                        </div>
+                        <div style="display: inline-block; color: rgba(255, 255, 255, 0.95);">
+                            P
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: absolute; top: 55%; width: 100%; height: 45%; background-color: white;">
+                <!-- Future chat browser-->
+            </div>
+        </div>
+        <div id="scene_channel_dialog_loading" style="position: absolute; z-index: 3; text-align: center; width: 100%; margin-top: 32%;">
+            <div class="spinner" style="display: inline-block;">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+            <div id="scene_channel_dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+        </div>
     </div>
-    <div id="scene_channel_dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
-  </div>
-	
-	</div>
 </body>
+
 </html>
