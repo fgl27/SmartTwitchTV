@@ -16,5 +16,9 @@ TIZEN_L10N=
 	"STR_ERROR_NETWORK_DISCONNECT" : "Rede desconectada.",
 	"STR_ERROR_STREAM_NOT_FOUND" : "Stream não encotrada.",
 	"STR_ERROR_AUTHENTICATION_FAIL" : "Falha na autenticação.",
-	"STR_ERROR_CONNECTION_FAIL" : "Falha na conexão."
+	"STR_ERROR_CONNECTION_FAIL" : "Falha na conexão.",
+	"STR_LIVE_CHANNELS" : "Canais ao vivo",
+	"STR_LIVE_HOSTS" : "Hosts ao vivo",
+	"STR_LIVE_GAMES" : "Jogos ao vivo",
+	"STR_PLACEHOLDER_TOOLS" : "Enter username..."
 };

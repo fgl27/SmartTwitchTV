@@ -26,7 +26,7 @@ Still don't understand config.xml, so left lots of things there. Still need to c
 
 Change Log
 ==============
-3.600
+3.6.0
 - Added a timer on stream info.
 - Added Game name on stream info.
 - Added key_up and key_down to change quality of stream.
@@ -38,6 +38,22 @@ Change Log
 - Started to add support for Follower
 - Added license to config.xml <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
 - Changed organization on index.html. Used Code Beautifier.
+
+3.6.3
+- Changed version to 3.6.3
+- Changed to Required version 2.3 on config.xml
+- Added some STR for languages changes. Used what twitch use on their site, don't know if its the better translation
+	- Didn't test DE and RU languages on my TV. It should work.
+- Added support to follower.
+	- Added KEY_TOOLS to open window to input username and open follower window.
+	- Added KEY_0 to open follower window with saved username. If there is no username save, it will open window to input username. 
+	- You can input username on the app, and see list of streams, live hosts, and live games which that that user is following.
+	- The username should save on WebStorage, so when you close and open the app, it should still be there.
+	- You can press the key TOOLS to open interface where you can input the username, and save/open.
+	- if there there is already a username you can pres the KEY_0 to open the list whithout typing again the username.
+	
+-TODO:
+	- Save Quality on WebStorage.
 
 Installation
 ==============

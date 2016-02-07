@@ -16,5 +16,9 @@ TIZEN_L10N=
 	"STR_ERROR_NETWORK_DISCONNECT" : "Соединение разорвано.",
 	"STR_ERROR_STREAM_NOT_FOUND" : "Стрим не найден.",
 	"STR_ERROR_AUTHENTICATION_FAIL" : "Ошибка авторизации.",
-	"STR_ERROR_CONNECTION_FAIL" : "Ошибка подключения."
+	"STR_ERROR_CONNECTION_FAIL" : "Ошибка подключения.",
+	"STR_LIVE_CHANNELS" : "Активные каналы",
+	"STR_LIVE_HOSTS" : "Интерактивные веб-узлы",
+	"STR_LIVE_GAMES" : "Онлайн-игры",
+	"STR_PLACEHOLDER_TOOLS" : "Enter username..."
 };

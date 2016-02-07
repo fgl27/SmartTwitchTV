@@ -16,5 +16,9 @@ TIZEN_L10N=
 	"STR_ERROR_NETWORK_DISCONNECT" : "Netzwerk nicht erreichbar.",
 	"STR_ERROR_STREAM_NOT_FOUND" : "Stream nicht gefunden.",
 	"STR_ERROR_AUTHENTICATION_FAIL" : "Authentifizierung fehlgeschlagen.",
-	"STR_ERROR_CONNECTION_FAIL" : "Verbindungsaufbau fehlgeschlagen."
+	"STR_ERROR_CONNECTION_FAIL" : "Verbindungsaufbau fehlgeschlagen.",
+	"STR_LIVE_CHANNELS" : "Live-Kanäle",
+	"STR_LIVE_HOSTS" : "Live-Hosts",
+	"STR_LIVE_GAMES" : "Livespiele",
+	"STR_PLACEHOLDER_TOOLS" : "Enter username..."
 };
