@@ -563,6 +563,9 @@ SceneSceneBrowser.refresh = function()
 {
 	if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO)
 	{
+		if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER){
+			SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+		}
 		SceneSceneBrowser.clean();
 		
 		SceneSceneBrowser.loadData();
@@ -740,6 +743,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 
 			return;
 		}
+		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL){
+			tizen.application.getCurrentApplication().exit();
+		}else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES
+				|| SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER){
+			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+		}
+		
 	}
 	
 	if (SceneSceneBrowser.loadingData)
@@ -963,7 +973,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			SceneSceneBrowser.refresh();
 			break;
 		default:
-			console.log("handle default key event, key code(" + keyCode + ")");
+			console.log("handle default key event, key code(" + e.keyCode + ")");
 			break;
 	}
 };
