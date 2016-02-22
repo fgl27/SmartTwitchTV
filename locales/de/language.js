@@ -20,5 +20,8 @@ TIZEN_L10N=
 	"STR_LIVE_CHANNELS" : "Live-Kanäle",
 	"STR_LIVE_HOSTS" : "Live-Hosts",
 	"STR_LIVE_GAMES" : "Livespiele",
-	"STR_PLACEHOLDER_TOOLS" : "Enter username..."
+	"STR_PLACEHOLDER_TOOLS" : "Enter username...",
+	"STR_CHANNEL" : "Channel",
+	"STR_USERNAME" : "Username",
+	"STR_DOES_NOT_EXIST" : "does not exist"
 };

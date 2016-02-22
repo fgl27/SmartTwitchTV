@@ -594,8 +594,11 @@ SceneSceneChannel.isPanelShown = function()
 	return $("#scene_channel_panel").is(":visible");
 };
 
-SceneSceneChannel.loadDataError = function()
+SceneSceneChannel.loadDataError = function(status)
 {
+	if(status){
+		SceneSceneChannel.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+	}else{
 	SceneSceneChannel.loadingDataTry++;
 	if (SceneSceneChannel.loadingDataTry < SceneSceneChannel.loadingDataTryMax)
 	{
@@ -629,6 +632,7 @@ SceneSceneChannel.loadDataError = function()
 	else
 	{
 		SceneSceneChannel.showDialog("Error: Unable to retrieve access token.");
+	}
 	}
 };
 
@@ -694,7 +698,7 @@ SceneSceneChannel.loadDataRequest = function()
 				else
 				{
 					console.log("calling loadDataError()");
-					SceneSceneChannel.loadDataError();
+					SceneSceneChannel.loadDataError(true);
 				}
 			}
 		};
@@ -704,7 +708,7 @@ SceneSceneChannel.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneChannel.loadDataError();
+		SceneSceneChannel.loadDataError(false);
 	}
 };
 

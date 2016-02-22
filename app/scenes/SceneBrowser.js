@@ -11,7 +11,7 @@ SceneSceneBrowser.MODE_GO = 3;
 SceneSceneBrowser.MODE_TOOLS = 4;
 SceneSceneBrowser.MODE_FOLLOWER = 5;
 SceneSceneBrowser.mode = SceneSceneBrowser.MODE_NONE;
-
+SceneSceneBrowser.modeReturn = SceneSceneBrowser.MODE_NONE;
 
 SceneSceneBrowser.STATE_FOLLOWER_NONE = -1;
 SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST = 0; //Loading channels name list
@@ -22,6 +22,7 @@ SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
 
 SceneSceneBrowser.followerMatrix = [];
 
+SceneSceneBrowser.isShowDialogOn = false;
 SceneSceneBrowser.returnToGames = true;
 SceneSceneBrowser.gameSelected = null;
 SceneSceneBrowser.followerChannels;
@@ -152,8 +153,12 @@ SceneSceneBrowser.createCellEmpty = function()
 	return $('<td class="stream_cell"></td>').html('');
 };
 
-SceneSceneBrowser.loadDataError = function(reason)
+SceneSceneBrowser.loadDataError = function(reason,status)
 {
+	if (status=="Not Found"){
+		SceneSceneBrowser.loadingData = false;
+		SceneSceneBrowser.showDialog(TIZEN_L10N.STR_USERNAME+" '"+SceneSceneBrowser.followerUsername+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+	}else{
 	SceneSceneBrowser.loadingDataTry++;
 	if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax)
 	{
@@ -189,6 +194,7 @@ SceneSceneBrowser.loadDataError = function(reason)
 		reason = (typeof reason === "undefined") ? "Unknown" : reason;
 		SceneSceneBrowser.loadingData = false;
 		SceneSceneBrowser.showDialog("Unable to load stream data. Reason: " + reason);
+	}
 	}
 };
 
@@ -436,7 +442,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 				else
 				{
-					SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status);
+					SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status,xmlHttp.statusText);
 				}
 			}
 		};
@@ -446,7 +452,7 @@ SceneSceneBrowser.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneBrowser.loadDataError(error.message);
+		SceneSceneBrowser.loadDataError(error.message,xmlHttp.statusText);
 	}
 };
 
@@ -466,6 +472,7 @@ SceneSceneBrowser.loadData = function()
 
 SceneSceneBrowser.showDialog = function(title)
 {
+	SceneSceneBrowser.isShowDialogOn = true;
 	$("#streamname_frame").hide();
 	$("#stream_table").hide();
 	$("#username_frame").hide();
@@ -475,6 +482,7 @@ SceneSceneBrowser.showDialog = function(title)
 
 SceneSceneBrowser.showTable = function()
 {
+	SceneSceneBrowser.isShowDialogOn = false;
 	$("#dialog_loading").hide();
 	$("#streamname_frame").hide();
 	$("#username_frame").hide();
@@ -485,6 +493,7 @@ SceneSceneBrowser.showTable = function()
 
 SceneSceneBrowser.showInput = function()
 {
+	SceneSceneBrowser.isShowDialogOn = false;
 	$("#dialog_loading").hide();
 	$("#stream_table").hide();
 	$("#streamname_frame").show();
@@ -493,6 +502,7 @@ SceneSceneBrowser.showInput = function()
 
 SceneSceneBrowser.showInputTools = function()
 {
+	SceneSceneBrowser.isShowDialogOn = false;
 	$("#dialog_loading").hide();
 	$("#stream_table").hide();
 	$("#streamname_frame").hide();
@@ -503,6 +513,7 @@ SceneSceneBrowser.switchMode = function(mode)
 {
 	if (mode != SceneSceneBrowser.mode)
 	{
+		SceneSceneBrowser.modeReturn = SceneSceneBrowser.mode;
 		SceneSceneBrowser.mode = mode;
 
 		$("#tip_icon_channels").removeClass('tip_icon_active');
@@ -541,9 +552,14 @@ SceneSceneBrowser.switchMode = function(mode)
 		}
 		else if (mode == SceneSceneBrowser.MODE_FOLLOWER)
 		{
-			console.log("Enter MODE_FOLLOWER")
-			SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
-			SceneSceneBrowser.refresh();
+			if(SceneSceneBrowser.followerUsername!=null && !SceneSceneBrowser.isShowDialogOn){
+				console.log("Enter MODE_FOLLOWER")
+				SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+				SceneSceneBrowser.refresh();
+			}else{
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+			}
+			
 		}
 	}
 };
@@ -740,13 +756,30 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 				e.preventDefault(); //prevent key to do default
 				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
 			}
-
 			return;
 		}
 		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL){
 			tizen.application.getCurrentApplication().exit();
-		}else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES
-				|| SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER){
+		}
+		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO){
+			if (SceneSceneBrowser.isShowDialogOn)
+			{
+				SceneSceneBrowser.clean();
+				SceneSceneBrowser.showInput();
+				SceneSceneBrowser.refreshInputFocus();
+			}else{
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+			}
+		}
+		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER){
+			if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS)
+			{
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+			}else{
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+			}
+		}else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS)
+		{
 			SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 		}
 		
@@ -876,11 +909,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 				}
 			break;
 		case TvKeyCode.KEY_0:
-				if(SceneSceneBrowser.followerUsername!=null){
-					SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-				}else{
-					SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
-				}
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
 			break;
 		case TvKeyCode.KEY_ENTER:
 			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER){
@@ -913,7 +942,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 				else
 				{
 					SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
-					SceneSceneBrowser.openStream();
+					if(SceneSceneBrowser.selectedChannel == ''){
+						console.log("SceneSceneBrowser.selectedChannel == null       ="+SceneSceneBrowser.selectedChannel);
+					}else{
+						console.log("NOT NULL       ="+SceneSceneBrowser.selectedChannel);
+						SceneSceneBrowser.openStream();
+					}
+					
 				}
 			}
 			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS)
@@ -935,7 +970,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 				{
 					SceneSceneBrowser.followerUsername = $('#username_input').val();
 					localStorage.setItem('followerUsername', $('#username_input').val());
-					SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+					if(SceneSceneBrowser.followerUsername == ''){
+						console.log("SceneSceneBrowser.followerUsername == null     = "+SceneSceneBrowser.followerUsername);
+					}else{
+						console.log("NOT NULL     = "+SceneSceneBrowser.followerUsername);
+						SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+					}
+					
 				}
 			}			
 			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
