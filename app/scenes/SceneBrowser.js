@@ -1,4 +1,5 @@
 SceneSceneBrowser.selectedChannel;
+SceneSceneBrowser.browser = true;
 
 SceneSceneBrowser.ItemsLimit = 100;
 SceneSceneBrowser.ColoumnsCount = 4;
@@ -21,7 +22,6 @@ SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST = 3; //Loading live hosts info
 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
 
 SceneSceneBrowser.followerMatrix = [];
-
 SceneSceneBrowser.isShowDialogOn = false;
 SceneSceneBrowser.returnToGames = true;
 SceneSceneBrowser.gameSelected = null;
@@ -44,7 +44,7 @@ SceneSceneBrowser.loadingDataTryMax = 15;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.dataEnded = false;
-
+SceneSceneBrowser.listenerID;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -153,12 +153,36 @@ SceneSceneBrowser.createCellEmpty = function()
 	return $('<td class="stream_cell"></td>').html('');
 };
 
-SceneSceneBrowser.loadDataError = function(reason,status)
+SceneSceneBrowser.loadDataError = function(reason,responseText)
 {
-	if (status=="Not Found"){
-		SceneSceneBrowser.loadingData = false;
-		SceneSceneBrowser.showDialog(TIZEN_L10N.STR_USERNAME+" '"+SceneSceneBrowser.followerUsername+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
-	}else{
+	var calling = false;
+	if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO){
+		try {
+			console.log(responseText);
+			var response = $.parseJSON(responseText);
+			console.log("response.message0="+response.message);
+			console.log("response.message1="+"User '"+SceneSceneBrowser.followerUsername+"' does not exist");
+			if( response.message === "User '"+SceneSceneBrowser.followerUsername+"' does not exist"){
+				console.log("response.message2="+response.message);
+				console.log("Call loadDataError(true) from howDialog");
+				calling = true;
+				SceneSceneBrowser.loadingData = false;
+				SceneSceneBrowser.showDialog(TIZEN_L10N.STR_USERNAME+" '"+SceneSceneBrowser.followerUsername+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+			}
+			//some names return requests error 422 (This is a Justin.tv channel. It cannot be viewed on Twitch.) Maybe its from old accounts. Example: https://api.twitch.tv/kraken/streams/phoxx
+			else if(( response.message === "Channel '"+SceneSceneBrowser.selectedChannel+"' does not exist")||(response.message === "Channel '"+SceneSceneBrowser.selectedChannel+"' is unavailable")){ 
+				console.log("response.message3="+response.message);
+				console.log("'Channel ''+SceneSceneBrowser.followerUsername+'' does not exist");
+				calling = true;
+				SceneSceneBrowser.loadingData = false;
+				SceneSceneBrowser.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+			}
+		} catch (e) {
+			console.log("$.parseJSON(xmlHttp.responseText); exception [" + e.code
+				    + "] name: " + e.name + " message: " + e.message);
+		}	
+	}
+	if(!calling){
 	SceneSceneBrowser.loadingDataTry++;
 	if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax)
 	{
@@ -219,6 +243,18 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
 		
 		SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
 		SceneSceneBrowser.loadDataRequest();
+	}else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO){
+		console.log("response="+response);
+		console.log("responseText="+responseText);
+		if( response.stream === null){
+			console.log("response.stream === 'null'=");
+			console.log("+response.stream="+response.stream);
+			SceneSceneBrowser.loadingData = false;
+			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_IS_OFFLINE);
+		}else{
+			console.log("Opening stream from loaddatasuccess GO");
+			SceneSceneBrowser.openStream();
+		}
 	}
 	else{
 		
@@ -415,6 +451,10 @@ SceneSceneBrowser.loadDataRequest = function()
 		{
 			theUrl = 'https://api.twitch.tv/api/users/'+encodeURIComponent(SceneSceneBrowser.followerUsername)+'/followed/hosting?limit=' + SceneSceneBrowser.ItemsLimit;// + '&offset=' + offset; removed offset for now, need fix latter
 		}
+		else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO)
+		{
+			theUrl = 'https://api.twitch.tv/kraken/streams/'+encodeURIComponent(SceneSceneBrowser.selectedChannel);
+		}
 		else
 		{
 			theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
@@ -442,7 +482,7 @@ SceneSceneBrowser.loadDataRequest = function()
 				}
 				else
 				{
-					SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status,xmlHttp.statusText);
+					SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status+" Message: "+xmlHttp.statusText,xmlHttp.responseText);
 				}
 			}
 		};
@@ -452,7 +492,7 @@ SceneSceneBrowser.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneBrowser.loadDataError(error.message,xmlHttp.statusText);
+		SceneSceneBrowser.loadDataError(error.message,xmlHttp.responseText);
 	}
 };
 
@@ -678,6 +718,7 @@ SceneSceneBrowser.openStream = function()
 
 	document.body.removeEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown);
 	document.body.addEventListener("keydown",SceneSceneChannel.prototype.handleKeyDown ,false);
+	SceneSceneBrowser.browser = false;
 	
 	$("#scene1").hide(); //sf.scene.hide('SceneBrowser')
 	$("#scene2").show(); //sf.scene.show('SceneChannel');
@@ -712,6 +753,7 @@ window.onload = function () {
 	document.body.addEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown ,false);
 	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 	SceneSceneChannel.prototype.initialize();
+	SceneSceneBrowser.addNetworkStateChangeListener();
 	
 
 };
@@ -946,7 +988,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 						console.log("SceneSceneBrowser.selectedChannel == null       ="+SceneSceneBrowser.selectedChannel);
 					}else{
 						console.log("NOT NULL       ="+SceneSceneBrowser.selectedChannel);
-						SceneSceneBrowser.openStream();
+						SceneSceneBrowser.loadData();
 					}
 					
 				}
@@ -1023,3 +1065,41 @@ function onCompleteText(string)
 {
 
 }
+
+SceneSceneBrowser.addNetworkStateChangeListener = function () {
+	 var onChange = function(data) {
+		 	if(data==4){
+		 			SceneSceneBrowser.showTable();
+		 		console.log("[NetworkStateChangedCallback] CONNECTED");
+		 	}else if (data==5){
+		 		if(SceneSceneBrowser.browser){
+		 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+		 		}
+		 		else{
+		 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+		 		}
+		 		console.log("[NetworkStateChangedCallback] DISCONNECTED");
+		 	}
+	 }
+	 try {
+		 SceneSceneBrowser.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
+	 } catch (e) {
+		 console.log("addNetworkStateChangeListener exception [" + e.code + "] name: " + e.name + " message: " + e.message);
+	 }
+	 if (SceneSceneBrowser.listenerID > -1) {
+		 console.log("addNetworkStateChangeListener success listener ID ["  + SceneSceneBrowser.listenerID + "] ");
+	 }
+}
+/*
+SceneSceneBrowser.removeNetworkStateChangeListener = function() {
+	 try {
+	  console.log("begin removeNetworkStateChangeListener listenerID: " + SceneSceneBrowser.listenerID);
+	  webapis.network.removeNetworkStateChangeListener(SceneSceneBrowser.listenerID);
+	 } catch (e) {
+	  console.log("removeNetworkStateChangeListener exception [" + e.code
+	    + "] name: " + e.name + " message: " + e.message);
+	  return;
+	 }
+	 console.log("removeNetworkStateChangeListener success");
+}
+*/

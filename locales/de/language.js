@@ -23,5 +23,6 @@ TIZEN_L10N=
 	"STR_PLACEHOLDER_TOOLS" : "Enter username...",
 	"STR_CHANNEL" : "Channel",
 	"STR_USERNAME" : "Username",
-	"STR_DOES_NOT_EXIST" : "does not exist"
+	"STR_DOES_NOT_EXIST" : "does not exist",
+	"STR_IS_OFFLINE" : "is offline"
 };

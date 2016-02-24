@@ -102,7 +102,7 @@ SceneSceneChannel.shutdownStream = function()
 	$("#scene1").focus();
 	document.body.removeEventListener("keydown",SceneSceneChannel.prototype.handleKeyDown);
 	document.body.addEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown ,false);
-	
+	SceneSceneBrowser.browser = true;
 	//sf.scene.focus('SceneBrowser');
 };
 
@@ -153,7 +153,7 @@ var listener = {
         },
         onbufferingprogress: function(percent) {
 	                console.log("Buffering progress data : " + percent);
-	        		SceneSceneChannel.onBufferingProgress(percent); //data or percent????
+	        		SceneSceneChannel.onBufferingProgress(percent); 
         },
         onbufferingcomplete: function() {
         		console.log("Buffering complete.");
@@ -382,6 +382,8 @@ SceneSceneChannel.onRenderingComplete = function () {
 };
 
 SceneSceneChannel.onBufferingStart = function () {
+	console.log("onBufferingStart");
+	SceneSceneChannel.shutdownStream();//this is "working", but i don't think this is the right place
 	SceneSceneChannel.showDialog(TIZEN_L10N.STR_BUFFERING);
 };
 
@@ -594,11 +596,8 @@ SceneSceneChannel.isPanelShown = function()
 	return $("#scene_channel_panel").is(":visible");
 };
 
-SceneSceneChannel.loadDataError = function(status)
+SceneSceneChannel.loadDataError = function()
 {
-	if(status){
-		SceneSceneChannel.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
-	}else{
 	SceneSceneChannel.loadingDataTry++;
 	if (SceneSceneChannel.loadingDataTry < SceneSceneChannel.loadingDataTryMax)
 	{
@@ -632,7 +631,6 @@ SceneSceneChannel.loadDataError = function(status)
 	else
 	{
 		SceneSceneChannel.showDialog("Error: Unable to retrieve access token.");
-	}
 	}
 };
 
@@ -674,7 +672,7 @@ SceneSceneChannel.loadDataRequest = function()
 		{
 			theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true';
 		}
-		
+		console.log(theUrl);
 		xmlHttp.ontimeout = function()
 		{
 		};
@@ -697,8 +695,7 @@ SceneSceneChannel.loadDataRequest = function()
 				}
 				else
 				{
-					console.log("calling loadDataError()");
-					SceneSceneChannel.loadDataError(true);
+					SceneSceneChannel.loadDataError();
 				}
 			}
 		};
@@ -708,7 +705,7 @@ SceneSceneChannel.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneChannel.loadDataError(false);
+		SceneSceneChannel.loadDataError();
 	}
 };
 
