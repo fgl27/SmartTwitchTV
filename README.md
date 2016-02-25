@@ -3,25 +3,32 @@ smarttv-twitch
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
 
-==============
+About this fork
+===============
 
 This is a try to upgrade smarttv-twitch so i can use it on my UN48j6300AGXZD Samsung TV, that has a Tizen OS.
-
 I didn't know anything about the SmartTV app. Lots of things i still don't know what they do, so i left then alone :) .
-Tried to use Caph.Scene because don't have more sf.scene on Tinzen. But i couldn't make it work. So i changed lots of things to make the app run.
 It's not the best way, but its working for me. Almost everything is working on the emulator and on my TV.
-Some handlers for errors on connections need to be fix (onConnectionFailed,onAuthenticationFailed,onStreamNotFound,onNetworkDisconnected);
-Didn't find anyway to use languagues. So it's just using en.js for now. 
+Some handlers for errors on connections need to be fix (onConnectionFailed, onAuthenticationFailed, onStreamNotFound, onNetworkDisconnected, onRenderError);
+Changed languages files, to work in Tizen.
 Put SceneBrowser.html and SceneChannel.html inside index.html, each one inside a div, and i toggle visibility off then when the app change betwen them.
 Moved CSS inside index.html too.
-Last time I tried to use on my TV, a scrollbar showed on the right side of the screen.
-And when you press UP and DOWN the screen don't update correctly, but if you press Left or Right it fix.  
-Still don't understand config.xml, so left lots of things there. Still need to clean it.
+On tizen every time you scroll the window, it will show a ScrollBar.
+When you keep pressed UP and DOWN the screen don't update correctly, but if you press Left or Right it fix.  
 
+Bug
+==============
+- Everytime the app scroll to much content, it will make a white flicker. This happens only on TV. Dont happen on TV Emulator.
+	- So when the app will start loading 100 more streams to show on the screen. It will scroll to the top of the window, making the white flicker, to show the loading msg. And when the loading finish, it will scroll to the bottom of page to focus on the current selected stream, making the screen flicker again.  	
 
-- Added a timer on stream info.
-- Added Game name on stream info.
-- Added key_up and key_down to change quality of stream.
+Installation
+==============
+
+How to install and run App in the TV
+http://107.22.233.36/TizenGuide/tizen3511/index.html
+
+[@sparkozos](https://github.com/sparkozos) made this guide
+https://github.com/mkvd/smarttv-twitch/issues/53#issuecomment-183156136
 
 
 Change Log
@@ -57,25 +64,16 @@ Change Log
 	- on other windows return to main window. 	
 - Fixed refresh key, to work on follower window
 - Added Network.public privilege to get network changes.
-- Changed error dialog when Channel or Username does not exist.	
 - Changed behaivor when connection lost, stream will play until finish then close player returning to streams list  
-- Added Message error when type invalid follower user name and stream name.
+- Changed error dialog when Channel or Username does not exist.	
 - Added Message error when stream is offline
 - Added addNetworkStateChangeListener();
-	- It will check when the network is disconnected and show it to the user
+	- It will check when the network is disconnected and show it to the user. But it will not work when only internet turn off, and network keep online)
 - Added some languages STR.
 - Changed jQuery to new version and to min.js
 
 -TODO:
 	- Save Quality on WebStorage.
-
-Installation
-==============
-
-How to install and run App in the TV
-http://107.22.233.36/TizenGuide/tizen3511/index.html
-
-https://github.com/mkvd/smarttv-twitch/issues/53#issuecomment-176191422
 
 Contribution
 ==============
