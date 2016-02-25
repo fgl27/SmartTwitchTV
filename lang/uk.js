@@ -1,0 +1,16 @@
+alert("Ukrainian (uk) loaded (by PaulFurlet)");
+var STR_CHANNELS = "Канали";
+var STR_GAMES = "Ігри";
+var STR_OPEN = "Відкрити";
+var STR_REFRESH = "Оновити";
+var STR_PLACEHOLDER_OPEN = "Введіть назву каналу...";
+var STR_QUALITY = "Якість";
+var STR_RETRYING = "Пробую ще";
+var STR_VIEWER = "Глядачів";
+var STR_BUFFERING = "Буферизація";
+var STR_ERROR_RENDER_SOURCE = "Формат не підтримується. :(";
+var STR_ERROR_RENDER_FIXED = "Схоже, що якість High/Medium/Low у вас не підтримується.\nСпробуйте Source на різних стрімах.";
+var STR_ERROR_NETWORK_DISCONNECT= "З'єднання розірвано.";
+var STR_ERROR_STREAM_NOT_FOUND = "Стрім не знайдено.";
+var STR_ERROR_AUTHENTICATION_FAIL = "Помилка авторизації.";
+var STR_ERROR_CONNECTION_FAIL = "Помилка підключення.";
