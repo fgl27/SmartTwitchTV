@@ -167,7 +167,7 @@ SceneSceneBrowser.loadDataError = function(reason,responseText)
 				console.log("Call loadDataError(true) from howDialog");
 				calling = true;
 				SceneSceneBrowser.loadingData = false;
-				SceneSceneBrowser.showDialog(TIZEN_L10N.STR_USERNAME+" '"+SceneSceneBrowser.followerUsername+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+				SceneSceneBrowser.showDialog(STR_USERNAME+" '"+SceneSceneBrowser.followerUsername+"' "+STR_DOES_NOT_EXIST);
 			}
 			//some names return requests error 422 (This is a Justin.tv channel. It cannot be viewed on Twitch.) Maybe its from old accounts. Example: https://api.twitch.tv/kraken/streams/phoxx
 			else if(( response.message === "Channel '"+SceneSceneBrowser.selectedChannel+"' does not exist")||(response.message === "Channel '"+SceneSceneBrowser.selectedChannel+"' is unavailable")){ 
@@ -175,7 +175,7 @@ SceneSceneBrowser.loadDataError = function(reason,responseText)
 				console.log("'Channel ''+SceneSceneBrowser.followerUsername+'' does not exist");
 				calling = true;
 				SceneSceneBrowser.loadingData = false;
-				SceneSceneBrowser.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_DOES_NOT_EXIST);
+				SceneSceneBrowser.showDialog(STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+STR_DOES_NOT_EXIST);
 			}
 		} catch (e) {
 			console.log("$.parseJSON(xmlHttp.responseText); exception [" + e.code
@@ -250,7 +250,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
 			console.log("response.stream === 'null'=");
 			console.log("+response.stream="+response.stream);
 			SceneSceneBrowser.loadingData = false;
-			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+TIZEN_L10N.STR_IS_OFFLINE);
+			SceneSceneBrowser.showDialog(STR_CHANNEL+" '"+SceneSceneBrowser.selectedChannel+"' "+STR_IS_OFFLINE);
 		}else{
 			console.log("Opening stream from loaddatasuccess GO");
 			SceneSceneBrowser.openStream();
@@ -298,13 +298,13 @@ SceneSceneBrowser.loadDataSuccess = function(responseText)
 				var tbody = $('<tbody></tbody>');
 				$('#stream_table').append(tbody);
 				$('#stream_table').css("padding-top", "0%");
-				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+TIZEN_L10N.STR_LIVE_CHANNELS+'</div>');
+				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+STR_LIVE_CHANNELS+'</div>');
 			}else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST)
 			{
-				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+TIZEN_L10N.STR_LIVE_HOSTS+'</div>');
+				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+STR_LIVE_HOSTS+'</div>');
 			}else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO)
 				{
-				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+TIZEN_L10N.STR_LIVE_GAMES+'</div>');
+				var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">'+STR_LIVE_GAMES+'</div>');
 				}
 			$('#stream_table').find('tbody').append(header);
 
@@ -418,7 +418,7 @@ SceneSceneBrowser.loadDataRequest = function()
 		var dialog_title = "";
 		if (SceneSceneBrowser.loadingDataTry > 0)
 		{
-			dialog_title = TIZEN_L10N.STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
+			dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
 		}
 		
 		SceneSceneBrowser.showDialog(dialog_title);
@@ -734,12 +734,12 @@ function SceneSceneBrowser()
 SceneSceneBrowser.initLanguage = function ()
 {
 	//set correct labels
-	$('.label_channels').html(TIZEN_L10N.STR_CHANNELS);
-	$('.label_games').html(TIZEN_L10N.STR_GAMES);
-	$('.label_open').html(TIZEN_L10N.STR_OPEN);
-	$('.label_refresh').html(TIZEN_L10N.STR_REFRESH);
-	$('.label_placeholder_open').attr("placeholder", TIZEN_L10N.STR_PLACEHOLDER_OPEN);
-	$('.label_placeholder_tools').attr("placeholder", TIZEN_L10N.STR_PLACEHOLDER_TOOLS);
+	$('.label_channels').html(STR_CHANNELS);
+	$('.label_games').html(STR_GAMES);
+	$('.label_open').html(STR_OPEN);
+	$('.label_refresh').html(STR_REFRESH);
+	$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
+	$('.label_placeholder_tools').attr("placeholder", STR_PLACEHOLDER_TOOLS);
 };
 
 window.onload = function () {
@@ -1075,11 +1075,11 @@ SceneSceneBrowser.addNetworkStateChangeListener = function () {
 			 	}else if (data==2 || 5){
 			 		console.log("[NetworkStateChangedCallback] network cable disconnected data= "+data);
 			 		if(SceneSceneBrowser.browser){
-			 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+			 			SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
 			 		}
 			 		else{
-			 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
-			 			SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+			 			SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+			 			SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
 			 		}
 			 	}
 	 }

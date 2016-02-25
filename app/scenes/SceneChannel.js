@@ -143,7 +143,7 @@ SceneSceneChannel.qualityDisplay = function()
 
 SceneSceneChannel.initLanguage = function ()
 {
-	$('#label_quality').html(TIZEN_L10N.STR_QUALITY);
+	$('#label_quality').html(STR_QUALITY);
 };
 
 var listener = {
@@ -345,25 +345,25 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 SceneSceneChannel.onConnectionFailed = function () {
 	if (SceneSceneChannel.playingTry++ < SceneSceneChannel.playingTryMax)
 	{
-		SceneSceneChannel.showDialog(TIZEN_L10N.STR_RETRYING + " (" + SceneSceneChannel.playingTry + "/" + SceneSceneChannel.playingTryMax + ")");
+		SceneSceneChannel.showDialog(STR_RETRYING + " (" + SceneSceneChannel.playingTry + "/" + SceneSceneChannel.playingTryMax + ")");
 		SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
 	}
 	else
 	{
-		SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_CONNECTION_FAIL);
+		SceneSceneChannel.showDialog(STR_ERROR_CONNECTION_FAIL);
 	}
 };
 
 SceneSceneChannel.onAuthenticationFailed = function () {
-	SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_AUTHENTICATION_FAIL);
+	SceneSceneChannel.showDialog(STR_ERROR_AUTHENTICATION_FAIL);
 };
 
 SceneSceneChannel.onStreamNotFound = function () {
-	SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_STREAM_NOT_FOUND);
+	SceneSceneChannel.showDialog(STR_ERROR_STREAM_NOT_FOUND);
 };
 
 SceneSceneChannel.onNetworkDisconnected = function () {
-	SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+	SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
 	SceneSceneChannel.shutdownStream();
 };
 
@@ -373,11 +373,11 @@ SceneSceneChannel.onRenderError = function (RenderErrorType)
 		|| SceneSceneChannel.quality == "Medium"
 		|| SceneSceneChannel.quality == "Low")
 	{
-		SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_RENDER_FIXED);
+		SceneSceneChannel.showDialog(STR_ERROR_RENDER_FIXED);
 	}
 	else
 	{
-		SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_RENDER_SOURCE);
+		SceneSceneChannel.showDialog(STR_ERROR_RENDER_SOURCE);
 	}
 };
 
@@ -387,11 +387,11 @@ SceneSceneChannel.onRenderingComplete = function () {
 
 SceneSceneChannel.onBufferingStart = function () {
 	console.log("onBufferingStart");
-	SceneSceneChannel.showDialog(TIZEN_L10N.STR_BUFFERING);
+	SceneSceneChannel.showDialog(STR_BUFFERING);
 };
 
 SceneSceneChannel.onBufferingProgress = function (percent) {
-	SceneSceneChannel.showDialog( TIZEN_L10N.STR_BUFFERING + ": " + percent + "%");
+	SceneSceneChannel.showDialog( STR_BUFFERING + ": " + percent + "%");
 };
 
 SceneSceneChannel.onBufferingComplete = function () {
@@ -562,7 +562,7 @@ SceneSceneChannel.updateStreamInfo = function()
 					var response = $.parseJSON(xmlHttp.responseText);
 					$("#stream_info_title").text(response.stream.channel.status);
 					$("#stream_info_game").text(response.stream.game);
-					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + TIZEN_L10N.STR_VIEWER);
+					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
 					$("#stream_info_icon").attr("src", response.stream.channel.logo);
 				}
 				catch (err)
@@ -662,7 +662,7 @@ SceneSceneChannel.loadDataRequest = function()
 		var dialog_title = "";
 		if (SceneSceneChannel.loadingDataTry > 0)
 		{
-			dialog_title = TIZEN_L10N.STR_RETRYING + " (" + (SceneSceneChannel.loadingDataTry + 1) + "/" + SceneSceneChannel.loadingDataTryMax + ")";
+			dialog_title = STR_RETRYING + " (" + (SceneSceneChannel.loadingDataTry + 1) + "/" + SceneSceneChannel.loadingDataTryMax + ")";
 		}
 		SceneSceneChannel.showDialog(dialog_title);
 		var xmlHttp = new XMLHttpRequest();
