@@ -217,7 +217,7 @@
         			  }
         			}
     </style>
-    <script type="text/javascript" src="jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="jquery-2.2.1.min.js"></script>
     <script type="text/javascript" src="app/scenes/TVKeyValue.js"></script>
     <!--   <script type="text/javascript" src="lang/en.js"></script>  -->
     <script type="text/javascript" src="app/scenes/SceneBrowser.js"></script>
@@ -266,7 +266,7 @@
         </div>
         <table id="stream_table" style="width: 100%; padding-top: 4%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
         </table>
-        <div id="streamname_frame" class="openchannel">
+        <div id="streamname_frame" class="openchannel" style="position : absolute; ">
             <input id="streamname_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_OPEN" />
             <div id="streamname_button" class="button_go label_open">
                 STR_OPEN
@@ -279,7 +279,7 @@
             </div>
         </div>
     </div>
-    <div id="scene2" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
+    <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
 	background-image : url('');">
         <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
         <div id="scene_channel_panel" style="position: absolute; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">

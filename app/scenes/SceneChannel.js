@@ -171,6 +171,10 @@ var listener = {
         },
         onerror: function(eventType) {
                 console.log("event type error : " + eventType);
+	        	if(eventType == 'PLAYER_ERROR_CONNECTION_FAILED'){
+	            	console.log("Closing stream from eventType == 'PLAYER_ERROR_CONNECTION_FAILED'");
+	            	SceneSceneChannel.shutdownStream();
+	            }
         },
         onsubtitlechange: function(duration, text, data3, data4) {
                 console.log("Subtitle Changed.");
@@ -383,7 +387,6 @@ SceneSceneChannel.onRenderingComplete = function () {
 
 SceneSceneChannel.onBufferingStart = function () {
 	console.log("onBufferingStart");
-	SceneSceneChannel.shutdownStream();//this is "working", but i don't think this is the right place
 	SceneSceneChannel.showDialog(TIZEN_L10N.STR_BUFFERING);
 };
 

@@ -492,7 +492,7 @@ SceneSceneBrowser.loadDataRequest = function()
 	}
 	catch (error)
 	{
-		SceneSceneBrowser.loadDataError(error.message,xmlHttp.responseText);
+		SceneSceneBrowser.loadDataError(error.message,null);
 	}
 };
 
@@ -1068,18 +1068,20 @@ function onCompleteText(string)
 
 SceneSceneBrowser.addNetworkStateChangeListener = function () {
 	 var onChange = function(data) {
-		 	if(data==4){
-		 			SceneSceneBrowser.showTable();
-		 		console.log("[NetworkStateChangedCallback] CONNECTED");
-		 	}else if (data==5){
-		 		if(SceneSceneBrowser.browser){
-		 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
-		 		}
-		 		else{
-		 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
-		 		}
-		 		console.log("[NetworkStateChangedCallback] DISCONNECTED");
-		 	}
+		 		console.log("[NetworkStateChangedCallback] DATA="+data);
+		 	  	if (data==1 || data==4){
+			 		console.log("[NetworkStateChangedCallback] network cable conecteddata= "+data);
+			 		SceneSceneBrowser.showTable();
+			 	}else if (data==2 || 5){
+			 		console.log("[NetworkStateChangedCallback] network cable disconnected data= "+data);
+			 		if(SceneSceneBrowser.browser){
+			 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+			 		}
+			 		else{
+			 			SceneSceneBrowser.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+			 			SceneSceneChannel.showDialog(TIZEN_L10N.STR_ERROR_NETWORK_DISCONNECT);
+			 		}
+			 	}
 	 }
 	 try {
 		 SceneSceneBrowser.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
@@ -1090,16 +1092,3 @@ SceneSceneBrowser.addNetworkStateChangeListener = function () {
 		 console.log("addNetworkStateChangeListener success listener ID ["  + SceneSceneBrowser.listenerID + "] ");
 	 }
 }
-/*
-SceneSceneBrowser.removeNetworkStateChangeListener = function() {
-	 try {
-	  console.log("begin removeNetworkStateChangeListener listenerID: " + SceneSceneBrowser.listenerID);
-	  webapis.network.removeNetworkStateChangeListener(SceneSceneBrowser.listenerID);
-	 } catch (e) {
-	  console.log("removeNetworkStateChangeListener exception [" + e.code
-	    + "] name: " + e.name + " message: " + e.message);
-	  return;
-	 }
-	 console.log("removeNetworkStateChangeListener success");
-}
-*/

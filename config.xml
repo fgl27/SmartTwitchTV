@@ -7,7 +7,7 @@
     <feature name="http://tizen.org/feature/screen.size.all"/>
     <feature name="http://tizen.org/feature/network.wifi"/>
     <feature name="http://www.samsungdforum.com/feature/Keyboard"/>
-    <icon src="GlitchIcon_WhiteonPurple.jpg" height="350" width="350"/>
+    <icon src="icon/icon_115_95.png" height="350" width="350"/>
     <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
     <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
     <name xml:lang="en-gb">Twitch</name>
