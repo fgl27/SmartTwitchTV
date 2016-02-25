@@ -51,7 +51,21 @@ Change Log
 	- The username should save on WebStorage, so when you close and open the app, it should still be there.
 	- You can press the key TOOLS to open interface where you can input the username, and save/open.
 	- if there there is already a username you can pres the KEY_0 to open the list whithout typing again the username.
-	
+3.6.4
+- Change Return key behaivor:
+	- on main window, close app
+	- on other windows return to main window. 	
+- Fixed refresh key, to work on follower window
+- Added Network.public privilege to get network changes.
+- Changed error dialog when Channel or Username does not exist.	
+- Changed behaivor when connection lost, stream will play until finish then close player returning to streams list  
+- Added Message error when type invalid follower user name and stream name.
+- Added Message error when stream is offline
+- Added addNetworkStateChangeListener();
+	- It will check when the network is disconnected and show it to the user
+- Added some languages STR.
+- Changed jQuery to new version and to min.js
+
 -TODO:
 	- Save Quality on WebStorage.
 
