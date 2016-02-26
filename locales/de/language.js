@@ -21,9 +21,9 @@ var STR_ERROR_AUTHENTICATION_FAIL = "Authentifizierung fehlgeschlagen.";
 var STR_ERROR_CONNECTION_FAIL = "Verbindungsaufbau fehlgeschlagen.";
 
 var STR_TOOLS = "Save";
-var STR_LIVE_CHANNELS = "Live Channels";
-var STR_LIVE_HOSTS = "Live Hosts";
-var STR_LIVE_GAMES = "Live Games";
+var STR_LIVE_CHANNELS = "Live-Kanäle";
+var STR_LIVE_HOSTS = "Live-Hosts";
+var STR_LIVE_GAMES = "Livespiele";
 var STR_PLACEHOLDER_TOOLS = "Enter username...";
 var STR_CHANNEL = "Channel";
 var STR_USERNAME = "Username";
