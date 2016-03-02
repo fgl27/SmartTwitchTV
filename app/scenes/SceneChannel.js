@@ -12,6 +12,7 @@ SceneSceneChannel.STATE_LOADING_TOKEN = 0;
 SceneSceneChannel.STATE_LOADING_PLAYLIST = 1;
 SceneSceneChannel.STATE_PLAYING = 2;
 SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
+SceneSceneChannel.isShowDialogOn = false;
 
 SceneSceneChannel.QualityAuto = "Auto";
 SceneSceneChannel.quality = "High";
@@ -173,6 +174,7 @@ var listener = {
                 console.log("event type error : " + eventType);
 	        	if(eventType == 'PLAYER_ERROR_CONNECTION_FAILED'){
 	            	console.log("Closing stream from eventType == 'PLAYER_ERROR_CONNECTION_FAILED'");
+	            	SceneSceneBrowser.errorNetwork = true;
 	            	SceneSceneChannel.shutdownStream();
 	            }
         },
@@ -201,6 +203,19 @@ SceneSceneChannel.prototype.initialize = function ()
 	SceneSceneChannel.initLanguage();
 	SceneSceneChannel.Player = document.getElementById('av-player');
 	
+	document.addEventListener('visibilitychange', function() {
+	    if(document.hidden){
+	        webapis.avplay.suspend();//Mandatory. You should call it, if you use avplay.
+	        // Something you want to do when hide.
+	    } else {
+	    	if(!SceneSceneBrowser.browser){
+	        	webapis.avplay.restore();
+	        }else{
+	        	SceneSceneBrowser.refresh();
+	        }
+	        // Something you want to do when resume.
+	    }
+	});
 };
 
 SceneSceneChannel.prototype.handleShow = function (data) {
@@ -209,7 +224,7 @@ SceneSceneChannel.prototype.handleShow = function (data) {
 
 SceneSceneChannel.prototype.handleHide = function () {
 	console.log("SceneSceneChannel.handleHide()");
-	window.clearInterval(SceneSceneChannel.streamInfoTimer); //dont know what this do, but left it anyway
+	window.clearInterval(SceneSceneChannel.streamInfoTimer); 
 };
 
 SceneSceneChannel.prototype.handleFocus = function () {
@@ -298,6 +313,20 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 			case TvKeyCode.KEY_RIGHT:
 				console.log("KEY_RIGHT");
 				SceneSceneChannel.hidePanel();
+				break;
+			case TvKeyCode.KEY_9:
+				console.log("Key9");
+				if (SceneSceneChannel.isPanelShown())
+				{
+					if (SceneSceneChannel.qualityIndex == 0)
+					{
+						localStorage.setItem('defaultQuality', SceneSceneChannel.QualityAuto);
+					}
+					else
+					{
+						localStorage.setItem('defaultQuality', SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id);
+					}
+				}
 				break;
 			case TvKeyCode.KEY_ENTER:
 				console.log("KEY_ENTER");
@@ -516,18 +545,17 @@ SceneSceneChannel.qualityChanged = function()
 SceneSceneChannel.showDialog = function(title)
 {
 	$("#scene_channel_dialog_loading_text").text(title);
-	$("#scene_channel_dialog_loading").show();
+	if(!SceneSceneChannel.isShowDialogOn){
+		$("#scene_channel_dialog_loading").show();
+		SceneSceneChannel.isShowDialogOn = true;	
+	}
 };
 
 SceneSceneChannel.showPlayer = function()
 {
 	$("#scene_channel_dialog_loading").hide();
-	$("av-player").focus();                   // Need to check if need this
-	$("av-player").show();                    // Need to check if need this
-	$("scene_channel_panel").hide();          // Need to check if need this
-	$("scene_channel_dialog_loading").hide(); // Need to check if need this
-	$(window).scrollTop(0);                   // Need to check if need this
-	
+	$("scene_channel_panel").hide();
+	SceneSceneChannel.isShowDialogOn = false;
 };
 
 function addCommas(nStr)
@@ -639,7 +667,7 @@ SceneSceneChannel.loadDataError = function()
 
 SceneSceneChannel.loadDataSuccess = function(responseText)
 {
-	SceneSceneChannel.showDialog("");
+	//SceneSceneChannel.showDialog("");
 	if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
 	{
 		SceneSceneChannel.tokenResponse = $.parseJSON(responseText);

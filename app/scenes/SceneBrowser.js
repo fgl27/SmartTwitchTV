@@ -1,5 +1,7 @@
 SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.browser = true;
+SceneSceneBrowser.noNetwork = false;
+SceneSceneBrowser.errorNetwork = false;
 
 SceneSceneBrowser.ItemsLimit = 100;
 SceneSceneBrowser.ColoumnsCount = 4;
@@ -52,6 +54,7 @@ tizen.tvinputdevice.registerKey("Tools");
 tizen.tvinputdevice.registerKey("1");
 tizen.tvinputdevice.registerKey("4");
 tizen.tvinputdevice.registerKey("0");
+tizen.tvinputdevice.registerKey("9");
 /*tizen.tvinputdevice.registerKey("MediaPlayPause"); //Still not using
 tizen.tvinputdevice.registerKey("MediaPlay");
 tizen.tvinputdevice.registerKey("MediaPause");
@@ -512,12 +515,14 @@ SceneSceneBrowser.loadData = function()
 
 SceneSceneBrowser.showDialog = function(title)
 {
-	SceneSceneBrowser.isShowDialogOn = true;
-	$("#streamname_frame").hide();
-	$("#stream_table").hide();
-	$("#username_frame").hide();
 	$("#dialog_loading_text").text(title);
-	$("#dialog_loading").show();
+	if(!SceneSceneChannel.isShowDialogOn){
+		SceneSceneBrowser.isShowDialogOn = true;
+		$("#streamname_frame").hide();
+		$("#stream_table").hide();
+		$("#username_frame").hide();
+		$("#dialog_loading").show();
+	}
 };
 
 SceneSceneBrowser.showTable = function()
@@ -714,7 +719,7 @@ SceneSceneBrowser.refreshInputFocusTools = function()
 
 SceneSceneBrowser.openStream = function()
 {
-	$(window).scrollTop(0);
+	//$(window).scrollTop(0);
 
 	document.body.removeEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown);
 	document.body.addEventListener("keydown",SceneSceneChannel.prototype.handleKeyDown ,false);
@@ -742,21 +747,25 @@ SceneSceneBrowser.initLanguage = function ()
 	$('.label_placeholder_tools').attr("placeholder", STR_PLACEHOLDER_TOOLS);
 };
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded",function(event) { //window.load
 	// this function will be called only once
-	$("#scene2").hide();
 	SceneSceneBrowser.initLanguage();
+	$("#scene2").hide();
 	SceneSceneBrowser.loadingData = false;
 	var followerU = localStorage.getItem('followerUsername');
 	$('#username_input').val(followerU);
 	SceneSceneBrowser.followerUsername = followerU;
+	var dq = localStorage.getItem('defaultQuality');
+	if(dq !== null){
+		SceneSceneChannel.quality = dq;
+		SceneSceneChannel.qualityPlaying = dq;
+	}
 	document.body.addEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown ,false);
 	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
 	SceneSceneChannel.prototype.initialize();
 	SceneSceneBrowser.addNetworkStateChangeListener();
 	
-
-};
+});
 
 SceneSceneBrowser.prototype.handleShow = function (data)
 {
@@ -827,7 +836,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 		
 	}
 	
-	if (SceneSceneBrowser.loadingData)
+	if (SceneSceneBrowser.loadingData || SceneSceneBrowser.noNetwork)
 	{
 		return;
 	}
@@ -1069,11 +1078,24 @@ function onCompleteText(string)
 SceneSceneBrowser.addNetworkStateChangeListener = function () {
 	 var onChange = function(data) {
 		 		console.log("[NetworkStateChangedCallback] DATA="+data);
-		 	  	if (data==1 || data==4){
+		 	  	if (data==1 || data==4){ //network connected
 			 		console.log("[NetworkStateChangedCallback] network cable conecteddata= "+data);
-			 		SceneSceneBrowser.showTable();
+			 		SceneSceneBrowser.noNetwork = false;
+			 		if(SceneSceneBrowser.browser){
+			 			if (SceneSceneBrowser.errorNetwork){
+			 				SceneSceneBrowser.errorNetwork = false;
+			 				SceneSceneBrowser.showTable();
+			 				SceneSceneBrowser.openStream();
+			 			}else{
+				 			SceneSceneBrowser.refresh();
+			 			}
+			 		}
+			 		else{
+			 			SceneSceneChannel.showPlayer();
+			 		}
 			 	}else if (data==2 || 5){
 			 		console.log("[NetworkStateChangedCallback] network cable disconnected data= "+data);
+			 		SceneSceneBrowser.noNetwork = true;
 			 		if(SceneSceneBrowser.browser){
 			 			SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
 			 		}
