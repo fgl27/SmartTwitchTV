@@ -1,3 +1,4 @@
+var random_int = Math.round(Math.random() * 1e7);
 SceneSceneChannel.Player = null;
 
 SceneSceneChannel.loadingDataTryMax = 15;
@@ -54,7 +55,7 @@ function extractQualityFromStream(input)
 		var values = input.split("\n");
 		values = values[0].split(":");
 		values = values[1].split(",");
-		
+
 		var set = {};
 		for(var i = 0; i<values.length; i++) {
 			var value = values[i].split("=");
@@ -129,7 +130,7 @@ SceneSceneChannel.qualityDisplay = function()
 		$('#quality_arrow_up').css({ 'opacity' : 1.0 });
 		$('#quality_arrow_down').css({ 'opacity' : 1.0 });
 	}
-	
+
 	if (SceneSceneChannel.qualityIndex == 0)
 	{
 		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
@@ -138,7 +139,7 @@ SceneSceneChannel.qualityDisplay = function()
 	{
 		SceneSceneChannel.quality = SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id;
 	}
-	
+
 	$('#quality_name').text(SceneSceneChannel.quality);
 };
 
@@ -148,13 +149,13 @@ SceneSceneChannel.initLanguage = function ()
 };
 
 var listener = {
-        onbufferingstart: function() {		        		  
+        onbufferingstart: function() {
         		console.log("Buffering start.");
-        		SceneSceneChannel.onBufferingStart();  
+        		SceneSceneChannel.onBufferingStart();
         },
         onbufferingprogress: function(percent) {
 	                console.log("Buffering progress data : " + percent);
-	        		SceneSceneChannel.onBufferingProgress(percent); 
+	        		SceneSceneChannel.onBufferingProgress(percent);
         },
         onbufferingcomplete: function() {
         		console.log("Buffering complete.");
@@ -180,7 +181,7 @@ var listener = {
         },
         onsubtitlechange: function(duration, text, data3, data4) {
                 console.log("Subtitle Changed.");
-        },  
+        },
         ondrmevent: function(drmEvent, drmData) {
                 console.log("DRM callback: " + drmEvent + ", data: " + drmData);
         },
@@ -195,14 +196,14 @@ var updateCurrentTime = function(currentTime){
 	if(currentTime == null){
 	    currentTime = webapis.avplay.getCurrentTime();
 	}
-	document.getElementById("stream_info_currentTime").innerHTML = Math.floor(currentTime/3600000) + ":" + Math.floor((currentTime/60000)%60) + ":" + Math.floor((currentTime/1000)%60);	
+	document.getElementById("stream_info_currentTime").innerHTML = Math.floor(currentTime/3600000) + ":" + Math.floor((currentTime/60000)%60) + ":" + Math.floor((currentTime/1000)%60);
 }
 
 SceneSceneChannel.prototype.initialize = function ()
-{	
+{
 	SceneSceneChannel.initLanguage();
 	SceneSceneChannel.Player = document.getElementById('av-player');
-	
+
 	document.addEventListener('visibilitychange', function() {
 	    if(document.hidden){
 	        webapis.avplay.suspend();//Mandatory. You should call it, if you use avplay.
@@ -224,12 +225,12 @@ SceneSceneChannel.prototype.handleShow = function (data) {
 
 SceneSceneChannel.prototype.handleHide = function () {
 	console.log("SceneSceneChannel.handleHide()");
-	window.clearInterval(SceneSceneChannel.streamInfoTimer); 
+	window.clearInterval(SceneSceneChannel.streamInfoTimer);
 };
 
 SceneSceneChannel.prototype.handleFocus = function () {
 	console.log("SceneSceneChannel.handleFocus()");
-	
+
 	webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF); //screensaver off
 
 	 	//SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';          Not implemented
@@ -238,16 +239,16 @@ SceneSceneChannel.prototype.handleFocus = function () {
 	    //SceneSceneChannel.Player.OnNetworkDisconnected = 'SceneSceneChannel.onNetworkDisconnected';    Not implemented
 	    //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
 	 	//http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
-	    
+
     SceneSceneChannel.hidePanel();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
 	$("#stream_info_title").text("");
 	$("#stream_info_viewer").text("");
 	$("#stream_info_icon").attr("src", "");
-	
+
 	SceneSceneChannel.updateStreamInfo();
 	SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
-    
+
     SceneSceneChannel.tokenResponse = 0;
     SceneSceneChannel.playlistResponse = 0;
     SceneSceneChannel.playingTry = 0;
@@ -257,7 +258,7 @@ SceneSceneChannel.prototype.handleFocus = function () {
 
 SceneSceneChannel.prototype.handleBlur = function () {
 	console.log("SceneSceneChannel.handleBlur()");
-	
+
 	webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON); //make screen saver on, when go back for SceneBrowser
 };
 
@@ -287,7 +288,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 		switch (e.keyCode) {
 			case TvKeyCode.KEY_CHANNELUP:
 			case TvKeyCode.KEY_1:
-			case TvKeyCode.KEY_UP:	
+			case TvKeyCode.KEY_UP:
 				if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0)
 				{
 					console.log("KEY_CHANNELDOWN or KEY_4");
@@ -428,118 +429,38 @@ SceneSceneChannel.onBufferingComplete = function () {
 };
 
 
-SceneSceneChannel.qualityChanged = function()
-{
+SceneSceneChannel.qualityChanged = function() {
 	SceneSceneChannel.showDialog("");
-	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token);
+	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token + '&allow_audio_only=true&allow_source=true&p=' + random_int);
 	SceneSceneChannel.qualityIndex = 0;
-	
-	for (var i = 0; i < SceneSceneChannel.qualities.length; i++)
-	{
-		if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality)
-		{
-			SceneSceneChannel.qualityIndex = i + 1;
-			SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
-			break;
+
+	for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
+	  if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
+		  SceneSceneChannel.qualityIndex = i + 1;
+		  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+		  break;
 		}
 	}
-	
-	if (SceneSceneChannel.qualityIndex == 0)
-	{
+
+	if (SceneSceneChannel.qualityIndex === 0) {
 		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
 	}
-	
+
 	SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
-	SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
-	
-	console.log("PlayerStop");     
-    try
-    {
-         webapis.avplay.stop();
-         
-    }
-    catch (e)
-    {
-   	 //console.log("Current state: " + webapis.avplay.getState());
-   	 console.log("webapis.avplay.stop(); error: "+e.message);
-   	 console.log("webapis.avplay.stop(); error: "+e.name);
-   	 logError(e);
-    }
-     
-	console.log("PlayerPlay");     
-     try
-     {
-          webapis.avplay.open(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
-          
-     }
-     catch (e)
-     {
-    	 //console.log("Current state: " + webapis.avplay.getState());
-    	 console.log("webapis.avplay.open() error: "+e.message);
-    	 console.log("webapis.avplay.open() error: "+e.name);
-    	 logError(e);
-     }
-     console.log("setListener");
-     try
-     {
-    	 webapis.avplay.setListener(listener);
-          
-     }
-     catch (e)
-     {
-    	 //console.log("Current state: " + webapis.avplay.getState());
-    	 console.log("webapis.avplay.setListener(listener) error: "+e.message);
-    	 console.log("webapis.avplay.setListener(listener) error: "+e.name);
-    	 logError(e);
-     }
-     
-     console.log("webapis.avplay.prepare();");
-     try
-     {
-    	 webapis.avplay.prepare();
-          
-     }
-     catch (e)
-     {
-    	 //console.log("Current state: " + webapis.avplay.getState());
-    	 console.log("webapis.avplay.prepare(); error: "+e.message);
-    	 console.log("webapis.avplay.prepare(); error: "+e.name);
-    	 logError(e);
-     }
-     
-     console.log("webapis.avplay.setDisplayRect()");
-     try
-     {
-    	 webapis.avplay.setDisplayMethod("PLAYER_DISPLAY_MODE_FULL_SCREEN");
-    	 webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
-          
-     }
-     catch (e)
-     {
-    	 //console.log("Current state: " + webapis.avplay.getState());
-    	 console.log("webapis.avplay.setDisplayRect error: "+e.message);
-    	 console.log("webapis.avplay.setDisplayRect error: "+e.name);
-    	 logError(e);
-     }
-     
-     console.log("webapis.avplay.play();");
-     try
-     {
-    	 webapis.avplay.play();
-          
-     }
-     catch (e)
-     {
-    	 //console.log("Current state: " + webapis.avplay.getState());
-    	 console.log("webapis.avplay.play(); error: "+e.name);
-    	 console.log("webapis.avplay.play(); error: "+e.message);
-    	 logError(e);
-     }
-     
-      
-     
-     
-     
+  SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
+
+  try {
+    webapis.avplay.stop();
+    webapis.avplay.open(SceneSceneChannel.playingUrl);
+    webapis.avplay.setListener(listener);
+    webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
+    webapis.avplay.setStreamingProperty("SET_MODE_4K");
+    webapis.avplay.prepare();
+    webapis.avplay.play();
+  }
+  catch (e) {
+    console.error(e);
+  }
 };
 
 SceneSceneChannel.showDialog = function(title)
@@ -547,7 +468,7 @@ SceneSceneChannel.showDialog = function(title)
 	$("#scene_channel_dialog_loading_text").text(title);
 	if(!SceneSceneChannel.isShowDialogOn){
 		$("#scene_channel_dialog_loading").show();
-		SceneSceneChannel.isShowDialogOn = true;	
+		SceneSceneChannel.isShowDialogOn = true;
 	}
 };
 
@@ -574,7 +495,7 @@ function addCommas(nStr)
 SceneSceneChannel.updateStreamInfo = function()
 {
 	var xmlHttp = new XMLHttpRequest();
-	
+
 	xmlHttp.ontimeout = function()
 	{
 
@@ -582,7 +503,7 @@ SceneSceneChannel.updateStreamInfo = function()
 	xmlHttp.onreadystatechange = function()
 	{
 		if (xmlHttp.readyState === 4)
-		{ 
+		{
 			if (xmlHttp.status === 200)
 			{
 				try
@@ -595,9 +516,9 @@ SceneSceneChannel.updateStreamInfo = function()
 				}
 				catch (err)
 				{
-					
+
 				}
-				
+
 			}
 			else
 			{
@@ -680,7 +601,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText)
 		SceneSceneChannel.qualities = extractQualities(SceneSceneChannel.playlistResponse);
 		SceneSceneChannel.state = SceneSceneChannel.STATE_PLAYING;
 		SceneSceneChannel.qualityChanged();
-	} 
+	}
 };
 
 SceneSceneChannel.loadDataRequest = function()
@@ -701,7 +622,7 @@ SceneSceneChannel.loadDataRequest = function()
 		}
 		else
 		{
-			theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true';
+			theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
 		}
 		console.log(theUrl);
 		xmlHttp.ontimeout = function()
@@ -710,11 +631,11 @@ SceneSceneChannel.loadDataRequest = function()
 	    xmlHttp.onreadystatechange = function()
 		{
 	    	if (xmlHttp.readyState === 4)
-			{ 
+			{
 	    		if (xmlHttp.status === 200)
 				{
 	    			try
-					{
+          {
 						SceneSceneChannel.loadDataSuccess(xmlHttp.responseText);
 					}
 					catch (err)
@@ -722,7 +643,7 @@ SceneSceneChannel.loadDataRequest = function()
 						console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
 						SceneSceneChannel.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
 					}
-					
+
 				}
 				else
 				{
@@ -741,7 +662,7 @@ SceneSceneChannel.loadDataRequest = function()
 };
 
 SceneSceneChannel.loadData = function()
-{	
+{
 	SceneSceneChannel.loadingDataTry = 0;
 	SceneSceneChannel.loadingDataTimeout = 500;
 	SceneSceneChannel.loadDataRequest();
