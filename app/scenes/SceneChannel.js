@@ -16,7 +16,7 @@ SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
 SceneSceneChannel.isShowDialogOn = false;
 
 SceneSceneChannel.QualityAuto = "Auto";
-SceneSceneChannel.quality = "High";
+SceneSceneChannel.quality = "Source";
 SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
 SceneSceneChannel.qualityPlayingIndex = 2;
 SceneSceneChannel.qualityIndex;
@@ -376,7 +376,7 @@ SceneSceneChannel.onConnectionFailed = function () {
 	if (SceneSceneChannel.playingTry++ < SceneSceneChannel.playingTryMax)
 	{
 		SceneSceneChannel.showDialog(STR_RETRYING + " (" + SceneSceneChannel.playingTry + "/" + SceneSceneChannel.playingTryMax + ")");
-		SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl + '|COMPONENT=HLS');
+		SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl);
 	}
 	else
 	{
@@ -430,11 +430,11 @@ SceneSceneChannel.onBufferingComplete = function () {
 
 
 SceneSceneChannel.qualityChanged = function() {
-	SceneSceneChannel.showDialog("");
-	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token + '&allow_audio_only=true&allow_source=true&p=' + random_int);
-	SceneSceneChannel.qualityIndex = 0;
+  SceneSceneChannel.showDialog("");
+	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&sig=' + SceneSceneChannel.tokenResponse.sig + '&$allow_audio_only=true&allow_source=true&type=any&p=' + random_int;
+  SceneSceneChannel.qualityIndex = 0;
 
-	for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
+  for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
 	  if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
 		  SceneSceneChannel.qualityIndex = i + 1;
 		  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
@@ -454,7 +454,7 @@ SceneSceneChannel.qualityChanged = function() {
     webapis.avplay.open(SceneSceneChannel.playingUrl);
     webapis.avplay.setListener(listener);
     webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
-    webapis.avplay.setStreamingProperty("SET_MODE_4K");
+    webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
     webapis.avplay.prepare();
     webapis.avplay.play();
   }
