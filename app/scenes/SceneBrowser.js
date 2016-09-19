@@ -491,6 +491,7 @@ SceneSceneBrowser.loadDataRequest = function()
 		};
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+		xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
 	    xmlHttp.send(null);
 	}
 	catch (error)
