@@ -611,6 +611,7 @@ SceneSceneChannel.loadDataRequest = function()
 		}
 		SceneSceneChannel.showDialog(dialog_title);
 		var xmlHttp = new XMLHttpRequest();
+		
 		var theUrl;
 		if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
 		{
@@ -649,6 +650,7 @@ SceneSceneChannel.loadDataRequest = function()
 		};
 	    xmlHttp.open("GET", theUrl, true);
 		xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
+		xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
 	    xmlHttp.send(null);
 	}
 	catch (error)
