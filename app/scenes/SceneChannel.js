@@ -522,6 +522,7 @@ SceneSceneChannel.updateStreamInfo = function()
 	};
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
 	xmlHttp.timeout = 10000;
+	xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
     xmlHttp.send(null);
 };
 
