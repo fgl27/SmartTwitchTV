@@ -434,19 +434,23 @@ SceneSceneChannel.qualityChanged = function() {
 	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&sig=' + SceneSceneChannel.tokenResponse.sig + '&$allow_audio_only=true&allow_source=true&type=any&p=' + random_int;
   SceneSceneChannel.qualityIndex = 0;
 
-  console.log(SceneSceneChannel.qualities[0]);
+  for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
+	  if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
+		  SceneSceneChannel.qualityIndex = i + 1;
+		  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+		  break;
+		}
+	}
 
-  SceneSceneChannel.qualityIndex = 1;
-  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
+	if (SceneSceneChannel.qualityIndex === 0) {
+		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
+	}
 
 	SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
   SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
-  console.log("playing quality: " + SceneSceneChannel.qualityPlaying);
-  console.log("quality index: " + SceneSceneChannel.qualityIndex);
 
   try {
     webapis.avplay.stop();
-    console.log("playing url: " + SceneSceneChannel.playingUrl);
     webapis.avplay.open(SceneSceneChannel.playingUrl);
     webapis.avplay.setListener(listener);
     webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
