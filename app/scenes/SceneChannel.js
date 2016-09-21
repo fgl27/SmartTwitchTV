@@ -110,7 +110,7 @@ SceneSceneChannel.shutdownStream = function()
 
 SceneSceneChannel.getQualitiesCount = function()
 {
-	return SceneSceneChannel.qualities.length + 1;
+	return SceneSceneChannel.qualities.length;
 };
 
 SceneSceneChannel.qualityDisplay = function()
@@ -131,14 +131,9 @@ SceneSceneChannel.qualityDisplay = function()
 		$('#quality_arrow_down').css({ 'opacity' : 1.0 });
 	}
 
-	if (SceneSceneChannel.qualityIndex == 0)
-	{
-		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
-	}
-	else
-	{
-		SceneSceneChannel.quality = SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id;
-	}
+
+		SceneSceneChannel.quality = SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex].id;
+
 
 	$('#quality_name').text(SceneSceneChannel.quality);
 };
@@ -319,14 +314,8 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 				console.log("Key9");
 				if (SceneSceneChannel.isPanelShown())
 				{
-					if (SceneSceneChannel.qualityIndex == 0)
-					{
-						localStorage.setItem('defaultQuality', SceneSceneChannel.QualityAuto);
-					}
-					else
-					{
+
 						localStorage.setItem('defaultQuality', SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id);
-					}
 				}
 				break;
 			case TvKeyCode.KEY_ENTER:
@@ -431,22 +420,18 @@ SceneSceneChannel.onBufferingComplete = function () {
 
 SceneSceneChannel.qualityChanged = function() {
   SceneSceneChannel.showDialog("");
-	SceneSceneChannel.playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&sig=' + SceneSceneChannel.tokenResponse.sig + '&$allow_audio_only=true&allow_source=true&type=any&p=' + random_int;
+  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
   SceneSceneChannel.qualityIndex = 0;
-
+  console.log("SceneSceneChannel.playingUrl = "+SceneSceneChannel.playingUrl);
   for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
 	  if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
-		  SceneSceneChannel.qualityIndex = i + 1;
+		  SceneSceneChannel.qualityIndex = i;
 		  SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
 		  break;
-		}
+		}  
 	}
-
-	if (SceneSceneChannel.qualityIndex === 0) {
-		SceneSceneChannel.quality = SceneSceneChannel.QualityAuto;
-	}
-
-	SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
+  
+  SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
   SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
 
   try {
