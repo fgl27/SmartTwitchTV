@@ -228,12 +228,12 @@ SceneSceneChannel.prototype.handleFocus = function () {
 
 	webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF); //screensaver off
 
-	 	//SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';          Not implemented
-	    //SceneSceneChannel.Player.OnAuthenticationFailed = 'SceneSceneChannel.onAuthenticationFailed';  Not implemented
-	    //SceneSceneChannel.Player.OnStreamNotFound = 'SceneSceneChannel.onStreamNotFound';              Not implemented
-	    //SceneSceneChannel.Player.OnNetworkDisconnected = 'SceneSceneChannel.onNetworkDisconnected';    Not implemented
-	    //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
-	 	//http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
+	 //SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';          Not implemented
+	 //SceneSceneChannel.Player.OnAuthenticationFailed = 'SceneSceneChannel.onAuthenticationFailed';  Not implemented
+	 //SceneSceneChannel.Player.OnStreamNotFound = 'SceneSceneChannel.onStreamNotFound';              Not implemented
+	 //SceneSceneChannel.Player.OnNetworkDisconnected = 'SceneSceneChannel.onNetworkDisconnected';    Not implemented
+	 //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
+	 //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
     SceneSceneChannel.hidePanel();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
@@ -438,7 +438,7 @@ SceneSceneChannel.qualityChanged = function() {
     webapis.avplay.stop();
     webapis.avplay.open(SceneSceneChannel.playingUrl);
     webapis.avplay.setListener(listener);
-    webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
+    webapis.avplay.setDisplayRect(0, 0, 3840, 2160);
     webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
     webapis.avplay.prepare();
     webapis.avplay.play();

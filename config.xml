@@ -4,10 +4,10 @@
     <tizen:application id="qY6HyNzLIR.Twitch" package="qY6HyNzLIR" required_version="2.3"/>
     <content src="index.html"/>
     <description xml:lang="en-gb">Twitch.tv</description>
-    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <feature name="http://tizen.org/feature/screen.size.normal.2160.3840"/>
     <feature name="http://tizen.org/feature/network.wifi"/>
     <feature name="http://www.samsungdforum.com/feature/Keyboard"/>
-    <icon src="icon/icon_115_95.png" height="350" width="350"/>
+    <icon src="icon/icon_16_by_9.png"/>
     <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
     <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
     <name xml:lang="en-gb">Twitch</name>
@@ -19,10 +19,6 @@
     <preference name="cpname" value="" readonly="false"/>
     <preference name="cplogo" value="" readonly="false"/>
     <preference name="cpauthjs" value="" readonly="false"/>
-    <preference name="ThumbIcon" value="icon/icon_106_87.png" readonly="false"/>
-    <preference name="BigThumbIcon" value="icon/icon_115_95.png" readonly="false"/>
-    <preference name="ListIcon" value="icon/icon_85_70.png" readonly="false"/>
-    <preference name="BigListIcon" value="icon/icon_95_78.png" readonly="false"/>
     <preference name="category" value="" readonly="false"/>
     <preference name="autoUpdate" value="n" readonly="false"/>
     <preference name="mgrver" value="" readonly="false"/>
