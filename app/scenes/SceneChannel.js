@@ -439,6 +439,7 @@ SceneSceneChannel.qualityChanged = function() {
     webapis.avplay.open(SceneSceneChannel.playingUrl);
     webapis.avplay.setListener(listener);
     webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
+    webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
     webapis.avplay.prepare();
     webapis.avplay.play();
   }
