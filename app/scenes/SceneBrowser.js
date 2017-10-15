@@ -960,6 +960,30 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 					SceneSceneBrowser.ime2.blur();
 				}
 			break;
+		case TvKeyCode.KEY_CHANNELUP:
+			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS)
+			{
+				SceneSceneBrowser.refresh();
+			} 
+			else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES)
+			{
+				SceneSceneBrowser.refresh();
+			}
+			else 
+			{
+				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+			}
+			break;
+		case TvKeyCode.KEY_CHANNELDOWN:
+			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_ALL)
+			{
+				SceneSceneBrowser.refresh();
+			}
+			else 
+			{
+			 	SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+			} 
+			break;
 		case TvKeyCode.KEY_0:
 				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
 			break;
