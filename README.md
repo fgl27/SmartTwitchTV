@@ -1,4 +1,3 @@
-![icon_16_by_9](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/icon/icon_16_by_9.png)
 smarttv-twitch
 ==============
 
@@ -12,7 +11,49 @@ About this fork
 I clone this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 The original Fork is https://github.com/nikitakatchik/smarttv-twitch
 
-It works well on the 2016 UN40KU6000HXPA or related **40" KU6000H Flat Smart 4K UHD TV**
+The application works well on the 2016 UN40KU6000HXPA or related **xx" KU6000H Flat Smart 4K UHD TV** from 2016/2017
+
+Controls
+==============
+![control](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/controler.png)
+
+The Application is tested with the above remote, below are the controls
+## Action: Remote Key
+### From Any Screen
+* **Force close the app**: Hold Return
+
+### Channels Screen
+* **To move between videos**: Directional pad (up/down/left/right)
+* **Open a video**: Select or Play/Pause
+* **Move to "Games" Screen**: CH **UP** (Channel Up)
+* **Refresh (From "Channels" screen)**: CH **DOWN** (Channel Down)
+* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
+* **Close the app**: Return
+
+### Games category Screen (select a game category)
+* **To move between games**: Directional pad (up/down/left/right)
+* **Open a game category**: Select or Play/Pause
+* **Move to "Channels" Screen**: CH **DOWN** (Channel Down)
+* **Refresh (From "Games" screen)**: CH **UP** (Channel Up)
+* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
+* **Return to Channels Screen**: Return
+
+### Game Screen (Select a video)
+* **To move between videos**: Directional pad (up/down/left/right)
+* **Open a video**: Select or Play/Pause
+* **Move to "Channels" Screen**: CH **DOWN** (Channel Down)
+* **Refresh (From "A Game" screen)**: CH **UP** (Channel Up)
+* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
+* **Return to Games category Screen**: Return
+
+### Playing a video Screen
+* **Play/Pause a video**: Play/Pause
+* **Open side panel**: Directional pad (left)
+* **If side panel is closed**:
+* **Close running video** : Return
+* **If side panel is open**:
+* **Close side panel**: Directional pad (right) or Return
+* **Change quality**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
 
 Revised installation guide Tizen studio (tested on Linux)
 ==============
