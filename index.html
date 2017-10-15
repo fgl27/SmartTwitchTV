@@ -20,21 +20,22 @@
         			}
 
         			div.tip_icon {
-        			  width: 42px;
-        			  height: 42px;
+        			  width: 52px;
+        			  height: 52px;
+        			  border-radius: 50%;
         			  margin-right: 4px;
         			  display: inline-block;
-        			  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
         			  color: white;
-        			  font-size: 22px;
+        			  font-size: 27px;
+                                  font-weight:bold;
         			  text-align: center;
         			  vertical-align: middle;
-        			  line-height: 42px;
+        			  line-height: 50px;
         			}
 
         			div.tip_icon_active {
-        			  outline: 1px solid white;
-        			  outline-offset: 2px;
+        			  border-radius: 50%;
+        			  border: 3px solid white;
         			}
 
         			div.tip_label {
@@ -130,6 +131,7 @@
         			div.button_go {
         			  width: 18%;
         			  height: 90px;
+        			  border-radius: 5%;
         			  margin-top: 2%;
         			  margin-left: 41%;
         			  padding-top: 0.5%;
@@ -146,6 +148,7 @@
         			div.button_go_focused {
         			  width: 18%;
         			  height: 90px;
+        			  border-radius: 5%;
         			  margin-top: 2%;
         			  margin-left: 41%;
         			  padding-top: 0.5%;
@@ -228,27 +231,27 @@
 <body>
     <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
 	background-image : url('')" ;="">
-        <img style="float: left; width: 8%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png" />
+        <img style="float: left; width: 12%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png" />
         <div style="float: right; padding-top: 3.0%;">
-            <div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">
+            <div id="tip_icon_channels" class="tip_icon" style="background-color: #FF2020">
                 A
             </div>
             <div class="tip_label label_channels">
                 STR_CHANNELS
             </div>
-            <div id="tip_icon_games" class="tip_icon" style="background-color: #55d459">
+            <div id="tip_icon_games" class="tip_icon" style="background-color: #1ACA20">
                 B
             </div>
             <div class="tip_label label_games">
                 STR_GAMES
             </div>
-            <div id="tip_icon_open" class="tip_icon" style="background-color: #eded00">
+            <div id="tip_icon_open" class="tip_icon" style="background-color: #DDC500">
                 C
             </div>
             <div class="tip_label label_open">
                 STR_OPEN
             </div>
-            <div id="tip_icon_refresh" class="tip_icon" style="background-color: #3d81f2">
+            <div id="tip_icon_refresh" class="tip_icon" style="background-color: #006EF2">
                 D
             </div>
             <div class="tip_label label_refresh">
