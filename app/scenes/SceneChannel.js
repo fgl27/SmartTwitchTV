@@ -86,12 +86,6 @@ function extractQualities(input)
   return result;
 }
 
-function sleep(millis, callback) {
-    setTimeout(function()
-            { callback(); }
-    , millis);
-}
-
 function SceneSceneChannel() {
 
 };

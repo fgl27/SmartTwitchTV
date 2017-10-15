@@ -8,7 +8,7 @@ var STR_PLACEHOLDER_OPEN = "Insira o nome do canal";
 
 var STR_QUALITY = "Qualidade";
 
-var STR_RETRYING = "Tentando novamente";
+var STR_RETRYING = "Carregando";
 var STR_VIEWER = "Viewers";
 var STR_BUFFERING = "Buffering";
 
