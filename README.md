@@ -2,6 +2,8 @@ smarttv-twitch
 ==============
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
+![ss](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/icon/original/ss.jpg)
+![icon_16_by_9](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/icon/icon_16_by_9.png)
 
 About this fork
 ===============
