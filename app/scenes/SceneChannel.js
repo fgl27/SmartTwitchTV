@@ -1,5 +1,6 @@
 var random_int = Math.round(Math.random() * 1e7);
 SceneSceneChannel.Player = null;
+SceneSceneChannel.Play;
 
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
@@ -105,6 +106,7 @@ SceneSceneChannel.shutdownStream = function()
 	document.body.removeEventListener("keydown",SceneSceneChannel.prototype.handleKeyDown);
 	document.body.addEventListener("keydown",SceneSceneBrowser.prototype.handleKeyDown ,false);
 	SceneSceneBrowser.browser = true;
+	SceneSceneChannel.Play = false;
 	//sf.scene.focus('SceneBrowser');
 };
 
@@ -290,6 +292,11 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					SceneSceneChannel.qualityIndex--;
 					SceneSceneChannel.qualityDisplay();
 				}
+				// Live strems from twitch don't have jumpForward/Backward options
+				//else
+				//{
+				//	webapis.avplay.jumpForward(5000);// time im ms
+				//}
 				break;
 			case TvKeyCode.KEY_CHANNELDOWN:
 			case TvKeyCode.KEY_4:
@@ -301,6 +308,10 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					SceneSceneChannel.qualityIndex++;
 					SceneSceneChannel.qualityDisplay();
 				}
+				//else
+				//{
+				//	webapis.avplay.jumpBackward(5000);// time im ms
+				//}
 				break;
 			case TvKeyCode.KEY_LEFT:
 				console.log("KEY_LEFT");
@@ -338,6 +349,18 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 				else
 				{
 					SceneSceneChannel.shutdownStream();
+				}
+				break;
+			case TvKeyCode.KEY_PLAYPAUSE:
+				if (SceneSceneChannel.Play)
+				{
+					SceneSceneChannel.Play = false,
+					webapis.avplay.pause();
+				} 
+				else
+				{
+					SceneSceneChannel.Play = true,
+					webapis.avplay.play();
 				}
 				break;
 			case TvKeyCode.KEY_VOLUMEUP:
