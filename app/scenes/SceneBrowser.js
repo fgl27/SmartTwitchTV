@@ -55,10 +55,7 @@ tizen.tvinputdevice.registerKey("1");
 tizen.tvinputdevice.registerKey("4");
 tizen.tvinputdevice.registerKey("0");
 tizen.tvinputdevice.registerKey("9");
-/*tizen.tvinputdevice.registerKey("MediaPlayPause"); //Still not using
-tizen.tvinputdevice.registerKey("MediaPlay");
-tizen.tvinputdevice.registerKey("MediaPause");
-tizen.tvinputdevice.registerKey("MediaStop");*/
+tizen.tvinputdevice.registerKey("MediaPlayPause");
 tizen.tvinputdevice.registerKey("ColorF0Red");
 tizen.tvinputdevice.registerKey("ColorF1Green");
 tizen.tvinputdevice.registerKey("ColorF2Yellow");
@@ -987,6 +984,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 		case TvKeyCode.KEY_0:
 				SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
 			break;
+		case TvKeyCode.KEY_PLAYPAUSE:
 		case TvKeyCode.KEY_ENTER:
 			if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER){
 				if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1]=='stream')
@@ -1066,6 +1064,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function (e)
 			{
 				SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
 				SceneSceneBrowser.openStream();
+                                SceneSceneChannel.Play = true;
 			}
 			break;
 		case TvKeyCode.KEY_VOLUMEUP:

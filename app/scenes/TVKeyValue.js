@@ -27,6 +27,7 @@ window.TvKeyCode =
 		"KEY_RECORD" : 416,//
 		"KEY_PLAY" : 415,//
 		"KEY_STOP" : 413,//
+		"KEY_PLAYPAUSE": 10252,
 		
 		"KEY_INFO" : 457,//
 		"KEY_LEFT" : 37,//
