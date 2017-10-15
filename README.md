@@ -14,7 +14,10 @@ Changed languages files, to work in Tizen.
 Put SceneBrowser.html and SceneChannel.html inside index.html, each one inside a div, and i toggle visibility off then when the app change betwen them.
 Moved CSS inside index.html too.
 On tizen every time you scroll the window, it will show a ScrollBar.
-When you keep pressed UP and DOWN the screen don't update correctly, but if you press Left or Right it fix.  
+When you keep pressed UP and DOWN the screen don't update correctly, but if you press Left or Right it fix.
+
+BHB27
+I clone this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 
 Bug
 ==============
