@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=1920" />
+    <meta name="viewport" content="width=1280" />
     <title>Twitch</title>
     <style type="text/css">
         body {
@@ -14,23 +14,33 @@
         			  font-weight: 100;
         			  letter-spacing: normal;
         			  position: absolute;
+        			  overflow: hidden;/*Prevent Scroling on SceneSceneChannel when the chat is on as it is biger then what*/
         			  z-index: 5;
         			  padding: 0px;
         			  margin: 0px;
+				  -webkit-font-smoothing: antialiased;
         			}
 
         			div.tip_icon {
-        			  width: 52px;
-        			  height: 52px;
+        			  width: 46px;
+        			  height: 46px;
         			  border-radius: 50%;
         			  margin-right: 4px;
         			  display: inline-block;
         			  color: white;
-        			  font-size: 27px;
+        			  font-size: 23px;
                                   font-weight:bold;
         			  text-align: center;
         			  vertical-align: middle;
-        			  line-height: 50px;
+        			  line-height: 45px;
+				  text-shadow:
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px;
+				  -webkit-font-smoothing: antialiased;
         			}
 
         			div.tip_icon_active {
@@ -40,14 +50,22 @@
 
         			div.tip_label {
         			  /*width: 86px;*/
-        			  height: 42px;
+        			  height: 38px;
         			  margin-right: 32px;
         			  display: inline-block;
         			  color: white;
-        			  font-size: 24px;
+        			  font-size: 23px;
                                   font-weight:bold;
         			  vertical-align: middle;
         			  line-height: 42px;
+				  text-shadow:
+				  #42009E 0px 0px 3px,
+				  #42009E 0px 0px 3px,
+				  #42009E 0px 0px 3px,
+				  #42009E 0px 0px 3px,
+				  #42009E 0px 0px 3px,
+				  #42009E 0px 0px 3px;
+				  -webkit-font-smoothing: antialiased;
         			}
 
         			td.stream_cell {
@@ -61,8 +79,7 @@
         			}
 
         			img.stream_thumbnail_focused {
-        			  outline: 3px solid white;
-        			  outline-offset: 3px;
+        			  outline: 5px outset #C9A0FF;
         			  width: 100%;
         			}
 
@@ -73,6 +90,14 @@
         			  right: 20%;
         			  background-color: rgba(0, 0, 0, 0.5);
         			  padding: 2%;
+				  text-shadow:
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px;
+				  -webkit-font-smoothing: antialiased;
         			}
 
         			div.stream_title {
@@ -84,6 +109,13 @@
         			  color: rgba(255, 255, 255, 0.95);
         			  font-weight: 100;
         			  font-size: 140%;
+				  text-shadow:
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px;
         			}
 
 
@@ -97,6 +129,14 @@
         			  color: rgba(255, 255, 255, 0.70);
         			  font-weight: 100;
         			  font-size: 140%;
+				  text-shadow:
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px,
+				  #000 0px 0px 2.5px;
+				  -webkit-font-smoothing: antialiased;
         			}
 
         			div.openchannel {
@@ -163,6 +203,31 @@
         			  background-color: #7f53cf;
         			}
 
+				.strokedmini
+				{
+				  color: white;
+				  text-shadow:
+				  #000 0px 0px 5px,
+				  #000 0px 0px 5px,
+				  #000 0px 0px 5px,
+				  #000 0px 0px 5px,
+				  #000 0px 0px 5px,
+				  #000 0px 0px 5px;
+				  -webkit-font-smoothing: antialiased;
+				}
+
+				.strokedbig
+				{
+				  color: black;
+				  text-shadow:
+				  #42009E 0px 0px 7px,
+				  #42009E 0px 0px 7px,
+				  #42009E 0px 0px 7px,
+				  #42009E 0px 0px 7px,
+				  #42009E 0px 0px 7px,
+				  #42009E 0px 0px 7px;
+				  -webkit-font-smoothing: antialiased;
+				}
         			.follower_header {
         			  width: 100%;
         			  text-align: left;
@@ -243,10 +308,10 @@
 </head>
 
 <body>
-    <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1920px;height : 1080px;background-color : #090909;
+    <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
 	background-image : url('')" ;="">
-        <img style="float: left; width: 12%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 0%;" src="images/twitchlogo.png" />
-        <div style="float: right; padding-top: 3.0%;">
+        <img style="float: left; width: 12%; padding-left: 3%; padding-top: 0.5%; padding-bottom: 0%;" src="images/twitchlogo.png" />
+        <div style="float: right; padding-top: 1.0%;">
             <div id="tip_icon_channels" class="tip_icon" style="background-color: #FF2020">
                 A
             </div>
@@ -279,7 +344,7 @@
                 <div class="bounce3"></div>
                 <div class="bounce4"></div>
             </div>
-            <div id="dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+            <div id="dialog_loading_text" class="strokedbig" style="display: inline-block; font-size: 200%; color: white;"></div>
         </div>
         <table id="stream_table" style="width: 100%; padding-top: 0%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
         </table>
@@ -296,44 +361,44 @@
             </div>
         </div>
     </div>
-    <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1920px;height : 1080px;background-color : #090909;
+    <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
 	background-image : url('');">
         <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
-        <div id="scene_channel_panel" style="position: absolute; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
-            <img style="width: 40%; padding-left: 10%; padding-top: 7%; padding-bottom: 1.5%;" src="images/twitchlogo.png" />
-            <div style="margin: 0 auto; width: 80%; height: 15%; padding-left: 15%; padding-top: 3%; padding-bottom: 1.5%;">
-                <img id="stream_info_icon" style="display: inline-block; width: 20%;" src="" />
-                <div style="text-align: center; color: white; vertical-align: top; display: inline-block; width: 65%; margin-top: 1%; margin-left: 0%;">
-                    <div id="stream_info_name" style="font-size: 120%; padding-bottom: 4%;"></div>
-                    <div id="stream_info_game" style="font-size: 120%; padding-bottom: 4%;"></div>
-                    <div id="stream_info_viewer" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
-                    <div id="stream_info_currentTime" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
+        <div id="scene_channel_panel" style="position: absolute; border:5px outset #350080; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
+            <img style="width: 40%; padding-left: 2.5%; padding-top: 0.5%; padding-bottom: 0%;" src="images/twitchlogo.png" />
+            <div style="margin: 0 auto; width: 90%; height: 15%; padding-left: 1%; padding-top: 1%; padding-bottom: 1.5%;">
+                <img id="stream_info_icon" style="border:5px outset #350080; display: inline-block; width: 30%;" src="" />
+                <div style="text-align: center; color: white; vertical-align: start; display: inline-block; width: 65%; margin-top: 0%; margin-left: 0%;">
+                    <div id="stream_info_name" class="strokedmini" style="font-size: 120%; font-weight:bold; padding-bottom: 2%;"></div>
+                    <div id="stream_info_game" style="font-size: 100%; padding-bottom: 2%;"></div>
+                    <div id="stream_info_viewer" style="font-size: 85%; color: rgba(255, 255, 255, 0.85)"></div>
+                    <div id="stream_info_currentTime" style="font-size: 85%; color: rgba(255, 255, 255, 0.85)"></div>
                 </div>
             </div>
-            <div style="position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
-                <div style="width: 80%; height: 47%; text-align: center; vertical-align: middle; padding: 2%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
+      <div id="chat_container" style="z-order:1; position: absolute; top: 40%; width: 100%; height: 100%; background-color: #4c3082;">
+      <!-- Chat browser-->
+      </div>
+      <div style="z-order:3; position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
+                <div style="width: 80%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
                     <p id="stream_info_title"></p>
                 </div>
-                <div style="width: 80%; height: 42px; line-height: 42px; margin: 0 auto; padding-top: 3%; font-size: 130%;">
-                    <div style="display: inline-block; width: 80%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
-                        <div style="width: 41%; text-align: center; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">
+                <div style="width: 80%; height: 26px; line-height: 26px; margin: 0 auto; padding-top: 13%; font-size: 100%;">
+                    <div style="display: inline-block; border:5px outset #350080; width: 80%; height: 99%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
+                        <div style="height: 26px; font-size: 80%; font-weight:bold; text-align: center; vertical-align: middle; width: 41%; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">
                             STR_QUALITY
                         </div>
-                        <div id="quality_name" style="width: 52%; text-align: center; display: inline-block;"></div>
+                        <div id="quality_name" style="font-size: 80%; width: 52%; text-align: center; display: inline-block;"></div>
                     </div>
-                    <div style="height: 42px; display: inline-block;">
+                    <div style="height: 28px; display: inline-block;">
                         <div style="display: inline-block;">
                             <div id="quality_arrow_up" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
                             <div id="quality_arrow_down" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
                         </div>
-                        <div style="display: inline-block; color: rgba(255, 255, 255, 0.95);">
+                        <div style="font-size: 90%; display: inline-block; color: rgba(255, 255, 255, 0.95);">
                             P
                         </div>
                     </div>
                 </div>
-            </div>
-            <div style="position: absolute; top: 55%; width: 100%; height: 45%; background-color: white;">
-                <!-- Future chat browser-->
             </div>
         </div>
         <div id="scene_channel_dialog_loading" style="position: absolute; z-index: 3; text-align: center; width: 100%; margin-top: 32%;">
@@ -343,7 +408,7 @@
                 <div class="bounce3"></div>
                 <div class="bounce4"></div>
             </div>
-            <div id="scene_channel_dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+            <div id="scene_channel_dialog_loading_text" class="strokedbig" style="display: inline-block; font-size: 200%; color: white;"></div>
         </div>
     </div>
 </body>
