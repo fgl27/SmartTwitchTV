@@ -149,28 +149,28 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
     var calling = false;
     if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
         try {
-            console.log(responseText);
+            //console.log(responseText);
             var response = $.parseJSON(responseText);
-            console.log("response.message0=" + response.message);
-            console.log("response.message1=" + "User '" + SceneSceneBrowser.followerUsername + "' does not exist");
+            //console.log("response.message0=" + response.message);
+            //console.log("response.message1=" + "User '" + SceneSceneBrowser.followerUsername + "' does not exist");
             if (response.message === "User '" + SceneSceneBrowser.followerUsername + "' does not exist") {
-                console.log("response.message2=" + response.message);
-                console.log("Call loadDataError(true) from howDialog");
+                //console.log("response.message2=" + response.message);
+                //console.log("Call loadDataError(true) from howDialog");
                 calling = true;
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.showDialog(STR_USERNAME + " '" + SceneSceneBrowser.followerUsername + "' " + STR_DOES_NOT_EXIST);
             }
             //some names return requests error 422 (This is a Justin.tv channel. It cannot be viewed on Twitch.) Maybe its from old accounts. Example: https://api.twitch.tv/kraken/streams/phoxx
             else if ((response.message === "Channel '" + SceneSceneBrowser.selectedChannel + "' does not exist") || (response.message === "Channel '" + SceneSceneBrowser.selectedChannel + "' is unavailable")) {
-                console.log("response.message3=" + response.message);
-                console.log("'Channel ''+SceneSceneBrowser.followerUsername+'' does not exist");
+                //console.log("response.message3=" + response.message);
+                //console.log("'Channel ''+SceneSceneBrowser.followerUsername+'' does not exist");
                 calling = true;
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannel + "' " + STR_DOES_NOT_EXIST);
             }
         } catch (e) {
-            console.log("$.parseJSON(xmlHttp.responseText); exception [" + e.code +
-                "] name: " + e.name + " message: " + e.message);
+            //console.log("$.parseJSON(xmlHttp.responseText); exception [" + e.code +
+            //    "] name: " + e.name + " message: " + e.message);
         }
     }
     if (!calling) {
@@ -226,15 +226,15 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
         SceneSceneBrowser.loadDataRequest();
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
-        console.log("response=" + response);
-        console.log("responseText=" + responseText);
+        //console.log("response=" + response);
+        //console.log("responseText=" + responseText);
         if (response.stream === null) {
-            console.log("response.stream === 'null'=");
-            console.log("+response.stream=" + response.stream);
+            //console.log("response.stream === 'null'=");
+            //console.log("+response.stream=" + response.stream);
             SceneSceneBrowser.loadingData = false;
             SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannel + "' " + STR_IS_OFFLINE);
         } else {
-            console.log("Opening stream from loaddatasuccess GO");
+            //console.log("Opening stream from loaddatasuccess GO");
             SceneSceneBrowser.openStream();
         }
     } else {
@@ -389,7 +389,7 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else {
             theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         }
-        console.log("theURL: " + theUrl);
+        //console.log("theURL: " + theUrl);
         xmlHttp.ontimeout = function() {
 
         };
@@ -490,13 +490,13 @@ SceneSceneBrowser.switchMode = function(mode) {
             SceneSceneBrowser.showInput();
             SceneSceneBrowser.refreshInputFocus();
         } else if (mode == SceneSceneBrowser.MODE_TOOLS) {
-            console.log("Enter MODE_TOOLS")
+            //console.log("Enter MODE_TOOLS")
             SceneSceneBrowser.clean();
             SceneSceneBrowser.showInputTools();
             SceneSceneBrowser.refreshInputFocusTools();
         } else if (mode == SceneSceneBrowser.MODE_FOLLOWER) {
             if (SceneSceneBrowser.followerUsername != null && !SceneSceneBrowser.isShowDialogOn) {
-                console.log("Enter MODE_FOLLOWER")
+                //console.log("Enter MODE_FOLLOWER")
                 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
                 SceneSceneBrowser.refresh();
             } else {
@@ -646,29 +646,29 @@ document.addEventListener("DOMContentLoaded", function(event) { //window.load
 });
 
 SceneSceneBrowser.prototype.handleShow = function(data) {
-    console.log("SceneSceneBrowser.handleShow()");
+    //console.log("SceneSceneBrowser.handleShow()");
     // this function will be called when the scene manager show this scene
 };
 
 SceneSceneBrowser.prototype.handleHide = function() {
-    console.log("SceneSceneBrowser.handleHide()");
+    //console.log("SceneSceneBrowser.handleHide()");
     // this function will be called when the scene manager hide this scene
     SceneSceneBrowser.clean();
 };
 
 SceneSceneBrowser.prototype.handleFocus = function() {
-    console.log("SceneSceneBrowser.handleFocus()");
+    //console.log("SceneSceneBrowser.handleFocus()");
     // this function will be called when the scene manager focus this scene
     SceneSceneBrowser.refresh();
 };
 
 SceneSceneBrowser.prototype.handleBlur = function() {
-    console.log("SceneSceneBrowser.handleBlur()");
+    //console.log("SceneSceneBrowser.handleBlur()");
     // this function will be called when the scene manager move focus to another scene from this scene
 };
 
 SceneSceneBrowser.prototype.handleKeyDown = function(e) {
-    console.log("SceneSceneBrowser.handleKeyDown(" + e.keyCode + ")");
+    //console.log("SceneSceneBrowser.handleKeyDown(" + e.keyCode + ")");
     if (e.keyCode == TvKeyCode.KEY_RETURN) {
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData) {
             if (SceneSceneBrowser.returnToGames) {
@@ -748,7 +748,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     }
                 }
             } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
-                console.log("keyup != mode GO");
+                //console.log("keyup != mode GO");
                 if (SceneSceneBrowser.cursorY > 0) {
                     e.preventDefault();
                     SceneSceneBrowser.removeFocus();
@@ -756,11 +756,11 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.addFocus();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
-                console.log("keyup SceneSceneBrowser.MODE_GO");
+                //console.log("keyup SceneSceneBrowser.MODE_GO");
                 SceneSceneBrowser.cursorY = 0;
                 SceneSceneBrowser.refreshInputFocus();
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
-                console.log("key UP on TOOLS");
+                //console.log("key UP on TOOLS");
                 SceneSceneBrowser.cursorY = 0;
                 SceneSceneBrowser.refreshInputFocusTools();
             }
@@ -769,7 +769,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.cursorY < SceneSceneBrowser.followerMatrix.length - 1) {
                     if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY + 1][SceneSceneBrowser.cursorX] !== 'undefined') {
-                        console.log("Key_DOWN - HAVE DOWN");
+                        //console.log("Key_DOWN - HAVE DOWN");
                         e.preventDefault();
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY++;
@@ -795,7 +795,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.refreshInputFocus();
                 SceneSceneBrowser.ime.blur();
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
-                console.log("key down on TOOLS");
+                //console.log("key down on TOOLS");
                 SceneSceneBrowser.cursorY = 1;
                 SceneSceneBrowser.refreshInputFocusTools();
                 SceneSceneBrowser.ime2.blur();
@@ -840,7 +840,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
                     //This is how we handle end of IME composition
                     SceneSceneBrowser.ime.addEventListener('compositionend', function() {
-                        console.log('compositionend');
+                        //console.log('compositionend');
                     });
 
                     SceneSceneBrowser.ime.focus();
@@ -848,9 +848,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 } else {
                     SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
                     if (SceneSceneBrowser.selectedChannel == '') {
-                        console.log("SceneSceneBrowser.selectedChannel == null       =" + SceneSceneBrowser.selectedChannel);
+                        //console.log("SceneSceneBrowser.selectedChannel == null       =" + SceneSceneBrowser.selectedChannel);
                     } else {
-                        console.log("NOT NULL       =" + SceneSceneBrowser.selectedChannel);
+                        //console.log("NOT NULL       =" + SceneSceneBrowser.selectedChannel);
                         SceneSceneBrowser.loadData();
                     }
 
@@ -863,7 +863,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
                     //This is how we handle end of IME composition
                     SceneSceneBrowser.ime2.addEventListener('compositionend', function() {
-                        console.log('compositionend');
+                        //console.log('compositionend');
                     });
 
                     SceneSceneBrowser.ime2.focus();
@@ -872,9 +872,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.followerUsername = $('#username_input').val();
                     localStorage.setItem('followerUsername', $('#username_input').val());
                     if (SceneSceneBrowser.followerUsername == '') {
-                        console.log("SceneSceneBrowser.followerUsername == null     = " + SceneSceneBrowser.followerUsername);
+                        //console.log("SceneSceneBrowser.followerUsername == null     = " + SceneSceneBrowser.followerUsername);
                     } else {
-                        console.log("NOT NULL     = " + SceneSceneBrowser.followerUsername);
+                        //console.log("NOT NULL     = " + SceneSceneBrowser.followerUsername);
                         SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                     }
 
@@ -912,7 +912,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             SceneSceneBrowser.refresh();
             break;
         default:
-            console.log("handle default key event, key code(" + e.keyCode + ")");
+            //console.log("handle default key event, key code(" + e.keyCode + ")");
             break;
     }
 };
@@ -923,9 +923,9 @@ function onCompleteText(string) {
 
 SceneSceneBrowser.addNetworkStateChangeListener = function() {
     var onChange = function(data) {
-        console.log("[NetworkStateChangedCallback] DATA=" + data);
+        //console.log("[NetworkStateChangedCallback] DATA=" + data);
         if (data == 1 || data == 4) { //network connected
-            console.log("[NetworkStateChangedCallback] network cable conecteddata= " + data);
+            //console.log("[NetworkStateChangedCallback] network cable conecteddata= " + data);
             SceneSceneBrowser.noNetwork = false;
             if (SceneSceneBrowser.browser) {
                 if (SceneSceneBrowser.errorNetwork) {
@@ -939,7 +939,7 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
                 SceneSceneChannel.showPlayer();
             }
         } else if (data == 2 || 5) {
-            console.log("[NetworkStateChangedCallback] network cable disconnected data= " + data);
+            //console.log("[NetworkStateChangedCallback] network cable disconnected data= " + data);
             SceneSceneBrowser.noNetwork = true;
             if (SceneSceneBrowser.browser) {
                 SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
@@ -952,9 +952,9 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
     try {
         SceneSceneBrowser.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
     } catch (e) {
-        console.log("addNetworkStateChangeListener exception [" + e.code + "] name: " + e.name + " message: " + e.message);
+        //console.log("addNetworkStateChangeListener exception [" + e.code + "] name: " + e.name + " message: " + e.message);
     }
-    if (SceneSceneBrowser.listenerID > -1) {
-        console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
-    }
+    //if (SceneSceneBrowser.listenerID > -1) {
+        //console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
+    //}
 }
