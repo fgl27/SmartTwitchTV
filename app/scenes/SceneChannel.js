@@ -142,43 +142,43 @@ SceneSceneChannel.initLanguage = function() {
 
 var listener = {
     onbufferingstart: function() {
-        console.log("Buffering start.");
+        //console.log("Buffering start.");
         SceneSceneChannel.onBufferingStart();
     },
     onbufferingprogress: function(percent) {
-        console.log("Buffering progress data : " + percent);
+        //console.log("Buffering progress data : " + percent);
         SceneSceneChannel.onBufferingProgress(percent);
     },
     onbufferingcomplete: function() {
-        console.log("Buffering complete.");
+        //console.log("Buffering complete.");
         SceneSceneChannel.onBufferingComplete();
     },
     oncurrentplaytime: function(currentTime) {
-        console.log("Current Playtime : " + currentTime);
+        //console.log("Current Playtime : " + currentTime);
         updateCurrentTime(currentTime);
     },
     onevent: function(eventType, eventData) {
-        console.log("event type error : " + eventType + ", data: " + eventData);
-        if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
-            console.log("Mudou de Qualidade");
-        }
+        //console.log("event type error : " + eventType + ", data: " + eventData);
+        //if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
+            //console.log("Mudou de Qualidade");
+        //}
     },
     onerror: function(eventType) {
-        console.log("event type error : " + eventType);
+        //console.log("event type error : " + eventType);
         if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
-            console.log("Closing stream from eventType == 'PLAYER_ERROR_CONNECTION_FAILED'");
+            //console.log("Closing stream from eventType == 'PLAYER_ERROR_CONNECTION_FAILED'");
             SceneSceneBrowser.errorNetwork = true;
             SceneSceneChannel.shutdownStream();
         }
     },
     onsubtitlechange: function(duration, text, data3, data4) {
-        console.log("Subtitle Changed.");
+        //console.log("Subtitle Changed.");
     },
     ondrmevent: function(drmEvent, drmData) {
-        console.log("DRM callback: " + drmEvent + ", data: " + drmData);
+        //console.log("DRM callback: " + drmEvent + ", data: " + drmData);
     },
     onstreamcompleted: function() {
-        console.log("Stream Completed");
+        //console.log("Stream Completed");
         SceneSceneChannel.onRenderingComplete();
     }
 }
@@ -211,16 +211,16 @@ SceneSceneChannel.prototype.initialize = function() {
 };
 
 SceneSceneChannel.prototype.handleShow = function(data) {
-    console.log("SceneSceneChannel.handleShow()");
+    //console.log("SceneSceneChannel.handleShow()");
 };
 
 SceneSceneChannel.prototype.handleHide = function() {
-    console.log("SceneSceneChannel.handleHide()");
+    //console.log("SceneSceneChannel.handleHide()");
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
 };
 
 SceneSceneChannel.prototype.handleFocus = function() {
-    console.log("SceneSceneChannel.handleFocus()");
+    //console.log("SceneSceneChannel.handleFocus()");
 
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF); //screensaver off
 
@@ -249,8 +249,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
 };
 
 SceneSceneChannel.prototype.handleBlur = function() {
-    console.log("SceneSceneChannel.handleBlur()");
-
+    //console.log("SceneSceneChannel.handleBlur()");
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON); //make screen saver on, when go back for SceneBrowser
 };
 
@@ -259,18 +258,18 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
     if (SceneSceneChannel.state != SceneSceneChannel.STATE_PLAYING) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_RETURN:
-                console.log("KEY_RETURN");
+                //console.log("KEY_RETURN");
                 e.preventDefault(); //prevent key to do default
                 SceneSceneChannel.shutdownStream();
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
-                console.log("KEY_VOLUMEUP");
+                //console.log("KEY_VOLUMEUP");
                 break;
             case TvKeyCode.KEY_VOLUMEDOWN:
-                console.log("KEY_VOLUMEDOWN");
+                //console.log("KEY_VOLUMEDOWN");
                 break;
             case TvKeyCode.KEY_MUTE:
-                console.log("KEY_MUTE");
+                //console.log("KEY_MUTE");
                 break;
         }
     } else {
@@ -278,7 +277,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_CHANNELUP:
             case TvKeyCode.KEY_UP:
                 if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0) {
-                    console.log("KEY_CHANNELDOWN or KEY_4");
+                    //console.log("KEY_CHANNELDOWN or KEY_4");
                     SceneSceneChannel.qualityIndex--;
                     SceneSceneChannel.qualityDisplay();
                     if (!SceneSceneChannel.ForcedPannelOn) {
@@ -297,7 +296,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_DOWN:
                 if (SceneSceneChannel.isPanelShown() &&
                     SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1) {
-                    console.log("KEY_CHANNELDOWN or KEY_4");
+                    //console.log("KEY_CHANNELDOWN or KEY_4");
                     SceneSceneChannel.qualityIndex++;
                     SceneSceneChannel.qualityDisplay();
                     if (!SceneSceneChannel.ForcedPannelOn) {
@@ -311,10 +310,9 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 //}
                 break;
             case TvKeyCode.KEY_LEFT:
-                console.log("KEY_LEFT");
+                //console.log("KEY_LEFT");
                 if (SceneSceneChannel.isPanelShown()) {
-                    if (SceneSceneChannel.ForcedPannelInit) // first click set it to true next will disable autohide
-                    {
+                    if (SceneSceneChannel.ForcedPannelInit) { // first click set it to true next will disable autohide
                         SceneSceneChannel.ForcedPannelOn = true;
                         clearRefresh();
                         clearHide();
@@ -325,11 +323,11 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                console.log("KEY_RIGHT");
+                //console.log("KEY_RIGHT");
                 SceneSceneChannel.hidePanel();
                 break;
             case TvKeyCode.KEY_ENTER:
-                console.log("KEY_ENTER");
+                //console.log("KEY_ENTER");
                 if (SceneSceneChannel.isPanelShown()) {
                     SceneSceneChannel.qualityChanged();
                 } else {
@@ -367,7 +365,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_BLUE:
                 break;
             default:
-                console.log("handle default key event, key code(" + keyCode + ")");
+                //console.log("handle default key event, key code(" + keyCode + ")");
                 break;
         }
     }
@@ -411,7 +409,7 @@ SceneSceneChannel.onRenderingComplete = function() {
 };
 
 SceneSceneChannel.onBufferingStart = function() {
-    console.log("onBufferingStart");
+    //console.log("onBufferingStart");
     SceneSceneChannel.showDialog(STR_BUFFERING);
 };
 
@@ -428,7 +426,7 @@ SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.showDialog("");
     SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
     SceneSceneChannel.qualityIndex = 0;
-    console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
+    //console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
     for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
         if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
             SceneSceneChannel.qualityIndex = i;
@@ -519,7 +517,6 @@ SceneSceneChannel.hidePanel = function() {
     clearHide();
     clearRefresh();
     SceneSceneChannel.ForcedPannelInit = false;
-    SceneSceneChannel.ForcedPannelOn = false;
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
@@ -620,7 +617,7 @@ SceneSceneChannel.loadDataRequest = function() {
         } else {
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
         }
-        console.log(theUrl);
+        //console.log(theUrl);
         xmlHttp.ontimeout = function() {};
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -628,7 +625,7 @@ SceneSceneChannel.loadDataRequest = function() {
                     try {
                         SceneSceneChannel.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
-                        console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+                        //console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                         SceneSceneChannel.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                     }
 
