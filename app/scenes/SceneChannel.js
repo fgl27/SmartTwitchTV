@@ -1,4 +1,5 @@
 var random_int = Math.round(Math.random() * 1e7);
+var timeoutID;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 
@@ -278,13 +279,14 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 	{
 		switch (e.keyCode) {
 			case TvKeyCode.KEY_CHANNELUP:
-			case TvKeyCode.KEY_1:
 			case TvKeyCode.KEY_UP:
 				if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0)
 				{
 					console.log("KEY_CHANNELDOWN or KEY_4");
 					SceneSceneChannel.qualityIndex--;
 					SceneSceneChannel.qualityDisplay();
+					clearHide();
+					setHide();
 				}
 				// Live strems from twitch don't have jumpForward/Backward options
 				//else
@@ -293,7 +295,6 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 				//}
 				break;
 			case TvKeyCode.KEY_CHANNELDOWN:
-			case TvKeyCode.KEY_4:
 			case TvKeyCode.KEY_DOWN:
 				if (SceneSceneChannel.isPanelShown()
 						&& SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1)
@@ -301,6 +302,8 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					console.log("KEY_CHANNELDOWN or KEY_4");
 					SceneSceneChannel.qualityIndex++;
 					SceneSceneChannel.qualityDisplay();
+					clearHide();
+					setHide();
 				}
 				//else
 				//{
@@ -314,14 +317,6 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 			case TvKeyCode.KEY_RIGHT:
 				console.log("KEY_RIGHT");
 				SceneSceneChannel.hidePanel();
-				break;
-			case TvKeyCode.KEY_9:
-				console.log("Key9");
-				if (SceneSceneChannel.isPanelShown())
-				{
-
-						localStorage.setItem('defaultQuality', SceneSceneChannel.qualities[SceneSceneChannel.qualityIndex - 1].id);
-				}
 				break;
 			case TvKeyCode.KEY_ENTER:
 				console.log("KEY_ENTER");
@@ -537,6 +532,7 @@ SceneSceneChannel.showPanel = function()
 {
 	SceneSceneChannel.qualityDisplay();
 	$("#scene_channel_panel").show();
+	setHide();
 };
 
 SceneSceneChannel.hidePanel = function()
@@ -544,7 +540,21 @@ SceneSceneChannel.hidePanel = function()
 	$("#scene_channel_panel").hide();
 	SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
 	SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
+	clearHide();
 };
+
+
+function setHide() {
+	timeoutID = window.setTimeout(TimeHidePanel, 3000);// time in ms
+}
+
+function TimeHidePanel() {
+	SceneSceneChannel.hidePanel();
+}
+
+function clearHide() {
+	window.clearTimeout(timeoutID);
+}
 
 SceneSceneChannel.isPanelShown = function()
 {
