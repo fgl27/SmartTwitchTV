@@ -2,6 +2,8 @@ var random_int = Math.round(Math.random() * 1e7);
 var timeoutID;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
+SceneSceneChannel.ForcedPannelInit = false;
+SceneSceneChannel.ForcedPannelOn = false;
 
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
@@ -240,6 +242,7 @@ SceneSceneChannel.prototype.handleFocus = function () {
 
 	SceneSceneChannel.updateStreamInfo();
 	SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
+	$("#chat_container").html('<iframe id="chat_frame" width="100%" height="147%" frameborder="0" scrolling="no" style="z-order:0;" src="http://twitch.tv/chat/embed?channel=' + SceneSceneBrowser.selectedChannel + '&amp;popout_chat=true"></iframe>');
 
     SceneSceneChannel.tokenResponse = 0;
     SceneSceneChannel.playlistResponse = 0;
@@ -285,8 +288,12 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					console.log("KEY_CHANNELDOWN or KEY_4");
 					SceneSceneChannel.qualityIndex--;
 					SceneSceneChannel.qualityDisplay();
-					clearHide();
-					setHide();
+					if (!SceneSceneChannel.ForcedPannelOn)
+					{
+						clearHide();
+						setHide();
+					}
+
 				}
 				// Live strems from twitch don't have jumpForward/Backward options
 				//else
@@ -302,8 +309,11 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					console.log("KEY_CHANNELDOWN or KEY_4");
 					SceneSceneChannel.qualityIndex++;
 					SceneSceneChannel.qualityDisplay();
-					clearHide();
-					setHide();
+					if (!SceneSceneChannel.ForcedPannelOn)
+					{
+						clearHide();
+						setHide();
+					}
 				}
 				//else
 				//{
@@ -312,7 +322,19 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 				break;
 			case TvKeyCode.KEY_LEFT:
 				console.log("KEY_LEFT");
-				SceneSceneChannel.showPanel();
+				if (SceneSceneChannel.isPanelShown())
+				{
+					if (SceneSceneChannel.ForcedPannelInit) // first click set it to true next will disable autohide
+					{
+						SceneSceneChannel.ForcedPannelOn = true;
+						clearHide();
+					}
+				}
+				else
+				{
+					SceneSceneChannel.showPanel();
+					SceneSceneChannel.ForcedPannelInit = true;
+				}
 				break;
 			case TvKeyCode.KEY_RIGHT:
 				console.log("KEY_RIGHT");
@@ -530,17 +552,19 @@ SceneSceneChannel.updateStreamInfo = function()
 
 SceneSceneChannel.showPanel = function()
 {
+	setHide();
 	SceneSceneChannel.qualityDisplay();
 	$("#scene_channel_panel").show();
-	setHide();
 };
 
 SceneSceneChannel.hidePanel = function()
 {
+	clearHide();
+	SceneSceneChannel.ForcedPannelInit = false;
+	SceneSceneChannel.ForcedPannelOn = false;
 	$("#scene_channel_panel").hide();
 	SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
 	SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
-	clearHide();
 };
 
 
