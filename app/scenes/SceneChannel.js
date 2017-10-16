@@ -1,5 +1,6 @@
 var random_int = Math.round(Math.random() * 1e7);
 var timeoutID;
+var refreshID;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -327,6 +328,7 @@ SceneSceneChannel.prototype.handleKeyDown = function (e) {
 					if (SceneSceneChannel.ForcedPannelInit) // first click set it to true next will disable autohide
 					{
 						SceneSceneChannel.ForcedPannelOn = true;
+						clearRefresh();
 						clearHide();
 					}
 				}
@@ -552,7 +554,10 @@ SceneSceneChannel.updateStreamInfo = function()
 
 SceneSceneChannel.showPanel = function()
 {
-	setHide();
+	if (!SceneSceneChannel.ForcedPannelOn)
+	{
+		setHide();
+	}
 	SceneSceneChannel.qualityDisplay();
 	$("#scene_channel_panel").show();
 };
@@ -560,6 +565,7 @@ SceneSceneChannel.showPanel = function()
 SceneSceneChannel.hidePanel = function()
 {
 	clearHide();
+	clearRefresh();
 	SceneSceneChannel.ForcedPannelInit = false;
 	SceneSceneChannel.ForcedPannelOn = false;
 	$("#scene_channel_panel").hide();
@@ -569,15 +575,35 @@ SceneSceneChannel.hidePanel = function()
 
 
 function setHide() {
-	timeoutID = window.setTimeout(TimeHidePanel, 3000);// time in ms
-}
-
-function TimeHidePanel() {
-	SceneSceneChannel.hidePanel();
+	timeoutID = window.setTimeout(SceneSceneChannel.hidePanel, 3000);// time in ms
 }
 
 function clearHide() {
 	window.clearTimeout(timeoutID);
+	setRefresh();
+}
+
+function setRefresh() {
+	refreshID = window.setTimeout(TimeRefresh, 180000);//time in ms... 180 seconds
+}
+
+function Resetfresh() {
+	refreshID = window.setTimeout(SceneSceneChannel.showPanel, 50);//time in ms
+}
+
+function TimeRefresh() {
+	if (SceneSceneChannel.isPanelShown())
+	{
+		SceneSceneChannel.hidePanel();
+		SceneSceneChannel.ForcedPannelOn = true;
+		Resetfresh();
+		setRefresh();
+		clearHide();
+	}
+}
+
+function clearRefresh() {
+	window.clearTimeout(refreshID);
 }
 
 SceneSceneChannel.isPanelShown = function()
