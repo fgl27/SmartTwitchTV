@@ -15,7 +15,7 @@ var STR_BUFFERING = "Buforowanie";
 
 var STR_ERROR_RENDER_SOURCE = "Format nie jest obsługiwany :(";
 var STR_ERROR_RENDER_FIXED = "Przykro nam, ale wydaje się, że transmisja\njakości High/Medium/Low nie są obsługiwane\nna twoim TV. Spróbuj jakość Source na różnych transmisjach.";
-var STR_ERROR_NETWORK_DISCONNECT= "Rozłączono z siecią.";
+var STR_ERROR_NETWORK_DISCONNECT = "Rozłączono z siecią.";
 var STR_ERROR_STREAM_NOT_FOUND = "Nie znaleziono transmisji.";
 var STR_ERROR_AUTHENTICATION_FAIL = "Uwierzytelnianie nie powiodło się.";
 var STR_ERROR_CONNECTION_FAIL = "Połączenie nieudane.";

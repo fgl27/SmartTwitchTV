@@ -15,7 +15,7 @@ var STR_BUFFERING = "Caricamento in corso...";
 
 var STR_ERROR_RENDER_SOURCE = "Formato non supportato :(";
 var STR_ERROR_RENDER_FIXED = "Spiacenti ma sembra lo stream in \nQualita' Alta/Media/Bassa non sono supportati\n sul tuo TV. Prova a settare la qualia' sullo stream.";
-var STR_ERROR_NETWORK_DISCONNECT= "Disconnesso da internet.";
+var STR_ERROR_NETWORK_DISCONNECT = "Disconnesso da internet.";
 var STR_ERROR_STREAM_NOT_FOUND = "Stream non trovato.";
 var STR_ERROR_AUTHENTICATION_FAIL = "Autenticazione fallita.";
 var STR_ERROR_CONNECTION_FAIL = "Connessione fallita.";
