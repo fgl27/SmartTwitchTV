@@ -188,7 +188,7 @@ var updateCurrentTime = function(currentTime) {
     if (currentTime == null) {
         currentTime = webapis.avplay.getCurrentTime();
     }
-    document.getElementById("stream_info_currentTime").innerHTML = Math.floor(currentTime / 3600000) + ":" + Math.floor((currentTime / 60000) % 60) + ":" + Math.floor((currentTime / 1000) % 60);
+    document.getElementById("stream_info_currentTime").innerHTML = ((currentTime < 36000000) ? "0" : "") + Math.floor(currentTime / 3600000) + ":" + ((currentTime < 600000) ? "0" : "") + Math.floor((currentTime / 60000) % 60) + ":" + ((currentTime < 10000) ? "0" : "") + Math.floor((currentTime / 1000) % 60);
 }
 
 SceneSceneChannel.prototype.initialize = function() {
@@ -517,6 +517,7 @@ SceneSceneChannel.hidePanel = function() {
     clearHide();
     clearRefresh();
     SceneSceneChannel.ForcedPannelInit = false;
+    SceneSceneChannel.ForcedPannelOn = false;
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
