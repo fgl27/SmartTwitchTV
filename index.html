@@ -337,25 +337,22 @@
       <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
          background-image : url('');">
          <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
-         <div id="scene_channel_panel" style="position: absolute; border:5px outset #350080; left: 75%; width: 25%; height: 100%; z-index: 2; background-color: #6545a5;">
+         <div id="scene_channel_panel" style="display:flex; position: absolute; box-sizing: border-box; border:5px outset #350080; left: 75%; width: 25%; height : 100%; z-index: 2; background-color: #6545a5;">
             <img style="width: 40%; padding-left: 2.5%; padding-top: 0.5%; padding-bottom: 0%;" src="images/twitchlogo.png" />
-            <div style="margin: 0 auto; width: 90%; height: 15%; padding-left: 1%; padding-top: 1%; padding-bottom: 1.5%;">
+            <div style="margin: 0 auto; width: 95%; height: 15%; padding-left: 1%; padding-top: 1%; padding-bottom: 1.5%;">
                <img id="stream_info_icon" style="border:5px outset #350080; display: inline-block; width: 30%;" src="" />
-               <div style="text-align: center; color: white; vertical-align: start; display: inline-block; width: 65%; margin-top: 0%; margin-left: 0%;">
+               <div style="z-order:1; text-align: center; color: white; vertical-align: start; display: inline-block; width: 65%; margin-top: 0%; margin-left: 0%;">
                   <div id="stream_info_name" class="strokedmini" style="font-size: 120%; font-weight:bold; padding-bottom: 2%;"></div>
                   <div id="stream_info_game" style="font-size: 100%; padding-bottom: 2%;"></div>
                   <div id="stream_info_viewer" style="font-size: 85%; color: rgba(255, 255, 255, 0.85)"></div>
                   <div id="stream_info_currentTime" style="font-size: 85%; color: rgba(255, 255, 255, 0.85)"></div>
                </div>
             </div>
-            <div id="chat_container" style="z-order:1; position: absolute; top: 40%; width: 100%; height: 100%; background-color: #4c3082;">
-               <!-- Chat browser-->
-            </div>
-            <div style="z-order:3; position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
-               <div style="width: 80%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
+            <div style="z-order:2; position: relative; width: 100%; height: 27.5%; margin-top: 2%; background-color: #4c3082;">
+               <div style="width: 90%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
                   <p id="stream_info_title"></p>
                </div>
-               <div style="width: 80%; height: 26px; line-height: 26px; margin: 0 auto; padding-top: 13%; font-size: 100%;">
+               <div style="width: 90%; height: 26px; line-height: 26px; margin: 0 auto; padding-top: 13%; font-size: 100%;">
                   <div style="display: inline-block; border:5px outset #350080; width: 80%; height: 99%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
                      <div style="height: 26px; font-size: 80%; font-weight:bold; text-align: center; vertical-align: middle; width: 41%; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">
                         STR_QUALITY
@@ -373,6 +370,9 @@
                   </div>
                </div>
             </div>
+            <div id="chat_container" style="z-order:3; position: absolute; width: 100%; height: 48%;">
+               <!-- Chat browser-->
+            </div>
          </div>
          <div id="scene_channel_dialog_loading" style="position: absolute; z-index: 3; text-align: center; width: 100%; margin-top: 32%;">
             <div class="spinner" style="display: inline-block;">
@@ -385,8 +385,8 @@
          </div>
          <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index: 4; text-align: center; width: 100%; margin-top: 32%;">
             <i style="display: inline-block; font-size: 450%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
-            </div>
          </div>
+      </div>
       </div>
    </body>
 </html>
