@@ -241,7 +241,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
 
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
-    $("#chat_container").html('<iframe id="chat_frame" width="100%" height="147%" frameborder="0" scrolling="no" style="z-order:0;" src="http://twitch.tv/chat/embed?channel=' + SceneSceneBrowser.selectedChannel + '&amp;popout_chat=true"></iframe>');
+    $("#chat_container").html('<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="z-order:0;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe>');
 
     SceneSceneChannel.tokenResponse = 0;
     SceneSceneChannel.playlistResponse = 0;
