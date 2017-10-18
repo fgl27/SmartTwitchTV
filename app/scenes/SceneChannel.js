@@ -1,6 +1,5 @@
 var random_int = Math.round(Math.random() * 1e7);
-var timeoutID;
-var refreshID;
+var timeoutID, refreshID, pauseEndID, pauseStartID;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -19,6 +18,7 @@ SceneSceneChannel.STATE_LOADING_PLAYLIST = 1;
 SceneSceneChannel.STATE_PLAYING = 2;
 SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
 SceneSceneChannel.isShowDialogOn = false;
+SceneSceneChannel.isShowPauseDialogOn = false;
 
 SceneSceneChannel.QualityAuto = "Auto";
 SceneSceneChannel.quality = "Source";
@@ -208,6 +208,8 @@ SceneSceneChannel.prototype.initialize = function() {
             // Something you want to do when resume.
         }
     });
+    $("#scene_channel_dialog_simple_pause").hide();
+    SceneSceneChannel.isShowPauseDialogOn = false;
 };
 
 SceneSceneChannel.prototype.handleShow = function(data) {
@@ -346,9 +348,15 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.Play) {
                     SceneSceneChannel.Play = false,
                         webapis.avplay.pause();
+                        SceneSceneChannel.showPauseDialog();
                 } else {
                     SceneSceneChannel.Play = true,
                         webapis.avplay.play();
+                        if (SceneSceneChannel.isShowPauseDialogOn) {
+                            $("#scene_channel_dialog_simple_pause").hide();
+                            SceneSceneChannel.isShowPauseDialogOn = false;
+                        }
+                        clearPause();
                 }
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
@@ -451,6 +459,23 @@ SceneSceneChannel.qualityChanged = function() {
     }
 };
 
+SceneSceneChannel.showPauseDialog = function() {
+    if (SceneSceneChannel.isShowDialogOn) {
+        $("#scene_channel_dialog_loading").hide();
+        SceneSceneChannel.isShowDialogOn = false;
+    }
+
+    if (!SceneSceneChannel.isShowPauseDialogOn) {
+        $("#scene_channel_dialog_simple_pause").show();
+        SceneSceneChannel.isShowPauseDialogOn = true;
+        pauseEndID = window.setTimeout(SceneSceneChannel.showPauseDialog, 1500);
+    } else {
+        $("#scene_channel_dialog_simple_pause").hide();
+        SceneSceneChannel.isShowPauseDialogOn = false;
+        pauseStartID = window.setTimeout(SceneSceneChannel.showPauseDialog, 8000); // time in ms
+    }
+};
+
 SceneSceneChannel.showDialog = function(title) {
     $("#scene_channel_dialog_loading_text").text(title);
     if (!SceneSceneChannel.isShowDialogOn) {
@@ -523,6 +548,10 @@ SceneSceneChannel.hidePanel = function() {
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
 };
 
+function clearPause() {
+    window.clearTimeout(pauseEndID);
+    window.clearTimeout(pauseStartID);
+}
 
 function setHide() {
     timeoutID = window.setTimeout(SceneSceneChannel.hidePanel, 3000); // time in ms
