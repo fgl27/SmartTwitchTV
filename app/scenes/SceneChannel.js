@@ -1,5 +1,5 @@
 var random_int = Math.round(Math.random() * 1e7);
-var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = 0, ChatPositionsTemp = 0;
+var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = null, ChatPositionsTemp = 0;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -155,6 +155,7 @@ var listener = {
     onbufferingcomplete: function() {
         //console.log("Buffering complete.");
         SceneSceneChannel.onBufferingComplete();
+        if (SceneSceneChannel.ChatEnableByChat) SceneSceneChannel.showChat();
     },
     oncurrentplaytime: function(currentTime) {
         //console.log("Current Playtime : " + currentTime);
@@ -191,7 +192,7 @@ var updateCurrentTime = function(currentTime) {
     if (currentTime == null) {
         currentTime = webapis.avplay.getCurrentTime();
     }
-    document.getElementById("stream_info_currentTime").innerHTML = ((currentTime < 36000000) ? "0" : "") + Math.floor(currentTime / 3600000) + ":" + ((currentTime < 600000) ? "0" : "") + Math.floor((currentTime / 60000) % 60) + ":" + ((currentTime < 10000) ? "0" : "") + Math.floor((currentTime / 1000) % 60);
+    document.getElementById("stream_info_currentTime").innerHTML = ((currentTime < 36000000) ? "0" : "") + Math.floor(currentTime / 3600000) + ":" + ((currentTime < 600000) ? "0" : "") + Math.floor((currentTime / 60000) % 60) + ":" + ((currentTime < 10000) ? "0" : "") + Math.floor((currentTime / 1000) % 60) + parseInt(localStorage.getItem('ChatPositionsValue') || 0);
 }
 
 SceneSceneChannel.prototype.initialize = function() {
@@ -238,6 +239,11 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
+    if (ChatPositions == null) { 
+        ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
+        ChatPositionsTemp = ChatPositions;
+    } else ChatPositionsTemp = ChatPositions + 1;
+    SceneSceneChannel.ChatEnableByChat = localStorage.getItem('ChatEnableByChat');
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
@@ -292,6 +298,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     if (!SceneSceneChannel.isChatShown()) {
                         SceneSceneChannel.showChat();
                         SceneSceneChannel.ChatEnableByChat = true;
+                        localStorage.setItem('ChatEnableByChat', 'true');
                     }
                     SceneSceneChannel.ChatPosition();
                     break;
@@ -319,6 +326,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         ChatPositions -= 1;
                         SceneSceneChannel.hideChat();
                         SceneSceneChannel.ChatEnableByChat = false;
+                        localStorage.setItem('ChatEnableByChat', 'false');
+                        localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
                     }
                     break;
                 }
@@ -372,6 +381,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         SceneSceneChannel.shutdownStream();
                         ChatPositions-=1;
                         window.clearTimeout(exitID);
+                        localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
                     }
                     SceneSceneChannel.showExitDialog();
                 }
@@ -584,7 +594,8 @@ SceneSceneChannel.showPanel = function() {
     }
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
-    if (ChatPositions > 1) ChatPositionsTemp = ChatPositions, ChatPositions = 1, SceneSceneChannel.ChatPosition();
+    ChatPositionsTemp = ChatPositions;
+    if (ChatPositions > 1) ChatPositions = 1, SceneSceneChannel.ChatPosition();
     if (!SceneSceneChannel.isChatShown()) {
         SceneSceneChannel.showChat();
         SceneSceneChannel.ChatEnableByPanel = true;
@@ -610,15 +621,18 @@ SceneSceneChannel.hidePanel = function() {
 SceneSceneChannel.ChatPosition = function() {
     var left = "75.3%", top = "51.5%";//default
 
-    if (ChatPositions > 1) top = "0.5%"; // top/lefth
-    if (ChatPositions > 2) left = "38.3%"; // top/midle
-    if (ChatPositions > 3) left = "0%"; // top/right
+    if (ChatPositions < 7) {
+        if (ChatPositions > 1) top = "0.5%"; // top/lefth
+        if (ChatPositions > 2) left = "38.3%"; // top/midle
+        if (ChatPositions > 3) left = "0%"; // top/right
 
-    if (ChatPositions > 4) top = "51.5%"; // bottom/lefth
-    if (ChatPositions > 5) left = "38.3%"; // bottom/midle
-    if (ChatPositions > 6 || ChatPositions < 2) ChatPositions = 1, left = "75.3%", top = "51.5%"; // reset
+        if (ChatPositions > 4) top = "51.5%"; // bottom/lefth
+        if (ChatPositions > 5) left = "38.3%"; // bottom/midle
+    } else ChatPositions = 1;
+
     document.getElementById("chat_container").style.top = top;
     document.getElementById("chat_container").style.left = left;
+    localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
 };
 
 SceneSceneChannel.showChat = function() {
