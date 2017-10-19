@@ -21,7 +21,7 @@ The Application is tested with the above remote, below are the controls and sect
 ## Top toolbar
 * **CH Down/Up**: Down Refresh current Screen, Up change for next Screen A - B - C - A (after C  back to A)
 * **Live**: All TwitchTv live Channel
-* **User**: Setup yours user name (using green 4 color buttons)/ Show user Live Followed (using CH Up if user is setup if not goes to Setup yours user name)
+* **User**: Setup yours user name (using 4 color buttons (color), after green or right) / Show user Live Followed Channels (using CH **UP** (Channel Up) if user is setup if not goes to Setup yours user name)
 * **Games**: All TwitchTv live Games
 * **Open a channel**: Open a channel by name
 
@@ -34,19 +34,21 @@ The Application is tested with the above remote, below are the controls and sect
 * **Open a video**: Select or Play/Pause
 * **Move to "User"**: CH **UP** (Channel Up)
 * **Refresh Live Screen**: CH **DOWN** (Channel Down)
-* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
+* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Close the application**: Return  (click it twice under 3 seconds)
 
-### User Setup a User Screen (4 color buttons (color) after Directional pad (right) for (green))
-* **Open Key Board**: CH **UP** (Channel Up) to select "text box" after Select (key), type your user and click done
-* **Load User**: CH **DOWN** (Channel Down) to select "Open Button" after Select (key)
+### User Setup or User Screen (4 color buttons (color), after Directional pad (right) for (green))
+* **Open Key Board**: Directional pad (Up) to select "text box" after Select (key) to enter, type your user and click done
+* **Load User**: Directional pad (Down) to select "Open Button" after Select (key) to enter
+* **Move to "Games"**: CH **UP** (Channel Up)
+* **Return to Live Screen**: Return
 
-### User Followed Screen (Access using CH UP (Channel Up) after having setup a user from Live Screen)
+### User Followed Channels Screen (Access using CH UP (Channel Up) after having setup a user from Live Screen)
 * **To move between videos/games**: Directional pad (up/down/left/right)
 * **Open a video/game**: Select or Play/Pause
 * **Move to "Games"**: CH **UP** (Channel Up)
 * **Refresh User Followed Screen**: CH **DOWN** (Channel Down)
-* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
+* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Live Screen**: Return
 
 ### Games category Screen (select a game category)
