@@ -14,6 +14,7 @@ var STR_ERROR_NETWORK_DISCONNECT = "З'єднання розірвано.";
 var STR_ERROR_STREAM_NOT_FOUND = "Стрім не знайдено.";
 var STR_ERROR_AUTHENTICATION_FAIL = "Помилка авторизації.";
 var STR_ERROR_CONNECTION_FAIL = "Помилка підключення.";
+var STR_EXIT = "Натисніть ще раз, щоб вийти!";
 
 var STR_TOOLS = "Save";
 var STR_LIVE_CHANNELS = "Live-Kanäle";

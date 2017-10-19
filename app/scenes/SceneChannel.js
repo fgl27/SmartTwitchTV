@@ -1,11 +1,12 @@
 var random_int = Math.round(Math.random() * 1e7);
-var timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = 0, ChatPositionsTemp = 0;
+var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = 0, ChatPositionsTemp = 0;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
 SceneSceneChannel.ForcedPannelOn = false;
 SceneSceneChannel.ChatEnableByPanel = false;
 SceneSceneChannel.ChatEnableByChat = false;
+SceneSceneChannel.isShowExitDialogOn = false;
 
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
@@ -211,7 +212,9 @@ SceneSceneChannel.prototype.initialize = function() {
         }
     });
     $("#scene_channel_dialog_simple_pause").hide();
+    $("#scene_channel_dialog_exit").hide();
     SceneSceneChannel.isShowPauseDialogOn = false;
+    SceneSceneChannel.isShowExitDialogOn = false;
 };
 
 SceneSceneChannel.prototype.handleShow = function(data) {
@@ -265,7 +268,11 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_RETURN:
                 //console.log("KEY_RETURN");
                 e.preventDefault(); //prevent key to do default
-                SceneSceneChannel.shutdownStream();
+                if (SceneSceneChannel.isShowExitDialogOn) {
+                   SceneSceneChannel.shutdownStream();
+                    window.clearTimeout(exitID);
+                }
+                SceneSceneChannel.showExitDialog();
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
                 //console.log("KEY_VOLUMEUP");
@@ -361,8 +368,12 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.isPanelShown()) {
                     SceneSceneChannel.hidePanel();
                 } else {
-                    SceneSceneChannel.shutdownStream();
-                    ChatPositions-=1;
+                    if (SceneSceneChannel.isShowExitDialogOn) {
+                        SceneSceneChannel.shutdownStream();
+                        ChatPositions-=1;
+                        window.clearTimeout(exitID);
+                    }
+                    SceneSceneChannel.showExitDialog();
                 }
                 break;
             case TvKeyCode.KEY_PLAYPAUSE:
@@ -477,6 +488,22 @@ SceneSceneChannel.qualityChanged = function() {
         webapis.avplay.play();
     } catch (e) {
         console.error(e);
+    }
+};
+
+SceneSceneChannel.showExitDialog = function() {
+    if (SceneSceneChannel.isShowDialogOn) {
+        $("#scene_channel_dialog_loading").hide();
+        SceneSceneChannel.isShowDialogOn = false;
+    }
+    $("#scene_channel_dialog_exit_text").text(STR_EXIT);
+    if (!SceneSceneChannel.isShowExitDialogOn) {
+        $("#scene_channel_dialog_exit").show();
+        SceneSceneChannel.isShowExitDialogOn = true;
+        exitID = window.setTimeout(SceneSceneChannel.showExitDialog, 3000);
+    } else {
+        $("#scene_channel_dialog_exit").hide();
+        SceneSceneChannel.isShowExitDialogOn = false;
     }
 };
 

@@ -310,7 +310,7 @@
                STR_REFRESH
             </div>
          </div>
-         <div id="dialog_loading" style="text-align: center; width: 100%; margin-top: 19%;">
+         <div id="dialog_loading" style="position: fixed; z-index:4; text-align: center; width: 100%; margin-top: 19%;">
             <div class="spinner" style="display: inline-block;">
                <div class="bounce1"></div>
                <div class="bounce2"></div>
@@ -319,15 +319,18 @@
             </div>
             <div id="dialog_loading_text" class="strokedbig" style="display: inline-block; font-size: 200%; color: white;"></div>
          </div>
+         <div id="dialog_exit" style="z-index:3; position: fixed; text-align: center; width: 100%; top: 50%;">
+            <div id="dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: white;"></div>
+         </div>
          <table id="stream_table" style="width: 100%; padding-top: 0%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
          </table>
-         <div id="streamname_frame" class="openchannel" style="position : absolute; ">
+         <div id="streamname_frame" class="openchannel" style="z-index:1; position : absolute; ">
             <input id="streamname_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_OPEN" />
             <div id="streamname_button" class="button_go label_open">
                STR_OPEN
             </div>
          </div>
-         <div id="username_frame" class="openchannel">
+         <div id="username_frame" class="openchannel" style="z-index:2">
             <input id="username_input" class="channelname label_placeholder_tools" type="text" placeholder="STR_PLACEHOLDER_TOOLS" />
             <div id="username_button" class="button_go label_open">
                STR_OPEN
@@ -371,7 +374,10 @@
                </div>
             </div>
          </div>
-         <div id="scene_channel_dialog_loading" style="position: absolute; z-index:2; text-align: center; width: 100%; margin-top: 32%;">
+         <div  id="chat_container" style="z-index:2; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5)"">
+            <!-- Chat browser-->
+         </div>
+         <div id="scene_channel_dialog_loading" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 32%;">
             <div class="spinner" style="display: inline-block;">
                <div class="bounce1"></div>
                <div class="bounce2"></div>
@@ -380,11 +386,11 @@
             </div>
             <div id="scene_channel_dialog_loading_text" class="strokedbig" style="display: inline-block; font-size: 200%; color: white;"></div>
          </div>
-         <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 32%;">
+         <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index:4; text-align: center; width: 100%; margin-top: 32%;">
             <i style="display: inline-block; font-size: 450%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
          </div>
-         <div  id="chat_container" style="z-index:4; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5)"">
-            <!-- Chat browser-->
+         <div id="scene_channel_dialog_exit" style="position: absolute; z-index:5; text-align: center; width: 100%; margin-top: 32%;">
+            <div id="scene_channel_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 200%; color: white;"></div>
          </div>
       </div>
       </div>

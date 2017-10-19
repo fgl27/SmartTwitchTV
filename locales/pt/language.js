@@ -11,7 +11,7 @@ var STR_QUALITY = "Qualidade";
 var STR_RETRYING = "Carregando";
 var STR_VIEWER = "Viewers";
 var STR_BUFFERING = "Buffering";
-
+var STR_EXIT = "Clique denovo para sair!";
 
 var STR_ERROR_RENDER_SOURCE = "Formato não suportado :(";
 var STR_ERROR_RENDER_FIXED = "Desculpe mas parece que as qualidades\n High/Medium/Low não são suportadas\npela sua TV. Tente a qualidade Source.";
