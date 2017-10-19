@@ -1,5 +1,5 @@
 var random_int = Math.round(Math.random() * 1e7);
-var timeoutID, refreshID, pauseEndID, pauseStartID;
+var timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = 0, ChatPositionsTemp = 0;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -281,8 +281,12 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_CHANNELUP:
                 if (!SceneSceneChannel.isPanelShown()) {
-                    SceneSceneChannel.showChat();
-                    SceneSceneChannel.ChatEnableByChat = true;
+                    ChatPositions += 1;
+                    if (!SceneSceneChannel.isChatShown()) {
+                        SceneSceneChannel.showChat();
+                        SceneSceneChannel.ChatEnableByChat = true;
+                    }
+                    SceneSceneChannel.ChatPosition();
                     break;
                 }
             case TvKeyCode.KEY_UP:
@@ -304,8 +308,11 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_CHANNELDOWN:
                 if (!SceneSceneChannel.isPanelShown()) {
-                    SceneSceneChannel.hideChat();
-                    SceneSceneChannel.ChatEnableByChat = false;
+                    if (SceneSceneChannel.isChatShown()) {
+                        ChatPositions -= 1;
+                        SceneSceneChannel.hideChat();
+                        SceneSceneChannel.ChatEnableByChat = false;
+                    }
                     break;
                 }
             case TvKeyCode.KEY_DOWN:
@@ -355,6 +362,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     SceneSceneChannel.hidePanel();
                 } else {
                     SceneSceneChannel.shutdownStream();
+                    ChatPositions-=1;
                 }
                 break;
             case TvKeyCode.KEY_PLAYPAUSE:
@@ -549,6 +557,7 @@ SceneSceneChannel.showPanel = function() {
     }
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
+    if (ChatPositions > 1) ChatPositionsTemp = ChatPositions, ChatPositions = 1, SceneSceneChannel.ChatPosition();
     if (!SceneSceneChannel.isChatShown()) {
         SceneSceneChannel.showChat();
         SceneSceneChannel.ChatEnableByPanel = true;
@@ -563,10 +572,26 @@ SceneSceneChannel.hidePanel = function() {
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
+    ChatPositions = ChatPositionsTemp;
     if (!SceneSceneChannel.ChatEnableByChat && SceneSceneChannel.ChatEnableByPanel) {
         SceneSceneChannel.hideChat();
         SceneSceneChannel.ChatEnableByPanel = false;
     }
+    SceneSceneChannel.ChatPosition();
+};
+
+SceneSceneChannel.ChatPosition = function() {
+    var left = "75.3%", top = "51.5%";//default
+
+    if (ChatPositions > 1) top = "0.5%"; // top/lefth
+    if (ChatPositions > 2) left = "38.3%"; // top/midle
+    if (ChatPositions > 3) left = "0%"; // top/right
+
+    if (ChatPositions > 4) top = "51.5%"; // bottom/lefth
+    if (ChatPositions > 5) left = "38.3%"; // bottom/midle
+    if (ChatPositions > 6 || ChatPositions < 2) ChatPositions = 1, left = "75.3%", top = "51.5%"; // reset
+    document.getElementById("chat_container").style.top = top;
+    document.getElementById("chat_container").style.left = left;
 };
 
 SceneSceneChannel.showChat = function() {
