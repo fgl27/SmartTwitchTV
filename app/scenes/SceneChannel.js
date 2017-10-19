@@ -4,6 +4,8 @@ SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
 SceneSceneChannel.ForcedPannelOn = false;
+SceneSceneChannel.ChatEnableByPanel = false;
+SceneSceneChannel.ChatEnableByChat = false;
 
 SceneSceneChannel.loadingDataTryMax = 15;
 SceneSceneChannel.loadingDataTry;
@@ -234,6 +236,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
     SceneSceneChannel.hidePanel();
+    SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_viewer").text("");
@@ -277,6 +280,11 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
     } else {
         switch (e.keyCode) {
             case TvKeyCode.KEY_CHANNELUP:
+                if (!SceneSceneChannel.isPanelShown()) {
+                    SceneSceneChannel.showChat();
+                    SceneSceneChannel.ChatEnableByChat = true;
+                    break;
+                }
             case TvKeyCode.KEY_UP:
                 if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0) {
                     //console.log("KEY_CHANNELDOWN or KEY_4");
@@ -295,6 +303,11 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 //}
                 break;
             case TvKeyCode.KEY_CHANNELDOWN:
+                if (!SceneSceneChannel.isPanelShown()) {
+                    SceneSceneChannel.hideChat();
+                    SceneSceneChannel.ChatEnableByChat = false;
+                    break;
+                }
             case TvKeyCode.KEY_DOWN:
                 if (SceneSceneChannel.isPanelShown() &&
                     SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1) {
@@ -536,6 +549,10 @@ SceneSceneChannel.showPanel = function() {
     }
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
+    if (!SceneSceneChannel.isChatShown()) {
+        SceneSceneChannel.showChat();
+        SceneSceneChannel.ChatEnableByPanel = true;
+    }
 };
 
 SceneSceneChannel.hidePanel = function() {
@@ -546,6 +563,22 @@ SceneSceneChannel.hidePanel = function() {
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
+    if (!SceneSceneChannel.ChatEnableByChat && SceneSceneChannel.ChatEnableByPanel) {
+        SceneSceneChannel.hideChat();
+        SceneSceneChannel.ChatEnableByPanel = false;
+    }
+};
+
+SceneSceneChannel.showChat = function() {
+    $("#chat_container").show();
+};
+
+SceneSceneChannel.hideChat = function() {
+    $("#chat_container").hide();
+};
+
+SceneSceneChannel.isChatShown = function() {
+    return $("#chat_container").is(":visible");
 };
 
 function clearPause() {
