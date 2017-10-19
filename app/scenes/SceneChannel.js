@@ -192,7 +192,29 @@ var updateCurrentTime = function(currentTime) {
     if (currentTime == null) {
         currentTime = webapis.avplay.getCurrentTime();
     }
-    document.getElementById("stream_info_currentTime").innerHTML = ((currentTime < 36000000) ? "0" : "") + Math.floor(currentTime / 3600000) + ":" + ((currentTime < 600000) ? "0" : "") + Math.floor((currentTime / 60000) % 60) + ":" + ((currentTime < 10000) ? "0" : "") + Math.floor((currentTime / 1000) % 60) + parseInt(localStorage.getItem('ChatPositionsValue') || 0);
+
+    var time, seconds, minutes, hours;
+    //seconds      
+    time = Math.floor(currentTime/1000);
+    seconds = time % 60;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    //minutes
+    time = Math.floor(time/60);
+    minutes = time % 60;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+    //hours
+    time = Math.floor(time/60);
+    hours = time % 24;
+    time = hours;
+    hours = (hours < 10) ? "0" + hours : hours;
+
+    //final time 00:00 or 00:00:00
+    time = (time == 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+
+    document.getElementById("stream_info_currentTime").innerHTML = time;
+
 }
 
 SceneSceneChannel.prototype.initialize = function() {
