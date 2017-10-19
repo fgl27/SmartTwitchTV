@@ -519,6 +519,7 @@ SceneSceneBrowser.switchMode = function(mode) {
             SceneSceneBrowser.refreshInputFocus();
         } else if (mode == SceneSceneBrowser.MODE_TOOLS) {
             //console.log("Enter MODE_TOOLS")
+            $("#tip_icon_user").addClass('tip_icon_active');
             SceneSceneBrowser.clean();
             SceneSceneBrowser.showInputTools();
             SceneSceneBrowser.refreshInputFocusTools();
@@ -847,7 +848,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            SceneSceneBrowser.refresh();
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) SceneSceneBrowser.refresh();
             break;
         case TvKeyCode.KEY_0:
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
