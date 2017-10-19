@@ -11,7 +11,7 @@ var STR_QUALITY = "Qualität";
 var STR_RETRYING = "Versuch";
 var STR_VIEWER = "Zuschauer";
 var STR_BUFFERING = "Puffer";
-
+var STR_EXIT = "Klicken Sie erneut, um zu beenden!";
 
 var STR_ERROR_RENDER_SOURCE = "Format not supported :(";
 var STR_ERROR_RENDER_FIXED = "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.";

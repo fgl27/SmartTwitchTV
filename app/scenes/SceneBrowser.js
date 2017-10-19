@@ -1,7 +1,10 @@
 SceneSceneBrowser.selectedChannel;
+var exitID;
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
 SceneSceneBrowser.errorNetwork = false;
+
+SceneSceneBrowser.isShowExitDialogOn = false;
 
 SceneSceneBrowser.ItemsLimit = 100;
 SceneSceneBrowser.ColoumnsCount = 4;
@@ -428,6 +431,22 @@ SceneSceneBrowser.loadData = function() {
     SceneSceneBrowser.loadDataRequest();
 };
 
+SceneSceneBrowser.showExitDialog = function() {
+    if (SceneSceneBrowser.isShowDialogOn) {
+        $("#dialog_loading").hide();
+        SceneSceneBrowser.isShowDialogOn = false;
+    }
+    $("#dialog_exit_text").text(STR_EXIT);
+    if (!SceneSceneBrowser.isShowExitDialogOn) {
+        $("#dialog_exit").show();
+        SceneSceneBrowser.isShowExitDialogOn = true;
+        exitID = window.setTimeout(SceneSceneBrowser.showExitDialog, 3000);
+    } else {
+        $("#dialog_exit").hide();
+        SceneSceneBrowser.isShowExitDialogOn = false;
+    }
+};
+
 SceneSceneBrowser.showDialog = function(title) {
     $("#dialog_loading_text").text(title);
     if (!SceneSceneChannel.isShowDialogOn) {
@@ -442,6 +461,7 @@ SceneSceneBrowser.showDialog = function(title) {
 SceneSceneBrowser.showTable = function() {
     SceneSceneBrowser.isShowDialogOn = false;
     $("#dialog_loading").hide();
+    $("#dialog_exit").hide();
     $("#streamname_frame").hide();
     $("#username_frame").hide();
     $("#stream_table").show();
@@ -452,6 +472,7 @@ SceneSceneBrowser.showTable = function() {
 SceneSceneBrowser.showInput = function() {
     SceneSceneBrowser.isShowDialogOn = false;
     $("#dialog_loading").hide();
+    $("#dialog_exit").hide();
     $("#stream_table").hide();
     $("#streamname_frame").show();
     $("#username_frame").hide();
@@ -460,6 +481,7 @@ SceneSceneBrowser.showInput = function() {
 SceneSceneBrowser.showInputTools = function() {
     SceneSceneBrowser.isShowDialogOn = false;
     $("#dialog_loading").hide();
+    $("#dialog_exit").hide();
     $("#stream_table").hide();
     $("#streamname_frame").hide();
     $("#username_frame").show();
@@ -680,7 +702,11 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             return;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
-            tizen.application.getCurrentApplication().exit();
+                if (SceneSceneBrowser.isShowExitDialogOn) {
+                    window.clearTimeout(exitID);
+                    tizen.application.getCurrentApplication().exit();
+                }
+                SceneSceneBrowser.showExitDialog();
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
             if (SceneSceneBrowser.isShowDialogOn) {
                 SceneSceneBrowser.clean();
@@ -920,6 +946,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 function onCompleteText(string) {
 
 }
+
 
 SceneSceneBrowser.addNetworkStateChangeListener = function() {
     var onChange = function(data) {
