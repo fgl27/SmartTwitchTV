@@ -273,14 +273,16 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 var tbody = $('<tbody></tbody>');
                 $('#stream_table').append(tbody);
                 $('#stream_table').css("padding-top", "0%");
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_CHANNELS +
-                             SceneSceneBrowser.followerUsername + STR_CHANGE_USER + ')</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_CHANNELS +
+                    SceneSceneBrowser.followerUsername + STR_CHANGE_USER + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_HOSTS +
-                             SceneSceneBrowser.followerUsername + ')</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_HOSTS +
+                    SceneSceneBrowser.followerUsername + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_GAMES + SceneSceneBrowser.followerUsername + ')</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_GAMES +
+                    SceneSceneBrowser.followerUsername + ')</div>');
             }
+
             $('#stream_table').find('tbody').append(header);
 
         }
