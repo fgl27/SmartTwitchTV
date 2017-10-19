@@ -265,7 +265,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
         ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
         ChatPositionsTemp = ChatPositions;
     } else ChatPositionsTemp = ChatPositions + 1;
-    SceneSceneChannel.ChatEnableByChat = localStorage.getItem('ChatEnableByChat');
+    SceneSceneChannel.ChatEnableByChat = localStorage.getItem('ChatEnableByChat') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
@@ -403,7 +403,6 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         SceneSceneChannel.shutdownStream();
                         ChatPositions-=1;
                         window.clearTimeout(exitID);
-                        localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
                     }
                     SceneSceneChannel.showExitDialog();
                 }
