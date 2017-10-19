@@ -1,5 +1,6 @@
 SceneSceneBrowser.selectedChannel;
 var exitID;
+
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
 SceneSceneBrowser.errorNetwork = false;
@@ -204,7 +205,7 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
-            SceneSceneBrowser.showDialog("Unable to load stream data. Reason: " + reason);
+            SceneSceneBrowser.showDialog("Unable to load stream data after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
         }
     }
 };
@@ -366,8 +367,8 @@ SceneSceneBrowser.loadDataRequest = function() {
     try {
         var dialog_title = "";
         if (SceneSceneBrowser.loadingDataTry > 0) {
-            dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + "/" + SceneSceneBrowser.loadingDataTryMax + ")";
-        }
+            dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + STR_ATTEMPT + ")";
+        } else dialog_title = STR_RETRYING + " (" + (1) + STR_ATTEMPT + ")";
 
         SceneSceneBrowser.showDialog(dialog_title);
 
@@ -417,6 +418,7 @@ SceneSceneBrowser.loadDataRequest = function() {
     } catch (error) {
         SceneSceneBrowser.loadDataError(error.message, null);
     }
+
 };
 
 SceneSceneBrowser.loadData = function() {
@@ -689,49 +691,49 @@ SceneSceneBrowser.prototype.handleBlur = function() {
     // this function will be called when the scene manager move focus to another scene from this scene
 };
 
-SceneSceneBrowser.prototype.handleKeyDown = function(e) {
-    //console.log("SceneSceneBrowser.handleKeyDown(" + e.keyCode + ")");
-    if (e.keyCode == TvKeyCode.KEY_RETURN) {
-        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData) {
-            if (SceneSceneBrowser.returnToGames) {
-                e.preventDefault(); //prevent key to do default
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
-            } else {
-                e.preventDefault(); //prevent key to do default
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-            }
-            return;
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
-                if (SceneSceneBrowser.isShowExitDialogOn) {
-                    window.clearTimeout(exitID);
-                    tizen.application.getCurrentApplication().exit();
-                }
-                SceneSceneBrowser.showExitDialog();
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
-            if (SceneSceneBrowser.isShowDialogOn) {
-                SceneSceneBrowser.clean();
-                SceneSceneBrowser.showInput();
-                SceneSceneBrowser.refreshInputFocus();
-            } else {
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-            }
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
-            if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
-            } else {
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-            }
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS) {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-        }
 
-    }
+SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
     if (SceneSceneBrowser.loadingData || SceneSceneBrowser.noNetwork) {
         return;
     }
 
     switch (e.keyCode) {
+        case TvKeyCode.KEY_RETURN:
+            e.preventDefault(); //prevent key to do default
+            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData) {
+                if (SceneSceneBrowser.returnToGames) {
+                    e.preventDefault(); //prevent key to do default
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+                } else {
+                    e.preventDefault(); //prevent key to do default
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+                }
+                return;
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
+                if (SceneSceneBrowser.isShowExitDialogOn) {
+                    window.clearTimeout(exitID);
+                    tizen.application.getCurrentApplication().exit();
+                }
+                SceneSceneBrowser.showExitDialog();
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
+                if (SceneSceneBrowser.isShowDialogOn) {
+                    SceneSceneBrowser.clean();
+                    SceneSceneBrowser.showInput();
+                    SceneSceneBrowser.refreshInputFocus();
+                } else {
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+                }
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
+                if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+                } else {
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+                }
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS) {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+            }
+            break;
         case TvKeyCode.KEY_LEFT:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
                 if (SceneSceneBrowser.cursorX > 0) {
@@ -982,6 +984,6 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
         //console.log("addNetworkStateChangeListener exception [" + e.code + "] name: " + e.name + " message: " + e.message);
     }
     //if (SceneSceneBrowser.listenerID > -1) {
-        //console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
+    //    console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
     //}
 }

@@ -414,7 +414,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
 
 SceneSceneChannel.onConnectionFailed = function() {
     if (SceneSceneChannel.playingTry++ < SceneSceneChannel.playingTryMax) {
-        SceneSceneChannel.showDialog(STR_RETRYING + " (" + SceneSceneChannel.playingTry + "/" + SceneSceneChannel.playingTryMax + ")");
+        SceneSceneChannel.showDialog(STR_RETRYING + " (" + SceneSceneChannel.playingTry + STR_ATTEMPT + ")");
         SceneSceneChannel.Player.Play(SceneSceneChannel.playingUrl);
     } else {
         SceneSceneChannel.showDialog(STR_ERROR_CONNECTION_FAIL);
@@ -721,8 +721,9 @@ SceneSceneChannel.loadDataRequest = function() {
     try {
         var dialog_title = "";
         if (SceneSceneChannel.loadingDataTry > 0) {
-            dialog_title = STR_RETRYING + " (" + (SceneSceneChannel.loadingDataTry + 1) + "/" + SceneSceneChannel.loadingDataTryMax + ")";
-        }
+            dialog_title = STR_RETRYING + " (" + (SceneSceneChannel.playingTry + 1) + STR_ATTEMPT + ")";
+        } else dialog_title = STR_RETRYING + " (" + (1) + STR_ATTEMPT + ")";
+
         SceneSceneChannel.showDialog(dialog_title);
         var xmlHttp = new XMLHttpRequest();
 

@@ -12,6 +12,7 @@ var STR_RETRYING = "Sto riprovando";
 var STR_VIEWER = "Spettatori";
 var STR_BUFFERING = "Caricamento in corso...";
 var STR_EXIT = "Fai clic nuovamente per uscire!";
+var STR_ATTEMPT = "º Attempt";
 
 var STR_ERROR_RENDER_SOURCE = "Formato non supportato :(";
 var STR_ERROR_RENDER_FIXED = "Spiacenti ma sembra lo stream in \nQualita' Alta/Media/Bassa non sono supportati\n sul tuo TV. Prova a settare la qualia' sullo stream.";

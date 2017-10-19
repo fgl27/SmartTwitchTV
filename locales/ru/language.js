@@ -12,6 +12,7 @@ var STR_RETRYING = "Попытка";
 var STR_VIEWER = "Зрителей";
 var STR_BUFFERING = "Буферизация";
 var STR_EXIT = "Нажмите еще раз, чтобы выйти!";
+var STR_ATTEMPT = "º Attempt";
 
 // Not sure if errors should be translated at all
 var STR_ERROR_RENDER_SOURCE = "Формат не поддерживается :(";
