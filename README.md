@@ -17,43 +17,63 @@ Controls
 ==============
 ![control](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/controler.png)
 
-The Application is tested with the above remote, below are the controls
+The Application is tested with the above remote, below are the controls and section explains
+## Top toolbar
+* **CH Down/Up**: Down Refresh current Screen, Up change for next Screen A - B - C - A (after C  back to A)
+* **Live**: All TwitchTv live Channel
+* **User**: Setup yours user name (using green 4 color buttons)/ Show user Live Followed (using CH Up if user is setup if not goes to Setup yours user name)
+* **Games**: All TwitchTv live Games
+* **Open a channel**: Open a channel by name
+
 ## Action: Remote Key
 ### From Any Screen
 * **Force close the app**: Hold Return
 
-### Channels Screen
+### Live Screen
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
-* **Move to "Games" Screen**: CH **UP** (Channel Up)
-* **Refresh (From "Channels" screen)**: CH **DOWN** (Channel Down)
-* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
-* **Close the app**: Return
+* **Move to "User"**: CH **UP** (Channel Up)
+* **Refresh Live Screen**: CH **DOWN** (Channel Down)
+* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
+* **Close the application**: Return  (click it twice under 3 seconds)
+
+### User Setup a User Screen (4 color buttons (color) after Directional pad (right) for (green))
+* **Open Key Board**: CH **UP** (Channel Up) to select "text box" after Select (key), type your user and click done
+* **Load User**: CH **DOWN** (Channel Down) to select "Open Button" after Select (key)
+
+### User Followed Screen (Access using CH UP (Channel Up) after having setup a user from Live Screen)
+* **To move between videos/games**: Directional pad (up/down/left/right)
+* **Open a video/game**: Select or Play/Pause
+* **Move to "Games"**: CH **UP** (Channel Up)
+* **Refresh User Followed Screen**: CH **DOWN** (Channel Down)
+* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
+* **Return to Live Screen**: Return
 
 ### Games category Screen (select a game category)
 * **To move between games**: Directional pad (up/down/left/right)
 * **Open a game category**: Select or Play/Pause
-* **Move to "Channels" Screen**: CH **DOWN** (Channel Down)
-* **Refresh (From "Games" screen)**: CH **UP** (Channel Up)
-* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
-* **Return to Channels Screen**: Return
+* **Refresh (Games category Screen**: CH **DOWN** (Channel Down)
+* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
+* **Return to Live Screen**: Return or CH **UP** (Channel Up)
 
-### Game Screen (Select a video)
+### A Game Screen (Select a video of a game category)
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
-* **Move to "Channels" Screen**: CH **DOWN** (Channel Down)
-* **Refresh (From "A Game" screen)**: CH **UP** (Channel Up)
-* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right)
+* **Refresh (From "A Game" screen)**: CH **DOWN** (Channel Down)
+* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Games category Screen**: Return
+* **Return to Live Screen**: CH **UP** (Channel Up)
 
 ### Playing a video Screen
 * **Play/Pause a video**: Play/Pause
+* **Close a video (if side panel is open)**: Return (click it twice under 3 seconds)
 * **Open side panel**: Directional pad (left)
-* **If side panel is closed**:
-* **Close running video** : Return
-* **If side panel is open**:
-* **Close side panel**: Directional pad (right) or Return
-* **Change quality**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
+* **Close side panel(if it's open)**: Directional pad (right) or Return
+* **Change quality (if side panel is open)**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
+* **Close video (If side panel is closed)** : Return twice
+* **Show Transparent chat**: CH **UP** (Channel Up)
+* **Move Transparent chat (if it's showing)**: CH **UP** (Channel Up)
+* **Hide Transparent chat (if it's showing)**: CH **DOWN** (Channel Down)
 
 Revised installation guide Tizen studio (tested on Linux)
 ==============
