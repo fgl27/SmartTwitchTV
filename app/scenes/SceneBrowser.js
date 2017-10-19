@@ -133,7 +133,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail
     if (info_fill) {
         infostyle = 'style="right: 0;"';
     } else {
-        infostyle = 'style="right: 20%;"';
+        infostyle = 'style="right: 10%;"';
     }
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + data_name + '"></td>').html(
@@ -273,11 +273,13 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 var tbody = $('<tbody></tbody>');
                 $('#stream_table').append(tbody);
                 $('#stream_table').css("padding-top", "0%");
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_CHANNELS + '</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_CHANNELS +
+                             SceneSceneBrowser.followerUsername + STR_CHANGE_USER + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_HOSTS + '</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_HOSTS +
+                             SceneSceneBrowser.followerUsername + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_GAMES + '</div>');
+                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + STR_LIVE_GAMES + SceneSceneBrowser.followerUsername + ')</div>');
             }
             $('#stream_table').find('tbody').append(header);
 
@@ -300,28 +302,28 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     var game = response.top[cursor];
 
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + ' Viewers', '', true);
+                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + STR_VIEWER, '', true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
 
                     var hosts = response.hosts[cursor];
                     matrix[t] = [hosts.target.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name, hosts.target.title, addCommas(hosts.target.viewers) + ' Viewers', false); //hosts.target.meta_game
+                    cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name, hosts.target.title, addCommas(hosts.target.viewers) + STR_VIEWER, false); //hosts.target.meta_game
 
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
 
                     var game = response.follows[cursor];
                     matrix[t] = [game.game.name, 'game'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + ' Viewers', '', true);
+                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + STR_VIEWER, '', true);
 
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
 
                     var stream = response.streams[cursor];
                     matrix[t] = [stream.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + ' Viewers', false);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
                     var stream = response.streams[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + ' Viewers', false);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
 
                 row.append(cell);
@@ -495,9 +497,9 @@ SceneSceneBrowser.switchMode = function(mode) {
         SceneSceneBrowser.mode = mode;
 
         $("#tip_icon_channels").removeClass('tip_icon_active');
+        $("#tip_icon_user").removeClass('tip_icon_active');
         $("#tip_icon_games").removeClass('tip_icon_active');
         $("#tip_icon_open").removeClass('tip_icon_active');
-        $("#tip_icon_refresh").removeClass('tip_icon_active');
 
         if (mode == SceneSceneBrowser.MODE_ALL) {
             $("#tip_icon_channels").addClass('tip_icon_active');
@@ -521,6 +523,7 @@ SceneSceneBrowser.switchMode = function(mode) {
         } else if (mode == SceneSceneBrowser.MODE_FOLLOWER) {
             if (SceneSceneBrowser.followerUsername != null && !SceneSceneBrowser.isShowDialogOn) {
                 //console.log("Enter MODE_FOLLOWER")
+                $("#tip_icon_user").addClass('tip_icon_active');
                 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
                 SceneSceneBrowser.refresh();
             } else {
@@ -641,10 +644,13 @@ function SceneSceneBrowser() {
 
 SceneSceneBrowser.initLanguage = function() {
     //set correct labels
+    $('.label_icon_updown').html(STR_CH_UPDOWN);
+    $('.label_updown').html(STR_UPDOWN);
     $('.label_channels').html(STR_CHANNELS);
+    $('.label_user').html(STR_USER);
     $('.label_games').html(STR_GAMES);
+    $('.label_open_channel').html(STR_OPEN_CHANNEL);
     $('.label_open').html(STR_OPEN);
-    $('.label_refresh').html(STR_REFRESH);
     $('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
     $('.label_placeholder_tools').attr("placeholder", STR_PLACEHOLDER_TOOLS);
 };
@@ -830,20 +836,16 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS) {
-                SceneSceneBrowser.refresh();
-            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
-                SceneSceneBrowser.refresh();
-            } else {
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+            } else {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_ALL) {
-                SceneSceneBrowser.refresh();
-            } else {
-                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-            }
+            SceneSceneBrowser.refresh();
             break;
         case TvKeyCode.KEY_0:
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
@@ -928,17 +930,20 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
             break;
         case TvKeyCode.KEY_GREEN:
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
-            break;
-        case TvKeyCode.KEY_YELLOW:
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
-            break;
-        case TvKeyCode.KEY_TOOLS:
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
             break;
-        case TvKeyCode.KEY_BLUE:
-            SceneSceneBrowser.refresh();
+        case TvKeyCode.KEY_YELLOW:
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
             break;
+        case TvKeyCode.KEY_BLUE:
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
+            break;
+        //case TvKeyCode.KEY_TOOLS:
+        //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+        //    break;
+        //case TvKeyCode.KEY_INFO:
+        //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+        //    break;
         default:
             //console.log("handle default key event, key code(" + e.keyCode + ")");
             break;

@@ -20,11 +20,59 @@
          margin: 0px;
          -webkit-font-smoothing: antialiased;
          }
+         div.ret_icon {
+         box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         -webkit-box-sizing: border-box;
+         width: 130px;
+         height: 46px;
+         border-radius: 50%;
+         margin-right: 0px;
+         display: inline-block;
+         color: white;
+         font-size: 20px;
+         font-weight:bold;
+         text-align: center;
+         vertical-align: middle;
+         line-height: 42px;
+         text-shadow:
+         #000 0px 0px 2.5px,
+         #000 0px 0px 2.5px,
+         #000 0px 0px 2.5px,
+         #000 0px 0px 2.5px,
+         #000 0px 0px 2.5px,
+         #000 0px 0px 2.5px;
+         -webkit-font-smoothing: antialiased;
+         border-radius: 20%;
+         border: 3px solid white;
+         }
+         div.ret_label {
+         /*width: 86px;*/
+         height: 38px;
+         margin-right: 10px;
+         display: inline-block;
+         color: white;
+         font-size: 20px;
+         font-weight:bold;
+         vertical-align: middle;
+         line-height: 42px;
+         text-shadow:
+         #42009E 0px 0px 3px,
+         #42009E 0px 0px 3px,
+         #42009E 0px 0px 3px,
+         #42009E 0px 0px 3px,
+         #42009E 0px 0px 3px,
+         #42009E 0px 0px 3px;
+         -webkit-font-smoothing: antialiased;
+         }
          div.tip_icon {
+         box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         -webkit-box-sizing: border-box;
          width: 46px;
          height: 46px;
          border-radius: 50%;
-         margin-right: 4px;
+         margin-right: 0px;
          display: inline-block;
          color: white;
          font-size: 23px;
@@ -42,13 +90,14 @@
          -webkit-font-smoothing: antialiased;
          }
          div.tip_icon_active {
+         line-height: 42px;/*div.tip_icon line-height minus border px size */
          border-radius: 50%;
          border: 3px solid white;
          }
          div.tip_label {
          /*width: 86px;*/
          height: 38px;
-         margin-right: 32px;
+         margin-right: 10px;
          display: inline-block;
          color: white;
          font-size: 23px;
@@ -80,7 +129,7 @@
          position: absolute;
          left: 5px;
          bottom: 5px;
-         right: 20%;
+         right: 10%;
          background-color: rgba(0, 0, 0, 0.5);
          padding: 2%;
          text-shadow:
@@ -100,7 +149,7 @@
          overflow: hidden;
          color: rgba(255, 255, 255, 0.95);
          font-weight: 100;
-         font-size: 140%;
+         font-size: 120%;
          text-shadow:
          #000 0px 0px 2.5px,
          #000 0px 0px 2.5px,
@@ -118,7 +167,7 @@
          overflow: hidden;
          color: rgba(255, 255, 255, 0.70);
          font-weight: 100;
-         font-size: 140%;
+         font-size: 120%;
          text-shadow:
          #000 0px 0px 2.5px,
          #000 0px 0px 2.5px,
@@ -215,11 +264,11 @@
          width: 100%;
          text-align: left;
          white-space: nowrap;
-         text-overflow: ellipsis;
-         overflow: hidden;
+         /* text-overflow: ellipsis;
+         overflow: hidden; */
          color: rgba(255, 255, 255, 0.95);
          font-weight: 100;
-         font-size: 140%;
+         font-size: 120%;
          margin-bottom: 10px;
          }
          .spinner {
@@ -285,29 +334,35 @@
          background-image : url('')" ;="">
          <img style="float: left; width: 12%; padding-left: 3%; padding-top: 0.5%; padding-bottom: 0%;" src="images/twitchlogo.png" />
          <div style="float: right; padding-top: 1.0%;">
+            <div id="ret_icon_channels" class="ret_icon label_icon_updown" style="background-color: #000000">
+               STR_CH_UPDOWN
+            </div>
+            <div class="ret_label label_updown">
+               STR_UPDOWN
+            </div>
             <div id="tip_icon_channels" class="tip_icon" style="background-color: #FF2020">
                A
             </div>
             <div class="tip_label label_channels">
                STR_CHANNELS
             </div>
-            <div id="tip_icon_games" class="tip_icon" style="background-color: #1ACA20">
+            <div id="tip_icon_user" class="tip_icon" style="background-color: #1ACA20">
                B
+            </div>
+            <div class="tip_label label_user">
+               STR_USER
+            </div>
+            <div id="tip_icon_games" class="tip_icon" style="background-color: #DDC500">
+               C
             </div>
             <div class="tip_label label_games">
                STR_GAMES
             </div>
-            <div id="tip_icon_open" class="tip_icon" style="background-color: #DDC500">
-               C
-            </div>
-            <div class="tip_label label_open">
-               STR_OPEN
-            </div>
-            <div id="tip_icon_refresh" class="tip_icon" style="background-color: #006EF2">
+            <div id="tip_icon_open" class="tip_icon" style="background-color: #006EF2">
                D
             </div>
-            <div class="tip_label label_refresh">
-               STR_REFRESH
+            <div class="tip_label label_open_channel">
+               STR_OPEN_CHANNEL
             </div>
          </div>
          <div id="dialog_loading" style="position: fixed; z-index:4; text-align: center; width: 100%; margin-top: 19%;">
