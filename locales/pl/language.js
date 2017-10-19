@@ -12,6 +12,7 @@ var STR_RETRYING = "Ponawianie";
 var STR_VIEWER = "Widzów";
 var STR_BUFFERING = "Buforowanie";
 var STR_EXIT = "Kliknij ponownie, aby wyjść!";
+var STR_ATTEMPT = "º Attempt";
 
 var STR_ERROR_RENDER_SOURCE = "Format nie jest obsługiwany :(";
 var STR_ERROR_RENDER_FIXED = "Przykro nam, ale wydaje się, że transmisja\njakości High/Medium/Low nie są obsługiwane\nna twoim TV. Spróbuj jakość Source na różnych transmisjach.";

@@ -9,6 +9,7 @@ var STR_PLACEHOLDER_OPEN = "Enter channel name...";
 var STR_QUALITY = "Quality";
 
 var STR_RETRYING = "Loading";
+var STR_ATTEMPT = "º Attempt";
 var STR_VIEWER = "Viewers";
 var STR_BUFFERING = "Buffering";
 var STR_EXIT = "Click again to exit!";
