@@ -4,6 +4,7 @@ var exitID;
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
 SceneSceneBrowser.errorNetwork = false;
+SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
@@ -46,7 +47,7 @@ SceneSceneBrowser.ime = null;
 SceneSceneBrowser.ime2 = null;
 
 SceneSceneBrowser.loadingData = false;
-SceneSceneBrowser.loadingDataTryMax = 15;
+SceneSceneBrowser.loadingDataTryMax = 12;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.dataEnded = false;
@@ -180,28 +181,32 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
     if (!calling) {
         SceneSceneBrowser.loadingDataTry++;
         if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax) {
-            if (SceneSceneBrowser.loadingDataTry < 10) {
-                SceneSceneBrowser.loadingDataTimeout += 100;
+            if (SceneSceneBrowser.loadingDataTry < 6) {
+                SceneSceneBrowser.loadingDataTimeout += 250;
             } else {
                 switch (SceneSceneBrowser.loadingDataTry) {
-                    case 10:
+                    case 6:
+                        SceneSceneBrowser.loadingDataTimeout = 2400;
+                        break;
+                    case 7:
                         SceneSceneBrowser.loadingDataTimeout = 5000;
                         break;
-                    case 11:
-                        SceneSceneBrowser.loadingDataTimeout = 10000;
+                    case 8:
+                        SceneSceneBrowser.loadingDataTimeout = 15000;
                         break;
-                    case 12:
+                    case 9:
                         SceneSceneBrowser.loadingDataTimeout = 30000;
                         break;
-                    case 13:
-                        SceneSceneBrowser.loadingDataTimeout = 60000;
+                    case 10:
+                        SceneSceneBrowser.loadingDataTimeout = 45000;
                         break;
                     default:
-                        SceneSceneBrowser.loadingDataTimeout = 300000;
+                        SceneSceneBrowser.loadingDataTimeout = 150000;
                         break;
                 }
             }
-            SceneSceneBrowser.loadDataRequest();
+            if (!SceneSceneBrowser.keyReturnPressed) SceneSceneBrowser.loadDataRequest();
+            else SceneSceneBrowser.loadingData = false, SceneSceneBrowser.mhandleKeyReturn();
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
@@ -397,6 +402,10 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else {
             theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         }
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+
         //console.log("theURL: " + theUrl);
         xmlHttp.ontimeout = function() {
 
@@ -415,9 +424,7 @@ SceneSceneBrowser.loadDataRequest = function() {
                 }
             }
         };
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+
         xmlHttp.send(null);
     } catch (error) {
         SceneSceneBrowser.loadDataError(error.message, null);
@@ -432,8 +439,9 @@ SceneSceneBrowser.loadData = function() {
     }
 
     SceneSceneBrowser.loadingData = true;
+    SceneSceneBrowser.keyReturnPressed = false;
     SceneSceneBrowser.loadingDataTry = 0;
-    SceneSceneBrowser.loadingDataTimeout = 500;
+    SceneSceneBrowser.loadingDataTimeout = 1000;
     SceneSceneBrowser.loadDataRequest();
 };
 
@@ -629,15 +637,13 @@ SceneSceneBrowser.refreshInputFocusTools = function() {
 };
 
 SceneSceneBrowser.openStream = function() {
-    //$(window).scrollTop(0);
-
     document.body.removeEventListener("keydown", SceneSceneBrowser.prototype.handleKeyDown);
     document.body.addEventListener("keydown", SceneSceneChannel.prototype.handleKeyDown, false);
     SceneSceneBrowser.browser = false;
 
-    $("#scene1").hide(); //sf.scene.hide('SceneBrowser')
-    $("#scene2").show(); //sf.scene.show('SceneChannel');
-    $("#scene2").focus(); //sf.scene.focus('SceneChannel'); //Check if still need
+    $("#scene1").hide();
+    $("#scene2").show();
+    $("#scene2").focus();
     SceneSceneChannel.prototype.handleFocus();
 };
 
@@ -681,6 +687,8 @@ document.addEventListener("DOMContentLoaded", function(event) { //window.load
 SceneSceneBrowser.prototype.handleShow = function(data) {
     //console.log("SceneSceneBrowser.handleShow()");
     // this function will be called when the scene manager show this scene
+    SceneSceneBrowser.removeFocus();
+    SceneSceneBrowser.addFocus();
 };
 
 SceneSceneBrowser.prototype.handleHide = function() {
@@ -700,17 +708,17 @@ SceneSceneBrowser.prototype.handleBlur = function() {
     // this function will be called when the scene manager move focus to another scene from this scene
 };
 
-
 SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
     if (SceneSceneBrowser.loadingData || SceneSceneBrowser.noNetwork) {
+        if (e.keyCode == TvKeyCode.KEY_RETURN) SceneSceneBrowser.keyReturnPressed = true;
         return;
     }
 
     switch (e.keyCode) {
         case TvKeyCode.KEY_RETURN:
             e.preventDefault(); //prevent key to do default
-            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS && !SceneSceneBrowser.loadingData) {
+            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
                 if (SceneSceneBrowser.returnToGames) {
                     e.preventDefault(); //prevent key to do default
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
@@ -953,10 +961,34 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
     }
 };
 
-function onCompleteText(string) {
-
-}
-
+SceneSceneBrowser.mhandleKeyReturn = function() {
+    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
+        if (SceneSceneBrowser.returnToGames) {
+            e.preventDefault(); //prevent key to do default
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
+        } else {
+            e.preventDefault(); //prevent key to do default
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+        }
+        return;
+    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
+        if (SceneSceneBrowser.isShowDialogOn) {
+            SceneSceneBrowser.clean();
+            SceneSceneBrowser.showInput();
+            SceneSceneBrowser.refreshInputFocus();
+        } else {
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+        }
+    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
+        if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+        } else {
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+        }
+    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS) {
+        SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+    }
+};
 
 SceneSceneBrowser.addNetworkStateChangeListener = function() {
     var onChange = function(data) {
@@ -977,11 +1009,10 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
             }
         } else if (data == 2 || 5) {
             //console.log("[NetworkStateChangedCallback] network cable disconnected data= " + data);
-            SceneSceneBrowser.noNetwork = true;
             if (SceneSceneBrowser.browser) {
+                SceneSceneBrowser.noNetwork = true;
                 SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
             } else {
-                SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
                 SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
             }
         }
