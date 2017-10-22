@@ -615,7 +615,9 @@ SceneSceneChannel.showPanel = function() {
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
     ChatPositionsTemp = ChatPositions;
-    if (ChatPositions > 1) ChatPositions = 1, SceneSceneChannel.ChatPosition();
+    //reset chat positon
+    ChatPositions = 1;
+    SceneSceneChannel.ChatPosition();
     if (!SceneSceneChannel.isChatShown()) {
         SceneSceneChannel.showChat();
         SceneSceneChannel.ChatEnableByPanel = true;
@@ -629,6 +631,7 @@ SceneSceneChannel.hidePanel = function() {
     SceneSceneChannel.ForcedPannelOn = false;
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
+    //restore chat positon
     SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
     ChatPositions = ChatPositionsTemp;
     if (!SceneSceneChannel.ChatEnableByChat && SceneSceneChannel.ChatEnableByPanel) {
