@@ -28,7 +28,7 @@ The Application is tested with the above remote, below are the controls and sect
 
 ## Action: Remote Key
 ### From Any Screen
-* **Force close the app**: Hold Return
+* **Force close the app (in case the app froze)**: Hold Return
 
 ### Live Screen
 * **To move between videos**: Directional pad (up/down/left/right)
@@ -69,10 +69,11 @@ The Application is tested with the above remote, below are the controls and sect
 
 ### Playing a video Screen
 * **Play/Pause a video**: Play/Pause
+* **Force refresh a video (in case it froze)**: Directional pad (left) to open side panel, after Press **Select** to restart buffer for current video quality, if it keeps freezing change to a lower video quality (below how to)
 * **Close a video (if side panel is open)**: Return (click it twice under 3 seconds)
 * **Open side panel**: Directional pad (left)
 * **Close side panel(if it's open)**: Directional pad (right) or Return
-* **Change quality (if side panel is open)**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
+* **Change video quality (if side panel is open)**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
 * **Close video (If side panel is closed)** : Return twice
 * **Show Transparent chat**: CH **UP** (Channel Up)
 * **Move Transparent chat (if it's showing)**: CH **UP** (Channel Up)
