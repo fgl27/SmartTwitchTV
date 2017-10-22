@@ -1,5 +1,7 @@
 var random_int = Math.round(Math.random() * 1e7);
-var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = null, ChatPositionsTemp = 0, sysTime, today;
+var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = null,
+    ChatPositionsTemp = 0,
+    sysTime, today;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -100,7 +102,7 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
-    var OutsysTime = new Date().getTime() - 300000;// 300000 current time minus 5 min
+    var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
     if (OutsysTime > sysTime) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
 };
@@ -165,7 +167,7 @@ var listener = {
     onevent: function(eventType, eventData) {
         //console.log("event type error : " + eventType + ", data: " + eventData);
         //if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
-            //console.log("Mudou de Qualidade");
+        //console.log("Mudou de Qualidade");
         //}
     },
     onerror: function(eventType) {
@@ -196,13 +198,13 @@ var updateCurrentTime = function(currentTime) {
 
     var time, seconds, minutes, hours;
 
-    time = Math.floor(currentTime/1000);
+    time = Math.floor(currentTime / 1000);
     seconds = lessthanten(time % 60);
 
-    time = Math.floor(time/60);
+    time = Math.floor(time / 60);
     minutes = lessthanten(time % 60);
 
-    time = Math.floor(time/60) % 24;
+    time = Math.floor(time / 60) % 24;
     hours = lessthanten(time);
 
     //final time 00:00 or 00:00:00
@@ -212,7 +214,7 @@ var updateCurrentTime = function(currentTime) {
     document.getElementById("stream_system_Time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
 }
 
-function lessthanten (time) {
+function lessthanten(time) {
     return (time < 10) ? "0" + time : time;
 }
 
@@ -260,7 +262,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
-    if (ChatPositions == null) { 
+    if (ChatPositions == null) {
         ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
         ChatPositionsTemp = ChatPositions;
     } else ChatPositionsTemp = ChatPositions + 1;
@@ -296,7 +298,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 //console.log("KEY_RETURN");
                 e.preventDefault(); //prevent key to do default
                 if (SceneSceneChannel.isShowExitDialogOn) {
-                   SceneSceneChannel.shutdownStream();
+                    SceneSceneChannel.shutdownStream();
                     window.clearTimeout(exitID);
                 }
                 SceneSceneChannel.showExitDialog();
@@ -400,7 +402,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 } else {
                     if (SceneSceneChannel.isShowExitDialogOn) {
                         SceneSceneChannel.shutdownStream();
-                        ChatPositions-=1;
+                        ChatPositions -= 1;
                         window.clearTimeout(exitID);
                     }
                     SceneSceneChannel.showExitDialog();
@@ -410,15 +412,15 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.Play) {
                     SceneSceneChannel.Play = false,
                         webapis.avplay.pause();
-                        SceneSceneChannel.showPauseDialog();
+                    SceneSceneChannel.showPauseDialog();
                 } else {
                     SceneSceneChannel.Play = true,
                         webapis.avplay.play();
-                        if (SceneSceneChannel.isShowPauseDialogOn) {
-                            $("#scene_channel_dialog_simple_pause").hide();
-                            SceneSceneChannel.isShowPauseDialogOn = false;
-                        }
-                        clearPause();
+                    if (SceneSceneChannel.isShowPauseDialogOn) {
+                        $("#scene_channel_dialog_simple_pause").hide();
+                        SceneSceneChannel.isShowPauseDialogOn = false;
+                    }
+                    clearPause();
                 }
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
@@ -642,7 +644,9 @@ SceneSceneChannel.hidePanel = function() {
 };
 
 SceneSceneChannel.ChatPosition = function() {
-    var left = "75.3%", top = "51.5%";//default
+    //default
+    var left = "75.3%",
+        top = "51.5%";
 
     if (ChatPositions < 7) {
         if (ChatPositions > 1) top = "0.5%"; // top/lefth
