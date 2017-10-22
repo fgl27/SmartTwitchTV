@@ -949,12 +949,12 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_BLUE:
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GO);
             break;
-        //case TvKeyCode.KEY_TOOLS:
-        //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
-        //    break;
-        //case TvKeyCode.KEY_INFO:
-        //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-        //    break;
+            //case TvKeyCode.KEY_TOOLS:
+            //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+            //    break;
+            //case TvKeyCode.KEY_INFO:
+            //    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+            //    break;
         default:
             //console.log("handle default key event, key code(" + e.keyCode + ")");
             break;
