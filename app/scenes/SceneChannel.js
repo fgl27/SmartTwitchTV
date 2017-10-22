@@ -808,6 +808,6 @@ SceneSceneChannel.loadDataRequest = function() {
 
 SceneSceneChannel.loadData = function() {
     SceneSceneChannel.loadingDataTry = 0;
-    SceneSceneChannel.loadingDataTimeout = 1000;
+    SceneSceneChannel.loadingDataTimeout = 1500;
     SceneSceneChannel.loadDataRequest();
 };

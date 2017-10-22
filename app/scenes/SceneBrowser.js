@@ -50,16 +50,12 @@ SceneSceneBrowser.loadingData = false;
 SceneSceneBrowser.loadingDataTryMax = 12;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
+SceneSceneBrowser.loadingDataTimeoutStart = false;
 SceneSceneBrowser.dataEnded = false;
 SceneSceneBrowser.listenerID;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
-tizen.tvinputdevice.registerKey("Tools");
-tizen.tvinputdevice.registerKey("1");
-tizen.tvinputdevice.registerKey("4");
-tizen.tvinputdevice.registerKey("0");
-tizen.tvinputdevice.registerKey("9");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
 tizen.tvinputdevice.registerKey("ColorF0Red");
 tizen.tvinputdevice.registerKey("ColorF1Green");
@@ -441,7 +437,11 @@ SceneSceneBrowser.loadData = function() {
     SceneSceneBrowser.loadingData = true;
     SceneSceneBrowser.keyReturnPressed = false;
     SceneSceneBrowser.loadingDataTry = 0;
-    SceneSceneBrowser.loadingDataTimeout = 1000;
+    SceneSceneBrowser.loadingDataTimeout = 1500;
+    if (!SceneSceneBrowser.loadingDataTimeoutStart)
+        SceneSceneBrowser.loadingDataTimeout += 3500;
+
+    SceneSceneBrowser.loadingDataTimeoutStart = true;
     SceneSceneBrowser.loadDataRequest();
 };
 
