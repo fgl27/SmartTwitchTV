@@ -1,3 +1,7 @@
+/*jshint multistr: true */
+function SceneSceneBrowser() {
+
+}
 SceneSceneBrowser.selectedChannel;
 var exitID;
 
@@ -36,9 +40,9 @@ SceneSceneBrowser.gameSelected = null;
 SceneSceneBrowser.followerChannels;
 SceneSceneBrowser.loadingFollower = false;
 SceneSceneBrowser.itemsCount = 0;
-SceneSceneBrowser.itemsCountFollowerChannels = 0
-SceneSceneBrowser.itemsCountFollowerLiveHosts = 0
-SceneSceneBrowser.itemsCountFollowerGames = 0
+SceneSceneBrowser.itemsCountFollowerChannels = 0;
+SceneSceneBrowser.itemsCountFollowerLiveHosts = 0;
+SceneSceneBrowser.itemsCountFollowerGames = 0;
 SceneSceneBrowser.rowsCountFollower = 0;
 
 SceneSceneBrowser.cursorX = 0;
@@ -277,18 +281,18 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         //Build header for Live Channels, Live Hosts, Live Games
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-
+            var header;
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                 var tbody = $('<tbody></tbody>');
                 $('#stream_table').append(tbody);
                 $('#stream_table').css("padding-top", "0%");
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_CHANNELS +
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_CHANNELS +
                     SceneSceneBrowser.followerUsername + STR_CHANGE_USER + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_HOSTS +
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_HOSTS +
                     SceneSceneBrowser.followerUsername + ')</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_GAMES +
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + response_items + ' ' + STR_LIVE_GAMES +
                     SceneSceneBrowser.followerUsername + ')</div>');
             }
 
@@ -298,20 +302,20 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         var t;
         for (var i = 0; i < response_rows; i++) {
-
+            var row_id;
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                var row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
+                row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
             } else {
-                var row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
+                row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
             }
             var row = $('<tr></tr>');
             var matrix = [];
 
             for (t = 0; t < SceneSceneBrowser.ColoumnsCount && cursor < response_items; t++, cursor++) {
-                var cell;
+                var cell, game, stream;
 
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
-                    var game = response.top[cursor];
+                    game = response.top[cursor];
 
                     cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + STR_VIEWER, '', true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
@@ -322,18 +326,18 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
 
-                    var game = response.follows[cursor];
+                    game = response.follows[cursor];
                     matrix[t] = [game.game.name, 'game'];
                     cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, game.game.name, addCommas(game.viewers) + STR_VIEWER, '', true);
 
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
 
-                    var stream = response.streams[cursor];
+                    stream = response.streams[cursor];
                     matrix[t] = [stream.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
-                    var stream = response.streams[cursor];
+                    stream = response.streams[cursor];
                     cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
 
@@ -657,10 +661,6 @@ SceneSceneBrowser.openStream = function() {
     SceneSceneChannel.prototype.handleFocus();
 };
 
-function SceneSceneBrowser() {
-
-};
-
 SceneSceneBrowser.initLanguage = function() {
     //set correct labels
     $('.label_icon_updown').html(STR_CH_UPDOWN);
@@ -674,7 +674,7 @@ SceneSceneBrowser.initLanguage = function() {
     $('.label_placeholder_tools').attr("placeholder", STR_PLACEHOLDER_TOOLS);
 };
 
-document.addEventListener("DOMContentLoaded", function(event) { //window.load
+document.addEventListener("DOMContentLoaded", function() { //window.load
     // this function will be called only once
     SceneSceneBrowser.initLanguage();
     $("#scene2").hide();
@@ -695,7 +695,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //window.load
 
 });
 
-SceneSceneBrowser.prototype.handleShow = function(data) {
+SceneSceneBrowser.prototype.handleShow = function() {
     //console.log("SceneSceneBrowser.handleShow()");
     // this function will be called when the scene manager show this scene
     SceneSceneBrowser.removeFocus();
@@ -740,7 +740,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
                 if (SceneSceneBrowser.isShowExitDialogOn) {
                     window.clearTimeout(exitID);
-                    tizen.application.getCurrentApplication().exit();
+                    try {
+                        tizen.application.getCurrentApplication().exit();
+                    } catch (e) {}
                 }
                 SceneSceneBrowser.showExitDialog();
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
@@ -888,7 +890,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
                 if (SceneSceneBrowser.cursorY == 0) {
-                    SceneSceneBrowser.ime = document.querySelector('#streamname_input');;
+                    SceneSceneBrowser.ime = document.querySelector('#streamname_input');
                     //This is how we handle input from IME
                     SceneSceneBrowser.ime.addEventListener('input');
 
@@ -1028,7 +1030,7 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
                 SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
             }
         }
-    }
+    };
     try {
         SceneSceneBrowser.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
     } catch (e) {
@@ -1037,4 +1039,4 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
     //if (SceneSceneBrowser.listenerID > -1) {
     //    console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
     //}
-}
+};
