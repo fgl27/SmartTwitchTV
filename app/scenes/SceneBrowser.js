@@ -726,7 +726,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     e.preventDefault(); //prevent key to do default
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                 }
-                return;
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
                 if (SceneSceneBrowser.isShowExitDialogOn) {
                     window.clearTimeout(exitID);
@@ -970,7 +969,6 @@ SceneSceneBrowser.mhandleKeyReturn = function() {
             e.preventDefault(); //prevent key to do default
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
         }
-        return;
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
         if (SceneSceneBrowser.isShowDialogOn) {
             SceneSceneBrowser.clean();
@@ -985,7 +983,7 @@ SceneSceneBrowser.mhandleKeyReturn = function() {
         } else {
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
         }
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode === SceneSceneBrowser.MODE_TOOLS) {
+    } else {
         SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
     }
 };
