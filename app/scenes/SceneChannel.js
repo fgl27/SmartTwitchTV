@@ -1,3 +1,8 @@
+/*jshint multistr: true */
+function SceneSceneChannel() {
+
+}
+
 var random_int = Math.round(Math.random() * 1e7);
 var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = null,
     ChatPositionsTemp = 0,
@@ -89,10 +94,6 @@ function extractQualities(input) {
     return result;
 }
 
-function SceneSceneChannel() {
-
-};
-
 SceneSceneChannel.shutdownStream = function() {
     document.body.removeEventListener("keydown", SceneSceneChannel.prototype.handleKeyDown);
     document.body.addEventListener("keydown", SceneSceneBrowser.prototype.handleKeyDown, false);
@@ -164,12 +165,12 @@ var listener = {
         //console.log("Current Playtime : " + currentTime);
         updateCurrentTime(currentTime);
     },
-    onevent: function(eventType, eventData) {
+    //onevent: function(eventType, eventData) {
         //console.log("event type error : " + eventType + ", data: " + eventData);
         //if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
         //console.log("Mudou de Qualidade");
         //}
-    },
+    //},
     onerror: function(eventType) {
         //console.log("event type error : " + eventType);
         if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
@@ -178,17 +179,17 @@ var listener = {
             SceneSceneChannel.shutdownStream();
         }
     },
-    onsubtitlechange: function(duration, text, data3, data4) {
+    //onsubtitlechange: function(duration, text, data3, data4) {
         //console.log("Subtitle Changed.");
-    },
-    ondrmevent: function(drmEvent, drmData) {
+    //},
+    //ondrmevent: function(drmEvent, drmData) {
         //console.log("DRM callback: " + drmEvent + ", data: " + drmData);
-    },
+    //},
     onstreamcompleted: function() {
         //console.log("Stream Completed");
         SceneSceneChannel.onRenderingComplete();
     }
-}
+};
 
 var updateCurrentTime = function(currentTime) {
     //current time is given in millisecond
@@ -212,7 +213,7 @@ var updateCurrentTime = function(currentTime) {
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_Time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
-}
+};
 
 function lessthanten(time) {
     return (time < 10) ? "0" + time : time;
@@ -241,7 +242,7 @@ SceneSceneChannel.prototype.initialize = function() {
     SceneSceneChannel.isShowExitDialogOn = false;
 };
 
-SceneSceneChannel.prototype.handleShow = function(data) {
+SceneSceneChannel.prototype.handleShow = function() {
     //console.log("SceneSceneChannel.handleShow()");
 };
 
@@ -324,8 +325,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         localStorage.setItem('ChatEnableByChat', 'true');
                     }
                     SceneSceneChannel.ChatPosition();
-                    break;
                 }
+                break;
             case TvKeyCode.KEY_UP:
                 if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0) {
                     //console.log("KEY_CHANNELDOWN or KEY_4");
@@ -335,7 +336,6 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         clearHide();
                         setHide();
                     }
-
                 }
                 // Live strems from twitch don't have jumpForward/Backward options
                 //else
@@ -352,8 +352,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         localStorage.setItem('ChatEnableByChat', 'false');
                         localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
                     }
-                    break;
                 }
+                break;
             case TvKeyCode.KEY_DOWN:
                 if (SceneSceneChannel.isPanelShown() &&
                     SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1) {
@@ -466,7 +466,7 @@ SceneSceneChannel.onNetworkDisconnected = function() {
     SceneSceneChannel.shutdownStream();
 };
 
-SceneSceneChannel.onRenderError = function(RenderErrorType) {
+SceneSceneChannel.onRenderError = function() {
     if (SceneSceneChannel.quality == "High" ||
         SceneSceneChannel.quality == "Medium" ||
         SceneSceneChannel.quality == "Low") {

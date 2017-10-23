@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="https://github.com/mkvd/smarttv-twitch" version="3.6.5" viewmodes="maximized">
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/mkvd/smarttv-twitch" version="3.6.5" viewmodes="maximized">
    <access origin="*" subdomains="true"></access>
-   <tizen:application id="qY6HyNzLIR.Twitch" package="qY6HyNzLIR" required_version="2.3"/>
+   <tizen:application id="qY6HyNzLIR.Twitch" package="qY6HyNzLIR" required_version="2.4"/>
    <content src="index.html"/>
    <description xml:lang="en-gb">Twitch.tv</description>
    <feature name="http://tizen.org/feature/screen.size.normal.2160.3840"/>
@@ -16,12 +16,7 @@
    <name xml:lang="ru-ru">Twitch</name>
    <name xml:lang="es-es">Twitch</name>
    <name>Twitch</name>
-   <preference name="cpname" value="" readonly="false"/>
-   <preference name="cplogo" value="" readonly="false"/>
-   <preference name="cpauthjs" value="" readonly="false"/>
-   <preference name="category" value="" readonly="false"/>
    <preference name="autoUpdate" value="n" readonly="false"/>
-   <preference name="mgrver" value="" readonly="false"/>
    <preference name="fullwidget" value="y" readonly="false"/>
    <preference name="type" value="user" readonly="false"/>
    <preference name="srcctl" value="y" readonly="false"/>
@@ -30,7 +25,6 @@
    <preference name="videomute" value="n" readonly="false"/>
    <preference name="dcont" value="y" readonly="false"/>
    <preference name="widgetname" value="Twitch" readonly="false"/>
-   <preference name="description" value="" readonly="false"/>
    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>

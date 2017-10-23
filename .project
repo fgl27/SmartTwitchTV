@@ -20,11 +20,17 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.tizen.web.jsa.JSAnalysisBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.tizen.web.privilege.nature.PrivilegeNature</nature>
 		<nature>json.validation.nature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>org.tizen.web.project.builder.WebNature</nature>
+		<nature>org.tizen.web.jsa.JSAnalysisNature</nature>
 	</natures>
 </projectDescription>
