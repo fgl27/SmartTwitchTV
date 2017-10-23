@@ -20,6 +20,7 @@ SceneSceneBrowser.MODE_TOOLS = 4;
 SceneSceneBrowser.MODE_FOLLOWER = 5;
 SceneSceneBrowser.mode = SceneSceneBrowser.MODE_NONE;
 SceneSceneBrowser.modeReturn = SceneSceneBrowser.MODE_NONE;
+SceneSceneBrowser.refreshClick = false;
 
 SceneSceneBrowser.STATE_FOLLOWER_NONE = -1;
 SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST = 0; //Loading channels name list
@@ -159,6 +160,7 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
                 //console.log("Call loadDataError(true) from howDialog");
                 calling = true;
                 SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
                 SceneSceneBrowser.showDialog(STR_USERNAME + " '" + SceneSceneBrowser.followerUsername + "' " + STR_DOES_NOT_EXIST);
             }
             //some names return requests error 422 (This is a Justin.tv channel. It cannot be viewed on Twitch.) Maybe its from old accounts. Example: https://api.twitch.tv/kraken/streams/phoxx
@@ -167,6 +169,7 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
                 //console.log("'Channel ''+SceneSceneBrowser.followerUsername+'' does not exist");
                 calling = true;
                 SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
                 SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannel + "' " + STR_DOES_NOT_EXIST);
             }
         } catch (e) {
@@ -202,7 +205,11 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
                 }
             }
             if (!SceneSceneBrowser.keyReturnPressed) SceneSceneBrowser.loadDataRequest();
-            else SceneSceneBrowser.loadingData = false, SceneSceneBrowser.mhandleKeyReturn();
+            else {
+                SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
+                SceneSceneBrowser.mhandleKeyReturn();
+            }
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
@@ -237,6 +244,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             //console.log("response.stream === 'null'=");
             //console.log("+response.stream=" + response.stream);
             SceneSceneBrowser.loadingData = false;
+            SceneSceneBrowser.refreshClick = false;
             SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannel + "' " + STR_IS_OFFLINE);
         } else {
             //console.log("Opening stream from loaddatasuccess GO");
@@ -361,8 +369,10 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
                 SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
                 SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
             } else {
                 SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
             }
         });
     }
@@ -370,10 +380,10 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
 SceneSceneBrowser.loadDataRequest = function() {
     try {
-        var dialog_title = "";
+        var dialog_title = "", dialog_retryfresh = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING);
         if (SceneSceneBrowser.loadingDataTry > 0) {
-            dialog_title = STR_RETRYING + " (" + (SceneSceneBrowser.loadingDataTry + 1) + STR_ATTEMPT + ")";
-        } else dialog_title = STR_RETRYING + " (" + (1) + STR_ATTEMPT + ")";
+            dialog_title = dialog_retryfresh + " (" + (SceneSceneBrowser.loadingDataTry + 1) + STR_ATTEMPT + ")";
+        } else dialog_title = dialog_retryfresh + " (" + (1) + STR_ATTEMPT + ")";
 
         SceneSceneBrowser.showDialog(dialog_title);
 
@@ -669,6 +679,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //window.load
     SceneSceneBrowser.initLanguage();
     $("#scene2").hide();
     SceneSceneBrowser.loadingData = false;
+    SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
     $('#username_input').val(followerU);
     SceneSceneBrowser.followerUsername = followerU;
@@ -855,7 +866,10 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) SceneSceneBrowser.refresh();
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
+                SceneSceneBrowser.refreshClick = true;
+                SceneSceneBrowser.refresh();
+            }
             break;
         case TvKeyCode.KEY_0:
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);

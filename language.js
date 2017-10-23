@@ -3,7 +3,7 @@ var STR_CHANNELS = "Live";
 var STR_GAMES = "Games";
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";
-var STR_REFRESH = "Refresh Screen";
+var STR_REFRESH = "Refresh";
 var STR_CH_UPDOWN = "CH Down/Up";
 var STR_UPDOWN = "Refresh/Change (Screen A/B/C)";
 
