@@ -3,7 +3,7 @@ function SceneSceneBrowser() {
 
 }
 SceneSceneBrowser.selectedChannel;
-var exitID;
+var exitID, sleeptime = 1500;
 
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
@@ -12,7 +12,7 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 100;
+SceneSceneBrowser.ItemsLimit = 64;
 SceneSceneBrowser.ColoumnsCount = 4;
 
 SceneSceneBrowser.MODE_NONE = -1;
@@ -121,12 +121,6 @@ function addCommas(nStr) {
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
-}
-
-function sleep(millis, callback) {
-    setTimeout(function() {
-        callback();
-    }, millis);
 }
 
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, data_name, thumbnail, title, info, info2, info_fill) {
@@ -334,57 +328,64 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
                     stream = response.streams[cursor];
                     matrix[t] = [stream.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
                     stream = response.streams[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
 
                 row.append(cell);
 
             }
 
-            for (; t < SceneSceneBrowser.ColoumnsCount; t++) {
+            for (t; t < SceneSceneBrowser.ColoumnsCount; t++) {
                 row.append(SceneSceneBrowser.createCellEmpty());
             }
             SceneSceneBrowser.followerMatrix[row_id] = matrix;
             $('#stream_table').append(row);
         }
 
-        sleep(2000, function() {
-            SceneSceneBrowser.showTable();
-            SceneSceneBrowser.addFocus();
-            //check state of follower load, and call next stage
-            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
-                SceneSceneBrowser.itemsCountFollowerChannels = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.itemsCount = 0;
-                SceneSceneBrowser.loadDataRequest();
-            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
-                SceneSceneBrowser.itemsCountFollowerLiveHosts = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.itemsCount = 0;
-                SceneSceneBrowser.loadDataRequest();
-            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
-                SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.loadingData = false;
-                SceneSceneBrowser.refreshClick = false;
-            } else {
-                SceneSceneBrowser.loadingData = false;
-                SceneSceneBrowser.refreshClick = false;
-            }
-        });
+        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
+            //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table
+            setTimeout(SceneSceneBrowser.loadDataSuccessFinish, sleeptime)
+            sleeptime = 250;
+        } else SceneSceneBrowser.loadDataSuccessFinish();
+    }
+};
+
+SceneSceneBrowser.loadDataSuccessFinish = function() {
+    SceneSceneBrowser.showTable();
+    SceneSceneBrowser.addFocus();
+    //check state of follower load, and call next stage
+    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+        SceneSceneBrowser.itemsCountFollowerChannels = SceneSceneBrowser.itemsCount;
+        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+        SceneSceneBrowser.itemsCount = 0;
+        SceneSceneBrowser.loadDataRequest();
+    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+        SceneSceneBrowser.itemsCountFollowerLiveHosts = SceneSceneBrowser.itemsCount;
+        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+        SceneSceneBrowser.itemsCount = 0;
+        SceneSceneBrowser.loadDataRequest();
+    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
+        SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
+        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+        SceneSceneBrowser.loadingData = false;
+        SceneSceneBrowser.refreshClick = false;
+    } else {
+        SceneSceneBrowser.loadingData = false;
+        SceneSceneBrowser.refreshClick = false;
     }
 };
 
 SceneSceneBrowser.loadDataRequest = function() {
     try {
-        var dialog_title = "", dialog_retryfresh = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING);
+        var dialog_title = "",
+            dialog_retryfresh = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING);
         if (SceneSceneBrowser.loadingDataTry > 0) {
             dialog_title = dialog_retryfresh + " (" + (SceneSceneBrowser.loadingDataTry + 1) + STR_ATTEMPT + ")";
         } else dialog_title = dialog_retryfresh + " (" + (1) + STR_ATTEMPT + ")";
@@ -711,6 +712,7 @@ SceneSceneBrowser.prototype.handleHide = function() {
 SceneSceneBrowser.prototype.handleFocus = function() {
     //console.log("SceneSceneBrowser.handleFocus()");
     // this function will be called when the scene manager focus this scene
+    sleeptime = 1500;
     SceneSceneBrowser.refresh();
 };
 
