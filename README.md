@@ -16,7 +16,6 @@ The application works well on the 2016 UN40KU6000HXPA or related **xx" KU6000H F
 Dependencies
 ==============
 * [imagesLoaded JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
-* [Lazy Load Remastered by tuupola](https://github.com/tuupola/jquery_lazyload/tree/2.x)
 
 Controls
 ==============
