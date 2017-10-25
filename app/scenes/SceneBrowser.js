@@ -54,7 +54,7 @@ SceneSceneBrowser.ime = null;
 SceneSceneBrowser.ime2 = null;
 
 SceneSceneBrowser.loadingData = false;
-SceneSceneBrowser.loadingDataTryMax = 11;
+SceneSceneBrowser.loadingDataTryMax = 13;
 SceneSceneBrowser.loadingDataTry;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.loadingDataTimeoutStart = false;
@@ -345,12 +345,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             $('#stream_table').append(row);
         }
 
-        SceneSceneBrowser.loadDataSuccessFinish();
-        //tp prevent stream_text/title/info from load before the thumbnail and display a odd stream_table revert to bellow
-        //        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
-        //            setTimeout(SceneSceneBrowser.loadDataSuccessFinish, sleeptime)
-        //            sleeptime = 250;
-        //        } else SceneSceneBrowser.loadDataSuccessFinish();
+        //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table revert to bellow
+        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
+           setTimeout(SceneSceneBrowser.loadDataSuccessFinish, sleeptime)
+           sleeptime = 250;
+        } else SceneSceneBrowser.loadDataSuccessFinish();
     }
 };
 
