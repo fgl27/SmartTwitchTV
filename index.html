@@ -118,10 +118,7 @@
          position: relative;
          width: 25%;
          }
-         img.stream_thumbnail {
-         width: 100%;
-         }
-         img.stream_thumbnail_focused {
+         img.lazyload_focused {
          outline: 5px outset #C9A0FF;
          width: 100%;
          }
@@ -141,15 +138,14 @@
          #000 0px 0px 2.5px;
          -webkit-font-smoothing: antialiased;
          }
-         div.stream_title {
+         div.stream_channel {
          width: 100%;
          text-align: left;
-         white-space: nowrap;
-         text-overflow: ellipsis;
-         overflow: hidden;
+         white-space: initial;
          color: rgba(255, 255, 255, 0.95);
          font-weight: 100;
-         font-size: 120%;
+         font-size: 130%;
+         font-weight:bold;
          text-shadow:
          #000 0px 0px 2.5px,
          #000 0px 0px 2.5px,
@@ -167,14 +163,14 @@
          overflow: hidden;
          color: rgba(255, 255, 255, 0.70);
          font-weight: 100;
-         font-size: 120%;
+         font-size: 105%;
          text-shadow:
-         #000 0px 0px 2.5px,
-         #000 0px 0px 2.5px,
-         #000 0px 0px 2.5px,
-         #000 0px 0px 2.5px,
-         #000 0px 0px 2.5px,
-         #000 0px 0px 2.5px;
+         #000 0px 0px 2px,
+         #000 0px 0px 2px,
+         #000 0px 0px 2px,
+         #000 0px 0px 2px,
+         #000 0px 0px 2px,
+         #000 0px 0px 2px;
          -webkit-font-smoothing: antialiased;
          }
          div.openchannel {
@@ -329,6 +325,7 @@
       <script src="language.js"></script>
       <script type="text/javascript" src="app/scenes/SceneChannel.js"></script>
       <script type="text/javascript" src="app/scenes/SceneBrowser.js"></script>
+      <script src="lazyload.js"></script>
    </head>
    <body>
       <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #090909;
