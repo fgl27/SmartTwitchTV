@@ -4,7 +4,6 @@ function SceneSceneBrowser() {
 }
 SceneSceneBrowser.selectedChannel;
 var exitID,
-    sleeptime = 1500,
     Scenemode = STR_CHANNELS;
 
 SceneSceneBrowser.browser = true;
@@ -345,11 +344,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             $('#stream_table').append(row);
         }
 
-        //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table revert to bellow
-        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
-           setTimeout(SceneSceneBrowser.loadDataSuccessFinish, sleeptime)
-           sleeptime = 250;
-        } else SceneSceneBrowser.loadDataSuccessFinish();
+        //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
+        //https://imagesloaded.desandro.com/
+	$('#stream_table').imagesLoaded( function() {
+	  SceneSceneBrowser.loadDataSuccessFinish();
+	});
     }
 };
 
@@ -714,7 +713,6 @@ SceneSceneBrowser.prototype.handleHide = function() {
 SceneSceneBrowser.prototype.handleFocus = function() {
     //console.log("SceneSceneBrowser.handleFocus()");
     // this function will be called when the scene manager focus this scene
-    sleeptime = 1500;
     SceneSceneBrowser.refresh();
 };
 
@@ -1022,7 +1020,6 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
                     SceneSceneBrowser.showTable();
                     SceneSceneBrowser.openStream();
                 } else {
-                    sleeptime = 1500;
                     SceneSceneBrowser.refresh();
                 }
             } else {
