@@ -126,7 +126,7 @@ function addCommas(nStr) {
 
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers) {
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="lazyload" width="100%" src="' + preview_thumbnail + '"/> \
+        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
 			<div class="stream_text" ' + 'style="right: 0;"' + '> \
 			<div class="stream_channel">' + channel_display_name + '</div> \
 			<div class="stream_info">' + stream_title + '</div> \
@@ -218,9 +218,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
         response_items = response.follows.length;
 
-        var x;
-        var ar = [];
-        SceneSceneBrowser.followerChannels = '';
+        var x, ar = [];
         for (x = 0; x < response_items; x++) {
             var channel = response.follows[x];
             ar.push(channel.channel.name);
@@ -258,7 +256,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             SceneSceneBrowser.dataEnded = true;
         }
 
-        var offset = SceneSceneBrowser.itemsCount;
+        var offset_itemsCount = SceneSceneBrowser.itemsCount;
         SceneSceneBrowser.itemsCount += response_items;
         var response_rows = response_items / SceneSceneBrowser.ColoumnsCount;
         if (response_items % SceneSceneBrowser.ColoumnsCount > 0) {
@@ -294,7 +292,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
             } else {
-                row_id = offset / SceneSceneBrowser.ColoumnsCount + i;
+                row_id = offset_itemsCount / SceneSceneBrowser.ColoumnsCount + i;
             }
             var row = $('<tr></tr>');
             var matrix = [];
@@ -309,17 +307,15 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
                     matrix[t] = [hosts.target.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview,
-                        hosts.display_name + ' Hosting ' + hosts.target.channel.display_name, hosts.target.title,
-                        stream.game, addCommas(hosts.target.viewers) + STR_VIEWER); //hosts.target.meta_game
-
+                    cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
+                        hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
+                        addCommas(hosts.target.viewers) + STR_VIEWER);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
                     matrix[t] = [game.game.name, 'game'];
                     cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, '', '', game.game.name,
                         addCommas(game.viewers) + STR_VIEWER);
-
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
@@ -584,7 +580,7 @@ SceneSceneBrowser.refresh = function() {
 
 
 SceneSceneBrowser.removeFocus = function() {
-    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('lazyload_focused');
+    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_thumbnail_focused');
 };
 
 SceneSceneBrowser.addFocus = function() {
@@ -593,7 +589,7 @@ SceneSceneBrowser.addFocus = function() {
         SceneSceneBrowser.loadData();
     }
 
-    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('lazyload_focused');
+    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
 
     ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
 };

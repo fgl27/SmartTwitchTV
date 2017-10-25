@@ -3,10 +3,17 @@ function SceneSceneChannel() {
 
 }
 
-var random_int = Math.round(Math.random() * 1e7);
-var exitID, timeoutID, refreshID, pauseEndID, pauseStartID, ChatPositions = null,
+var random_int = Math.round(Math.random() * 1e7),
+    exitID,
+    timeoutID,
+    refreshID,
+    pauseEndID,
+    pauseStartID,
+    ChatPositions = null,
     ChatPositionsTemp = 0,
-    sysTime, today;
+    sysTime,
+    today;
+
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ForcedPannelInit = false;
@@ -166,10 +173,10 @@ var listener = {
         updateCurrentTime(currentTime);
     },
     //onevent: function(eventType, eventData) {
-        //console.log("event type error : " + eventType + ", data: " + eventData);
-        //if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
-        //console.log("Mudou de Qualidade");
-        //}
+    //console.log("event type error : " + eventType + ", data: " + eventData);
+    //if (eventType == 'PLAYER_MSG_RESOLUTION_CHANGED') {
+    //console.log("Mudou de Qualidade");
+    //}
     //},
     onerror: function(eventType) {
         //console.log("event type error : " + eventType);
@@ -180,10 +187,10 @@ var listener = {
         }
     },
     //onsubtitlechange: function(duration, text, data3, data4) {
-        //console.log("Subtitle Changed.");
+    //console.log("Subtitle Changed.");
     //},
     //ondrmevent: function(drmEvent, drmData) {
-        //console.log("DRM callback: " + drmEvent + ", data: " + drmData);
+    //console.log("DRM callback: " + drmEvent + ", data: " + drmData);
     //},
     onstreamcompleted: function() {
         //console.log("Stream Completed");
@@ -412,10 +419,12 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.Play) {
                     SceneSceneChannel.Play = false,
                         webapis.avplay.pause();
+                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
                     SceneSceneChannel.showPauseDialog();
                 } else {
                     SceneSceneChannel.Play = true,
                         webapis.avplay.play();
+                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                     if (SceneSceneChannel.isShowPauseDialogOn) {
                         $("#scene_channel_dialog_simple_pause").hide();
                         SceneSceneChannel.isShowPauseDialogOn = false;
@@ -518,6 +527,7 @@ SceneSceneChannel.qualityChanged = function() {
         webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
         webapis.avplay.prepare();
         webapis.avplay.play();
+        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     } catch (e) {
         console.error(e);
     }
