@@ -15,7 +15,7 @@ SceneSceneChannel.ChatEnableByPanel = false;
 SceneSceneChannel.ChatEnableByChat = false;
 SceneSceneChannel.isShowExitDialogOn = false;
 
-SceneSceneChannel.loadingDataTryMax = 12;
+SceneSceneChannel.loadingDataTryMax = 13;
 SceneSceneChannel.loadingDataTry;
 SceneSceneChannel.loadingDataTimeout;
 
@@ -717,23 +717,23 @@ SceneSceneChannel.isPanelShown = function() {
 SceneSceneChannel.loadDataError = function() {
     SceneSceneChannel.loadingDataTry++;
     if (SceneSceneChannel.loadingDataTry < SceneSceneChannel.loadingDataTryMax) {
-        if (SceneSceneChannel.loadingDataTry < 6) {
+        if (SceneSceneChannel.loadingDataTry < 5) {
             SceneSceneChannel.loadingDataTimeout += 250;
         } else {
             switch (SceneSceneChannel.loadingDataTry) {
-                case 6:
+                case 5:
                     SceneSceneChannel.loadingDataTimeout = 2400;
                     break;
-                case 7:
+                case 6:
                     SceneSceneChannel.loadingDataTimeout = 5000;
                     break;
-                case 8:
+                case 7:
                     SceneSceneChannel.loadingDataTimeout = 15000;
                     break;
-                case 9:
+                case 8:
                     SceneSceneChannel.loadingDataTimeout = 30000;
                     break;
-                case 10:
+                case 9:
                     SceneSceneChannel.loadingDataTimeout = 45000;
                     break;
                 default:
@@ -763,10 +763,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText) {
 
 SceneSceneChannel.loadDataRequest = function() {
     try {
-        var dialog_title = "";
-        if (SceneSceneChannel.loadingDataTry > 0) {
-            dialog_title = STR_RETRYING + " (" + (SceneSceneChannel.playingTry + 1) + STR_ATTEMPT + ")";
-        } else dialog_title = STR_RETRYING + " (" + (1) + STR_ATTEMPT + ")";
+        var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " + SceneSceneBrowser.selectedChannel + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
 
         SceneSceneChannel.showDialog(dialog_title);
         var xmlHttp = new XMLHttpRequest();
@@ -807,7 +804,7 @@ SceneSceneChannel.loadDataRequest = function() {
 };
 
 SceneSceneChannel.loadData = function() {
-    SceneSceneChannel.loadingDataTry = 0;
+    SceneSceneChannel.loadingDataTry = 1;
     SceneSceneChannel.loadingDataTimeout = 1500;
     SceneSceneChannel.loadDataRequest();
 };
