@@ -13,6 +13,11 @@ The original Fork is https://github.com/nikitakatchik/smarttv-twitch
 
 The application works well on the 2016 UN40KU6000HXPA or related **xx" KU6000H Flat Smart 4K UHD TV** from 2016/2017
 
+Dependencies
+==============
+* [imagesLoaded JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
+* [Lazy Load Remastered by tuupola](https://github.com/tuupola/jquery_lazyload/tree/2.x)
+
 Controls
 ==============
 ![control](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/controler.png)
