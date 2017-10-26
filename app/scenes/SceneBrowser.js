@@ -3,6 +3,7 @@ function SceneSceneBrowser() {
 
 }
 SceneSceneBrowser.selectedChannel;
+SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
     Scenemode = STR_CHANNELS;
 
@@ -130,7 +131,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
 			<div class="stream_text" ' + 'style="right: 0;"' + '> \
-			<div class="stream_channel">' + channel_display_name + '</div> \
+			<div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
 			<div class="stream_info">' + stream_title + '</div> \
 			<div class="stream_info">' + stream_game + '</div> \
             <div class="stream_info">' + viwers + '</div> \
@@ -872,6 +873,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'stream') {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+                    SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                     SceneSceneBrowser.openStream();
                 } else if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'game') {
                     SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
@@ -935,6 +937,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.refresh();
             } else {
                 SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+                SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                 SceneSceneBrowser.openStream();
                 SceneSceneChannel.Play = true;
             }
