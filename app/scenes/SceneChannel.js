@@ -12,7 +12,8 @@ var random_int = Math.round(Math.random() * 1e7),
     ChatPositions = null,
     ChatPositionsTemp = 0,
     sysTime,
-    today;
+    today,
+    created;
 
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
@@ -204,9 +205,22 @@ var updateCurrentTime = function(currentTime) {
         currentTime = webapis.avplay.getCurrentTime();
     }
 
-    var time, seconds, minutes, hours;
+    document.getElementById("stream_info_currentime").innerHTML = 'Playing time ' + timeMs(currentTime);
 
-    time = Math.floor(currentTime / 1000);
+    document.getElementById("stream_info_livetime").innerHTML = 'Live sence ' + streamLiveAt(created) + ' ago';
+
+    today = (new Date()).toString().split(' ');
+    document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
+};
+
+function lessthanten(time) {
+    return (time < 10) ? "0" + time : time;
+}
+
+function timeMs(time) {
+    var seconds, minutes, hours;
+
+    time = Math.floor(time / 1000);
     seconds = lessthanten(time % 60);
 
     time = Math.floor(time / 60);
@@ -216,14 +230,12 @@ var updateCurrentTime = function(currentTime) {
     hours = lessthanten(time);
 
     //final time 00:00 or 00:00:00
-    document.getElementById("stream_info_currentTime").innerHTML = (time == 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+    return (time == 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+}
 
-    today = (new Date()).toString().split(' ');
-    document.getElementById("stream_system_Time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
-};
-
-function lessthanten(time) {
-    return (time < 10) ? "0" + time : time;
+function streamLiveAt(time) {//time in '2017-10-27T13:27:27Z'
+    var date2_ms = new Date().getTime();
+    return timeMs(date2_ms - time);
 }
 
 SceneSceneChannel.prototype.initialize = function() {
@@ -607,6 +619,7 @@ SceneSceneChannel.updateStreamInfo = function() {
                     $("#stream_info_game").text(response.stream.game);
                     $("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     $("#stream_info_icon").attr("src", response.stream.channel.logo);
+                    created = new Date(response.stream.created_at).getTime();
                 } catch (err) {
 
                 }
