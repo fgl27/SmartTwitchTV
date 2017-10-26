@@ -13,8 +13,8 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 64;
-SceneSceneBrowser.ColoumnsCount = 4;
+SceneSceneBrowser.ItemsLimit = 30;
+SceneSceneBrowser.ColoumnsCount = 3;
 
 SceneSceneBrowser.MODE_NONE = -1;
 SceneSceneBrowser.MODE_ALL = 0;
@@ -100,13 +100,15 @@ var ScrollHelper = {
      * @param padding Top padding to apply above element.
      */
     scrollVerticalToElementById: function(id, padding) {
-        var element = document.getElementById(id);
+        var element = document.getElementById(id), offset = 0.345;
         if (element == null) {
             console.warn('Cannot find element with id \'' + id + '\'.');
             return;
         }
 
-        var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.25 * this.viewportHeight() - padding;
+        //offset center the page when scrolling to focus
+        if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) offset = 0.125;
+        var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - offset * this.viewportHeight() - padding;
 
         $(window).scrollTop(targetPosition);
     }
@@ -320,12 +322,12 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
                     matrix[t] = [stream.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status,
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER);
 
                 } else {
                     stream = response.streams[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.medium, stream.channel.status,
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER);
                 }
 
@@ -584,7 +586,7 @@ SceneSceneBrowser.removeFocus = function() {
 };
 
 SceneSceneBrowser.addFocus = function() {
-    if (SceneSceneBrowser.cursorY + 5 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount &&
+    if (SceneSceneBrowser.cursorY + 3 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount &&
         !SceneSceneBrowser.dataEnded) {
         SceneSceneBrowser.loadData();
     }
@@ -726,7 +728,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
     switch (e.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            e.preventDefault(); //prevent key to do default
             if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
                 if (SceneSceneBrowser.returnToGames) {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
@@ -773,7 +774,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_RIGHT:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX + 1] !== 'undefined') {
-                    e.preventDefault();
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorX++;
                     SceneSceneBrowser.addFocus();
@@ -790,12 +790,10 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.cursorY > 0) {
                     if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY - 1][SceneSceneBrowser.cursorX] !== 'undefined') {
-                        e.preventDefault();
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY--;
                         SceneSceneBrowser.addFocus();
                     } else {
-                        e.preventDefault();
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY--;
                         SceneSceneBrowser.cursorX = SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY].length - 1;
@@ -805,7 +803,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
                 //console.log("keyup != mode GO");
                 if (SceneSceneBrowser.cursorY > 0) {
-                    e.preventDefault();
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorY--;
                     SceneSceneBrowser.addFocus();
@@ -825,22 +822,18 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 if (SceneSceneBrowser.cursorY < SceneSceneBrowser.followerMatrix.length - 1) {
                     if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY + 1][SceneSceneBrowser.cursorX] !== 'undefined') {
                         //console.log("Key_DOWN - HAVE DOWN");
-                        e.preventDefault();
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY++;
                         SceneSceneBrowser.addFocus();
-                    } else {
-                        e.preventDefault();
+                    } else if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY + 2][SceneSceneBrowser.cursorX] !== 'undefined') {
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY++;
-                        SceneSceneBrowser.cursorX = SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY].length - 1;
                         SceneSceneBrowser.addFocus();
                     }
                 }
             } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
                 if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1 &&
                     SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY + 1)) {
-                    e.preventDefault();
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorY++;
                     SceneSceneBrowser.addFocus();
@@ -979,10 +972,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 SceneSceneBrowser.mhandleKeyReturn = function() {
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
         if (SceneSceneBrowser.returnToGames) {
-            e.preventDefault(); //prevent key to do default
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
         } else {
-            e.preventDefault(); //prevent key to do default
             SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
         }
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
