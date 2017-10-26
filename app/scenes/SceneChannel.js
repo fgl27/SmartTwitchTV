@@ -13,7 +13,9 @@ var random_int = Math.round(Math.random() * 1e7),
     ChatPositionsTemp = 0,
     sysTime,
     today,
-    created;
+    created,
+    oldcurrentTime = 0
+    offsettime = 0;
 
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
@@ -112,6 +114,8 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene2").hide();
     $("#scene1").focus();
     var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
+    oldcurrentTime = 0;
+    offsettime = 0;
     if (OutsysTime > sysTime) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
 };
@@ -200,12 +204,13 @@ var listener = {
 };
 
 var updateCurrentTime = function(currentTime) {
-    //current time is given in millisecond
-    if (currentTime == null) {
-        currentTime = webapis.avplay.getCurrentTime();
-    }
 
-    document.getElementById("stream_info_currentime").innerHTML = 'Playing time ' + timeMs(currentTime);
+    //current time is given in millisecond
+    if (currentTime == null)
+        currentTime = webapis.avplay.getCurrentTime();
+
+    oldcurrentTime = currentTime + offsettime;
+    document.getElementById("stream_info_currentime").innerHTML = 'Playing time ' + timeMs(oldcurrentTime);
 
     document.getElementById("stream_info_livetime").innerHTML = 'Live sence ' + streamLiveAt(created) + ' ago';
 
@@ -532,6 +537,7 @@ SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
 
     try {
+        offsettime = oldcurrentTime;
         webapis.avplay.stop();
         webapis.avplay.open(SceneSceneChannel.playingUrl);
         webapis.avplay.setListener(listener);
