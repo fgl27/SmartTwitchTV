@@ -621,6 +621,7 @@ SceneSceneChannel.updateStreamInfo = function() {
             if (xmlHttp.status === 200) {
                 try {
                     var response = $.parseJSON(xmlHttp.responseText);
+                    $("#stream_info_name").text(response.stream.channel.display_name);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text(response.stream.game);
                     $("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
@@ -792,7 +793,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText) {
 
 SceneSceneChannel.loadDataRequest = function() {
     try {
-        var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " + SceneSceneBrowser.selectedChannel + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
+        var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " + SceneSceneBrowser.selectedChannelDisplayname + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
 
         SceneSceneChannel.showDialog(dialog_title);
         var xmlHttp = new XMLHttpRequest();
