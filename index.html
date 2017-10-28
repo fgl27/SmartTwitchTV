@@ -122,7 +122,7 @@
          width: 100%;
          }
          img.stream_thumbnail_focused {
-         outline: 5px outset #C9A0FF;
+         outline: 5px outset #5F2EA3;
          width: 100%;
          }
          div.stream_text {
@@ -145,7 +145,7 @@
          width: 100%;
          text-align: left;
          white-space: initial;
-         color: rgba(255, 255, 255, 0.95);
+         color: rgba(255, 255, 255, 1);
          font-weight: 100;
          font-size: 130%;
          font-weight:bold;
@@ -164,7 +164,7 @@
          white-space: nowrap;
          text-overflow: ellipsis;
          overflow: hidden;
-         color: rgba(255, 255, 255, 0.70);
+         color: rgba(255, 255, 255, 0.9);
          font-weight: 100;
          font-size: 105%;
          text-shadow:
@@ -217,7 +217,7 @@
          text-align: center;
          vertical-align: middle;
          line-height: 90px;
-         background-color: #6441a5;
+         background-color: #42009E;
          }
          div.button_go_focused {
          width: 18%;
@@ -397,13 +397,13 @@
       <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #000000;
          background-image : url('');">
          <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
-         <div id="scene_channel_panel" style="display:flex; position: absolute; box-sizing: border-box; border:5px outset #350080; left: 75%; width: 25%; height : 100%; z-index: 1; background-color: #6545a5;">
+         <div id="scene_channel_panel" style="display:flex; position: absolute; box-sizing: border-box; border:5px outset rgba(53, 0, 128, 0.5); left: 75%; width: 25%; height : 100%; z-index: 1; background-color: rgba(101, 69, 165, 0.6);">
             <div style="float: right; padding-right: 6.5%; padding-top: 4.5% ">
                <div id="stream_system_time" class="strokedmini" style="font-size: 120%;font-weight:bold;"></div>
             </div>
             <img style="width: 40%; padding-left: 2.5%; padding-top: 2%; padding-bottom: 0%;" src="images/twitchlogo.png" />
             <div style="margin: 0 auto; width: 95%; height: 17%; padding-left: 1%; padding-top: 0.5%; padding-bottom: 0.5%;">
-               <img id="stream_info_icon" style="border:5px outset #350080; display: inline-block; width: 33%;" src="" />
+               <img id="stream_info_icon" style="border:5px outset rgba(53, 0, 128, 0.5); display: inline-block; width: 33%;" src="" />
                <div style="z-order:1; text-align: center; color: white; vertical-align: top; padding-top: 0%; display: inline-block; width: 62%;">
                   <div id="stream_info_name" class="strokedmini" style="font-size: 115%; font-weight:bold; padding-bottom: 2%;"></div>
                   <div id="stream_info_game" style="font-size: 95%; color: white"></div>
@@ -412,13 +412,13 @@
                   <div id="stream_info_livetime" style="font-size: 85%;  color: white"></div>
                </div>
             </div>
-            <div style="z-order:2; position: relative; width: 100%; height: 25.5%; margin-top: 2%; background-color: #4c3082;">
-               <div style="width: 90%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.9);">
+            <div style="z-order:2; position: relative; width: 100%; height: 25.5%; margin-top: 2%; background-color: rgba(76,48, 130, 0.4);">
+               <div style="width: 90%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 90%; color: rgba(255, 255, 255, 0.8);">
                   <p id="stream_info_title"></p>
                </div>
                <div style="width: 90%; height: 26px; line-height: 26px; margin: 0 auto; padding-top: 13%; font-size: 100%;">
-                  <div style="display: inline-block; border:5px outset #350080; width: 80%; height: 99%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.4); color: black; font-weight: 100;">
-                     <div style="height: 26px; font-size: 80%; font-weight:bold; text-align: center; vertical-align: middle; width: 41%; display: inline-block; background-color: rgba(255, 255, 255, 0.35);" id="label_quality">
+                  <div style="display: inline-block; border:5px outset rgba(53, 0, 128, 0.5); width: 80%; height: 99%; margin-left: 5%; background-color: rgba(255, 255, 255, 0.35); color: black; font-weight: 100;">
+                     <div style="height: 26px; font-size: 80%; font-weight:bold; text-align: center; vertical-align: middle; width: 41%; display: inline-block; background-color: rgba(255, 255, 255, 0.30);" id="label_quality">
                         STR_QUALITY
                      </div>
                      <div id="quality_name" style="font-size: 80%; width: 52%; text-align: center; display: inline-block;"></div>
