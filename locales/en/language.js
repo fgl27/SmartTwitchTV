@@ -23,11 +23,11 @@ var STR_ERROR_AUTHENTICATION_FAIL = "Authentication failed.";
 var STR_ERROR_CONNECTION_FAIL = "Connection failed.";
 
 var STR_TOOLS = "Save";
-var STR_CHANGE_USER = ", to change user, use Extra + B";
-var STR_LIVE_CHANNELS = "Live Channels (For user ";
+var STR_CHANGE_USER = "(to change user, use Extra + B)";
+var STR_LIVE_CHANNELS = "Live Channels User ";
 var STR_USER = "User";
-var STR_LIVE_HOSTS = "Live Hosts (For user ";
-var STR_LIVE_GAMES = "Live Games (For user ";
+var STR_LIVE_HOSTS = "Live Hosts";
+var STR_LIVE_GAMES = "Live Games";
 var STR_PLACEHOLDER_TOOLS = "Enter user name...";
 var STR_CHANNEL = "Channel";
 var STR_USERNAME = "User name";
