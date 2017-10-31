@@ -2,16 +2,20 @@ smarttv-twitch
 ==============
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
+The application was tested in a 2016 TV model UN40KU6000HXPA or related **xx" KU6000H Flat Smart 4K UHD TV** from 2016/2017.
+This branch is only dedicated for TV models from 2016 and up that run Tizen OS, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
+![Live](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/screenshot/smarthub.jpeg)
+
+In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
+
 ## [All Screen shots](https://github.com/bhb27/smarttv-twitch/tree/tizen/images/screenshot)
 ![Live](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/screenshot/animated.gif)
 
 About this fork
 ===============
 
-I clone this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
-The original Fork is https://github.com/nikitakatchik/smarttv-twitch
-
-The application works well on the 2016 UN40KU6000HXPA or related **xx" KU6000H Flat Smart 4K UHD TV** from 2016/2017
+I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
+The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
 Dependencies
 ==============
@@ -120,3 +124,6 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * The name  the folder symbol with was **BasicProject-tv-samsung-3.0** now change to **BasicProject-tv-samsung-public-2.4**
 * Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > 1 Tizen wen Application, the installation will start
 * If everything goes OK the app must automatic open on the TV
+
+## In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
+Inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
