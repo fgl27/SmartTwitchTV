@@ -344,43 +344,47 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             $('#stream_table').append(row);
         }
 
-        //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
-        //https://imagesloaded.desandro.com/
-        $('#stream_table').imagesLoaded(function() {
-            SceneSceneBrowser.loadDataSuccessFinish();
-        });
+        SceneSceneBrowser.loadDataSuccessFinish();
     }
 };
 
+//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
+//https://imagesloaded.desandro.com/
 SceneSceneBrowser.loadDataSuccessFinish = function() {
-    SceneSceneBrowser.showTable();
-    SceneSceneBrowser.addFocus();
-    //check state of follower load, and call next stage
-    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-        SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
-        SceneSceneBrowser.itemsCountFollowerChannels = SceneSceneBrowser.itemsCount;
-        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-        SceneSceneBrowser.itemsCount = 0;
-        SceneSceneBrowser.loadDataRequest();
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-        SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
-        SceneSceneBrowser.itemsCountFollowerLiveHosts = SceneSceneBrowser.itemsCount;
-        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-        SceneSceneBrowser.itemsCount = 0;
-        SceneSceneBrowser.loadDataRequest();
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-        SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
-        SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
-        SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-        SceneSceneBrowser.loadingData = false;
-        SceneSceneBrowser.refreshClick = false;
-    } else {
-        SceneSceneBrowser.loadingData = false;
-        SceneSceneBrowser.refreshClick = false;
-    }
+    $('#stream_table').imagesLoaded()
+        .done( { background: true }, function() {//all images successfully loaded
+            SceneSceneBrowser.showTable();
+            SceneSceneBrowser.addFocus();
+            //check state of follower load, and call next stage
+            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+                SceneSceneBrowser.itemsCountFollowerChannels = SceneSceneBrowser.itemsCount;
+                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+                SceneSceneBrowser.itemsCount = 0;
+                SceneSceneBrowser.loadDataRequest();
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+                SceneSceneBrowser.itemsCountFollowerLiveHosts = SceneSceneBrowser.itemsCount;
+                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+                SceneSceneBrowser.itemsCount = 0;
+                SceneSceneBrowser.loadDataRequest();
+            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
+                SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
+                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
+                SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
+            } else {
+                SceneSceneBrowser.loadingData = false;
+                SceneSceneBrowser.refreshClick = false;
+            }
+        })
+        .fail( { background: true }, function() {//all images loaded, at least one is broken or not yet load
+            SceneSceneBrowser.loadDataSuccessFinish();
+        });
 };
 
 SceneSceneBrowser.loadDataRequest = function() {
