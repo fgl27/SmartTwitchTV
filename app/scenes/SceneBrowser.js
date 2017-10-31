@@ -101,7 +101,8 @@ var ScrollHelper = {
      * @param padding Top padding to apply above element.
      */
     scrollVerticalToElementById: function(id, padding) {
-        var element = document.getElementById(id), offset = 0.345;
+        var element = document.getElementById(id),
+            offset = 0.345;
         if (element == null) {
             console.warn('Cannot find element with id \'' + id + '\'.');
             return;
@@ -345,9 +346,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
         //https://imagesloaded.desandro.com/
-	$('#stream_table').imagesLoaded( function() {
-	  SceneSceneBrowser.loadDataSuccessFinish();
-	});
+        $('#stream_table').imagesLoaded(function() {
+            SceneSceneBrowser.loadDataSuccessFinish();
+        });
     }
 };
 
@@ -765,48 +766,42 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             break;
         case TvKeyCode.KEY_LEFT:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
-                if (SceneSceneBrowser.cursorX > 0) {
+                if (ThumbNull((SceneSceneBrowser.cursorY), (SceneSceneBrowser.cursorX - 1))) {
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorX--;
+                    SceneSceneBrowser.addFocus();
+                } else if (ThumbNull((SceneSceneBrowser.cursorY - 1), (SceneSceneBrowser.ColoumnsCount - 1))) {
+                    SceneSceneBrowser.removeFocus();
+                    SceneSceneBrowser.cursorY--;
+                    SceneSceneBrowser.cursorX = (SceneSceneBrowser.ColoumnsCount - 1);
                     SceneSceneBrowser.addFocus();
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX + 1] !== 'undefined') {
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
+                if (ThumbNull((SceneSceneBrowser.cursorY), (SceneSceneBrowser.cursorX + 1))) {
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorX++;
                     SceneSceneBrowser.addFocus();
-                }
-            } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
-                if (SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY) - 1) {
+                } else if (ThumbNull((SceneSceneBrowser.cursorY + 1), 0)) {
                     SceneSceneBrowser.removeFocus();
-                    SceneSceneBrowser.cursorX++;
+                    SceneSceneBrowser.cursorY++;
+                    SceneSceneBrowser.cursorX = 0;
                     SceneSceneBrowser.addFocus();
                 }
             }
             break;
         case TvKeyCode.KEY_UP:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                if (SceneSceneBrowser.cursorY > 0) {
-                    if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY - 1][SceneSceneBrowser.cursorX] !== 'undefined') {
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
+                for (i = 0; i < SceneSceneBrowser.ColoumnsCount; i++) {
+                    if (ThumbNull((SceneSceneBrowser.cursorY - 1), (SceneSceneBrowser.cursorX - i))) {
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY--;
+                        SceneSceneBrowser.cursorX = SceneSceneBrowser.cursorX - i;
                         SceneSceneBrowser.addFocus();
-                    } else {
-                        SceneSceneBrowser.removeFocus();
-                        SceneSceneBrowser.cursorY--;
-                        SceneSceneBrowser.cursorX = SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY].length - 1;
-                        SceneSceneBrowser.addFocus();
+                        break;
                     }
-                }
-            } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
-                //console.log("keyup != mode GO");
-                if (SceneSceneBrowser.cursorY > 0) {
-                    SceneSceneBrowser.removeFocus();
-                    SceneSceneBrowser.cursorY--;
-                    SceneSceneBrowser.addFocus();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
                 //console.log("keyup SceneSceneBrowser.MODE_GO");
@@ -819,25 +814,15 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                if (SceneSceneBrowser.cursorY < SceneSceneBrowser.followerMatrix.length - 1) {
-                    if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY + 1][SceneSceneBrowser.cursorX] !== 'undefined') {
-                        //console.log("Key_DOWN - HAVE DOWN");
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
+                for (i = 0; i < SceneSceneBrowser.ColoumnsCount; i++) {
+                    if (ThumbNull((SceneSceneBrowser.cursorY + 1), (SceneSceneBrowser.cursorX - i))) {
                         SceneSceneBrowser.removeFocus();
                         SceneSceneBrowser.cursorY++;
+                        SceneSceneBrowser.cursorX = SceneSceneBrowser.cursorX - i;
                         SceneSceneBrowser.addFocus();
-                    } else if (typeof SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY + 2][SceneSceneBrowser.cursorX] !== 'undefined') {
-                        SceneSceneBrowser.removeFocus();
-                        SceneSceneBrowser.cursorY++;
-                        SceneSceneBrowser.addFocus();
+                        break;
                     }
-                }
-            } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS) {
-                if (SceneSceneBrowser.cursorY < SceneSceneBrowser.getRowsCount() - 1 &&
-                    SceneSceneBrowser.cursorX < SceneSceneBrowser.getCellsCount(SceneSceneBrowser.cursorY + 1)) {
-                    SceneSceneBrowser.removeFocus();
-                    SceneSceneBrowser.cursorY++;
-                    SceneSceneBrowser.addFocus();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
                 SceneSceneBrowser.cursorY = 1;
@@ -971,6 +956,10 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             break;
     }
 };
+
+function ThumbNull(y, x) {
+    return document.getElementById('thumbnail_' + y + '_' + x, 0) != null;
+}
 
 SceneSceneBrowser.mhandleKeyReturn = function() {
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
