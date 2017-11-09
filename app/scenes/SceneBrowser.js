@@ -774,11 +774,16 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.removeFocus();
                     SceneSceneBrowser.cursorX--;
                     SceneSceneBrowser.addFocus();
-                } else if (ThumbNull((SceneSceneBrowser.cursorY - 1), (SceneSceneBrowser.ColoumnsCount - 1))) {
-                    SceneSceneBrowser.removeFocus();
-                    SceneSceneBrowser.cursorY--;
-                    SceneSceneBrowser.cursorX = (SceneSceneBrowser.ColoumnsCount - 1);
-                    SceneSceneBrowser.addFocus();
+                } else {
+                    for (i = (SceneSceneBrowser.ColoumnsCount - 1); i > -1; i--) {
+                        if (ThumbNull((SceneSceneBrowser.cursorY - 1), i)) {
+                            SceneSceneBrowser.removeFocus();
+                            SceneSceneBrowser.cursorY--;
+                            SceneSceneBrowser.cursorX = i;
+                            SceneSceneBrowser.addFocus();
+                            break;
+                        }
+                    }
                 }
             }
             break;
