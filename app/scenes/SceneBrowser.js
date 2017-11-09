@@ -128,7 +128,13 @@ function addCommas(nStr) {
     return x1 + x2;
 }
 
-SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers) {
+SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
+
+    if (isGame)
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855");// preview.large = 272x380 using a larg * 2,25
+    else
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");// preview.large = 640x360 forcing here just in case it changes
+
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
 			<div class="stream_text" ' + 'style="right: 0;"' + '> \
@@ -305,32 +311,32 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 var cell, game, stream;
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     game = response.top[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, '', '', game.game.name,
-                        addCommas(game.viewers) + STR_VIEWER);
+                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.template, '', '', game.game.name,
+                        addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
                     matrix[t] = [hosts.target.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
-                        addCommas(hosts.target.viewers) + STR_VIEWER);
+                        addCommas(hosts.target.viewers) + STR_VIEWER, false);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
                     matrix[t] = [game.game.name, 'game'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.large, '', '', game.game.name,
-                        addCommas(game.viewers) + STR_VIEWER);
+                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.template, '', '', game.game.name,
+                        addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
                     matrix[t] = [stream.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status,
-                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.template, stream.channel.status,
+                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
                     stream = response.streams[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.large, stream.channel.status,
-                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER);
+                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.template, stream.channel.status,
+                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
 
                 row.append(cell);
