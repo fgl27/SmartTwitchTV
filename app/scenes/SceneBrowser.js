@@ -131,12 +131,12 @@ function addCommas(nStr) {
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
 
     if (isGame)
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855");// preview.large = 272x380 using a larg * 2,25
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
     else
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");// preview.large = 640x360 forcing here just in case it changes
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-            '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
             <div class="stream_text" ' + 'style="right: 0;"' + '> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div class="stream_info">' + stream_title + '</div> \
@@ -358,7 +358,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 //https://imagesloaded.desandro.com/
 SceneSceneBrowser.loadDataSuccessFinish = function() {
     $('#stream_table').imagesLoaded()
-        .done( { background: true }, function() {//all images successfully loaded
+        .done({
+            background: true
+        }, function() { //all images successfully loaded
             SceneSceneBrowser.showTable();
             SceneSceneBrowser.addFocus();
             //check state of follower load, and call next stage
@@ -388,7 +390,9 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.refreshClick = false;
             }
         })
-        .fail( { background: true }, function() {//all images loaded, at least one is broken or not yet load
+        .fail({
+            background: true
+        }, function() { //all images loaded, at least one is broken or not yet load
             SceneSceneBrowser.loadDataSuccessFinish();
         });
 };

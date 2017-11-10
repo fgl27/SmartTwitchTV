@@ -168,10 +168,10 @@ var listener = {
         SceneSceneChannel.ChatPosition();
         SceneSceneChannel.ChatSize();
         if (SceneSceneChannel.ChatEnable && !SceneSceneChannel.isChatShown()) {
-                ChatPositions += 1;
-                SceneSceneChannel.ChatPosition();
-                SceneSceneChannel.showChat();
-       }
+            ChatPositions += 1;
+            SceneSceneChannel.ChatPosition();
+            SceneSceneChannel.showChat();
+        }
     },
     onbufferingprogress: function(percent) {
         //console.log("Buffering progress data : " + percent);
@@ -374,17 +374,17 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_LEFT:
                 //console.log("KEY_LEFT");
                 if (SceneSceneChannel.isChatShown()) {
-                        ChatBackground -= 0.05;
-                        if (ChatBackground < 0) ChatBackground = 0;
-                        SceneSceneChannel.ChatBackground();
+                    ChatBackground -= 0.05;
+                    if (ChatBackground < 0) ChatBackground = 0;
+                    SceneSceneChannel.ChatBackground();
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
                 //console.log("KEY_RIGHT");
                 if (SceneSceneChannel.isChatShown()) {
-                        ChatBackground += 0.05;
-                        if (ChatBackground > 1) ChatBackground = 1;
-                        SceneSceneChannel.ChatBackground();
+                    ChatBackground += 0.05;
+                    if (ChatBackground > 1) ChatBackground = 1;
+                    SceneSceneChannel.ChatBackground();
                 }
                 break;
             case TvKeyCode.KEY_UP:
@@ -400,7 +400,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     if (ChatSizeValue > 0) {
                         ChatSizeValue--;
                         SceneSceneChannel.ChatSize();
-                    } SceneSceneChannel.showChatBackgroundDialog('Size 33%');
+                    }
+                    SceneSceneChannel.showChatBackgroundDialog('Size 33%');
                 }
                 break;
             case TvKeyCode.KEY_DOWN:
@@ -412,7 +413,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     }
                     clearHide();
                     setHide();
-                } else  if (SceneSceneChannel.isChatShown()) {
+                } else if (SceneSceneChannel.isChatShown()) {
                     if (ChatSizeValue < 2) {
                         ChatSizeValue++;
                         SceneSceneChannel.ChatSize();
@@ -682,18 +683,20 @@ SceneSceneChannel.ChatPosition = function() {
 };
 
 SceneSceneChannel.ChatSize = function() {
-    var containerHeight = 48, percentage = 100, dialogTop = 50;
+    var containerHeight = 48,
+        percentage = 100,
+        dialogTop = 50;
     sizeOffset = 0;
     if (ChatSizeValue == 1) {
-       containerHeight = 32;
-       percentage = 66;
-       dialogTop = 25;
-       sizeOffset = 16;
+        containerHeight = 32;
+        percentage = 66;
+        dialogTop = 25;
+        sizeOffset = 16;
     } else if (ChatSizeValue == 0) {
-       containerHeight = 16;
-       percentage = 33;
-       dialogTop = 12.5;
-       sizeOffset = 32;
+        containerHeight = 16;
+        percentage = 33;
+        dialogTop = 12.5;
+        sizeOffset = 32;
     }
     document.getElementById("chat_container").style.height = containerHeight + '%';
     window.parent.document.getElementById("chat_frame").style.height = '100%';
