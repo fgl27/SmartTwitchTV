@@ -402,6 +402,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         SceneSceneChannel.ChatSize();
                     }
                     SceneSceneChannel.showChatBackgroundDialog('Size 33%');
+                } else {
+                    SceneSceneChannel.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_DOWN:
@@ -418,6 +420,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         ChatSizeValue++;
                         SceneSceneChannel.ChatSize();
                     } else SceneSceneChannel.showChatBackgroundDialog('Size 100%');
+                } else {
+                    SceneSceneChannel.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_ENTER:
