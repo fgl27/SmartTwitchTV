@@ -33,4 +33,51 @@
 		<nature>org.tizen.web.project.builder.WebNature</nature>
 		<nature>org.tizen.web.jsa.JSAnalysisNature</nature>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1510351540759</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-.git</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1510351540762</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-screenshot</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1510351540765</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-.gitignore</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1510351540767</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-README.md</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1510351540770</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-LICENSE</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>
