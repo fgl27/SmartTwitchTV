@@ -7,18 +7,19 @@ var random_int = Math.round(Math.random() * 1e7),
     exitID,
     timeoutID,
     pauseEndID,
+    chatBID,
     pauseStartID,
+    ChatBackground = null,
     ChatPositions = null,
     sysTime,
     today,
     created,
     oldcurrentTime = 0
-    offsettime = 0;
+offsettime = 0;
 
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
-SceneSceneChannel.ChatEnableByPanel = false;
-SceneSceneChannel.ChatEnableByChat = false;
+SceneSceneChannel.ChatEnable = false;
 SceneSceneChannel.isShowExitDialogOn = false;
 
 SceneSceneChannel.loadingDataTryMax = 13;
@@ -168,7 +169,7 @@ var listener = {
     onbufferingcomplete: function() {
         //console.log("Buffering complete.");
         SceneSceneChannel.onBufferingComplete();
-        if (SceneSceneChannel.ChatEnableByChat) SceneSceneChannel.showChat();
+        if (SceneSceneChannel.ChatEnable) SceneSceneChannel.showChat();
     },
     oncurrentplaytime: function(currentTime) {
         //console.log("Current Playtime : " + currentTime);
@@ -235,7 +236,7 @@ function timeMs(time) {
     return (time == 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
 }
 
-function streamLiveAt(time) {//time in '2017-10-27T13:27:27Z'
+function streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
     var date2_ms = new Date().getTime();
     return timeMs(date2_ms - time);
 }
@@ -259,6 +260,7 @@ SceneSceneChannel.prototype.initialize = function() {
     });
     $("#scene_channel_dialog_simple_pause").hide();
     $("#scene_channel_dialog_exit").hide();
+    $("#scene_channel_dialog_chat").hide();
     SceneSceneChannel.isShowPauseDialogOn = false;
     SceneSceneChannel.isShowExitDialogOn = false;
 };
@@ -286,7 +288,9 @@ SceneSceneChannel.prototype.handleFocus = function() {
 
     if (ChatPositions == null)
         ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
-    SceneSceneChannel.ChatEnableByChat = localStorage.getItem('ChatEnableByChat') == 'true' ? true : false;
+    if (ChatBackground == null)
+        ChatBackground = parseInt(localStorage.getItem('ChatBackground')) || 0.5;
+    SceneSceneChannel.ChatEnable = localStorage.getItem('ChatEnable') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
@@ -295,8 +299,11 @@ SceneSceneChannel.prototype.handleFocus = function() {
 
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
-    $("#chat_container").html('<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="z-order:0;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe>');
-
+    $("#chat_container").html(
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="z-order:0; position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
+        <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
+        <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
+        </div>');
     SceneSceneChannel.tokenResponse = 0;
     SceneSceneChannel.playlistResponse = 0;
     SceneSceneChannel.playingTry = 0;
@@ -338,8 +345,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 ChatPositions += 1;
                 if (!SceneSceneChannel.isChatShown()) {
                     SceneSceneChannel.showChat();
-                    SceneSceneChannel.ChatEnableByChat = true;
-                    localStorage.setItem('ChatEnableByChat', 'true');
+                    SceneSceneChannel.ChatEnable = true;
+                    localStorage.setItem('ChatEnable', 'true');
                 }
                 SceneSceneChannel.ChatPosition();
                 break;
@@ -347,9 +354,25 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.isChatShown()) {
                     ChatPositions -= 1;
                     SceneSceneChannel.hideChat();
-                    SceneSceneChannel.ChatEnableByChat = false;
-                    localStorage.setItem('ChatEnableByChat', 'false');
+                    SceneSceneChannel.ChatEnable = false;
+                    localStorage.setItem('ChatEnable', 'false');
                     localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
+                }
+                break;
+            case TvKeyCode.KEY_LEFT:
+                //console.log("KEY_LEFT");
+                if (SceneSceneChannel.isChatShown()) {
+                        ChatBackground -= 0.05;
+                        if (ChatBackground < 0) ChatBackground = 0;
+                        SceneSceneChannel.ChatBackground();
+                }
+                break;
+            case TvKeyCode.KEY_RIGHT:
+                //console.log("KEY_RIGHT");
+                if (SceneSceneChannel.isChatShown()) {
+                        ChatBackground += 0.05;
+                        if (ChatBackground > 1) ChatBackground = 1;
+                        SceneSceneChannel.ChatBackground();
                 }
                 break;
             case TvKeyCode.KEY_UP:
@@ -373,16 +396,6 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     clearHide();
                     setHide();
                 } else SceneSceneChannel.showPanel();
-                break;
-            case TvKeyCode.KEY_LEFT:
-                //console.log("KEY_LEFT");
-                if (SceneSceneChannel.isPanelShown())
-                    SceneSceneChannel.hidePanel();
-                break;
-            case TvKeyCode.KEY_RIGHT:
-                //console.log("KEY_RIGHT");
-                if (SceneSceneChannel.isPanelShown())
-                    SceneSceneChannel.hidePanel();
                 break;
             case TvKeyCode.KEY_ENTER:
                 //console.log("KEY_ENTER");
@@ -641,6 +654,23 @@ SceneSceneChannel.ChatPosition = function() {
     document.getElementById("chat_container").style.top = top;
     document.getElementById("chat_container").style.left = left;
     localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
+};
+
+SceneSceneChannel.ChatBackground = function() {
+    document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + ChatBackground + ")";
+    localStorage.setItem('ChatBackgroundValue', parseInt(ChatBackground));
+    SceneSceneChannel.showChatBackgroundDialog('Brightness ' + (ChatBackground.toFixed(2) * 100).toFixed(0) + '%');
+};
+
+SceneSceneChannel.showChatBackgroundDialog = function(DialogText) {
+    window.clearTimeout(chatBID);
+    $("#scene_channel_dialog_chat_text").text(DialogText);
+    $("#scene_channel_dialog_chat").show();
+    chatBID = window.setTimeout(SceneSceneChannel.hideChatBackgroundDialog, 1000);
+};
+
+SceneSceneChannel.hideChatBackgroundDialog = function() {
+    $("#scene_channel_dialog_chat").hide();
 };
 
 SceneSceneChannel.showChat = function() {
