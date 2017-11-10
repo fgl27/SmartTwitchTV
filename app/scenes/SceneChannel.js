@@ -153,6 +153,7 @@ SceneSceneChannel.qualityDisplay = function() {
 
 SceneSceneChannel.initLanguage = function() {
     $('#label_quality').html(STR_QUALITY);
+    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_CHANNELS.toUpperCase();
 };
 
 var listener = {
@@ -289,7 +290,6 @@ SceneSceneChannel.prototype.handleFocus = function() {
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
-    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_CHANNELS.toUpperCase();
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
 
