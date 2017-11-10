@@ -9,6 +9,7 @@ var random_int = Math.round(Math.random() * 1e7),
     pauseEndID,
     chatBID,
     sizeOffset = 0,
+    sizePanelOffset = 0,
     pauseStartID,
     ChatBackground = null,
     ChatSizeValue = null,
@@ -112,6 +113,7 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
+    ChatPositions -= 1;
     var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
     oldcurrentTime = 0;
     offsettime = 0;
@@ -432,8 +434,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     SceneSceneChannel.hidePanel();
                 } else {
                     if (SceneSceneChannel.isShowExitDialogOn) {
+                        SceneSceneChannel.hideChat();
                         SceneSceneChannel.shutdownStream();
-                        ChatPositions -= 1;
                         window.clearTimeout(exitID);
                     }
                     SceneSceneChannel.showExitDialog();
@@ -648,18 +650,22 @@ SceneSceneChannel.showPanel = function() {
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
     setHide();
+    sizePanelOffset = -4;
+    if (SceneSceneChannel.isChatShown() && (ChatPositions < 2)) SceneSceneChannel.ChatPosition();
 };
 
 SceneSceneChannel.hidePanel = function() {
     clearHide();
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
+    sizePanelOffset = 0;
+    if (SceneSceneChannel.isChatShown() && (ChatPositions < 2)) SceneSceneChannel.ChatPosition();
 };
 
 SceneSceneChannel.ChatPosition = function() {
     //default
     var left = "75.3%",
-        top = (51 + sizeOffset) + '.5%';
+        top = (51 + sizeOffset + sizePanelOffset) + '.5%';
 
     if (ChatPositions < 7) {
         if (ChatPositions > 1) top = "0.5%"; // top/lefth
