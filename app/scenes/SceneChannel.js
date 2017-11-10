@@ -8,8 +8,10 @@ var random_int = Math.round(Math.random() * 1e7),
     timeoutID,
     pauseEndID,
     chatBID,
+    sizeOffset = 0,
     pauseStartID,
     ChatBackground = null,
+    ChatSizeValue = null,
     ChatPositions = null,
     sysTime,
     today,
@@ -161,6 +163,13 @@ var listener = {
     onbufferingstart: function() {
         //console.log("Buffering start.");
         SceneSceneChannel.onBufferingStart();
+        SceneSceneChannel.ChatPosition();
+        SceneSceneChannel.ChatSize();
+        if (SceneSceneChannel.ChatEnable && !SceneSceneChannel.isChatShown()) {
+                ChatPositions += 1;
+                SceneSceneChannel.ChatPosition();
+                SceneSceneChannel.showChat();
+       }
     },
     onbufferingprogress: function(percent) {
         //console.log("Buffering progress data : " + percent);
@@ -169,7 +178,6 @@ var listener = {
     onbufferingcomplete: function() {
         //console.log("Buffering complete.");
         SceneSceneChannel.onBufferingComplete();
-        if (SceneSceneChannel.ChatEnable) SceneSceneChannel.showChat();
     },
     oncurrentplaytime: function(currentTime) {
         //console.log("Current Playtime : " + currentTime);
@@ -290,6 +298,8 @@ SceneSceneChannel.prototype.handleFocus = function() {
         ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
     if (ChatBackground == null)
         ChatBackground = parseInt(localStorage.getItem('ChatBackground')) || 0.5;
+    if (ChatSizeValue == null)
+        ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 2;
     SceneSceneChannel.ChatEnable = localStorage.getItem('ChatEnable') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
@@ -300,7 +310,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="z-order:0; position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
         </div>');
@@ -384,7 +394,12 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     }
                     clearHide();
                     setHide();
-                } else SceneSceneChannel.showPanel();
+                } else if (SceneSceneChannel.isChatShown()) {
+                    if (ChatSizeValue > 0) {
+                        ChatSizeValue--;
+                        SceneSceneChannel.ChatSize();
+                    } SceneSceneChannel.showChatBackgroundDialog('Size 33%');
+                }
                 break;
             case TvKeyCode.KEY_DOWN:
                 if (SceneSceneChannel.isPanelShown()) {
@@ -395,11 +410,17 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     }
                     clearHide();
                     setHide();
-                } else SceneSceneChannel.showPanel();
+                } else  if (SceneSceneChannel.isChatShown()) {
+                    if (ChatSizeValue < 2) {
+                        ChatSizeValue++;
+                        SceneSceneChannel.ChatSize();
+                    } else SceneSceneChannel.showChatBackgroundDialog('Size 100%');
+                }
                 break;
             case TvKeyCode.KEY_ENTER:
                 //console.log("KEY_ENTER");
                 if (SceneSceneChannel.isPanelShown()) {
+                    clearPause();
                     SceneSceneChannel.qualityChanged();
                 } else {
                     SceneSceneChannel.showPanel();
@@ -420,19 +441,17 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_PLAYPAUSE:
                 if (SceneSceneChannel.Play) {
-                    SceneSceneChannel.Play = false,
-                        webapis.avplay.pause();
+                    SceneSceneChannel.Play = false;
+                    webapis.avplay.pause();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
                     SceneSceneChannel.showPauseDialog();
-                } else {
-                    SceneSceneChannel.Play = true,
-                        webapis.avplay.play();
-                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-                    if (SceneSceneChannel.isShowPauseDialogOn) {
-                        $("#scene_channel_dialog_simple_pause").hide();
-                        SceneSceneChannel.isShowPauseDialogOn = false;
+                    if (!SceneSceneChannel.isPanelShown()) {
+                        SceneSceneChannel.showPanel();
                     }
+                } else {
                     clearPause();
+                    webapis.avplay.play();
+                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                 }
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
@@ -640,20 +659,42 @@ SceneSceneChannel.hidePanel = function() {
 SceneSceneChannel.ChatPosition = function() {
     //default
     var left = "75.3%",
-        top = "51.5%";
+        top = (51 + sizeOffset) + '.5%';
 
     if (ChatPositions < 7) {
         if (ChatPositions > 1) top = "0.5%"; // top/lefth
         if (ChatPositions > 2) left = "38.3%"; // top/midle
         if (ChatPositions > 3) left = "0%"; // top/right
 
-        if (ChatPositions > 4) top = "51.5%"; // bottom/lefth
+        if (ChatPositions > 4) top = (51 + sizeOffset) + '.5%'; // bottom/lefth
         if (ChatPositions > 5) left = "38.3%"; // bottom/midle
     } else ChatPositions = 1;
 
     document.getElementById("chat_container").style.top = top;
     document.getElementById("chat_container").style.left = left;
     localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
+};
+
+SceneSceneChannel.ChatSize = function() {
+    var containerHeight = 48, percentage = 100, dialogTop = 50;
+    sizeOffset = 0;
+    if (ChatSizeValue == 1) {
+       containerHeight = 32;
+       percentage = 66;
+       dialogTop = 25;
+       sizeOffset = 16;
+    } else if (ChatSizeValue == 0) {
+       containerHeight = 16;
+       percentage = 33;
+       dialogTop = 12.5;
+       sizeOffset = 32;
+    }
+    document.getElementById("chat_container").style.height = containerHeight + '%';
+    window.parent.document.getElementById("chat_frame").style.height = '100%';
+    document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
+    SceneSceneChannel.ChatPosition();
+    localStorage.setItem('ChatSizeValue', parseInt(ChatSizeValue));
+    SceneSceneChannel.showChatBackgroundDialog('Size ' + percentage + '%');
 };
 
 SceneSceneChannel.ChatBackground = function() {
@@ -688,6 +729,14 @@ SceneSceneChannel.isChatShown = function() {
 function clearPause() {
     window.clearTimeout(pauseEndID);
     window.clearTimeout(pauseStartID);
+    SceneSceneChannel.Play = true;
+    if (SceneSceneChannel.isShowPauseDialogOn) {
+        $("#scene_channel_dialog_simple_pause").hide();
+        SceneSceneChannel.isShowPauseDialogOn = false;
+    }
+    if (SceneSceneChannel.isPanelShown()) {
+        SceneSceneChannel.hidePanel();
+    }
 }
 
 function setHide() {
