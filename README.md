@@ -79,15 +79,16 @@ The Application is tested with the above remote, below are the controls and sect
 
 ### [Playing a video Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/images/screenshot/float_chat.jpg)
 * **Play/Pause a video**: Play/Pause
-* **Force refresh a video (in case it froze)**: Directional pad (left) to open side panel, after Press **Select** to restart buffer for current video quality, if it keeps freezing change to a lower video quality (below how to)
-* **Close a video (if side panel is open)**: Return (click it twice under 3 seconds)
-* **Open side panel**: Directional pad (left)
-* **Close side panel(if it's open)**: Directional pad (right) or Return
-* **Change video quality (if side panel is open)**: Directional pad (up/down) or CH **UP/DOWN** (Channel Up/Down) after Press **Select** to confirm
-* **Close video (If side panel is closed)** : Return twice
-* **Show Transparent chat**: CH **UP** (Channel Up)
-* **Move Transparent chat (if it's showing)**: CH **UP** (Channel Up)
-* **Hide Transparent chat (if it's showing)**: CH **DOWN** (Channel Down)
+* **Force refresh a video (in case it froze)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to) and if it just freezes force close the app
+* **Close a video**: Return twice (click it twice under 3 seconds) if info panel is showing do it tree times first one will dismiss the info panel
+* **Open info panel**: Press **Select** once
+* **Dismiss info panel(if info panel it's showing)**: Return or wait 5 seconds it will auto dismiss
+* **Change video quality (if info panel is showing)**: Directional pad (up/down) after Press **Select** to confirm
+* **Show Chat**: CH **UP** (Channel Up)
+* **Hide Chat (if chat it's showing)**: CH **DOWN** (Channel Down)
+* **Change Chat position (if chat it's showing)**: CH **UP** (Channel Up)
+* **Change Chat size (if chat it's showing and info panel is not)**: Directional pad (up/down)
+* **Change Chat background brightness (if chat it's showing)**: Directional pad (left/right)
 
 Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 bits)
 ==============
