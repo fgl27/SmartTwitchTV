@@ -136,11 +136,11 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
         preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");// preview.large = 640x360 forcing here just in case it changes
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-			<div class="stream_text" ' + 'style="right: 0;"' + '> \
-			<div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-			<div class="stream_info">' + stream_title + '</div> \
-			<div class="stream_info">' + stream_game + '</div> \
+            '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+            <div class="stream_text" ' + 'style="right: 0;"' + '> \
+            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+            <div class="stream_info">' + stream_title + '</div> \
+            <div class="stream_info">' + stream_game + '</div> \
             <div class="stream_info">' + viwers + '</div> \
             </div>');
 };

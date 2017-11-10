@@ -6,11 +6,9 @@ function SceneSceneChannel() {
 var random_int = Math.round(Math.random() * 1e7),
     exitID,
     timeoutID,
-    refreshID,
     pauseEndID,
     pauseStartID,
     ChatPositions = null,
-    ChatPositionsTemp = 0,
     sysTime,
     today,
     created,
@@ -19,8 +17,6 @@ var random_int = Math.round(Math.random() * 1e7),
 
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
-SceneSceneChannel.ForcedPannelInit = false;
-SceneSceneChannel.ForcedPannelOn = false;
 SceneSceneChannel.ChatEnableByPanel = false;
 SceneSceneChannel.ChatEnableByChat = false;
 SceneSceneChannel.isShowExitDialogOn = false;
@@ -210,9 +206,9 @@ var updateCurrentTime = function(currentTime) {
         currentTime = webapis.avplay.getCurrentTime();
 
     oldcurrentTime = currentTime + offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = 'Playing time ' + timeMs(oldcurrentTime);
+    document.getElementById("stream_info_currentime").innerHTML = 'Playing for ' + timeMs(oldcurrentTime);
 
-    document.getElementById("stream_info_livetime").innerHTML = 'Live sence ' + streamLiveAt(created) + ' ago';
+    document.getElementById("stream_info_livetime").innerHTML = 'Since ' + streamLiveAt(created) + ' ago';
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
@@ -287,16 +283,14 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
-    if (ChatPositions == null) {
+    if (ChatPositions == null)
         ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
-        ChatPositionsTemp = ChatPositions;
-    } else ChatPositionsTemp = ChatPositions + 1;
     SceneSceneChannel.ChatEnableByChat = localStorage.getItem('ChatEnableByChat') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
+    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_CHANNELS.toUpperCase();
     $("#stream_info_title").text("");
-    $("#stream_info_viewer").text("");
     $("#stream_info_icon").attr("src", "");
 
     SceneSceneChannel.updateStreamInfo();
@@ -341,75 +335,54 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
     } else {
         switch (e.keyCode) {
             case TvKeyCode.KEY_CHANNELUP:
-                if (!SceneSceneChannel.isPanelShown()) {
-                    ChatPositions += 1;
-                    if (!SceneSceneChannel.isChatShown()) {
-                        SceneSceneChannel.showChat();
-                        SceneSceneChannel.ChatEnableByChat = true;
-                        localStorage.setItem('ChatEnableByChat', 'true');
-                    }
-                    SceneSceneChannel.ChatPosition();
+                ChatPositions += 1;
+                if (!SceneSceneChannel.isChatShown()) {
+                    SceneSceneChannel.showChat();
+                    SceneSceneChannel.ChatEnableByChat = true;
+                    localStorage.setItem('ChatEnableByChat', 'true');
+                }
+                SceneSceneChannel.ChatPosition();
+                break;
+            case TvKeyCode.KEY_CHANNELDOWN:
+                if (SceneSceneChannel.isChatShown()) {
+                    ChatPositions -= 1;
+                    SceneSceneChannel.hideChat();
+                    SceneSceneChannel.ChatEnableByChat = false;
+                    localStorage.setItem('ChatEnableByChat', 'false');
+                    localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
                 }
                 break;
             case TvKeyCode.KEY_UP:
-                if (SceneSceneChannel.isPanelShown() && SceneSceneChannel.qualityIndex > 0) {
-                    //console.log("KEY_CHANNELDOWN or KEY_4");
-                    SceneSceneChannel.qualityIndex--;
-                    SceneSceneChannel.qualityDisplay();
-                    if (!SceneSceneChannel.ForcedPannelOn) {
-                        clearHide();
-                        setHide();
+                if (SceneSceneChannel.isPanelShown()) {
+                    if (SceneSceneChannel.qualityIndex > 0) {
+                        //console.log("KEY_CHANNELDOWN or KEY_4");
+                        SceneSceneChannel.qualityIndex--;
+                        SceneSceneChannel.qualityDisplay();
                     }
-                }
-                // Live strems from twitch don't have jumpForward/Backward options
-                //else
-                //{
-                //	webapis.avplay.jumpForward(5000);// time im ms
-                //}
-                break;
-            case TvKeyCode.KEY_CHANNELDOWN:
-                if (!SceneSceneChannel.isPanelShown()) {
-                    if (SceneSceneChannel.isChatShown()) {
-                        ChatPositions -= 1;
-                        SceneSceneChannel.hideChat();
-                        SceneSceneChannel.ChatEnableByChat = false;
-                        localStorage.setItem('ChatEnableByChat', 'false');
-                        localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
-                    }
-                }
+                    clearHide();
+                    setHide();
+                } else SceneSceneChannel.showPanel();
                 break;
             case TvKeyCode.KEY_DOWN:
-                if (SceneSceneChannel.isPanelShown() &&
-                    SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1) {
-                    //console.log("KEY_CHANNELDOWN or KEY_4");
-                    SceneSceneChannel.qualityIndex++;
-                    SceneSceneChannel.qualityDisplay();
-                    if (!SceneSceneChannel.ForcedPannelOn) {
-                        clearHide();
-                        setHide();
+                if (SceneSceneChannel.isPanelShown()) {
+                    if (SceneSceneChannel.qualityIndex < SceneSceneChannel.getQualitiesCount() - 1) {
+                        //console.log("KEY_CHANNELDOWN or KEY_4");
+                        SceneSceneChannel.qualityIndex++;
+                        SceneSceneChannel.qualityDisplay();
                     }
-                }
-                //else
-                //{
-                //	webapis.avplay.jumpBackward(5000);// time im ms
-                //}
+                    clearHide();
+                    setHide();
+                } else SceneSceneChannel.showPanel();
                 break;
             case TvKeyCode.KEY_LEFT:
                 //console.log("KEY_LEFT");
-                if (SceneSceneChannel.isPanelShown()) {
-                    if (SceneSceneChannel.ForcedPannelInit) { // first click set it to true next will disable autohide
-                        SceneSceneChannel.ForcedPannelOn = true;
-                        clearRefresh();
-                        clearHide();
-                    }
-                } else {
-                    SceneSceneChannel.showPanel();
-                    SceneSceneChannel.ForcedPannelInit = true;
-                }
+                if (SceneSceneChannel.isPanelShown())
+                    SceneSceneChannel.hidePanel();
                 break;
             case TvKeyCode.KEY_RIGHT:
                 //console.log("KEY_RIGHT");
-                SceneSceneChannel.hidePanel();
+                if (SceneSceneChannel.isPanelShown())
+                    SceneSceneChannel.hidePanel();
                 break;
             case TvKeyCode.KEY_ENTER:
                 //console.log("KEY_ENTER");
@@ -623,8 +596,7 @@ SceneSceneChannel.updateStreamInfo = function() {
                     var response = $.parseJSON(xmlHttp.responseText);
                     $("#stream_info_name").text(response.stream.channel.display_name);
                     $("#stream_info_title").text(response.stream.channel.status);
-                    $("#stream_info_game").text(response.stream.game);
-                    $("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     $("#stream_info_icon").attr("src", response.stream.channel.logo);
                     created = new Date(response.stream.created_at).getTime();
                 } catch (err) {
@@ -641,36 +613,15 @@ SceneSceneChannel.updateStreamInfo = function() {
 };
 
 SceneSceneChannel.showPanel = function() {
-    if (!SceneSceneChannel.ForcedPannelOn) {
-        setHide();
-    }
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
-    ChatPositionsTemp = ChatPositions;
-    //reset chat positon
-    ChatPositions = 1;
-    SceneSceneChannel.ChatPosition();
-    if (!SceneSceneChannel.isChatShown()) {
-        SceneSceneChannel.showChat();
-        SceneSceneChannel.ChatEnableByPanel = true;
-    }
+    setHide();
 };
 
 SceneSceneChannel.hidePanel = function() {
     clearHide();
-    clearRefresh();
-    SceneSceneChannel.ForcedPannelInit = false;
-    SceneSceneChannel.ForcedPannelOn = false;
     $("#scene_channel_panel").hide();
     SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
-    //restore chat positon
-    SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
-    ChatPositions = ChatPositionsTemp;
-    if (!SceneSceneChannel.ChatEnableByChat && SceneSceneChannel.ChatEnableByPanel) {
-        SceneSceneChannel.hideChat();
-        SceneSceneChannel.ChatEnableByPanel = false;
-    }
-    SceneSceneChannel.ChatPosition();
 };
 
 SceneSceneChannel.ChatPosition = function() {
@@ -710,34 +661,11 @@ function clearPause() {
 }
 
 function setHide() {
-    timeoutID = window.setTimeout(SceneSceneChannel.hidePanel, 3000); // time in ms
+    timeoutID = window.setTimeout(SceneSceneChannel.hidePanel, 5000); // time in ms
 }
 
 function clearHide() {
     window.clearTimeout(timeoutID);
-    setRefresh();
-}
-
-function setRefresh() {
-    refreshID = window.setTimeout(TimeRefresh, 180000); //time in ms... 180 seconds
-}
-
-function Resetfresh() {
-    refreshID = window.setTimeout(SceneSceneChannel.showPanel, 50); //time in ms
-}
-
-function TimeRefresh() {
-    if (SceneSceneChannel.isPanelShown()) {
-        SceneSceneChannel.hidePanel();
-        SceneSceneChannel.ForcedPannelOn = true;
-        Resetfresh();
-        setRefresh();
-        clearHide();
-    }
-}
-
-function clearRefresh() {
-    window.clearTimeout(refreshID);
 }
 
 SceneSceneChannel.isPanelShown = function() {

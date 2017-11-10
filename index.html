@@ -266,12 +266,12 @@
          {
          color: white;
          text-shadow:
-         #000 0px 0px 4.5px,
-         #000 0px 0px 4.5px,
-         #000 0px 0px 4.5px,
-         #000 0px 0px 4.5px,
-         #000 0px 0px 4.5px,
-         #000 0px 0px 4.5px;
+         #000 0px 0px 4px,
+         #000 0px 0px 4px,
+         #000 0px 0px 4px,
+         #000 0px 0px 4px,
+         #000 0px 0px 4px,
+         #000 0px 0px 4px;
          -webkit-font-smoothing: antialiased;
          }
          .strokedbig
@@ -424,45 +424,35 @@
       <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px;background-color : #000000;
          background-image : url('');">
          <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
-         <div id="scene_channel_panel" style="display:flex; position: absolute; box-sizing: border-box; border:5px outset rgba(97, 0, 120, 0.5); left: 75%; width: 25%; height : 100%; z-index: 1; background-color: rgba(101, 69, 165, 0.6);">
-            <div style="float: right; padding-right: 6.5%; padding-top: 4.5% ">
-               <div id="stream_system_time" class="strokedmini" style="font-size: 120%;font-weight:bold;"></div>
-            </div>
-            <img style="width: 40%; padding-left: 2.5%; padding-top: 2%; padding-bottom: 0%;" src="images/twitchlogo.png" alt="twitchlogo"/>
-            <div style="margin: 0 auto; width: 95%; height: 17%; padding-left: 1%; padding-top: 0.5%; padding-bottom: 0.5%;">
-               <img id="stream_info_icon" style="border:5px outset rgba(97, 0, 120, 0.5); display: inline-block; width: 33%;" src="#" alt="stream_info"/>
-               <div style="z-order:1; text-align: center; color: white; vertical-align: top; padding-top: 0%; display: inline-block; width: 62%;">
-                  <div id="stream_info_name" class="strokedmini" style="font-size: 120%; font-weight:bold; padding-bottom: 2%;"></div>
-                  <div id="stream_info_game" class="strokedextramini" style="font-size: 95%; color: white"></div>
-                  <div id="stream_info_viewer" class="strokedextramini" style="font-size: 85%; color: white"></div>
-                  <div id="stream_info_currentime" class="strokedextramini" style="font-size: 85%; color: white"></div>
-                  <div id="stream_info_livetime" class="strokedextramini" style="font-size: 85%; color: white"></div>
+         <div id="scene_channel_panel" style="display:flex; position: absolute; top: 0%; width: 100%; height : 100%; z-index: 1;">
+            <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.035));">
+               <div style="float: right; padding-right: 1%; padding-top: 1%;">
+                  <div id="stream_live" class="strokedextramini" style="font-size: 120%; font-weight:bold;"></div>
+                  <div id="stream_info_livetime" class="strokedextramini" style="font-size: 120%; font-weight:bold; color: white"></div>
+                  <div id="stream_info_currentime" class="strokedextramini" style="font-size: 120%; color: white;  font-weight:bold;"></div>
+                  <div id="stream_system_time" class="strokedextramini" style="font-size: 120%; font-weight:bold;"></div>
+               </div>
+               <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9%;" src="#" alt="stream_info"/>
+               <div style="vertical-align: top; padding-left: 1%; padding-top: 1.5%; display: inline-block; width: 75%;">
+                  <div id="stream_info_name" class="strokedmini" style="font-size: 190%; font-weight:bold;"></div>
+                  <div id="stream_info_title" class="strokedextramini" style="font-size: 150%;"></div>
+                  <div id="stream_info_game" class="strokedextramini" style="font-size: 150%;"></div>
                </div>
             </div>
-            <div style="z-order:2; position: relative; width: 100%; height: 25.5%; margin-top: 2%; background-color: rgba(76, 48, 130, 0.4);">
-               <div class="strokedextramini" style="width: 95%; height: 47%; text-align: center; vertical-align: middle; padding: 1%; margin: 0 auto; font-size: 100%; color: rgba(255, 255, 255, 0.8);">
-                  <p id="stream_info_title"></p>
-               </div>
-               <div style="width: 95%; height: 26px; line-height: 26px; margin: 0 auto; padding-top: 10%; font-size: 100%;">
-                  <div style="display: inline-block; border:5px outset rgba(97, 0, 120, 0.5); width: 75%; height: 100%; margin-left: 8%; background-color: rgba(255, 255, 255, 0.3); color: black; font-weight: 100;">
-                     <div class="textblack" style="height: 26px;font-size: 100%; width: 30%; background-color: rgba(255, 255, 255, 0.3);" id="label_quality">
-                        STR_QUALITY
-                     </div>
-                     <div id="quality_name" class="textblack" style="font-size: 100%; width: 65%;"></div>
-                  </div>
-                  <div style="height: 28px; display: inline-block;">
+            <div style="z-order:2; position: absolute; bottom: 0; width: 100%;">
+               <div style="float: right; width: 23%; height: auto; display: inline-block; border-radius: 3%; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.35));">
+                  <div id="label_quality" class="strokedextramini" style="font-size: 150%; width: auto; display: inline-block; ">STR_QUALITY</div>
+                  <div style="height: auto; display: inline-block;">
                      <div style="display: inline-block;">
-                        <div id="quality_arrow_up" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
-                        <div id="quality_arrow_down" style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
-                     </div>
-                     <div style="font-size: 90%; display: inline-block; color: rgba(255, 255, 255, 0.95);">
-                        P
+                        <div id="quality_arrow_up" style="border-left: 6px solid transparent; border-right: 6px solid transparent;border-bottom: 8px solid white"></div>
+                        <div id="quality_arrow_down" style="border-left: 6px solid transparent; border-right: 6px solid transparent;border-top: 8px solid white"></div>
                      </div>
                   </div>
+                  <div id="quality_name" class="strokedextramini" style="border-radius: 4%; font-size: 150%; width: auto; display: inline-block; background-color: rgba(255, 255, 255, 0.6);"></div>
                </div>
             </div>
          </div>
-         <div id="chat_container" style="z-index:2; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5);">
+         <div id="chat_container" style="z-index:2; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.65);">
             <!-- Chat browser-->
          </div>
          <div id="scene_channel_dialog_loading" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 32%;">
