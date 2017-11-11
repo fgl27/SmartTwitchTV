@@ -82,7 +82,7 @@ The Application is tested with the above remote, below are the controls and sect
 * **Force refresh a video (in case it froze)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to) and if it just freezes force close the app
 * **Close a video**: Return twice (click it twice under 3 seconds) if info panel is showing do it tree times first one will dismiss the info panel
 * **Show info panel(if chat is showing)**: Press **Select** once
-* **Show info panel(if chat is not showing)**: Directional pad (up/down) or Press **Select** once
+* **Show info panel(if chat is not showing)**: Directional pad (up/down/left/right) or Press **Select** once
 * **Dismiss info panel(if info panel it's showing)**: Return or wait 5 seconds it will auto dismiss
 * **Change video quality (if info panel is showing)**: Directional pad (up/down) after Press **Select** to confirm
 * **Show Chat**: CH **UP** (Channel Up)
