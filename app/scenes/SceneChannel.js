@@ -218,7 +218,7 @@ var updateCurrentTime = function(currentTime) {
         currentTime = webapis.avplay.getCurrentTime();
 
     oldcurrentTime = currentTime + offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = 'Playing for ' + timeMs(oldcurrentTime);
+    document.getElementById("stream_info_currentime").innerHTML = 'Watching for ' + timeMs(oldcurrentTime);
 
     document.getElementById("stream_info_livetime").innerHTML = 'Since ' + streamLiveAt(created) + ' ago';
 
@@ -377,6 +377,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground -= 0.05;
                     if (ChatBackground < 0) ChatBackground = 0;
                     SceneSceneChannel.ChatBackground();
+                } else {
+                    SceneSceneChannel.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
@@ -385,6 +387,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground += 0.05;
                     if (ChatBackground > 1) ChatBackground = 1;
                     SceneSceneChannel.ChatBackground();
+                } else {
+                    SceneSceneChannel.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_UP:
