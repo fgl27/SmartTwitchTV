@@ -431,8 +431,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_ENTER:
                 //console.log("KEY_ENTER");
                 if (SceneSceneChannel.isPanelShown()) {
-                    clearPause();
                     SceneSceneChannel.qualityChanged();
+                    clearPause();
                 } else {
                     SceneSceneChannel.showPanel();
                 }
