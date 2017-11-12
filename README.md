@@ -79,12 +79,12 @@ The Application is tested with the above remote, below are the controls and sect
 
 ### [Playing a video Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/float_chat.jpg)
 * **Play/Pause a video**: Play/Pause
-* **Force refresh a video (in case it froze)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to) and if it just freezes force close the app
+* **Force refresh a video (in case it freezes)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to), but if it freezes not responding to key commands force close the app by holding the Return key
 * **Close a video**: Return twice (click it twice under 3 seconds) if info panel is showing do it tree times first one will dismiss the info panel
 * **Show info panel(if chat is showing)**: Press **Select** once
 * **Show info panel(if chat is not showing)**: Directional pad (up/down/left/right) or Press **Select** once
 * **Dismiss info panel(if info panel it's showing)**: Return or wait 5 seconds it will auto dismiss
-* **Change video quality (if info panel is showing)**: Directional pad (up/down) after Press **Select** to confirm
+* **Change video quality (if info panel is showing it will be on bottom right corner)**: Directional pad (up/down) to change after Press **Select** to confirm
 * **Show Chat**: CH **UP** (Channel Up)
 * **Hide Chat (if chat it's showing)**: CH **DOWN** (Channel Down)
 * **Change Chat position (if chat it's showing)**: CH **UP** (Channel Up)
@@ -97,7 +97,7 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * Create a Samsung account if you don't have one and set it up as a developer account [SAMSUNG DEVELOPERS](http://developer.samsung.com/home.do)
 * Log in with the developer account on the TV, open "APPS", hit number button and press the sequence 12345 A new window will pop, enter your computer LAN IP address and make sure you click "On" for enabling the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on [SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 * [Download and install Tizen Studio](https://developer.tizen.org/development/tizen-studio/download)
-* I used the "Tizen Studio 1.3 with IDE installer", download the 32/64 bit according to yours CPU, on linux the file is a executable binary 480Mb size, give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **it may ask you to use apt-get to install missing dependencies**, on windows it is a .exe file around 480MB
+* I used the "Tizen Studio 2.0 with IDE installer", download the 32/64 bit according to yours CPU, on linux the file is a executable binary 480Mb size, give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **it may ask you to use apt-get to install missing dependencies**, on windows it is a .exe file around 480MB
 * Install Java SDK, I install this app with **Oracle JDK java 8** on linux terminal commands below, on windows go to [Java SE Development Kit 8 Downloads
 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) download the latest version of jdk when this was tested it was "jdk-8u152-windows-x64.exe" for 64bit windows or "jdk-8u152-windows-i586.exe 32bits
 "
