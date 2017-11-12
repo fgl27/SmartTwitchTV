@@ -228,9 +228,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
         response_items = response.follows.length;
 
-        var x, ar = [];
+        var channel, x, ar = [];
         for (x = 0; x < response_items; x++) {
-            var channel = response.follows[x];
+            channel = response.follows[x];
             ar.push(channel.channel.name);
         }
         SceneSceneBrowser.followerChannels = ar.join();
@@ -296,54 +296,61 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         }
 
-        var t;
+        var coloumn_id, row_id, row, cell, game, stream, mItemExist = false,
+            matrix = [];
         for (var i = 0; i < response_rows; i++) {
-            var row_id;
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
             } else {
                 row_id = offset_itemsCount / SceneSceneBrowser.ColoumnsCount + i;
             }
-            var row = $('<tr></tr>');
-            var matrix = [];
+            row = $('<tr></tr>');
+            matrix = [];
 
-            for (t = 0; t < SceneSceneBrowser.ColoumnsCount && cursor < response_items; t++, cursor++) {
-                var cell, game, stream;
+            for (coloumn_id = 0; coloumn_id < SceneSceneBrowser.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+                mItemExist = false;
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     game = response.top[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.template, '', '', game.game.name,
+                    mItemExist = SceneSceneBrowser.itemExist(game.game.name);
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                         addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
-                    matrix[t] = [hosts.target.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
+                    matrix[coloumn_id] = [hosts.target.channel.name, 'stream'];
+                    mItemExist = SceneSceneBrowser.itemExist(hosts.target.channel.display_name);
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
                         addCommas(hosts.target.viewers) + STR_VIEWER, false);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
-                    matrix[t] = [game.game.name, 'game'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, game.game.name, game.game.box.template, '', '', game.game.name,
+                    matrix[coloumn_id] = [game.game.name, 'game'];
+                    mItemExist = SceneSceneBrowser.itemExist(game.game.name);
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                         addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
-                    matrix[t] = [stream.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.template, stream.channel.status,
+                    matrix[coloumn_id] = [stream.channel.name, 'stream'];
+                    mItemExist = SceneSceneBrowser.itemExist(stream.channel.name);
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
                     stream = response.streams[cursor];
-                    cell = SceneSceneBrowser.createCell(row_id, t, stream.channel.name, stream.preview.template, stream.channel.status,
+                    mItemExist = SceneSceneBrowser.itemExist(stream.channel.name);
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
-
-                row.append(cell);
+                if (!mItemExist)
+                    row.append(cell);
+                else coloumn_id--;
 
             }
 
-            for (t; t < SceneSceneBrowser.ColoumnsCount; t++) {
+            // TODO remove empty cell related to SceneSceneBrowser.itemExist
+            for (coloumn_id; coloumn_id < SceneSceneBrowser.ColoumnsCount; coloumn_id++) {
                 row.append(SceneSceneBrowser.createCellEmpty());
             }
             SceneSceneBrowser.followerMatrix[row_id] = matrix;
@@ -352,6 +359,23 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         SceneSceneBrowser.loadDataSuccessFinish();
     }
+};
+
+// this function is responsable for checking duplicated streames/games and is the cause of blank cell that are created in for with a todo
+// TODO remove empty cell
+SceneSceneBrowser.itemExist = function(display_name) {
+    if (SceneSceneBrowser.ItemsLimit > SceneSceneBrowser.itemsCount) {
+        for (y = 0; y < SceneSceneBrowser.getRowsCount(); y++) {
+            for (x = 0; x < (SceneSceneBrowser.ColoumnsCount - 1); x++) {
+                if (document.getElementById('display_name_' + y + '_' + x) != null) {
+                    if (display_name == document.getElementById('display_name_' + y + '_' + x).textContent) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 };
 
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
