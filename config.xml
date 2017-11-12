@@ -5,6 +5,7 @@
    <content src="index.html"/>
    <description xml:lang="en-gb">Twitch.tv</description>
    <feature name="http://tizen.org/feature/screen.size.normal.2160.3840"/>
+   <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
    <feature name="http://tizen.org/feature/network.wifi"/>
    <feature name="http://www.samsungdforum.com/feature/Keyboard"/>
    <icon src="icon/icon_16_by_9.png"/>
@@ -28,6 +29,7 @@
    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+   <tizen:privilege name="http://developer.samsung.com/privilege/productinfo"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.audio"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>

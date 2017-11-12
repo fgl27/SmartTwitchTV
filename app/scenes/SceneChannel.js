@@ -558,8 +558,13 @@ SceneSceneChannel.qualityChanged = function() {
         webapis.avplay.stop();
         webapis.avplay.open(SceneSceneChannel.playingUrl);
         webapis.avplay.setListener(listener);
-        webapis.avplay.setDisplayRect(0, 0, 3840, 2160);
-        webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        if (webapis.productinfo.isUdPanelSupported()) {
+            webapis.avplay.setDisplayRect(0, 0, 3840, 2160);
+            webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        } else {
+            webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
+        }
+
         webapis.avplay.prepare();
         webapis.avplay.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
