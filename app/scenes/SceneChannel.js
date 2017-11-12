@@ -17,8 +17,8 @@ var random_int = Math.round(Math.random() * 1e7),
     sysTime,
     today,
     created,
-    oldcurrentTime = 0
-offsettime = 0;
+    oldcurrentTime = 0,
+    offsettime = 0;
 
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
@@ -76,9 +76,9 @@ function extractQualityFromStream(input) {
         values = values[0].split(":");
         values = values[1].split(",");
 
-        var set = {};
+        var value, set = {};
         for (var i = 0; i < values.length; i++) {
-            var value = values[i].split("=");
+            value = values[i].split("=");
             set[value[0]] = value[1].replace(/"/g, '');
         }
         quality = set.NAME;
