@@ -119,6 +119,7 @@ SceneSceneChannel.shutdownStream = function() {
     offsettime = 0;
     if (OutsysTime > sysTime) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
+    window.clearInterval(SceneSceneChannel.streamInfoTimer);
 };
 
 SceneSceneChannel.getQualitiesCount = function() {
@@ -312,7 +313,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=transparent&channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
         </div>');
