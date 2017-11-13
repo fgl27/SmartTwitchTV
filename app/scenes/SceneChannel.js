@@ -803,7 +803,8 @@ SceneSceneChannel.loadDataError = function() {
         }
         SceneSceneChannel.loadDataRequest();
     } else {
-        SceneSceneChannel.showDialog("Error: Unable to retrieve access token.");
+        SceneSceneChannel.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannelDisplayname +
+            "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
     }
 };
 
