@@ -11,9 +11,9 @@ var random_int = Math.round(Math.random() * 1e7),
     sizeOffset = 0,
     sizePanelOffset = 0,
     pauseStartID,
-    ChatBackground = null,
-    ChatSizeValue = null,
-    ChatPositions = null,
+    ChatBackground = 0.5,
+    ChatSizeValue = 2,
+    ChatPositions = 0,
     sysTime,
     today,
     created,
@@ -113,7 +113,6 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
-    ChatPositions--;
     var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
     oldcurrentTime = 0;
     offsettime = 0;
@@ -166,10 +165,10 @@ var listener = {
     onbufferingstart: function() {
         //console.log("Buffering start.");
         SceneSceneChannel.onBufferingStart();
+        SceneSceneChannel.ChatSize(false);
+        SceneSceneChannel.ChatBackground(false);
         SceneSceneChannel.ChatPosition();
-        SceneSceneChannel.ChatSize();
         if (SceneSceneChannel.ChatEnable && !SceneSceneChannel.isChatShown()) {
-            ChatPositions++;
             SceneSceneChannel.ChatPosition();
             SceneSceneChannel.showChat();
         }
@@ -297,12 +296,10 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
-    if (ChatPositions == null)
-        ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
-    if (ChatBackground == null)
-        ChatBackground = parseInt(localStorage.getItem('ChatBackground')) || 0.5;
-    if (ChatSizeValue == null)
-        ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 2;
+    ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
+    ChatBackground = parseInt(localStorage.getItem('ChatBackgroundValue')) || 0.5;
+    ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 2;
+
     SceneSceneChannel.ChatEnable = localStorage.getItem('ChatEnable') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
@@ -313,7 +310,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?channel=' + SceneSceneBrowser.selectedChannel + '&bot_activity=false&prevent_clipping=false"></iframe> \
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
         </div>');
@@ -377,7 +374,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.isChatShown()) {
                     ChatBackground -= 0.05;
                     if (ChatBackground < 0) ChatBackground = 0;
-                    SceneSceneChannel.ChatBackground();
+                    SceneSceneChannel.ChatBackground(true);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -387,7 +384,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 if (SceneSceneChannel.isChatShown()) {
                     ChatBackground += 0.05;
                     if (ChatBackground > 1) ChatBackground = 1;
-                    SceneSceneChannel.ChatBackground();
+                    SceneSceneChannel.ChatBackground(true);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -402,11 +399,10 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     clearHide();
                     setHide();
                 } else if (SceneSceneChannel.isChatShown()) {
-                    if (ChatSizeValue > 0) {
-                        ChatSizeValue--;
-                        SceneSceneChannel.ChatSize();
-                    }
-                    SceneSceneChannel.showChatBackgroundDialog('Size 33%');
+                    if (ChatSizeValue < 2) {
+                        ChatSizeValue++;
+                        SceneSceneChannel.ChatSize(true);
+                    } else SceneSceneChannel.showChatBackgroundDialog('Size 100%');
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -421,10 +417,10 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     clearHide();
                     setHide();
                 } else if (SceneSceneChannel.isChatShown()) {
-                    if (ChatSizeValue < 2) {
-                        ChatSizeValue++;
-                        SceneSceneChannel.ChatSize();
-                    } else SceneSceneChannel.showChatBackgroundDialog('Size 100%');
+                    if (ChatSizeValue > 0) {
+                        ChatSizeValue--;
+                        SceneSceneChannel.ChatSize(true);
+                    } else SceneSceneChannel.showChatBackgroundDialog('Size 33%');
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -696,7 +692,7 @@ SceneSceneChannel.ChatPosition = function() {
     localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
 };
 
-SceneSceneChannel.ChatSize = function() {
+SceneSceneChannel.ChatSize = function(showDialog) {
     var containerHeight = 48,
         percentage = 100,
         dialogTop = 50;
@@ -717,13 +713,15 @@ SceneSceneChannel.ChatSize = function() {
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     SceneSceneChannel.ChatPosition();
     localStorage.setItem('ChatSizeValue', parseInt(ChatSizeValue));
-    SceneSceneChannel.showChatBackgroundDialog('Size ' + percentage + '%');
+    if (showDialog)
+        SceneSceneChannel.showChatBackgroundDialog('Size ' + percentage + '%');
 };
 
-SceneSceneChannel.ChatBackground = function() {
+SceneSceneChannel.ChatBackground = function(showDialog) {
     document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + ChatBackground + ")";
     localStorage.setItem('ChatBackgroundValue', parseInt(ChatBackground));
-    SceneSceneChannel.showChatBackgroundDialog('Brightness ' + (ChatBackground.toFixed(2) * 100).toFixed(0) + '%');
+    if (showDialog)
+        SceneSceneChannel.showChatBackgroundDialog('Brightness ' + (ChatBackground.toFixed(2) * 100).toFixed(0) + '%');
 };
 
 SceneSceneChannel.showChatBackgroundDialog = function(DialogText) {
