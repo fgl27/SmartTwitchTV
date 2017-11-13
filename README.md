@@ -2,7 +2,7 @@ smarttv-twitch
 ==============
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
-The application was tested in a 2016 TV model UN40KU6000HXPA or related **xx" KU6000H Flat Smart 4K UHD TV** from 2016/2017.
+The application was tested on TV model UN40KU6000HXPA 40" 4k Series 6 or related **xx" KU6000H Flat Smart 4K UHD TV** and on TV model UE40K6372SUXXH 40" FHD Series 6 or related **xx" K6372 Flat Smart FHD TV**.
 This branch is only dedicated for TV models from 2016 and up that run Tizen OS, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
 ![Live](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthub.jpeg)
 
