@@ -245,7 +245,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             //console.log("+response.stream=" + response.stream);
             SceneSceneBrowser.loadingData = false;
             SceneSceneBrowser.refreshClick = false;
-            SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannel + "' " + STR_IS_OFFLINE);
+            SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannelDisplayname +
+                "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
         } else {
             //console.log("Opening stream from loaddatasuccess GO");
             SceneSceneBrowser.openStream();

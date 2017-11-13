@@ -32,4 +32,4 @@ var STR_PLACEHOLDER_TOOLS = "Enter user name...";
 var STR_CHANNEL = "Channel";
 var STR_USERNAME = "User name";
 var STR_DOES_NOT_EXIST = "does not exist.";
-var STR_IS_OFFLINE = "is offline.";
+var STR_IS_OFFLINE = "went offline, or the";
