@@ -289,7 +289,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     sysTime = new Date().getTime();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF); //screensaver off
 
-    //SceneSceneChannel.Player.OnConnectionFailed = 'SceneSceneChannel.onConnectionFailed';          Not implemented
+    //SceneSceneChannel.Player.OnConnefctionFailed = 'SceneSceneChannel.onConnectionFailed';          Not implemented
     //SceneSceneChannel.Player.OnAuthenticationFailed = 'SceneSceneChannel.onAuthenticationFailed';  Not implemented
     //SceneSceneChannel.Player.OnStreamNotFound = 'SceneSceneChannel.onStreamNotFound';              Not implemented
     //SceneSceneChannel.Player.OnNetworkDisconnected = 'SceneSceneChannel.onNetworkDisconnected';    Not implemented
@@ -309,8 +309,10 @@ SceneSceneChannel.prototype.handleFocus = function() {
 
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
+    //workaround: scale to .8 set width/height to 1.25 to makes font look smaller
+    //customized chat values at https://www.nightdev.com/kapchat/ click "install for xsplit" next get the link
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false"></iframe> \
+        '<iframe id="chat_frame" width="125%" height="125%" frameborder="0" scrolling="no" style="position: absolute; -o-transform: scale(0.80); -o-transform-origin: 0 0; -webkit-transform: scale(0.80); -webkit-transform-origin: 0 0;" src="https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
         </div>');
@@ -709,7 +711,7 @@ SceneSceneChannel.ChatSize = function(showDialog) {
         sizeOffset = 32;
     }
     document.getElementById("chat_container").style.height = containerHeight + '%';
-    window.parent.document.getElementById("chat_frame").style.height = '100%';
+    window.parent.document.getElementById("chat_frame").style.height = '125%';// this value must equal to "SceneSceneChannel.prototype.handleFocus" value
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     SceneSceneChannel.ChatPosition();
     localStorage.setItem('ChatSizeValue', parseInt(ChatSizeValue));
