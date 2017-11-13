@@ -113,7 +113,7 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
-    ChatPositions -= 1;
+    ChatPositions--;
     var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
     oldcurrentTime = 0;
     offsettime = 0;
@@ -169,7 +169,7 @@ var listener = {
         SceneSceneChannel.ChatPosition();
         SceneSceneChannel.ChatSize();
         if (SceneSceneChannel.ChatEnable && !SceneSceneChannel.isChatShown()) {
-            ChatPositions += 1;
+            ChatPositions++;
             SceneSceneChannel.ChatPosition();
             SceneSceneChannel.showChat();
         }
@@ -355,7 +355,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
     } else {
         switch (e.keyCode) {
             case TvKeyCode.KEY_CHANNELUP:
-                ChatPositions += 1;
+                ChatPositions++;
                 if (!SceneSceneChannel.isChatShown()) {
                     SceneSceneChannel.showChat();
                     SceneSceneChannel.ChatEnable = true;
@@ -365,7 +365,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_CHANNELDOWN:
                 if (SceneSceneChannel.isChatShown()) {
-                    ChatPositions -= 1;
+                    ChatPositions--;
                     SceneSceneChannel.hideChat();
                     SceneSceneChannel.ChatEnable = false;
                     localStorage.setItem('ChatEnable', 'false');
