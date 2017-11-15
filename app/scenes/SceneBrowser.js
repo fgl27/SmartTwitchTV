@@ -14,7 +14,7 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 30;
+SceneSceneBrowser.ItemsLimit = 60;
 SceneSceneBrowser.ColoumnsCount = 3;
 
 SceneSceneBrowser.MODE_NONE = -1;
@@ -629,7 +629,7 @@ SceneSceneBrowser.removeFocus = function() {
 };
 
 SceneSceneBrowser.addFocus = function() {
-    if (SceneSceneBrowser.cursorY + 3 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount &&
+    if (SceneSceneBrowser.cursorY + 4 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount &&
         !SceneSceneBrowser.dataEnded) {
         SceneSceneBrowser.loadData();
     }
