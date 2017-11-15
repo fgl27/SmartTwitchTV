@@ -109,7 +109,7 @@ SceneSceneChannel.shutdownStream = function() {
     document.body.addEventListener("keydown", SceneSceneBrowser.prototype.handleKeyDown, false);
     SceneSceneBrowser.browser = true;
     SceneSceneChannel.Play = false;
-    webapis.avplay.close();
+    SceneSceneChannel.mWebapisAvplay.close();
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
@@ -215,7 +215,7 @@ var updateCurrentTime = function(currentTime) {
 
     //current time is given in millisecond
     if (currentTime == null)
-        currentTime = webapis.avplay.getCurrentTime();
+        currentTime = SceneSceneChannel.mWebapisAvplay.getCurrentTime();
 
     oldcurrentTime = currentTime + offsettime;
     document.getElementById("stream_info_currentime").innerHTML = 'Watching for ' + timeMs(oldcurrentTime);
@@ -253,15 +253,16 @@ function streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
 
 SceneSceneChannel.prototype.initialize = function() {
     SceneSceneChannel.initLanguage();
+    SceneSceneChannel.mWebapisAvplay = (window.tizen && window.webapis.avplay) || {};
     SceneSceneChannel.Player = document.getElementById('av-player');
 
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            webapis.avplay.suspend(); //Mandatory. You should call it, if you use avplay.
+            SceneSceneChannel.mWebapisAvplay.suspend(); //Mandatory. You should call it, if you use avplay.
             // Something you want to do when hide.
         } else {
             if (!SceneSceneBrowser.browser) {
-                webapis.avplay.restore();
+                SceneSceneChannel.mWebapisAvplay.restore();
             } else {
                 SceneSceneBrowser.refresh();
             }
@@ -452,7 +453,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_PLAYPAUSE:
                 if (SceneSceneChannel.Play) {
                     SceneSceneChannel.Play = false;
-                    webapis.avplay.pause();
+                    SceneSceneChannel.mWebapisAvplay.pause();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
                     SceneSceneChannel.showPauseDialog();
                     if (!SceneSceneChannel.isPanelShown()) {
@@ -460,7 +461,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     }
                 } else {
                     clearPause();
-                    webapis.avplay.play();
+                    SceneSceneChannel.mWebapisAvplay.play();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                 }
                 break;
@@ -553,18 +554,17 @@ SceneSceneChannel.qualityChanged = function() {
 
     try {
         offsettime = oldcurrentTime;
-        webapis.avplay.stop();
-        webapis.avplay.open(SceneSceneChannel.playingUrl);
-        webapis.avplay.setListener(listener);
+        SceneSceneChannel.mWebapisAvplay.stop();
+        SceneSceneChannel.mWebapisAvplay.open(SceneSceneChannel.playingUrl);
+        SceneSceneChannel.mWebapisAvplay.setListener(listener);
         if (webapis.productinfo.isUdPanelSupported()) {
-            webapis.avplay.setDisplayRect(0, 0, 3840, 2160);
-            webapis.avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+            SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 3840, 2160);
+            SceneSceneChannel.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
         } else {
-            webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
+            SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 1920, 1080);
         }
-
-        webapis.avplay.prepareAsync(function() {
-            webapis.avplay.play(); //SuccessCallback
+        SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
+            SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
         }, function() {
             SceneSceneChannel.qualityChanged(); //ErrorCallback try again
         });
