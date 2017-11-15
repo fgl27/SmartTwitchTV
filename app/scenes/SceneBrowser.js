@@ -362,14 +362,16 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     }
 };
 
-// this function is responsable for checking duplicated streames/games and is the cause of blank cell that are created in for with a todo
+// this function is responsable for checking duplicated streames/games and is the cause of blank cell that are created in createCellEmpty
 // TODO remove empty cell
 SceneSceneBrowser.itemExist = function(display_name) {
-    if (SceneSceneBrowser.ItemsLimit > SceneSceneBrowser.itemsCount) {
+    var tempElement;
+    if (SceneSceneBrowser.ItemsLimit < SceneSceneBrowser.itemsCount) {
         for (y = 0; y < SceneSceneBrowser.getRowsCount(); y++) {
             for (x = 0; x < (SceneSceneBrowser.ColoumnsCount - 1); x++) {
-                if (document.getElementById('display_name_' + y + '_' + x) != null) {
-                    if (display_name == document.getElementById('display_name_' + y + '_' + x).textContent) {
+                tempElement = document.getElementById('display_name_' + y + '_' + x);
+                if (tempElement != null) {
+                    if (display_name == tempElement.textContent) {
                         return true;
                     }
                 }
