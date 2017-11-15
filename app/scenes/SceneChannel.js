@@ -563,8 +563,11 @@ SceneSceneChannel.qualityChanged = function() {
             webapis.avplay.setDisplayRect(0, 0, 1920, 1080);
         }
 
-        webapis.avplay.prepare();
-        webapis.avplay.play();
+        webapis.avplay.prepareAsync(function() {
+            webapis.avplay.play(); //SuccessCallback
+        }, function() {
+            SceneSceneChannel.qualityChanged(); //ErrorCallback try again
+        });
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     } catch (e) {
         console.error(e);
