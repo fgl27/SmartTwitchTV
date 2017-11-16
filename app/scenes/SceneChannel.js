@@ -557,7 +557,7 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.mWebapisAvplay.stop();
         SceneSceneChannel.mWebapisAvplay.open(SceneSceneChannel.playingUrl);
         SceneSceneChannel.mWebapisAvplay.setListener(listener);
-        SceneSceneChannel.mWebapisAvplay.setTimeoutForBuffering(30000);
+        SceneSceneChannel.mWebapisAvplay.setTimeoutForBuffering(20000);
         SceneSceneChannel.mWebapisAvplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY","PLAYER_BUFFER_SIZE_IN_BYTE", 4*32*1024*1024);//default 32*1024*1024
         if (webapis.productinfo.isUdPanelSupported()) {
             SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 3840, 2160);
