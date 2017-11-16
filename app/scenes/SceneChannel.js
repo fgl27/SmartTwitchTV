@@ -118,6 +118,7 @@ SceneSceneChannel.shutdownStream = function() {
     offsettime = 0;
     if (OutsysTime > sysTime) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
+    document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
 };
 
@@ -283,6 +284,7 @@ SceneSceneChannel.prototype.handleShow = function() {
 SceneSceneChannel.prototype.handleHide = function() {
     //console.log("SceneSceneChannel.handleHide()");
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
+    document.getElementById('chat_frame').src = 'about:blank';
 };
 
 SceneSceneChannel.prototype.handleFocus = function() {
