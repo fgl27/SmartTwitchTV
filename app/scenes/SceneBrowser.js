@@ -2,10 +2,12 @@
 function SceneSceneBrowser() {
 
 }
+
 SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
-    Scenemode = STR_CHANNELS;
+    Scenemode = STR_CHANNELS,
+    blankCellCount = 0;
 
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
@@ -14,8 +16,8 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 60;
-SceneSceneBrowser.ColoumnsCount = 3;
+SceneSceneBrowser.ItemsLimit = 60; // max 100 use a value that is multiplier of SceneSceneBrowser.ColoumnsCount
+SceneSceneBrowser.ColoumnsCount = 3; // make the 4 in SceneSceneBrowser.cursorY + 4 in SceneSceneBrowser.addFocus + 1 this value because more rows will be showed, offset in ScrollHelper() also need to be revised
 
 SceneSceneBrowser.MODE_NONE = -1;
 SceneSceneBrowser.MODE_ALL = 0;
@@ -127,27 +129,6 @@ function addCommas(nStr) {
     }
     return x1 + x2;
 }
-
-SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
-
-    if (isGame)
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
-    else
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
-
-    return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-            <div class="stream_text" ' + 'style="right: 0;"' + '> \
-            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div class="stream_info">' + stream_title + '</div> \
-            <div class="stream_info">' + stream_game + '</div> \
-            <div class="stream_info">' + viwers + '</div> \
-            </div>');
-};
-
-SceneSceneBrowser.createCellEmpty = function() {
-    return $('<td class="stream_cell"></td>').html('');
-};
 
 SceneSceneBrowser.loadDataError = function(reason, responseText) {
     var calling = false;
@@ -297,7 +278,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         }
 
-        var coloumn_id, row_id, row, cell, game, stream, mItemExist = false,
+        var coloumn_id, row_id, row, cell, game, stream, mCellExists = false,
+            mReplace = false,
             matrix = [];
         for (var i = 0; i < response_rows; i++) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
@@ -309,17 +291,26 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             matrix = [];
 
             for (coloumn_id = 0; coloumn_id < SceneSceneBrowser.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
-                mItemExist = false;
+                mCellExists = false;
+                mReplace = false;
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     game = response.top[cursor];
-                    mItemExist = SceneSceneBrowser.itemExist(game.game.name);
+                    mCellExists = SceneSceneBrowser.CellExists(game.game.name);
+                    if (!mCellExists) {
+                        mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
+                            addCommas(game.viewers) + STR_VIEWER, true);
+                    }
+                    if (mReplace) {
+                        cursor++;
+                        stream = response.streams[cursor];
+                        mCellExists = SceneSceneBrowser.CellExists(game.game.name);
+                    }
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                         addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
                     matrix[coloumn_id] = [hosts.target.channel.name, 'stream'];
-                    mItemExist = SceneSceneBrowser.itemExist(hosts.target.channel.display_name);
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
                         addCommas(hosts.target.viewers) + STR_VIEWER, false);
@@ -327,32 +318,36 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
                     matrix[coloumn_id] = [game.game.name, 'game'];
-                    mItemExist = SceneSceneBrowser.itemExist(game.game.name);
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                         addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
                     matrix[coloumn_id] = [stream.channel.name, 'stream'];
-                    mItemExist = SceneSceneBrowser.itemExist(stream.channel.name);
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
 
                 } else {
                     stream = response.streams[cursor];
-                    mItemExist = SceneSceneBrowser.itemExist(stream.channel.name);
+                    mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
+                    if (!mCellExists) {
+                        mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
+                            stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                    }
+                    if (mReplace) {
+                        cursor++;
+                        stream = response.streams[cursor];
+                        mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
+                    }
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                         stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
-                if (!mItemExist)
-                    row.append(cell);
+                if (!mCellExists) row.append(cell);
                 else coloumn_id--;
-
             }
 
-            // TODO remove empty cell related to SceneSceneBrowser.itemExist
             for (coloumn_id; coloumn_id < SceneSceneBrowser.ColoumnsCount; coloumn_id++) {
-                row.append(SceneSceneBrowser.createCellEmpty());
+                row.append(SceneSceneBrowser.createCellEmpty(row_id, coloumn_id));
             }
             SceneSceneBrowser.followerMatrix[row_id] = matrix;
             $('#stream_table').append(row);
@@ -362,9 +357,35 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     }
 };
 
-// this function is responsable for checking duplicated streames/games and is the cause of blank cell that are created in createCellEmpty
-// TODO remove empty cell
-SceneSceneBrowser.itemExist = function(display_name) {
+SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
+
+    if (isGame)
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
+    else
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
+
+    return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+            <div class="stream_text" ' + 'style="right: 0;"' + '> \
+            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+            <div class="stream_info">' + stream_title + '</div> \
+            <div class="stream_info">' + stream_game + '</div> \
+            <div class="stream_info">' + viwers + '</div> \
+            </div>');
+};
+
+SceneSceneBrowser.createCellEmpty = function(row_id, coloumn_id) {
+    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
+    return $('<td id="empty_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
+};
+
+/* 
+ * CellExists and replaceCellEmpty check for duplicated streams/games that are created when SceneSceneBrowser.itemsCount is bigger then 0
+ * CellExists force remove a duplicated but it will cause a blank cell via createCellEmpty
+ * replaceCellEmpty will replace those blank cell with new cell on next load when clicking down, it will cause more and more blank cell
+ * as you click down and more and more streams are showed, theoretically the code can handle it as it grows
+*/
+SceneSceneBrowser.CellExists = function(display_name) {
     var tempElement;
     if (SceneSceneBrowser.ItemsLimit < SceneSceneBrowser.itemsCount) {
         for (y = 0; y < SceneSceneBrowser.getRowsCount(); y++) {
@@ -372,12 +393,43 @@ SceneSceneBrowser.itemExist = function(display_name) {
                 tempElement = document.getElementById('display_name_' + y + '_' + x);
                 if (tempElement != null) {
                     if (display_name == tempElement.textContent) {
+                        blankCellCount++;
                         return true;
                     }
                 }
             }
         }
     }
+    return false;
+};
+
+SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
+
+    for (y = row_id - (1 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
+        for (x = 0; x < SceneSceneBrowser.ColoumnsCount; x++) {
+            if (((row_id > ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1))) && !ThumbNull(y, x)) {
+                row_id = y;
+                coloumn_id = x;
+                if (isGame)
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
+                else
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
+
+                document.getElementById('empty_' + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
+                document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
+                    '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+                    <div class="stream_text" ' + 'style="right: 0;"' + '> \
+                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+                    <div class="stream_info">' + stream_title + '</div> \
+                    <div class="stream_info">' + stream_game + '</div> \
+                    <div class="stream_info">' + viwers + '</div> \
+                    </div>';
+                return true;
+            }
+        }
+    }
+
     return false;
 };
 
@@ -618,7 +670,7 @@ SceneSceneBrowser.refresh = function() {
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
         }
         SceneSceneBrowser.clean();
-
+        blankCellCount = 0;
         SceneSceneBrowser.loadData();
     }
 };
