@@ -302,7 +302,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     }
                     if (mReplace) {
                         cursor++;
-                        stream = response.streams[cursor];
+                        game = response.top[cursor];
                         mCellExists = SceneSceneBrowser.CellExists(game.game.name);
                     }
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
@@ -384,7 +384,7 @@ SceneSceneBrowser.createCellEmpty = function(row_id, coloumn_id) {
  * CellExists force remove a duplicated but it will cause a blank cell via createCellEmpty
  * replaceCellEmpty will replace those blank cell with new cell on next load when clicking down, it will cause more and more blank cell
  * as you click down and more and more streams are showed, theoretically the code can handle it as it grows
-*/
+ */
 SceneSceneBrowser.CellExists = function(display_name) {
     var tempElement;
     if (SceneSceneBrowser.ItemsLimit < SceneSceneBrowser.itemsCount) {
@@ -405,7 +405,7 @@ SceneSceneBrowser.CellExists = function(display_name) {
 
 SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
 
-    for (y = row_id - (1 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
+    for (y = row_id - (2 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
         for (x = 0; x < SceneSceneBrowser.ColoumnsCount; x++) {
             if (((row_id > ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1))) && !ThumbNull(y, x)) {
                 row_id = y;
@@ -471,8 +471,9 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
         })
         .fail({
             background: true
-        }, function() { //all images loaded, at least one is broken or not yet load
-            SceneSceneBrowser.loadDataSuccessFinish();
+        }, function() { //all images loaded, at least one is broken reload it
+            console.warn("loadDataSuccessFinish fail restarting SceneSceneBrowser.loadData");
+            SceneSceneBrowser.loadData();
         });
 };
 
