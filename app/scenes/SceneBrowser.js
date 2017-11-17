@@ -472,8 +472,9 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
         .fail({
             background: true
         }, function() { //all images loaded, at least one is broken reload it
-            console.warn("loadDataSuccessFinish fail restarting SceneSceneBrowser.loadData");
-            SceneSceneBrowser.loadData();
+            console.warn("loadDataSuccessFinish fail restarting SceneSceneBrowser.refresh");
+            //TODO properly fix the problem, this check if pic has load correctly or not, if it fail is because internet problem check it pic individually reload the pic in case of a fail
+            SceneSceneBrowser.refresh();
         });
 };
 
