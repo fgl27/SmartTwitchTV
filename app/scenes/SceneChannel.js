@@ -812,6 +812,7 @@ SceneSceneChannel.loadDataError = function() {
     } else {
         SceneSceneChannel.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannelDisplayname +
             "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
+        window.setTimeout(SceneSceneChannel.shutdownStream, 3000);
     }
 };
 
