@@ -18,6 +18,7 @@ SceneSceneBrowser.isShowExitDialogOn = false;
 
 SceneSceneBrowser.ItemsLimit = 60; // max 100 use a value that is multiplier of SceneSceneBrowser.ColoumnsCount
 SceneSceneBrowser.ColoumnsCount = 3; // make the 4 in SceneSceneBrowser.cursorY + 4 in SceneSceneBrowser.addFocus + 1 this value because more rows will be showed, offset in ScrollHelper() also need to be revised
+SceneSceneBrowser.ItemsLimitOffset = 0;
 
 SceneSceneBrowser.MODE_NONE = -1;
 SceneSceneBrowser.MODE_ALL = 0;
@@ -405,7 +406,7 @@ SceneSceneBrowser.CellExists = function(display_name) {
 
 SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
 
-    for (y = row_id - (2 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
+    for (y = row_id - (1 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
         for (x = 0; x < SceneSceneBrowser.ColoumnsCount; x++) {
             if (((row_id > ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1))) && !ThumbNull(y, x)) {
                 row_id = y;
@@ -487,23 +488,39 @@ SceneSceneBrowser.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
         var theUrl;
 
+        SceneSceneBrowser.ItemsLimitOffset = 0;
+        if ((blankCellCount > 2)) {
+            SceneSceneBrowser.ItemsLimitOffset = Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount);
+            blankCellCount = blankCellCount % SceneSceneBrowser.ColoumnsCount;
+        }
         var offset = SceneSceneBrowser.itemsCount;
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
-            theUrl = 'https://api.twitch.tv/kraken/games/top?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+            theUrl = 'https://api.twitch.tv/kraken/games/top?limit=' + (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) +
+                '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
-            theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
-            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' + SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
-        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' + SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
+            theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' +
+                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+            SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
+            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
+                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+            SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
+                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+            SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
+                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset); // + '&offset=' + offset; removed offset for now, need fix latter
+        } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
+            SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
+                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset); // + '&offset=' + offset; removed offset for now, need fix latter
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SceneSceneBrowser.selectedChannel);
         } else {
-            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' +
+                offset;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
