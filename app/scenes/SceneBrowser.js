@@ -120,7 +120,7 @@ var ScrollHelper = {
         }
 
         //offset center the page when scrolling to focus
-        if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) offset = 0.125;
+        if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) offset = 0.205;
         var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - offset * this.viewportHeight();
 
         $(window).scrollTop(targetPosition);
@@ -265,7 +265,6 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                 var tbody = $('<tbody></tbody>');
                 $('#stream_table').append(tbody);
-                $('#stream_table').css("padding-top", "0%");
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + STR_LIVE_CHANNELS + ' ' +
                     SceneSceneBrowser.followerUsername + STR_CHANGE_USER + '</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
