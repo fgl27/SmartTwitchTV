@@ -259,8 +259,6 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             response_rows++;
         }
 
-        var cursor = 0;
-
         //Build header for Live Channels, Live Hosts, Live Games
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
             var header;
@@ -284,7 +282,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         var coloumn_id, row_id, row, cell, game, stream, mCellExists = false,
             mReplace = false,
-            matrix = [];
+            matrix = [],
+            cursor = 0;
         for (var i = 0; i < response_rows; i++) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
@@ -304,13 +303,13 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                         mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                             addCommas(game.viewers) + STR_VIEWER, true);
                     }
-                    if (mReplace) {
+                    if (mReplace && ((cursor + 1) < response_items)) {
                         cursor++;
                         game = response.top[cursor];
                         mCellExists = SceneSceneBrowser.CellExists(game.game.name);
                     }
-                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
-                        addCommas(game.viewers) + STR_VIEWER, true);
+                    if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
+                        '', '', game.game.name, addCommas(game.viewers) + STR_VIEWER, true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
@@ -343,8 +342,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                         stream = response.streams[cursor];
                         mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
                     }
-                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
-                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                    if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
+                        stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
                 if (!mCellExists) row.append(cell);
                 else coloumn_id--;
