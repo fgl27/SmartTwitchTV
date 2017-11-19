@@ -197,7 +197,12 @@ var listener = {
         if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
             //console.log("Closing stream from eventType == 'PLAYER_ERROR_CONNECTION_FAILED'");
             SceneSceneBrowser.errorNetwork = true;
-            SceneSceneChannel.shutdownStream();
+            window.clearTimeout(exitID);
+            SceneSceneChannel.isShowExitDialogOn = false;
+            $("#scene_channel_dialog_exit").hide();
+            SceneSceneChannel.hideDialog();
+            SceneSceneChannel.hideChat();
+            window.setTimeout(SceneSceneChannel.shutdownStream, 10);
         }
     },
     //onsubtitlechange: function(duration, text, data3, data4) {
@@ -337,12 +342,16 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_RETURN:
                 //console.log("KEY_RETURN");
-                e.preventDefault(); //prevent key to do default
                 if (SceneSceneChannel.isShowExitDialogOn) {
-                    SceneSceneChannel.shutdownStream();
                     window.clearTimeout(exitID);
+                    SceneSceneChannel.isShowExitDialogOn = false;
+                    $("#scene_channel_dialog_exit").hide();
+                    SceneSceneChannel.hideDialog();
+                    SceneSceneChannel.hideChat();
+                    window.setTimeout(SceneSceneChannel.shutdownStream, 10);
+                } else {
+                    SceneSceneChannel.showExitDialog();
                 }
-                SceneSceneChannel.showExitDialog();
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
                 //console.log("KEY_VOLUMEUP");
@@ -440,16 +449,20 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                e.preventDefault(); //prevent key to do default
                 if (SceneSceneChannel.isPanelShown()) {
                     SceneSceneChannel.hidePanel();
                 } else {
                     if (SceneSceneChannel.isShowExitDialogOn) {
-                        SceneSceneChannel.hideChat();
-                        SceneSceneChannel.shutdownStream();
                         window.clearTimeout(exitID);
+                        SceneSceneChannel.isShowExitDialogOn = false;
+                        $("#scene_channel_dialog_exit_text").text("");
+                        $("#scene_channel_dialog_exit").hide();
+                        SceneSceneChannel.hideDialog();
+                        SceneSceneChannel.hideChat();
+                        window.setTimeout(SceneSceneChannel.shutdownStream, 10);
+                    } else {
+                        SceneSceneChannel.showExitDialog();
                     }
-                    SceneSceneChannel.showExitDialog();
                 }
                 break;
             case TvKeyCode.KEY_PLAYPAUSE:
@@ -507,7 +520,8 @@ SceneSceneChannel.onStreamNotFound = function() {
 
 SceneSceneChannel.onNetworkDisconnected = function() {
     SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
-    SceneSceneChannel.shutdownStream();
+    window.setTimeout(SceneSceneChannel.hideDialog, 2990);
+    window.setTimeout(SceneSceneChannel.shutdownStream, 3000);
 };
 
 SceneSceneChannel.onRenderError = function() {
@@ -560,7 +574,7 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.mWebapisAvplay.open(SceneSceneChannel.playingUrl);
         SceneSceneChannel.mWebapisAvplay.setListener(listener);
         SceneSceneChannel.mWebapisAvplay.setTimeoutForBuffering(20000);
-        SceneSceneChannel.mWebapisAvplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY","PLAYER_BUFFER_SIZE_IN_BYTE", 4*32*1024*1024);//default 32*1024*1024
+        SceneSceneChannel.mWebapisAvplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_BYTE", 4 * 32 * 1024 * 1024); //default 32*1024*1024
         if (webapis.productinfo.isUdPanelSupported()) {
             SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 3840, 2160);
             SceneSceneChannel.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
@@ -580,7 +594,7 @@ SceneSceneChannel.qualityChanged = function() {
 
 SceneSceneChannel.showExitDialog = function() {
     if (SceneSceneChannel.isShowDialogOn) {
-        $("#scene_channel_dialog_loading").hide();
+        SceneSceneChannel.hideDialog();
         SceneSceneChannel.isShowDialogOn = false;
     }
     $("#scene_channel_dialog_exit_text").text(STR_EXIT);
@@ -596,7 +610,7 @@ SceneSceneChannel.showExitDialog = function() {
 
 SceneSceneChannel.showPauseDialog = function() {
     if (SceneSceneChannel.isShowDialogOn) {
-        $("#scene_channel_dialog_loading").hide();
+        SceneSceneChannel.hideDialog();
         SceneSceneChannel.isShowDialogOn = false;
     }
 
@@ -619,8 +633,12 @@ SceneSceneChannel.showDialog = function(title) {
     }
 };
 
-SceneSceneChannel.showPlayer = function() {
+SceneSceneChannel.hideDialog = function(title) {
     $("#scene_channel_dialog_loading").hide();
+};
+
+SceneSceneChannel.showPlayer = function() {
+    SceneSceneChannel.hideDialog();
     $("scene_channel_panel").hide();
     SceneSceneChannel.isShowDialogOn = false;
 };
@@ -718,7 +736,7 @@ SceneSceneChannel.ChatSize = function(showDialog) {
         sizeOffset = 32;
     }
     document.getElementById("chat_container").style.height = containerHeight + '%';
-    window.parent.document.getElementById("chat_frame").style.height = '125%';// this value must equal to "SceneSceneChannel.prototype.handleFocus" value
+    window.parent.document.getElementById("chat_frame").style.height = '125%'; // this value must equal to "SceneSceneChannel.prototype.handleFocus" value
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     SceneSceneChannel.ChatPosition();
     localStorage.setItem('ChatSizeValue', parseInt(ChatSizeValue));
@@ -812,6 +830,7 @@ SceneSceneChannel.loadDataError = function() {
     } else {
         SceneSceneChannel.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannelDisplayname +
             "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
+        window.setTimeout(SceneSceneChannel.hideDialog, 2990);
         window.setTimeout(SceneSceneChannel.shutdownStream, 3000);
     }
 };
