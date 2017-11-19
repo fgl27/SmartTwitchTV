@@ -7,8 +7,16 @@ SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
     Scenemode = STR_CHANNELS,
-    blankCellCount = 0;
+    blankCellCount = 0,
+    imgMatrix = [],
+    imgMatrixId = [],
+    imgMatrixCount = 0,
+    loadingMore = false,
+    keyClickDelayTime = 75, // Delay between accept a click to prevent screen stall
+    videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
+    gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.LastClickFinish = true;
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
 SceneSceneBrowser.errorNetwork = false;
@@ -16,8 +24,9 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 60; // max 100 use a value that is multiplier of SceneSceneBrowser.ColoumnsCount
-SceneSceneBrowser.ColoumnsCount = 3; // make the 4 in SceneSceneBrowser.cursorY + 4 in SceneSceneBrowser.addFocus + 1 this value because more rows will be showed, offset in ScrollHelper() also need to be revised
+SceneSceneBrowser.ItemsLimit = 60; // max 100 use a value here that is a multiplier of SceneSceneBrowser.ColoumnsCount
+SceneSceneBrowser.ColoumnsCount = 3; // offset in ScrollHelper() need to be revised if change this value
+SceneSceneBrowser.ItemsReloadLimit = Math.ceil((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) / 2);
 SceneSceneBrowser.ItemsLimitOffset = 0;
 
 SceneSceneBrowser.MODE_NONE = -1;
@@ -103,17 +112,16 @@ var ScrollHelper = {
      * @param id The id of the element to scroll to.
      * @param padding Top padding to apply above element.
      */
-    scrollVerticalToElementById: function(id, padding) {
-        var element = document.getElementById(id),
-            offset = 0.345;
-        if (element == null) {
+    scrollVerticalToElementById: function(id) {
+        var offset = 0.345;
+        if (document.getElementById(id) == null) {
             console.warn('Cannot find element with id \'' + id + '\'.');
             return;
         }
 
         //offset center the page when scrolling to focus
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) offset = 0.125;
-        var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - offset * this.viewportHeight() - padding;
+        var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - offset * this.viewportHeight();
 
         $(window).scrollTop(targetPosition);
     }
@@ -188,12 +196,7 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
                         break;
                 }
             }
-            if (!SceneSceneBrowser.keyReturnPressed) SceneSceneBrowser.loadDataRequest();
-            else {
-                SceneSceneBrowser.loadingData = false;
-                SceneSceneBrowser.refreshClick = false;
-                SceneSceneBrowser.mhandleKeyReturn();
-            }
+            SceneSceneBrowser.loadDataRequest();
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
@@ -335,7 +338,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                         mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                             stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                     }
-                    if (mReplace) {
+                    if (mReplace && ((cursor + 1) < response_items)) {
                         cursor++;
                         stream = response.streams[cursor];
                         mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
@@ -359,14 +362,21 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 };
 
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
+    var blank_thumbnail;
+    if (isGame) {
+        blank_thumbnail = 'images/game.png';
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize);
+    } else {
+        blank_thumbnail = 'images/video.png';
+        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize);
+    }
 
-    if (isGame)
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
-    else
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
+    imgMatrix[imgMatrixCount] = preview_thumbnail;
+    imgMatrixId[imgMatrixCount] = 'thumbnail_' + row_id + '_' + coloumn_id;
+    imgMatrixCount++;
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + blank_thumbnail + '"/> \
             <div class="stream_text" ' + 'style="right: 0;"' + '> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div class="stream_info">' + stream_title + '</div> \
@@ -412,9 +422,9 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                 row_id = y;
                 coloumn_id = x;
                 if (isGame)
-                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "612x855"); // preview.large = 272x380 using a larg * 2,25
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize); // preview.large = 272x380 using a larg * 2,25
                 else
-                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360"); // preview.large = 640x360 forcing here just in case it changes
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize); // preview.large = 640x360 forcing here just in case it changes
 
                 document.getElementById('empty_' + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
@@ -434,15 +444,17 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table only with names source
+//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SceneSceneBrowser.loadDataSuccessFinish = function() {
     $('#stream_table').imagesLoaded()
-        .done({
+        .always({
             background: true
-        }, function() { //all images successfully loaded
-            SceneSceneBrowser.showTable();
-            SceneSceneBrowser.addFocus();
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            if (!loadingMore) {
+                SceneSceneBrowser.showTable();
+                SceneSceneBrowser.addFocus();
+            }
             //check state of follower load, and call next stage
             if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                 SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
@@ -469,21 +481,26 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
             }
-        })
-        .fail({
-            background: true
-        }, function() { //all images loaded, at least one is broken reload it
-            console.warn("loadDataSuccessFinish fail restarting SceneSceneBrowser.refresh");
-            //TODO properly fix the problem, this check if pic has load correctly or not, if it fail is because internet problem check it pic individually reload the pic in case of a fail
-            SceneSceneBrowser.refresh();
+            loadingMore = false;
+            for (var i = 0; i < imgMatrix.length; i++) {
+                var tumbImg = document.getElementById(imgMatrixId[i]);
+
+                tumbImg.onerror = function() {
+                    this.src = (this.src.indexOf(gameImgSize) == -1) ? 'images/404_video.jpg' : 'images/404_game.jpg'; //img fail to load use predefined
+                };
+
+                tumbImg.src = imgMatrix[i];
+            }
         });
 };
 
 SceneSceneBrowser.loadDataRequest = function() {
     try {
-        var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " + Scenemode + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
-
-        SceneSceneBrowser.showDialog(dialog_title);
+        if (!loadingMore) {
+            var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " +
+                Scenemode + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
+            SceneSceneBrowser.showDialog(dialog_title);
+        }
 
         var xmlHttp = new XMLHttpRequest();
         var theUrl;
@@ -558,6 +575,9 @@ SceneSceneBrowser.loadData = function() {
         return;
     }
 
+    imgMatrix = [];
+    imgMatrixId = [];
+    imgMatrixCount = 0;
     SceneSceneBrowser.loadingData = true;
     SceneSceneBrowser.keyReturnPressed = false;
     SceneSceneBrowser.loadingDataTry = 1;
@@ -604,7 +624,7 @@ SceneSceneBrowser.showTable = function() {
     $("#username_frame").hide();
     $("#stream_table").show();
 
-    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
+    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
 };
 
 SceneSceneBrowser.showInput = function() {
@@ -690,6 +710,7 @@ SceneSceneBrowser.refresh = function() {
         }
         SceneSceneBrowser.clean();
         blankCellCount = 0;
+        loadingMore = false;
         SceneSceneBrowser.loadData();
     }
 };
@@ -700,14 +721,14 @@ SceneSceneBrowser.removeFocus = function() {
 };
 
 SceneSceneBrowser.addFocus = function() {
-    if (SceneSceneBrowser.cursorY + 4 > SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount &&
+    if (((SceneSceneBrowser.cursorY + SceneSceneBrowser.ItemsReloadLimit) > (SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)) &&
         !SceneSceneBrowser.dataEnded) {
+        loadingMore = true;
         SceneSceneBrowser.loadData();
     }
 
     $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
-
-    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
+    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
 };
 
 SceneSceneBrowser.getCellsCount = function(posY) {
@@ -715,7 +736,6 @@ SceneSceneBrowser.getCellsCount = function(posY) {
         SceneSceneBrowser.ColoumnsCount,
         SceneSceneBrowser.itemsCount - posY * SceneSceneBrowser.ColoumnsCount);
 };
-
 
 SceneSceneBrowser.getRowsCount = function() {
     var count = SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount;
@@ -835,10 +855,17 @@ SceneSceneBrowser.prototype.handleBlur = function() {
 
 SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 
-    if (SceneSceneBrowser.loadingData || SceneSceneBrowser.noNetwork) {
-        if (e.keyCode == TvKeyCode.KEY_RETURN) SceneSceneBrowser.keyReturnPressed = true;
+    if ((SceneSceneBrowser.loadingData && !loadingMore) || SceneSceneBrowser.noNetwork) {
+        e.preventDefault();
         return;
+    } else if (!SceneSceneBrowser.LastClickFinish) {
+        e.preventDefault();
+        return;
+    } else {
+        SceneSceneBrowser.LastClickFinish = false;
+        window.setTimeout(keyClickDelay, keyClickDelayTime);
     }
+
 
     switch (e.keyCode) {
         case TvKeyCode.KEY_RETURN:
@@ -967,9 +994,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.refresh();
             }
             break;
-        case TvKeyCode.KEY_0:
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-            break;
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
@@ -1078,31 +1102,9 @@ function ThumbNull(y, x) {
     return document.getElementById('thumbnail_' + y + '_' + x, 0) != null;
 }
 
-SceneSceneBrowser.mhandleKeyReturn = function() {
-    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
-        if (SceneSceneBrowser.returnToGames) {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
-        } else {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-        }
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
-        if (SceneSceneBrowser.isShowDialogOn) {
-            SceneSceneBrowser.clean();
-            SceneSceneBrowser.showInput();
-            SceneSceneBrowser.refreshInputFocus();
-        } else {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-        }
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
-        if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
-        } else {
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-        }
-    } else {
-        SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
-    }
-};
+function keyClickDelay() {
+    SceneSceneBrowser.LastClickFinish = true;
+}
 
 SceneSceneBrowser.addNetworkStateChangeListener = function() {
     var onChange = function(data) {
