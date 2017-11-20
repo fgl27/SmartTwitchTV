@@ -8,14 +8,19 @@ SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
     Scenemode = STR_CHANNELS,
     blankCellCount = 0,
+    newImg = new Image,
+    loadingReplace = false,
     imgMatrix = [],
     imgMatrixId = [],
     imgMatrixCount = 0,
+    nameMatrix = [],
+    nameMatrixCount = 0,
     loadingMore = false,
-    keyClickDelayTime = 75, // Delay between accept a click to prevent screen stall
+    keyClickDelayTime = 25, // Delay between accept a click to prevent screen stall
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.itemsCountOffset = 0;
 SceneSceneBrowser.LastClickFinish = true;
 SceneSceneBrowser.browser = true;
 SceneSceneBrowser.noNetwork = false;
@@ -24,10 +29,9 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 60; // max 100 use a value here that is a multiplier of SceneSceneBrowser.ColoumnsCount
+SceneSceneBrowser.ItemsLimit = 99; // max 100 use a value here that is a multiplier of SceneSceneBrowser.ColoumnsCount
 SceneSceneBrowser.ColoumnsCount = 3; // offset in ScrollHelper() need to be revised if change this value
 SceneSceneBrowser.ItemsReloadLimit = Math.ceil((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) / 2);
-SceneSceneBrowser.ItemsLimitOffset = 0;
 
 SceneSceneBrowser.MODE_NONE = -1;
 SceneSceneBrowser.MODE_ALL = 0;
@@ -205,6 +209,58 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
     }
 };
 
+SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
+    var response = $.parseJSON(responseText);
+    var response_items;
+
+    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
+        response_items = response.top.length;
+    } else {
+        response_items = response.streams.length;
+    }
+
+    var row_id = SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount;
+
+    var coloumn_id, row, cell, game, stream, mCellExists = false,
+        mReplace = false;
+
+    for (var cursor = 0; cursor < response_items; cursor++) {
+        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
+            game = response.top[cursor];
+            mCellExists = SceneSceneBrowser.CellExists(game.game.name);
+            if (mCellExists) blankCellCount--;
+
+            if (!mCellExists) {
+                mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
+                    '', '', game.game.name, addCommas(game.viewers) + STR_VIEWER, true);
+                if (mReplace) blankCellCount--;
+                if (blankCellCount == 0) {
+                    console.log("game");
+                    break;
+                }
+            }
+        } else {
+            stream = response.streams[cursor];
+            mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
+            if (mCellExists) blankCellCount--;
+
+            if (!mCellExists) {
+                mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
+                    stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                if (mReplace) blankCellCount--;
+                if (blankCellCount == 0) {
+                    break;
+                }
+            }
+        }
+    }
+
+    if (response_items < SceneSceneBrowser.ItemsLimit) {
+        blankCellCount = 0;
+    }
+    SceneSceneBrowser.loadDataSuccessFinish();
+};
+
 SceneSceneBrowser.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items;
@@ -298,17 +354,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     game = response.top[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(game.game.name);
-                    if (!mCellExists) {
-                        mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
-                            addCommas(game.viewers) + STR_VIEWER, true);
-                    }
-                    if (mReplace && ((cursor + 1) < response_items)) {
-                        cursor++;
-                        game = response.top[cursor];
-                        mCellExists = SceneSceneBrowser.CellExists(game.game.name);
-                    }
                     if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
                         '', '', game.game.name, addCommas(game.viewers) + STR_VIEWER, true);
+
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
@@ -332,15 +380,6 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 } else {
                     stream = response.streams[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
-                    if (!mCellExists) {
-                        mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
-                            stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
-                    }
-                    if (mReplace && ((cursor + 1) < response_items)) {
-                        cursor++;
-                        stream = response.streams[cursor];
-                        mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
-                    }
                     if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                         stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
                 }
@@ -373,6 +412,12 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
     imgMatrixId[imgMatrixCount] = 'thumbnail_' + row_id + '_' + coloumn_id;
     imgMatrixCount++;
 
+    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4))//preload first 4 rows
+        newImg.src = preview_thumbnail;
+
+    nameMatrix[nameMatrixCount] = channel_name;
+    nameMatrixCount++;
+
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + blank_thumbnail + '"/> \
             <div class="stream_text" ' + 'style="right: 0;"' + '> \
@@ -389,40 +434,35 @@ SceneSceneBrowser.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 /* 
- * CellExists and replaceCellEmpty check for duplicated streams/games that are created when SceneSceneBrowser.itemsCount is bigger then 0
+ * CellExists and replaceCellEmpty check for duplicated streams/games that are created randomly when offset in loadDataRequest is bigger then 0
  * CellExists force remove a duplicated but it will cause a blank cell via createCellEmpty
- * replaceCellEmpty will replace those blank cell with new cell on next load when clicking down, it will cause more and more blank cell
- * as you click down and more and more streams are showed, theoretically the code can handle it as it grows
+ * replaceCellEmpty will replace those blank cell with new cell before allowing a new refresh
+ * as you click down and more and more streams are showed, theoretically the code can handle it as it grows but 1000+ videos can slowdown the app
  */
 SceneSceneBrowser.CellExists = function(display_name) {
-    var tempElement;
-    if (SceneSceneBrowser.ItemsLimit < SceneSceneBrowser.itemsCount) {
-        for (y = 0; y < SceneSceneBrowser.getRowsCount(); y++) {
-            for (x = 0; x < (SceneSceneBrowser.ColoumnsCount - 1); x++) {
-                tempElement = document.getElementById('display_name_' + y + '_' + x);
-                if (tempElement != null) {
-                    if (display_name == tempElement.textContent) {
-                        blankCellCount++;
-                        return true;
-                    }
-                }
-            }
+    for (var i = 0; i <= nameMatrixCount; i++) {
+        if (display_name == nameMatrix[i]) {
+            blankCellCount++;
+            return true;
         }
     }
     return false;
 };
 
 SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
-
-    for (y = row_id - (1 + Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount)); y < row_id; y++) {
-        for (x = 0; x < SceneSceneBrowser.ColoumnsCount; x++) {
-            if (((row_id > ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1))) && !ThumbNull(y, x)) {
-                row_id = y;
-                coloumn_id = x;
+    var my = 0, mx = 0;
+    for (my = row_id - (1 + Math.ceil(blankCellCount / SceneSceneBrowser.ColoumnsCount)); my < row_id; my++) {
+        for (mx = 0; mx < SceneSceneBrowser.ColoumnsCount; mx++) {
+            if (!ThumbNull(my, mx)) {
+                row_id = my;
+                coloumn_id = mx;
                 if (isGame)
                     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize); // preview.large = 272x380 using a larg * 2,25
                 else
                     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize); // preview.large = 640x360 forcing here just in case it changes
+
+                nameMatrix[nameMatrixCount] = channel_name;
+                nameMatrixCount++;
 
                 document.getElementById('empty_' + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
@@ -489,6 +529,18 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
 
                 tumbImg.src = imgMatrix[i];
             }
+            if (blankCellCount > 0) {
+                if (blankCellCount > (SceneSceneBrowser.ItemsLimit / 2))
+                    SceneSceneBrowser.itemsCountOffset += blankCellCount;
+                else if (blankCellCount < (SceneSceneBrowser.ItemsLimit / 2))
+                    SceneSceneBrowser.itemsCountOffset = 0;
+                loadingMore = true;
+                loadingReplace = true;
+                SceneSceneBrowser.loadData();
+            } else {
+                loadingReplace = false;
+                SceneSceneBrowser.itemsCountOffset = 0;
+            }
         });
 };
 
@@ -503,38 +555,33 @@ SceneSceneBrowser.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
         var theUrl;
 
-        SceneSceneBrowser.ItemsLimitOffset = 0;
-        if ((blankCellCount > 2)) {
-            SceneSceneBrowser.ItemsLimitOffset = Math.floor(blankCellCount / SceneSceneBrowser.ColoumnsCount);
-            blankCellCount = blankCellCount % SceneSceneBrowser.ColoumnsCount;
-        }
-        var offset = SceneSceneBrowser.itemsCount;
+        var offset = SceneSceneBrowser.itemsCount + SceneSceneBrowser.itemsCountOffset;
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
-            theUrl = 'https://api.twitch.tv/kraken/games/top?limit=' + (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) +
+            theUrl = 'https://api.twitch.tv/kraken/games/top?limit=' + SceneSceneBrowser.ItemsLimit +
                 '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES_STREAMS) {
             theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(SceneSceneBrowser.gameSelected) + '&limit=' +
-                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
-                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
-                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' + offset;
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
-                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset); // + '&offset=' + offset; removed offset for now, need fix latter
+                SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
-                (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset); // + '&offset=' + offset; removed offset for now, need fix latter
+                SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SceneSceneBrowser.selectedChannel);
         } else {
-            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + (SceneSceneBrowser.ItemsLimit + SceneSceneBrowser.ItemsLimitOffset) + '&offset=' +
+            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' +
                 offset;
         }
         xmlHttp.open("GET", theUrl, true);
@@ -549,7 +596,8 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
+                        if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
+                        else SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
                         SceneSceneBrowser.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                     }
@@ -708,6 +756,8 @@ SceneSceneBrowser.refresh = function() {
         }
         SceneSceneBrowser.clean();
         blankCellCount = 0;
+        nameMatrix = [];
+        nameMatrixCount = 0;
         loadingMore = false;
         SceneSceneBrowser.loadData();
     }
