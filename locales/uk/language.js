@@ -1,5 +1,5 @@
 alert("Ukrainian (uk) loaded (by PaulFurlet)");
-var STR_CHANNELS = "Канали";
+var STR_LIVE = "Канали";
 var STR_GAMES = "Ігри";
 var STR_OPEN = "Відкрити";
 var STR_OPEN_CHANNEL = "Open a channel";
@@ -11,7 +11,7 @@ var STR_PLACEHOLDER_OPEN = "Введіть назву каналу...";
 var STR_QUALITY = "Якість";
 var STR_RETRYING = "Пробую ще";
 var STR_ATTEMPT = "º Attempt";
-var STR_VIEWER = "Глядачів";
+var STR_VIEWER = " Глядачів";
 var STR_BUFFERING = "Буферизація";
 var STR_EXIT = "Натисніть ще раз, щоб вийти!";
 
@@ -30,6 +30,7 @@ var STR_LIVE_HOSTS = "Live-Hosts";
 var STR_LIVE_GAMES = "Livespiele";
 var STR_PLACEHOLDER_TOOLS = "Enter username...";
 var STR_CHANNEL = "Channel";
+var STR_CHANNELS = " Channels";
 var STR_USERNAME = "Username";
 var STR_DOES_NOT_EXIST = "does not exist.";
 var STR_IS_OFFLINE = "is offline.";

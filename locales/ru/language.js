@@ -1,5 +1,5 @@
 console.log("Russian (ru) loaded");
-var STR_CHANNELS = "Каналы";
+var STR_LIVE = "Каналы";
 var STR_GAMES = "Игры";
 var STR_OPEN = "Открыть";
 var STR_OPEN_CHANNEL = "Open a channel";
@@ -11,7 +11,7 @@ var STR_PLACEHOLDER_OPEN = "Введите имя канала...";
 var STR_QUALITY = "Качество";
 var STR_RETRYING = "Попытка";
 var STR_ATTEMPT = "º Attempt";
-var STR_VIEWER = "Зрителей";
+var STR_VIEWER = " Зрителей";
 var STR_BUFFERING = "Буферизация";
 var STR_EXIT = "Нажмите еще раз, чтобы выйти!";
 
@@ -30,6 +30,7 @@ var STR_LIVE_HOSTS = "Интерактивные веб-узлы";
 var STR_LIVE_GAMES = "Онлайн-игры";
 var STR_PLACEHOLDER_TOOLS = "Enter username...";
 var STR_CHANNEL = "Channel";
+var STR_CHANNELS = " Channels";
 var STR_USERNAME = "Username";
 var STR_DOES_NOT_EXIST = "does not exist.";
 var STR_IS_OFFLINE = "is offline.";
