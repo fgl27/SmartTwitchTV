@@ -1,0 +1,104 @@
+{
+	"_total": 1270,
+	"_links": {
+		"self": "https://api.twitch.tv/kraken/games/top?limit=99",
+		"next": "https://api.twitch.tv/kraken/games/top?limit=99&offset=99"
+	},
+	"top": [{
+		"game": {
+			"name": "League of Legends",
+			"popularity": 133765,
+			"_id": 21779,
+			"giantbomb_id": 24024,
+			"box": {
+				"large": "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-272x380.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-136x190.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-52x72.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-{width}x{height}.jpg"
+			},
+			"logo": {
+				"large": "https://static-cdn.jtvnw.net/ttv-logoart/League%20of%20Legends-240x144.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/League%20of%20Legends-120x72.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-logoart/League%20of%20Legends-60x36.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-logoart/League%20of%20Legends-{width}x{height}.jpg"
+			},
+			"_links": {},
+			"localized_name": "League of Legends",
+			"locale": "en-us"
+		},
+		"viewers": 136538,
+		"channels": 1645
+	}, {
+		"game": {
+			"name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"popularity": 89426,
+			"_id": 493057,
+			"giantbomb_id": 54979,
+			"box": {
+				"large": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-272x380.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-136x190.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-52x72.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+			},
+			"logo": {
+				"large": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-240x144.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-120x72.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-60x36.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+			},
+			"_links": {},
+			"localized_name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"locale": "en-us"
+		},
+		"viewers": 89614,
+		"channels": 2099
+	}, {
+		"game": {
+			"name": "IRL",
+			"popularity": 52221,
+			"_id": 494717,
+			"giantbomb_id": 0,
+			"box": {
+				"large": "https://static-cdn.jtvnw.net/ttv-boxart/IRL-272x380.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/IRL-136x190.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-boxart/IRL-52x72.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-boxart/IRL-{width}x{height}.jpg"
+			},
+			"logo": {
+				"large": "https://static-cdn.jtvnw.net/ttv-logoart/IRL-240x144.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/IRL-120x72.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-logoart/IRL-60x36.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-logoart/IRL-{width}x{height}.jpg"
+			},
+			"_links": {},
+			"localized_name": "IRL",
+			"locale": "en-us"
+		},
+		"viewers": 53965,
+		"channels": 440
+	}, {
+		"game": {
+			"name": "Dota 2",
+			"popularity": 42012,
+			"_id": 29595,
+			"giantbomb_id": 32887,
+			"box": {
+				"large": "https://static-cdn.jtvnw.net/ttv-boxart/Dota%202-272x380.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Dota%202-136x190.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-boxart/Dota%202-52x72.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-boxart/Dota%202-{width}x{height}.jpg"
+			},
+			"logo": {
+				"large": "https://static-cdn.jtvnw.net/ttv-logoart/Dota%202-240x144.jpg",
+				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Dota%202-120x72.jpg",
+				"small": "https://static-cdn.jtvnw.net/ttv-logoart/Dota%202-60x36.jpg",
+				"template": "https://static-cdn.jtvnw.net/ttv-logoart/Dota%202-{width}x{height}.jpg"
+			},
+			"_links": {},
+			"localized_name": "Dota 2",
+			"locale": "en-us"
+		},
+		"viewers": 43029,
+		"channels": 534
+	}
+}

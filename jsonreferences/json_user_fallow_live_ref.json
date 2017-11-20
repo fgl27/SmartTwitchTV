@@ -1,0 +1,173 @@
+{
+	"_total": 3,
+	"streams": [{
+		"_id": 26773985792,
+		"game": "World of Warcraft",
+		"viewers": 17250,
+		"video_height": 1080,
+		"average_fps": 60,
+		"delay": 0,
+		"created_at": "2017-11-20T00:05:53Z",
+		"is_playlist": false,
+		"stream_type": "live",
+		"preview": {
+			"small": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-80x45.jpg",
+			"medium": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-320x180.jpg",
+			"large": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-640x360.jpg",
+			"template": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-{width}x{height}.jpg"
+		},
+		"channel": {
+			"mature": true,
+			"partner": true,
+			"status": "P60 Horde | Follow https://twitter.com/c9shroud",
+			"broadcaster_language": "en",
+			"display_name": "shroud",
+			"game": "World of Warcraft",
+			"language": "en",
+			"_id": 37402112,
+			"name": "shroud",
+			"created_at": "2012-11-03T15:50:32Z",
+			"updated_at": "2017-11-20T14:35:22Z",
+			"delay": null,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/shroud-profile_image-850e059aee3d6bfa-300x300.jpeg",
+			"banner": null,
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/9f5258a6aa3d3be1-channel_offline_image-1920x1080.png",
+			"background": null,
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/c921e2b29e137572-profile_banner-480.png",
+			"profile_banner_background_color": "",
+			"url": "https://www.twitch.tv/shroud",
+			"views": 70761976,
+			"followers": 1737801,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/shroud",
+				"follows": "https://api.twitch.tv/kraken/channels/shroud/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/shroud/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/shroud/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/shroud",
+				"features": "https://api.twitch.tv/kraken/channels/shroud/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/shroud/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/shroud/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/shroud/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/shroud/videos"
+			}
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/streams/shroud"
+		}
+	}, {
+		"_id": 26777270800,
+		"game": "Nioh",
+		"viewers": 8369,
+		"video_height": 1080,
+		"average_fps": 60.0938967136,
+		"delay": 0,
+		"created_at": "2017-11-20T12:58:18Z",
+		"is_playlist": false,
+		"stream_type": "live",
+		"preview": {
+			"small": "https://static-cdn.jtvnw.net/previews-ttv/live_user_cohhcarnage-80x45.jpg",
+			"medium": "https://static-cdn.jtvnw.net/previews-ttv/live_user_cohhcarnage-320x180.jpg",
+			"large": "https://static-cdn.jtvnw.net/previews-ttv/live_user_cohhcarnage-640x360.jpg",
+			"template": "https://static-cdn.jtvnw.net/previews-ttv/live_user_cohhcarnage-{width}x{height}.jpg"
+		},
+		"channel": {
+			"mature": false,
+			"partner": true,
+			"status": "[!Shirt] Nioh DLC!! (PC/Odachi) - All new content! \\o/ - Rimworld & TWOM(DLC) soon! - !SubGift - !Everyday - !Store",
+			"broadcaster_language": "en",
+			"display_name": "CohhCarnage",
+			"game": "Nioh",
+			"language": "en",
+			"_id": 26610234,
+			"name": "cohhcarnage",
+			"created_at": "2011-12-06T18:20:34Z",
+			"updated_at": "2017-11-20T14:35:28Z",
+			"delay": null,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-profile_image-92dc409e41560047-300x300.png",
+			"banner": null,
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-channel_offline_image-58bb58f8f33ebd49-1920x1080.jpeg",
+			"background": null,
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-profile_banner-bcb1b1b8e6194799-480.png",
+			"profile_banner_background_color": "",
+			"url": "https://www.twitch.tv/cohhcarnage",
+			"views": 70393766,
+			"followers": 880682,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/cohhcarnage",
+				"follows": "https://api.twitch.tv/kraken/channels/cohhcarnage/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/cohhcarnage/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/cohhcarnage/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/cohhcarnage",
+				"features": "https://api.twitch.tv/kraken/channels/cohhcarnage/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/cohhcarnage/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/cohhcarnage/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/cohhcarnage/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/cohhcarnage/videos"
+			}
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/streams/cohhcarnage"
+		}
+	}, {
+		"_id": 26777524800,
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"viewers": 504,
+		"video_height": 720,
+		"average_fps": 60,
+		"delay": 0,
+		"created_at": "2017-11-20T13:58:07Z",
+		"is_playlist": false,
+		"stream_type": "live",
+		"preview": {
+			"small": "https://static-cdn.jtvnw.net/previews-ttv/live_user_spreeezy-80x45.jpg",
+			"medium": "https://static-cdn.jtvnw.net/previews-ttv/live_user_spreeezy-320x180.jpg",
+			"large": "https://static-cdn.jtvnw.net/previews-ttv/live_user_spreeezy-640x360.jpg",
+			"template": "https://static-cdn.jtvnw.net/previews-ttv/live_user_spreeezy-{width}x{height}.jpg"
+		},
+		"channel": {
+			"mature": false,
+			"partner": false,
+			"status": "🏆 PUBG Rank #2 EU FPP Solo | 42% Winrate | 7.70 K/D Ratio",
+			"broadcaster_language": "en",
+			"display_name": "sprEEEzy",
+			"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"language": "en",
+			"_id": 29320228,
+			"name": "spreeezy",
+			"created_at": "2012-03-27T20:52:51Z",
+			"updated_at": "2017-11-20T14:34:37Z",
+			"delay": null,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/spreeezy-profile_image-df0c90ffd0a331c9-300x300.jpeg",
+			"banner": null,
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/53212cacf874b98c-channel_offline_image-1920x1080.png",
+			"background": null,
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/spreeezy-profile_banner-3d3d3fd4a8d9b263-480.jpeg",
+			"profile_banner_background_color": "",
+			"url": "https://www.twitch.tv/spreeezy",
+			"views": 169046,
+			"followers": 13260,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/spreeezy",
+				"follows": "https://api.twitch.tv/kraken/channels/spreeezy/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/spreeezy/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/spreeezy/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/spreeezy",
+				"features": "https://api.twitch.tv/kraken/channels/spreeezy/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/spreeezy/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/spreeezy/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/spreeezy/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/spreeezy/videos"
+			}
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/streams/spreeezy"
+		}
+	}],
+	"_links": {
+		"self": "https://api.twitch.tv/kraken/streams?channel=thevsnz%2Ccastro_1021%2Cspreee…s%2Ch3h3podcast%2Ccohhcarnage%2Cdrdisrespectlive&limit=99&stream_type=live",
+		"next": "https://api.twitch.tv/kraken/streams?channel=thevsnz%2Ccastro_1021%2Cspreee…dcast%2Ccohhcarnage%2Cdrdisrespectlive&limit=99&offset=99&stream_type=live",
+		"featured": "https://api.twitch.tv/kraken/streams/featured",
+		"summary": "https://api.twitch.tv/kraken/streams/summary",
+		"followed": "https://api.twitch.tv/kraken/streams/followed"
+	}
+}

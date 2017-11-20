@@ -1,0 +1,4 @@
+uncoment 
+    //console.log(JSON.stringify(response));
+in SceneSceneBrowser.loadDataSuccessReplace and build as Debug read console output
+

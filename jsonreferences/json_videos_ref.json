@@ -1,0 +1,58 @@
+{
+	"_total": 20318,
+	"streams": [{
+		"_id": 26773985792,
+		"game": "World of Warcraft",
+		"viewers": 16796,
+		"video_height": 1080,
+		"average_fps": 60,
+		"delay": 0,
+		"created_at": "2017-11-20T00:05:53Z",
+		"is_playlist": false,
+		"stream_type": "live",
+		"preview": {
+			"small": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-80x45.jpg",
+			"medium": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-320x180.jpg",
+			"large": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-640x360.jpg",
+			"template": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-{width}x{height}.jpg"
+		},
+		"channel": {
+			"mature": true,
+			"partner": true,
+			"status": "P60 Horde | Follow https://twitter.com/c9shroud",
+			"broadcaster_language": "en",
+			"display_name": "shroud",
+			"game": "World of Warcraft",
+			"language": "en",
+			"_id": 37402112,
+			"name": "shroud",
+			"created_at": "2012-11-03T15:50:32Z",
+			"updated_at": "2017-11-20T14:05:09Z",
+			"delay": null,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/shroud-profile_image-850e059aee3d6bfa-300x300.jpeg",
+			"banner": null,
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/9f5258a6aa3d3be1-channel_offline_image-1920x1080.png",
+			"background": null,
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/c921e2b29e137572-profile_banner-480.png",
+			"profile_banner_background_color": "",
+			"url": "https://www.twitch.tv/shroud",
+			"views": 70749163,
+			"followers": 1737717,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/shroud",
+				"follows": "https://api.twitch.tv/kraken/channels/shroud/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/shroud/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/shroud/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/shroud",
+				"features": "https://api.twitch.tv/kraken/channels/shroud/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/shroud/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/shroud/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/shroud/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/shroud/videos"
+			}
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/streams/shroud"
+		}
+	}
+}
