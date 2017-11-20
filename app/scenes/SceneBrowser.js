@@ -212,6 +212,8 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
 SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items;
+    // log response json
+    //console.log(JSON.stringify(response));
 
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
         response_items = response.top.length;
