@@ -465,6 +465,7 @@ SceneSceneBrowser.CellExists = function(display_name) {
 SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, isGame) {
     var my = 0,
         mx = 0;
+    if (row_id < ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1)) return false;
     for (my = row_id - (1 + Math.ceil(blankCellCount / SceneSceneBrowser.ColoumnsCount)); my < row_id; my++) {
         for (mx = 0; mx < SceneSceneBrowser.ColoumnsCount; mx++) {
             if (!ThumbNull(my, mx)) {
@@ -769,6 +770,7 @@ SceneSceneBrowser.refresh = function() {
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
         }
         SceneSceneBrowser.clean();
+        loadingReplace = false;
         blankCellCount = 0;
         nameMatrix = [];
         nameMatrixCount = 0;
