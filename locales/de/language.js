@@ -1,5 +1,5 @@
 console.log("German (de) loaded");
-var STR_CHANNELS = "Leben";
+var STR_LIVE = "Leben";
 var STR_GAMES = "Spiele";
 var STR_OPEN = "Kanal öffnen";
 var STR_OPEN_CHANNEL = "Open a channel";
@@ -30,6 +30,7 @@ var STR_LIVE_HOSTS = "Live-Hosts";
 var STR_LIVE_GAMES = "Livespiele";
 var STR_PLACEHOLDER_TOOLS = "Benutzername eingeben...";
 var STR_CHANNEL = "Kanal";
+var STR_CHANNELS = " Kanäle";
 var STR_USERNAME = "Benutzername";
 var STR_DOES_NOT_EXIST = "ist nicht vorhanden.";
 var STR_IS_OFFLINE = "ist offline.";

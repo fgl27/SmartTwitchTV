@@ -159,7 +159,7 @@ SceneSceneChannel.qualityDisplay = function() {
 
 SceneSceneChannel.initLanguage = function() {
     $('#label_quality').html(STR_QUALITY);
-    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_CHANNELS.toUpperCase();
+    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
 };
 
 var listener = {

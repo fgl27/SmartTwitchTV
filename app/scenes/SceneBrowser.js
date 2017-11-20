@@ -6,7 +6,7 @@ function SceneSceneBrowser() {
 SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
-    Scenemode = STR_CHANNELS,
+    Scenemode = STR_LIVE,
     blankCellCount = 0,
     newImg = new Image,
     loadingReplace = false,
@@ -234,7 +234,7 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
 
             if (!mCellExists) {
                 mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    '', '', game.game.name, addCommas(game.viewers) + STR_VIEWER, true);
+                    '', '', game.game.name, addCommas(game.channels) + STR_CHANNELS + ' for ' + addCommas(game.viewers) + STR_VIEWER, '', true);
                 if (mReplace) blankCellCount--;
                 if (blankCellCount == 0) {
                     console.log("game");
@@ -248,7 +248,8 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
 
             if (!mCellExists) {
                 mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                    stream.channel.status, stream.game, stream.channel.display_name,
+                    addCommas(stream.viewers) + STR_VIEWER, videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
                 if (mReplace) blankCellCount--;
                 if (blankCellCount == 0) {
                     break;
@@ -256,7 +257,6 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
             }
         }
     }
-
     if (response_items < SceneSceneBrowser.ItemsLimit) {
         blankCellCount = 0;
     }
@@ -357,7 +357,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     game = response.top[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(game.game.name);
                     if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
-                        '', '', game.game.name, addCommas(game.viewers) + STR_VIEWER, true);
+                        '', '', game.game.name, addCommas(game.channels) + STR_CHANNELS + ' for ' + addCommas(game.viewers) + STR_VIEWER, '', true);
 
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
@@ -365,25 +365,27 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     matrix[coloumn_id] = [hosts.target.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
-                        addCommas(hosts.target.viewers) + STR_VIEWER, false);
+                        addCommas(hosts.target.viewers) + STR_VIEWER, '', false);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
                     matrix[coloumn_id] = [game.game.name, 'game'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
-                        addCommas(game.viewers) + STR_VIEWER, true);
+                        addCommas(game.channels) + STR_CHANNELS + ' for ' + addCommas(game.viewers) + STR_VIEWER, '', true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
                     matrix[coloumn_id] = [stream.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
-                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
+                        videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
 
                 } else {
                     stream = response.streams[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
                     if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                        stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER, false);
+                        stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
+                        videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
                 }
                 if (!mCellExists) row.append(cell);
                 else coloumn_id--;
@@ -400,9 +402,17 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     }
 };
 
-SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
-    var blank_thumbnail;
+function videoqualitylang(video_height, average_fps, language) {
+    if (average_fps > 55) average_fps = 60;
+    else if (average_fps < 35) average_fps = 30;
+    else average_fps = Math.ceil(average_fps);
+    return video_height + 'p' + average_fps + ' [' + language.toUpperCase() + ']';
+}
+
+SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, isGame) {
+    var blank_thumbnail, viwers_width = 64;
     if (isGame) {
+        viwers_width = 100;
         blank_thumbnail = 'images/game.png';
         preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize);
     } else {
@@ -414,7 +424,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
     imgMatrixId[imgMatrixCount] = 'thumbnail_' + row_id + '_' + coloumn_id;
     imgMatrixCount++;
 
-    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4))//preload first 4 rows
+    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //preload first 4 rows
         newImg.src = preview_thumbnail;
 
     nameMatrix[nameMatrixCount] = channel_name;
@@ -426,7 +436,8 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div class="stream_info">' + stream_title + '</div> \
             <div class="stream_info">' + stream_game + '</div> \
-            <div class="stream_info">' + viwers + '</div> \
+            <div class="stream_info" style="width: '+ viwers_width + '%; display: inline-block;">' + viwers + '</div> \
+            <div class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
             </div>');
 };
 
@@ -451,8 +462,9 @@ SceneSceneBrowser.CellExists = function(display_name) {
     return false;
 };
 
-SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, isGame) {
-    var my = 0, mx = 0;
+SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, isGame) {
+    var my = 0,
+        mx = 0;
     for (my = row_id - (1 + Math.ceil(blankCellCount / SceneSceneBrowser.ColoumnsCount)); my < row_id; my++) {
         for (mx = 0; mx < SceneSceneBrowser.ColoumnsCount; mx++) {
             if (!ThumbNull(my, mx)) {
@@ -474,7 +486,7 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                     <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
                     <div class="stream_info">' + stream_title + '</div> \
                     <div class="stream_info">' + stream_game + '</div> \
-                    <div class="stream_info">' + viwers + '</div> \
+                    <div class="stream_info" style="width:25%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
                     </div>';
                 return true;
             }
@@ -705,7 +717,7 @@ SceneSceneBrowser.switchMode = function(mode) {
 
         if (mode == SceneSceneBrowser.MODE_ALL) {
             $("#tip_icon_channels").addClass('tip_icon_active');
-            Scenemode = STR_CHANNELS;
+            Scenemode = STR_LIVE;
             SceneSceneBrowser.refresh();
         } else if (mode == SceneSceneBrowser.MODE_GAMES) {
             $("#tip_icon_games").addClass('tip_icon_active');
@@ -849,7 +861,7 @@ SceneSceneBrowser.initLanguage = function() {
     //set correct labels
     $('.label_icon_updown').html(STR_CH_UPDOWN);
     $('.label_updown').html(STR_UPDOWN);
-    $('.label_channels').html(STR_CHANNELS);
+    $('.label_channels').html(STR_LIVE);
     $('.label_user').html(STR_USER);
     $('.label_games').html(STR_GAMES);
     $('.label_open_channel').html(STR_OPEN_CHANNEL);

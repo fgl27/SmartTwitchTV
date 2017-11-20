@@ -1,5 +1,5 @@
 console.log("English (en) loaded");
-var STR_CHANNELS = "Live";
+var STR_LIVE = "Live";
 var STR_GAMES = "Games";
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";
@@ -30,6 +30,7 @@ var STR_LIVE_HOSTS = "Live Hosts";
 var STR_LIVE_GAMES = "Live Games";
 var STR_PLACEHOLDER_TOOLS = "Enter user name...";
 var STR_CHANNEL = "Channel";
+var STR_CHANNELS = " Channels";
 var STR_USERNAME = "User name";
 var STR_DOES_NOT_EXIST = "does not exist.";
 var STR_IS_OFFLINE = "went offline, or the";
