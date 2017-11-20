@@ -1,0 +1,35 @@
+{
+	"_links": {
+		"self": "https://api.twitch.tv/api/users/fglfgl27/followed/hosting?limit=99&offset=0",
+		"next": "https://api.twitch.tv/api/users/fglfgl27/followed/hosting?limit=99&offset=99"
+	},
+	"_total": 1,
+	"hosts": [{
+		"id": 52091823,
+		"name": "castro_1021",
+		"target": {
+			"id": "messiah2627",
+			"channel": {
+				"id": 67800414,
+				"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/b0449fb98b38c2bc-profile_image-300x300.jpeg",
+				"url": "https://www.twitch.tv/messiah2627",
+				"display_name": "Messiah2627",
+				"name": "messiah2627"
+			},
+			"meta_game": "Call of Duty: WWII",
+			"preview": "https://static-cdn.jtvnw.net/previews-ttv/live_user_messiah2627-320x180.jpg",
+			"title": "( ͡° ͜ʖ ͡°) COD TIME ( ͡° ͜ʖ ͡°) ",
+			"url": "https://www.twitch.tv/messiah2627",
+			"preview_urls": {
+				"small": "https://static-cdn.jtvnw.net/previews-ttv/live_user_messiah2627-80x45.jpg",
+				"medium": "https://static-cdn.jtvnw.net/previews-ttv/live_user_messiah2627-320x180.jpg",
+				"large": "https://static-cdn.jtvnw.net/previews-ttv/live_user_messiah2627-640x360.jpg",
+				"template": "https://static-cdn.jtvnw.net/previews-ttv/live_user_messiah2627-{width}x{height}.jpg"
+			},
+			"viewers": 188,
+			"_id": 67800414
+		},
+		"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1894f0796c2a77f4-profile_image-300x300.jpeg",
+		"display_name": "Castro_1021"
+	}]
+}

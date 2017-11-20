@@ -1,0 +1,377 @@
+{
+	"_total": 9,
+	"_links": {
+		"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels?direction=DESC&limit=99&sortby=created_at&user=fglfgl27",
+		"next": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels?direction=DESC&limit=99&offset=99&sortby=created_at&user=fglfgl27"
+	},
+	"follows": [{
+		"created_at": "2017-11-16T21:00:47Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/thevsnz"
+		},
+		"channel": {
+			"mature": true,
+			"status": "SubSundays | Keyword : boba | !rules !subgames if you have questions",
+			"broadcaster_language": "en",
+			"display_name": "theVSNZ",
+			"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"language": "en",
+			"_id": 80620714,
+			"name": "thevsnz",
+			"created_at": "2015-01-23T09:34:12Z",
+			"updated_at": "2017-11-20T14:34:59Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/thevsnz-profile_image-d36f01542696db9b-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/ebec5ed9f9027f26-channel_offline_image-1920x1080.jpeg",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/163812b83f0dd51f-profile_banner-480.jpeg",
+			"profile_banner_background_color": "#340909",
+			"url": "https://www.twitch.tv/thevsnz",
+			"views": 1020455,
+			"followers": 55315,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/thevsnz",
+				"follows": "https://api.twitch.tv/kraken/channels/thevsnz/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/thevsnz/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/thevsnz/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/thevsnz",
+				"features": "https://api.twitch.tv/kraken/channels/thevsnz/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/thevsnz/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/thevsnz/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/thevsnz/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/thevsnz/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": true
+	}, {
+		"created_at": "2017-11-08T18:11:08Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/castro_1021"
+		},
+		"channel": {
+			"mature": false,
+			"status": "WE GOT THE HOUSE!!!! @CASTRO1021",
+			"broadcaster_language": "en",
+			"display_name": "Castro_1021",
+			"game": "FIFA 18",
+			"language": "en-gb",
+			"_id": 52091823,
+			"name": "castro_1021",
+			"created_at": "2013-11-24T08:42:28Z",
+			"updated_at": "2017-11-20T14:35:07Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1894f0796c2a77f4-profile_image-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/7440ae63dd7e3a08-channel_offline_image-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/623df6bbadcc4ca9-profile_banner-480.png",
+			"profile_banner_background_color": "#454145",
+			"url": "https://www.twitch.tv/castro_1021",
+			"views": 38448474,
+			"followers": 1304658,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/castro_1021",
+				"follows": "https://api.twitch.tv/kraken/channels/castro_1021/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/castro_1021/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/castro_1021/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/castro_1021",
+				"features": "https://api.twitch.tv/kraken/channels/castro_1021/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/castro_1021/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/castro_1021/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/castro_1021/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/castro_1021/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": true
+	}, {
+		"created_at": "2017-11-04T19:50:19Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/spreeezy"
+		},
+		"channel": {
+			"mature": false,
+			"status": "🏆 PUBG Rank #2 EU FPP Solo | 42% Winrate | 7.70 K/D Ratio",
+			"broadcaster_language": "en",
+			"display_name": "sprEEEzy",
+			"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"language": "en",
+			"_id": 29320228,
+			"name": "spreeezy",
+			"created_at": "2012-03-27T20:52:51Z",
+			"updated_at": "2017-11-20T14:34:37Z",
+			"partner": false,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/spreeezy-profile_image-df0c90ffd0a331c9-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/53212cacf874b98c-channel_offline_image-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/spreeezy-profile_banner-3d3d3fd4a8d9b263-480.jpeg",
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/spreeezy",
+			"views": 169046,
+			"followers": 13260,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/spreeezy",
+				"follows": "https://api.twitch.tv/kraken/channels/spreeezy/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/spreeezy/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/spreeezy/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/spreeezy",
+				"features": "https://api.twitch.tv/kraken/channels/spreeezy/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/spreeezy/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/spreeezy/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/spreeezy/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/spreeezy/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": false
+	}, {
+		"created_at": "2017-10-31T00:06:56Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/summit1g"
+		},
+		"channel": {
+			"mature": true,
+			"status": "more gamin - [ Follow @summit1g ]",
+			"broadcaster_language": "en",
+			"display_name": "summit1g",
+			"game": "Fortnite",
+			"language": "en",
+			"_id": 26490481,
+			"name": "summit1g",
+			"created_at": "2011-12-01T06:33:31Z",
+			"updated_at": "2017-11-20T14:34:38Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/200cea12142f2384-profile_image-300x300.png",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/summit1g-channel_offline_image-e2f9a1df9e695ec1-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/summit1g-profile_banner-da83b29c4dede9e4-480.png",
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/summit1g",
+			"views": 181484984,
+			"followers": 2406396,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/summit1g",
+				"follows": "https://api.twitch.tv/kraken/channels/summit1g/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/summit1g/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/summit1g/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/summit1g",
+				"features": "https://api.twitch.tv/kraken/channels/summit1g/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/summit1g/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/summit1g/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/summit1g/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/summit1g/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": false
+	}, {
+		"created_at": "2017-10-30T21:38:39Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/shroud"
+		},
+		"channel": {
+			"mature": true,
+			"status": "P60 Horde | Follow https://twitter.com/c9shroud",
+			"broadcaster_language": "en",
+			"display_name": "shroud",
+			"game": "World of Warcraft",
+			"language": "en",
+			"_id": 37402112,
+			"name": "shroud",
+			"created_at": "2012-11-03T15:50:32Z",
+			"updated_at": "2017-11-20T14:35:22Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/shroud-profile_image-850e059aee3d6bfa-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/9f5258a6aa3d3be1-channel_offline_image-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/c921e2b29e137572-profile_banner-480.png",
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/shroud",
+			"views": 70761976,
+			"followers": 1737801,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/shroud",
+				"follows": "https://api.twitch.tv/kraken/channels/shroud/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/shroud/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/shroud/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/shroud",
+				"features": "https://api.twitch.tv/kraken/channels/shroud/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/shroud/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/shroud/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/shroud/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/shroud/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": false
+	}, {
+		"created_at": "2017-10-27T22:53:33Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/h3h3productions"
+		},
+		"channel": {
+			"mature": false,
+			"status": "H3 Podcast - Post Malone",
+			"broadcaster_language": "en",
+			"display_name": "h3h3productions",
+			"game": "Talk Shows",
+			"language": "en",
+			"_id": 62438432,
+			"name": "h3h3productions",
+			"created_at": "2014-05-10T21:38:48Z",
+			"updated_at": "2017-11-20T14:35:19Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/h3h3productions-profile_image-6306a88944befd98-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/18beeab8fe3346a6-channel_offline_image-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/h3h3productions-profile_banner-4d0940fc8178e159-480.jpeg",
+			"profile_banner_background_color": "#543254",
+			"url": "https://www.twitch.tv/h3h3productions",
+			"views": 5155203,
+			"followers": 434957,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/h3h3productions",
+				"follows": "https://api.twitch.tv/kraken/channels/h3h3productions/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/h3h3productions/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/h3h3productions/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/h3h3productions",
+				"features": "https://api.twitch.tv/kraken/channels/h3h3productions/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/h3h3productions/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/h3h3productions/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/h3h3productions/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/h3h3productions/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": false
+	}, {
+		"created_at": "2017-10-27T19:20:45Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/h3h3podcast"
+		},
+		"channel": {
+			"mature": false,
+			"status": null,
+			"broadcaster_language": null,
+			"display_name": "h3h3podcast",
+			"game": null,
+			"language": "en",
+			"_id": 107398849,
+			"name": "h3h3podcast",
+			"created_at": "2015-11-18T05:32:16Z",
+			"updated_at": "2017-11-20T14:01:28Z",
+			"partner": false,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/09a0e621bda4d414-profile_image-300x300.jpeg",
+			"video_banner": null,
+			"profile_banner": null,
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/h3h3podcast",
+			"views": 13539,
+			"followers": 1981,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/h3h3podcast",
+				"follows": "https://api.twitch.tv/kraken/channels/h3h3podcast/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/h3h3podcast/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/h3h3podcast/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/h3h3podcast",
+				"features": "https://api.twitch.tv/kraken/channels/h3h3podcast/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/h3h3podcast/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/h3h3podcast/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/h3h3podcast/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/h3h3podcast/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": false
+	}, {
+		"created_at": "2017-10-16T16:50:02Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/cohhcarnage"
+		},
+		"channel": {
+			"mature": false,
+			"status": "[!Shirt] Nioh DLC!! (PC/Odachi) - All new content! \\o/ - Rimworld & TWOM(DLC) soon! - !SubGift - !Everyday - !Store",
+			"broadcaster_language": "en",
+			"display_name": "CohhCarnage",
+			"game": "Nioh",
+			"language": "en",
+			"_id": 26610234,
+			"name": "cohhcarnage",
+			"created_at": "2011-12-06T18:20:34Z",
+			"updated_at": "2017-11-20T14:35:28Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-profile_image-92dc409e41560047-300x300.png",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-channel_offline_image-58bb58f8f33ebd49-1920x1080.jpeg",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/cohhcarnage-profile_banner-bcb1b1b8e6194799-480.png",
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/cohhcarnage",
+			"views": 70393766,
+			"followers": 880682,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/cohhcarnage",
+				"follows": "https://api.twitch.tv/kraken/channels/cohhcarnage/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/cohhcarnage/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/cohhcarnage/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/cohhcarnage",
+				"features": "https://api.twitch.tv/kraken/channels/cohhcarnage/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/cohhcarnage/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/cohhcarnage/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/cohhcarnage/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/cohhcarnage/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": true
+	}, {
+		"created_at": "2017-10-13T20:24:23Z",
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/users/fglfgl27/follows/channels/drdisrespectlive"
+		},
+		"channel": {
+			"mature": false,
+			"status": "Deep into the Night || @DrDisRespect",
+			"broadcaster_language": "en",
+			"display_name": "DrDisRespectLIVE",
+			"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+			"language": "en",
+			"_id": 17337557,
+			"name": "drdisrespectlive",
+			"created_at": "2010-11-02T15:32:25Z",
+			"updated_at": "2017-11-20T14:35:27Z",
+			"partner": true,
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/710c3ca784e2941d-profile_image-300x300.jpeg",
+			"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-channel_offline_image-a79e4923a8019a58-1920x1080.png",
+			"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/b872fe2c-b23f-47b4-b594-3fbf7305b1b8-profile_banner-480.png",
+			"profile_banner_background_color": null,
+			"url": "https://www.twitch.tv/drdisrespectlive",
+			"views": 37838883,
+			"followers": 1266749,
+			"_links": {
+				"self": "https://api.twitch.tv/kraken/channels/drdisrespectlive",
+				"follows": "https://api.twitch.tv/kraken/channels/drdisrespectlive/follows",
+				"commercial": "https://api.twitch.tv/kraken/channels/drdisrespectlive/commercial",
+				"stream_key": "https://api.twitch.tv/kraken/channels/drdisrespectlive/stream_key",
+				"chat": "https://api.twitch.tv/kraken/chat/drdisrespectlive",
+				"features": "https://api.twitch.tv/kraken/channels/drdisrespectlive/features",
+				"subscriptions": "https://api.twitch.tv/kraken/channels/drdisrespectlive/subscriptions",
+				"editors": "https://api.twitch.tv/kraken/channels/drdisrespectlive/editors",
+				"teams": "https://api.twitch.tv/kraken/channels/drdisrespectlive/teams",
+				"videos": "https://api.twitch.tv/kraken/channels/drdisrespectlive/videos"
+			},
+			"delay": null,
+			"banner": null,
+			"background": null
+		},
+		"notifications": true
+	}]
+}
