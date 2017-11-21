@@ -14,11 +14,26 @@ var exitID,
     imgMatrixId = [],
     imgMatrixCount = 0,
     nameMatrix = [],
+    userlive = [],
+    userlivesubtitle = [],
+    usergames = [],
+    userhostlive = [],
+    userhostlivesubtitle = [],
+    userlivetitle = [],
+    userliveimg = [],
+    usergamesimg = [],
+    userhosttitle = [],
+    userhostimg = [],
     nameMatrixCount = 0,
     loadingMore = false,
+    previewData = "",
     keyClickDelayTime = 25, // Delay between accept a click to prevent screen stall
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
+
+
+SceneSceneBrowser.previewDataItemsLimit = 10;
+SceneSceneBrowser.previewData = 0;
 
 SceneSceneBrowser.itemsCountOffset = 0;
 SceneSceneBrowser.LastClickFinish = true;
@@ -131,6 +146,152 @@ var ScrollHelper = {
     }
 };
 
+SceneSceneBrowser.loadpreviewDataError = function(reason) {
+    SceneSceneBrowser.loadingDataTry++;
+    if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax) {
+        if (SceneSceneBrowser.loadingDataTry < 5) {
+            SceneSceneBrowser.loadingDataTimeout += 250;
+        } else {
+            switch (SceneSceneBrowser.loadingDataTry) {
+                case 5:
+                    SceneSceneBrowser.loadingDataTimeout = 2400;
+                    break;
+                case 6:
+                    SceneSceneBrowser.loadingDataTimeout = 5000;
+                    break;
+                case 7:
+                    SceneSceneBrowser.loadingDataTimeout = 15000;
+                    break;
+                case 8:
+                    SceneSceneBrowser.loadingDataTimeout = 30000;
+                    break;
+                case 9:
+                    SceneSceneBrowser.loadingDataTimeout = 45000;
+                    break;
+                default:
+                    SceneSceneBrowser.loadingDataTimeout = 150000;
+                    break;
+            }
+        }
+        SceneSceneBrowser.loadDataRequest();
+    } else {
+        reason = (typeof reason === "undefined") ? "Unknown" : reason;
+        SceneSceneBrowser.loadingData = false;
+        SceneSceneBrowser.showDialog("Unable to load stream data after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
+    }
+};
+
+SceneSceneBrowser.loadpreviewDataRequest = function() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+        var theUrl;
+
+        var offset = 0;
+        if (SceneSceneBrowser.previewData === 0) { //all user folowed channel need to run before next step
+            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
+                SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
+        } else if (SceneSceneBrowser.previewData === 1) { //user live streams
+            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
+                SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
+        } else if (SceneSceneBrowser.previewData === 2) { // user games
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
+                SceneSceneBrowser.previewDataItemsLimit;
+        } else if (SceneSceneBrowser.previewData === 3) { //user live host
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
+                SceneSceneBrowser.previewDataItemsLimit;
+        } else {
+            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.previewDataItemsLimit + '&offset=' +
+                offset;
+        }
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+
+        xmlHttp.ontimeout = function() {
+
+        };
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    try {
+                        SceneSceneBrowser.previewDataSuccess(xmlHttp.responseText);
+                    } catch (err) {
+                        console.log("loadpreviewDataRequest() exception: " + err.name + ' ' + err.message);
+                    }
+
+                } else {
+                    SceneSceneBrowser.loadpreviewDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (error) {
+        SceneSceneBrowser.loadpreviewDataError(error.message);
+    }
+
+};
+
+SceneSceneBrowser.previewDataSuccess = function(responseText) {
+    var response = $.parseJSON(responseText);
+    var response_items, cursor = 0,
+        game, stream, hosts;
+
+    if (SceneSceneBrowser.previewData === 0) {
+        response_items = response.follows.length;
+
+        var channel, x, ar = [];
+        for (x = 0; x < response_items; x++) {
+            channel = response.follows[x];
+            ar.push(channel.channel.name);
+        }
+        SceneSceneBrowser.followerChannels = ar.join();
+    } else if (SceneSceneBrowser.previewData === 1) {
+        response_items = response.streams.length;
+        for (cursor = 0; cursor < response_items; cursor++) {
+            stream = response.streams[cursor];
+            userlive[cursor] = stream.channel.name;
+            userlivetitle[cursor] = stream.channel.display_name;
+            userlivesubtitle[cursor] = stream.game;
+            userliveimg[cursor] = (stream.preview.template).replace("{width}x{height}", videoImgSize);
+        }
+    } else if (SceneSceneBrowser.previewData === 2) {
+        response_items = response.follows.length;
+        for (cursor = 0; cursor < response_items; cursor++) {
+            game = response.follows[cursor];
+            usergames[cursor] = game.game.name;
+            usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", gameImgSize);
+        }
+    } else if (SceneSceneBrowser.previewData === 3) {
+        response_items = response.hosts.length;
+        for (cursor = 0; cursor < response_items; cursor++) {
+            hosts = response.hosts[cursor];
+            userhostlive[cursor] = hosts.target.channel.name;
+            userhosttitle[cursor] = hosts.display_name + ' Hosting ' + hosts.target.channel.display_name;
+            userhostlivesubtitle[cursor] = hosts.target.meta_game;
+            userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", videoImgSize);
+        }
+    }
+    if (SceneSceneBrowser.previewData < 3) {
+        SceneSceneBrowser.previewData++;
+        SceneSceneBrowser.loadpreviewDataRequest();
+    } else {
+        webapis.preview.setPreviewData(previewDataGenerator());
+    }
+};
+
+SceneSceneBrowser.previewDataStart = function() {
+    if (SceneSceneBrowser.followerUsername == null) return;
+
+    userlive = [], userlivetitle = [], userlivesubtitle = [], userliveimg = [];
+    usergamesimg = [], usergames = [];
+    userhostlive = [], userhosttitle = [], userhostlivesubtitle = [], userhostimg = [];
+
+    SceneSceneBrowser.previewData = 0;
+    SceneSceneBrowser.loadpreviewDataRequest();
+};
+
 function addCommas(nStr) {
     nStr += '';
     x = nStr.split('.');
@@ -236,10 +397,7 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
                 mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
                     '', '', game.game.name, addCommas(game.channels) + STR_CHANNELS + ' for ' + addCommas(game.viewers) + STR_VIEWER, '', true);
                 if (mReplace) blankCellCount--;
-                if (blankCellCount == 0) {
-                    console.log("game");
-                    break;
-                }
+                if (blankCellCount == 0) break;
             }
         } else {
             stream = response.streams[cursor];
@@ -251,9 +409,7 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
                     stream.channel.status, stream.game, stream.channel.display_name,
                     addCommas(stream.viewers) + STR_VIEWER, videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
                 if (mReplace) blankCellCount--;
-                if (blankCellCount == 0) {
-                    break;
-                }
+                if (blankCellCount == 0) break;
             }
         }
     }
@@ -293,6 +449,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         } else {
             //console.log("Opening stream from loaddatasuccess GO");
             SceneSceneBrowser.openStream();
+            SceneSceneChannel.Play = true;
         }
     } else {
 
@@ -363,7 +520,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
                     matrix[coloumn_id] = [hosts.target.channel.name, 'stream'];
-                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview, hosts.target.title,
+                    cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
                         addCommas(hosts.target.viewers) + STR_VIEWER, '', false);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
@@ -436,7 +593,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div class="stream_info">' + stream_title + '</div> \
             <div class="stream_info">' + stream_game + '</div> \
-            <div class="stream_info" style="width: '+ viwers_width + '%; display: inline-block;">' + viwers + '</div> \
+            <div class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
             <div class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
             </div>');
 };
@@ -530,9 +687,11 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
+                if (!loadingMore) SceneSceneBrowser.previewDataStart();
             } else {
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
+                if (!loadingMore) SceneSceneBrowser.previewDataStart();
             }
             loadingMore = false;
             for (var i = 0; i < imgMatrix.length; i++) {
@@ -614,7 +773,7 @@ SceneSceneBrowser.loadDataRequest = function() {
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
                         else SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
-                        SceneSceneBrowser.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+                        console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                     }
 
                 } else {
@@ -874,6 +1033,7 @@ SceneSceneBrowser.initLanguage = function() {
 
 document.addEventListener("DOMContentLoaded", function() { //window.load
     // this function will be called only once
+    window.addEventListener('appcontrol', SmartHubEventListener);
     SceneSceneBrowser.initLanguage();
     $("#scene2").hide();
     SceneSceneBrowser.loadingData = false;
@@ -892,6 +1052,80 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.addNetworkStateChangeListener();
 
 });
+
+function SmartHubEventListener() {
+    var requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
+    var appControlData;
+    var actionData;
+
+    var videoIdx;
+    var videoTitleIdx;
+    var gameIdx;
+
+    if (requestedAppControl) {
+        appControlData = requestedAppControl.appControl.data;
+        for (var i = 0; i < appControlData.length; i++) {
+            if (appControlData[i].key == 'PAYLOAD') {
+                actionData = JSON.parse(appControlData[i].value[0]).values;
+                if (JSON.parse(actionData).videoIdx) {
+                    videoIdx = JSON.parse(actionData).videoIdx;
+                    videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
+                    SceneSceneBrowser.selectedChannel = videoIdx;
+                    SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
+                    SceneSceneBrowser.openStream();
+                    SceneSceneChannel.Play = true;
+                } else if (JSON.parse(actionData).gameIdx) {
+                    gameIdx = JSON.parse(actionData).gameIdx;
+                    SceneSceneBrowser.gameSelected = gameIdx;
+                    SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
+                    SceneSceneBrowser.returnToGames = true;
+                    Scenemode = SceneSceneBrowser.gameSelected;
+                    SceneSceneBrowser.refresh();
+                }
+
+            }
+        }
+    }
+}
+
+function previewDataGenerator() {
+    var data = '{"sections":[';
+
+    if (userlive.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + SceneSceneBrowser.followerUsername + '","tiles":[';
+    for (var i = 0; i < userlive.length; i++) {
+        if (i < 1) {
+            data += '{"title":"' + userlivetitle[i] + '","subtitle":"' + userlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userliveimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userlivetitle[i] + '\\\"}","is_playable":true}';
+        } else {
+            data += ',{"title":"' + userlivetitle[i] + '","subtitle":"' + userlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userliveimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userlivetitle[i] + '\\\"}","is_playable":true}';
+        }
+    }
+    if (userlive.length > 0 && (userhostlive.length > 0 || usergames.length > 0)) data += ']},';
+    else if (userlive.length > 0) data += ']}';
+
+    if (userhostlive.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SceneSceneBrowser.followerUsername + '","tiles":[';
+    for (var i = 0; i < userhostlive.length; i++) {
+        if (i < 1) {
+            data += '{"title":"' + userhosttitle[i] + '","subtitle":"' + userhostlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userhostlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userhosttitle[i] + '\\\"}","is_playable":true}';
+        } else {
+            data += ',{"title":"' + userhosttitle[i] + '","subtitle":"' + userhostlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userhostlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userhosttitle[i] + '\\\"}","is_playable":true}';
+        }
+    }
+    if (userhostlive.length > 0 && usergames.length > 0) data += ']},';
+    else if (userhostlive.length > 0) data += ']}';
+
+    if (usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SceneSceneBrowser.followerUsername + '","tiles":[';
+    for (var i = 0; i < usergames.length; i++) {
+        if (i < 1) {
+            data += '{"title":"' + usergames[i] + '","image_ratio":"2by3","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
+        } else {
+            data += ',{"title":"' + usergames[i] + '","image_ratio":"2by3","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
+        }
+    }
+    if (usergames.length > 0) data += ']}';
+
+    data += ']}';
+    return data;
+}
 
 SceneSceneBrowser.prototype.handleShow = function() {
     //console.log("SceneSceneBrowser.handleShow()");
@@ -1065,6 +1299,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                     SceneSceneBrowser.openStream();
+                    SceneSceneChannel.Play = true;
                 } else if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'game') {
                     SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
@@ -1181,6 +1416,7 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
                     SceneSceneBrowser.errorNetwork = false;
                     SceneSceneBrowser.showTable();
                     SceneSceneBrowser.openStream();
+                    SceneSceneChannel.Play = true;
                 } else {
                     SceneSceneBrowser.refresh();
                 }

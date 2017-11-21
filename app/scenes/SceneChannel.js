@@ -51,6 +51,7 @@ SceneSceneChannel.tokenResponse;
 SceneSceneChannel.playlistResponse;
 
 SceneSceneChannel.streamInfoTimer = null;
+SceneSceneChannel.previewDataRefresh = null;
 
 function extractStreamDeclarations(input) {
     var result = [];
@@ -120,6 +121,7 @@ SceneSceneChannel.shutdownStream = function() {
     else SceneSceneBrowser.prototype.handleShow();
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
+    window.clearInterval(SceneSceneChannel.previewDataRefresh);
 };
 
 SceneSceneChannel.getQualitiesCount = function() {
@@ -289,10 +291,18 @@ SceneSceneChannel.prototype.handleShow = function() {
 SceneSceneChannel.prototype.handleHide = function() {
     //console.log("SceneSceneChannel.handleHide()");
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
+    window.clearInterval(SceneSceneChannel.previewDataRefresh);
     document.getElementById('chat_frame').src = 'about:blank';
 };
 
 SceneSceneChannel.prototype.handleFocus = function() {
+    if (SceneSceneChannel.Play) {
+        SceneSceneChannel.mWebapisAvplay.close();
+        oldcurrentTime = 0;
+        offsettime = 0;
+        currentTime = 0;
+        document.getElementById('chat_frame').src = 'about:blank';
+    }
     //console.log("SceneSceneChannel.handleFocus()");
     sysTime = new Date().getTime();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF); //screensaver off
@@ -317,6 +327,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
 
     SceneSceneChannel.updateStreamInfo();
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
+    SceneSceneChannel.previewDataRefresh = window.setInterval(SceneSceneBrowser.previewDataStart, 10000);
     //workaround: scale to .8 set width/height to 1.25 to makes font look smaller
     //customized chat values at https://www.nightdev.com/kapchat/ click "install for xsplit" next get the link
     $("#chat_container").html(
