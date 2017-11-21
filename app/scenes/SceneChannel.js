@@ -245,7 +245,7 @@ function timeMs(time) {
     time = Math.floor(time / 60);
     minutes = lessthanten(time % 60);
 
-    time = Math.floor(time / 60) % 24;
+    time = Math.floor(time / 60);
     hours = lessthanten(time);
 
     //final time 00:00 or 00:00:00
