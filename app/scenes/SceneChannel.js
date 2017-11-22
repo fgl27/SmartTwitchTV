@@ -117,7 +117,7 @@ SceneSceneChannel.shutdownStream = function() {
     var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
     oldcurrentTime = 0;
     offsettime = 0;
-    if (OutsysTime > sysTime) SceneSceneBrowser.prototype.handleFocus();
+    if (OutsysTime > sysTime || SceneSceneBrowser.forcehandleFocus) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(SceneSceneChannel.streamInfoTimer);

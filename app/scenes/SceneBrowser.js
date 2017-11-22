@@ -38,7 +38,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
-
+SceneSceneBrowser.forcehandleFocus = false;
 SceneSceneBrowser.previewDataItemsLimit = 10;
 SceneSceneBrowser.previewData = 0;
 
@@ -1097,9 +1097,11 @@ function SmartHubEventListener() {
                     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
                     SceneSceneBrowser.returnToGames = true;
                     Scenemode = SceneSceneBrowser.gameSelected;
-                    SceneSceneBrowser.refresh();
+                    if (SceneSceneChannel.Play) {
+                        SceneSceneBrowser.forcehandleFocus = true;
+                        window.setTimeout(SceneSceneChannel.shutdownStream, 10);
+                    } else SceneSceneBrowser.refresh();
                 }
-
             }
         }
     }
@@ -1161,6 +1163,7 @@ SceneSceneBrowser.prototype.handleFocus = function() {
     //console.log("SceneSceneBrowser.handleFocus()");
     // this function will be called when the scene manager focus this scene
     SceneSceneBrowser.refresh();
+    SceneSceneBrowser.forcehandleFocus = false;
 };
 
 SceneSceneBrowser.prototype.handleBlur = function() {
