@@ -1093,7 +1093,11 @@ function SmartHubEventListener() {
                     SceneSceneChannel.Play = true;
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
-                    SceneSceneBrowser.gameSelected = gameIdx;
+                    SceneSceneBrowser.gameSelected = gameIdx
+                    $("#tip_icon_channels").removeClass('tip_icon_active');
+                    $("#tip_icon_user").removeClass('tip_icon_active');
+                    $("#tip_icon_open").removeClass('tip_icon_active');
+                    $("#tip_icon_games").addClass('tip_icon_active');;
                     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
                     SceneSceneBrowser.returnToGames = true;
                     Scenemode = SceneSceneBrowser.gameSelected;
