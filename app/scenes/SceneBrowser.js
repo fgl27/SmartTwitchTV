@@ -24,6 +24,13 @@ var exitID,
     usergamesimg = [],
     userhosttitle = [],
     userhostimg = [],
+    canPreviewData = false,
+    previewDataInfo = "",
+    userliveold = 0,
+    usergamesold = 0,
+    userhostliveold = 0,
+    LastUpdate = 0,
+    UpdatePreview = 0,
     nameMatrixCount = 0,
     loadingMore = false,
     previewData = "",
@@ -187,16 +194,16 @@ SceneSceneBrowser.loadpreviewDataRequest = function() {
         var theUrl;
 
         var offset = 0;
-        if (SceneSceneBrowser.previewData === 0) { //all user folowed channel need to run before next step
+        if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
                 SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
-        } else if (SceneSceneBrowser.previewData === 1) { //user live streams
+        } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
                 SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
-        } else if (SceneSceneBrowser.previewData === 2) { // user games
+        } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) { // user games
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
                 SceneSceneBrowser.previewDataItemsLimit;
-        } else if (SceneSceneBrowser.previewData === 3) { //user live host
+        } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) { //user live host
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
                 SceneSceneBrowser.previewDataItemsLimit;
         } else {
@@ -238,7 +245,7 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
     var response_items, cursor = 0,
         game, stream, hosts;
 
-    if (SceneSceneBrowser.previewData === 0) {
+    if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
         response_items = response.follows.length;
 
         var channel, x, ar = [];
@@ -247,7 +254,7 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
             ar.push(channel.channel.name);
         }
         SceneSceneBrowser.followerChannels = ar.join();
-    } else if (SceneSceneBrowser.previewData === 1) {
+    } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
         response_items = response.streams.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             stream = response.streams[cursor];
@@ -256,14 +263,14 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
             userlivesubtitle[cursor] = stream.game;
             userliveimg[cursor] = (stream.preview.template).replace("{width}x{height}", videoImgSize);
         }
-    } else if (SceneSceneBrowser.previewData === 2) {
+    } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
         response_items = response.follows.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             game = response.follows[cursor];
             usergames[cursor] = game.game.name;
             usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", gameImgSize);
         }
-    } else if (SceneSceneBrowser.previewData === 3) {
+    } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
         response_items = response.hosts.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             hosts = response.hosts[cursor];
@@ -273,16 +280,24 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
             userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", videoImgSize);
         }
     }
-    if (SceneSceneBrowser.previewData < 3) {
+    if (SceneSceneBrowser.previewData < SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
         SceneSceneBrowser.previewData++;
         SceneSceneBrowser.loadpreviewDataRequest();
     } else {
-        webapis.preview.setPreviewData(previewDataGenerator());
+        UpdatePreview = new Date().getTime() - 590000;// if last was 9 min 50 sec ago update
+        if ((UpdatePreview > LastUpdate) || userliveold != userlive.length || usergamesold != usergames.length || userhostliveold != userhostlive.length) {
+            LastUpdate = new Date().getTime();
+            previewDataInfo = previewDataGenerator();
+            webapis.preview.setPreviewData(previewDataInfo);
+        }
     }
 };
 
 SceneSceneBrowser.previewDataStart = function() {
-    if (SceneSceneBrowser.followerUsername == null) return;
+    UpdatePreview = new Date().getTime() - 590000;// if last was 9 min 50 sec ago update
+    if ((UpdatePreview < LastUpdate) || SceneSceneBrowser.followerUsername == null) return;
+
+    userliveold = userlive.length, usergamesold = usergames.length, userhostliveold = userhostlive.length;
 
     userlive = [], userlivetitle = [], userlivesubtitle = [], userliveimg = [];
     usergamesimg = [], usergames = [];
@@ -665,6 +680,7 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.showTable();
                 SceneSceneBrowser.addFocus();
             }
+            canPreviewData = false;
             //check state of follower load, and call next stage
             if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                 SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
@@ -687,11 +703,11 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
-                if (!loadingMore) SceneSceneBrowser.previewDataStart();
+                canPreviewData = true;
             } else {
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
-                if (!loadingMore) SceneSceneBrowser.previewDataStart();
+                canPreviewData = true;
             }
             loadingMore = false;
             for (var i = 0; i < imgMatrix.length; i++) {
@@ -715,6 +731,7 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 loadingReplace = false;
                 SceneSceneBrowser.itemsCountOffset = 0;
             }
+            if (!loadingMore && canPreviewData) SceneSceneBrowser.previewDataStart();
         });
 };
 
