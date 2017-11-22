@@ -1072,12 +1072,7 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
 
 function SmartHubEventListener() {
     var requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
-    var appControlData;
-    var actionData;
-
-    var videoIdx;
-    var videoTitleIdx;
-    var gameIdx;
+    var appControlData, actionData, videoIdx, screenIdx, gameIdx, videoTitleIdx;;
 
     if (requestedAppControl) {
         appControlData = requestedAppControl.appControl.data;
@@ -1093,14 +1088,35 @@ function SmartHubEventListener() {
                     SceneSceneChannel.Play = true;
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
-                    SceneSceneBrowser.gameSelected = gameIdx
+                    SceneSceneBrowser.gameSelected = gameIdx;
                     $("#tip_icon_channels").removeClass('tip_icon_active');
                     $("#tip_icon_user").removeClass('tip_icon_active');
                     $("#tip_icon_open").removeClass('tip_icon_active');
-                    $("#tip_icon_games").addClass('tip_icon_active');;
+                    $("#tip_icon_games").addClass('tip_icon_active');
                     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
-                    SceneSceneBrowser.returnToGames = true;
                     Scenemode = SceneSceneBrowser.gameSelected;
+                    SceneSceneBrowser.returnToGames = true;
+                    if (SceneSceneChannel.Play) {
+                        SceneSceneBrowser.forcehandleFocus = true;
+                        window.setTimeout(SceneSceneChannel.shutdownStream, 10);
+                    } else SceneSceneBrowser.refresh();
+                } else if (JSON.parse(actionData).screenIdx) {
+                    screenIdx = JSON.parse(actionData).screenIdx;
+                    SceneSceneBrowser.gameSelected = screenIdx;
+                    $("#tip_icon_channels").removeClass('tip_icon_active');
+                    $("#tip_icon_user").removeClass('tip_icon_active');
+                    $("#tip_icon_open").removeClass('tip_icon_active');
+                    $("#tip_icon_games").removeClass('tip_icon_active');
+                    if (screenIdx === 1) {
+                        SceneSceneBrowser.mode = SceneSceneBrowser.MODE_ALL;
+                        Scenemode = STR_LIVE;
+                        $("#tip_icon_channels").addClass('tip_icon_active');
+                    } else {
+                        SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES;
+                        Scenemode = STR_GAMES;
+                        $("#tip_icon_games").addClass('tip_icon_active');
+                    }
+                    SceneSceneBrowser.returnToGames = false;
                     if (SceneSceneChannel.Play) {
                         SceneSceneBrowser.forcehandleFocus = true;
                         window.setTimeout(SceneSceneChannel.shutdownStream, 10);
@@ -1122,8 +1138,7 @@ function previewDataGenerator() {
             data += ',{"title":"' + userlivetitle[i] + '","subtitle":"' + userlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userliveimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userlivetitle[i] + '\\\"}","is_playable":true}';
         }
     }
-    if (userlive.length > 0 && (userhostlive.length > 0 || usergames.length > 0)) data += ']},';
-    else if (userlive.length > 0) data += ']}';
+    if (userlive.length > 0) data += ']},';
 
     if (userhostlive.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SceneSceneBrowser.followerUsername + '","tiles":[';
     for (var i = 0; i < userhostlive.length; i++) {
@@ -1133,18 +1148,25 @@ function previewDataGenerator() {
             data += ',{"title":"' + userhosttitle[i] + '","subtitle":"' + userhostlivesubtitle[i] + '","image_ratio":"16by9","image_url":"' + userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + userhostlive[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + userhosttitle[i] + '\\\"}","is_playable":true}';
         }
     }
-    if (userhostlive.length > 0 && usergames.length > 0) data += ']},';
-    else if (userhostlive.length > 0) data += ']}';
+    if (userhostlive.length > 0) data += ']},';
 
     if (usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SceneSceneBrowser.followerUsername + '","tiles":[';
     for (var i = 0; i < usergames.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + usergames[i] + '","image_ratio":"2by3","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
+            data += '{"title":"' + usergames[i] + '","image_ratio":"16by9","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
         } else {
-            data += ',{"title":"' + usergames[i] + '","image_ratio":"2by3","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
+            data += ',{"title":"' + usergames[i] + '","image_ratio":"16by9","image_url":"' + usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + usergames[i] + '\\\"}","is_playable":false}';
         }
     }
-    if (usergames.length > 0) data += ']}';
+    if (usergames.length > 0) data += ']},';
+
+    data += '{"title":"' + STR_LIVE + '","tiles":[';
+    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += ']},';
+
+    data += '{"title":"' + STR_GAMES + '","tiles":[';
+    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/games.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += ']}';
 
     data += ']}';
     return data;
