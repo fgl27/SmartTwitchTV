@@ -565,10 +565,10 @@ SceneSceneChannel.onBufferingComplete = function() {
 
 SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.showDialog("");
-    SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
+    if (SceneSceneChannel.qualities[0].url) SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
     SceneSceneChannel.qualityIndex = 0;
     //console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
-    for (var i = 0; i < SceneSceneChannel.qualities.length; i++) {
+    for (var i = 0; i < SceneSceneChannel.getQualitiesCount(); i++) {
         if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
             SceneSceneChannel.qualityIndex = i;
             SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
@@ -677,6 +677,8 @@ SceneSceneChannel.updateStreamInfo = function() {
             if (xmlHttp.status === 200) {
                 try {
                     var response = $.parseJSON(xmlHttp.responseText);
+                    // log response json
+                    //console.log(JSON.stringify(response));
                     $("#stream_info_name").text(response.stream.channel.display_name);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
@@ -847,7 +849,8 @@ SceneSceneChannel.loadDataError = function() {
 };
 
 SceneSceneChannel.loadDataSuccess = function(responseText) {
-    //SceneSceneChannel.showDialog("");
+    // log response json
+    //console.log(JSON.stringify(responseText));
     if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN) {
         SceneSceneChannel.tokenResponse = $.parseJSON(responseText);
         SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_PLAYLIST;

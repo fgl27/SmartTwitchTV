@@ -141,7 +141,7 @@ var ScrollHelper = {
     scrollVerticalToElementById: function(id) {
         var offset = 0.345;
         if (document.getElementById(id) == null) {
-            console.warn('Cannot find element with id \'' + id + '\'.');
+            //console.warn('Cannot find element with id \'' + id + '\'.');
             return;
         }
 
@@ -224,7 +224,7 @@ SceneSceneBrowser.loadpreviewDataRequest = function() {
                     try {
                         SceneSceneBrowser.previewDataSuccess(xmlHttp.responseText);
                     } catch (err) {
-                        console.log("loadpreviewDataRequest() exception: " + err.name + ' ' + err.message);
+                        //console.log("loadpreviewDataRequest() exception: " + err.name + ' ' + err.message);
                     }
 
                 } else {
@@ -575,8 +575,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 };
 
 function videoqualitylang(video_height, average_fps, language) {
-    if (average_fps > 55) average_fps = 60;
-    else if (average_fps < 35) average_fps = 30;
+    if (average_fps > 58) average_fps = 60;
+    else if (average_fps < 32) average_fps = 30;
     else average_fps = Math.ceil(average_fps);
     return video_height + 'p' + average_fps + ' [' + language.toUpperCase() + ']';
 }
@@ -596,7 +596,7 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
     imgMatrixId[imgMatrixCount] = 'thumbnail_' + row_id + '_' + coloumn_id;
     imgMatrixCount++;
 
-    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //preload first 4 rows
+    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //pre cache first 4 rows
         newImg.src = preview_thumbnail;
 
     nameMatrix[nameMatrixCount] = channel_name;
@@ -636,17 +636,19 @@ SceneSceneBrowser.CellExists = function(display_name) {
 
 SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, isGame) {
     var my = 0,
-        mx = 0;
+        mx = 0,
+        viwers_width = 64;
     if (row_id < ((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) - 1)) return false;
     for (my = row_id - (1 + Math.ceil(blankCellCount / SceneSceneBrowser.ColoumnsCount)); my < row_id; my++) {
         for (mx = 0; mx < SceneSceneBrowser.ColoumnsCount; mx++) {
-            if (!ThumbNull(my, mx)) {
+            if (!ThumbNull(my, mx) && (document.getElementById('empty_' + my + '_' + mx, 0) != null)) {
                 row_id = my;
                 coloumn_id = mx;
-                if (isGame)
-                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize); // preview.large = 272x380 using a larg * 2,25
-                else
-                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize); // preview.large = 640x360 forcing here just in case it changes
+                if (isGame) {
+                    viwers_width = 100;
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize);
+                } else
+                    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize);
 
                 nameMatrix[nameMatrixCount] = channel_name;
                 nameMatrixCount++;
@@ -656,10 +658,11 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div class="stream_text" ' + 'style="right: 0;"' + '> \
-                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + ' ' + row_id +'</div> \
                     <div class="stream_info">' + stream_title + '</div> \
                     <div class="stream_info">' + stream_game + '</div> \
-                    <div class="stream_info" style="width:25%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
+                    <div class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
+                    <div class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
                     </div>';
                 return true;
             }
@@ -790,7 +793,7 @@ SceneSceneBrowser.loadDataRequest = function() {
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
                         else SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
-                        console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+                        //console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                     }
 
                 } else {
@@ -1057,7 +1060,7 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
     $('#username_input').val(followerU);
-    SceneSceneBrowser.followerUsername = followerU;
+    SceneSceneBrowser.followerUsername = followerU;// hardcoded user here
     var dq = localStorage.getItem('defaultQuality');
     if (dq !== null) {
         SceneSceneChannel.quality = dq;
