@@ -1071,7 +1071,10 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
 });
 
 function SmartHubEventListener() {
-    var requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
+    var requestedAppControl;
+    try {
+        requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
+    } catch (e) {}
     var appControlData, actionData, videoIdx, screenIdx, gameIdx, videoTitleIdx;;
 
     if (requestedAppControl) {
