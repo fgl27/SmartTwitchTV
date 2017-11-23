@@ -333,13 +333,13 @@
          }
          }
       </style>
-      <script type="text/javascript" src="app/js/jquery.js"></script>
-      <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
-      <script type="text/javascript" src="app/scenes/TVKeyValue.js"></script>
-      <script type="text/javascript" src="app/js/language.js"></script>
-      <script type="text/javascript" src="app/scenes/SceneChannel.js"></script>
-      <script type="text/javascript" src="app/scenes/SceneBrowser.js"></script>
-      <script type="text/javascript" src="app/js/imagesloaded.pkgd.min.js"></script>
+      <script src="app/js/jquery.js" defer></script>
+      <script src="$WEBAPIS/webapis/webapis.js" defer></script>
+      <script src="app/scenes/TVKeyValue.js" defer></script>
+      <script src="app/js/language.js" defer></script>
+      <script src="app/scenes/SceneChannel.js" defer></script>
+      <script src="app/scenes/SceneBrowser.js" defer></script>
+      <script src="app/js/imagesloaded.pkgd.min.js" defer></script>
    </head>
    <body>
       <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px; background-color : #000000;">
@@ -405,8 +405,7 @@
             </div>
          </div>
       </div>
-      <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px; background-color : #000000;
-         background-image : url('');">
+      <div id="scene2" style="display:none; position : absolute;left : 0px;top : 0px;width : 1280px;height : 720px; background-color : #000000;">
          <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
          <div id="scene_channel_panel" style="display:flex; position: absolute; top: 0%; width: 100%; height : 100%; z-index: 1;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.035));">
