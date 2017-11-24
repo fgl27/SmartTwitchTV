@@ -40,8 +40,8 @@ SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
 SceneSceneChannel.isShowDialogOn = false;
 SceneSceneChannel.isShowPauseDialogOn = false;
 
-SceneSceneChannel.QualityAuto = "Auto";
-SceneSceneChannel.quality = "Source";
+//SceneSceneChannel.QualityAuto = "auto";
+SceneSceneChannel.quality = "source";
 SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
 SceneSceneChannel.qualityPlayingIndex = 2;
 SceneSceneChannel.qualityIndex;
@@ -565,7 +565,12 @@ SceneSceneChannel.onBufferingComplete = function() {
 
 SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.showDialog("");
-    if (SceneSceneChannel.qualities[0].url) SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
+    if (typeof SceneSceneChannel.qualities[0].url !== 'undefined') SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
+    else {//ErrorCallback try again from the top
+        SceneSceneChannel.Play = false;
+        SceneSceneChannel.prototype.initialize();
+        window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
+    }
     SceneSceneChannel.qualityIndex = 0;
     //console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
     for (var i = 0; i < SceneSceneChannel.getQualitiesCount(); i++) {
@@ -573,6 +578,9 @@ SceneSceneChannel.qualityChanged = function() {
             SceneSceneChannel.qualityIndex = i;
             SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
             break;
+        } else if (SceneSceneChannel.qualities[i].id.indexOf(SceneSceneChannel.quality) !== -1) { //make shore to set a value before break out
+            SceneSceneChannel.qualityIndex = i;
+            SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
         }
     }
 
@@ -594,12 +602,17 @@ SceneSceneChannel.qualityChanged = function() {
         }
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
             SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
-        }, function() {
-            SceneSceneChannel.qualityChanged(); //ErrorCallback try again
+            SceneSceneChannel.Play = true;
+        }, function() {//ErrorCallback try again from the top
+            SceneSceneChannel.Play = false;
+            SceneSceneChannel.prototype.initialize();
+            window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
         });
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    } catch (e) {
-        console.error(e);
+    } catch (e) {//ErrorCallback try again from the top
+        SceneSceneChannel.Play = false;
+        SceneSceneChannel.prototype.initialize();
+        window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
     }
 };
 

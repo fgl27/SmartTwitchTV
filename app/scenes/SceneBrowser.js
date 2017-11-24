@@ -464,7 +464,6 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         } else {
             //console.log("Opening stream from loaddatasuccess GO");
             SceneSceneBrowser.openStream();
-            SceneSceneChannel.Play = true;
         }
     } else {
 
@@ -1090,8 +1089,7 @@ function SmartHubEventListener() {
                     videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
-                    SceneSceneBrowser.openStream();
-                    SceneSceneChannel.Play = true;
+                    window.setTimeout(SceneSceneBrowser.openStream, 250);
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
                     SceneSceneBrowser.gameSelected = gameIdx;
@@ -1351,7 +1349,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                     SceneSceneBrowser.openStream();
-                    SceneSceneChannel.Play = true;
                 } else if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'game') {
                     SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
@@ -1416,7 +1413,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                 SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                 SceneSceneBrowser.openStream();
-                SceneSceneChannel.Play = true;
             }
             break;
         case TvKeyCode.KEY_VOLUMEUP:
@@ -1468,7 +1464,6 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
                     SceneSceneBrowser.errorNetwork = false;
                     SceneSceneBrowser.showTable();
                     SceneSceneBrowser.openStream();
-                    SceneSceneChannel.Play = true;
                 } else {
                     SceneSceneBrowser.refresh();
                 }
