@@ -124,6 +124,18 @@ SceneSceneChannel.shutdownStream = function() {
     window.clearInterval(SceneSceneChannel.previewDataRefresh);
 };
 
+SceneSceneChannel.qualityIndexReset = function() {
+    SceneSceneChannel.qualityIndex = 0;
+    for (var i = 0; i < SceneSceneChannel.getQualitiesCount(); i++) {
+        if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
+            SceneSceneChannel.qualityIndex = i;
+            break;
+        } else if (SceneSceneChannel.qualities[i].id.indexOf(SceneSceneChannel.quality) !== -1) { //make shore to set a value before break out
+            SceneSceneChannel.qualityIndex = i;
+        }
+    }
+};
+
 SceneSceneChannel.getQualitiesCount = function() {
     return SceneSceneChannel.qualities.length;
 };
@@ -711,6 +723,7 @@ SceneSceneChannel.updateStreamInfo = function() {
 };
 
 SceneSceneChannel.showPanel = function() {
+    SceneSceneChannel.qualityIndexReset();
     SceneSceneChannel.qualityDisplay();
     $("#scene_channel_panel").show();
     setHide();
