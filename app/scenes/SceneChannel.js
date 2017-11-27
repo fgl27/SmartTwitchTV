@@ -23,6 +23,7 @@ var random_int = Math.round(Math.random() * 1e7),
     oldcurrentTime = 0,
     offsettime = 0;
 
+SceneSceneChannel.RestoreFromResume = false;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
 SceneSceneChannel.ChatEnable = false;
@@ -48,7 +49,7 @@ SceneSceneChannel.quality = "source";
 SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
 SceneSceneChannel.qualityPlayingIndex = 2;
 SceneSceneChannel.qualityIndex;
-SceneSceneChannel.qualities;
+SceneSceneChannel.qualities = [];
 
 SceneSceneChannel.tokenResponse;
 SceneSceneChannel.playlistResponse;
@@ -290,7 +291,8 @@ SceneSceneChannel.prototype.initialize = function() {
         } else {
             RefreshsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
             if (!SceneSceneBrowser.browser) {
-                SceneSceneBrowser.openStream();
+                SceneSceneChannel.RestoreFromResume = true;
+                window.setTimeout(SceneSceneBrowser.openStream, 125);
             } else if (RefreshsysTime > SuspendesysTime){
                 SceneSceneBrowser.refresh();
             }
@@ -583,22 +585,28 @@ SceneSceneChannel.onBufferingComplete = function() {
 
 SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.showDialog("");
-    SceneSceneChannel.qualityIndex = 0;
-    //console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
-    for (var i = 0; i < SceneSceneChannel.getQualitiesCount(); i++) {
-        if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
-            SceneSceneChannel.qualityIndex = i;
-            SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
-            break;
-        } else if (SceneSceneChannel.qualities[i].id.indexOf(SceneSceneChannel.quality) !== -1) { //make shore to set a value before break out
-            SceneSceneChannel.qualityIndex = i;
-            SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+
+    if (!SceneSceneChannel.RestoreFromResume) {
+        SceneSceneChannel.qualityIndex = 0;
+        SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[0].url;
+        if (SceneSceneChannel.quality.indexOf("source") !== -1) SceneSceneChannel.quality = "source";
+
+        //console.log("SceneSceneChannel.playingUrl = " + SceneSceneChannel.playingUrl);
+        for (var i = 0; i < SceneSceneChannel.getQualitiesCount(); i++) {
+            if (SceneSceneChannel.qualities[i].id === SceneSceneChannel.quality) {
+                SceneSceneChannel.qualityIndex = i;
+                SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+                break;
+            } else if (SceneSceneChannel.qualities[i].id.indexOf(SceneSceneChannel.quality) !== -1) { //make shore to set a value before break out
+                SceneSceneChannel.qualityIndex = i;
+                SceneSceneChannel.playingUrl = SceneSceneChannel.qualities[i].url;
+            }
         }
+
+        SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
+        SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
     }
-
-    SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
-    SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
-
+    SceneSceneChannel.RestoreFromResume = false;
     try {
         offsettime = oldcurrentTime;
         SceneSceneChannel.mWebapisAvplay.stop();
