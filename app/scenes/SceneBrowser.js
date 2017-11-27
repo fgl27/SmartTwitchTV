@@ -1086,11 +1086,13 @@ function SmartHubEventListener() {
             if (appControlData[i].key == 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
+                    SceneSceneBrowser.browser = true;
                     videoIdx = JSON.parse(actionData).videoIdx;
                     videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
+                    if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) return;
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
-                    window.setTimeout(SceneSceneBrowser.openStream, 250);
+                    window.setTimeout(SceneSceneBrowser.openStream, 100);
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
                     SceneSceneBrowser.gameSelected = gameIdx;
