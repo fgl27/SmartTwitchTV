@@ -161,7 +161,7 @@ SceneSceneChannel.qualityDisplay = function() {
 
 SceneSceneChannel.initLanguage = function() {
     $('#label_quality').html(STR_QUALITY);
-    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 80%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
+    document.getElementById("stream_live").innerHTML = '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
 };
 
 var listener = {
@@ -333,7 +333,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     $("#chat_container").html(
         '<iframe id="chat_frame" width="125%" height="125%" frameborder="0" scrolling="no" style="position: absolute; -o-transform: scale(0.80); -o-transform-origin: 0 0; -webkit-transform: scale(0.80); -webkit-transform-origin: 0 0;" src="https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
-        <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 150%; color: white;"></div> \
+        <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
         </div>');
     SceneSceneChannel.tokenResponse = 0;
     SceneSceneChannel.playlistResponse = 0;
