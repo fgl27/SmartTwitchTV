@@ -606,12 +606,10 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.mWebapisAvplay.setListener(listener);
         SceneSceneChannel.mWebapisAvplay.setTimeoutForBuffering(20000);
         SceneSceneChannel.mWebapisAvplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_BYTE", 4 * 32 * 1024 * 1024); //default 32*1024*1024
-        if (webapis.productinfo.isUdPanelSupported()) {
-            SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 3840, 2160);
+        if (webapis.productinfo.isUdPanelSupported())
             SceneSceneChannel.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-        } else {
-            SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 1920, 1080);
-        }
+
+        SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, screen.width, screen.height);
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
             SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
             SceneSceneChannel.Play = true;
