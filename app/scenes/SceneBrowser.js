@@ -1092,7 +1092,7 @@ function SmartHubEventListener() {
                     if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) return;
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
-                    window.setTimeout(SceneSceneBrowser.openStream, 100);
+                    window.setTimeout(SceneSceneBrowser.openStream, 125);
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
                     SceneSceneBrowser.gameSelected = gameIdx;
