@@ -6,6 +6,7 @@ function SceneSceneBrowser() {
 SceneSceneBrowser.selectedChannel;
 SceneSceneBrowser.selectedChannelDisplayname;
 var exitID,
+    networkID,
     Scenemode = STR_LIVE,
     blankCellCount = 0,
     newImg = new Image,
@@ -161,10 +162,10 @@ SceneSceneBrowser.loadpreviewDataError = function(reason) {
         } else {
             switch (SceneSceneBrowser.loadingDataTry) {
                 case 5:
-                    SceneSceneBrowser.loadingDataTimeout = 2400;
+                    SceneSceneBrowser.loadingDataTimeout = 5000;
                     break;
                 case 6:
-                    SceneSceneBrowser.loadingDataTimeout = 5000;
+                    SceneSceneBrowser.loadingDataTimeout = 6500;
                     break;
                 case 7:
                     SceneSceneBrowser.loadingDataTimeout = 15000;
@@ -1458,14 +1459,12 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
         //console.log("[NetworkStateChangedCallback] DATA=" + data);
         if (data == 1 || data == 4) { //network connected
             //console.log("[NetworkStateChangedCallback] network cable conecteddata= " + data);
+            window.clearTimeout(networkID);
             SceneSceneBrowser.noNetwork = false;
             if (SceneSceneBrowser.browser) {
                 if (SceneSceneBrowser.errorNetwork) {
                     SceneSceneBrowser.errorNetwork = false;
-                    SceneSceneBrowser.showTable();
                     SceneSceneBrowser.openStream();
-                } else {
-                    SceneSceneBrowser.refresh();
                 }
             } else {
                 SceneSceneChannel.showPlayer();
@@ -1474,9 +1473,9 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
             //console.log("[NetworkStateChangedCallback] network cable disconnected data= " + data);
             if (SceneSceneBrowser.browser) {
                 SceneSceneBrowser.noNetwork = true;
-                SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+                networkID = window.setTimeout(function(){ SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT); }, 10000);
             } else {
-                SceneSceneChannel.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+                networkID = window.setTimeout(function(){ SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT); }, 10000);
             }
         }
     };

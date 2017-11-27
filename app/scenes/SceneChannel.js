@@ -15,6 +15,9 @@ var random_int = Math.round(Math.random() * 1e7),
     ChatSizeValue = 2,
     ChatPositions = 0,
     sysTime,
+    OutsysTime,
+    SuspendesysTime,
+    RefreshsysTime,
     today,
     created,
     oldcurrentTime = 0,
@@ -114,7 +117,7 @@ SceneSceneChannel.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
-    var OutsysTime = new Date().getTime() - 300000; // 300000 current time minus 5 min
+    OutsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
     oldcurrentTime = 0;
     offsettime = 0;
     if (OutsysTime > sysTime || SceneSceneBrowser.forcehandleFocus) SceneSceneBrowser.prototype.handleFocus();
@@ -278,12 +281,17 @@ SceneSceneChannel.prototype.initialize = function() {
 
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            SceneSceneChannel.mWebapisAvplay.suspend(); //Mandatory. You should call it, if you use avplay.
-            // Something you want to do when hide.
+            if (SceneSceneChannel.Play) {
+                SceneSceneChannel.shutdownStream();
+                SceneSceneBrowser.browser = false;
+                SceneSceneChannel.Play = false;
+            }
+            SuspendesysTime = new Date().getTime();
         } else {
+            RefreshsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
             if (!SceneSceneBrowser.browser) {
-                SceneSceneChannel.mWebapisAvplay.restore();
-            } else {
+                SceneSceneBrowser.openStream();
+            } else if (RefreshsysTime > SuspendesysTime){
                 SceneSceneBrowser.refresh();
             }
             // Something you want to do when resume.
@@ -846,10 +854,10 @@ SceneSceneChannel.loadDataError = function() {
         } else {
             switch (SceneSceneChannel.loadingDataTry) {
                 case 5:
-                    SceneSceneChannel.loadingDataTimeout = 2400;
+                    SceneSceneChannel.loadingDataTimeout = 5000;
                     break;
                 case 6:
-                    SceneSceneChannel.loadingDataTimeout = 5000;
+                    SceneSceneChannel.loadingDataTimeout = 6500;
                     break;
                 case 7:
                     SceneSceneChannel.loadingDataTimeout = 15000;
