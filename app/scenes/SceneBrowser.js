@@ -1032,10 +1032,12 @@ SceneSceneBrowser.openStream = function() {
     document.body.addEventListener("keydown", SceneSceneChannel.prototype.handleKeyDown, false);
     SceneSceneBrowser.browser = false;
 
-    $("#scene1").hide();
     $("#scene2").show();
-    $("#scene2").focus();
-    SceneSceneChannel.prototype.handleFocus();
+    window.setTimeout(function(){
+        SceneSceneChannel.prototype.handleFocus();
+        $("#scene1").hide();
+        $("#scene2").focus();
+    }, 15);
 };
 
 SceneSceneBrowser.initLanguage = function() {
@@ -1092,7 +1094,7 @@ function SmartHubEventListener() {
                     if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) return;
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
-                    window.setTimeout(SceneSceneBrowser.openStream, 125);
+                    SceneSceneBrowser.openStream();
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
                     SceneSceneBrowser.gameSelected = gameIdx;

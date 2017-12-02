@@ -110,19 +110,19 @@ function extractQualities(input) {
 }
 
 SceneSceneChannel.shutdownStream = function() {
+    SceneSceneChannel.mWebapisAvplay.close();
     document.body.removeEventListener("keydown", SceneSceneChannel.prototype.handleKeyDown);
     document.body.addEventListener("keydown", SceneSceneBrowser.prototype.handleKeyDown, false);
     SceneSceneBrowser.browser = true;
     SceneSceneChannel.Play = false;
-    SceneSceneChannel.mWebapisAvplay.close();
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
     OutsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
-    oldcurrentTime = 0;
-    offsettime = 0;
     if (OutsysTime > sysTime || SceneSceneBrowser.forcehandleFocus) SceneSceneBrowser.prototype.handleFocus();
     else SceneSceneBrowser.prototype.handleShow();
+    oldcurrentTime = 0;
+    offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(SceneSceneChannel.streamInfoTimer);
     window.clearInterval(SceneSceneChannel.previewDataRefresh);
@@ -292,11 +292,10 @@ SceneSceneChannel.prototype.initialize = function() {
             RefreshsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
             if (!SceneSceneBrowser.browser) {
                 SceneSceneChannel.RestoreFromResume = true;
-                window.setTimeout(SceneSceneBrowser.openStream, 125);
+                SceneSceneBrowser.openStream();
             } else if (RefreshsysTime > SuspendesysTime){
                 SceneSceneBrowser.refresh();
             }
-            // Something you want to do when resume.
         }
     });
     $("#scene_channel_dialog_simple_pause").hide();
