@@ -1034,9 +1034,9 @@ SceneSceneBrowser.openStream = function() {
 
     $("#scene2").show();
     window.setTimeout(function(){
-        SceneSceneChannel.prototype.handleFocus();
         $("#scene1").hide();
         $("#scene2").focus();
+        SceneSceneChannel.prototype.handleFocus();
     }, 15);
 };
 
@@ -1094,6 +1094,7 @@ function SmartHubEventListener() {
                     if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) return;
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
+                    SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneBrowser.openStream();
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
@@ -1353,6 +1354,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'stream') {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
+                    SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneBrowser.openStream();
                 } else if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'game') {
                     SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
@@ -1417,6 +1419,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else {
                 SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                 SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
+                SceneSceneChannel.RestoreFromResume = false;
                 SceneSceneBrowser.openStream();
             }
             break;
