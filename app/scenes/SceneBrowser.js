@@ -1033,6 +1033,8 @@ SceneSceneBrowser.openStream = function() {
     SceneSceneBrowser.browser = false;
 
     $("#scene2").show();
+    SceneSceneChannel.hidePanel();
+    SceneSceneChannel.hideChat();
     window.setTimeout(function(){
         $("#scene1").hide();
         $("#scene2").focus();
