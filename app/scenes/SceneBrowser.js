@@ -39,6 +39,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
 SceneSceneBrowser.previewDataItemsLimit = 10;
 SceneSceneBrowser.previewData = 0;
@@ -707,10 +708,12 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
                 canPreviewData = true;
+                SceneSceneBrowser.SmartHubResume = false;
             } else {
                 SceneSceneBrowser.loadingData = false;
                 SceneSceneBrowser.refreshClick = false;
                 canPreviewData = true;
+                SceneSceneBrowser.SmartHubResume = false;
             }
             loadingMore = false;
             for (var i = 0; i < imgMatrix.length; i++) {
@@ -1085,15 +1088,18 @@ function SmartHubEventListener() {
     var appControlData, actionData, videoIdx, screenIdx, gameIdx, videoTitleIdx;;
 
     if (requestedAppControl) {
+        SceneSceneBrowser.SmartHubResume = true;
         appControlData = requestedAppControl.appControl.data;
         for (var i = 0; i < appControlData.length; i++) {
             if (appControlData[i].key == 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
-                    SceneSceneBrowser.browser = true;
                     videoIdx = JSON.parse(actionData).videoIdx;
                     videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) return;
+                    if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) {
+                        SceneSceneBrowser.SmartHubResume = false;
+                        return;
+                    }
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
                     SceneSceneChannel.RestoreFromResume = false;
