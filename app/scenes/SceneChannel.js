@@ -288,7 +288,7 @@ SceneSceneChannel.prototype.initialize = function() {
                 SceneSceneChannel.Play = false;
             }
             SuspendesysTime = new Date().getTime();
-        } else {
+        } else if (!SceneSceneBrowser.SmartHubResume){
             RefreshsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
             if (!SceneSceneBrowser.browser) {
                 SceneSceneChannel.RestoreFromResume = true;
@@ -606,6 +606,7 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
     }
     SceneSceneChannel.RestoreFromResume = false;
+    SceneSceneBrowser.SmartHubResume = false;
     try {
         offsettime = oldcurrentTime;
         SceneSceneChannel.mWebapisAvplay.stop();
