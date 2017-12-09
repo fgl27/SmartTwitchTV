@@ -53,7 +53,7 @@ SceneSceneBrowser.keyReturnPressed = false;
 
 SceneSceneBrowser.isShowExitDialogOn = false;
 
-SceneSceneBrowser.ItemsLimit = 99; // max 100 use a value here that is a multiplier of SceneSceneBrowser.ColoumnsCount
+SceneSceneBrowser.ItemsLimit = 99; // min 25 max 100 use a value here that is divisible by SceneSceneBrowser.ColoumnsCount
 SceneSceneBrowser.ColoumnsCount = 3; // offset in ScrollHelper() need to be revised if change this value
 SceneSceneBrowser.ItemsReloadLimit = Math.ceil((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) / 2);
 
@@ -769,7 +769,7 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
-                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast';
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
