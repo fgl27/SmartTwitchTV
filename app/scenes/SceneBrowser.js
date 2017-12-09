@@ -446,7 +446,6 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
 SceneSceneBrowser.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items;
-
     //Check if is follower mode and if its in first stage, where it only load a list of channels games, then loadDataRequest() to load info about this channels
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
         response_items = response.follows.length;
@@ -501,6 +500,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
             var header;
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                //console.log(JSON.stringify(response));
                 var tbody = $('<tbody></tbody>');
                 $('#stream_table').append(tbody);
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + STR_LIVE_CHANNELS + ' ' +
@@ -773,7 +773,7 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
-                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset + '&stream_type=all';
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
@@ -785,8 +785,7 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SceneSceneBrowser.selectedChannel);
         } else {
-            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' +
-                offset;
+            theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
