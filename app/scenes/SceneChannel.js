@@ -30,7 +30,7 @@ SceneSceneChannel.ChatEnable = false;
 SceneSceneChannel.isShowExitDialogOn = false;
 
 SceneSceneChannel.loadingDataTryMax = 13;
-SceneSceneChannel.loadingDataTry;
+SceneSceneChannel.loadingDataTry = 1;
 SceneSceneChannel.loadingDataTimeout;
 
 SceneSceneChannel.playingTryMax = 10;
@@ -919,6 +919,7 @@ SceneSceneChannel.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
+                        SceneSceneChannel.loadingDataTry = 1;
                         SceneSceneChannel.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
                         //console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
