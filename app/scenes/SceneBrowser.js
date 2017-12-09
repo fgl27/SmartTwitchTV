@@ -95,7 +95,7 @@ SceneSceneBrowser.ime2 = null;
 
 SceneSceneBrowser.loadingData = false;
 SceneSceneBrowser.loadingDataTryMax = 13;
-SceneSceneBrowser.loadingDataTry;
+SceneSceneBrowser.loadingDataTry = 1;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.loadingDataTimeoutStart = false;
 SceneSceneBrowser.dataEnded = false;
@@ -800,6 +800,7 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
+                        SceneSceneBrowser.loadingDataTry = 1;
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
                         else SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {
