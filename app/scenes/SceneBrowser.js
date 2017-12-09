@@ -186,7 +186,6 @@ SceneSceneBrowser.loadpreviewDataError = function(reason) {
     } else {
         reason = (typeof reason === "undefined") ? "Unknown" : reason;
         SceneSceneBrowser.loadingData = false;
-        SceneSceneBrowser.showDialog("Unable to load stream data after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
     }
 };
 
@@ -286,7 +285,7 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
         SceneSceneBrowser.previewData++;
         SceneSceneBrowser.loadpreviewDataRequest();
     } else {
-        UpdatePreview = new Date().getTime() - 590000;// if last was 9 min 50 sec ago update
+        UpdatePreview = new Date().getTime() - 590000; // if last was 9 min 50 sec ago update
         if ((UpdatePreview > LastUpdate) || userliveold != userlive.length || usergamesold != usergames.length || userhostliveold != userhostlive.length) {
             LastUpdate = new Date().getTime();
             previewDataInfo = previewDataGenerator();
@@ -296,7 +295,7 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
 };
 
 SceneSceneBrowser.previewDataStart = function() {
-    UpdatePreview = new Date().getTime() - 590000;// if last was 9 min 50 sec ago update
+    UpdatePreview = new Date().getTime() - 590000; // if last was 9 min 50 sec ago update
     if ((UpdatePreview < LastUpdate) || SceneSceneBrowser.followerUsername == null) return;
 
     userliveold = userlive.length, usergamesold = usergames.length, userhostliveold = userhostlive.length;
@@ -382,7 +381,15 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
-            SceneSceneBrowser.showDialog("Unable to load stream data after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
+            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
+                SceneSceneBrowser.showDialog("Unable to open user " + SceneSceneBrowser.followerUsername + "Reason: " + reason);
+                SceneSceneBrowser.followerUsername = null;
+                window.setTimeout(function() {
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
+                }, 2000);
+            } else {
+                SceneSceneBrowser.showDialog("Unable to load stream after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
+            }
         }
     }
 };
@@ -659,7 +666,7 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div class="stream_text" ' + 'style="right: 0;"' + '> \
-                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + ' ' + row_id +'</div> \
+                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + ' ' + row_id + '</div> \
                     <div class="stream_info">' + stream_title + '</div> \
                     <div class="stream_info">' + stream_game + '</div> \
                     <div class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
@@ -1038,7 +1045,7 @@ SceneSceneBrowser.openStream = function() {
     $("#scene2").show();
     SceneSceneChannel.hidePanel();
     SceneSceneChannel.hideChat();
-    window.setTimeout(function(){
+    window.setTimeout(function() {
         $("#scene1").hide();
         $("#scene2").focus();
         SceneSceneChannel.prototype.handleFocus();
@@ -1067,7 +1074,7 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
     $('#username_input').val(followerU);
-    SceneSceneBrowser.followerUsername = followerU;// hardcoded user here
+    SceneSceneBrowser.followerUsername = followerU; // hardcoded user do it here
     var dq = localStorage.getItem('defaultQuality');
     if (dq !== null) {
         SceneSceneChannel.quality = dq;
@@ -1371,7 +1378,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     Scenemode = SceneSceneBrowser.gameSelected;
                     SceneSceneBrowser.refresh();
                 }
-            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) { //open a channel
                 if (SceneSceneBrowser.cursorY == 0) {
                     SceneSceneBrowser.ime = document.querySelector('#streamname_input');
                     //This is how we handle input from IME
@@ -1385,16 +1392,17 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.ime.focus();
                     //SceneSceneBrowser.isImeFocused = true;
                 } else {
-                    SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
-                    if (SceneSceneBrowser.selectedChannel == '') {
-                        //console.log("SceneSceneBrowser.selectedChannel == null       =" + SceneSceneBrowser.selectedChannel);
-                    } else {
+                    if ($('#streamname_input').val() != '' && $('#streamname_input').val() != null) {
+                        SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
+                        document.getElementById("streamname_input").value = '';
+                        SceneSceneBrowser.selectedChannelDisplayname = SceneSceneBrowser.selectedChannel;
                         //console.log("NOT NULL       =" + SceneSceneBrowser.selectedChannel);
-                        SceneSceneBrowser.loadData();
+                        SceneSceneChannel.RestoreFromResume = false;
+                        SceneSceneBrowser.forcehandleFocus = true;
+                        window.setTimeout(SceneSceneBrowser.openStream, 10);
                     }
-
                 }
-            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) { //open a user
                 if (SceneSceneBrowser.cursorY == 0) {
                     SceneSceneBrowser.ime2 = document.querySelector('#username_input');
                     //This is how we handle input from IME
@@ -1408,15 +1416,13 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.ime2.focus();
                     //SceneSceneBrowser.isIme2Focused = true;
                 } else {
-                    SceneSceneBrowser.followerUsername = $('#username_input').val();
-                    localStorage.setItem('followerUsername', $('#username_input').val());
-                    if (SceneSceneBrowser.followerUsername == '') {
-                        //console.log("SceneSceneBrowser.followerUsername == null     = " + SceneSceneBrowser.followerUsername);
-                    } else {
-                        //console.log("NOT NULL     = " + SceneSceneBrowser.followerUsername);
+                    if ($('#username_input').val() != '' && $('#username_input').val() != null) {
+                        SceneSceneBrowser.followerUsername = $('#username_input').val();
+                        document.getElementById("username_input").value = '';
+                        localStorage.setItem('followerUsername', $('#username_input').val());
                         SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                     }
-
+                    document.getElementById("username_input").value = '';
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                 SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
@@ -1488,9 +1494,13 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
             //console.log("[NetworkStateChangedCallback] network cable disconnected data= " + data);
             if (SceneSceneBrowser.browser) {
                 SceneSceneBrowser.noNetwork = true;
-                networkID = window.setTimeout(function(){ SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT); }, 10000);
+                networkID = window.setTimeout(function() {
+                    SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+                }, 10000);
             } else {
-                networkID = window.setTimeout(function(){ SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT); }, 10000);
+                networkID = window.setTimeout(function() {
+                    SceneSceneBrowser.showDialog(STR_ERROR_NETWORK_DISCONNECT);
+                }, 10000);
             }
         }
     };
