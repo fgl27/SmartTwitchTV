@@ -1,6 +1,7 @@
 /**
  *@file     TVKeyValue.js
  *@date     2014.06.20
+ * more at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
  */
 window.TvKeyCode = {
     'KEY_1': 49, //
@@ -19,6 +20,7 @@ window.TvKeyCode = {
     'KEY_MUTE': 449, //
     'KEY_CHANNELUP': 427, //
     'KEY_CHANNELDOWN': 428, //
+    'KEY_CHANNELGUIDE': 458, //
     'KEY_PREVIOUS': 412,
     'KEY_NEXT': 417, //
     'KEY_PAUSE': 19, //

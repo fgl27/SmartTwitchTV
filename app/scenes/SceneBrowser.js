@@ -41,7 +41,7 @@ var exitID,
 
 SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
-SceneSceneBrowser.previewDataItemsLimit = 12;//Maximum 40 tiles, we have User Live, host and game = 12 + 2 (All live and all games) total max possible = 38
+SceneSceneBrowser.previewDataItemsLimit = 12; //Maximum 40 tiles, we have User Live, host and game = 12 + 2 (All live and all games) total max possible = 38
 SceneSceneBrowser.previewData = 0;
 
 SceneSceneBrowser.itemsCountOffset = 0;
@@ -108,6 +108,7 @@ tizen.tvinputdevice.registerKey("ColorF0Red");
 tizen.tvinputdevice.registerKey("ColorF1Green");
 tizen.tvinputdevice.registerKey("ColorF2Yellow");
 tizen.tvinputdevice.registerKey("ColorF3Blue");
+tizen.tvinputdevice.registerKey("Guide");
 var ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
@@ -1352,8 +1353,15 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.ime2.blur();
             }
             break;
+        case TvKeyCode.KEY_CHANNELGUIDE:
+            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
+                SceneSceneBrowser.refreshClick = true;
+                SceneSceneBrowser.refresh();
+            }
+            break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES ||
+                SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
@@ -1362,9 +1370,12 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
-                SceneSceneBrowser.refreshClick = true;
-                SceneSceneBrowser.refresh();
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
+            } else {
+                SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
             }
             break;
         case TvKeyCode.KEY_PLAYPAUSE:

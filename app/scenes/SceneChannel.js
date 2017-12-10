@@ -13,7 +13,7 @@ var random_int = Math.round(Math.random() * 1e7),
     pauseStartID,
     ChatBackground = 0.5,
     ChatSizeValue = 2,
-    ChatPositions = 0,
+    ChatPositions = 1,
     sysTime,
     OutsysTime,
     SuspendesysTime,
@@ -335,7 +335,7 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //SceneSceneChannel.Player.OnRenderError = 'SceneSceneChannel.onRenderError';                    Not implemented
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
-    ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 0;
+    ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     ChatBackground = parseInt(localStorage.getItem('ChatBackgroundValue')) || 0.5;
     ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 2;
 
@@ -395,22 +395,27 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
         }
     } else {
         switch (e.keyCode) {
-            case TvKeyCode.KEY_CHANNELUP:
-                ChatPositions++;
+            case TvKeyCode.KEY_CHANNELGUIDE:
                 if (!SceneSceneChannel.isChatShown()) {
                     SceneSceneChannel.showChat();
                     SceneSceneChannel.ChatEnable = true;
                     localStorage.setItem('ChatEnable', 'true');
+                } else {
+                    SceneSceneChannel.hideChat();
+                    SceneSceneChannel.ChatEnable = false;
+                    localStorage.setItem('ChatEnable', 'false');
                 }
-                SceneSceneChannel.ChatPosition();
+                break;
+            case TvKeyCode.KEY_CHANNELUP:
+                if (SceneSceneChannel.isChatShown()) {
+                    ChatPositions++;
+                    SceneSceneChannel.ChatPosition();
+                }
                 break;
             case TvKeyCode.KEY_CHANNELDOWN:
                 if (SceneSceneChannel.isChatShown()) {
                     ChatPositions--;
-                    SceneSceneChannel.hideChat();
-                    SceneSceneChannel.ChatEnable = false;
-                    localStorage.setItem('ChatEnable', 'false');
-                    localStorage.setItem('ChatPositionsValue', parseInt(ChatPositions));
+                    SceneSceneChannel.ChatPosition();
                 }
                 break;
             case TvKeyCode.KEY_LEFT:
@@ -749,6 +754,9 @@ SceneSceneChannel.ChatPosition = function() {
     //default
     var left = "75.3%",
         top = (51 + sizeOffset + sizePanelOffset) + '.5%';
+    console.log(ChatPositions);
+
+    if (ChatPositions == 0) ChatPositions = 6;
 
     if (ChatPositions < 7) {
         if (ChatPositions > 1) top = "0.5%"; // top/lefth
