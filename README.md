@@ -42,40 +42,40 @@ The Application is tested with the above remote, below are the controls and sect
 ### [Live Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/Live.png)
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
-* **Move to "User"**: CH **UP** (Channel Up)
-* **Refresh Live Screen**: CH **DOWN** (Channel Down)
+* **Change Screen**: CH **UP or DOWN**
+* **Refresh Live Screen**: CH **PRESS** (Channel Press)
 * **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
-* **Close the application**: Return  (click it twice under 3 seconds)
+* **Close the app**: Return (click it twice under 3 seconds)
 
 ### [User Setup (Access using 4 color buttons (color), after Directional pad (right) for (green))](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/User.png)
 * **Open Key Board**: Directional pad (Up) to select "text box" after Select (key) to enter, type your user and click done
 * **Load User**: Directional pad (Down) to select "Open Button" after Select (key) to enter
-* **Move to "Games"**: CH **UP** (Channel Up)
+* **Change Screen**: CH **UP or DOWN**
 * **Return to Live Screen**: Return
 
 ### [User Followed Channels Screen (Access using CH UP (Channel Up) (from Live Screen) after having setup a User)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/User_live_host.png)
 * **To move between videos/games**: Directional pad (up/down/left/right)
 * **Open a video/game**: Select or Play/Pause
-* **Move to "Games"**: CH **UP** (Channel Up)
-* **Refresh User Followed Screen**: CH **DOWN** (Channel Down)
+* **Change Screen**: CH **UP or DOWN**
+* **Refresh User Followed Screen**: CH **PRESS** (Channel Press)
 * **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Live Screen**: Return
 
 ### [Games category Screen (select a game category, access using Access using CH UP (Channel Up) (from User Followed Screen)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/Games.png)
 * **To move between games**: Directional pad (up/down/left/right)
 * **Open a game category**: Select or Play/Pause
-* **Refresh (Games category Screen**: CH **DOWN** (Channel Down)
+* **Refresh (Games category Screen**: CH **PRESS** (Channel Press)
 * **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Followed Channels/Games Screen**: Return
-* **Return to Live Screen**: CH **UP** (Channel Up)
+* **Change Screen**: CH **UP or DOWN**
 
 ### [A Game Screen (Select a video of a game category, access using Access using Select or Play/Pause (from Games category Screen)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/A_Game.png)
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
-* **Refresh (From "A Game" screen)**: CH **DOWN** (Channel Down)
+* **Refresh (From "A Game" screen)**: CH **PRESS** (Channel Press)
 * **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Games category Screen**: Return
-* **Return to Live Screen**: CH **UP** (Channel Up)
+* **Change Screen**: CH **UP or DOWN**
 
 ### [Playing a video Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/float_chat.jpg)
 * **Play/Pause a video**: Play/Pause
@@ -85,9 +85,8 @@ The Application is tested with the above remote, below are the controls and sect
 * **Show info panel(if chat is not showing)**: Directional pad (up/down/left/right) or Press **Select** once
 * **Dismiss info panel(if info panel it's showing)**: Return or wait 5 seconds it will auto dismiss
 * **Change video quality (if info panel is showing it will be on bottom right corner)**: Directional pad (up/down) to change after Press **Select** to confirm
-* **Show Chat**: CH **UP** (Channel Up)
-* **Hide Chat (if chat it's showing)**: CH **DOWN** (Channel Down)
-* **Change Chat position (if chat it's showing)**: CH **UP** (Channel Up)
+* **Show or hide the Chat**: CH **PRESS**
+* **Change Chat position (if chat it's showing)**: CH **UP or DOWN**
 * **Change Chat size (if chat it's showing and info panel is not)**: Directional pad (up/down)
 * **Change Chat background brightness (if chat it's showing)**: Directional pad (left/right)
 
