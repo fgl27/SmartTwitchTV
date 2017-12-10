@@ -1419,10 +1419,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     if ($('#username_input').val() != '' && $('#username_input').val() != null) {
                         SceneSceneBrowser.followerUsername = $('#username_input').val();
                         document.getElementById("username_input").value = '';
-                        localStorage.setItem('followerUsername', $('#username_input').val());
+                        localStorage.setItem('followerUsername', SceneSceneBrowser.followerUsername);
                         SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                     }
-                    document.getElementById("username_input").value = '';
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                 SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
