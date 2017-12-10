@@ -41,7 +41,7 @@ var exitID,
 
 SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
-SceneSceneBrowser.previewDataItemsLimit = 10;
+SceneSceneBrowser.previewDataItemsLimit = 12;//Maximum 40 tiles, we have User Live, host and game = 12 + 2 (All live and all games) total max possible = 38
 SceneSceneBrowser.previewData = 0;
 
 SceneSceneBrowser.itemsCountOffset = 0;
@@ -197,7 +197,7 @@ SceneSceneBrowser.loadpreviewDataRequest = function() {
         var offset = 0;
         if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
-                SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
+                SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset + '&sortby=last_broadcast';
         } else if (SceneSceneBrowser.previewData === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
                 SceneSceneBrowser.previewDataItemsLimit + '&offset=' + offset;
