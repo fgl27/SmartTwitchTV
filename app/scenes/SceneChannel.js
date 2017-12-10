@@ -710,7 +710,7 @@ SceneSceneChannel.updateStreamInfo = function() {
                     var response = $.parseJSON(xmlHttp.responseText);
                     // log response json
                     //console.log(JSON.stringify(response));
-                    $("#stream_info_name").text(response.stream.channel.display_name);
+                    $("#stream_info_name").text(SceneSceneBrowser.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     $("#stream_info_icon").attr("src", response.stream.channel.logo);
