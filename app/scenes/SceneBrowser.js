@@ -260,7 +260,7 @@ SceneSceneBrowser.previewDataSuccess = function(responseText) {
         for (cursor = 0; cursor < response_items; cursor++) {
             stream = response.streams[cursor];
             userlive[cursor] = stream.channel.name;
-            userlivetitle[cursor] = stream.channel.display_name;
+            userlivetitle[cursor] = SceneSceneBrowser.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
             userlivesubtitle[cursor] = stream.game;
             userliveimg[cursor] = (stream.preview.template).replace("{width}x{height}", videoImgSize);
         }
@@ -430,7 +430,7 @@ SceneSceneBrowser.loadDataSuccessReplace = function(responseText) {
 
             if (!mCellExists) {
                 mReplace = SceneSceneBrowser.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, stream.channel.display_name,
+                    stream.channel.status, stream.game, SceneSceneBrowser.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     addCommas(stream.viewers) + STR_VIEWER, videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
                 if (mReplace) blankCellCount--;
                 if (blankCellCount == 0) break;
@@ -557,14 +557,14 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                     stream = response.streams[cursor];
                     matrix[coloumn_id] = [stream.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
-                        stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
+                        stream.game, SceneSceneBrowser.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
                         videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
 
                 } else {
                     stream = response.streams[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(stream.channel.name);
                     if (!mCellExists) cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                        stream.channel.status, stream.game, stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
+                        stream.channel.status, stream.game, SceneSceneBrowser.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
                         videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
                 }
                 if (!mCellExists) row.append(cell);
@@ -581,6 +581,10 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         SceneSceneBrowser.loadDataSuccessFinish();
     }
 };
+
+SceneSceneBrowser.is_playlist = function(content) {
+    return (content.indexOf('watch_party') == -1) ? '' : '[VOD] ';
+}
 
 function videoqualitylang(video_height, average_fps, language) {
     if (average_fps > 58) average_fps = 60;
