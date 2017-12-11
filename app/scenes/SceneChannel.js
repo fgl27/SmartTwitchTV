@@ -12,7 +12,7 @@ var random_int = Math.round(Math.random() * 1e7),
     sizePanelOffset = 0,
     pauseStartID,
     ChatBackground = 0.5,
-    ChatSizeValue = 2,
+    ChatSizeValue = 3,
     ChatPositions = 1,
     sysTime,
     OutsysTime,
@@ -336,8 +336,8 @@ SceneSceneChannel.prototype.handleFocus = function() {
     //http://107.22.233.36/guide_static/tizenguide/_downloads/Tizen_AppConverting_Guide_1_10.pdf page 14 example to solve
 
     ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
-    ChatBackground = parseInt(localStorage.getItem('ChatBackgroundValue')) || 0.5;
-    ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 2;
+    ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
+    ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
 
     SceneSceneChannel.ChatEnable = localStorage.getItem('ChatEnable') == 'true' ? true : false;
     SceneSceneChannel.hidePanel();
@@ -448,7 +448,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     clearHide();
                     setHide();
                 } else if (SceneSceneChannel.isChatShown()) {
-                    if (ChatSizeValue < 2) {
+                    if (ChatSizeValue < 3) {
                         ChatSizeValue++;
                         SceneSceneChannel.ChatSize(true);
                     } else SceneSceneChannel.showChatBackgroundDialog('Size 100%');
@@ -466,7 +466,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     clearHide();
                     setHide();
                 } else if (SceneSceneChannel.isChatShown()) {
-                    if (ChatSizeValue > 0) {
+                    if (ChatSizeValue > 1) {
                         ChatSizeValue--;
                         SceneSceneChannel.ChatSize(true);
                     } else SceneSceneChannel.showChatBackgroundDialog('Size 33%');
@@ -777,12 +777,12 @@ SceneSceneChannel.ChatSize = function(showDialog) {
         percentage = 100,
         dialogTop = 50;
     sizeOffset = 0;
-    if (ChatSizeValue == 1) {
+    if (ChatSizeValue == 2) {
         containerHeight = 32;
         percentage = 66;
         dialogTop = 25;
         sizeOffset = 16;
-    } else if (ChatSizeValue == 0) {
+    } else if (ChatSizeValue == 1) {
         containerHeight = 16;
         percentage = 33;
         dialogTop = 12.5;
@@ -792,14 +792,14 @@ SceneSceneChannel.ChatSize = function(showDialog) {
     window.parent.document.getElementById("chat_frame").style.height = '100%'; // this value must equal to "SceneSceneChannel.prototype.handleFocus" value
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     SceneSceneChannel.ChatPosition();
-    localStorage.setItem('ChatSizeValue', parseInt(ChatSizeValue));
+    localStorage.setItem('ChatSizeValue', ChatSizeValue);
     if (showDialog)
         SceneSceneChannel.showChatBackgroundDialog('Size ' + percentage + '%');
 };
 
 SceneSceneChannel.ChatBackground = function(showDialog) {
     document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + ChatBackground + ")";
-    localStorage.setItem('ChatBackgroundValue', parseInt(ChatBackground));
+    localStorage.setItem('ChatBackgroundValue', ChatBackground);
     if (showDialog)
         SceneSceneChannel.showChatBackgroundDialog('Brightness ' + (ChatBackground.toFixed(2) * 100).toFixed(0) + '%');
 };
