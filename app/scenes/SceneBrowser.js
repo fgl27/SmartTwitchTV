@@ -1078,7 +1078,6 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.loadingData = false;
     SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
-    $('#username_input').val(followerU);
     SceneSceneBrowser.followerUsername = followerU; // hardcoded user do it here
     var dq = localStorage.getItem('defaultQuality');
     if (dq !== null) {
