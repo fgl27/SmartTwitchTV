@@ -4,7 +4,7 @@ var STR_GAMES = "Игры";
 var STR_OPEN = "Открыть";
 var STR_OPEN_CHANNEL = "Open a channel";
 var STR_REFRESH = "Обновить";
-var STR_CH_UPDOWN = "CH Press/Up or Down";
+var STR_CH_UPDOWN = "CH Press(Guide)/Up or Down";
 var STR_UPDOWN = "Refresh/Change (Screen A/B/C)";
 
 var STR_PLACEHOLDER_OPEN = "Введите имя канала...";

@@ -4,7 +4,7 @@ var STR_GAMES = "Spiele";
 var STR_OPEN = "Kanal öffnen";
 var STR_OPEN_CHANNEL = "Open a channel";
 var STR_REFRESH = "Aktualisieren";
-var STR_CH_UPDOWN = "Kanal Drücken / oben oder unten";
+var STR_CH_UPDOWN = "CH Press(Guide)/Up or Down";
 var STR_UPDOWN = "Aktualisieren / Ändern (Bildschirm A/B/C)";
 
 var STR_PLACEHOLDER_OPEN = "Kanalnamen eingeben...";

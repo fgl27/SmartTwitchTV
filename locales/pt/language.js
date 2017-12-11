@@ -4,7 +4,7 @@ var STR_GAMES = "Jogos";
 var STR_OPEN = "Abrir";
 var STR_OPEN_CHANNEL = "Abrir um canal";
 var STR_REFRESH = "Atualizar";
-var STR_CH_UPDOWN = "CH Pressione/Cima ou abaixo";
+var STR_CH_UPDOWN = "CH Pressione (Guia)/Cima ou abaixo";
 var STR_UPDOWN = "Atualizar/Trocar (Tela A/B/C)";
 
 var STR_PLACEHOLDER_OPEN = "Insira o nome do canal";

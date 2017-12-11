@@ -109,6 +109,7 @@ tizen.tvinputdevice.registerKey("ColorF1Green");
 tizen.tvinputdevice.registerKey("ColorF2Yellow");
 tizen.tvinputdevice.registerKey("ColorF3Blue");
 tizen.tvinputdevice.registerKey("Guide");
+tizen.tvinputdevice.registerKey("Info");
 var ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
@@ -1352,6 +1353,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.ime2.blur();
             }
             break;
+        case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_TOOLS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
                 SceneSceneBrowser.refreshClick = true;

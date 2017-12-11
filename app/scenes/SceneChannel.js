@@ -395,6 +395,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
         }
     } else {
         switch (e.keyCode) {
+            case TvKeyCode.KEY_INFO:
             case TvKeyCode.KEY_CHANNELGUIDE:
                 if (!SceneSceneChannel.isChatShown()) {
                     SceneSceneChannel.showChat();
