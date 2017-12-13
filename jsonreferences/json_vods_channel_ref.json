@@ -1,0 +1,1683 @@
+{
+	"_total": 35,
+	"_links": {
+		"self": "https://api.twitch.tv/kraken/channels/drdisrespectlive/videos?broadcast_type=archive\u0026limit=30\u0026login=drdisrespectlive\u0026sort=time",
+		"next": "https://api.twitch.tv/kraken/channels/drdisrespectlive/videos?broadcast_typ…ve\u0026limit=30\u0026login=drdisrespectlive\u0026offset=30\u0026sort=time"
+	},
+	"videos": [{
+		"title": "Speed and Precision || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26964343408,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 7349,
+		"created_at": "2017-12-12T16:13:24Z",
+		"published_at": "2017-12-12T16:13:24Z",
+		"url": "https://www.twitch.tv/videos/208939647",
+		"_id": "v208939647",
+		"recorded_at": "2017-12-12T16:13:24Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 30239,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/storyboards/208939647-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d8c15610c76517b0e19e_drdisrespectlive_26964343408_753941633/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.88331301396357,
+			"360p30": 29.883346083163286,
+			"480p30": 29.883346083163286,
+			"720p30": 29.883346083163286,
+			"720p60": 59.74129502094587,
+			"chunked": 59.74129502094587
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v208939647",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Dark Alleyways || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26958300960,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 8884,
+		"created_at": "2017-12-11T21:02:17Z",
+		"published_at": "2017-12-11T21:02:17Z",
+		"url": "https://www.twitch.tv/videos/208738279",
+		"_id": "v208738279",
+		"recorded_at": "2017-12-11T21:02:17Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 23852,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/storyboards/208738279-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/b1ebc25ce8f794a4fb5e_drdisrespectlive_26958300960_753563980/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.761844120900783,
+			"360p30": 29.761844120900783,
+			"480p30": 29.761844120900783,
+			"720p30": 29.761844120900783,
+			"720p60": 59.44034204808346,
+			"chunked": 59.44034204808346
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v208738279",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Dark Alleyways || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26957863328,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 2764,
+		"created_at": "2017-12-11T20:04:16Z",
+		"published_at": "2017-12-11T20:04:16Z",
+		"url": "https://www.twitch.tv/videos/208723760",
+		"_id": "v208723760",
+		"recorded_at": "2017-12-11T20:04:15Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 3409,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/storyboards/208723760-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0a9fb0eb8bf055667a5b_drdisrespectlive_26957863328_753536628/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.00029038500065,
+			"360p30": 29.999994133579566,
+			"480p30": 30.00029038500065,
+			"720p30": 30.00029038500065,
+			"720p60": 59.999700815453885,
+			"chunked": 59.99969494613746
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v208723760",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "New Map, New Champion || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26928676736,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 35977,
+		"created_at": "2017-12-08T17:48:20Z",
+		"published_at": "2017-12-08T17:48:20Z",
+		"url": "https://www.twitch.tv/videos/207791171",
+		"_id": "v207791171",
+		"recorded_at": "2017-12-08T17:48:20Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 19868,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/storyboards/207791171-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a034265c32fd676838d3_drdisrespectlive_26928676736_751712466/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.778857274062503,
+			"360p30": 29.778907604922477,
+			"480p30": 29.77880694320253,
+			"720p30": 29.778907604922477,
+			"720p60": 59.503961189672545,
+			"chunked": 59.503810197092626
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v207791171",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "The Best || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26913077248,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 19362,
+		"created_at": "2017-12-06T19:46:08Z",
+		"published_at": "2017-12-06T19:46:08Z",
+		"url": "https://www.twitch.tv/videos/207272082",
+		"_id": "v207272082",
+		"recorded_at": "2017-12-06T19:46:08Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 29143,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/storyboards/207272082-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a74f42547b0df683df4b_drdisrespectlive_26913077248_750737499/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.945095762446954,
+			"360p30": 29.945095762446954,
+			"480p30": 29.945095762446954,
+			"720p30": 29.945095762446954,
+			"720p60": 59.878497162851005,
+			"chunked": 59.87856578874815
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v207272082",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "LIVE FROM DREAMHACK! || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26885105536,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 30356,
+		"created_at": "2017-12-03T11:44:52Z",
+		"published_at": "2017-12-03T11:44:52Z",
+		"url": "https://www.twitch.tv/videos/206359307",
+		"_id": "v206359307",
+		"recorded_at": "2017-12-03T11:44:51Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 10886,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/storyboards/206359307-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a9846d7d93e48654622d_drdisrespectlive_26885105536_748989267/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.000062460135737,
+			"360p30": 30.000062460135737,
+			"480p30": 30.000062460135737,
+			"720p30": 29.99987875385416,
+			"720p60": 60.00003306713069,
+			"chunked": 60.00003306713069
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v206359307",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "LIVE FROM DREAMHACK! || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26875617088,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 22852,
+		"created_at": "2017-12-02T12:42:58Z",
+		"published_at": "2017-12-02T12:42:58Z",
+		"url": "https://www.twitch.tv/videos/206066045",
+		"_id": "v206066045",
+		"recorded_at": "2017-12-02T12:42:58Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 12937,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/storyboards/206066045-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/87975f130fdfd67e4276_drdisrespectlive_26875617088_748396239/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.99977120652692,
+			"360p30": 29.99977120652692,
+			"480p30": 29.99977120652692,
+			"720p30": 29.99977120652692,
+			"chunked": 29.99977120652692
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v206066045",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Eagles and Dreams || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26875389568,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 8439,
+		"created_at": "2017-12-02T11:59:54Z",
+		"published_at": "2017-12-02T11:59:54Z",
+		"url": "https://www.twitch.tv/videos/206059284",
+		"_id": "v206059284",
+		"recorded_at": "2017-12-02T11:59:54Z",
+		"game": "Fortnite",
+		"length": 2570,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/storyboards/206059284-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/225ab779910ad8e4e337_drdisrespectlive_26875389568_748382019/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.987000732035376,
+			"360p30": 29.98622279858447,
+			"480p30": 29.986611765309924,
+			"720p30": 29.98622279858447,
+			"chunked": 29.98622279858447
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v206059284",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Eagles and Dreams || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26843499328,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 40460,
+		"created_at": "2017-11-28T16:02:01Z",
+		"published_at": "2017-11-28T16:02:01Z",
+		"url": "https://www.twitch.tv/videos/205008178",
+		"_id": "v205008178",
+		"recorded_at": "2017-11-28T16:02:01Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 14588,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/storyboards/205008178-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/a241eda9596384ed5820_drdisrespectlive_26843499328_746388881/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.99657125638023,
+			"360p30": 29.99657125638023,
+			"480p30": 29.99657125638023,
+			"720p30": 29.99657125638023,
+			"720p60": 59.989442345107264,
+			"chunked": 59.98950949772951
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v205008178",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Ripped from head to toe || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26837376496,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 15538,
+		"created_at": "2017-11-27T20:02:33Z",
+		"published_at": "2017-11-27T20:02:33Z",
+		"url": "https://www.twitch.tv/videos/204803476",
+		"_id": "v204803476",
+		"recorded_at": "2017-11-27T20:02:33Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 26734,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/storyboards/204803476-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e5d415222faaa795f1f3_drdisrespectlive_26837376496_746006204/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.999984663808423,
+			"360p30": 30.00002206915373,
+			"480p30": 30.00002206915373,
+			"720p30": 30.00002206915373,
+			"720p60": 59.99992369320118,
+			"chunked": 59.99992369320118
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v204803476",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Black on Black Friday || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26811080896,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 29384,
+		"created_at": "2017-11-24T19:42:28Z",
+		"published_at": "2017-11-24T19:42:28Z",
+		"url": "https://www.twitch.tv/videos/203969990",
+		"_id": "v203969990",
+		"recorded_at": "2017-11-24T19:42:28Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 39214,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/storyboards/203969990-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/7bd3597faf58597cd9e9_drdisrespectlive_26811080896_744362729/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.936154465763916,
+			"360p30": 29.93617996654247,
+			"480p30": 29.93617996654247,
+			"720p30": 29.936154465763916,
+			"720p60": 59.866298551450335,
+			"chunked": 59.86708952707488
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v203969990",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Digital Dominator || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26796141216,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 20915,
+		"created_at": "2017-11-22T20:28:15Z",
+		"published_at": "2017-11-22T20:28:15Z",
+		"url": "https://www.twitch.tv/videos/203488645",
+		"_id": "v203488645",
+		"recorded_at": "2017-11-22T20:28:15Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 26078,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/storyboards/203488645-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d4a7ed1d6d16c877a4e9_drdisrespectlive_26796141216_743428999/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.54243025625872,
+			"360p30": 29.54243025625872,
+			"480p30": 29.54243025625872,
+			"720p30": 29.54243025625872,
+			"720p60": 58.987959853447244,
+			"chunked": 58.9944020025267
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v203488645",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Perfect Gaming Specimen || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26786078144,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 18560,
+		"created_at": "2017-11-21T16:04:49Z",
+		"published_at": "2017-11-21T16:04:49Z",
+		"url": "https://www.twitch.tv/videos/203159692",
+		"_id": "v203159692",
+		"recorded_at": "2017-11-21T16:04:49Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 28488,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/storyboards/203159692-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/91c88aaee9a69c094307_drdisrespectlive_26786078144_742800057/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.000033346396933,
+			"360p30": 29.999963143456025,
+			"480p30": 29.999963143456025,
+			"720p30": 29.999998244926477,
+			"720p60": 59.9999613883825,
+			"chunked": 59.9999613883825
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v203159692",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "#1 in Everything || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26780572944,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 15066,
+		"created_at": "2017-11-20T21:39:50Z",
+		"published_at": "2017-11-20T21:39:50Z",
+		"url": "https://www.twitch.tv/videos/202975571",
+		"_id": "v202975571",
+		"recorded_at": "2017-11-20T21:39:50Z",
+		"game": "H1Z1",
+		"length": 24825,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/storyboards/202975571-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0107fd21d817222187ec_drdisrespectlive_26780572944_742455984/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.999907354109915,
+			"360p30": 29.999907354109915,
+			"480p30": 29.999907354109915,
+			"720p30": 29.999907354109915,
+			"720p60": 59.99999919438542,
+			"chunked": 59.999996777535294
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v202975571",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Deep into the Night || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26757402064,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 26171,
+		"created_at": "2017-11-18T03:54:40Z",
+		"published_at": "2017-11-18T03:54:40Z",
+		"url": "https://www.twitch.tv/videos/202237469",
+		"_id": "v202237469",
+		"recorded_at": "2017-11-18T03:54:40Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 9983,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/storyboards/202237469-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d6a53419eadb9a07830e_drdisrespectlive_26757402064_741007807/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.000030048708954,
+			"360p30": 29.999929886345765,
+			"480p30": 29.99982972398257,
+			"720p30": 29.999729561619382,
+			"720p60": 59.999993990264834,
+			"chunked": 59.999993990264834
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v202237469",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Into the Sunset || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26753755520,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 12925,
+		"created_at": "2017-11-17T19:37:49Z",
+		"published_at": "2017-11-17T19:37:49Z",
+		"url": "https://www.twitch.tv/videos/202115231",
+		"_id": "v202115231",
+		"recorded_at": "2017-11-17T19:37:49Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 10442,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/storyboards/202115231-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1086f362978355d819c1_drdisrespectlive_26753755520_740779898/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.96936794464147,
+			"360p30": 29.96946370871862,
+			"480p30": 29.96946370871862,
+			"720p30": 29.96946370871862,
+			"720p60": 59.932415460190924,
+			"chunked": 59.93279851649953
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v202115231",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Award Winner || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26746329824,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 22203,
+		"created_at": "2017-11-16T20:08:02Z",
+		"published_at": "2017-11-16T20:08:02Z",
+		"url": "https://www.twitch.tv/videos/201768991",
+		"_id": "v201768991",
+		"recorded_at": "2017-11-16T20:08:02Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 27300,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/storyboards/201768991-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/93abde09f97b25a015cc_drdisrespectlive_26746329824_740315793/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.89754656883403,
+			"360p30": 29.897473310105187,
+			"480p30": 29.897473310105187,
+			"720p30": 29.897473310105187,
+			"720p60": 59.775459798338495,
+			"chunked": 59.77674182609323
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v201768991",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "You're Dead You're Done || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26698127760,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 51710,
+		"created_at": "2017-11-10T20:05:58Z",
+		"published_at": "2017-11-10T20:05:58Z",
+		"url": "https://www.twitch.tv/videos/200185336",
+		"_id": "v200185336",
+		"recorded_at": "2017-11-10T20:05:58Z",
+		"game": "Star Wars Battlefront II",
+		"length": 19449,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/storyboards/200185336-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d27842b5a707c7b28a39_drdisrespectlive_26698127760_737303174/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.685860382883703,
+			"360p30": 29.685808966599005,
+			"480p30": 29.685860382883703,
+			"720p30": 29.6859117991684,
+			"720p60": 59.325137611829774,
+			"chunked": 59.32945657974452
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v200185336",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Face of Twitch || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26688906480,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 25300,
+		"created_at": "2017-11-09T16:23:45Z",
+		"published_at": "2017-11-09T16:23:45Z",
+		"url": "https://www.twitch.tv/videos/188895353",
+		"_id": "v188895353",
+		"recorded_at": "2017-11-09T16:23:45Z",
+		"game": "Star Wars Battlefront II",
+		"length": 24242,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/storyboards/188895353-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/0e037f24b38063fed984_drdisrespectlive_26688906480_736726844/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.7256463213913,
+			"360p30": 29.725603499422352,
+			"480p30": 29.725604285444273,
+			"720p30": 29.725604285444273,
+			"720p60": 59.40113109104473,
+			"chunked": 59.404967339500644
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v188895353",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "At the tippity top || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26682919536,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 18424,
+		"created_at": "2017-11-08T19:55:22Z",
+		"published_at": "2017-11-08T19:55:22Z",
+		"url": "https://www.twitch.tv/videos/188690429",
+		"_id": "v188690429",
+		"recorded_at": "2017-11-08T19:55:22Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 24233,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/storyboards/188690429-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/1013e1fa0bbd8df0534e_drdisrespectlive_26682919536_736352660/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.000020219678973,
+			"360p30": 29.999896425726085,
+			"480p30": 29.99993769037705,
+			"720p30": 29.99993769037705,
+			"720p60": 59.99991747081046,
+			"chunked": 59.99991747081046
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v188690429",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Turbo Tuesday with Fortnite #ad || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26676350160,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 18190,
+		"created_at": "2017-11-07T21:39:38Z",
+		"published_at": "2017-11-07T21:39:38Z",
+		"url": "https://www.twitch.tv/videos/188467823",
+		"_id": "v188467823",
+		"recorded_at": "2017-11-07T21:39:38Z",
+		"game": "Fortnite",
+		"length": 28395,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/storyboards/188467823-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/571a1b38ebcfc41699c9_drdisrespectlive_26676350160_735942074/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.687618251117627,
+			"360p30": 29.68768868454274,
+			"480p30": 29.68768868454274,
+			"720p30": 29.68768868454274,
+			"720p60": 59.270835380304106,
+			"chunked": 59.27615310221458
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v188467823",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Zero Negotiations || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26668266704,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 16875,
+		"created_at": "2017-11-06T20:06:01Z",
+		"published_at": "2017-11-06T20:06:01Z",
+		"url": "https://www.twitch.tv/videos/188200144",
+		"_id": "v188200144",
+		"recorded_at": "2017-11-06T20:06:01Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 16899,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/storyboards/188200144-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/013a9e0e3e4e7a3f3279_drdisrespectlive_26668266704_735436860/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.851853806808144,
+			"360p30": 29.851735457436302,
+			"480p30": 29.851912981494067,
+			"720p30": 29.851853806808144,
+			"720p60": 59.67021474138473,
+			"chunked": 59.67258172882159
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v188200144",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Revenge on the streets || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26642391584,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 29441,
+		"created_at": "2017-11-03T20:03:10Z",
+		"published_at": "2017-11-03T20:03:10Z",
+		"url": "https://www.twitch.tv/videos/187372148",
+		"_id": "v187372148",
+		"recorded_at": "2017-11-03T20:03:10Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 34105,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/storyboards/187372148-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/59bf56e51dcff6ca5bd4_drdisrespectlive_26642391584_733819665/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.960716399544165,
+			"360p30": 29.96062843674328,
+			"480p30": 29.960716399544165,
+			"720p30": 29.96062843674328,
+			"720p60": 59.91172757005753,
+			"chunked": 59.91237263059734
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v187372148",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Dangerous || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26634926640,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 12766,
+		"created_at": "2017-11-02T21:46:19Z",
+		"published_at": "2017-11-02T21:46:19Z",
+		"url": "https://www.twitch.tv/videos/187128158",
+		"_id": "v187128158",
+		"recorded_at": "2017-11-02T21:46:19Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 4897,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/storyboards/187128158-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/76be408aec9094e0c4be_drdisrespectlive_26634926640_733353106/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.94302730776974,
+			"360p30": 29.94302730776974,
+			"480p30": 29.94302730776974,
+			"720p30": 29.94302730776974,
+			"720p60": 59.875845187500225,
+			"chunked": 59.876457753182585
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v187128158",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Dangerous || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26632722640,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 10079,
+		"created_at": "2017-11-02T16:38:08Z",
+		"published_at": "2017-11-02T16:38:08Z",
+		"url": "https://www.twitch.tv/videos/187056416",
+		"_id": "v187056416",
+		"recorded_at": "2017-11-02T16:38:08Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 18251,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/storyboards/187056416-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/e17abf17018f69d59bb6_drdisrespectlive_26632722640_733215356/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.99988987065939,
+			"360p30": 29.999944661376112,
+			"480p30": 29.999944661376112,
+			"720p30": 29.999944661376112,
+			"720p60": 60.000053694902384,
+			"chunked": 59.99994192194847
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v187056416",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Outgunnin your face || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26626457600,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 26239,
+		"created_at": "2017-11-01T19:09:23Z",
+		"published_at": "2017-11-01T19:09:23Z",
+		"url": "https://www.twitch.tv/videos/186850927",
+		"_id": "v186850927",
+		"recorded_at": "2017-11-01T19:09:23Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 23851,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/storyboards/186850927-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/42455fbf94b22eec039f_drdisrespectlive_26626457600_732823791/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 30.00002096264666,
+			"360p30": 29.999979037353338,
+			"480p30": 29.99993711206002,
+			"720p30": 29.99993711206002,
+			"chunked": 59.99995723623129
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v186850927",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Ready to Kill || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26617794208,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 17382,
+		"created_at": "2017-10-31T15:44:21Z",
+		"published_at": "2017-10-31T15:44:21Z",
+		"url": "https://www.twitch.tv/videos/186562133",
+		"_id": "v186562133",
+		"recorded_at": "2017-10-31T15:44:21Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 23790,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/storyboards/186562133-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/5b821cb7b918ac072d9b_drdisrespectlive_26617794208_732282329/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.99988987086897,
+			"360p30": 29.99988987086897,
+			"480p30": 29.99988987086897,
+			"720p30": 29.99988987086897,
+			"720p60": 59.998939061348395,
+			"chunked": 59.998939061348395
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v186562133",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Sprinting Violently || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26611559888,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 13756,
+		"created_at": "2017-10-30T19:01:26Z",
+		"published_at": "2017-10-30T19:01:26Z",
+		"url": "https://www.twitch.tv/videos/186355357",
+		"_id": "v186355357",
+		"recorded_at": "2017-10-30T19:01:26Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 30519,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/storyboards/186355357-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/485b7f2fe3a684c36205_drdisrespectlive_26611559888_731892684/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.99991153281199,
+			"360p30": 29.999977064062367,
+			"480p30": 29.99994429843718,
+			"720p30": 29.99994429843718,
+			"720p60": 60.00001965937511,
+			"chunked": 59.99992136249954
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v186355357",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Getting the job done || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26594553216,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 16164,
+		"created_at": "2017-10-28T17:01:38Z",
+		"published_at": "2017-10-28T17:01:38Z",
+		"url": "https://www.twitch.tv/videos/185814199",
+		"_id": "v185814199",
+		"recorded_at": "2017-10-28T17:01:38Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 26404,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/storyboards/185814199-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/702ab322b2f537557a6b_drdisrespectlive_26594553216_730829767/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.992552364941314,
+			"360p30": 29.99251449240097,
+			"480p30": 29.99251449240097,
+			"720p30": 29.99251449240097,
+			"720p60": 59.98185755819943,
+			"chunked": 59.98185755819943
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v185814199",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}, {
+		"title": "Getting the job done || @DrDisRespect",
+		"description": null,
+		"description_html": null,
+		"broadcast_id": 26578663632,
+		"broadcast_type": "archive",
+		"status": "recorded",
+		"language": "en",
+		"tag_list": "",
+		"views": 22505,
+		"created_at": "2017-10-26T18:34:03Z",
+		"published_at": "2017-10-26T18:34:03Z",
+		"url": "https://www.twitch.tv/videos/185295725",
+		"_id": "v185295725",
+		"recorded_at": "2017-10-26T18:34:03Z",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"length": 25519,
+		"preview": "https://static-cdn.jtvnw.net/s3_vods/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/thumb/thumb0-320x240.jpg",
+		"animated_preview_url": "https://vod-storyboards.twitch.tv/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/storyboards/185295725-strip-0.jpg",
+		"thumbnails": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/thumb/thumb0-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/thumb/thumb1-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/thumb/thumb2-320x240.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/4fa8dd0e7f0f0c754e5b_drdisrespectlive_26578663632_729836668/thumb/thumb3-320x240.jpg"
+		}],
+		"fps": {
+			"160p30": 29.917988121641283,
+			"360p30": 29.91802667247088,
+			"480p30": 29.917988121641283,
+			"720p30": 29.91785511800066,
+			"720p60": 59.816542454041986,
+			"chunked": 59.81412870712054
+		},
+		"resolutions": {
+			"160p30": "284x160",
+			"360p30": "640x360",
+			"480p30": "852x480",
+			"720p30": "1280x720",
+			"720p60": "1280x720",
+			"chunked": "1280x720"
+		},
+		"channel": {
+			"name": "drdisrespectlive",
+			"display_name": "DrDisRespectLIVE"
+		},
+		"_links": {
+			"self": "https://api.twitch.tv/kraken/videos/v185295725",
+			"channel": "https://api.twitch.tv/kraken/channels/drdisrespectlive"
+		}
+	}]
+}

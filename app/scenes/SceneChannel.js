@@ -23,6 +23,7 @@ var random_int = Math.round(Math.random() * 1e7),
     oldcurrentTime = 0,
     offsettime = 0;
 
+SceneSceneChannel.Vod = false;
 SceneSceneChannel.RestoreFromResume = false;
 SceneSceneChannel.Player = null;
 SceneSceneChannel.Play;
@@ -912,9 +913,15 @@ SceneSceneChannel.loadDataRequest = function() {
 
         var theUrl;
         if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN) {
-            theUrl = 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel + '/access_token';
+            theUrl = SceneSceneChannel.Vod ? 'https://api.twitch.tv/api/vods/' + SceneSceneBrowser.selectedVod +
+                '/access_token?as3=t' : 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel +
+                '/access_token'; // SceneSceneBrowser.selectedVod = _id witout the v
         } else {
-            theUrl = 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
+            theUrl = SceneSceneChannel.Vod ? 'http://usher.twitch.tv/vod/' + SceneSceneBrowser.selectedVod + '?nauthsig=' +
+                SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token) :
+                'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel +
+                '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' +
+                escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
