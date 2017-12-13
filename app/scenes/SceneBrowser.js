@@ -39,6 +39,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.selectedVod = '208939647';//_id witout the v
 SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
 SceneSceneBrowser.previewDataItemsLimit = 12; //Maximum 40 tiles, we have User Live, host and game = 12 + 2 (All live and all games) total max possible = 38
