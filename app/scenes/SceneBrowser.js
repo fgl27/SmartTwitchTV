@@ -462,19 +462,20 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
         SceneSceneBrowser.loadDataRequest();
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
-        //console.log("response=" + response);
-        //console.log("responseText=" + responseText);
         if (response.stream === null) {
-            //console.log("response.stream === 'null'=");
-            //console.log("+response.stream=" + response.stream);
             SceneSceneBrowser.loadingData = false;
             SceneSceneBrowser.refreshClick = false;
             SceneSceneBrowser.showDialog(STR_CHANNEL + " '" + SceneSceneBrowser.selectedChannelDisplayname +
-                "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
+                "' " + STR_IS_OFFLINE + " or " + STR_ERROR_CONNECTION_FAIL);
         } else {
-            //console.log("Opening stream from loaddatasuccess GO");
+            SceneSceneChannel.RestoreFromResume = false;
+            SceneSceneBrowser.forcehandleFocus = true;
             SceneSceneBrowser.openStream();
         }
+        SceneSceneBrowser.loadingData = false;
+        SceneSceneBrowser.refreshClick = false;
+        SceneSceneBrowser.SmartHubResume = false;
+        return;
     } else {
 
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GAMES) {
@@ -756,7 +757,7 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
 
 SceneSceneBrowser.loadDataRequest = function() {
     try {
-        if (!loadingMore) {
+        if (!loadingMore && SceneSceneBrowser.mode !== SceneSceneBrowser.MODE_GO) {
             var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " +
                 Scenemode + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
             SceneSceneBrowser.showDialog(dialog_title);
@@ -1218,7 +1219,7 @@ SceneSceneBrowser.prototype.handleHide = function() {
 SceneSceneBrowser.prototype.handleFocus = function() {
     //console.log("SceneSceneBrowser.handleFocus()");
     // this function will be called when the scene manager focus this scene
-    SceneSceneBrowser.refresh();
+    if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) SceneSceneBrowser.refresh();
     SceneSceneBrowser.forcehandleFocus = false;
 };
 
@@ -1412,10 +1413,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
                         document.getElementById("streamname_input").value = '';
                         SceneSceneBrowser.selectedChannelDisplayname = SceneSceneBrowser.selectedChannel;
-                        //console.log("NOT NULL       =" + SceneSceneBrowser.selectedChannel);
-                        SceneSceneChannel.RestoreFromResume = false;
-                        SceneSceneBrowser.forcehandleFocus = true;
-                        window.setTimeout(SceneSceneBrowser.openStream, 10);
+                        SceneSceneBrowser.loadData();
                     }
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) { //open a user

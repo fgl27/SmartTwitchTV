@@ -755,7 +755,6 @@ SceneSceneChannel.ChatPosition = function() {
     //default
     var left = "75.3%",
         top = (51 + sizeOffset + sizePanelOffset) + '.5%';
-    console.log(ChatPositions);
 
     if (ChatPositions == 0) ChatPositions = 6;
 
