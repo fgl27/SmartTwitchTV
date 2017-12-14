@@ -25,7 +25,6 @@ var exitID,
     usergamesimg = [],
     userhosttitle = [],
     userhostimg = [],
-    canPreviewData = false,
     previewDataInfo = "",
     userliveold = 0,
     usergamesold = 0,
@@ -39,6 +38,18 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
+SceneSceneBrowser.DogetAllUserFallowing = false;
+SceneSceneBrowser.DogetAllUserFallowingLive = false;
+SceneSceneBrowser.UserFallowingName = [];
+SceneSceneBrowser.UserFallowingLive = [];
+SceneSceneBrowser.UserFallowingDisplayName = [];
+SceneSceneBrowser.followerDoLastBroadcast = false;
+SceneSceneBrowser.returntoFollowerListOffsset = 0;
+SceneSceneBrowser.followerChannelsTemp = '';
+SceneSceneBrowser.returntoFollowerList = false;
+SceneSceneBrowser.returnToFallower = false;
+SceneSceneBrowser.returnToGamesFallows = false;
 SceneSceneBrowser.selectedVod = '208939647';//_id witout the v
 SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
@@ -76,7 +87,6 @@ SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO = 2; //Loading games info
 SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST = 3; //Loading live hosts info
 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
 
-SceneSceneBrowser.followerMatrix = [];
 SceneSceneBrowser.isShowDialogOn = false;
 SceneSceneBrowser.returnToGames = true;
 SceneSceneBrowser.gameSelected = null;
@@ -450,18 +460,39 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items;
     //Check if is follower mode and if its in first stage, where it only load a list of channels games, then loadDataRequest() to load info about this channels
-    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
-        response_items = response.follows.length;
+    if ((SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) || SceneSceneBrowser.returntoFollowerList) {
 
-        var channel, x, ar = [];
-        for (x = 0; x < response_items; x++) {
-            channel = response.follows[x];
-            ar.push(channel.channel.name);
+
+        SceneSceneBrowser.followerChannels = SceneSceneBrowser.followerChannelsTemp;
+        if (SceneSceneBrowser.returntoFollowerList) {
+            response_items = response.streams.length;
+            for (var x = 0; x < response_items; x++) {
+                SceneSceneBrowser.followerChannels += response.streams[x].channel.name + ',';
+            }
+        } else {
+            response_items = response.follows.length;
+            for (var x = 0; x < response_items; x++) {
+                SceneSceneBrowser.followerChannels += response.follows[x].channel.name + ',';
+            }
         }
-        SceneSceneBrowser.followerChannels = ar.join();
+
+        SceneSceneBrowser.returntoFollowerListOffsset = 0;
+        if (SceneSceneBrowser.returntoFollowerList) {
+            SceneSceneBrowser.followerChannelsTemp = SceneSceneBrowser.followerChannels;
+            SceneSceneBrowser.returntoFollowerList = false;
+            SceneSceneBrowser.returntoFollowerListOffsset = SceneSceneBrowser.ItemsLimit;
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+            SceneSceneBrowser.loadDataRequest();
+            return;
+        }
+
+        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
+            SceneSceneBrowser.returntoFollowerList = true;
+        }
 
         SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
         SceneSceneBrowser.loadDataRequest();
+        return; 
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
         if (response.stream === null) {
             SceneSceneBrowser.loadingData = false;
@@ -503,18 +534,18 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         //Build header for Live Channels, Live Hosts, Live Games
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
             var header;
+            var tbody = $('<tbody></tbody>');
+            $('#stream_table').append(tbody);
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                 //console.log(JSON.stringify(response));
-                var tbody = $('<tbody></tbody>');
-                $('#stream_table').append(tbody);
-                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + STR_LIVE_CHANNELS + ' ' +
-                    SceneSceneBrowser.followerUsername + STR_CHANGE_USER + '</div>');
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> LIVE CHANNELS ' +
+                    SceneSceneBrowser.followerUsername + ' Change screen LIVE CHANNELS/HOSTS/GAMES</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + STR_LIVE_HOSTS + ' ' +
-                    SceneSceneBrowser.followerUsername + '</div>');
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> LIVE HOSTS ' +
+                    SceneSceneBrowser.followerUsername + ' Change screen LIVE CHANNELS/HOSTS/GAMES</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + STR_LIVE_GAMES + ' ' +
-                    SceneSceneBrowser.followerUsername + '</div>');
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> LIVE GAMES ' +
+                    SceneSceneBrowser.followerUsername + ' Change screen LIVE CHANNELS/HOSTS/GAMES</div>');
             }
 
             $('#stream_table').find('tbody').append(header);
@@ -523,16 +554,10 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         var coloumn_id, row_id, row, cell, game, stream, mCellExists = false,
             mReplace = false,
-            matrix = [],
             cursor = 0;
         for (var i = 0; i < response_rows; i++) {
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                row_id = SceneSceneBrowser.rowsCountFollower + i; //SceneSceneBrowser.rowsCountFollower + i; // use SceneSceneBrowser.followerMatrix.length -1)
-            } else {
-                row_id = offset_itemsCount / SceneSceneBrowser.ColoumnsCount + i;
-            }
+            row_id = offset_itemsCount / SceneSceneBrowser.ColoumnsCount + i;
             row = $('<tr></tr>');
-            matrix = [];
 
             for (coloumn_id = 0; coloumn_id < SceneSceneBrowser.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
                 mCellExists = false;
@@ -546,20 +571,17 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     var hosts = response.hosts[cursor];
-                    matrix[coloumn_id] = [hosts.target.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template, hosts.target.title,
                         hosts.target.meta_game, hosts.display_name + ' Hosting ' + hosts.target.channel.display_name,
                         addCommas(hosts.target.viewers) + STR_VIEWER, '', false);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     game = response.follows[cursor];
-                    matrix[coloumn_id] = [game.game.name, 'game'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, game.game.name, game.game.box.template, '', '', game.game.name,
                         addCommas(game.channels) + STR_CHANNELS + ' for ' + addCommas(game.viewers) + STR_VIEWER, '', true);
                 } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
                     SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     stream = response.streams[cursor];
-                    matrix[coloumn_id] = [stream.channel.name, 'stream'];
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template, stream.channel.status,
                         stream.game, SceneSceneBrowser.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name, addCommas(stream.viewers) + STR_VIEWER,
                         videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), false);
@@ -578,7 +600,6 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             for (coloumn_id; coloumn_id < SceneSceneBrowser.ColoumnsCount; coloumn_id++) {
                 row.append(SceneSceneBrowser.createCellEmpty(row_id, coloumn_id));
             }
-            SceneSceneBrowser.followerMatrix[row_id] = matrix;
             $('#stream_table').append(row);
         }
 
@@ -699,37 +720,10 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 SceneSceneBrowser.showTable();
                 SceneSceneBrowser.addFocus();
             }
-            canPreviewData = false;
             //check state of follower load, and call next stage
-            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
-                SceneSceneBrowser.itemsCountFollowerChannels = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.itemsCount = 0;
-                SceneSceneBrowser.loadDataRequest();
-            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
-                SceneSceneBrowser.itemsCountFollowerLiveHosts = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.itemsCount = 0;
-                SceneSceneBrowser.loadDataRequest();
-            } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
-                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
-                SceneSceneBrowser.itemsCountFollowerGames = SceneSceneBrowser.itemsCount;
-                SceneSceneBrowser.rowsCountFollower += Math.ceil(SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount);
-                SceneSceneBrowser.loadingData = false;
-                SceneSceneBrowser.refreshClick = false;
-                canPreviewData = true;
-                SceneSceneBrowser.SmartHubResume = false;
-            } else {
-                SceneSceneBrowser.loadingData = false;
-                SceneSceneBrowser.refreshClick = false;
-                canPreviewData = true;
-                SceneSceneBrowser.SmartHubResume = false;
-            }
+            SceneSceneBrowser.loadingData = false;
+            SceneSceneBrowser.refreshClick = false;
+            SceneSceneBrowser.SmartHubResume = false;
             loadingMore = false;
             for (var i = 0; i < imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(imgMatrixId[i]);
@@ -752,7 +746,7 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
                 loadingReplace = false;
                 SceneSceneBrowser.itemsCountOffset = 0;
             }
-            if (!loadingMore && canPreviewData) SceneSceneBrowser.previewDataStart();
+            if (!loadingMore) SceneSceneBrowser.previewDataStart();
         });
 };
 
@@ -777,19 +771,20 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
-                SceneSceneBrowser.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast';
+                SceneSceneBrowser.ItemsLimit + '&offset=' + SceneSceneBrowser.returntoFollowerListOffsset +
+                (SceneSceneBrowser.followerDoLastBroadcast ? '&sortby=last_broadcast' : '&sortby=created_at');
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
-                SceneSceneBrowser.ItemsLimit + '&offset=' + offset + '&stream_type=all';
+                SceneSceneBrowser.ItemsLimit + '&stream_type=all';
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/games/live?limit=' +
-                SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
-                SceneSceneBrowser.ItemsLimit; // + '&offset=' + offset; removed offset for now, need fix latter
+                SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SceneSceneBrowser.selectedChannel);
         } else {
@@ -807,9 +802,14 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
+                        console.log('try SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
                         SceneSceneBrowser.loadingDataTry = 1;
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
+                        else if (SceneSceneBrowser.DogetAllUserFallowing) SceneSceneBrowser.getAllUserFallowingInline(xmlHttp.responseText);
+                        else if (SceneSceneBrowser.DogetAllUserFallowingLive) SceneSceneBrowser.getAllUserFallowingLive(xmlHttp.responseText);
+                        else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.isPreUser) SceneSceneBrowser.loadDataSuccessPreUser(xmlHttp.responseText);
                         else SceneSceneBrowser.loadDataSuccess(xmlHttp.responseText);
+                        return;
                     } catch (err) {
                         //console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
                     }
@@ -904,7 +904,7 @@ SceneSceneBrowser.showInputTools = function() {
 };
 
 SceneSceneBrowser.switchMode = function(mode) {
-    if (mode != SceneSceneBrowser.mode) {
+    if (mode != SceneSceneBrowser.mode || SceneSceneBrowser.returnToFallower) {
         SceneSceneBrowser.modeReturn = SceneSceneBrowser.mode;
         SceneSceneBrowser.mode = mode;
 
@@ -942,6 +942,7 @@ SceneSceneBrowser.switchMode = function(mode) {
                 $("#tip_icon_user").addClass('tip_icon_active');
                 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
                 Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername;
+                SceneSceneBrowser.isPreUser = true;
                 SceneSceneBrowser.refresh();
             } else {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
@@ -955,7 +956,6 @@ SceneSceneBrowser.clean = function() {
     $('#stream_table').empty();
     SceneSceneBrowser.itemsCount = 0;
     SceneSceneBrowser.rowsCountFollower = 0;
-    SceneSceneBrowser.followerMatrix = [];
     SceneSceneBrowser.cursorX = 0;
     SceneSceneBrowser.cursorY = 0;
     SceneSceneBrowser.dataEnded = false;
@@ -963,7 +963,7 @@ SceneSceneBrowser.clean = function() {
 
 SceneSceneBrowser.refresh = function() {
     if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
-        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
+        if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.isPreUser) {
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
         }
         SceneSceneBrowser.clean();
@@ -972,6 +972,8 @@ SceneSceneBrowser.refresh = function() {
         nameMatrix = [];
         nameMatrixCount = 0;
         loadingMore = false;
+        SceneSceneBrowser.followerChannelsTemp = '';
+        SceneSceneBrowser.returntoFollowerList = false;
         SceneSceneBrowser.loadData();
     }
 };
@@ -1093,7 +1095,7 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.loadingData = false;
     SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
-    SceneSceneBrowser.followerUsername = followerU; // hardcoded user do it here
+    SceneSceneBrowser.followerUsername = 'fglfgl27'; // hardcoded user do it here
     var dq = localStorage.getItem('defaultQuality');
     if (dq !== null) {
         SceneSceneChannel.quality = dq;
@@ -1280,7 +1282,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
                 }
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
-                if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
+                if (SceneSceneBrowser.returnToFallower) {
+                    SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+                } else if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_TOOLS) {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_TOOLS);
                 } else {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
@@ -1375,17 +1379,57 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES ||
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.followerDoLastBroadcast = false;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.followerDoLastBroadcast = false;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.followerDoLastBroadcast = false;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES ||
                 SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
             } else {
+                SceneSceneBrowser.followerDoLastBroadcast = true;
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER &&
+                SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+                SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.returnToFallower = true;
+                SceneSceneBrowser.refresh();
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_ALL);
@@ -1396,17 +1440,40 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
-                if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'stream') {
-                    SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
-                    SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
-                    SceneSceneChannel.RestoreFromResume = false;
-                    SceneSceneBrowser.openStream();
-                } else if (SceneSceneBrowser.followerMatrix[SceneSceneBrowser.cursorY][SceneSceneBrowser.cursorX][1] == 'game') {
-                    SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
-                    SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
-                    SceneSceneBrowser.returnToGames = false;
-                    Scenemode = SceneSceneBrowser.gameSelected;
-                    SceneSceneBrowser.refresh();
+                if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_NONE) {
+                    if (SceneSceneBrowser.cursorX == 0) {
+//                          SceneSceneBrowser.getAllUserPreFallowingLive(false);
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+                        SceneSceneBrowser.isPreUser = false;
+                        SceneSceneBrowser.returnToFallower = true;
+                        SceneSceneBrowser.refresh();
+                    } else if (SceneSceneBrowser.cursorX == 1) {
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+                        SceneSceneBrowser.isPreUser = false;
+                        SceneSceneBrowser.returnToFallower = true;
+                        SceneSceneBrowser.refresh();
+                    } else if (SceneSceneBrowser.cursorX == 2) {
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+                        SceneSceneBrowser.isPreUser = false;
+                        SceneSceneBrowser.returnToFallower = true;
+                        SceneSceneBrowser.refresh();
+                    }
+
+                } else {
+                    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO ||
+                        SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                        SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+                        SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
+                        SceneSceneChannel.RestoreFromResume = false;
+                        SceneSceneBrowser.openStream();
+                    } else {
+                        SceneSceneBrowser.gameSelected = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
+                        SceneSceneBrowser.mode = SceneSceneBrowser.MODE_GAMES_STREAMS;
+                        SceneSceneBrowser.returnToGames = false;
+                        SceneSceneBrowser.returnToGamesFallows = true;
+                        Scenemode = SceneSceneBrowser.gameSelected;
+                        SceneSceneBrowser.refresh();
+                    }
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GO) { //open a channel
                 if (SceneSceneBrowser.cursorY == 0) {
@@ -1538,4 +1605,267 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
     //if (SceneSceneBrowser.listenerID > -1) {
     //    console.log("addNetworkStateChangeListener success listener ID [" + SceneSceneBrowser.listenerID + "] ");
     //}
+};
+
+SceneSceneBrowser.loadDataSuccessPreUser = function(responseText) {
+    var response = $.parseJSON(responseText);
+    var cell, response_items;
+    if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
+        if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
+            response_items = response.follows.length;
+
+            SceneSceneBrowser.followerChannels = '';
+            for (var x = 0; x < response_items; x++) {
+                SceneSceneBrowser.followerChannels += response.follows[x].channel.name + ',';
+            }
+
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+            SceneSceneBrowser.loadDataRequest();
+        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+
+            var tbody = $('<tbody></tbody>');
+            $('#stream_table').append(tbody);
+            var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + SceneSceneBrowser.followerUsername +
+                ' Fallowing overview ' + STR_CHANGE_USER + '</div>');
+            $('#stream_table').find('tbody').append(header);
+
+            row = $('<tr></tr>');
+
+            cell = SceneSceneBrowser.createUserCell(0, 0, SceneSceneBrowser.followerUsername,  response._total + ' LIVE CHANNELS');
+
+            row.append(cell);
+
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
+            SceneSceneBrowser.loadDataRequest();
+        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+            cell = SceneSceneBrowser.createUserCell(0, 1, SceneSceneBrowser.followerUsername, response._total + ' LIVE HOSTS');
+            row.append(cell);
+
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
+            SceneSceneBrowser.loadDataRequest();
+        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+            cell = SceneSceneBrowser.createUserCell(0, 2, SceneSceneBrowser.followerUsername, response._total + ' LIVE GAMES');
+            row.append(cell);
+            $('#stream_table').append(row);
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
+            SceneSceneBrowser.loadDataSuccessFinishPreUser();
+        }
+    }
+
+};
+
+SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, stream_type) {
+    var thumbnail = 'images/blur_video_1.png';
+    if (coloumn_id == 1) thumbnail = 'images/blur_video_2.png';
+    else if (coloumn_id == 2) thumbnail = 'images/blur_game.png';
+
+    return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
+           '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+            <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
+            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div> \
+            <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
+            <div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
+            <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" ></div> \
+            <div id="quality_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
+            </div>');
+};
+
+SceneSceneBrowser.getAllUserFallowing = function(responseText) {
+    SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
+    SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+    SceneSceneBrowser.DogetAllUserFallowing = true;
+    if (responseText != null) {
+        var response = $.parseJSON(responseText);
+
+        var response_items = response.follows.length;
+        var temp = SceneSceneBrowser.UserFallowingName.length;
+
+        for (var x = temp; x < (temp + response_items); x++) {
+            SceneSceneBrowser.UserFallowingName[x] = response.follows[x - temp].channel.name;
+            SceneSceneBrowser.UserFallowingDisplayName[x]  = response.follows[x - temp].channel.display_name;
+        }
+
+        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
+            SceneSceneBrowser.returntoFollowerListOffsset += SceneSceneBrowser.ItemsLimit;
+            SceneSceneBrowser.loadDataRequest();
+        } else { // end
+            SceneSceneBrowser.DogetAllUserFallowing = false;
+        }
+    } else { // start
+        SceneSceneBrowser.returntoFollowerListOffsset = 0;
+        SceneSceneBrowser.UserFallowing = [];
+        SceneSceneBrowser.loadDataRequest();
+    }
+};
+
+SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
+    SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
+    SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+    SceneSceneBrowser.DogetAllUserFallowing = true;
+    if (responseText != null) {
+        var response = $.parseJSON(responseText);
+
+        var response_items = response.follows.length;
+        var temp = SceneSceneBrowser.UserFallowingName.length;
+
+        for (var x = temp; x < (temp + response_items); x++) {
+            SceneSceneBrowser.UserFallowingName[x] = response.follows[x - temp].channel.name;
+            SceneSceneBrowser.UserFallowingDisplayName[x]  = response.follows[x - temp].channel.display_name;
+        }
+
+        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
+            SceneSceneBrowser.returntoFollowerListOffsset += SceneSceneBrowser.ItemsLimit;
+            SceneSceneBrowser.loadDataRequest();
+        } else { // end
+            SceneSceneBrowser.DogetAllUserFallowing = false;
+            SceneSceneBrowser.getAllUserPreFallowingLive(true);
+        }
+    } else { // start
+        SceneSceneBrowser.returntoFollowerListOffsset = 0;
+        SceneSceneBrowser.UserFallowingName = [];
+        SceneSceneBrowser.UserFallowingDisplayName = [];
+        SceneSceneBrowser.loadDataRequest();
+    }
+};
+
+SceneSceneBrowser.getAllUserPreFallowingLive = function(response) {
+    if (!response) {
+        SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
+        SceneSceneBrowser.getAllUserFallowingInline(null);
+        SceneSceneBrowser.UserFallowingLive = [];
+    } else {
+        var total = SceneSceneBrowser.UserFallowingName.length;
+        var times = Math.ceil(total / (SceneSceneBrowser.ItemsLimit - 1));
+
+        SceneSceneBrowser.returntoFollowerListOffsset = 0;
+        if (SceneSceneBrowser.getAllUserPreFallowingLiveCount < times) {
+            SceneSceneBrowser.followerChannels = '';
+
+            for (var y = 0; y < SceneSceneBrowser.UserFallowingName.length; y++) {
+                if (y < SceneSceneBrowser.UserFallowingName.length) {
+                    console.log(y);
+                    console.log(SceneSceneBrowser.UserFallowingName[(SceneSceneBrowser.getAllUserPreFallowingLiveCount * (SceneSceneBrowser.ItemsLimit - 1)) + y]);
+                    SceneSceneBrowser.followerChannels += SceneSceneBrowser.UserFallowingName[(SceneSceneBrowser.getAllUserPreFallowingLiveCount * (SceneSceneBrowser.ItemsLimit - 1)) + y] + ',';
+                } else {
+                    break;
+                }
+            }
+            console.log(SceneSceneBrowser.followerChannels);
+            SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
+            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+            SceneSceneBrowser.DogetAllUserFallowingLive = true;
+            console.log('before try SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
+            SceneSceneBrowser.loadDataRequestUser();
+        } else {
+            console.log('after for SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
+            SceneSceneBrowser.DogetAllUserFallowingLive = false;
+            console.log(SceneSceneBrowser.UserFallowingLive);
+            // generated here
+        }
+    }
+};
+
+
+SceneSceneBrowser.loadDataRequestUser = function() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+        var theUrl;
+
+        theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
+            SceneSceneBrowser.ItemsLimit + '&stream_type=all';
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+
+        //console.log("theURL: " + theUrl);
+        xmlHttp.ontimeout = function() {
+
+        };
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    try {
+                        console.log('try loadDataRequestUser');
+                        SceneSceneBrowser.getAllUserFallowingLive(xmlHttp.responseText);
+                        return;
+                    } catch (err) {
+                        //console.log("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+                    }
+
+                } else {
+                    SceneSceneBrowser.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                }
+            }
+        };
+        xmlHttp.send(null);
+    } catch (error) {
+        SceneSceneBrowser.loadDataErrorUser(error.message, null);
+    }
+
+};
+
+SceneSceneBrowser.loadDataErrorUser = function(reason, responseText) {
+        SceneSceneBrowser.loadingDataTry++;
+        if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax) {
+            if (SceneSceneBrowser.loadingDataTry < 5) {
+                SceneSceneBrowser.loadingDataTimeout += 250;
+            } else {
+                switch (SceneSceneBrowser.loadingDataTry) {
+                    case 5:
+                        SceneSceneBrowser.loadingDataTimeout = 2400;
+                        break;
+                    case 6:
+                        SceneSceneBrowser.loadingDataTimeout = 5000;
+                        break;
+                    case 7:
+                        SceneSceneBrowser.loadingDataTimeout = 15000;
+                        break;
+                    case 8:
+                        SceneSceneBrowser.loadingDataTimeout = 30000;
+                        break;
+                    case 9:
+                        SceneSceneBrowser.loadingDataTimeout = 45000;
+                        break;
+                    default:
+                        SceneSceneBrowser.loadingDataTimeout = 150000;
+                        break;
+                }
+            }
+            SceneSceneBrowser.loadDataRequestUser();
+        } else {
+            reason = (typeof reason === "undefined") ? "Unknown" : reason;
+            SceneSceneBrowser.loadingData = false;
+            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+        }
+};
+
+SceneSceneBrowser.getAllUserFallowingLive = function(responseText) {
+    console.log('getAllUserFallowingLive');
+    var response = $.parseJSON(responseText);
+    var response_items = response.streams.length;
+    var temp = SceneSceneBrowser.UserFallowingLive.length;
+
+    for (var x = temp; x < (temp + response_items); x++) {
+        SceneSceneBrowser.UserFallowingLive[x] = response.streams[x - temp].channel.name;
+    }
+
+    SceneSceneBrowser.getAllUserPreFallowingLiveCount++;
+    SceneSceneBrowser.getAllUserPreFallowingLive(true)
+};
+
+SceneSceneBrowser.loadDataSuccessFinishPreUser = function() {
+    $('#stream_table').imagesLoaded()
+        .always({
+            background: true
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            SceneSceneBrowser.showTable();
+            SceneSceneBrowser.addFocus();
+            SceneSceneBrowser.dataEnded = true;
+            SceneSceneBrowser.loadingData = false;
+            SceneSceneBrowser.refreshClick = false;
+            SceneSceneBrowser.SmartHubResume = false;
+            SceneSceneBrowser.returnToFallower = false;
+            SceneSceneBrowser.returnToGamesFallows = false;
+        });
 };
