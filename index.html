@@ -21,8 +21,6 @@
          }
          div.ret_icon {
          box-sizing: border-box;
-         -moz-box-sizing: border-box;
-         -webkit-box-sizing: border-box;
          width: auto;
          height: 49px;
          border-radius: 50%;
@@ -65,8 +63,6 @@
          }
          div.tip_icon {
          box-sizing: border-box;
-         -moz-box-sizing: border-box;
-         -webkit-box-sizing: border-box;
          width: 58px;
          height: 58px;
          border-radius: 50%;
@@ -119,23 +115,24 @@
          width: 100%;
          }
          img.stream_thumbnail_focused {
-         outline: 7px outset #5F2EA3;
+         outline: 5px outset #FFF;
          width: 100%;
          }
          div.stream_text {
          position: absolute;
          left: 7px;
-         bottom: 7px;
-         right: 10%;
+         bottom: 12px;
+         right: 7px;
          background-color: rgba(0, 0, 0, 0.5);
          padding: 2%;
-         text-shadow:
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 2.5px;
+         }
+         div.stream_text_focused {
+         position: absolute;
+         left: 7px;
+         bottom: 12px;
+         right: 7px;
+         background-color: rgba(255, 255, 255, 0.6);
+         padding: 2%;
          }
          div.stream_channel {
          width: 100%;
@@ -148,10 +145,19 @@
          text-shadow:
          #000 0px 0px 3.6px,
          #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
-         #000 0px 0px 3.6px,
          #000 0px 0px 2.5px;
+         }
+         div.stream_channel_focused {
+         width: 100%;
+         text-align: left;
+         white-space: initial;
+         color: rgba(0, 0, 0, 1);
+         font-weight: 100;
+         font-size: 188%;
+         font-weight:bold;
+         text-shadow:
+         #FFF 0px 0px 2.5px,
+         #808080 0px 0px 3px;
          }
          div.stream_info {
          padding-top: 0.5%;
@@ -163,13 +169,26 @@
          color: rgba(255, 255, 255, 0.9);
          font-weight: 100;
          font-size: 152%;
+         font-weight:bold;
          text-shadow:
          #000 0px 0px 3px,
          #000 0px 0px 3px,
-         #000 0px 0px 3px,
-         #000 0px 0px 3px,
-         #000 0px 0px 3px,
          #000 0px 0px 2px;
+         }
+         div.stream_info_focused {
+         padding-top: 0.5%;
+         width: 100%;
+         text-align: left;
+         white-space: nowrap;
+         text-overflow: ellipsis;
+         overflow: hidden;
+         color: rgba(0, 0, 0, 1);
+         font-weight: 100;
+         font-size: 152%;
+         font-weight:bold;
+         text-shadow:
+         #FFF 0px 0px 2px,
+         #808080 0px 0px 1.5px;
          }
          div.openchannel {
          width: 70%;
@@ -236,9 +255,6 @@
          text-shadow:
          #000 0px 0px 7.2px,
          #000 0px 0px 7.2px,
-         #000 0px 0px 7.2px,
-         #000 0px 0px 7.2px,
-         #000 0px 0px 7.2px,
          #000 0px 0px 5px;
          }
          .textblack
@@ -256,9 +272,6 @@
          text-shadow:
          #000 0px 0px 5.7px,
          #000 0px 0px 5.7px,
-         #000 0px 0px 5.7px,
-         #000 0px 0px 5.7px,
-         #000 0px 0px 5.7px,
          #000 0px 0px 4px;
          }
          .strokedbig
@@ -267,10 +280,7 @@
          text-shadow:
          #42009E 0px 0px 7px,
          #42009E 0px 0px 7px,
-         #42009E 0px 0px 7px,
-         #42009E 0px 0px 7px,
-         #42009E 0px 0px 7px,
-         #42009E 0px 0px 7px;
+         #42009E 0px 0px 5px;
          }
          .follower_header {
          width: 100%;
