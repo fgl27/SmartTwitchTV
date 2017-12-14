@@ -620,12 +620,12 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + blank_thumbnail + '"/> \
-            <div class="stream_text" ' + 'style="right: 0;"' + '> \
+            <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div class="stream_info">' + stream_title + '</div> \
-            <div class="stream_info">' + stream_game + '</div> \
-            <div class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
-            <div class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
+            <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
+            <div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
+            <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
+            <div id="quality_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
             </div>');
 };
 
@@ -673,12 +673,12 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-                    <div class="stream_text" ' + 'style="right: 0;"' + '> \
-                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + ' ' + row_id + '</div> \
-                    <div class="stream_info">' + stream_title + '</div> \
-                    <div class="stream_info">' + stream_game + '</div> \
-                    <div class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
-                    <div class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
+                    <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
+                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+                    <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
+                    <div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
+                    <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: ' + viwers_width + '%; display: inline-block;">' + viwers + '</div> \
+                    <div id="quality_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
                     </div>';
                 return true;
             }
@@ -979,6 +979,12 @@ SceneSceneBrowser.refresh = function() {
 
 SceneSceneBrowser.removeFocus = function() {
     $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_thumbnail_focused');
+    $('#thumbnail_div_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_text_focused');
+    $('#display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_channel_focused');
+    $('#stream_title_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_info_focused');
+    $('#stream_game_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_info_focused');
+    $('#viwers_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_info_focused');
+    $('#quality_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_info_focused');
 };
 
 SceneSceneBrowser.addFocus = function() {
@@ -989,6 +995,12 @@ SceneSceneBrowser.addFocus = function() {
     }
 
     $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
+    $('#thumbnail_div_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_text_focused');
+    $('#display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_channel_focused');
+    $('#stream_title_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
+    $('#stream_game_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
+    $('#viwers_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
+    $('#quality_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
     ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
 };
 
