@@ -48,7 +48,6 @@ SceneSceneBrowser.DogetAllUserFallowingLive = false;
 SceneSceneBrowser.UserFallowingName = [];
 SceneSceneBrowser.UserFallowingLive = [];
 SceneSceneBrowser.UserFallowingDisplayName = [];
-SceneSceneBrowser.followerDoLastBroadcast = false;
 SceneSceneBrowser.returntoFollowerListOffsset = 0;
 SceneSceneBrowser.followerChannelsTemp = '';
 SceneSceneBrowser.returntoFollowerList = false;
@@ -742,8 +741,7 @@ SceneSceneBrowser.loadDataRequest = function() {
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/follows/channels?limit=' +
-                SceneSceneBrowser.ItemsLimit + '&offset=' + SceneSceneBrowser.returntoFollowerListOffsset +
-                (SceneSceneBrowser.followerDoLastBroadcast ? '&sortby=last_broadcast' : '&sortby=created_at');
+                SceneSceneBrowser.ItemsLimit + '&offset=' + SceneSceneBrowser.returntoFollowerListOffsset + '&sortby=created_at';
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
             SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SceneSceneBrowser.followerChannels) + '&limit=' +
@@ -937,7 +935,7 @@ SceneSceneBrowser.clean = function() {
 };
 
 SceneSceneBrowser.refresh = function() {
-    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) SceneSceneBrowser.getAllUserPreFallowingLive(false);
+    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) SceneSceneBrowser.getAllUserPreFallowingLive(false);
     else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_OPEN) {
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.isPreUser) {
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
@@ -1301,7 +1299,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE GAMES';
                     SceneSceneBrowser.isPreUser = false;
                     SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.followerDoLastBroadcast = false;
                     SceneSceneBrowser.refresh();
                 }
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_ALL) {
@@ -1419,25 +1416,22 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_CHANNELUP:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE HOSTS';
-                    SceneSceneBrowser.isPreUser = false;
                     SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.followerDoLastBroadcast = false;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE GAMES';
-                    SceneSceneBrowser.isPreUser = false;
                     SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.followerDoLastBroadcast = false;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE CHANNELS';
-                    SceneSceneBrowser.isPreUser = false;
                     SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.followerDoLastBroadcast = false;
                     SceneSceneBrowser.refresh();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES ||
@@ -1446,28 +1440,27 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_USERS) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
             } else {
-                SceneSceneBrowser.followerDoLastBroadcast = true;
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE CHANNELS';
-                    SceneSceneBrowser.isPreUser = false;
+                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE GAMES';
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE GAMES';
-                    SceneSceneBrowser.isPreUser = false;
+                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE CHANNELS';
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
+                    loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE HOSTS';
-                    SceneSceneBrowser.isPreUser = false;
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.refresh();
                 }
@@ -1732,7 +1725,6 @@ SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, strea
 SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
     SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
-    SceneSceneBrowser.DogetAllUserFallowing = true;
     if (responseText != null) {
         var response = $.parseJSON(responseText);
 
@@ -1744,7 +1736,7 @@ SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
             SceneSceneBrowser.UserFallowingDisplayName[x] = response.follows[x - temp].channel.display_name;
         }
 
-        if (response_items == SceneSceneBrowser.ItemsLimit) {
+        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
             SceneSceneBrowser.returntoFollowerListOffsset += SceneSceneBrowser.ItemsLimit;
             SceneSceneBrowser.loadDataRequest();
         } else { // end
@@ -1752,6 +1744,7 @@ SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
             SceneSceneBrowser.getAllUserPreFallowingLive(true);
         }
     } else { // start
+        SceneSceneBrowser.DogetAllUserFallowing = true;
         SceneSceneBrowser.returntoFollowerListOffsset = 0;
         SceneSceneBrowser.UserFallowingName = [];
         SceneSceneBrowser.UserFallowingDisplayName = [];
@@ -1790,7 +1783,6 @@ SceneSceneBrowser.generateUserLive = function() {
 SceneSceneBrowser.getAllUserPreFallowingLive = function(response) {
     if (!response) {
         SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
-        SceneSceneBrowser.getAllUserFallowingInline(null);
         SceneSceneBrowser.UserFallowingLive = [];
         SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
         SceneSceneBrowser.isPreUser = false;
@@ -1818,6 +1810,7 @@ SceneSceneBrowser.getAllUserPreFallowingLive = function(response) {
                 Scenemode + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
             SceneSceneBrowser.showDialog(dialog_title);
         }
+        SceneSceneBrowser.getAllUserFallowingInline(null);
     } else {
         var total = SceneSceneBrowser.UserFallowingName.length;
         var times = Math.ceil(total / SceneSceneBrowser.ItemsLimit);
