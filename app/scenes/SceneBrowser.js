@@ -38,6 +38,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.generateUserLiveCount = 0;
 SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
 SceneSceneBrowser.DogetAllUserFallowing = false;
 SceneSceneBrowser.DogetAllUserFallowingLive = false;
@@ -50,7 +51,7 @@ SceneSceneBrowser.followerChannelsTemp = '';
 SceneSceneBrowser.returntoFollowerList = false;
 SceneSceneBrowser.returnToFallower = false;
 SceneSceneBrowser.returnToGamesFallows = false;
-SceneSceneBrowser.selectedVod = '208939647';//_id witout the v
+SceneSceneBrowser.selectedVod = '208939647'; //_id witout the v
 SceneSceneBrowser.SmartHubResume = false;
 SceneSceneBrowser.forcehandleFocus = false;
 SceneSceneBrowser.previewDataItemsLimit = 12; //Maximum 40 tiles, we have User Live, host and game = 12 + 2 (All live and all games) total max possible = 38
@@ -460,40 +461,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items;
     //Check if is follower mode and if its in first stage, where it only load a list of channels games, then loadDataRequest() to load info about this channels
-    if ((SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) || SceneSceneBrowser.returntoFollowerList) {
-
-
-        SceneSceneBrowser.followerChannels = SceneSceneBrowser.followerChannelsTemp;
-        if (SceneSceneBrowser.returntoFollowerList) {
-            response_items = response.streams.length;
-            for (var x = 0; x < response_items; x++) {
-                SceneSceneBrowser.followerChannels += response.streams[x].channel.name + ',';
-            }
-        } else {
-            response_items = response.follows.length;
-            for (var x = 0; x < response_items; x++) {
-                SceneSceneBrowser.followerChannels += response.follows[x].channel.name + ',';
-            }
-        }
-
-        SceneSceneBrowser.returntoFollowerListOffsset = 0;
-        if (SceneSceneBrowser.returntoFollowerList) {
-            SceneSceneBrowser.followerChannelsTemp = SceneSceneBrowser.followerChannels;
-            SceneSceneBrowser.returntoFollowerList = false;
-            SceneSceneBrowser.returntoFollowerListOffsset = SceneSceneBrowser.ItemsLimit;
-            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
-            SceneSceneBrowser.loadDataRequest();
-            return;
-        }
-
-        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
-            SceneSceneBrowser.returntoFollowerList = true;
-        }
-
-        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
-        SceneSceneBrowser.loadDataRequest();
-        return; 
-    } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
+    if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_GO) {
         if (response.stream === null) {
             SceneSceneBrowser.loadingData = false;
             SceneSceneBrowser.refreshClick = false;
@@ -802,7 +770,6 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        console.log('try SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
                         SceneSceneBrowser.loadingDataTry = 1;
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
                         else if (SceneSceneBrowser.DogetAllUserFallowing) SceneSceneBrowser.getAllUserFallowingInline(xmlHttp.responseText);
@@ -962,7 +929,8 @@ SceneSceneBrowser.clean = function() {
 };
 
 SceneSceneBrowser.refresh = function() {
-    if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
+    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) SceneSceneBrowser.getAllUserPreFallowingLive(false);
+    else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_GO) {
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.isPreUser) {
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
         }
@@ -978,7 +946,6 @@ SceneSceneBrowser.refresh = function() {
     }
 };
 
-
 SceneSceneBrowser.removeFocus = function() {
     $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_thumbnail_focused');
     $('#thumbnail_div_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_text_focused');
@@ -993,7 +960,8 @@ SceneSceneBrowser.addFocus = function() {
     if (((SceneSceneBrowser.cursorY + SceneSceneBrowser.ItemsReloadLimit) > (SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)) &&
         !SceneSceneBrowser.dataEnded) {
         loadingMore = true;
-        SceneSceneBrowser.loadData();
+        if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) SceneSceneBrowser.generateUserLive();
+        else SceneSceneBrowser.loadData();
     }
 
     $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
@@ -1095,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", function() { //window.load
     SceneSceneBrowser.loadingData = false;
     SceneSceneBrowser.refreshClick = false;
     var followerU = localStorage.getItem('followerUsername');
-    SceneSceneBrowser.followerUsername = 'fglfgl27'; // hardcoded user do it here
+    SceneSceneBrowser.followerUsername = followerU; // hardcoded user do it here
     var dq = localStorage.getItem('defaultQuality');
     if (dq !== null) {
         SceneSceneChannel.quality = dq;
@@ -1365,7 +1333,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.refreshInputFocus();
                 SceneSceneBrowser.ime.blur();
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_TOOLS) {
-                //console.log("key down on TOOLS");
                 SceneSceneBrowser.cursorY = 1;
                 SceneSceneBrowser.refreshInputFocusTools();
                 SceneSceneBrowser.ime2.blur();
@@ -1442,10 +1409,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_NONE) {
                     if (SceneSceneBrowser.cursorX == 0) {
-//                          SceneSceneBrowser.getAllUserPreFallowingLive(false);
-                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
-                        SceneSceneBrowser.isPreUser = false;
-                        SceneSceneBrowser.returnToFallower = true;
+                        loadingMore = false;
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
                         SceneSceneBrowser.refresh();
                     } else if (SceneSceneBrowser.cursorX == 1) {
                         SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
@@ -1609,42 +1574,20 @@ SceneSceneBrowser.addNetworkStateChangeListener = function() {
 
 SceneSceneBrowser.loadDataSuccessPreUser = function(responseText) {
     var response = $.parseJSON(responseText);
-    var cell, response_items;
+    var cell;
     if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
         if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
-            response_items = response.follows.length;
-
-            SceneSceneBrowser.followerChannels = '';
-            for (var x = 0; x < response_items; x++) {
-                SceneSceneBrowser.followerChannels += response.follows[x].channel.name + ',';
-            }
-
-            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
-            SceneSceneBrowser.loadDataRequest();
-        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-
             var tbody = $('<tbody></tbody>');
             $('#stream_table').append(tbody);
             var header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> ' + SceneSceneBrowser.followerUsername +
-                ' Fallowing overview ' + STR_CHANGE_USER + '</div>');
+                ' Fallowing ' + response._total + ' Channels ' + STR_CHANGE_USER + '</div>');
             $('#stream_table').find('tbody').append(header);
-
             row = $('<tr></tr>');
-
-            cell = SceneSceneBrowser.createUserCell(0, 0, SceneSceneBrowser.followerUsername,  response._total + ' LIVE CHANNELS');
-
+            cell = SceneSceneBrowser.createUserCell(0, 0, SceneSceneBrowser.followerUsername, 'LIVE CHANNELS');
             row.append(cell);
-
-            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST;
-            SceneSceneBrowser.loadDataRequest();
-        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
-            cell = SceneSceneBrowser.createUserCell(0, 1, SceneSceneBrowser.followerUsername, response._total + ' LIVE HOSTS');
+            cell = SceneSceneBrowser.createUserCell(0, 1, SceneSceneBrowser.followerUsername, 'LIVE HOSTS');
             row.append(cell);
-
-            SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
-            SceneSceneBrowser.loadDataRequest();
-        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-            cell = SceneSceneBrowser.createUserCell(0, 2, SceneSceneBrowser.followerUsername, response._total + ' LIVE GAMES');
+            cell = SceneSceneBrowser.createUserCell(0, 2, SceneSceneBrowser.followerUsername, 'LIVE GAMES');
             row.append(cell);
             $('#stream_table').append(row);
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
@@ -1660,7 +1603,7 @@ SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, strea
     else if (coloumn_id == 2) thumbnail = 'images/blur_game.png';
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-           '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
             <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div> \
             <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
@@ -1668,34 +1611,6 @@ SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, strea
             <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" ></div> \
             <div id="quality_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
             </div>');
-};
-
-SceneSceneBrowser.getAllUserFallowing = function(responseText) {
-    SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
-    SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
-    SceneSceneBrowser.DogetAllUserFallowing = true;
-    if (responseText != null) {
-        var response = $.parseJSON(responseText);
-
-        var response_items = response.follows.length;
-        var temp = SceneSceneBrowser.UserFallowingName.length;
-
-        for (var x = temp; x < (temp + response_items); x++) {
-            SceneSceneBrowser.UserFallowingName[x] = response.follows[x - temp].channel.name;
-            SceneSceneBrowser.UserFallowingDisplayName[x]  = response.follows[x - temp].channel.display_name;
-        }
-
-        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
-            SceneSceneBrowser.returntoFollowerListOffsset += SceneSceneBrowser.ItemsLimit;
-            SceneSceneBrowser.loadDataRequest();
-        } else { // end
-            SceneSceneBrowser.DogetAllUserFallowing = false;
-        }
-    } else { // start
-        SceneSceneBrowser.returntoFollowerListOffsset = 0;
-        SceneSceneBrowser.UserFallowing = [];
-        SceneSceneBrowser.loadDataRequest();
-    }
 };
 
 SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
@@ -1710,10 +1625,10 @@ SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
 
         for (var x = temp; x < (temp + response_items); x++) {
             SceneSceneBrowser.UserFallowingName[x] = response.follows[x - temp].channel.name;
-            SceneSceneBrowser.UserFallowingDisplayName[x]  = response.follows[x - temp].channel.display_name;
+            SceneSceneBrowser.UserFallowingDisplayName[x] = response.follows[x - temp].channel.display_name;
         }
 
-        if (response_items == (SceneSceneBrowser.ItemsLimit - 1)) {
+        if (response_items == SceneSceneBrowser.ItemsLimit) {
             SceneSceneBrowser.returntoFollowerListOffsset += SceneSceneBrowser.ItemsLimit;
             SceneSceneBrowser.loadDataRequest();
         } else { // end
@@ -1728,43 +1643,91 @@ SceneSceneBrowser.getAllUserFallowingInline = function(responseText) {
     }
 };
 
+SceneSceneBrowser.generateUserLive = function() {
+    if (!loadingMore) {
+        SceneSceneBrowser.generateUserLiveCount = 0;
+        var total = SceneSceneBrowser.UserFallowingLive.length;
+        var times = Math.ceil(total / SceneSceneBrowser.ItemsLimit);
+        SceneSceneBrowser.followerChannels = '';
+
+        for (var y = 0; y < SceneSceneBrowser.ItemsLimit; y++) {
+            if (((SceneSceneBrowser.generateUserLiveCount * (SceneSceneBrowser.ItemsLimit)) + y) < SceneSceneBrowser.UserFallowingLive.length) {
+                SceneSceneBrowser.followerChannels += SceneSceneBrowser.UserFallowingLive[(SceneSceneBrowser.generateUserLiveCount * SceneSceneBrowser.ItemsLimit) + y] + ',';
+            }
+        }
+        SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+        SceneSceneBrowser.loadDataRequest();
+    } else {
+        SceneSceneBrowser.generateUserLiveCount++;
+        for (var y = 0; y < SceneSceneBrowser.ItemsLimit; y++) {
+            if (((SceneSceneBrowser.generateUserLiveCount * (SceneSceneBrowser.ItemsLimit)) + y) < SceneSceneBrowser.UserFallowingLive.length) {
+                SceneSceneBrowser.followerChannels += SceneSceneBrowser.UserFallowingLive[(SceneSceneBrowser.generateUserLiveCount * SceneSceneBrowser.ItemsLimit) + y] + ',';
+            }
+        }
+        SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
+        SceneSceneBrowser.loadDataRequest();
+    }
+};
+
 SceneSceneBrowser.getAllUserPreFallowingLive = function(response) {
     if (!response) {
         SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
         SceneSceneBrowser.getAllUserFallowingInline(null);
         SceneSceneBrowser.UserFallowingLive = [];
+        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST;
+        SceneSceneBrowser.isPreUser = false;
+        SceneSceneBrowser.returnToFallower = true;
+        SceneSceneBrowser.clean();
+        loadingReplace = false;
+        blankCellCount = 0;
+        nameMatrix = [];
+        nameMatrixCount = 0;
+        SceneSceneBrowser.followerChannelsTemp = '';
+        imgMatrix = [];
+        imgMatrixId = [];
+        imgMatrixCount = 0;
+        SceneSceneBrowser.loadingData = true;
+        SceneSceneBrowser.keyReturnPressed = false;
+        SceneSceneBrowser.loadingDataTry = 1;
+        SceneSceneBrowser.loadingDataTimeout = 1500;
+        if (!SceneSceneBrowser.loadingDataTimeoutStart)
+            SceneSceneBrowser.loadingDataTimeout += 3500;
+
+        SceneSceneBrowser.loadingDataTimeoutStart = true;
+
+        if (!loadingMore && SceneSceneBrowser.mode !== SceneSceneBrowser.MODE_GO) {
+            var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " +
+                Scenemode + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
+            SceneSceneBrowser.showDialog(dialog_title);
+        }
     } else {
         var total = SceneSceneBrowser.UserFallowingName.length;
-        var times = Math.ceil(total / (SceneSceneBrowser.ItemsLimit - 1));
+        var times = Math.ceil(total / SceneSceneBrowser.ItemsLimit);
 
         SceneSceneBrowser.returntoFollowerListOffsset = 0;
         if (SceneSceneBrowser.getAllUserPreFallowingLiveCount < times) {
             SceneSceneBrowser.followerChannels = '';
 
-            for (var y = 0; y < SceneSceneBrowser.UserFallowingName.length; y++) {
-                if (y < SceneSceneBrowser.UserFallowingName.length) {
-                    console.log(y);
-                    console.log(SceneSceneBrowser.UserFallowingName[(SceneSceneBrowser.getAllUserPreFallowingLiveCount * (SceneSceneBrowser.ItemsLimit - 1)) + y]);
-                    SceneSceneBrowser.followerChannels += SceneSceneBrowser.UserFallowingName[(SceneSceneBrowser.getAllUserPreFallowingLiveCount * (SceneSceneBrowser.ItemsLimit - 1)) + y] + ',';
+            for (var y = 0; y < SceneSceneBrowser.ItemsLimit; y++) {
+                if (((SceneSceneBrowser.getAllUserPreFallowingLiveCount * (SceneSceneBrowser.ItemsLimit)) + y) < SceneSceneBrowser.UserFallowingName.length) {
+                    SceneSceneBrowser.followerChannels += SceneSceneBrowser.UserFallowingName[(SceneSceneBrowser.getAllUserPreFallowingLiveCount * SceneSceneBrowser.ItemsLimit) + y] + ',';
                 } else {
                     break;
                 }
             }
-            console.log(SceneSceneBrowser.followerChannels);
             SceneSceneBrowser.mode = SceneSceneBrowser.MODE_FOLLOWER;
             SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
             SceneSceneBrowser.DogetAllUserFallowingLive = true;
-            console.log('before try SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
             SceneSceneBrowser.loadDataRequestUser();
         } else {
-            console.log('after for SceneSceneBrowser.DogetAllUserFallowingLive = ' + SceneSceneBrowser.DogetAllUserFallowingLive);
             SceneSceneBrowser.DogetAllUserFallowingLive = false;
-            console.log(SceneSceneBrowser.UserFallowingLive);
-            // generated here
+            SceneSceneBrowser.getAllUserPreFallowingLiveCount = 0;
+            SceneSceneBrowser.generateUserLive();
         }
     }
 };
-
 
 SceneSceneBrowser.loadDataRequestUser = function() {
     try {
@@ -1786,7 +1749,6 @@ SceneSceneBrowser.loadDataRequestUser = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        console.log('try loadDataRequestUser');
                         SceneSceneBrowser.getAllUserFallowingLive(xmlHttp.responseText);
                         return;
                     } catch (err) {
@@ -1806,42 +1768,41 @@ SceneSceneBrowser.loadDataRequestUser = function() {
 };
 
 SceneSceneBrowser.loadDataErrorUser = function(reason, responseText) {
-        SceneSceneBrowser.loadingDataTry++;
-        if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax) {
-            if (SceneSceneBrowser.loadingDataTry < 5) {
-                SceneSceneBrowser.loadingDataTimeout += 250;
-            } else {
-                switch (SceneSceneBrowser.loadingDataTry) {
-                    case 5:
-                        SceneSceneBrowser.loadingDataTimeout = 2400;
-                        break;
-                    case 6:
-                        SceneSceneBrowser.loadingDataTimeout = 5000;
-                        break;
-                    case 7:
-                        SceneSceneBrowser.loadingDataTimeout = 15000;
-                        break;
-                    case 8:
-                        SceneSceneBrowser.loadingDataTimeout = 30000;
-                        break;
-                    case 9:
-                        SceneSceneBrowser.loadingDataTimeout = 45000;
-                        break;
-                    default:
-                        SceneSceneBrowser.loadingDataTimeout = 150000;
-                        break;
-                }
-            }
-            SceneSceneBrowser.loadDataRequestUser();
+    SceneSceneBrowser.loadingDataTry++;
+    if (SceneSceneBrowser.loadingDataTry < SceneSceneBrowser.loadingDataTryMax) {
+        if (SceneSceneBrowser.loadingDataTry < 5) {
+            SceneSceneBrowser.loadingDataTimeout += 250;
         } else {
-            reason = (typeof reason === "undefined") ? "Unknown" : reason;
-            SceneSceneBrowser.loadingData = false;
-            SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+            switch (SceneSceneBrowser.loadingDataTry) {
+                case 5:
+                    SceneSceneBrowser.loadingDataTimeout = 2400;
+                    break;
+                case 6:
+                    SceneSceneBrowser.loadingDataTimeout = 5000;
+                    break;
+                case 7:
+                    SceneSceneBrowser.loadingDataTimeout = 15000;
+                    break;
+                case 8:
+                    SceneSceneBrowser.loadingDataTimeout = 30000;
+                    break;
+                case 9:
+                    SceneSceneBrowser.loadingDataTimeout = 45000;
+                    break;
+                default:
+                    SceneSceneBrowser.loadingDataTimeout = 150000;
+                    break;
+            }
         }
+        SceneSceneBrowser.loadDataRequestUser();
+    } else {
+        reason = (typeof reason === "undefined") ? "Unknown" : reason;
+        SceneSceneBrowser.loadingData = false;
+        SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
+    }
 };
 
 SceneSceneBrowser.getAllUserFallowingLive = function(responseText) {
-    console.log('getAllUserFallowingLive');
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
     var temp = SceneSceneBrowser.UserFallowingLive.length;
