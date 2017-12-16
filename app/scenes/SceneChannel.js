@@ -116,6 +116,7 @@ SceneSceneChannel.shutdownStream = function() {
     document.body.addEventListener("keydown", SceneSceneBrowser.prototype.handleKeyDown, false);
     SceneSceneBrowser.browser = true;
     SceneSceneChannel.Play = false;
+    SceneSceneChannel.Vod = false;
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
@@ -243,38 +244,50 @@ var updateCurrentTime = function(currentTime) {
         currentTime = SceneSceneChannel.mWebapisAvplay.getCurrentTime();
 
     oldcurrentTime = currentTime + offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = 'Watching for ' + timeMs(oldcurrentTime);
+    if (!SceneSceneChannel.Vod)
+        document.getElementById("stream_info_currentime").innerHTML = 'Watching for ' + SceneSceneChannel.timeMs(oldcurrentTime);
+    else
+        document.getElementById("stream_info_currentime").innerHTML = 'Watching time ' + SceneSceneChannel.timeMs(oldcurrentTime);
 
-    document.getElementById("stream_info_livetime").innerHTML = 'Since ' + streamLiveAt(created) + ' ago';
+    if (!SceneSceneChannel.Vod)
+        document.getElementById("stream_info_livetime").innerHTML = 'Since ' + SceneSceneChannel.streamLiveAt(created) + ' ago';
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
 };
 
-function lessthanten(time) {
+SceneSceneChannel.lessthanten = function(time) {
     return (time < 10) ? "0" + time : time;
-}
+};
 
-function timeMs(time) {
+SceneSceneChannel.timeMs = function(time) {
     var seconds, minutes, hours;
 
     time = Math.floor(time / 1000);
-    seconds = lessthanten(time % 60);
+    seconds = SceneSceneChannel.lessthanten(time % 60);
 
     time = Math.floor(time / 60);
-    minutes = lessthanten(time % 60);
+    minutes = SceneSceneChannel.lessthanten(time % 60);
 
     time = Math.floor(time / 60);
-    hours = lessthanten(time);
+    hours = SceneSceneChannel.lessthanten(time);
 
     //final time 00:00 or 00:00:00
     return (time == 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
-}
+};
 
-function streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
+SceneSceneChannel.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
     var date2_ms = new Date().getTime();
-    return timeMs(date2_ms - time);
-}
+    return SceneSceneChannel.timeMs(date2_ms - time);
+};
+
+SceneSceneChannel.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+        "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+    ];
+    time = new Date(time);
+    return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
+};
 
 SceneSceneChannel.prototype.initialize = function() {
     SceneSceneChannel.initLanguage();
@@ -287,14 +300,15 @@ SceneSceneChannel.prototype.initialize = function() {
                 SceneSceneChannel.shutdownStream();
                 SceneSceneBrowser.browser = false;
                 SceneSceneChannel.Play = false;
+                SceneSceneChannel.Vod = true;
             }
             SuspendesysTime = new Date().getTime();
-        } else if (!SceneSceneBrowser.SmartHubResume){
+        } else if (!SceneSceneBrowser.SmartHubResume) {
             RefreshsysTime = new Date().getTime() - 1800000; // less then 30 min don't refresh
             if (!SceneSceneBrowser.browser) {
                 SceneSceneChannel.RestoreFromResume = true;
                 SceneSceneBrowser.openStream();
-            } else if (RefreshsysTime > SuspendesysTime){
+            } else if (RefreshsysTime > SuspendesysTime) {
                 SceneSceneBrowser.refresh();
             }
         }
@@ -348,10 +362,20 @@ SceneSceneChannel.prototype.handleFocus = function() {
     $("#stream_info_icon").attr("src", "");
 
     SceneSceneChannel.updateStreamInfo();
+    if (SceneSceneChannel.Vod) {
+        $("#stream_info_name").text(SceneSceneBrowser.selectedChannelDisplaynameOld);
+        $("#stream_info_icon").attr("src", SceneSceneBrowser.selectedChannelChannelLogo);
+        $("#stream_info_title").text(SceneSceneBrowser.selectedChannelDisplayname);
+        document.getElementById("stream_info_livetime").innerHTML = '';
+    }
     SceneSceneChannel.streamInfoTimer = window.setInterval(SceneSceneChannel.updateStreamInfo, 10000);
     SceneSceneChannel.previewDataRefresh = window.setInterval(SceneSceneBrowser.previewDataStart, 10000);
+
+    var chat_src = SceneSceneChannel.Vod ? 'about:blank' : 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
+        SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
+
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + SceneSceneBrowser.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false"></iframe> \
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="' + chat_src + '"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
         </div>');
@@ -426,6 +450,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground -= 0.05;
                     if (ChatBackground < 0) ChatBackground = 0;
                     SceneSceneChannel.ChatBackground(true);
+                    //} else if (SceneSceneChannel.Vod){
+                    //    SceneSceneChannel.mWebapisAvplay.jumpBackward(5000);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -436,6 +462,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground += 0.05;
                     if (ChatBackground > 1) ChatBackground = 1;
                     SceneSceneChannel.ChatBackground(true);
+                    //} else if (SceneSceneChannel.Vod){
+                    //    SceneSceneChannel.mWebapisAvplay.jumpForward(5000);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -628,13 +656,13 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
             SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
             SceneSceneChannel.Play = true;
-        }, function() {//ErrorCallback try again from the top
+        }, function() { //ErrorCallback try again from the top
             SceneSceneChannel.Play = false;
             SceneSceneChannel.prototype.initialize();
             window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
         });
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    } catch (e) {//ErrorCallback try again from the top
+    } catch (e) { //ErrorCallback try again from the top
         SceneSceneChannel.Play = false;
         SceneSceneChannel.prototype.initialize();
         window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
@@ -717,11 +745,16 @@ SceneSceneChannel.updateStreamInfo = function() {
                     var response = $.parseJSON(xmlHttp.responseText);
                     // log response json
                     //console.log(JSON.stringify(response));
-                    $("#stream_info_name").text(SceneSceneBrowser.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
-                    $("#stream_info_title").text(response.stream.channel.status);
-                    $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
-                    $("#stream_info_icon").attr("src", response.stream.channel.logo);
-                    created = new Date(response.stream.created_at).getTime();
+                    if (SceneSceneChannel.Vod) {
+                        $("#stream_info_game").text('Streamed on ' + SceneSceneChannel.videoCreatedAt(response.created_at));
+                        document.getElementById("stream_live").innerHTML = addCommas(response.views) + ' Views';
+                    } else {
+                        $("#stream_info_name").text(SceneSceneBrowser.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
+                        $("#stream_info_title").text(response.stream.channel.status);
+                        $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                        $("#stream_info_icon").attr("src", response.stream.channel.logo);
+                        created = new Date(response.stream.created_at).getTime();
+                    }
                 } catch (err) {
 
                 }
@@ -729,7 +762,8 @@ SceneSceneChannel.updateStreamInfo = function() {
             } else {}
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
+    if (SceneSceneChannel.Vod) xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/v' + SceneSceneBrowser.selectedChannel, true);
+    else xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
     xmlHttp.send(null);
@@ -817,7 +851,8 @@ SceneSceneChannel.hideChatBackgroundDialog = function() {
 };
 
 SceneSceneChannel.showChat = function() {
-    $("#chat_container").show();
+    if (!SceneSceneChannel.Vod)
+        $("#chat_container").show();
 };
 
 SceneSceneChannel.hideChat = function() {
@@ -913,12 +948,12 @@ SceneSceneChannel.loadDataRequest = function() {
 
         var theUrl;
         if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN) {
-            theUrl = SceneSceneChannel.Vod ? 'https://api.twitch.tv/api/vods/' + SceneSceneBrowser.selectedVod +
-                '/access_token?as3=t' : 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel +
-                '/access_token'; // SceneSceneBrowser.selectedVod = _id witout the v
+            theUrl = SceneSceneChannel.Vod ? 'https://api.twitch.tv/api/vods/' + SceneSceneBrowser.selectedChannel +
+                '/access_token' : 'http://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel +
+                '/access_token'; // VOD= _id witout the v
         } else {
-            theUrl = SceneSceneChannel.Vod ? 'http://usher.twitch.tv/vod/' + SceneSceneBrowser.selectedVod + '?nauthsig=' +
-                SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token) :
+            theUrl = SceneSceneChannel.Vod ? 'http://usher.twitch.tv/vod/' + SceneSceneBrowser.selectedChannel + '.m3u8?player=twitchweb&&type=any&nauthsig=' +
+                SceneSceneChannel.tokenResponse.sig + '&nauth=' + escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int :
                 'http://usher.twitch.tv/api/channel/hls/' + SceneSceneBrowser.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + SceneSceneChannel.tokenResponse.sig + '&token=' +
                 escape(SceneSceneChannel.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
