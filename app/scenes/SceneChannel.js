@@ -21,8 +21,10 @@ var random_int = Math.round(Math.random() * 1e7),
     today,
     created,
     oldcurrentTime = 0,
-    offsettime = 0;
+    offsettime = 0,
+    seektime = 0;
 
+SceneSceneChannel.QualitChage = false;
 SceneSceneChannel.Vod = false;
 SceneSceneChannel.RestoreFromResume = false;
 SceneSceneChannel.Player = null;
@@ -117,6 +119,7 @@ SceneSceneChannel.shutdownStream = function() {
     SceneSceneBrowser.browser = true;
     SceneSceneChannel.Play = false;
     SceneSceneChannel.Vod = false;
+    clearPause();
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
@@ -450,8 +453,15 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground -= 0.05;
                     if (ChatBackground < 0) ChatBackground = 0;
                     SceneSceneChannel.ChatBackground(true);
-                    //} else if (SceneSceneChannel.Vod){
-                    //    SceneSceneChannel.mWebapisAvplay.jumpBackward(5000);
+                    } else if (SceneSceneChannel.Vod){
+                        SceneSceneChannel.showDialog('JumpBackward 10 min');
+                        SceneSceneChannel.mWebapisAvplay.jumpBackward(10 * 1000 * 60
+                        , function() { //successCallback
+                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
+                        }, function() { //ErrorCallback
+                            SceneSceneChannel.showDialog('JumpBackward Fail');
+                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
+                        });
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -462,8 +472,15 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     ChatBackground += 0.05;
                     if (ChatBackground > 1) ChatBackground = 1;
                     SceneSceneChannel.ChatBackground(true);
-                    //} else if (SceneSceneChannel.Vod){
-                    //    SceneSceneChannel.mWebapisAvplay.jumpForward(5000);
+                    } else if (SceneSceneChannel.Vod) {
+                        SceneSceneChannel.showDialog('jumpForward 10 min');
+                        SceneSceneChannel.mWebapisAvplay.jumpForward(10 * 1000 * 60
+                        , function() { //successCallback
+                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
+                        }, function() { //ErrorCallback
+                            SceneSceneChannel.showDialog('jumpForward Fail');
+                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
+                        });
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -507,6 +524,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
             case TvKeyCode.KEY_ENTER:
                 //console.log("KEY_ENTER");
                 if (SceneSceneChannel.isPanelShown()) {
+                    SceneSceneChannel.QualitChage = true;
                     SceneSceneChannel.qualityChanged();
                     clearPause();
                 } else {
@@ -640,22 +658,33 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.qualityPlaying = SceneSceneChannel.quality;
         SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
     }
+
     SceneSceneChannel.RestoreFromResume = false;
     SceneSceneBrowser.SmartHubResume = false;
     try {
-        offsettime = oldcurrentTime;
+        if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) seektime = oldcurrentTime;
+        else offsettime = oldcurrentTime;
         SceneSceneChannel.mWebapisAvplay.stop();
         SceneSceneChannel.mWebapisAvplay.open(SceneSceneChannel.playingUrl);
         SceneSceneChannel.mWebapisAvplay.setListener(listener);
         SceneSceneChannel.mWebapisAvplay.setTimeoutForBuffering(20000);
-        SceneSceneChannel.mWebapisAvplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_BYTE", 4 * 32 * 1024 * 1024); //default 32*1024*1024
         if (webapis.productinfo.isUdPanelSupported())
             SceneSceneChannel.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
 
         SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, screen.width, screen.height);
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
-            SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
+            if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) {
+                try {
+                    webapis.avplay.seekTo(seektime - 5000);
+                    SceneSceneChannel.mWebapisAvplay.play();
+                } catch (e) {
+                    console.error(e);
+                }
+            } else {
+                SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
+            }
             SceneSceneChannel.Play = true;
+            SceneSceneChannel.QualitChage = false;
         }, function() { //ErrorCallback try again from the top
             SceneSceneChannel.Play = false;
             SceneSceneChannel.prototype.initialize();
@@ -710,7 +739,7 @@ SceneSceneChannel.showDialog = function(title) {
     }
 };
 
-SceneSceneChannel.hideDialog = function(title) {
+SceneSceneChannel.hideDialog = function() {
     $("#scene_channel_dialog_loading").hide();
 };
 
