@@ -22,7 +22,8 @@ var random_int = Math.round(Math.random() * 1e7),
     created,
     oldcurrentTime = 0,
     offsettime = 0,
-    seektime = 0;
+    seektime = 0,
+    duration = 0;
 
 SceneSceneChannel.QualitChage = false;
 SceneSceneChannel.Vod = false;
@@ -120,6 +121,7 @@ SceneSceneChannel.shutdownStream = function() {
     SceneSceneChannel.Play = false;
     SceneSceneChannel.Vod = false;
     clearPause();
+    duration = 0;
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
@@ -252,8 +254,7 @@ var updateCurrentTime = function(currentTime) {
     else
         document.getElementById("stream_info_currentime").innerHTML = 'Watching time ' + SceneSceneChannel.timeMs(oldcurrentTime);
 
-    if (!SceneSceneChannel.Vod)
-        document.getElementById("stream_info_livetime").innerHTML = 'Since ' + SceneSceneChannel.streamLiveAt(created) + ' ago';
+    if (!SceneSceneChannel.Vod) document.getElementById("stream_info_livetime").innerHTML = 'Since ' + SceneSceneChannel.streamLiveAt(created) + ' ago';
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
@@ -777,6 +778,9 @@ SceneSceneChannel.updateStreamInfo = function() {
                     if (SceneSceneChannel.Vod) {
                         $("#stream_info_game").text('Streamed on ' + SceneSceneChannel.videoCreatedAt(response.created_at));
                         document.getElementById("stream_live").innerHTML = addCommas(response.views) + ' Views';
+                        duration = (parseInt(response.length) / 60) * 60000;
+                        document.getElementById("stream_info_livetime").innerHTML = 'Duration ' +
+                            SceneSceneChannel.timeMs(duration);
                     } else {
                         $("#stream_info_name").text(SceneSceneBrowser.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
                         $("#stream_info_title").text(response.stream.channel.status);
