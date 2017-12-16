@@ -38,6 +38,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.highlight = false;
 SceneSceneBrowser.selectedChannelDisplaynameOld = '';
 SceneSceneBrowser.selectedChannelDisplayname = '';
 SceneSceneBrowser.returnToVods = false;
@@ -566,8 +567,8 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             var header;
             var tbody = $('<tbody></tbody>');
             $('#stream_table').append(tbody);
+            //console.log(JSON.stringify(response));
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-                //console.log(JSON.stringify(response));
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> LIVE CHANNELS ' +
                     SceneSceneBrowser.followerUsername + '<br>CH Up/Down will change between this user LIVE CHANNELS/HOSTS/GAMES/VOD</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
@@ -580,7 +581,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' +
                     SceneSceneBrowser.followerUsername + ' Fallowing Channels (' + SceneSceneBrowser.UserFallowingName.length + ') select one to list VODs<br>CH Up/Down will change between this user LIVE CHANNELS/HOSTS/GAMES/VOD</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
-                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + SceneSceneBrowser.selectedChannelDisplayname + ' VODs<br>CH Up/Down will change between filter</div>');
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + SceneSceneBrowser.selectedChannelDisplayname + ' ' + (SceneSceneBrowser.highlight ? ' Highlight ' : ' Past Broadcast' ) + '<br>CH Press(Guide) will change between Highlight and Past Broadcast</div>');
             }
             $('#stream_table').find('tbody').append(header);
 
@@ -660,7 +661,7 @@ function videoqualitylang(video_height, average_fps, language) {
     if (average_fps > 58) average_fps = 60;
     else if (average_fps < 32) average_fps = 30;
     else average_fps = Math.ceil(average_fps);
-    return video_height + 'p' + average_fps + ' [' + language.toUpperCase() + ']';
+    return video_height + 'p' + average_fps + ((language != "") ? ' [' + language.toUpperCase() + ']' : '');
 }
 
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, thumb_type) {
@@ -835,7 +836,7 @@ SceneSceneBrowser.loadDataRequest = function() {
                 theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SceneSceneBrowser.followerUsername) + '/followed/hosting?limit=' +
                     SceneSceneBrowser.ItemsLimit + '&offset=' + offset;
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
-                theUrl = 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(SceneSceneBrowser.selectedChannel) + '/videos?limit=' + SceneSceneBrowser.ItemsLimit + '&broadcast_type=archive&sort=time&offset=' + offset;
+                theUrl = 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(SceneSceneBrowser.selectedChannel) + '/videos?limit=' + SceneSceneBrowser.ItemsLimit + '&broadcast_type=' + (SceneSceneBrowser.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset;
             }
         } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_OPEN) {
             theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SceneSceneBrowser.selectedChannel);
@@ -1520,6 +1521,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_USERS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_OPEN) {
                 SceneSceneBrowser.refreshClick = true;
+            if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) SceneSceneBrowser.highlight = !SceneSceneBrowser.highlight;
                 SceneSceneBrowser.refresh();
             }
             break;
