@@ -959,6 +959,7 @@ SceneSceneBrowser.switchMode = function(mode) {
     if (mode != SceneSceneBrowser.mode || SceneSceneBrowser.returnToFallower) {
         SceneSceneBrowser.modeReturn = SceneSceneBrowser.mode;
         SceneSceneBrowser.mode = mode;
+        SceneSceneBrowser.returnToFallower = false;
 
         $("#tip_icon_channels").removeClass('tip_icon_active');
         $("#tip_icon_user").removeClass('tip_icon_active');
@@ -1421,7 +1422,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 }
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.returnToFallower) {
-                    SceneSceneBrowser.returnToFallower = false;
                     SceneSceneBrowser.LoadFallowingOnly = false;
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                 } else if (SceneSceneBrowser.returnToVods) {
