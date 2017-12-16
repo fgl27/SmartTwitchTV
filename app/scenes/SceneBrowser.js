@@ -1635,6 +1635,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
+                    SceneSceneBrowser.selectedChannelChannelLogo = document.getElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).src;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS;
                     SceneSceneBrowser.returnToVods = true;
                     SceneSceneBrowser.returnToFallower = false;
@@ -1643,7 +1644,6 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.selectedChannelDisplaynameOld = SceneSceneBrowser.selectedChannelDisplayname;
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname').substr(1);
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
-                    SceneSceneBrowser.selectedChannelChannelLogo = document.getElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).src;
                     SceneSceneChannel.Vod = true;
                     SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneBrowser.openStream();
