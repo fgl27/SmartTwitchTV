@@ -682,28 +682,38 @@ SceneSceneChannel.qualityChanged = function() {
 
         SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, screen.width, screen.height);
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
-            if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) {
-                try {
-                    webapis.avplay.seekTo(seektime - 5000);
+            try {
+                if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) {
+                    SceneSceneChannel.mWebapisAvplay.seekTo(seektime - 5000, function() { //successCallback
+                        SceneSceneChannel.mWebapisAvplay.play();
+                    }, function() { //ErrorCallback
+                        SceneSceneChannel.Play = false;
+                        SceneSceneChannel.QualitChage = true;
+                        SceneSceneChannel.prototype.initialize();
+                        window.setTimeout(SceneSceneChannel.prototype.handleFocus, 150);
+                    });
+
+                } else {
                     SceneSceneChannel.mWebapisAvplay.play();
-                } catch (e) {
-                    console.error(e);
+                    SceneSceneChannel.Play = true;
                 }
-            } else {
-                SceneSceneChannel.mWebapisAvplay.play(); //SuccessCallback
+            } catch (e) {
+                console.error(e);
             }
             SceneSceneChannel.Play = true;
             SceneSceneChannel.QualitChage = false;
         }, function() { //ErrorCallback try again from the top
             SceneSceneChannel.Play = false;
+            SceneSceneChannel.QualitChage = true;
             SceneSceneChannel.prototype.initialize();
-            window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
+            window.setTimeout(SceneSceneChannel.prototype.handleFocus, 150);
         });
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     } catch (e) { //ErrorCallback try again from the top
         SceneSceneChannel.Play = false;
+        SceneSceneChannel.QualitChage = true;
         SceneSceneChannel.prototype.initialize();
-        window.setTimeout(SceneSceneChannel.prototype.handleFocus, 250);
+        window.setTimeout(SceneSceneChannel.prototype.handleFocus, 150);
     }
 };
 
