@@ -1266,6 +1266,7 @@ function SmartHubEventListener() {
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
                     SceneSceneChannel.RestoreFromResume = false;
+                    SceneSceneChannel.Vod = false;
                     SceneSceneBrowser.openStream();
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
