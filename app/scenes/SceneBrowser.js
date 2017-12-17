@@ -1652,7 +1652,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO ||
                     SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
-                    SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
+                    SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                     SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneBrowser.openStream();
                 } else {
