@@ -599,7 +599,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 mReplace = false;
                 if (responseText == null) {
                     cell = SceneSceneBrowser.createCell(row_id, coloumn_id, SceneSceneBrowser.UserFallowingNameTemp[cursor],
-                        SceneSceneBrowser.UserFallowingLogoTemp[cursor], '', '', SceneSceneBrowser.UserFallowingDisplayNameTemp[cursor], '', '', 1);
+                        SceneSceneBrowser.UserFallowingLogoTemp[cursor], '', '', SceneSceneBrowser.UserFallowingDisplayNameTemp[cursor], '', '', 4);
                 } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
                     game = response.top[cursor];
                     mCellExists = SceneSceneBrowser.CellExists(game.game.name);
@@ -1855,7 +1855,7 @@ SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, strea
     var thumbnail = 'images/blur_video_1.png';
     if (coloumn_id == 1) thumbnail = 'images/blur_video_2.png';
     else if (coloumn_id == 2) thumbnail = 'images/blur_game.png';
-    //    else if (coloumn_id == 3) thumbnail = 'images/blur_vod.png';
+    else if (coloumn_id == 3) thumbnail = 'images/blur_vod.png';
     else if (coloumn_id == 4) thumbnail = (SceneSceneBrowser.Followercount == 0) ? 'images/user_plus.png' : 'images/user_up.png';
     else if (coloumn_id == 5) thumbnail = 'images/user_minus.png';
 
