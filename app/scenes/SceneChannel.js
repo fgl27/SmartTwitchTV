@@ -660,11 +660,6 @@ SceneSceneChannel.qualityChanged = function() {
         SceneSceneChannel.qualityPlayingIndex = SceneSceneChannel.qualityIndex;
     }
 
-
-
-    SceneSceneChannel.playingUrl = 'https://r2---sn-gxqxpn2-2v5e.googlevideo.com/videoplayback?id=540178adfbbe1130&itag=266&source=youtube&requiressl=yes&mn=sn-gxqxpn2-2v5e&mm=31&initcwndbps=220000&pl=24&mv=m&ms=au&ei=oXw2WoK7K82KxwTVjLPYBQ&ratebypass=yes&mime=video/mp4&gir=yes&clen=599663997&lmt=1507623846011504&dur=293.359&key=dg_yt0&signature=3D510F34734B7437DE443D2EF37DC2BA54D9D2A5.2C644061E05C55C3214DFCBA762A8909573087DF&mt=1513520155&ip=168.205.179.29&ipbits=0&expire=1513541889&sparams=ip,ipbits,expire,id,itag,source,requiressl,mn,mm,initcwndbps,pl,mv,ms,ei,ratebypass,mime,gir,clen,lmt,dur';
-
-
     SceneSceneChannel.RestoreFromResume = false;
     SceneSceneBrowser.SmartHubResume = false;
     try {
@@ -676,7 +671,7 @@ SceneSceneChannel.qualityChanged = function() {
         if (webapis.productinfo.isUdPanelSupported())
             SceneSceneChannel.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
 
-        SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, 3840, 2160);
+        SceneSceneChannel.mWebapisAvplay.setDisplayRect(0, 0, screen.width, screen.height);
         SceneSceneChannel.mWebapisAvplay.prepareAsync(function() {
             try {
                 if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) {
