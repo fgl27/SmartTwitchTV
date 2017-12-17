@@ -301,10 +301,14 @@ SceneSceneChannel.prototype.initialize = function() {
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
             if (SceneSceneChannel.Play) {
+                seektime = oldcurrentTime;
                 SceneSceneChannel.shutdownStream();
                 SceneSceneBrowser.browser = false;
                 SceneSceneChannel.Play = false;
-                SceneSceneChannel.Vod = true;
+                if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
+                    SceneSceneChannel.Vod = true;
+                    SceneSceneChannel.QualitChage = true;
+                }
             }
             SuspendesysTime = new Date().getTime();
         } else if (!SceneSceneBrowser.SmartHubResume) {
@@ -526,6 +530,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                 //console.log("KEY_ENTER");
                 if (SceneSceneChannel.isPanelShown()) {
                     SceneSceneChannel.QualitChage = true;
+                    seektime = oldcurrentTime;
                     SceneSceneChannel.qualityChanged();
                     clearPause();
                 } else {
@@ -664,8 +669,7 @@ SceneSceneChannel.qualityChanged = function() {
     SceneSceneChannel.RestoreFromResume = false;
     SceneSceneBrowser.SmartHubResume = false;
     try {
-        if (SceneSceneChannel.Vod && SceneSceneChannel.QualitChage) seektime = oldcurrentTime;
-        else offsettime = oldcurrentTime;
+        if (!SceneSceneChannel.Vod && !SceneSceneChannel.QualitChage) offsettime = oldcurrentTime;
         SceneSceneChannel.mWebapisAvplay.stop();
         SceneSceneChannel.mWebapisAvplay.open(SceneSceneChannel.playingUrl);
         SceneSceneChannel.mWebapisAvplay.setListener(listener);
