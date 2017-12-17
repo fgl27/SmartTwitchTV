@@ -559,6 +559,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                         SceneSceneChannel.showPanel();
                     }
                 } else {
+                    SceneSceneChannel.Play = true;
                     clearPause();
                     SceneSceneChannel.mWebapisAvplay.play();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
@@ -899,7 +900,6 @@ SceneSceneChannel.isChatShown = function() {
 function clearPause() {
     window.clearTimeout(pauseEndID);
     window.clearTimeout(pauseStartID);
-    SceneSceneChannel.Play = true;
     if (SceneSceneChannel.isShowPauseDialogOn) {
         $("#scene_channel_dialog_simple_pause").hide();
         SceneSceneChannel.isShowPauseDialogOn = false;
