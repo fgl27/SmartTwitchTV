@@ -120,6 +120,8 @@ SceneSceneChannel.shutdownStream = function() {
     SceneSceneBrowser.browser = true;
     SceneSceneChannel.Play = false;
     SceneSceneChannel.Vod = false;
+    SceneSceneChannel.hideDialog();
+    SceneSceneChannel.isShowDialogOn = false;
     clearPause();
     duration = 0;
     $("#scene1").show();
