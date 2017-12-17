@@ -960,6 +960,7 @@ SceneSceneBrowser.switchMode = function(mode) {
         SceneSceneBrowser.modeReturn = SceneSceneBrowser.mode;
         SceneSceneBrowser.mode = mode;
         SceneSceneBrowser.returnToFallower = false;
+        SceneSceneBrowser.LoadFallowingOnly = false;
 
         $("#tip_icon_channels").removeClass('tip_icon_active');
         $("#tip_icon_user").removeClass('tip_icon_active');
