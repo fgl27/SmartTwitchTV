@@ -1647,6 +1647,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname').substr(1);
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
                     SceneSceneChannel.Vod = true;
+                    SceneSceneChannel.QualitChage = false;
                     SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneBrowser.openStream();
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO ||
