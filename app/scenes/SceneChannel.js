@@ -370,7 +370,8 @@ SceneSceneChannel.prototype.handleFocus = function() {
     $('#stream_info_name').text(SceneSceneBrowser.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
-
+    document.getElementById("stream_live").innerHTML =
+        '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
     SceneSceneChannel.updateStreamInfo();
     if (SceneSceneChannel.Vod) {
         $("#stream_info_name").text(SceneSceneBrowser.selectedChannelDisplaynameOld);
@@ -789,8 +790,6 @@ SceneSceneChannel.updateStreamInfo = function() {
                         document.getElementById("stream_info_livetime").innerHTML = 'Duration ' +
                             SceneSceneChannel.timeMs(duration);
                     } else {
-                        document.getElementById("stream_live").innerHTML =
-                            '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
                         $("#stream_info_name").text(SceneSceneBrowser.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
                         $("#stream_info_title").text(response.stream.channel.status);
                         $("#stream_info_game").text('playing ' + response.stream.game + ' for ' + addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
