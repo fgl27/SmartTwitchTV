@@ -980,7 +980,7 @@ SceneSceneChannel.loadDataSuccess = function(responseText) {
 
 SceneSceneChannel.loadDataRequest = function() {
     try {
-        var dialog_title = (SceneSceneBrowser.refreshClick ? STR_REFRESH : STR_RETRYING) + " " + SceneSceneBrowser.selectedChannelDisplayname + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
+        var dialog_title = STR_RETRYING + " " + SceneSceneBrowser.selectedChannelDisplayname + " (" + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")";
 
         SceneSceneChannel.showDialog(dialog_title);
         var xmlHttp = new XMLHttpRequest();
