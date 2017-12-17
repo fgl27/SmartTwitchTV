@@ -11,6 +11,8 @@ var random_int = Math.round(Math.random() * 1e7),
     sizeOffset = 0,
     sizePanelOffset = 0,
     pauseStartID,
+    JumpFBID,
+    JumpFowardBackwardCount = 0,
     ChatBackground = 0.5,
     ChatSizeValue = 3,
     ChatPositions = 1,
@@ -47,6 +49,7 @@ SceneSceneChannel.STATE_PLAYING = 2;
 SceneSceneChannel.state = SceneSceneChannel.STATE_LOADING_TOKEN;
 SceneSceneChannel.isShowDialogOn = false;
 SceneSceneChannel.isShowPauseDialogOn = false;
+SceneSceneChannel.isShowExtraDialogOn = false;
 
 //SceneSceneChannel.QualityAuto = "auto";
 SceneSceneChannel.quality = "source";
@@ -121,7 +124,6 @@ SceneSceneChannel.shutdownStream = function() {
     SceneSceneChannel.Play = false;
     SceneSceneChannel.Vod = false;
     SceneSceneChannel.hideDialog();
-    SceneSceneChannel.isShowDialogOn = false;
     clearPause();
     duration = 0;
     $("#scene1").show();
@@ -462,14 +464,9 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     if (ChatBackground < 0) ChatBackground = 0;
                     SceneSceneChannel.ChatBackground(true);
                     } else if (SceneSceneChannel.Vod){
-                        SceneSceneChannel.showDialog('JumpBackward 10 min');
-                        SceneSceneChannel.mWebapisAvplay.jumpBackward(10 * 1000 * 60
-                        , function() { //successCallback
-                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
-                        }, function() { //ErrorCallback
-                            SceneSceneChannel.showDialog('JumpBackward Fail');
-                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
-                        });
+                        JumpFowardBackwardCount--;
+                        if (JumpFowardBackwardCount < -12) JumpFowardBackwardCount = -12;
+                        SceneSceneChannel.SetJumpFowardBackward(JumpFowardBackwardCount);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -481,14 +478,9 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     if (ChatBackground > 1) ChatBackground = 1;
                     SceneSceneChannel.ChatBackground(true);
                     } else if (SceneSceneChannel.Vod) {
-                        SceneSceneChannel.showDialog('jumpForward 10 min');
-                        SceneSceneChannel.mWebapisAvplay.jumpForward(10 * 1000 * 60
-                        , function() { //successCallback
-                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
-                        }, function() { //ErrorCallback
-                            SceneSceneChannel.showDialog('jumpForward Fail');
-                            window.setTimeout(SceneSceneChannel.hideDialog, 1000);
-                        });
+                        JumpFowardBackwardCount++;
+                        if (JumpFowardBackwardCount > 12) JumpFowardBackwardCount = 12;
+                        SceneSceneChannel.SetJumpFowardBackward(JumpFowardBackwardCount);
                 } else {
                     SceneSceneChannel.showPanel();
                 }
@@ -547,7 +539,6 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     if (SceneSceneChannel.isShowExitDialogOn) {
                         window.clearTimeout(exitID);
                         SceneSceneChannel.isShowExitDialogOn = false;
-                        $("#scene_channel_dialog_exit_text").text("");
                         $("#scene_channel_dialog_exit").hide();
                         SceneSceneChannel.hideDialog();
                         SceneSceneChannel.hideChat();
@@ -720,7 +711,6 @@ SceneSceneChannel.qualityChanged = function() {
 SceneSceneChannel.showExitDialog = function() {
     if (SceneSceneChannel.isShowDialogOn) {
         SceneSceneChannel.hideDialog();
-        SceneSceneChannel.isShowDialogOn = false;
     }
     $("#scene_channel_dialog_exit_text").text(STR_EXIT);
     if (!SceneSceneChannel.isShowExitDialogOn) {
@@ -736,7 +726,6 @@ SceneSceneChannel.showExitDialog = function() {
 SceneSceneChannel.showPauseDialog = function() {
     if (SceneSceneChannel.isShowDialogOn) {
         SceneSceneChannel.hideDialog();
-        SceneSceneChannel.isShowDialogOn = false;
     }
 
     if (!SceneSceneChannel.isShowPauseDialogOn) {
@@ -760,12 +749,124 @@ SceneSceneChannel.showDialog = function(title) {
 
 SceneSceneChannel.hideDialog = function() {
     $("#scene_channel_dialog_loading").hide();
+    SceneSceneChannel.isShowDialogOn = false;
+};
+
+SceneSceneChannel.DoJumpFowardBackward = function() {
+    SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
+        SceneSceneChannel.hideExtraDialog();
+        JumpFowardBackwardCount = 0;
+    }, function() { //ErrorCallback
+        SceneSceneChannel.hideExtraDialog();
+        JumpFowardBackwardCount = 0;
+    });
+};
+
+SceneSceneChannel.SetJumpFowardBackward = function(value) {
+    window.clearTimeout(JumpFBID);
+    SceneSceneChannel.JumpFowardBackwardCases(value);
+    JumpFBID = window.setTimeout(SceneSceneChannel.DoJumpFowardBackward, 1000);
+};
+
+SceneSceneChannel.JumpFowardBackwardCases = function(value) {
+    if (value < 0) {
+        if (value == -1) {
+            SceneSceneChannel.JumpTime = -1000 * 10; //10sec
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000) + ' Sec');
+        } else if (value == -2) {
+            SceneSceneChannel.JumpTime = -1000 * 30; //30sec
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000) + ' Sec');
+        } else if (value == -3) {
+            SceneSceneChannel.JumpTime = -1000 * 60; //1min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -4) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 2; //2min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -5) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 10; //10min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -6) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 20; //20min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -7) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 30; //30min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -8) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 60; //1hr
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == -9) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 2; //2hr
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == -10) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 3; //3hr
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == -11) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 6; //6hr
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == -12) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 12; //12hr
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        }
+    } else if (value > 0) {
+        if (value == 1) {
+            SceneSceneChannel.JumpTime = 1000 * 10; //10sec
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000) + ' Sec');
+        } else if (value == 2) {
+            SceneSceneChannel.JumpTime = 1000 * 30; //30sec
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000) + ' Sec');
+        } else if (value == 3) {
+            SceneSceneChannel.JumpTime = 1000 * 60; //1min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 4) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 2; //2min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 5) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 10; //10min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 6) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 20; //20min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 7) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 30; //30min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 8) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 60; //1hr
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == 9) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 2; //2hr
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == 10) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 3; //3hr
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == 11) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 6; //6hr
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        } else if (value == 12) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 12; //12hr
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
+        }
+    } else {
+        SceneSceneChannel.JumpTime = 1000 * 0; //0sec
+        SceneSceneChannel.showExtraDialog(' Jump forward Canceled');
+    }
+};
+
+SceneSceneChannel.showExtraDialog = function(title) {
+    $("#scene_channel_dialog_extra_text").text(title);
+    if (!SceneSceneChannel.isShowExtraDialogOn) {
+        $("#scene_channel_dialog_extra").show();
+        SceneSceneChannel.isShowExtraDialogOn = true;
+    }
+};
+
+SceneSceneChannel.hideExtraDialog = function() {
+    $("#scene_channel_dialog_extra").hide();
+    SceneSceneChannel.isShowExtraDialogOn = false;
 };
 
 SceneSceneChannel.showPlayer = function() {
     SceneSceneChannel.hideDialog();
     $("scene_channel_panel").hide();
-    SceneSceneChannel.isShowDialogOn = false;
 };
 
 function addCommas(nStr) {
