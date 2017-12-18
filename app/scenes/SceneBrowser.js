@@ -407,9 +407,10 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
         } else {
             reason = (typeof reason === "undefined") ? "Unknown" : reason;
             SceneSceneBrowser.loadingData = false;
-            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
+            if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.NewUser) {
                 SceneSceneBrowser.showDialog("Unable to open user " + SceneSceneBrowser.followerUsername + "Reason: " + reason);
                 SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.NewUser = false;
                 SceneSceneBrowser.removeUser(SceneSceneBrowser.followerUsernameArraySize - 1);
                 SceneSceneBrowser.state_follower = null;
                 window.setTimeout(function() {
@@ -417,7 +418,7 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
                 }, 2000);
                 return;
             } else {
-                SceneSceneBrowser.showDialog("Unable to load stream after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
+                SceneSceneBrowser.showDialog("Unable to load after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
             }
         }
     }
@@ -871,6 +872,8 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
+                        document.getElementById("username_input").value = '';//reset username_input and prevent username be deleted on success
+                        SceneSceneBrowser.NewUser = false;
                         SceneSceneBrowser.loadingDataTry = 1;
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
                         else if (SceneSceneBrowser.DogetAllUserFallowing) SceneSceneBrowser.getAllUserFallowingInline(xmlHttp.responseText);
@@ -1217,6 +1220,7 @@ SceneSceneBrowser.removeUser = function(Position) {
 
 SceneSceneBrowser.SaveNewUser = function() {
     if (!SceneSceneBrowser.UserExist(SceneSceneBrowser.followerUsername)) {
+        SceneSceneBrowser.NewUser = true;
         SceneSceneBrowser.followerUsernameArray[SceneSceneBrowser.followerUsernameArraySize] = SceneSceneBrowser.followerUsername;
         localStorage.setItem('followerUsernameArray' + SceneSceneBrowser.followerUsernameArraySize, SceneSceneBrowser.followerUsername);
 
@@ -1687,12 +1691,17 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_OPEN) { //open a channel
                 if (SceneSceneBrowser.cursorY == 0) {
                     SceneSceneBrowser.ime = document.querySelector('#streamname_input');
+
                     //This is how we handle input from IME
                     SceneSceneBrowser.ime.addEventListener('input');
 
                     //This is how we handle end of IME composition
                     SceneSceneBrowser.ime.addEventListener('compositionend', function() {
                         //console.log('compositionend');
+                    });
+
+                    document.body.addEventListener('keydown', function(event) {
+                        SceneSceneBrowser.KeyboardEvent(event);
                     });
 
                     SceneSceneBrowser.ime.focus();
@@ -1702,12 +1711,17 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         SceneSceneBrowser.selectedChannel = $('#streamname_input').val();
                         document.getElementById("streamname_input").value = '';
                         SceneSceneBrowser.selectedChannelDisplayname = SceneSceneBrowser.selectedChannel;
+                        SceneSceneBrowser.ime.blur();
+                        document.body.removeEventListener('keydown', function(event) {
+                            SceneSceneBrowser.KeyboardEvent(event)
+                        });
                         SceneSceneBrowser.loadData();
                     }
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_USERS) { //open a user
                 if (SceneSceneBrowser.cursorY == 0) {
                     SceneSceneBrowser.ime2 = document.querySelector('#username_input');
+
                     //This is how we handle input from IME
                     SceneSceneBrowser.ime2.addEventListener('input');
 
@@ -1716,12 +1730,18 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         //console.log('compositionend');
                     });
 
+                    document.body.addEventListener('keydown', function(event) {
+                        SceneSceneBrowser.KeyboardEvent(event);
+                    });
+
                     SceneSceneBrowser.ime2.focus();
-                    //SceneSceneBrowser.isIme2Focused = true;
                 } else {
                     if ($('#username_input').val() != '' && $('#username_input').val() != null) {
                         SceneSceneBrowser.followerUsername = $('#username_input').val();
-                        document.getElementById("username_input").value = '';
+                        SceneSceneBrowser.ime2.blur();
+                        document.body.removeEventListener('keydown', function(event) {
+                            SceneSceneBrowser.KeyboardEvent(event)
+                        });
                         SceneSceneBrowser.SaveNewUser();
                     }
                 }
@@ -1776,6 +1796,33 @@ function ThumbNull(y, x) {
 function keyClickDelay() {
     SceneSceneBrowser.LastClickFinish = true;
 }
+
+SceneSceneBrowser.KeyboardEvent = function(event) {
+    switch (event.keyCode) {
+        case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_OPEN) { //open a channel
+                document.getElementById("streamname_input").value = '';
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_USERS) {
+                document.getElementById("username_input").value = '';
+            }
+            event.preventDefault();
+            break;
+        case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
+            if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_OPEN) { //open a channel
+                document.getElementById("streamname_input").value = $('#streamname_input').val().slice(0, -1);
+            } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_USERS) {
+                document.getElementById("username_input").value = $('#username_input').val().slice(0, -1);
+            }
+            event.preventDefault();
+            break;
+        case TvKeyCode.KEY_KEYBOARD_SPACE:
+            //console.log('KEY_KEYBOARD_SPACE'); // do noting
+            event.preventDefault();
+            break;
+        default:
+            break;
+    }
+};
 
 SceneSceneBrowser.addNetworkStateChangeListener = function() {
     var onChange = function(data) {
