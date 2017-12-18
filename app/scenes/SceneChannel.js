@@ -754,23 +754,27 @@ SceneSceneChannel.hideDialog = function() {
 
 SceneSceneChannel.DoJumpFowardBackward = function() {
     if ((SceneSceneChannel.mWebapisAvplay.getCurrentTime() + SceneSceneChannel.JumpTime) < 0) {
-        try {
-            SceneSceneChannel.mWebapisAvplay.seekTo(0, function() { //successCallback
-                SceneSceneChannel.hideExtraDialog();
-                JumpFowardBackwardCount = 0;
-            }, function() { //ErrorCallback
+        SceneSceneChannel.showExtraDialog('Jump backward time less than duration jumping to 00:00');
+        window.setTimeout(function() {
+            try {
+                SceneSceneChannel.mWebapisAvplay.seekTo(0, function() { //successCallback
+                    SceneSceneChannel.hideExtraDialog();
+                    JumpFowardBackwardCount = 0;
+                }, function() { //ErrorCallback
+                    SceneSceneChannel.hideExtraDialog();
+                    JumpFowardBackwardCount = 0;
+                    console.error(e);
+                });
+            } catch (e) {
                 SceneSceneChannel.hideExtraDialog();
                 JumpFowardBackwardCount = 0;
                 console.error(e);
-            });
-        } catch (e) {
-            SceneSceneChannel.hideExtraDialog();
+            }
+        }, 1500);
+    }else if ((SceneSceneChannel.mWebapisAvplay.getCurrentTime() + SceneSceneChannel.JumpTime) > duration) {
             JumpFowardBackwardCount = 0;
-            console.error(e);
-        }
-    } else if ((SceneSceneChannel.mWebapisAvplay.getCurrentTime() + SceneSceneChannel.JumpTime) > duration) {
-            SceneSceneChannel.hideExtraDialog();
-            JumpFowardBackwardCount = 0;
+            SceneSceneChannel.showExtraDialog('Jump forward time greater than duration, jump canceled');
+            window.setTimeout(SceneSceneChannel.hideExtraDialog, 2500);
     } else {
         try {
             SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
