@@ -44,6 +44,10 @@ window.TvKeyCode = {
     'KEY_MENU': 18, //
 
     'KEY_RETURN': 10009, //
-    'KEY_TOOLS': 10135
+    'KEY_TOOLS': 10135, //
+
+    'KEY_KEYBOARD_BACKSPACE': 8, //http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
+    'KEY_KEYBOARD_SPACE': 32, //
+    'KEY_KEYBOARD_DELETE_ALL': 46
 
 };
