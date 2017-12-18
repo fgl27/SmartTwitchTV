@@ -753,18 +753,36 @@ SceneSceneChannel.hideDialog = function() {
 };
 
 SceneSceneChannel.DoJumpFowardBackward = function() {
-    try {
-        SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
+    if ((SceneSceneChannel.mWebapisAvplay.getCurrentTime() + SceneSceneChannel.JumpTime) < 0) {
+        try {
+            SceneSceneChannel.mWebapisAvplay.seekTo(0, function() { //successCallback
+                SceneSceneChannel.hideExtraDialog();
+                JumpFowardBackwardCount = 0;
+            }, function() { //ErrorCallback
+                SceneSceneChannel.hideExtraDialog();
+                JumpFowardBackwardCount = 0;
+                console.error(e);
+            });
+        } catch (e) {
             SceneSceneChannel.hideExtraDialog();
             JumpFowardBackwardCount = 0;
-        }, function() { //ErrorCallback
+            console.error(e);
+        }
+
+    } else {
+        try {
+            SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
+                SceneSceneChannel.hideExtraDialog();
+                JumpFowardBackwardCount = 0;
+            }, function() { //ErrorCallback
+                SceneSceneChannel.hideExtraDialog();
+                JumpFowardBackwardCount = 0;
+            });
+        } catch (e) {
             SceneSceneChannel.hideExtraDialog();
             JumpFowardBackwardCount = 0;
-        });
-    } catch (e) {
-        console.error(e);
-        SceneSceneChannel.hideExtraDialog();
-        JumpFowardBackwardCount = 0;
+            console.error(e);
+        }
     }
 };
 
