@@ -465,7 +465,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     SceneSceneChannel.ChatBackground(true);
                     } else if (SceneSceneChannel.Vod){
                         JumpFowardBackwardCount--;
-                        if (JumpFowardBackwardCount < -12) JumpFowardBackwardCount = -12;
+                        if (JumpFowardBackwardCount < -13) JumpFowardBackwardCount = -13;
                         SceneSceneChannel.SetJumpFowardBackward(JumpFowardBackwardCount);
                 } else {
                     SceneSceneChannel.showPanel();
@@ -479,7 +479,7 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     SceneSceneChannel.ChatBackground(true);
                     } else if (SceneSceneChannel.Vod) {
                         JumpFowardBackwardCount++;
-                        if (JumpFowardBackwardCount > 12) JumpFowardBackwardCount = 12;
+                        if (JumpFowardBackwardCount > 13) JumpFowardBackwardCount = 13;
                         SceneSceneChannel.SetJumpFowardBackward(JumpFowardBackwardCount);
                 } else {
                     SceneSceneChannel.showPanel();
@@ -783,27 +783,30 @@ SceneSceneChannel.JumpFowardBackwardCases = function(value) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 2; //2min
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == -5) {
-            SceneSceneChannel.JumpTime = -1000 * 60 * 10; //10min
+            SceneSceneChannel.JumpTime = -1000 * 60 * 5; //5min
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == -6) {
-            SceneSceneChannel.JumpTime = -1000 * 60 * 20; //20min
+            SceneSceneChannel.JumpTime = -1000 * 60 * 10; //10min
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == -7) {
-            SceneSceneChannel.JumpTime = -1000 * 60 * 30; //30min
+            SceneSceneChannel.JumpTime = -1000 * 60 * 15; //15min
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == -8) {
+            SceneSceneChannel.JumpTime = -1000 * 60 * 30; //30min
+            SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == -9) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 60; //1hr
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == -9) {
+        } else if (value == -10) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 2; //2hr
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == -10) {
+        } else if (value == -11) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 3; //3hr
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == -11) {
+        } else if (value == -12) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 6; //6hr
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == -12) {
+        } else if (value == -13) {
             SceneSceneChannel.JumpTime = -1000 * 60 * 60 * 12; //12hr
             SceneSceneChannel.showExtraDialog(' Jump Backward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
         }
@@ -821,27 +824,30 @@ SceneSceneChannel.JumpFowardBackwardCases = function(value) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 2; //2min
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == 5) {
-            SceneSceneChannel.JumpTime = 1000 * 60 * 10; //10min
+            SceneSceneChannel.JumpTime = 1000 * 60 * 5; //5min
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == 6) {
-            SceneSceneChannel.JumpTime = 1000 * 60 * 20; //20min
+            SceneSceneChannel.JumpTime = 1000 * 60 * 10; //10min
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == 7) {
-            SceneSceneChannel.JumpTime = 1000 * 60 * 30; //30min
+            SceneSceneChannel.JumpTime = 1000 * 60 * 15; //15min
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
         } else if (value == 8) {
+            SceneSceneChannel.JumpTime = 1000 * 60 * 30; //30min
+            SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60) + ' Min');
+        } else if (value == 9) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 60; //1hr
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == 9) {
+        } else if (value == 10) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 2; //2hr
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == 10) {
+        } else if (value == 11) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 3; //3hr
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == 11) {
+        } else if (value == 12) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 6; //6hr
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
-        } else if (value == 12) {
+        } else if (value == 13) {
             SceneSceneChannel.JumpTime = 1000 * 60 * 60 * 12; //12hr
             SceneSceneChannel.showExtraDialog(' Jump forward ' + (SceneSceneChannel.JumpTime / 1000 / 60 / 60) + ' hr');
         }
