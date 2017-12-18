@@ -753,13 +753,19 @@ SceneSceneChannel.hideDialog = function() {
 };
 
 SceneSceneChannel.DoJumpFowardBackward = function() {
-    SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
+    try {
+        SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
+            SceneSceneChannel.hideExtraDialog();
+            JumpFowardBackwardCount = 0;
+        }, function() { //ErrorCallback
+            SceneSceneChannel.hideExtraDialog();
+            JumpFowardBackwardCount = 0;
+        });
+    } catch (e) {
+        console.error(e);
         SceneSceneChannel.hideExtraDialog();
         JumpFowardBackwardCount = 0;
-    }, function() { //ErrorCallback
-        SceneSceneChannel.hideExtraDialog();
-        JumpFowardBackwardCount = 0;
-    });
+    }
 };
 
 SceneSceneChannel.SetJumpFowardBackward = function(value) {
