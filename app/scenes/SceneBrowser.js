@@ -127,6 +127,8 @@ SceneSceneBrowser.listenerID;
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
+tizen.tvinputdevice.registerKey("MediaPlay");
+tizen.tvinputdevice.registerKey("MediaPause");
 tizen.tvinputdevice.registerKey("ColorF0Red");
 tizen.tvinputdevice.registerKey("ColorF1Green");
 tizen.tvinputdevice.registerKey("ColorF2Yellow");
@@ -1624,6 +1626,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_GAMES);
             }
             break;
+        case TvKeyCode.KEY_PLAY:
+        case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {

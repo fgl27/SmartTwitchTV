@@ -548,6 +548,8 @@ SceneSceneChannel.prototype.handleKeyDown = function(e) {
                     }
                 }
                 break;
+            case TvKeyCode.KEY_PLAY:
+            case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
                 if (SceneSceneChannel.Play) {
                     SceneSceneChannel.Play = false;
