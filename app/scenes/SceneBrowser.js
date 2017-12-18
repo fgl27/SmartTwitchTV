@@ -590,7 +590,7 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         }
 
-        var coloumn_id, row_id, row, cell, game, video, stream, mCellExists = false,
+        var temp, coloumn_id, row_id, row, cell, game, video, stream, mCellExists = false,
             mReplace = false,
             cursor = 0;
         for (var i = 0; i < response_rows; i++) {
@@ -627,10 +627,16 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                             videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language), 2);
                     } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
                         video = response.videos[cursor];
-                        cell = SceneSceneBrowser.createCell(row_id, coloumn_id, video._id, video.preview,
-                            'Streamed on ' + SceneSceneChannel.videoCreatedAt(video.created_at),
-                            'Duration ' + SceneSceneChannel.timeMs((parseInt(video.length) / 60) * 60000), video.title,
-                            addCommas(video.views) + ' Views', videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language), 3);
+                        temp = JSON.stringify(video.preview) + '';
+                        if (temp.indexOf('404_processing_320x240.png') == -1) {
+                            cell = SceneSceneBrowser.createCell(row_id, coloumn_id, video._id, video.preview,
+                                'Streamed on ' + SceneSceneChannel.videoCreatedAt(video.created_at),
+                                'Duration ' + SceneSceneChannel.timeMs((parseInt(video.length) / 60) * 60000), video.title,
+                                addCommas(video.views) +
+                                ' Views', videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language), 3);
+                        } else {
+                            cell = SceneSceneBrowser.createCell(row_id, coloumn_id, '', 'images/404_processing.png', '', '', '', '404 Video can\'t be played', '', '', '', null);
+                        }
                     }
                 } else {
                     stream = response.streams[cursor];
@@ -669,18 +675,22 @@ function videoqualitylang(video_height, average_fps, language) {
 
 SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, thumb_type) {
     var blank_thumbnail, viwers_width = 64;
-    if (thumb_type == 1) {
-        viwers_width = 100;
-        blank_thumbnail = 'images/game.png';
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize);
-    } else if (thumb_type == 2) {
-        blank_thumbnail = 'images/video.png';
-        preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize);
-    } else if (thumb_type == 3) {
-        blank_thumbnail = 'images/video.png';
-        preview_thumbnail = preview_thumbnail.replace("320x240", videoImgSize);
+    if (thumb_type != null) {
+        if (thumb_type == 1) {
+            viwers_width = 100;
+            blank_thumbnail = 'images/game.png';
+            preview_thumbnail = preview_thumbnail.replace("{width}x{height}", gameImgSize);
+        } else if (thumb_type == 2) {
+            blank_thumbnail = 'images/video.png';
+            preview_thumbnail = preview_thumbnail.replace("{width}x{height}", videoImgSize);
+        } else if (thumb_type == 3) {
+            blank_thumbnail = 'images/video.png';
+            preview_thumbnail = preview_thumbnail.replace("320x240", videoImgSize);
+        } else {
+            blank_thumbnail = 'images/ch_logo.png';
+        }
     } else {
-        blank_thumbnail = 'images/ch_logo.png';
+        blank_thumbnail = preview_thumbnail;
     }
 
     imgMatrix[imgMatrixCount] = preview_thumbnail;
@@ -1656,7 +1666,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneChannel.Vod = true;
                     SceneSceneChannel.QualitChage = false;
                     SceneSceneChannel.RestoreFromResume = false;
-                    SceneSceneBrowser.openStream();
+                    if (SceneSceneBrowser.selectedChannel != '')
+                        SceneSceneBrowser.openStream();
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO ||
                     SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
