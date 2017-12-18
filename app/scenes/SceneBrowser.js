@@ -514,6 +514,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 }
             }
         }
+    } else {
+        SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod;
+        SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod * 2;
     }
 
     if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_OPEN && responseText != null) {
@@ -1056,10 +1059,13 @@ SceneSceneBrowser.removeFocus = function() {
 };
 
 SceneSceneBrowser.addFocus = function() {
-    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD)
+    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
+        SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod * 2;
         SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod / 2;
-    else
+    } else {
+        SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod;
         SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod * 2;
+    }
 
     if (((SceneSceneBrowser.cursorY + SceneSceneBrowser.ItemsReloadLimit) > (SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)) &&
         !SceneSceneBrowser.dataEnded) {
@@ -1260,13 +1266,14 @@ function SmartHubEventListener() {
                     videoIdx = JSON.parse(actionData).videoIdx;
                     videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
                     if (SceneSceneChannel.Play && SceneSceneBrowser.selectedChannel == videoIdx) {
-                        SceneSceneBrowser.SmartHubResume = false;
+                        SceneSceneBrowser.SmartHubResume = SceneSceneBrowser.SmartHubResume;
                         return;
                     }
                     SceneSceneBrowser.selectedChannel = videoIdx;
                     SceneSceneBrowser.selectedChannelDisplayname = videoTitleIdx;
                     SceneSceneChannel.RestoreFromResume = false;
                     SceneSceneChannel.Vod = false;
+                    SceneSceneBrowser.SmartHubResumePlay = true;
                     SceneSceneBrowser.openStream();
                 } else if (JSON.parse(actionData).gameIdx) {
                     gameIdx = JSON.parse(actionData).gameIdx;
@@ -1716,6 +1723,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                 SceneSceneChannel.RestoreFromResume = false;
                 SceneSceneBrowser.openStream();
             }
+            SceneSceneBrowser.SmartHubResumePlay = false;
             break;
         case TvKeyCode.KEY_VOLUMEUP:
             break;

@@ -309,7 +309,7 @@ SceneSceneChannel.prototype.initialize = function() {
                 SceneSceneChannel.shutdownStream();
                 SceneSceneBrowser.browser = false;
                 SceneSceneChannel.Play = false;
-                if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
+                if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS && !SceneSceneBrowser.SmartHubResumePlay) {
                     SceneSceneChannel.Vod = true;
                     SceneSceneChannel.QualitChage = true;
                 }
