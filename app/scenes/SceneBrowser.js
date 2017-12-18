@@ -1448,7 +1448,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
                 } else if (SceneSceneBrowser.returnToVods) {
                     loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST VOD';
+                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
                     SceneSceneBrowser.LoadFallowingOnly = true;
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.returnToVods = false;
@@ -1563,7 +1563,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
                     loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST VOD';
+                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
                     SceneSceneBrowser.LoadFallowingOnly = true;
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.getAllUserPreFallowingLive(false)
@@ -1588,7 +1588,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                     loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST VOD';
+                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
                     SceneSceneBrowser.LoadFallowingOnly = true;
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.getAllUserPreFallowingLive(false)
@@ -1643,7 +1643,7 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         SceneSceneBrowser.returnToFallower = true;
                         SceneSceneBrowser.refresh();
                     } else if (SceneSceneBrowser.cursorX == 3) { // vod
-                        Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST VOD';
+                        Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
                         SceneSceneBrowser.LoadFallowingOnly = true;
                         SceneSceneBrowser.returnToFallower = true;
                         SceneSceneBrowser.getAllUserPreFallowingLive(false);
@@ -1840,7 +1840,7 @@ SceneSceneBrowser.loadDataSuccessPreUser = function(responseText) {
             row.append(cell);
             cell = SceneSceneBrowser.createUserCell(SceneSceneBrowser.Followercount, 2, SceneSceneBrowser.followerUsername, 'LIVE GAMES');
             row.append(cell);
-            cell = SceneSceneBrowser.createUserCell(SceneSceneBrowser.Followercount, 3, SceneSceneBrowser.followerUsername, 'PAST VOD');
+            cell = SceneSceneBrowser.createUserCell(SceneSceneBrowser.Followercount, 3, SceneSceneBrowser.followerUsername, 'PAST BROADCAST');
             row.append(cell);
             if (SceneSceneBrowser.Followercount == 0)
                 cell = SceneSceneBrowser.createUserCell(SceneSceneBrowser.Followercount, 4, SceneSceneBrowser.followerUsername, 'ADD USER');
