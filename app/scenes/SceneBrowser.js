@@ -409,10 +409,13 @@ SceneSceneBrowser.loadDataError = function(reason, responseText) {
             SceneSceneBrowser.loadingData = false;
             if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
                 SceneSceneBrowser.showDialog("Unable to open user " + SceneSceneBrowser.followerUsername + "Reason: " + reason);
-                SceneSceneBrowser.followerUsername = null;
+                SceneSceneBrowser.isPreUser = false;
+                SceneSceneBrowser.removeUser(SceneSceneBrowser.followerUsernameArraySize - 1);
+                SceneSceneBrowser.state_follower = null;
                 window.setTimeout(function() {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_USERS);
                 }, 2000);
+                return;
             } else {
                 SceneSceneBrowser.showDialog("Unable to load stream after " + SceneSceneBrowser.loadingDataTry + STR_ATTEMPT + ")" + " Reason: " + reason);
             }
@@ -1009,7 +1012,6 @@ SceneSceneBrowser.switchMode = function(mode) {
                 SceneSceneBrowser.followerUsername = SceneSceneBrowser.followerUsernameArray[SceneSceneBrowser.Followercount];
             else SceneSceneBrowser.followerUsername = null;
             if (SceneSceneBrowser.followerUsername != null && !SceneSceneBrowser.isShowDialogOn) {
-                //console.log("Enter MODE_FOLLOWER")
                 $("#tip_icon_user").addClass('tip_icon_active');
                 Scenemode = STR_USER + 's';
                 SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_NONE;
@@ -1082,8 +1084,9 @@ SceneSceneBrowser.addFocus = function() {
         if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
             loadingMore = true;
             SceneSceneBrowser.loadDataSuccess(null);
-        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) SceneSceneBrowser.generateUserLive();
-        else if (SceneSceneBrowser.state_follower !== SceneSceneBrowser.STATE_FOLLOWER_NONE) {
+        } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST) {
+            SceneSceneBrowser.generateUserLive();
+        } else if (SceneSceneBrowser.state_follower !== SceneSceneBrowser.STATE_FOLLOWER_NONE) {
             loadingMore = true;
             SceneSceneBrowser.loadData();
         }
