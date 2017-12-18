@@ -768,7 +768,9 @@ SceneSceneChannel.DoJumpFowardBackward = function() {
             JumpFowardBackwardCount = 0;
             console.error(e);
         }
-
+    } else if ((SceneSceneChannel.mWebapisAvplay.getCurrentTime() + SceneSceneChannel.JumpTime) > duration) {
+            SceneSceneChannel.hideExtraDialog();
+            JumpFowardBackwardCount = 0;
     } else {
         try {
             SceneSceneChannel.mWebapisAvplay.jumpForward(SceneSceneChannel.JumpTime, function() { //successCallback
