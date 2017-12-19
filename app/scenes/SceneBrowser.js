@@ -14,6 +14,9 @@ var exitID,
     imgMatrix = [],
     imgMatrixId = [],
     imgMatrixCount = 0,
+    imgMatrixVod = [],
+    imgMatrixIdVod = [],
+    imgMatrixCountVod = 0;
     nameMatrix = [],
     userlive = [],
     userlivesubtitle = [],
@@ -39,6 +42,7 @@ var exitID,
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.itemsCountVod = 0;
 SceneSceneBrowser.vodWasLoad = false;
 SceneSceneBrowser.cursorYOld = 0;
 SceneSceneBrowser.cursorXOld = 0;
@@ -77,7 +81,7 @@ SceneSceneBrowser.isShowExitDialogOn = false;
 
 SceneSceneBrowser.ItemsLimit = 99; // min 25 max 100 use a value here that is divisible by SceneSceneBrowser.ColoumnsCount
 SceneSceneBrowser.ColoumnsCount = 3; // offset in ScrollHelper() need to be revised if change this value
-SceneSceneBrowser.ItemsReloadLimit = Math.ceil((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) / 2);
+SceneSceneBrowser.ItemsReloadLimit = Math.floor((SceneSceneBrowser.ItemsLimit / SceneSceneBrowser.ColoumnsCount) / 2);
 SceneSceneBrowser.ItemsReloadLimitVod = SceneSceneBrowser.ItemsReloadLimit;
 SceneSceneBrowser.ColoumnsCountVod = SceneSceneBrowser.ColoumnsCount;
 SceneSceneBrowser.ItemsLimitVod = 96;
@@ -126,6 +130,7 @@ SceneSceneBrowser.loadingDataTry = 1;
 SceneSceneBrowser.loadingDataTimeout;
 SceneSceneBrowser.loadingDataTimeoutStart = false;
 SceneSceneBrowser.dataEnded = false;
+SceneSceneBrowser.dataEndedVod = false;
 SceneSceneBrowser.listenerID;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
@@ -574,6 +579,10 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
 
         var offset_itemsCount = SceneSceneBrowser.itemsCount;
         SceneSceneBrowser.itemsCount += response_items;
+        if (responseText == null) {
+             SceneSceneBrowser.itemsCountVod = SceneSceneBrowser.itemsCount;
+             SceneSceneBrowser.dataEndedVod = SceneSceneBrowser.dataEnded;
+        }
         var response_rows = response_items / SceneSceneBrowser.ColoumnsCount;
         if (response_items % SceneSceneBrowser.ColoumnsCount > 0) {
             response_rows++;
@@ -716,14 +725,22 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
     }
 
     cur_thumbnail = 'thumbnail_';
-    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+    if (thumb_type == 4) {
+        cur_thumbnail = 'thumbnail_vod_';
+        imgMatrixVod[imgMatrixCountVod] = preview_thumbnail;
+        imgMatrixIdVod[imgMatrixCountVod] = cur_thumbnail + row_id + '_' + coloumn_id;
+        imgMatrixCountVod++;
 
-    imgMatrix[imgMatrixCount] = preview_thumbnail;
-    imgMatrixId[imgMatrixCount] = cur_thumbnail + row_id + '_' + coloumn_id;
-    imgMatrixCount++;
+        if (imgMatrixCountVod <= (SceneSceneBrowser.ColoumnsCount * 6)) //try to pre cache first 6 rows
+            newImg.src = preview_thumbnail;
+    } else {
+        imgMatrix[imgMatrixCount] = preview_thumbnail;
+        imgMatrixId[imgMatrixCount] = cur_thumbnail + row_id + '_' + coloumn_id;
+        imgMatrixCount++;
 
-    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //try to pre cache first 4 rows
-        newImg.src = preview_thumbnail;
+        if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //try to pre cache first 4 rows
+            newImg.src = preview_thumbnail;
+    }
 
     nameMatrix[nameMatrixCount] = channel_name;
     nameMatrixCount++;
@@ -812,10 +829,12 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
         .always({
             background: true
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+
             if (!loadingMore) {
                 SceneSceneBrowser.showTable();
                 SceneSceneBrowser.addFocus();
             }
+
             //check state of follower load, and call next stage
             SceneSceneBrowser.loadingData = false;
             SceneSceneBrowser.refreshClick = false;
@@ -823,16 +842,28 @@ SceneSceneBrowser.loadDataSuccessFinish = function() {
             loadingMore = false;
             SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod;
             SceneSceneBrowser.ItemsLimit = SceneSceneBrowser.ItemsLimitVod + SceneSceneBrowser.ColoumnsCount;
-            for (var i = 0; i < imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(imgMatrixId[i]);
 
-                tumbImg.onerror = function() {
-                    this.src = (this.src.indexOf(gameImgSize) > -1) ? 'images/404_game.png' :
-                        (this.src.indexOf(videoImgSize) > -1) ? 'images/404_video.png)' : 'images/404_logo.png)'; //img fail to load use predefined
-                };
+            if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) {
+                for (var i = 0; i < imgMatrixVod.length; i++) {
+                    var tumbImg = document.getElementById(imgMatrixIdVod[i]);
 
-                tumbImg.src = imgMatrix[i];
+                    tumbImg.onerror = function() {
+                        this.src = 'images/404_logo.png'; //img fail to load use predefined
+                    };
+
+                    tumbImg.src = imgMatrixVod[i];
+                }
+            } else {
+                for (var i = 0; i < imgMatrix.length; i++) {
+                    var tumbImg = document.getElementById(imgMatrixId[i]);
+                    tumbImg.onerror = function() {
+                        this.src = (this.src.indexOf(gameImgSize) > -1) ? 'images/404_game.png' : 'images/404_video.png'; //img fail to load use predefined
+                    };
+
+                    tumbImg.src = imgMatrix[i];
+                }
             }
+
             if (blankCellCount > 0) {
                 if (blankCellCount > (SceneSceneBrowser.ItemsLimit / 2))
                     SceneSceneBrowser.itemsCountOffset += blankCellCount;
@@ -987,6 +1018,9 @@ SceneSceneBrowser.showTable = function() {
         SceneSceneBrowser.cursorY = SceneSceneBrowser.cursorYOld;
         SceneSceneBrowser.cursorX = SceneSceneBrowser.cursorXOld;
         cur_thumbnail = 'thumbnail_vod_';
+        SceneSceneBrowser.dataEnded = SceneSceneBrowser.dataEndedVod;
+        SceneSceneBrowser.itemsCount = SceneSceneBrowser.itemsCountVod;
+        SceneSceneBrowser.vodWasLoad = false;
     } else {
         $("#stream_table_vod").hide();
         $("#stream_table").show();
@@ -1137,14 +1171,14 @@ SceneSceneBrowser.addFocus = function() {
     cur_thumbnail = 'thumbnail_';
     if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
         SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod * 2;
-        SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod / 2;
+        SceneSceneBrowser.ItemsReloadLimit = (SceneSceneBrowser.ItemsReloadLimitVod / 2) - 1;
     } else {
         SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod;
-        SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod * 2;
+        SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod - 2;
     }
 
     if (((SceneSceneBrowser.cursorY + SceneSceneBrowser.ItemsReloadLimit) > (SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)) &&
-        !SceneSceneBrowser.dataEnded && !SceneSceneBrowser.vodWasLoad) {
+        !SceneSceneBrowser.dataEnded) {
         if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
             loadingMore = true;
             SceneSceneBrowser.loadDataSuccess(null);
@@ -1610,8 +1644,24 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_USERS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_OPEN) {
                 SceneSceneBrowser.refreshClick = true;
-                if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) SceneSceneBrowser.highlight = !SceneSceneBrowser.highlight;
-                SceneSceneBrowser.vodWasLoad = false;
+                if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS)
+                    SceneSceneBrowser.highlight = !SceneSceneBrowser.highlight;
+                else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
+                        Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
+                        SceneSceneBrowser.LoadFallowingOnly = true;
+                        SceneSceneBrowser.returnToFallower = true;
+                        SceneSceneBrowser.vodWasLoad = false;
+                        SceneSceneBrowser.cursorYOld = 0;
+                        SceneSceneBrowser.cursorXOld = 0;
+                        $('#stream_table_vod').empty();
+                        SceneSceneBrowser.itemsCountVod = 0;
+                        SceneSceneBrowser.dataEndedVod = false;
+                        imgMatrixVod = [];
+                        imgMatrixIdVod = [];
+                        imgMatrixCountVod = 0;
+                        SceneSceneBrowser.getAllUserPreFallowingLive(false);
+                        return;
+                 }
                 SceneSceneBrowser.refresh();
             }
             break;
