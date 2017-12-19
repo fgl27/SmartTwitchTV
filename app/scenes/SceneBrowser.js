@@ -93,6 +93,7 @@ SceneSceneBrowser.mode = SceneSceneBrowser.MODE_NONE;
 SceneSceneBrowser.modeReturn = SceneSceneBrowser.MODE_NONE;
 SceneSceneBrowser.refreshClick = false;
 
+SceneSceneBrowser.STATE_FOLLOWER_EMPTY = -2;
 SceneSceneBrowser.STATE_FOLLOWER_NONE = -1;
 SceneSceneBrowser.STATE_FOLLOWER_NAME_LIST = 0; //Loading channels name list
 SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO = 1; //Loading channels info
@@ -1025,6 +1026,9 @@ SceneSceneBrowser.switchMode = function(mode) {
         $("#tip_icon_user").removeClass('tip_icon_active');
         $("#tip_icon_games").removeClass('tip_icon_active');
         $("#tip_icon_open").removeClass('tip_icon_active');
+
+       // reset state_follower when switching mode
+       SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_EMPTY;
 
         if (mode == SceneSceneBrowser.MODE_ALL) {
             $("#tip_icon_channels").addClass('tip_icon_active');
