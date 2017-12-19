@@ -179,7 +179,11 @@ var ScrollHelper = {
         }
 
         //offset center the page when scrolling to focus
-        if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) offset = 0.205;
+        if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES || SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO)
+            offset = 0.205;
+        else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD)
+            offset = 0.430;
+
         var targetPosition = this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - offset * this.viewportHeight();
 
         $(window).scrollTop(targetPosition);
