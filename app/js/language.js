@@ -1,9 +1,12 @@
-console.log("English (en) loaded");
+var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
+var STR_SEARCH = "Search (D)";
+var STR_SWITCH = "Switch (CH Up/Down or A/B/C)";
+var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";
+
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";
-var STR_REFRESH = "Refresh";
 var STR_CH_UPDOWN = "CH Press(Guide)/Up or Down";
 var STR_UPDOWN = "Refresh/Change (Screen A/B/C)";
 
@@ -25,7 +28,7 @@ var STR_ERROR_CONNECTION_FAIL = "Connection failed.";
 var STR_TOOLS = "Save";
 var STR_CHANGE_USER = "(to change user, use Extra + B)";
 var STR_LIVE_CHANNELS = "Live Channels User ";
-var STR_USER = "User";
+
 var STR_LIVE_HOSTS = "Live Hosts";
 var STR_LIVE_GAMES = "Live Games";
 var STR_PLACEHOLDER_TOOLS = "Enter user name...";

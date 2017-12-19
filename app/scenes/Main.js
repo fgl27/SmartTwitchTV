@@ -28,7 +28,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 Main.initLanguage = function() {
     //set top bar labels
-    $(".label_icon_updown").html(STR_CH_UPDOWN);
+    $('.label_refresh').html(STR_REFRESH);
+    $('.label_search').html(STR_SEARCH);
+    $('.label_switch').html(STR_SWITCH);
+
+    $('.lable_live').html(STR_LIVE);
+    $('.lable_user').html(STR_USER);
+    $('.lable_game').html(STR_GAMES);
 };
 
 Main.initWindows = function() {
@@ -54,6 +60,7 @@ Main.handleKeyDown = function(event) {
             console.log("KEY_CHANNELGUIDE");
             break;
         case TvKeyCode.KEY_CHANNELUP:
+            Main.SwitchTobBar();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             break;
@@ -76,4 +83,12 @@ Main.handleKeyDown = function(event) {
         default:
             break;
     }
+};
+
+Main.SwitchTobBar = function() {
+    $('#top_bar_live').removeClass('icon_center_focus');
+    $('#top_bar_live').addClass('icon_center_label');
+    $('#top_bar_user').removeClass('icon_center_label');
+    document.getElementById("top_bar_spacing").style.paddingLeft = "31%";
+    $('#top_bar_user').addClass('icon_center_focus');
 };
