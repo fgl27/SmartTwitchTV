@@ -33,15 +33,18 @@ var exitID,
     UpdatePreview = 0,
     nameMatrixCount = 0,
     loadingMore = false,
+    cur_thumbnail = 'thumbnail_',
     previewData = "",
     keyClickDelayTime = 25, // Delay between accept a click to prevent screen stall
     videoImgSize = "640x360", // preview.large = 640x360 forcing here just in case it changes
     gameImgSize = "612x855"; // preview.large = 272x380 using a preview.large * 2,25 = 612x855
 
+SceneSceneBrowser.vodWasLoad = false;
+SceneSceneBrowser.cursorYOld = 0;
+SceneSceneBrowser.cursorXOld = 0;
 SceneSceneBrowser.highlight = false;
 SceneSceneBrowser.selectedChannelDisplaynameOld = '';
 SceneSceneBrowser.selectedChannelDisplayname = '';
-SceneSceneBrowser.returnToVods = false;
 SceneSceneBrowser.UserFallowingNameTemp = [];
 SceneSceneBrowser.UserFallowingDisplayNameTemp = [];
 SceneSceneBrowser.UserFallowingLogoTemp = [];
@@ -575,7 +578,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
         if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER && !loadingMore) {
             var header;
             var tbody = $('<tbody></tbody>');
-            $('#stream_table').append(tbody);
+
+            if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD)
+                $('#stream_table_vod').append(tbody);
+            else $('#stream_table').append(tbody);
+
             //console.log(JSON.stringify(response));
             if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header"> LIVE CHANNELS ' +
@@ -590,9 +597,11 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
                 header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' +
                     SceneSceneBrowser.followerUsername + ' Fallowing Channels (' + SceneSceneBrowser.UserFallowingName.length + ') select one to list VODs<br>CH Up/Down will change between this user LIVE CHANNELS/HOSTS/GAMES/VOD</div>');
             } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
-                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + SceneSceneBrowser.selectedChannelDisplayname + ' ' + (SceneSceneBrowser.highlight ? ' Highlight ' : ' Past Broadcast' ) + '<br>CH Press(Guide) will change between Highlight and Past Broadcast</div>');
+                header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + SceneSceneBrowser.selectedChannelDisplayname + ' ' + (SceneSceneBrowser.highlight ? ' Highlight ' : ' Past Broadcast') + '<br>CH Press(Guide) will change between Highlight and Past Broadcast</div>');
             }
-            $('#stream_table').find('tbody').append(header);
+            if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD)
+                $('#stream_table_vod').find('tbody').append(header);
+            else $('#stream_table').find('tbody').append(header);
 
         }
 
@@ -659,7 +668,9 @@ SceneSceneBrowser.loadDataSuccess = function(responseText) {
             for (coloumn_id; coloumn_id < SceneSceneBrowser.ColoumnsCount; coloumn_id++) {
                 row.append(SceneSceneBrowser.createCellEmpty(row_id, coloumn_id));
             }
-            $('#stream_table').append(row);
+            if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD)
+                $('#stream_table_vod').append(row);
+            else $('#stream_table').append(row);
         }
 
         SceneSceneBrowser.loadDataSuccessFinish();
@@ -699,18 +710,21 @@ SceneSceneBrowser.createCell = function(row_id, coloumn_id, channel_name, previe
         blank_thumbnail = preview_thumbnail;
     }
 
+    cur_thumbnail = 'thumbnail_';
+    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+
     imgMatrix[imgMatrixCount] = preview_thumbnail;
-    imgMatrixId[imgMatrixCount] = 'thumbnail_' + row_id + '_' + coloumn_id;
+    imgMatrixId[imgMatrixCount] = cur_thumbnail + row_id + '_' + coloumn_id;
     imgMatrixCount++;
 
-    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //pre cache first 4 rows
+    if (imgMatrixCount <= (SceneSceneBrowser.ColoumnsCount * 4)) //try to pre cache first 4 rows
         newImg.src = preview_thumbnail;
 
     nameMatrix[nameMatrixCount] = channel_name;
     nameMatrixCount++;
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + blank_thumbnail + '"/> \
+        '<img id="' + cur_thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + blank_thumbnail + '"/> \
             <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
@@ -760,10 +774,13 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
                 nameMatrix[nameMatrixCount] = channel_name;
                 nameMatrixCount++;
 
+                cur_thumbnail = 'thumbnail_';
+                if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+
                 document.getElementById('empty_' + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
+                    '<img id="' + cur_thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
                     <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
                     <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
@@ -782,7 +799,11 @@ SceneSceneBrowser.replaceCellEmpty = function(row_id, coloumn_id, channel_name, 
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SceneSceneBrowser.loadDataSuccessFinish = function() {
-    $('#stream_table').imagesLoaded()
+    var table = 'stream_table';
+    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD)
+        table = 'stream_table_vod';
+
+    $('#' + table).imagesLoaded()
         .always({
             background: true
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
@@ -874,7 +895,7 @@ SceneSceneBrowser.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        document.getElementById("username_input").value = '';//reset username_input and prevent username be deleted on success
+                        document.getElementById("username_input").value = ''; //reset username_input and prevent username be deleted on success
                         SceneSceneBrowser.NewUser = false;
                         SceneSceneBrowser.loadingDataTry = 1;
                         if (loadingReplace) SceneSceneBrowser.loadDataSuccessReplace(xmlHttp.responseText);
@@ -942,20 +963,31 @@ SceneSceneBrowser.showDialog = function(title) {
         SceneSceneBrowser.isShowDialogOn = true;
         $("#streamname_frame").hide();
         $("#stream_table").hide();
+        $("#stream_table_vod").hide();
         $("#username_frame").hide();
         $("#dialog_loading").show();
     }
 };
 
 SceneSceneBrowser.showTable = function() {
+    cur_thumbnail = 'thumbnail_';
     SceneSceneBrowser.isShowDialogOn = false;
     $("#dialog_loading").hide();
     $("#dialog_exit").hide();
     $("#streamname_frame").hide();
     $("#username_frame").hide();
-    $("#stream_table").show();
+    if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
+        $("#stream_table").hide();
+        $("#stream_table_vod").show();
+        SceneSceneBrowser.cursorY = SceneSceneBrowser.cursorYOld;
+        SceneSceneBrowser.cursorX = SceneSceneBrowser.cursorXOld;
+        cur_thumbnail = 'thumbnail_vod_';
+    } else {
+        $("#stream_table_vod").hide();
+        $("#stream_table").show();
+    }
 
-    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
+    ScrollHelper.scrollVerticalToElementById(cur_thumbnail + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
 };
 
 SceneSceneBrowser.showInput = function() {
@@ -963,6 +995,7 @@ SceneSceneBrowser.showInput = function() {
     $("#dialog_loading").hide();
     $("#dialog_exit").hide();
     $("#stream_table").hide();
+    $("#stream_table_vod").hide();
     $("#streamname_frame").show();
     $("#username_frame").hide();
 };
@@ -972,6 +1005,7 @@ SceneSceneBrowser.showInputTools = function() {
     $("#dialog_loading").hide();
     $("#dialog_exit").hide();
     $("#stream_table").hide();
+    $("#stream_table_vod").hide();
     $("#streamname_frame").hide();
     $("#username_frame").show();
 };
@@ -982,6 +1016,10 @@ SceneSceneBrowser.switchMode = function(mode) {
         SceneSceneBrowser.mode = mode;
         SceneSceneBrowser.returnToFallower = false;
         SceneSceneBrowser.LoadFallowingOnly = false;
+        SceneSceneBrowser.vodWasLoad = false;
+        SceneSceneBrowser.cursorYOld = 0;
+        SceneSceneBrowser.cursorXOld = 0;
+        $('#stream_table_vod').empty();
 
         $("#tip_icon_channels").removeClass('tip_icon_active');
         $("#tip_icon_user").removeClass('tip_icon_active');
@@ -1046,8 +1084,18 @@ SceneSceneBrowser.refresh = function() {
         return;
     } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER &&
         SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
-        SceneSceneBrowser.LoadFallowingOnly = true;
-        SceneSceneBrowser.getAllUserPreFallowingLive(false);
+        if (SceneSceneBrowser.vodWasLoad) {
+            SceneSceneBrowser.clean();
+            SceneSceneBrowser.showTable();
+            SceneSceneBrowser.addFocus();
+        } else {
+            $('#stream_table_vod').empty();
+            SceneSceneBrowser.cursorYOld = 0;
+            SceneSceneBrowser.cursorXOld = 0;
+            SceneSceneBrowser.LoadFallowingOnly = true;
+            SceneSceneBrowser.vodWasLoad = true;
+            SceneSceneBrowser.getAllUserPreFallowingLive(false);
+        }
         return;
     } else if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_OPEN) {
         if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER && SceneSceneBrowser.isPreUser) {
@@ -1066,7 +1114,9 @@ SceneSceneBrowser.refresh = function() {
 };
 
 SceneSceneBrowser.removeFocus = function() {
-    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_thumbnail_focused');
+    cur_thumbnail = 'thumbnail_';
+    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+    $('#' + cur_thumbnail + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_thumbnail_focused');
     $('#thumbnail_div_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_text_focused');
     $('#display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_channel_focused');
     $('#stream_title_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).removeClass('stream_info_focused');
@@ -1076,6 +1126,7 @@ SceneSceneBrowser.removeFocus = function() {
 };
 
 SceneSceneBrowser.addFocus = function() {
+    cur_thumbnail = 'thumbnail_';
     if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
         SceneSceneBrowser.ColoumnsCount = SceneSceneBrowser.ColoumnsCountVod * 2;
         SceneSceneBrowser.ItemsReloadLimit = SceneSceneBrowser.ItemsReloadLimitVod / 2;
@@ -1085,7 +1136,7 @@ SceneSceneBrowser.addFocus = function() {
     }
 
     if (((SceneSceneBrowser.cursorY + SceneSceneBrowser.ItemsReloadLimit) > (SceneSceneBrowser.itemsCount / SceneSceneBrowser.ColoumnsCount)) &&
-        !SceneSceneBrowser.dataEnded) {
+        !SceneSceneBrowser.dataEnded && !SceneSceneBrowser.vodWasLoad) {
         if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
             loadingMore = true;
             SceneSceneBrowser.loadDataSuccess(null);
@@ -1097,14 +1148,16 @@ SceneSceneBrowser.addFocus = function() {
         }
     }
 
-    $('#thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
+    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+
+    $('#' + cur_thumbnail + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_thumbnail_focused');
     $('#thumbnail_div_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_text_focused');
     $('#display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_channel_focused');
     $('#stream_title_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
     $('#stream_game_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
     $('#viwers_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
     $('#quality_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).addClass('stream_info_focused');
-    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
+    ScrollHelper.scrollVerticalToElementById(cur_thumbnail + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX);
 };
 
 SceneSceneBrowser.getCellsCount = function(posY) {
@@ -1196,7 +1249,9 @@ SceneSceneBrowser.RestoreUsers = function() {
             SceneSceneBrowser.followerUsernameArray[x] = localStorage.getItem('followerUsernameArray' + x);
         }
     } else {
-        //SceneSceneBrowser.followerUsernameArray[0] = 'fglfgl27'; // hardcoded user
+        //SceneSceneBrowser.followerUsernameArray[0] = ''; // hardcoded user 1
+        //SceneSceneBrowser.followerUsernameArraySize++;
+        //SceneSceneBrowser.followerUsernameArray[1] = ''; // hardcoded user 2
         //SceneSceneBrowser.followerUsernameArraySize++;
     }
 };
@@ -1451,14 +1506,12 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
             } else if (SceneSceneBrowser.mode === SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.returnToFallower) {
                     SceneSceneBrowser.LoadFallowingOnly = false;
+                    SceneSceneBrowser.vodWasLoad = false;
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_FOLLOWER);
-                } else if (SceneSceneBrowser.returnToVods) {
-                    loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
-                    SceneSceneBrowser.LoadFallowingOnly = true;
+                } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS && SceneSceneBrowser.vodWasLoad) {
+                    SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_VOD;
                     SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.returnToVods = false;
-                    SceneSceneBrowser.getAllUserPreFallowingLive(false)
+                    SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.isShowDialogOn && SceneSceneBrowser.modeReturn === SceneSceneBrowser.MODE_USERS) {
                     SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_USERS);
                 } else {
@@ -1549,7 +1602,8 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (SceneSceneBrowser.mode != SceneSceneBrowser.MODE_USERS && SceneSceneBrowser.mode != SceneSceneBrowser.MODE_OPEN) {
                 SceneSceneBrowser.refreshClick = true;
-            if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) SceneSceneBrowser.highlight = !SceneSceneBrowser.highlight;
+                if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) SceneSceneBrowser.highlight = !SceneSceneBrowser.highlight;
+                SceneSceneBrowser.vodWasLoad = false;
                 SceneSceneBrowser.refresh();
             }
             break;
@@ -1568,17 +1622,26 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.returnToFallower = true;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO) {
-                    loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
-                    SceneSceneBrowser.LoadFallowingOnly = true;
-                    SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.getAllUserPreFallowingLive(false)
+                    if (SceneSceneBrowser.vodWasLoad) {
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_VOD;
+                        SceneSceneBrowser.refresh();
+                    } else {
+                        loadingMore = false;
+                        Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
+                        SceneSceneBrowser.LoadFallowingOnly = true;
+                        SceneSceneBrowser.returnToFallower = true;
+                        $('#stream_table_vod').empty();
+                        SceneSceneBrowser.getAllUserPreFallowingLive(false)
+                    }
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_VOD) {
                     loadingMore = false;
                     SceneSceneBrowser.LoadFallowingOnly = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE CHANNELS';
                     SceneSceneBrowser.returnToFallower = true;
+                    SceneSceneBrowser.vodWasLoad = true;
+                    SceneSceneBrowser.cursorYOld = SceneSceneBrowser.cursorY;
+                    SceneSceneBrowser.cursorXOld = SceneSceneBrowser.cursorX;
                     SceneSceneBrowser.refresh();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES ||
@@ -1593,11 +1656,17 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
         case TvKeyCode.KEY_CHANNELDOWN:
             if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_FOLLOWER) {
                 if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO) {
-                    loadingMore = false;
-                    Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
-                    SceneSceneBrowser.LoadFallowingOnly = true;
-                    SceneSceneBrowser.returnToFallower = true;
-                    SceneSceneBrowser.getAllUserPreFallowingLive(false)
+                    if (SceneSceneBrowser.vodWasLoad) {
+                        SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_VOD;
+                        SceneSceneBrowser.refresh();
+                    } else {
+                        loadingMore = false;
+                        Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
+                        SceneSceneBrowser.LoadFallowingOnly = true;
+                        SceneSceneBrowser.returnToFallower = true;
+                        $('#stream_table_vod').empty();
+                        SceneSceneBrowser.getAllUserPreFallowingLive(false)
+                    }
                 } else if (SceneSceneBrowser.state_follower === SceneSceneBrowser.STATE_FOLLOWER_LIVE_HOST) {
                     loadingMore = false;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_CHANNELS_INFO;
@@ -1616,6 +1685,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_GAMES_INFO;
                     Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' LIVE GAMES';
                     SceneSceneBrowser.returnToFallower = true;
+                    SceneSceneBrowser.vodWasLoad = true;
+                    SceneSceneBrowser.cursorYOld = SceneSceneBrowser.cursorY;
+                    SceneSceneBrowser.cursorXOld = SceneSceneBrowser.cursorX;
                     SceneSceneBrowser.refresh();
                 }
             } else if (SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES_STREAMS || SceneSceneBrowser.mode == SceneSceneBrowser.MODE_GAMES) {
@@ -1654,6 +1726,10 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         Scenemode = STR_USER + ' ' + SceneSceneBrowser.followerUsername + ' PAST BROADCAST';
                         SceneSceneBrowser.LoadFallowingOnly = true;
                         SceneSceneBrowser.returnToFallower = true;
+                        SceneSceneBrowser.vodWasLoad = false;
+                        SceneSceneBrowser.cursorYOld = 0;
+                        SceneSceneBrowser.cursorXOld = 0;
+                        $('#stream_table_vod').empty();
                         SceneSceneBrowser.getAllUserPreFallowingLive(false);
                     } else if (SceneSceneBrowser.cursorX == 4 && SceneSceneBrowser.cursorY == 0) { // add
                         SceneSceneBrowser.switchMode(SceneSceneBrowser.MODE_USERS);
@@ -1663,12 +1739,16 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
                         SceneSceneBrowser.removeUser(SceneSceneBrowser.cursorY);
                     }
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) {
+                    cur_thumbnail = 'thumbnail_';
+                    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
                     SceneSceneBrowser.selectedChannel = $('#cell_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).attr('data-channelname');
                     SceneSceneBrowser.selectedChannelDisplayname = document.getElementById('display_name_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).textContent;
-                    SceneSceneBrowser.selectedChannelChannelLogo = document.getElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).src;
+                    SceneSceneBrowser.selectedChannelChannelLogo = document.getElementById(cur_thumbnail + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX).src;
                     SceneSceneBrowser.state_follower = SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS;
-                    SceneSceneBrowser.returnToVods = true;
                     SceneSceneBrowser.returnToFallower = false;
+                    SceneSceneBrowser.vodWasLoad = true;
+                    SceneSceneBrowser.cursorYOld = SceneSceneBrowser.cursorY;
+                    SceneSceneBrowser.cursorXOld = SceneSceneBrowser.cursorX;
                     SceneSceneBrowser.refresh();
                 } else if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD_VIDEOS) {
                     SceneSceneBrowser.selectedChannelDisplaynameOld = SceneSceneBrowser.selectedChannelDisplayname;
@@ -1794,7 +1874,9 @@ SceneSceneBrowser.prototype.handleKeyDown = function(e) {
 };
 
 function ThumbNull(y, x) {
-    return document.getElementById('thumbnail_' + y + '_' + x, 0) != null;
+    cur_thumbnail = 'thumbnail_';
+    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+    return document.getElementById(cur_thumbnail + y + '_' + x, 0) != null;
 }
 
 function keyClickDelay() {
@@ -1932,8 +2014,11 @@ SceneSceneBrowser.createUserCell = function(row_id, coloumn_id, user_name, strea
     else if (coloumn_id == 4) thumbnail = (SceneSceneBrowser.Followercount == 0) ? 'images/user_plus.png' : 'images/user_up.png';
     else if (coloumn_id == 5) thumbnail = 'images/user_minus.png';
 
+    cur_thumbnail = 'thumbnail_';
+    if (SceneSceneBrowser.state_follower == SceneSceneBrowser.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
+
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell_small" data-channelname="' + user_name + '"></td>').html(
-        '<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+        '<img id="' + cur_thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
             <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div> \
             <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
