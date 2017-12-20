@@ -279,6 +279,7 @@
     <script src="app/js/language.js" defer></script>
     <script src="app/scenes/TVKeyValue.js" defer></script>
     <script src="app/scenes/Main.js" defer></script>
+    <script src="app/scenes/Live.js" defer></script>
     <script src="app/js/imagesloaded.pkgd.min.js" defer></script>
 </head>
 
@@ -302,7 +303,7 @@
                     </div>
                     <div id="top_bar_spacing" class="icon_center_label" style="padding-left: 30%;">
                     </div>
-                    <div id="top_bar_live" class="icon_center_focus lable_live">
+                    <div id="top_bar_live" class="icon_center_label lable_live">
                         STR_LIVE
                     </div>
                     <div id="top_bar_user" class="icon_center_label lable_user">
@@ -333,6 +334,10 @@
                 <div class="sk-cube sk-cube8"></div>
                 <div class="sk-cube sk-cube9"></div>
             </div>
+        </div>
+
+        <div id="dialog_warning" style="position: fixed; z-index:100; text-align: center; width: 100%; margin-top: 30%;">
+            <div id="dialog_warning_text" class="strokedbig" style="display: inline-block; font-size: 289%; color: white;"></div>
         </div>
         <table id="stream_table_live" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
         <table id="stream_table_user" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>

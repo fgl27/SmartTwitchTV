@@ -4,6 +4,20 @@ function Main() {
 }
 
 //Variable initialization
+Main.PreviouslyWindow = 0;
+Main.CurrentWindow = 0;
+
+Main.Live = 1;
+Main.User = 2;
+Main.Games = 3;
+Main.AGames = 4;
+Main.UserLive = 5;
+Main.UserHost = 6;
+Main.UserGames = 7;
+Main.UserAGames = 8;
+Main.UserVod = 9;
+Main.UserAVod = 10;
+
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
@@ -18,77 +32,114 @@ tizen.tvinputdevice.registerKey("Info");
 //Variable initialization end
 
 
+// this function will be called only once
 document.addEventListener("DOMContentLoaded", function() {
-    // this function will be called only once
-    Main.initLanguage();
     Main.initWindows();
-    document.body.addEventListener("keydown", Main.handleKeyDown, false);
-//    SceneSceneChannel.prototype.initialize();
+    Main.CurrentWindow = Main.Live;
+    Live.init();
 });
 
-Main.initLanguage = function() {
+Main.initWindows = function() {
     //set top bar labels
     $('.label_refresh').html(STR_REFRESH);
     $('.label_search').html(STR_SEARCH);
     $('.label_switch').html(STR_SWITCH);
-
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
-};
-
-Main.initWindows = function() {
     //hide all but Live
     $("#scene2").hide();
+    $("#stream_table_user").hide();
+    $("#stream_table_user_live").hide();
+    $("#stream_table_user_host").hide();
+    $("#stream_table_user_games").hide();
+    $("#stream_table_user_a_games").hide();
+    $("#stream_table_user_vod").hide();
+    $("#stream_table_user_a_vod").hide();
+    $("#stream_table_games").hide();
+    $("#stream_table_a_game").hide();
 };
 
-Main.handleKeyDown = function(event) {
+Main.showLoadDialog = function() {
+    $("#dialog_loading").show();
+};
 
-    switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
-            break;
-        case TvKeyCode.KEY_LEFT:
-            break;
-        case TvKeyCode.KEY_RIGHT:
-            break;
-        case TvKeyCode.KEY_UP:
-            break;
-        case TvKeyCode.KEY_DOWN:
-            break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
-            console.log("KEY_CHANNELGUIDE");
-            break;
-        case TvKeyCode.KEY_CHANNELUP:
-            Main.SwitchTobBar();
-            break;
-        case TvKeyCode.KEY_CHANNELDOWN:
-            break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
-            break;
-        case TvKeyCode.KEY_RED:
-            break;
-        case TvKeyCode.KEY_GREEN:
-            break;
-        case TvKeyCode.KEY_YELLOW:
-            break;
-        case TvKeyCode.KEY_BLUE:
-            break;
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
-        default:
-            break;
+Main.HideLoadDialog = function() {
+    $("#dialog_loading").hide();
+};
+
+Main.showWarningDialog = function(text) {
+    $("#dialog_warning_text").text(title);
+    $("#dialog_warning").show();
+};
+
+Main.HideWarningDialog = function() {
+    $("#dialog_warning_text").text('');
+    $("#dialog_warning").hide();
+};
+
+Main.addCommas = function(nStr) {
+    nStr += '';
+    var x = nStr.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
+    return x1 + x2;
 };
 
-Main.SwitchTobBar = function() {
-    $('#top_bar_live').removeClass('icon_center_focus');
-    $('#top_bar_live').addClass('icon_center_label');
-    $('#top_bar_user').removeClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "31%";
-    $('#top_bar_user').addClass('icon_center_focus');
+Main.videoqualitylang = function(video_height, average_fps, language) {
+    video_height = video_height + ''; //stringfy doesnot work 8|
+    if (video_height.indexOf('x') === 0) video_height = video_height.slice(-3);
+
+    if (average_fps > 58) average_fps = 60;
+    else if (average_fps < 32) average_fps = 30;
+    else average_fps = Math.ceil(average_fps);
+
+    return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
+};
+
+Main.is_playlist = function(content) {
+    return (content.indexOf('watch_party') == -1) ? '' : '[VOD] ';
+};
+
+Main.ThumbNull = function(y, x, thumbnail) {
+    return document.getElementById(thumbnail + y + '_' + x, 0) !== null;
+};
+
+Main.ScrollHelper = {
+    documentVerticalScrollPosition: function() {
+        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
+        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
+        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
+        return 0; // None of the above.
+    },
+
+    viewportHeight: function() {
+        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
+    },
+
+    documentHeight: function() {
+        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
+    },
+
+    documentMaximumScrollPosition: function() {
+        return this.documentHeight() - this.viewportHeight();
+    },
+
+    elementVerticalClientPositionById: function(id) {
+        var element = document.getElementById(id);
+        var rectangle = element.getBoundingClientRect();
+        return rectangle.top;
+    },
+
+    scrollVerticalToElementById: function(id) {
+        if (document.getElementById(id) === null) {
+            return;
+        }
+
+        $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
+    }
 };
