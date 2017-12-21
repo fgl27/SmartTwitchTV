@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 Main.initWindows = function() {
     //set top bar labels
-    $('.label_refresh').html(STR_REFRESH);
-    $('.label_search').html(STR_SEARCH);
-    $('.label_switch').html(STR_SWITCH);
+    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
+    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH);
+    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
