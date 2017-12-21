@@ -15,7 +15,9 @@
         font-weight: 100;
         letter-spacing: normal;
         position: absolute;
-        overflow: hidden;/*Prevent Scroling*/
+        overflow: hidden;
+        /*Prevent Scroling*/
+        
         z-index: 5;
         padding: 0px;
         margin: 0px;
@@ -273,6 +275,21 @@
             transform: scale3D(0, 0, 1);
         }
     }
+    .loading_bar {
+        margin: 0 auto;
+        width: 250px;
+        height: 18px;
+        font-size: 289%;
+        border-radius: 3px;
+        border: 3px solid white;
+        background: rgba(0, 0, 0, 0);
+        margin-bottom: 5px;
+    }
+    .loading_bar_progress {
+        width: 0%;
+        height: 100%;
+        background:linear-gradient(to left, #37077A, rgba(200, 160, 255, 0.6));
+    }
     </style>
     <script src="app/js/jquery.js" defer></script>
     <script src="$WEBAPIS/webapis/webapis.js" defer></script>
@@ -383,7 +400,12 @@
         <div id="chat_container" style="z-index:0; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5);">
         </div>
         <div id="scene_channel_dialog_loading" style="position: absolute; z-index:99; text-align: center; width: 100%; margin-top: 32%;">
-            <div id="scene_channel_dialog_loading_text" class="strokedbig" style="display: inline-block; font-size: 289%; color: white;"></div>
+            <div id="scene_channel_dialog_loading_text" class="strokedbig label_buffering" style="display: inline-block; font-size: 289%; color: white;">
+            STR_BUFFERING
+            </div>
+            <div class="loading_bar">
+                <div id="loading_bar_one" class="loading_bar_progress" style="padding-left: 10%;"></div>
+            </div>
         </div>
         <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 32%;">
             <i style="display: inline-block; font-size: 650%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
