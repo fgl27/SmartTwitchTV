@@ -30,13 +30,15 @@ tizen.tvinputdevice.registerKey("ColorF3Blue");
 tizen.tvinputdevice.registerKey("Guide");
 tizen.tvinputdevice.registerKey("Info");
 //Variable initialization end
-
+Main.selectedChannel = '';
+Main.selectedChannelDisplayname = '';
 
 // this function will be called only once
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Main.CurrentWindow = Main.Live;
     Live.init();
+    Play.PreStart();
 });
 
 Main.initWindows = function() {
@@ -146,6 +148,25 @@ Main.ScrollHelper = {
     }
 };
 
-//Main.LoadDialogBar = function() {
-//    document.getElementById("loading_bar_one").style.width = buffersize + '%';
-//};
+Main.StartPlayerLive = function() {
+    document.body.addEventListener("keydown", Play.handleKeyDown, false);
+    Play.Start();
+};
+
+Main.ReStartScreens = function() {
+    Live.init();
+    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
+};
+
+Main.openStream = function() {
+    document.body.addEventListener("keydown", Play.handleKeyDown, false);
+
+    $("#scene2").show();
+    Play.hidePanel();
+    Play.hideChat();
+    window.setTimeout(function() {
+        $("#scene1").hide();
+        $("#scene2").focus();
+        Play.Start();
+    }, 15);
+};

@@ -294,9 +294,9 @@ Live.loadDataSuccessReplace = function(responseText) {
 
         if (!mCellExists) {
             mReplace = Live.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-                    stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+                stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
+                stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             if (mReplace) Live.blankCellCount--;
             if (Live.blankCellCount === 0) break;
         }
@@ -308,7 +308,8 @@ Live.loadDataSuccessReplace = function(responseText) {
 };
 
 Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var my = 0, mx = 0;
+    var my = 0,
+        mx = 0;
     if (row_id < ((Live.ItemsLimit / Live.ColoumnsCount) - 1)) return false;
     for (my = row_id - (1 + Math.ceil(Live.blankCellCount / Live.ColoumnsCount)); my < row_id; my++) {
         for (mx = 0; mx < Live.ColoumnsCount; mx++) {
@@ -448,6 +449,10 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
+            Main.selectedChannel = $('#cell_' + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
+            Main.selectedChannelDisplayname = document.getElementById('display_name_' + Live.cursorY + '_' + Live.cursorX).textContent;
+            document.body.removeEventListener("keydown", Live.handleKeyDown);
+            Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
             break;

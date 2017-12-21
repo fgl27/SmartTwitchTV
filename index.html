@@ -30,7 +30,7 @@
         width: auto;
         height: 15px;
         text-align: left;
-        color: white;
+        color: #FFFFFF;
         font-size: 20px;
         line-height: 10px;
         display: inline-block;
@@ -55,7 +55,7 @@
         width: auto;
         height: 22px;
         text-align: left;
-        color: white;
+        color: #FFFFFF;
         font-size: 80px;
         line-height: 10px;
         display: inline-block;
@@ -184,13 +184,13 @@
         margin-left: 41%;
         padding-top: 0.5%;
         box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
-        color: white;
+        color: #FFFFFF;
         font-weight: 100;
         font-size: 245%;
         text-align: center;
         vertical-align: middle;
         line-height: 130px;
-        background-color: #42009E;
+        background-color: #000000;
     }
     div.button_go_focused {
         width: 18%;
@@ -200,7 +200,7 @@
         margin-left: 41%;
         padding-top: 0.5%;
         box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
-        color: white;
+        color: #FFFFFF;
         font-weight: 100;
         font-size: 245%;
         text-align: center;
@@ -209,7 +209,7 @@
         background-color: #7f53cf;
     }
     .strokedmini {
-        color: white;
+        color: #FFFFFF;
         text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
     }
     .textblack {
@@ -221,12 +221,12 @@
         display: inline-block;
     }
     .strokedextramini {
-        color: white;
+        color: #FFFFFF;
         text-shadow: #000000 0px 0px 5.7px, #000000 0px 0px 5.7px, #000000 0px 0px 4px;
     }
     .strokedbig {
         color: black;
-        text-shadow: #42009E 0px 0px 7px, #42009E 0px 0px 7px, #42009E 0px 0px 5px;
+        text-shadow: #000000 0px 0px 15px, #000000 0px 0px 15px, #000000 0px 0px 10px;
     }
     .sk-cube-grid {
         width: 200px;
@@ -275,20 +275,21 @@
             transform: scale3D(0, 0, 1);
         }
     }
-    .loading_bar {
-        margin: 0 auto;
-        width: 250px;
-        height: 18px;
-        font-size: 289%;
+    .buffering_bar {
+        width: 300px;
+        height: 22px;
         border-radius: 3px;
-        border: 3px solid white;
-        background: rgba(0, 0, 0, 0);
-        margin-bottom: 5px;
+        border: 4px solid #000000;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: inset 0 0 0 4px #FFFFFF;
+        margin: auto auto;
+        padding: 4px;
+        position: relative;
     }
-    .loading_bar_progress {
+    .buffering_bar_progress {
         width: 0%;
         height: 100%;
-        background:linear-gradient(to left, #37077A, rgba(200, 160, 255, 0.6));
+        background: linear-gradient(to left, #000000, #5F5F5F);
     }
     </style>
     <script src="app/js/jquery.js" defer></script>
@@ -297,6 +298,7 @@
     <script src="app/scenes/TVKeyValue.js" defer></script>
     <script src="app/scenes/Main.js" defer></script>
     <script src="app/scenes/Live.js" defer></script>
+    <script src="app/scenes/Play.js" defer></script>
     <script src="app/js/imagesloaded.pkgd.min.js" defer></script>
 </head>
 
@@ -347,8 +349,8 @@
             </div>
         </div>
 
-        <div id="dialog_warning" style="position: fixed; z-index:100; text-align: center; width: 100%; margin-top: 30%;">
-            <div id="dialog_warning_text" class="strokedbig" style="display: inline-block; font-size: 289%; color: white;"></div>
+        <div id="dialog_warning" style="position: fixed; z-index:101; text-align: center; width: 100%; margin-top: 30%;">
+            <div id="dialog_warning_text" class="strokedbig" style="display: inline-block; font-size: 289%; color: #FFFFFF;"></div>
         </div>
         <table id="stream_table_live" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
         <table id="stream_table_user" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
@@ -362,13 +364,13 @@
         <table id="stream_table_a_game" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
     </div>
     <div id="scene2" style="z-index:99; display:none; position : absolute;left : 0px;top : 0px;width : 1920px;height : 1080px; background-color : #000000;">
-        <object id="av-player" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
+        <object id="av-player_live" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
         <div id="scene_channel_panel" style="display:flex; position: absolute; top: 0%; width: 100%; height : 100%; z-index: 1;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.035));">
                 <div style="float: right; padding-right: 0.5%; padding-top: 1.5%;">
                     <div id="stream_live" class="strokedextramini" style="font-size: 170%; font-weight:bold;"></div>
-                    <div id="stream_info_livetime" class="strokedextramini" style="font-size: 170%; font-weight:bold; color: white"></div>
-                    <div id="stream_info_currentime" class="strokedextramini" style="font-size: 170%; color: white;  font-weight:bold;"></div>
+                    <div id="stream_info_livetime" class="strokedextramini" style="font-size: 170%; font-weight:bold; color: #FFFFFF"></div>
+                    <div id="stream_info_currentime" class="strokedextramini" style="font-size: 170%; color: #FFFFFF;  font-weight:bold;"></div>
                     <div id="stream_system_time" class="strokedextramini" style="font-size: 170%; font-weight:bold;"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" src="#" alt="stream_info" />
@@ -393,22 +395,35 @@
         </div>
         <div id="chat_container" style="z-index:0; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5);">
         </div>
-        <div id="scene_channel_dialog_loading" style="position: absolute; z-index:99; text-align: center; width: 100%; margin-top: 32%;">
-            <div id="scene_channel_dialog_loading_text" class="strokedbig label_buffering" style="display: inline-block; font-size: 289%; color: white;">
-            STR_BUFFERING
+        <div id="play_dialog_buffering" style="position: absolute; z-index:99; text-align: center; width: 100%; margin-top: 32%;">
+            <div id="play_dialog_buffering_text" class="strokedbig label_buffering" style="display: inline-block; font-size: 310%; color: #FFFFFF; font-weight:bold;">
+                STR_BUFFERING
             </div>
-            <div class="loading_bar">
-                <div id="loading_bar_one" class="loading_bar_progress" style="padding-left: 10%;"></div>
+            <div class="buffering_bar">
+                <div id="buffering_bar_one" class="buffering_bar_progress"></div>
             </div>
         </div>
-        <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 32%;">
-            <i style="display: inline-block; font-size: 650%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
+        <div id="scene_channel_dialog_simple_pause" style="position: absolute; z-index:3; text-align: center; width: 100%; margin-top: 27%;">
+            <i style="display: inline-block; font-size: 750%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
         </div>
-        <div id="scene_channel_dialog_exit" style="position: absolute; z-index:4; text-align: center; width: 100%; margin-top: 20%;">
-            <div id="scene_channel_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: white;"></div>
+        <div id="scene_channel_dialog_exit" style="position: absolute; z-index:4; text-align: center; width: 100%; margin-top: 25%; font-weight:bold;">
+            <div id="scene_channel_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: #FFFFFF;"></div>
         </div>
-        <div id="scene_channel_dialog_extra" style="position: absolute; z-index:5; text-align: center; width: 100%; margin-top: 50%;">
-            <div id="scene_channel_dialog_extra_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: white;"></div>
+        <div id="dialog_loading_play" style="position: fixed; z-index:102; text-align: center; width: 100%; margin-top: 17%;">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+        </div>
+        <div id="dialog_warning_play" style="position: fixed; z-index:103; text-align: center; width: 100%; margin-top: 30%; font-weight:bold;">
+            <div id="dialog_warning_play_text" class="strokedbig" style="display: inline-block; font-size: 289%; color: #FFFFFF;"></div>
         </div>
     </div>
 </body>
