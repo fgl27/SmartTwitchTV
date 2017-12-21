@@ -10,15 +10,6 @@
    <icon src="icon/icon_16_by_9.png"/>
    <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
    <name>TwitchTest</name>
-   <preference name="autoUpdate" value="n" readonly="false"/>
-   <preference name="fullwidget" value="y" readonly="false"/>
-   <preference name="type" value="user" readonly="false"/>
-   <preference name="srcctl" value="y" readonly="false"/>
-   <preference name="ticker" value="n" readonly="false"/>
-   <preference name="childlock" value="n" readonly="false"/>
-   <preference name="videomute" value="n" readonly="false"/>
-   <preference name="dcont" value="y" readonly="false"/>
-   <preference name="widgetname" value="Twitch" readonly="false"/>
    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
@@ -26,7 +17,7 @@
    <tizen:privilege name="http://tizen.org/privilege/tv.audio"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>
-   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="false" encryption="disable" install-location="auto" hwkey-event="enable"/>
+   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="true" encryption="disable" install-location="auto" hwkey-event="enable"/>
    <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
    <!-- Smart Hub Preview-->
    <tizen:metadata key='http://samsung.com/tv/metadata/use.preview' value='endpoint_URL=http://yourServer/JSONfile.json'></tizen:metadata>

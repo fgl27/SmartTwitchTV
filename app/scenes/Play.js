@@ -106,7 +106,7 @@ Play.Resume = function() {
         if (!Play.Play) {
             Play.ReturnFromResumeCount = 0;
             Play.ReturnFromResume();
-            Play.ReturnFromResumeId = window.setInterval(Play.ReturnFromResume, 1000);
+            Play.ReturnFromResumeId = window.setInterval(Play.ReturnFromResume, 250);
         }
     }
 };
@@ -114,7 +114,7 @@ Play.Resume = function() {
 Play.ReturnFromResume = function() {
     if (!webapis.network.isConnectedToGateway()) {
        Play.ReturnFromResumeCount++;
-       if (Play.ReturnFromResumeCount > 11) Play.shutdownStream();
+       if (Play.ReturnFromResumeCount > 45) Play.shutdownStream();
     } else {
         Play.ReturnFromResumeCount = 0;
         Play.clearPause();
