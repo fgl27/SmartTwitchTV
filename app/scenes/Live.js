@@ -178,7 +178,7 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/video.png"/> \
             <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + row_id + '_' + coloumn_id + '</div> \
+            <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
             <div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
             <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div> \
@@ -324,7 +324,7 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + row_id + '_' + coloumn_id + '</div> \
+                    <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
                     <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
                     <div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
                     <div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div> \
