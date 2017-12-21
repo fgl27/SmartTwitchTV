@@ -4,6 +4,16 @@ var STR_SWITCH = "Switch (CH Up/Down or A/B/C)";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";
+var STR_PLAYING = "Playing ";
+var STR_FOR = " for ";
+
+var STR_FOR = " for ";
+var STR_WATCHING = "Watching time ";
+var STR_SINCE = "Since ";
+var STR_AGO = " ago";
+
+
+
 
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";
