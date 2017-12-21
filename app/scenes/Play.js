@@ -41,6 +41,8 @@ Play.loadingDataTryMax = 12;
 Play.random_int = Math.round(Math.random() * 1e7);
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
+Play.ReturnFromResumeId = null;
+Play.ReturnFromResumeCount = 0;
 
 //Variable initialization end
 
@@ -87,7 +89,40 @@ Play.Start = function() {
     Play.playlistResponse = 0;
     Play.playingTry = 0;
     Play.state = Play.STATE_LOADING_TOKEN;
+
+    document.addEventListener('visibilitychange', Play.Resume, false);
     Play.loadData();
+    Play.ReturnFromResumeCount = 0;
+};
+
+Play.Resume = function() {
+    if (document.hidden) {
+        if (Play.Play) {
+            Play.Play = false;
+            Play.mWebapisAvplay.pause();
+            Play.showPauseDialog();
+        }
+    } else {
+        if (!Play.Play) {
+            Play.ReturnFromResumeCount = 0;
+            Play.ReturnFromResume();
+            Play.ReturnFromResumeId = window.setInterval(Play.ReturnFromResume, 1000);
+        }
+    }
+};
+
+Play.ReturnFromResume = function() {
+    if (!webapis.network.isConnectedToGateway()) {
+       Play.ReturnFromResumeCount++;
+       if (Play.ReturnFromResumeCount > 11) Play.shutdownStream();
+    } else {
+        Play.ReturnFromResumeCount = 0;
+        Play.clearPause();
+        Play.ReturnFromResumeCount = 0;
+        window.clearInterval(Play.ReturnFromResumeId);
+        Play.RestoreFromResume = true;
+        Play.qualityChanged();
+    }
 };
 
 Play.hidePanel = function() {

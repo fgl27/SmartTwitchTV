@@ -17,6 +17,9 @@ Main.UserGames = 7;
 Main.UserAGames = 8;
 Main.UserVod = 9;
 Main.UserAVod = 10;
+Main.selectedChannel = '';
+Main.selectedChannelDisplayname = '';
+Main.listenerID = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -30,8 +33,7 @@ tizen.tvinputdevice.registerKey("ColorF3Blue");
 tizen.tvinputdevice.registerKey("Guide");
 tizen.tvinputdevice.registerKey("Info");
 //Variable initialization end
-Main.selectedChannel = '';
-Main.selectedChannelDisplayname = '';
+
 
 // this function will be called only once
 document.addEventListener("DOMContentLoaded", function() {
@@ -169,4 +171,17 @@ Main.openStream = function() {
         $("#scene2").focus();
         Play.Start();
     }, 15);
+};
+
+Main.NetworkStateChangeListener = function() {
+    var onChange = function(data) {
+        if (data == 1 || data == 4) { //network connected
+            console.log("conecteddata = " + data);
+        } else if (data == 2 || 5) {
+            console.log("conecteddata = " + data);
+        } else console.log("conecteddata = " + data);
+    };
+    try {
+        Main.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
+    } catch (e) {}
 };
