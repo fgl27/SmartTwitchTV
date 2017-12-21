@@ -384,6 +384,15 @@ Live.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
+            if (Main.isExitDialogShown()) {
+                window.clearTimeout(Main.ExitDialogID);
+                Main.HideExitDialog();
+                try {
+                    tizen.application.getCurrentApplication().hide();
+                } catch (e) {}
+            } else {
+                Main.showExitDialog();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.Thumbnail)) {
