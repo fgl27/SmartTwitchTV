@@ -47,6 +47,8 @@ Main.initWindows = function() {
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
+
+    $('.label_buffering').html(STR_BUFFERING);
     //hide all but Live
     $("#scene2").hide();
     $("#stream_table_user").hide();
@@ -143,3 +145,7 @@ Main.ScrollHelper = {
         $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
     }
 };
+
+//Main.LoadDialogBar = function() {
+//    document.getElementById("loading_bar_one").style.width = buffersize + '%';
+//};
