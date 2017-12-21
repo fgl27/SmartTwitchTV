@@ -43,6 +43,7 @@ Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.ReturnFromResumeId = null;
 Play.ReturnFromResumeCount = 0;
+Play.isReturnFromResume = false;
 
 //Variable initialization end
 
@@ -68,6 +69,7 @@ Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.hidePanel();
     Play.hideChat();
+    Play.HideWarningDialog();
     $("#play_dialog_buffering").hide();
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
@@ -99,13 +101,15 @@ Play.Resume = function() {
     if (document.hidden) {
         if (Play.Play) {
             Play.Play = false;
-            Play.mWebapisAvplay.pause();
-            Play.showPauseDialog();
+            Play.mWebapisAvplay.stop();
         }
     } else {
         if (!Play.Play) {
+            Play.isReturnFromResume = true;
             Play.ReturnFromResumeCount = 0;
             Play.ReturnFromResume();
+            $("#scene_channel_panel").show();
+            Play.showWarningDialog(STR_RESUME);
             Play.ReturnFromResumeId = window.setInterval(Play.ReturnFromResume, 250);
         }
     }
@@ -114,15 +118,17 @@ Play.Resume = function() {
 Play.ReturnFromResume = function() {
     if (!webapis.network.isConnectedToGateway()) {
        Play.ReturnFromResumeCount++;
-       if (Play.ReturnFromResumeCount > 45) Play.shutdownStream();
+       if (Play.ReturnFromResumeCount > 120) Play.shutdownStream();
     } else {
-        Play.ReturnFromResumeCount = 0;
-        Play.clearPause();
-        Play.ReturnFromResumeCount = 0;
         window.clearInterval(Play.ReturnFromResumeId);
+        Play.ReturnFromResumeCount = 0;
         Play.RestoreFromResume = true;
         Play.qualityChanged();
     }
+};
+
+Play.isPanelShown = function() {
+    return $("#scene_channel_panel").is(":visible");
 };
 
 Play.hidePanel = function() {
@@ -196,6 +202,7 @@ Play.setHidePanel = function() {
 };
 
 Play.showChat = function() {
+    Play.ChatPosition();
     $("#chat_container").show();
 };
 
@@ -419,6 +426,8 @@ Play.qualityChanged = function() {
 Play.listener = {
     onbufferingstart: function() {
         Play.hideDialog();
+        Play.HideWarningDialog();
+        Play.hidePanel();
         $("#play_dialog_buffering").show();
         Play.ChatSize(false);
         Play.ChatBackgroundChange(false);
@@ -434,21 +443,36 @@ Play.listener = {
     onbufferingcomplete: function() {
         $("#play_dialog_buffering").hide();
         $("scene_channel_panel").hide();
+        Play.isReturnFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
         updateCurrentTime(currentTime);
     },
     onerror: function(eventType) {
         if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
-            window.clearTimeout(Play.exitID);
-            $("#play_dialog_exit").hide();
-            Play.hideChat();
-            window.setTimeout(Play.shutdownStream, 10);
+            if (!Play.isReturnFromResume) {
+                Play.OnErrorshutdownStream();
+            } else {
+                if (Play.ReturnFromResumeCount > 1) {
+                    Play.OnErrorshutdownStream();
+                } else { // try two times when comming from background
+                    Play.ReturnFromResumeCount++;
+                    Play.qualityChanged();
+                }
+            }
         }
     },
     onstreamcompleted: function() {
         Play.shutdownStream();
     }
+};
+
+Play.OnErrorshutdownStream = function() {
+    Play.ReturnFromResumeCount = 0;
+    window.clearTimeout(Play.exitID);
+    $("#play_dialog_exit").hide();
+    Play.hideChat();
+    window.setTimeout(Play.shutdownStream, 10);
 };
 
 var updateCurrentTime = function(currentTime) {
@@ -515,6 +539,7 @@ Play.shutdownStream = function() {
     Play.Playing = false;
     Play.hideDialog();
     Play.clearPause();
+    Play.HideWarningDialog();
     $("#scene1").show();
     $("#scene2").hide();
     $("#scene1").focus();
@@ -524,6 +549,7 @@ Play.shutdownStream = function() {
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
+    window.clearInterval(Play.ReturnFromResumeId);
 };
 
 Play.showDialog = function() {
@@ -635,10 +661,6 @@ Play.showChatBackgroundDialog = function(DialogText) {
 
 Play.hideChatBackgroundDialog = function() {
     $("#scene_channel_dialog_chat").hide();
-};
-
-Play.isPanelShown = function() {
-    return $("#scene_channel_panel").is(":visible");
 };
 
 Play.handleKeyDown = function(e) {
