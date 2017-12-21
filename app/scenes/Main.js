@@ -20,6 +20,7 @@ Main.UserAVod = 10;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.listenerID = null;
+Main.ExitDialogID = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -51,9 +52,11 @@ Main.initWindows = function() {
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
+    $("#main_dialog_exit_text").text(STR_EXIT);
 
     $('.label_buffering').html(STR_BUFFERING);
     //hide all but Live
+    Main.HideExitDialog();
     $("#scene2").hide();
     $("#stream_table_user").hide();
     $("#stream_table_user_live").hide();
@@ -72,6 +75,19 @@ Main.showLoadDialog = function() {
 
 Main.HideLoadDialog = function() {
     $("#dialog_loading").hide();
+};
+
+Main.showExitDialog = function() {
+    Main.ExitDialogID = window.setTimeout(Main.HideExitDialog, 3000);
+    $("#main_dialog_exit").show();
+};
+
+Main.HideExitDialog = function() {
+    $("#main_dialog_exit").hide();
+};
+
+Main.isExitDialogShown = function() {
+    return $("#main_dialog_exit").is(":visible");
 };
 
 Main.showWarningDialog = function(text) {

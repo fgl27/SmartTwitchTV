@@ -57,9 +57,9 @@ Play.PreStart = function() {
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     document.getElementById("stream_live").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
-    $("#scene_channel_dialog_exit_text").text(STR_EXIT);
+    $("#play_dialog_exit_text").text(STR_EXIT);
     $("#scene_channel_dialog_simple_pause").hide();
-    $("#scene_channel_dialog_exit").hide();
+    $("#play_dialog_exit").hide();
     $("#play_dialog_buffering").hide();
     $("#dialog_loading_play").hide();
 };
@@ -73,7 +73,7 @@ Play.Start = function() {
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
     $("#scene_channel_dialog_simple_pause").hide();
-    $("#scene_channel_dialog_exit").hide();
+    $("#play_dialog_exit").hide();
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="' +
         'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
@@ -441,7 +441,7 @@ Play.listener = {
     onerror: function(eventType) {
         if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
             window.clearTimeout(Play.exitID);
-            $("#scene_channel_dialog_exit").hide();
+            $("#play_dialog_exit").hide();
             Play.hideChat();
             window.setTimeout(Play.shutdownStream, 10);
         }
@@ -494,15 +494,15 @@ Play.showExitDialog = function() {
         Play.hideDialog();
     }
     if (!Play.ExitDialogVisible()) {
-        $("#scene_channel_dialog_exit").show();
+        $("#play_dialog_exit").show();
         Play.exitID = window.setTimeout(Play.showExitDialog, 3000);
     } else {
-        $("#scene_channel_dialog_exit").hide();
+        $("#play_dialog_exit").hide();
     }
 };
 
 Play.ExitDialogVisible = function() {
-    return $("#scene_channel_dialog_exit").is(":visible");
+    return $("#play_dialog_exit").is(":visible");
 };
 
 Play.DialogVisible = function() {
@@ -648,7 +648,7 @@ Play.handleKeyDown = function(e) {
                 //console.log("KEY_RETURN");
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
-                    $("#scene_channel_dialog_exit").hide();
+                    $("#play_dialog_exit").hide();
                     Play.hideDialog();
                     Play.hideChat();
                     window.setTimeout(Play.shutdownStream, 10);
@@ -764,7 +764,7 @@ Play.handleKeyDown = function(e) {
                 } else {
                     if (Play.ExitDialogVisible()) {
                         window.clearTimeout(Play.exitID);
-                        $("#scene_channel_dialog_exit").hide();
+                        $("#play_dialog_exit").hide();
                         Play.hideDialog();
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
