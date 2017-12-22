@@ -59,19 +59,14 @@ Play.PreStart = function() {
     document.getElementById("stream_live").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
 };
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    Play.hidePanel();
-    Play.hideChat();
-    Play.ChatSize(false);
-    Play.ChatBackgroundChange(false);
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
+
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="' +
         'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
@@ -79,7 +74,8 @@ Play.Start = function() {
     <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
     <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
     </div>');
-
+    Play.ChatSize(false);
+    Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
     Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
     Play.tokenResponse = 0;
@@ -433,7 +429,7 @@ Play.shutdownStream = function() {
 };
 
 Play.showDialog = function() {
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
+    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
     $("#dialog_loading_play").show();
 };
 
@@ -442,7 +438,7 @@ Play.hideDialog = function() {
 };
 
 Play.showWarningDialog = function(text) {
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
+    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_loading_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('play_dialog_buffering', 'dialog_loading_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
     $("#dialog_warning_play_text").text(text);
     $("#dialog_warning_play").show();
 };
@@ -453,7 +449,7 @@ Play.HideWarningDialog = function() {
 };
 
 Play.showExitDialog = function() {
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
+    while (Play.isAllDialogsOff('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause');
 
     if (!Play.ExitDialogVisible()) {
         $("#play_dialog_exit").show();
@@ -472,7 +468,7 @@ Play.DialogVisible = function() {
 };
 
 Play.showBufferDialog = function() {
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
+    while (Play.isAllDialogsOff('dialog_loading_play', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
     $("#play_dialog_buffering").show();
 };
 
@@ -492,7 +488,7 @@ Play.clearPause = function() {
 };
 
 Play.showPauseDialog = function() {
-    while (Play.isAllDialogsOff) Play.HideAllDialogs();
+    while (Play.isAllDialogsOff('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_exit');
     if (!Play.isShowPauseDialogOn()) {
         $("#scene_channel_dialog_simple_pause").show();
         Play.pauseEndID = window.setTimeout(Play.showPauseDialog, 1500);
@@ -527,21 +523,18 @@ Play.showPanel = function() {
     if (Play.ChatPositions === 1) Play.ChatPosition();
 };
 
-Play.isAllDialogsOff = function() {
-    return $("#scene_channel_dialog_simple_pause").is(":visible") ||
-        $("#dialog_loading_play").is(":visible") ||
-        $("#dialog_warning_play").is(":visible") ||
-        $("#play_dialog_exit").is(":visible") ||
-        $("#play_dialog_buffering").is(":visible");
+Play.isAllDialogsOff = function(one, two, three, four) {
+    return $("#" + one).is(":visible") ||
+        $("#" + two).is(":visible") ||
+        $("#" + three).is(":visible") ||
+        $("#" + four).is(":visible");
 };
 
-Play.HideAllDialogs = function() {
-    $("#dialog_loading_play").hide();
-    $("#dialog_warning_play").hide();
-    window.clearTimeout(Play.exitID);
-    $("#scene_channel_dialog_simple_pause").hide();
-    $("#play_dialog_exit").hide();
-    $("#play_dialog_buffering").hide();
+Play.HideAllDialogs = function(one, two, three, four) {
+    $("#" + one).hide();
+    $("#" + two).hide();
+    $("#" + three).hide();
+    $("#" + four).hide();
 };
 
 Play.clearHidePanel = function() {
