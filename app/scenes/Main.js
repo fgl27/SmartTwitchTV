@@ -173,7 +173,7 @@ Main.StartPlayerLive = function() {
 };
 
 Main.ReStartScreens = function() {
-    Live.init();
+    Main.SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 };
 
