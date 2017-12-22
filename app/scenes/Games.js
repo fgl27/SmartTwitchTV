@@ -57,8 +57,10 @@ Games.exit = function() {
 };
 
 Games.StartLoad = function() {
-    $('#stream_table_games').empty();
+    //TODO a function to check and to this hide/show to all none empty
     $('#stream_table_games').hide();
+    $('#stream_table_live').hide();
+    $('#stream_table_games').empty();
     Main.showLoadDialog();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
@@ -207,6 +209,7 @@ Games.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Games.loadingMore) {
+                $("#stream_table_live").show();
                 $("#stream_table_games").show();
                 Main.HideLoadDialog();
                 Games.addFocus();
