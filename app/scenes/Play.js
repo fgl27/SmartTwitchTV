@@ -333,7 +333,7 @@ Play.listener = {
         if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
     },
     onbufferingprogress: function(percent) {
-        document.getElementById("buffering_bar_one").style.width = (percent + 2) + '%';
+        document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
     },
     onbufferingcomplete: function() {
         $("#play_dialog_buffering").hide();
