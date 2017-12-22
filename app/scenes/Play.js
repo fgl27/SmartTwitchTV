@@ -429,7 +429,7 @@ Play.shutdownStream = function() {
 };
 
 Play.showDialog = function() {
-    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
+    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_warning_play', 'play_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'play_dialog_simple_pause', 'play_dialog_exit');
     $("#dialog_loading_play").show();
 };
 
@@ -438,7 +438,7 @@ Play.hideDialog = function() {
 };
 
 Play.showWarningDialog = function(text) {
-    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_loading_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('play_dialog_buffering', 'dialog_loading_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
+    while (Play.isAllDialogsOff('play_dialog_buffering', 'dialog_loading_play', 'play_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('play_dialog_buffering', 'dialog_loading_play', 'play_dialog_simple_pause', 'play_dialog_exit');
     $("#dialog_warning_play_text").text(text);
     $("#dialog_warning_play").show();
 };
@@ -449,7 +449,7 @@ Play.HideWarningDialog = function() {
 };
 
 Play.showExitDialog = function() {
-    while (Play.isAllDialogsOff('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'scene_channel_dialog_simple_pause');
+    while (Play.isAllDialogsOff('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_simple_pause')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_simple_pause');
 
     if (!Play.ExitDialogVisible()) {
         $("#play_dialog_exit").show();
@@ -468,7 +468,7 @@ Play.DialogVisible = function() {
 };
 
 Play.showBufferDialog = function() {
-    while (Play.isAllDialogsOff('dialog_loading_play', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'dialog_warning_play', 'scene_channel_dialog_simple_pause', 'play_dialog_exit');
+    while (Play.isAllDialogsOff('dialog_loading_play', 'dialog_warning_play', 'play_dialog_simple_pause', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'dialog_warning_play', 'play_dialog_simple_pause', 'play_dialog_exit');
     $("#play_dialog_buffering").show();
 };
 
@@ -480,7 +480,7 @@ Play.clearPause = function() {
     window.clearTimeout(Play.pauseEndID);
     window.clearTimeout(Play.pauseStartID);
     if (Play.isShowPauseDialogOn()) {
-        $("#scene_channel_dialog_simple_pause").hide();
+        $("#play_dialog_simple_pause").hide();
     }
     if (Play.isPanelShown()) {
         Play.hidePanel();
@@ -490,16 +490,16 @@ Play.clearPause = function() {
 Play.showPauseDialog = function() {
     while (Play.isAllDialogsOff('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_exit')) Play.HideAllDialogs('dialog_loading_play', 'play_dialog_buffering', 'dialog_warning_play', 'play_dialog_exit');
     if (!Play.isShowPauseDialogOn()) {
-        $("#scene_channel_dialog_simple_pause").show();
+        $("#play_dialog_simple_pause").show();
         Play.pauseEndID = window.setTimeout(Play.showPauseDialog, 1500);
     } else {
-        $("#scene_channel_dialog_simple_pause").hide();
+        $("#play_dialog_simple_pause").hide();
         Play.pauseStartID = window.setTimeout(Play.showPauseDialog, 8000); // time in ms
     }
 };
 
 Play.isShowPauseDialogOn = function() {
-    return $("#scene_channel_dialog_simple_pause").is(":visible");
+    return $("#play_dialog_simple_pause").is(":visible");
 };
 
 Play.isPanelShown = function() {
