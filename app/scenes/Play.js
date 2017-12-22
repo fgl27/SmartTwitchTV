@@ -111,101 +111,14 @@ Play.Resume = function() {
 
 Play.ReturnFromResume = function() {
     if (!webapis.network.isConnectedToGateway()) {
-       Play.ReturnFromResumeCount++;
-       if (Play.ReturnFromResumeCount > 120) Play.shutdownStream();
+        Play.ReturnFromResumeCount++;
+        if (Play.ReturnFromResumeCount > 120) Play.shutdownStream();
     } else {
         window.clearInterval(Play.ReturnFromResumeId);
         Play.ReturnFromResumeCount = 0;
         Play.RestoreFromResume = true;
         Play.qualityChanged();
     }
-};
-
-Play.isPanelShown = function() {
-    return $("#scene_channel_panel").is(":visible");
-};
-
-Play.hidePanel = function() {
-    Play.clearHidePanel();
-    $("#scene_channel_panel").hide();
-    Play.quality = Play.qualityPlaying;
-    Play.sizePanelOffset = 0;
-    if (Play.ChatPositions === 1) Play.ChatPosition();
-};
-
-Play.showPanel = function() {
-    Play.qualityIndexReset();
-    Play.qualityDisplay();
-    $("#scene_channel_panel").show();
-    Play.setHidePanel();
-    Play.sizePanelOffset = -4;
-    if (Play.ChatPositions === 1) Play.ChatPosition();
-};
-
-Play.qualityIndexReset = function() {
-    Play.qualityIndex = 0;
-    for (var i = 0; i < Play.getQualitiesCount(); i++) {
-        if (Play.qualities[i].id === Play.quality) {
-            Play.qualityIndex = i;
-            break;
-        } else if (Play.qualities[i].id.indexOf(Play.quality) !== -1) { //make shore to set a value before break out
-            Play.qualityIndex = i;
-        }
-    }
-};
-
-Play.qualityDisplay = function() {
-    if (Play.qualityIndex === 0) {
-        $('#quality_arrow_up').css({
-            'opacity': 0.2
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
-    } else if (Play.qualityIndex == Play.getQualitiesCount() - 1) {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 0.2
-        });
-    } else {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
-    }
-
-    Play.quality = Play.qualities[Play.qualityIndex].id;
-
-    $('#quality_name').text(Play.quality);
-};
-
-Play.getQualitiesCount = function() {
-    return Play.qualities.length;
-};
-
-Play.clearHidePanel = function() {
-    window.clearTimeout(Play.PanelHideID);
-};
-
-Play.setHidePanel = function() {
-    Play.PanelHideID = window.setTimeout(Play.hidePanel, 5000); // time in ms
-};
-
-Play.showChat = function() {
-    Play.ChatPosition();
-    $("#chat_container").show();
-};
-
-Play.hideChat = function() {
-    $("#chat_container").hide();
-};
-
-Play.isChatShown = function() {
-    return $("#chat_container").is(":visible");
 };
 
 Play.updateStreamInfo = function() {
@@ -593,6 +506,27 @@ Play.isShowPauseDialogOn = function() {
     return $("#scene_channel_dialog_simple_pause").is(":visible");
 };
 
+Play.isPanelShown = function() {
+    return $("#scene_channel_panel").is(":visible");
+};
+
+Play.hidePanel = function() {
+    Play.clearHidePanel();
+    $("#scene_channel_panel").hide();
+    Play.quality = Play.qualityPlaying;
+    Play.sizePanelOffset = 0;
+    if (Play.ChatPositions === 1) Play.ChatPosition();
+};
+
+Play.showPanel = function() {
+    Play.qualityIndexReset();
+    Play.qualityDisplay();
+    $("#scene_channel_panel").show();
+    Play.setHidePanel();
+    Play.sizePanelOffset = -4;
+    if (Play.ChatPositions === 1) Play.ChatPosition();
+};
+
 Play.isAllDialogsOff = function() {
     return $("#scene_channel_dialog_simple_pause").is(":visible") ||
         $("#dialog_loading_play").is(":visible") ||
@@ -608,6 +542,72 @@ Play.HideAllDialogs = function() {
     $("#scene_channel_dialog_simple_pause").hide();
     $("#play_dialog_exit").hide();
     $("#play_dialog_buffering").hide();
+};
+
+Play.clearHidePanel = function() {
+    window.clearTimeout(Play.PanelHideID);
+};
+
+Play.setHidePanel = function() {
+    Play.PanelHideID = window.setTimeout(Play.hidePanel, 5000); // time in ms
+};
+
+Play.showChat = function() {
+    Play.ChatPosition();
+    $("#chat_container").show();
+};
+
+Play.hideChat = function() {
+    $("#chat_container").hide();
+};
+
+Play.isChatShown = function() {
+    return $("#chat_container").is(":visible");
+};
+
+Play.qualityIndexReset = function() {
+    Play.qualityIndex = 0;
+    for (var i = 0; i < Play.getQualitiesCount(); i++) {
+        if (Play.qualities[i].id === Play.quality) {
+            Play.qualityIndex = i;
+            break;
+        } else if (Play.qualities[i].id.indexOf(Play.quality) !== -1) { //make shore to set a value before break out
+            Play.qualityIndex = i;
+        }
+    }
+};
+
+Play.qualityDisplay = function() {
+    if (Play.qualityIndex === 0) {
+        $('#quality_arrow_up').css({
+            'opacity': 0.2
+        });
+        $('#quality_arrow_down').css({
+            'opacity': 1.0
+        });
+    } else if (Play.qualityIndex == Play.getQualitiesCount() - 1) {
+        $('#quality_arrow_up').css({
+            'opacity': 1.0
+        });
+        $('#quality_arrow_down').css({
+            'opacity': 0.2
+        });
+    } else {
+        $('#quality_arrow_up').css({
+            'opacity': 1.0
+        });
+        $('#quality_arrow_down').css({
+            'opacity': 1.0
+        });
+    }
+
+    Play.quality = Play.qualities[Play.qualityIndex].id;
+
+    $('#quality_name').text(Play.quality);
+};
+
+Play.getQualitiesCount = function() {
+    return Play.qualities.length;
 };
 
 Play.ChatSize = function(showDialog) {
