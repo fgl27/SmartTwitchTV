@@ -11,7 +11,7 @@ Main.Go = 1;
 Main.Live = 1;
 Main.User = 2;
 Main.Games = 3;
-Main.AGames = 4;
+Main.AGame = 4;
 Main.UserLive = 5;
 Main.UserHost = 6;
 Main.UserGames = 7;
@@ -180,6 +180,7 @@ Main.ReStartScreens = function() {
 Main.SwitchScreen = function() {
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.Games) Games.init();
+    else if (Main.Go === Main.AGame) AGame.init();
 };
 
 Main.openStream = function() {

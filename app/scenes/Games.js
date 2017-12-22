@@ -33,6 +33,7 @@ Games.StreamTitleDiv = 'game_stream_title_';
 Games.StreamGameDiv = 'game_stream_game_';
 Games.ViwersDiv = 'game_viwers_';
 Games.QualityDiv = 'game_quality_';
+Games.Cell = 'game_cell_';
 
 //Variable initialization end
 
@@ -177,7 +178,7 @@ Games.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Games.nameMatrix[Games.nameMatrixCount] = channel_name;
     Games.nameMatrixCount++;
 
-    return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/game.png"/> \
             <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
@@ -317,9 +318,9 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
                 Games.nameMatrix[Games.nameMatrixCount] = channel_name;
                 Games.nameMatrixCount++;
-                document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
-                document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
+                document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
+                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/game.png"/> \
                      <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                      <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
@@ -453,10 +454,10 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Main.selectedGame = $('#cell_' + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
-            Main.selectedGameDisplayname = document.getElementById('display_name_' + Games.cursorY + '_' + Games.cursorX).textContent;
-            //document.body.removeEventListener("keydown", Games.handleKeyDown);
-            //Main.openStream();
+            Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
+            document.body.removeEventListener("keydown", Games.handleKeyDown);
+            Main.Go = Main.AGame;
+            Games.exit();
             break;
         case TvKeyCode.KEY_RED:
             break;
@@ -503,8 +504,9 @@ Games.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
+        //console.log(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight()); remove to calculate off set the 514 value below
         if (id.indexOf(Games.Thumbnail + '0_') == -1)
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
-        else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(Games.Thumbnail + '1_0') - 0.535 * this.viewportHeight());
+        else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
     }
 };
