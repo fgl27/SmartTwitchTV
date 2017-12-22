@@ -33,10 +33,9 @@ Live.keyClickDelayTime = 25;
 Live.init = function() {
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
     $('#top_bar_live').removeClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
+    //    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
     $('#top_bar_live').addClass('icon_center_focus');
     if (Live.Status) {
-        $("#stream_table_live").show();
         Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
     } else {
         Live.Status = true;
@@ -47,10 +46,9 @@ Live.init = function() {
 
 Live.exit = function() {
     document.body.removeEventListener("keydown", Live.handleKeyDown);
-    Live.SwitchTobBar();
     $('#top_bar_live').removeClass('icon_center_focus');
     $('#top_bar_live').addClass('icon_center_label');
-    $("#stream_table_live").hide();
+    Main.SwitchScreen();
 };
 
 Live.StartLoad = function() {
@@ -140,13 +138,14 @@ Live.loadDataSuccess = function(responseText) {
         for (coloumn_id = 0; coloumn_id < Live.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             mReplace = false;
             stream = response.streams[cursor];
-            if (!Live.CellExists(stream.channel.name)) {
+            if (Live.CellExists(stream.channel.name)) coloumn_id--;
+            else {
                 cell = Live.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                     stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
                     Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
                 row.append(cell);
-            } else coloumn_id--;
+            }
         }
 
         for (coloumn_id; coloumn_id < Live.ColoumnsCount; coloumn_id++) {
@@ -284,15 +283,12 @@ Live.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Live.itemsCount / Live.ColoumnsCount;
 
-    var coloumn_id, stream, mCellExists = false,
-        mReplace = false;
+    var coloumn_id, stream, mReplace = false;
 
     for (var cursor = 0; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
-        mCellExists = Live.CellExists(stream.channel.name);
-        if (mCellExists) Live.blankCellCount--;
-
-        if (!mCellExists) {
+        if (Live.CellExists(stream.channel.name)) Games.blankCellCount--;
+        else {
             mReplace = Live.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
@@ -450,9 +446,12 @@ Live.handleKeyDown = function(event) {
             Live.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Live.SwitchTobBar();
+            Main.Go = Main.Games;
+            Live.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
+            Main.Go = Main.Games;
+            Live.exit();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -464,8 +463,10 @@ Live.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            $('#img_black').hide();
             break;
         case TvKeyCode.KEY_GREEN:
+            $('#img_black').show();
             break;
         case TvKeyCode.KEY_YELLOW:
             break;

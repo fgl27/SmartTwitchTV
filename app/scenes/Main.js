@@ -4,8 +4,9 @@ function Main() {
 }
 
 //Variable initialization
-Main.PreviouslyWindow = 0;
-Main.CurrentWindow = 0;
+Main.Hide = '';
+Main.Show = '';
+Main.Go = 1;
 
 Main.Live = 1;
 Main.User = 2;
@@ -21,6 +22,8 @@ Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.listenerID = null;
 Main.ExitDialogID = null;
+Main.selectedGame = '';
+Main.selectedGameDisplayname = '';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -39,7 +42,7 @@ tizen.tvinputdevice.registerKey("Info");
 // this function will be called only once
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
-    Main.CurrentWindow = Main.Live;
+    Main.Show = Main.Live;
     Live.init();
     Play.PreStart();
 });
@@ -152,9 +155,7 @@ Main.ScrollHelper = {
     },
 
     elementVerticalClientPositionById: function(id) {
-        var element = document.getElementById(id);
-        var rectangle = element.getBoundingClientRect();
-        return rectangle.top;
+        return document.getElementById(id).getBoundingClientRect().top;
     },
 
     scrollVerticalToElementById: function(id) {
@@ -174,6 +175,11 @@ Main.StartPlayerLive = function() {
 Main.ReStartScreens = function() {
     Live.init();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
+};
+
+Main.SwitchScreen = function() {
+    if (Main.Go === Main.Live) Live.init();
+    else if (Main.Go === Main.Games) Games.init();
 };
 
 Main.openStream = function() {

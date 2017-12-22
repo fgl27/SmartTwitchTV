@@ -135,14 +135,24 @@
         font-weight: bold;
         text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;
     }
+    div.stream_info_games {
+        -webkit-font-smoothing: antialiased;
+        padding-top: 0.5%;
+        width: 100%;
+        text-align: left;
+        word-wrap: break-word;
+        color: #FFFFFF;
+        font-weight: 100;
+        font-size: 152%;
+        font-weight: bold;
+        text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;
+    }
     div.stream_info_focused {
         -webkit-font-smoothing: antialiased;
         padding-top: 0.5%;
         width: 100%;
         text-align: left;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        word-wrap: break-word;
         color: #000000;
         font-weight: 100;
         font-size: 152%;
@@ -299,11 +309,13 @@
     <script src="app/scenes/Main.js" defer></script>
     <script src="app/scenes/Live.js" defer></script>
     <script src="app/scenes/Play.js" defer></script>
+    <script src="app/scenes/Games.js" defer></script>
     <script src="app/js/imagesloaded.pkgd.min.js" defer></script>
+    <script src="app/js/smooth-scroll.js" defer></script>
 </head>
 
 <body>
-    <div id="scene1" style="position : absolute;left : 0px;top : 0px;width : 1920px;height : 1080px; background-color : #000000;">
+    <div id="scene1" style="position : absolute;left : 0px;top : 0px; width : 1920px; height : 1080px; background-color : #000000;">
         <div id="toolbar" style="z-index:99; position: fixed; width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35));">
             <div style="float: right; padding-right: 0.5%; padding-top: 1%; width: 10%;">
                 <img style="float: right; width: 100%; padding-left: 2%;" src="images/twitchlogo.png" alt="twitchlogo" />
