@@ -52,9 +52,9 @@ Live.exit = function() {
 };
 
 Live.StartLoad = function() {
-    Main.showLoadDialog();
     $('#stream_table_live').hide();
     $('#stream_table_live').empty();
+    Main.showLoadDialog();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
     Live.nameMatrix = [];
