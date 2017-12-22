@@ -52,7 +52,7 @@ Live.exit = function() {
 };
 
 Live.StartLoad = function() {
-    $('#stream_table_live').hide();
+    Main.HideAllScreen();
     $('#stream_table_live').empty();
     Main.showLoadDialog();
     Live.loadingMore = false;
@@ -204,7 +204,7 @@ Live.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Live.loadingMore) {
-                $("#stream_table_live").show();
+                Main.ShowAllScreen();
                 Main.HideLoadDialog();
                 Live.addFocus();
             }
