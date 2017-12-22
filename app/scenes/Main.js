@@ -190,7 +190,6 @@ Main.openStream = function() {
     Play.hideChat();
     window.setTimeout(function() {
         $("#scene1").hide();
-        $("#scene2").focus();
         Play.Start();
     }, 15);
 };

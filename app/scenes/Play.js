@@ -418,7 +418,6 @@ Play.shutdownStream = function() {
     Play.HideWarningDialog();
     $("#scene1").show();
     $("#scene2").hide();
-    $("#scene1").focus();
     Main.ReStartScreens();
 
     Play.oldcurrentTime = 0;
