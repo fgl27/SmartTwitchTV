@@ -229,7 +229,7 @@ AGame.loadDataSuccessFinish = function() {
             }
 
             if (AGame.blankCellCount > 0) {
-                if (AGame.blankCellCount > (AGame.ItemsLimit / 2)) AGame.itemsCountOffset += AGame.blankCellCount;
+                if (AGame.blankCellCount > (AGame.ItemsLimit / 2)) AGame.itemsCountOffset += (AGame.blankCellCount * 2);
                 else AGame.itemsCountOffset = 0;
                 AGame.loadingMore = true;
                 AGame.loadDataReplace();

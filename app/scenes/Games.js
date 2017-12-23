@@ -224,7 +224,7 @@ Games.loadDataSuccessFinish = function() {
             }
 
             if (Games.blankCellCount > 0) {
-                if (Games.blankCellCount > (Games.ItemsLimit / 2)) Games.itemsCountOffset += Games.blankCellCount;
+                if (Games.blankCellCount > (Games.ItemsLimit / 2)) Games.itemsCountOffset += (Games.blankCellCount * 2);
                 else Games.itemsCountOffset = 0;
                 Games.loadingMore = true;
                 Games.loadDataReplace();
