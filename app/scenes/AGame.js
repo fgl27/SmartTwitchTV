@@ -362,7 +362,9 @@ AGame.addFocus = function() {
     $('#' + AGame.StreamGameDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
     $('#' + AGame.ViwersDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
     $('#' + AGame.QualityDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
-    AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
+    window.setTimeout(function() {
+        AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
+    }, 10);
 };
 
 AGame.removeFocus = function() {

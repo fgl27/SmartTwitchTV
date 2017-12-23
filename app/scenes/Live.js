@@ -349,7 +349,9 @@ Live.addFocus = function() {
     $('#stream_game_' + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
     $('#viwers_' + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
     $('#quality_' + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
-    Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    window.setTimeout(function() {
+        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    }, 10);
 };
 
 Live.removeFocus = function() {

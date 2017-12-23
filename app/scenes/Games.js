@@ -352,7 +352,9 @@ Games.addFocus = function() {
     //$('#' + Games.StreamGameDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
     $('#' + Games.ViwersDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
     //$('#' + Games.QualityDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
-    Games.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail + Games.cursorY + '_' + Games.cursorX);
+    window.setTimeout(function() {
+        Games.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail + Games.cursorY + '_' + Games.cursorX);
+    }, 10);
 };
 
 Games.removeFocus = function() {
