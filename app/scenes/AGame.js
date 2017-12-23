@@ -418,7 +418,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.removeFocus();
                 AGame.cursorX++;
                 AGame.addFocus();
-            } else if (Main.ThumbNull((AGame.cursorY + 1), 0), AGame.Thumbnail) {
+            } else if (Main.ThumbNull((AGame.cursorY + 1), 0, AGame.Thumbnail)) {
                 AGame.removeFocus();
                 AGame.cursorY++;
                 AGame.cursorX = 0;
