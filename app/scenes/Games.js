@@ -26,6 +26,7 @@ Games.blankCellCount = 0;
 Games.itemsCountOffset = 0;
 Games.LastClickFinish = true;
 Games.keyClickDelayTime = 25;
+Games.ReplacedataEnded = false;
 
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
@@ -63,6 +64,8 @@ Games.StartLoad = function() {
     Main.showLoadDialog();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
+    Games.itemsCountOffset = 0;
+    Games.ReplacedataEnded = false;
     Games.nameMatrix = [];
     Games.nameMatrixCount = 0;
     Games.itemsCount = 0;
@@ -87,7 +90,14 @@ Games.loadDataRequest = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + Games.itemsCount, true);
+        var offset = Games.itemsCount + Games.itemsCountOffset;
+        if (offset >= (Games.MaxOffset - Games.ItemsLimit)) {
+            offset = Games.MaxOffset - Games.ItemsLimit;
+            Games.dataEnded = true;
+            Games.ReplacedataEnded = true;
+        }
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -124,12 +134,12 @@ Games.loadDataError = function(reason, responseText) {
 Games.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.top.length;
+    Games.MaxOffset = parseInt(response._total);
 
     if (response_items < Games.ItemsLimit) Games.dataEnded = true;
 
     var offset_itemsCount = Games.itemsCount;
     Games.itemsCount += response_items;
-
 
     var response_rows = response_items / Games.ColoumnsCount;
     if (response_items % Games.ColoumnsCount > 0) response_rows++;
@@ -144,8 +154,9 @@ Games.loadDataSuccess = function(responseText) {
         for (coloumn_id = 0; coloumn_id < Games.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             mReplace = false;
             game = response.top[cursor];
-            if (Games.CellExists(game.game.name)) coloumn_id--;
-            else {
+            if (Games.CellExists(game.game.name)) {
+                coloumn_id--;
+            } else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
                     '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
                 row.append(cell);
@@ -212,26 +223,25 @@ Games.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Games.addFocus();
             }
-            Games.loadingData = false;
 
             for (var i = 0; i < Games.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(Games.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'images/404_video.png'; //img fail to load use predefined
+                    this.src = 'images/404_game.png'; //img fail to load use predefined
                 };
 
                 tumbImg.src = Games.imgMatrix[i];
             }
 
-            if (Games.blankCellCount > 0) {
-                if (Games.blankCellCount > (Games.ItemsLimit / 2)) Games.itemsCountOffset += (Games.blankCellCount * 2);
-                else Games.itemsCountOffset = 0;
+            if (Games.blankCellCount > 0 && !Games.dataEnded) {
+                Games.itemsCountOffset += Games.blankCellCount;
                 Games.loadingMore = true;
                 Games.loadDataReplace();
-            } else {
-                Games.itemsCountOffset = 0;
-            }
-            //if (!Games.loadingMore) Games.previewDataStart();
+                return;
+            } else Games.blankCellCount = 0;
+
+            Games.loadingData = false;
+            Games.loadingMore = false;
         });
 };
 
@@ -251,6 +261,12 @@ Games.loadDataRequestReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Games.itemsCount + Games.itemsCountOffset;
+        if (offset >= (Games.MaxOffset - Games.ItemsLimit)) {
+            offset = Games.MaxOffset - Games.ItemsLimit;
+            Games.dataEnded = true;
+            Games.ReplacedataEnded = true;
+        }
+
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
@@ -283,7 +299,10 @@ Games.loadDataErrorReplace = function(reason, responseText) {
 
 Games.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items = response.streams.length;
+    var response_items = response.top.length;
+    Games.MaxOffset = parseInt(response._total);
+
+    if (response_items < Games.ItemsLimit) Games.ReplacedataEnded = true;
 
     var row_id = Games.itemsCount / Games.ColoumnsCount;
 
@@ -296,12 +315,16 @@ Games.loadDataSuccessReplace = function(responseText) {
             mReplace = Games.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
                 '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
             if (mReplace) Games.blankCellCount--;
-            if (Games.blankCellCount === 0) break;
+            if (Games.blankCellCount === 0) {
+                Games.itemsCountOffset += cursor;
+                break;
+            }
         }
     }
     if (response_items < Games.ItemsLimit) {
         Games.blankCellCount = 0;
     }
+    if (Games.ReplacedataEnded) Games.blankCellCount = 0;
     Games.loadDataSuccessFinish();
 };
 
@@ -320,7 +343,7 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/game.png"/> \
+                    '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                      <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                      <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
                      <div id="' + Games.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
@@ -340,7 +363,7 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
 
 Games.addFocus = function() {
     if (((Games.cursorY + Games.ItemsReloadLimit) > (Games.itemsCount / Games.ColoumnsCount)) &&
-        !Games.dataEnded) {
+        !Games.dataEnded && !Games.loadingMore) {
         Games.loadingMore = true;
         Games.loadData();
     }
