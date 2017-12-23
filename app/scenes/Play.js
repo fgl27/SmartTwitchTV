@@ -198,8 +198,10 @@ Play.loadDataError = function() {
     } else {
         Play.showWarningDialog(STR_CHANNEL + " '" + Main.selectedChannelDisplayname +
             "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
-        window.setTimeout(Play.HideWarningDialog, 1990);
-        window.setTimeout(Play.shutdownStream, 2000);
+        window.setTimeout(function() {
+            Play.HideWarningDialog();
+            Play.shutdownStream();
+        }, 2000);
     }
 };
 
@@ -336,7 +338,7 @@ Play.listener = {
         document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
     },
     onbufferingcomplete: function() {
-        $("#play_dialog_buffering").hide();
+        Play.HideBufferDialog();
         $("scene_channel_panel").hide();
         Play.isReturnFromResume = false;
     },
@@ -471,7 +473,7 @@ Play.showBufferDialog = function() {
     $("#play_dialog_buffering").show();
 };
 
-Play.HideWarningDialog = function() {
+Play.HideBufferDialog = function() {
     $("#play_dialog_buffering").hide();
 };
 
