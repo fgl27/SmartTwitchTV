@@ -220,7 +220,7 @@ Live.loadDataSuccessFinish = function() {
             }
 
             if (Live.blankCellCount > 0) {
-                if (Live.blankCellCount > (Live.ItemsLimit / 2)) Live.itemsCountOffset += Live.blankCellCount;
+                if (Live.blankCellCount > (Live.ItemsLimit / 2)) Live.itemsCountOffset += (Live.blankCellCount * 2);
                 else Live.itemsCountOffset = 0;
                 Live.loadingMore = true;
                 Live.loadDataReplace();
