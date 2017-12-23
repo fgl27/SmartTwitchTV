@@ -412,7 +412,7 @@ Live.handleKeyDown = function(event) {
                 Live.removeFocus();
                 Live.cursorX++;
                 Live.addFocus();
-            } else if (Main.ThumbNull((Live.cursorY + 1), 0), Live.Thumbnail) {
+            } else if (Main.ThumbNull((Live.cursorY + 1), 0, Live.Thumbnail)) {
                 Live.removeFocus();
                 Live.cursorY++;
                 Live.cursorX = 0;
