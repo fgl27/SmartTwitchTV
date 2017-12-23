@@ -24,6 +24,8 @@ Main.listenerID = null;
 Main.ExitDialogID = null;
 Main.selectedGame = '';
 Main.selectedGameDisplayname = '';
+Main.gameSelected = '';
+Main.OldgameSelected = '';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");

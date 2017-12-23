@@ -58,7 +58,6 @@ Games.exit = function() {
 };
 
 Games.StartLoad = function() {
-    //TODO a function to check and to this hide/show to all none empty
     Main.HideAllScreen();
     $('#stream_table_games').empty();
     Main.showLoadDialog();
@@ -454,6 +453,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
+            Main.OldgameSelected = Main.gameSelected;
             Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
             document.body.removeEventListener("keydown", Games.handleKeyDown);
             Main.Go = Main.AGame;

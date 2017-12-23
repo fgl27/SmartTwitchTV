@@ -1,7 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function AGame() {}
-AGame.Status = false;
 AGame.Thumbnail = 'thumbnail_agame_';
 AGame.EmptyCell = 'agame_empty_';
 AGame.cursorY = 0;
@@ -34,6 +33,7 @@ AGame.StreamGameDiv = 'agame_stream_AGame_';
 AGame.ViwersDiv = 'agame_viwers_';
 AGame.QualityDiv = 'agame_quality_';
 AGame.Cell = 'agame_cell_';
+AGame.Playing = false;
 
 //Variable initialization end
 
@@ -42,10 +42,10 @@ AGame.init = function() {
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
-    if (AGame.Status) {
+    if ((Main.OldgameSelected === Main.gameSelected) || AGame.Playing) {
+        AGame.Playing = false;
         AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
     } else {
-        AGame.Status = false;
         AGame.StartLoad();
     }
 
@@ -89,7 +89,7 @@ AGame.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-        '&limit=' + AGame.ItemsLimit + '&offset=' + AGame.itemsCount, true);
+            '&limit=' + AGame.ItemsLimit + '&offset=' + AGame.itemsCount, true);
         xmlHttp.timeout = AGame.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -257,7 +257,7 @@ AGame.loadDataRequestReplace = function() {
 
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-       '&limit=' + AGame.ItemsLimit + '&offset=' + offset, true);
+            '&limit=' + AGame.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = AGame.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -466,6 +466,7 @@ AGame.handleKeyDown = function(event) {
             Main.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
             Main.selectedChannelDisplayname = document.getElementById('display_name_' + AGame.cursorY + '_' + AGame.cursorX).textContent;
             document.body.removeEventListener("keydown", AGame.handleKeyDown);
+            AGame.Playing = true;
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
