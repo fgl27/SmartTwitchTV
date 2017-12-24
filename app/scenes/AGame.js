@@ -36,6 +36,7 @@ AGame.ViwersDiv = 'agame_viwers_';
 AGame.QualityDiv = 'agame_quality_';
 AGame.Cell = 'agame_cell_';
 AGame.Playing = false;
+AGame.status = false;
 
 //Variable initialization end
 
@@ -47,9 +48,7 @@ AGame.init = function() {
     if ((Main.OldgameSelected === Main.gameSelected) || AGame.Playing) {
         AGame.Playing = false;
         AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
-    } else {
-        AGame.StartLoad();
-    }
+    } else AGame.StartLoad();
 
 };
 
@@ -61,6 +60,7 @@ AGame.exit = function() {
 };
 
 AGame.StartLoad = function() {
+    AGame.status = false;
     Main.HideAllScreen();
     $('#stream_table_a_game').empty();
     Main.showLoadDialog();
@@ -224,9 +224,10 @@ AGame.loadDataSuccessFinish = function() {
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!AGame.loadingMore) {
+            if (!AGame.status) {
                 Main.ShowAllScreen();
                 Main.HideLoadDialog();
+                AGame.status = true;
                 AGame.addFocus();
             }
 
@@ -243,6 +244,7 @@ AGame.loadDataSuccessFinish = function() {
                 AGame.itemsCountOffset += (AGame.blankCellCount * 2);
                 AGame.loadingMore = true;
                 AGame.loadDataReplace();
+                return;
             } else AGame.blankCellCount = 0;
 
             AGame.loadingData = false;
@@ -306,7 +308,7 @@ AGame.loadDataErrorReplace = function(reason, responseText) {
 AGame.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
-    Games.MaxOffset = parseInt(response._total);
+    AGame.MaxOffset = parseInt(response._total);
 
     if (response_items < AGame.ItemsLimit) AGame.ReplacedataEnded = true;
 
@@ -361,7 +363,6 @@ AGame.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                     <div id="' + AGame.QualityDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
                     </div>';
-console.log("replacede youuwww");
                 return true;
             }
         }
@@ -540,11 +541,12 @@ AGame.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
-
-        if (id.indexOf(AGame.Thumbnail + '0_') == -1) {
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-        } else {
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290);// check Games.ScrollHelper to understand the "290"
-        }
+        if (Main.Go === Main.AGame) {
+            if (id.indexOf(AGame.Thumbnail + '0_') == -1) {
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
+            } else {
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+            }
+        } else return;
     }
 };
