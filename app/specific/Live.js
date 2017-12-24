@@ -35,7 +35,6 @@ Live.MaxOffset = 0;
 Live.init = function() {
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
     $('#top_bar_live').removeClass('icon_center_label');
-    //    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
     $('#top_bar_live').addClass('icon_center_focus');
     if (Live.Status) Live.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
     else Live.StartLoad();
