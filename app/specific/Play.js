@@ -307,6 +307,10 @@ Play.qualityChanged = function() {
             try {
                 Play.hideDialog();
                 Play.mWebapisAvplay.play();
+                Play.HideWarningDialog();
+                Play.hidePanel();
+                Play.showBufferDialog();
+                if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
                 Play.Play = true;
                 // sync chat and stream
                 $("#chat_container").html(
@@ -330,16 +334,12 @@ Play.qualityChanged = function() {
 
 Play.listener = {
     onbufferingstart: function() {
-        Play.hidePanel();
-        Play.showBufferDialog();
-        if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
     },
     onbufferingprogress: function(percent) {
         document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
     },
     onbufferingcomplete: function() {
         Play.HideBufferDialog();
-        $("scene_channel_panel").hide();
         Play.isReturnFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
@@ -431,7 +431,6 @@ Play.shutdownStream = function() {
 
 Play.showDialog = function() {
     $("#dialog_loading_play").show();
-    Play.HideAllOthersDialogs(['play_dialog_buffering', 'dialog_warning_play', 'play_dialog_simple_pause', 'play_dialog_exit']);
 };
 
 Play.hideDialog = function() {
@@ -441,12 +440,15 @@ Play.hideDialog = function() {
 Play.showWarningDialog = function(text) {
     $("#dialog_warning_play_text").text(text);
     $("#dialog_warning_play").show();
-    Play.HideAllOthersDialogs(['play_dialog_buffering', 'dialog_loading_play', 'play_dialog_simple_pause', 'play_dialog_exit']);
 };
 
 Play.HideWarningDialog = function() {
     $("#dialog_warning_play_text").text('');
     $("#dialog_warning_play").hide();
+};
+
+Play.WarningDialogVisible = function() {
+    return $("#dialog_warning_play").is(":visible");
 };
 
 Play.showExitDialog = function() {
@@ -456,7 +458,6 @@ Play.showExitDialog = function() {
     } else {
         $("#play_dialog_exit").hide();
     }
-    Play.HideAllOthersDialogs(['play_dialog_buffering', 'dialog_warning_play', 'play_dialog_simple_pause', 'dialog_loading_play']);
 };
 
 Play.ExitDialogVisible = function() {
@@ -469,11 +470,14 @@ Play.DialogVisible = function() {
 
 Play.showBufferDialog = function() {
     $("#play_dialog_buffering").show();
-    Play.HideAllOthersDialogs(['dialog_loading_play', 'dialog_warning_play', 'play_dialog_simple_pause', 'play_dialog_exit']);
 };
 
 Play.HideBufferDialog = function() {
     $("#play_dialog_buffering").hide();
+};
+
+Play.BufferDialogVisible = function() {
+    return $("#play_dialog_buffering").is(":visible");
 };
 
 Play.clearPause = function() {
@@ -495,7 +499,6 @@ Play.showPauseDialog = function() {
         $("#play_dialog_simple_pause").hide();
         Play.pauseStartID = window.setTimeout(Play.showPauseDialog, 8000); // time in ms
     }
-    Play.HideAllOthersDialogs(['play_dialog_buffering', 'dialog_warning_play', 'dialog_loading_play', 'play_dialog_exit']);
 };
 
 Play.isShowPauseDialogOn = function() {
@@ -786,6 +789,10 @@ Play.handleKeyDown = function(e) {
                         Play.hideDialog();
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
+                    } else if (Play.WarningDialogVisible()) {
+                        Play.HideWarningDialog();
+                    } else if (Play.BufferDialogVisible()) {
+                        Play.HideBufferDialog();
                     } else {
                         Play.showExitDialog();
                     }
