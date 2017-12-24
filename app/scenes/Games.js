@@ -27,6 +27,7 @@ Games.itemsCountOffset = 0;
 Games.LastClickFinish = true;
 Games.keyClickDelayTime = 25;
 Games.ReplacedataEnded = false;
+Games.MaxOffset = 0;
 
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
@@ -66,6 +67,7 @@ Games.StartLoad = function() {
     Games.blankCellCount = 0;
     Games.itemsCountOffset = 0;
     Games.ReplacedataEnded = false;
+    Games.MaxOffset = 0;
     Games.nameMatrix = [];
     Games.nameMatrixCount = 0;
     Games.itemsCount = 0;
@@ -91,7 +93,7 @@ Games.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset >= (Games.MaxOffset - Games.ItemsLimit)) {
+        if (offset !== 0 && offset >= (Games.MaxOffset - Games.ItemsLimit)) {
             offset = Games.MaxOffset - Games.ItemsLimit;
             Games.dataEnded = true;
             Games.ReplacedataEnded = true;
@@ -154,9 +156,8 @@ Games.loadDataSuccess = function(responseText) {
         for (coloumn_id = 0; coloumn_id < Games.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             mReplace = false;
             game = response.top[cursor];
-            if (Games.CellExists(game.game.name)) {
-                coloumn_id--;
-            } else {
+            if (Games.CellExists(game.game.name)) coloumn_id--;
+            else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
                     '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
                 row.append(cell);
@@ -261,7 +262,7 @@ Games.loadDataRequestReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset >= (Games.MaxOffset - Games.ItemsLimit)) {
+        if (offset !== 0 && offset >= (Games.MaxOffset - Games.ItemsLimit)) {
             offset = Games.MaxOffset - Games.ItemsLimit;
             Games.dataEnded = true;
             Games.ReplacedataEnded = true;
@@ -529,7 +530,7 @@ Games.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
-        //console.log(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight()); remove to calculate off set the 514 value below
+        //console.log(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());// remove to calculate off set the 514 value below do row 1 - row 0
         if (id.indexOf(Games.Thumbnail + '0_') == -1)
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
         else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
