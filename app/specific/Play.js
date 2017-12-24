@@ -196,6 +196,7 @@ Play.loadDataError = function() {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
         Play.loadDataRequest();
     } else {
+        Play.hideDialog();
         Play.showWarningDialog(STR_CHANNEL + " '" + Main.selectedChannelDisplayname +
             "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
         window.setTimeout(function() {
