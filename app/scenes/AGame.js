@@ -485,7 +485,7 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             Main.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
-            Main.selectedChannelDisplayname = document.getElementById('display_name_' + AGame.cursorY + '_' + AGame.cursorX).textContent;
+            Main.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
             document.body.removeEventListener("keydown", AGame.handleKeyDown);
             AGame.Playing = true;
             Main.openStream();
