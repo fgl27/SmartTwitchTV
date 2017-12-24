@@ -310,9 +310,9 @@ AGame.loadDataSuccessReplace = function(responseText) {
 
     var row_id = AGame.itemsCount / AGame.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false;
+    var coloumn_id, stream, mReplace = false, cursor = 0;
 
-    for (var cursor = 0; cursor < response_items; cursor++) {
+    for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
         if (AGame.CellExists(stream.channel.name)) AGame.blankCellCount--;
         else {
@@ -321,15 +321,11 @@ AGame.loadDataSuccessReplace = function(responseText) {
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
                 Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             if (mReplace) AGame.blankCellCount--;
-            if (AGame.blankCellCount === 0) {
-                AGame.itemsCountOffset += cursor;
-                break;
-            }
+            if (AGame.blankCellCount === 0) break;
         }
     }
-    if (response_items < AGame.ItemsLimit) {
-        AGame.blankCellCount = 0;
-    }
+    AGame.itemsCountOffset += cursor;
+    if (AGame.ReplacedataEnded) AGame.blankCellCount = 0;
     AGame.loadDataSuccessFinish();
 };
 
