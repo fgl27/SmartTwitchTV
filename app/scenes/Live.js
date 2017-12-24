@@ -125,7 +125,7 @@ Live.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Live.ColoumnsCount;
     if (response_items % Live.ColoumnsCount > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, stream, mReplace,
+    var coloumn_id, row_id, row, cell, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -133,7 +133,6 @@ Live.loadDataSuccess = function(responseText) {
         row = $('<tr></tr>');
 
         for (coloumn_id = 0; coloumn_id < Live.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
-            mReplace = false;
             stream = response.streams[cursor];
             if (Live.CellExists(stream.channel.name)) coloumn_id--;
             else {
