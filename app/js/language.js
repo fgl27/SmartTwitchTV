@@ -6,13 +6,11 @@ var STR_LIVE = "Live";
 var STR_GAMES = "Games";
 var STR_PLAYING = "Playing ";
 var STR_FOR = " for ";
-
-var STR_FOR = " for ";
 var STR_WATCHING = "Watching time ";
 var STR_SINCE = "Since ";
 var STR_AGO = " ago";
 var STR_RESUME = "Resuming after be on background, please wait!";
-
+var STR_AGAME = "A Game";
 
 
 

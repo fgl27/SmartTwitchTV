@@ -45,6 +45,8 @@ AGame.init = function() {
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
+    $('.lable_game').html(STR_AGAME);
+    $('.label_agame_name').html(Main.gameSelected);
     if ((Main.OldgameSelected === Main.gameSelected) || AGame.Playing) {
         AGame.Playing = false;
         AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
@@ -53,6 +55,8 @@ AGame.init = function() {
 };
 
 AGame.exit = function() {
+    $('.label_agame_name').html('');
+    $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", AGame.handleKeyDown);
     $('#top_bar_game').removeClass('icon_center_focus');
     $('#top_bar_game').addClass('icon_center_label');
