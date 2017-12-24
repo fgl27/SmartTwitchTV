@@ -1,6 +1,6 @@
 var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
 var STR_SEARCH = "Search (D)";
-var STR_SWITCH = "Switch (CH Up/Down or A/B/C)";
+var STR_SWITCH = "Switch (CH Up/Down)";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";
