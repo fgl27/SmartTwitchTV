@@ -59,10 +59,7 @@ Main.initWindows = function() {
     $('.lable_game').html(STR_GAMES);
     $('.label_agame').html('');
     $("#main_dialog_exit_text").text(STR_EXIT);
-
     $('.label_buffering').html(STR_BUFFERING);
-    //hide all but Live
-    Main.HideExitDialog();
     $("#scene2").hide();
 };
 
