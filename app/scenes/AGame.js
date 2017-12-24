@@ -148,7 +148,7 @@ AGame.loadDataSuccess = function(responseText) {
     var response_rows = response_items / AGame.ColoumnsCount;
     if (response_items % AGame.ColoumnsCount > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, stream, mReplace,
+    var coloumn_id, row_id, row, cell, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -156,7 +156,6 @@ AGame.loadDataSuccess = function(responseText) {
         row = $('<tr></tr>');
 
         for (coloumn_id = 0; coloumn_id < AGame.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
-            mReplace = false;
             stream = response.streams[cursor];
             if (AGame.CellExists(stream.channel.name)) coloumn_id--;
             else {
@@ -241,7 +240,6 @@ AGame.loadDataSuccessFinish = function() {
             }
 
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
-                AGame.itemsCountOffset += (AGame.blankCellCount * 2);
                 AGame.loadingMore = true;
                 AGame.loadDataReplace();
                 return;

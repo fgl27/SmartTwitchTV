@@ -143,7 +143,7 @@ Games.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Games.ColoumnsCount;
     if (response_items % Games.ColoumnsCount > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, game, mReplace,
+    var coloumn_id, row_id, row, cell, game,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -151,7 +151,6 @@ Games.loadDataSuccess = function(responseText) {
         row = $('<tr></tr>');
 
         for (coloumn_id = 0; coloumn_id < Games.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
-            mReplace = false;
             game = response.top[cursor];
             if (Games.CellExists(game.game.name)) coloumn_id--;
             else {
@@ -233,7 +232,6 @@ Games.loadDataSuccessFinish = function() {
             }
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
-                Games.itemsCountOffset += Games.blankCellCount;
                 Games.loadingMore = true;
                 Games.loadDataReplace();
                 return;
