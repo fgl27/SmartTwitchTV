@@ -44,12 +44,8 @@ Games.init = function() {
     document.body.addEventListener("keydown", Games.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
-    if (Games.Status) {
-        Games.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail + Games.cursorY + '_' + Games.cursorX);
-    } else {
-        Games.Status = true;
-        Games.StartLoad();
-    }
+    if (Games.Status) Games.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail + Games.cursorY + '_' + Games.cursorX);
+    else Games.StartLoad();
 };
 
 Games.exit = function() {
@@ -60,6 +56,7 @@ Games.exit = function() {
 };
 
 Games.StartLoad = function() {
+    Games.Status = false;
     Main.HideAllScreen();
     $('#stream_table_games').empty();
     Main.showLoadDialog();
@@ -219,9 +216,10 @@ Games.loadDataSuccessFinish = function() {
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Games.loadingMore) {
+            if (!Games.Status) {
                 Main.ShowAllScreen();
                 Main.HideLoadDialog();
+                Games.Status = true;
                 Games.addFocus();
             }
 
@@ -531,8 +529,10 @@ Games.ScrollHelper = {
             return;
         }
         //console.log(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());// remove to calculate off set the 514 value below do row 1 - row 0
-        if (id.indexOf(Games.Thumbnail + '0_') == -1)
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
-        else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
+        if (Main.Go === Main.Games) {
+            if (id.indexOf(Games.Thumbnail + '0_') == -1)
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
+            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
+        } else return;
     }
 };

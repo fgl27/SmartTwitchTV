@@ -35,12 +35,8 @@ Live.init = function() {
     $('#top_bar_live').removeClass('icon_center_label');
     //    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
     $('#top_bar_live').addClass('icon_center_focus');
-    if (Live.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
-    } else {
-        Live.Status = true;
-        Live.StartLoad();
-    }
+    if (Live.Status) Live.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    else Live.StartLoad();
 
 };
 
@@ -52,6 +48,7 @@ Live.exit = function() {
 };
 
 Live.StartLoad = function() {
+    Live.Status = false;
     Main.HideAllScreen();
     $('#stream_table_live').empty();
     Main.showLoadDialog();
@@ -203,9 +200,10 @@ Live.loadDataSuccessFinish = function() {
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Live.loadingMore) {
+            if (!Live.Status) {
                 Main.ShowAllScreen();
                 Main.HideLoadDialog();
+                Live.Status = true;
                 Live.addFocus();
             }
             Live.loadingData = false;
@@ -224,6 +222,7 @@ Live.loadDataSuccessFinish = function() {
                 else Live.itemsCountOffset = 0;
                 Live.loadingMore = true;
                 Live.loadDataReplace();
+                return;
             } else {
                 Live.itemsCountOffset = 0;
             }
@@ -350,7 +349,7 @@ Live.addFocus = function() {
     $('#viwers_' + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
     $('#quality_' + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+        Live.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail + Live.cursorY + '_' + Live.cursorX);
     }, 10);
 };
 
@@ -480,5 +479,39 @@ Live.handleKeyDown = function(event) {
             break;
         default:
             break;
+    }
+};
+
+Live.ScrollHelper = {
+    documentVerticalScrollPosition: function() {
+        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
+        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
+        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
+        return 0; // None of the above.
+    },
+
+    viewportHeight: function() {
+        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
+    },
+
+    documentHeight: function() {
+        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
+    },
+
+    documentMaximumScrollPosition: function() {
+        return this.documentHeight() - this.viewportHeight();
+    },
+
+    elementVerticalClientPositionById: function(id) {
+        return document.getElementById(id).getBoundingClientRect().top;
+    },
+
+    scrollVerticalToElementById: function(id) {
+        if (document.getElementById(id) === null) {
+            return;
+        }
+        if (Main.Go === Main.Live)
+            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
+        else return;
     }
 };
