@@ -61,9 +61,9 @@ AGame.exit = function() {
 
 AGame.StartLoad = function() {
     AGame.status = false;
-    Main.HideAllScreen();
-    $('#stream_table_a_game').empty();
+    AGame.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    $('#stream_table_a_game').empty();
     AGame.loadingMore = false;
     AGame.blankCellCount = 0;
     AGame.itemsCountOffset = 0;
@@ -224,7 +224,6 @@ AGame.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!AGame.status) {
-                Main.ShowAllScreen();
                 Main.HideLoadDialog();
                 AGame.status = true;
                 AGame.addFocus();
@@ -492,10 +491,8 @@ AGame.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
-            $('#img_black').hide();
             break;
         case TvKeyCode.KEY_GREEN:
-            $('#img_black').show();
             break;
         case TvKeyCode.KEY_YELLOW:
             break;

@@ -57,9 +57,9 @@ Games.exit = function() {
 
 Games.StartLoad = function() {
     Games.Status = false;
-    Main.HideAllScreen();
-    $('#stream_table_games').empty();
+    Games.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    $('#stream_table_games').empty();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
     Games.itemsCountOffset = 0;
@@ -216,7 +216,6 @@ Games.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Games.Status) {
-                Main.ShowAllScreen();
                 Main.HideLoadDialog();
                 Games.Status = true;
                 Games.addFocus();
