@@ -198,7 +198,7 @@ AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     AGame.nameMatrixCount++;
 
     return $('<td id="' + AGame.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/video.png"/> \
+        '<img id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
             <div id="' + AGame.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + AGame.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div id="' + AGame.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
@@ -236,7 +236,7 @@ AGame.loadDataSuccessFinish = function() {
             for (var i = 0; i < AGame.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(AGame.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'images/404_video.png'; //img fail to load use predefined
+                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
                 };
 
                 tumbImg.src = AGame.imgMatrix[i];

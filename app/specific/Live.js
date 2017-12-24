@@ -183,7 +183,7 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Live.nameMatrixCount++;
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="images/video.png"/> \
+        '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
             <div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
@@ -220,7 +220,7 @@ Live.loadDataSuccessFinish = function() {
             for (var i = 0; i < Live.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(Live.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'images/404_video.png'; //img fail to load use predefined
+                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
                 };
 
                 tumbImg.src = Live.imgMatrix[i];
