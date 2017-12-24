@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=1920" />
-    <link rel="stylesheet" href="font-awesome/font-awesome.css">
+    <link rel="stylesheet" href="app/general/font-awesome/font-awesome.css">
     <title>TwitchTest</title>
     <style type="text/css">
     body {
@@ -301,24 +301,23 @@
         background: linear-gradient(to left, #000000, #5F5F5F);
     }
     </style>
-    <script src="app/js/jquery.js" defer></script>
+    <script src="app/general/jquery.js" defer></script>
     <script src="$WEBAPIS/webapis/webapis.js" defer></script>
-    <script src="app/js/language.js" defer></script>
-    <script src="app/scenes/TVKeyValue.js" defer></script>
-    <script src="app/scenes/Main.js" defer></script>
-    <script src="app/scenes/Live.js" defer></script>
-    <script src="app/scenes/Play.js" defer></script>
-    <script src="app/scenes/Games.js" defer></script>
-    <script src="app/scenes/AGame.js" defer></script>
-    <script src="app/js/imagesloaded.pkgd.min.js" defer></script>
-    <script src="app/js/smooth-scroll.js" defer></script>
+    <script src="app/general/language.js" defer></script>
+    <script src="app/general/TVKeyValue.js" defer></script>
+    <script src="app/general/imagesloaded.js" defer></script>
+    <script src="app/specific/Main.js" defer></script>
+    <script src="app/specific/Live.js" defer></script>
+    <script src="app/specific/Play.js" defer></script>
+    <script src="app/specific/Games.js" defer></script>
+    <script src="app/specific/AGame.js" defer></script>
 </head>
 
 <body>
     <div id="scene1" class="screen_size" style="position : absolute;left : 0px;top : 0px;">
         <div id="toolbar" style="z-index:99; position: fixed; width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35));">
             <div style="float: right; padding-right: 0.5%; padding-top: 1%; width: 10%;">
-                <img style="float: right; width: 100%; padding-left: 2%;" src="images/twitchlogo.png" alt="twitchlogo" />
+                <img style="float: right; width: 100%; padding-left: 2%;" src="app/images/twitchlogo.png" alt="twitchlogo" />
             </div>
             <div style="padding-left: 1%; padding-top: 0.5%;">
                 <div class="icon_top_label label_refresh">
