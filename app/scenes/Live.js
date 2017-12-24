@@ -26,6 +26,8 @@ Live.blankCellCount = 0;
 Live.itemsCountOffset = 0;
 Live.LastClickFinish = true;
 Live.keyClickDelayTime = 25;
+Live.ReplacedataEnded = false;
+Live.MaxOffset = 0;
 
 //Variable initialization end
 
@@ -54,6 +56,9 @@ Live.StartLoad = function() {
     Main.showLoadDialog();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
+    Live.itemsCountOffset = 0;
+    Live.ReplacedataEnded = false;
+    Live.MaxOffset = 0;
     Live.nameMatrix = [];
     Live.nameMatrixCount = 0;
     Live.itemsCount = 0;
@@ -78,7 +83,14 @@ Live.loadDataRequest = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Live.ItemsLimit + '&offset=' + Live.itemsCount, true);
+        var offset = Live.itemsCount + Live.itemsCountOffset;
+        if (offset !== 0 && offset >= (Live.MaxOffset - Live.ItemsLimit)) {
+            offset = Live.MaxOffset - Live.ItemsLimit;
+            Live.dataEnded = true;
+            Live.ReplacedataEnded = true;
+        }
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Live.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = Live.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -115,12 +127,12 @@ Live.loadDataError = function(reason, responseText) {
 Live.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
+    Live.MaxOffset = parseInt(response._total);
 
     if (response_items < Live.ItemsLimit) Live.dataEnded = true;
 
     var offset_itemsCount = Live.itemsCount;
     Live.itemsCount += response_items;
-
 
     var response_rows = response_items / Live.ColoumnsCount;
     if (response_items % Live.ColoumnsCount > 0) response_rows++;
@@ -205,7 +217,6 @@ Live.loadDataSuccessFinish = function() {
                 Live.Status = true;
                 Live.addFocus();
             }
-            Live.loadingData = false;
 
             for (var i = 0; i < Live.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(Live.imgMatrixId[i]);
@@ -216,16 +227,14 @@ Live.loadDataSuccessFinish = function() {
                 tumbImg.src = Live.imgMatrix[i];
             }
 
-            if (Live.blankCellCount > 0) {
-                if (Live.blankCellCount > (Live.ItemsLimit / 2)) Live.itemsCountOffset += (Live.blankCellCount * 2);
-                else Live.itemsCountOffset = 0;
+            if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
                 Live.loadDataReplace();
                 return;
-            } else {
-                Live.itemsCountOffset = 0;
-            }
-            //if (!Live.loadingMore) Live.previewDataStart();
+            } else Live.blankCellCount = 0;
+
+            Live.loadingData = false;
+            Live.loadingMore = false;
         });
 };
 
@@ -245,6 +254,11 @@ Live.loadDataRequestReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Live.itemsCount + Live.itemsCountOffset;
+        if (offset !== 0 && offset >= (Live.MaxOffset - Live.ItemsLimit)) {
+            offset = Live.MaxOffset - Live.ItemsLimit;
+            Live.ReplacedataEnded = true;
+        }
+
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Live.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = Live.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
@@ -279,6 +293,10 @@ Live.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
 
+    Live.MaxOffset = parseInt(response._total);
+
+    if (response_items < Live.ItemsLimit) Live.ReplacedataEnded = true;
+
     var row_id = Live.itemsCount / Live.ColoumnsCount;
 
     var coloumn_id, stream, mReplace = false;
@@ -292,7 +310,10 @@ Live.loadDataSuccessReplace = function(responseText) {
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
                 Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             if (mReplace) Live.blankCellCount--;
-            if (Live.blankCellCount === 0) break;
+            if (Live.blankCellCount === 0) {
+                Live.itemsCountOffset += cursor;
+                break;
+            }
         }
     }
     if (response_items < Live.ItemsLimit) {
@@ -335,7 +356,7 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
 
 Live.addFocus = function() {
     if (((Live.cursorY + Live.ItemsReloadLimit) > (Live.itemsCount / Live.ColoumnsCount)) &&
-        !Live.dataEnded) {
+        !Live.dataEnded && !Live.loadingMore) {
         Live.loadingMore = true;
         Live.loadData();
     }

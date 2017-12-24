@@ -268,7 +268,6 @@ AGame.loadDataRequestReplace = function() {
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
         if (offset !== 0 && offset >= (AGame.MaxOffset - AGame.ItemsLimit)) {
             offset = AGame.MaxOffset - AGame.ItemsLimit;
-            AGame.dataEnded = true;
             AGame.ReplacedataEnded = true;
         }
 
