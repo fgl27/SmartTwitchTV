@@ -283,7 +283,7 @@ AGame.loadDataRequestReplace = function() {
                         AGame.loadDataSuccessReplace(xmlHttp.responseText);
                         return;
                     } catch (e) {}
-                } else {}
+                }
             }
         };
 
@@ -298,7 +298,7 @@ AGame.loadDataErrorReplace = function(reason, responseText) {
     if (AGame.loadingDataTry < AGame.loadingDataTryMax) {
         AGame.loadingDataTimeout += (AGame.loadingDataTry < 5) ? 250 : 3500;
         AGame.loadDataRequestReplace();
-    } else {}
+    }
 };
 
 AGame.loadDataSuccessReplace = function(responseText) {

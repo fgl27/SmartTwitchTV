@@ -74,6 +74,7 @@ Play.Start = function() {
     <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
     <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
     </div>');
+    $("#stream_info_name").text(Main.selectedChannelDisplayname);
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
@@ -132,14 +133,13 @@ Play.updateStreamInfo = function() {
                     try {
                         var response = $.parseJSON(xmlHttp.responseText);
                         // log response json
-                        //console.log(JSON.stringify(response));
-                        $("#stream_info_name").text(Main.is_playlist(JSON.stringify(response.stream.stream_type)) + response.stream.channel.display_name);
+                        //console.log(response);
                         $("#stream_info_title").text(response.stream.channel.status);
                         $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                         $("#stream_info_icon").attr("src", response.stream.channel.logo);
                         Play.created = new Date(response.stream.created_at).getTime();
                     } catch (err) {}
-                } else {}
+                }
             }
         };
         xmlHttp.send(null);

@@ -270,7 +270,7 @@ Live.loadDataRequestReplace = function() {
                         Live.loadDataSuccessReplace(xmlHttp.responseText);
                         return;
                     } catch (e) {}
-                } else {}
+                }
             }
         };
 
@@ -285,7 +285,7 @@ Live.loadDataErrorReplace = function(reason, responseText) {
     if (Live.loadingDataTry < Live.loadingDataTryMax) {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
         Live.loadDataRequestReplace();
-    } else {}
+    }
 };
 
 Live.loadDataSuccessReplace = function(responseText) {
