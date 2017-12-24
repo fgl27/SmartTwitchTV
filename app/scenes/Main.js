@@ -63,15 +63,6 @@ Main.initWindows = function() {
     //hide all but Live
     Main.HideExitDialog();
     $("#scene2").hide();
-    $("#stream_table_user").hide();
-    $("#stream_table_user_live").hide();
-    $("#stream_table_user_host").hide();
-    $("#stream_table_user_games").hide();
-    $("#stream_table_user_a_games").hide();
-    $("#stream_table_user_vod").hide();
-    $("#stream_table_user_a_vod").hide();
-    $("#stream_table_games").hide();
-    $("#stream_table_a_game").hide();
 };
 
 Main.showLoadDialog = function() {
@@ -162,33 +153,6 @@ Main.openStream = function() {
         $("#scene1").hide();
         Play.Start();
     }, 15);
-};
-
-//TODO re check way a div with all does't work
-Main.HideAllScreen = function() {
-    $('#stream_table_live').hide();
-    $('#stream_table_user').hide();
-    $('#stream_table_user_live').hide();
-    $('#stream_table_user_host').hide();
-    $('#stream_table_user_games').hide();
-    $('#stream_table_user_a_game').hide();
-    $('#stream_table_user_vod').hide();
-    $('#stream_table_user_a_vod').hide();
-    $('#stream_table_a_game').hide();
-    $('#stream_table_games').hide();
-};
-
-Main.ShowAllScreen = function() {
-    $('#stream_table_live').show();
-    $('#stream_table_user').show();
-    $('#stream_table_user_live').show();
-    $('#stream_table_user_host').show();
-    $('#stream_table_user_games').show();
-    $('#stream_table_user_a_game').show();
-    $('#stream_table_user_vod').show();
-    $('#stream_table_user_a_vod').show();
-    $('#stream_table_a_game').show();
-    $('#stream_table_games').show();
 };
 
 Main.NetworkStateChangeListener = function() {

@@ -51,9 +51,9 @@ Live.exit = function() {
 
 Live.StartLoad = function() {
     Live.Status = false;
-    Main.HideAllScreen();
-    $('#stream_table_live').empty();
+    Live.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    $('#stream_table_live').empty();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
     Live.itemsCountOffset = 0;
@@ -212,7 +212,6 @@ Live.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Live.Status) {
-                Main.ShowAllScreen();
                 Main.HideLoadDialog();
                 Live.Status = true;
                 Live.addFocus();
@@ -484,10 +483,8 @@ Live.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
-            $('#img_black').hide();
             break;
         case TvKeyCode.KEY_GREEN:
-            $('#img_black').show();
             break;
         case TvKeyCode.KEY_YELLOW:
             break;
@@ -530,8 +527,12 @@ Live.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
-        if (Main.Go === Main.Live)
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-        else return;
+        if (Main.Go === Main.Live) {
+            if (id.indexOf(Live.Thumbnail + '0_') == -1) {
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
+            } else {
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+            }
+        }  else return;
     }
 };
