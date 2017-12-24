@@ -301,24 +301,19 @@ Games.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Games.itemsCount / Games.ColoumnsCount;
 
-    var coloumn_id, game, mReplace = false;
+    var coloumn_id, game, mReplace = false, cursor = 0;
 
-    for (var cursor = 0; cursor < response_items; cursor++) {
+    for (cursor; cursor < response_items; cursor++) {
         game = response.top[cursor];
         if (Games.CellExists(game.game.name)) Games.blankCellCount--;
         else {
             mReplace = Games.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
                 '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
             if (mReplace) Games.blankCellCount--;
-            if (Games.blankCellCount === 0) {
-                Games.itemsCountOffset += cursor;
-                break;
-            }
+            if (Games.blankCellCount === 0) break;
         }
     }
-    if (response_items < Games.ItemsLimit) {
-        Games.blankCellCount = 0;
-    }
+    Games.itemsCountOffset += cursor;
     if (Games.ReplacedataEnded) Games.blankCellCount = 0;
     Games.loadDataSuccessFinish();
 };
