@@ -1,5 +1,6 @@
 var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
 var STR_SEARCH = "Search (D)";
+var STR_SEARCHS = "Search";
 var STR_SWITCH = "Switch (CH Up/Down)";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
@@ -11,7 +12,10 @@ var STR_SINCE = "Since ";
 var STR_AGO = " ago";
 var STR_RESUME = "Resuming after be on background, please wait!";
 var STR_AGAME = "A Game";
-
+var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
+var STR_CHANNELS = "Channels";
+var STR_LIVE_STREAMS = "Live stream";
+var STR_GOBACK = "Back to previously screen";
 
 
 var STR_OPEN = "Open";

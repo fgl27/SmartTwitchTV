@@ -484,6 +484,9 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.Before = Main.Go;
+            Main.Go = Main.Search;
+            Live.exit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:
