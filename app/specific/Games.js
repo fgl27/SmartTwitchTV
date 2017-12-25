@@ -31,10 +31,7 @@ Games.MaxOffset = 0;
 
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
-Games.StreamTitleDiv = 'game_stream_title_';
-Games.StreamGameDiv = 'game_stream_game_';
 Games.ViwersDiv = 'game_viwers_';
-Games.QualityDiv = 'game_quality_';
 Games.Cell = 'game_cell_';
 
 //Variable initialization end
@@ -189,12 +186,8 @@ Games.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
         '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/game.png"/> \
             <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div id="' + Games.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-            <div id="' + Games.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
             <div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + viwers +
-        '</div> \
-             <div id="' + Games.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
+            '</div> \
             </div>');
 };
 
@@ -336,12 +329,8 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                     '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                      <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                      <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-                     <div id="' + Games.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-                     <div id="' + Games.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
                      <div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
                     viwers + '</div> \
-                     <div id="' + Games.QualityDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
                      </div>';
                 return true;
             }
@@ -361,10 +350,7 @@ Games.addFocus = function() {
     $('#' + Games.Thumbnail + Games.cursorY + '_' + Games.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Games.ThumbnailDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_text_focused');
     $('#' + Games.DispNameDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_channel_focused');
-    //$('#' + Games.StreamTitleDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
-    //$('#' + Games.StreamGameDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
     $('#' + Games.ViwersDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
-    //$('#' + Games.QualityDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
         Games.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail + Games.cursorY + '_' + Games.cursorX);
     }, 10);
@@ -374,10 +360,7 @@ Games.removeFocus = function() {
     $('#' + Games.Thumbnail + Games.cursorY + '_' + Games.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + Games.ThumbnailDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_text_focused');
     $('#' + Games.DispNameDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_channel_focused');
-    //$('#' + Games.StreamTitleDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_info_focused');
-    //$('#' + Games.StreamGameDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_info_focused');
     $('#' + Games.ViwersDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_info_focused');
-    //$('#' + Games.QualityDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_info_focused');
 };
 
 Games.keyClickDelay = function() {
