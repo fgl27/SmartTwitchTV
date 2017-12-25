@@ -451,7 +451,6 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Main.OldgameSelected = Main.gameSelected;
             Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
             document.body.removeEventListener("keydown", Games.handleKeyDown);
             Main.Go = Main.AGame;
@@ -464,6 +463,9 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.Before = Main.Go;
+            Main.Go = Main.Search;
+            Games.exit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

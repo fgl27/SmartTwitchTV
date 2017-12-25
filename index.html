@@ -162,34 +162,63 @@
         margin-top: 23%;
         margin-left: 15%;
     }
-    input.channelname {
+    input.in_search {
         width: 100%;
-        height: 115.5px;
+        height: 100px;
         box-shadow: 0px 0px 29px rgba(0, 0, 0, 0.45);
         color: black;
         font-size: 200%;
         font-weight: bold;
         text-align: center;
         vertical-align: middle;
-        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        border: 4px solid #FFFFFF;
+        box-shadow: inset 0 0 0 4px #000000;
+        padding: 4px;
     }
-    input.channelname_focused {
+    input.in_search_focused {
         width: 100%;
-        height: 115.5px;
+        height: 100px;
         box-shadow: 0px 0px 29px rgba(0, 0, 0, 0.45);
         color: black;
         font-weight: bold;
         font-size: 289%;
         text-align: center;
         vertical-align: middle;
-        background-color: rgba(255, 255, 255, 1.0);
+        background-color: rgba(255, 255, 255f, 0.4);
+        border-radius: 15px;
+        border: 4px solid #FFFFFF;
+        box-shadow: inset 0 0 0 4px #000000;
+        padding: 4px;
     }
-    div.button_go {
+    div.button_search {
         width: 18%;
-        height: 130px;
-        border-radius: 5%;
+        height: 80px;
+        border-radius: 15px;
         margin-top: 2%;
-        margin-left: 41%;
+        margin-left: 10%;
+        padding-top: 0.5%;
+        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
+        color: #000000;
+        font-weight: bold;
+        font-size: 245%;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 80px;
+        background-color: #AAAAAA;
+        border: 4px solid #FFFFFF;
+        box-shadow: inset 0 0 0 4px #000000;
+        padding: 4px;
+        display: inline-block;
+    }
+    div.button_search_focused {
+        width: 18%;
+        height: 80px;
+        border-radius: 15px;
+        margin-top: 2%;
+        margin-left: 10%;
         padding-top: 0.5%;
         box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
         color: #FFFFFF;
@@ -197,24 +226,12 @@
         font-size: 245%;
         text-align: center;
         vertical-align: middle;
-        line-height: 130px;
-        background-color: #000000;
-    }
-    div.button_go_focused {
-        width: 18%;
-        height: 130px;
-        border-radius: 5%;
-        margin-top: 2%;
-        margin-left: 41%;
-        padding-top: 0.5%;
-        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
-        color: #FFFFFF;
-        font-weight: bold;
-        font-size: 245%;
-        text-align: center;
-        vertical-align: middle;
-        line-height: 130px;
+        line-height: 80px;
         background-color: #7f53cf;
+        border: 4px solid #FFFFFF;
+        box-shadow: inset 0 0 0 4px #000000;
+        padding: 4px;
+        display: inline-block;
     }
     .strokedmini {
         color: #FFFFFF;
@@ -310,6 +327,7 @@
     <script src="app/specific/Play.js" defer></script>
     <script src="app/specific/Games.js" defer></script>
     <script src="app/specific/AGame.js" defer></script>
+    <script src="app/specific/Search.js" defer></script>
 </head>
 
 <body>
@@ -387,6 +405,19 @@
         <table id="stream_table_games" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
         <div class="screen_size" ></div><!-- Prevent one table see the other-->
         <table id="stream_table_a_game" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <div class="screen_size" ></div><!-- Prevent one table see the other-->
+        <div id="search" class="openchannel" >
+            <input id="search_input" class="in_search label_placeholder_search" type="text" placeholder="STR_PLACEHOLDER_SEARCH" /> 
+            <div id="username_button" class="button_search label_search_chanel">
+               STR_CHANNELS
+            </div>
+            <div id="username_button" class="button_search label_search_game">
+               STR_GAMES
+            </div>
+            <div id="username_button" class="button_search label_search_live">
+               STR_LIVE_STREAMS
+            </div>
+        </div>
         <div class="screen_size" ></div><!-- Prevent one table see the other-->
     </div>
     <div id="scene2" class="screen_size" style="z-index:99; display:none; position : absolute;left : 0px;top : 0px;">

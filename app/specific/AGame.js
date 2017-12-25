@@ -35,7 +35,6 @@ AGame.StreamGameDiv = 'agame_stream_AGame_';
 AGame.ViwersDiv = 'agame_viwers_';
 AGame.QualityDiv = 'agame_quality_';
 AGame.Cell = 'agame_cell_';
-AGame.Playing = false;
 AGame.status = false;
 
 //Variable initialization end
@@ -47,11 +46,8 @@ AGame.init = function() {
     $('#top_bar_game').addClass('icon_center_focus');
     $('.lable_game').html(STR_AGAME);
     $('.label_agame_name').html(Main.gameSelected);
-    if ((Main.OldgameSelected === Main.gameSelected) || AGame.Playing) {
-        AGame.Playing = false;
-        AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
-    } else AGame.StartLoad();
-
+    if ((Main.OldgameSelected === Main.gameSelected)) AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
+    else AGame.StartLoad();
 };
 
 AGame.exit = function() {
@@ -487,7 +483,7 @@ AGame.handleKeyDown = function(event) {
             Main.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
             Main.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
             document.body.removeEventListener("keydown", AGame.handleKeyDown);
-            AGame.Playing = true;
+            Main.OldgameSelected = Main.gameSelected
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
@@ -497,6 +493,10 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.Before = Main.Go;
+            Main.Go = Main.Search;
+            Main.OldgameSelected = Main.gameSelected
+            AGame.exit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

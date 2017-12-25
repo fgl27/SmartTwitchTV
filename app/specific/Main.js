@@ -7,6 +7,7 @@ function Main() {
 Main.Hide = '';
 Main.Show = '';
 Main.Go = 1;
+Main.Before = 1;
 
 Main.Live = 1;
 Main.User = 2;
@@ -18,6 +19,7 @@ Main.UserGames = 7;
 Main.UserAGames = 8;
 Main.UserVod = 9;
 Main.UserAVod = 10;
+Main.Search = 11;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.listenerID = null;
@@ -25,7 +27,7 @@ Main.ExitDialogID = null;
 Main.selectedGame = '';
 Main.selectedGameDisplayname = '';
 Main.gameSelected = '';
-Main.OldgameSelected = '';
+Main.OldgameSelected = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -58,6 +60,9 @@ Main.initWindows = function() {
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
     $('.label_agame').html('');
+    $('.label_search_chanel').html(STR_CHANNELS);
+    $('.label_search_game').html(STR_GAMES);
+    $('.label_search_live').html(STR_LIVE_STREAMS);
     $("#main_dialog_exit_text").text(STR_EXIT);
     $('.label_buffering').html(STR_BUFFERING);
     $("#scene2").hide();
@@ -139,6 +144,7 @@ Main.SwitchScreen = function() {
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.Games) Games.init();
     else if (Main.Go === Main.AGame) AGame.init();
+    else if (Main.Go === Main.Search) Search.init();
 };
 
 Main.openStream = function() {
