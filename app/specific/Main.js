@@ -85,7 +85,7 @@ Main.isExitDialogShown = function() {
 };
 
 Main.showWarningDialog = function(text) {
-    $("#dialog_warning_text").text(title);
+    $("#dialog_warning_text").text(text);
     $("#dialog_warning").show();
 };
 
