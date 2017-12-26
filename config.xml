@@ -17,7 +17,7 @@
    <tizen:privilege name="http://tizen.org/privilege/tv.audio"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>
-   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="true" encryption="disable" install-location="auto" hwkey-event="enable"/>
+   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="false" encryption="disable" install-location="auto" hwkey-event="enable"/>
    <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
    <!-- Smart Hub Preview-->
    <tizen:metadata key='http://samsung.com/tv/metadata/use.preview' value='endpoint_URL=http://yourServer/JSONfile.json'></tizen:metadata>

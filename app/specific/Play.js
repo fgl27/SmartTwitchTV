@@ -42,7 +42,6 @@ Play.random_int = Math.round(Math.random() * 1e7);
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.ReturnFromResumeId = null;
-Play.ReturnFromResumeCount = 0;
 Play.isReturnFromResume = false;
 
 //Variable initialization end
@@ -84,36 +83,17 @@ Play.Start = function() {
     Play.playingTry = 0;
     Play.state = Play.STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', Play.Resume, false);
-    Play.ReturnFromResumeCount = 0;
     Play.loadData();
 };
 
 Play.Resume = function() {
     if (document.hidden) {
-        if (Play.Play) {
-            Play.Play = false;
-            Play.mWebapisAvplay.stop();
-        }
+        Play.Play = false;
+        Play.mWebapisAvplay.stop();
     } else {
-        if (!Play.Play) {
-            Play.isReturnFromResume = true;
-            Play.ReturnFromResumeCount = 0;
-            Play.ReturnFromResume();
-            $("#scene_channel_panel").show();
-            Play.showWarningDialog(STR_RESUME);
-            Play.ReturnFromResumeId = window.setInterval(Play.ReturnFromResume, 250);
-        }
-    }
-};
-
-Play.ReturnFromResume = function() {
-    if (!webapis.network.isConnectedToGateway()) {
-        Play.ReturnFromResumeCount++;
-        if (Play.ReturnFromResumeCount > 120) Play.shutdownStream();
-    } else {
-        window.clearInterval(Play.ReturnFromResumeId);
-        Play.ReturnFromResumeCount = 0;
-        Play.RestoreFromResume = true;
+        $("#scene_channel_panel").show();
+        Play.showWarningDialog(STR_RESUME);
+        Play.isReturnFromResume = true;
         Play.qualityChanged();
     }
 };
@@ -347,30 +327,19 @@ Play.listener = {
         updateCurrentTime(currentTime);
     },
     onerror: function(eventType) {
-        if (eventType == 'PLAYER_ERROR_CONNECTION_FAILED') {
+        if (eventType === 'PLAYER_ERROR_CONNECTION_FAILED') {
             if (!Play.isReturnFromResume) {
-                Play.OnErrorshutdownStream();
+                Play.shutdownStream();
             } else {
-                if (Play.ReturnFromResumeCount > 1) {
-                    Play.OnErrorshutdownStream();
-                } else { // try two times when comming from background
-                    Play.ReturnFromResumeCount++;
-                    Play.qualityChanged();
-                }
+                Play.RestoreFromResume = true;
+                Play.isReturnFromResume = false;
+                Play.qualityChanged();
             }
         }
     },
     onstreamcompleted: function() {
         Play.shutdownStream();
     }
-};
-
-Play.OnErrorshutdownStream = function() {
-    Play.ReturnFromResumeCount = 0;
-    window.clearTimeout(Play.exitID);
-    $("#play_dialog_exit").hide();
-    Play.hideChat();
-    window.setTimeout(Play.shutdownStream, 10);
 };
 
 var updateCurrentTime = function(currentTime) {
