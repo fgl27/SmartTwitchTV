@@ -18,11 +18,11 @@
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>
    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="false" encryption="disable" install-location="auto" hwkey-event="enable"/>
-   <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
+   <tizen:metadata key="samsung.com/tv/metadata/multitasking.support" value="true" />
    <!-- Smart Hub Preview-->
-   <tizen:metadata key='http://samsung.com/tv/metadata/use.preview' value='endpoint_URL=http://yourServer/JSONfile.json'></tizen:metadata>
+   <tizen:metadata key="http://samsung.com/tv/metadata/use.preview" value="endpoint_URL=http://yourServer/JSONfile.json"></tizen:metadata>
    <tizen:app-control>
-      <tizen:src name='index.html' reload='disable'></tizen:src>
-      <tizen:operation name='http://samsung.com/appcontrol/operation/eden_resume'></tizen:operation>
+      <tizen:src name="index.html" reload="disable"></tizen:src>
+      <tizen:operation name="http://samsung.com/appcontrol/operation/eden_resume"></tizen:operation>
    </tizen:app-control>
 </widget>
