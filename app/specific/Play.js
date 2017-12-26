@@ -41,6 +41,7 @@ Play.loadingDataTryMax = 12;
 Play.random_int = Math.round(Math.random() * 1e7);
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
+Play.offsettime = 0;
 Play.ReturnFromResumeId = null;
 Play.isReturnFromResume = false;
 
@@ -321,10 +322,9 @@ Play.listener = {
     },
     onbufferingcomplete: function() {
         Play.HideBufferDialog();
-        Play.isReturnFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
-        updateCurrentTime(currentTime);
+        Play.updateCurrentTime(currentTime);
     },
     onerror: function(eventType) {
         if (eventType === 'PLAYER_ERROR_CONNECTION_FAILED') {
@@ -342,7 +342,7 @@ Play.listener = {
     }
 };
 
-var updateCurrentTime = function(currentTime) {
+Play.updateCurrentTime = function(currentTime) {
     //current time is given in millisecond
     if (currentTime === null)
         currentTime = Play.mWebapisAvplay.getCurrentTime();
@@ -353,6 +353,12 @@ var updateCurrentTime = function(currentTime) {
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
+
+    if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+    if (Play.BufferDialogVisible()) {
+        if (parseInt(document.getElementById("buffering_bar_one").style.width) > 99) Play.HideBufferDialog();
+    }
+    Play.isReturnFromResume = false;
 };
 
 Play.lessthanten = function(time) {
