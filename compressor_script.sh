@@ -1,5 +1,5 @@
 #!/bin/bash
-#code compressor using yui-compressor, install on linux 
+#code compressor using yui-compressor and sed, install on linux 
 #sudo apt-get install yui-compressor
 #drag to terminal to run
 
@@ -38,10 +38,10 @@ js_comp() {
         array=( "$@" );
 	for i in ${array[@]}; do
 		cd $i || exit;
-		for i in *.js; do
-			if [ ! "$i" == "jquery.js" ] && [ ! "$i" == "imagesloaded.js" ]; then
-				echo -e "Compressing $i";
-				yui-compressor "$i" -o "$i";
+		for x in *.js; do
+			if [ ! "$x" == "jquery.js" ] && [ ! "$x" == "imagesloaded.js" ]; then
+				echo -e "Compressing $x";
+				yui-compressor "$x" -o "$x";
 			fi;
 		done
 		cd - > /dev/null;
@@ -50,18 +50,27 @@ js_comp() {
 
 echo -e "\nStarting compression optimization of source files\n";
 
+if ! which 'sed' >/dev/null  ; then
+	echo -e "can't run sed it's not installed"
+        echo -e "Install using command:";
+        echo -e "sudo apt-get install sed\n";
+	echo -e ".html files not compressed."
+else
+	sed_comp "${html_file[@]}"
+fi;
 
-sed_comp "${html_file[@]}"
 
-if ! which yui-compressor >/dev/null  ; then
+
+if ! which 'yui-compressor' >/dev/null  ; then
 	echo -e "\ncan't run yui-compressor it's not installed"
         echo -e "Install using command:";
         echo -e "sudo apt-get install yui-compressor\n";
-	echo -e ".js files not compressed."
+	echo -e ".js files not compressed.\n"
 	exit;
+else
+	js_comp "${js_folders[@]}"
 fi;
 
-js_comp "${js_folders[@]}"
 
 echo -e "\nCompression done\n";
 echo -e "Install the app now enjoy it!\n";
