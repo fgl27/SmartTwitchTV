@@ -51,7 +51,7 @@ SLive.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "45%";
-    $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
+    $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     if (SLive.status) SLive.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + Live.cursorY + '_' + Live.cursorX);
     else SLive.StartLoad();
