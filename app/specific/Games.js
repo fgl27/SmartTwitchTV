@@ -381,7 +381,8 @@ Games.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Live;
+            if (Main.Go === Main.Before) Main.Go = Main.Live;
+            else Main.Go = Main.Before;
             Games.exit();
             break;
         case TvKeyCode.KEY_LEFT:
@@ -453,6 +454,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
             document.body.removeEventListener("keydown", Games.handleKeyDown);
+            Main.Before = Main.Go;
             Main.Go = Main.AGame;
             Games.exit();
             break;
@@ -463,7 +465,6 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.Before = Main.Go;
             Main.Go = Main.Search;
             Games.exit();
             break;
