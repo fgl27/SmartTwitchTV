@@ -14,7 +14,7 @@ var STR_RESUME = "Resuming after be on background, please wait!";
 var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
 var STR_CHANNELS = "Channels";
-var STR_LIVE_STREAMS = "Live stream";
+var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen";
 
 
