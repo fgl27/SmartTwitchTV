@@ -425,7 +425,8 @@ SLive.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Before;
+            if (Main.Go === Main.Before) Main.Go = Main.Live;
+            else Main.Go = Main.Before;
             SLive.exit();
             break;
         case TvKeyCode.KEY_LEFT:
