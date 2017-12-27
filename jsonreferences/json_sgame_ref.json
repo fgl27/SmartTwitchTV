@@ -1,0 +1,136 @@
+{
+	"games": [{
+		"name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"popularity": 99108,
+		"_id": 493057,
+		"giantbomb_id": 54979,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+		},
+		"localized_name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"locale": "en-us"
+	}, {
+		"name": "Players Unknown Battle Grand",
+		"popularity": 26,
+		"_id": 499871,
+		"giantbomb_id": 62365,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Players%20Unknown%20Battle%20Grand-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Players%20Unknown%20Battle%20Grand-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Players%20Unknown%20Battle%20Grand-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Players%20Unknown%20Battle%20Grand-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Players%20Unknown%20Battle%20Grand-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Players%20Unknown%20Battle%20Grand-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Players%20Unknown%20Battle%20Grand-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Players%20Unknown%20Battle%20Grand-{width}x{height}.jpg"
+		},
+		"localized_name": "Players Unknown Battle Grand",
+		"locale": "en-us"
+	}, {
+		"name": "Player Manager 98/99",
+		"popularity": 0,
+		"_id": 17840,
+		"giantbomb_id": 19490,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%2098/99-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%2098/99-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%2098/99-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%2098/99-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%2098/99-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%2098/99-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%2098/99-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%2098/99-{width}x{height}.jpg"
+		},
+		"localized_name": "Player Manager 98/99",
+		"locale": "en-us"
+	}, {
+		"name": "Player Manager",
+		"popularity": 0,
+		"_id": 4749,
+		"giantbomb_id": 5189,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager-{width}x{height}.jpg"
+		},
+		"localized_name": "Player Manager",
+		"locale": "en-us"
+	}, {
+		"name": "Player Manager 2",
+		"popularity": 0,
+		"_id": 8190,
+		"giantbomb_id": 8938,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202-{width}x{height}.jpg"
+		},
+		"localized_name": "Player Manager 2",
+		"locale": "en-us"
+	}, {
+		"name": "Player Manager 2000",
+		"popularity": 0,
+		"_id": 9223,
+		"giantbomb_id": 10062,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202000-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202000-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202000-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202000-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202000-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202000-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202000-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202000-{width}x{height}.jpg"
+		},
+		"localized_name": "Player Manager 2000",
+		"locale": "en-us"
+	}, {
+		"name": "Player Manager 2001",
+		"popularity": 0,
+		"_id": 7451,
+		"giantbomb_id": 8140,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202001-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202001-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202001-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Player%20Manager%202001-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202001-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202001-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202001-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Player%20Manager%202001-{width}x{height}.jpg"
+		},
+		"localized_name": "Player Manager 2001",
+		"locale": "en-us"
+	}]
+}
