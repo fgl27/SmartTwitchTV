@@ -3,7 +3,6 @@ function Play() {
 
 }
 //Variable initialization
-Play.Playing = false;
 Play.ChatPositions = 1;
 Play.ChatBackground = 0.5;
 Play.ChatSizeValue = 3;
@@ -28,7 +27,6 @@ Play.qualityIndex = '';
 Play.RestoreFromResume = false;
 Play.ChatEnable = false;
 Play.exitID = '';
-Play.Playing = false;
 
 Play.pauseEndID = '';
 Play.pauseStartID = '';
@@ -42,7 +40,6 @@ Play.random_int = Math.round(Math.random() * 1e7);
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
-Play.ReturnFromResumeId = null;
 Play.isReturnFromResume = false;
 
 //Variable initialization end
@@ -91,11 +88,13 @@ Play.Resume = function() {
     if (document.hidden) {
         Play.Play = false;
         Play.mWebapisAvplay.stop();
+        window.clearInterval(Play.streamInfoTimer);
     } else {
         $("#scene_channel_panel").show();
         Play.showWarningDialog(STR_RESUME);
         Play.isReturnFromResume = true;
         Play.qualityChanged();
+        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
     }
 };
 
@@ -207,7 +206,7 @@ Play.extractQualities = function(input) {
     for (var i = 0; i < streams.length; i++) {
         result.push({
             'id': extractQualityFromStream(streams[i]),
-            'url': extractUrlFromStream(streams[i])
+            'url': streams[i].split("\n")[2]
         });
     }
     Play.qualities = result;
@@ -220,9 +219,7 @@ function extractStreamDeclarations(input) {
 
     var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
     var match;
-    while (match = myRegexp.exec(input)) {
-        result.push(match[0]);
-    }
+    while (match = myRegexp.exec(input)) result.push(match[0]);
 
     return result;
 }
@@ -232,12 +229,9 @@ function extractQualityFromStream(input) {
     var match = myRegexp.exec(input);
 
     var quality;
-    if (match !== null) {
-        quality = match[1];
-    } else {
-        var values = input.split("\n");
-        values = values[0].split(":");
-        values = values[1].split(",");
+    if (match !== null) quality = match[1];
+    else {
+        var values = input.split("\n")[0].split(":")[1].split(",");
 
         var value, set = {};
         for (var i = 0; i < values.length; i++) {
@@ -247,10 +241,6 @@ function extractQualityFromStream(input) {
         quality = set.NAME;
     }
     return quality;
-}
-
-function extractUrlFromStream(input) {
-    return input.split("\n")[2];
 }
 
 Play.qualityChanged = function() {
@@ -390,7 +380,6 @@ Play.shutdownStream = function() {
     Play.mWebapisAvplay.close();
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
-    Play.Playing = false;
     Play.hideDialog();
     Play.clearPause();
     Play.HideWarningDialog();
@@ -402,7 +391,6 @@ Play.shutdownStream = function() {
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
-    window.clearInterval(Play.ReturnFromResumeId);
 };
 
 Play.showDialog = function() {
