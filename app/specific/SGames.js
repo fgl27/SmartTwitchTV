@@ -39,16 +39,36 @@ SGames.Cell = 'sgame_cell_';
 
 SGames.init = function() {
     Main.Go = Main.SGames;
+    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
+    $('.label_search').html('');
+    $('.label_switch').html('');
+    $('.lable_live').html('');
+    $('.lable_user').html(STR_SEARCHS);
+    $('.lable_game').html('');
+    document.getElementById("top_bar_spacing").style.paddingLeft = "40.5%";
+    $('#top_bar_user').removeClass('icon_center_label');
+    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById("id_agame_name").style.paddingLeft = "45%";
+    $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
-    $('#top_bar_game').removeClass('icon_center_label');
-    $('#top_bar_game').addClass('icon_center_focus');
-    SGames.StartLoad();
+    if (SGames.status) SGames.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    else SGames.StartLoad();
 };
 
 SGames.exit = function() {
+    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
+    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH);
+    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
+    $('#top_bar_user').removeClass('icon_center_focus');
+    $('#top_bar_user').addClass('icon_center_label');
+    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
+    document.getElementById("id_agame_name").style.paddingLeft = "50%";
+    $('.lable_live').html(STR_LIVE);
+    $('.lable_user').html(STR_USER);
+    $('.lable_game').html(STR_GAMES);
+    $('.label_agame_name').html('');
+    SGames.Status = false;
     document.body.removeEventListener("keydown", SGames.handleKeyDown);
-    $('#top_bar_game').removeClass('icon_center_focus');
-    $('#top_bar_game').addClass('icon_center_label');
     Main.SwitchScreen();
 };
 
@@ -130,7 +150,10 @@ SGames.loadDataError = function(reason, responseText) {
 
 SGames.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items = response.games.length;
+    var response_items;
+
+    if (response.games !== null) response_items = response.games.length;
+    else response_items = 0;
 
     if (response_items < SGames.ItemsLimit) SGames.dataEnded = true;
 
@@ -286,7 +309,10 @@ SGames.loadDataErrorReplace = function(reason, responseText) {
 
 SGames.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items = response.games.length;
+    var response_items;
+
+    if (response.games !== null) response_items = response.games.length;
+    else response_items = 0;
 
     if (response_items < SGames.ItemsLimit) SGames.ReplacedataEnded = true;
 
@@ -378,7 +404,7 @@ SGames.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Live;
+            Main.Go = Main.Before;
             SGames.exit();
             break;
         case TvKeyCode.KEY_LEFT:
@@ -437,12 +463,7 @@ SGames.handleKeyDown = function(event) {
             SGames.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Live;
-            SGames.exit();
-            break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.Live;
-            SGames.exit();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

@@ -483,7 +483,7 @@ AGame.handleKeyDown = function(event) {
             Main.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
             Main.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
             document.body.removeEventListener("keydown", AGame.handleKeyDown);
-            Main.OldgameSelected = Main.gameSelected
+            Main.OldgameSelected = Main.gameSelected;
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
@@ -495,7 +495,7 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_BLUE:
             Main.Before = Main.Go;
             Main.Go = Main.Search;
-            Main.OldgameSelected = Main.gameSelected
+            Main.OldgameSelected = Main.gameSelected;
             AGame.exit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:

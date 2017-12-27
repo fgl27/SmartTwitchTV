@@ -51,7 +51,7 @@ Search.loadData = function() {
     Search.exit();
     if (Search.cursorX == 0) SGames.init();
     else if (Search.cursorX == 1) SGames.init();
-    else if (Search.cursorX == 2) SGames.init();
+    else if (Search.cursorX == 2) SLive.init();
 };
 
 Search.refreshInputFocusTools = function() {
