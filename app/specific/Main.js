@@ -20,6 +20,7 @@ Main.UserAGames = 8;
 Main.UserVod = 9;
 Main.UserAVod = 10;
 Main.Search = 11;
+Main.SGames = 12;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.listenerID = null;

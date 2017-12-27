@@ -41,11 +41,17 @@ Search.exit = function() {
     $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", Search.handleKeyDown);
     document.getElementById("search_input").value = '';
+};
+
+Search.exitMain = function() {
     Main.SwitchScreen();
 };
 
 Search.loadData = function() {
-    console.log(Search.data);
+    Search.exit();
+    if (Search.cursorX == 0) SGames.init();
+    else if (Search.cursorX == 1) SGames.init();
+    else if (Search.cursorX == 2) SGames.init();
 };
 
 Search.refreshInputFocusTools = function() {
@@ -69,6 +75,7 @@ Search.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Before;
             Search.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Search.cursorY === 1) {
