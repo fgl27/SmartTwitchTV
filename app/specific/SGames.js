@@ -6,7 +6,6 @@ SGames.Thumbnail = 'thumbnail_sgames_';
 SGames.EmptyCell = 'sgames_empty_';
 SGames.cursorY = 0;
 SGames.cursorX = 0;
-SGames.dataEnded = false;
 SGames.itemsCount = 0;
 SGames.imgMatrix = [];
 SGames.imgMatrixId = [];
@@ -82,12 +81,9 @@ SGames.StartLoad = function() {
     SGames.itemsCountOffset = 0;
     SGames.ReplacedataEnded = false;
     SGames.MaxOffset = 0;
-    SGames.nameMatrix = [];
-    SGames.nameMatrixCount = 0;
     SGames.itemsCount = 0;
     SGames.cursorX = 0;
     SGames.cursorY = 0;
-    SGames.dataEnded = false;
     SGames.loadData();
 };
 
@@ -105,13 +101,6 @@ SGames.loadDataRequest = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-
-        var offset = SGames.itemsCount + SGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (SGames.MaxOffset - SGames.ItemsLimit)) {
-            offset = SGames.MaxOffset - SGames.ItemsLimit;
-            SGames.dataEnded = true;
-            SGames.ReplacedataEnded = true;
-        }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Search.data), true);
         xmlHttp.timeout = SGames.loadingDataTimeout;
@@ -150,12 +139,9 @@ SGames.loadDataError = function(reason, responseText) {
 
 SGames.loadDataSuccess = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items;
+    var response_items = 0;
 
     if (response.games !== null) response_items = response.games.length;
-    else response_items = 0;
-
-    if (response_items < SGames.ItemsLimit) SGames.dataEnded = true;
 
     var offset_itemsCount = SGames.itemsCount;
     SGames.itemsCount += response_items;
@@ -172,11 +158,8 @@ SGames.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < SGames.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             game = response.games[cursor];
-            if (SGames.CellExists(game.name)) coloumn_id--;
-            else {
-                cell = SGames.createCell(row_id, coloumn_id, game.name, game.box.template, '', '', game.name, '', '');
-                row.append(cell);
-            }
+            cell = SGames.createCell(row_id, coloumn_id, game.name, game.box.template, '', '', game.name, '', '');
+            row.append(cell);
         }
         for (coloumn_id; coloumn_id < SGames.ColoumnsCount; coloumn_id++) {
             row.append(SGames.createCellEmpty(row_id, coloumn_id));
@@ -201,26 +184,13 @@ SGames.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail
 
     if (SGames.imgMatrixCount <= (SGames.ColoumnsCount * 3)) SGames.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
-    SGames.nameMatrix[SGames.nameMatrixCount] = channel_name;
-    SGames.nameMatrixCount++;
-
     return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/game.png"/> \
             <div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             <div id="' + SGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_SGames" style="width: 100%; display: inline-block;">' + viwers +
-            '</div> \
+        '</div> \
             </div>');
-};
-
-SGames.CellExists = function(display_name) {
-    for (var i = 0; i <= SGames.nameMatrixCount; i++) {
-        if (display_name == SGames.nameMatrix[i]) {
-            SGames.blankCellCount++;
-            return true;
-        }
-    }
-    return false;
 };
 
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
@@ -245,131 +215,11 @@ SGames.loadDataSuccessFinish = function() {
                 tumbImg.src = SGames.imgMatrix[i];
             }
 
-            if (SGames.blankCellCount > 0 && !SGames.dataEnded) {
-                SGames.loadingMore = true;
-                SGames.loadDataReplace();
-                return;
-            } else SGames.blankCellCount = 0;
-
             SGames.loadingData = false;
-            SGames.loadingMore = false;
         });
 };
 
-SGames.loadDataReplace = function() {
-    SGames.imgMatrix = [];
-    SGames.imgMatrixId = [];
-    SGames.imgMatrixCount = 0;
-    SGames.loadingData = true;
-    SGames.loadingDataTry = 0;
-    SGames.loadingDataTimeout = 1500;
-    SGames.loadDataRequestReplace();
-};
-
-SGames.loadDataRequestReplace = function() {
-    try {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        var offset = SGames.itemsCount + SGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (SGames.MaxOffset - SGames.ItemsLimit)) {
-            offset = SGames.MaxOffset - SGames.ItemsLimit;
-            SGames.ReplacedataEnded = true;
-        }
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Search.data), true);
-        xmlHttp.timeout = SGames.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    try {
-                        SGames.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        SGames.loadDataErrorReplace(e.message, null);
-    }
-};
-
-SGames.loadDataErrorReplace = function(reason, responseText) {
-    SGames.loadingDataTry++;
-    if (SGames.loadingDataTry < SGames.loadingDataTryMax) {
-        SGames.loadingDataTimeout += (SGames.loadingDataTry < 5) ? 250 : 3500;
-        SGames.loadDataRequestReplace();
-    }
-};
-
-SGames.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
-    var response_items;
-
-    if (response.games !== null) response_items = response.games.length;
-    else response_items = 0;
-
-    if (response_items < SGames.ItemsLimit) SGames.ReplacedataEnded = true;
-
-    var row_id = SGames.itemsCount / SGames.ColoumnsCount;
-
-    var coloumn_id, game, mReplace = false, cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
-        game = response.top[cursor];
-        if (SGames.CellExists(game.name)) SGames.blankCellCount--;
-        else {
-            mReplace = SGames.replaceCellEmpty(row_id, coloumn_id, game.name, game.box.template, '', '', game.name, '', '');
-            if (mReplace) SGames.blankCellCount--;
-            if (SGames.blankCellCount === 0) break;
-        }
-    }
-    SGames.itemsCountOffset += cursor;
-    if (SGames.ReplacedataEnded) SGames.blankCellCount = 0;
-    SGames.loadDataSuccessFinish();
-};
-
-SGames.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var my = 0,
-        mx = 0;
-    if (row_id < ((SGames.ItemsLimit / SGames.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(SGames.blankCellCount / SGames.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < SGames.ColoumnsCount; mx++) {
-            if (!Main.ThumbNull(my, mx, SGames.Thumbnail) && (Main.ThumbNull(my, mx, SGames.EmptyCell))) {
-                row_id = my;
-                coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
-                SGames.nameMatrix[SGames.nameMatrixCount] = channel_name;
-                SGames.nameMatrixCount++;
-                document.getElementById(SGames.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', SGames.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(SGames.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(SGames.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-                     <div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                     <div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-                     <div id="' + SGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_SGames" style="width: 100%; display: inline-block;">' +
-                    viwers + '</div> \
-                     </div>';
-                return true;
-            }
-        }
-    }
-
-    return false;
-};
-
 SGames.addFocus = function() {
-    if (((SGames.cursorY + SGames.ItemsReloadLimit) > (SGames.itemsCount / SGames.ColoumnsCount)) &&
-        !SGames.dataEnded && !SGames.loadingMore) {
-        SGames.loadingMore = true;
-        SGames.loadData();
-    }
-
     $('#' + SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_thumbnail_focused');
     $('#' + SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_text_focused');
     $('#' + SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_channel_focused');
