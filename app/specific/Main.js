@@ -21,6 +21,7 @@ Main.UserVod = 9;
 Main.UserAVod = 10;
 Main.Search = 11;
 Main.SGames = 12;
+Main.SLive = 13;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.listenerID = null;
@@ -146,6 +147,8 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.Games) Games.init();
     else if (Main.Go === Main.AGame) AGame.init();
     else if (Main.Go === Main.Search) Search.init();
+    else if (Main.Go === Main.SGames) SGames.init();
+    else if (Main.Go === Main.SLive) SLive.init();
 };
 
 Main.openStream = function() {
