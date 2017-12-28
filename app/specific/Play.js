@@ -345,6 +345,7 @@ Play.updateCurrentTime = function(currentTime) {
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
 
+    if (Play.DialogVisible()) Play.hideDialog();
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) {
         if (parseInt(document.getElementById("buffering_bar_one").style.width) > 99) Play.HideBufferDialog();
@@ -430,7 +431,7 @@ Play.ExitDialogVisible = function() {
 };
 
 Play.DialogVisible = function() {
-    return $("#scene_channel_dialog_loading").is(":visible");
+    return $("#dialog_loading_play").is(":visible");
 };
 
 Play.showBufferDialog = function() {
@@ -754,10 +755,10 @@ Play.handleKeyDown = function(e) {
                         Play.hideDialog();
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
-                    } else if (Play.WarningDialogVisible()) {
+                    } else if (Play.WarningDialogVisible() || Play.BufferDialogVisible() || Play.DialogVisible()) {
                         Play.HideWarningDialog();
-                    } else if (Play.BufferDialogVisible()) {
                         Play.HideBufferDialog();
+                        Play.hideDialog();
                     } else {
                         Play.showExitDialog();
                     }
