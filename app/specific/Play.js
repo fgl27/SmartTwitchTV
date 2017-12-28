@@ -386,6 +386,7 @@ Play.shutdownStream = function() {
     Play.hideDialog();
     Play.clearPause();
     Play.HideWarningDialog();
+    Play.HideBufferDialog();
     $("#scene1").show();
     $("#scene2").hide();
     Main.ReStartScreens();
