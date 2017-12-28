@@ -75,6 +75,7 @@ SLive.exit = function() {
 };
 
 SLive.StartLoad = function() {
+    Main.HideWarningDialog();
     SLive.status = false;
     SLive.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
@@ -146,7 +147,10 @@ SLive.loadDataError = function(reason, responseText) {
         SLive.loadingDataTimeout += (SLive.loadingDataTry < 5) ? 250 : 3500;
         SLive.loadDataRequest();
     } else {
-        Main.showWarningDialog("Unable to load SLive " + " Reason: " + reason + '<br>Hit Refresh to retry');
+        SLive.loadingData = false;
+        SLive.loadingMore = false;
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -412,7 +416,7 @@ SLive.keyClickDelay = function() {
 };
 
 SLive.handleKeyDown = function(event) {
-    if (SLive.loadingData && !SLive.loadingMore) {
+    if (SLive.loadingData) {
         event.preventDefault();
         return;
     } else if (!SLive.LastClickFinish) {

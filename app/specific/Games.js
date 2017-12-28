@@ -53,6 +53,7 @@ Games.exit = function() {
 };
 
 Games.StartLoad = function() {
+    Main.HideWarningDialog();
     Games.Status = false;
     Games.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
@@ -123,7 +124,10 @@ Games.loadDataError = function(reason, responseText) {
         Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
         Games.loadDataRequest();
     } else {
-        Main.showWarningDialog("Unable to load Games " + " Reason: " + reason + '<br>Hit Refresh to retry');
+        Games.loadingData = false;
+        Games.loadingMore = false;
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -368,7 +372,7 @@ Games.keyClickDelay = function() {
 };
 
 Games.handleKeyDown = function(event) {
-    if (Games.loadingData && !Games.loadingMore) {
+    if (Games.loadingData) {
         event.preventDefault();
         return;
     } else if (!Games.LastClickFinish) {

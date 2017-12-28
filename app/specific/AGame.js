@@ -60,6 +60,7 @@ AGame.exit = function() {
 };
 
 AGame.StartLoad = function() {
+    Main.HideWarningDialog();
     AGame.status = false;
     AGame.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
@@ -131,7 +132,10 @@ AGame.loadDataError = function(reason, responseText) {
         AGame.loadingDataTimeout += (AGame.loadingDataTry < 5) ? 250 : 3500;
         AGame.loadDataRequest();
     } else {
-        Main.showWarningDialog("Unable to load AGame " + " Reason: " + reason + '<br>Hit Refresh to retry');
+        AGame.loadingData = false;
+        AGame.loadingMore = false;
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -397,7 +401,7 @@ AGame.keyClickDelay = function() {
 };
 
 AGame.handleKeyDown = function(event) {
-    if (AGame.loadingData && !AGame.loadingMore) {
+    if (AGame.loadingData) {
         event.preventDefault();
         return;
     } else if (!AGame.LastClickFinish) {
