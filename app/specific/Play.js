@@ -306,9 +306,11 @@ Play.qualityChanged = function() {
 
 Play.listener = {
     onbufferingstart: function() {
+        Play.showBufferDialog();
     },
     onbufferingprogress: function(percent) {
         document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
+        if (!Play.BufferDialogVisible() && (percent < 98)) Play.showBufferDialog();
     },
     onbufferingcomplete: function() {
         Play.HideBufferDialog();
