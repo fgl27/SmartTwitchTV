@@ -16,7 +16,7 @@ var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
 var STR_CHANNELS = "Channels";
 var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen";
-
+var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
 
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";
@@ -49,4 +49,4 @@ var STR_CHANNEL = "Channel";
 var STR_CHANNELS = " Channels";
 var STR_USERNAME = "User name";
 var STR_DOES_NOT_EXIST = "does not exist.";
-var STR_IS_OFFLINE = "went offline, or the";
+
