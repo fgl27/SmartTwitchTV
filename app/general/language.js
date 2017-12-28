@@ -17,6 +17,7 @@ var STR_CHANNELS = "Channels";
 var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
+var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
 
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";

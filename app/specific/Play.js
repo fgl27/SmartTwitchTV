@@ -276,6 +276,7 @@ Play.qualityChanged = function() {
                 Play.mWebapisAvplay.play();
                 Play.HideWarningDialog();
                 Play.hidePanel();
+                document.getElementById("buffering_bar_one").style.width = '1%';
                 Play.showBufferDialog();
                 if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
                 Play.Play = true;
@@ -306,7 +307,7 @@ Play.listener = {
     },
     onbufferingprogress: function(percent) {
         document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
-        if (!Play.BufferDialogVisible() && (percent < 98)) Play.showBufferDialog();
+        if (!Play.BufferDialogVisible() && !Play.ExitDialogVisible() && (percent < 98)) Play.showBufferDialog();
     },
     onbufferingcomplete: function() {
         Play.HideBufferDialog();

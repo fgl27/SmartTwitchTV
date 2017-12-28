@@ -10,6 +10,7 @@ Search.data = '';
 
 
 Search.init = function() {
+    Main.HideWarningDialog();
     $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
     $('.label_search').html('');
     $('.label_switch').html('');

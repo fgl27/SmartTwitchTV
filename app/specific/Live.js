@@ -49,6 +49,7 @@ Live.exit = function() {
 };
 
 Live.StartLoad = function() {
+    Main.HideWarningDialog();
     Live.Status = false;
     Live.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
@@ -119,7 +120,10 @@ Live.loadDataError = function(reason, responseText) {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
         Live.loadDataRequest();
     } else {
-        Main.showWarningDialog("Unable to load Live " + " Reason: " + reason + '<br>Hit Refresh to retry');
+        Live.loadingData = false;
+        Live.loadingMore = false;
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -382,7 +386,7 @@ Live.keyClickDelay = function() {
 };
 
 Live.handleKeyDown = function(event) {
-    if (Live.loadingData && !Live.loadingMore) {
+    if (Live.loadingData) {
         event.preventDefault();
         return;
     } else if (!Live.LastClickFinish) {

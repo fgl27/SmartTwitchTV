@@ -72,11 +72,11 @@ SGames.exit = function() {
 };
 
 SGames.StartLoad = function() {
+    Main.HideWarningDialog();
     SGames.Status = false;
     SGames.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     $('#stream_table_search_game').empty();
-    SGames.loadingMore = false;
     SGames.blankCellCount = 0;
     SGames.itemsCountOffset = 0;
     SGames.ReplacedataEnded = false;
@@ -133,7 +133,9 @@ SGames.loadDataError = function(reason, responseText) {
         SGames.loadingDataTimeout += (SGames.loadingDataTry < 5) ? 250 : 3500;
         SGames.loadDataRequest();
     } else {
-        Main.showWarningDialog("Unable to load the Search " + " Reason: " + reason + '<br>Hit Refresh to retry');
+        SGames.loadingData = false;
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -241,7 +243,7 @@ SGames.keyClickDelay = function() {
 };
 
 SGames.handleKeyDown = function(event) {
-    if (SGames.loadingData && !SGames.loadingMore) {
+    if (SGames.loadingData) {
         event.preventDefault();
         return;
     } else if (!SGames.LastClickFinish) {
