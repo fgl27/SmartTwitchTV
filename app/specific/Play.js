@@ -177,8 +177,7 @@ Play.loadDataError = function() {
         Play.loadDataRequest();
     } else {
         Play.hideDialog();
-        Play.showWarningDialog(STR_IS_OFFLINE);
-        window.setTimeout(Play.shutdownStream, 1500);
+        Play.WarnShutdownStream();
     }
 };
 
@@ -316,10 +315,8 @@ Play.listener = {
     },
     onerror: function(eventType) {
         if (eventType === 'PLAYER_ERROR_CONNECTION_FAILED') {
-            if (!Play.isReturnFromResume) {
-                Play.showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(Play.shutdownStream, 1500);
-            } else {
+            if (!Play.isReturnFromResume) Play.WarnShutdownStream();
+            else {
                 Play.RestoreFromResume = true;
                 Play.isReturnFromResume = false;
                 Play.qualityChanged();
@@ -327,8 +324,13 @@ Play.listener = {
         }
     },
     onstreamcompleted: function() {
-        Play.shutdownStream();
+        Play.WarnShutdownStream();
     }
+};
+
+Play.WarnShutdownStream = function() {
+    Play.showWarningDialog(STR_IS_OFFLINE);
+    window.setTimeout(Play.shutdownStream, 1500);
 };
 
 Play.updateCurrentTime = function(currentTime) {
