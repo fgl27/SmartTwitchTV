@@ -1,7 +1,8 @@
 #!/bin/bash
-#code compressor using yui-compressor and sed, install on linux 
+#code compressor using yui-compressor and sed, runs on linux shell base system
 #sudo apt-get install yui-compressor
-#drag to terminal to run
+#sudo apt-get install sed
+#drag this file to terminal before installing the app
 
 # add html files here
 html_file=("config.xml" "index.html");
@@ -9,8 +10,7 @@ html_file=("config.xml" "index.html");
 # add js folders here
 js_folders=("app/general/" "app/specific/");
 
-
-# no changes needed bellow here
+# no changes needed to be done bellow this line
 cd "$(dirname "$0")"
 sed_comp() {
         array=( "$@" );
@@ -59,8 +59,6 @@ else
 	sed_comp "${html_file[@]}"
 fi;
 
-
-
 if ! which 'yui-compressor' >/dev/null  ; then
 	echo -e "\ncan't run yui-compressor it's not installed"
         echo -e "Install using command:";
@@ -71,8 +69,6 @@ else
 	js_comp "${js_folders[@]}"
 fi;
 
-
 echo -e "\nCompression done\n";
 echo -e "Install the app now enjoy it!\n";
-
 exit;
