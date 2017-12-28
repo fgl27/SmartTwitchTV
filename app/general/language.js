@@ -15,7 +15,7 @@ var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
 var STR_CHANNELS = "Channels";
 var STR_LIVE_STREAMS = "Live streams";
-var STR_GOBACK = "Back to previously screen";
+var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
 
 var STR_OPEN = "Open";
