@@ -301,6 +301,7 @@ Play.qualityChanged = function() {
 
 Play.listener = {
     onbufferingstart: function() {
+        document.getElementById("buffering_bar_one").style.width = '1%';
         Play.showBufferDialog();
     },
     onbufferingprogress: function(percent) {
