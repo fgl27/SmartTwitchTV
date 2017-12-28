@@ -177,12 +177,8 @@ Play.loadDataError = function() {
         Play.loadDataRequest();
     } else {
         Play.hideDialog();
-        Play.showWarningDialog(STR_CHANNEL + " '" + Main.selectedChannelDisplayname +
-            "' " + STR_IS_OFFLINE + " " + STR_ERROR_CONNECTION_FAIL);
-        window.setTimeout(function() {
-            Play.HideWarningDialog();
-            Play.shutdownStream();
-        }, 2000);
+        Play.showWarningDialog(STR_IS_OFFLINE);
+        window.setTimeout(Play.shutdownStream, 1500);
     }
 };
 
@@ -321,7 +317,8 @@ Play.listener = {
     onerror: function(eventType) {
         if (eventType === 'PLAYER_ERROR_CONNECTION_FAILED') {
             if (!Play.isReturnFromResume) {
-                Play.shutdownStream();
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(Play.shutdownStream, 1500);
             } else {
                 Play.RestoreFromResume = true;
                 Play.isReturnFromResume = false;
