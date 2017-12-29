@@ -33,50 +33,38 @@ SChannels.DispNameDiv = 'schannels_display_name_';
 SChannels.StreamTitleDiv = 'schannels_stream_title_';
 SChannels.Cell = 'schannels_cell_';
 SChannels.status = false;
+SChannels.lastData = '';
 
 //Variable initialization end
 
 SChannels.init = function() {
     Main.Go = Main.SChannels;
-    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
-    $('.label_search').html('');
-    $('.label_switch').html('');
-    $('.lable_live').html('');
+    if (SChannels.lastData !== Search.data) SChannels.status = false;
     $('.lable_user').html(STR_SEARCHS);
-    $('.lable_game').html('');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "40.5%";
-    $('#top_bar_user').removeClass('icon_center_label');
-    $('#top_bar_user').addClass('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = "45%";
+    Main.cleanTopLabel();
     $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
-    if (SChannels.status) SChannels.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    if (SChannels.status) SChannels.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX);
     else SChannels.StartLoad();
 };
 
 SChannels.exit = function() {
-    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
-    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH);
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
-    $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
-    document.getElementById("id_agame_name").style.paddingLeft = "50%";
-    $('.lable_live').html(STR_LIVE);
-    $('.lable_user').html(STR_USER);
-    $('.lable_game').html(STR_GAMES);
-    $('.label_agame_name').html('');
+    Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels.handleKeyDown);
     SChannels.status = false;
+};
+
+SChannels.Postexit = function() {
     Main.SwitchScreen();
 };
 
 SChannels.StartLoad = function() {
+    SChannels.lastData = Search.data;
     Main.HideWarningDialog();
     SChannels.status = false;
     SChannels.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_search_live').empty();
+    $('#stream_table_search_channel').empty();
     SChannels.loadingMore = false;
     SChannels.blankCellCount = 0;
     SChannels.itemsCountOffset = 0;
@@ -175,7 +163,7 @@ SChannels.loadDataSuccess = function(responseText) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
-                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels.logo, channels.display_name);
+                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels.logo, channels.profile_banner, channels.display_name);
                 row.append(cell);
             }
         }
@@ -183,7 +171,7 @@ SChannels.loadDataSuccess = function(responseText) {
         for (coloumn_id; coloumn_id < SChannels.ColoumnsCount; coloumn_id++) {
             row.append(SChannels.createCellEmpty(row_id, coloumn_id));
         }
-        $('#stream_table_search_live').append(row);
+        $('#stream_table_search_channel').append(row);
     }
 
     SChannels.loadDataSuccessFinish();
@@ -194,7 +182,7 @@ SChannels.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + SChannels.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
+SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, preview_logo, channel_display_name) {
     SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
     SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
     SChannels.imgMatrixCount++;
@@ -204,7 +192,7 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
 
-    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-logo="' + preview_logo + '"></td>').html(
         '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/ch_logo.png"/> \
             <div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
@@ -224,7 +212,7 @@ SChannels.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SChannels.loadDataSuccessFinish = function() {
-    $('#stream_table_search_live').imagesLoaded()
+    $('#stream_table_search_channel').imagesLoaded()
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
@@ -315,7 +303,8 @@ SChannels.loadDataSuccessReplace = function(responseText) {
 
     var row_id = SChannels.itemsCount / SChannels.ColoumnsCount;
 
-    var coloumn_id, channels, mReplace = false, cursor = 0;
+    var coloumn_id, channels, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         channels = response.channels[cursor];
@@ -375,7 +364,7 @@ SChannels.addFocus = function() {
 SChannels.removeFocus = function() {
     $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_text_focused');
-    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_channel_focuse');
+    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_channel_focused');
 };
 
 SChannels.keyClickDelay = function() {
@@ -399,6 +388,7 @@ SChannels.handleKeyDown = function(event) {
             if (Main.Go === Main.Before) Main.Go = Main.Live;
             else Main.Go = Main.Before;
             SChannels.exit();
+            SChannels.Postexit();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((SChannels.cursorY), (SChannels.cursorX - 1), SChannels.Thumbnail)) {
@@ -462,6 +452,11 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
+            Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
+            Main.selectedChannelLogo = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-logo');
+            Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
+            document.body.removeEventListener("keydown", SChannels.handleKeyDown);
+            SChannelsA.init();
             break;
         case TvKeyCode.KEY_RED:
         case TvKeyCode.KEY_GREEN:
@@ -470,6 +465,7 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_BLUE:
             Main.Go = Main.Search;
             SChannels.exit();
+            SChannels.Postexit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:
@@ -510,9 +506,14 @@ SChannels.ScrollHelper = {
         }
         if (Main.Go === Main.SChannels) {
             if (id.indexOf(SChannels.Thumbnail + '0_') == -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
+                if (id.indexOf(SChannels.Thumbnail + '1_') == -1)
+                    $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
+                else
+                    $(window).scrollTop(this.documentVerticalScrollPosition() +
+                        this.elementVerticalClientPositionById(SChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 290);
             } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+                $(window).scrollTop(this.documentVerticalScrollPosition() +
+                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
             }
         } else return;
     }

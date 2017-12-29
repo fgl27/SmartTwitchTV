@@ -14,10 +14,17 @@ var STR_RESUME = "Resuming after be on background, please wait!";
 var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
 var STR_CHANNELS = "Channels";
+var STR_CHANNEL = "Channel";
 var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
+var STR_PAST_BROA = " Past Broadcast";
+var STR_CLIPS = " Clips";
+var STR_CONTENT = " Content";
+
+
+
 
 var STR_OPEN = "Open";
 var STR_OPEN_CHANNEL = "Open a channel";

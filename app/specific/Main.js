@@ -22,8 +22,10 @@ Main.UserAVod = 10;
 Main.Search = 11;
 Main.SGames = 12;
 Main.SLive = 13;
+Main.SChannelsA = 14;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
+Main.selectedChannelLogo = '';
 Main.listenerID = null;
 Main.ExitDialogID = null;
 Main.selectedGame = '';
@@ -149,6 +151,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.Search) Search.init();
     else if (Main.Go === Main.SGames) SGames.init();
     else if (Main.Go === Main.SLive) SLive.init();
+    else if (Main.Go === Main.SChannelsA) SChannelsA.init();
 };
 
 Main.openStream = function() {
@@ -161,6 +164,30 @@ Main.openStream = function() {
         $("#scene1").hide();
         Play.Start();
     }, 15);
+};
+
+Main.RestoreTopLabel = function() {
+    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
+    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
+    $('#top_bar_user').removeClass('icon_center_focus');
+    $('#top_bar_user').addClass('icon_center_label');
+    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
+    document.getElementById("id_agame_name").style.paddingLeft = "50%";
+    $('.lable_live').html(STR_LIVE);
+    $('.lable_user').html(STR_USER);
+    $('.lable_game').html(STR_GAMES);
+    $('.label_agame_name').html('');
+};
+
+Main.cleanTopLabel = function() {
+    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
+    $('.label_switch').html('');
+    $('.lable_live').html('');
+    $('.lable_game').html('');
+    document.getElementById("top_bar_spacing").style.paddingLeft = "34.5%";
+    $('#top_bar_user').removeClass('icon_center_label');
+    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById("id_agame_name").style.paddingLeft = "43.2%";
 };
 
 Main.NetworkStateChangeListener = function() {
