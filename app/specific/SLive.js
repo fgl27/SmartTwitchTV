@@ -41,16 +41,8 @@ SLive.status = false;
 
 SLive.init = function() {
     Main.Go = Main.SLive;
-    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
-    $('.label_search').html('');
-    $('.label_switch').html('');
-    $('.lable_live').html('');
     $('.lable_user').html(STR_SEARCHS);
-    $('.lable_game').html('');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "40.5%";
-    $('#top_bar_user').removeClass('icon_center_label');
-    $('#top_bar_user').addClass('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = "45%";
+    Main.cleanTopLabel();
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     if (SLive.status) SLive.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + Live.cursorY + '_' + Live.cursorX);
@@ -58,17 +50,7 @@ SLive.init = function() {
 };
 
 SLive.exit = function() {
-    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
-    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH);
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
-    $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
-    document.getElementById("id_agame_name").style.paddingLeft = "50%";
-    $('.lable_live').html(STR_LIVE);
-    $('.lable_user').html(STR_USER);
-    $('.lable_game').html(STR_GAMES);
-    $('.label_agame_name').html('');
+    Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SLive.handleKeyDown);
     SLive.status = false;
     Main.SwitchScreen();
@@ -329,7 +311,8 @@ SLive.loadDataSuccessReplace = function(responseText) {
 
     var row_id = SLive.itemsCount / SLive.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false, cursor = 0;
+    var coloumn_id, stream, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
