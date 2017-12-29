@@ -16,7 +16,7 @@ Games.nameMatrixCount = 0;
 Games.loadingData = false;
 Games.loadingDataTry = 1;
 Games.loadingDataTryMax = 10;
-Games.loadingDataTimeout = 1500;
+Games.loadingDataTimeout = 3500;
 Games.isDialogOn = false;
 Games.ItemsLimit = 100;
 Games.ColoumnsCount = 5;
@@ -78,7 +78,7 @@ Games.loadData = function() {
     Games.imgMatrixCount = 0;
     Games.loadingData = true;
     Games.loadingDataTry = 0;
-    Games.loadingDataTimeout = 1500;
+    Games.loadingDataTimeout = 3500;
     Games.loadDataRequest();
 };
 
@@ -244,7 +244,7 @@ Games.loadDataReplace = function() {
     Games.imgMatrixCount = 0;
     Games.loadingData = true;
     Games.loadingDataTry = 0;
-    Games.loadingDataTimeout = 1500;
+    Games.loadingDataTimeout = 3500;
     Games.loadDataRequestReplace();
 };
 

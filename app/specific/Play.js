@@ -128,7 +128,7 @@ Play.updateStreamInfo = function() {
 
 Play.loadData = function() {
     Play.loadingDataTry = 0;
-    Play.loadingDataTimeout = 1500;
+    Play.loadingDataTimeout = 3500;
     Play.loadDataRequest();
 };
 

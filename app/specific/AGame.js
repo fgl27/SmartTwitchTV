@@ -15,7 +15,7 @@ AGame.nameMatrixCount = 0;
 AGame.loadingData = false;
 AGame.loadingDataTry = 1;
 AGame.loadingDataTryMax = 10;
-AGame.loadingDataTimeout = 1500;
+AGame.loadingDataTimeout = 3500;
 AGame.isDialogOn = false;
 AGame.ItemsLimit = 99;
 AGame.ColoumnsCount = 3;
@@ -85,7 +85,7 @@ AGame.loadData = function() {
     AGame.imgMatrixCount = 0;
     AGame.loadingData = true;
     AGame.loadingDataTry = 0;
-    AGame.loadingDataTimeout = 1500;
+    AGame.loadingDataTimeout = 3500;
     AGame.loadDataRequest();
 };
 
@@ -259,7 +259,7 @@ AGame.loadDataReplace = function() {
     AGame.imgMatrixCount = 0;
     AGame.loadingData = true;
     AGame.loadingDataTry = 0;
-    AGame.loadingDataTimeout = 1500;
+    AGame.loadingDataTimeout = 3500;
     AGame.loadDataRequestReplace();
 };
 

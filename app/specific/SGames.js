@@ -15,7 +15,7 @@ SGames.nameMatrixCount = 0;
 SGames.loadingData = false;
 SGames.loadingDataTry = 1;
 SGames.loadingDataTryMax = 10;
-SGames.loadingDataTimeout = 1500;
+SGames.loadingDataTimeout = 3500;
 SGames.isDialogOn = false;
 SGames.ItemsLimit = 100;
 SGames.ColoumnsCount = 5;
@@ -93,7 +93,7 @@ SGames.loadData = function() {
     SGames.imgMatrixCount = 0;
     SGames.loadingData = true;
     SGames.loadingDataTry = 0;
-    SGames.loadingDataTimeout = 1500;
+    SGames.loadingDataTimeout = 3500;
     SGames.loadDataRequest();
 };
 
