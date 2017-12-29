@@ -386,7 +386,7 @@ Live.keyClickDelay = function() {
 };
 
 Live.handleKeyDown = function(event) {
-    if (Live.loadingData) {
+    if (Live.loadingData && !Live.loadingMore) {
         event.preventDefault();
         return;
     } else if (!Live.LastClickFinish) {
