@@ -45,7 +45,7 @@ SLive.init = function() {
     Main.cleanTopLabel();
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
-    if (SLive.status) SLive.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + Live.cursorY + '_' + Live.cursorX);
+    if (SLive.status) SLive.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + SLive.cursorY + '_' + SLive.cursorX);
     else SLive.StartLoad();
 };
 
