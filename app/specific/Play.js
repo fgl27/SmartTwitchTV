@@ -307,7 +307,7 @@ Play.listener = {
     },
     onbufferingprogress: function(percent) {
         document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
-        if (!Play.BufferDialogVisible() && !Play.ExitDialogVisible() && (percent < 98)) Play.showBufferDialog();
+        if (!Play.BufferDialogVisible() && (percent < 98)) Play.showBufferDialog();
     },
     onbufferingcomplete: function() {
         Play.HideBufferDialog();
@@ -759,9 +759,10 @@ Play.handleKeyDown = function(e) {
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
                     } else if (Play.WarningDialogVisible() || Play.BufferDialogVisible() || Play.DialogVisible()) {
+                        Play.hideDialog();
                         Play.HideWarningDialog();
                         Play.HideBufferDialog();
-                        Play.hideDialog();
+                        Play.showExitDialog();
                     } else {
                         Play.showExitDialog();
                     }
