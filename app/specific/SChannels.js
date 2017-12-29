@@ -383,7 +383,7 @@ SChannels.keyClickDelay = function() {
 };
 
 SChannels.handleKeyDown = function(event) {
-    if (SChannels.loadingData) {
+    if (SChannels.loadingData && !SChannels.loadingMore) {
         event.preventDefault();
         return;
     } else if (!SChannels.LastClickFinish) {

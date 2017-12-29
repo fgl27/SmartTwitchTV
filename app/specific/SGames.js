@@ -243,7 +243,7 @@ SGames.keyClickDelay = function() {
 };
 
 SGames.handleKeyDown = function(event) {
-    if (SGames.loadingData) {
+    if (SGames.loadingData && !SGames.loadingMore) {
         event.preventDefault();
         return;
     } else if (!SGames.LastClickFinish) {

@@ -416,7 +416,7 @@ SLive.keyClickDelay = function() {
 };
 
 SLive.handleKeyDown = function(event) {
-    if (SLive.loadingData) {
+    if (SLive.loadingData && !SLive.loadingMore) {
         event.preventDefault();
         return;
     } else if (!SLive.LastClickFinish) {

@@ -401,7 +401,7 @@ AGame.keyClickDelay = function() {
 };
 
 AGame.handleKeyDown = function(event) {
-    if (AGame.loadingData) {
+    if (AGame.loadingData && !AGame.loadingMore) {
         event.preventDefault();
         return;
     } else if (!AGame.LastClickFinish) {

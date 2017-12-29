@@ -372,7 +372,7 @@ Games.keyClickDelay = function() {
 };
 
 Games.handleKeyDown = function(event) {
-    if (Games.loadingData) {
+    if (Games.loadingData && !Games.loadingMore) {
         event.preventDefault();
         return;
     } else if (!Games.LastClickFinish) {
