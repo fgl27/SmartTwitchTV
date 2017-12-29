@@ -486,7 +486,7 @@ SLive.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            SLive.StartLoad();
+            if (!SLive.loadingMore) SLive.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
         case TvKeyCode.KEY_CHANNELDOWN:

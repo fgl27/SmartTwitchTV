@@ -453,7 +453,7 @@ SChannels.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            SChannels.StartLoad();
+            if (!SChannels.loadingMore) SChannels.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
         case TvKeyCode.KEY_CHANNELDOWN:

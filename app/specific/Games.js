@@ -442,7 +442,7 @@ Games.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            Games.StartLoad();
+            if (!Games.loadingMore) Games.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.Live;
