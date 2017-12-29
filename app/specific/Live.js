@@ -16,7 +16,7 @@ Live.nameMatrixCount = 0;
 Live.loadingData = false;
 Live.loadingDataTry = 1;
 Live.loadingDataTryMax = 10;
-Live.loadingDataTimeout = 1500;
+Live.loadingDataTimeout = 3500;
 Live.isDialogOn = false;
 Live.ItemsLimit = 99;
 Live.ColoumnsCount = 3;
@@ -74,7 +74,7 @@ Live.loadData = function() {
     Live.imgMatrixCount = 0;
     Live.loadingData = true;
     Live.loadingDataTry = 0;
-    Live.loadingDataTimeout = 1500;
+    Live.loadingDataTimeout = 3500;
     Live.loadDataRequest();
 };
 
@@ -246,7 +246,7 @@ Live.loadDataReplace = function() {
     Live.imgMatrixCount = 0;
     Live.loadingData = true;
     Live.loadingDataTry = 0;
-    Live.loadingDataTimeout = 1500;
+    Live.loadingDataTimeout = 3500;
     Live.loadDataRequestReplace();
 };
 

@@ -50,7 +50,7 @@ Search.exitMain = function() {
 
 Search.loadData = function() {
     Search.exit();
-    if (Search.cursorX == 0) SGames.init();
+    if (Search.cursorX == 0) SChannels.init();
     else if (Search.cursorX == 1) SGames.init();
     else if (Search.cursorX == 2) SLive.init();
 };

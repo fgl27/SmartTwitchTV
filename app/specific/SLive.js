@@ -15,7 +15,7 @@ SLive.nameMatrixCount = 0;
 SLive.loadingData = false;
 SLive.loadingDataTry = 1;
 SLive.loadingDataTryMax = 10;
-SLive.loadingDataTimeout = 1500;
+SLive.loadingDataTimeout = 3500;
 SLive.isDialogOn = false;
 SLive.ItemsLimit = 99;
 SLive.ColoumnsCount = 3;
@@ -100,7 +100,7 @@ SLive.loadData = function() {
     SLive.imgMatrixCount = 0;
     SLive.loadingData = true;
     SLive.loadingDataTry = 0;
-    SLive.loadingDataTimeout = 1500;
+    SLive.loadingDataTimeout = 3500;
     SLive.loadDataRequest();
 };
 
@@ -274,7 +274,7 @@ SLive.loadDataReplace = function() {
     SLive.imgMatrixCount = 0;
     SLive.loadingData = true;
     SLive.loadingDataTry = 0;
-    SLive.loadingDataTimeout = 1500;
+    SLive.loadingDataTimeout = 3500;
     SLive.loadDataRequestReplace();
 };
 
@@ -289,7 +289,7 @@ SLive.loadDataRequestReplace = function() {
             SLive.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
             '&limit=' + SLive.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
