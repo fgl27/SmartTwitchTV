@@ -23,6 +23,7 @@ Main.Search = 11;
 Main.SGames = 12;
 Main.SLive = 13;
 Main.SChannelsA = 14;
+Main.Svod = 15;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -152,6 +153,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.SGames) SGames.init();
     else if (Main.Go === Main.SLive) SLive.init();
     else if (Main.Go === Main.SChannelsA) SChannelsA.init();
+    else if (Main.Go === Main.Svod) Svod.init();
 };
 
 Main.openStream = function() {
@@ -188,6 +190,14 @@ Main.cleanTopLabel = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "43.2%";
+};
+
+Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+        "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+    ];
+    time = new Date(time);
+    return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 };
 
 Main.NetworkStateChangeListener = function() {

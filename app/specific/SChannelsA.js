@@ -42,6 +42,7 @@ SChannelsA.init = function() {
     Main.Go = Main.SChannelsA;
     if (SChannelsA.lastselectedChannel !== Main.selectedChannel) SChannelsA.status = false;
     Main.cleanTopLabel();
+    $('.lable_user').html(STR_CHANNEL);
     $('.label_agame_name').html(Main.selectedChannelDisplayname + STR_CONTENT);
     document.body.addEventListener("keydown", SChannelsA.handleKeyDown, false);
     if (SChannelsA.status) SChannelsA.ScrollHelper.scrollVerticalToElementById(SChannelsA.Thumbnail + SChannelsA.cursorY + '_' + SChannelsA.cursorX);
@@ -247,13 +248,13 @@ SChannelsA.keyClickDelay = function() {
 };
 
 SChannelsA.keyEnter = function() {
+    document.body.removeEventListener("keydown", SChannelsA.handleKeyDown);
     var value = (!SChannelsA.skipImg ? 0 : 1);
     if (SChannelsA.cursorX === (0 - value)) {
         Main.selectedChannel = $('#' + SChannelsA.Cell + SChannelsA.cursorY + '_' + SChannelsA.cursorX).attr('data-channelname');
         Main.selectedChannelDisplayname = document.getElementById(SChannelsA.DispNameDiv + SChannelsA.cursorY + '_' + SChannelsA.cursorX).textContent;
-        document.body.removeEventListener("keydown", SChannelsA.handleKeyDown);
         Main.openStream();
-    } else if (SChannelsA.cursorX === (1 - value)) console.log(SChannelsA.cursorX);
+    } else if (SChannelsA.cursorX === (1 - value)) Svod.init();
     else if (SChannelsA.cursorX === (2 - value)) console.log(SChannelsA.cursorX);
 };
 
@@ -271,8 +272,7 @@ SChannelsA.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.Go === Main.Before) Main.Go = Main.SChannelsA;
-            else Main.Go = Main.Before;
+            Main.Go = Main.SChannels;
             SChannelsA.exit();
             break;
         case TvKeyCode.KEY_LEFT:
