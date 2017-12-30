@@ -44,10 +44,10 @@ Svod.init = function() {
     Main.Go = Main.Svod;
     if (SChannelsA.lastselectedChannel !== Main.selectedChannel) Svod.status = false;
     Main.cleanTopLabel();
-    $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-    document.getElementById("top_bar_spacing").style.paddingLeft = "27.5%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_VOD);
-    $('.label_agame_name').html(Main.selectedChannel);
+    $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    $('.lable_game').html(Main.selectedChannel);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
     if (Svod.status) Svod.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX);
     else Svod.StartLoad();
@@ -320,7 +320,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
 
     for (cursor; cursor < response_items; cursor++) {
         video = response.streams[cursor];
-        if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) coloumn_id--;
+        if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) Svod.blankCellCount--;
         else {
             mReplace = Svod.replaceCellEmpty(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
                 STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeMs((parseInt(video.length) / 60) * 60000),
@@ -471,8 +471,10 @@ Svod.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            Svod.highlight = !Svod.highlight;
-            if (!Svod.loadingMore) Svod.StartLoad();
+            if (!Svod.loadingMore) {
+                Svod.highlight = !Svod.highlight;
+                Svod.StartLoad();
+            }
             break;
         case TvKeyCode.KEY_CHANNELUP:
         case TvKeyCode.KEY_CHANNELDOWN:
@@ -534,7 +536,7 @@ Svod.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.Svod) {
-            if (id.indexOf(Svod.Thumbnail + '0_') == -1) {
+            if (id.indexOf(Svod.Thumbnail + '0_') === -1) {
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
             } else {
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"

@@ -3,6 +3,7 @@ var STR_SEARCH = "Search (D)";
 var STR_SEARCHS = "Search";
 var STR_SWITCH = "Switch (CH Up/Down)";
 var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide(CH Press) or Info)";
+var STR_SWITCH_CLIP = "Switch Period (day, week, month, all) (Guide(CH Press) or Info)";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";

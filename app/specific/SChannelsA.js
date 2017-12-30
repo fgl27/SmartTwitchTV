@@ -42,8 +42,10 @@ SChannelsA.init = function() {
     Main.Go = Main.SChannelsA;
     if (SChannelsA.lastselectedChannel !== Main.selectedChannel) SChannelsA.status = false;
     Main.cleanTopLabel();
+    document.getElementById("top_bar_spacing").style.paddingLeft = "25.5%";
     $('.lable_user').html(STR_CHANNEL);
-    $('.label_agame_name').html(Main.selectedChannelDisplayname + STR_CONTENT);
+    $('.lable_game').html(Main.selectedChannelDisplayname);
+    $('.label_agame_name').html('');
     document.body.addEventListener("keydown", SChannelsA.handleKeyDown, false);
     if (SChannelsA.status) SChannelsA.ScrollHelper.scrollVerticalToElementById(SChannelsA.Thumbnail + SChannelsA.cursorY + '_' + SChannelsA.cursorX);
     else SChannelsA.StartLoad();
@@ -255,7 +257,7 @@ SChannelsA.keyEnter = function() {
         Main.selectedChannelDisplayname = document.getElementById(SChannelsA.DispNameDiv + SChannelsA.cursorY + '_' + SChannelsA.cursorX).textContent;
         Main.openStream();
     } else if (SChannelsA.cursorX === (1 - value)) Svod.init();
-    else if (SChannelsA.cursorX === (2 - value)) console.log(SChannelsA.cursorX);
+    else if (SChannelsA.cursorX === (2 - value)) Sclip.init();
 };
 
 SChannelsA.handleKeyDown = function(event) {
