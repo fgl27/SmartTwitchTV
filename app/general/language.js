@@ -2,6 +2,7 @@ var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
 var STR_SEARCH = "Search (D)";
 var STR_SEARCHS = "Search";
 var STR_SWITCH = "Switch (CH Up/Down)";
+var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide(CH Press) or Info)";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";
@@ -20,9 +21,12 @@ var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
 var STR_PAST_BROA = " Past Broadcast";
+var STR_PAST_HIGHL = " Highlight";
 var STR_CLIPS = " Clips";
 var STR_CONTENT = " Content";
-
+var STR_STREAM_ON = "Streamed on ";
+var STR_DURATION = "Duration ";
+var STR_VIEWS = " Views";
 
 
 
