@@ -40,6 +40,7 @@ Sclip.highlight = false;
 Sclip.cursor = null;
 Sclip.periodNumber = 1;
 Sclip.period = 'week';
+Sclip.Duration = 0;
 
 //Variable initialization end
 
@@ -171,12 +172,10 @@ Sclip.loadDataSuccess = function(responseText) {
         for (coloumn_id = 0; coloumn_id < Sclip.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
             vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
-            console.log(vod_id);
             if (Sclip.CellExists(vod_id)) coloumn_id--;
             else {
                 row.append(Sclip.createCell(row_id, coloumn_id, vod_id, video.thumbnails.medium,
-                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), Play.timeMs((parseInt(video.duration) / 60) * 60000),
-                    video.title, Main.addCommas(video.views) + STR_VIEWS));
+                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS));
             }
         }
 
@@ -206,12 +205,12 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;
 
-    return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-duration="' + video_duration + '"></td>').html(
             '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
             <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
             <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
-            <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + video_duration + '</div> \
+            <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
             <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
             '</div> \
             </div>');
@@ -323,12 +322,10 @@ Sclip.loadDataSuccessReplace = function(responseText) {
     for (cursor; cursor < response_items; cursor++) {
         video = response.clips[cursor];
         vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
-        console.log(vod_id);
         if (Sclip.CellExists(vod_id)) Sclip.blankCellCount--;
         else {
             mReplace = Sclip.replaceCellEmpty(row_id, coloumn_id, vod_id, video.thumbnails.medium,
-                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), Play.timeMs((parseInt(video.duration) / 60) * 60000),
-                video.title, Main.addCommas(video.views) + STR_VIEWS);
+                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS);
 
             if (mReplace) Sclip.blankCellCount--;
             if (Sclip.blankCellCount === 0) break;
@@ -351,12 +348,14 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 Sclip.nameMatrixCount++;
                 document.getElementById(Sclip.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Sclip.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-duration', video_duration);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                     <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
                     <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
-                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + video_duration + '</div> \
+                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + 
+                    STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
                     <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
                     '</div> \
@@ -485,7 +484,9 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            //Main.selectedChannel = $('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-channelname');
+            Sclip.playUrl = $('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-channelname');
+            Sclip.Duration = parseInt($('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-duration'));
+            Sclip.openStream();
             //Main.selectedChannelDisplayname = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
             //document.body.removeEventListener("keydown", Sclip.handleKeyDown);
             //Main.openStream();
@@ -545,4 +546,16 @@ Sclip.ScrollHelper = {
             }
         } else return;
     }
+};
+
+
+Sclip.openStream = function() {
+    document.body.addEventListener("keydown", PlayClip.handleKeyDown, false);
+    document.body.removeEventListener("keydown", Sclip.handleKeyDown);
+
+    $("#scene3").show();
+    window.setTimeout(function() {
+        $("#scene1").hide();
+        PlayClip.Start();
+    }, 15);
 };

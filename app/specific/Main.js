@@ -24,6 +24,7 @@ Main.SGames = 12;
 Main.SLive = 13;
 Main.SChannelsA = 14;
 Main.Svod = 15;
+Main.Sclip = 16;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -71,6 +72,7 @@ Main.initWindows = function() {
     $("#main_dialog_exit_text").text(STR_EXIT);
     $('.label_buffering').html(STR_BUFFERING);
     $("#scene2").hide();
+    $("#scene3").hide();
 };
 
 Main.showLoadDialog = function() {
@@ -154,6 +156,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.SLive) SLive.init();
     else if (Main.Go === Main.SChannelsA) SChannelsA.init();
     else if (Main.Go === Main.Svod) Svod.init();
+    else if (Main.Go === Main.Sclip) Sclip.init();
 };
 
 Main.openStream = function() {

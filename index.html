@@ -320,6 +320,7 @@
     <script src="app/specific/SChannelsA.js" defer></script>
     <script src="app/specific/Svod.js" defer></script>
     <script src="app/specific/Sclip.js" defer></script>
+    <script src="app/specific/PlayClip.js" defer></script>
 </head>
 
 <body>
@@ -486,6 +487,9 @@
                 <div id="buffering_bar_one" class="buffering_bar_progress"></div>
             </div>
         </div>
+    </div>
+    <div id="scene3" class="screen_size" style="z-index:99; display:none; position : absolute;left : 0px;top : 0px;">
+        <video id='video_clip' width='1920' height='1080' autoplay poster='' src='' type="video/mp4" style='background:black'></video>
     </div>
 </body>
 
