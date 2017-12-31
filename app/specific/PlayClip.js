@@ -63,6 +63,7 @@ PlayClip.Exit = function() {
     PlayClip.Player.pause();
     PlayClip.Player.src('app/images/temp.mp4');
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
+    document.removeEventListener('visibilitychange', Play.Resume);
     PlayClip.hidePanel();
     $("#play_clip_dialog_simple_pause").hide();
     $("#play_clip_dialog_exit").hide();
