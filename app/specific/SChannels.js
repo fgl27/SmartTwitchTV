@@ -455,6 +455,7 @@ SChannels.handleKeyDown = function(event) {
             Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
             Main.selectedChannelLogo = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-logo');
             Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
+            Main.selectedChannelChannelLogo = document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).src;
             document.body.removeEventListener("keydown", SChannels.handleKeyDown);
             SChannelsA.init();
             break;

@@ -41,13 +41,16 @@ Sclip.cursor = null;
 Sclip.periodNumber = 1;
 Sclip.period = 'week';
 Sclip.Duration = 0;
+Sclip.views = '';
+Sclip.title = '';
+Sclip.lastselectedChannel = '';
 
 //Variable initialization end
 
 Sclip.init = function() {
     Main.Go = Main.Sclip;
     Sclip.SetPeriod();
-    if (SChannelsA.lastselectedChannel !== Main.selectedChannel) Sclip.status = false;
+    if (SChannelsA.lastselectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
     Main.cleanTopLabel();
     $('.lable_user').html(STR_CLIPS);
     document.getElementById("top_bar_spacing").style.paddingLeft = "25.5%";
@@ -69,6 +72,7 @@ Sclip.StartLoad = function() {
     Main.HideWarningDialog();
     Sclip.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    Sclip.lastselectedChannel = SChannelsA.lastselectedChannel;
     Sclip.loadingReplace = false;
     Sclip.cursor = null;
     Sclip.status = false;
@@ -110,8 +114,8 @@ Sclip.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main.selectedChannel) + '&limit=' +
-           Sclip.ItemsLimit + '&period=' + encodeURIComponent(Sclip.period) +
-          (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
+            Sclip.ItemsLimit + '&period=' + encodeURIComponent(Sclip.period) +
+            (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
         xmlHttp.timeout = Sclip.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -205,14 +209,14 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;
 
-    return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-duration="' + video_duration + '"></td>').html(
-            '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
+    return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+        '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
             <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
             <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
             <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
             <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
-            '</div> \
+        '</div> \
             </div>');
 };
 
@@ -276,7 +280,7 @@ Sclip.loadDataRequestReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main.selectedChannel) + '&limit=' +
-           Sclip.blankCellCount + '&period=' + Sclip.period + (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
+            Sclip.blankCellCount + '&period=' + Sclip.period + (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
         xmlHttp.timeout = Sclip.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -348,13 +352,12 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 Sclip.nameMatrixCount++;
                 document.getElementById(Sclip.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Sclip.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-duration', video_duration);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                     <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
                     <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
-                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + 
+                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' +
                     STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
                     <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
@@ -485,7 +488,11 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             Sclip.playUrl = $('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-channelname');
-            Sclip.Duration = parseInt($('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-duration'));
+            Sclip.Duration = document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.views = document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.title = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.createdAt = document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+
             Sclip.openStream();
             //Main.selectedChannelDisplayname = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
             //document.body.removeEventListener("keydown", Sclip.handleKeyDown);
@@ -552,10 +559,11 @@ Sclip.ScrollHelper = {
 Sclip.openStream = function() {
     document.body.addEventListener("keydown", PlayClip.handleKeyDown, false);
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-
     $("#scene3").show();
-    window.setTimeout(function() {
-        $("#scene1").hide();
-        PlayClip.Start();
-    }, 15);
+    PlayClip.hidePanel();
+    $("#play_clip_dialog_simple_pause").hide();
+    $("#play_clip_dialog_exit").hide();
+    $("#dialog_warning_play").hide();
+    $("#scene1").hide();
+    PlayClip.Start();
 };
