@@ -39,7 +39,7 @@ js_comp() {
 	for i in ${array[@]}; do
 		cd $i || exit;
 		for x in *.js; do
-			if [ ! "$x" == "jquery.js" ] && [ ! "$x" == "imagesloaded.js" ]; then
+			if [ ! "$x" == "jquery.min.js" ] && [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
 				echo -e "Compressing $x";
 				yui-compressor "$x" -o "$x";
 			fi;
