@@ -34,6 +34,7 @@ Main.selectedGame = '';
 Main.selectedGameDisplayname = '';
 Main.gameSelected = '';
 Main.OldgameSelected = null;
+Main.selectedChannelChannelLogo = '';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
     Main.Show = Main.Live;
     Live.init();
     Play.PreStart();
+    PlayClip.PreStart();
 });
 
 Main.initWindows = function() {
