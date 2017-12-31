@@ -324,24 +324,6 @@
                 transform: scale3D(0, 0, 1);
             }
         }
-
-        .buffering_bar {
-            width: 300px;
-            height: 22px;
-            border-radius: 3px;
-            border: 4px solid #000000;
-            background: rgba(255, 255, 255, 0.7);
-            box-shadow: inset 0 0 0 4px #FFFFFF;
-            margin: auto auto;
-            padding: 4px;
-            position: relative;
-        }
-
-        .buffering_bar_progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(to left, #000000, #5F5F5F);
-        }
     </style>
     <script src="app/general/jquery.min.js" defer></script>
     <script src="$WEBAPIS/webapis/webapis.js" defer></script>
@@ -485,7 +467,7 @@
         <!-- Prevent one table see the other-->
     </div>
     <div id="scene2" class="screen_size" style="z-index:99; display:none; position : absolute;left : 0px;top : 0px;">
-        <object id="av-player_live" type="application/avplayer" style="width:100%;height:100%;position: absolute;"></object>
+        <video id='video_live' class="video-js" width='1920' height='1080' src='' type="video/mp4" style='background:black'></video>
         <div id="scene_channel_panel" style="display:flex; position: absolute; top: 0%; width: 100%; height : 100%; z-index: 1;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.035));">
                 <div style="float: right; padding-right: 0.5%; padding-top: 1.5%;">
@@ -514,37 +496,18 @@
                 </div>
             </div>
         </div>
+        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 25%; width: 100%; height : 50%; z-index: 2;">
+            <div id="play_dialog_simple_pause" style="position: fixed; z-index:5; text-align: center; width: 100%; margin-top: 27%; display:none;">
+                <i style="display: inline-block; font-size: 750%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
+            </div>
+            <div id="play_dialog_exit" style="position: fixed; z-index:6; text-align: center; width: 100%; margin-top: 24%; font-weight:bold; display:none;">
+                <div id="play_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: #FFFFFF;"></div>
+            </div>
+            <div id="dialog_warning_play" style="position: fixed; z-index:7; text-align: center; width: 100%; margin-top: 20%; font-weight:bold; display:none;">
+                <div id="dialog_warning_play_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;"></div>
+            </div>
+        </div>
         <div id="chat_container" style="z-index:0; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5); display:none;">
-        </div>
-        <div id="play_dialog_simple_pause" style="position: fixed; z-index:5; text-align: center; width: 100%; margin-top: 27%; display:none;">
-            <i style="display: inline-block; font-size: 750%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
-        </div>
-        <div id="play_dialog_exit" style="position: fixed; z-index:6; text-align: center; width: 100%; margin-top: 24%; font-weight:bold; display:none;">
-            <div id="play_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: #FFFFFF;"></div>
-        </div>
-        <div id="dialog_warning_play" style="position: fixed; z-index:7; text-align: center; width: 100%; margin-top: 32%; font-weight:bold; display:none;">
-            <div id="dialog_warning_play_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;"></div>
-        </div>
-        <div id="dialog_loading_play" style="position: fixed; z-index:8; text-align: center; width: 100%; margin-top: 17%; display:none;">
-            <div class="sk-cube-grid">
-                <div class="sk-cube sk-cube1"></div>
-                <div class="sk-cube sk-cube2"></div>
-                <div class="sk-cube sk-cube3"></div>
-                <div class="sk-cube sk-cube4"></div>
-                <div class="sk-cube sk-cube5"></div>
-                <div class="sk-cube sk-cube6"></div>
-                <div class="sk-cube sk-cube7"></div>
-                <div class="sk-cube sk-cube8"></div>
-                <div class="sk-cube sk-cube9"></div>
-            </div>
-        </div>
-        <div id="play_dialog_buffering" style="position: fixed; z-index:9; text-align: center; width: 100%; margin-top: 34%; display:none;">
-            <div id="play_dialog_buffering_text" class="strokedbig label_buffering" style="display: inline-block; font-size: 310%; color: #FFFFFF; font-weight:bold;">
-                STR_BUFFERING
-            </div>
-            <div class="buffering_bar">
-                <div id="buffering_bar_one" class="buffering_bar_progress"></div>
-            </div>
         </div>
     </div>
     <div id="scene3" class="screen_size" style="z-index:97; display:none; position : absolute;left : 0px;top : 0px;">
