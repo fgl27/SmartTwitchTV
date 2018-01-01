@@ -28,9 +28,9 @@ PlayVod.pauseStartID = '';
 PlayVod.created = '';
 
 PlayVod.loadingDataTry = 0;
-PlayVod.loadingDataTryMax = 12;
-PlayVod.random_int = Math.round(Math.random() * 1e7);
+PlayVod.loadingDataTryMax = 15;
 PlayVod.offsettime = 0;
+var random_int = Math.round(Math.random() * 1e7);
 
 //Variable initialization end
 
@@ -81,11 +81,11 @@ PlayVod.loadDataRequest = function() {
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
-                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + PlayVod.random_int;
+                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
 
         xmlHttp.ontimeout = function() {};
 
@@ -93,7 +93,7 @@ PlayVod.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        PlayVod.loadingDataTry = 1;
+                        PlayVod.loadingDataTry = 0;
                         PlayVod.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
 
@@ -111,10 +111,34 @@ PlayVod.loadDataRequest = function() {
 PlayVod.loadDataError = function() {
     PlayVod.loadingDataTry++;
     if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
-        Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
+        if (PlayVod.loadingDataTry < 5) {
+            PlayVod.loadingDataTimeout += 250;
+        } else {
+            switch (PlayVod.loadingDataTry) {
+                case 5:
+                    PlayVod.loadingDataTimeout = 5000;
+                    break;
+                case 6:
+                    PlayVod.loadingDataTimeout = 6500;
+                    break;
+                case 7:
+                    PlayVod.loadingDataTimeout = 15000;
+                    break;
+                case 8:
+                    PlayVod.loadingDataTimeout = 30000;
+                    break;
+                case 9:
+                    PlayVod.loadingDataTimeout = 60000;
+                    break;
+                default:
+                    PlayVod.loadingDataTimeout = 300000;
+                    break;
+            }
+        }
         PlayVod.loadDataRequest();
     } else {
-        PlayVod.WarnShutdownStream();
+        PlayVod.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        window.setTimeout(PlayVod.shutdownStream, 1500);
     }
 };
 
@@ -195,7 +219,7 @@ PlayVod.qualityChanged = function() {
 
 PlayVod.onPlayer = function() {
     PlayClip.Player.src({
-        type: "video/mp4",
+        type: "application/vnd.apple.mpegurl",
         src: PlayVod.playingUrl
     });
 

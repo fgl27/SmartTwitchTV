@@ -34,11 +34,11 @@ Play.sizeOffset = 0;
 Play.created = '';
 
 Play.loadingDataTry = 0;
-Play.loadingDataTryMax = 12;
-Play.random_int = Math.round(Math.random() * 1e7);
+Play.loadingDataTryMax = 15;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
+var random_int = Math.round(Math.random() * 1e7);
 
 //Variable initialization end
 
@@ -68,7 +68,7 @@ Play.Start = function() {
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
-    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
     Play.tokenResponse = 0;
     Play.playlistResponse = 0;
     Play.playingTry = 0;
@@ -86,7 +86,7 @@ Play.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
-        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
         window.setTimeout(function() {
             Play.onPlayer();
         }, 500);
@@ -94,31 +94,29 @@ Play.Resume = function() {
 };
 
 Play.updateStreamInfo = function() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main.selectedChannel, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    try {
-                        var response = $.parseJSON(xmlHttp.responseText);
-                        // log response json
-                        //console.log(response);
-                        $("#stream_info_title").text(response.stream.channel.status);
-                        $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
-                        $("#stream_info_icon").attr("src", response.stream.channel.logo);
-                        Play.created = new Date(response.stream.created_at).getTime();
-                    } catch (err) {}
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                try {
+                    var response = $.parseJSON(xmlHttp.responseText);
+                    // log response json
+                    //console.log(response);
+                    $("#stream_info_title").text(response.stream.channel.status);
+                    $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    $("#stream_info_icon").attr("src", response.stream.channel.logo);
+                    Play.created = new Date(response.stream.created_at).getTime();
+                } catch (err) {}
             }
-        };
-        xmlHttp.send(null);
-    } catch (e) {}
+        }
+    };
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main.selectedChannel, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+    xmlHttp.send(null);
 };
 
 Play.loadData = function() {
@@ -137,11 +135,11 @@ Play.loadDataRequest = function() {
         } else {
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Main.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + Play.tokenResponse.sig + '&token=' +
-                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
+                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
 
         xmlHttp.ontimeout = function() {};
 
@@ -149,7 +147,7 @@ Play.loadDataRequest = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        Play.loadingDataTry = 1;
+                        Play.loadingDataTry = 0;
                         Play.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
 
@@ -158,6 +156,7 @@ Play.loadDataRequest = function() {
                 }
             }
         };
+
         xmlHttp.send(null);
     } catch (error) {
         Play.loadDataError();
@@ -167,10 +166,34 @@ Play.loadDataRequest = function() {
 Play.loadDataError = function() {
     Play.loadingDataTry++;
     if (Play.loadingDataTry < Play.loadingDataTryMax) {
-        Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
+        if (Play.loadingDataTry < 5) {
+            Play.loadingDataTimeout += 250;
+        } else {
+            switch (Play.loadingDataTry) {
+                case 5:
+                    Play.loadingDataTimeout = 5000;
+                    break;
+                case 6:
+                    Play.loadingDataTimeout = 6500;
+                    break;
+                case 7:
+                    Play.loadingDataTimeout = 15000;
+                    break;
+                case 8:
+                    Play.loadingDataTimeout = 30000;
+                    break;
+                case 9:
+                    Play.loadingDataTimeout = 60000;
+                    break;
+                default:
+                    Play.loadingDataTimeout = 300000;
+                    break;
+            }
+        }
         Play.loadDataRequest();
     } else {
-        Play.WarnShutdownStream();
+        Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        window.setTimeout(Play.shutdownStream, 1500);
     }
 };
 
@@ -253,7 +276,7 @@ Play.qualityChanged = function() {
 
 Play.onPlayer = function() {
     Play.videojs.src({
-        type: "video/mp4",
+        type: "application/vnd.apple.mpegurl",
         src: Play.playingUrl
     });
 
@@ -280,7 +303,8 @@ Play.onPlayer = function() {
         });
 
         this.on('error', function() {
-            Play.WarnShutdownStream();
+            Play.showWarningDialog(STR_IS_OFFLINE + ' error');
+            window.setTimeout(Play.shutdownStream, 1500);
         });
 
     });
