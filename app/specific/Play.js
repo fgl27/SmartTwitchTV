@@ -40,7 +40,6 @@ Play.random_int = Math.round(Math.random() * 1e7);
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
-Play.isReturnFromResume = false;
 
 //Variable initialization end
 
@@ -55,6 +54,11 @@ Play.PreStart = function() {
     document.getElementById("stream_live").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
+    $("#chat_container").html(
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe> \
+        <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
+        <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
+        </div>');
 };
 
 Play.Start = function() {
@@ -62,14 +66,6 @@ Play.Start = function() {
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
-
-    $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="' +
-        'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-        Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false' + '"></iframe> \
-    <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
-    <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
-    </div>');
     $("#stream_info_name").text(Main.selectedChannelDisplayname);
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
@@ -86,11 +82,17 @@ Play.Start = function() {
 Play.Resume = function() {
     if (document.hidden) {
         Play.videojs.pause();
+        Play.offPlayer();
+        document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
     } else {
-        Play.RestoreFromResume = true;
-        Play.qualityChanged();
+        $("#scene2").show();
+        $("#scene1").hide();
         Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+        window.setTimeout(function() {
+            Play.RestoreFromResume = true;
+            Play.qualityChanged();
+        }, 500);
     }
 };
 
@@ -261,24 +263,18 @@ Play.qualityChanged = function() {
     });
 
     Play.offsettime = Play.oldcurrentTime;
+    Play.HideWarningDialog();
+    Play.hidePanel();
+    if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
+
+    // sync chat and stream
+    document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
+        Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
 
     Play.videojs.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
         this.play();
-        Play.videojs.play();
-        Play.HideWarningDialog();
-        Play.hidePanel();
-        if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
-
-        // sync chat and stream
-        $("#chat_container").html(
-            '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="' +
-            'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-            Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false' + '"></iframe> \
-                    <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
-                    <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
-                    </div>');
 
         this.on('ended', function() {
             Play.Exit();
@@ -294,6 +290,13 @@ Play.qualityChanged = function() {
         });
 
     });
+};
+
+Play.offPlayer = function() {
+    Play.videojs.off('ended', null);
+    Play.videojs.off('timeupdate', null);
+    Play.videojs.off('error', null);
+    Play.videojs.off('stalled', null);
 };
 
 Play.WarnShutdownStream = function() {
@@ -312,7 +315,6 @@ Play.updateCurrentTime = function(currentTime) {
     document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
 
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
-    Play.isReturnFromResume = false;
 };
 
 Play.lessthanten = function(time) {
@@ -343,6 +345,7 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 Play.shutdownStream = function() {
     Play.videojs.pause();
     Play.videojs.src('app/images/temp.mp4');
+    Play.offPlayer();
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();
