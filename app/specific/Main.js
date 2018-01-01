@@ -202,7 +202,7 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 };
 
-Main.NetworkStateChangeListener = function() {
+Main.NetworkStateChangeListenerStart = function() {
     var onChange = function(data) {
         if (data == 1 || data == 4) { //network connected
             console.log("conecteddata = " + data);
@@ -212,5 +212,11 @@ Main.NetworkStateChangeListener = function() {
     };
     try {
         Main.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
+    } catch (e) {}
+};
+
+Main.NetworkStateChangeListenerStop = function() {
+    try {
+        webapis.network.removeNetworkStateChangeListener(Main.listenerID);
     } catch (e) {}
 };
