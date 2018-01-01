@@ -239,8 +239,6 @@ Play.qualityChanged = function() {
         Play.qualityIndex = 0;
         Play.playingUrl = Play.qualities[0].url;
         if (Play.quality.indexOf("source") !== -1) Play.quality = "source";
-
-        //console.log("Play.playingUrl = " + Play.playingUrl);
         for (var i = 0; i < Play.getQualitiesCount(); i++) {
             if (Play.qualities[i].id === Play.quality) {
                 Play.qualityIndex = i;
@@ -571,7 +569,6 @@ Play.handleKeyDown = function(e) {
     if (Play.state != Play.STATE_PLAYING) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_RETURN:
-                //console.log("KEY_RETURN");
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
@@ -582,13 +579,10 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_VOLUMEUP:
-                //console.log("KEY_VOLUMEUP");
                 break;
             case TvKeyCode.KEY_VOLUMEDOWN:
-                //console.log("KEY_VOLUMEDOWN");
                 break;
             case TvKeyCode.KEY_MUTE:
-                //console.log("KEY_MUTE");
                 break;
         }
     } else {
@@ -618,7 +612,6 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_LEFT:
-                //console.log("KEY_LEFT");
                 if (Play.isChatShown()) {
                     Play.ChatBackground -= 0.05;
                     if (Play.ChatBackground < 0) Play.ChatBackground = 0;
@@ -628,7 +621,6 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                //console.log("KEY_RIGHT");
                 if (Play.isChatShown()) {
                     Play.ChatBackground += 0.05;
                     if (Play.ChatBackground > 1) Play.ChatBackground = 1;
@@ -640,7 +632,6 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_UP:
                 if (Play.isPanelShown()) {
                     if (Play.qualityIndex > 0) {
-                        //console.log("KEY_CHANNELDOWN or KEY_4");
                         Play.qualityIndex--;
                         Play.qualityDisplay();
                     }
@@ -658,7 +649,6 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_DOWN:
                 if (Play.isPanelShown()) {
                     if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
-                        //console.log("KEY_CHANNELDOWN or KEY_4");
                         Play.qualityIndex++;
                         Play.qualityDisplay();
                     }
@@ -674,7 +664,6 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_ENTER:
-                //console.log("KEY_ENTER");
                 if (Play.isPanelShown()) {
                     Play.QualitChage = true;
                     Play.qualityChanged();
