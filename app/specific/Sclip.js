@@ -117,7 +117,7 @@ Sclip.loadDataRequest = function() {
             Sclip.ItemsLimit + '&period=' + encodeURIComponent(Sclip.period) +
             (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
         xmlHttp.timeout = Sclip.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 
@@ -282,7 +282,7 @@ Sclip.loadDataRequestReplace = function() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main.selectedChannel) + '&limit=' +
             Sclip.blankCellCount + '&period=' + Sclip.period + (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)), true);
         xmlHttp.timeout = Sclip.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 

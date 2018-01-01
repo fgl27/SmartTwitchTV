@@ -104,7 +104,7 @@ SChannels.loadDataRequest = function() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
             '&limit=' + SChannels.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -266,7 +266,7 @@ SChannels.loadDataRequestReplace = function() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
             '&limit=' + SChannels.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
