@@ -17,6 +17,7 @@ PlayClip.PreStart = function() {
 
 PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    $("#scene3_quality").hide();
     $("#stream_clip_info_icon").attr("src", Main.selectedChannelChannelLogo);
     $('#stream_clip_info_name').text(Main.selectedChannel);
     $("#stream_clip_info_title").text(Sclip.title);
@@ -81,11 +82,11 @@ PlayClip.Exit = function() {
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
-    //current time is given in millisecond
     document.getElementById("stream_clip_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(currentTime);
 
-    today = (new Date()).toString().split(' ');
-    document.getElementById("stream_clip_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
+    var today = (new Date()).toString().split(' ');
+    var time = today[4].toString().split(':');
+    document.getElementById("stream_clip_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + time[0] + ':' + time[1];
 
     if (PlayClip.WarningDialogVisible()) PlayClip.HideWarningDialog();
 };
@@ -188,6 +189,8 @@ PlayClip.hidePanel = function() {
 };
 
 PlayClip.showPanel = function() {
+    PlayVod.clock();
+    $("#scene3_quality").hide();
     $("#scene3_channel_panel").show();
     PlayClip.setHidePanel();
 };

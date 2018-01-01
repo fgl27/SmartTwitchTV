@@ -24,7 +24,6 @@ Play.playingTry = 0;
 Play.playingUrl = '';
 Play.qualities = [];
 Play.qualityIndex = '';
-Play.RestoreFromResume = false;
 Play.ChatEnable = false;
 Play.exitID = '';
 
@@ -42,7 +41,6 @@ Play.oldcurrentTime = 0;
 Play.offsettime = 0;
 
 //Variable initialization end
-
 
 Play.PreStart = function() {
     Play.videojs = videojs('video_live');
@@ -90,8 +88,7 @@ Play.Resume = function() {
         $("#scene1").hide();
         Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
         window.setTimeout(function() {
-            Play.RestoreFromResume = true;
-            Play.qualityChanged();
+            Play.onPlayer();
         }, 500);
     }
 };
@@ -235,26 +232,26 @@ function extractQualityFromStream(input) {
 }
 
 Play.qualityChanged = function() {
-    if (!Play.RestoreFromResume) {
-        Play.qualityIndex = 0;
-        Play.playingUrl = Play.qualities[0].url;
-        if (Play.quality.indexOf("source") !== -1) Play.quality = "source";
-        for (var i = 0; i < Play.getQualitiesCount(); i++) {
-            if (Play.qualities[i].id === Play.quality) {
-                Play.qualityIndex = i;
-                Play.playingUrl = Play.qualities[i].url;
-                break;
-            } else if (Play.qualities[i].id.indexOf(Play.quality) !== -1) { //make shore to set a value before break out
-                Play.qualityIndex = i;
-                Play.playingUrl = Play.qualities[i].url;
-            }
+    Play.qualityIndex = 0;
+    Play.playingUrl = Play.qualities[0].url;
+    if (Play.quality.indexOf("source") !== -1) Play.quality = "source";
+    for (var i = 0; i < Play.getQualitiesCount(); i++) {
+        if (Play.qualities[i].id === Play.quality) {
+            Play.qualityIndex = i;
+            Play.playingUrl = Play.qualities[i].url;
+            break;
+        } else if (Play.qualities[i].id.indexOf(Play.quality) !== -1) { //make shore to set a value before break out
+            Play.qualityIndex = i;
+            Play.playingUrl = Play.qualities[i].url;
         }
-
-        Play.qualityPlaying = Play.quality;
     }
 
-    Play.RestoreFromResume = false;
+    Play.qualityPlaying = Play.quality;
+    Play.onPlayer();
 
+};
+
+Play.onPlayer = function() {
     Play.videojs.src({
         type: "video/mp4",
         src: Play.playingUrl
@@ -301,16 +298,17 @@ Play.WarnShutdownStream = function() {
 };
 
 Play.updateCurrentTime = function(currentTime) {
-    //current time is given in millisecond
-
     Play.oldcurrentTime = currentTime + Play.offsettime;
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 
-    today = (new Date()).toString().split(' ');
-    document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
-
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+};
+
+Play.clock = function(currentTime) {
+    var today = (new Date()).toString().split(' ');
+    var time = today[4].toString().split(':');
+    document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + time[0] + ':' + time[1];
 };
 
 Play.lessthanten = function(time) {
@@ -423,6 +421,7 @@ Play.hidePanel = function() {
 Play.showPanel = function() {
     Play.qualityIndexReset();
     Play.qualityDisplay();
+    Play.clock();
     $("#scene_channel_panel").show();
     Play.setHidePanel();
     Play.sizePanelOffset = -4;

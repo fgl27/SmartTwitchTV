@@ -492,11 +492,7 @@ Sclip.handleKeyDown = function(event) {
             Sclip.views = document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
             Sclip.title = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
             Sclip.createdAt = document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-
             Sclip.openStream();
-            //Main.selectedChannelDisplayname = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            //document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-            //Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
             break;
