@@ -28,14 +28,6 @@ var STR_CONTENT = " Content";
 var STR_STREAM_ON = "Streamed on ";
 var STR_DURATION = "Duration ";
 var STR_VIEWS = " Views";
-var STR_JUMP_ZERO = "Jump backward time less than duration jumping to 00:00";
-var STR_JUMP_F_CANCEL = "Jump forward time greater than duration, jump canceled";
-var STR_JUMP_CANCEL = "Jump canceled ";
-var STR_JUMP_F = "Jump forward ";
-var STR_JUMP_B = "Jump Backward ";
-var STR_SEC = " Sec";
-var STR_HR = " Hr";
-var STR_MIN = " Min";
 
 
 
