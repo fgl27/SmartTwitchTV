@@ -43,7 +43,7 @@ var random_int = Math.round(Math.random() * 1e7);
 //Variable initialization end
 
 Play.PreStart = function() {
-    Play.videojs = videojs('video_live');
+    Play.mWebapisAvplay = (window.tizen && window.webapis.avplay) || {};
     $('#label_quality').html(STR_QUALITY);
     Play.ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
@@ -68,7 +68,7 @@ Play.Start = function() {
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
-    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
+    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
     Play.tokenResponse = 0;
     Play.playlistResponse = 0;
     Play.playingTry = 0;
@@ -79,17 +79,16 @@ Play.Start = function() {
 
 Play.Resume = function() {
     if (document.hidden) {
-        Play.videojs.pause();
-        Play.offPlayer();
+        Play.Play = false;
+        Play.mWebapisAvplay.stop();
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
     } else {
-        $("#scene2").show();
-        $("#scene1").hide();
-        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
-        window.setTimeout(function() {
-            Play.onPlayer();
-        }, 500);
+        $("#scene_channel_panel").show();
+        Play.showWarningDialog(STR_RESUME);
+        Play.isReturnFromResume = true;
+        Play.onPlayer();
+        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
     }
 };
 
@@ -127,6 +126,7 @@ Play.loadData = function() {
 
 Play.loadDataRequest = function() {
     try {
+        Play.showDialog();
         var xmlHttp = new XMLHttpRequest();
 
         var theUrl;
@@ -192,6 +192,7 @@ Play.loadDataError = function() {
         }
         Play.loadDataRequest();
     } else {
+        Play.hideDialog();
         Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
         window.setTimeout(Play.shutdownStream, 1500);
     }
@@ -275,45 +276,69 @@ Play.qualityChanged = function() {
 };
 
 Play.onPlayer = function() {
-    Play.videojs.src({
-        type: "application/vnd.apple.mpegurl",
-        src: Play.playingUrl
-    });
+    try {
+        Play.offsettime = Play.oldcurrentTime;
+        Play.mWebapisAvplay.stop();
+        Play.mWebapisAvplay.open(Play.playingUrl);
+        Play.mWebapisAvplay.setListener(Play.listener);
+        Play.mWebapisAvplay.setTimeoutForBuffering(20000);
+        if (webapis.productinfo.isUdPanelSupported())
+            Play.mWebapisAvplay.setStreamingProperty("SET_MODE_4K", "TRUE");
 
-    Play.offsettime = Play.oldcurrentTime;
-    Play.HideWarningDialog();
-    Play.hidePanel();
-    if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
-
-    // sync chat and stream
-    document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-        Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
-
-    Play.videojs.ready(function() {
-        this.isFullscreen(true);
-        this.requestFullscreen();
-        this.play();
-
-        this.on('ended', function() {
-            Play.shutdownStream();
+        Play.mWebapisAvplay.setDisplayRect(0, 0, screen.width, screen.height);
+        Play.mWebapisAvplay.prepareAsync(function() {
+            try {
+                Play.hideDialog();
+                Play.mWebapisAvplay.play();
+                Play.HideWarningDialog();
+                Play.hidePanel();
+                document.getElementById("buffering_bar_one").style.width = '1%';
+                Play.showBufferDialog();
+                if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
+                Play.Play = true;
+                // sync chat and stream
+                document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
+                    Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
+            } catch (e) {}
+        }, function() { //ErrorCallback try again from the top
+            Play.Play = false;
+            window.setTimeout(Play.Start, 150);
         });
-
-        this.on('timeupdate', function() {
-            Play.updateCurrentTime(this.currentTime());
-        });
-
-        this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE + ' error');
-            window.setTimeout(Play.shutdownStream, 1500);
-        });
-
-    });
+        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    } catch (e) { //ErrorCallback try again from the top
+        Play.Play = false;
+        window.setTimeout(Play.Start, 150);
+    }
 };
 
-Play.offPlayer = function() {
-    Play.videojs.off('ended', null);
-    Play.videojs.off('timeupdate', null);
-    Play.videojs.off('error', null);
+Play.listener = {
+    onbufferingstart: function() {
+        document.getElementById("buffering_bar_one").style.width = '1%';
+        Play.showBufferDialog();
+    },
+    onbufferingprogress: function(percent) {
+        document.getElementById("buffering_bar_one").style.width = (((percent + 2) <= 100) ? (percent + 2) : 100) + '%';
+        if (!Play.BufferDialogVisible() && (percent < 98)) Play.showBufferDialog();
+    },
+    onbufferingcomplete: function() {
+        Play.HideBufferDialog();
+    },
+    oncurrentplaytime: function(currentTime) {
+        Play.updateCurrentTime(currentTime);
+    },
+    onerror: function(eventType) {
+        if (eventType === 'PLAYER_ERROR_CONNECTION_FAILED') {
+            if (!Play.isReturnFromResume) Play.WarnShutdownStream();
+            else {
+                Play.RestoreFromResume = true;
+                Play.isReturnFromResume = false;
+                Play.qualityChanged();
+            }
+        }
+    },
+    onstreamcompleted: function() {
+        Play.WarnShutdownStream();
+    }
 };
 
 Play.WarnShutdownStream = function() {
@@ -322,11 +347,19 @@ Play.WarnShutdownStream = function() {
 };
 
 Play.updateCurrentTime = function(currentTime) {
+    if (currentTime === null)
+        currentTime = Play.mWebapisAvplay.getCurrentTime();
+
     Play.oldcurrentTime = currentTime + Play.offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
+    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeMs(Play.oldcurrentTime);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 
+    if (Play.DialogVisible()) Play.hideDialog();
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+    if (Play.BufferDialogVisible()) {
+        if (parseInt(document.getElementById("buffering_bar_one").style.width) > 99) Play.HideBufferDialog();
+    }
+    Play.isReturnFromResume = false;
 };
 
 Play.clock = function(currentTime) {
@@ -361,13 +394,13 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 };
 
 Play.shutdownStream = function() {
-    Play.videojs.pause();
-    Play.videojs.src('app/images/temp.mp4');
-    Play.offPlayer();
+    Play.mWebapisAvplay.close();
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();
+    Play.hideDialog();
     Play.HideWarningDialog();
+    Play.HideBufferDialog();
     $("#scene1").show();
     $("#scene2").hide();
     Main.ReStartScreens();
@@ -376,6 +409,14 @@ Play.shutdownStream = function() {
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
+};
+
+Play.showDialog = function() {
+    $("#dialog_loading_play").show();
+};
+
+Play.hideDialog = function() {
+    $("#dialog_loading_play").hide();
 };
 
 Play.showWarningDialog = function(text) {
@@ -414,6 +455,22 @@ Play.clearPause = function() {
     if (Play.isPanelShown()) {
         Play.hidePanel();
     }
+};
+
+Play.DialogVisible = function() {
+    return $("#dialog_loading_play").is(":visible");
+};
+
+Play.showBufferDialog = function() {
+    $("#play_dialog_buffering").show();
+};
+
+Play.HideBufferDialog = function() {
+    $("#play_dialog_buffering").hide();
+};
+
+Play.BufferDialogVisible = function() {
+    return $("#play_dialog_buffering").is(":visible");
 };
 
 Play.showPauseDialog = function() {
@@ -595,6 +652,7 @@ Play.handleKeyDown = function(e) {
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
+                    Play.hideDialog();
                     Play.hideChat();
                     window.setTimeout(Play.shutdownStream, 10);
                 } else {
@@ -702,10 +760,13 @@ Play.handleKeyDown = function(e) {
                     if (Play.ExitDialogVisible()) {
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();
+                        Play.hideDialog();
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
-                    } else if (Play.WarningDialogVisible()) {
+                    } else if (Play.WarningDialogVisible() || Play.BufferDialogVisible() || Play.DialogVisible()) {
+                        Play.hideDialog();
                         Play.HideWarningDialog();
+                        Play.HideBufferDialog();
                         Play.showExitDialog();
                     } else {
                         Play.showExitDialog();
@@ -715,9 +776,9 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                if (!Play.videojs.paused()) {
+                if (Play.Play) {
                     Play.Play = false;
-                    Play.videojs.pause();
+                    Play.mWebapisAvplay.pause();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
                     Play.showPauseDialog();
                     if (!Play.isPanelShown()) {
@@ -726,7 +787,7 @@ Play.handleKeyDown = function(e) {
                 } else {
                     Play.Play = true;
                     Play.clearPause();
-                    Play.videojs.play();
+                    Play.mWebapisAvplay.play();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                 }
                 break;
