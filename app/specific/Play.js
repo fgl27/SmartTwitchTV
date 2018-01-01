@@ -87,8 +87,10 @@ Play.Resume = function() {
         $("#scene_channel_panel").show();
         Play.showWarningDialog(STR_RESUME);
         Play.isReturnFromResume = true;
-        Play.onPlayer();
         Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+        window.setTimeout(function() {
+            Play.onPlayer();
+        }, 500);
     }
 };
 
