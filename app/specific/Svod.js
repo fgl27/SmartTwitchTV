@@ -37,12 +37,13 @@ Svod.QualityDiv = 'svod_quality_';
 Svod.Cell = 'svod_cell_';
 Svod.status = false;
 Svod.highlight = false;
+Svod.lastselectedChannel = '';
 
 //Variable initialization end
 
 Svod.init = function() {
     Main.Go = Main.Svod;
-    if (SChannelsA.lastselectedChannel !== Main.selectedChannel) Svod.status = false;
+    if (SChannelsA.lastselectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_VOD);
@@ -63,6 +64,7 @@ Svod.exit = function() {
 Svod.StartLoad = function() {
     $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     Main.HideWarningDialog();
+    Svod.lastselectedChannel = SChannelsA.lastselectedChannel;
     Svod.status = false;
     Svod.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
