@@ -34,6 +34,7 @@ PlayClip.Start = function() {
     PlayClip.Player.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
+        this.play();
 
         this.on('ended', function() {
             PlayClip.Exit();
