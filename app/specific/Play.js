@@ -277,7 +277,7 @@ Play.qualityChanged = function() {
         this.play();
 
         this.on('ended', function() {
-            Play.Exit();
+            Play.shutdownStream();
         });
 
         this.on('timeupdate', function() {
