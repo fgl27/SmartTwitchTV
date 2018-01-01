@@ -38,6 +38,7 @@ Svod.Cell = 'svod_cell_';
 Svod.status = false;
 Svod.highlight = false;
 Svod.lastselectedChannel = '';
+Svod.vodId = '';
 
 //Variable initialization end
 
@@ -485,10 +486,12 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            //Main.selectedChannel = $('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-channelname');
-            //Main.selectedChannelDisplayname = document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
-            //document.body.removeEventListener("keydown", Svod.handleKeyDown);
-            //Main.openStream();
+            Svod.vodId = $('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-channelname').substr(1);
+            Svod.Duration = document.getElementById(Svod.StreamGameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.views = document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.title = document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.createdAt = document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.openStream();
             break;
         case TvKeyCode.KEY_RED:
             break;
@@ -545,4 +548,16 @@ Svod.ScrollHelper = {
             }
         } else return;
     }
+};
+
+Svod.openStream = function() {
+    document.body.addEventListener("keydown", PlayVod.handleKeyDown, false);
+    document.body.removeEventListener("keydown", Svod.handleKeyDown);
+    $("#scene3").show();
+    PlayVod.hidePanel();
+    $("#play_clip_dialog_simple_pause").hide();
+    $("#play_clip_dialog_exit").hide();
+    $("#dialog_warning_play").hide();
+    $("#scene1").hide();
+    PlayVod.Start();
 };
