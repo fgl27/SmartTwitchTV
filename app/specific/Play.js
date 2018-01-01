@@ -285,8 +285,7 @@ Play.qualityChanged = function() {
         });
 
         this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(Play.Exit, 1000);
+            Play.WarnShutdownStream();
         });
 
     });
@@ -296,7 +295,6 @@ Play.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
-    Play.videojs.off('stalled', null);
 };
 
 Play.WarnShutdownStream = function() {

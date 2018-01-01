@@ -55,7 +55,6 @@ PlayClip.offPlayer = function() {
     PlayClip.Player.off('ended', null);
     PlayClip.Player.off('timeupdate', null);
     PlayClip.Player.off('error', null);
-    PlayClip.Player.off('stalled', null);
 };
 
 PlayClip.Resume = function() {
