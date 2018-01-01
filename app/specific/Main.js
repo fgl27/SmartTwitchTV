@@ -163,14 +163,11 @@ Main.SwitchScreen = function() {
 
 Main.openStream = function() {
     document.body.addEventListener("keydown", Play.handleKeyDown, false);
-
     $("#scene2").show();
     Play.hidePanel();
     Play.hideChat();
-    window.setTimeout(function() {
-        $("#scene1").hide();
-        Play.Start();
-    }, 15);
+    $("#scene1").hide();
+    Play.Start();
 };
 
 Main.RestoreTopLabel = function() {

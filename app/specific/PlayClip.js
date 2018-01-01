@@ -6,7 +6,6 @@ function PlayClip() {
 PlayClip.exitID = '';
 PlayClip.pauseEndID = '';
 PlayClip.pauseStartID = '';
-
 Sclip.playUrl = '';
 
 //Variable initialization end
@@ -35,7 +34,6 @@ PlayClip.Start = function() {
     PlayClip.Player.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
-        this.play();
 
         this.on('ended', function() {
             PlayClip.Exit();
@@ -53,15 +51,24 @@ PlayClip.Start = function() {
     });
 };
 
+PlayClip.offPlayer = function() {
+    PlayClip.Player.off('ended', null);
+    PlayClip.Player.off('timeupdate', null);
+    PlayClip.Player.off('error', null);
+    PlayClip.Player.off('stalled', null);
+};
+
 PlayClip.Resume = function() {
     if (document.hidden) {
         PlayClip.Exit();
+        PlayClip.offPlayer();
     }
 };
 
 PlayClip.Exit = function() {
     PlayClip.Player.pause();
     PlayClip.Player.src('app/images/temp.mp4');
+    PlayClip.offPlayer();
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     PlayClip.hidePanel();
@@ -79,6 +86,8 @@ PlayClip.updateCurrentTime = function(currentTime) {
 
     today = (new Date()).toString().split(' ');
     document.getElementById("stream_clip_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + today[4].toString();
+
+    if (PlayClip.WarningDialogVisible()) PlayClip.HideWarningDialog();
 };
 
 PlayClip.lessthanten = function(time) {
