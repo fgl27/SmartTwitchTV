@@ -272,9 +272,10 @@
         }
 
         .sk-cube-grid .sk-cube {
-            width: 33%;
-            height: 33%;
+            width: 30%;
+            height: 30%;
             background-color: #333333;
+            border: 1px solid #000000;
             float: left;
             animation: sk-cubeGridScaleDelay 1.8s infinite ease-in-out;
         }
@@ -312,6 +313,57 @@
         }
 
         .sk-cube-grid .sk-cube9 {
+            animation-delay: 1.8s;
+        }
+
+        .sk-cube-grid-small {
+            width: 100px;
+            height: 100px;
+            margin: -45px auto;
+        }
+
+        .sk-cube-grid-small .sk-cube {
+            width: 28%;
+            height: 28%;
+            background-color: #333333;
+            border: 1px solid #929292;
+            float: left;
+            animation: sk-cubeGridScaleDelay 1.8s infinite ease-in-out;
+        }
+
+        .sk-cube-grid-small .sk-cube1 {
+            animation-delay: 0.2s;
+        }
+
+        .sk-cube-grid-small .sk-cube2 {
+            animation-delay: 0.4s;
+        }
+
+        .sk-cube-grid-small .sk-cube3 {
+            animation-delay: 0.6s;
+        }
+
+        .sk-cube-grid-small .sk-cube4 {
+            animation-delay: 0.8s;
+        }
+
+        .sk-cube-grid-small .sk-cube5 {
+            animation-delay: 1s;
+        }
+
+        .sk-cube-grid-small .sk-cube6 {
+            animation-delay: 1.2s;
+        }
+
+        .sk-cube-grid-small .sk-cube7 {
+            animation-delay: 1.4s;
+        }
+
+        .sk-cube-grid-small .sk-cube8 {
+            animation-delay: 1.6s;
+        }
+
+        .sk-cube-grid-small .sk-cube9 {
             animation-delay: 1.8s;
         }
 
@@ -506,6 +558,20 @@
             </div>
             <div id="dialog_warning_play" style="position: fixed; z-index:7; text-align: center; width: 100%; margin-top: 20%; font-weight:bold; display:none;">
                 <div id="dialog_warning_play_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;"></div>
+            </div>
+            <div id="dialog_loading_play" class="screen_size" style="position: fixed; z-index:98; text-align: center; width: 100%; display:none;">
+            <div id="dialog_loading_play_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;">STR_BUFFERING</div>
+                <div class="sk-cube-grid-small" style="margin-top: 13%; display: inline-block;">
+                    <div class="sk-cube sk-cube1"></div>
+                    <div class="sk-cube sk-cube2"></div>
+                    <div class="sk-cube sk-cube3"></div>
+                    <div class="sk-cube sk-cube4"></div>
+                    <div class="sk-cube sk-cube5"></div>
+                    <div class="sk-cube sk-cube6"></div>
+                    <div class="sk-cube sk-cube7"></div>
+                    <div class="sk-cube sk-cube8"></div>
+                    <div class="sk-cube sk-cube9"></div>
+                </div>
             </div>
         </div>
         <div id="chat_container" style="z-index:0; left: 75.3%; top: 51.5%; position: absolute; width: 24.7%; height: 48%; background-color: rgba(0, 0, 0, 0.5); display:none;">
