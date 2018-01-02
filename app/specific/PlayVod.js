@@ -477,7 +477,7 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_RETURN:
                 if (PlayVod.ExitDialogVisible()) {
                     window.clearTimeout(PlayVod.exitID);
-                    $("#play_dialog_exit").hide();
+                    $("#play_clip_dialog_exit").hide();
                     window.setTimeout(PlayVod.shutdownStream, 10);
                 } else {
                     PlayVod.showExitDialog();
@@ -543,7 +543,7 @@ PlayVod.handleKeyDown = function(e) {
                 } else {
                     if (PlayVod.ExitDialogVisible()) {
                         window.clearTimeout(PlayVod.exitID);
-                        $("#play_dialog_exit").hide();
+                        $("#play_clip_dialog_exit").hide();
                         window.setTimeout(PlayVod.shutdownStream, 10);
                     } else if (PlayVod.WarningDialogVisible()) {
                         PlayVod.HideWarningDialog();
