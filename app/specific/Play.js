@@ -38,7 +38,11 @@ Play.loadingDataTryMax = 15;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
-var random_int = Math.round(Math.random() * 1e7);
+Play.random_int = Math.round(Math.random() * 1e7);
+Play.qualityCount = 0;
+Play.qualityName = [];
+Play.qualityLinks = [];
+Play.qualitiesFound = false;
 
 //Variable initialization end
 
@@ -68,7 +72,8 @@ Play.Start = function() {
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
-    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
+    Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+    Play.qualitiesFound = 0;
     Play.tokenResponse = 0;
     Play.playlistResponse = 0;
     Play.playingTry = 0;
@@ -86,7 +91,7 @@ Play.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
-        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 10000);
+        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
         window.setTimeout(function() {
             Play.onPlayer();
         }, 500);
@@ -135,7 +140,7 @@ Play.loadDataRequest = function() {
         } else {
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Main.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + Play.tokenResponse.sig + '&token=' +
-                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
+                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play.loadingDataTimeout;
@@ -150,9 +155,10 @@ Play.loadDataRequest = function() {
                         Play.loadingDataTry = 0;
                         Play.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
-
                 } else {
-                    Play.loadDataError();
+                    if ((xmlHttp.responseText).indexOf('Bad auth token') !== -1) {
+                        Play.restore();
+                    } else Play.loadDataError();
                 }
             }
         };
@@ -186,11 +192,35 @@ Play.loadDataError = function() {
                     Play.loadingDataTimeout = 60000;
                     break;
                 default:
-                    Play.loadingDataTimeout = 300000;
+                    Play.loadingDataTimeout = 150000;
                     break;
             }
         }
         Play.loadDataRequest();
+    } else {
+        Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        window.setTimeout(Play.shutdownStream, 1500);
+    }
+};
+
+Play.saveQualities = function() {
+    Play.qualityName[Play.qualityCount] = Main.selectedChannel;
+    Play.qualityLinks[Play.qualityCount] = Play.qualities;
+    Play.qualityCount++;
+};
+
+Play.restore = function() {
+    for (var i = 0; i < Play.qualityName.length; i++) {
+        if (Play.qualityName[i] == Main.selectedChannel) {
+            Play.qualities = Play.qualityLinks[i];
+            Play.qualitiesFound = true;
+            console.log("qualitiesFound");
+        }
+    }
+
+    if (Play.qualitiesFound) {
+        Play.state = Play.STATE_PLAYING;
+        Play.qualityChanged();
     } else {
         Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
         window.setTimeout(Play.shutdownStream, 1500);
@@ -223,6 +253,7 @@ Play.extractQualities = function(input) {
     Play.qualities = result;
     Play.state = Play.STATE_PLAYING;
     Play.qualityChanged();
+    Play.saveQualities();
 };
 
 function extractStreamDeclarations(input) {

@@ -30,7 +30,11 @@ PlayVod.created = '';
 PlayVod.loadingDataTry = 0;
 PlayVod.loadingDataTryMax = 15;
 PlayVod.offsettime = 0;
-var random_int = Math.round(Math.random() * 1e7);
+PlayVod.random_int = Math.round(Math.random() * 1e7);
+
+PlayVod.qualityName = [];
+PlayVod.qualityLinks = [];
+PlayVod.qualityCount = 0;
 
 //Variable initialization end
 
@@ -81,7 +85,7 @@ PlayVod.loadDataRequest = function() {
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
-                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + random_int;
+                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + PlayVod.random_int;
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod.loadingDataTimeout;
@@ -98,7 +102,9 @@ PlayVod.loadDataRequest = function() {
                     } catch (err) {}
 
                 } else {
-                    PlayVod.loadDataError();
+                    if ((xmlHttp.responseText).indexOf('Bad auth token') !== -1) {
+                        PlayVod.restore();
+                    } else PlayVod.loadDataError();
                 }
             }
         };
@@ -131,11 +137,34 @@ PlayVod.loadDataError = function() {
                     PlayVod.loadingDataTimeout = 60000;
                     break;
                 default:
-                    PlayVod.loadingDataTimeout = 300000;
+                    PlayVod.loadingDataTimeout = 150000;
                     break;
             }
         }
         PlayVod.loadDataRequest();
+    } else {
+        PlayVod.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        window.setTimeout(PlayVod.shutdownStream, 1500);
+    }
+};
+
+PlayVod.saveQualities = function() {
+    PlayVod.qualityName[Play.qualityCount] = Svod.vodId;
+    PlayVod.qualityLinks[Play.qualityCount] = PlayVod.qualities;
+    PlayVod.qualityCount++;
+};
+
+PlayVod.restore = function() {
+    for (var i = 0; i < Play.qualityName.length; i++) {
+        if (PlayVod.qualityName[i] == Main.selectedChannel) {
+            PlayVod.qualities = Play.qualityLinks[i];
+            PlayVod.qualitiesFound = true;
+        }
+    }
+
+    if (PlayVod.qualitiesFound) {
+        PlayVod.state = PlayVod.STATE_PLAYING;
+        PlayVod.qualityChanged();
     } else {
         PlayVod.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
         window.setTimeout(PlayVod.shutdownStream, 1500);
@@ -168,6 +197,7 @@ PlayVod.extractQualities = function(input) {
     PlayVod.qualities = result;
     PlayVod.state = PlayVod.STATE_PLAYING;
     PlayVod.qualityChanged();
+    PlayVod.saveQualities();
 };
 
 function extractStreamDeclarations(input) {
