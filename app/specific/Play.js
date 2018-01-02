@@ -57,9 +57,10 @@ Play.PreStart = function() {
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     document.getElementById("stream_live").innerHTML =
-        '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
+        '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
-    $("#dialog_loading_play_text").text(STR_BUFFERING);
+    document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
+        '<i class="fa fa-spinner fa-spin"></i>';
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
@@ -69,7 +70,7 @@ Play.PreStart = function() {
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    $("#dialog_loading_play").show();
+    $("#dialog_buffer_play").show();
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
@@ -314,7 +315,7 @@ Play.qualityChanged = function() {
 };
 
 Play.onPlayer = function() {
-    $("#dialog_loading_play").show();
+    $("#dialog_buffer_play").show();
     Play.videojs.src({
         type: "video/mp4",
         src: Play.playingUrl
@@ -354,7 +355,7 @@ Play.onPlayer = function() {
 Play.PlayerCheck = function() {
     if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
         Play.PlayerCheckCount++;
-        $("#dialog_loading_play").show();
+        $("#dialog_buffer_play").show();
         if (Play.PlayerCheckCount > 60) { //staled for 30 sec drop one quality
             Play.PlayerCheckCount = 0;
             if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
@@ -383,7 +384,7 @@ Play.updateCurrentTime = function(currentTime) {
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
-    if ($("#dialog_loading_play").is(":visible")) $("#dialog_loading_play").hide();
+    if ($("#dialog_buffer_play").is(":visible")) $("#dialog_buffer_play").hide();
     Play.PlayerCheckCount = 0;
 };
 
