@@ -11,7 +11,7 @@ Sclip.playUrl = '';
 //Variable initialization end
 
 PlayClip.PreStart = function() {
-    PlayClip.Player = videojs('video_clip');
+    PlayClip.videojs = videojs('video_clip');
     $("#play_clip_dialog_exit_text").text(STR_EXIT);
 };
 
@@ -27,15 +27,15 @@ PlayClip.Start = function() {
 
     document.addEventListener('visibilitychange', PlayClip.Resume, false);
 
-    PlayClip.Player.src({
+    PlayClip.videojs.src({
         type: "video/mp4",
         src: Sclip.playUrl
     });
 
-    PlayClip.Player.ready(function() {
+    PlayClip.videojs.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
-        this.play();
+        this.autoplay(true);
 
         this.on('ended', function() {
             PlayClip.Exit();
@@ -54,9 +54,9 @@ PlayClip.Start = function() {
 };
 
 PlayClip.offPlayer = function() {
-    PlayClip.Player.off('ended', null);
-    PlayClip.Player.off('timeupdate', null);
-    PlayClip.Player.off('error', null);
+    PlayClip.videojs.off('ended', null);
+    PlayClip.videojs.off('timeupdate', null);
+    PlayClip.videojs.off('error', null);
 };
 
 PlayClip.Resume = function() {
@@ -67,11 +67,12 @@ PlayClip.Resume = function() {
 };
 
 PlayClip.Exit = function() {
-    PlayClip.Player.pause();
-    PlayClip.Player.src('app/images/temp.mp4');
+    PlayClip.videojs.pause();
+    PlayClip.videojs.autoplay(false);
+    PlayClip.videojs.src('app/images/temp.mp4');
     PlayClip.offPlayer();
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
-    document.removeEventListener('visibilitychange', Play.Resume);
+    document.removeEventListener('visibilitychange', PlayClip.Resume);
     PlayClip.hidePanel();
     $("#play_clip_dialog_simple_pause").hide();
     $("#play_clip_dialog_exit").hide();
@@ -206,10 +207,10 @@ PlayClip.setHidePanel = function() {
 PlayClip.handleKeyDown = function(e) {
     switch (e.keyCode) {
         case TvKeyCode.KEY_LEFT:
-            PlayClip.Player.currentTime(PlayClip.Player.currentTime() - 5);
+            PlayClip.videojs.currentTime(PlayClip.videojs.currentTime() - 5);
             break;
         case TvKeyCode.KEY_RIGHT:
-            PlayClip.Player.currentTime(PlayClip.Player.currentTime() + 5);
+            PlayClip.videojs.currentTime(PlayClip.videojs.currentTime() + 5);
             break;
         case TvKeyCode.KEY_UP:
             if (!PlayClip.isPanelShown()) {
@@ -242,12 +243,12 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
-            if (!PlayClip.Player.paused()) {
+            if (!PlayClip.videojs.paused()) {
                 PlayClip.showPauseDialog();
-                PlayClip.Player.pause();
+                PlayClip.videojs.pause();
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
             } else {
-                PlayClip.Player.play();
+                PlayClip.videojs.play();
                 PlayClip.clearPause();
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
             }

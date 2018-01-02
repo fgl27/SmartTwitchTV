@@ -307,7 +307,7 @@ Play.qualityChanged = function() {
 
 Play.onPlayer = function() {
     Play.videojs.src({
-        type: "application/vnd.apple.mpegurl",
+        type: "video/mp4",
         src: Play.playingUrl
     });
 
@@ -323,7 +323,7 @@ Play.onPlayer = function() {
     Play.videojs.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
-        this.play();
+        this.autoplay(true);
 
         this.on('ended', function() {
             Play.shutdownStream();
@@ -339,6 +339,7 @@ Play.onPlayer = function() {
         });
 
     });
+
 };
 
 Play.offPlayer = function() {
@@ -393,6 +394,7 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 
 Play.shutdownStream = function() {
     Play.videojs.pause();
+    Play.videojs.autoplay(false);
     Play.videojs.src('app/images/temp.mp4');
     Play.offPlayer();
     document.body.removeEventListener("keydown", Play.handleKeyDown);

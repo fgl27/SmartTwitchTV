@@ -59,12 +59,12 @@ PlayVod.Start = function() {
 
 PlayVod.Resume = function() {
     if (document.hidden) {
-        PlayClip.Player.pause();
+        PlayClip.videojs.pause();
     } else {
         $("#scene3").show();
         $("#scene1").hide();
         window.setTimeout(function() {
-            PlayClip.Player.play();
+            PlayClip.videojs.play();
         }, 500);
     }
 };
@@ -149,15 +149,15 @@ PlayVod.loadDataError = function() {
 };
 
 PlayVod.saveQualities = function() {
-    PlayVod.qualityName[Play.qualityCount] = Svod.vodId;
-    PlayVod.qualityLinks[Play.qualityCount] = PlayVod.qualities;
+    PlayVod.qualityName[PlayVod.qualityCount] = Svod.vodId;
+    PlayVod.qualityLinks[PlayVod.qualityCount] = PlayVod.qualities;
     PlayVod.qualityCount++;
 };
 
 PlayVod.restore = function() {
-    for (var i = 0; i < Play.qualityName.length; i++) {
+    for (var i = 0; i < PlayVod.qualityName.length; i++) {
         if (PlayVod.qualityName[i] == Main.selectedChannel) {
-            PlayVod.qualities = Play.qualityLinks[i];
+            PlayVod.qualities = PlayVod.qualityLinks[i];
             PlayVod.qualitiesFound = true;
         }
     }
@@ -248,17 +248,17 @@ PlayVod.qualityChanged = function() {
 };
 
 PlayVod.onPlayer = function() {
-    PlayClip.Player.src({
-        type: "application/vnd.apple.mpegurl",
+    PlayClip.videojs.src({
+        type: "video/mp4",
         src: PlayVod.playingUrl
     });
 
     PlayVod.HideWarningDialog();
     PlayVod.hidePanel();
-    PlayClip.Player.ready(function() {
+    PlayClip.videojs.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
-        this.play();
+        this.autoplay(true);
 
         this.on('ended', function() {
             PlayVod.shutdownStream();
@@ -284,10 +284,10 @@ PlayVod.onPlayer = function() {
 };
 
 PlayVod.offPlayer = function() {
-    PlayClip.Player.off('ended', null);
-    PlayClip.Player.off('timeupdate', null);
-    PlayClip.Player.off('error', null);
-    PlayClip.Player.off('playing', null);
+    PlayClip.videojs.off('ended', null);
+    PlayClip.videojs.off('timeupdate', null);
+    PlayClip.videojs.off('error', null);
+    PlayClip.videojs.off('playing', null);
 };
 
 PlayVod.WarnShutdownStream = function() {
@@ -332,8 +332,9 @@ PlayVod.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 };
 
 PlayVod.shutdownStream = function() {
-    PlayClip.Player.pause();
-    PlayClip.Player.src('app/images/temp.mp4');
+    PlayClip.videojs.pause();
+    PlayClip.videojs.autoplay(false);
+    PlayClip.videojs.src('app/images/temp.mp4');
     PlayVod.offPlayer();
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod.Resume);
@@ -497,10 +498,10 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_CHANNELDOWN:
                 break;
             case TvKeyCode.KEY_LEFT:
-                PlayClip.Player.currentTime(PlayClip.Player.currentTime() - 600);
+                PlayClip.videojs.currentTime(PlayClip.videojs.currentTime() - 600);
                 break;
             case TvKeyCode.KEY_RIGHT:
-                PlayClip.Player.currentTime(PlayClip.Player.currentTime() + 600);
+                PlayClip.videojs.currentTime(PlayClip.videojs.currentTime() + 600);
                 break;
             case TvKeyCode.KEY_UP:
                 if (PlayVod.isPanelShown()) {
@@ -528,7 +529,7 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (PlayVod.isPanelShown()) {
-                    PlayVod.offsettime = PlayClip.Player.currentTime();
+                    PlayVod.offsettime = PlayClip.videojs.currentTime();
                     PlayVod.QualitChage = true;
                     PlayVod.qualityChanged();
                     PlayVod.clearPause();
@@ -555,9 +556,9 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                if (!PlayClip.Player.paused()) {
+                if (!PlayClip.videojs.paused()) {
                     PlayVod.Play = false;
-                    PlayClip.Player.pause();
+                    PlayClip.videojs.pause();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
                     PlayVod.showPauseDialog();
                     if (!PlayVod.isPanelShown()) {
@@ -566,7 +567,7 @@ PlayVod.handleKeyDown = function(e) {
                 } else {
                     PlayVod.Play = true;
                     PlayVod.clearPause();
-                    PlayClip.Player.play();
+                    PlayClip.videojs.play();
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                 }
                 break;
