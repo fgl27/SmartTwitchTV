@@ -43,6 +43,9 @@ Play.qualityCount = 0;
 Play.qualityName = [];
 Play.qualityLinks = [];
 Play.qualitiesFound = false;
+Play.PlayerTime = 0;
+Play.streamCheck = null;
+Play.PlayerCheckCount = 0;
 
 //Variable initialization end
 
@@ -56,6 +59,7 @@ Play.PreStart = function() {
     document.getElementById("stream_live").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%; aria-hidden="true"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
+    $("#dialog_loading_play_text").text(STR_BUFFERING);
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
@@ -65,6 +69,7 @@ Play.PreStart = function() {
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    $("#dialog_loading_play").show();
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
@@ -73,6 +78,7 @@ Play.Start = function() {
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
     Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+    Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
     Play.qualitiesFound = 0;
     Play.tokenResponse = 0;
     Play.playlistResponse = 0;
@@ -88,12 +94,14 @@ Play.Resume = function() {
         Play.offPlayer();
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
+        window.clearInterval(Play.streamCheck);
     } else {
         $("#scene2").show();
         $("#scene1").hide();
         Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
         window.setTimeout(function() {
             Play.onPlayer();
+            Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
         }, 500);
     }
 };
@@ -198,7 +206,7 @@ Play.loadDataError = function() {
         }
         Play.loadDataRequest();
     } else {
-        Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E);
         window.setTimeout(Play.shutdownStream, 1500);
     }
 };
@@ -222,7 +230,7 @@ Play.restore = function() {
         Play.state = Play.STATE_PLAYING;
         Play.qualityChanged();
     } else {
-        Play.showWarningDialog(STR_IS_OFFLINE + ' loadDataError');
+        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E);
         window.setTimeout(Play.shutdownStream, 1500);
     }
 };
@@ -306,6 +314,7 @@ Play.qualityChanged = function() {
 };
 
 Play.onPlayer = function() {
+    $("#dialog_loading_play").show();
     Play.videojs.src({
         type: "video/mp4",
         src: Play.playingUrl
@@ -334,12 +343,32 @@ Play.onPlayer = function() {
         });
 
         this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE + ' error');
+            Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_P_E);
             window.setTimeout(Play.shutdownStream, 1500);
         });
 
     });
 
+};
+
+Play.PlayerCheck = function() {
+    if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
+        Play.PlayerCheckCount++;
+        $("#dialog_loading_play").show();
+        if (Play.PlayerCheckCount > 60) { //staled for 30 sec drop one quality
+            Play.PlayerCheckCount = 0;
+            if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
+                Play.qualityIndex++;
+                Play.qualityDisplay();
+                Play.qualityChanged();
+            } else { //staled too long drop the player
+                Play.showWarningDialog(STR_PLAYER_PROBLEM);
+                window.setTimeout(Play.shutdownStream, 1500);
+            }
+        }
+    }
+    if (!Play.videojs.paused()) Play.videojs.play();
+    Play.PlayerTime = Play.videojs.currentTime();
 };
 
 Play.offPlayer = function() {
@@ -348,17 +377,14 @@ Play.offPlayer = function() {
     Play.videojs.off('error', null);
 };
 
-Play.WarnShutdownStream = function() {
-    Play.showWarningDialog(STR_IS_OFFLINE);
-    window.setTimeout(Play.shutdownStream, 1500);
-};
-
 Play.updateCurrentTime = function(currentTime) {
     Play.oldcurrentTime = currentTime + Play.offsettime;
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+    if ($("#dialog_loading_play").is(":visible")) $("#dialog_loading_play").hide();
+    Play.PlayerCheckCount = 0;
 };
 
 Play.clock = function(currentTime) {
@@ -409,6 +435,7 @@ Play.shutdownStream = function() {
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
+    window.clearInterval(Play.streamCheck);
 };
 
 Play.showWarningDialog = function(text) {
@@ -721,7 +748,6 @@ Play.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    Play.QualitChage = true;
                     Play.qualityChanged();
                     Play.clearPause();
                 } else {

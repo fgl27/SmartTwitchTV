@@ -19,8 +19,11 @@ var STR_CHANNELS = "Channels";
 var STR_CHANNEL = "Channel";
 var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen (Return)";
-var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed.";
+var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed ";
+var STR_IS_OFFLINE_P_E = "(Player Error)";
+var STR_IS_OFFLINE_L_E = "(Loading data Error)";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
+var STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
 var STR_PAST_BROA = " Past Broadcast";
 var STR_PAST_HIGHL = " Highlight";
 var STR_CLIPS = " Clips";
@@ -28,7 +31,7 @@ var STR_CONTENT = " Content";
 var STR_STREAM_ON = "Streamed on ";
 var STR_DURATION = "Duration ";
 var STR_VIEWS = " Views";
-
+var STR_BUFFERING = "Buffering ";
 
 
 var STR_OPEN = "Open";
@@ -41,7 +44,6 @@ var STR_QUALITY = "Quality";
 var STR_RETRYING = "Loading";
 var STR_ATTEMPT = "º Attempt";
 var STR_VIEWER = " Viewers";
-var STR_BUFFERING = "Buffering";
 var STR_EXIT = "Click again to exit!";
 
 var STR_ERROR_RENDER_SOURCE = "Format not supported :(";
