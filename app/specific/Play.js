@@ -46,6 +46,9 @@ Play.qualitiesFound = false;
 Play.PlayerTime = 0;
 Play.streamCheck = null;
 Play.PlayerCheckCount = 0;
+Play.RestoreFromResume = true;
+Play.PlayerCheckOffset = -30;
+Play.PlayerCheckQualityChanged = false;
 
 //Variable initialization end
 
@@ -101,6 +104,8 @@ Play.Resume = function() {
         $("#scene1").hide();
         Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
         window.setTimeout(function() {
+            Play.RestoreFromResume = true;
+            Play.PlayerCheckOffset = 60;
             Play.onPlayer();
             Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
         }, 500);
@@ -356,12 +361,14 @@ Play.PlayerCheck = function() {
     if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
         Play.PlayerCheckCount++;
         $("#dialog_buffer_play").show();
-        if (Play.PlayerCheckCount > 60) { //staled for 30 sec drop one quality
+        if (Play.PlayerCheckQualityChanged && !Play.RestoreFromResume) Play.PlayerCheckOffset = -30;
+        if (Play.PlayerCheckCount > (60 + Play.PlayerCheckOffset)) { //staled for 30 sec drop one quality
             Play.PlayerCheckCount = 0;
             if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
                 Play.qualityIndex++;
                 Play.qualityDisplay();
                 Play.qualityChanged();
+                Play.PlayerCheckQualityChanged = true; // half time on next check
             } else { //staled too long drop the player
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(Play.shutdownStream, 1500);
@@ -379,13 +386,16 @@ Play.offPlayer = function() {
 };
 
 Play.updateCurrentTime = function(currentTime) {
-    Play.oldcurrentTime = currentTime + Play.offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
-    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
-
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
     if ($("#dialog_buffer_play").is(":visible")) $("#dialog_buffer_play").hide();
     Play.PlayerCheckCount = 0;
+    Play.PlayerCheckOffset = 0;
+    Play.RestoreFromResume = false;
+    Play.PlayerCheckQualityChanged = false;
+
+    Play.oldcurrentTime = currentTime + Play.offsettime;
+    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
+    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 };
 
 Play.clock = function(currentTime) {
