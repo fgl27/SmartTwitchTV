@@ -450,6 +450,7 @@ Play.shutdownStream = function() {
 };
 
 Play.showWarningDialog = function(text) {
+    $("#dialog_buffer_play").hide()
     $("#dialog_warning_play_text").text(text);
     $("#dialog_warning_play").show();
 };
