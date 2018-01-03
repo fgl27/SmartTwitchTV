@@ -13,6 +13,8 @@ Sclip.playUrl = '';
 PlayClip.PreStart = function() {
     PlayClip.videojs = videojs('video_clip');
     $("#play_clip_dialog_exit_text").text(STR_EXIT);
+    document.getElementById("dialog_buffer_play_clip_text").innerHTML = STR_BUFFERING +
+        '<i class="fa fa-spinner fa-spin"></i>';
 };
 
 PlayClip.Start = function() {
