@@ -236,7 +236,7 @@ Play.restore = function() {
         Play.state = Play.STATE_PLAYING;
         Play.qualityChanged();
     } else {
-        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E);
+        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E_R);
         window.setTimeout(Play.shutdownStream, 1500);
     }
 };

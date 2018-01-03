@@ -22,6 +22,7 @@ var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended, or the connection failed ";
 var STR_IS_OFFLINE_P_E = "(Player Error)";
 var STR_IS_OFFLINE_L_E = "(Loading data Error)";
+var STR_IS_OFFLINE_L_E_R = "(Loading data Error 2)";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
 var STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
 var STR_PAST_BROA = " Past Broadcast";
