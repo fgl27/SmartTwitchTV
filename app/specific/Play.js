@@ -46,8 +46,8 @@ Play.qualitiesFound = false;
 Play.PlayerTime = 0;
 Play.streamCheck = null;
 Play.PlayerCheckCount = 0;
-Play.RestoreFromResume = true;
-Play.PlayerCheckOffset = -30;
+Play.RestoreFromResume = false;
+Play.PlayerCheckOffset = 0;
 Play.PlayerCheckQualityChanged = false;
 
 //Variable initialization end
@@ -78,6 +78,7 @@ Play.Start = function() {
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
     $("#stream_info_name").text(Main.selectedChannelDisplayname);
+    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(0);
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();

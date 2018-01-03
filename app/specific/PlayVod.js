@@ -39,8 +39,8 @@ PlayVod.qualityCount = 0;
 PlayVod.PlayerTime = 0;
 PlayVod.streamCheck = null;
 PlayVod.PlayerCheckCount = 0;
-PlayVod.RestoreFromResume = true;
-PlayVod.PlayerCheckOffset = -30;
+PlayVod.RestoreFromResume = false;
+PlayVod.PlayerCheckOffset = 0;
 PlayVod.PlayerCheckQualityChanged = false;
 PlayVod.Canjump = false;
 
@@ -57,6 +57,7 @@ PlayVod.Start = function() {
     $("#stream_clip_info_game").text(Svod.createdAt);
     $("#stream_clip_live").text(Svod.views);
     $("#stream_clip_info_livetime").text(Svod.Duration);
+    document.getElementById("stream_clip_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(0);
 
     PlayVod.tokenResponse = 0;
     PlayVod.playlistResponse = 0;
@@ -287,7 +288,7 @@ PlayVod.onPlayer = function() {
             window.setTimeout(Play.shutdownStream, 1500);
         });
 
-        this.on('playing', function() {// reset position after quality change
+        this.on('playing', function() { // reset position after quality change
             PlayVod.Canjump = true;
             if (PlayVod.offsettime > 0) {
                 this.currentTime(PlayVod.offsettime);
