@@ -289,7 +289,6 @@ PlayVod.onPlayer = function() {
         });
 
         this.on('playing', function() { // reset position after quality change
-            PlayVod.Canjump = true;
             if (PlayVod.offsettime > 0) {
                 this.currentTime(PlayVod.offsettime);
                 PlayVod.offsettime = 0;
@@ -336,6 +335,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
     PlayVod.PlayerCheckOffset = 0;
     PlayVod.RestoreFromResume = false;
     PlayVod.PlayerCheckQualityChanged = false;
+    PlayVod.Canjump = true;
 
     document.getElementById("stream_clip_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(currentTime);
 };
@@ -381,7 +381,7 @@ PlayVod.shutdownStream = function() {
     PlayVod.clearPause();
     PlayVod.HideWarningDialog();
     $("#scene1").show();
-    $("#scene2").hide();
+    $("#scene3").hide();
     Main.ReStartScreens();
     PlayVod.offsettime = 0;
     window.clearInterval(PlayVod.streamInfoTimer);
@@ -540,7 +540,7 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_CHANNELDOWN:
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (PlayVod.Canjump)
+                if (PlayVod.Canjump)//TODO prevent consecutive jump as it can breack the app time counter
                     PlayClip.videojs.currentTime(PlayClip.videojs.currentTime() - 600);
                 break;
             case TvKeyCode.KEY_RIGHT:
