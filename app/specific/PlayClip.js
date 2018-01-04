@@ -61,10 +61,6 @@ PlayClip.Start = function() {
             window.setTimeout(PlayClip.Exit, 1500);
         });
 
-        this.on('playing', function() {
-            PlayClip.Canjump = true;
-        });
-
     });
 };
 
@@ -72,7 +68,6 @@ PlayClip.offPlayer = function() {
     PlayClip.videojs.off('ended', null);
     PlayClip.videojs.off('timeupdate', null);
     PlayClip.videojs.off('error', null);
-    PlayClip.videojs.off('playing', null);
 };
 
 PlayClip.Resume = function() {
@@ -117,6 +112,7 @@ PlayClip.updateCurrentTime = function(currentTime) {
     if (PlayClip.WarningDialogVisible()) PlayClip.HideWarningDialog();
     if ($("#dialog_buffer_play_clip").is(":visible")) $("#dialog_buffer_play_clip").hide();
     PlayClip.PlayerCheckCount = 0;
+    PlayClip.Canjump = true;
 
     document.getElementById("stream_clip_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(currentTime);
 };
