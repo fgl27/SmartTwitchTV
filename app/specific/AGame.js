@@ -415,7 +415,8 @@ AGame.handleKeyDown = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             Main.OldgameSelected = Main.gameSelected;
-            Main.Go = Main.Before;
+            if (Main.Go === Main.Before) Main.Go = Main.Games;
+            else Main.Go = Main.Before;
             AGame.exit();
             break;
         case TvKeyCode.KEY_LEFT:
