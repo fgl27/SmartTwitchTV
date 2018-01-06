@@ -229,7 +229,6 @@ Play.restore = function() {
         if (Play.qualityName[i] == Main.selectedChannel) {
             Play.qualities = Play.qualityLinks[i];
             Play.qualitiesFound = true;
-            console.log("qualitiesFound");
         }
     }
 
