@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/bhb27/smarttv-twitch" version="1.0.0" viewmodes="maximized">
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/mkvd/smarttv-twitch" version="3.6.5" viewmodes="maximized">
    <access origin="*" subdomains="true"></access>
-   <tizen:application id="q27HyNzLIR.TwitchTest" package="q27HyNzLIR" required_version="2.4"/>
+   <tizen:application id="GcpEsjpyhx.TwitchTest" package="GcpEsjpyhx" required_version="2.4"/>
    <content src="index.html"/>
    <description xml:lang="en-gb">TwitchTest.tv</description>
    <feature name="http://tizen.org/feature/screen.size.normal.all"/>
@@ -9,20 +9,34 @@
    <feature name="http://www.samsungdforum.com/feature/Keyboard"/>
    <icon src="app/images/icon_16_by_9.png"/>
    <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
+   <name xml:lang="en-gb">TwitchTest</name>
+   <name xml:lang="pt-br">TwitchTest</name>
+   <name xml:lang="de-de">TwitchTest</name>
+   <name xml:lang="ru-ru">TwitchTest</name>
+   <name xml:lang="es-es">TwitchTest</name>
    <name>TwitchTest</name>
+   <preference name="autoUpdate" value="n" readonly="false"/>
+   <preference name="fullwidget" value="y" readonly="false"/>
+   <preference name="type" value="user" readonly="false"/>
+   <preference name="srcctl" value="y" readonly="false"/>
+   <preference name="ticker" value="n" readonly="false"/>
+   <preference name="childlock" value="n" readonly="false"/>
+   <preference name="videomute" value="n" readonly="false"/>
+   <preference name="dcont" value="y" readonly="false"/>
    <preference name="widgetname" value="TwitchTest" readonly="false"/>
    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+   <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/productinfo"/>
    <tizen:privilege name="http://tizen.org/privilege/tv.audio"/>
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>
    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="false" encryption="disable" install-location="auto" hwkey-event="enable"/>
-   <tizen:metadata key="samsung.com/tv/metadata/multitasking.support" value="true" />
+   <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
    <!-- Smart Hub Preview-->
-   <tizen:metadata key="http://samsung.com/tv/metadata/use.preview" value="endpoint_URL=http://yourServer/JSONfile.json"></tizen:metadata>
+   <tizen:metadata key='http://samsung.com/tv/metadata/use.preview' value='endpoint_URL=http://yourServer/JSONfile.json'></tizen:metadata>
    <tizen:app-control>
-      <tizen:src name="index.html" reload="disable"></tizen:src>
-      <tizen:operation name="http://samsung.com/appcontrol/operation/eden_resume"></tizen:operation>
+      <tizen:src name='index.html' reload='disable'></tizen:src>
+      <tizen:operation name='http://samsung.com/appcontrol/operation/eden_resume'></tizen:operation>
    </tizen:app-control>
 </widget>
