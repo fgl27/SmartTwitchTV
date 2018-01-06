@@ -79,6 +79,7 @@ Play.Start = function() {
     $("#stream_info_icon").attr("src", "");
     $("#stream_info_name").text(Main.selectedChannelDisplayname);
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(0);
+    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + PlayClip.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
