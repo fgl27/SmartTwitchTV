@@ -34,7 +34,7 @@ Play.sizeOffset = 0;
 Play.created = '';
 
 Play.loadingDataTry = 0;
-Play.loadingDataTryMax = 15;
+Play.loadingDataTryMax = 10;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
@@ -188,33 +188,10 @@ Play.loadDataRequest = function() {
 Play.loadDataError = function() {
     Play.loadingDataTry++;
     if (Play.loadingDataTry < Play.loadingDataTryMax) {
-        if (Play.loadingDataTry < 5) {
-            Play.loadingDataTimeout += 250;
-        } else {
-            switch (Play.loadingDataTry) {
-                case 5:
-                    Play.loadingDataTimeout = 5000;
-                    break;
-                case 6:
-                    Play.loadingDataTimeout = 6500;
-                    break;
-                case 7:
-                    Play.loadingDataTimeout = 15000;
-                    break;
-                case 8:
-                    Play.loadingDataTimeout = 30000;
-                    break;
-                case 9:
-                    Play.loadingDataTimeout = 60000;
-                    break;
-                default:
-                    Play.loadingDataTimeout = 150000;
-                    break;
-            }
-        }
+        Play.loadingDataTimeout += (Play.loadingDataTry < 5) ? 250 : 3500;
         Play.loadDataRequest();
     } else {
-        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E);
+        Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(Play.shutdownStream, 1500);
     }
 };
@@ -237,7 +214,7 @@ Play.restore = function() {
         Play.state = Play.STATE_PLAYING;
         Play.qualityChanged();
     } else {
-        Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E_R);
+        Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(Play.shutdownStream, 1500);
     }
 };
@@ -342,7 +319,8 @@ Play.onPlayer = function() {
         this.autoplay(true);
 
         this.on('ended', function() {
-            Play.shutdownStream();
+            Play.showWarningDialog(STR_IS_OFFLINE);
+            window.setTimeout(Play.shutdownStream, 1500);
         });
 
         this.on('timeupdate', function() {
@@ -350,7 +328,7 @@ Play.onPlayer = function() {
         });
 
         this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_P_E);
+            Play.showWarningDialog(STR_PLAYER_PROBLEM);
             window.setTimeout(Play.shutdownStream, 1500);
         });
 
