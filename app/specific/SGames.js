@@ -30,7 +30,6 @@ SGames.MaxOffset = 0;
 
 SGames.ThumbnailDiv = 'sgame_thumbnail_div_';
 SGames.DispNameDiv = 'sgame_display_name_';
-SGames.ViwersDiv = 'sgame_viwers_';
 SGames.Cell = 'sgame_cell_';
 
 //Variable initialization end
@@ -142,7 +141,7 @@ SGames.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < SGames.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             game = response.games[cursor];
-            cell = SGames.createCell(row_id, coloumn_id, game.name, game.box.template, '', '', game.name, '', '');
+            cell = SGames.createCell(row_id, coloumn_id, game.name, game.box.template);
             row.append(cell);
         }
         for (coloumn_id; coloumn_id < SGames.ColoumnsCount; coloumn_id++) {
@@ -159,7 +158,7 @@ SGames.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + SGames.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-SGames.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
 
     SGames.imgMatrix[SGames.imgMatrixCount] = preview_thumbnail;
@@ -168,12 +167,10 @@ SGames.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail
 
     if (SGames.imgMatrixCount <= (SGames.ColoumnsCount * 3)) SGames.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
-    return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
         '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/game.png"/> \
             <div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div id="' + SGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_SGames" style="width: 100%; display: inline-block;">' + viwers +
-        '</div> \
+            <div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
             </div>');
 };
 
@@ -207,7 +204,6 @@ SGames.addFocus = function() {
     $('#' + SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_thumbnail_focused');
     $('#' + SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_text_focused');
     $('#' + SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_channel_focused');
-    $('#' + SGames.ViwersDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
         SGames.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX);
     }, 10);
@@ -217,7 +213,6 @@ SGames.removeFocus = function() {
     $('#' + SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_text_focused');
     $('#' + SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_channel_focused');
-    $('#' + SGames.ViwersDiv + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_info_focused');
 };
 
 SGames.keyClickDelay = function() {
