@@ -28,7 +28,7 @@ PlayVod.pauseStartID = '';
 PlayVod.created = '';
 
 PlayVod.loadingDataTry = 0;
-PlayVod.loadingDataTryMax = 15;
+PlayVod.loadingDataTryMax = 10;
 PlayVod.offsettime = 0;
 PlayVod.random_int = Math.round(Math.random() * 1e7);
 
@@ -131,33 +131,10 @@ PlayVod.loadDataRequest = function() {
 PlayVod.loadDataError = function() {
     PlayVod.loadingDataTry++;
     if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
-        if (PlayVod.loadingDataTry < 5) {
-            PlayVod.loadingDataTimeout += 250;
-        } else {
-            switch (PlayVod.loadingDataTry) {
-                case 5:
-                    PlayVod.loadingDataTimeout = 5000;
-                    break;
-                case 6:
-                    PlayVod.loadingDataTimeout = 6500;
-                    break;
-                case 7:
-                    PlayVod.loadingDataTimeout = 15000;
-                    break;
-                case 8:
-                    PlayVod.loadingDataTimeout = 30000;
-                    break;
-                case 9:
-                    PlayVod.loadingDataTimeout = 60000;
-                    break;
-                default:
-                    PlayVod.loadingDataTimeout = 150000;
-                    break;
-            }
-        }
+        PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
         PlayVod.loadDataRequest();
     } else {
-        PlayVod.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E);
+        PlayVod.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(PlayVod.shutdownStream, 1500);
     }
 };
@@ -180,7 +157,7 @@ PlayVod.restore = function() {
         PlayVod.state = PlayVod.STATE_PLAYING;
         PlayVod.qualityChanged();
     } else {
-        PlayVod.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_L_E_R);
+        PlayVod.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(PlayVod.shutdownStream, 1500);
     }
 };
@@ -276,7 +253,8 @@ PlayVod.onPlayer = function() {
         this.autoplay(true);
 
         this.on('ended', function() {
-            PlayVod.shutdownStream();
+            Play.showWarningDialog(STR_IS_OFFLINE);
+            window.setTimeout(PlayVod.shutdownStream, 1500);
         });
 
         this.on('timeupdate', function() {
@@ -284,8 +262,8 @@ PlayVod.onPlayer = function() {
         });
 
         this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_P_E);
-            window.setTimeout(Play.shutdownStream, 1500);
+            Play.showWarningDialog(STR_PLAYER_PROBLEM);
+            window.setTimeout(PlayVod.shutdownStream, 1500);
         });
 
         this.on('playing', function() { // reset position after quality change

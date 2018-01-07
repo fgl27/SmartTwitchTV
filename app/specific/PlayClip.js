@@ -57,7 +57,7 @@ PlayClip.Start = function() {
         });
 
         this.on('error', function() {
-            PlayClip.showWarningDialog(STR_IS_OFFLINE + STR_IS_OFFLINE_P_E);
+            PlayClip.showWarningDialog(STR_IS_OFFLINE);
             window.setTimeout(PlayClip.Exit, 1500);
         });
 
