@@ -54,6 +54,8 @@ PlayClip.Start = function() {
 
         this.on('timeupdate', function() {
             PlayClip.updateCurrentTime(this.currentTime());
+            this.isFullscreen(true);
+            this.requestFullscreen();
         });
 
         this.on('error', function() {

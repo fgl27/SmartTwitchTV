@@ -325,6 +325,8 @@ Play.onPlayer = function() {
 
         this.on('timeupdate', function() {
             Play.updateCurrentTime(this.currentTime());
+            this.isFullscreen(true);
+            this.requestFullscreen();
         });
 
         this.on('error', function() {
