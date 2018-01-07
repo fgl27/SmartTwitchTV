@@ -112,18 +112,18 @@ SLive.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    SLive.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    SLive.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        SLive.loadDataError(e.message, null);
+        SLive.loadDataError();
     }
 };
 
-SLive.loadDataError = function(reason, responseText) {
+SLive.loadDataError = function() {
     SLive.loadingDataTry++;
     if (SLive.loadingDataTry < SLive.loadingDataTryMax) {
         SLive.loadingDataTimeout += (SLive.loadingDataTry < 5) ? 250 : 3500;
@@ -290,11 +290,11 @@ SLive.loadDataRequestReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        SLive.loadDataErrorReplace(e.message, null);
+        SLive.loadDataErrorReplace();
     }
 };
 
-SLive.loadDataErrorReplace = function(reason, responseText) {
+SLive.loadDataErrorReplace = function() {
     SLive.loadingDataTry++;
     if (SLive.loadingDataTry < SLive.loadingDataTryMax) {
         SLive.loadingDataTimeout += (SLive.loadingDataTry < 5) ? 250 : 3500;

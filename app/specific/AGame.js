@@ -115,18 +115,18 @@ AGame.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    AGame.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    AGame.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        AGame.loadDataError(e.message, null);
+        AGame.loadDataError();
     }
 };
 
-AGame.loadDataError = function(reason, responseText) {
+AGame.loadDataError = function() {
     AGame.loadingDataTry++;
     if (AGame.loadingDataTry < AGame.loadingDataTryMax) {
         AGame.loadingDataTimeout += (AGame.loadingDataTry < 5) ? 250 : 3500;
@@ -293,11 +293,11 @@ AGame.loadDataRequestReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        AGame.loadDataErrorReplace(e.message, null);
+        AGame.loadDataErrorReplace();
     }
 };
 
-AGame.loadDataErrorReplace = function(reason, responseText) {
+AGame.loadDataErrorReplace = function() {
     AGame.loadingDataTry++;
     if (AGame.loadingDataTry < AGame.loadingDataTryMax) {
         AGame.loadingDataTimeout += (AGame.loadingDataTry < 5) ? 250 : 3500;

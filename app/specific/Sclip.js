@@ -129,18 +129,18 @@ Sclip.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    Sclip.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    Sclip.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        Sclip.loadDataError(e.message, null);
+        Sclip.loadDataError();
     }
 };
 
-Sclip.loadDataError = function(reason, responseText) {
+Sclip.loadDataError = function() {
     Sclip.loadingDataTry++;
     if (Sclip.loadingDataTry < Sclip.loadingDataTryMax) {
         Sclip.loadingDataTimeout += (Sclip.loadingDataTry < 5) ? 250 : 3500;
@@ -299,11 +299,11 @@ Sclip.loadDataRequestReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        Sclip.loadDataErrorReplace(e.message, null);
+        Sclip.loadDataErrorReplace();
     }
 };
 
-Sclip.loadDataErrorReplace = function(reason, responseText) {
+Sclip.loadDataErrorReplace = function() {
     Sclip.loadingDataTry++;
     if (Sclip.loadingDataTry < Sclip.loadingDataTryMax) {
         Sclip.loadingDataTimeout += (Sclip.loadingDataTry < 5) ? 250 : 3500;

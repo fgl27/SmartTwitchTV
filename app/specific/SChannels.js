@@ -115,18 +115,18 @@ SChannels.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    SChannels.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    SChannels.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        SChannels.loadDataError(e.message, null);
+        SChannels.loadDataError();
     }
 };
 
-SChannels.loadDataError = function(reason, responseText) {
+SChannels.loadDataError = function() {
     SChannels.loadingDataTry++;
     if (SChannels.loadingDataTry < SChannels.loadingDataTryMax) {
         SChannels.loadingDataTimeout += (SChannels.loadingDataTry < 5) ? 250 : 3500;
@@ -282,11 +282,11 @@ SChannels.loadDataRequestReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        SChannels.loadDataErrorReplace(e.message, null);
+        SChannels.loadDataErrorReplace();
     }
 };
 
-SChannels.loadDataErrorReplace = function(reason, responseText) {
+SChannels.loadDataErrorReplace = function() {
     SChannels.loadingDataTry++;
     if (SChannels.loadingDataTry < SChannels.loadingDataTryMax) {
         SChannels.loadingDataTimeout += (SChannels.loadingDataTry < 5) ? 250 : 3500;

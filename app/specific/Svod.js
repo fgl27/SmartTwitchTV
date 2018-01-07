@@ -120,18 +120,18 @@ Svod.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    Svod.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    Svod.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        Svod.loadDataError(e.message, null);
+        Svod.loadDataError();
     }
 };
 
-Svod.loadDataError = function(reason, responseText) {
+Svod.loadDataError = function() {
     Svod.loadingDataTry++;
     if (Svod.loadingDataTry < Svod.loadingDataTryMax) {
         Svod.loadingDataTimeout += (Svod.loadingDataTry < 5) ? 250 : 3500;
@@ -297,11 +297,11 @@ Svod.loadDataRequestReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        Svod.loadDataErrorReplace(e.message, null);
+        Svod.loadDataErrorReplace();
     }
 };
 
-Svod.loadDataErrorReplace = function(reason, responseText) {
+Svod.loadDataErrorReplace = function() {
     Svod.loadingDataTry++;
     if (Svod.loadingDataTry < Svod.loadingDataTryMax) {
         Svod.loadingDataTimeout += (Svod.loadingDataTry < 5) ? 250 : 3500;
