@@ -156,7 +156,7 @@ Games.loadDataSuccess = function(responseText) {
             if (Games.CellExists(game.game.name)) coloumn_id--;
             else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
+                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
                 row.append(cell);
             }
         }
@@ -174,7 +174,7 @@ Games.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + Games.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-Games.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
 
     Games.imgMatrix[Games.imgMatrixCount] = preview_thumbnail;
@@ -183,13 +183,13 @@ Games.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
 
     if (Games.imgMatrixCount <= (Games.ColoumnsCount * 3)) Games.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
-    Games.nameMatrix[Games.nameMatrixCount] = channel_name;
+    Games.nameMatrix[Games.nameMatrixCount] = game_name;
     Games.nameMatrixCount++;
 
-    return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
         '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/game.png"/> \
             <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+            <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
             <div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + viwers +
             '</div> \
             </div>');
@@ -305,7 +305,7 @@ Games.loadDataSuccessReplace = function(responseText) {
         if (Games.CellExists(game.game.name)) Games.blankCellCount--;
         else {
             mReplace = Games.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
-                '', '', game.game.name, Main.addCommas(game.channels) + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER, '');
+                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
             if (mReplace) Games.blankCellCount--;
             if (Games.blankCellCount === 0) break;
         }
@@ -315,7 +315,7 @@ Games.loadDataSuccessReplace = function(responseText) {
     Games.loadDataSuccessFinish();
 };
 
-Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
     var my = 0,
         mx = 0;
     if (row_id < ((Games.ItemsLimit / Games.ColoumnsCount) - 1)) return false;
@@ -325,14 +325,14 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 row_id = my;
                 coloumn_id = mx;
                 preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
-                Games.nameMatrix[Games.nameMatrixCount] = channel_name;
+                Games.nameMatrix[Games.nameMatrixCount] = game_name;
                 Games.nameMatrixCount++;
                 document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                      <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                     <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
+                     <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
                      <div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
                     viwers + '</div> \
                      </div>';
