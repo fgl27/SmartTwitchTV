@@ -98,18 +98,18 @@ SGames.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    SGames.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    SGames.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        SGames.loadDataError(e.message, null);
+        SGames.loadDataError();
     }
 };
 
-SGames.loadDataError = function(reason, responseText) {
+SGames.loadDataError = function() {
     SGames.loadingDataTry++;
     if (SGames.loadingDataTry < SGames.loadingDataTryMax) {
         SGames.loadingDataTimeout += (SGames.loadingDataTry < 5) ? 250 : 3500;

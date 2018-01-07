@@ -105,18 +105,18 @@ SChannelsA.loadDataRequest = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    SChannelsA.loadDataError("HTTP Status " + xmlHttp.status + " Message: " + xmlHttp.statusText, xmlHttp.responseText);
+                    SChannelsA.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        SChannelsA.loadDataError(e.message, null);
+        SChannelsA.loadDataError();
     }
 };
 
-SChannelsA.loadDataError = function(reason, responseText) {
+SChannelsA.loadDataError = function() {
     SChannelsA.loadingDataTry++;
     if (SChannelsA.loadingDataTry < SChannelsA.loadingDataTryMax) {
         SChannelsA.loadingDataTimeout += (SChannelsA.loadingDataTry < 5) ? 250 : 3500;
