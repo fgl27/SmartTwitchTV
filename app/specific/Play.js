@@ -63,7 +63,7 @@ Play.PreStart = function() {
         '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-spinner fa-spin"></i></div>';
+        '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe> \
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
