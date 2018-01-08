@@ -19,7 +19,7 @@ PlayClip.PreStart = function() {
     PlayClip.videojs = videojs('video_clip');
     $("#play_clip_dialog_exit_text").text(STR_EXIT);
     document.getElementById("dialog_buffer_play_clip_text").innerHTML = STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-spinner fa-spin"></i></div>';
+        '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
 };
 
 PlayClip.Start = function() {
