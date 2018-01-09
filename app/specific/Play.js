@@ -402,6 +402,22 @@ Play.timeS = function(time) {
     return (time === 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
 };
 
+Play.timeMs = function(time) {
+    var seconds, minutes, hours;
+
+    time = Math.floor(time / 1000);
+    seconds = Play.lessthanten(time % 60);
+
+    time = Math.floor(time / 60);
+    minutes = Play.lessthanten(time % 60);
+
+    time = Math.floor(time / 60);
+    hours = Play.lessthanten(time);
+
+    //final time 00:00 or 00:00:00
+    return (time === 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+};
+
 Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
     var date2_ms = new Date().getTime();
     return Play.timeMs(date2_ms - time);
