@@ -44,6 +44,7 @@ Sclip.Duration = 0;
 Sclip.views = '';
 Sclip.title = '';
 Sclip.lastselectedChannel = '';
+Sclip.playUrl = '';
 
 //Variable initialization end
 
@@ -214,7 +215,7 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
             <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
             <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
-            <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
+            <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(video_duration) + '</div> \
             <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
         '</div> \
             </div>');
@@ -358,7 +359,7 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                     <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + video_title + '</div> \
                     <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
                     <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' +
-                    STR_DURATION + Play.timeMs((parseInt(video_duration) / 60) * 60000) + '</div> \
+                    STR_DURATION + Play.timeS(video_duration) + '</div> \
                     <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 64%; display: inline-block;">' + views +
                     '</div> \
@@ -555,7 +556,7 @@ Sclip.ScrollHelper = {
 Sclip.openStream = function() {
     document.body.addEventListener("keydown", PlayClip.handleKeyDown, false);
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-    $("#scene3").show();
+    $("#scene2").show();
     PlayClip.hidePanel();
     $("#play_clip_dialog_simple_pause").hide();
     $("#play_clip_dialog_exit").hide();

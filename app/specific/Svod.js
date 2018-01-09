@@ -169,7 +169,7 @@ Svod.loadDataSuccess = function(responseText) {
             if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) coloumn_id--;
             else {
                 row.append(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
-                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeMs((parseInt(video.length) / 60) * 60000),
+                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
                     video.title, Main.addCommas(video.views) + STR_VIEWS,
                     Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)));
             }
@@ -326,7 +326,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
         if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) Svod.blankCellCount--;
         else {
             mReplace = Svod.replaceCellEmpty(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
-                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeMs((parseInt(video.length) / 60) * 60000),
+                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeMs(video.length),
                 video.title, Main.addCommas(video.views) + STR_VIEWS,
                 Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)));
             if (mReplace) Svod.blankCellCount--;
@@ -553,7 +553,7 @@ Svod.ScrollHelper = {
 Svod.openStream = function() {
     document.body.addEventListener("keydown", PlayVod.handleKeyDown, false);
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
-    $("#scene3").show();
+    $("#scene2").show();
     PlayVod.hidePanel();
     $("#play_clip_dialog_simple_pause").hide();
     $("#play_clip_dialog_exit").hide();
