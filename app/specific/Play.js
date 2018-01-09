@@ -59,8 +59,6 @@ Play.PreStart = function() {
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    document.getElementById("stream_live").innerHTML =
-        '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#play_dialog_exit_text").text(STR_EXIT);
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
@@ -73,13 +71,15 @@ Play.PreStart = function() {
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    $("#dialog_buffer_play").show();
+    Play.showBufferDialog();
+    document.getElementById("stream_live").innerHTML =
+        '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
     $("#stream_info_name").text(Main.selectedChannelDisplayname);
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(0);
-    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + PlayClip.timeS(0) + STR_AGO;
+    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
+    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
@@ -235,10 +235,10 @@ Play.loadDataSuccess = function(responseText) {
 Play.extractQualities = function(input) {
     var result = [];
 
-    var streams = extractStreamDeclarations(input);
+    var streams = Play.extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
         result.push({
-            'id': extractQualityFromStream(streams[i]),
+            'id': Play.extractQualityFromStream(streams[i]),
             'url': streams[i].split("\n")[2]
         });
     }
@@ -248,7 +248,7 @@ Play.extractQualities = function(input) {
     Play.saveQualities();
 };
 
-function extractStreamDeclarations(input) {
+Play.extractStreamDeclarations = function(input) {
     var result = [];
 
     var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
@@ -258,7 +258,7 @@ function extractStreamDeclarations(input) {
     return result;
 }
 
-function extractQualityFromStream(input) {
+Play.extractQualityFromStream = function(input) {
     var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
     var match = myRegexp.exec(input);
 
@@ -298,7 +298,7 @@ Play.qualityChanged = function() {
 };
 
 Play.onPlayer = function() {
-    $("#dialog_buffer_play").show();
+    Play.showBufferDialog();
     Play.videojs.src({
         type: "video/mp4",
         src: Play.playingUrl
@@ -325,8 +325,6 @@ Play.onPlayer = function() {
 
         this.on('timeupdate', function() {
             Play.updateCurrentTime(this.currentTime());
-            this.isFullscreen(true);
-            this.requestFullscreen();
         });
 
         this.on('error', function() {
@@ -341,7 +339,7 @@ Play.onPlayer = function() {
 Play.PlayerCheck = function() {
     if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
         Play.PlayerCheckCount++;
-        $("#dialog_buffer_play").show();
+        Play.showBufferDialog();
         if (Play.PlayerCheckQualityChanged && !Play.RestoreFromResume) Play.PlayerCheckOffset = -30;
         if (Play.PlayerCheckCount > (60 + Play.PlayerCheckOffset)) { //staled for 30 sec drop one quality
             Play.PlayerCheckCount = 0;
@@ -368,14 +366,14 @@ Play.offPlayer = function() {
 
 Play.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible()) Play.HideWarningDialog();
-    if ($("#dialog_buffer_play").is(":visible")) $("#dialog_buffer_play").hide();
+    if (Play.BufferDialogVisible()) Play.HideBufferDialog();
     Play.PlayerCheckCount = 0;
     Play.PlayerCheckOffset = 0;
     Play.RestoreFromResume = false;
     Play.PlayerCheckQualityChanged = false;
 
     Play.oldcurrentTime = currentTime + Play.offsettime;
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + PlayClip.timeS(Play.oldcurrentTime);
+    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(Play.oldcurrentTime);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 };
 
@@ -389,11 +387,10 @@ Play.lessthanten = function(time) {
     return (time < 10) ? "0" + time : time;
 };
 
-Play.timeMs = function(time) {
+Play.timeS = function(time) {
     var seconds, minutes, hours;
 
-    time = Math.floor(time / 1000);
-    seconds = Play.lessthanten(time % 60);
+    seconds = Play.lessthanten(parseInt(time) % 60);
 
     time = Math.floor(time / 60);
     minutes = Play.lessthanten(time % 60);
@@ -428,6 +425,18 @@ Play.shutdownStream = function() {
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
     window.clearInterval(Play.streamCheck);
+};
+
+Play.showBufferDialog = function() {
+    $("#dialog_buffer_play").show();
+};
+
+Play.HideBufferDialog = function() {
+    $("#dialog_buffer_play").hide();
+};
+
+Play.BufferDialogVisible = function() {
+    return $("#dialog_buffer_play").is(":visible");
 };
 
 Play.showWarningDialog = function(text) {

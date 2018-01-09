@@ -50,13 +50,12 @@ tizen.tvinputdevice.registerKey("Info");
 //Variable initialization end
 
 
-// this function will be called only once
+// this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Main.Show = Main.Live;
     Live.init();
     Play.PreStart();
-    PlayClip.PreStart();
 });
 
 Main.initWindows = function() {
@@ -74,7 +73,6 @@ Main.initWindows = function() {
     $("#main_dialog_exit_text").text(STR_EXIT);
     $('.label_buffering').html(STR_BUFFERING);
     $("#scene2").hide();
-    $("#scene3").hide();
 };
 
 Main.showLoadDialog = function() {
