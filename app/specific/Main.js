@@ -76,6 +76,7 @@ Main.initWindows = function() {
 };
 
 Main.showLoadDialog = function() {
+    Main.HideExitDialog();
     $("#dialog_loading").show();
 };
 
