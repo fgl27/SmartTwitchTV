@@ -150,6 +150,7 @@ Main.ReStartScreens = function() {
 
 Main.SwitchScreen = function() {
     if (Main.Go === Main.Live) Live.init();
+    else if (Main.Go === Main.User) User.init();
     else if (Main.Go === Main.Games) Games.init();
     else if (Main.Go === Main.AGame) AGame.init();
     else if (Main.Go === Main.Search) Search.init();
