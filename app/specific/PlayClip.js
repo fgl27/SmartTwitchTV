@@ -174,7 +174,7 @@ PlayClip.handleKeyDown = function(e) {
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
             } else {
                 Play.videojs.play();
-                PlayClip.clearPause();
+                Play.clearPause();
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
             }
             break;
