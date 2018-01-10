@@ -15,7 +15,6 @@ SChannelsA.loadingData = false;
 SChannelsA.loadingDataTry = 1;
 SChannelsA.loadingDataTryMax = 10;
 SChannelsA.loadingDataTimeout = 3500;
-SChannelsA.isDialogOn = false;
 SChannelsA.ItemsLimit = 96;
 SChannelsA.ColoumnsCount = 6;
 SChannelsA.ItemsReloadLimit = Math.floor((SChannelsA.ItemsLimit / SChannelsA.ColoumnsCount) / 2);
@@ -184,9 +183,6 @@ SChannelsA.createCell = function(row_id, coloumn_id, channel_name, preview_thumb
 SChannelsA.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     var thumbnail = 'app/images/blur_vod.png';
     if (coloumn_id == 1) thumbnail = 'app/images/blur_video_2.png';
-
-    cur_thumbnail = 'thumbnail_';
-    if (SChannelsA.state_follower == SChannelsA.STATE_FOLLOWER_VOD) cur_thumbnail = 'thumbnail_vod_';
 
     return $('<td id="' + SChannelsA.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + SChannelsA.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \

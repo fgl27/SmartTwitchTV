@@ -34,12 +34,13 @@ var STR_BUFFERING = "Buffering ";
 var STR_QUALITY = "Quality";
 var STR_VIEWER = " Viewers";
 var STR_EXIT = "Click again to exit!";
+var STR_LIVE_CHANNELS = " Live Channels";
+var STR_LIVE_HOSTS = " Live Hosts";
+var STR_LIVE_GAMES = " Live Games";
+var STR_USER_CHANNEL = " Followed Channels";
+var STR_USER_ADD = " Add User";
+var STR_USER_REMOVE = " Remove User";
 
 
-
-var STR_LIVE_HOSTS = "Live Hosts";
-var STR_LIVE_GAMES = "Live Games";
-var STR_CHANNEL = "Channel";
-var STR_USERNAME = "User name";
 var STR_DOES_NOT_EXIST = "does not exist.";
 
