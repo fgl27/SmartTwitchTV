@@ -17,6 +17,7 @@ Users.loadingData = true;
 
 Users.init = function() {
     Main.Go = Main.Users;
+    Main.HideWarningDialog();
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.body.addEventListener("keydown", Users.handleKeyDown, false);

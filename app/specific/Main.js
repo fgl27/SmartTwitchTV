@@ -162,6 +162,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.Sclip) Sclip.init();
     else if (Main.Go === Main.Users) Users.init();
     else if (Main.Go === Main.UserLive) UserLive.init();
+    else if (Main.Go === Main.UserHost) UserHost.init();
 };
 
 Main.openStream = function() {

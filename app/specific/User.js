@@ -1,7 +1,7 @@
 /*jshint multistr: true */
 //Variable initialization
 function User() {}
-User.UserName = 'fglfgl27';
+User.UserName = null;
 User.loadingDataTry = 1;
 User.loadingDataTryMax = 10;
 User.loadingDataTimeout = 3500;
