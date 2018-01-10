@@ -100,6 +100,7 @@ Play.Resume = function() {
     if (document.hidden) {
         Play.videojs.pause();
         Play.offPlayer();
+        Play.Playing = false;
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
         window.clearInterval(Play.streamCheck);
