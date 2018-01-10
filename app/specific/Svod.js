@@ -58,7 +58,6 @@ Svod.init = function() {
 Svod.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
-    Main.Go = Main.SChannelsA;
     Main.SwitchScreen();
 };
 
@@ -419,6 +418,7 @@ Svod.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
+            Main.Go = Main.SChannelsA;
             Svod.exit();
             break;
         case TvKeyCode.KEY_LEFT:
