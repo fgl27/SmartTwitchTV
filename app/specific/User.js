@@ -163,6 +163,7 @@ User.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         document.getElementById("user_input").value = '';
+                        localStorage.setItem('UserName', User.UserName);
                         document.body.removeEventListener("keydown", User.handleKeyDown);
                         Users.init();
                         return;

@@ -55,6 +55,7 @@ tizen.tvinputdevice.registerKey("Info");
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Main.Show = Main.Live;
+    User.UserName = localStorage.getItem('UserName') || null;
     Live.init();
     Play.PreStart();
 });
