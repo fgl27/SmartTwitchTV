@@ -178,18 +178,18 @@ UserLive.loadChannelsLive = function() {
                         return;
                     } catch (e) {}
                 } else {
-                    UserLive.loadDataError();
+                    UserLive.loadDataErrorLive();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserLive.loadDataError();
+        UserLive.loadDataErrorLive();
     }
 };
 
-UserLive.loadDataError = function() {
+UserLive.loadDataErrorLive = function() {
     UserLive.loadingDataTry++;
     if (UserLive.loadingDataTry < UserLive.loadingDataTryMax) {
         UserLive.loadingDataTimeout += (UserLive.loadingDataTry < 5) ? 250 : 3500;
@@ -605,7 +605,7 @@ UserLive.ScrollHelper = {
             if (id.indexOf(UserLive.Thumbnail + '0_') == -1) {
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
             } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 275); // check Games.ScrollHelper to understand the "275"
             }
         } else return;
     }
