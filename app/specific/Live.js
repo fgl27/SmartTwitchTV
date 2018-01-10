@@ -465,7 +465,7 @@ Live.handleKeyDown = function(event) {
             if (!Live.loadingMore) Live.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.User;
+            Main.Go = (User.UserName !== null) ? Main.Users : Main.User;
             Live.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:

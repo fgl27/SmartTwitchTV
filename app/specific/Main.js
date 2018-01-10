@@ -25,6 +25,7 @@ Main.SLive = 13;
 Main.SChannelsA = 14;
 Main.Svod = 15;
 Main.Sclip = 16;
+Main.Users = 17;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -159,6 +160,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.SChannelsA) SChannelsA.init();
     else if (Main.Go === Main.Svod) Svod.init();
     else if (Main.Go === Main.Sclip) Sclip.init();
+    else if (Main.Go === Main.Users) Users.init();
 };
 
 Main.openStream = function() {

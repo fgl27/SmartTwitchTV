@@ -108,9 +108,9 @@ User.KeyboardEvent = function(event) {
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
             document.getElementById("user_input").value = $('#user_input').val();
             User.UserName = $('#user_input').val();
-            console.log("User.UserName = " + User.UserName);
             document.getElementById("user_input").value = '';
             User.input.blur();
+            Users.init();
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
