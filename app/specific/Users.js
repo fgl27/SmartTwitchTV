@@ -138,7 +138,7 @@ Users.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.SChannels;
+            Main.Go = Main.Live;
             Users.exit();
             break;
         case TvKeyCode.KEY_LEFT:

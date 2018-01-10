@@ -40,6 +40,7 @@ var STR_LIVE_GAMES = " Live Games";
 var STR_USER_CHANNEL = " Followed Channels";
 var STR_USER_ADD = " Add User";
 var STR_USER_REMOVE = " Remove User";
+var STR_USER_ERROR = "User doesn\'t exist";
 
 
 var STR_DOES_NOT_EXIST = "does not exist.";
