@@ -479,7 +479,7 @@ AGame.handleKeyDown = function(event) {
             AGame.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.Live;
+            Main.Go = Main.User;
             AGame.exit();
             break;
         case TvKeyCode.KEY_PLAY:

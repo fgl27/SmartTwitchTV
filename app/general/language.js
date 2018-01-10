@@ -14,7 +14,8 @@ var STR_SINCE = "Since ";
 var STR_AGO = " ago";
 var STR_RESUME = "Resuming after be on background, please wait!";
 var STR_AGAME = "A Game";
-var STR_PLACEHOLDER_SEARCH = "Enter yours search..";
+var STR_PLACEHOLDER_SEARCH = "Enter yours search...";
+var STR_PLACEHOLDER_USER = "Enter user name...";
 var STR_CHANNELS = "Channels";
 var STR_CHANNEL = "Channel";
 var STR_LIVE_STREAMS = "Live streams";
@@ -38,7 +39,6 @@ var STR_EXIT = "Click again to exit!";
 
 var STR_LIVE_HOSTS = "Live Hosts";
 var STR_LIVE_GAMES = "Live Games";
-var STR_PLACEHOLDER_TOOLS = "Enter user name...";
 var STR_CHANNEL = "Channel";
 var STR_USERNAME = "User name";
 var STR_DOES_NOT_EXIST = "does not exist.";

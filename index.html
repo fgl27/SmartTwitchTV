@@ -181,7 +181,7 @@
             margin-left: 15%;
         }
 
-        input.in_search {
+        input.input_class {
             width: 100%;
             height: 100px;
             box-shadow: 0px 0px 29px rgba(0, 0, 0, 0.45);
@@ -288,6 +288,7 @@
     <script src="app/specific/Sclip.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
+    <script src="app/specific/User.js" defer></script>
 </head>
 
 <body>
@@ -386,7 +387,7 @@
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <div id="search" class="openchannel">
-            <input id="search_input" class="in_search label_placeholder_search" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
+            <input id="search_input" class="input_class label_placeholder_search" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
             <div id="chanel_button" class="button_search label_search_chanel">
                 STR_CHANNELS
             </div>
@@ -396,6 +397,11 @@
             <div id="live_button" class="button_search label_search_live">
                 STR_LIVE_STREAMS
             </div>
+        </div>
+        <div class="screen_size"></div>
+        <!-- Prevent one table see the other-->
+        <div id="add_user" class="openchannel">
+            <input id="user_input" class="input_class label_placeholder_user" type="text" placeholder="STR_PLACEHOLDER_USER" />
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
