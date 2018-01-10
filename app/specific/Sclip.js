@@ -65,7 +65,6 @@ Sclip.init = function() {
 Sclip.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-    Main.Go = Main.SChannelsA;
     Main.SwitchScreen();
 };
 
@@ -419,6 +418,7 @@ Sclip.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
+            Main.Go = Main.SChannelsA;
             Sclip.exit();
             break;
         case TvKeyCode.KEY_LEFT:

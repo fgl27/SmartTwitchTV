@@ -311,7 +311,9 @@ SChannelsA.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_BLUE:
             Main.Go = Main.Search;
-            SChannelsA.exit();
+            Main.RestoreTopLabel();
+            document.body.removeEventListener("keydown", SChannelsA.handleKeyDown);
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:
