@@ -236,14 +236,36 @@ Play.loadDataSuccess = function(responseText) {
 };
 
 Play.extractQualities = function(input) {
-    var result = [];
+    var result = [],
+        TempId = '',
+        TempId2 = '',
+        tempCount = 1;
 
     var streams = Play.extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
-        result.push({
-            'id': Play.extractQualityFromStream(streams[i]),
-            'url': streams[i].split("\n")[2]
-        });
+        TempId = Play.extractQualityFromStream(streams[i]);
+        if (result.length === 0) {
+            result.push({
+                'id': TempId,
+                'url': streams[i].split("\n")[2]
+            });
+        } else if (result[i - tempCount].id !== TempId) {
+            TempId2 = result[i - tempCount].id;
+            if (TempId2.indexOf('ource') === -1) {
+                result.push({
+                    'id': TempId,
+                    'url': streams[i].split("\n")[2]
+                });
+            } else {
+                TempId2 = TempId2.split(" ")[0];
+                if (TempId2 !== TempId) {
+                    result.push({
+                        'id': TempId,
+                        'url': streams[i].split("\n")[2]
+                    });
+                } else tempCount++;
+            }
+        } else tempCount++;
     }
     Play.qualities = result;
     Play.state = Play.STATE_PLAYING;
@@ -684,11 +706,7 @@ Play.handleKeyDown = function(e) {
                     Play.showExitDialog();
                 }
                 break;
-            case TvKeyCode.KEY_VOLUMEUP:
-                break;
-            case TvKeyCode.KEY_VOLUMEDOWN:
-                break;
-            case TvKeyCode.KEY_MUTE:
+            default:
                 break;
         }
     } else {
@@ -812,9 +830,6 @@ Play.handleKeyDown = function(e) {
                     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
                 }
                 break;
-            case TvKeyCode.KEY_VOLUMEUP:
-            case TvKeyCode.KEY_VOLUMEDOWN:
-            case TvKeyCode.KEY_MUTE:
             case TvKeyCode.KEY_RED:
             case TvKeyCode.KEY_GREEN:
             case TvKeyCode.KEY_YELLOW:

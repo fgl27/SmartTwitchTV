@@ -4,7 +4,7 @@ function PlayVod() {
 }
 //Variable initialization
 PlayVod.PanelHideID = '';
-PlayVod.quality = "source";
+PlayVod.quality = 'source';
 PlayVod.qualityPlaying = PlayVod.quality;
 
 PlayVod.STATE_LOADING_TOKEN = 0;
@@ -161,8 +161,6 @@ PlayVod.restore = function() {
 };
 
 PlayVod.loadDataSuccess = function(responseText) {
-    // log response json
-    //console.log(responseText);
     if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
@@ -174,17 +172,39 @@ PlayVod.loadDataSuccess = function(responseText) {
 };
 
 PlayVod.extractQualities = function(input) {
-    var result = [];
-
+    var result = [],
+        TempId = '',
+        TempId2 = '',
+        tempCount = 1;
     var streams = Play.extractStreamDeclarations(input);
+
     for (var i = 0; i < streams.length; i++) {
-        result.push({
-            'id': Play.extractQualityFromStream(streams[i]),
-            'url': streams[i].split("\n")[2]
-        });
+        TempId = Play.extractQualityFromStream(streams[i]);
+        if (result.length === 0) {
+            result.push({
+                'id': TempId + ' (source)',
+                'url': streams[i].split("\n")[2]
+            });
+        } else if (result[i - tempCount].id !== TempId){
+            TempId2 = result[i - tempCount].id;
+            if (TempId2.indexOf('ource') === -1) {
+                result.push({
+                    'id': TempId,
+                    'url': streams[i].split("\n")[2]
+                });
+            } else {
+                TempId2 = TempId2.split(" ")[0];
+                if (TempId2 !== TempId) {
+                    result.push({
+                        'id': TempId,
+                        'url': streams[i].split("\n")[2]
+                    });
+                } else tempCount++;
+            }
+        } else tempCount++;
     }
     PlayVod.qualities = result;
-    PlayVod.state = PlayVod.STATE_PLAYING;
+    PlayVod.state = Play.STATE_PLAYING;
     PlayVod.qualityChanged();
     PlayVod.saveQualities();
 };
@@ -203,6 +223,7 @@ PlayVod.qualityChanged = function() {
             PlayVod.playingUrl = PlayVod.qualities[i].url;
         }
     }
+
     PlayVod.qualityPlaying = PlayVod.quality;
     PlayVod.onPlayer();
 };
@@ -344,30 +365,29 @@ PlayVod.qualityIndexReset = function() {
 
 PlayVod.qualityDisplay = function() {
     if (PlayVod.qualityIndex === 0) {
-        $('#clip_quality_arrow_up').css({
+        $('#quality_arrow_up').css({
             'opacity': 0.2
         });
-        $('#clip_quality_arrow_down').css({
+        $('#quality_arrow_down').css({
             'opacity': 1.0
         });
     } else if (PlayVod.qualityIndex == PlayVod.getQualitiesCount() - 1) {
-        $('#clip_quality_arrow_up').css({
+        $('#quality_arrow_up').css({
             'opacity': 1.0
         });
-        $('#clip_quality_arrow_down').css({
+        $('#quality_arrow_down').css({
             'opacity': 0.2
         });
     } else {
-        $('#clip_quality_arrow_up').css({
+        $('#quality_arrow_up').css({
             'opacity': 1.0
         });
-        $('#clip_quality_arrow_down').css({
+        $('#quality_arrow_down').css({
             'opacity': 1.0
         });
     }
 
     PlayVod.quality = PlayVod.qualities[PlayVod.qualityIndex].id;
-
     $('#quality_name').text(PlayVod.quality);
 };
 
@@ -376,6 +396,21 @@ PlayVod.getQualitiesCount = function() {
 };
 
 PlayVod.handleKeyDown = function(e) {
+    if (PlayVod.state != PlayVod.STATE_PLAYING) {
+        switch (e.keyCode) {
+            case TvKeyCode.KEY_RETURN:
+                if (Play.ExitDialogVisible()) {
+                    window.clearTimeout(Play.exitID);
+                    $("#play_dialog_exit").hide();
+                    window.setTimeout(Play.shutdownStream, 10);
+                } else {
+                    Play.showExitDialog();
+                }
+                break;
+            default:
+                break;
+        }
+    } else {
         switch (e.keyCode) {
             case TvKeyCode.KEY_INFO:
             case TvKeyCode.KEY_CHANNELGUIDE:
@@ -383,7 +418,7 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_CHANNELDOWN:
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (PlayVod.Canjump)//TODO prevent consecutive jump as it can breack the app time counter
+                if (PlayVod.Canjump) //TODO prevent consecutive jump as it can breack the app time counter
                     Play.videojs.currentTime(Play.videojs.currentTime() - 600);
                 break;
             case TvKeyCode.KEY_RIGHT:
@@ -468,4 +503,5 @@ PlayVod.handleKeyDown = function(e) {
             default:
                 break;
         }
+    }
 };
