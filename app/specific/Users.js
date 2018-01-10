@@ -165,8 +165,7 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            console.log("Users.cursorX = " + Users.cursorX);
-            //Users.keyEnter();
+            Users.keyEnter();
             break;
         case TvKeyCode.KEY_RED:
         case TvKeyCode.KEY_GREEN:
