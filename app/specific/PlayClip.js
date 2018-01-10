@@ -8,19 +8,12 @@ PlayClip.PlayerTime = 0;
 PlayClip.streamCheck = null;
 PlayClip.PlayerCheckCount = 0;
 PlayClip.Canjump = false;
-PlayClip.Cliplength = 0;
-PlayClip.videoHeight = 0;
-PlayClip.videoQualities = [];
-PlayClip.videoUrl = [];
-PlayClip.BaseUrl = '';
-PlayClip.qualityUser = null;
-PlayClip.qualityIndex = 0;
-PlayClip.qualityPlaying = 0;
 
 //Variable initialization end
 
 PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    $("#scene2_quality").hide();
     Play.showBufferDialog();
     $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
     $('#stream_info_name').text(Main.selectedChannel);
@@ -40,59 +33,6 @@ PlayClip.Start = function() {
     });
 
     Play.videojs.ready(function() {
-        this.on('loadedmetadata', function() {
-            PlayClip.videoHeight = parseInt(this.videoHeight());
-            PlayClip.extractQualities();
-        });
-    });
-};
-
-PlayClip.extractQualities = function() {
-    Play.videojs.off('loadedmetadata', null);
-    PlayClip.videoQualities = [];
-    PlayClip.videoUrl = [];
-
-    PlayClip.BaseUrl = (Sclip.playUrl).slice(0, -4);
-    if (PlayClip.BaseUrl.indexOf("vod") === -1) PlayClip.BaseUrl = PlayClip.BaseUrl.replace("tv/", "tv/AT-");
-
-    PlayClip.Cliplength = 0;
-    // anything bellow 720 can't be seeing
-    // there inst today resolution above 1080 the day there is add more checks. 
-    if (PlayClip.videoHeight > 1080) PlayClip.Cliplength = 2;
-    else if (PlayClip.videoHeight > 720) PlayClip.Cliplength = 1;
-
-    if (PlayClip.Cliplength > 0) {
-        for (var i = 0; i < PlayClip.Cliplength; i++) {
-            if (i === 0) {
-                PlayClip.videoQualities[i] = '720p';
-                PlayClip.videoUrl[i] = PlayClip.BaseUrl + '-1280x720.mp4';
-            } else if (i === 1) {
-                PlayClip.videoQualities[i] = '1080p';
-                PlayClip.videoUrl[i] = PlayClip.BaseUrl + '-1920x1080.mp4';
-            }
-        }
-    }
-    PlayClip.videoQualities[PlayClip.Cliplength] = PlayClip.videoHeight + 'p (source)';
-    PlayClip.videoUrl[PlayClip.Cliplength] = Sclip.playUrl;
-
-    console.log("PlayClip.videoQualities = " + PlayClip.videoQualities);
-    console.log("PlayClip.videoUrl = " + PlayClip.videoUrl);
-
-    PlayClip.qualityIndex = PlayClip.Cliplength;
-    if (PlayClip.qualityUser !== null && PlayClip.qualityUser < PlayClip.Cliplength) PlayClip.qualityIndex = PlayClip.qualityUser;
-
-    PlayClip.play();
-};
-
-PlayClip.play = function() {
-    if (PlayClip.qualityIndex < PlayClip.Cliplength) {
-        Play.videojs.src({
-            type: "video/mp4",
-            src: PlayClip.videoUrl[PlayClip.qualityIndex]
-        });
-    }
-
-    Play.videojs.ready(function() {
         this.isFullscreen(true);
         this.requestFullscreen();
         this.autoplay(true);
@@ -110,19 +50,6 @@ PlayClip.play = function() {
             window.setTimeout(PlayClip.Exit, 1500);
         });
 
-        this.on('loadedmetadata', function() {
-            console.log("videoHeight = " + parseInt(this.videoHeight()));
-        });
-
-    });
-    PlayClip.qualityPlaying = PlayClip.qualityIndex;
-    PlayClip.qualityDisplay();
-};
-
-PlayClip.qualityChanged = function() {
-    Play.videojs.src({
-        type: "video/mp4",
-        src: PlayClip.videoUrl[PlayClip.qualityIndex]
     });
 };
 
@@ -130,7 +57,6 @@ PlayClip.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
-    Play.videojs.off('loadedmetadata', null);
 };
 
 PlayClip.Resume = function() {
@@ -162,6 +88,7 @@ PlayClip.Exit = function() {
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip.Resume);
     window.clearInterval(PlayClip.streamCheck);
+    $("#scene2_quality").show();
     PlayClip.hidePanel();
     $("#play_dialog_simple_pause").hide();
     $("#play_dialog_exit").hide();
@@ -187,8 +114,7 @@ PlayClip.hidePanel = function() {
 
 PlayClip.showPanel = function() {
     Play.clock();
-    PlayClip.qualityIndex = PlayClip.qualityPlaying;
-    PlayClip.qualityDisplay();
+    $("#scene2_quality").hide();
     $("#scene_channel_panel").show();
     PlayClip.setHidePanel();
 };
@@ -199,33 +125,6 @@ PlayClip.clearHidePanel = function() {
 
 PlayClip.setHidePanel = function() {
     PlayClip.PanelHideID = window.setTimeout(PlayClip.hidePanel, 5000); // time in ms
-};
-
-PlayClip.qualityDisplay = function() {
-    if (PlayClip.qualityIndex === 0) {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 0.2
-        });
-    } else if (PlayClip.qualityIndex === PlayClip.Cliplength) {
-        $('#quality_arrow_up').css({
-            'opacity': 0.2
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
-    } else {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
-    }
-
-    $('#quality_name').text(PlayClip.videoQualities[PlayClip.qualityIndex]);
 };
 
 PlayClip.handleKeyDown = function(e) {
@@ -239,37 +138,18 @@ PlayClip.handleKeyDown = function(e) {
                 Play.videojs.currentTime(Play.videojs.currentTime() + 5);
             break;
         case TvKeyCode.KEY_UP:
-            if (Play.isPanelShown()) {
-                if (PlayClip.qualityIndex < PlayClip.Cliplength) {
-                    PlayClip.qualityIndex++;
-                    PlayClip.qualityDisplay();
-                }
-                PlayClip.clearHidePanel();
-                PlayClip.setHidePanel();
-            } else {
+            if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            if (Play.isPanelShown()) {
-                if (PlayClip.qualityIndex > 0) {
-                    PlayClip.qualityIndex--;
-                    PlayClip.qualityDisplay();
-                }
-                PlayClip.clearHidePanel();
-                PlayClip.setHidePanel();
-            } else {
+            if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
             }
             break;
         case TvKeyCode.KEY_ENTER:
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
-            } else {
-                PlayClip.qualityUser = (PlayClip.qualityIndex === PlayClip.Cliplength ? null : PlayClip.qualityIndex);
-                PlayClip.qualityPlaying = PlayClip.qualityIndex;
-                PlayClip.qualityChanged();
-                Play.clearPause();
             }
             break;
         case TvKeyCode.KEY_RETURN:
@@ -294,7 +174,7 @@ PlayClip.handleKeyDown = function(e) {
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
             } else {
                 Play.videojs.play();
-                Play.clearPause();
+                PlayClip.clearPause();
                 webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
             }
             break;
