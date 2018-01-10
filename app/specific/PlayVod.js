@@ -19,7 +19,7 @@ PlayVod.playingTry = 0;
 
 PlayVod.playingUrl = '';
 PlayVod.qualities = [];
-PlayVod.qualityIndex = '';
+PlayVod.qualityIndex = 0;
 
 PlayVod.created = '';
 
@@ -39,6 +39,7 @@ PlayVod.RestoreFromResume = false;
 PlayVod.PlayerCheckOffset = 0;
 PlayVod.PlayerCheckQualityChanged = false;
 PlayVod.Canjump = false;
+PlayVod.Playing = false;
 
 //Variable initialization end
 
@@ -62,6 +63,7 @@ PlayVod.Start = function() {
     document.addEventListener('visibilitychange', PlayVod.Resume, false);
     PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
     PlayVod.Canjump = false;
+    PlayVod.Playing = false;
     PlayVod.loadData();
 };
 
@@ -214,33 +216,37 @@ PlayVod.onPlayer = function() {
 
     Play.HideWarningDialog();
     PlayVod.hidePanel();
-    Play.videojs.ready(function() {
-        this.isFullscreen(true);
-        this.requestFullscreen();
-        this.autoplay(true);
 
-        this.on('ended', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(PlayVod.shutdownStream, 1500);
+    if (!PlayVod.Playing) {
+        Play.videojs.ready(function() {
+            this.isFullscreen(true);
+            this.requestFullscreen();
+            this.autoplay(true);
+
+            this.on('ended', function() {
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(PlayVod.shutdownStream, 1500);
+            });
+
+            this.on('timeupdate', function() {
+                PlayVod.updateCurrentTime(this.currentTime());
+            });
+
+            this.on('error', function() {
+                Play.showWarningDialog(STR_PLAYER_PROBLEM);
+                window.setTimeout(PlayVod.shutdownStream, 1500);
+            });
+
+            this.on('playing', function() { // reset position after quality change
+                if (PlayVod.offsettime > 0) {
+                    this.currentTime(PlayVod.offsettime);
+                    PlayVod.offsettime = 0;
+                }
+            });
+
         });
-
-        this.on('timeupdate', function() {
-            PlayVod.updateCurrentTime(this.currentTime());
-        });
-
-        this.on('error', function() {
-            Play.showWarningDialog(STR_PLAYER_PROBLEM);
-            window.setTimeout(PlayVod.shutdownStream, 1500);
-        });
-
-        this.on('playing', function() { // reset position after quality change
-            if (PlayVod.offsettime > 0) {
-                this.currentTime(PlayVod.offsettime);
-                PlayVod.offsettime = 0;
-            }
-        });
-
-    });
+        PlayVod.Playing = true;
+    }
 };
 
 PlayVod.PlayerCheck = function() {

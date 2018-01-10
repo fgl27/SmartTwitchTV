@@ -23,7 +23,7 @@ Play.playingTry = 0;
 
 Play.playingUrl = '';
 Play.qualities = [];
-Play.qualityIndex = '';
+Play.qualityIndex = 0;
 Play.ChatEnable = false;
 Play.exitID = '';
 
@@ -49,6 +49,7 @@ Play.PlayerCheckCount = 0;
 Play.RestoreFromResume = false;
 Play.PlayerCheckOffset = 0;
 Play.PlayerCheckQualityChanged = false;
+Play.Playing = false;
 
 //Variable initialization end
 
@@ -91,6 +92,7 @@ Play.Start = function() {
     Play.playingTry = 0;
     Play.state = Play.STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', Play.Resume, false);
+    Play.Playing = false;
     Play.loadData();
 };
 
@@ -313,27 +315,29 @@ Play.onPlayer = function() {
     document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
         Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
 
-    Play.videojs.ready(function() {
-        this.isFullscreen(true);
-        this.requestFullscreen();
-        this.autoplay(true);
+    if (!Play.Playing) {
+        Play.videojs.ready(function() {
+            this.isFullscreen(true);
+            this.requestFullscreen();
+            this.autoplay(true);
 
-        this.on('ended', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(Play.shutdownStream, 1500);
+            this.on('ended', function() {
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(Play.shutdownStream, 1500);
+            });
+
+            this.on('timeupdate', function() {
+                Play.updateCurrentTime(this.currentTime());
+            });
+
+            this.on('error', function() {
+                Play.showWarningDialog(STR_PLAYER_PROBLEM);
+                window.setTimeout(Play.shutdownStream, 1500);
+            });
+
         });
-
-        this.on('timeupdate', function() {
-            Play.updateCurrentTime(this.currentTime());
-        });
-
-        this.on('error', function() {
-            Play.showWarningDialog(STR_PLAYER_PROBLEM);
-            window.setTimeout(Play.shutdownStream, 1500);
-        });
-
-    });
-
+        Play.Playing = true;
+    }
 };
 
 Play.PlayerCheck = function() {
