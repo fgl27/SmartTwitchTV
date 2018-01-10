@@ -461,11 +461,11 @@ UserHost.handleKeyDown = function(event) {
             if (!UserHost.loadingMore) UserHost.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Live;
+            Main.Go = Main.UserLive;
             UserHost.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = (User.UserName !== null) ? Main.Users : Main.User;
+            Main.Go = Main.UserLive;
             UserHost.exit();
             break;
         case TvKeyCode.KEY_PLAY:
