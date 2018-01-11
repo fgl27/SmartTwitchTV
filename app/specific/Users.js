@@ -76,7 +76,7 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
             <div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div> \
+            <div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_user">' + stream_type + '</div> \
             </div>');
 };
 
@@ -101,13 +101,13 @@ Users.loadDataSuccessFinish = function() {
 Users.addFocus = function() {
     $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_channel_focused');
+    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_user_focused');
 };
 
 Users.removeFocus = function() {
     $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_channel_focused');
+    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_user_focused');
 };
 
 Users.keyClickDelay = function() {
