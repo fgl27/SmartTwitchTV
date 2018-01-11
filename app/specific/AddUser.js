@@ -1,49 +1,49 @@
 /*jshint multistr: true */
 //Variable initialization
-function User() {}
-User.UserName = null;
-User.loadingDataTry = 1;
-User.loadingDataTryMax = 10;
-User.loadingDataTimeout = 3500;
+function AddUser() {}
+AddUser.UserName = null;
+AddUser.loadingDataTry = 1;
+AddUser.loadingDataTryMax = 10;
+AddUser.loadingDataTimeout = 3500;
 //Variable initialization end
 
-User.init = function() {
+AddUser.init = function() {
     Main.HideWarningDialog();
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
-    User.input = document.querySelector('#user_input');
+    AddUser.input = document.querySelector('#user_input');
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
-    document.body.addEventListener("keydown", User.handleKeyDown, false);
-    User.inputFocus();
-    User.ScrollHelper.scrollVerticalToElementById('user_input');
+    document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
+    AddUser.inputFocus();
+    AddUser.ScrollHelper.scrollVerticalToElementById('user_input');
 };
 
-User.exit = function() {
+AddUser.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
-    document.body.removeEventListener("keydown", User.handleKeyDown);
+    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     Main.SwitchScreen();
 };
 
-User.handleKeyDown = function(event) {
+AddUser.handleKeyDown = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Before;
-            User.exit();
+            AddUser.exit();
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.Live;
-            User.exit();
+            AddUser.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.Games;
-            User.exit();
+            AddUser.exit();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            User.inputFocus();
+            AddUser.inputFocus();
             break;
         case TvKeyCode.KEY_LEFT:
         case TvKeyCode.KEY_RIGHT:
@@ -61,7 +61,7 @@ User.handleKeyDown = function(event) {
     }
 };
 
-User.ScrollHelper = {
+AddUser.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
         if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
@@ -93,18 +93,18 @@ User.ScrollHelper = {
     }
 };
 
-User.inputFocus = function() {
-    User.input.addEventListener('input');
-    User.input.addEventListener('compositionend');
+AddUser.inputFocus = function() {
+    AddUser.input.addEventListener('input');
+    AddUser.input.addEventListener('compositionend');
 
     document.body.addEventListener('keydown', function(event) {
-        User.KeyboardEvent(event);
+        AddUser.KeyboardEvent(event);
     });
 
-    User.input.focus();
+    AddUser.input.focus();
 };
 
-User.KeyboardEvent = function(event) {
+AddUser.KeyboardEvent = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("user_input").value = '';
@@ -114,18 +114,18 @@ User.KeyboardEvent = function(event) {
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
             if ($('#user_input').val() != '' && $('#user_input').val() != null) {
                 document.getElementById("user_input").value = $('#user_input').val();
-                User.UserName = $('#user_input').val();
-                User.input.blur();
-                User.loadingDataTry = 1;
-                User.loadingDataTimeout = 3500;
+                AddUser.UserName = $('#user_input').val();
+                AddUser.input.blur();
+                AddUser.loadingDataTry = 1;
+                AddUser.loadingDataTimeout = 3500;
                 Main.showLoadDialog();
-                User.ScrollHelper.scrollVerticalToElementById('blank_focus');
-                User.loadDataRequest();
+                AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
+                AddUser.loadDataRequest();
                 break;
             }
-            User.input.blur();
+            AddUser.input.blur();
             document.body.removeEventListener('keydown', function(event) {
-                User.KeyboardEvent(event)
+                AddUser.KeyboardEvent(event)
             });
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
@@ -141,20 +141,20 @@ User.KeyboardEvent = function(event) {
     }
 };
 
-User.loadDataRequest = function() {
+AddUser.loadDataRequest = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = User.itemsCount + User.itemsCountOffset;
-        if (offset !== 0 && offset >= (User.MaxOffset - User.ItemsLimit)) {
-            offset = User.MaxOffset - User.ItemsLimit;
-            User.dataEnded = true;
-            User.ReplacedataEnded = true;
+        var offset = AddUser.itemsCount + AddUser.itemsCountOffset;
+        if (offset !== 0 && offset >= (AddUser.MaxOffset - AddUser.ItemsLimit)) {
+            offset = AddUser.MaxOffset - AddUser.ItemsLimit;
+            AddUser.dataEnded = true;
+            AddUser.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(User.UserName) + '/follows/channels?limit=1&sortby=created_at', true);
-        xmlHttp.timeout = User.loadingDataTimeout;
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=1&sortby=created_at', true);
+        xmlHttp.timeout = AddUser.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
 
@@ -163,39 +163,39 @@ User.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         document.getElementById("user_input").value = '';
-                        localStorage.setItem('UserName', User.UserName);
-                        document.body.removeEventListener("keydown", User.handleKeyDown);
+                        localStorage.setItem('UserName', AddUser.UserName);
+                        document.body.removeEventListener("keydown", AddUser.handleKeyDown);
                         Users.init();
                         return;
                     } catch (e) {}
                 } else {
-                    User.loadDataError();
+                    AddUser.loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        User.loadDataError();
+        AddUser.loadDataError();
     }
 };
 
-User.loadDataError = function() {
-    User.loadingDataTry++;
-    if (User.loadingDataTry < User.loadingDataTryMax) {
-        User.loadingDataTimeout += (User.loadingDataTry < 5) ? 250 : 3500;
-        User.loadDataRequest();
+AddUser.loadDataError = function() {
+    AddUser.loadingDataTry++;
+    if (AddUser.loadingDataTry < AddUser.loadingDataTryMax) {
+        AddUser.loadingDataTimeout += (AddUser.loadingDataTry < 5) ? 250 : 3500;
+        AddUser.loadDataRequest();
     } else {
-        User.UserName = null;
+        AddUser.UserName = null;
         Main.HideLoadDialog();
         Main.showWarningDialog(STR_USER_ERROR);
         window.setTimeout(function() {
-            User.init();
+            AddUser.init();
         }, 1000);
     }
 };
 
-User.ScrollHelper = {
+AddUser.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
         if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
@@ -223,7 +223,7 @@ User.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
-        if (Main.Go === Main.User) {
+        if (Main.Go === Main.AddUser) {
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
         } else return;
     }
