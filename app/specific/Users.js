@@ -120,9 +120,9 @@ Users.keyEnter = function() {
     if (Users.cursorX === 0) UserLive.init();
     else if (Users.cursorX === 1) UserHost.init();
     else if (Users.cursorX === 2) UserGames.init();
-    else if (Users.cursorX === 3) UserChannels.init();
-    else if (Users.cursorX === 4) UserAdd.init();
-    else if (Users.cursorX === 5) UserRemove.init();
+    else if (Users.cursorX === 5) AddUser.removeUser();
+//    else if (Users.cursorX === 3) UserChannels.init();
+//    else if (Users.cursorX === 4) UserAdd.init();
 };
 
 Users.handleKeyDown = function(event) {

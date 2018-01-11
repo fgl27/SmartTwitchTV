@@ -8,6 +8,7 @@ AddUser.loadingDataTimeout = 3500;
 //Variable initialization end
 
 AddUser.init = function() {
+    Main.Go = Main.AddUser;
     Main.HideWarningDialog();
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
@@ -227,4 +228,10 @@ AddUser.ScrollHelper = {
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
         } else return;
     }
+};
+
+AddUser.removeUser = function() {
+    Users.status = false;
+    AddUser.UserName = null;
+    AddUser.init();
 };
