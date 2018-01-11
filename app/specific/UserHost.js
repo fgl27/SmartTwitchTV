@@ -41,6 +41,8 @@ UserHost.followerChannels = '';
 
 UserHost.init = function() {
     Main.Go = Main.UserHost;
+    $('#top_bar_user').removeClass('icon_center_label');
+    $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(User.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
@@ -49,6 +51,8 @@ UserHost.init = function() {
 };
 
 UserHost.exit = function() {
+    $('#top_bar_user').removeClass('icon_center_focus');
+    $('#top_bar_user').addClass('icon_center_label');
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = "50%";
     document.body.removeEventListener("keydown", UserHost.handleKeyDown);
@@ -461,7 +465,7 @@ UserHost.handleKeyDown = function(event) {
             if (!UserHost.loadingMore) UserHost.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserLive;
+            Main.Go = Main.UserGames;
             UserHost.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:

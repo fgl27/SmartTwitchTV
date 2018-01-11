@@ -164,6 +164,7 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.Users) Users.init();
     else if (Main.Go === Main.UserLive) UserLive.init();
     else if (Main.Go === Main.UserHost) UserHost.init();
+    else if (Main.Go === Main.UserGames) UserGames.init();
 };
 
 Main.openStream = function() {
