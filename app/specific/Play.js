@@ -399,7 +399,7 @@ Play.updateCurrentTime = function(currentTime) {
     Play.RestoreFromResume = false;
     Play.PlayerCheckQualityChanged = false;
 
-    Play.oldcurrentTime = currentTime + Play.offsettime;
+    Play.oldcurrentTime = currentTime + Play.offsettime - 14;// 14 buffer size from twitch
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(Play.oldcurrentTime);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
 };
