@@ -10,7 +10,7 @@ Main.Go = 1;
 Main.Before = 1;
 
 Main.Live = 1;
-Main.User = 2;
+Main.AddUser = 2;
 Main.Games = 3;
 Main.AGame = 4;
 Main.UserLive = 5;
@@ -55,7 +55,7 @@ tizen.tvinputdevice.registerKey("Info");
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Main.Show = Main.Live;
-    User.UserName = localStorage.getItem('UserName') || null;
+    AddUser.UserName = localStorage.getItem('UserName') || null;
     Live.init();
     Play.PreStart();
 });
@@ -152,7 +152,7 @@ Main.ReStartScreens = function() {
 
 Main.SwitchScreen = function() {
     if (Main.Go === Main.Live) Live.init();
-    else if (Main.Go === Main.User) User.init();
+    else if (Main.Go === Main.AddUser) AddUser.init();
     else if (Main.Go === Main.Games) Games.init();
     else if (Main.Go === Main.AGame) AGame.init();
     else if (Main.Go === Main.Search) Search.init();

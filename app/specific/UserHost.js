@@ -44,7 +44,7 @@ UserHost.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
-    $('.label_agame_name').html(User.UserName + STR_LIVE_HOSTS);
+    $('.label_agame_name').html(AddUser.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
     if (UserHost.status) UserHost.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX);
     else UserHost.StartLoad();
@@ -101,7 +101,7 @@ UserHost.loadChannels = function() {
             UserHost.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(User.UserName) + '/followed/hosting?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser.UserName) + '/followed/hosting?limit=' +
                 UserLive.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = UserHost.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');

@@ -45,7 +45,7 @@ UserLive.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
-    $('.label_agame_name').html(User.UserName + STR_LIVE_CHANNELS);
+    $('.label_agame_name').html(AddUser.UserName + STR_LIVE_CHANNELS);
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
     if (UserLive.status) UserLive.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail + UserLive.cursorY + '_' + UserLive.cursorX);
     else UserLive.StartLoad();
@@ -102,7 +102,7 @@ UserLive.loadChannels = function() {
             UserLive.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(User.UserName) + '/follows/channels?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=' +
                 UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');

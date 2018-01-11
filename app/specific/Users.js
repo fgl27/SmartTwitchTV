@@ -48,13 +48,13 @@ Users.loadData = function() {
     var row = $('<tr></tr>');
     var coloumn_id = 0;
 
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, User.UserName + STR_LIVE_CHANNELS));
+    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, AddUser.UserName + STR_LIVE_CHANNELS));
     coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, User.UserName + STR_LIVE_HOSTS));
+    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, AddUser.UserName + STR_LIVE_HOSTS));
     coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, User.UserName + STR_LIVE_GAMES));
+    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, AddUser.UserName + STR_LIVE_GAMES));
     coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, User.UserName + STR_USER_CHANNEL));
+    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, AddUser.UserName + STR_USER_CHANNEL));
     coloumn_id++;
     row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD));
     coloumn_id++;
