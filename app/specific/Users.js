@@ -160,7 +160,12 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
         case TvKeyCode.KEY_CHANNELUP:
+            Main.Go = Main.Games;
+            Users.exit();
+            break;
         case TvKeyCode.KEY_CHANNELDOWN:
+            Main.Go = Main.Live;
+            Users.exit();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
