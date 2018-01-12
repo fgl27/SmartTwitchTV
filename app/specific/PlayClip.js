@@ -27,30 +27,33 @@ PlayClip.Start = function() {
     PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
     PlayClip.Canjump = false;
 
-    Play.videojs.src({
-        type: "video/mp4",
-        src: Sclip.playUrl
-    });
-
-    Play.videojs.ready(function() {
-        this.isFullscreen(true);
-        this.requestFullscreen();
-        this.autoplay(true);
-
-        this.on('ended', function() {
-            PlayClip.Exit();
+    window.setTimeout(function() {
+        Play.videojs.src({
+            type: "video/mp4",
+            src: Sclip.playUrl
         });
 
-        this.on('timeupdate', function() {
-            PlayClip.updateCurrentTime(this.currentTime());
-        });
+        Play.videojs.ready(function() {
+            this.isFullscreen(true);
+            this.requestFullscreen();
+            this.autoplay(true);
 
-        this.on('error', function() {
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(PlayClip.Exit, 1500);
-        });
+            this.on('ended', function() {
+                PlayClip.Exit();
+            });
 
-    });
+            this.on('timeupdate', function() {
+                PlayClip.updateCurrentTime(this.currentTime());
+            });
+
+            this.on('error', function() {
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(PlayClip.Exit, 1500);
+            });
+
+        });
+    }, 1000);
+
 };
 
 PlayClip.offPlayer = function() {
