@@ -1,0 +1,2386 @@
+{
+	"clips": [{
+		"slug": "PricklyCulturedMartenBCWarrior",
+		"tracking_id": "112881304",
+		"url": "https://clips.twitch.tv/PricklyCulturedMartenBCWarrior?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PricklyCulturedMartenBCWarrior\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PricklyCulturedMartenBCWarrior\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "39461838",
+			"name": "lynaughh",
+			"display_name": "Lynaughh",
+			"channel_url": "https://www.twitch.tv/lynaughh",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/lynaughh-profile_image-ac5cb57a607f4674-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25976394816",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Mmmmmm BREAK!",
+		"views": 70,
+		"duration": 27.25,
+		"created_at": "2017-08-10T22:21:05Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25976394816-offset-14443.966-27.249999999999897-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25976394816-offset-14443.966-27.249999999999897-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25976394816-offset-14443.966-27.249999999999897-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SolidSullenAardvarkPRChase",
+		"tracking_id": "105403400",
+		"url": "https://clips.twitch.tv/SolidSullenAardvarkPRChase?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SolidSullenAardvarkPRChase\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SolidSullenAardvarkPRChase\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "125891827",
+			"name": "kindnuguz",
+			"display_name": "kindnuguz",
+			"channel_url": "https://www.twitch.tv/kindnuguz",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/kindnuguz-profile_image-18fc08a25327d8e0-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25836600624",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "What was that ?",
+		"views": 70,
+		"duration": 16.183984,
+		"created_at": "2017-07-25T02:48:48Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25836600624-offset-30625.18333333333-16.166666666666693-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25836600624-offset-30625.18333333333-16.166666666666693-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25836600624-offset-30625.18333333333-16.166666666666693-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "BlushingBraveAlfalfaOSfrog",
+		"tracking_id": "100811978",
+		"url": "https://clips.twitch.tv/BlushingBraveAlfalfaOSfrog?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=BlushingBraveAlfalfaOSfrog\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=BlushingBraveAlfalfaOSfrog\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "125891827",
+			"name": "kindnuguz",
+			"display_name": "kindnuguz",
+			"channel_url": "https://www.twitch.tv/kindnuguz",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/kindnuguz-profile_image-18fc08a25327d8e0-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25759812160",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Boom! dead...",
+		"views": 70,
+		"duration": 24.833984,
+		"created_at": "2017-07-15T18:34:25Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25759812160-offset-10846.998666666666-24.833333333333325-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25759812160-offset-10846.998666666666-24.833333333333325-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25759812160-offset-10846.998666666666-24.833333333333325-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "HealthyPoorAardvarkPJSugar",
+		"tracking_id": "97077540",
+		"url": "https://clips.twitch.tv/HealthyPoorAardvarkPJSugar?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=HealthyPoorAardvarkPJSugar\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=HealthyPoorAardvarkPJSugar\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "27198577",
+			"name": "lokitanna",
+			"display_name": "Lokitanna",
+			"channel_url": "https://www.twitch.tv/lokitanna",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/lokitanna-profile_image-6bcd6f782f950985-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25692807712",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Clipped it !",
+		"views": 70,
+		"duration": 27.932667,
+		"created_at": "2017-07-07T18:50:37Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25692807712-offset-5350-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25692807712-offset-5350-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25692807712-offset-5350-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ArtisticBlazingNewtFrankerZ",
+		"tracking_id": "90043306",
+		"url": "https://clips.twitch.tv/ArtisticBlazingNewtFrankerZ?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ArtisticBlazingNewtFrankerZ\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ArtisticBlazingNewtFrankerZ\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "95030820",
+			"name": "jymnasium",
+			"display_name": "Jymnasium",
+			"channel_url": "https://www.twitch.tv/jymnasium",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1308b34f5f33e190-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25540518720",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "3 for 3 vissRekt",
+		"views": 70,
+		"duration": 27.433984,
+		"created_at": "2017-06-18T20:11:27Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25540518720-offset-2062.0333333333333-27.416666666666693-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25540518720-offset-2062.0333333333333-27.416666666666693-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25540518720-offset-2062.0333333333333-27.416666666666693-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DeterminedPricklyDiscDAESuppy",
+		"tracking_id": "165174866",
+		"url": "https://clips.twitch.tv/DeterminedPricklyDiscDAESuppy?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DeterminedPricklyDiscDAESuppy\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DeterminedPricklyDiscDAESuppy\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "183796873",
+			"name": "anakin_skyhammer",
+			"display_name": "anakin_skyhammer",
+			"channel_url": "https://www.twitch.tv/anakin_skyhammer",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "210821338",
+			"url": "https://www.twitch.tv/videos/210821338?t=7h35m34s",
+			"offset": 27334
+		},
+		"broadcast_id": "27022355248",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "i have no title",
+		"views": 69,
+		"duration": 22.366992,
+		"created_at": "2017-12-19T19:41:21Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/165174866-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/165174866-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/165174866-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "PuzzledProudCheesecakeFreakinStinkin",
+		"tracking_id": "148005389",
+		"url": "https://clips.twitch.tv/PuzzledProudCheesecakeFreakinStinkin?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PuzzledProudCheesecakeFreakinStinkin\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PuzzledProudCheesecakeFreakinStinkin\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "42653188",
+			"name": "fourjan",
+			"display_name": "fourJan",
+			"channel_url": "https://www.twitch.tv/fourjan",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fourjan-profile_image-99a1945708709432-150x150.jpeg"
+		},
+		"vod": {
+			"id": "188166797",
+			"url": "https://www.twitch.tv/videos/188166797?t=3m38s",
+			"offset": 218
+		},
+		"broadcast_id": "26667270848",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "A big Visstake",
+		"views": 69,
+		"duration": 11.083984,
+		"created_at": "2017-11-06T17:57:51Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/148005389-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/148005389-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/148005389-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SlipperyTriumphantGrasshopperPMSTwin",
+		"tracking_id": "135897166",
+		"url": "https://clips.twitch.tv/SlipperyTriumphantGrasshopperPMSTwin?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SlipperyTriumphantGrasshopperPMSTwin\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SlipperyTriumphantGrasshopperPMSTwin\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "68816177",
+			"name": "shadebladee",
+			"display_name": "shadebladee",
+			"channel_url": "https://www.twitch.tv/shadebladee",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26429068832",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "the legendary sneck",
+		"views": 69,
+		"duration": 30.433984,
+		"created_at": "2017-10-07T20:52:16Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/135897166-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/135897166-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/135897166-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SarcasticFitPepperBuddhaBar",
+		"tracking_id": "125042888",
+		"url": "https://clips.twitch.tv/SarcasticFitPepperBuddhaBar?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SarcasticFitPepperBuddhaBar\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SarcasticFitPepperBuddhaBar\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "114794989",
+			"name": "thehusband_",
+			"display_name": "thehusband_",
+			"channel_url": "https://www.twitch.tv/thehusband_",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/thehusband_-profile_image-904c5f3f6e02514e-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "26218446080",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Must hases sks",
+		"views": 69,
+		"duration": 29.683667,
+		"created_at": "2017-09-09T17:32:16Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26218446080-offset-6918-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26218446080-offset-6918-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26218446080-offset-6918-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "GracefulSmoggyPeanutSuperVinlin",
+		"tracking_id": "113863331",
+		"url": "https://clips.twitch.tv/GracefulSmoggyPeanutSuperVinlin?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=GracefulSmoggyPeanutSuperVinlin\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=GracefulSmoggyPeanutSuperVinlin\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "44322370",
+			"name": "themanders1",
+			"display_name": "Themanders1",
+			"channel_url": "https://www.twitch.tv/themanders1",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/themanders1-profile_image-09dea92921b68c30-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25992404128",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "That shot?!?!?!",
+		"views": 69,
+		"duration": 15.583984,
+		"created_at": "2017-08-12T23:52:00Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25992404128-offset-21177.649666666668-15.58333333333337-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25992404128-offset-21177.649666666668-15.58333333333337-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25992404128-offset-21177.649666666668-15.58333333333337-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CheerfulTallPeanutNononoCat",
+		"tracking_id": "97738624",
+		"url": "https://clips.twitch.tv/CheerfulTallPeanutNononoCat?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CheerfulTallPeanutNononoCat\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CheerfulTallPeanutNononoCat\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "102844154",
+			"name": "kitrenard630",
+			"display_name": "Kitrenard630",
+			"channel_url": "https://www.twitch.tv/kitrenard630",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/kitrenard630-profile_image-aac45e4739288326-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "25700391872",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "No!",
+		"views": 69,
+		"duration": 14.583984,
+		"created_at": "2017-07-08T23:01:15Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25700391872-offset-29156.15-14.583333333333327-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25700391872-offset-29156.15-14.583333333333327-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25700391872-offset-29156.15-14.583333333333327-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "AlluringDiligentWaspJKanStyle",
+		"tracking_id": "96705075",
+		"url": "https://clips.twitch.tv/AlluringDiligentWaspJKanStyle?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=AlluringDiligentWaspJKanStyle\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=AlluringDiligentWaspJKanStyle\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "147648163",
+			"name": "brooklynmiles",
+			"display_name": "BrooklynMiles",
+			"channel_url": "https://www.twitch.tv/brooklynmiles",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25684545408",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Got him.",
+		"views": 69,
+		"duration": 27.083984,
+		"created_at": "2017-07-06T23:37:33Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25684545408-offset-22324.966-27.08333333333333-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25684545408-offset-22324.966-27.08333333333333-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25684545408-offset-22324.966-27.08333333333333-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "PricklyFlirtyRadicchioResidentSleeper",
+		"tracking_id": "95378027",
+		"url": "https://clips.twitch.tv/PricklyFlirtyRadicchioResidentSleeper?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PricklyFlirtyRadicchioResidentSleeper\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PricklyFlirtyRadicchioResidentSleeper\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "159811310",
+			"name": "vissmak",
+			"display_name": "vissmak",
+			"channel_url": "https://www.twitch.tv/vissmak",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25659854064",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG [534 Wins] | Day 219/365 | Twitter @TSMViss",
+		"views": 69,
+		"duration": 14.75,
+		"created_at": "2017-07-04T00:25:07Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25659854064-offset-26348.53266666667-14.750000000000002-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25659854064-offset-26348.53266666667-14.750000000000002-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25659854064-offset-26348.53266666667-14.750000000000002-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "KawaiiRelatedCoyoteBlargNaut",
+		"tracking_id": "92287390",
+		"url": "https://clips.twitch.tv/KawaiiRelatedCoyoteBlargNaut?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=KawaiiRelatedCoyoteBlargNaut\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=KawaiiRelatedCoyoteBlargNaut\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "39721284",
+			"name": "johng183",
+			"display_name": "JohnG183",
+			"channel_url": "https://www.twitch.tv/johng183",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25593547072",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG [495 Wins] | Day 211/365 | Twitter @TSMViss",
+		"views": 69,
+		"duration": 31,
+		"created_at": "2017-06-25T19:23:35Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25593547072-offset-7374.915-31-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25593547072-offset-7374.915-31-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25593547072-offset-7374.915-31-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "MiniatureIronicHerbsPJSugar",
+		"tracking_id": "88113585",
+		"url": "https://clips.twitch.tv/MiniatureIronicHerbsPJSugar?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=MiniatureIronicHerbsPJSugar\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=MiniatureIronicHerbsPJSugar\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "95030820",
+			"name": "jymnasium",
+			"display_name": "Jymnasium",
+			"channel_url": "https://www.twitch.tv/jymnasium",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1308b34f5f33e190-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25494161472",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Vissception!",
+		"views": 69,
+		"duration": 60,
+		"created_at": "2017-06-13T00:52:58Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25494161472-offset-21678.066-60-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25494161472-offset-21678.066-60-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25494161472-offset-21678.066-60-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CoyWealthyPeanutEagleEye",
+		"tracking_id": "83910177",
+		"url": "https://clips.twitch.tv/CoyWealthyPeanutEagleEye?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CoyWealthyPeanutEagleEye\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CoyWealthyPeanutEagleEye\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "154627209",
+			"name": "antwrocksnyla",
+			"display_name": "antwrocksnyla",
+			"channel_url": "https://www.twitch.tv/antwrocksnyla",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "-365888384",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG [389 Wins] | Day 185/365 | Twitter @TSMViss",
+		"views": 69,
+		"duration": 29.565667,
+		"created_at": "2017-06-01T02:39:18Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/-365888384-offset-30160-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/-365888384-offset-30160-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/-365888384-offset-30160-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ShyBadClipsmomTheRinger",
+		"tracking_id": "71978605",
+		"url": "https://clips.twitch.tv/ShyBadClipsmomTheRinger?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ShyBadClipsmomTheRinger\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ShyBadClipsmomTheRinger\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "100947648",
+			"name": "proofer74",
+			"display_name": "proofer74",
+			"channel_url": "https://www.twitch.tv/proofer74",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25143283424",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] NA #1 Solo #2 Duo! Sat= Pack Games  [276 Wins] | Day 150 | Twitter \u0026 Youtube @Vissgames",
+		"views": 69,
+		"duration": 32.550667,
+		"created_at": "2017-04-27T00:03:57Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25143283424-offset-21590-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25143283424-offset-21590-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25143283424-offset-21590-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "TemperedAssiduousVanillaAMPTropPunch",
+		"tracking_id": "19066139",
+		"url": "https://clips.twitch.tv/TemperedAssiduousVanillaAMPTropPunch?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=TemperedAssiduousVanillaAMPTropPunch\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=TemperedAssiduousVanillaAMPTropPunch\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "58975648",
+			"name": "n0dda_",
+			"display_name": "n0dda_",
+			"channel_url": "https://www.twitch.tv/n0dda_",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "23689764880",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PLAYERUNKNOWN'S BATTLEGROUNDS with Viss | Twitter \u0026 Youtube @VissGames",
+		"views": 69,
+		"duration": 31.999833,
+		"created_at": "2016-11-18T05:11:49Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/23689764880-offset-4786-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/23689764880-offset-4786-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/23689764880-offset-4786-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "AstuteManlyBobaOneHand",
+		"tracking_id": "167374245",
+		"url": "https://clips.twitch.tv/AstuteManlyBobaOneHand?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=AstuteManlyBobaOneHand\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=AstuteManlyBobaOneHand\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "28910510",
+			"name": "mkn97",
+			"display_name": "MKN97",
+			"channel_url": "https://www.twitch.tv/mkn97",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/mkn97-profile_image-e36482cdc44ee168-150x150.jpeg"
+		},
+		"vod": {
+			"id": "212407102",
+			"url": "https://www.twitch.tv/videos/212407102?t=6h53m57s",
+			"offset": 24837
+		},
+		"broadcast_id": "27072592000",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Knows the fans want more!",
+		"views": 68,
+		"duration": 8.183984,
+		"created_at": "2017-12-25T18:54:59Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/167374245-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/167374245-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/167374245-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DarkTolerantSeahorseNinjaGrumpy",
+		"tracking_id": "161549467",
+		"url": "https://clips.twitch.tv/DarkTolerantSeahorseNinjaGrumpy?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DarkTolerantSeahorseNinjaGrumpy\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DarkTolerantSeahorseNinjaGrumpy\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "62508617",
+			"name": "wooordwooord",
+			"display_name": "WooordWooord",
+			"channel_url": "https://www.twitch.tv/wooordwooord",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/wooordwooord-profile_image-15694b7b146922b6-150x150.png"
+		},
+		"vod": {
+			"id": "208349586",
+			"url": "https://www.twitch.tv/videos/208349586?t=4h34m32s",
+			"offset": 16472
+		},
+		"broadcast_id": "26946214000",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Murdererrrrrrr",
+		"views": 68,
+		"duration": 28.333984,
+		"created_at": "2017-12-10T16:32:35Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/161549467-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/161549467-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/161549467-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "YawningBreakableHerdFreakinStinkin",
+		"tracking_id": "161061381",
+		"url": "https://clips.twitch.tv/YawningBreakableHerdFreakinStinkin?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=YawningBreakableHerdFreakinStinkin\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=YawningBreakableHerdFreakinStinkin\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "147753666",
+			"name": "josephjoestar316",
+			"display_name": "JosephJoestar316",
+			"channel_url": "https://www.twitch.tv/josephjoestar316",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/52a1a75bdddfdfe6-profile_image-150x150.jpeg"
+		},
+		"vod": {
+			"id": "208034229",
+			"url": "https://www.twitch.tv/videos/208034229?t=2h8m45s",
+			"offset": 7725
+		},
+		"broadcast_id": "26936117456",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "SHIP IT",
+		"views": 68,
+		"duration": 13.5,
+		"created_at": "2017-12-09T14:21:51Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/161061381-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/161061381-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/161061381-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "EnticingEntertainingMangetoutArgieB8",
+		"tracking_id": "155538846",
+		"url": "https://clips.twitch.tv/EnticingEntertainingMangetoutArgieB8?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=EnticingEntertainingMangetoutArgieB8\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=EnticingEntertainingMangetoutArgieB8\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "178428508",
+			"name": "earthchie",
+			"display_name": "earthchie",
+			"channel_url": "https://www.twitch.tv/earthchie",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "204162864",
+			"url": "https://www.twitch.tv/videos/204162864?t=4h24m25s",
+			"offset": 15865
+		},
+		"broadcast_id": "26817169888",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[ENG] TSM_Viss | !newvid | [1175 Wins PUBG] 336/365 Twitter @TSMViss",
+		"views": 68,
+		"duration": 30.115667,
+		"created_at": "2017-11-25T17:10:50Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26817169888-offset-15890-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26817169888-offset-15890-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26817169888-offset-15890-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "KitschyAdventurousSharkJKanStyle",
+		"tracking_id": "143767182",
+		"url": "https://clips.twitch.tv/KitschyAdventurousSharkJKanStyle?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=KitschyAdventurousSharkJKanStyle\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=KitschyAdventurousSharkJKanStyle\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "155919614",
+			"name": "the_bry_guy",
+			"display_name": "The_Bry_Guy",
+			"channel_url": "https://www.twitch.tv/the_bry_guy",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26584286384",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "LOOK OUT IT'S MARIUS",
+		"views": 68,
+		"duration": 10.75,
+		"created_at": "2017-10-27T16:13:01Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/143767182-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/143767182-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/143767182-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "WittyAmazingBottleBatChest",
+		"tracking_id": "140263605",
+		"url": "https://clips.twitch.tv/WittyAmazingBottleBatChest?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=WittyAmazingBottleBatChest\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=WittyAmazingBottleBatChest\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "36774526",
+			"name": "mortifier21",
+			"display_name": "mortifier21",
+			"channel_url": "https://www.twitch.tv/mortifier21",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26512891840",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Viss and Marius duel it out",
+		"views": 68,
+		"duration": 35.816667,
+		"created_at": "2017-10-18T16:48:08Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/vod-183158824-offset-12780-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/vod-183158824-offset-12780-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/vod-183158824-offset-12780-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "StupidModernCodSwiftRage",
+		"tracking_id": "136997230",
+		"url": "https://clips.twitch.tv/StupidModernCodSwiftRage?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=StupidModernCodSwiftRage\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=StupidModernCodSwiftRage\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "27198577",
+			"name": "lokitanna",
+			"display_name": "Lokitanna",
+			"channel_url": "https://www.twitch.tv/lokitanna",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/lokitanna-profile_image-6bcd6f782f950985-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26452411152",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "I can peek from here for days !",
+		"views": 68,
+		"duration": 30.283667,
+		"created_at": "2017-10-10T13:55:09Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26452411152-offset-2710-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26452411152-offset-2710-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26452411152-offset-2710-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "FurryAttractivePotKAPOW",
+		"tracking_id": "132039415",
+		"url": "https://clips.twitch.tv/FurryAttractivePotKAPOW?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=FurryAttractivePotKAPOW\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=FurryAttractivePotKAPOW\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "142328",
+			"name": "tonyrockyhorror",
+			"display_name": "TonyRockyHorror",
+			"channel_url": "https://www.twitch.tv/tonyrockyhorror",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/tonyrockyhorror-profile_image-ded3911af0b456b5-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26352765392",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "TSM_Viss WTF Headshots",
+		"views": 68,
+		"duration": 28.416667,
+		"created_at": "2017-09-27T19:57:35Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26352765392-offset-7366-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26352765392-offset-7366-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26352765392-offset-7366-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "GrotesqueExcitedPheasantThisIsSparta",
+		"tracking_id": "131347518",
+		"url": "https://clips.twitch.tv/GrotesqueExcitedPheasantThisIsSparta?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=GrotesqueExcitedPheasantThisIsSparta\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=GrotesqueExcitedPheasantThisIsSparta\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "104474731",
+			"name": "deccypher_se",
+			"display_name": "deccypher_se",
+			"channel_url": "https://www.twitch.tv/deccypher_se",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/94cedbe81e88f52b-profile_image-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "26338396080",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Called it",
+		"views": 68,
+		"duration": 13.25,
+		"created_at": "2017-09-25T21:21:55Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26338396080-offset-15253.65-13.249999999999996-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26338396080-offset-15253.65-13.249999999999996-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26338396080-offset-15253.65-13.249999999999996-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SquareFaintMeatloafWow",
+		"tracking_id": "128359081",
+		"url": "https://clips.twitch.tv/SquareFaintMeatloafWow?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SquareFaintMeatloafWow\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SquareFaintMeatloafWow\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "95030820",
+			"name": "jymnasium",
+			"display_name": "Jymnasium",
+			"channel_url": "https://www.twitch.tv/jymnasium",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1308b34f5f33e190-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26282021296",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "1min of Vissmania",
+		"views": 68,
+		"duration": 29.866667,
+		"created_at": "2017-09-18T01:12:25Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26282021296-offset-11764-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26282021296-offset-11764-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26282021296-offset-11764-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "RoughWonderfulWatercressDogFace",
+		"tracking_id": "91093432",
+		"url": "https://clips.twitch.tv/RoughWonderfulWatercressDogFace?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=RoughWonderfulWatercressDogFace\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=RoughWonderfulWatercressDogFace\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "146482003",
+			"name": "dabdaddy77",
+			"display_name": "dabdaddy77",
+			"channel_url": "https://www.twitch.tv/dabdaddy77",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/5befca9fe419d4d4-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25562224752",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG VissRespect All Day Long! [475 Wins] | Day 207/365 | Twitter @TSMViss",
+		"views": 68,
+		"duration": 29.833667,
+		"created_at": "2017-06-21T23:58:47Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25562224752-offset-20740-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25562224752-offset-20740-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25562224752-offset-20740-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "FineCuriousPoxCharlietheUnicorn",
+		"tracking_id": "90113561",
+		"url": "https://clips.twitch.tv/FineCuriousPoxCharlietheUnicorn?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=FineCuriousPoxCharlietheUnicorn\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=FineCuriousPoxCharlietheUnicorn\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "147648163",
+			"name": "brooklynmiles",
+			"display_name": "BrooklynMiles",
+			"channel_url": "https://www.twitch.tv/brooklynmiles",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25540518720",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "That Reaction, For Real.",
+		"views": 68,
+		"duration": 16.5,
+		"created_at": "2017-06-18T23:20:43Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/vod-152779688-offset-12838.433333333334-16.500000000000046-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/vod-152779688-offset-12838.433333333334-16.500000000000046-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/vod-152779688-offset-12838.433333333334-16.500000000000046-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CulturedAdorableKangarooMcaT",
+		"tracking_id": "40558663",
+		"url": "https://clips.twitch.tv/CulturedAdorableKangarooMcaT?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CulturedAdorableKangarooMcaT\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CulturedAdorableKangarooMcaT\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "128058161",
+			"name": "seventemp",
+			"display_name": "SevenTemp",
+			"channel_url": "https://www.twitch.tv/seventemp",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/seventemp-profile_image-d31e261f688aa58a-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "22159039328",
+		"game": "Arma 3",
+		"language": "en",
+		"title": "[ENG] Battle Royale Commentary! Pack Games! $100 !giveaway Twitter \u0026 Youtube @VissGames",
+		"views": 68,
+		"duration": 32,
+		"created_at": "2016-07-03T18:42:23Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/22159039328-index-0000000577-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/22159039328-index-0000000577-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/22159039328-index-0000000577-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CrowdedThirstyCatBabyRage",
+		"tracking_id": "160189724",
+		"url": "https://clips.twitch.tv/CrowdedThirstyCatBabyRage?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CrowdedThirstyCatBabyRage\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CrowdedThirstyCatBabyRage\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "183796873",
+			"name": "anakin_skyhammer",
+			"display_name": "anakin_skyhammer",
+			"channel_url": "https://www.twitch.tv/anakin_skyhammer",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "207449689",
+			"url": "https://www.twitch.tv/videos/207449689?t=47m52s",
+			"offset": 2872
+		},
+		"broadcast_id": "26918381840",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "get destroyed boy",
+		"views": 67,
+		"duration": 22,
+		"created_at": "2017-12-07T12:48:42Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/160189724-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/160189724-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/160189724-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "GeniusCheerfulSquirrelFailFish",
+		"tracking_id": "159193568",
+		"url": "https://clips.twitch.tv/GeniusCheerfulSquirrelFailFish?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=GeniusCheerfulSquirrelFailFish\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=GeniusCheerfulSquirrelFailFish\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "77226933",
+			"name": "mehadin",
+			"display_name": "Mehadin",
+			"channel_url": "https://www.twitch.tv/mehadin",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/744e76ce-d418-43cf-a172-efc9e2e4f8e2-profile_image-150x150.png"
+		},
+		"vod": {
+			"id": "206638356",
+			"url": "https://www.twitch.tv/videos/206638356?t=8h1m21s",
+			"offset": 28881
+		},
+		"broadcast_id": "26893938960",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "The magic house of lagg!!",
+		"views": 67,
+		"duration": 35.933984,
+		"created_at": "2017-12-04T20:04:02Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/159193568-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/159193568-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/159193568-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CrunchyAttractiveInternPoooound",
+		"tracking_id": "137523692",
+		"url": "https://clips.twitch.tv/CrunchyAttractiveInternPoooound?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CrunchyAttractiveInternPoooound\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CrunchyAttractiveInternPoooound\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "43140840",
+			"name": "0wlhurtyou",
+			"display_name": "0wlhurtyou",
+			"channel_url": "https://www.twitch.tv/0wlhurtyou",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26459676320",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "The most difficult win...ever",
+		"views": 67,
+		"duration": 31.75,
+		"created_at": "2017-10-11T22:03:42Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/137523692-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/137523692-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/137523692-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "PerfectBrightRabbitNotATK",
+		"tracking_id": "124211345",
+		"url": "https://clips.twitch.tv/PerfectBrightRabbitNotATK?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PerfectBrightRabbitNotATK\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PerfectBrightRabbitNotATK\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "57507314",
+			"name": "redrockoverlord",
+			"display_name": "RedRockOverlord",
+			"channel_url": "https://www.twitch.tv/redrockoverlord",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/d162b2b6a4827210-profile_image-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "26202624704",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Viss the Salesman",
+		"views": 67,
+		"duration": 29.999667,
+		"created_at": "2017-09-07T16:30:26Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26202624704-offset-5234-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26202624704-offset-5234-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26202624704-offset-5234-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "AggressiveTriangularGorillaTheThing",
+		"tracking_id": "105345034",
+		"url": "https://clips.twitch.tv/AggressiveTriangularGorillaTheThing?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=AggressiveTriangularGorillaTheThing\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=AggressiveTriangularGorillaTheThing\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "27198577",
+			"name": "lokitanna",
+			"display_name": "Lokitanna",
+			"channel_url": "https://www.twitch.tv/lokitanna",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/lokitanna-profile_image-6bcd6f782f950985-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25836600624",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "That wiggling hand ...",
+		"views": 67,
+		"duration": 31.566667,
+		"created_at": "2017-07-24T23:45:15Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25836600624-offset-19620-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25836600624-offset-19620-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25836600624-offset-19620-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "TangibleSincereWeaselTwitchRaid",
+		"tracking_id": "100767684",
+		"url": "https://clips.twitch.tv/TangibleSincereWeaselTwitchRaid?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=TangibleSincereWeaselTwitchRaid\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=TangibleSincereWeaselTwitchRaid\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "64446838",
+			"name": "alexvondoom",
+			"display_name": "AlexVonDoom",
+			"channel_url": "https://www.twitch.tv/alexvondoom",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/alexvondoom-profile_image-2632c9862d2adcb6-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25759812160",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Viss witnesed Ninja Kappa going murder time!",
+		"views": 67,
+		"duration": 30.499667,
+		"created_at": "2017-07-15T16:46:58Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25759812160-offset-4420-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25759812160-offset-4420-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25759812160-offset-4420-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "OptimisticDignifiedTildePhilosoraptor",
+		"tracking_id": "89361714",
+		"url": "https://clips.twitch.tv/OptimisticDignifiedTildePhilosoraptor?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=OptimisticDignifiedTildePhilosoraptor\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=OptimisticDignifiedTildePhilosoraptor\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "100947648",
+			"name": "proofer74",
+			"display_name": "proofer74",
+			"channel_url": "https://www.twitch.tv/proofer74",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25523965168",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "TURN to KILL",
+		"views": 67,
+		"duration": 30.666667,
+		"created_at": "2017-06-16T23:06:29Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25523965168-offset-16820-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25523965168-offset-16820-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25523965168-offset-16820-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ConsiderateFairCoffeeNononoCat",
+		"tracking_id": "88093293",
+		"url": "https://clips.twitch.tv/ConsiderateFairCoffeeNononoCat?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ConsiderateFairCoffeeNononoCat\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ConsiderateFairCoffeeNononoCat\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "63701209",
+			"name": "japoolingoro",
+			"display_name": "JapoolIngoro",
+			"channel_url": "https://www.twitch.tv/japoolingoro",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25494161472",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG [447 Wins] | Day 197/365 | Twitter @TSMViss",
+		"views": 67,
+		"duration": 29,
+		"created_at": "2017-06-12T23:39:52Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25494161472-offset-17345.232666666667-29-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25494161472-offset-17345.232666666667-29-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25494161472-offset-17345.232666666667-29-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DreamyPricklyCurryDancingBanana",
+		"tracking_id": "78888764",
+		"url": "https://clips.twitch.tv/DreamyPricklyCurryDancingBanana?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DreamyPricklyCurryDancingBanana\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DreamyPricklyCurryDancingBanana\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "32494475",
+			"name": "k12ad",
+			"display_name": "K12AD",
+			"channel_url": "https://www.twitch.tv/k12ad",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25293032096",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Casual Viss plays",
+		"views": 67,
+		"duration": 35.433984,
+		"created_at": "2017-05-16T20:59:34Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25293032096-offset-11050.06633333333-35.41666666666667-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25293032096-offset-11050.06633333333-35.41666666666667-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25293032096-offset-11050.06633333333-35.41666666666667-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SavageLaconicOctopusSSSsss",
+		"tracking_id": "62210295",
+		"url": "https://clips.twitch.tv/SavageLaconicOctopusSSSsss?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SavageLaconicOctopusSSSsss\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SavageLaconicOctopusSSSsss\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "75364718",
+			"name": "crux2222",
+			"display_name": "Crux2222",
+			"channel_url": "https://www.twitch.tv/crux2222",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "24899614816",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Streaming [EN] #2 NA Duo's! [144 Wins] | Day 120 | Twitter \u0026 Youtube @Vissgames",
+		"views": 67,
+		"duration": 31.395833,
+		"created_at": "2017-03-28T03:35:13Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/24899614816-offset-39234-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/24899614816-offset-39234-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/24899614816-offset-39234-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "PoorBlatantMangoMikeHogu",
+		"tracking_id": "167005999",
+		"url": "https://clips.twitch.tv/PoorBlatantMangoMikeHogu?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PoorBlatantMangoMikeHogu\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PoorBlatantMangoMikeHogu\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "153006005",
+			"name": "spitfu",
+			"display_name": "spitfu",
+			"channel_url": "https://www.twitch.tv/spitfu",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "212189358",
+			"url": "https://www.twitch.tv/videos/212189358?t=4h28m6s",
+			"offset": 16086
+		},
+		"broadcast_id": "27065437952",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Houston we have liftoff!",
+		"views": 66,
+		"duration": 11.083984,
+		"created_at": "2017-12-24T16:22:56Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/167005999-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/167005999-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/167005999-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DreamyAlluringTardigradeBloodTrail",
+		"tracking_id": "166665928",
+		"url": "https://clips.twitch.tv/DreamyAlluringTardigradeBloodTrail?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DreamyAlluringTardigradeBloodTrail\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DreamyAlluringTardigradeBloodTrail\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "50840711",
+			"name": "nuzzletops",
+			"display_name": "nuzzletops",
+			"channel_url": "https://www.twitch.tv/nuzzletops",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/nuzzletops-profile_image-6c62d6830e5d0493-150x150.png"
+		},
+		"vod": {
+			"id": "211917713",
+			"url": "https://www.twitch.tv/videos/211917713?t=6h23m8s",
+			"offset": 22988
+		},
+		"broadcast_id": "27056601952",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "that 8x spray",
+		"views": 66,
+		"duration": 19.75,
+		"created_at": "2017-12-23T18:10:36Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/166665928-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/166665928-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/166665928-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "InnocentAbstruseRuffWTRuck",
+		"tracking_id": "158347933",
+		"url": "https://clips.twitch.tv/InnocentAbstruseRuffWTRuck?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=InnocentAbstruseRuffWTRuck\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=InnocentAbstruseRuffWTRuck\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "181192623",
+			"name": "thekovalevy",
+			"display_name": "TheKovalevy",
+			"channel_url": "https://www.twitch.tv/thekovalevy",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/c814926cdd619043-profile_image-150x150.png"
+		},
+		"vod": {
+			"id": "206057838",
+			"url": "https://www.twitch.tv/videos/206057838?t=8h43m29s",
+			"offset": 31409
+		},
+		"broadcast_id": "26875340032",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Come to mee!",
+		"views": 66,
+		"duration": 21.333984,
+		"created_at": "2017-12-02T20:33:53Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/158347933-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/158347933-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/158347933-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DeadAssiduousDaikonTBCheesePull",
+		"tracking_id": "157098120",
+		"url": "https://clips.twitch.tv/DeadAssiduousDaikonTBCheesePull?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DeadAssiduousDaikonTBCheesePull\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DeadAssiduousDaikonTBCheesePull\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "154557663",
+			"name": "haybaggins",
+			"display_name": "Haybaggins",
+			"channel_url": "https://www.twitch.tv/haybaggins",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "205236015",
+			"url": "https://www.twitch.tv/videos/205236015?t=4h8m56s",
+			"offset": 14936
+		},
+		"broadcast_id": "26850296768",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Its official.....",
+		"views": 66,
+		"duration": 10,
+		"created_at": "2017-11-29T16:08:44Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/157098120-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/157098120-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/157098120-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "FurryBlitheGiraffeThunBeast",
+		"tracking_id": "150794942",
+		"url": "https://clips.twitch.tv/FurryBlitheGiraffeThunBeast?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=FurryBlitheGiraffeThunBeast\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=FurryBlitheGiraffeThunBeast\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "143730063",
+			"name": "souldropp",
+			"display_name": "Souldropp",
+			"channel_url": "https://www.twitch.tv/souldropp",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "200973460",
+			"url": "https://www.twitch.tv/videos/200973460?t=29m47s",
+			"offset": 1787
+		},
+		"broadcast_id": "26722681296",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Sneaky Break",
+		"views": 66,
+		"duration": 23.5,
+		"created_at": "2017-11-13T17:38:09Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/150794942-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/150794942-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/150794942-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "LongTangibleWaterDAESuppy",
+		"tracking_id": "123238203",
+		"url": "https://clips.twitch.tv/LongTangibleWaterDAESuppy?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=LongTangibleWaterDAESuppy\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=LongTangibleWaterDAESuppy\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "40757272",
+			"name": "aporlebeke",
+			"display_name": "aporlebeke",
+			"channel_url": "https://www.twitch.tv/aporlebeke",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26180953600",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "DEATH BY RED CIRCLE",
+		"views": 66,
+		"duration": 29.149667,
+		"created_at": "2017-09-04T23:08:38Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26180953600-offset-17526-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26180953600-offset-17526-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26180953600-offset-17526-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "InspiringEnergeticBearNerfBlueBlaster",
+		"tracking_id": "116576562",
+		"url": "https://clips.twitch.tv/InspiringEnergeticBearNerfBlueBlaster?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=InspiringEnergeticBearNerfBlueBlaster\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=InspiringEnergeticBearNerfBlueBlaster\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "77746388",
+			"name": "almightyteejus",
+			"display_name": "AlmightyTeejus",
+			"channel_url": "https://www.twitch.tv/almightyteejus",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/2ca0af34ebed4f1b-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26053309136",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "viss going off",
+		"views": 66,
+		"duration": 27.999667,
+		"created_at": "2017-08-19T18:21:49Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26053309136-offset-8524-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26053309136-offset-8524-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26053309136-offset-8524-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "GorgeousUglySquirrelPogChamp",
+		"tracking_id": "115837916",
+		"url": "https://clips.twitch.tv/GorgeousUglySquirrelPogChamp?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=GorgeousUglySquirrelPogChamp\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=GorgeousUglySquirrelPogChamp\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "26344370",
+			"name": "sirhcman",
+			"display_name": "sirhcman",
+			"channel_url": "https://www.twitch.tv/sirhcman",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/sirhcman-profile_image-810a3484eab8e165-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26038700352",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Viss Tater",
+		"views": 66,
+		"duration": 12.933984,
+		"created_at": "2017-08-17T22:27:30Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26038700352-offset-11605.016666666666-12.916666666666663-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26038700352-offset-11605.016666666666-12.916666666666663-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26038700352-offset-11605.016666666666-12.916666666666663-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "BlazingTangibleSkunkKeyboardCat",
+		"tracking_id": "89686641",
+		"url": "https://clips.twitch.tv/BlazingTangibleSkunkKeyboardCat?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=BlazingTangibleSkunkKeyboardCat\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=BlazingTangibleSkunkKeyboardCat\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "47435167",
+			"name": "gregory253",
+			"display_name": "gregory253",
+			"channel_url": "https://www.twitch.tv/gregory253",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25531907376",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG Duo In Squads [465 Wins] | Day 203/365 | Twitter @TSMViss",
+		"views": 66,
+		"duration": 29.933667,
+		"created_at": "2017-06-17T21:10:42Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25531907376-offset-11082-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25531907376-offset-11082-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25531907376-offset-11082-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "FrozenTriangularCheesecakePupper",
+		"tracking_id": "88402083",
+		"url": "https://clips.twitch.tv/FrozenTriangularCheesecakePupper?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=FrozenTriangularCheesecakePupper\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=FrozenTriangularCheesecakePupper\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "63741238",
+			"name": "tarym1",
+			"display_name": "tarym1",
+			"channel_url": "https://www.twitch.tv/tarym1",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/7d4af7e7c73a1e8c-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25501247504",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Grave Mistakes were made @TSMViss",
+		"views": 66,
+		"duration": 30.332667,
+		"created_at": "2017-06-13T22:48:13Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25501247504-offset-16710-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25501247504-offset-16710-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25501247504-offset-16710-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "WrongEvilJackalCeilingCat",
+		"tracking_id": "160302951",
+		"url": "https://clips.twitch.tv/WrongEvilJackalCeilingCat?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=WrongEvilJackalCeilingCat\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=WrongEvilJackalCeilingCat\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "105128098",
+			"name": "el_switchblade",
+			"display_name": "El_Switchblade",
+			"channel_url": "https://www.twitch.tv/el_switchblade",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/el_switchblade-profile_image-af9fd76225b47198-150x150.jpeg"
+		},
+		"vod": {
+			"id": "207449689",
+			"url": "https://www.twitch.tv/videos/207449689?t=7h32m14s",
+			"offset": 27134
+		},
+		"broadcast_id": "26918381840",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Viss Sounding Like a Medicine Side Effect Commercial",
+		"views": 65,
+		"duration": 22.933984,
+		"created_at": "2017-12-07T19:33:08Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/160302951-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/160302951-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/160302951-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DepressedFairAnisePunchTrees",
+		"tracking_id": "150876392",
+		"url": "https://clips.twitch.tv/DepressedFairAnisePunchTrees?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DepressedFairAnisePunchTrees\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DepressedFairAnisePunchTrees\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "132975504",
+			"name": "captainnoobzor",
+			"display_name": "CaptainNoobzor",
+			"channel_url": "https://www.twitch.tv/captainnoobzor",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "200973460",
+			"url": "https://www.twitch.tv/videos/200973460?t=4h4m56s",
+			"offset": 14696
+		},
+		"broadcast_id": "26722681296",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "senses are tingling",
+		"views": 65,
+		"duration": 30.000667,
+		"created_at": "2017-11-13T21:13:30Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26722681296-offset-14720-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26722681296-offset-14720-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26722681296-offset-14720-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "AthleticAntediluvianTildeOneHand",
+		"tracking_id": "133470615",
+		"url": "https://clips.twitch.tv/AthleticAntediluvianTildeOneHand?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=AthleticAntediluvianTildeOneHand\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=AthleticAntediluvianTildeOneHand\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "43140840",
+			"name": "0wlhurtyou",
+			"display_name": "0wlhurtyou",
+			"channel_url": "https://www.twitch.tv/0wlhurtyou",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "26383685696",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "The corkscrew",
+		"views": 65,
+		"duration": 32.116667,
+		"created_at": "2017-10-01T16:17:09Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26383685696-offset-3542-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26383685696-offset-3542-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26383685696-offset-3542-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SlickSassyToothKeyboardCat",
+		"tracking_id": "127134859",
+		"url": "https://clips.twitch.tv/SlickSassyToothKeyboardCat?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SlickSassyToothKeyboardCat\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SlickSassyToothKeyboardCat\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "125891827",
+			"name": "kindnuguz",
+			"display_name": "kindnuguz",
+			"channel_url": "https://www.twitch.tv/kindnuguz",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/kindnuguz-profile_image-18fc08a25327d8e0-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26255482080",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "On The Hunt With TSM_Viss | !subtember !newvid | [882 Wins] [Day 285/365] | Twitter @TSMViss",
+		"views": 65,
+		"duration": 41,
+		"created_at": "2017-09-15T01:46:00Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/vod-174708564-offset-34722.934-41.000000000000036-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/vod-174708564-offset-34722.934-41.000000000000036-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/vod-174708564-offset-34722.934-41.000000000000036-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SpinelessDreamyBurritoYee",
+		"tracking_id": "125455322",
+		"url": "https://clips.twitch.tv/SpinelessDreamyBurritoYee?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SpinelessDreamyBurritoYee\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SpinelessDreamyBurritoYee\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "125891827",
+			"name": "kindnuguz",
+			"display_name": "kindnuguz",
+			"channel_url": "https://www.twitch.tv/kindnuguz",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/kindnuguz-profile_image-18fc08a25327d8e0-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26226861520",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "TSM_Viss on the Hunt! | !subtember !newvid | [865 Wins] [Day 277/365] | Twitter @TSMViss",
+		"views": 65,
+		"duration": 17,
+		"created_at": "2017-09-10T15:44:56Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26226861520-offset-1973.4323333333332-17.000000000000032-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26226861520-offset-1973.4323333333332-17.000000000000032-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26226861520-offset-1973.4323333333332-17.000000000000032-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ProudCheerfulSalmonNotLikeThis",
+		"tracking_id": "123679766",
+		"url": "https://clips.twitch.tv/ProudCheerfulSalmonNotLikeThis?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ProudCheerfulSalmonNotLikeThis\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ProudCheerfulSalmonNotLikeThis\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "125909556",
+			"name": "yokhannan",
+			"display_name": "Yokhannan",
+			"channel_url": "https://www.twitch.tv/yokhannan",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/3a7acc8e158826c8-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26188734224",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "TSM_Viss get's potatoed by a biker",
+		"views": 65,
+		"duration": 16.583984,
+		"created_at": "2017-09-06T03:00:11Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26188734224-offset-28497.816333333332-16.583333333333375-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26188734224-offset-28497.816333333332-16.583333333333375-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26188734224-offset-28497.816333333332-16.583333333333375-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "LittleEphemeralArtichokeCclamChamp",
+		"tracking_id": "122844634",
+		"url": "https://clips.twitch.tv/LittleEphemeralArtichokeCclamChamp?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=LittleEphemeralArtichokeCclamChamp\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=LittleEphemeralArtichokeCclamChamp\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "38278905",
+			"name": "billyelninja",
+			"display_name": "BillyelNinja",
+			"channel_url": "https://www.twitch.tv/billyelninja",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/billyelninja-profile_image-56c2aefc7ad38e05-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "26171364512",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "I cant jump this shiet",
+		"views": 65,
+		"duration": 25.866667,
+		"created_at": "2017-09-03T23:06:52Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26171364512-offset-31554-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26171364512-offset-31554-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26171364512-offset-31554-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "EmpathicDeterminedFalconPoooound",
+		"tracking_id": "111995574",
+		"url": "https://clips.twitch.tv/EmpathicDeterminedFalconPoooound?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=EmpathicDeterminedFalconPoooound\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=EmpathicDeterminedFalconPoooound\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "30153910",
+			"name": "typat",
+			"display_name": "Typat",
+			"channel_url": "https://www.twitch.tv/typat",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25959571040",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] [720 Wins] | New Vid! https://youtu.be/aGg5dwv5IwM 08/07/17 | Day 251/365 | Twitter @TSMViss",
+		"views": 65,
+		"duration": 30.150667,
+		"created_at": "2017-08-08T22:22:21Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25959571040-offset-19664-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25959571040-offset-19664-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25959571040-offset-19664-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "TangibleMuddyGarageHumbleLife",
+		"tracking_id": "107075762",
+		"url": "https://clips.twitch.tv/TangibleMuddyGarageHumbleLife?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=TangibleMuddyGarageHumbleLife\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=TangibleMuddyGarageHumbleLife\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "100947648",
+			"name": "proofer74",
+			"display_name": "proofer74",
+			"channel_url": "https://www.twitch.tv/proofer74",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25869718880",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Double Hit ?",
+		"views": 65,
+		"duration": 29.566667,
+		"created_at": "2017-07-29T00:03:31Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25869718880-offset-19908-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25869718880-offset-19908-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25869718880-offset-19908-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DaintyInexpensiveGaurPoooound",
+		"tracking_id": "98109354",
+		"url": "https://clips.twitch.tv/DaintyInexpensiveGaurPoooound?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DaintyInexpensiveGaurPoooound\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DaintyInexpensiveGaurPoooound\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "62634779",
+			"name": "feeblehero",
+			"display_name": "FeebleHero",
+			"channel_url": "https://www.twitch.tv/feeblehero",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25709342384",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "TSM Viss, the woman pleaser",
+		"views": 65,
+		"duration": 30.765667,
+		"created_at": "2017-07-09T17:46:32Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25709342384-offset-5926-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25709342384-offset-5926-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25709342384-offset-5926-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ChillyAbrasiveArtichokeAMPEnergyCherry",
+		"tracking_id": "84873101",
+		"url": "https://clips.twitch.tv/ChillyAbrasiveArtichokeAMPEnergyCherry?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ChillyAbrasiveArtichokeAMPEnergyCherry\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ChillyAbrasiveArtichokeAMPEnergyCherry\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "85772494",
+			"name": "potentiallunatic_",
+			"display_name": "potentiallunatic_",
+			"channel_url": "https://www.twitch.tv/potentiallunatic_",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/potentiallunatic_-profile_image-f2e4a4a35b02ec45-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25426316240",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG The Grind! [396 Wins] | Day 187/365 | Twitter @TSMViss",
+		"views": 65,
+		"duration": 60,
+		"created_at": "2017-06-03T22:13:11Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/vod-149246811-offset-14436.850000000008-60-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/vod-149246811-offset-14436.850000000008-60-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/vod-149246811-offset-14436.850000000008-60-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "SpineyBlitheReindeerSuperVinlin",
+		"tracking_id": "81385934",
+		"url": "https://clips.twitch.tv/SpineyBlitheReindeerSuperVinlin?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=SpineyBlitheReindeerSuperVinlin\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=SpineyBlitheReindeerSuperVinlin\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "135686587",
+			"name": "smoketiger1337",
+			"display_name": "smoketiger1337",
+			"channel_url": "https://www.twitch.tv/smoketiger1337",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/8923cacda9f54824-profile_image-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25352374112",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "\"I'm an idiot\" - TSM_Viss",
+		"views": 65,
+		"duration": 29.166667,
+		"created_at": "2017-05-24T22:17:17Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25352374112-offset-14908-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25352374112-offset-14908-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25352374112-offset-14908-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "RespectfulGrossRaisinTF2John",
+		"tracking_id": "80460234",
+		"url": "https://clips.twitch.tv/RespectfulGrossRaisinTF2John?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=RespectfulGrossRaisinTF2John\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=RespectfulGrossRaisinTF2John\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "127976194",
+			"name": "fennek89",
+			"display_name": "Fennek89",
+			"channel_url": "https://www.twitch.tv/fennek89",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fennek89-profile_image-8954a8d6bb33ba16-150x150.jpeg"
+		},
+		"vod": null,
+		"broadcast_id": "25330608000",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Should we fake a fight?",
+		"views": 65,
+		"duration": 37.433984,
+		"created_at": "2017-05-21T20:54:29Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/vod-145963538-offset-7995.983333333339-37.41666666666665-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/vod-145963538-offset-7995.983333333339-37.41666666666665-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/vod-145963538-offset-7995.983333333339-37.41666666666665-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DignifiedPuzzledMonkeyOSsloth",
+		"tracking_id": "79204259",
+		"url": "https://clips.twitch.tv/DignifiedPuzzledMonkeyOSsloth?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DignifiedPuzzledMonkeyOSsloth\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DignifiedPuzzledMonkeyOSsloth\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "29839446",
+			"name": "stic726",
+			"display_name": "sTIc726",
+			"channel_url": "https://www.twitch.tv/stic726",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-150x150.jpg"
+		},
+		"vod": null,
+		"broadcast_id": "25300193312",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "[EN] PUBG [335 Wins] | Day 171/365 | Twitter @TSMViss",
+		"views": 65,
+		"duration": 29.316667,
+		"created_at": "2017-05-17T22:16:07Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/25300193312-offset-14602-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/25300193312-offset-14602-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/25300193312-offset-14602-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "OnerousRichJuiceYouWHY",
+		"tracking_id": "29422001",
+		"url": "https://clips.twitch.tv/OnerousRichJuiceYouWHY?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=OnerousRichJuiceYouWHY\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=OnerousRichJuiceYouWHY\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "28225113",
+			"name": "hacksaw295",
+			"display_name": "hacksaw295",
+			"channel_url": "https://www.twitch.tv/hacksaw295",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/hacksaw295-profile_image-3aa20c31da8eacd8-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "23237131152",
+		"game": "Arma 3",
+		"language": "en",
+		"title": "[EN] Battle Royale [964 Solo Wins] | !subgoal 224250 https://youtu.be/vWlpkk9TuZE | $100 !giveaway Twitter \u0026 Youtube @VissGames",
+		"views": 65,
+		"duration": 32,
+		"created_at": "2016-09-22T22:09:03Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/23237131152-offset-13244-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/23237131152-offset-13244-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/23237131152-offset-13244-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "ManlyAbnegatePlumageDxAbomb",
+		"tracking_id": "39219454",
+		"url": "https://clips.twitch.tv/ManlyAbnegatePlumageDxAbomb?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=ManlyAbnegatePlumageDxAbomb\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=ManlyAbnegatePlumageDxAbomb\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "32755992",
+			"name": "billymcfloy",
+			"display_name": "BillyMcFloy",
+			"channel_url": "https://www.twitch.tv/billymcfloy",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/billymcfloy-profile_image-08ad39eeb1ea1429-150x150.png"
+		},
+		"vod": null,
+		"broadcast_id": "22340155456",
+		"game": "Arma 3",
+		"language": "en",
+		"title": "[ENG] Battle Royale [850 Solo Wins] $100 !giveaway Twitter \u0026 Youtube @VissGames",
+		"views": 65,
+		"duration": 32,
+		"created_at": "2016-07-14T20:45:29Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/22340155456-index-0000002071-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/22340155456-index-0000002071-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/22340155456-index-0000002071-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "CredulousHappyConsolePartyTime",
+		"tracking_id": "163731747",
+		"url": "https://clips.twitch.tv/CredulousHappyConsolePartyTime?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=CredulousHappyConsolePartyTime\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=CredulousHappyConsolePartyTime\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "62595572",
+			"name": "thumbbreaker4",
+			"display_name": "thumbbreaker4",
+			"channel_url": "https://www.twitch.tv/thumbbreaker4",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "209709617",
+			"url": "https://www.twitch.tv/videos/209709617?t=14m28s",
+			"offset": 868
+		},
+		"broadcast_id": "26987312896",
+		"game": "IRL",
+		"language": "en",
+		"title": "Gotta love Viss part 2",
+		"views": 64,
+		"duration": 34.933984,
+		"created_at": "2017-12-16T06:05:13Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/163731747-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/163731747-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/163731747-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "DrabSecretiveBeefBibleThump",
+		"tracking_id": "163465263",
+		"url": "https://clips.twitch.tv/DrabSecretiveBeefBibleThump?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=DrabSecretiveBeefBibleThump\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=DrabSecretiveBeefBibleThump\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "27198577",
+			"name": "lokitanna",
+			"display_name": "Lokitanna",
+			"channel_url": "https://www.twitch.tv/lokitanna",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/lokitanna-profile_image-6bcd6f782f950985-150x150.jpeg"
+		},
+		"vod": {
+			"id": "209709617",
+			"url": "https://www.twitch.tv/videos/209709617?t=4h29m14s",
+			"offset": 16154
+		},
+		"broadcast_id": "26987312896",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "Obvious stream sniper",
+		"views": 64,
+		"duration": 30.416667,
+		"created_at": "2017-12-15T16:28:00Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26987312896-offset-16180-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26987312896-offset-16180-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26987312896-offset-16180-preview-86x45.jpg"
+		}
+	}, {
+		"slug": "PunchyDarlingGuanacoTriHard",
+		"tracking_id": "162773000",
+		"url": "https://clips.twitch.tv/PunchyDarlingGuanacoTriHard?tt_medium=clips_api\u0026tt_content=url",
+		"embed_url": "https://clips.twitch.tv/embed?clip=PunchyDarlingGuanacoTriHard\u0026tt_medium=clips_api\u0026tt_content=embed",
+		"embed_html": "\u003ciframe src='https://clips.twitch.tv/embed?clip=PunchyDarlingGuanacoTriHard\u0026tt_medium=clips_api\u0026tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'\u003e\u003c/iframe\u003e",
+		"broadcaster": {
+			"id": "90020006",
+			"name": "tsm_viss",
+			"display_name": "TSM_Viss",
+			"channel_url": "https://www.twitch.tv/tsm_viss",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/15ea6088e14b5a50-profile_image-150x150.png"
+		},
+		"curator": {
+			"id": "130634369",
+			"name": "bam_balam",
+			"display_name": "bam_balam",
+			"channel_url": "https://www.twitch.tv/bam_balam",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-150x150.jpg"
+		},
+		"vod": {
+			"id": "209175158",
+			"url": "https://www.twitch.tv/videos/209175158?t=7h2m16s",
+			"offset": 25336
+		},
+		"broadcast_id": "26971263328",
+		"game": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"language": "en",
+		"title": "none shall escape",
+		"views": 64,
+		"duration": 30.050667,
+		"created_at": "2017-12-13T18:59:10Z",
+		"thumbnails": {
+			"medium": "https://clips-media-assets.twitch.tv/26971263328-offset-25360-preview-480x272.jpg",
+			"small": "https://clips-media-assets.twitch.tv/26971263328-offset-25360-preview-260x147.jpg",
+			"tiny": "https://clips-media-assets.twitch.tv/26971263328-offset-25360-preview-86x45.jpg"
+		}
+	}],
+	"_cursor": ""
+}
