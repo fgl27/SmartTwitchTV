@@ -333,10 +333,6 @@ Play.onPlayer = function() {
     Play.hidePanel();
     if (Play.ChatEnable && !Play.isChatShown()) Play.showChat();
 
-    // sync chat and stream
-    document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-        Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
-
     if (!Play.Playing) {
         Play.videojs.ready(function() {
             this.isFullscreen(true);
@@ -357,8 +353,18 @@ Play.onPlayer = function() {
                 window.setTimeout(Play.shutdownStream, 1500);
             });
 
+            this.on('canplaythrough', function() {
+                // sync chat and stream
+                document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
+                    Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
+            });
+
         });
         Play.Playing = true;
+    } else {
+        // sync chat and stream
+        document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
+            Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
     }
 };
 
@@ -388,6 +394,7 @@ Play.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
+    Play.videojs.off('canplaythrough', null);
 };
 
 Play.updateCurrentTime = function(currentTime) {
