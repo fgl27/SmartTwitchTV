@@ -22,6 +22,10 @@ AddUser.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.body.removeEventListener("keydown", AddUser.handleKeyDown);
+    AddUser.input.blur();
+    document.body.removeEventListener('keydown', function(event) {
+        AddUser.KeyboardEvent(event);
+    });
     Main.SwitchScreen();
 };
 
@@ -55,6 +59,9 @@ AddUser.handleKeyDown = function(event) {
         case TvKeyCode.KEY_GREEN:
         case TvKeyCode.KEY_YELLOW:
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.Go;
+            Main.Go = Main.Search;
+            Live.exit();
             break;
         default:
             break;

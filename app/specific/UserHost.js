@@ -490,7 +490,7 @@ UserHost.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.Before = Main.Go;
+            Main.BeforeSearch = Main.UserHost;
             Main.Go = Main.Search;
             UserHost.exit();
             break;

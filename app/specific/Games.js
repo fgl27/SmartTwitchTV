@@ -469,6 +469,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.Games;
             Main.Go = Main.Search;
             Games.exit();
             break;

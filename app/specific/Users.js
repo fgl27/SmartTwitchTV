@@ -180,6 +180,7 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.Users;
             Main.Go = Main.Search;
             Main.RestoreTopLabel();
             document.body.removeEventListener("keydown", Users.handleKeyDown);

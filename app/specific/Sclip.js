@@ -515,6 +515,7 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.Sclip;
             Main.Go = Main.Search;
             Sclip.exit();
             break;

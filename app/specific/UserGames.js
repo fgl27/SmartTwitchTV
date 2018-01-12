@@ -480,7 +480,7 @@ UserGames.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.Before = Main.Go;
+            Main.BeforeSearch = Main.UserGames;
             Main.Go = Main.Search;
             Main.OldgameSelected = Main.gameSelected;
             UserGames.exit();

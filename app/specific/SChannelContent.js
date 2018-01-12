@@ -306,6 +306,7 @@ SChannelContent.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.SChannelContent;
             Main.Go = Main.Search;
             Main.RestoreTopLabel();
             document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
