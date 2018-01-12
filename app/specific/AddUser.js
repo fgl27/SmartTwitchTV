@@ -19,14 +19,16 @@ AddUser.init = function() {
 };
 
 AddUser.exit = function() {
-    $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
-    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     AddUser.input.blur();
     document.body.removeEventListener('keydown', function(event) {
         AddUser.KeyboardEvent(event);
     });
-    Main.SwitchScreen();
+    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
+    window.setTimeout(function() {
+        $('#top_bar_user').removeClass('icon_center_focus');
+        $('#top_bar_user').addClass('icon_center_label');
+        Main.SwitchScreen();
+    }, 250);
 };
 
 AddUser.handleKeyDown = function(event) {
