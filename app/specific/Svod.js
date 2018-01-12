@@ -44,7 +44,7 @@ Svod.vodId = '';
 
 Svod.init = function() {
     Main.Go = Main.Svod;
-    if (SChannelsA.lastselectedChannel !== Svod.lastselectedChannel) Svod.status = false;
+    if (SChannelContent.lastselectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_VOD);
@@ -64,7 +64,7 @@ Svod.exit = function() {
 Svod.StartLoad = function() {
     $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     Main.HideWarningDialog();
-    Svod.lastselectedChannel = SChannelsA.lastselectedChannel;
+    Svod.lastselectedChannel = SChannelContent.lastselectedChannel;
     Svod.status = false;
     Svod.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
@@ -418,7 +418,7 @@ Svod.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.SChannelsA;
+            Main.Go = Main.SChannelContent;
             Svod.exit();
             break;
         case TvKeyCode.KEY_LEFT:

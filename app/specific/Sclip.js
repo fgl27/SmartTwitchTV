@@ -51,7 +51,7 @@ Sclip.playUrl = '';
 Sclip.init = function() {
     Main.Go = Main.Sclip;
     Sclip.SetPeriod();
-    if (SChannelsA.lastselectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
+    if (SChannelContent.lastselectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
     Main.cleanTopLabel();
     $('.lable_user').html(STR_CLIPS);
     document.getElementById("top_bar_spacing").style.paddingLeft = "25.5%";
@@ -72,7 +72,7 @@ Sclip.StartLoad = function() {
     Main.HideWarningDialog();
     Sclip.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Sclip.lastselectedChannel = SChannelsA.lastselectedChannel;
+    Sclip.lastselectedChannel = SChannelContent.lastselectedChannel;
     Sclip.loadingReplace = false;
     Sclip.cursor = null;
     Sclip.status = false;
@@ -418,7 +418,7 @@ Sclip.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.SChannelsA;
+            Main.Go = Main.SChannelContent;
             Sclip.exit();
             break;
         case TvKeyCode.KEY_LEFT:

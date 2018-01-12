@@ -22,10 +22,11 @@ Main.UserAVod = 10;
 Main.Search = 11;
 Main.SGames = 12;
 Main.SLive = 13;
-Main.SChannelsA = 14;
+Main.SChannelContent = 14;
 Main.Svod = 15;
 Main.Sclip = 16;
 Main.Users = 17;
+Main.UserChannels = 18;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -158,13 +159,16 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.Search) Search.init();
     else if (Main.Go === Main.SGames) SGames.init();
     else if (Main.Go === Main.SLive) SLive.init();
-    else if (Main.Go === Main.SChannelsA) SChannelsA.init();
+    else if (Main.Go === Main.SChannelContent) SChannelContent.init();
     else if (Main.Go === Main.Svod) Svod.init();
     else if (Main.Go === Main.Sclip) Sclip.init();
     else if (Main.Go === Main.Users) Users.init();
     else if (Main.Go === Main.UserLive) UserLive.init();
     else if (Main.Go === Main.UserHost) UserHost.init();
     else if (Main.Go === Main.UserGames) UserGames.init();
+    else if (Main.Go === Main.UserChannels) UserChannels.init();
+    else if (Main.Go === Main.SChannels) SChannels.init();
+    else Live.init();
 };
 
 Main.openStream = function() {
