@@ -50,7 +50,7 @@ Search.exitMain = function() {
 
 Search.loadData = function() {
     Search.exit();
-    if (Search.cursorX == 0) SChannels.init();
+    if (Search.cursorX === 0) SChannels.init();
     else if (Search.cursorX == 1) SGames.init();
     else if (Search.cursorX == 2) SLive.init();
 };
@@ -65,7 +65,7 @@ Search.refreshInputFocusTools = function() {
         $('#game_button').addClass('button_search');
         $('#live_button').addClass('button_search');
     } else {
-        if (Search.cursorX == 0) $('#chanel_button').addClass('button_search_focused');
+        if (Search.cursorX === 0) $('#chanel_button').addClass('button_search_focused');
         else if (Search.cursorX == 1) $('#game_button').addClass('button_search_focused');
         else if (Search.cursorX == 2) $('#live_button').addClass('button_search_focused');
     }
@@ -125,14 +125,14 @@ Search.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            if (Search.cursorY == 0) Search.inputFocus();
+            if (Search.cursorY === 0) Search.inputFocus();
             else {
-                if ($('#search_input').val() != '' && $('#search_input').val() != null) {
+                if ($('#search_input').val() !== '' && $('#search_input').val() !== null) {
                     Search.data = $('#search_input').val();
                     document.getElementById("search_input").value = '';
                     Search.input.blur();
                     document.body.removeEventListener('keydown', function(event) {
-                        Search.KeyboardEvent(event)
+                        Search.KeyboardEvent(event);
                     });
                     Search.loadData();
                 }
