@@ -490,7 +490,6 @@ UserHost.handleKeyDown = function(event) {
         case TvKeyCode.KEY_BLUE:
             Main.Before = Main.Go;
             Main.Go = Main.Search;
-            Main.OldgameSelected = Main.gameSelected;
             UserHost.exit();
             break;
         case TvKeyCode.KEY_VOLUMEUP:

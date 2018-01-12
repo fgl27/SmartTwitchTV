@@ -75,7 +75,6 @@ Play.Start = function() {
     Play.showBufferDialog();
     document.getElementById("stream_live").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
-    $('#stream_info_name').text(Main.selectedChannel);
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
     $("#stream_info_name").text(Main.selectedChannelDisplayname);

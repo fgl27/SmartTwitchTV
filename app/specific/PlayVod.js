@@ -49,10 +49,10 @@ PlayVod.Start = function() {
     $("#scene2_quality").show();
     $('#clip_label_quality').html(STR_QUALITY);
     $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
-    $('#stream_info_name').text(Main.selectedChannel);
+    $('#stream_info_name').text(Main.selectedChannelDisplayname);
     $("#stream_info_title").text(Svod.title);
-    $("#stream_info_game").text(Svod.createdAt);
-    $("#stream_live").text(Svod.views);
+    $("#stream_info_game").text(Svod.views);
+    $("#stream_live").text(Svod.createdAt);
     $("#stream_info_livetime").text(Svod.Duration);
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
 
