@@ -46,6 +46,7 @@ UserHost.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(AddUser.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
+    if (Main.OldUserName !== AddUser.UserName) UserHost.status = false;
     if (UserHost.status) UserHost.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX);
     else UserHost.StartLoad();
 };
@@ -61,9 +62,10 @@ UserHost.exit = function() {
 
 UserHost.StartLoad = function() {
     Main.HideWarningDialog();
-    UserHost.status = false;
     UserHost.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    Main.OldUserName = AddUser.UserName;
+    UserHost.status = false;
     $('#stream_table_user_host').empty();
     UserHost.loadingMore = false;
     UserHost.blankCellCount = 0;

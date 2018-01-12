@@ -37,6 +37,7 @@ Main.selectedGameDisplayname = '';
 Main.gameSelected = '';
 Main.OldgameSelected = null;
 Main.selectedChannelChannelLogo = '';
+Main.OldUserName = '';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
