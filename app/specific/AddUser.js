@@ -232,10 +232,6 @@ AddUser.ScrollHelper = {
 
 AddUser.removeUser = function() {
     Users.status = false;
-    UserChannels.status = false;
-    UserGames.status = false;
-    UserHost.status = false;
-    UserLive.status = false;
     AddUser.UserName = null;
     AddUser.init();
 };
