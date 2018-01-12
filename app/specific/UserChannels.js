@@ -326,11 +326,11 @@ UserChannels.handleKeyDown = function(event) {
             if (!UserChannels.loadingMore) UserChannels.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserGames;
+            Main.Go = Main.UserLive;
             UserChannels.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.UserLive;
+            Main.Go = Main.UserGames;
             UserChannels.exit();
             break;
         case TvKeyCode.KEY_PLAY:
