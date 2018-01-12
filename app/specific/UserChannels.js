@@ -37,9 +37,9 @@ UserChannels.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
-    $('.label_agame_name').html(AddUser.UserName + STR_USER_CHANNEL);
+    $('.label_agame_name').html(Main.UserName + STR_USER_CHANNEL);
     document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
-    if (Main.OldUserName !== AddUser.UserName) UserChannels.status = false;
+    if (Main.OldUserName !== Main.UserName) UserChannels.status = false;
     if (UserChannels.status) UserChannels.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX);
     else UserChannels.StartLoad();
 };
@@ -57,7 +57,7 @@ UserChannels.StartLoad = function() {
     Main.HideWarningDialog();
     UserChannels.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Main.OldUserName = AddUser.UserName;
+    Main.OldUserName = Main.UserName;
     UserChannels.status = false;
     $('#stream_table_user_channels').empty();
     UserChannels.loadingMore = false;
@@ -82,7 +82,7 @@ UserChannels.loadChannels = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=100&offset=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=100&offset=' +
             UserChannels.loadChannelOffsset + '&sortby=created_at', true);
         xmlHttp.timeout = UserChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');

@@ -1,7 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function AddUser() {}
-AddUser.UserName = null;
 AddUser.loadingDataTry = 1;
 AddUser.loadingDataTryMax = 10;
 AddUser.loadingDataTimeout = 3500;
@@ -115,7 +114,7 @@ AddUser.KeyboardEvent = function(event) {
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
             if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
                 document.getElementById("user_input").value = $('#user_input').val();
-                AddUser.UserName = $('#user_input').val();
+                Main.UserName = $('#user_input').val();
                 AddUser.input.blur();
                 AddUser.loadingDataTry = 1;
                 AddUser.loadingDataTimeout = 3500;
@@ -154,7 +153,7 @@ AddUser.loadDataRequest = function() {
             AddUser.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=1&sortby=created_at', true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=1&sortby=created_at', true);
         xmlHttp.timeout = AddUser.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -164,7 +163,7 @@ AddUser.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         document.getElementById("user_input").value = '';
-                        localStorage.setItem('UserName', AddUser.UserName);
+                        localStorage.setItem('UserName', Main.UserName);
                         document.body.removeEventListener("keydown", AddUser.handleKeyDown);
                         Users.init();
                         return;
@@ -187,7 +186,7 @@ AddUser.loadDataError = function() {
         AddUser.loadingDataTimeout += (AddUser.loadingDataTry < 5) ? 250 : 3500;
         AddUser.loadDataRequest();
     } else {
-        AddUser.UserName = null;
+        Main.UserName = null;
         Main.HideLoadDialog();
         Main.showWarningDialog(STR_USER_ERROR);
         window.setTimeout(function() {
@@ -232,6 +231,6 @@ AddUser.ScrollHelper = {
 
 AddUser.removeUser = function() {
     Users.status = false;
-    AddUser.UserName = null;
+    Main.UserName = null;
     AddUser.init();
 };
