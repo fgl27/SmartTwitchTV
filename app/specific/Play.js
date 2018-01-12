@@ -193,6 +193,7 @@ Play.loadDataError = function() {
         Play.loadingDataTimeout += (Play.loadingDataTry < 5) ? 250 : 3500;
         Play.loadDataRequest();
     } else {
+        Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(Play.shutdownStream, 1500);
     }
@@ -216,6 +217,7 @@ Play.restore = function() {
         Play.state = Play.STATE_PLAYING;
         Play.qualityChanged();
     } else {
+        Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(Play.shutdownStream, 1500);
     }
@@ -340,6 +342,7 @@ Play.onPlayer = function() {
             this.autoplay(true);
 
             this.on('ended', function() {
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_IS_OFFLINE);
                 window.setTimeout(Play.shutdownStream, 1500);
             });
@@ -349,6 +352,7 @@ Play.onPlayer = function() {
             });
 
             this.on('error', function() {
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(Play.shutdownStream, 1500);
             });
@@ -381,6 +385,7 @@ Play.PlayerCheck = function() {
                 Play.qualityChanged();
                 Play.PlayerCheckQualityChanged = true; // half time on next check
             } else { //staled too long drop the player
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(Play.shutdownStream, 1500);
             }
@@ -489,7 +494,6 @@ Play.BufferDialogVisible = function() {
 };
 
 Play.showWarningDialog = function(text) {
-    $("#dialog_buffer_play").hide()
     $("#dialog_warning_play_text").text(text);
     $("#dialog_warning_play").show();
 };
