@@ -16,10 +16,10 @@ PlayClip.Start = function() {
     $("#scene2_quality").hide();
     Play.showBufferDialog();
     $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
-    $('#stream_info_name').text(Main.selectedChannel);
-    $("#stream_info_title").text(Sclip.title);
-    $("#stream_info_game").text(Sclip.createdAt);
-    $("#stream_live").text(Sclip.views);
+    $('#stream_info_name').text(Sclip.title);
+    $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
+    $("#stream_info_game").text(Sclip.views);
+    $("#stream_live").text(Sclip.createdAt);
     $("#stream_info_livetime").text(Sclip.Duration);
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
 

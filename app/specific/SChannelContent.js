@@ -41,9 +41,9 @@ SChannelContent.init = function() {
     Main.Go = Main.SChannelContent;
     if (SChannelContent.lastselectedChannel !== Main.selectedChannel) SChannelContent.status = false;
     Main.cleanTopLabel();
-    document.getElementById("top_bar_spacing").style.paddingLeft = "25.5%";
-    $('.lable_user').html(STR_CHANNEL);
-    $('.lable_game').html(Main.selectedChannelDisplayname);
+    document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
+    $('.lable_user').html(Main.selectedChannelDisplayname);
+    $('.lable_game').html(STR_CHANNEL + STR_CONTENT);
     $('.label_agame_name').html('');
     document.body.addEventListener("keydown", SChannelContent.handleKeyDown, false);
     if (SChannelContent.status) SChannelContent.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail + SChannelContent.cursorY + '_' + SChannelContent.cursorX);

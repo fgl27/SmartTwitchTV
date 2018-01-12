@@ -48,8 +48,8 @@ Svod.init = function() {
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_VOD);
-    $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-    $('.lable_game').html(Main.selectedChannel);
+    $('.lable_user').html(Main.selectedChannelDisplayname);
+    $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
     if (Svod.status) Svod.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX);
     else Svod.StartLoad();
@@ -62,7 +62,7 @@ Svod.exit = function() {
 };
 
 Svod.StartLoad = function() {
-    $('.lable_user').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     Main.HideWarningDialog();
     Svod.lastselectedChannel = SChannelContent.lastselectedChannel;
     Svod.status = false;
