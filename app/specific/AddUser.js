@@ -36,11 +36,11 @@ AddUser.handleKeyDown = function(event) {
             AddUser.exit();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Live;
+            Main.Go = Main.Games;
             AddUser.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.Games;
+            Main.Go = Main.Live;
             AddUser.exit();
             break;
         case TvKeyCode.KEY_PLAY:
