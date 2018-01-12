@@ -8,6 +8,10 @@ PlayClip.PlayerTime = 0;
 PlayClip.streamCheck = null;
 PlayClip.PlayerCheckCount = 0;
 PlayClip.Canjump = false;
+PlayClip.IsJumping = false;
+PlayClip.jumpCount = 0;
+PlayClip.JumpID = null;
+PlayClip.TimeToJump = 0;
 
 //Variable initialization end
 
@@ -26,6 +30,9 @@ PlayClip.Start = function() {
     document.addEventListener('visibilitychange', PlayClip.Resume, false);
     PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
     PlayClip.Canjump = false;
+    PlayClip.IsJumping = false;
+    PlayClip.jumpCount = 0;
+    PlayClip.TimeToJump = 0;
 
     window.setTimeout(function() {
         Play.videojs.src({
@@ -104,7 +111,7 @@ PlayClip.Exit = function() {
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
-    if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+    if (Play.WarningDialogVisible() && !PlayClip.IsJumping) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
     PlayClip.PlayerCheckCount = 0;
     PlayClip.Canjump = true;
@@ -132,15 +139,78 @@ PlayClip.setHidePanel = function() {
     PlayClip.PanelHideID = window.setTimeout(PlayClip.hidePanel, 5000); // time in ms
 };
 
+PlayClip.jump = function() {
+    if (!Play.videojs.paused()) Play.videojs.pause();
+    Play.videojs.currentTime(Play.videojs.currentTime() + PlayClip.TimeToJump);
+    PlayClip.jumpCount = 0;
+    PlayClip.IsJumping = false;
+    PlayClip.Canjump = false;
+    Play.videojs.play();
+};
+
+PlayClip.jumpStart = function() {
+    window.clearTimeout(PlayClip.JumpID);
+    PlayClip.IsJumping = true;
+    var time = '';
+
+    if (PlayClip.jumpCount === 0) {
+        PlayClip.TimeToJump = 0;
+        Play.showWarningDialog(STR_JUMP_CANCEL);
+        window.setTimeout(function() {
+            PlayClip.IsJumping = false;
+        }, 1000);
+        return;
+    } else if (PlayClip.jumpCount < 0) {
+        if (PlayClip.jumpCount == -1) PlayClip.TimeToJump = -5;
+        else if (PlayClip.jumpCount == -2) PlayClip.TimeToJump = -10;
+        else if (PlayClip.jumpCount == -3) PlayClip.TimeToJump = -15;
+        else if (PlayClip.jumpCount == -4) PlayClip.TimeToJump = -20;
+        else if (PlayClip.jumpCount == -5) PlayClip.TimeToJump = -25;
+        else if (PlayClip.jumpCount == -6) PlayClip.TimeToJump = -30;
+        else if (PlayClip.jumpCount == -7) PlayClip.TimeToJump = -35;
+        else if (PlayClip.jumpCount == -8) PlayClip.TimeToJump = -40;
+        else if (PlayClip.jumpCount == -9) PlayClip.TimeToJump = -45;
+        else if (PlayClip.jumpCount == -10) PlayClip.TimeToJump = -50;
+        else if (PlayClip.jumpCount == -11) PlayClip.TimeToJump = -55;
+        else PlayClip.TimeToJump = -60;
+
+        time = PlayClip.TimeToJump + STR_SEC;
+        if (PlayClip.TimeToJump < -30) time = (PlayClip.TimeToJump / 60) + STR_MIN;
+        if (PlayClip.TimeToJump < -1800) time = ((PlayClip.TimeToJump / 60) / 60) + STR_HR;
+    } else {
+        if (PlayClip.jumpCount == 1) PlayClip.TimeToJump = 5;
+        else if (PlayClip.jumpCount == 2) PlayClip.TimeToJump = 10;
+        else if (PlayClip.jumpCount == 3) PlayClip.TimeToJump = 15;
+        else if (PlayClip.jumpCount == 4) PlayClip.TimeToJump = 20;
+        else if (PlayClip.jumpCount == 5) PlayClip.TimeToJump = 25;
+        else if (PlayClip.jumpCount == 6) PlayClip.TimeToJump = 30;
+        else if (PlayClip.jumpCount == 7) PlayClip.TimeToJump = 35;
+        else if (PlayClip.jumpCount == 8) PlayClip.TimeToJump = 40;
+        else if (PlayClip.jumpCount == 9) PlayClip.TimeToJump = 45;
+        else if (PlayClip.jumpCount == 10) PlayClip.TimeToJump = 50;
+        else if (PlayClip.jumpCount == 11) PlayClip.TimeToJump = 55;
+        else PlayClip.TimeToJump = 60;
+    }
+    time = PlayClip.TimeToJump + STR_SEC;
+    Play.showWarningDialog(STR_JUMP_TIME + time + STR_JUMP_T0 +
+        Play.timeS(Play.videojs.currentTime() + PlayClip.TimeToJump));
+
+    PlayClip.JumpID = window.setTimeout(PlayClip.jump, 1000);
+};
+
 PlayClip.handleKeyDown = function(e) {
     switch (e.keyCode) {
         case TvKeyCode.KEY_LEFT:
-            if (PlayClip.Canjump)
-                Play.videojs.currentTime(Play.videojs.currentTime() - 5);
+            if (PlayClip.Canjump) {
+                if (PlayClip.jumpCount > -12) PlayClip.jumpCount--;
+                PlayClip.jumpStart();
+            }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (PlayClip.Canjump)
-                Play.videojs.currentTime(Play.videojs.currentTime() + 5);
+            if (PlayClip.Canjump) {
+                if (PlayClip.jumpCount < 12) PlayClip.jumpCount++;
+                PlayClip.jumpStart();
+            }
             break;
         case TvKeyCode.KEY_UP:
             if (!Play.isPanelShown()) {
