@@ -40,6 +40,10 @@ PlayVod.PlayerCheckOffset = 0;
 PlayVod.PlayerCheckQualityChanged = false;
 PlayVod.Canjump = false;
 PlayVod.Playing = false;
+PlayVod.JumpID = null;
+PlayVod.TimeToJump = 0;
+PlayVod.IsJumping = false;
+PlayVod.jumpCount = 0;
 
 //Variable initialization end
 
@@ -56,6 +60,8 @@ PlayVod.Start = function() {
     $("#stream_info_livetime").text(Svod.Duration);
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
 
+    PlayVod.jumpCount = 0;
+    PlayVod.IsJumping = false;
     PlayVod.tokenResponse = 0;
     PlayVod.playlistResponse = 0;
     PlayVod.playingTry = 0;
@@ -132,6 +138,7 @@ PlayVod.loadDataError = function() {
         PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
         PlayVod.loadDataRequest();
     } else {
+        Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(PlayVod.shutdownStream, 1500);
     }
@@ -155,6 +162,7 @@ PlayVod.restore = function() {
         PlayVod.state = PlayVod.STATE_PLAYING;
         PlayVod.qualityChanged();
     } else {
+        Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
         window.setTimeout(PlayVod.shutdownStream, 1500);
     }
@@ -185,7 +193,7 @@ PlayVod.extractQualities = function(input) {
                 'id': TempId + ' (source)',
                 'url': streams[i].split("\n")[2]
             });
-        } else if (result[i - tempCount].id !== TempId){
+        } else if (result[i - tempCount].id !== TempId) {
             TempId2 = result[i - tempCount].id;
             if (TempId2.indexOf('ource') === -1) {
                 result.push({
@@ -234,7 +242,7 @@ PlayVod.onPlayer = function() {
         type: "video/mp4",
         src: PlayVod.playingUrl
     });
-
+    PlayVod.Canjump = false;
     Play.HideWarningDialog();
     PlayVod.hidePanel();
 
@@ -245,6 +253,7 @@ PlayVod.onPlayer = function() {
             this.autoplay(true);
 
             this.on('ended', function() {
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_IS_OFFLINE);
                 window.setTimeout(PlayVod.shutdownStream, 1500);
             });
@@ -254,6 +263,7 @@ PlayVod.onPlayer = function() {
             });
 
             this.on('error', function() {
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(PlayVod.shutdownStream, 1500);
             });
@@ -284,6 +294,7 @@ PlayVod.PlayerCheck = function() {
                 PlayVod.qualityChanged();
                 PlayVod.PlayerCheckQualityChanged = true; // half time on next check
             } else { //staled too long drop the player
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(PlayVod.shutdownStream, 1500);
             }
@@ -301,7 +312,7 @@ PlayVod.offPlayer = function() {
 };
 
 PlayVod.updateCurrentTime = function(currentTime) {
-    if (Play.WarningDialogVisible()) Play.HideWarningDialog();
+    if (Play.WarningDialogVisible() && !PlayVod.IsJumping) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
     PlayVod.PlayerCheckCount = 0;
     PlayVod.PlayerCheckOffset = 0;
@@ -395,6 +406,77 @@ PlayVod.getQualitiesCount = function() {
     return PlayVod.qualities.length;
 };
 
+PlayVod.jump = function() {
+    if (!Play.videojs.paused()) Play.videojs.pause();
+    Play.videojs.currentTime(Play.videojs.currentTime() + PlayVod.TimeToJump);
+    PlayVod.jumpCount = 0;
+    PlayVod.IsJumping = false;
+    PlayVod.Canjump = false;
+    Play.videojs.play();
+};
+
+PlayVod.jumpStart = function() {
+    window.clearTimeout(PlayVod.JumpID);
+    PlayVod.IsJumping = true;
+    var time = '';
+
+    if (PlayVod.jumpCount === 0) {
+        PlayVod.TimeToJump = 0;
+        Play.showWarningDialog(STR_JUMP_CANCEL);
+        window.setTimeout(function() {
+            PlayVod.IsJumping = false;
+        }, 1000);
+        return;
+    } else if (PlayVod.jumpCount < 0) {
+        if (PlayVod.jumpCount == -1) PlayVod.TimeToJump = -5;
+        else if (PlayVod.jumpCount == -2) PlayVod.TimeToJump = -10;
+        else if (PlayVod.jumpCount == -3) PlayVod.TimeToJump = -15;
+        else if (PlayVod.jumpCount == -4) PlayVod.TimeToJump = -30;
+        else if (PlayVod.jumpCount == -5) PlayVod.TimeToJump = -60;
+        else if (PlayVod.jumpCount == -6) PlayVod.TimeToJump = -120;
+        else if (PlayVod.jumpCount == -7) PlayVod.TimeToJump = -300;
+        else if (PlayVod.jumpCount == -8) PlayVod.TimeToJump = -600;
+        else if (PlayVod.jumpCount == -9) PlayVod.TimeToJump = -900;
+        else if (PlayVod.jumpCount == -10) PlayVod.TimeToJump = -1800;
+        else if (PlayVod.jumpCount == -11) PlayVod.TimeToJump = -3600;
+        else if (PlayVod.jumpCount == -12) PlayVod.TimeToJump = -7200;
+        else if (PlayVod.jumpCount == -13) PlayVod.TimeToJump = -10800;
+        else if (PlayVod.jumpCount == -14) PlayVod.TimeToJump = -14400;
+        else if (PlayVod.jumpCount == -15) PlayVod.TimeToJump = -18000;
+        else PlayVod.TimeToJump = -36000;
+
+        time = PlayVod.TimeToJump + STR_SEC;
+        if (PlayVod.TimeToJump < -30) time = (PlayVod.TimeToJump / 60) + STR_MIN;
+        if (PlayVod.TimeToJump < -1800) time = ((PlayVod.TimeToJump / 60) / 60) + STR_HR;
+    } else {
+        if (PlayVod.jumpCount == 1) PlayVod.TimeToJump = 5;
+        else if (PlayVod.jumpCount == 2) PlayVod.TimeToJump = 10;
+        else if (PlayVod.jumpCount == 3) PlayVod.TimeToJump = 15;
+        else if (PlayVod.jumpCount == 4) PlayVod.TimeToJump = 30;
+        else if (PlayVod.jumpCount == 5) PlayVod.TimeToJump = 60;
+        else if (PlayVod.jumpCount == 6) PlayVod.TimeToJump = 120;
+        else if (PlayVod.jumpCount == 7) PlayVod.TimeToJump = 300;
+        else if (PlayVod.jumpCount == 8) PlayVod.TimeToJump = 600;
+        else if (PlayVod.jumpCount == 9) PlayVod.TimeToJump = 900;
+        else if (PlayVod.jumpCount == 10) PlayVod.TimeToJump = 1800;
+        else if (PlayVod.jumpCount == 11) PlayVod.TimeToJump = 3600;
+        else if (PlayVod.jumpCount == 12) PlayVod.TimeToJump = 7200;
+        else if (PlayVod.jumpCount == 13) PlayVod.TimeToJump = 10800;
+        else if (PlayVod.jumpCount == 14) PlayVod.TimeToJump = 14400;
+        else if (PlayVod.jumpCount == 15) PlayVod.TimeToJump = 18000;
+        else PlayVod.TimeToJump = 36000;
+
+        time = PlayVod.TimeToJump + STR_SEC;
+        if (PlayVod.TimeToJump > 30) time = (PlayVod.TimeToJump / 60) + STR_MIN;
+        if (PlayVod.TimeToJump > 1800) time = ((PlayVod.TimeToJump / 60) / 60) + STR_HR;
+    }
+
+    Play.showWarningDialog(STR_JUMP_TIME + time + STR_JUMP_T0 +
+        Play.timeS(Play.videojs.currentTime() + PlayVod.TimeToJump));
+
+    PlayVod.JumpID = window.setTimeout(PlayVod.jump, 1000);
+};
+
 PlayVod.handleKeyDown = function(e) {
     if (PlayVod.state != PlayVod.STATE_PLAYING) {
         switch (e.keyCode) {
@@ -418,17 +500,21 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_CHANNELDOWN:
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (PlayVod.Canjump) //TODO prevent consecutive jump as it can breack the app time counter
-                    Play.videojs.currentTime(Play.videojs.currentTime() - 600);
+                if (PlayVod.Canjump) {
+                    PlayVod.jumpCount--;
+                    PlayVod.jumpStart();
+                }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                if (PlayVod.Canjump)
-                    Play.videojs.currentTime(Play.videojs.currentTime() + 600);
+                if (PlayVod.Canjump) {
+                    if (PlayVod.jumpCount < 16) PlayVod.jumpCount++;
+                    PlayVod.jumpStart();
+                }
                 break;
             case TvKeyCode.KEY_UP:
                 if (Play.isPanelShown()) {
                     if (PlayVod.qualityIndex > 0) {
-                        PlayVod.qualityIndex--;
+                        if (PlayVod.jumpCount > -16) PlayVod.jumpCount--;
                         PlayVod.qualityDisplay();
                     }
                     PlayVod.clearHidePanel();

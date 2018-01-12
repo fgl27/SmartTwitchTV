@@ -47,6 +47,7 @@ PlayClip.Start = function() {
             });
 
             this.on('error', function() {
+                Play.HideBufferDialog();
                 Play.showWarningDialog(STR_IS_OFFLINE);
                 window.setTimeout(PlayClip.Exit, 1500);
             });
@@ -75,6 +76,7 @@ PlayClip.PlayerCheck = function() {
         Play.showBufferDialog();
         if (PlayClip.PlayerCheckCount > 90) {
             PlayClip.PlayerCheckCount = 0;
+            Play.HideBufferDialog();
             Play.showWarningDialog(STR_PLAYER_PROBLEM);
             window.setTimeout(PlayClip.shutdownStream, 1500);
         }
