@@ -101,7 +101,7 @@ UserLive.loadChannels = function() {
             UserLive.dataEnded = true;
             UserLive.ReplacedataEnded = true;
         }
-
+        // TODO revise this offset, as the value here may not always correct for this particularly function
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=' +
                 UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
@@ -544,7 +544,7 @@ UserLive.handleKeyDown = function(event) {
             UserLive.exit();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.UserGames;
+            Main.Go = Main.UserChannels;
             UserLive.exit();
             break;
         case TvKeyCode.KEY_PLAY:

@@ -163,7 +163,7 @@ SChannels.loadDataSuccess = function(responseText) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
-                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels.logo, channels.profile_banner, channels.display_name);
+                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels.logo, channels.display_name);
                 row.append(cell);
             }
         }
@@ -182,7 +182,7 @@ SChannels.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + SChannels.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, preview_logo, channel_display_name) {
+SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
     SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
     SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
     SChannels.imgMatrixCount++;
@@ -192,7 +192,7 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
 
-    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-logo="' + preview_logo + '"></td>').html(
+    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/ch_logo.png"/> \
             <div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
@@ -453,11 +453,11 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
-            Main.selectedChannelLogo = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-logo');
             Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
             Main.selectedChannelChannelLogo = document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).src;
             document.body.removeEventListener("keydown", SChannels.handleKeyDown);
-            SChannelsA.init();
+            Main.Before = Main.SChannels;
+            SChannelContent.init();
             break;
         case TvKeyCode.KEY_RED:
         case TvKeyCode.KEY_GREEN:
