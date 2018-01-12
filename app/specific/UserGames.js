@@ -44,6 +44,7 @@ UserGames.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(AddUser.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
+    if (Main.OldUserName !== AddUser.UserName) UserGames.status = false;
     if (UserGames.status) UserGames.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX);
     else UserGames.StartLoad();
 };
@@ -59,9 +60,10 @@ UserGames.exit = function() {
 
 UserGames.StartLoad = function() {
     Main.HideWarningDialog();
-    UserGames.status = false;
     UserGames.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
+    Main.OldUserName = AddUser.UserName;
+    UserGames.status = false;
     $('#stream_table_user_games').empty();
     UserGames.loadingMore = false;
     UserGames.blankCellCount = 0;
