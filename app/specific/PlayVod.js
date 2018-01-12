@@ -501,7 +501,7 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_LEFT:
                 if (PlayVod.Canjump) {
-                    PlayVod.jumpCount--;
+                    if (PlayVod.jumpCount > -16) PlayVod.jumpCount--;
                     PlayVod.jumpStart();
                 }
                 break;
@@ -514,7 +514,7 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_UP:
                 if (Play.isPanelShown()) {
                     if (PlayVod.qualityIndex > 0) {
-                        if (PlayVod.jumpCount > -16) PlayVod.jumpCount--;
+                        PlayVod.qualityIndex--;
                         PlayVod.qualityDisplay();
                     }
                     PlayVod.clearHidePanel();
