@@ -38,6 +38,7 @@ Main.gameSelected = '';
 Main.OldgameSelected = null;
 Main.selectedChannelChannelLogo = '';
 Main.OldUserName = '';
+Main.UserName = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -57,9 +58,9 @@ tizen.tvinputdevice.registerKey("Info");
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Main.Show = Main.Live;
-    AddUser.UserName = localStorage.getItem('UserName') || null;
     Live.init();
     Play.PreStart();
+    Main.UserName = localStorage.getItem('UserName') || null;
 });
 
 Main.initWindows = function() {

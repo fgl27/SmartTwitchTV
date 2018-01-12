@@ -45,9 +45,9 @@ UserLive.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
-    $('.label_agame_name').html(AddUser.UserName + STR_LIVE_CHANNELS);
+    $('.label_agame_name').html(Main.UserName + STR_LIVE_CHANNELS);
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
-    if (Main.OldUserName !== AddUser.UserName) UserLive.status = false;
+    if (Main.OldUserName !== Main.UserName) UserLive.status = false;
     if (UserLive.status) UserLive.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail + UserLive.cursorY + '_' + UserLive.cursorX);
     else UserLive.StartLoad();
 };
@@ -66,7 +66,7 @@ UserLive.StartLoad = function() {
     UserLive.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserLive.status = false;
-    Main.OldUserName = AddUser.UserName;
+    Main.OldUserName = Main.UserName;
     $('#stream_table_user_live').empty();
     UserLive.loadingMore = false;
     UserLive.blankCellCount = 0;
@@ -104,7 +104,7 @@ UserLive.loadChannels = function() {
             UserLive.ReplacedataEnded = true;
         }
         // TODO revise this offset, as the value here may not always correct for this particularly function
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.UserName) + '/follows/channels?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=' +
                 UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');

@@ -42,9 +42,9 @@ UserGames.init = function() {
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
-    $('.label_agame_name').html(AddUser.UserName + STR_LIVE_GAMES);
+    $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
-    if (Main.OldUserName !== AddUser.UserName) UserGames.status = false;
+    if (Main.OldUserName !== Main.UserName) UserGames.status = false;
     if (UserGames.status) UserGames.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX);
     else UserGames.StartLoad();
 };
@@ -62,7 +62,7 @@ UserGames.StartLoad = function() {
     Main.HideWarningDialog();
     UserGames.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Main.OldUserName = AddUser.UserName;
+    Main.OldUserName = Main.UserName;
     UserGames.status = false;
     $('#stream_table_user_games').empty();
     UserGames.loadingMore = false;
@@ -101,7 +101,7 @@ UserGames.loadChannels = function() {
             UserGames.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser.UserName) + '/follows/games/live?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games/live?limit=' +
             UserLive.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
