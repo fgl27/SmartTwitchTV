@@ -113,7 +113,7 @@ AddUser.KeyboardEvent = function(event) {
             break;
         case TvKeyCode.KEY_KEYBOARD_DONE:
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
-            if ($('#user_input').val() != '' && $('#user_input').val() != null) {
+            if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
                 document.getElementById("user_input").value = $('#user_input').val();
                 AddUser.UserName = $('#user_input').val();
                 AddUser.input.blur();
@@ -126,7 +126,7 @@ AddUser.KeyboardEvent = function(event) {
             }
             AddUser.input.blur();
             document.body.removeEventListener('keydown', function(event) {
-                AddUser.KeyboardEvent(event)
+                AddUser.KeyboardEvent(event);
             });
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
