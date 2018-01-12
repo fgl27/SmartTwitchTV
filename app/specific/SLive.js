@@ -490,6 +490,7 @@ SLive.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.SLive;
             Main.Go = Main.Search;
             SLive.exit();
             break;

@@ -353,7 +353,7 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.Before = Main.Go;
+            Main.BeforeSearch = Main.UserChannels;
             Main.Go = Main.Search;
             Main.OldgameSelected = Main.gameSelected;
             UserChannels.exit();

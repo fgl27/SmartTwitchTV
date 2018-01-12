@@ -8,6 +8,7 @@ Main.Hide = '';
 Main.Show = '';
 Main.Go = 1;
 Main.Before = 1;
+Main.BeforeSearch = 1;
 
 Main.Live = 1;
 Main.AddUser = 2;

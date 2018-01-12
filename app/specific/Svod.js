@@ -500,6 +500,7 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_YELLOW:
             break;
         case TvKeyCode.KEY_BLUE:
+            Main.BeforeSearch = Main.Svod;
             Main.Go = Main.Search;
             Svod.exit();
             break;

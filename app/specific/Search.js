@@ -31,6 +31,7 @@ Search.init = function() {
 };
 
 Search.exit = function() {
+    Main.Go = Main.BeforeSearch;
     $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
     $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH);
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
@@ -42,6 +43,10 @@ Search.exit = function() {
     $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", Search.handleKeyDown);
     document.getElementById("search_input").value = '';
+    Search.input.blur();
+    document.body.removeEventListener('keydown', function(event) {
+        Search.KeyboardEvent(event);
+    });
 };
 
 Search.exitMain = function() {
@@ -74,7 +79,6 @@ Search.refreshInputFocusTools = function() {
 Search.handleKeyDown = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Before;
             Search.exit();
             Main.SwitchScreen();
             break;
@@ -114,12 +118,12 @@ Search.handleKeyDown = function(event) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Live;
             Search.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.Live;
             Search.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
