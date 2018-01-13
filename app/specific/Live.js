@@ -45,7 +45,6 @@ Live.exit = function() {
     document.body.removeEventListener("keydown", Live.handleKeyDown);
     $('#top_bar_live').removeClass('icon_center_focus');
     $('#top_bar_live').addClass('icon_center_label');
-    Main.SwitchScreen();
 };
 
 Live.StartLoad = function() {
@@ -468,11 +467,13 @@ Live.handleKeyDown = function(event) {
             Main.Before = Main.Live;
             Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
             Live.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Before = Main.Live;
             Main.Go = Main.Games;
             Live.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -493,6 +494,7 @@ Live.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.Live;
             Main.Go = Main.Search;
             Live.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

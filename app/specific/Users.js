@@ -29,7 +29,6 @@ Users.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.body.removeEventListener("keydown", Users.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 Users.StartLoad = function() {
@@ -141,6 +140,7 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Live;
             Users.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             Users.removeFocus();
@@ -163,11 +163,13 @@ Users.handleKeyDown = function(event) {
             Main.Before = Main.Users;
             Main.Go = Main.Games;
             Users.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Before = Main.Users;
             Main.Go = Main.Live;
             Users.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

@@ -55,7 +55,6 @@ UserGames.exit = function() {
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = "50%";
     document.body.removeEventListener("keydown", UserGames.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 UserGames.StartLoad = function() {
@@ -400,6 +399,7 @@ UserGames.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Users;
             UserGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((UserGames.cursorY), (UserGames.cursorX - 1), UserGames.Thumbnail)) {
@@ -459,10 +459,12 @@ UserGames.handleKeyDown = function(event) {
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.UserChannels;
             UserGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.UserHost;
             UserGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -472,6 +474,7 @@ UserGames.handleKeyDown = function(event) {
             Main.Before = Main.UserGames;
             Main.Go = Main.AGame;
             UserGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_RED:
             break;
@@ -484,6 +487,7 @@ UserGames.handleKeyDown = function(event) {
             Main.Go = Main.Search;
             Main.OldgameSelected = Main.gameSelected;
             UserGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

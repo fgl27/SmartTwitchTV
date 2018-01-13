@@ -106,12 +106,14 @@ Play.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
-        Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
         window.setTimeout(function() {
-            Play.RestoreFromResume = true;
-            Play.PlayerCheckOffset = 60;
-            Play.onPlayer();
-            Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
+            if (!SmartHub.SmartHubResume) {
+                Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
+                Play.RestoreFromResume = true;
+                Play.PlayerCheckOffset = 60;
+                Play.onPlayer();
+                Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
+            }
         }, 500);
     }
 };
@@ -270,6 +272,7 @@ Play.extractQualities = function(input) {
     }
     Play.qualities = result;
     Play.state = Play.STATE_PLAYING;
+    SmartHub.SmartHubResume = false;
     Play.qualityChanged();
     Play.saveQualities();
 };

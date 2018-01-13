@@ -37,8 +37,8 @@ SGames.Cell = 'sgame_cell_';
 
 SGames.init = function() {
     Main.Go = Main.SGames;
-    $('.lable_user').html(STR_SEARCHS);
     Main.cleanTopLabel();
+    $('.lable_user').html(STR_SEARCHS);
     $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
     if (SGames.status) SGames.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + Live.cursorY + '_' + Live.cursorX);
@@ -49,7 +49,6 @@ SGames.exit = function() {
     Main.RestoreTopLabel();
     SGames.Status = false;
     document.body.removeEventListener("keydown", SGames.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 SGames.StartLoad = function() {
@@ -236,6 +235,7 @@ SGames.handleKeyDown = function(event) {
             if (Main.Go === Main.Before) Main.Go = Main.Live;
             else Main.Go = Main.Before;
             SGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((SGames.cursorY), (SGames.cursorX - 1), SGames.Thumbnail)) {
@@ -304,6 +304,7 @@ SGames.handleKeyDown = function(event) {
             Main.Before = Main.Go;
             Main.Go = Main.AGame;
             SGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_RED:
             break;
@@ -315,6 +316,7 @@ SGames.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.SGames;
             Main.Go = Main.Search;
             SGames.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:
