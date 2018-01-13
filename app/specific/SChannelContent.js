@@ -53,7 +53,6 @@ SChannelContent.init = function() {
 SChannelContent.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 SChannelContent.StartLoad = function() {
@@ -272,6 +271,7 @@ SChannelContent.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Before;
             SChannelContent.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             SChannelContent.removeFocus();

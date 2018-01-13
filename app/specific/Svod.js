@@ -58,7 +58,6 @@ Svod.init = function() {
 Svod.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 Svod.StartLoad = function() {
@@ -420,6 +419,7 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.SChannelContent;
             Svod.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX - 1), Svod.Thumbnail)) {
@@ -503,6 +503,7 @@ Svod.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.Svod;
             Main.Go = Main.Search;
             Svod.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

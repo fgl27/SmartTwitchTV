@@ -9,8 +9,6 @@ AddUser.loadingDataTimeout = 3500;
 AddUser.init = function() {
     Main.Go = Main.AddUser;
     Main.HideWarningDialog();
-    $('#top_bar_user').removeClass('icon_center_label');
-    $('#top_bar_user').addClass('icon_center_focus');
     AddUser.input = document.querySelector('#user_input');
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
     document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
@@ -27,6 +25,11 @@ AddUser.exit = function() {
     window.setTimeout(function() {
         $('#top_bar_user').removeClass('icon_center_focus');
         $('#top_bar_user').addClass('icon_center_label');
+    }, 250);
+};
+
+AddUser.exitMain = function() {
+    window.setTimeout(function() {
         Main.SwitchScreen();
     }, 250);
 };
@@ -36,14 +39,17 @@ AddUser.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Before;
             AddUser.exit();
+            AddUser.exitMain();
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.Games;
             AddUser.exit();
+            AddUser.exitMain();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.Live;
             AddUser.exit();
+            AddUser.exitMain();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -175,6 +181,9 @@ AddUser.loadDataRequest = function() {
                         localStorage.setItem('UserName', Main.UserName);
                         document.body.removeEventListener("keydown", AddUser.handleKeyDown);
                         Users.init();
+                        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+                        SmartHub.Start();
+                        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
                         return;
                     } catch (e) {}
                 } else {

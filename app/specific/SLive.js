@@ -41,8 +41,8 @@ SLive.status = false;
 
 SLive.init = function() {
     Main.Go = Main.SLive;
-    $('.lable_user').html(STR_SEARCHS);
     Main.cleanTopLabel();
+    $('.lable_user').html(STR_SEARCHS);
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     if (SLive.status) SLive.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail + SLive.cursorY + '_' + SLive.cursorX);
@@ -53,7 +53,6 @@ SLive.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SLive.handleKeyDown);
     SLive.status = false;
-    Main.SwitchScreen();
 };
 
 SLive.StartLoad = function() {
@@ -415,6 +414,7 @@ SLive.handleKeyDown = function(event) {
             if (Main.Go === Main.Before) Main.Go = Main.Live;
             else Main.Go = Main.Before;
             SLive.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((SLive.cursorY), (SLive.cursorX - 1), SLive.Thumbnail)) {
@@ -493,6 +493,7 @@ SLive.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.SLive;
             Main.Go = Main.Search;
             SLive.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

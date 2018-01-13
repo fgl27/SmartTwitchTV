@@ -40,8 +40,8 @@ SChannels.lastData = '';
 SChannels.init = function() {
     Main.Go = Main.SChannels;
     if (SChannels.lastData !== Search.data) SChannels.status = false;
-    $('.lable_user').html(STR_SEARCHS);
     Main.cleanTopLabel();
+    $('.lable_user').html(STR_SEARCHS);
     $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
     if (SChannels.status) SChannels.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX);

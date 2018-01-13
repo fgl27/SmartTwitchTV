@@ -65,7 +65,6 @@ Sclip.init = function() {
 Sclip.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 Sclip.StartLoad = function() {
@@ -432,6 +431,7 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.SChannelContent;
             Sclip.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX - 1), Sclip.Thumbnail)) {
@@ -518,6 +518,7 @@ Sclip.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.Sclip;
             Main.Go = Main.Search;
             Sclip.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

@@ -50,7 +50,6 @@ UserChannels.exit = function() {
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = "50%";
     document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
-    Main.SwitchScreen();
 };
 
 UserChannels.StartLoad = function() {
@@ -271,6 +270,7 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Users;
             UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((UserChannels.cursorY), (UserChannels.cursorX - 1), UserChannels.Thumbnail)) {
@@ -330,10 +330,12 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.UserLive;
             UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.UserGames;
             UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -357,6 +359,7 @@ UserChannels.handleKeyDown = function(event) {
             Main.Go = Main.Search;
             Main.OldgameSelected = Main.gameSelected;
             UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:
         case TvKeyCode.KEY_VOLUMEDOWN:

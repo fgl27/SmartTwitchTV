@@ -1,11 +1,7 @@
 /*jshint multistr: true */
-function Main() {
-
-}
-
+function Main() {}
 //Variable initialization
 Main.Hide = '';
-Main.Show = '';
 Main.Go = 1;
 Main.Before = 1;
 Main.BeforeSearch = 1;
@@ -40,6 +36,7 @@ Main.OldgameSelected = null;
 Main.selectedChannelChannelLogo = '';
 Main.OldUserName = '';
 Main.UserName = null;
+Main.SmartHubId = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -58,10 +55,14 @@ tizen.tvinputdevice.registerKey("Info");
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
-    Main.Show = Main.Live;
     Live.init();
     Play.PreStart();
     Main.UserName = localStorage.getItem('UserName') || null;
+    if (Main.UserName !== null) { 
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+        SmartHub.Start();
+        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+    }
 });
 
 Main.initWindows = function() {
@@ -172,6 +173,25 @@ Main.SwitchScreen = function() {
     else if (Main.Go === Main.UserChannels) UserChannels.init();
     else if (Main.Go === Main.SChannels) SChannels.init();
     else Live.init();
+};
+
+Main.ExitCurrent = function() {
+    if (Main.Go === Main.Live) Live.exit();
+    else if (Main.Go === Main.AddUser) AddUser.exit();
+    else if (Main.Go === Main.Games) Games.exit();
+    else if (Main.Go === Main.AGame) AGame.exit();
+    else if (Main.Go === Main.Search) Search.exit();
+    else if (Main.Go === Main.SGames) SGames.exit();
+    else if (Main.Go === Main.SLive) SLive.exit();
+    else if (Main.Go === Main.SChannelContent) SChannelContent.exit();
+    else if (Main.Go === Main.Svod) Svod.exit();
+    else if (Main.Go === Main.Sclip) Sclip.exit();
+    else if (Main.Go === Main.Users) Users.exit();
+    else if (Main.Go === Main.UserLive) UserLive.exit();
+    else if (Main.Go === Main.UserHost) UserHost.exit();
+    else if (Main.Go === Main.UserGames) UserGames.exit();
+    else if (Main.Go === Main.UserChannels) UserChannels.exit();
+    else if (Main.Go === Main.SChannels) SChannels.exit();
 };
 
 Main.openStream = function() {
