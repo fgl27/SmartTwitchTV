@@ -17,12 +17,14 @@ SmartHub.userhosttitle = [];
 SmartHub.userhostsubtitle = [];
 SmartHub.userhostimg = [];
 SmartHub.followerChannels = '';
+SmartHub.LastUpdate = 0;
 //Variable initialization end
 
 SmartHub.Start = function() {
-    if (document.hidden) return;
     if (Main.UserName === null) {
         window.clearInterval(Main.SmartHubId);
+        document.removeEventListener('visibilitychange', Main.Resume);
+        window.removeEventListener('appcontrol', SmartHub.EventListener);
         return;
     }
 
@@ -148,6 +150,7 @@ SmartHub.previewDataSuccess = function(responseText) {
         SmartHub.loadingDataTimeout = 3500;
         SmartHub.loadDataRequest();
     } else {
+            SmartHub.LastUpdate = new Date().getTime();
             webapis.preview.setPreviewData(previewDataGenerator());
     }
 };
