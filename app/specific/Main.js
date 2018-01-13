@@ -59,9 +59,10 @@ document.addEventListener("DOMContentLoaded", function() {
     Play.PreStart();
     Main.UserName = localStorage.getItem('UserName') || null;
     if (Main.UserName !== null) { 
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
         SmartHub.Start();
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', Main.Resume, false);
     }
 });
 
@@ -254,3 +255,21 @@ Main.NetworkStateChangeListenerStop = function() {
         webapis.network.removeNetworkStateChangeListener(Main.listenerID);
     } catch (e) {}
 };
+
+Main.Resume = function() {
+    if (document.hidden) {
+        if (Main.UserName !== null) window.clearInterval(Main.SmartHubId);
+    } else {
+        window.setTimeout(function() {
+            if (Main.UserName !== null) {
+                if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
+                Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+            } else {
+                window.clearInterval(Main.SmartHubId);
+                document.removeEventListener('visibilitychange', Main.Resume);
+                window.removeEventListener('appcontrol', SmartHub.EventListener);
+            }
+        }, 1000);
+    }
+};
+

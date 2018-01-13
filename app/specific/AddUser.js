@@ -183,9 +183,10 @@ AddUser.loadDataRequest = function() {
                         localStorage.setItem('UserName', Main.UserName);
                         document.body.removeEventListener("keydown", AddUser.handleKeyDown);
                         Users.init();
-                        window.addEventListener('appcontrol', SmartHub.EventListener, false);
                         SmartHub.Start();
+                        window.addEventListener('appcontrol', SmartHub.EventListener, false);
                         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+                        document.addEventListener('visibilitychange', Main.Resume, false);
                         return;
                     } catch (e) {}
                 } else {
