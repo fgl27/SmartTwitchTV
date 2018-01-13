@@ -248,8 +248,8 @@ SChannelContent.keyEnter = function() {
     document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
     var value = (!SChannelContent.skipImg ? 0 : 1);
     if (SChannelContent.cursorX === (0 - value)) {
-        Main.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
-        Main.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).textContent;
+        Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
+        Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).textContent;
         Main.openStream();
     } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
     else if (SChannelContent.cursorX === (2 - value)) Sclip.init();

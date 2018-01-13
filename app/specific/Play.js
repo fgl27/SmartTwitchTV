@@ -50,6 +50,8 @@ Play.RestoreFromResume = false;
 Play.PlayerCheckOffset = 0;
 Play.PlayerCheckQualityChanged = false;
 Play.Playing = false;
+Play.selectedChannel = '';
+Play.selectedChannelDisplayname = '';
 
 //Variable initialization end
 
@@ -77,7 +79,7 @@ Play.Start = function() {
         '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
-    $("#stream_info_name").text(Main.selectedChannelDisplayname);
+    $("#stream_info_name").text(Play.selectedChannelDisplayname);
     document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
     document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
@@ -138,7 +140,7 @@ Play.updateStreamInfo = function() {
             }
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main.selectedChannel, true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel, true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
     xmlHttp.send(null);
@@ -156,9 +158,9 @@ Play.loadDataRequest = function() {
 
         var theUrl;
         if (Play.state == Play.STATE_LOADING_TOKEN) {
-            theUrl = 'http://api.twitch.tv/api/channels/' + Main.selectedChannel + '/access_token';
+            theUrl = 'http://api.twitch.tv/api/channels/' + Play.selectedChannel + '/access_token';
         } else {
-            theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Main.selectedChannel +
+            theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + Play.tokenResponse.sig + '&token=' +
                 escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
         }
@@ -202,14 +204,14 @@ Play.loadDataError = function() {
 };
 
 Play.saveQualities = function() {
-    Play.qualityName[Play.qualityCount] = Main.selectedChannel;
+    Play.qualityName[Play.qualityCount] = Play.selectedChannel;
     Play.qualityLinks[Play.qualityCount] = Play.qualities;
     Play.qualityCount++;
 };
 
 Play.restore = function() {
     for (var i = 0; i < Play.qualityName.length; i++) {
-        if (Play.qualityName[i] == Main.selectedChannel) {
+        if (Play.qualityName[i] == Play.selectedChannel) {
             Play.qualities = Play.qualityLinks[i];
             Play.qualitiesFound = true;
         }
@@ -363,7 +365,7 @@ Play.onPlayer = function() {
             this.on('canplaythrough', function() {
                 // sync chat and stream
                 document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-                    Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
+                    Play.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
             });
 
         });
@@ -371,7 +373,7 @@ Play.onPlayer = function() {
     } else {
         // sync chat and stream
         document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-            Main.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
+            Play.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
     }
 };
 
@@ -469,6 +471,7 @@ Play.shutdownStream = function() {
     Play.videojs.autoplay(false);
     Play.videojs.src('app/images/temp.mp4');
     Play.offPlayer();
+    Play.Playing = false;
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();

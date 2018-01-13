@@ -51,7 +51,7 @@ Sclip.playUrl = '';
 
 Sclip.init = function() {
     Main.Go = Main.Sclip;
-    if (SChannelContent.lastselectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
+    if (Main.selectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
     Main.cleanTopLabel();
     Sclip.SetPeriod();
     $('.lable_user').html(Main.selectedChannelDisplayname);
@@ -71,7 +71,7 @@ Sclip.StartLoad = function() {
     Main.HideWarningDialog();
     Sclip.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Sclip.lastselectedChannel = SChannelContent.lastselectedChannel;
+    Sclip.lastselectedChannel = Main.selectedChannel;
     Sclip.loadingReplace = false;
     Sclip.cursor = null;
     Sclip.status = false;

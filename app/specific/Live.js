@@ -479,8 +479,8 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Main.selectedChannel = $('#cell_' + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
-            Main.selectedChannelDisplayname = document.getElementById('display_name_' + Live.cursorY + '_' + Live.cursorX).textContent;
+            Play.selectedChannel = $('#cell_' + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
+            Play.selectedChannelDisplayname = document.getElementById('display_name_' + Live.cursorY + '_' + Live.cursorX).textContent;
             document.body.removeEventListener("keydown", Live.handleKeyDown);
             Main.openStream();
             break;
