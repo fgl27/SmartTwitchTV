@@ -328,6 +328,7 @@ PlayVod.shutdownStream = function() {
     Play.videojs.autoplay(false);
     Play.videojs.src('app/images/temp.mp4');
     PlayVod.offPlayer();
+    PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod.Resume);
     Play.clearPause();

@@ -8,6 +8,8 @@ AddUser.loadingDataTimeout = 3500;
 
 AddUser.init = function() {
     Main.Go = Main.AddUser;
+    $('#top_bar_user').removeClass('icon_center_label');
+    $('#top_bar_user').addClass('icon_center_focus');
     Main.HideWarningDialog();
     AddUser.input = document.querySelector('#user_input');
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);

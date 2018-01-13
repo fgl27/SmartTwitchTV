@@ -151,6 +151,7 @@ Main.StartPlayerLive = function() {
 };
 
 Main.ReStartScreens = function() {
+    $("#play_dialog_exit").hide();
     Main.SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 };

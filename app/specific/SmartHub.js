@@ -214,12 +214,12 @@ SmartHub.EventListener = function() {
                 if (JSON.parse(actionData).videoIdx) {
                     videoIdx = JSON.parse(actionData).videoIdx;
                     videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (Play.Playing && Main.selectedChannel == videoIdx) {
+                    if (Play.Playing && Play.selectedChannel == videoIdx) {
                         return;
                     }
-                    Main.selectedChannel = videoIdx;
-                    Main.selectedChannelDisplayname = videoTitleIdx;
-
+                    Play.selectedChannel = videoIdx;
+                    Play.selectedChannelDisplayname = videoTitleIdx;
+                    Main.ExitCurrent();
                     if (Play.Playing) {
                        Play.shutdownStream();
                        Main.openStream();
