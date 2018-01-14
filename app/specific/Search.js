@@ -32,9 +32,8 @@ Search.init = function() {
 
 Search.exit = function() {
     Search.input.blur();
-    document.body.removeEventListener('keydown', function(event) {
-        Search.KeyboardEvent(event);
-    });
+    document.body.removeEventListener("keydown", Search.KeyboardEvent);
+    document.body.removeEventListener("keydown", Search.handleKeyDown);
     Search.refreshInputFocusTools();
     Main.Go = Main.BeforeSearch;
     $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
@@ -46,7 +45,6 @@ Search.exit = function() {
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
-    document.body.removeEventListener("keydown", Search.handleKeyDown);
     document.getElementById("search_input").value = '';
 };
 
@@ -138,10 +136,12 @@ Search.handleKeyDown = function(event) {
                     Search.data = $('#search_input').val();
                     document.getElementById("search_input").value = '';
                     Search.input.blur();
-                    document.body.removeEventListener('keydown', function(event) {
-                        Search.KeyboardEvent(event);
-                    });
                     Search.loadData();
+                } else {
+                    Main.showWarningDialog(STR_SEARCH_EMPTY);
+                    window.setTimeout(function() {
+                        Main.HideWarningDialog();
+                    }, 1000);
                 }
             }
             break;
