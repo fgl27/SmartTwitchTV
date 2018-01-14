@@ -45,6 +45,7 @@ var STR_USER_ERROR = "User doesn\'t exist";
 var STR_USER_HOSTING = " hosting ";
 var STR_USER_SET = " already set";
 var STR_USER_MAKE_ONE = "Make #1";
+var STR_USER_NUMBER_ONE = " (#1 Has it\'s content on SmartHub Preview)";
 var STR_CLIP_DAY = " (day)";
 var STR_CLIP_WEEK = " (week)";
 var STR_CLIP_MONTH = " (month)";

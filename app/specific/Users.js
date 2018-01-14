@@ -45,19 +45,26 @@ Users.StartLoad = function() {
 };
 
 Users.loadData = function() {
-    var row, coloumn_id;
+    var row, coloumn_id, tbody = $('<tbody></tbody>'), header;
+    $('#stream_table_user').append(tbody);
 
     for (var x = 0; x < AddUser.UsernameArray.length; x++) {
         coloumn_id = 0;
-        row = $('<tr></tr>');
         Main.UserName = AddUser.UsernameArray[x];
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_CHANNELS));
+
+        header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + Main.UserName +
+                    STR_CONTENT + ((x === 0) ? STR_USER_NUMBER_ONE : '') + '</div>');
+        $('#stream_table_user').find('tbody').append(header);
+
+        row = $('<tr></tr>');
+
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_HOSTS));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_GAMES));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_GAMES));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_USER_CHANNEL));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL));
         coloumn_id++;
         row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, (x === 0) ? STR_USER_ADD : STR_USER_MAKE_ONE));
         coloumn_id++;
@@ -275,10 +282,10 @@ Users.ScrollHelper = {
                     $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
                 else
                     $(window).scrollTop(this.documentVerticalScrollPosition() +
-                        this.elementVerticalClientPositionById(Users.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 270);
+                        this.elementVerticalClientPositionById(Users.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 220);
             } else {
                 $(window).scrollTop(this.documentVerticalScrollPosition() +
-                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 270); // check Games.ScrollHelper to understand the "290"
+                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 220); // check Games.ScrollHelper to understand the "220"
             }
         } else return;
     }
