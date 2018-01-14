@@ -300,7 +300,8 @@ Live.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Live.itemsCount / Live.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false, cursor = 0;
+    var coloumn_id, stream, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
@@ -465,7 +466,7 @@ Live.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Before = Main.Live;
-            Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
+            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
             Live.exit();
             Main.SwitchScreen();
             break;
@@ -539,6 +540,6 @@ Live.ScrollHelper = {
             } else {
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
             }
-        }  else return;
+        } else return;
     }
 };

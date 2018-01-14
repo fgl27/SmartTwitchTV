@@ -35,8 +35,8 @@ Main.gameSelected = '';
 Main.OldgameSelected = null;
 Main.selectedChannelChannelLogo = '';
 Main.OldUserName = '';
-Main.UserName = null;
 Main.SmartHubId = null;
+Main.UserName = null;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -57,13 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     Main.initWindows();
     Live.init();
     Play.PreStart();
-    Main.UserName = localStorage.getItem('UserName') || null;
-    if (Main.UserName !== null) { 
-        SmartHub.Start();
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
-        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', Main.Resume, false);
-    }
+    AddUser.RestoreUsers();
 });
 
 Main.initWindows = function() {
@@ -258,10 +252,10 @@ Main.NetworkStateChangeListenerStop = function() {
 
 Main.Resume = function() {
     if (document.hidden) {
-        if (Main.UserName !== null) window.clearInterval(Main.SmartHubId);
+        window.clearInterval(Main.SmartHubId);
     } else {
         window.setTimeout(function() {
-            if (Main.UserName !== null) {
+            if (AddUser.UsernameArray.length > 0) {
                 if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
                 Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
             } else {
@@ -269,7 +263,6 @@ Main.Resume = function() {
                 document.removeEventListener('visibilitychange', Main.Resume);
                 window.removeEventListener('appcontrol', SmartHub.EventListener);
             }
-        }, 1000);
+        }, 1500);
     }
 };
-

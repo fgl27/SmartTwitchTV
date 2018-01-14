@@ -4,6 +4,11 @@ function AddUser() {}
 AddUser.loadingDataTry = 1;
 AddUser.loadingDataTryMax = 10;
 AddUser.loadingDataTimeout = 3500;
+AddUser.UsernameArraySize = 0;
+AddUser.UsernameArray = [];
+AddUser.Followercount = 0;
+AddUser.Username = null;
+AddUser.loadingData = false;
 //Variable initialization end
 
 AddUser.init = function() {
@@ -20,9 +25,7 @@ AddUser.init = function() {
 
 AddUser.exit = function() {
     AddUser.input.blur();
-    document.body.removeEventListener('keydown', function(event) {
-        AddUser.KeyboardEvent(event);
-    });
+    document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
     document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     window.setTimeout(function() {
         $('#top_bar_user').removeClass('icon_center_focus');
@@ -37,6 +40,11 @@ AddUser.exitMain = function() {
 };
 
 AddUser.handleKeyDown = function(event) {
+    if (AddUser.loadingData) {
+        event.preventDefault();
+        return;
+    }
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             Main.Go = Main.Before;
@@ -111,17 +119,17 @@ AddUser.ScrollHelper = {
 };
 
 AddUser.inputFocus = function() {
+    document.body.addEventListener("keydown", AddUser.KeyboardEvent, false);
     AddUser.input.addEventListener('input');
     AddUser.input.addEventListener('compositionend');
-
-    document.body.addEventListener('keydown', function(event) {
-        AddUser.KeyboardEvent(event);
-    });
-
     AddUser.input.focus();
 };
 
 AddUser.KeyboardEvent = function(event) {
+    if (AddUser.loadingData) {
+        event.preventDefault();
+        return;
+    }
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("user_input").value = '';
@@ -130,20 +138,28 @@ AddUser.KeyboardEvent = function(event) {
         case TvKeyCode.KEY_KEYBOARD_DONE:
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
             if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
+
                 document.getElementById("user_input").value = $('#user_input').val();
-                Main.UserName = $('#user_input').val();
-                AddUser.input.blur();
-                AddUser.loadingDataTry = 1;
-                AddUser.loadingDataTimeout = 3500;
-                Main.showLoadDialog();
-                AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
-                AddUser.loadDataRequest();
-                break;
+                AddUser.Username = $('#user_input').val();
+
+                if (!AddUser.UserExist(AddUser.Username)) {
+                    AddUser.loadingDataTry = 1;
+                    AddUser.loadingDataTimeout = 3500;
+                    AddUser.loadingData = true;
+                    Main.showLoadDialog();
+                    AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
+                    AddUser.loadDataRequest();
+                } else {
+                    Main.HideLoadDialog();
+                    Main.showWarningDialog(STR_USER + AddUser.Username + STR_USER_SET);
+                    window.setTimeout(function() {
+                        Main.HideWarningDialog();
+                        AddUser.inputFocus();
+                    }, 1500);
+                }
             }
             AddUser.input.blur();
-            document.body.removeEventListener('keydown', function(event) {
-                AddUser.KeyboardEvent(event);
-            });
+            document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
@@ -163,14 +179,7 @@ AddUser.loadDataRequest = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = AddUser.itemsCount + AddUser.itemsCountOffset;
-        if (offset !== 0 && offset >= (AddUser.MaxOffset - AddUser.ItemsLimit)) {
-            offset = AddUser.MaxOffset - AddUser.ItemsLimit;
-            AddUser.dataEnded = true;
-            AddUser.ReplacedataEnded = true;
-        }
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=1&sortby=created_at', true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.Username) + '/follows/channels?limit=1&sortby=created_at', true);
         xmlHttp.timeout = AddUser.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -180,13 +189,8 @@ AddUser.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         document.getElementById("user_input").value = '';
-                        localStorage.setItem('UserName', Main.UserName);
                         document.body.removeEventListener("keydown", AddUser.handleKeyDown);
-                        Users.init();
-                        SmartHub.Start();
-                        window.addEventListener('appcontrol', SmartHub.EventListener, false);
-                        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-                        document.addEventListener('visibilitychange', Main.Resume, false);
+                        AddUser.SaveNewUser();
                         return;
                     } catch (e) {}
                 } else {
@@ -207,13 +211,95 @@ AddUser.loadDataError = function() {
         AddUser.loadingDataTimeout += (AddUser.loadingDataTry < 5) ? 250 : 3500;
         AddUser.loadDataRequest();
     } else {
-        Main.UserName = null;
+        AddUser.Username = null;
         Main.HideLoadDialog();
         Main.showWarningDialog(STR_USER_ERROR);
         window.setTimeout(function() {
             AddUser.init();
         }, 1000);
+        AddUser.loadingData = false;
     }
+};
+
+AddUser.RestoreUsers = function() {
+    AddUser.UsernameArray = [];
+    AddUser.UsernameArraySize = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
+    if (AddUser.UsernameArraySize > 0) {
+        for (var x = 0; x < AddUser.UsernameArraySize; x++) {
+            AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
+        }
+
+        SmartHub.Start();
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', Main.Resume, false);
+
+    }
+
+    // else {
+    //AddUser.UsernameArray[0] = ''; // hardcoded user 1
+    //AddUser.UsernameArraySize++;
+    //AddUser.UsernameArray[1] = ''; // hardcoded user 2
+    //AddUser.UsernameArraySize++;
+    // }
+};
+
+AddUser.SaveNewUser = function() {
+    AddUser.UsernameArray[AddUser.UsernameArraySize] = AddUser.Username;
+    localStorage.setItem('UsernameArray' + AddUser.UsernameArraySize, AddUser.Username);
+    AddUser.UsernameArraySize++;
+    localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
+    Users.status = false;
+    Users.init();
+    AddUser.loadingData = false;
+
+    if (AddUser.UsernameArray.length === 1) {
+        SmartHub.Start();
+
+        window.clearInterval(Main.SmartHubId);
+        document.removeEventListener('visibilitychange', Main.Resume);
+        window.removeEventListener('appcontrol', SmartHub.EventListener);
+
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', Main.Resume, false);
+    }
+};
+
+AddUser.removeUser = function(Position) {
+    AddUser.UsernameArraySize--;
+    localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
+
+    var index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]);
+    if (index > -1) {
+        AddUser.UsernameArray.splice(index, 1);
+    }
+
+    for (var x = 0; x < AddUser.UsernameArray.length; x++) {
+        localStorage.setItem('UsernameArray' + x, AddUser.UsernameArray[x]);
+    }
+    if (AddUser.UsernameArray.length > 0) {
+        Users.status = false;
+        Users.init();
+        if (Position === 0) SmartHub.Start();
+    } else AddUser.init();
+};
+
+AddUser.UserMakeOne = function(Position) {
+    AddUser.Username = AddUser.UsernameArray[0];
+    AddUser.UsernameArray[0] = AddUser.UsernameArray[Position];
+    AddUser.UsernameArray[Position] = AddUser.Username;
+    Users.status = false;
+    Users.init();
+    SmartHub.Start();
+};
+
+AddUser.UserExist = function(user) {
+    return AddUser.UsernameArray.indexOf(user) != -1;
+};
+
+AddUser.IsUserSet = function() {
+    return AddUser.UsernameArray.length > 0;
 };
 
 AddUser.ScrollHelper = {
@@ -248,10 +334,4 @@ AddUser.ScrollHelper = {
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
         } else return;
     }
-};
-
-AddUser.removeUser = function() {
-    Users.status = false;
-    Main.UserName = null;
-    AddUser.init();
 };
