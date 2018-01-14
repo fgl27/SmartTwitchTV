@@ -29,6 +29,7 @@ UserChannels.ThumbnailDiv = 'uchannel_thumbnail_div_';
 UserChannels.DispNameDiv = 'uchannel_display_name_';
 UserChannels.Cell = 'uchannel_cell_';
 UserChannels.status = false;
+UserChannels.OldUserName = '';
 
 //Variable initialization end
 
@@ -39,7 +40,7 @@ UserChannels.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(Main.UserName + STR_USER_CHANNEL);
     document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
-    if (Main.OldUserName !== Main.UserName) UserChannels.status = false;
+    if (UserChannels.OldUserName !== Main.UserName) UserChannels.status = false;
     if (UserChannels.status) UserChannels.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX);
     else UserChannels.StartLoad();
 };
@@ -56,7 +57,7 @@ UserChannels.StartLoad = function() {
     Main.HideWarningDialog();
     UserChannels.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Main.OldUserName = Main.UserName;
+    UserChannels.OldUserName = Main.UserName;
     UserChannels.status = false;
     $('#stream_table_user_channels').empty();
     UserChannels.loadingMore = false;

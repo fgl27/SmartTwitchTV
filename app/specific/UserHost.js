@@ -36,6 +36,7 @@ UserHost.ViwersDiv = 'hlive_viwers_';
 UserHost.Cell = 'hlive_cell_';
 UserHost.status = false;
 UserHost.followerChannels = '';
+UserHost.OldUserName = '';
 
 //Variable initialization end
 
@@ -46,7 +47,7 @@ UserHost.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
-    if (Main.OldUserName !== Main.UserName) UserHost.status = false;
+    if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
     if (UserHost.status) UserHost.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX);
     else UserHost.StartLoad();
 };
@@ -63,7 +64,7 @@ UserHost.StartLoad = function() {
     Main.HideWarningDialog();
     UserHost.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Main.OldUserName = Main.UserName;
+    UserHost.OldUserName = Main.UserName;
     UserHost.status = false;
     $('#stream_table_user_host').empty();
     UserHost.loadingMore = false;
@@ -103,7 +104,7 @@ UserHost.loadChannels = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/followed/hosting?limit=' +
-                UserLive.ItemsLimit + '&offset=' + offset, true);
+            UserLive.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = UserHost.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -312,15 +313,16 @@ UserHost.loadDataSuccessReplace = function(responseText) {
 
     var row_id = UserHost.itemsCount / UserHost.ColoumnsCount;
 
-    var coloumn_id, hosts, mReplace = false, cursor = 0;
+    var coloumn_id, hosts, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         hosts = response.hosts[cursor];
         if (UserHost.CellExists(hosts.target.channel.name)) UserHost.blankCellCount--;
         else {
             mReplace = UserHost.replaceCellEmpty(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template,
-                    hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                    Main.addCommas(hosts.target.viewers) + STR_VIEWER);
+                hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
+                Main.addCommas(hosts.target.viewers) + STR_VIEWER);
             if (mReplace) UserHost.blankCellCount--;
             if (UserHost.blankCellCount === 0) break;
         }

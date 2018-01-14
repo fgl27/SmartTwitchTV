@@ -21,14 +21,14 @@ SmartHub.LastUpdate = 0;
 //Variable initialization end
 
 SmartHub.Start = function() {
-    if (Main.UserName === null) {
+    if (AddUser.UsernameArray.length === 0) {
         window.clearInterval(Main.SmartHubId);
         document.removeEventListener('visibilitychange', Main.Resume);
         window.removeEventListener('appcontrol', SmartHub.EventListener);
         return;
     }
 
-    SmartHub.followerUsername = Main.UserName; // SmartHub.followerUsernameArray[0];
+    SmartHub.followerUsername = AddUser.UsernameArray[0];
     SmartHub.userold = SmartHub.user.length;
     SmartHub.usergamesold = SmartHub.usergames.length;
     SmartHub.userhostold = SmartHub.userhost.length;
@@ -150,8 +150,8 @@ SmartHub.previewDataSuccess = function(responseText) {
         SmartHub.loadingDataTimeout = 3500;
         SmartHub.loadDataRequest();
     } else {
-            SmartHub.LastUpdate = new Date().getTime();
-            webapis.preview.setPreviewData(previewDataGenerator());
+        SmartHub.LastUpdate = new Date().getTime();
+        webapis.preview.setPreviewData(previewDataGenerator());
     }
 };
 
@@ -224,11 +224,11 @@ SmartHub.EventListener = function() {
                     Play.selectedChannelDisplayname = videoTitleIdx;
                     Main.ExitCurrent();
                     if (Play.Playing) {
-                       Play.shutdownStream();
-                       Main.openStream();
+                        Play.shutdownStream();
+                        Main.openStream();
                     } else if (PlayVod.Playing) {
-                       PlayVod.shutdownStream();
-                       Main.openStream();
+                        PlayVod.shutdownStream();
+                        Main.openStream();
                     } else Main.openStream();
 
                 } else if (JSON.parse(actionData).gameIdx) {
@@ -254,4 +254,3 @@ SmartHub.EventListener = function() {
         }
     }
 };
-

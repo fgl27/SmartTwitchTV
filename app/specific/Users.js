@@ -6,6 +6,7 @@ Users.cursorY = 0;
 Users.cursorX = 0;
 Users.LastClickFinish = true;
 Users.keyClickDelayTime = 25;
+Users.ColoumnsCount = 6;
 
 Users.ThumbnailDiv = 'users_thumbnail_div_';
 Users.DispNameDiv = 'users_display_name_';
@@ -44,22 +45,26 @@ Users.StartLoad = function() {
 };
 
 Users.loadData = function() {
-    var row = $('<tr></tr>');
-    var coloumn_id = 0;
+    var row, coloumn_id;
 
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_CHANNELS));
-    coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_HOSTS));
-    coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_GAMES));
-    coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_USER_CHANNEL));
-    coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD));
-    coloumn_id++;
-    row.append(Users.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE));
+    for (var x = 0; x < AddUser.UsernameArray.length; x++) {
+        coloumn_id = 0;
+        row = $('<tr></tr>');
+        Main.UserName = AddUser.UsernameArray[x];
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_CHANNELS));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_HOSTS));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_LIVE_GAMES));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, Main.UserName + STR_USER_CHANNEL));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, (x === 0) ? STR_USER_ADD : STR_USER_MAKE_ONE));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE));
 
-    $('#stream_table_user').append(row);
+        $('#stream_table_user').append(row);
+    }
 
     Users.loadDataSuccessFinish();
 };
@@ -69,7 +74,7 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     if (coloumn_id === 1) thumbnail = 'app/images/blur_video_2.png';
     if (coloumn_id === 2) thumbnail = 'app/images/blur_game.png';
     if (coloumn_id === 3) thumbnail = 'app/images/blur_vod.png';
-    if (coloumn_id === 4) thumbnail = 'app/images/user_plus.png';
+    if (coloumn_id === 4) thumbnail = (row_id === 0) ? 'app/images/user_plus.png' : 'app/images/user_up.png';
     if (coloumn_id === 5) thumbnail = 'app/images/user_minus.png';
 
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
@@ -90,7 +95,6 @@ Users.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Users.status = true;
                 Users.addFocus();
-                Users.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail + Users.cursorY + '_' + Users.cursorX);
             }
 
             Users.loadingData = false;
@@ -101,6 +105,7 @@ Users.addFocus = function() {
     $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_text_focused');
     $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_user_focused');
+    Users.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail + Users.cursorY + '_' + Users.cursorX);
 };
 
 Users.removeFocus = function() {
@@ -115,13 +120,16 @@ Users.keyClickDelay = function() {
 
 Users.keyEnter = function() {
     document.body.removeEventListener("keydown", Users.handleKeyDown);
+    Main.UserName = AddUser.UsernameArray[Users.cursorY];
 
     if (Users.cursorX === 0) UserLive.init();
     else if (Users.cursorX === 1) UserHost.init();
     else if (Users.cursorX === 2) UserGames.init();
     else if (Users.cursorX === 3) UserChannels.init();
-    else if (Users.cursorX === 5) AddUser.removeUser();
-//    else if (Users.cursorX === 4) UserAdd.init();
+    else if (Users.cursorX === 4) {
+        if (Users.cursorY === 0) AddUser.init();
+        else AddUser.UserMakeOne(Users.cursorY);
+    } else if (Users.cursorX === 5) AddUser.removeUser(Users.cursorY);
 };
 
 Users.handleKeyDown = function(event) {
@@ -143,19 +151,55 @@ Users.handleKeyDown = function(event) {
             Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_LEFT:
-            Users.removeFocus();
-            Users.cursorX--;
-            if (Users.cursorX < 0) Users.cursorX = 5;
-            Users.addFocus();
+            if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.Thumbnail)) {
+                Users.removeFocus();
+                Users.cursorX--;
+                Users.addFocus();
+            } else {
+                for (i = (Users.ColoumnsCount - 1); i > -1; i--) {
+                    if (Main.ThumbNull((Users.cursorY - 1), i, Users.Thumbnail)) {
+                        Users.removeFocus();
+                        Users.cursorY--;
+                        Users.cursorX = i;
+                        Users.addFocus();
+                        break;
+                    }
+                }
+            }
             break;
         case TvKeyCode.KEY_RIGHT:
-            Users.removeFocus();
-            Users.cursorX++;
-            if (Users.cursorX > 5) Users.cursorX = 0;
-            Users.addFocus();
+            if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.Thumbnail)) {
+                Users.removeFocus();
+                Users.cursorX++;
+                Users.addFocus();
+            } else if (Main.ThumbNull((Users.cursorY + 1), 0, Users.Thumbnail)) {
+                Users.removeFocus();
+                Users.cursorY++;
+                Users.cursorX = 0;
+                Users.addFocus();
+            }
             break;
         case TvKeyCode.KEY_UP:
+            for (i = 0; i < Users.ColoumnsCount; i++) {
+                if (Main.ThumbNull((Users.cursorY - 1), (Users.cursorX - i), Users.Thumbnail)) {
+                    Users.removeFocus();
+                    Users.cursorY--;
+                    Users.cursorX = Users.cursorX - i;
+                    Users.addFocus();
+                    break;
+                }
+            }
+            break;
         case TvKeyCode.KEY_DOWN:
+            for (i = 0; i < Users.ColoumnsCount; i++) {
+                if (Main.ThumbNull((Users.cursorY + 1), (Users.cursorX - i), Users.Thumbnail)) {
+                    Users.removeFocus();
+                    Users.cursorY++;
+                    Users.cursorX = Users.cursorX - i;
+                    Users.addFocus();
+                    break;
+                }
+            }
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
@@ -226,7 +270,16 @@ Users.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.Users) {
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 270);
+            if (id.indexOf(Users.Thumbnail + '0_') == -1) {
+                if (id.indexOf(Users.Thumbnail + '1_') == -1)
+                    $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
+                else
+                    $(window).scrollTop(this.documentVerticalScrollPosition() +
+                        this.elementVerticalClientPositionById(Users.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 270);
+            } else {
+                $(window).scrollTop(this.documentVerticalScrollPosition() +
+                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 270); // check Games.ScrollHelper to understand the "290"
+            }
         } else return;
     }
 };

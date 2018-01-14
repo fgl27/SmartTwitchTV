@@ -37,6 +37,7 @@ UserLive.QualityDiv = 'ulive_quality_';
 UserLive.Cell = 'ulive_cell_';
 UserLive.status = false;
 UserLive.followerChannels = '';
+UserLive.OldUserName = '';
 
 //Variable initialization end
 
@@ -47,7 +48,7 @@ UserLive.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_CHANNELS);
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
-    if (Main.OldUserName !== Main.UserName) UserLive.status = false;
+    if (UserLive.OldUserName !== Main.UserName) UserLive.status = false;
     if (UserLive.status) UserLive.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail + UserLive.cursorY + '_' + UserLive.cursorX);
     else UserLive.StartLoad();
 };
@@ -65,7 +66,7 @@ UserLive.StartLoad = function() {
     UserLive.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserLive.status = false;
-    Main.OldUserName = Main.UserName;
+    UserLive.OldUserName = Main.UserName;
     $('#stream_table_user_live').empty();
     UserLive.loadingMore = false;
     UserLive.blankCellCount = 0;
@@ -104,7 +105,7 @@ UserLive.loadChannels = function() {
         }
         // TODO revise this offset, as the value here may not always correct for this particularly function
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=' +
-                UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
+            UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -170,7 +171,7 @@ UserLive.loadChannelsLive = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive.followerChannels) + '&limit=' +
-                UserLive.ItemsLimit + '&offset=' + offset, true);
+            UserLive.ItemsLimit + '&offset=' + offset, true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -382,7 +383,8 @@ UserLive.loadDataSuccessReplace = function(responseText) {
 
     var row_id = UserLive.itemsCount / UserLive.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false, cursor = 0;
+    var coloumn_id, stream, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];

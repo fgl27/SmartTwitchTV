@@ -190,7 +190,7 @@ Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, vi
             <div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
             <div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + viwers +
-            '</div> \
+        '</div> \
             </div>');
 };
 
@@ -297,14 +297,15 @@ Games.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Games.itemsCount / Games.ColoumnsCount;
 
-    var coloumn_id, game, mReplace = false, cursor = 0;
+    var coloumn_id, game, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         game = response.top[cursor];
         if (Games.CellExists(game.game.name)) Games.blankCellCount--;
         else {
             mReplace = Games.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
+                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
             if (mReplace) Games.blankCellCount--;
             if (Games.blankCellCount === 0) break;
         }
@@ -452,7 +453,7 @@ Games.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Before = Main.Games;
-            Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
+            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
             Games.exit();
             Main.SwitchScreen();
             break;

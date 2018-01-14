@@ -34,6 +34,7 @@ UserGames.ViwersDiv = 'glive_viwers_';
 UserGames.Cell = 'glive_cell_';
 UserGames.status = false;
 UserGames.followerChannels = '';
+UserGames.OldUserName = '';
 
 //Variable initialization end
 
@@ -44,7 +45,7 @@ UserGames.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
-    if (Main.OldUserName !== Main.UserName) UserGames.status = false;
+    if (UserGames.OldUserName !== Main.UserName) UserGames.status = false;
     if (UserGames.status) UserGames.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX);
     else UserGames.StartLoad();
 };
@@ -61,7 +62,7 @@ UserGames.StartLoad = function() {
     Main.HideWarningDialog();
     UserGames.ScrollHelper.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    Main.OldUserName = Main.UserName;
+    UserGames.OldUserName = Main.UserName;
     UserGames.status = false;
     $('#stream_table_user_games').empty();
     UserGames.loadingMore = false;
