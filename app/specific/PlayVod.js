@@ -415,6 +415,7 @@ PlayVod.jump = function() {
     PlayVod.IsJumping = false;
     PlayVod.Canjump = false;
     Play.videojs.play();
+    Play.clearPause();
 };
 
 PlayVod.jumpStart = function() {
