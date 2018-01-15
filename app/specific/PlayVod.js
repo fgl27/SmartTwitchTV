@@ -271,8 +271,13 @@ PlayVod.onPlayer = function() {
 
             this.on('loadedmetadata', function() { // reset position after quality change or back from resume
                 if (PlayVod.offsettime > 0 && PlayVod.offsettime !== this.currentTime()) {
+                    this.pause();
                     this.currentTime(PlayVod.offsettime);
+                    Play.showBufferDialog();
+                    Play.clearPause();
+                    this.play();
                 }
+                PlayVod.Canjump = true;
             });
 
             this.on('playing', function() {
@@ -294,7 +299,7 @@ PlayVod.PlayerCheck = function() {
             if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1) {
                 PlayVod.qualityIndex++;
                 PlayVod.qualityDisplay();
-                PlayVod.offsettime = Play.videojs.currentTime();
+                if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
                 PlayVod.qualityChanged();
                 PlayVod.PlayerCheckQualityChanged = true; // half time on next check
             } else { //staled too long drop the player
