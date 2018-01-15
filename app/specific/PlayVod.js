@@ -269,11 +269,14 @@ PlayVod.onPlayer = function() {
                 window.setTimeout(PlayVod.shutdownStream, 1500);
             });
 
-            this.on('loadedmetadata', function() { // reset position after quality change
+            this.on('loadedmetadata', function() { // reset position after quality change or back from resume
                 if (PlayVod.offsettime > 0 && PlayVod.offsettime !== this.currentTime()) {
                     this.currentTime(PlayVod.offsettime);
-                    PlayVod.offsettime = 0;
                 }
+            });
+
+            this.on('playing', function() {
+                if (PlayVod.offsettime > 0) PlayVod.offsettime = 0;
             });
 
         });
@@ -310,6 +313,7 @@ PlayVod.offPlayer = function() {
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
     Play.videojs.off('loadedmetadata', null);
+    Play.videojs.off('playing', null);
 };
 
 PlayVod.updateCurrentTime = function(currentTime) {
@@ -540,7 +544,7 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    PlayVod.offsettime = Play.videojs.currentTime();
+                    if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
                     PlayVod.qualityChanged();
                     Play.clearPause();
                 } else {
