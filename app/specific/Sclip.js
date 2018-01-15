@@ -486,15 +486,21 @@ Sclip.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
+            break;
+        case TvKeyCode.KEY_CHANNELUP:
             if (!Sclip.loadingMore) {
                 Sclip.periodNumber++;
                 if (Sclip.periodNumber > 3) Sclip.periodNumber = 0;
                 Sclip.SetPeriod();
                 Sclip.StartLoad();
             }
-            break;
-        case TvKeyCode.KEY_CHANNELUP:
         case TvKeyCode.KEY_CHANNELDOWN:
+            if (!Sclip.loadingMore) {
+                Sclip.periodNumber--;
+                if (Sclip.periodNumber < 0) Sclip.periodNumber = 3;
+                Sclip.SetPeriod();
+                Sclip.StartLoad();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
