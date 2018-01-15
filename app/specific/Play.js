@@ -70,6 +70,9 @@ Play.PreStart = function() {
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
         </div>');
+    document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY;
+    document.getElementById("stream_controls").innerHTML =
+        '<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%;"></i> ' + STR_CONTROLS;
 };
 
 Play.Start = function() {
@@ -617,6 +620,20 @@ Play.isChatShown = function() {
     return $("#chat_container").is(":visible");
 };
 
+Play.showControlsDialog = function() {
+    $("#play_dialog_exit").hide();
+    $("#dialog_controls_play").show();
+};
+
+Play.HideControlsDialog = function() {
+    $("#dialog_controls_play").hide();
+};
+
+Play.isControlsDialogShown = function() {
+    return $("#dialog_controls_play").is(":visible");
+};
+
+
 Play.qualityIndexReset = function() {
     Play.qualityIndex = 0;
     for (var i = 0; i < Play.getQualitiesCount(); i++) {
@@ -829,7 +846,8 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                if (Play.isPanelShown()) {
+                if (Play.isControlsDialogShown()) Play.HideControlsDialog();
+                else if (Play.isPanelShown()) {
                     Play.hidePanel();
                 } else {
                     if (Play.ExitDialogVisible()) {
@@ -866,6 +884,8 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_RED:
             case TvKeyCode.KEY_GREEN:
             case TvKeyCode.KEY_YELLOW:
+                Play.showControlsDialog();
+                break;
             case TvKeyCode.KEY_BLUE:
                 break;
             default:

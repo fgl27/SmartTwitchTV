@@ -263,16 +263,48 @@
             text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
         }
 
-         .follower_header {
-         width: 100%;
-         text-align: left;
-         white-space: nowrap;
-         color: white;
-         font-weight: 100;
-         font-size: 166%;
-         margin-bottom: 0px;
-         margin-top: -5.2px;
-         }
+        .follower_header {
+            width: 100%;
+            text-align: left;
+            white-space: nowrap;
+            color: white;
+            font-weight: 100;
+            font-size: 166%;
+            margin-bottom: 0px;
+            margin-top: -5.2px;
+        }
+
+        div.about_text {
+            -webkit-font-smoothing: antialiased;
+            display: inline - block;
+            color: #FFFFFF;
+            margin-left: 2%;
+            margin-right: 2%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            width: 100%;
+            text-align: center;
+            word-wrap: break -word;
+            font-size: 188%;
+            font-weight: bold;
+            text-shadow: #000000 0px 0px 3.6px, # 000000 0 px 0 px 3.6 px, #000000 0px 0px 2.5px;
+        }
+
+        div.controls_text {
+            -webkit-font-smoothing: antialiased;
+            display: inline - block;
+            color: #FFFFFF;
+            margin-left: 2%;
+            margin-right: 2%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            width: 100%;
+            text-align: left;
+            word-wrap: break -word;
+            font-size: 188%;
+            font-weight: bold;
+            text-shadow: #000000 0px 0px 3.6px, # 000000 0 px 0 px 3.6 px, #000000 0px 0px 2.5px;
+        }
 
         .strokedmini {
             color: #FFFFFF;
@@ -297,6 +329,7 @@
             color: black;
             text-shadow: #000000 0px 0px 15px, #000000 0px 0px 15px, #000000 0px 0px 10px;
         }
+
         .strokeloading {
             text-shadow: #545454 0px 0px 17px, #545454 0px 0px 14px, #545454 0px 0px 11px;
         }
@@ -334,9 +367,19 @@
     <div id="scene1" class="screen_size" style="z-index:98; position : absolute;left : 0px;top : 0px;">
         <div id="toolbar" style="z-index:99; position: fixed; width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35));">
             <div style="float: right; padding-right: 0.5%; padding-top: 1%; width: 10%;">
-                <img style="float: right; width: 100%; padding-left: 2%;" src="app/images/twitchlogo.png" alt="twitchlogo" />
+                <img style="float: right; width: 100%;" src="app/images/twitchlogo.png" alt="twitchlogo" />
+                <div style="text-align: center;">
+                    <div class="icon_top_label label_about">
+                        STR_ABOUT
+                    </div>
+                </div>
             </div>
             <div style="padding-left: 1%; padding-top: 0.5%;">
+                <div style="padding-bottom: 0.3%;">
+                    <div class="icon_top_label label_controls">
+                        STR_CONTROLS
+                    </div>
+                </div>
                 <div class="icon_top_label label_refresh">
                     STR_REFRESH
                 </div>
@@ -368,6 +411,12 @@
         </div>
         <div id="dialog_loading" class="screen_size" style="position: fixed; z-index:98; text-align: center; width: 100%; display:none;">
             <i class="fa fa-circle-o-notch fa-spin strokeloading" style="margin-top: 24%; font-size: 727%; color: #FFFFFF;"></i>
+        </div>
+        <div id="dialog_about" style="position: fixed; z-index:100; width: 30%; margin-top: 10%; margin-left: 35%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+            <div id="dialog_about_text" class="about_text"></div>
+        </div>
+        <div id="dialog_controls" style="position: fixed; z-index:100; width: 60%; margin-top: 10%; margin-left: 20%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+            <div id="dialog_controls_text" class="controls_text"></div>
         </div>
         <div id="main_dialog_exit" style="position: fixed; z-index:4; text-align: center; width: 100%; margin-top: 25%; font-weight:bold; display:none;">
             <div id="main_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;"></div>
@@ -448,6 +497,7 @@
                     <div id="stream_info_livetime" class="strokedextramini" style="font-size: 170%; font-weight:bold; color: #FFFFFF"></div>
                     <div id="stream_info_currentime" class="strokedextramini" style="font-size: 170%; color: #FFFFFF;  font-weight:bold;"></div>
                     <div id="stream_system_time" class="strokedextramini" style="font-size: 170%; font-weight:bold;"></div>
+                    <div id="stream_controls" class="strokedextramini" style="font-size: 170%; font-weight:bold;"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" src="#" alt="stream_info" />
                 <div style="vertical-align: top; padding-left: 1%; padding-top: 1.5%; display: inline-block; width: 71%;">
@@ -469,7 +519,10 @@
                 </div>
             </div>
         </div>
-        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 25%; width: 100%; height : 50%; z-index: 2;">
+        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 20%; width: 100%; height : 50%; z-index: 2;">
+            <div id="dialog_controls_play" style="position: fixed; z-index:100; width: 60%; margin-left: 20%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+                <div id="dialog_controls_play_text" class="controls_text"></div>
+            </div>
             <div id="play_dialog_simple_pause" style="position: fixed; z-index:5; text-align: center; width: 100%; margin-top: 27%; display:none;">
                 <i style="display: inline-block; font-size: 750%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
             </div>

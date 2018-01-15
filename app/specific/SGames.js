@@ -356,9 +356,8 @@ SGames.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.SGames) {
-            if (id.indexOf(SGames.Thumbnail + '0_') == -1)
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
-            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
+            if (id.indexOf(SGames.Thumbnail + '0_') == -1) $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
+            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + Main.ScrollOffSetGame);
             // check Games.ScrollHelper to understand the "514"
         } else return;
     }

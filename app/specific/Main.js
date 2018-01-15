@@ -38,6 +38,9 @@ Main.OldUserName = '';
 Main.SmartHubId = null;
 Main.UserName = null;
 
+Main.ScrollOffSetVideo = 275; // check Games.ScrollHelper to understand the "275"
+Main.ScrollOffSetGame = 514;
+
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
@@ -74,6 +77,10 @@ Main.initWindows = function() {
     $('.label_search_live').html(STR_LIVE_STREAMS);
     $("#main_dialog_exit_text").text(STR_EXIT);
     $('.label_buffering').html(STR_BUFFERING);
+    $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROLS);
+    $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT);
+    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO;
+    document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN;
     $("#scene2").hide();
 };
 
@@ -107,6 +114,32 @@ Main.showWarningDialog = function(text) {
 Main.HideWarningDialog = function() {
     $("#dialog_warning_text").text('');
     $("#dialog_warning").hide();
+};
+
+Main.showAboutDialog = function() {
+    Main.HideExitDialog();
+    $("#dialog_about").show();
+};
+
+Main.HideAboutDialog = function() {
+    $("#dialog_about").hide();
+};
+
+Main.isAboutDialogShown = function() {
+    return $("#dialog_about").is(":visible");
+};
+
+Main.showControlsDialog = function() {
+    Main.HideExitDialog();
+    $("#dialog_controls").show();
+};
+
+Main.HideControlsDialog = function() {
+    $("#dialog_controls").hide();
+};
+
+Main.isControlsDialogShown = function() {
+    return $("#dialog_controls").is(":visible");
 };
 
 Main.addCommas = function(nStr) {

@@ -399,7 +399,9 @@ Live.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isExitDialogShown()) {
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else if (Main.isExitDialogShown()) {
                 window.clearTimeout(Main.ExitDialogID);
                 Main.HideExitDialog();
                 try {
@@ -486,10 +488,13 @@ Live.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
+            break;
             break;
         case TvKeyCode.KEY_GREEN:
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.Live;
@@ -538,7 +543,7 @@ Live.ScrollHelper = {
             if (id.indexOf(Live.Thumbnail + '0_') == -1) {
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
             } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
             }
         } else return;
     }
