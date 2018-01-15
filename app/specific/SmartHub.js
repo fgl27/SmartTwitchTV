@@ -224,12 +224,12 @@ SmartHub.EventListener = function() {
                     Play.selectedChannelDisplayname = videoTitleIdx;
                     Main.ExitCurrent();
                     if (Play.Playing) {
-                        Play.shutdownStream();
-                        Main.openStream();
+                        Play.PartiallyshutdownStream();
+                        window.setTimeout(Main.openStream, 10);
                     } else if (PlayVod.Playing) {
-                        PlayVod.shutdownStream();
-                        Main.openStream();
-                    } else Main.openStream();
+                        PlayVod.PartiallyshutdownStream();
+                        window.setTimeout(Main.openStream, 10);
+                    } else window.setTimeout(Main.openStream, 10);
 
                 } else if (JSON.parse(actionData).gameIdx) {
                     Main.ExitCurrent();

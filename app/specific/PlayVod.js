@@ -81,6 +81,7 @@ PlayVod.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
+        Play.showBufferDialog();
         window.setTimeout(function() {
             Play.videojs.play();
             PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
@@ -346,6 +347,21 @@ PlayVod.shutdownStream = function() {
     $("#scene1").show();
     $("#scene2").hide();
     Main.ReStartScreens();
+    PlayVod.offsettime = 0;
+    window.clearInterval(PlayVod.streamInfoTimer);
+    window.clearInterval(PlayVod.streamCheck);
+};
+
+PlayVod.PartiallyshutdownStream = function() {
+    Play.videojs.pause();
+    Play.videojs.autoplay(false);
+    Play.videojs.src('app/images/temp.mp4');
+    PlayVod.offPlayer();
+    PlayVod.Playing = false;
+    document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
+    document.removeEventListener('visibilitychange', PlayVod.Resume);
+    Play.clearPause();
+    Play.HideWarningDialog();
     PlayVod.offsettime = 0;
     window.clearInterval(PlayVod.streamInfoTimer);
     window.clearInterval(PlayVod.streamCheck);

@@ -110,6 +110,7 @@ Play.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
+        Play.showBufferDialog();
         window.setTimeout(function() {
             if (!SmartHub.SmartHubResume) {
                 Play.RestoreFromResume = true;
@@ -479,6 +480,23 @@ Play.shutdownStream = function() {
     $("#scene2").hide();
     Main.ReStartScreens();
 
+    Play.oldcurrentTime = 0;
+    Play.offsettime = 0;
+    document.getElementById('chat_frame').src = 'about:blank';
+    window.clearInterval(Play.streamInfoTimer);
+    window.clearInterval(Play.streamCheck);
+};
+
+Play.PartiallyshutdownStream = function() {
+    Play.videojs.pause();
+    Play.Playing = false;
+    Play.offPlayer();
+    Play.videojs.autoplay(false);
+    Play.videojs.src('app/images/temp.mp4');
+    document.body.removeEventListener("keydown", Play.handleKeyDown);
+    document.removeEventListener('visibilitychange', Play.Resume);
+    Play.clearPause();
+    Play.HideWarningDialog();
     Play.oldcurrentTime = 0;
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
