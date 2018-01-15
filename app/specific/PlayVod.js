@@ -76,6 +76,7 @@ PlayVod.Start = function() {
 PlayVod.Resume = function() {
     if (document.hidden) {
         Play.videojs.pause();
+        PlayVod.offsettime = Play.videojs.currentTime();
         window.clearInterval(PlayVod.streamCheck);
     } else {
         $("#scene2").show();
@@ -268,8 +269,8 @@ PlayVod.onPlayer = function() {
                 window.setTimeout(PlayVod.shutdownStream, 1500);
             });
 
-            this.on('playing', function() { // reset position after quality change
-                if (PlayVod.offsettime > 0) {
+            this.on('loadedmetadata', function() { // reset position after quality change
+                if (PlayVod.offsettime > 0 && PlayVod.offsettime !== this.currentTime()) {
                     this.currentTime(PlayVod.offsettime);
                     PlayVod.offsettime = 0;
                 }
@@ -308,7 +309,7 @@ PlayVod.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
-    Play.videojs.off('playing', null);
+    Play.videojs.off('loadedmetadata', null);
 };
 
 PlayVod.updateCurrentTime = function(currentTime) {

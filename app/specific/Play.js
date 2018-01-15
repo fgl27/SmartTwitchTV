@@ -100,8 +100,10 @@ Play.Start = function() {
 Play.Resume = function() {
     if (document.hidden) {
         Play.videojs.pause();
-        Play.offPlayer();
         Play.Playing = false;
+        Play.offPlayer();
+        Play.videojs.autoplay(false);
+        Play.videojs.src('app/images/temp.mp4');
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
         window.clearInterval(Play.streamCheck);
@@ -110,10 +112,11 @@ Play.Resume = function() {
         $("#scene1").hide();
         window.setTimeout(function() {
             if (!SmartHub.SmartHubResume) {
-                Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
                 Play.RestoreFromResume = true;
                 Play.PlayerCheckOffset = 60;
                 Play.onPlayer();
+                Play.updateStreamInfo();
+                Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
                 Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
             }
         }, 500);
@@ -362,7 +365,7 @@ Play.onPlayer = function() {
                 window.setTimeout(Play.shutdownStream, 1500);
             });
 
-            this.on('canplaythrough', function() {
+            this.on('loadedmetadata', function() {
                 // sync chat and stream
                 document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
                     Play.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
@@ -370,10 +373,6 @@ Play.onPlayer = function() {
 
         });
         Play.Playing = true;
-    } else {
-        // sync chat and stream
-        document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-            Play.selectedChannel + '&fade=false&bot_activity=false&prevent_clipping=false';
     }
 };
 
@@ -404,7 +403,7 @@ Play.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
-    Play.videojs.off('canplaythrough', null);
+    Play.videojs.off('loadedmetadata', null);
 };
 
 Play.updateCurrentTime = function(currentTime) {
@@ -468,10 +467,10 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 
 Play.shutdownStream = function() {
     Play.videojs.pause();
+    Play.Playing = false;
+    Play.offPlayer();
     Play.videojs.autoplay(false);
     Play.videojs.src('app/images/temp.mp4');
-    Play.offPlayer();
-    Play.Playing = false;
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();
