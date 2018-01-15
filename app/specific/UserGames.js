@@ -528,11 +528,9 @@ UserGames.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.UserGames) {
-            if (id.indexOf(UserGames.Thumbnail + '0_') == -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 275); // check Games.ScrollHelper to understand the "275"
-            }
+            if (id.indexOf(UserGames.Thumbnail + '0_') == -1)
+                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
+            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + Main.ScrollOffSetGame);
         } else return;
     }
 };

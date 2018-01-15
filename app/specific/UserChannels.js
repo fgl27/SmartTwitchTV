@@ -400,15 +400,15 @@ UserChannels.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.UserChannels) {
-            if (id.indexOf(UserChannels.Thumbnail + '0_') == -1) {
+            if (id.indexOf(UserChannels.Thumbnail + '0_') == -1) {// if is not 0_ 1_0 exist so don't do "0_ || 1_" to prevent null checks
                 if (id.indexOf(UserChannels.Thumbnail + '1_') == -1)
                     $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
                 else
                     $(window).scrollTop(this.documentVerticalScrollPosition() +
-                        this.elementVerticalClientPositionById(UserChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 290);
+                        this.elementVerticalClientPositionById(UserChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
             } else {
                 $(window).scrollTop(this.documentVerticalScrollPosition() +
-                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
             }
         } else return;
     }

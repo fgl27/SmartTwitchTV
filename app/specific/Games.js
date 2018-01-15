@@ -521,7 +521,7 @@ Games.ScrollHelper = {
         if (Main.Go === Main.Games) {
             if (id.indexOf(Games.Thumbnail + '0_') == -1)
                 $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
-            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + 514);
+            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + Main.ScrollOffSetGame);
         } else return;
     }
 };

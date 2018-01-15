@@ -1,6 +1,8 @@
 var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
 var STR_SEARCH = "Search (D)";
 var STR_SEARCHS = "Search";
+var STR_CONTROLS = "Controls (C)";
+var STR_ABOUT = "About (A)";
 var STR_SEARCH_EMPTY = "The text you entered is empty.";
 var STR_SWITCH = "Switch (CH Up/Down)";
 var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide(CH Press) or Info)";
@@ -56,3 +58,6 @@ var STR_JUMP_CANCEL = "Jump Canceled";
 var STR_SEC = " Sec";
 var STR_MIN = " Min";
 var STR_HR = " Hr";
+var STR_CONTROLS_MAIN = "Controls temp main <br> Controls temp main <br> Controls temp main";
+var STR_CONTROLS_PLAY = "Controls temp play <br> Controls temp play <br> Controls temp play";
+var STR_ABOUT_INFO = "About temp <br> About temp <br> About temp";

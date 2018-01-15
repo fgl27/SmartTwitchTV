@@ -350,7 +350,7 @@ SChannelContent.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.SChannelContent) {
-            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 270);
+            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
         } else return;
     }
 };

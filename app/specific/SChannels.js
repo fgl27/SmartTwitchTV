@@ -512,10 +512,10 @@ SChannels.ScrollHelper = {
                     $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
                 else
                     $(window).scrollTop(this.documentVerticalScrollPosition() +
-                        this.elementVerticalClientPositionById(SChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 290);
+                        this.elementVerticalClientPositionById(SChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + 275);
             } else {
                 $(window).scrollTop(this.documentVerticalScrollPosition() +
-                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 290); // check Games.ScrollHelper to understand the "290"
+                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
             }
         } else return;
     }
