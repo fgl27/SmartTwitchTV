@@ -19,9 +19,11 @@ The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
 Dependencies
 ==============
-* [imagesLoaded JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
-* [Font Awesome The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
+* [imagesLoaded - JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
+* [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
 * [Video.js - HTML5 Video Player](https://github.com/videojs/video.js)
+* [jQuery - fast, small, and feature-rich JavaScript library](https://code.jquery.com/jquery/)
+* [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
 Controls
 ==============

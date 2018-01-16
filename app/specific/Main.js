@@ -118,6 +118,7 @@ Main.HideWarningDialog = function() {
 
 Main.showAboutDialog = function() {
     Main.HideExitDialog();
+    Main.HideControlsDialog();
     $("#dialog_about").show();
 };
 
@@ -131,6 +132,7 @@ Main.isAboutDialogShown = function() {
 
 Main.showControlsDialog = function() {
     Main.HideExitDialog();
+    Main.HideAboutDialog();
     $("#dialog_controls").show();
 };
 
