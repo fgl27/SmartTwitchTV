@@ -274,6 +274,13 @@
             margin-top: -5.2px;
         }
 
+        div.about_text_title {
+            text-align: center;
+            width: 100%;
+            font-size: 150%;
+            font-weight: bold;
+        }
+
         div.about_text {
             -webkit-font-smoothing: antialiased;
             display: inline - block;
@@ -282,12 +289,11 @@
             margin-right: 2%;
             margin-top: 2%;
             margin-bottom: 2%;
-            width: 100%;
+            width: 96%;
             text-align: center;
             word-wrap: break -word;
-            font-size: 188%;
-            font-weight: bold;
-            text-shadow: #000000 0px 0px 3.6px, # 000000 0 px 0 px 3.6 px, #000000 0px 0px 2.5px;
+            font-size: 175%;
+            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
         }
 
         div.controls_text {
@@ -298,12 +304,11 @@
             margin-right: 2%;
             margin-top: 2%;
             margin-bottom: 2%;
-            width: 100%;
+            width: 96%;
             text-align: left;
             word-wrap: break -word;
-            font-size: 188%;
-            font-weight: bold;
-            text-shadow: #000000 0px 0px 3.6px, # 000000 0 px 0 px 3.6 px, #000000 0px 0px 2.5px;
+            font-size: 175%;
+            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
         }
 
         .strokedmini {
@@ -412,10 +417,10 @@
         <div id="dialog_loading" class="screen_size" style="position: fixed; z-index:98; text-align: center; width: 100%; display:none;">
             <i class="fa fa-circle-o-notch fa-spin strokeloading" style="margin-top: 24%; font-size: 727%; color: #FFFFFF;"></i>
         </div>
-        <div id="dialog_about" style="position: fixed; z-index:100; width: 30%; margin-top: 10%; margin-left: 35%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+        <div id="dialog_about" style="position: fixed; z-index:100; width: 70%; margin-top: 6%; margin-left: 15%; background-color: rgba(0, 0, 0, 0.85); display:none;">
             <div id="dialog_about_text" class="about_text"></div>
         </div>
-        <div id="dialog_controls" style="position: fixed; z-index:100; width: 60%; margin-top: 10%; margin-left: 20%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+        <div id="dialog_controls" style="position: fixed; z-index:100; width: 70%; margin-top: 6%; margin-left: 15%; background-color: rgba(0, 0, 0, 0.85); display:none;">
             <div id="dialog_controls_text" class="controls_text"></div>
         </div>
         <div id="main_dialog_exit" style="position: fixed; z-index:4; text-align: center; width: 100%; margin-top: 25%; font-weight:bold; display:none;">
@@ -519,12 +524,12 @@
                 </div>
             </div>
         </div>
-        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 20%; width: 100%; height : 50%; z-index: 2;">
-            <div id="dialog_controls_play" style="position: fixed; z-index:100; width: 60%; margin-left: 20%; background-color: rgba(0, 0, 0, 0.75); display:none;">
+        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 10%; width: 100%; height : 50%; z-index: 2;">
+            <div id="dialog_controls_play" style="position: fixed; z-index:100; width: 70%; margin-left: 15%; background-color: rgba(0, 0, 0, 0.85); display:none;">
                 <div id="dialog_controls_play_text" class="controls_text"></div>
             </div>
             <div id="play_dialog_simple_pause" style="position: fixed; z-index:5; text-align: center; width: 100%; margin-top: 27%; display:none;">
-                <i style="display: inline-block; font-size: 750%; color: rgba(255, 255, 255, 0.8); background-color: rgba(0, 0, 0, 0.6)" class="fa">&nbsp;&#xf04c;&nbsp;</i>
+                <i class="strokedbig fa fa-pause-circle" style="color: #FFFFFF; font-size: 850%;"></i>
             </div>
             <div id="play_dialog_exit" style="position: fixed; z-index:6; text-align: center; width: 100%; margin-top: 24%; font-weight:bold; display:none;">
                 <div id="play_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: #FFFFFF;"></div>
@@ -532,7 +537,7 @@
             <div id="dialog_warning_play" style="position: fixed; z-index:7; text-align: center; width: 100%; margin-top: 20%; font-weight:bold; display:none;">
                 <div id="dialog_warning_play_text" class="strokedbig" style="display: inline-block; font-size: 350%; color: #FFFFFF;"></div>
             </div>
-            <div id="dialog_buffer_play" class="screen_size" style="position: fixed; z-index:98; margin-top: 18%; text-align: center; width: 100%; display:none;">
+            <div id="dialog_buffer_play" class="screen_size" style="position: fixed; z-index:98; margin-top: 24%; text-align: center; width: 100%; display:none;">
                 <div id="dialog_buffer_play_text" class="strokedbig" style="display: inline-block; font-size: 300%; color: #FFFFFF;"></div>
             </div>
         </div>

@@ -472,15 +472,14 @@ Svod.handleKeyDown = function(event) {
                 }
             }
             break;
+        case TvKeyCode.KEY_CHANNELUP:
+        case TvKeyCode.KEY_CHANNELDOWN:
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (!Svod.loadingMore) {
                 Svod.highlight = !Svod.highlight;
                 Svod.StartLoad();
             }
-            break;
-        case TvKeyCode.KEY_CHANNELUP:
-        case TvKeyCode.KEY_CHANNELDOWN:
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
