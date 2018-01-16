@@ -228,7 +228,8 @@ PlayClip.handleKeyDown = function(e) {
             }
             break;
         case TvKeyCode.KEY_RETURN:
-            if (Play.isPanelShown()) {
+            if (Play.isControlsDialogShown()) Play.HideControlsDialog();
+            else if (Play.isPanelShown()) {
                 PlayClip.hidePanel();
             } else {
                 if (Play.ExitDialogVisible()) {
@@ -263,6 +264,8 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_RED:
         case TvKeyCode.KEY_GREEN:
         case TvKeyCode.KEY_YELLOW:
+            Play.showControlsDialog();
+            break;
         case TvKeyCode.KEY_BLUE:
             break;
         default:

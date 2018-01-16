@@ -45,7 +45,8 @@ Users.StartLoad = function() {
 };
 
 Users.loadData = function() {
-    var row, coloumn_id, tbody = $('<tbody></tbody>'), header;
+    var row, coloumn_id, tbody = $('<tbody></tbody>'),
+        header;
     $('#stream_table_user').append(tbody);
 
     for (var x = 0; x < AddUser.UsernameArray.length; x++) {
@@ -53,7 +54,7 @@ Users.loadData = function() {
         Main.UserName = AddUser.UsernameArray[x];
 
         header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + Main.UserName +
-                    STR_CONTENT + ((x === 0) ? STR_USER_NUMBER_ONE : '') + '</div>');
+            STR_CONTENT + ((x === 0) ? STR_USER_NUMBER_ONE : '') + '</div>');
         $('#stream_table_user').find('tbody').append(header);
 
         row = $('<tr></tr>');
@@ -153,9 +154,13 @@ Users.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Live;
-            Users.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.Live;
+                Users.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.Thumbnail)) {
@@ -229,14 +234,20 @@ Users.handleKeyDown = function(event) {
             Users.keyEnter();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
+            break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            Users.exit();
+            Main.SwitchScreen();
+            break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.Users;
             Main.Go = Main.Search;
-            Main.RestoreTopLabel();
-            document.body.removeEventListener("keydown", Users.handleKeyDown);
+            Users.exit();
             Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_VOLUMEUP:

@@ -51,7 +51,7 @@ Search.exit = function() {
 Search.exitMain = function() {
     window.setTimeout(function() {
         Main.SwitchScreen();
-    }, 250);
+    }, 100);
 };
 
 Search.loadData = function() {
@@ -80,8 +80,12 @@ Search.refreshInputFocusTools = function() {
 Search.handleKeyDown = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Search.exit();
-            Search.exitMain();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Search.exit();
+                Search.exitMain();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Search.cursorY === 1) {
@@ -146,12 +150,23 @@ Search.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RED:
+            Search.input.blur();
+            window.setTimeout(function() {
+                Main.showAboutDialog();
+            }, 100);
+            break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            Search.exit();
+            Search.exitMain();
+            break;
         case TvKeyCode.KEY_YELLOW:
+            Search.input.blur();
+            window.setTimeout(function() {
+                Main.showControlsDialog();
+            }, 100);
+            break;
         case TvKeyCode.KEY_BLUE:
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
             break;
         default:
             break;

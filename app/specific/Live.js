@@ -490,7 +490,6 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
             break;
-            break;
         case TvKeyCode.KEY_GREEN:
             break;
         case TvKeyCode.KEY_YELLOW:

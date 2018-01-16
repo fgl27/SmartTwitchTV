@@ -36,7 +36,7 @@ AddUser.exit = function() {
 AddUser.exitMain = function() {
     window.setTimeout(function() {
         Main.SwitchScreen();
-    }, 250);
+    }, 100);
 };
 
 AddUser.handleKeyDown = function(event) {
@@ -47,9 +47,13 @@ AddUser.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Before;
-            AddUser.exit();
-            AddUser.exitMain();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.Before;
+                AddUser.exit();
+                AddUser.exitMain();
+            }
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.Games;
@@ -74,12 +78,27 @@ AddUser.handleKeyDown = function(event) {
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
         case TvKeyCode.KEY_RED:
+            AddUser.input.blur();
+            window.setTimeout(function() {
+                Main.showAboutDialog();
+            }, 100);
+            break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            AddUser.exit();
+            AddUser.exitMain();
+            break;
         case TvKeyCode.KEY_YELLOW:
+            AddUser.input.blur();
+            window.setTimeout(function() {
+                Main.showControlsDialog();
+            }, 100);
+            break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.Go;
             Main.Go = Main.Search;
-            Live.exit();
+            AddUser.exit();
+            AddUser.exitMain();
             break;
         default:
             break;
