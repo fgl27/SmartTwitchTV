@@ -409,9 +409,13 @@ UserHost.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Users;
-            UserHost.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.Users;
+                UserHost.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((UserHost.cursorY), (UserHost.cursorX - 1), UserHost.Thumbnail)) {
@@ -488,10 +492,15 @@ UserHost.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            UserHost.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.UserHost;

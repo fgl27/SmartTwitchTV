@@ -269,9 +269,13 @@ UserChannels.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Users;
-            UserChannels.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.Users;
+                UserChannels.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((UserChannels.cursorY), (UserChannels.cursorX - 1), UserChannels.Thumbnail)) {
@@ -350,15 +354,19 @@ UserChannels.handleKeyDown = function(event) {
             SChannelContent.init();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.UserChannels;
             Main.Go = Main.Search;
-            Main.OldgameSelected = Main.gameSelected;
             UserChannels.exit();
             Main.SwitchScreen();
             break;
@@ -400,7 +408,7 @@ UserChannels.ScrollHelper = {
             return;
         }
         if (Main.Go === Main.UserChannels) {
-            if (id.indexOf(UserChannels.Thumbnail + '0_') == -1) {// if is not 0_ 1_0 exist so don't do "0_ || 1_" to prevent null checks
+            if (id.indexOf(UserChannels.Thumbnail + '0_') == -1) { // if is not 0_ 1_0 exist so don't do "0_ || 1_" to prevent null checks
                 if (id.indexOf(UserChannels.Thumbnail + '1_') == -1)
                     $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
                 else

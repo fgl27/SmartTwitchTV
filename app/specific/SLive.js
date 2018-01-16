@@ -411,10 +411,14 @@ SLive.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.Go === Main.Before) Main.Go = Main.Live;
-            else Main.Go = Main.Before;
-            SLive.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                if (Main.Go === Main.Before) Main.Go = Main.Live;
+                else Main.Go = Main.Before;
+                SLive.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((SLive.cursorY), (SLive.cursorX - 1), SLive.Thumbnail)) {
@@ -484,10 +488,15 @@ SLive.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            SLive.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.SLive;

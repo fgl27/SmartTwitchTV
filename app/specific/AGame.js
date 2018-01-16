@@ -203,9 +203,9 @@ AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
             <div id="' + AGame.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
             <div id="' + AGame.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
             <div id="' + AGame.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
-            '</div> \
+        '</div> \
             <div id="' + AGame.QualityDiv + row_id + '_' + coloumn_id +
-            '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
+        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
             </div>');
 };
 
@@ -313,7 +313,8 @@ AGame.loadDataSuccessReplace = function(responseText) {
 
     var row_id = AGame.itemsCount / AGame.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false, cursor = 0;
+    var coloumn_id, stream, mReplace = false,
+        cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
@@ -413,11 +414,15 @@ AGame.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.OldgameSelected = Main.gameSelected;
-            if (Main.Go === Main.Before) Main.Go = Main.Games;
-            else Main.Go = Main.Before;
-            AGame.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.OldgameSelected = Main.gameSelected;
+                if (Main.Go === Main.Before) Main.Go = Main.Games;
+                else Main.Go = Main.Before;
+                AGame.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX - 1), AGame.Thumbnail)) {
@@ -495,10 +500,15 @@ AGame.handleKeyDown = function(event) {
             Main.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            AGame.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.AGame;

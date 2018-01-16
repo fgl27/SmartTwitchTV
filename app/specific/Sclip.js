@@ -223,9 +223,9 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
             <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div> \
             <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
             <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
-            '"class="stream_info_games" style="width: 48%; display: inline-block;">' + views + '</div> \
+        '"class="stream_info_games" style="width: 48%; display: inline-block;">' + views + '</div> \
             <div id="' + Sclip.DurationDiv + row_id + '_' + coloumn_id +
-            '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' + video_duration + '</div> \
+        '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' + video_duration + '</div> \
             </div>');
 };
 
@@ -395,7 +395,6 @@ Sclip.addFocus = function() {
     $('#' + Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
     $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
 
-Sclip.DurationDiv
     window.setTimeout(function() {
         Sclip.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX);
     }, 10);
@@ -429,9 +428,13 @@ Sclip.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.SChannelContent;
-            Sclip.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.SChannelContent;
+                Sclip.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX - 1), Sclip.Thumbnail)) {
@@ -494,6 +497,7 @@ Sclip.handleKeyDown = function(event) {
                 Sclip.SetPeriod();
                 Sclip.StartLoad();
             }
+            break;
         case TvKeyCode.KEY_CHANNELDOWN:
             if (!Sclip.loadingMore) {
                 Sclip.periodNumber--;
@@ -515,20 +519,21 @@ Sclip.handleKeyDown = function(event) {
             Sclip.openStream();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            Sclip.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.Sclip;
             Main.Go = Main.Search;
             Sclip.exit();
             Main.SwitchScreen();
-            break;
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
             break;
         default:
             break;

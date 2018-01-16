@@ -269,9 +269,13 @@ SChannelContent.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            Main.Go = Main.Before;
-            SChannelContent.exit();
-            Main.SwitchScreen();
+            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            else {
+                Main.Go = Main.Before;
+                SChannelContent.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_LEFT:
             SChannelContent.removeFocus();
@@ -302,8 +306,15 @@ SChannelContent.handleKeyDown = function(event) {
             SChannelContent.keyEnter();
             break;
         case TvKeyCode.KEY_RED:
+            Main.showAboutDialog();
+            break;
         case TvKeyCode.KEY_GREEN:
+            Main.Go = Main.Live;
+            SChannelContent.exit();
+            Main.SwitchScreen();
+            break;
         case TvKeyCode.KEY_YELLOW:
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.SChannelContent;
