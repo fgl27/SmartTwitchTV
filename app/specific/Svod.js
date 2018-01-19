@@ -27,11 +27,12 @@ Svod.LastClickFinish = true;
 Svod.keyClickDelayTime = 25;
 Svod.ReplacedataEnded = false;
 Svod.MaxOffset = 0;
+Svod.DurationSeconds = 0;
 
 Svod.ThumbnailDiv = 'svod_thumbnail_div_';
 Svod.DispNameDiv = 'svod_display_name_';
 Svod.StreamTitleDiv = 'svod_stream_title_';
-Svod.StreamGameDiv = 'svod_stream_svod_';
+Svod.StreamDurationDiv = 'svod_stream_svod_';
 Svod.ViwersDiv = 'svod_viwers_';
 Svod.QualityDiv = 'svod_quality_';
 Svod.Cell = 'svod_cell_';
@@ -167,7 +168,7 @@ Svod.loadDataSuccess = function(responseText) {
             if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) coloumn_id--;
             else {
                 row.append(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
-                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
+                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
                     video.title, Main.addCommas(video.views) + STR_VIEWS,
                     Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)));
             }
@@ -187,7 +188,7 @@ Svod.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + Svod.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
     preview_thumbnail = preview_thumbnail.replace("320x240", "640x360");
 
     Svod.imgMatrix[Svod.imgMatrixCount] = preview_thumbnail;
@@ -199,12 +200,13 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
     Svod.nameMatrixCount++;
 
-    return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + 
+        '" data-durationseconds=" ' + duration + '"></td>').html(
         '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/video.png"/> \
             <div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div> \
             <div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-            <div id="' + Svod.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
+            <div id="' + Svod.StreamDurationDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(duration) + '</div> \
             <div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
         '</div> \
              <div id="' + Svod.QualityDiv + row_id + '_' + coloumn_id +
@@ -324,7 +326,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
         if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) Svod.blankCellCount--;
         else {
             mReplace = Svod.replaceCellEmpty(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
-                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeMs(video.length),
+                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
                 video.title, Main.addCommas(video.views) + STR_VIEWS,
                 Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)));
             if (mReplace) Svod.blankCellCount--;
@@ -336,7 +338,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
     Svod.loadDataSuccessFinish();
 };
 
-Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
     var my = 0,
         mx = 0;
     if (row_id < ((Svod.ItemsLimit / Svod.ColoumnsCount) - 1)) return false;
@@ -350,12 +352,13 @@ Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
                 Svod.nameMatrixCount++;
                 document.getElementById(Svod.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Svod.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).setAttribute('data-durationseconds', duration);
                 document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                     <div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div> \
                     <div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-                    <div id="' + Svod.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
+                    <div id="' + Svod.StreamDurationDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(duration) + '</div> \
                     <div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
                     '</div> \
@@ -381,7 +384,7 @@ Svod.addFocus = function() {
     $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_text_focused');
     $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.StreamGameDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
+    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
@@ -394,7 +397,7 @@ Svod.removeFocus = function() {
     $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_text_focused');
     $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
     $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.StreamGameDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
+    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
     $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
     $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
 };
@@ -490,7 +493,8 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             Svod.vodId = $('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-channelname').substr(1);
-            Svod.Duration = document.getElementById(Svod.StreamGameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.DurationSeconds = parseInt($('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-durationseconds'));
+            Svod.Duration = document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.views = document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.title = document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.createdAt = document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
