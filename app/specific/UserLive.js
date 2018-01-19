@@ -27,6 +27,7 @@ UserLive.LastClickFinish = true;
 UserLive.keyClickDelayTime = 25;
 UserLive.ReplacedataEnded = false;
 UserLive.MaxOffset = 0;
+UserLive.loadChannelOffsset = 0;
 
 UserLive.ThumbnailDiv = 'ulive_thumbnail_div_';
 UserLive.DispNameDiv = 'ulive_display_name_';
@@ -68,6 +69,7 @@ UserLive.StartLoad = function() {
     UserLive.status = false;
     UserLive.OldUserName = Main.UserName;
     $('#stream_table_user_live').empty();
+    UserLive.loadChannelOffsset = 0;
     UserLive.loadingMore = false;
     UserLive.blankCellCount = 0;
     UserLive.itemsCountOffset = 0;
@@ -83,9 +85,6 @@ UserLive.StartLoad = function() {
 };
 
 UserLive.loadData = function() {
-    UserLive.imgMatrix = [];
-    UserLive.imgMatrixId = [];
-    UserLive.imgMatrixCount = 0;
     UserLive.loadingData = true;
     UserLive.loadingDataTry = 0;
     UserLive.loadingDataTimeout = 3500;
@@ -97,15 +96,8 @@ UserLive.loadChannels = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserLive.MaxOffset - UserLive.ItemsLimit)) {
-            offset = UserLive.MaxOffset - UserLive.ItemsLimit;
-            UserLive.dataEnded = true;
-            UserLive.ReplacedataEnded = true;
-        }
-        // TODO revise this offset, as the value here may not always correct for this particularly function
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=' +
-            UserLive.ItemsLimit + '&offset=' + offset + '&sortby=last_broadcast', true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) +
+            '/follows/channels?limit=100&offset=' + UserLive.loadChannelOffsset + '&sortby=created_at', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -142,23 +134,31 @@ UserLive.loadDataError = function() {
     }
 };
 
+
 UserLive.loadChannelLive = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items = response.follows.length;
-    UserLive.followerChannels = '';
 
-    for (var x = 0; x < response_items; x++) {
-        UserLive.followerChannels += response.follows[x].channel.name + ',';
-    }
+    var response_items = response.follows.length;
+
+    for (var x = 0; x < response_items; x++) UserLive.followerChannels += response.follows[x].channel.name + ',';
+
     UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
 
-    UserLive.loadingData = true;
-    UserLive.loadingDataTry = 0;
-    UserLive.loadingDataTimeout = 3500;
-    UserLive.loadChannelsLive();
+    if (response_items > 0) { // response_items here is not always 99 so check until it is 0
+        UserLive.loadChannelOffsset += response_items;
+        UserLive.loadData();
+    } else { // end
+        UserLive.imgMatrix = [];
+        UserLive.imgMatrixId = [];
+        UserLive.imgMatrixCount = 0;
+        UserLive.loadingData = true;
+        UserLive.loadingDataTry = 0;
+        UserLive.loadingDataTimeout = 3500;
+        UserLive.loadChannelUserLive();
+    }
 };
 
-UserLive.loadChannelsLive = function() {
+UserLive.loadChannelUserLive = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -171,7 +171,7 @@ UserLive.loadChannelsLive = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive.followerChannels) + '&limit=' +
-            UserLive.ItemsLimit + '&offset=' + offset, true);
+            UserLive.ItemsLimit + '&offset=' + offset + '&stream_type=all', true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -199,7 +199,7 @@ UserLive.loadDataErrorLive = function() {
     UserLive.loadingDataTry++;
     if (UserLive.loadingDataTry < UserLive.loadingDataTryMax) {
         UserLive.loadingDataTimeout += (UserLive.loadingDataTry < 5) ? 250 : 3500;
-        UserLive.loadChannelsLive();
+        UserLive.loadChannelUserLive();
     } else {
         UserLive.loadingData = false;
         UserLive.loadingMore = false;

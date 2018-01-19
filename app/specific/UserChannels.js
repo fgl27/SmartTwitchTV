@@ -129,8 +129,8 @@ UserChannels.loadChannelLive = function(responseText) {
     var existCount = 0;
 
     for (var x = TempCount; x < (TempCount + response_items); x++) {
-        ChannelTemp = response.follows[x - TempCount].channel.name + ',' +
-            response.follows[x - TempCount].channel.display_name + ',' + response.follows[x - TempCount].channel.logo;
+        ChannelTemp = response.follows[x - TempCount].channel.display_name + ',' +
+            response.follows[x - TempCount].channel.name + ',' + response.follows[x - TempCount].channel.logo;
         if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList[x - existCount] = ChannelTemp;
         else existCount++;
     }
@@ -186,7 +186,7 @@ UserChannels.createCellEmpty = function(row_id, coloumn_id) {
     return $('<td id="' + UserChannels.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
-UserChannels.createCell = function(row_id, coloumn_id, channel_name, channel_display_name, preview_thumbnail) {
+UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, channel_name, preview_thumbnail) {
     UserChannels.imgMatrix[UserChannels.imgMatrixCount] = preview_thumbnail;
     UserChannels.imgMatrixId[UserChannels.imgMatrixCount] = UserChannels.Thumbnail + row_id + '_' + coloumn_id;
     UserChannels.imgMatrixCount++;
