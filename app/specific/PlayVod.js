@@ -557,11 +557,9 @@ PlayVod.handleKeyDown = function(e) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_INFO:
             case TvKeyCode.KEY_CHANNELGUIDE:
-                if (Play.isChatShown()) {
-                    Play.hideChat();
-                    Play.ChatEnable = false;
-                    localStorage.setItem('ChatEnable', 'false');
-                }
+                Play.hideChat();
+                Play.ChatEnable = false;
+                localStorage.setItem('ChatEnable', 'false');
                 break;
             case TvKeyCode.KEY_CHANNELUP:
             case TvKeyCode.KEY_CHANNELDOWN:
