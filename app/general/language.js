@@ -20,6 +20,7 @@ var STR_RESUME = "Resuming after be on background, please wait!";
 var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Enter yours search...";
 var STR_PLACEHOLDER_USER = "Enter user name...";
+var STR_PLACEHOLDER_PRESS = "Press enter to ";
 var STR_CHANNELS = "Channels";
 var STR_CHANNEL = "Channel";
 var STR_LIVE_STREAMS = "Live streams";
