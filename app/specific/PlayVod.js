@@ -50,6 +50,7 @@ PlayVod.jumpCount = 0;
 PlayVod.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
+    Play.hideChat();
     $("#scene2_quality").show();
     $('#clip_label_quality').html(STR_QUALITY);
     $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
@@ -524,6 +525,12 @@ PlayVod.handleKeyDown = function(e) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_INFO:
             case TvKeyCode.KEY_CHANNELGUIDE:
+                if (Play.isChatShown()) {
+                    Play.hideChat();
+                    Play.ChatEnable = false;
+                    localStorage.setItem('ChatEnable', 'false');
+                }
+                break;
             case TvKeyCode.KEY_CHANNELUP:
             case TvKeyCode.KEY_CHANNELDOWN:
                 break;
