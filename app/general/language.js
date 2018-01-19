@@ -57,6 +57,7 @@ var STR_CLIP_ALL = " (all)";
 var STR_JUMP_TIME = "Jumping ";
 var STR_JUMP_T0 = " to ";
 var STR_JUMP_CANCEL = "Jump Canceled";
+var STR_JUMP_TIME_BIG = " , jump time bigger then duration";
 var STR_SEC = " Sec";
 var STR_MIN = " Min";
 var STR_HR = " Hr";
