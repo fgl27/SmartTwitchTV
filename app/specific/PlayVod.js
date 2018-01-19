@@ -463,7 +463,7 @@ PlayVod.jumpStart = function() {
         Play.showWarningDialog(STR_JUMP_CANCEL);
         PlayVod.JumpID = window.setTimeout(function() {
             PlayVod.IsJumping = false;
-        }, 2000);
+        }, 1500);
         return;
     } else if (PlayVod.jumpCount < 0) {
         if (PlayVod.jumpCount == -1) PlayVod.TimeToJump = -5;
@@ -525,7 +525,7 @@ PlayVod.jumpStart = function() {
                 PlayVod.jumpCountMax = 16;
                 PlayVod.jumpCount = 0;
                 PlayVod.IsJumping = false;
-            }, 2000);
+            }, 1500);
             return;
         } else {
             PlayVod.TimeToJump = jumpTotime;
@@ -535,7 +535,7 @@ PlayVod.jumpStart = function() {
     }
 
     Play.showWarningDialog(STR_JUMP_TIME + time + STR_JUMP_T0 + jumpTotime);
-    PlayVod.JumpID = window.setTimeout(PlayVod.jump, 2000);
+    PlayVod.JumpID = window.setTimeout(PlayVod.jump, 1500);
 };
 
 PlayVod.handleKeyDown = function(e) {

@@ -12,6 +12,8 @@ PlayClip.IsJumping = false;
 PlayClip.jumpCount = 0;
 PlayClip.JumpID = null;
 PlayClip.TimeToJump = 0;
+PlayClip.jumpCountMin = -12;
+PlayClip.jumpCountMax = 12;
 
 //Variable initialization end
 
@@ -34,6 +36,8 @@ PlayClip.Start = function() {
     PlayClip.IsJumping = false;
     PlayClip.jumpCount = 0;
     PlayClip.TimeToJump = 0;
+    PlayClip.jumpCountMin = -12;
+    PlayClip.jumpCountMax = 12;
 
     window.setTimeout(function() {
         Play.videojs.src({
@@ -60,6 +64,10 @@ PlayClip.Start = function() {
                 window.setTimeout(PlayClip.Exit, 1500);
             });
 
+            this.on('loadedmetadata', function() {
+                PlayClip.Canjump = true;
+            });
+
         });
     }, 1000);
 
@@ -69,6 +77,7 @@ PlayClip.offPlayer = function() {
     Play.videojs.off('ended', null);
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
+    Play.videojs.off('loadedmetadata', null);
 };
 
 PlayClip.Resume = function() {
@@ -142,8 +151,10 @@ PlayClip.setHidePanel = function() {
 
 PlayClip.jump = function() {
     if (!Play.videojs.paused()) Play.videojs.pause();
-    Play.videojs.currentTime(Play.videojs.currentTime() + PlayClip.TimeToJump);
+    Play.videojs.currentTime(PlayClip.TimeToJump);
     PlayClip.jumpCount = 0;
+    PlayClip.jumpCountMin = -12;
+    PlayClip.jumpCountMax = 12;
     PlayClip.IsJumping = false;
     PlayClip.Canjump = false;
     Play.videojs.play();
@@ -152,14 +163,17 @@ PlayClip.jump = function() {
 PlayClip.jumpStart = function() {
     window.clearTimeout(PlayClip.JumpID);
     PlayClip.IsJumping = true;
-    var time = '';
+    var time = '',
+        jumpTotime = '';
 
     if (PlayClip.jumpCount === 0) {
         PlayClip.TimeToJump = 0;
+        PlayClip.jumpCountMin = -12;
+        PlayClip.jumpCountMax = 12;
         Play.showWarningDialog(STR_JUMP_CANCEL);
         window.setTimeout(function() {
             PlayClip.IsJumping = false;
-        }, 1000);
+        }, 1500);
         return;
     } else if (PlayClip.jumpCount < 0) {
         if (PlayClip.jumpCount == -1) PlayClip.TimeToJump = -5;
@@ -176,8 +190,14 @@ PlayClip.jumpStart = function() {
         else PlayClip.TimeToJump = -60;
 
         time = PlayClip.TimeToJump + STR_SEC;
-        if (PlayClip.TimeToJump < -30) time = (PlayClip.TimeToJump / 60) + STR_MIN;
-        if (PlayClip.TimeToJump < -1800) time = ((PlayClip.TimeToJump / 60) / 60) + STR_HR;
+
+        jumpTotime = Play.videojs.currentTime() + PlayClip.TimeToJump;
+        if (jumpTotime < 0) {
+            PlayClip.jumpCountMin = PlayClip.jumpCount;
+            jumpTotime = 0;
+        }
+        PlayClip.TimeToJump = jumpTotime;
+        jumpTotime = Play.timeS(jumpTotime);
     } else {
         if (PlayClip.jumpCount == 1) PlayClip.TimeToJump = 5;
         else if (PlayClip.jumpCount == 2) PlayClip.TimeToJump = 10;
@@ -191,25 +211,41 @@ PlayClip.jumpStart = function() {
         else if (PlayClip.jumpCount == 10) PlayClip.TimeToJump = 50;
         else if (PlayClip.jumpCount == 11) PlayClip.TimeToJump = 55;
         else PlayClip.TimeToJump = 60;
-    }
-    time = PlayClip.TimeToJump + STR_SEC;
-    Play.showWarningDialog(STR_JUMP_TIME + time + STR_JUMP_T0 +
-        Play.timeS(Play.videojs.currentTime() + PlayClip.TimeToJump));
 
-    PlayClip.JumpID = window.setTimeout(PlayClip.jump, 1000);
+        time = PlayClip.TimeToJump + STR_SEC;
+
+        jumpTotime = Play.videojs.currentTime() + PlayClip.TimeToJump;
+        if (jumpTotime > Sclip.DurationSeconds) {
+            PlayClip.TimeToJump = 0;
+            PlayClip.jumpCountMax = PlayClip.jumpCount;
+            Play.showWarningDialog(STR_JUMP_CANCEL + STR_JUMP_TIME_BIG);
+            PlayClip.JumpID = window.setTimeout(function() {
+                PlayClip.jumpCountMax = 16;
+                PlayClip.jumpCount = 0;
+                PlayClip.IsJumping = false;
+            }, 1500);
+            return;
+        } else {
+            PlayClip.TimeToJump = jumpTotime;
+            jumpTotime = Play.timeS(jumpTotime);
+        }
+    }
+
+    Play.showWarningDialog(STR_JUMP_TIME + time + STR_JUMP_T0 + jumpTotime);
+    PlayClip.JumpID = window.setTimeout(PlayClip.jump, 1500);
 };
 
 PlayClip.handleKeyDown = function(e) {
     switch (e.keyCode) {
         case TvKeyCode.KEY_LEFT:
             if (PlayClip.Canjump) {
-                if (PlayClip.jumpCount > -12) PlayClip.jumpCount--;
+                if (PlayClip.jumpCount > PlayClip.jumpCountMin) PlayClip.jumpCount--;
                 PlayClip.jumpStart();
             }
             break;
         case TvKeyCode.KEY_RIGHT:
             if (PlayClip.Canjump) {
-                if (PlayClip.jumpCount < 12) PlayClip.jumpCount++;
+                if (PlayClip.jumpCount < PlayClip.jumpCountMax) PlayClip.jumpCount++;
                 PlayClip.jumpStart();
             }
             break;
