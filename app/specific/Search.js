@@ -51,7 +51,7 @@ Search.exit = function() {
 Search.exitMain = function() {
     window.setTimeout(function() {
         Main.SwitchScreen();
-    }, 100);
+    }, 250);
 };
 
 Search.loadData = function() {
@@ -153,7 +153,7 @@ Search.handleKeyDown = function(event) {
             Search.input.blur();
             window.setTimeout(function() {
                 Main.showAboutDialog();
-            }, 100);
+            }, 250);
             break;
         case TvKeyCode.KEY_GREEN:
             Main.Go = Main.Live;
@@ -164,7 +164,7 @@ Search.handleKeyDown = function(event) {
             Search.input.blur();
             window.setTimeout(function() {
                 Main.showControlsDialog();
-            }, 100);
+            }, 250);
             break;
         case TvKeyCode.KEY_BLUE:
             break;

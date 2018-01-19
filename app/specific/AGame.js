@@ -41,12 +41,13 @@ AGame.status = false;
 
 
 AGame.init = function() {
+    Main.Go = Main.AGame;
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
     $('.lable_game').html(STR_AGAME);
     $('.label_agame_name').html(Main.gameSelected);
-    if ((Main.OldgameSelected === Main.gameSelected)) AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
+    if ((Main.OldgameSelected === Main.gameSelected)) Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     else AGame.StartLoad();
 };
 
@@ -61,7 +62,7 @@ AGame.exit = function() {
 AGame.StartLoad = function() {
     Main.HideWarningDialog();
     AGame.status = false;
-    AGame.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     $('#stream_table_a_game').empty();
     AGame.loadingMore = false;
@@ -382,7 +383,7 @@ AGame.addFocus = function() {
     $('#' + AGame.ViwersDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
     $('#' + AGame.QualityDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
-        AGame.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 };
 
@@ -523,43 +524,5 @@ AGame.handleKeyDown = function(event) {
             break;
         default:
             break;
-    }
-};
-
-AGame.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.AGame) {
-            if (id.indexOf(AGame.Thumbnail + '0_') == -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            }
-        } else return;
     }
 };

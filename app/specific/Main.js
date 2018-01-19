@@ -38,8 +38,12 @@ Main.OldUserName = '';
 Main.SmartHubId = null;
 Main.UserName = null;
 
-Main.ScrollOffSetVideo = 275; // check Games.ScrollHelper to understand the "275"
+Main.ScrollOffSetVideo = 275;
 Main.ScrollOffSetGame = 514;
+
+Main.ScrollOffSetMinusVideo = 0.345;
+Main.ScrollOffSetMinusChannels = 0.430;
+Main.ScrollOffSetMinusGame = 0.535;
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -299,5 +303,87 @@ Main.Resume = function() {
                 window.removeEventListener('appcontrol', SmartHub.EventListener);
             }
         }, 1500);
+    }
+};
+
+Main.ScrollHelper = {
+    documentVerticalScrollPosition: function() {
+        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
+        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
+        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
+        return 0; // None of the above.
+    },
+
+    viewportHeight: function() {
+        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
+    },
+
+    documentHeight: function() {
+        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
+    },
+
+    documentMaximumScrollPosition: function() {
+        return this.documentHeight() - this.viewportHeight();
+    },
+
+    elementVerticalClientPositionById: function(id) {
+        return document.getElementById(id).getBoundingClientRect().top;
+    },
+
+    scrollVerticalToElementById: function(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
+        var id = Thumbnail + cursorY + '_' + cursorX;
+
+        if (document.getElementById(id) === null) {
+            return;
+        } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+            id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        } else if (cursorY == 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+            id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+            cursorY = 0;
+        }
+
+        if (DuploYOffsetCheck) {
+            DuploYOffsetCheck = (cursorY === 0 || cursorY === 1);
+            if (DuploYOffsetCheck) {
+                id = Thumbnail + '0_' + cursorX;
+                OffsetMinus = OffsetMinus - 0.085;
+            }
+        } else DuploYOffsetCheck = (cursorY === 0);
+
+        if (Main.Go === Screen) {
+            $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) -
+                OffsetMinus * this.viewportHeight() + (DuploYOffsetCheck ? OffsetPlus : 0));
+        } else return;
+    }
+};
+
+
+Main.ScrollHelperBlank = {
+    documentVerticalScrollPosition: function() {
+        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
+        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
+        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
+        return 0; // None of the above.
+    },
+
+    viewportHeight: function() {
+        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
+    },
+
+    documentHeight: function() {
+        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
+    },
+
+    documentMaximumScrollPosition: function() {
+        return this.documentHeight() - this.viewportHeight();
+    },
+
+    elementVerticalClientPositionById: function(id) {
+        return document.getElementById(id).getBoundingClientRect().top;
+    },
+
+    scrollVerticalToElementById: function() {
+        $(window).scrollTop(this.documentVerticalScrollPosition() +
+            this.elementVerticalClientPositionById('blank_focus') - 0.345 * this.viewportHeight());
     }
 };

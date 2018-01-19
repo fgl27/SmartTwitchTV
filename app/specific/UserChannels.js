@@ -41,7 +41,7 @@ UserChannels.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_USER_CHANNEL);
     document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
     if (UserChannels.OldUserName !== Main.UserName) UserChannels.status = false;
-    if (UserChannels.status) UserChannels.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX);
+    if (UserChannels.status) Main.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, Main.UserChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     else UserChannels.StartLoad();
 };
 
@@ -55,7 +55,7 @@ UserChannels.exit = function() {
 
 UserChannels.StartLoad = function() {
     Main.HideWarningDialog();
-    UserChannels.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserChannels.OldUserName = Main.UserName;
     UserChannels.status = false;
@@ -241,7 +241,7 @@ UserChannels.addFocus = function() {
     $('#' + UserChannels.ThumbnailDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_text_focused');
     $('#' + UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_channel_focused');
     window.setTimeout(function() {
-        UserChannels.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, Main.UserChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
 };
 
@@ -376,48 +376,5 @@ UserChannels.handleKeyDown = function(event) {
             break;
         default:
             break;
-    }
-};
-
-UserChannels.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.UserChannels) {
-            if (id.indexOf(UserChannels.Thumbnail + '0_') == -1) { // if is not 0_ 1_0 exist so don't do "0_ || 1_" to prevent null checks
-                if (id.indexOf(UserChannels.Thumbnail + '1_') == -1)
-                    $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.430 * this.viewportHeight());
-                else
-                    $(window).scrollTop(this.documentVerticalScrollPosition() +
-                        this.elementVerticalClientPositionById(UserChannels.Thumbnail + '0_1') - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() +
-                    this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            }
-        } else return;
     }
 };

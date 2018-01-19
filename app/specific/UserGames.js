@@ -46,7 +46,7 @@ UserGames.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     if (UserGames.OldUserName !== Main.UserName) UserGames.status = false;
-    if (UserGames.status) UserGames.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX);
+    if (UserGames.status) Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     else UserGames.StartLoad();
 };
 
@@ -60,7 +60,7 @@ UserGames.exit = function() {
 
 UserGames.StartLoad = function() {
     Main.HideWarningDialog();
-    UserGames.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserGames.OldUserName = Main.UserName;
     UserGames.status = false;
@@ -369,7 +369,7 @@ UserGames.addFocus = function() {
     $('#' + UserGames.DispNameDiv + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_channel_focused');
     $('#' + UserGames.ViwersDiv + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
-        UserGames.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
 };
 
@@ -504,41 +504,5 @@ UserGames.handleKeyDown = function(event) {
             break;
         default:
             break;
-    }
-};
-
-UserGames.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.UserGames) {
-            if (id.indexOf(UserGames.Thumbnail + '0_') == -1)
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight());
-            else $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.535 * this.viewportHeight() + Main.ScrollOffSetGame);
-        } else return;
     }
 };

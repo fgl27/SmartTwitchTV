@@ -58,7 +58,7 @@ Sclip.init = function() {
     document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
-    if (Sclip.status) Sclip.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX);
+    if (Sclip.status) Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     else Sclip.StartLoad();
 };
 
@@ -69,7 +69,7 @@ Sclip.exit = function() {
 
 Sclip.StartLoad = function() {
     Main.HideWarningDialog();
-    Sclip.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     Sclip.lastselectedChannel = Main.selectedChannel;
     Sclip.loadingReplace = false;
@@ -396,7 +396,7 @@ Sclip.addFocus = function() {
     $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
 
     window.setTimeout(function() {
-        Sclip.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 };
 
@@ -539,45 +539,6 @@ Sclip.handleKeyDown = function(event) {
             break;
     }
 };
-
-Sclip.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.Sclip) {
-            if (id.indexOf(Sclip.Thumbnail + '0_') == -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            }
-        } else return;
-    }
-};
-
 
 Sclip.openStream = function() {
     document.body.addEventListener("keydown", PlayClip.handleKeyDown, false);

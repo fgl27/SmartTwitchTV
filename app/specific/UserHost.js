@@ -48,7 +48,7 @@ UserHost.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
     if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
-    if (UserHost.status) UserHost.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX);
+    if (UserHost.status) Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     else UserHost.StartLoad();
 };
 
@@ -62,7 +62,7 @@ UserHost.exit = function() {
 
 UserHost.StartLoad = function() {
     Main.HideWarningDialog();
-    UserHost.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserHost.OldUserName = Main.UserName;
     UserHost.status = false;
@@ -378,7 +378,7 @@ UserHost.addFocus = function() {
     $('#' + UserHost.hostsGameDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_info_focused');
     $('#' + UserHost.ViwersDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
-        UserHost.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 };
 
@@ -514,43 +514,5 @@ UserHost.handleKeyDown = function(event) {
             break;
         default:
             break;
-    }
-};
-
-UserHost.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.UserHost) {
-            if (id.indexOf(UserHost.Thumbnail + '0_') == -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            }
-        } else return;
     }
 };

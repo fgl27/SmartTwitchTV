@@ -51,7 +51,7 @@ Svod.init = function() {
     $('.lable_user').html(Main.selectedChannelDisplayname);
     $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
-    if (Svod.status) Svod.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX);
+    if (Svod.status) Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     else Svod.StartLoad();
 };
 
@@ -65,7 +65,7 @@ Svod.StartLoad = function() {
     Main.HideWarningDialog();
     Svod.lastselectedChannel = Main.selectedChannel;
     Svod.status = false;
-    Svod.ScrollHelper.scrollVerticalToElementById('blank_focus');
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     $('#stream_table_search_vod').empty();
     Svod.loadingMore = false;
@@ -385,7 +385,7 @@ Svod.addFocus = function() {
     $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
-        Svod.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX);
+        Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 };
 
@@ -519,44 +519,6 @@ Svod.handleKeyDown = function(event) {
             break;
         default:
             break;
-    }
-};
-
-Svod.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        if (Main.Go === Main.Svod) {
-            if (id.indexOf(Svod.Thumbnail + '0_') === -1) {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-            } else {
-                $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + Main.ScrollOffSetVideo);
-            }
-        } else return;
     }
 };
 
