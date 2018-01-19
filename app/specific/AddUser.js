@@ -9,6 +9,7 @@ AddUser.UsernameArray = [];
 AddUser.Followercount = 0;
 AddUser.Username = null;
 AddUser.loadingData = false;
+AddUser.keyBoardOn = false;
 //Variable initialization end
 
 AddUser.init = function() {
@@ -24,21 +25,14 @@ AddUser.init = function() {
 };
 
 AddUser.exit = function() {
-    AddUser.input.blur();
-    document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
+    AddUser.RemoveinputFocus();
     document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
 };
 
-AddUser.exitMain = function() {
-    window.setTimeout(function() {
-        Main.SwitchScreen();
-    }, 250);
-};
-
 AddUser.handleKeyDown = function(event) {
-    if (AddUser.loadingData) {
+    if (AddUser.loadingData || AddUser.keyBoardOn) {
         event.preventDefault();
         return;
     }
@@ -50,18 +44,18 @@ AddUser.handleKeyDown = function(event) {
             else {
                 Main.Go = Main.Before;
                 AddUser.exit();
-                AddUser.exitMain();
+                Main.SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Go = Main.Games;
             AddUser.exit();
-            AddUser.exitMain();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.Live;
             AddUser.exit();
-            AddUser.exitMain();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -76,27 +70,21 @@ AddUser.handleKeyDown = function(event) {
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
         case TvKeyCode.KEY_RED:
-            AddUser.input.blur();
-            window.setTimeout(function() {
-                Main.showAboutDialog();
-            }, 100);
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             Main.Go = Main.Live;
             AddUser.exit();
-            AddUser.exitMain();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
-            AddUser.input.blur();
-            window.setTimeout(function() {
-                Main.showControlsDialog();
-            }, 100);
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.Go;
             Main.Go = Main.Search;
             AddUser.exit();
-            AddUser.exitMain();
+            Main.SwitchScreen();
             break;
         default:
             break;
@@ -107,7 +95,16 @@ AddUser.inputFocus = function() {
     document.body.addEventListener("keydown", AddUser.KeyboardEvent, false);
     AddUser.input.addEventListener('input');
     AddUser.input.addEventListener('compositionend');
+    $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
     AddUser.input.focus();
+    AddUser.keyBoardOn = true;
+};
+
+AddUser.RemoveinputFocus = function() {
+    AddUser.input.blur();
+    document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
+    $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER);
+    AddUser.keyBoardOn = false;
 };
 
 AddUser.KeyboardEvent = function(event) {
@@ -143,8 +140,7 @@ AddUser.KeyboardEvent = function(event) {
                     }, 1500);
                 }
             }
-            AddUser.input.blur();
-            document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
+            AddUser.RemoveinputFocus();
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);

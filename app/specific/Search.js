@@ -5,7 +5,7 @@ Search.cursorY = 0;
 Search.cursorX = 0;
 Search.status = false;
 Search.data = '';
-
+Search.keyBoardOn = false;
 //Variable initialization end
 
 
@@ -31,8 +31,7 @@ Search.init = function() {
 };
 
 Search.exit = function() {
-    Search.input.blur();
-    document.body.removeEventListener("keydown", Search.KeyboardEvent);
+    Search.RemoveinputFocus();
     document.body.removeEventListener("keydown", Search.handleKeyDown);
     Search.refreshInputFocusTools();
     Main.Go = Main.BeforeSearch;
@@ -46,12 +45,6 @@ Search.exit = function() {
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
     document.getElementById("search_input").value = '';
-};
-
-Search.exitMain = function() {
-    window.setTimeout(function() {
-        Main.SwitchScreen();
-    }, 250);
 };
 
 Search.loadData = function() {
@@ -78,13 +71,18 @@ Search.refreshInputFocusTools = function() {
 };
 
 Search.handleKeyDown = function(event) {
+    if (Search.keyBoardOn) {
+        event.preventDefault();
+        return;
+    }
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
                 Search.exit();
-                Search.exitMain();
+                Main.SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
@@ -110,7 +108,7 @@ Search.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             if (Search.cursorY === 0) {
-                Search.input.blur();
+                Search.RemoveinputFocus();
                 Search.cursorY = 1;
                 Search.refreshInputFocusTools();
             } else if (Search.cursorY === 1) {
@@ -124,11 +122,11 @@ Search.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Search.exit();
-            Search.exitMain();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Search.exit();
-            Search.exitMain();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -139,7 +137,6 @@ Search.handleKeyDown = function(event) {
                 if ($('#search_input').val() !== '' && $('#search_input').val() !== null) {
                     Search.data = $('#search_input').val();
                     document.getElementById("search_input").value = '';
-                    Search.input.blur();
                     Search.loadData();
                 } else {
                     Main.showWarningDialog(STR_SEARCH_EMPTY);
@@ -150,21 +147,15 @@ Search.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RED:
-            Search.input.blur();
-            window.setTimeout(function() {
-                Main.showAboutDialog();
-            }, 250);
+            Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             Search.exit();
-            Search.exitMain();
+            Main.Go = Main.Live;
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Search.input.blur();
-            window.setTimeout(function() {
-                Main.showControlsDialog();
-            }, 250);
+            Main.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             break;
@@ -206,15 +197,21 @@ Search.ScrollHelper = {
 };
 
 Search.inputFocus = function() {
+    document.body.addEventListener("keydown", Search.KeyboardEvent, false);
     Search.input.addEventListener('input');
     Search.input.addEventListener('compositionend');
-
-    document.body.addEventListener('keydown', function(event) {
-        Search.KeyboardEvent(event);
-    });
-
+    $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_SEARCH);
     Search.input.focus();
+    Search.keyBoardOn = true;
 };
+
+Search.RemoveinputFocus = function() {
+    Search.input.blur();
+    document.body.removeEventListener("keydown", Search.KeyboardEvent);
+    $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH);
+    Search.keyBoardOn = false;
+};
+
 Search.KeyboardEvent = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
@@ -224,7 +221,7 @@ Search.KeyboardEvent = function(event) {
         case TvKeyCode.KEY_KEYBOARD_DONE:
         case TvKeyCode.KEY_KEYBOARD_CANCEL:
             document.getElementById("search_input").value = $('#search_input').val();
-            Search.input.blur();
+            Search.RemoveinputFocus();
             Search.cursorY = 1;
             Search.refreshInputFocusTools();
             break;
