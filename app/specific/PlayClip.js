@@ -17,8 +17,9 @@ PlayClip.TimeToJump = 0;
 
 PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    $("#scene2_quality").hide();
     Play.showBufferDialog();
+    $("#scene2_quality").hide();
+    Play.hideChat();
     $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
     $('#stream_info_name').text(Sclip.title);
     $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
@@ -256,6 +257,12 @@ PlayClip.handleKeyDown = function(e) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
+            if (Play.isChatShown()) {
+                Play.hideChat();
+                Play.ChatEnable = false;
+                localStorage.setItem('ChatEnable', 'false');
+            }
+            break;
         case TvKeyCode.KEY_CHANNELUP:
         case TvKeyCode.KEY_CHANNELDOWN:
         case TvKeyCode.KEY_VOLUMEUP:
