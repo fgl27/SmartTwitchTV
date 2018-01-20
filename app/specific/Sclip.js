@@ -184,7 +184,7 @@ Sclip.loadDataSuccess = function(responseText) {
         for (coloumn_id = 0; coloumn_id < Sclip.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
             vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
-            if (Sclip.CellExists(vod_id)) coloumn_id--;
+            if (Sclip.CellExists(video.tracking_id)) coloumn_id--;
             else {
                 row.append(Sclip.createCell(row_id, coloumn_id, vod_id, video.thumbnails.medium, STR_STREAM_ON + Main.videoCreatedAt(video.created_at),
                     video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS, video.game));
@@ -253,18 +253,15 @@ Sclip.loadDataSuccessFinish = function() {
                 Sclip.status = true;
                 Sclip.addFocus();
             }
-
             if (!Sclip.loadingReplace) {
                 for (var i = 0; i < Sclip.imgMatrix.length; i++) {
                     var tumbImg = document.getElementById(Sclip.imgMatrixId[i]);
                     tumbImg.onerror = function() {
                         this.src = 'app/images/404_video.png'; //img fail to load use predefined
                     };
-
                     tumbImg.src = Sclip.imgMatrix[i];
                 }
             }
-
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
                 Sclip.loadingMore = true;
                 Sclip.loadingReplace = true;
@@ -333,11 +330,10 @@ Sclip.loadDataSuccessReplace = function(responseText) {
 
     var coloumn_id, video, vod_id, mReplace = false,
         cursor = 0;
-
     for (cursor; cursor < response_items; cursor++) {
         video = response.clips[cursor];
         vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
-        if (Sclip.CellExists(vod_id)) Sclip.blankCellCount--;
+        if (Sclip.CellExists(video.tracking_id)) Sclip.blankCellCount--;
         else {
             mReplace = Sclip.replaceCellEmpty(row_id, coloumn_id, vod_id, video.thumbnails.medium,
                 STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS, video.game);
@@ -357,23 +353,23 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
             if (!Main.ThumbNull(my, mx, Sclip.Thumbnail) && (Main.ThumbNull(my, mx, Sclip.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                // preview_thumbnail = preview_thumbnail.replace("480x272", "640x360");
                 Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
                 Sclip.nameMatrixCount++;
 
                 document.getElementById(Sclip.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Sclip.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).setAttribute('data-durationseconds', video_duration);
+                document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-durationseconds', video_duration);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).innerHTML =
                     '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
                     <div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
                     <div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + video_title + '</div> \
-                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_duration + '</div> \
-                    <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div> \
+                    <div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div> \
+                    <div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div> \
                     <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 48%; display: inline-block;">' + views + '</div> \
                     <div id="' + Sclip.DurationDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' + STR_DURATION + Play.timeS(video_duration) + '</div> \
+                    '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' + STR_DURATION +
+                    Play.timeS(video_duration) + '</div> \
                     </div>';
                 return true;
             }
