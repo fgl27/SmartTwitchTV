@@ -130,6 +130,7 @@ var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_CONTROL + ':</div
     STR_DOT + "Change Chat position (if chat it\'s showing): Chanel Up or Down" + STR_BR +
     STR_DOT + "Change Chat size (if chat it\'s showing and info panel is not): Directional pad (up/down)" + STR_BR +
     STR_DOT + "Change Chat background brightness (if chat it\'s showing): Directional pad (left/right)" +
+    STR_DOT + "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self" + STR_BR +
     '</div>' + // not translatable
     STR_BR + STR_BR + STR_CLOSE_THIS;
 
