@@ -24,6 +24,7 @@ Main.Svod = 15;
 Main.Sclip = 16;
 Main.Users = 17;
 Main.UserChannels = 18;
+Main.SChannels = 19;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -191,6 +192,7 @@ Main.ReStartScreens = function() {
 };
 
 Main.SwitchScreen = function() {
+    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.AddUser) AddUser.init();
     else if (Main.Go === Main.Games) Games.init();
@@ -334,7 +336,13 @@ Main.ScrollHelper = {
         var id = Thumbnail + cursorY + '_' + cursorX;
 
         if (document.getElementById(id) === null) {
+            if (cursorY === 0 && cursorX === 0) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
             return;
+        } else if (Screen == Main.UserChannels || Screen == Main.SChannels) {
+            if (!Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+                if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+                else cursorY = 0;
+            }
         } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
         } else if (cursorY == 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
