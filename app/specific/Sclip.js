@@ -488,7 +488,6 @@ Sclip.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            break;
         case TvKeyCode.KEY_CHANNELUP:
             if (!Sclip.loadingMore) {
                 Sclip.periodNumber++;
