@@ -109,12 +109,9 @@ var STR_ABOUT_INFO = '<div class="about_text_title">Twitch.TV:</div>' + // not t
 var STR_PLAYER = "Player Related:";
 var STR_CHAT = "Chat Related:";
 var STR_GENERAL = "General Related:";
-var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_CONTROL + ':</div>' + // not translatable
-    STR_BR +
-
-    '<div class="about_text_title">' + STR_GENERAL + '</div>' + // not translatable
+var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_GENERAL + '</div>' + // not translatable
     STR_DOT + "Show information panel: Select key if chat is showing or Directional pad (up/down/left/right) if not" + STR_BR +
-    STR_DOT + "Close a video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)" + STR_BR +
+    STR_DOT + "Close the video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)" + STR_BR +
     STR_DOT + "Controls list: color button yellow or C" +
     '</div>' + // not translatable
 
@@ -129,8 +126,8 @@ var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_CONTROL + ':</div
     STR_DOT + "Show or hide the Chat (Only availably on live streams): Guide or info (Guide is channel press key on smart remote)" + STR_BR +
     STR_DOT + "Change Chat position (if chat it\'s showing): Chanel Up or Down" + STR_BR +
     STR_DOT + "Change Chat size (if chat it\'s showing and info panel is not): Directional pad (up/down)" + STR_BR +
-    STR_DOT + "Change Chat background brightness (if chat it\'s showing): Directional pad (left/right)" +
-    STR_DOT + "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self" + STR_BR +
+    STR_DOT + "Change Chat background brightness (if chat it\'s showing): Directional pad (left/right)" + STR_BR +
+    STR_DOT + "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self" +
     '</div>' + // not translatable
     STR_BR + STR_BR + STR_CLOSE_THIS;
 
