@@ -167,6 +167,7 @@ Play.loadDataRequest = function() {
         if (Play.state == Play.STATE_LOADING_TOKEN) {
             theUrl = 'http://api.twitch.tv/api/channels/' + Play.selectedChannel + '/access_token';
         } else {
+            Play.random_int = Math.round(Math.random() * 1e7);
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + Play.tokenResponse.sig + '&token=' +
                 escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
