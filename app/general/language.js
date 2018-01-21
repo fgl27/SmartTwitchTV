@@ -63,6 +63,7 @@ var STR_MIN = " Min";
 var STR_HR = " Hr";
 var STR_CLOSE_THIS = "Press return key to close this.";
 var STR_BR = "<br>"; // not translatable
+var STR_VERSION_TAG = "4.0.0"; // not translatable
 var STR_DOT = '<i class="fa fa-circle"style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  "; // not translatable
 
 // the bellow can cause display problem if translated wrong please check the application after making changes if you are translating this!
@@ -83,7 +84,7 @@ var STR_CONTROLS_MAIN = '<div class="about_text_title">' + STR_CONTROL + ':</div
     STR_BR + STR_CLOSE_THIS;
 
 var STR_ABOUT_INFO = '<div class="about_text_title">Twitch.TV:</div>' + // not translatable
-    "Version 4.0.0" + STR_BR +
+    "Version " + STR_VERSION_TAG + STR_BR +
     "This is a unofficial Twitch.Tv application develop by individuals on they free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it" + STR_BR +
     STR_BR +
     '<div class="about_text_title">' + // not translatable
