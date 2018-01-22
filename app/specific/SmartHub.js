@@ -1,7 +1,7 @@
 /*jshint multistr: true */
 //Variable initialization
 function SmartHub() {}
-SmartHub.loadingDataTry = 1;
+SmartHub.loadingDataTry = 0;
 SmartHub.loadingDataTryMax = 10;
 SmartHub.loadingDataTimeout = 3500;
 SmartHub.user = [];
@@ -46,7 +46,7 @@ SmartHub.Start = function() {
     SmartHub.userhostsubtitle = [];
     SmartHub.userhostimg = [];
 
-    SmartHub.loadingDataTry = 1;
+    SmartHub.loadingDataTry = 0;
     SmartHub.loadingDataTryMax = 10;
     SmartHub.loadingDataTimeout = 3500;
     SmartHub.previewData = 0;
@@ -145,7 +145,7 @@ SmartHub.previewDataSuccess = function(responseText) {
     }
     if (SmartHub.previewData < 3) {
         SmartHub.previewData++;
-        SmartHub.loadingDataTry = 1;
+        SmartHub.loadingDataTry = 0;
         SmartHub.loadingDataTryMax = 10;
         SmartHub.loadingDataTimeout = 3500;
         SmartHub.loadDataRequest();
