@@ -197,7 +197,7 @@ function previewDataGenerator() {
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/games.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
@@ -209,7 +209,7 @@ SmartHub.EventListener = function() {
     try {
         requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
     } catch (e) {}
-    var appControlData, actionData, videoIdx, videoTitleIdx;
+    var appControlData, actionData, VideoIdx, VideoTitleIdx, GameIdx, ScreenIdx, ExitScreen, ExitToMain = false;
 
     if (requestedAppControl) {
         SmartHub.SmartHubResume = true;
@@ -218,40 +218,51 @@ SmartHub.EventListener = function() {
             if (appControlData[i].key == 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
-                    videoIdx = JSON.parse(actionData).videoIdx;
-                    videoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (Play.Playing && Play.selectedChannel == videoIdx) {
+                    VideoIdx = JSON.parse(actionData).videoIdx;
+                    VideoTitleIdx = JSON.parse(actionData).videoTitleIdx;
+                    if (Play.Playing && Play.selectedChannel == VideoIdx) {
                         return;
                     }
-                    Play.selectedChannel = videoIdx;
-                    Play.selectedChannelDisplayname = videoTitleIdx;
-                    Main.ExitCurrent();
+                    Play.selectedChannel = VideoIdx;
+                    Play.selectedChannelDisplayname = VideoTitleIdx;
                     if (Play.Playing) {
                         Play.PartiallyshutdownStream();
                         window.setTimeout(Main.openStream, 10);
                     } else if (PlayVod.Playing) {
                         PlayVod.PartiallyshutdownStream();
                         window.setTimeout(Main.openStream, 10);
-                    } else window.setTimeout(Main.openStream, 10);
+                    } else {
+                        Main.ExitCurrent(Main.Go);
+                        window.setTimeout(Main.openStream, 10);
+                    }
 
                 } else if (JSON.parse(actionData).gameIdx) {
-                    Main.ExitCurrent();
-                    Main.gameSelected = JSON.parse(actionData).gameIdx;
+                    GameIdx = JSON.parse(actionData).gameIdx;
+                    ExitToMain = (GameIdx !== Main.gameSelected);
+                    ExitScreen = Main.Go;
+                    Main.gameSelected = GameIdx;
                     Main.Go = Main.AGame;
 
                     if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else Main.SwitchScreen();
+                    else if (ExitToMain) {
+                        Main.ExitCurrent(ExitScreen);
+                        Main.SwitchScreen();
+                    }
 
                 } else if (JSON.parse(actionData).screenIdx) {
-                    Main.ExitCurrent();
-                    if (JSON.parse(actionData).screenIdx === 1) Main.Go = Main.Live;
+                    ScreenIdx = JSON.parse(actionData).screenIdx;
+                    ExitToMain = (ScreenIdx !== Main.Go);
+                    ExitScreen = Main.Go;
+                    if (ScreenIdx === 1) Main.Go = Main.Live;
                     else Main.Go = Main.Games;
 
                     if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else Main.SwitchScreen();
-
+                    else if (ExitToMain) {
+                        Main.ExitCurrent(ExitScreen);
+                        Main.SwitchScreen();
+                    }
                 }
             }
         }

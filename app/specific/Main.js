@@ -212,23 +212,23 @@ Main.SwitchScreen = function() {
     else Live.init();
 };
 
-Main.ExitCurrent = function() {
-    if (Main.Go === Main.Live) Live.exit();
-    else if (Main.Go === Main.AddUser) AddUser.exit();
-    else if (Main.Go === Main.Games) Games.exit();
-    else if (Main.Go === Main.AGame) AGame.exit();
-    else if (Main.Go === Main.Search) Search.exit();
-    else if (Main.Go === Main.SGames) SGames.exit();
-    else if (Main.Go === Main.SLive) SLive.exit();
-    else if (Main.Go === Main.SChannelContent) SChannelContent.exit();
-    else if (Main.Go === Main.Svod) Svod.exit();
-    else if (Main.Go === Main.Sclip) Sclip.exit();
-    else if (Main.Go === Main.Users) Users.exit();
-    else if (Main.Go === Main.UserLive) UserLive.exit();
-    else if (Main.Go === Main.UserHost) UserHost.exit();
-    else if (Main.Go === Main.UserGames) UserGames.exit();
-    else if (Main.Go === Main.UserChannels) UserChannels.exit();
-    else if (Main.Go === Main.SChannels) SChannels.exit();
+Main.ExitCurrent = function(ExitCurrent) {
+    if (ExitCurrent === Main.Live) Live.exit();
+    else if (ExitCurrent === Main.AddUser) AddUser.exit();
+    else if (ExitCurrent === Main.Games) Games.exit();
+    else if (ExitCurrent === Main.AGame) AGame.exit();
+    else if (ExitCurrent === Main.Search) Search.exit();
+    else if (ExitCurrent === Main.SGames) SGames.exit();
+    else if (ExitCurrent === Main.SLive) SLive.exit();
+    else if (ExitCurrent === Main.SChannelContent) SChannelContent.exit();
+    else if (ExitCurrent === Main.Svod) Svod.exit();
+    else if (ExitCurrent === Main.Sclip) Sclip.exit();
+    else if (ExitCurrent === Main.Users) Users.exit();
+    else if (ExitCurrent === Main.UserLive) UserLive.exit();
+    else if (ExitCurrent === Main.UserHost) UserHost.exit();
+    else if (ExitCurrent === Main.UserGames) UserGames.exit();
+    else if (ExitCurrent === Main.UserChannels) UserChannels.exit();
+    else if (ExitCurrent === Main.SChannels) SChannels.exit();
 };
 
 Main.openStream = function() {
