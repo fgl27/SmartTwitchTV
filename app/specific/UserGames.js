@@ -102,7 +102,7 @@ UserGames.loadChannels = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games/live?limit=' +
-            UserLive.ItemsLimit + '&offset=' + offset, true);
+            UserLive.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -268,7 +268,7 @@ UserGames.loadChannelsReplace = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/follows?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + UserGames.ItemsLimit + '&offset=' + offset, true);
+            '&limit=' + UserGames.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};

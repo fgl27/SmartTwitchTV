@@ -38,7 +38,6 @@ Play.loadingDataTryMax = 10;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
-Play.random_int = Math.round(Math.random() * 1e7);
 Play.qualityCount = 0;
 Play.qualityName = [];
 Play.qualityLinks = [];
@@ -147,7 +146,7 @@ Play.updateStreamInfo = function() {
             }
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel, true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
     xmlHttp.send(null);
@@ -167,10 +166,9 @@ Play.loadDataRequest = function() {
         if (Play.state == Play.STATE_LOADING_TOKEN) {
             theUrl = 'http://api.twitch.tv/api/channels/' + Play.selectedChannel + '/access_token';
         } else {
-            Play.random_int = Math.round(Math.random() * 1e7);
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play.selectedChannel +
                 '.m3u8?player=twitchweb&&type=any&sig=' + Play.tokenResponse.sig + '&token=' +
-                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
+                escape(Play.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play.loadingDataTimeout;

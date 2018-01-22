@@ -60,13 +60,16 @@ SmartHub.loadDataRequest = function() {
 
         if (SmartHub.previewData === 0) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub.followerUsername) +
-                '/follows/channels?limit=100&sortby=last_broadcast';
+                '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 1) {
-            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=22';
+            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=22&' +
+            Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 2) { // user games
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/follows/games/live?limit=6';
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/follows/games/live?limit=6&' +
+            Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 3) { //user SmartHub host
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/followed/hosting?limit=10';
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/followed/hosting?limit=10&' +
+            Math.round(Math.random() * 1e7);
         }
 
         xmlHttp.open("GET", theUrl, true);

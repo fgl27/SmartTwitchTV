@@ -94,7 +94,7 @@ Games.loadDataRequest = function() {
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -259,7 +259,7 @@ Games.loadDataRequestReplace = function() {
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};

@@ -107,10 +107,9 @@ PlayVod.loadDataRequest = function() {
         if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
             theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token';
         } else {
-            Play.random_int = Math.round(Math.random() * 1e7);
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
-                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&p=' + Play.random_int;
+                escape(PlayVod.tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod.loadingDataTimeout;

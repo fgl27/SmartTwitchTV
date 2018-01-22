@@ -102,7 +102,7 @@ SChannels.loadDataRequest = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset, true);
+            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -264,7 +264,7 @@ SChannels.loadDataRequestReplace = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset, true);
+            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};

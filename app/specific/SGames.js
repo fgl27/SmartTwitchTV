@@ -82,7 +82,7 @@ SGames.loadDataRequest = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Search.data), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Search.data) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
