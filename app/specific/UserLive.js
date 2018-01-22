@@ -98,7 +98,7 @@ UserLive.loadChannels = function() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) +
-            '/follows/channels?limit=100&offset=' + UserLive.loadChannelOffsset + '&sortby=created_at', true);
+            '/follows/channels?limit=100&offset=' + UserLive.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
@@ -172,7 +172,7 @@ UserLive.loadChannelUserLive = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive.followerChannels) + '&limit=' +
-            UserLive.ItemsLimit + '&offset=' + offset + '&stream_type=all', true);
+            UserLive.ItemsLimit + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
         xmlHttp.ontimeout = function() {};
