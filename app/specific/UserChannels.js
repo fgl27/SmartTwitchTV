@@ -13,7 +13,7 @@ UserChannels.imgMatrixCount = 0;
 UserChannels.nameMatrix = [];
 UserChannels.nameMatrixCount = 0;
 UserChannels.loadingData = false;
-UserChannels.loadingDataTry = 1;
+UserChannels.loadingDataTry = 0;
 UserChannels.loadingDataTryMax = 10;
 UserChannels.loadingDataTimeout = 3500;
 UserChannels.ItemsLimit = 96;
@@ -100,7 +100,6 @@ UserChannels.loadChannels = function() {
                 }
             }
         };
-
         xmlHttp.send(null);
     } catch (e) {
         UserChannels.loadDataError();
@@ -115,6 +114,7 @@ UserChannels.loadDataError = function() {
     } else {
         UserChannels.loadingData = false;
         UserChannels.loadingMore = false;
+        UserChannels.status = false;
         Main.HideLoadDialog();
         Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }

@@ -1,7 +1,7 @@
 /*jshint multistr: true */
 //Variable initialization
 function AddUser() {}
-AddUser.loadingDataTry = 1;
+AddUser.loadingDataTry = 0;
 AddUser.loadingDataTryMax = 10;
 AddUser.loadingDataTimeout = 3500;
 AddUser.UsernameArraySize = 0;
@@ -125,7 +125,7 @@ AddUser.KeyboardEvent = function(event) {
                 AddUser.Username = $('#user_input').val();
 
                 if (!AddUser.UserExist(AddUser.Username)) {
-                    AddUser.loadingDataTry = 1;
+                    AddUser.loadingDataTry = 0;
                     AddUser.loadingDataTimeout = 3500;
                     AddUser.loadingData = true;
                     Main.showLoadDialog();
