@@ -23,3 +23,11 @@ app/scenes/Copy of SceneChannel.js
 css/*
 js/*
 TODO
+release/app/*
+release/config.xml
+release/widget.info
+release/release*.zip
+release/.master.js
+release/.tproject
+release/.project
+release/master.js

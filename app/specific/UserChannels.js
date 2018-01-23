@@ -221,7 +221,7 @@ UserChannels.loadDataSuccessFinish = function() {
             for (var i = 0; i < UserChannels.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(UserChannels.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_logo.png'; //img fail to load use predefined
+                    this.src = IMG_404_LOGO; //img fail to load use predefined
                 };
 
                 tumbImg.src = UserChannels.imgMatrix[i];

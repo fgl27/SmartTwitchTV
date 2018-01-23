@@ -306,7 +306,7 @@ UserLive.loadDataSuccessFinish = function() {
             for (var i = 0; i < UserLive.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(UserLive.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
+                    this.src = IMG_404_VIDEO; //img fail to load use predefined
                 };
 
                 tumbImg.src = UserLive.imgMatrix[i];

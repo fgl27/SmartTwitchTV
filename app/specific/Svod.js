@@ -241,7 +241,7 @@ Svod.loadDataSuccessFinish = function() {
             for (var i = 0; i < Svod.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(Svod.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
+                    this.src = IMG_404_VIDEO; //img fail to load use predefined
                 };
 
                 tumbImg.src = Svod.imgMatrix[i];
