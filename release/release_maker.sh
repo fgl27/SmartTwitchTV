@@ -105,7 +105,7 @@ echo -e "\nMaking done\n";
 
 cd release/
 rm -rf release.zip
-zip -qr9 release ./ -x master.* html_body.js master.js
+zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
 git stash &> /dev/null
 
 echo -e "Release zip generated at $mainfolder/release/release.zip\n";
