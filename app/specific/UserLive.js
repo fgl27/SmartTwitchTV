@@ -143,12 +143,13 @@ UserLive.loadChannelLive = function(responseText) {
 
     for (var x = 0; x < response_items; x++) UserLive.followerChannels += response.follows[x].channel.name + ',';
 
-    UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
+
 
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserLive.loadChannelOffsset += response_items;
         UserLive.loadData();
     } else { // end
+        UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
         UserLive.imgMatrix = [];
         UserLive.imgMatrixId = [];
         UserLive.imgMatrixCount = 0;
