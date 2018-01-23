@@ -1,0 +1,1 @@
+var LANG = "italiano";
