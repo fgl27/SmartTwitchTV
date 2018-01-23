@@ -6,6 +6,7 @@ Main.Hide = '';
 Main.Go = 1;
 Main.Before = 1;
 Main.BeforeSearch = 1;
+Main.newImg = new Image();
 
 Main.Live = 1;
 Main.AddUser = 2;
@@ -80,6 +81,9 @@ var APP_ICON = "https://bhb27.github.io/smarttv-twitch/images/app_icon.png";
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
+    Main.newImg.src = IMG_LOD_LOGO;
+    Main.newImg.src = IMG_LOD_GAME;
+    Main.newImg.src = IMG_LOD_VIDEO;
     Main.initWindows();
     Live.init();
     Play.PreStart();
