@@ -199,7 +199,7 @@ UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, cha
     UserChannels.nameMatrixCount++;
 
     return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="app/images/ch_logo.png"/> \
+        '<img id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/> \
             <div id="' + UserChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + UserChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
             </div>');

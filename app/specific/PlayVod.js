@@ -341,7 +341,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
 PlayVod.shutdownStream = function() {
     Play.videojs.pause();
     Play.videojs.autoplay(false);
-    Play.videojs.src('app/images/temp.mp4');
+    Play.videojs.src(TEMP_MP4);
     PlayVod.offPlayer();
     PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
@@ -359,7 +359,7 @@ PlayVod.shutdownStream = function() {
 PlayVod.PartiallyshutdownStream = function() {
     Play.videojs.pause();
     Play.videojs.autoplay(false);
-    Play.videojs.src('app/images/temp.mp4');
+    Play.videojs.src(TEMP_MP4);
     PlayVod.offPlayer();
     PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
