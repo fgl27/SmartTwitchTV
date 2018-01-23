@@ -131,5 +131,3 @@ var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_GENERAL + '</div>
     STR_DOT + "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self" +
     '</div>' + // not translatable
     STR_BR + STR_BR + STR_CLOSE_THIS;
-
-

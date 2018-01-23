@@ -221,7 +221,7 @@ Games.loadDataSuccessFinish = function() {
             for (var i = 0; i < Games.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(Games.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_game.png'; //img fail to load use predefined
+                    this.src = IMG_404_GAME; //img fail to load use predefined
                 };
 
                 tumbImg.src = Games.imgMatrix[i];

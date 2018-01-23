@@ -180,8 +180,8 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
 };
 
 SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
-    var thumbnail = 'app/images/blur_vod.png';
-    if (coloumn_id == 1) thumbnail = 'app/images/blur_video_2.png';
+    var thumbnail = IMG_BLUR_VOD;
+    if (coloumn_id == 1) thumbnail = IMG_BLUR_VIDEO2;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
@@ -211,7 +211,7 @@ SChannelContent.loadDataSuccessFinish = function() {
             if (!SChannelContent.skipImg) {
                 var tumbImg = document.getElementById(SChannelContent.imgMatrixId);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
+                    this.src = IMG_404_VIDEO; //img fail to load use predefined
                 };
                 tumbImg.src = SChannelContent.imgMatrix;
             }

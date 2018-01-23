@@ -232,7 +232,7 @@ SLive.loadDataSuccessFinish = function() {
             for (var i = 0; i < SLive.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(SLive.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
+                    this.src = IMG_404_VIDEO; //img fail to load use predefined
                 };
 
                 tumbImg.src = SLive.imgMatrix[i];

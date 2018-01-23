@@ -229,7 +229,7 @@ UserGames.loadDataSuccessFinish = function() {
             for (var i = 0; i < UserGames.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(UserGames.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_game.png'; //img fail to load use predefined
+                    this.src = IMG_404_GAME; //img fail to load use predefined
                 };
 
                 tumbImg.src = UserGames.imgMatrix[i];

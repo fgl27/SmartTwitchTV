@@ -35,7 +35,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1514266756294</id>
+			<id>1516671450059</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -44,7 +44,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756299</id>
+			<id>1516671450062</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -53,7 +53,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756302</id>
+			<id>1516671450067</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -62,7 +62,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756306</id>
+			<id>1516671450070</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -71,7 +71,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756310</id>
+			<id>1516671450076</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -80,7 +80,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756314</id>
+			<id>1516671450081</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -89,7 +89,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756317</id>
+			<id>1516671450084</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -98,7 +98,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756321</id>
+			<id>1516671450088</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -107,7 +107,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756325</id>
+			<id>1516671450094</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -116,12 +116,30 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1514266756329</id>
+			<id>1516671450098</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-compressor_script.sh</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1516671450102</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-TODO</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1516671450122</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-release</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

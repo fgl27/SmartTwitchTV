@@ -78,12 +78,12 @@ Users.loadData = function() {
 };
 
 Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
-    var thumbnail = 'app/images/blur_video_1.png';
-    if (coloumn_id === 1) thumbnail = 'app/images/blur_video_2.png';
-    if (coloumn_id === 2) thumbnail = 'app/images/blur_game.png';
-    if (coloumn_id === 3) thumbnail = 'app/images/blur_vod.png';
-    if (coloumn_id === 4) thumbnail = (row_id === 0) ? 'app/images/user_plus.png' : 'app/images/user_up.png';
-    if (coloumn_id === 5) thumbnail = 'app/images/user_minus.png';
+    var thumbnail = IMG_BLUR_VIDEO1;
+    if (coloumn_id === 1) thumbnail = IMG_BLUR_VIDEO2;
+    if (coloumn_id === 2) thumbnail = IMG_BLUR_GAME;
+    if (coloumn_id === 3) thumbnail = IMG_BLUR_VOD;
+    if (coloumn_id === 4) thumbnail = (row_id === 0) ? IMG_USER_PLUS : IMG_USER_UP;
+    if (coloumn_id === 5) thumbnail = IMG_USER_MINUS;
 
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \

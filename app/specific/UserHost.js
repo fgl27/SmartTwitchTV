@@ -235,7 +235,7 @@ UserHost.loadDataSuccessFinish = function() {
             for (var i = 0; i < UserHost.imgMatrix.length; i++) {
                 var tumbImg = document.getElementById(UserHost.imgMatrixId[i]);
                 tumbImg.onerror = function() {
-                    this.src = 'app/images/404_video.png'; //img fail to load use predefined
+                    this.src = IMG_404_VIDEO; //img fail to load use predefined
                 };
 
                 tumbImg.src = UserHost.imgMatrix[i];
