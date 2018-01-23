@@ -60,20 +60,20 @@ tizen.tvinputdevice.registerKey("ColorF3Blue");
 tizen.tvinputdevice.registerKey("Guide");
 tizen.tvinputdevice.registerKey("Info");
 
-var IMG_404_GAME = "https://bhb27.github.io/smarttv-twitch/images/404_game.png";
-var IMG_404_LOGO = "https://bhb27.github.io/smarttv-twitch/images/404_logo.png";
-var IMG_404_VIDEO = "https://bhb27.github.io/smarttv-twitch/images/404_video.png";
-var IMG_BLUR_GAME = "https://bhb27.github.io/smarttv-twitch/images/blur_game.png";
-var IMG_BLUR_VIDEO1 = "https://bhb27.github.io/smarttv-twitch/images/blur_video_1.png";
-var IMG_BLUR_VIDEO2 = "https://bhb27.github.io/smarttv-twitch/images/blur_video_2.png";
-var IMG_BLUR_VOD = "https://bhb27.github.io/smarttv-twitch/images/blur_vod.png";
-var IMG_USER_MINUS = "https://bhb27.github.io/smarttv-twitch/images/user_minus.png";
-var IMG_USER_PLUS = "https://bhb27.github.io/smarttv-twitch/images/user_plus.png";
-var IMG_USER_UP = "https://bhb27.github.io/smarttv-twitch/images/user_up.png";
-var IMG_LOD_LOGO = "https://bhb27.github.io/smarttv-twitch/images/ch_logo.png";
-var IMG_LOD_GAME = "https://bhb27.github.io/smarttv-twitch/images/game.png";
-var IMG_LOD_VIDEO = "https://bhb27.github.io/smarttv-twitch/images/video.png";
-var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/images/temp.mp4";
+var IMG_404_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/404_game.png";
+var IMG_404_LOGO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/404_logo.png";
+var IMG_404_VIDEO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/404_video.png";
+var IMG_BLUR_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_game.png";
+var IMG_BLUR_VIDEO1 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_1.png";
+var IMG_BLUR_VIDEO2 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_2.png";
+var IMG_BLUR_VOD = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_vod.png";
+var IMG_USER_MINUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_minus.png";
+var IMG_USER_PLUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_plus.png";
+var IMG_USER_UP = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_up.png";
+var IMG_LOD_LOGO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/ch_logo.png";
+var IMG_LOD_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/game.png";
+var IMG_LOD_VIDEO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/video.png";
+var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/temp.mp4";
 //Variable initialization end
 
 
