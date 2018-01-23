@@ -105,7 +105,7 @@ Play.Resume = function() {
         Play.Playing = false;
         Play.offPlayer();
         Play.videojs.autoplay(false);
-        Play.videojs.src('app/images/temp.mp4');
+        Play.videojs.src(TEMP_MP4);
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
         window.clearInterval(Play.streamCheck);
@@ -473,7 +473,7 @@ Play.shutdownStream = function() {
     Play.Playing = false;
     Play.offPlayer();
     Play.videojs.autoplay(false);
-    Play.videojs.src('app/images/temp.mp4');
+    Play.videojs.src(TEMP_MP4);
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();
@@ -494,7 +494,7 @@ Play.PartiallyshutdownStream = function() {
     Play.Playing = false;
     Play.offPlayer();
     Play.videojs.autoplay(false);
-    Play.videojs.src('app/images/temp.mp4');
+    Play.videojs.src(TEMP_MP4);
     document.body.removeEventListener("keydown", Play.handleKeyDown);
     document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();

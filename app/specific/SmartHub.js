@@ -193,11 +193,11 @@ function previewDataGenerator() {
     if (SmartHub.usergames.length > 0) data += ']},';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthubreference/games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
