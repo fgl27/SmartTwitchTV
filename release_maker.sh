@@ -66,13 +66,9 @@ master_maker() {
 echo -e "\nStarting Release maker\n";
 
 sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
+rm -rf release/app/
 mkdir -p 'release/app/images/'
 cp -rf app/images/app_icon.png release/app/images/app_icon.png
-cp -rf app/images/temp.mp4 release/app/images/temp.mp4
-cp -rf app/images/game.png release/app/images/game.png
-cp -rf app/images/ch_logo.png release/app/images/ch_logo.png
-cp -rf app/images/video.png release/app/images/video.png
-
 cp -rf widget.info release/widget.info
 cp -rf .project release/.project
 cp -rf .tproject release/.tproject
