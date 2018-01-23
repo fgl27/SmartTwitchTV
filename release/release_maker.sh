@@ -11,9 +11,8 @@ html_file=("config.xml" "index.html" "release/index.html");
 js_folders=("app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
-temp="$(dirname "$0")";
-mainfolder="$(dirname "$temp")";
-echo -e "$mainfolder";
+sh_folder="$(dirname "$0")";
+mainfolder="$(dirname "$sh_folder")";
 cd $mainfolder
 sed_comp() {
         array=( "$@" );
@@ -80,8 +79,8 @@ if ! which 'sed' >/dev/null  ; then
         echo -e "Install using command:";
         echo -e "sudo apt-get install sed\n";
 	echo -e ".html files not compressed."
-#else
-#	sed_comp "${html_file[@]}"
+else
+	sed_comp "${html_file[@]}"
 fi;
 
 if ! which 'yui-compressor' >/dev/null  ; then
@@ -90,8 +89,8 @@ if ! which 'yui-compressor' >/dev/null  ; then
         echo -e "sudo apt-get install yui-compressor\n";
 	echo -e ".js files not compressed.\n"
 	exit;
-#else
-#	js_comp "${js_folders[@]}"
+else
+	js_comp "${js_folders[@]}"
 fi;
 
 echo -e "\nCompression done\n";
@@ -111,11 +110,12 @@ git stash &> /dev/null
 
 echo -e "Release zip generated at $mainfolder/release/release.zip\n";
 cp -rf master.js githubio/js/master.js
-cd -
+cd - &> /dev/null
 git_check="$(git status | grep modified)";
 
-if [ -z "$automode" ]; then
-	echo "$git_check"
+if [ ! -z "$git_check" ]; then
+	echo -e "Is necessary to update githubio as below files are modify:\n"
+	echo -e "$git_check"
 fi;
 exit;
 
