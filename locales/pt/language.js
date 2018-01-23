@@ -1,1 +1,1 @@
-var LANG = "polski";
+var LANG = "portuguese";
