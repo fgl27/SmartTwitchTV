@@ -111,7 +111,7 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 
 #
 * Press enter and Click OK/YES and accept all the requests from java installer on the terminal
-* [Download and extract the github repo](https://github.com/bhb27/smarttv-twitch) clone or Download >  Download ZIP
+* **[Download and extract the release_4_0_0.zip file Click here](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0/release_4_0_0.zip)**
 * Open the tizen Package manager (on linux it may request you to use apt-get to install missing dependencies)
 * Main page (Main SDK) Install Tizen SDK tools and all the etc under it (on linux it may request you to use apt-get to install missing dependencies)
 * Extension SDK page Install everything (TV extensions-3.0 and all under, TV extensions Tools) (on linux it may request you to use apt-get to install missing dependencies)
@@ -124,11 +124,12 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
 * wait for it to load
 * Left click on the folder symbol with **BasicProject-tv-samsung-3.0** on the left corner under project explorer just to select it(**BasicProject-tv-samsung-3.0** is the default name give when you created a project on the past step, if you change the name click on that)
-* Top menu > File > Import > General > File System ... next > Browser find the extracted folder from github ... > click Select All, mark Overwrite existing ... > Finish
+* Top menu > File > Import > General > File System ... next > Browser to find the extracted folder from the release_X_X_X.zip ... > click Select All, mark Overwrite existing ... > Finish
 * wait for it to load
-* The name  the folder symbol with was **BasicProject-tv-samsung-3.0** now change to **BasicProject-tv-samsung-public-2.4**
+* The name  the folder symbol with was **BasicProject-tv-samsung-X.0** now change to **BasicProject-tv-samsung-public-2.4**
 * Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > 1 Tizen wen Application, the installation will start
 * If everything goes OK the app must automatic open on the TV
+* This app can update most of it's file by it self, so this instalation proccess will only be needed on a major update were the change is not in the files that can be slef updated
 
 ## In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
 Inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
