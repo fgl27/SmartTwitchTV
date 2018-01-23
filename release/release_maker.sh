@@ -66,7 +66,10 @@ echo -e "\nStarting Release maker\n";
 
 sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
 rm -rf release/app/
+rm -rf release/locales/
 mkdir -p 'release/app/images/'
+mkdir -p 'release/locales/'
+cp -rf locales/* release/locales/
 cp -rf app/images/app_icon.png release/app/images/app_icon.png
 cp -rf widget.info release/widget.info
 cp -rf .project release/.project
