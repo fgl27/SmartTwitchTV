@@ -40,7 +40,7 @@ js_comp() {
 	for i in ${array[@]}; do
 		cd $i || exit;
 		for x in *.js; do
-			if [ ! "$x" == "jquery.slim.min.js" ] && [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
+			if [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
 				echo -e "Compressing $x";
 				yui-compressor "$x" -o "$x";
 			fi;
@@ -54,10 +54,8 @@ master_maker() {
 	for i in ${array[@]}; do
 		cd $i || exit;
 		for x in *.js; do
-			if [ ! "$x" == "jquery.slim.min.js" ]; then
-				echo -e "Including $x";
-				echo $(cat $x) >> $mainfolder/release/master.js;
-			fi;
+			echo -e "Including $x";
+			echo $(cat $x) >> $mainfolder/release/master.js;
 		done
 		cd - > /dev/null;
 	done

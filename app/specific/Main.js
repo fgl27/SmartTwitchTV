@@ -74,7 +74,6 @@ var IMG_LOD_LOGO = "https://bhb27.github.io/smarttv-twitch/images/ch_logo.png";
 var IMG_LOD_GAME = "https://bhb27.github.io/smarttv-twitch/images/game.png";
 var IMG_LOD_VIDEO = "https://bhb27.github.io/smarttv-twitch/images/video.png";
 var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/images/temp.mp4";
-var APP_ICON = "https://bhb27.github.io/smarttv-twitch/images/app_icon.png";
 //Variable initialization end
 
 
