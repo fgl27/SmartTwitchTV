@@ -79,6 +79,7 @@ var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/t
 
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
+    Main.loadTranslations();
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     Main.newImg.src = IMG_LOD_LOGO;
     Main.newImg.src = IMG_LOD_GAME;
@@ -88,6 +89,17 @@ document.addEventListener("DOMContentLoaded", function() {
     Play.PreStart();
     AddUser.RestoreUsers();
 });
+
+//TODO the day there is a translation add on if if the new values
+Main.loadTranslations = function() {
+    if (LANG === "german") console.log(LANG + " translation is empty");
+    else if (LANG === "spanish") console.log(LANG + " translation is empty");
+    else if (LANG === "italiano") console.log(LANG + " translation is empty");
+    else if (LANG === "polski") console.log(LANG + " translation is empty");
+    else if (LANG === "portuguese") console.log(LANG + " translation is empty");
+    else if (LANG === "russian") console.log(LANG + " translation is empty");
+    else if (LANG === "ukrainian") console.log(LANG + " translation is empty");
+};
 
 Main.initWindows = function() {
     //set top bar labels
