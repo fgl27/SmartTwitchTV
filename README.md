@@ -129,7 +129,8 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * The name  the folder symbol with was **BasicProject-tv-samsung-X.0** now change to **BasicProject-tv-samsung-public-2.4**
 * Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > 1 Tizen wen Application, the installation will start
 * If everything goes OK the app must automatic open on the TV
-* This app can update most of it's file by it self, so this instalation proccess will only be needed on a major update were the change is not in the files that can be slef updated
+* If it fail during the instantiation make shore you don't have any other Twitch application installed, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
+* This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change is not possible to be done by the app it self, the app will warn the user the day there is a need to update and will be necessary to redo the installation process.
 
 ## In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
 Inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG

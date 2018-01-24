@@ -1,3 +1,4 @@
+//TODO make this language file easier to translate
 var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
 var STR_SEARCHS = "Search";
 var STR_SEARCH = STR_SEARCHS + " (D)";
@@ -84,7 +85,8 @@ var STR_CONTROLS_MAIN = '<div class="about_text_title">' + STR_CONTROL + ':</div
 
 var STR_VERSION = "Version ";
 var STR_ABOUT_INFO_HEADER = '<div class="about_text_title">Twitch.TV:</div>'; // not translatable
-var STR_ABOUT_INFO = "This is a unofficial Twitch.Tv application develop by individuals on they free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it" + STR_BR +
+var STR_ABOUT_INFO = "This is a unofficial Twitch.Tv application develop by individuals on they free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it." + STR_BR +
+    "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it." + STR_BR +
     STR_BR +
     '<div class="about_text_title">' + // not translatable
     "Developer information:" +
