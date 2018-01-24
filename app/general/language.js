@@ -63,7 +63,6 @@ var STR_MIN = " Min";
 var STR_HR = " Hr";
 var STR_CLOSE_THIS = "Press return key to close this.";
 var STR_BR = "<br>"; // not translatable
-var STR_VERSION_TAG = "4.0.0"; // not translatable
 var STR_DOT = '<i class="fa fa-circle"style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  "; // not translatable
 
 // the bellow can cause display problem if translated wrong please check the application after making changes if you are translating this!
@@ -83,9 +82,9 @@ var STR_CONTROLS_MAIN = '<div class="about_text_title">' + STR_CONTROL + ':</div
     STR_DOT + "About this application: color button red or A" + STR_BR +
     STR_BR + STR_CLOSE_THIS;
 
-var STR_ABOUT_INFO = '<div class="about_text_title">Twitch.TV:</div>' + // not translatable
-    "Version " + STR_VERSION_TAG + STR_BR +
-    "This is a unofficial Twitch.Tv application develop by individuals on they free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it" + STR_BR +
+var STR_VERSION = "Version ";
+var STR_ABOUT_INFO_HEADER = '<div class="about_text_title">Twitch.TV:</div>'; // not translatable
+var STR_ABOUT_INFO = "This is a unofficial Twitch.Tv application develop by individuals on they free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it" + STR_BR +
     STR_BR +
     '<div class="about_text_title">' + // not translatable
     "Developer information:" +
@@ -131,3 +130,21 @@ var STR_CONTROLS_PLAY = '<div class="about_text_title">' + STR_GENERAL + '</div>
     STR_DOT + "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self" +
     '</div>' + // not translatable
     STR_BR + STR_BR + STR_CLOSE_THIS;
+
+var STR_UPDATE = 'Update';
+var STR_CURRENT_VERSION = "Current Major version ";
+var STR_LATEST_VERSION = " Latest Major version ";
+var STR_UPDATE_MAIN_HEADER = '<div class="about_text_title">' + STR_UPDATE + '</div>' + // not translatable
+    "A update is available, and the app can't self update this version " + STR_BR;
+var STR_UPDATE_MAIN =  STR_BR +
+    '<div class="about_text_title">' + // not translatable
+    "Major changes:" +
+    '</div>' + // not translatable
+    '<div style="text-align: left;">' + // not translatable
+    STR_DOT + "Temp update 1" + STR_BR +
+    STR_DOT + "Temp update 2" + STR_BR +
+    STR_DOT + "Temp update 3" + STR_BR +
+    STR_DOT + "Temp update 4" + STR_BR +
+    STR_DOT + "Temp update 5" + STR_BR +
+    STR_BR + STR_CLOSE_THIS +
+    '</div>'; // not translatable
