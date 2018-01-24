@@ -13,6 +13,10 @@ Users.DispNameDiv = 'users_display_name_';
 Users.Cell = 'users_cell_';
 Users.status = false;
 Users.loadingData = true;
+Users.imgMatrix = [];
+Users.imgMatrixId = [];
+Users.imgMatrixCount = 0;
+Users.newImg = new Image();
 
 //Variable initialization end
 
@@ -38,6 +42,9 @@ Users.StartLoad = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     $('#stream_table_user').empty();
+    Users.imgMatrix = [];
+    Users.imgMatrixId = [];
+    Users.imgMatrixCount = 0;
     Users.cursorX = 0;
     Users.cursorY = 0;
     Users.loadingData = true;
@@ -85,8 +92,14 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     if (coloumn_id === 4) thumbnail = (row_id === 0) ? IMG_USER_PLUS : IMG_USER_UP;
     if (coloumn_id === 5) thumbnail = IMG_USER_MINUS;
 
+    Users.imgMatrix[Users.imgMatrixCount] = preview_thumbnail;
+    Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
+    Users.imgMatrixCount++;
+
+    Users.newImg.src = thumbnail; //try to pre cache the img
+
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+        '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/> \
             <div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
             <div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_user">' + stream_type + '</div> \
             </div>');
@@ -103,6 +116,14 @@ Users.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Users.status = true;
                 Users.addFocus();
+            }
+
+            for (var i = 0; i < Users.imgMatrix.length; i++) {
+                var tumbImg = document.getElementById(Users.imgMatrixId[i]);
+                tumbImg.onerror = function() {
+                    this.src = IMG_LOD_VIDEO; //img fail to load use predefined
+                };
+                tumbImg.src = Users.imgMatrix[i];
             }
 
             Users.loadingData = false;
