@@ -92,7 +92,7 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     if (coloumn_id === 4) thumbnail = (row_id === 0) ? IMG_USER_PLUS : IMG_USER_UP;
     if (coloumn_id === 5) thumbnail = IMG_USER_MINUS;
 
-    Users.imgMatrix[Users.imgMatrixCount] = preview_thumbnail;
+    Users.imgMatrix[Users.imgMatrixCount] = thumbnail;
     Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
     Users.imgMatrixCount++;
 
