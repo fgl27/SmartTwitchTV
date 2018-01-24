@@ -28,6 +28,7 @@ Live.LastClickFinish = true;
 Live.keyClickDelayTime = 25;
 Live.ReplacedataEnded = false;
 Live.MaxOffset = 0;
+Live.checkVersion = false;
 
 //Variable initialization end
 
@@ -237,6 +238,11 @@ Live.loadDataSuccessFinish = function() {
 
             Live.loadingData = false;
             Live.loadingMore = false;
+
+            if (!Live.checkVersion) {
+                Live.checkVersion = true;
+                if (Main.checkVersion()) Main.showUpdateDialog();
+            }
         });
 };
 
@@ -401,6 +407,7 @@ Live.handleKeyDown = function(event) {
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            else if (Main.isUpdateDialogShown()) Main.HideUpdateDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else if (Main.isExitDialogShown()) {
                 window.clearTimeout(Main.ExitDialogID);

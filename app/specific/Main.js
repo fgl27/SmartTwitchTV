@@ -74,6 +74,12 @@ var IMG_LOD_LOGO = "https://bhb27.github.io/smarttv-twitch/release/githubio/imag
 var IMG_LOD_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/game.png";
 var IMG_LOD_VIDEO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/video.png";
 var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/temp.mp4";
+
+Main.version = 400;
+Main.stringVersion = '4.0.0';
+Main.currentVersion = '';
+Main.minversion = 180123;
+Main.versonTag = '';
 //Variable initialization end
 
 
@@ -117,7 +123,7 @@ Main.initWindows = function() {
     $('.label_buffering').html(STR_BUFFERING);
     $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROLS);
     $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT);
-    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO;
+    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN;
     $("#scene2").hide();
 };
@@ -157,6 +163,7 @@ Main.HideWarningDialog = function() {
 Main.showAboutDialog = function() {
     Main.HideExitDialog();
     Main.HideControlsDialog();
+    Main.HideUpdateDialog();
     $("#dialog_about").show();
 };
 
@@ -171,6 +178,7 @@ Main.isAboutDialogShown = function() {
 Main.showControlsDialog = function() {
     Main.HideExitDialog();
     Main.HideAboutDialog();
+    Main.HideUpdateDialog();
     $("#dialog_controls").show();
 };
 
@@ -178,8 +186,24 @@ Main.HideControlsDialog = function() {
     $("#dialog_controls").hide();
 };
 
+
 Main.isControlsDialogShown = function() {
     return $("#dialog_controls").is(":visible");
+};
+
+Main.showUpdateDialog = function() {
+    Main.HideExitDialog();
+    Main.HideAboutDialog();
+    Main.HideControlsDialog();
+    $("#dialog_update").show();
+};
+
+Main.HideUpdateDialog = function() {
+    $("#dialog_update").hide();
+};
+
+Main.isUpdateDialogShown = function() {
+    return $("#dialog_update").is(":visible");
 };
 
 Main.addCommas = function(nStr) {
@@ -322,6 +346,23 @@ Main.NetworkStateChangeListenerStop = function() {
     try {
         webapis.network.removeNetworkStateChangeListener(Main.listenerID);
     } catch (e) {}
+};
+
+Main.checkVersion = function() {
+    var version = null,
+        value = 0;
+    try {
+        version = (tizen.application.getAppInfo().version);
+    } catch (e) {}
+    if (version !== null) {
+        Main.currentVersion = version;
+        Main.versonTag = STR_VERSION + version + '.' + Main.minversion + STR_BR;
+        version = version.split(".");
+        value = parseInt(version[0] + version[1] + version[2]);
+        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main.versonTag + STR_ABOUT_INFO;
+        document.getElementById("dialog_update_text").innerHTML =  STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN;
+        return value < Main.version;
+    } else return false;
 };
 
 Main.Resume = function() {
