@@ -180,7 +180,7 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
 };
 
 SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
-    var thumbnail = IMG_BLUR_VOD;
+    var thumbnail = IMG_BLUR_VIDEO1;
     if (coloumn_id == 1) thumbnail = IMG_BLUR_VIDEO2;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
