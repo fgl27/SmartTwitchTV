@@ -4,12 +4,12 @@ smarttv-twitch
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
 The application was tested on TV model UN40KU6000HXPA 40" 4k Series 6 or related **xx" KU6000H Flat Smart 4K UHD TV** and on TV model UE40K6372SUXXH 40" FHD Series 6 or related **xx" K6372 Flat Smart FHD TV**.
 This branch is only dedicated for TV models from 2016 and up that run Tizen OS, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
-![Live](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/smarthub.jpeg)
+![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
 ## [All Screen shots](https://github.com/bhb27/smarttv-twitch/tree/tizen/screenshot)
-![Live](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/animated.gif)
+![Live](https://bhb27.github.io/smarttv-twitch/screenshot/animated.gif)
 
 About this fork
 ===============
@@ -27,11 +27,11 @@ Dependencies
 
 Controls
 ==============
-![control](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/controler.png)
+![control](https://bhb27.github.io/smarttv-twitch/screenshot/controler.png)
 
 The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks different)(The key **INFO** is also map on the app to do the **GUIDE** key function as some remotes may not have the **GUIDE** one), below are the controls and section explains.
 ## Top toolbar
-![top_toolbar](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/top_toolbar.png)
+![top_toolbar](https://bhb27.github.io/smarttv-twitch/screenshot/top_toolbar.png)
 * **CH Press (Guide)/Up or Down**: Press (Guide) Refresh current Screen (The key **info** is also map to to this function), Up change the Screen on the sequence A - B - C - A (if on C back to A), Down do the reverse C - B - A - C (if on A back to C)
 * **Live**: All [twitch.tv](https://www.twitch.tv) live Channel that is displayed on [twitch.tv as Popular](https://www.twitch.tv/directory/all)
 * **User** Two options: Setup your [twitch.tv](https://www.twitch.tv) username (using 4 color buttons (color), after green or right) / using CH **UP** (Channel Up) from live screen if user is set will show user [live following channels](https://www.twitch.tv/directory/following/live), [Hots from following channels](https://www.twitch.tv/directory/following/hosts) and [Live following games](https://www.twitch.tv/directory/following/games)
@@ -42,7 +42,7 @@ The Application is tested with the above remotes (Any Samsung remote that has th
 ### From Any Screen
 * **Force close the app (in case the app froze)**: Hold Return
 
-### [Live Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/Live.png)
+### [Live Screen](https://bhb27.github.io/smarttv-twitch/screenshot/Live.png)
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
 * **Change Screen**: CH **UP or DOWN**
@@ -50,13 +50,13 @@ The Application is tested with the above remotes (Any Samsung remote that has th
 * **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Close the app**: Return (click it twice under 3 seconds)
 
-### [User Setup (Access using 4 color buttons (color), after Directional pad (right) for (green))](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/User.png)
+### [User Setup (Access using 4 color buttons (color), after Directional pad (right) for (green))](https://bhb27.github.io/smarttv-twitch/screenshot/User.png)
 * **Open Key Board**: Directional pad (Up) to select "text box" after Select (key) to enter, type your user and click done
 * **Load User**: Directional pad (Down) to select "Open Button" after Select (key) to enter
 * **Change Screen**: CH **UP or DOWN**
 * **Return to Live Screen**: Return
 
-### [User Followed Channels Screen (Access using CH UP (Channel Up) (from Live Screen) after having setup a User)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/User_live_host.png)
+### [User Followed Channels Screen (Access using CH UP (Channel Up) (from Live Screen) after having setup a User)](https://bhb27.github.io/smarttv-twitch/screenshot/User_live_host.png)
 * **To move between videos/games**: Directional pad (up/down/left/right)
 * **Open a video/game**: Select or Play/Pause
 * **Change Screen**: CH **UP or DOWN**
@@ -64,7 +64,7 @@ The Application is tested with the above remotes (Any Samsung remote that has th
 * **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
 * **Return to Live Screen**: Return
 
-### [Games category Screen (select a game category, access using Access using CH UP (Channel Up) (from User Followed Screen)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/Games.png)
+### [Games category Screen (select a game category, access using Access using CH UP (Channel Up) (from User Followed Screen)](https://bhb27.github.io/smarttv-twitch/screenshot/Games.png)
 * **To move between games**: Directional pad (up/down/left/right)
 * **Open a game category**: Select or Play/Pause
 * **Refresh (Games category Screen**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
@@ -72,7 +72,7 @@ The Application is tested with the above remotes (Any Samsung remote that has th
 * **Return to Followed Channels/Games Screen**: Return
 * **Change Screen**: CH **UP or DOWN**
 
-### [A Game Screen (Select a video of a game category, access using Access using Select or Play/Pause (from Games category Screen)](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/A_Game.png)
+### [A Game Screen (Select a video of a game category, access using Access using Select or Play/Pause (from Games category Screen)](https://bhb27.github.io/smarttv-twitch/screenshot/A_Game.png)
 * **To move between videos**: Directional pad (up/down/left/right)
 * **Open a video**: Select or Play/Pause
 * **Refresh (From "A Game" screen)**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
@@ -80,7 +80,7 @@ The Application is tested with the above remotes (Any Samsung remote that has th
 * **Return to Games category Screen**: Return
 * **Change Screen**: CH **UP or DOWN**
 
-### [Playing a video Screen](https://raw.githubusercontent.com/bhb27/smarttv-twitch/tizen/screenshot/float_chat.jpg)
+### [Playing a video Screen](https://bhb27.github.io/smarttv-twitch/screenshot/float_chat.jpg)
 * **Play/Pause a video**: Play/Pause
 * **Force refresh a video (in case it freezes)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to), but if it freezes not responding to key commands force close the app by holding the Return key
 * **Close a video**: Return twice (click it twice under 3 seconds) if info panel is showing do it tree times first one will dismiss the info panel
