@@ -20,6 +20,8 @@ smarttvtwitch.wgt
 app/scenes/bank.js
 app/scenes/Copy of SceneChannel.js
 *.wgt
+css/*
+js/*
 TODO
 release/app/*
 release/config.xml
