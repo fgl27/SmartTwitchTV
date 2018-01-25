@@ -78,7 +78,7 @@ var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/t
 Main.version = 400;
 Main.stringVersion = '4.0.0';
 Main.currentVersion = '';
-Main.minversion = 180123;
+Main.minversion = 180125;
 Main.versonTag = '';
 //Variable initialization end
 
@@ -464,8 +464,8 @@ Main.ScrollHelperBlank = {
         return document.getElementById(id).getBoundingClientRect().top;
     },
 
-    scrollVerticalToElementById: function() {
+    scrollVerticalToElementById: function(id) {
         $(window).scrollTop(this.documentVerticalScrollPosition() +
-            this.elementVerticalClientPositionById('blank_focus') - 0.345 * this.viewportHeight());
+            this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
     }
 };
