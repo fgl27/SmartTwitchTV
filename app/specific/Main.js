@@ -415,13 +415,13 @@ Main.ScrollHelper = {
             if (cursorY === 0 && cursorX === 0) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
             return;
         } else if (Screen == Main.UserChannels || Screen == Main.SChannels) {
-            if (!Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+            if (!Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
                 if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
                 else cursorY = 0;
             }
-        } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+        } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        } else if (cursorY == 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), cursorX, Thumbnail)) {
+        } else if (cursorY == 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
             cursorY = 0;
         }
