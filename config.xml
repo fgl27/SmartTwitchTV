@@ -10,12 +10,7 @@
    <icon src="app/images/app_icon.png"/>
    <license xml:lang="en-gb" href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</license>
    <name>TwitchTv</name>
-   <name xml:lang="en-gb">TwitchTv</name>
-   <name xml:lang="pt-br">TwitchTv</name>
-   <name xml:lang="de-de">TwitchTv</name>
-   <name xml:lang="ru-ru">TwitchTv</name>
-   <name xml:lang="es-es">TwitchTv</name>
-   <preference name="autoUpdate" value="n" readonly="false"/>
+   <preference name="autoUpdate" value="y" readonly="false"/>
    <preference name="fullwidget" value="y" readonly="false"/>
    <preference name="type" value="user" readonly="false"/>
    <preference name="srcctl" value="y" readonly="false"/>
