@@ -1,1 +1,0 @@
-var LANG = "russian";
