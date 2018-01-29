@@ -85,7 +85,7 @@ Main.versonTag = '';
 
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
-    Main.loadTranslations();
+    tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     Main.newImg.src = IMG_LOD_LOGO;
     Main.newImg.src = IMG_LOD_GAME;
@@ -97,14 +97,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 //TODO the day there is a translation add on if if the new values
-Main.loadTranslations = function() {
-    if (LANG === "german") console.log(LANG + " translation is empty");
-    else if (LANG === "spanish") console.log(LANG + " translation is empty");
-    else if (LANG === "italiano") console.log(LANG + " translation is empty");
-    else if (LANG === "polski") console.log(LANG + " translation is empty");
-    else if (LANG === "portuguese") console.log(LANG + " translation is empty");
-    else if (LANG === "russian") console.log(LANG + " translation is empty");
-    else if (LANG === "ukrainian") console.log(LANG + " translation is empty");
+Main.loadTranslations = function(device) {
+
+    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+    var lang = device.language.split(".")[0];
+
+    if (lang.indexOf('pt_') !== -1 ) console.log("loading language " + lang);
+    else console.log("language is " + lang);
 };
 
 Main.initWindows = function() {
