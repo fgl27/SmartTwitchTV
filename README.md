@@ -3,7 +3,7 @@ smarttv-twitch
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
 The application was tested on TV model UN40KU6000HXPA 40" 4k Series 6 or related **xx" KU6000H Flat Smart 4K UHD TV** and on TV model UE40K6372SUXXH 40" FHD Series 6 or related **xx" K6372 Flat Smart FHD TV**.
-This branch is only dedicated for TV models from 2016 and up that run Tizen OS, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
+This branch is only dedicated for TV models from 2016 and up that run Tizen OS series 6 and up Samsung TV models, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
@@ -31,46 +31,16 @@ Controls
 
 The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks different)(The key **INFO** is also map on the app to do the **GUIDE** key function as some remotes may not have the **GUIDE** one), below are the controls and section explains.
 
-## Action: Remote Key
-### From Any Screen
-* **Force close the app (in case the app froze)**: Hold Return
+## Bellow are the on screens controls
+### To access the controls from any screen press key C or on smart remote press the 4 color buttons (color) after Directional pad down for yellow C
 
-### [Live Screen](https://bhb27.github.io/smarttv-twitch/screenshot/All.png)
-* **To move between videos**: Directional pad (up/down/left/right)
-* **Open a video**: Select or Play/Pause
-* **Change Screen**: CH **UP or DOWN**
-* **Refresh Live Screen**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
-* **Top left options (Live, User, Games and Open a channel)**: 4 color buttons (color), after Directional pad (up/down/left/right) for (red/yellow/blue/green)
-* **Close the app**: Return (click it twice under 3 seconds)
 
-### [Games category Screen (select a game category, access using Access using CH UP (Channel Up) (from User Followed Screen)](https://bhb27.github.io/smarttv-twitch/screenshot/Games.png)
-* **To move between games**: Directional pad (up/down/left/right)
-* **Open a game category**: Select or Play/Pause
-* **Refresh (Games category Screen**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
-* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
-* **Return to Followed Channels/Games Screen**: Return
-* **Change Screen**: CH **UP or DOWN**
+## Main controls
+![Main](https://bhb27.github.io/smarttv-twitch/screenshot/controls_main_simple.png)
+==============
+## Player controls
+![Players](https://bhb27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
 
-### [A Game Screen (Select a video of a game category, access using Access using Select or Play/Pause (from Games category Screen)](https://bhb27.github.io/smarttv-twitch/screenshot/A_Game.png)
-* **To move between videos**: Directional pad (up/down/left/right)
-* **Open a video**: Select or Play/Pause
-* **Refresh (From "A Game" screen)**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
-* **Top left options (Channels, Games, Open (to open a channel by name) and Refresh current screen)**: 4 color buttons (color) after Directional pad (up/down/left/right) for (red/yellow/blue/green)
-* **Return to Games category Screen**: Return
-* **Change Screen**: CH **UP or DOWN**
-
-### [Playing a video Screen](https://bhb27.github.io/smarttv-twitch/screenshot/playing.jpg)
-* **Play/Pause a video**: Play/Pause
-* **Force refresh a video (in case it freezes)**: Press **Select** twice (first open info panel) to restart buffering for current video quality, if it keeps freezing change to a lower video quality (below how to), but if it freezes not responding to key commands force close the app by holding the Return key
-* **Close a video**: Return twice (click it twice under 3 seconds) if info panel is showing do it tree times first one will dismiss the info panel
-* **Show info panel(if chat is showing)**: Press **Select** once
-* **Show info panel(if chat is not showing)**: Directional pad (up/down/left/right) or Press **Select** once
-* **Dismiss info panel(if info panel it's showing)**: Return or wait 5 seconds it will auto dismiss
-* **Change video quality (if info panel is showing it will be on bottom right corner)**: Directional pad (up/down) to change after Press **Select** to confirm
-* **Show or hide the Chat**: CH **PRESS** (on smart remote) or **GUIDE** or **INFO** (on normal remote) 
-* **Change Chat position (if chat it's showing)**: CH **UP or DOWN**
-* **Change Chat size (if chat it's showing and info panel is not)**: Directional pad (up/down)
-* **Change Chat background brightness (if chat it's showing)**: Directional pad (left/right)
 
 Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 bits)
 ==============
