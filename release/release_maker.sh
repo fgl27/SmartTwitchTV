@@ -59,10 +59,8 @@ js_comp_yuo() {
 	for i in ${array[@]}; do
 		cd $i || exit;
 		for x in *.js; do
-			if [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
-				echo -e "Compressing $x";
-				yui-compressor "$x" -o "$x";
-			fi;
+			echo -e "Compressing $x";
+			yui-compressor "$x" -o "$x";
 		done
 		cd - > /dev/null;
 	done
@@ -73,10 +71,8 @@ js_comp_ugf() {
 	for i in ${array[@]}; do
 		cd $i || exit;
 		for x in *.js; do
-			if [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
-				echo -e "Compressing $x";
-				uglifyjs "$x" -c -m -o "$x";
-			fi;
+			echo -e "Compressing $x";
+			uglifyjs "$x" -c -m -o "$x";
 		done
 		cd - > /dev/null;
 	done
