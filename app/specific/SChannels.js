@@ -41,7 +41,7 @@ SChannels.init = function() {
     Main.Go = Main.SChannels;
     if (SChannels.lastData !== Search.data) SChannels.status = false;
     Main.cleanTopLabel();
-    $('.lable_user').html(STR_SEARCHS);
+    $('.lable_user').html(STR_SEARCH_KEY);
     $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
     if (SChannels.status) Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);

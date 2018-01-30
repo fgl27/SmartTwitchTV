@@ -126,7 +126,7 @@ SmartHub.previewDataSuccess = function(responseText) {
             stream = response.streams[cursor];
             SmartHub.user[cursor] = stream.channel.name;
             SmartHub.usertitle[cursor] = Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
-            SmartHub.usersubtitle[cursor] = stream.game;
+            SmartHub.usersubtitle[cursor] = STR_PLAYING + stream.game;
             SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", "640x360");
         }
     } else if (SmartHub.previewData === 2) {
@@ -142,7 +142,7 @@ SmartHub.previewDataSuccess = function(responseText) {
             hosts = response.hosts[cursor];
             SmartHub.userhost[cursor] = hosts.target.channel.name;
             SmartHub.userhosttitle[cursor] = hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name;
-            SmartHub.userhostsubtitle[cursor] = hosts.target.meta_game;
+            SmartHub.userhostsubtitle[cursor] = STR_PLAYING + hosts.target.meta_game;
             SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", "640x360");
         }
     }

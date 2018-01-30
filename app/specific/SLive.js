@@ -42,7 +42,7 @@ SLive.status = false;
 SLive.init = function() {
     Main.Go = Main.SLive;
     Main.cleanTopLabel();
-    $('.lable_user').html(STR_SEARCHS);
+    $('.lable_user').html(STR_SEARCH_KEY);
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     if (SLive.status) Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);

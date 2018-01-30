@@ -38,7 +38,7 @@ SGames.Cell = 'sgame_cell_';
 SGames.init = function() {
     Main.Go = Main.SGames;
     Main.cleanTopLabel();
-    $('.lable_user').html(STR_SEARCHS);
+    $('.lable_user').html(STR_SEARCH_KEY);
     $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
     if (SGames.status) Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
