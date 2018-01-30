@@ -69,9 +69,9 @@ Play.PreStart = function() {
         <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
         <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
         </div>');
-    document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY;
+    document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
-        '<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%;"></i> ' + STR_CONTROLS;
+        '<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%;"></i> ' + STR_CONTROL_KEY;
 };
 
 Play.Start = function() {

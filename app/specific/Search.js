@@ -15,7 +15,7 @@ Search.init = function() {
     $('.label_search').html('');
     $('.label_switch').html('');
     $('.lable_live').html('');
-    $('.lable_user').html(STR_SEARCHS);
+    $('.lable_user').html(STR_SEARCH_KEY);
     $('.lable_game').html('');
     $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_SEARCH);
     document.getElementById("top_bar_spacing").style.paddingLeft = "40.5%";

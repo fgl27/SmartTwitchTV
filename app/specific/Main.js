@@ -78,7 +78,7 @@ var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/t
 Main.version = 400;
 Main.stringVersion = '4.0.0';
 Main.currentVersion = '';
-Main.minversion = 180129;
+Main.minversion = '012918';
 Main.versonTag = '';
 //Variable initialization end
 
@@ -123,10 +123,10 @@ Main.initWindows = function() {
     $('.label_search_live').html(STR_LIVE_STREAMS);
     $("#main_dialog_exit_text").text(STR_EXIT);
     $('.label_buffering').html(STR_BUFFERING);
-    $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROLS);
-    $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT);
-    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO;
-    document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN;
+    $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROL_KEY);
+    $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT_KEY);
+    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
+    document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     $("#scene2").hide();
 };
 
@@ -361,8 +361,8 @@ Main.checkVersion = function() {
         Main.versonTag = STR_VERSION + version + '.' + Main.minversion + STR_BR;
         version = version.split(".");
         value = parseInt(version[0] + version[1] + version[2]);
-        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main.versonTag + STR_ABOUT_INFO;
-        document.getElementById("dialog_update_text").innerHTML =  STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN;
+        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main.versonTag + STR_ABOUT_INFO_0;
+        document.getElementById("dialog_update_text").innerHTML =  STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN_0;
         return value < Main.version;
     } else return false;
 };
