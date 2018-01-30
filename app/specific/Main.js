@@ -87,6 +87,7 @@ Main.versonTag = '';
 document.addEventListener("DOMContentLoaded", function() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
+    // pre load LOD img
     Main.newImg.src = IMG_LOD_LOGO;
     Main.newImg.src = IMG_LOD_GAME;
     Main.newImg.src = IMG_LOD_VIDEO;
@@ -94,6 +95,17 @@ document.addEventListener("DOMContentLoaded", function() {
     Live.init();
     Play.PreStart();
     AddUser.RestoreUsers();
+    // pre load All img
+    Main.newImg.src = IMG_404_VIDEO;
+    Main.newImg.src = IMG_404_GAME;
+    Main.newImg.src = IMG_404_LOGO;
+    Main.newImg.src = IMG_BLUR_GAME;
+    Main.newImg.src = IMG_BLUR_VIDEO1;
+    Main.newImg.src = IMG_BLUR_VIDEO2;
+    Main.newImg.src = IMG_BLUR_VOD;
+    Main.newImg.src = IMG_USER_MINUS;
+    Main.newImg.src = IMG_USER_PLUS;
+    Main.newImg.src = IMG_USER_UP;
 });
 
 //TODO the day there is a translation add on if if the new values
@@ -105,7 +117,7 @@ Main.loadTranslations = function(device) {
 
     var lang = device.language.split(".")[0];
 
-    if (lang.indexOf('pt_') !== -1 ) console.log("loading language " + lang);
+    if (lang.indexOf('pt_') !== -1) console.log("loading language " + lang);
     else console.log("language is " + lang);
 };
 
@@ -362,7 +374,7 @@ Main.checkVersion = function() {
         version = version.split(".");
         value = parseInt(version[0] + version[1] + version[2]);
         document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main.versonTag + STR_ABOUT_INFO_0;
-        document.getElementById("dialog_update_text").innerHTML =  STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN_0;
+        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN_0;
         return value < Main.version;
     } else return false;
 };
