@@ -1,8 +1,4 @@
-/**
- *@file     TVKeyValue.js
- *@date     2014.06.20
- * more at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
- */
+// more keys at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
 window.TvKeyCode = {
     'KEY_1': 49,
     'KEY_2': 50,
