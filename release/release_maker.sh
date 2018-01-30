@@ -1,8 +1,26 @@
 #!/bin/bash
-#code compressor using yui-compressor and sed, runs on linux shell base system
+#code compressor using uglifyjs or yui-compressor and sed, runs on linux shell base system
+
+#instalation of uglifyjs has more then one step
+#1# Donwload npm/node and https://nodejs.org/en/
+# extract the download file then do the bellow on the terminal
+
+# sudo mkdir /usr/lib/nodejs
+# sudo mv /path_of_extracted_node_version /usr/lib/nodejs/node
+
+# after OK on the terminal commands export the variable past the below at the end of yours .bashrc file (remove the #)
+# export NODEJS_HOME=/usr/lib/nodejs/node
+# export PATH=$NODEJS_HOME/bin:$PATH
+
+# now install uglifyjs via terminal
+# npm install uglify-js -g
+
+#instalation of yui-compressor and sed is via more used apt-get
+
 #sudo apt-get install yui-compressor
 #sudo apt-get install sed
-#drag this file to terminal before installing the app
+
+#exect this file or drag this .sh file to terminal to generate a released
 
 # add html files here
 html_file=("config.xml" "index.html" "release/index.html");
@@ -36,7 +54,7 @@ sed_comp() {
 	done
 }
 
-js_comp() {
+js_comp_yuo() {
         array=( "$@" );
 	for i in ${array[@]}; do
 		cd $i || exit;
@@ -44,6 +62,20 @@ js_comp() {
 			if [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
 				echo -e "Compressing $x";
 				yui-compressor "$x" -o "$x";
+			fi;
+		done
+		cd - > /dev/null;
+	done
+}
+
+js_comp_ugf() {
+        array=( "$@" );
+	for i in ${array[@]}; do
+		cd $i || exit;
+		for x in *.js; do
+			if [ ! "$x" == "imagesloaded.min.js" ] && [ ! "$x" == "video.min.js" ]; then
+				echo -e "Compressing $x";
+				uglifyjs "$x" -c -m -o "$x";
 			fi;
 		done
 		cd - > /dev/null;
@@ -72,25 +104,27 @@ cp -rf widget.info release/widget.info
 cp -rf .project release/.project
 cp -rf .tproject release/.tproject
 
-echo -e "\nCompression\n";
+echo -e "\nCompressing Start\n";
 
-if ! which 'sed' >/dev/null  ; then
+if which 'sed' >/dev/null  ; then
+	sed_comp "${html_file[@]}"
+else
 	echo -e "can't run sed it's not installed"
         echo -e "Install using command:";
         echo -e "sudo apt-get install sed\n";
 	echo -e ".html files not compressed."
-else
-	sed_comp "${html_file[@]}"
 fi;
 
-if ! which 'yui-compressor' >/dev/null  ; then
-	echo -e "\ncan't run yui-compressor it's not installed"
-        echo -e "Install using command:";
+if which 'uglifyjs' >/dev/null  ; then
+	js_comp_ugf "${js_folders[@]}"
+elif which 'yui-compressor' >/dev/null  ; then
+	js_comp_yuo "${js_folders[@]}"
+else
+	echo -e "\ncan't run uglifyjs or yui-compressor as they are not installed"
+        echo -e "To install uglifyjs read the release maker notes on the top\n";
+        echo -e "Install yui-compressor using command:";
         echo -e "sudo apt-get install yui-compressor\n";
 	echo -e ".js files not compressed.\n"
-	exit;
-else
-	js_comp "${js_folders[@]}"
 fi;
 
 echo -e "\nCompression done\n";
@@ -101,12 +135,13 @@ cp -rf config.xml release/config.xml
 echo $(cat release/html_body.js) > $mainfolder/release/master.js;
 master_maker "${js_folders[@]}"
 
-echo -e "\nMaking done\n";
-
 cd release/
 rm -rf release.zip
 zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
 git stash &> /dev/null
+uglifyjs master.js -c -o master.js
+
+echo -e "\nMaking done\n";
 
 echo -e "Release zip generated at $mainfolder/release/release.zip\n";
 cp -rf master.js githubio/js/master.js
@@ -118,4 +153,3 @@ if [ ! -z "$git_check" ]; then
 	echo -e "$git_check"
 fi;
 exit;
-
