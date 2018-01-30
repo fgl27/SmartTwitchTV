@@ -95,6 +95,7 @@ master_maker() {
 echo -e "\nStarting Release maker\n";
 
 sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
+echo "$(cat index.html | sed -n '/bodystart/,/bodyend/p')" > index.html
 rm -rf release/app/
 mkdir -p 'release/app/images/'
 cp -rf app/images/app_icon.png release/app/images/app_icon.png
@@ -131,7 +132,7 @@ echo -e "\nCompression done\n";
 echo -e "\nMaking new files up\n";
 
 cp -rf config.xml release/config.xml
-echo $(cat release/html_body.js) > $mainfolder/release/master.js;
+echo "var STR_BODY='"$(cat index.html)"';" > release/master.js;
 master_maker "${js_folders[@]}"
 
 cd release/
