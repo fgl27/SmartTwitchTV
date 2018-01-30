@@ -46,9 +46,9 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 ==============
 
 * Create a Samsung account if you don't have one and set it up as a developer account [SAMSUNG DEVELOPERS](http://developer.samsung.com/home.do)
-* Log in with the developer account on the TV, open "APPS", hit number button and press the sequence 12345 A new window will pop, enter your computer LAN IP address and make sure you click "On" for enabling the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on [SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
+* Log in with the developer account on the TV, open the application "APPS", hit number button (smart remote) and press the key sequence 12345, a new window will pop, enter your computer LAN IP address and make sure you click "On" to enable the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on. [Click here to read SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 * [Download and install Tizen Studio](https://developer.tizen.org/development/tizen-studio/download)
-* I used the "Tizen Studio 2.0 with IDE installer", download the 32/64 bit according to yours CPU, on linux the file is a executable binary 480Mb size, give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **it may ask you to use apt-get to install missing dependencies**, on windows it is a .exe file around 480MB
+* I used the **Tizen Studio 2.2 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on linux the file is a executable binary 480Mb size, give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **it may ask you to use apt-get to install missing dependencies**, on windows it is a .exe file around 480MB
 * Install Java SDK, I install this app with **Oracle JDK java 8** on linux terminal commands below, on windows go to [Java SE Development Kit 8 Downloads
 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) download the latest version of jdk when this was tested it was "jdk-8u152-windows-x64.exe" for 64bit windows or "jdk-8u152-windows-i586.exe 32bits
 "
@@ -60,10 +60,9 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 
 #
 * Press enter and Click OK/YES and accept all the requests from java installer on the terminal
-* **[Download and extract the release_4_0_0.zip file Click here](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0/release_4_0_0.zip)**
 * Open the tizen Package manager (on linux it may request you to use apt-get to install missing dependencies)
 * Main page (Main SDK) Install Tizen SDK tools and all the etc under it (on linux it may request you to use apt-get to install missing dependencies)
-* Extension SDK page Install everything (TV extensions-3.0 and all under, TV extensions Tools) (on linux it may request you to use apt-get to install missing dependencies)
+* Extension SDK page Install everything (TV extensions-X.0 and all under, TV extensions Tools) (on linux it may request you to use apt-get to install missing dependencies)
 * After everything finish installing close the package manager it will ask if you wanna to open the Tizen studio YES click open, if on windows it may request to add firewall permission for tizen give.
 * Setting up the build environment...
 * On the Tizen studio start the device manager by clicking on drop down menu that has a option by default "No target" and select "Launch remote device manager" if you don't find the device manager on the studio just open it as a separated app it must be installed just like the studio
@@ -71,15 +70,16 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * Generate a certificate, back to Tizen studio > Tools > Certificate Manager > + > select/click **Tizen** > create a new author.. next > setup name password etc... next > Use the default Tizen... Finish > **Sucess** click OK
 * Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
 * Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
-* wait for it to load
-* Left click on the folder symbol with **BasicProject-tv-samsung-3.0** on the left corner under project explorer just to select it(**BasicProject-tv-samsung-3.0** is the default name give when you created a project on the past step, if you change the name click on that)
-* Top menu > File > Import > General > File System ... next > Browser to find the extracted folder from the release_X_X_X.zip ... > click Select All, mark Overwrite existing ... > Finish
-* wait for it to load
-* The name  the folder symbol with was **BasicProject-tv-samsung-X.0** now change to **BasicProject-tv-samsung-public-2.4**
-* Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > 1 Tizen wen Application, the installation will start
-* If everything goes OK the app must automatic open on the TV
-* If it fail during the instantiation make shore you don't have any other Twitch application installed, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
-* This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change is not possible to be done by the app it self, the app will warn the user the day there is a need to update and will be necessary to redo the installation process.
+* Wait for it to load
+* **[Download and extract the release_4_0_0.zip file Click here, this is the application recipe file](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0/release_4_0_0.zip)**
+* Back on tizen studio, Left click on the folder symbol with **BasicProject-tv-samsung-X.0** on the left corner under project explorer just to select the folder(**BasicProject-tv-samsung-X.0** is the default name give when you created a project on the past step, if you change the name click on that)
+* Top menu > **File** > Import > General > File System ... next > Browser to find the extracted folder from the release_X_X_X.zip ... > click Select All, mark Overwrite existing ... > Finish
+* Wait for it to load
+* The name of the folder **BasicProject-tv-samsung-X.0** changes to **BasicProject-tv-samsung-public-2.4**
+* Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > **1 Tizen wen Application**, the installation will start
+* If everything goes OK the app must automatic open in a few seconds on the TV and work
+* If it fail during the instantiation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
+* This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
 ## In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
 Inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
