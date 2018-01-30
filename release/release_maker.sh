@@ -29,6 +29,15 @@ html_file=("config.xml" "index.html" "release/index.html");
 js_folders=("app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
+
+if ! which 'sed' >/dev/null  ; then
+	echo -e "\ncan't run sed it's not installed";
+        echo -e "Install using command:";
+        echo -e "sudo apt-get install sed\n";
+	echo -e "Release maker aborted"
+	exit;
+fi;
+
 sh_folder="$(dirname "$0")";
 mainfolder="$(dirname "$sh_folder")";
 canuglifyjs=0;
@@ -105,14 +114,7 @@ cp -rf .tproject release/.tproject
 
 echo -e "\nCompressing Start\n";
 
-if which 'sed' >/dev/null  ; then
-	sed_comp "${html_file[@]}"
-else
-	echo -e "can't run sed it's not installed";
-        echo -e "Install using command:";
-        echo -e "sudo apt-get install sed\n";
-	echo -e ".html files not compressed."
-fi;
+sed_comp "${html_file[@]}";
 
 if which 'uglifyjs' >/dev/null  ; then
 	js_comp_ugf "${js_folders[@]}";
