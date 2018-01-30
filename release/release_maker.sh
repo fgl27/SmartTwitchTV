@@ -31,6 +31,8 @@ js_folders=("app/general/" "app/specific/");
 # no changes needed to be done bellow this line
 sh_folder="$(dirname "$0")";
 mainfolder="$(dirname "$sh_folder")";
+canuglifyjs=0;
+
 cd $mainfolder
 sed_comp() {
         array=( "$@" );
@@ -105,18 +107,19 @@ echo -e "\nCompressing Start\n";
 if which 'sed' >/dev/null  ; then
 	sed_comp "${html_file[@]}"
 else
-	echo -e "can't run sed it's not installed"
+	echo -e "can't run sed it's not installed";
         echo -e "Install using command:";
         echo -e "sudo apt-get install sed\n";
 	echo -e ".html files not compressed."
 fi;
 
 if which 'uglifyjs' >/dev/null  ; then
-	js_comp_ugf "${js_folders[@]}"
+	js_comp_ugf "${js_folders[@]}";
+        canuglifyjs=1;
 elif which 'yui-compressor' >/dev/null  ; then
-	js_comp_yuo "${js_folders[@]}"
+	js_comp_yuo "${js_folders[@]}";
 else
-	echo -e "\ncan't run uglifyjs or yui-compressor as they are not installed"
+	echo -e "\ncan't run uglifyjs or yui-compressor as they are not installed";
         echo -e "To install uglifyjs read the release maker notes on the top\n";
         echo -e "Install yui-compressor using command:";
         echo -e "sudo apt-get install yui-compressor\n";
@@ -135,7 +138,10 @@ cd release/
 rm -rf release.zip
 zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
 git stash &> /dev/null
-uglifyjs master.js -c -o master.js
+
+if [ "$canuglifyjs" == 1 ]; then
+	uglifyjs master.js -c -o master.js
+fi;
 
 echo -e "\nMaking done\n";
 
