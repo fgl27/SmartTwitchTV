@@ -87,6 +87,7 @@ Main.versonTag = '';
 document.addEventListener("DOMContentLoaded", function() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
+    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + '.';
     // pre load LOD img
     Main.newImg.src = IMG_LOD_LOGO;
     Main.newImg.src = IMG_LOD_GAME;
