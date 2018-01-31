@@ -175,7 +175,7 @@ Live.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
     Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
@@ -328,7 +328,7 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
             if (!Main.ThumbNull(my, mx, Live.Thumbnail) && (Main.ThumbNull(my, mx, Live.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
                 Live.nameMatrix[Live.nameMatrixCount] = channel_name;
                 Live.nameMatrixCount++;
                 document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);

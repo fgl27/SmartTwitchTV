@@ -49,6 +49,8 @@ Main.ScrollOffSetMinusChannels = 0.430;
 Main.ScrollOffSetMinusGame = 0.535;
 
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+Main.VideoSize = "640x360";
+Main.GameSize = "481x672";
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");

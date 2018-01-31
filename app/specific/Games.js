@@ -175,7 +175,7 @@ Games.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
 
     Games.imgMatrix[Games.imgMatrixCount] = preview_thumbnail;
     Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
@@ -317,7 +317,7 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbna
             if (!Main.ThumbNull(my, mx, Games.Thumbnail) && (Main.ThumbNull(my, mx, Games.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
+                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
                 Games.nameMatrix[Games.nameMatrixCount] = game_name;
                 Games.nameMatrixCount++;
                 document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);

@@ -187,7 +187,7 @@ UserHost.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     UserHost.imgMatrix[UserHost.imgMatrixCount] = preview_thumbnail;
     UserHost.imgMatrixId[UserHost.imgMatrixCount] = UserHost.Thumbnail + row_id + '_' + coloumn_id;
@@ -333,7 +333,7 @@ UserHost.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_t
             if (!Main.ThumbNull(my, mx, UserHost.Thumbnail) && (Main.ThumbNull(my, mx, UserHost.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
                 UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
                 UserHost.nameMatrixCount++;
                 document.getElementById(UserHost.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserHost.Cell + row_id + '_' + coloumn_id);

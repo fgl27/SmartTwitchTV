@@ -127,14 +127,14 @@ SmartHub.previewDataSuccess = function(responseText) {
             SmartHub.user[cursor] = stream.channel.name;
             SmartHub.usertitle[cursor] = Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
             SmartHub.usersubtitle[cursor] = STR_PLAYING + stream.game;
-            SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", "640x360");
+            SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", Main.VideoSize);
         }
     } else if (SmartHub.previewData === 2) {
         response_items = response.follows.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             game = response.follows[cursor];
             SmartHub.usergames[cursor] = game.game.name;
-            SmartHub.usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", "481x672");
+            SmartHub.usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", Main.GameSize);
         }
     } else if (SmartHub.previewData === 3) {
         response_items = response.hosts.length;
@@ -143,7 +143,7 @@ SmartHub.previewDataSuccess = function(responseText) {
             SmartHub.userhost[cursor] = hosts.target.channel.name;
             SmartHub.userhosttitle[cursor] = hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name;
             SmartHub.userhostsubtitle[cursor] = STR_PLAYING + hosts.target.meta_game;
-            SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", "640x360");
+            SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", Main.VideoSize);
         }
     }
     if (SmartHub.previewData < 3) {

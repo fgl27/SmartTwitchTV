@@ -158,7 +158,7 @@ SGames.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "481x672");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
 
     SGames.imgMatrix[SGames.imgMatrixCount] = preview_thumbnail;
     SGames.imgMatrixId[SGames.imgMatrixCount] = SGames.Thumbnail + row_id + '_' + coloumn_id;

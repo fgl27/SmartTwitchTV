@@ -162,7 +162,7 @@ SChannelContent.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
     SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Thumbnail + row_id + '_' + coloumn_id;
