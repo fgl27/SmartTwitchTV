@@ -249,7 +249,7 @@ Main.videoqualitylang = function(video_height, average_fps, language) {
 };
 
 Main.is_playlist = function(content) {
-    return (content.indexOf('watch_party') == -1) ? '' : '[VOD] ';
+    return (content.indexOf('live') !== -1) ? '' : STR_NOT_LIVE;
 };
 
 Main.ThumbNull = function(y, x, thumbnail) {
