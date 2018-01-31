@@ -148,7 +148,7 @@ Play.updateStreamInfo = function() {
     };
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+    xmlHttp.setRequestHeader('Client-ID', Main.clientId);
     xmlHttp.send(null);
 };
 
@@ -172,7 +172,7 @@ Play.loadDataRequest = function() {
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
 
         xmlHttp.ontimeout = function() {};
 
