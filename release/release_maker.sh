@@ -23,7 +23,7 @@
 #exect this file or drag this .sh file to terminal to generate a released
 
 # add html files here
-html_file=("config.xml" "index.html" "release/index.html");
+html_file=("config.xml" "index.html" "master.css" "release/index.html");
 
 # add js folders here
 js_folders=("app/general/" "app/specific/");
@@ -101,10 +101,12 @@ master_maker() {
 	done
 }
 
-echo -e "\\nStarting Release maker\\n";
+echo -e "\\nStarting Release maker";
 
 sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
+cp -rf index.html master.css
 sed -i -n '/bodystart/,/bodyend/p' index.html
+sed -i -n '/cssstart/,/cssend/p' master.css
 rm -rf release/app/
 mkdir -p 'release/app/images/'
 cp -rf app/images/app_icon.png release/app/images/app_icon.png
@@ -140,7 +142,12 @@ master_maker "${js_folders[@]}"
 cd release/ || exit
 rm -rf release.zip
 zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
-git stash &> /dev/null
+
+cd - &> /dev/null || exit;
+git stash &> /dev/null;
+cp -rf master.css release/githubio/css/master.css
+rm -rf master.css;
+cd release/ || exit
 
 if [ "$canuglifyjs" == 1 ]; then
 	uglifyjs master.js -c -o master.js;
