@@ -37,6 +37,7 @@ var STR_BUFFERING = "Buffering ";
 var STR_QUALITY = "Quality";
 var STR_VIEWER = " Viewers";
 var STR_EXIT = "Click again to exit!";
+var STR_NOT_LIVE = "[Not Live] ";
 var STR_LIVE_CHANNELS = " Live Channels";
 var STR_LIVE_HOSTS = " Live Hosts";
 var STR_LIVE_GAMES = " Live Games";
