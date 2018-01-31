@@ -150,7 +150,7 @@ rm -rf master.css;
 cd release/ || exit
 
 if [ "$canuglifyjs" == 1 ]; then
-	uglifyjs master.js -c -o master.js;
+	uglifyjs master.js -c -m toplevel -o master.js;
 fi;
 
 echo -e "\\nMaking done\\n";
