@@ -22,7 +22,7 @@
 
 #exect this file or drag this .sh file to terminal to generate a released
 
-# add html files here
+# add html files here, master.css here is a temp file generate by this .sh it has the css content of index.html
 html_file=("config.xml" "index.html" "master.css" "release/index.html");
 
 # add js folders here
@@ -30,6 +30,7 @@ js_folders=("app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
 
+# Exit if sed is not available
 if ! which 'sed' >/dev/null  ; then
 	echo -e "\\ncan't run sed it's not installed";
         echo -e "Install using command:";
@@ -38,15 +39,18 @@ if ! which 'sed' >/dev/null  ; then
 	exit;
 fi;
 
+# this .sh folder used for cd back and for
 sh_folder="$(dirname "$0")";
 mainfolder="$(dirname "$sh_folder")";
 canuglifyjs=0;
 
 cd "$mainfolder" || exit
+
+# sed_comp cleans/compress up html/xml related files
 sed_comp() {
         array=( "$@" );
 	for i in "${array[@]}"; do
-		echo -e "Compressing $i";
+		echo -e "sed compressing $i";
                 sed -i -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' "$i";
                 sed -i "/\\/\\*.*\\*\\//d;/\\/\\*/,/\\*\\// d" "$i";
 		sed -i '/^\(\s*\)\/\//d' "$i";
@@ -63,38 +67,42 @@ sed_comp() {
 		sed -i 's/\s*}/}/g' "$i";
 #		sed -i 's/" \+/"/g' "$i";
 	done
+	echo -e "";
 }
 
+# yui-compressor cleans/compress up js related files
 js_comp_yuo() {
         array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "Compressing $x";
+			echo -e "yui-compressor $x";
 			yui-compressor "$x" -o "$x";
 		done
 		cd - &> /dev/null || exit;
 	done
 }
 
+# uglifyjs cleans/compress up js related files, is better then yui-compressor
 js_comp_ugf() {
         array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "Compressing $x";
+			echo -e "uglifyjs $x";
 			uglifyjs "$x" -c -m -o "$x";
 		done
 		cd - &> /dev/null || exit;
 	done
 }
 
+# copy all files to release/master.js
 master_maker() {
         array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "Including $x";
+			echo -e "Including $x to master.js";
 			cat "$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
@@ -103,6 +111,7 @@ master_maker() {
 
 echo -e "\\nStarting Release maker";
 
+# Prepare the release folder copy files to correct place and make new temp files
 sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
 cp -rf index.html master.css
 sed -i -n '/bodystart/,/bodyend/p' index.html
@@ -116,6 +125,7 @@ cp -rf .tproject release/.tproject
 
 echo -e "\\nCompressing Start\\n";
 
+# run the cleans/compress tools
 sed_comp "${html_file[@]}";
 
 if which 'uglifyjs' >/dev/null  ; then
@@ -135,33 +145,52 @@ echo -e "\\nCompression done\\n";
 
 echo -e "\\nMaking new files up\\n";
 
+# Include STR_BODY to release/master, STR_BODY has the content of index.html body
 cp -rf config.xml release/config.xml
 echo "var STR_BODY='""$(cat index.html)""';" > release/master.js;
+
+# Runs the copy all files to release/master.js
 master_maker "${js_folders[@]}"
 
+#Make a zip
 cd release/ || exit
 rm -rf release.zip
 zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
 
+# Clean up release/ folder temp files and stash all over git changes
+rm -rf app/
+rm -rf config.xml release/config.xml
+rm -rf widget.info release/widget.info
+rm -rf .project release/.project
+rm -rf .tproject release/.tproject
+
 cd - &> /dev/null || exit;
 git stash &> /dev/null;
+
+# Copy master.css to its place, it's the css content of index.html
 cp -rf master.css release/githubio/css/master.css
 rm -rf master.css;
 cd release/ || exit
 
+# Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
+	echo -e "\\nuglifyjs master.js";
 	uglifyjs master.js -c -m toplevel -o master.js;
 fi;
 
 echo -e "\\nMaking done\\n";
 
 echo -e "Release zip generated at $mainfolder/release/release.zip\\n";
+
+# compy master.js temp files to githubio/js/
 cp -rf master.js githubio/js/master.js;
 cd - &> /dev/null || exit;
-git_check="$(git status | grep modified)";
 
+# Warn if a change was detected to master.js or master.css file
+git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
 	echo -e "Is necessary to update githubio as below files are modify:\\n"
 	echo -e "$git_check"
 fi;
+
 exit;
