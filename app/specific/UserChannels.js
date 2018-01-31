@@ -139,7 +139,7 @@ UserChannels.loadChannelLive = function(responseText) {
         UserChannels.loadChannelOffsset += response_items;
         UserChannels.loadData();
     } else { // end
-        UserChannels.UserChannelsList.sort(function (a, b) {
+        UserChannels.UserChannelsList.sort(function(a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
         });
         UserChannels.imgMatrix = [];

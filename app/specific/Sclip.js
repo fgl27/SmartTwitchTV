@@ -227,7 +227,8 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
             <div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
         '"class="stream_info_games" style="width: 48%; display: inline-block;">' + views + '</div> \
             <div id="' + Sclip.DurationDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' + STR_DURATION + Play.timeS(video_duration) + '</div> \
+        '"class="stream_info" style="width:48%; text-align: right; float: right; display: inline-block;">' +
+        STR_DURATION + Play.timeS(video_duration) + '</div> \
             </div>');
 };
 

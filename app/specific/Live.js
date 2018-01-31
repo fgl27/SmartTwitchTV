@@ -517,4 +517,3 @@ Live.handleKeyDown = function(event) {
             break;
     }
 };
-

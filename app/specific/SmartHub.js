@@ -63,13 +63,13 @@ SmartHub.loadDataRequest = function() {
                 '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 1) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=22&' +
-            Math.round(Math.random() * 1e7);
+                Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 2) { // user games
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/follows/games/live?limit=6&' +
-            Math.round(Math.random() * 1e7);
+                Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 3) { //user SmartHub host
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/followed/hosting?limit=10&' +
-            Math.round(Math.random() * 1e7);
+                Math.round(Math.random() * 1e7);
         }
 
         xmlHttp.open("GET", theUrl, true);
@@ -165,9 +165,13 @@ function previewDataGenerator() {
     if (SmartHub.user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.user.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
+            data += '{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
         } else {
-            data += ',{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
+            data += ',{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
         }
     }
     if (SmartHub.user.length > 0) data += ']},';
@@ -175,9 +179,13 @@ function previewDataGenerator() {
     if (SmartHub.userhost.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.userhost.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
+            data += '{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
         } else {
-            data += ',{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
+            data += ',{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
         }
     }
     if (SmartHub.userhost.length > 0) data += ']},';
@@ -185,9 +193,11 @@ function previewDataGenerator() {
     if (SmartHub.usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.usergames.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
+            data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] +
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
         } else {
-            data += ',{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] + '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
+            data += ',{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] +
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
         }
     }
     if (SmartHub.usergames.length > 0) data += ']},';

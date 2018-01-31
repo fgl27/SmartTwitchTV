@@ -201,7 +201,7 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
     Svod.nameMatrixCount++;
 
-    return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + 
+    return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
         '" data-durationseconds=" ' + duration + '"></td>').html(
         '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/> \
             <div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
