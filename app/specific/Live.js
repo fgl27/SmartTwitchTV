@@ -93,7 +93,7 @@ Live.loadDataRequest = function() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Live.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Live.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -261,7 +261,7 @@ Live.loadDataRequestReplace = function() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Live.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Live.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

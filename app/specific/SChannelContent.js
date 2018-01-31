@@ -93,7 +93,7 @@ SChannelContent.loadDataRequest = function() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(Main.selectedChannel) + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannelContent.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

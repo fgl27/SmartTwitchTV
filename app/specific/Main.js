@@ -48,6 +48,8 @@ Main.ScrollOffSetMinusVideo = 0.345;
 Main.ScrollOffSetMinusChannels = 0.430;
 Main.ScrollOffSetMinusGame = 0.535;
 
+Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("MediaPlayPause");

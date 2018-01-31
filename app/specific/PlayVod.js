@@ -113,7 +113,7 @@ PlayVod.loadDataRequest = function() {
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
 
         xmlHttp.ontimeout = function() {};
 

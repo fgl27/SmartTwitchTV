@@ -74,7 +74,7 @@ SmartHub.loadDataRequest = function() {
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SmartHub.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
 
         xmlHttp.ontimeout = function() {
 

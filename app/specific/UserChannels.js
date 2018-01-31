@@ -85,7 +85,7 @@ UserChannels.loadChannels = function() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=100&offset=' +
             UserChannels.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx');
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
