@@ -169,16 +169,15 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
     SChannelContent.imgMatrixCount++;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/> \
-            <div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-            <div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
-            <div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' +
-            '<i class="fa fa-circle" style="color: red; font-size: 100%; aria-hidden="true"></i> ' + viwers + '</div> \
-             <div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id +
-            '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
-            </div>');
+        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
+        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
+        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' +
+        '<i class="fa fa-circle" style="color: red; font-size: 100%; aria-hidden="true"></i> ' + viwers + '</div>' +
+        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id +
+        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
 };
 
 SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
@@ -190,14 +189,13 @@ SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stre
     SChannelContent.imgMatrixCount++;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/> \
-            <div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div> \
-            <div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
-            <div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
-            <div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" ></div> \
-            <div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div> \
-            </div>');
+        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
+        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
+        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
+        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" ></div>' +
+        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
 };
 
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source

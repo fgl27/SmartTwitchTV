@@ -193,10 +193,9 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.nameMatrixCount++;
 
     return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-            '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/> \
-            <div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            </div>');
+        '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
+        '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
 };
 
 SChannels.CellExists = function(display_name) {
@@ -327,10 +326,9 @@ SChannels.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_
                 document.getElementById(SChannels.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', SChannels.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-                    <div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                    <div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-                    </div>';
+                    '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+                    '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
                 return true;
             }
         }
