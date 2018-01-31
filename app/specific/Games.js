@@ -498,4 +498,3 @@ Games.handleKeyDown = function(event) {
             break;
     }
 };
-

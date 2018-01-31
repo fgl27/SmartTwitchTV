@@ -201,7 +201,7 @@ SLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
             <div id="' + SLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
             <div id="' + SLive.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
         '</div> \
-             <div id="' + SLive.QualityDiv + row_id + '_' + coloumn_id +
+            <div id="' + SLive.QualityDiv + row_id + '_' + coloumn_id +
         '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
             </div>');
 };
