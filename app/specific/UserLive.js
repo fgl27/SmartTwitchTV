@@ -269,16 +269,15 @@ UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
     UserLive.nameMatrixCount++;
 
     return $('<td id="' + UserLive.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/> \
-            <div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-            <div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-            <div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
-            <div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
-        '</div> \
-             <div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
-            </div>');
+        '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
+        '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
+        '<div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
+        '</div>' +
+        '<div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
+        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
 };
 
 UserLive.CellExists = function(display_name) {
@@ -413,17 +412,16 @@ UserLive.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_t
                 document.getElementById(UserLive.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserLive.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(UserLive.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(UserLive.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-                    <div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                    <div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div> \
-                    <div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div> \
-                    <div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div> \
-                    <div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id +
+                    '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+                    '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
+                    '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
+                    '<div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
+                    '<div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
-                    '</div> \
-                    <div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div> \
-                    </div>';
+                    '</div>' +
+                    '<div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
+                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
                 return true;
             }
         }

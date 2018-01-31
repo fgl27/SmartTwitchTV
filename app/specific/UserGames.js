@@ -195,12 +195,11 @@ UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail
     UserGames.nameMatrixCount++;
 
     return $('<td id="' + UserGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/> \
-            <div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-            <div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
-            <div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + viwers +
-        '</div> \
-            </div>');
+        '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
+        '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
+        '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
+        viwers + '</div></div>');
 };
 
 UserGames.CellExists = function(display_name) {
@@ -333,15 +332,14 @@ UserGames.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thu
                 document.getElementById(UserGames.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserGames.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
                 document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/> \
-                    <div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text"> \
-                    <div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div> \
-                    <div id="' + UserGames.followsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + follows_title + '</div> \
-                    <div id="' + UserGames.followsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + follows_game + '</div> \
-                    <div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id +
+                    '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+                    '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
+                    '<div id="' + UserGames.followsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + follows_title + '</div>' +
+                    '<div id="' + UserGames.followsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + follows_game + '</div>' +
+                    '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id +
                     '"class="stream_info_games" style="width: 100%; display: inline-block;">' + viwers +
-                    '</div> \
-                    </div>';
+                    '</div></div>';
                 return true;
             }
         }
