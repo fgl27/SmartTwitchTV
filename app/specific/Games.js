@@ -218,14 +218,7 @@ Games.loadDataSuccessFinish = function() {
                 Games.addFocus();
             }
 
-            for (var i = 0; i < Games.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(Games.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_GAME; //img fail to load use predefined
-                };
-
-                tumbImg.src = Games.imgMatrix[i];
-            }
+            Main.LoadImages(Games.imgMatrix, Games.imgMatrixId, IMG_404_GAME);
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;

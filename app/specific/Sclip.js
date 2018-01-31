@@ -254,15 +254,9 @@ Sclip.loadDataSuccessFinish = function() {
                 Sclip.status = true;
                 Sclip.addFocus();
             }
-            if (!Sclip.loadingReplace) {
-                for (var i = 0; i < Sclip.imgMatrix.length; i++) {
-                    var tumbImg = document.getElementById(Sclip.imgMatrixId[i]);
-                    tumbImg.onerror = function() {
-                        this.src = IMG_404_VIDEO; //img fail to load use predefined
-                    };
-                    tumbImg.src = Sclip.imgMatrix[i];
-                }
-            }
+
+            Main.LoadImages(Sclip.imgMatrix, Sclip.imgMatrixId, IMG_404_VIDEO);
+
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
                 Sclip.loadingMore = true;
                 Sclip.loadingReplace = true;

@@ -238,14 +238,7 @@ Svod.loadDataSuccessFinish = function() {
                 Svod.addFocus();
             }
 
-            for (var i = 0; i < Svod.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(Svod.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = Svod.imgMatrix[i];
-            }
+            Main.LoadImages(Svod.imgMatrix, Svod.imgMatrixId, IMG_404_VIDEO);
 
             if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
                 Svod.loadingMore = true;

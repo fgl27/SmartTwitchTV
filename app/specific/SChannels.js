@@ -222,14 +222,7 @@ SChannels.loadDataSuccessFinish = function() {
                 SChannels.addFocus();
             }
 
-            for (var i = 0; i < SChannels.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(SChannels.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_LOGO; //img fail to load use predefined
-                };
-
-                tumbImg.src = SChannels.imgMatrix[i];
-            }
+            Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
 
             if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
                 SChannels.loadingMore = true;

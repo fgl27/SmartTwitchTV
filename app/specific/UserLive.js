@@ -304,14 +304,7 @@ UserLive.loadDataSuccessFinish = function() {
                 UserLive.addFocus();
             }
 
-            for (var i = 0; i < UserLive.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(UserLive.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = UserLive.imgMatrix[i];
-            }
+            Main.LoadImages(UserLive.imgMatrix, UserLive.imgMatrixId, IMG_404_VIDEO);
 
             if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
                 UserLive.loadingMore = true;

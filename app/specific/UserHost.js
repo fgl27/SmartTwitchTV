@@ -232,14 +232,7 @@ UserHost.loadDataSuccessFinish = function() {
                 UserHost.addFocus();
             }
 
-            for (var i = 0; i < UserHost.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(UserHost.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = UserHost.imgMatrix[i];
-            }
+            Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
 
             if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
                 UserHost.loadingMore = true;
