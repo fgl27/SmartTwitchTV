@@ -221,14 +221,7 @@ Live.loadDataSuccessFinish = function() {
                 Live.addFocus();
             }
 
-            for (var i = 0; i < Live.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(Live.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = Live.imgMatrix[i];
-            }
+            Main.LoadImages(Live.imgMatrix, Live.imgMatrixId, IMG_404_VIDEO);
 
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;

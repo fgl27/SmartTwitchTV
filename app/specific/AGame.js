@@ -233,14 +233,7 @@ AGame.loadDataSuccessFinish = function() {
                 AGame.addFocus();
             }
 
-            for (var i = 0; i < AGame.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(AGame.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = AGame.imgMatrix[i];
-            }
+            Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
 
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
                 AGame.loadingMore = true;

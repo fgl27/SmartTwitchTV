@@ -218,14 +218,7 @@ UserChannels.loadDataSuccessFinish = function() {
                 UserChannels.addFocus();
             }
 
-            for (var i = 0; i < UserChannels.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(UserChannels.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_LOGO; //img fail to load use predefined
-                };
-
-                tumbImg.src = UserChannels.imgMatrix[i];
-            }
+            Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
 
             UserChannels.loadingData = false;
             UserChannels.loadingMore = false;

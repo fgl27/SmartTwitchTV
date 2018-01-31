@@ -397,6 +397,21 @@ Main.Resume = function() {
     }
 };
 
+Main.LoadImages = function(imgVector, idVector, img_type) {
+    var loadImages, i;
+
+    loadImages = function(position, tumbImg) {
+        tumbImg.onerror = function() {
+            this.src = img_type; //img fail to load use predefined
+        };
+        tumbImg.src = imgVector[position];
+    };
+
+    for (i = 0; i < imgVector.length; i++) {
+        loadImages(i, document.getElementById(idVector[i]));
+    }
+};
+
 Main.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.

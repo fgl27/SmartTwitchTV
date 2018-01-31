@@ -118,13 +118,7 @@ Users.loadDataSuccessFinish = function() {
                 Users.addFocus();
             }
 
-            for (var i = 0; i < Users.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(Users.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_LOD_VIDEO; //img fail to load use predefined
-                };
-                tumbImg.src = Users.imgMatrix[i];
-            }
+            Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
 
             Users.loadingData = false;
         });

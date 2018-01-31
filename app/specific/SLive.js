@@ -229,14 +229,7 @@ SLive.loadDataSuccessFinish = function() {
                 SLive.addFocus();
             }
 
-            for (var i = 0; i < SLive.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(SLive.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_VIDEO; //img fail to load use predefined
-                };
-
-                tumbImg.src = SLive.imgMatrix[i];
-            }
+            Main.LoadImages(SLive.imgMatrix, SLive.imgMatrixId, IMG_404_VIDEO);
 
             if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
                 SLive.loadingMore = true;

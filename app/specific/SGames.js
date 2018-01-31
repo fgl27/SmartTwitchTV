@@ -186,14 +186,7 @@ SGames.loadDataSuccessFinish = function() {
                 SGames.addFocus();
             }
 
-            for (var i = 0; i < SGames.imgMatrix.length; i++) {
-                var tumbImg = document.getElementById(SGames.imgMatrixId[i]);
-                tumbImg.onerror = function() {
-                    this.src = IMG_404_GAME; //img fail to load use predefined
-                };
-
-                tumbImg.src = SGames.imgMatrix[i];
-            }
+            Main.LoadImages(SGames.imgMatrix, SGames.imgMatrixId, IMG_404_GAME);
 
             SGames.loadingData = false;
         });
