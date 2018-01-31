@@ -186,7 +186,7 @@ AGame.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     AGame.imgMatrix[AGame.imgMatrixCount] = preview_thumbnail;
     AGame.imgMatrixId[AGame.imgMatrixCount] = AGame.Thumbnail + row_id + '_' + coloumn_id;
@@ -335,7 +335,7 @@ AGame.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
             if (!Main.ThumbNull(my, mx, AGame.Thumbnail) && (Main.ThumbNull(my, mx, AGame.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", "640x360");
+                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
                 AGame.nameMatrix[AGame.nameMatrixCount] = channel_name;
                 AGame.nameMatrixCount++;
                 document.getElementById(AGame.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', AGame.Cell + row_id + '_' + coloumn_id);

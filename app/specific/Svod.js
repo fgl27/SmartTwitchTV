@@ -190,7 +190,7 @@ Svod.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
-    preview_thumbnail = preview_thumbnail.replace("320x240", "640x360");
+    preview_thumbnail = preview_thumbnail.replace("320x240", Main.VideoSize);
 
     Svod.imgMatrix[Svod.imgMatrixCount] = preview_thumbnail;
     Svod.imgMatrixId[Svod.imgMatrixCount] = Svod.Thumbnail + row_id + '_' + coloumn_id;
@@ -341,7 +341,7 @@ Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
             if (!Main.ThumbNull(my, mx, Svod.Thumbnail) && (Main.ThumbNull(my, mx, Svod.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("320x240", "640x360");
+                preview_thumbnail = preview_thumbnail.replace("320x240", Main.VideoSize);
                 Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
                 Svod.nameMatrixCount++;
                 document.getElementById(Svod.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Svod.Cell + row_id + '_' + coloumn_id);

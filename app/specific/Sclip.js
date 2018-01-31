@@ -206,7 +206,7 @@ Sclip.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
-    //preview_thumbnail = preview_thumbnail.replace("480x272", "640x360");
+    //preview_thumbnail = preview_thumbnail.replace("480x272", Main.VideoSize);
 
     Sclip.imgMatrix[Sclip.imgMatrixCount] = preview_thumbnail;
     Sclip.imgMatrixId[Sclip.imgMatrixCount] = Sclip.Thumbnail + row_id + '_' + coloumn_id;
