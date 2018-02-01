@@ -489,10 +489,6 @@ UserGames.handleKeyDown = function(event) {
             UserGames.exit();
             Main.SwitchScreen();
             break;
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
-            break;
         default:
             break;
     }
