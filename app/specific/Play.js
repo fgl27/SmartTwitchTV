@@ -65,10 +65,9 @@ Play.PreStart = function() {
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe> \
-        <div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;"> \
-        <div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div> \
-        </div>');
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe>' +
+        '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
+        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
         '<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%;"></i> ' + STR_CONTROL_KEY;
@@ -293,7 +292,7 @@ Play.extractStreamDeclarations = function(input) {
     while (match = myRegexp.exec(input)) result.push(match[0]);
 
     return result;
-}
+};
 
 Play.extractQualityFromStream = function(input) {
     var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
@@ -312,7 +311,7 @@ Play.extractQualityFromStream = function(input) {
         quality = set.NAME;
     }
     return quality;
-}
+};
 
 Play.qualityChanged = function() {
     Play.qualityIndex = 0;
