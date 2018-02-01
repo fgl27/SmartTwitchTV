@@ -538,9 +538,6 @@ PlayVod.handleKeyDown = function(e) {
                 Play.ChatEnable = false;
                 localStorage.setItem('ChatEnable', 'false');
                 break;
-            case TvKeyCode.KEY_CHANNELUP:
-            case TvKeyCode.KEY_CHANNELDOWN:
-                break;
             case TvKeyCode.KEY_LEFT:
                 if (PlayVod.Canjump) {
                     if (PlayVod.jumpCount > PlayVod.jumpCountMin) PlayVod.jumpCount--;
@@ -587,26 +584,12 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                if (Play.isControlsDialogShown()) Play.HideControlsDialog();
-                else if (Play.isPanelShown()) {
-                    PlayVod.hidePanel();
-                } else {
-                    if (Play.ExitDialogVisible()) {
-                        window.clearTimeout(Play.exitID);
-                        $("#play_dialog_exit").hide();
-                        window.setTimeout(PlayVod.shutdownStream, 10);
-                    } else if (Play.WarningDialogVisible()) {
-                        Play.HideWarningDialog();
-                        Play.showExitDialog();
-                    } else {
-                        Play.showExitDialog();
-                    }
-                }
+                Play.KeyReturn();
                 break;
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                Play.checkPause();
+                Play.KeyPause();
                 break;
             case TvKeyCode.KEY_YELLOW:
                 Play.showControlsDialog();

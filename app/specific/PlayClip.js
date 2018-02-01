@@ -269,7 +269,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
-            Play.checkPause();
+            Play.KeyPause();
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:

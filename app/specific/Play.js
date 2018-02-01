@@ -735,7 +735,7 @@ Play.hideChatBackgroundDialog = function() {
     $("#scene_channel_dialog_chat").hide();
 };
 
-Play.checkPause = function() {
+Play.KeyPause = function() {
     if (!Play.videojs.paused()) {
         Play.videojs.pause();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
@@ -744,6 +744,25 @@ Play.checkPause = function() {
         Play.clearPause();
         Play.videojs.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    }
+};
+
+Play.KeyReturn = function() {
+    if (Play.isControlsDialogShown()) Play.HideControlsDialog();
+    else if (Play.isPanelShown()) {
+        Play.hidePanel();
+    } else {
+        if (Play.ExitDialogVisible()) {
+            window.clearTimeout(Play.exitID);
+            $("#play_dialog_exit").hide();
+            Play.hideChat();
+            window.setTimeout(Play.shutdownStream, 10);
+        } else if (Play.WarningDialogVisible()) {
+            Play.HideWarningDialog();
+            Play.showExitDialog();
+        } else {
+            Play.showExitDialog();
+        }
     }
 };
 
@@ -850,27 +869,12 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                if (Play.isControlsDialogShown()) Play.HideControlsDialog();
-                else if (Play.isPanelShown()) {
-                    Play.hidePanel();
-                } else {
-                    if (Play.ExitDialogVisible()) {
-                        window.clearTimeout(Play.exitID);
-                        $("#play_dialog_exit").hide();
-                        Play.hideChat();
-                        window.setTimeout(Play.shutdownStream, 10);
-                    } else if (Play.WarningDialogVisible()) {
-                        Play.HideWarningDialog();
-                        Play.showExitDialog();
-                    } else {
-                        Play.showExitDialog();
-                    }
-                }
+                Play.KeyReturn();
                 break;
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                Play.checkPause();
+                Play.KeyPause();
                 break;
             case TvKeyCode.KEY_YELLOW:
                 Play.showControlsDialog();
