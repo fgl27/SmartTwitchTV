@@ -406,6 +406,7 @@ Play.offPlayer = function() {
     Play.videojs.off('timeupdate', null);
     Play.videojs.off('error', null);
     Play.videojs.off('loadedmetadata', null);
+    Play.videojs.off('playing', null);
 };
 
 Play.updateCurrentTime = function(currentTime) {

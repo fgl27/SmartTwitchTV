@@ -73,17 +73,10 @@ PlayClip.Start = function() {
 
 };
 
-PlayClip.offPlayer = function() {
-    Play.videojs.off('ended', null);
-    Play.videojs.off('timeupdate', null);
-    Play.videojs.off('error', null);
-    Play.videojs.off('loadedmetadata', null);
-};
-
 PlayClip.Resume = function() {
     if (document.hidden) {
         PlayClip.Exit();
-        PlayClip.offPlayer();
+        Play.offPlayer();
     }
 };
 
@@ -106,7 +99,7 @@ PlayClip.Exit = function() {
     Play.videojs.pause();
     Play.videojs.autoplay(false);
     Play.videojs.src(TEMP_MP4);
-    PlayClip.offPlayer();
+    Play.offPlayer();
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip.Resume);
     window.clearInterval(PlayClip.streamCheck);
