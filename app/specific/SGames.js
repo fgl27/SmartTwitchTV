@@ -288,9 +288,6 @@ SGames.handleKeyDown = function(event) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             SGames.StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
-        case TvKeyCode.KEY_CHANNELDOWN:
-            break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
@@ -318,10 +315,6 @@ SGames.handleKeyDown = function(event) {
             Main.Go = Main.Search;
             SGames.exit();
             Main.SwitchScreen();
-            break;
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
             break;
         default:
             break;

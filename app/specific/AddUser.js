@@ -63,12 +63,6 @@ AddUser.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             AddUser.inputFocus();
             break;
-        case TvKeyCode.KEY_LEFT:
-        case TvKeyCode.KEY_RIGHT:
-        case TvKeyCode.KEY_UP:
-        case TvKeyCode.KEY_DOWN:
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
             break;

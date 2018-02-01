@@ -435,9 +435,6 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (!SChannels.loadingMore) SChannels.StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
-        case TvKeyCode.KEY_CHANNELDOWN:
-            break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
@@ -465,10 +462,6 @@ SChannels.handleKeyDown = function(event) {
             Main.Go = Main.Search;
             SChannels.exit();
             SChannels.Postexit();
-            break;
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
             break;
         default:
             break;
