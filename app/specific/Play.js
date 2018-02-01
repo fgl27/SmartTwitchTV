@@ -735,6 +735,18 @@ Play.hideChatBackgroundDialog = function() {
     $("#scene_channel_dialog_chat").hide();
 };
 
+Play.checkPause = function() {
+    if (!Play.videojs.paused()) {
+        Play.videojs.pause();
+        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
+        Play.showPauseDialog();
+    } else {
+        Play.clearPause();
+        Play.videojs.play();
+        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+    }
+};
+
 Play.handleKeyDown = function(e) {
     if (Play.state != Play.STATE_PLAYING) {
         switch (e.keyCode) {
@@ -858,23 +870,8 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                if (!Play.videojs.paused()) {
-                    Play.Play = false;
-                    Play.videojs.pause();
-                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
-                    Play.showPauseDialog();
-                    if (!Play.isPanelShown()) {
-                        Play.showPanel();
-                    }
-                } else {
-                    Play.Play = true;
-                    Play.clearPause();
-                    Play.videojs.play();
-                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-                }
+                Play.checkPause();
                 break;
-            case TvKeyCode.KEY_RED:
-            case TvKeyCode.KEY_GREEN:
             case TvKeyCode.KEY_YELLOW:
                 Play.showControlsDialog();
                 break;

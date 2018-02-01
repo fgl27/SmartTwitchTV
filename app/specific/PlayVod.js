@@ -606,26 +606,8 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
             case TvKeyCode.KEY_PLAYPAUSE:
-                if (!Play.videojs.paused()) {
-                    PlayVod.Play = false;
-                    Play.videojs.pause();
-                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
-                    Play.showPauseDialog();
-                    if (!Play.isPanelShown()) {
-                        PlayVod.showPanel();
-                    }
-                } else {
-                    PlayVod.Play = true;
-                    Play.clearPause();
-                    Play.videojs.play();
-                    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-                }
+                Play.checkPause();
                 break;
-            case TvKeyCode.KEY_VOLUMEUP:
-            case TvKeyCode.KEY_VOLUMEDOWN:
-            case TvKeyCode.KEY_MUTE:
-            case TvKeyCode.KEY_RED:
-            case TvKeyCode.KEY_GREEN:
             case TvKeyCode.KEY_YELLOW:
                 Play.showControlsDialog();
                 break;
