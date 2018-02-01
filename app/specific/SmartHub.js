@@ -236,10 +236,10 @@ SmartHub.EventListener = function() {
                     Play.selectedChannel = VideoIdx;
                     Play.selectedChannelDisplayname = VideoTitleIdx;
                     if (Play.Playing) {
-                        Play.PartiallyshutdownStream();
+                        Play.PreshutdownStream();
                         window.setTimeout(Main.openStream, 10);
                     } else if (PlayVod.Playing) {
-                        PlayVod.PartiallyshutdownStream();
+                        PlayVod.PreshutdownStream();
                         window.setTimeout(Main.openStream, 10);
                     } else {
                         Main.ExitCurrent(Main.Go);

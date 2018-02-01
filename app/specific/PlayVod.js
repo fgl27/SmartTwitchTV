@@ -331,33 +331,19 @@ PlayVod.updateCurrentTime = function(currentTime) {
 };
 
 PlayVod.shutdownStream = function() {
-    Play.videojs.pause();
-    Play.videojs.autoplay(false);
-    Play.videojs.src(TEMP_MP4);
-    Play.offPlayer();
-    PlayVod.Playing = false;
-    document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayVod.Resume);
-    Play.clearPause();
-    Play.HideWarningDialog();
-    $("#scene1").show();
-    $("#scene2").hide();
-    Main.ReStartScreens();
-    PlayVod.offsettime = 0;
-    window.clearInterval(PlayVod.streamInfoTimer);
-    window.clearInterval(PlayVod.streamCheck);
+    Play.PreshutdownStream();
+    Play.exitMain();
 };
 
-PlayVod.PartiallyshutdownStream = function() {
-    Play.videojs.pause();
-    Play.videojs.autoplay(false);
-    Play.videojs.src(TEMP_MP4);
-    Play.offPlayer();
+PlayVod.PreshutdownStream = function() {
+    Play.ClearPlayer();
+    PlayVod.ClearVod();
+};
+
+PlayVod.ClearVod = function() {
     PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod.Resume);
-    Play.clearPause();
-    Play.HideWarningDialog();
     PlayVod.offsettime = 0;
     window.clearInterval(PlayVod.streamInfoTimer);
     window.clearInterval(PlayVod.streamCheck);

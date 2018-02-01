@@ -100,11 +100,8 @@ Play.Start = function() {
 
 Play.Resume = function() {
     if (document.hidden) {
-        Play.videojs.pause();
+        Play.ClearPlayer();
         Play.Playing = false;
-        Play.offPlayer();
-        Play.videojs.autoplay(false);
-        Play.videojs.src(TEMP_MP4);
         document.getElementById('chat_frame').src = 'about:blank';
         window.clearInterval(Play.streamInfoTimer);
         window.clearInterval(Play.streamCheck);
@@ -469,36 +466,34 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 };
 
 Play.shutdownStream = function() {
-    Play.videojs.pause();
-    Play.Playing = false;
-    Play.offPlayer();
-    Play.videojs.autoplay(false);
-    Play.videojs.src(TEMP_MP4);
-    document.body.removeEventListener("keydown", Play.handleKeyDown);
-    document.removeEventListener('visibilitychange', Play.Resume);
-    Play.clearPause();
-    Play.HideWarningDialog();
+    Play.PreshutdownStream();
+    Play.exitMain();
+};
+
+Play.PreshutdownStream = function() {
+    Play.ClearPlayer();
+    Play.ClearPlay();
+};
+
+Play.exitMain = function() {
     $("#scene1").show();
     $("#scene2").hide();
     Main.ReStartScreens();
-
-    Play.oldcurrentTime = 0;
-    Play.offsettime = 0;
-    document.getElementById('chat_frame').src = 'about:blank';
-    window.clearInterval(Play.streamInfoTimer);
-    window.clearInterval(Play.streamCheck);
 };
 
-Play.PartiallyshutdownStream = function() {
+Play.ClearPlayer = function() {
     Play.videojs.pause();
-    Play.Playing = false;
     Play.offPlayer();
     Play.videojs.autoplay(false);
     Play.videojs.src(TEMP_MP4);
-    document.body.removeEventListener("keydown", Play.handleKeyDown);
-    document.removeEventListener('visibilitychange', Play.Resume);
     Play.clearPause();
     Play.HideWarningDialog();
+};
+
+Play.ClearPlay = function() {
+    Play.Playing = false;
+    document.body.removeEventListener("keydown", Play.handleKeyDown);
+    document.removeEventListener('visibilitychange', Play.Resume);
     Play.oldcurrentTime = 0;
     Play.offsettime = 0;
     document.getElementById('chat_frame').src = 'about:blank';
@@ -548,9 +543,7 @@ Play.ExitDialogVisible = function() {
 Play.clearPause = function() {
     window.clearTimeout(Play.pauseEndID);
     window.clearTimeout(Play.pauseStartID);
-    if (Play.isShowPauseDialogOn()) {
-        $("#play_dialog_simple_pause").hide();
-    }
+    $("#play_dialog_simple_pause").hide();
     if (Play.isPanelShown()) {
         Play.hidePanel();
     }
