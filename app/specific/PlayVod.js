@@ -318,14 +318,6 @@ PlayVod.PlayerCheck = function() {
     PlayVod.PlayerTime = Play.videojs.currentTime();
 };
 
-PlayVod.offPlayer = function() {
-    Play.videojs.off('ended', null);
-    Play.videojs.off('timeupdate', null);
-    Play.videojs.off('error', null);
-    Play.videojs.off('loadedmetadata', null);
-    Play.videojs.off('playing', null);
-};
-
 PlayVod.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible() && !PlayVod.IsJumping) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
@@ -342,7 +334,7 @@ PlayVod.shutdownStream = function() {
     Play.videojs.pause();
     Play.videojs.autoplay(false);
     Play.videojs.src(TEMP_MP4);
-    PlayVod.offPlayer();
+    Play.offPlayer();
     PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod.Resume);
@@ -360,7 +352,7 @@ PlayVod.PartiallyshutdownStream = function() {
     Play.videojs.pause();
     Play.videojs.autoplay(false);
     Play.videojs.src(TEMP_MP4);
-    PlayVod.offPlayer();
+    Play.offPlayer();
     PlayVod.Playing = false;
     document.body.removeEventListener("keydown", PlayVod.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod.Resume);
