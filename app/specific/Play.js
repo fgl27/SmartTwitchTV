@@ -747,7 +747,7 @@ Play.KeyPause = function() {
     }
 };
 
-Play.KeyReturn = function() {
+Play.KeyReturn = function(is_vod) {
     if (Play.isControlsDialogShown()) Play.HideControlsDialog();
     else if (Play.isPanelShown()) {
         Play.hidePanel();
@@ -756,7 +756,8 @@ Play.KeyReturn = function() {
             window.clearTimeout(Play.exitID);
             $("#play_dialog_exit").hide();
             Play.hideChat();
-            window.setTimeout(Play.shutdownStream, 10);
+            if (is_vod) window.setTimeout(PlayVod.shutdownStream, 10);
+            else window.setTimeout(Play.shutdownStream, 10);
         } else if (Play.WarningDialogVisible()) {
             Play.HideWarningDialog();
             Play.showExitDialog();
@@ -869,7 +870,7 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                Play.KeyReturn();
+                Play.KeyReturn(false);
                 break;
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
