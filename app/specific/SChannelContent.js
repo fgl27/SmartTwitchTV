@@ -148,17 +148,12 @@ SChannelContent.loadDataSuccess = function(responseText) {
 
     if (coloumn_id < 2) {
         coloumn_id++;
-        row.append(SChannelContent.createCellEmpty(0, coloumn_id));
+        row.append(Main.createCellEmpty(0, coloumn_id, SChannelContent.EmptyCell));
     }
 
     $('#stream_table_search_channel_a').append(row);
 
     SChannelContent.loadDataSuccessFinish();
-};
-
-SChannelContent.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + SChannelContent.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {

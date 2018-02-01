@@ -168,7 +168,7 @@ SLive.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < SLive.ColoumnsCount; coloumn_id++) {
-            row.append(SLive.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, SLive.EmptyCell));
         }
         $('#stream_table_search_live').append(row);
     }

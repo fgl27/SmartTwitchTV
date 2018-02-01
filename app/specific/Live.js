@@ -32,7 +32,6 @@ Live.checkVersion = false;
 
 //Variable initialization end
 
-
 Live.init = function() {
     Main.Go = Main.Live;
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
@@ -161,17 +160,12 @@ Live.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Live.ColoumnsCount; coloumn_id++) {
-            row.append(Live.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
         }
         $('#stream_table_live').append(row);
     }
 
     Live.loadDataSuccessFinish();
-};
-
-Live.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + Live.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {

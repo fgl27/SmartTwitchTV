@@ -144,7 +144,7 @@ SGames.loadDataSuccess = function(responseText) {
             row.append(cell);
         }
         for (coloumn_id; coloumn_id < SGames.ColoumnsCount; coloumn_id++) {
-            row.append(SGames.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, SGames.EmptyCell));
         }
         $('#stream_table_search_game').append(row);
     }

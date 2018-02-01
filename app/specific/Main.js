@@ -416,6 +416,11 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
     }
 };
 
+Main.createCellEmpty = function(row_id, coloumn_id, cell) {
+    // id here can't be equal between screen
+    return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
+};
+
 Main.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
