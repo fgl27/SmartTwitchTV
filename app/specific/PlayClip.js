@@ -269,15 +269,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
-            if (!Play.videojs.paused()) {
-                Play.showPauseDialog();
-                Play.videojs.pause();
-                webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
-            } else {
-                Play.videojs.play();
-                Play.clearPause();
-                webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-            }
+            Play.checkPause();
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
@@ -285,13 +277,6 @@ PlayClip.handleKeyDown = function(e) {
             Play.ChatEnable = false;
             localStorage.setItem('ChatEnable', 'false');
             break;
-        case TvKeyCode.KEY_CHANNELUP:
-        case TvKeyCode.KEY_CHANNELDOWN:
-        case TvKeyCode.KEY_VOLUMEUP:
-        case TvKeyCode.KEY_VOLUMEDOWN:
-        case TvKeyCode.KEY_MUTE:
-        case TvKeyCode.KEY_RED:
-        case TvKeyCode.KEY_GREEN:
         case TvKeyCode.KEY_YELLOW:
             Play.showControlsDialog();
             break;
