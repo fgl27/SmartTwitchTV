@@ -331,7 +331,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
 };
 
 PlayVod.shutdownStream = function() {
-    Play.PreshutdownStream();
+    PlayVod.PreshutdownStream();
     Play.exitMain();
 };
 
@@ -522,7 +522,7 @@ PlayVod.handleKeyDown = function(e) {
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
-                    window.setTimeout(Play.shutdownStream, 10);
+                    window.setTimeout(PlayVod.shutdownStream, 10);
                 } else {
                     Play.showExitDialog();
                 }
@@ -584,7 +584,7 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RETURN:
-                Play.KeyReturn();
+                Play.KeyReturn(true);
                 break;
             case TvKeyCode.KEY_PLAY:
             case TvKeyCode.KEY_PAUSE:
