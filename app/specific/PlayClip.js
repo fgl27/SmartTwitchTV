@@ -51,7 +51,7 @@ PlayClip.Start = function() {
             this.autoplay(true);
 
             this.on('ended', function() {
-                PlayClip.Exit();
+                PlayClip.shutdownStream();
             });
 
             this.on('timeupdate', function() {
@@ -61,7 +61,7 @@ PlayClip.Start = function() {
             this.on('error', function() {
                 Play.HideBufferDialog();
                 Play.showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(PlayClip.Exit, 1500);
+                window.setTimeout(PlayClip.shutdownStream, 1500);
             });
 
             this.on('loadedmetadata', function() {
@@ -75,7 +75,7 @@ PlayClip.Start = function() {
 
 PlayClip.Resume = function() {
     if (document.hidden) {
-        PlayClip.Exit();
+        PlayClip.shutdownStream();
         Play.offPlayer();
     }
 };
@@ -95,22 +95,17 @@ PlayClip.PlayerCheck = function() {
     PlayClip.PlayerTime = Play.videojs.currentTime();
 };
 
-PlayClip.Exit = function() {
-    Play.videojs.pause();
-    Play.videojs.autoplay(false);
-    Play.videojs.src(TEMP_MP4);
-    Play.offPlayer();
+PlayClip.shutdownStream = function() {
+    Play.ClearPlayer();
+
     document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip.Resume);
-    window.clearInterval(PlayClip.streamCheck);
     $("#scene2_quality").show();
     PlayClip.hidePanel();
-    $("#play_dialog_simple_pause").hide();
-    $("#play_dialog_exit").hide();
-    Play.HideWarningDialog();
-    $("#scene1").show();
-    $("#scene2").hide();
-    Main.ReStartScreens();
+
+    Play.exitMain();
+
+    window.clearInterval(PlayClip.streamCheck);
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
@@ -265,7 +260,7 @@ PlayClip.handleKeyDown = function(e) {
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
-                    window.setTimeout(PlayClip.Exit, 10);
+                    window.setTimeout(PlayClip.shutdownStream, 10);
                 } else {
                     Play.showExitDialog();
                 }
