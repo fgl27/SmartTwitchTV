@@ -169,7 +169,7 @@ UserGames.loadDataSuccess = function(responseText) {
             }
         }
         for (coloumn_id; coloumn_id < UserGames.ColoumnsCount; coloumn_id++) {
-            row.append(UserGames.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, UserGames.EmptyCell));
         }
         $('#stream_table_user_games').append(row);
     }

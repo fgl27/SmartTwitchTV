@@ -243,7 +243,7 @@ UserLive.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < UserLive.ColoumnsCount; coloumn_id++) {
-            row.append(UserLive.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, UserLive.EmptyCell));
         }
         $('#stream_table_user_live').append(row);
     }

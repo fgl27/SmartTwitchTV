@@ -169,17 +169,12 @@ SChannels.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < SChannels.ColoumnsCount; coloumn_id++) {
-            row.append(SChannels.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
         }
         $('#stream_table_search_channel').append(row);
     }
 
     SChannels.loadDataSuccessFinish();
-};
-
-SChannels.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + SChannels.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {

@@ -176,7 +176,7 @@ Svod.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Svod.ColoumnsCount; coloumn_id++) {
-            row.append(Svod.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, Svod.EmptyCell));
         }
         $('#stream_table_search_vod').append(row);
     }

@@ -161,17 +161,12 @@ Games.loadDataSuccess = function(responseText) {
             }
         }
         for (coloumn_id; coloumn_id < Games.ColoumnsCount; coloumn_id++) {
-            row.append(Games.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
         }
         $('#stream_table_games').append(row);
     }
 
     Games.loadDataSuccessFinish();
-};
-
-Games.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + Games.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {

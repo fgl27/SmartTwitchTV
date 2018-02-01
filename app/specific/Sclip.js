@@ -192,7 +192,7 @@ Sclip.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Sclip.ColoumnsCount; coloumn_id++) {
-            row.append(Sclip.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, Sclip.EmptyCell));
         }
         $('#stream_table_search_clip').append(row);
     }

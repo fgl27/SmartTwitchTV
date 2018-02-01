@@ -173,7 +173,7 @@ UserHost.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < UserHost.ColoumnsCount; coloumn_id++) {
-            row.append(UserHost.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, UserHost.EmptyCell));
         }
         $('#stream_table_user_host').append(row);
     }

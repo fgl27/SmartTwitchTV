@@ -175,7 +175,7 @@ UserChannels.loadDataSuccess = function() {
         }
 
         for (coloumn_id; coloumn_id < UserChannels.ColoumnsCount; coloumn_id++) {
-            row.append(UserChannels.createCellEmpty(row_id, coloumn_id));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, UserChannels.EmptyCell));
         }
         $('#stream_table_user_channels').append(row);
     }
