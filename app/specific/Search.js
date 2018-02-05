@@ -25,7 +25,6 @@ Search.init = function() {
     Search.cursorX = 0;
     Search.input = document.querySelector('#search_input');
     Search.refreshInputFocusTools();
-    document.body.addEventListener("keydown", Search.handleKeyDown, false);
     Search.inputFocus();
     Search.ScrollHelper.scrollVerticalToElementById('search_input');
 };
@@ -71,10 +70,7 @@ Search.refreshInputFocusTools = function() {
 };
 
 Search.handleKeyDown = function(event) {
-    if (Search.keyBoardOn) {
-        event.preventDefault();
-        return;
-    }
+    if (Search.keyBoardOn) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
@@ -197,6 +193,7 @@ Search.ScrollHelper = {
 };
 
 Search.inputFocus = function() {
+    document.body.removeEventListener("keydown", Search.handleKeyDown);
     document.body.addEventListener("keydown", Search.KeyboardEvent, false);
     Search.input.addEventListener('input');
     Search.input.addEventListener('compositionend');
@@ -208,6 +205,7 @@ Search.inputFocus = function() {
 Search.RemoveinputFocus = function() {
     Search.input.blur();
     document.body.removeEventListener("keydown", Search.KeyboardEvent);
+    document.body.addEventListener("keydown", Search.handleKeyDown, false);
     $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH);
     Search.keyBoardOn = false;
 };
