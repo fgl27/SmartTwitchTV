@@ -19,7 +19,6 @@ AddUser.init = function() {
     Main.HideWarningDialog();
     AddUser.input = document.querySelector('#user_input');
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
-    document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
     AddUser.inputFocus();
     Search.ScrollHelper.scrollVerticalToElementById('user_input');
 };
@@ -32,10 +31,7 @@ AddUser.exit = function() {
 };
 
 AddUser.handleKeyDown = function(event) {
-    if (AddUser.loadingData || AddUser.keyBoardOn) {
-        event.preventDefault();
-        return;
-    }
+    if (AddUser.loadingData || AddUser.keyBoardOn) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
@@ -86,6 +82,7 @@ AddUser.handleKeyDown = function(event) {
 };
 
 AddUser.inputFocus = function() {
+    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     document.body.addEventListener("keydown", AddUser.KeyboardEvent, false);
     AddUser.input.addEventListener('input');
     AddUser.input.addEventListener('compositionend');
@@ -97,15 +94,14 @@ AddUser.inputFocus = function() {
 AddUser.RemoveinputFocus = function() {
     AddUser.input.blur();
     document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
+    document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER);
     AddUser.keyBoardOn = false;
 };
 
 AddUser.KeyboardEvent = function(event) {
-    if (AddUser.loadingData) {
-        event.preventDefault();
-        return;
-    }
+    if (AddUser.loadingData) return;
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("user_input").value = '';
