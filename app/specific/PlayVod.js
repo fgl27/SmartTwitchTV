@@ -58,9 +58,9 @@ PlayVod.Start = function() {
     $('#stream_info_name').text(Main.selectedChannelDisplayname);
     $("#stream_info_title").text(Svod.title);
     $("#stream_info_game").text(Svod.views);
-    $("#stream_live").text(Svod.createdAt);
-    $("#stream_info_livetime").text(Svod.Duration);
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
+    $("#stream_live_icon").text(Svod.createdAt);
+    $("#stream_live_time").text(Svod.Duration);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
     PlayVod.jumpCount = 0;
     PlayVod.IsJumping = false;
@@ -327,7 +327,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
     PlayVod.PlayerCheckQualityChanged = false;
     PlayVod.Canjump = true;
 
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(currentTime);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
 };
 
 PlayVod.shutdownStream = function() {
