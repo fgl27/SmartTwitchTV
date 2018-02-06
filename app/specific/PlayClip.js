@@ -26,9 +26,9 @@ PlayClip.Start = function() {
     $('#stream_info_name').text(Sclip.title);
     $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
     $("#stream_info_game").text(Sclip.views);
-    $("#stream_live").text(Sclip.createdAt);
-    $("#stream_info_livetime").text(Sclip.Duration);
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
+    $("#stream_live_icon").text(Sclip.createdAt);
+    $("#stream_live_time").text(Sclip.Duration);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
     document.addEventListener('visibilitychange', PlayClip.Resume, false);
     PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
@@ -114,7 +114,7 @@ PlayClip.updateCurrentTime = function(currentTime) {
     PlayClip.PlayerCheckCount = 0;
     PlayClip.Canjump = true;
 
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(currentTime);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
 };
 
 PlayClip.hidePanel = function() {

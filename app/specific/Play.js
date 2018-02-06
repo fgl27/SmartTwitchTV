@@ -76,13 +76,13 @@ Play.PreStart = function() {
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
-    document.getElementById("stream_live").innerHTML =
+    document.getElementById("stream_live_icon").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#stream_info_title").text("");
     $("#stream_info_icon").attr("src", "");
     $("#stream_info_name").text(Play.selectedChannelDisplayname);
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(0);
-    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
+    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
     Play.updateStreamInfo();
@@ -415,14 +415,13 @@ Play.updateCurrentTime = function(currentTime) {
     Play.PlayerCheckQualityChanged = false;
 
     Play.oldcurrentTime = currentTime + Play.offsettime - 14; // 14 buffer size from twitch
-    document.getElementById("stream_info_currentime").innerHTML = STR_WATCHING + Play.timeS(Play.oldcurrentTime);
-    document.getElementById("stream_info_livetime").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
+    if (Play.isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.oldcurrentTime);
 };
 
 Play.clock = function(currentTime) {
     var today = (new Date()).toString().split(' ');
     var time = today[4].toString().split(':');
-    document.getElementById("stream_system_time").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + time[0] + ':' + time[1];
+    document.getElementById("stream_clock").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + time[0] + ':' + time[1];
 };
 
 Play.lessthanten = function(time) {
@@ -445,19 +444,16 @@ Play.timeS = function(time) {
 };
 
 Play.timeMs = function(time) {
-    var seconds, minutes, hours;
+    var minutes, hours;
 
-    time = Math.floor(time / 1000);
-    seconds = Play.lessthanten(time % 60);
-
-    time = Math.floor(time / 60);
+    time = Math.floor(time / 1000 / 60);
     minutes = Play.lessthanten(time % 60);
 
     time = Math.floor(time / 60);
     hours = Play.lessthanten(time);
 
     //final time 00:00 or 00:00:00
-    return (time === 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+    return hours + ":" + minutes;
 };
 
 Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
@@ -578,6 +574,8 @@ Play.hidePanel = function() {
 Play.showPanel = function() {
     Play.qualityIndexReset();
     Play.qualityDisplay();
+    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.oldcurrentTime);
     Play.clock();
     $("#scene_channel_panel").show();
     Play.setHidePanel();
