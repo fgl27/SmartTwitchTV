@@ -82,6 +82,7 @@ PlayVod.Resume = function() {
         Play.videojs.pause();
         PlayVod.offsettime = Play.videojs.currentTime();
         window.clearInterval(PlayVod.streamCheck);
+        Play.clearPause();
     } else {
         $("#scene2").show();
         $("#scene1").hide();
