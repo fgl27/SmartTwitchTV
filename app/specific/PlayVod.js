@@ -327,7 +327,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
     PlayVod.PlayerCheckQualityChanged = false;
     PlayVod.Canjump = true;
 
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
+    if (Play.isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
 };
 
 PlayVod.shutdownStream = function() {
@@ -358,6 +358,7 @@ PlayVod.hidePanel = function() {
 PlayVod.showPanel = function() {
     PlayVod.qualityIndexReset();
     Play.clock();
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
     PlayVod.qualityDisplay();
     $("#scene_channel_panel").show();
     PlayVod.setHidePanel();
