@@ -114,7 +114,7 @@ PlayClip.updateCurrentTime = function(currentTime) {
     PlayClip.PlayerCheckCount = 0;
     PlayClip.Canjump = true;
 
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
+    if (Play.isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(currentTime);
 };
 
 PlayClip.hidePanel = function() {
@@ -124,6 +124,7 @@ PlayClip.hidePanel = function() {
 
 PlayClip.showPanel = function() {
     Play.clock();
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
     $("#scene2_quality").hide();
     $("#scene_channel_panel").show();
     PlayClip.setHidePanel();
