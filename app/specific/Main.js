@@ -82,7 +82,7 @@ var TEMP_MP4 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/t
 Main.version = 400;
 Main.stringVersion = '4.0.0';
 Main.currentVersion = '';
-Main.minversion = '020718';
+Main.minversion = '021418';
 Main.versonTag = '';
 //Variable initialization end
 
