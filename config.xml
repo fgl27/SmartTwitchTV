@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/bhb27/smarttv-twitch" version="4.0.0" viewmodes="maximized">
    <access origin="*" subdomains="true"></access>
-   <tizen:application id="qY6HyNzLIR.TwitchTv" package="qY6HyNzLIR" required_version="2.4"/>
+   <tizen:application id="qY6HyNzLIR.TwitchTv" package="qY6HyNzLIR" required_version="2.3"/>
    <content src="index.html"/>
    <description xml:lang="en-gb">TwitchTV</description>
    <feature name="http://tizen.org/feature/screen.size.normal.all"/>
@@ -29,6 +29,7 @@
    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="false" encryption="disable" install-location="auto" hwkey-event="enable"/>
    <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
    <!-- Smart Hub Preview-->
+   <tizen:metadata key='http://samsung.com/tv/metadata/devel.api.version' value='2.4'></tizen:metadata>
    <tizen:metadata key='http://samsung.com/tv/metadata/use.preview' value='endpoint_URL=http://yourServer/JSONfile.json'></tizen:metadata>
    <tizen:app-control>
       <tizen:src name='index.html' reload='disable'></tizen:src>
