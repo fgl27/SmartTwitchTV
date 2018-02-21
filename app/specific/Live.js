@@ -458,6 +458,7 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
             if (!Live.loadingMore) Live.StartLoad();
+            CheckVideoHtml5();
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Main.Before = Main.Live;
