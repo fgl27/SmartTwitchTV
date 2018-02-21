@@ -15,7 +15,7 @@
 # now install uglifyjs via terminal
 # npm install uglify-js -g
 
-#instalation of yui-compressor and sed is via more used apt-get
+#installation of yui-compressor and sed is via more used apt-get
 
 #sudo apt-get install yui-compressor
 #sudo apt-get install sed
