@@ -91,7 +91,7 @@ Main.versonTag = '';
 document.addEventListener("DOMContentLoaded", function() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
-    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + '.';
+    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
     // pre load LOD img
     Main.newImg.src = IMG_LOD_LOGO;
     Main.newImg.src = IMG_LOD_GAME;
@@ -419,6 +419,35 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
 Main.createCellEmpty = function(row_id, coloumn_id, cell) {
     // id here can't be equal between screen
     return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
+};
+
+Main.CheckMp4Html5 = function() {
+    var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
+    if (!!document.createElement('video').canPlayType) {
+
+        var VideoTest = document.createElement("video");
+        var h264Test = VideoTest.canPlayType('video/mp4; codecs="avc1.42E01E"');
+
+        if (h264Test) {
+            if (h264Test == "probably") result += " Full support for avc1.";
+            else result += " Some support for avc1.(" + h264Test + ")";
+        } else {
+            result += "No video support for avc1.";
+        }
+
+        result += STR_BR + STR_DOT;
+        h264Test = VideoTest.canPlayType('video/mp4; codecs="mp4a.40.2"');
+
+        if (h264Test) {
+            if (h264Test == "probably") result += " Full support for mp4a.";
+            else result += " Some support for mp4a.(" + h264Test + ")";
+        } else {
+            result += " No video support for mp4a.";
+        }
+
+    } else result += "No video support at all, createElement video fail.";
+
+    return result;
 };
 
 Main.ScrollHelper = {
