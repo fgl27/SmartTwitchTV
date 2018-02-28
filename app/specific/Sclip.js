@@ -28,6 +28,7 @@ Sclip.ReplacedataEnded = false;
 Sclip.MaxOffset = 0;
 Sclip.loadingReplace = false;
 Sclip.DurationSeconds = 0;
+Sclip.emptyContent = false;
 
 Sclip.ThumbnailDiv = 'sclip_thumbnail_div_';
 Sclip.DispNameDiv = 'sclip_display_name_';
@@ -171,6 +172,8 @@ Sclip.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Sclip.itemsCount;
     Sclip.itemsCount += response_items;
 
+    Sclip.emptyContent = Sclip.itemsCount === 0;
+
     var response_rows = response_items / Sclip.ColoumnsCount;
     if (response_items % Sclip.ColoumnsCount > 0) response_rows++;
 
@@ -250,8 +253,9 @@ Sclip.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Sclip.status) {
                 Main.HideLoadDialog();
-                Sclip.status = true;
                 Sclip.addFocus();
+                if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
+                else Sclip.status = true;
             }
 
             Main.LoadImages(Sclip.imgMatrix, Sclip.imgMatrixId, IMG_404_VIDEO);
