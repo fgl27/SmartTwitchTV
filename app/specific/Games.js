@@ -18,7 +18,7 @@ Games.loadingDataTry = 0;
 Games.loadingDataTryMax = 10;
 Games.loadingDataTimeout = 3500;
 Games.isDialogOn = false;
-Games.ItemsLimit = 100;
+Games.ItemsLimit = 95;
 Games.ColoumnsCount = 5;
 Games.ItemsReloadLimit = Math.floor((Games.ItemsLimit / Games.ColoumnsCount) / 2);
 Games.newImg = new Image();
@@ -94,7 +94,8 @@ Games.loadDataRequest = function() {
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Games.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Games.ItemsLimit + (offset === 0 ? 1 : 0 )) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
