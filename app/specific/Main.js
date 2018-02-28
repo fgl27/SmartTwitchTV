@@ -269,6 +269,7 @@ Main.ReStartScreens = function() {
 
 Main.SwitchScreen = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
+    Main.HideWarningDialog();
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.AddUser) AddUser.init();
     else if (Main.Go === Main.Games) Games.init();

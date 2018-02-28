@@ -24,6 +24,7 @@ UserChannels.LastClickFinish = true;
 UserChannels.keyClickDelayTime = 25;
 UserChannels.UserChannelsList = [];
 UserChannels.loadChannelOffsset = 0;
+UserChannels.emptyContent = false;
 
 UserChannels.ThumbnailDiv = 'uchannel_thumbnail_div_';
 UserChannels.DispNameDiv = 'uchannel_display_name_';
@@ -159,6 +160,8 @@ UserChannels.loadDataSuccess = function() {
 
     UserChannels.itemsCount += response_items;
 
+    UserChannels.emptyContent = UserChannels.itemsCount === 0;
+
     var response_rows = response_items / UserChannels.ColoumnsCount;
     if (response_items % UserChannels.ColoumnsCount > 0) response_rows++;
 
@@ -213,8 +216,9 @@ UserChannels.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!UserChannels.status) {
                 Main.HideLoadDialog();
-                UserChannels.status = true;
                 UserChannels.addFocus();
+                if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
+                else UserChannels.status = true;
             }
 
             Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
