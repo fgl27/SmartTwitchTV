@@ -27,6 +27,7 @@ AGame.LastClickFinish = true;
 AGame.keyClickDelayTime = 25;
 AGame.ReplacedataEnded = false;
 AGame.MaxOffset = 0;
+AGame.emptyContent = false;
 
 AGame.ThumbnailDiv = 'agame_thumbnail_div_';
 AGame.DispNameDiv = 'agame_display_name_';
@@ -149,6 +150,8 @@ AGame.loadDataSuccess = function(responseText) {
     var offset_itemsCount = AGame.itemsCount;
     AGame.itemsCount += response_items;
 
+    AGame.emptyContent = AGame.itemsCount === 0;
+
     var response_rows = response_items / AGame.ColoumnsCount;
     if (response_items % AGame.ColoumnsCount > 0) response_rows++;
 
@@ -223,8 +226,9 @@ AGame.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!AGame.status) {
                 Main.HideLoadDialog();
-                AGame.status = true;
                 AGame.addFocus();
+                if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
+                else AGame.status = true;
             }
 
             Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
