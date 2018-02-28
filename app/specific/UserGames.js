@@ -27,6 +27,7 @@ UserGames.LastClickFinish = true;
 UserGames.keyClickDelayTime = 25;
 UserGames.ReplacedataEnded = false;
 UserGames.MaxOffset = 0;
+UserGames.emptyContent = false;
 
 UserGames.ThumbnailDiv = 'glive_thumbnail_div_';
 UserGames.DispNameDiv = 'glive_display_name_';
@@ -149,6 +150,8 @@ UserGames.loadDataSuccess = function(responseText) {
     var offset_itemsCount = UserGames.itemsCount;
     UserGames.itemsCount += response_items;
 
+    UserGames.emptyContent = UserGames.itemsCount === 0;
+
     var response_rows = response_items / UserGames.ColoumnsCount;
     if (response_items % UserGames.ColoumnsCount > 0) response_rows++;
 
@@ -221,8 +224,9 @@ UserGames.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!UserGames.status) {
                 Main.HideLoadDialog();
-                UserGames.status = true;
                 UserGames.addFocus();
+                if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                else UserGames.status = true;
             }
 
             Main.LoadImages(UserGames.imgMatrix, UserGames.imgMatrixId, IMG_404_GAME);

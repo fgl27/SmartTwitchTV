@@ -27,6 +27,7 @@ UserHost.LastClickFinish = true;
 UserHost.keyClickDelayTime = 25;
 UserHost.ReplacedataEnded = false;
 UserHost.MaxOffset = 0;
+UserHost.emptyContent = false;
 
 UserHost.ThumbnailDiv = 'hlive_thumbnail_div_';
 UserHost.DispNameDiv = 'hlive_display_name_';
@@ -151,6 +152,8 @@ UserHost.loadDataSuccess = function(responseText) {
     var offset_itemsCount = UserHost.itemsCount;
     UserHost.itemsCount += response_items;
 
+    UserHost.emptyContent = UserHost.itemsCount === 0;
+
     var response_rows = response_items / UserHost.ColoumnsCount;
     if (response_items % UserHost.ColoumnsCount > 0) response_rows++;
 
@@ -227,8 +230,9 @@ UserHost.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!UserHost.status) {
                 Main.HideLoadDialog();
-                UserHost.status = true;
                 UserHost.addFocus();
+                if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+                else UserHost.status = true;
             }
 
             Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);

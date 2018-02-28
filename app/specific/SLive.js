@@ -27,6 +27,7 @@ SLive.LastClickFinish = true;
 SLive.keyClickDelayTime = 25;
 SLive.ReplacedataEnded = false;
 SLive.MaxOffset = 0;
+SLive.emptyContent = false;
 
 SLive.ThumbnailDiv = 'slive_thumbnail_div_';
 SLive.DispNameDiv = 'slive_display_name_';
@@ -145,6 +146,8 @@ SLive.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SLive.itemsCount;
     SLive.itemsCount += response_items;
 
+    SLive.emptyContent = SLive.itemsCount === 0;
+
     var response_rows = response_items / SLive.ColoumnsCount;
     if (response_items % SLive.ColoumnsCount > 0) response_rows++;
 
@@ -224,8 +227,9 @@ SLive.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!SLive.status) {
                 Main.HideLoadDialog();
-                SLive.status = true;
                 SLive.addFocus();
+                if (SLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+                else SLive.status = true;
             }
 
             Main.LoadImages(SLive.imgMatrix, SLive.imgMatrixId, IMG_404_VIDEO);
