@@ -138,7 +138,9 @@ Main.initWindows = function() {
     $('.label_search_chanel').html(STR_CHANNELS);
     $('.label_search_game').html(STR_GAMES);
     $('.label_search_live').html(STR_LIVE_STREAMS);
-    $("#main_dialog_exit_text").text(STR_EXIT);
+    $('.label_exit_cancel').html(STR_CANCEL);
+    $('.label_exit_exit').html(STR_EXIT);
+    $("#main_dialog_exit_text").text(STR_EXIT_MESSAGE);
     $('.label_buffering').html(STR_BUFFERING);
     $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROL_KEY);
     $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT_KEY);
@@ -156,13 +158,23 @@ Main.HideLoadDialog = function() {
     $("#dialog_loading").hide();
 };
 
+Main.clearExitDialog = function() {
+    window.clearTimeout(Main.ExitDialogID);
+};
+
+Main.setExitDialog = function() {
+    Main.ExitDialogID = window.setTimeout(Main.HideExitDialog, 6000);
+};
+
 Main.showExitDialog = function() {
-    Main.ExitDialogID = window.setTimeout(Main.HideExitDialog, 3000);
+    Main.setExitDialog();
     $("#main_dialog_exit").show();
 };
 
 Main.HideExitDialog = function() {
+    Main.clearExitDialog();
     $("#main_dialog_exit").hide();
+    Live.ExitCursorSet(0);
 };
 
 Main.isExitDialogShown = function() {

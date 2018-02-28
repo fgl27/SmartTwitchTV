@@ -6,6 +6,7 @@ Live.Thumbnail = 'thumbnail_live';
 Live.EmptyCell = 'live_empty_';
 Live.cursorY = 0;
 Live.cursorX = 0;
+Live.Exitcursor = 0;
 Live.dataEnded = false;
 Live.itemsCount = 0;
 Live.imgMatrix = [];
@@ -373,6 +374,17 @@ Live.removeFocus = function() {
     $('#quality_' + Live.cursorY + '_' + Live.cursorX).removeClass('stream_info_focused');
 };
 
+Live.ExitCursorSet = function(value) {
+    Live.Exitcursor = value;
+    if (value) {
+        $('#exit_app_cancel').removeClass('button_search_focused');
+        $('#exit_app_exit').addClass('button_search_focused');
+    } else {
+        $('#exit_app_exit').removeClass('button_search_focused');
+        $('#exit_app_cancel').addClass('button_search_focused');
+    }
+};
+
 Live.keyClickDelay = function() {
     Live.LastClickFinish = true;
 };
@@ -394,18 +406,15 @@ Live.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isUpdateDialogShown()) Main.HideUpdateDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
-            else if (Main.isExitDialogShown()) {
-                window.clearTimeout(Main.ExitDialogID);
-                Main.HideExitDialog();
-                try {
-                    tizen.application.getCurrentApplication().hide();
-                } catch (e) {}
-            } else {
-                Main.showExitDialog();
-            }
+            else if (Main.isExitDialogShown()) Main.HideExitDialog();
+            else Main.showExitDialog();
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.Thumbnail)) {
+            if (Main.isExitDialogShown()) {
+                Live.ExitCursorSet(0);
+                Main.clearExitDialog();
+                Main.setExitDialog();
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.Thumbnail)) {
                 Live.removeFocus();
                 Live.cursorX--;
                 Live.addFocus();
@@ -422,7 +431,11 @@ Live.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.Thumbnail)) {
+            if (Main.isExitDialogShown()) {
+                Live.ExitCursorSet(1);
+                Main.clearExitDialog();
+                Main.setExitDialog();
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.Thumbnail)) {
                 Live.removeFocus();
                 Live.cursorX++;
                 Live.addFocus();
@@ -475,10 +488,19 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Play.selectedChannel = $('#cell_' + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
-            Play.selectedChannelDisplayname = document.getElementById('display_name_' + Live.cursorY + '_' + Live.cursorX).textContent;
-            document.body.removeEventListener("keydown", Live.handleKeyDown);
-            Main.openStream();
+            if (Main.isExitDialogShown()) {
+                if (Live.Exitcursor) {
+                    try {
+                        tizen.application.getCurrentApplication().hide();
+                    } catch (e) {}
+                    Main.HideExitDialog();
+                } else Main.HideExitDialog();
+            } else {
+                Play.selectedChannel = $('#cell_' + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
+                Play.selectedChannelDisplayname = document.getElementById('display_name_' + Live.cursorY + '_' + Live.cursorX).textContent;
+                document.body.removeEventListener("keydown", Live.handleKeyDown);
+                Main.openStream();
+            }
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
