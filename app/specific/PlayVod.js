@@ -247,7 +247,7 @@ PlayVod.onPlayer = function() {
     Play.showBufferDialog();
     Play.videojs.src({
         type: "application/x-mpegURL",
-        src: Play.playingUrl
+        src: PlayVod.playingUrl
     });
     PlayVod.Canjump = false;
     Play.HideWarningDialog();
