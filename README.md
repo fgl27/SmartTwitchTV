@@ -2,10 +2,10 @@ smarttv-twitch
 ==============
 
 This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
-The application was tested on TV model UN40KU6000HXPA 40" 4k Series 6 or related **xx" KU6000H Flat Smart 4K UHD TV** and on TV model UE40K6372SUXXH 40" FHD Series 6 or related **xx" K6372 Flat Smart FHD TV**.
-This branch is only dedicated for TV models from 2016 and up that run Tizen OS series 6 and up Samsung TV models, if yours Smart Hub menu is different from the one below yours TV is probably not supported.
+The application was tested on TV 4k and 1080p Samsung TV running Tizen 2.4, it full supports all series 6 or up TV 1080p to 4k models, some series 5 TV have support but not all, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run latest Tizen version.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
+Full support for series 5 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the support is available a new application will be made to support Series 5 TV, and the proper info will be noted ere.
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
 ## [All Screen shots](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
@@ -17,12 +17,17 @@ About this fork
 I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
-Dependencies
+I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, cips, Channel off line content etc) and the looks of the app was a little old-fashioned.
+
+So I work alone writing a new application from scratch, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user.
+
+Project Dependencies
 ==============
 * [imagesLoaded - JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
 * [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
 * [Video.js - HTML5 Video Player](https://github.com/videojs/video.js)
 * [jQuery - fast, small, and feature-rich JavaScript library](https://code.jquery.com/jquery/)
+* [UglifyJS is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
 * [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
 Controls
