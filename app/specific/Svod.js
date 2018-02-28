@@ -28,6 +28,7 @@ Svod.keyClickDelayTime = 25;
 Svod.ReplacedataEnded = false;
 Svod.MaxOffset = 0;
 Svod.DurationSeconds = 0;
+Svod.emptyContent = false;
 
 Svod.ThumbnailDiv = 'svod_thumbnail_div_';
 Svod.DispNameDiv = 'svod_display_name_';
@@ -154,6 +155,8 @@ Svod.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Svod.itemsCount;
     Svod.itemsCount += response_items;
 
+    Svod.emptyContent = Svod.itemsCount === 0;
+
     var response_rows = response_items / Svod.ColoumnsCount;
     if (response_items % Svod.ColoumnsCount > 0) response_rows++;
 
@@ -235,6 +238,8 @@ Svod.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Svod.status = true;
                 Svod.addFocus();
+                if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+                else Svod.status = true;
             }
 
             Main.LoadImages(Svod.imgMatrix, Svod.imgMatrixId, IMG_404_VIDEO);

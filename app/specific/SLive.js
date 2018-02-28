@@ -228,7 +228,7 @@ SLive.loadDataSuccessFinish = function() {
             if (!SLive.status) {
                 Main.HideLoadDialog();
                 SLive.addFocus();
-                if (SLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+                if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SLive.status = true;
             }
 

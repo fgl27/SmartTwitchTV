@@ -27,6 +27,7 @@ SGames.LastClickFinish = true;
 SGames.keyClickDelayTime = 25;
 SGames.ReplacedataEnded = false;
 SGames.MaxOffset = 0;
+SGames.emptyContent = false;
 
 SGames.ThumbnailDiv = 'sgame_thumbnail_div_';
 SGames.DispNameDiv = 'sgame_display_name_';
@@ -128,6 +129,8 @@ SGames.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SGames.itemsCount;
     SGames.itemsCount += response_items;
 
+    SGames.emptyContent = SGames.itemsCount === 0;
+
     var response_rows = response_items / SGames.ColoumnsCount;
     if (response_items % SGames.ColoumnsCount > 0) response_rows++;
 
@@ -181,8 +184,9 @@ SGames.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!SGames.Status) {
                 Main.HideLoadDialog();
-                SGames.Status = true;
                 SGames.addFocus();
+                if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+                else SGames.status = true;
             }
 
             Main.LoadImages(SGames.imgMatrix, SGames.imgMatrixId, IMG_404_GAME);

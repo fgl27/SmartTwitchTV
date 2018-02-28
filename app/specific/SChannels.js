@@ -27,6 +27,7 @@ SChannels.LastClickFinish = true;
 SChannels.keyClickDelayTime = 25;
 SChannels.ReplacedataEnded = false;
 SChannels.MaxOffset = 0;
+SChannels.emptyContent = false;
 
 SChannels.ThumbnailDiv = 'schannels_thumbnail_div_';
 SChannels.DispNameDiv = 'schannels_display_name_';
@@ -149,6 +150,8 @@ SChannels.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SChannels.itemsCount;
     SChannels.itemsCount += response_items;
 
+    SChannels.emptyContent = SChannels.itemsCount === 0;
+
     var response_rows = response_items / SChannels.ColoumnsCount;
     if (response_items % SChannels.ColoumnsCount > 0) response_rows++;
 
@@ -212,8 +215,9 @@ SChannels.loadDataSuccessFinish = function() {
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!SChannels.status) {
                 Main.HideLoadDialog();
-                SChannels.status = true;
                 SChannels.addFocus();
+                if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+                else SChannels.status = true;
             }
 
             Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
