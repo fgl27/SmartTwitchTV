@@ -108,6 +108,7 @@ Play.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
+        Play.clearPause();
         Play.showBufferDialog();
         window.setTimeout(function() {
             if (!SmartHub.SmartHubResume) {
@@ -539,13 +540,20 @@ Play.ExitDialogVisible = function() {
     return $("#play_dialog_exit").is(":visible");
 };
 
-Play.clearPause = function() {
+// For some reason clearTimeout fail some time when two are set in a sequence on the same function
+Play.clearPauseEnd = function() {
     window.clearTimeout(Play.pauseEndID);
+};
+
+Play.clearPauseStart = function() {
     window.clearTimeout(Play.pauseStartID);
+};
+
+Play.clearPause = function() {
+    Play.clearPauseEnd();
+    Play.clearPauseStart();
     $("#play_dialog_simple_pause").hide();
-    if (Play.isPanelShown()) {
-        Play.hidePanel();
-    }
+    if (Play.isPanelShown()) Play.hidePanel();
 };
 
 Play.showPauseDialog = function() {
