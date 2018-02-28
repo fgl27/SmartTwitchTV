@@ -18,15 +18,16 @@ SmartHub.userhostsubtitle = [];
 SmartHub.userhostimg = [];
 SmartHub.followerChannels = '';
 SmartHub.LastUpdate = 0;
+SmartHub.emptyUser = false;
+
 //Variable initialization end
 
 SmartHub.Start = function() {
     if (AddUser.UsernameArray.length === 0) {
         window.clearInterval(Main.SmartHubId);
         document.removeEventListener('visibilitychange', Main.Resume);
-        window.removeEventListener('appcontrol', SmartHub.EventListener);
-        return;
-    }
+        SmartHub.emptyUser = true;
+    } else SmartHub.emptyUser = false;
 
     SmartHub.followerUsername = AddUser.UsernameArray[0];
     SmartHub.userold = SmartHub.user.length;
@@ -50,7 +51,10 @@ SmartHub.Start = function() {
     SmartHub.loadingDataTryMax = 10;
     SmartHub.loadingDataTimeout = 3500;
     SmartHub.previewData = 0;
-    SmartHub.loadDataRequest();
+    if (SmartHub.emptyUser) {
+        webapis.preview.setPreviewData(previewDataGeneratorEmpty());
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+    } else SmartHub.loadDataRequest();
 };
 
 SmartHub.loadDataRequest = function() {
@@ -158,6 +162,25 @@ SmartHub.previewDataSuccess = function(responseText) {
     }
 };
 
+function previewDataGeneratorEmpty() {
+    var data = '{"sections":[';
+
+    data += '{"title":"' + STR_LIVE + '","tiles":[';
+    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += ']},';
+
+    data += '{"title":"' + STR_USER_ADD + '","tiles":[';
+    data += '{"title":"Go to ' + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += ']},';
+
+    data += '{"title":"' + STR_GAMES + '","tiles":[';
+    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += ']}';
+
+    data += ']}';
+    return data;
+}
+
 function previewDataGenerator() {
     var data = '{"sections":[';
     var i = 0;
@@ -264,8 +287,7 @@ SmartHub.EventListener = function() {
                     ScreenIdx = JSON.parse(actionData).screenIdx;
                     ExitToMain = (ScreenIdx !== Main.Go);
                     ExitScreen = Main.Go;
-                    if (ScreenIdx === 1) Main.Go = Main.Live;
-                    else Main.Go = Main.Games;
+                    Main.Go = ScreenIdx;
 
                     if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
