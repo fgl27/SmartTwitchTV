@@ -246,8 +246,8 @@ PlayVod.qualityChanged = function() {
 PlayVod.onPlayer = function() {
     Play.showBufferDialog();
     Play.videojs.src({
-        type: "video/mp4",
-        src: PlayVod.playingUrl
+        type: "application/x-mpegURL",
+        src: Play.playingUrl
     });
     PlayVod.Canjump = false;
     Play.HideWarningDialog();
