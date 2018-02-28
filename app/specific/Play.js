@@ -333,7 +333,7 @@ Play.qualityChanged = function() {
 Play.onPlayer = function() {
     Play.showBufferDialog();
     Play.videojs.src({
-        type: "video/mp4",
+        type: "application/x-mpegURL",
         src: Play.playingUrl
     });
 
@@ -481,7 +481,10 @@ Play.ClearPlayer = function() {
     Play.videojs.pause();
     Play.offPlayer();
     Play.videojs.autoplay(false);
-    Play.videojs.src(TEMP_MP4);
+    Play.videojs.src({
+        type: "video/mp4",
+        src: TEMP_MP4
+    });
     Play.clearPause();
     Play.HideWarningDialog();
 };
