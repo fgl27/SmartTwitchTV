@@ -3,14 +3,14 @@ smarttv-twitch
 
 This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not availably for most TV, that is way this project exist.
 
-The application was tested on TV 4k and 1080p Samsung TV running Tizen 2.4, it full supports all series 6 or up TV 1080p to 4k models, some series 5 TV have support but not all, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run latest Tizen version.
+The application was tested on 4k and 1080p Samsung TV running Tizen 2.4, it full supports all series 6 TV (or up) 1080p to 4k models, some series 5 TV have support but not all, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run Tizen version supported by the application.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
 Full support for series 5 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the support is available a new application will be made to support Series 5 TV, and the proper info will be noted here and on the release page.
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
-## [All Screen shots](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
+## [How the application looks](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/animated.gif)
 
 About this fork
@@ -19,9 +19,9 @@ About this fork
 I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
-I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, cips, Channel off line content etc) and the looks of the app was a little old-fashioned.
+I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, cips, Channel off line content etc), did not fully support the latest smart remote, the looks of the app was a little old-fashioned, etc...
 
-So I work alone writing a new application from scratch, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user, but as today there is only one main developer working on the project the process is slow.
+So I work alone writing a new application from scratch focusing on performance and needed featuring, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user, but as today there is only one main developer working on the project the process is slow.
 
 Project Dependencies
 ==============
@@ -36,7 +36,9 @@ Controls
 ==============
 ![control](https://bhb27.github.io/smarttv-twitch/screenshot/controler.png)
 
-The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks different)(The key **INFO** is also map on the app to do the **GUIDE** key function as some remotes may not have the **GUIDE** one), below are the controls and section explains.
+The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks is a little different)
+
+The key **INFO** is also map on the app with the same functions as the **GUIDE** key, as some remotes may not have the **GUIDE** one.
 
 ## Bellow are the on screens controls
 ### To access the controls from any screen press key C or on smart remote press the 4 color buttons (color) after Directional pad down for yellow C
