@@ -86,6 +86,7 @@ PlayVod.Resume = function() {
     } else {
         $("#scene2").show();
         $("#scene1").hide();
+        Play.clearPause();
         Play.showBufferDialog();
         window.setTimeout(function() {
             Play.videojs.play();
