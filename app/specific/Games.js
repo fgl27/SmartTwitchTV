@@ -28,6 +28,7 @@ Games.LastClickFinish = true;
 Games.keyClickDelayTime = 25;
 Games.ReplacedataEnded = false;
 Games.MaxOffset = 0;
+Games.ItemsLimitOffset = 1;
 
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
@@ -94,7 +95,8 @@ Games.loadDataRequest = function() {
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Games.ItemsLimit + (offset === 0 ? 1 : 0 )) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        //TODO re check Games.ItemsLimitOffset workaround on the future "for some reason if offset=0 the response_items is one less then response_items"
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Games.ItemsLimit + (offset === 0 ? Games.ItemsLimitOffset : 0 )) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -137,7 +139,11 @@ Games.loadDataSuccess = function(responseText) {
     var response_items = response.top.length;
     Games.MaxOffset = parseInt(response._total);
 
-    if (response_items < Games.ItemsLimit) Games.dataEnded = true;
+    if (response_items > Games.ItemsLimit) {
+        Games.ItemsLimitOffset = 0;
+        Games.loadData();
+        return;
+    } else if (response_items < Games.ItemsLimit) Games.dataEnded = true;
 
     var offset_itemsCount = Games.itemsCount;
     Games.itemsCount += response_items;
