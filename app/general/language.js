@@ -52,6 +52,7 @@ var STR_USER_HOSTING = " hosting ";
 var STR_USER_SET = " already set";
 var STR_USER_MAKE_ONE = "Make First";
 var STR_USER_NUMBER_ONE = " (First user has it\'s content on SmartHub Preview)";
+var STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
 var STR_CLIP_DAY = " (day)";
 var STR_CLIP_WEEK = " (week)";
 var STR_CLIP_MONTH = " (month)";

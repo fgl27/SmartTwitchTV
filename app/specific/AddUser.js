@@ -200,7 +200,6 @@ AddUser.RestoreUsers = function() {
             AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
         }
 
-        SmartHub.Start();
         window.addEventListener('appcontrol', SmartHub.EventListener, false);
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
         document.addEventListener('visibilitychange', Main.Resume, false);
@@ -211,6 +210,7 @@ AddUser.RestoreUsers = function() {
     //AddUser.UsernameArray[1] = ''; // hardcoded user 2
     //AddUser.UsernameArraySize++;
     //}
+    SmartHub.Start();
 };
 
 AddUser.SaveNewUser = function() {
@@ -251,7 +251,10 @@ AddUser.removeUser = function(Position) {
         Users.status = false;
         Users.init();
         if (Position === 0) SmartHub.Start();
-    } else AddUser.init();
+    } else { 
+        AddUser.init();
+        SmartHub.Start();
+    }
 };
 
 AddUser.UserMakeOne = function(Position) {
