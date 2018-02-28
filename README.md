@@ -1,11 +1,13 @@
 smarttv-twitch
 ==============
 
-This is an app for Samsung SmartTV's designed to watch twitch.tv broadcasts.
+This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not availably for most TV, that is way this project exist.
+
 The application was tested on TV 4k and 1080p Samsung TV running Tizen 2.4, it full supports all series 6 or up TV 1080p to 4k models, some series 5 TV have support but not all, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run latest Tizen version.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for series 5 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the support is available a new application will be made to support Series 5 TV, and the proper info will be noted ere.
+Full support for series 5 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the support is available a new application will be made to support Series 5 TV, and the proper info will be noted here and on the release page.
+
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
 ## [All Screen shots](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
@@ -19,7 +21,7 @@ The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
 I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, cips, Channel off line content etc) and the looks of the app was a little old-fashioned.
 
-So I work alone writing a new application from scratch, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user.
+So I work alone writing a new application from scratch, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user, but as today there is only one main developer working on the project the process is slow.
 
 Project Dependencies
 ==============
