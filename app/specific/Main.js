@@ -49,8 +49,8 @@ Main.ScrollOffSetMinusChannels = 0.430;
 Main.ScrollOffSetMinusGame = 0.535;
 
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
-Main.VideoSize = "640x360";
-Main.GameSize = "481x672";
+Main.VideoSize = "528x297"; // default size 640x360
+Main.GameSize = "340x475"; // default size 272x380
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -93,24 +93,24 @@ document.addEventListener("DOMContentLoaded", function() {
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
     // pre load LOD img
-    Main.newImg.src = IMG_LOD_LOGO;
-    Main.newImg.src = IMG_LOD_GAME;
-    Main.newImg.src = IMG_LOD_VIDEO;
+    Main.PreLoadAImage(IMG_LOD_LOGO);
+    Main.PreLoadAImage(IMG_LOD_GAME);
+    Main.PreLoadAImage(IMG_LOD_VIDEO);
     Main.initWindows();
     Live.init();
     Play.PreStart();
     AddUser.RestoreUsers();
     // pre load All img
-    Main.newImg.src = IMG_404_VIDEO;
-    Main.newImg.src = IMG_404_GAME;
-    Main.newImg.src = IMG_404_LOGO;
-    Main.newImg.src = IMG_BLUR_GAME;
-    Main.newImg.src = IMG_BLUR_VIDEO1;
-    Main.newImg.src = IMG_BLUR_VIDEO2;
-    Main.newImg.src = IMG_BLUR_VOD;
-    Main.newImg.src = IMG_USER_MINUS;
-    Main.newImg.src = IMG_USER_PLUS;
-    Main.newImg.src = IMG_USER_UP;
+    Main.PreLoadAImage(IMG_404_VIDEO);
+    Main.PreLoadAImage(IMG_404_GAME);
+    Main.PreLoadAImage(IMG_404_LOGO);
+    Main.PreLoadAImage(IMG_BLUR_GAME);
+    Main.PreLoadAImage(IMG_BLUR_VIDEO1);
+    Main.PreLoadAImage(IMG_BLUR_VIDEO2);
+    Main.PreLoadAImage(IMG_BLUR_VOD);
+    Main.PreLoadAImage(IMG_USER_MINUS);
+    Main.PreLoadAImage(IMG_USER_PLUS);
+    Main.PreLoadAImage(IMG_USER_UP);
 });
 
 //TODO the day there is a translation add on if if the new values
@@ -427,6 +427,10 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
     for (i = 0; i < imgVector.length; i++) {
         loadImages(i, document.getElementById(idVector[i]));
     }
+};
+
+Main.PreLoadAImage = function(link) {
+    Main.newImg.src = link;
 };
 
 Main.createCellEmpty = function(row_id, coloumn_id, cell) {
