@@ -21,7 +21,6 @@ Games.isDialogOn = false;
 Games.ItemsLimit = 95;
 Games.ColoumnsCount = 5;
 Games.ItemsReloadLimit = Math.floor((Games.ItemsLimit / Games.ColoumnsCount) / 2);
-Games.newImg = new Image();
 Games.blankCellCount = 0;
 Games.itemsCountOffset = 0;
 Games.LastClickFinish = true;
@@ -183,8 +182,6 @@ Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, vi
     Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
     Games.imgMatrixCount++;
 
-    if (Games.imgMatrixCount <= (Games.ColoumnsCount * 3)) Games.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
-
     Games.nameMatrix[Games.nameMatrixCount] = game_name;
     Games.nameMatrixCount++;
 
@@ -320,12 +317,17 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbna
                 row_id = my;
                 coloumn_id = mx;
                 preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
+
+                Games.imgMatrix[Games.imgMatrixCount] = preview_thumbnail;
+                Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
+                Games.imgMatrixCount++;
+
                 Games.nameMatrix[Games.nameMatrixCount] = game_name;
                 Games.nameMatrixCount++;
                 document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
                     '<div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
                     '<div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
