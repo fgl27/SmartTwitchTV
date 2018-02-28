@@ -61,7 +61,7 @@ Play.PreStart = function() {
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    $("#play_dialog_exit_text").text(STR_EXIT);
+    $("#play_dialog_exit_text").text(STR_EXIT_AGAIN);
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
     $("#chat_container").html(
@@ -597,7 +597,7 @@ Play.clearHidePanel = function() {
 };
 
 Play.setHidePanel = function() {
-    Play.PanelHideID = window.setTimeout(Play.hidePanel, 5000); // time in ms
+    Play.PanelHideID = window.setTimeout(Play.hidePanel, 5000);
 };
 
 Play.showChat = function() {
