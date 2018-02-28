@@ -47,6 +47,7 @@ Live.exit = function() {
     document.body.removeEventListener("keydown", Live.handleKeyDown);
     $('#top_bar_live').removeClass('icon_center_focus');
     $('#top_bar_live').addClass('icon_center_label');
+    Main.HideExitDialog();
 };
 
 Live.StartLoad = function() {
