@@ -144,9 +144,9 @@ UserLive.loadChannelLive = function(responseText) {
 
     var response_items = response.follows.length;
 
-    for (var x = 0; x < response_items; x++) UserLive.followerChannels += response.follows[x].channel.name + ',';
-
-
+    for (var x = 0; x < response_items; x++)
+        if (UserLive.followerChannels.indexOf(response.follows[x].channel.name + ',') === -1)
+            UserLive.followerChannels += response.follows[x].channel.name + ',';
 
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserLive.loadChannelOffsset += response_items;
