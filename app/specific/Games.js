@@ -36,14 +36,16 @@ Games.Cell = 'game_cell_';
 
 //Variable initialization end
 
-
 Games.init = function() {
     Main.Go = Main.Games;
     document.body.addEventListener("keydown", Games.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
-    if (Games.Status) Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-    else Games.StartLoad();
+    if (Games.Status) {
+        Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games,
+            Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
+        Main.CounterDialog(Games.cursorX, Games.cursorY, Games.ColoumnsCount, Games.itemsCount);
+    } else Games.StartLoad();
 };
 
 Games.exit = function() {
@@ -355,6 +357,8 @@ Games.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
+
+    Main.CounterDialog(Games.cursorX, Games.cursorY, Games.ColoumnsCount, Games.itemsCount);
 };
 
 Games.removeFocus = function() {

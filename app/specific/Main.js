@@ -181,6 +181,10 @@ Main.isExitDialogShown = function() {
     return $("#main_dialog_exit").is(":visible");
 };
 
+Main.CounterDialog = function(x, y, coloumns, total) {
+    $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
+};
+
 Main.showWarningDialog = function(text) {
     $("#dialog_warning_text").text(text);
     $("#dialog_warning").show();
@@ -282,6 +286,7 @@ Main.ReStartScreens = function() {
 Main.SwitchScreen = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.HideWarningDialog();
+    $("#dialog_counter_text").text('');
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.AddUser) AddUser.init();
     else if (Main.Go === Main.Games) Games.init();

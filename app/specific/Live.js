@@ -37,9 +37,10 @@ Live.init = function() {
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
     $('#top_bar_live').removeClass('icon_center_label');
     $('#top_bar_live').addClass('icon_center_focus');
-    if (Live.Status) Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else Live.StartLoad();
-
+    if (Live.Status) {
+        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(Live.cursorX, Live.cursorY, Live.ColoumnsCount, Live.itemsCount);
+    } else Live.StartLoad();
 };
 
 Live.exit = function() {
@@ -366,6 +367,8 @@ Live.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(Live.cursorX, Live.cursorY, Live.ColoumnsCount, Live.itemsCount);
 };
 
 Live.removeFocus = function() {
