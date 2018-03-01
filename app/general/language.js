@@ -7,6 +7,7 @@ var STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
 var STR_SWITCH = "Switch (CH Up/Down)";
 var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide(CH Press) or Info)";
 var STR_SWITCH_CLIP = "Switch Period (day, week, month, all) (CH Up/Down)";
+var STR_GO_TO = "Go to ";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
 var STR_GAMES = "Games";

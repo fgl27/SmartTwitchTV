@@ -66,7 +66,7 @@ SmartHub.loadDataRequest = function() {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub.followerUsername) +
                 '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 1) {
-            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=22&' +
+            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=21&' +
                 Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 2) { // user games
             theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/follows/games/live?limit=6&' +
@@ -166,15 +166,15 @@ function previewDataGeneratorEmpty() {
     var data = '{"sections":[';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_USER_ADD + '","tiles":[';
-    data += '{"title":"Go to ' + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
@@ -185,7 +185,7 @@ function previewDataGenerator() {
     var data = '{"sections":[';
     var i = 0;
 
-    if (SmartHub.user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + SmartHub.followerUsername + '","tiles":[';
+    if (SmartHub.user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.user.length; i++) {
         if (i < 1) {
             data += '{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] +
@@ -226,11 +226,15 @@ function previewDataGenerator() {
     if (SmartHub.usergames.length > 0) data += ']},';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"Go to ' + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += ']},';
+
+    data += '{"title":"' + STR_USER + '","tiles":[';
+    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"Go to ' + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
