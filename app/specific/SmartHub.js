@@ -230,7 +230,7 @@ function previewDataGenerator() {
     data += ']},';
 
     data += '{"title":"' + STR_USER + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
