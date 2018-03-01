@@ -44,8 +44,11 @@ SChannels.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
-    if (SChannels.status) Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
-    else SChannels.StartLoad();
+    if (SChannels.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels,
+            Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
+        Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, SChannels.ColoumnsCount, SChannels.itemsCount);
+    } else SChannels.StartLoad();
 };
 
 SChannels.exit = function() {
@@ -351,6 +354,8 @@ SChannels.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
+
+    Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, SChannels.ColoumnsCount, SChannels.itemsCount);
 };
 
 SChannels.removeFocus = function() {

@@ -59,8 +59,11 @@ Sclip.init = function() {
     document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
-    if (Sclip.status) Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else Sclip.StartLoad();
+    if (Sclip.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
+            Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Sclip.ColoumnsCount, Sclip.itemsCount);
+    } else Sclip.StartLoad();
 };
 
 Sclip.exit = function() {
@@ -397,6 +400,8 @@ Sclip.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Sclip.ColoumnsCount, Sclip.itemsCount);
 };
 
 Sclip.removeFocus = function() {

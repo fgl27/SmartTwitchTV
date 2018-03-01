@@ -48,8 +48,11 @@ UserHost.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
     if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
-    if (UserHost.status) Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else UserHost.StartLoad();
+    if (UserHost.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo,
+            Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(UserHost.cursorX, UserHost.cursorY, UserHost.ColoumnsCount, UserHost.itemsCount);
+    } else UserHost.StartLoad();
 };
 
 UserHost.exit = function() {
@@ -376,6 +379,8 @@ UserHost.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(UserHost.cursorX, UserHost.cursorY, UserHost.ColoumnsCount, UserHost.itemsCount);
 };
 
 UserHost.removeFocus = function() {
