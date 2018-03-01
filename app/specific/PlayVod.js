@@ -54,7 +54,7 @@ PlayVod.Start = function() {
     Play.hideChat();
     $("#scene2_quality").show();
     $('#clip_label_quality').html(STR_QUALITY);
-    $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
+    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelChannelLogo);
     $('#stream_info_name').text(Main.selectedChannelDisplayname);
     $("#stream_info_title").text(Svod.title);
     $("#stream_info_game").text(Svod.views);
