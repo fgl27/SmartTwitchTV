@@ -228,6 +228,7 @@ Live.loadDataSuccessFinish = function() {
                 Live.checkVersion = true;
                 if (Main.checkVersion()) Main.showUpdateDialog();
             }
+            //Main.ScrollSize('stream_table_live', Live.itemsCount, Live.ColoumnsCount);
         });
 };
 
