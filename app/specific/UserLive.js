@@ -268,6 +268,8 @@ UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
     UserLive.imgMatrixId[UserLive.imgMatrixCount] = UserLive.Thumbnail + row_id + '_' + coloumn_id;
     UserLive.imgMatrixCount++;
 
+    if (UserLive.imgMatrixCount < (UserLive.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     UserLive.nameMatrix[UserLive.nameMatrixCount] = channel_name;
     UserLive.nameMatrixCount++;
 

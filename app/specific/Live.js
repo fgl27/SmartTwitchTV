@@ -177,6 +177,8 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
     Live.imgMatrixCount++;
 
+    if (Live.imgMatrixCount < (Live.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
 

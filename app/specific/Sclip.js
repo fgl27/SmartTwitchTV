@@ -217,6 +217,8 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Sclip.imgMatrixId[Sclip.imgMatrixCount] = Sclip.Thumbnail + row_id + '_' + coloumn_id;
     Sclip.imgMatrixCount++;
 
+    if (Sclip.imgMatrixCount < (Sclip.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;
 

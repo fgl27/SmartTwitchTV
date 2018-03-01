@@ -194,6 +194,8 @@ UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail
     UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
     UserGames.imgMatrixCount++;
 
+    if (UserGames.imgMatrixCount < (UserGames.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
     UserGames.nameMatrixCount++;
 

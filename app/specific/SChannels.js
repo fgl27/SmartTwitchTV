@@ -187,6 +187,8 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
     SChannels.imgMatrixCount++;
 
+    if (SChannels.imgMatrixCount < (SChannels.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
 
