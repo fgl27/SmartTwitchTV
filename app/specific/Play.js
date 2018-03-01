@@ -79,7 +79,8 @@ Play.Start = function() {
     document.getElementById("stream_live_icon").innerHTML =
         '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
     $("#stream_info_title").text("");
-    $("#stream_info_icon").attr("src", "");
+    Play.LoadLogoSucess = false;
+    $("#stream_info_icon").attr("src", IMG_LOD_LOGO);
     $("#stream_info_name").text(Play.selectedChannelDisplayname);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
@@ -137,7 +138,8 @@ Play.updateStreamInfo = function() {
                     //console.log(response);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
-                    $("#stream_info_icon").attr("src", response.stream.channel.logo);
+                    if (!Play.LoadLogoSucess) Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
+                    Play.LoadLogoSucess = true;
                     Play.created = new Date(response.stream.created_at).getTime();
                 } catch (err) {}
             }
@@ -147,6 +149,14 @@ Play.updateStreamInfo = function() {
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader('Client-ID', Main.clientId);
     xmlHttp.send(null);
+};
+
+Play.LoadLogo = function(ImgObjet, link) {
+    ImgObjet.onerror = function() {
+        this.src = IMG_404_LOGO; //img fail to load use predefined
+        Play.LoadLogoSucess = false;
+    };
+    ImgObjet.src = link;
 };
 
 Play.loadData = function() {

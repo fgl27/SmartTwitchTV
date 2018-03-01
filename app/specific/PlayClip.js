@@ -22,7 +22,7 @@ PlayClip.Start = function() {
     Play.showBufferDialog();
     $("#scene2_quality").hide();
     Play.hideChat();
-    $("#stream_info_icon").attr("src", Main.selectedChannelChannelLogo);
+    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelChannelLogo);
     $('#stream_info_name').text(Sclip.title);
     $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
     $("#stream_info_game").text(Sclip.views);
