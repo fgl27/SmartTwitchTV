@@ -408,12 +408,17 @@ UserLive.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_t
                 row_id = my;
                 coloumn_id = mx;
                 preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+
+                UserLive.imgMatrix[UserLive.imgMatrixCount] = preview_thumbnail;
+                UserLive.imgMatrixId[UserLive.imgMatrixCount] = UserLive.Thumbnail + row_id + '_' + coloumn_id;
+                UserLive.imgMatrixCount++;
+
                 UserLive.nameMatrix[UserLive.nameMatrixCount] = channel_name;
                 UserLive.nameMatrixCount++;
                 document.getElementById(UserLive.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserLive.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(UserLive.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(UserLive.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
                     '<div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
                     '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
