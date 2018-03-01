@@ -467,6 +467,11 @@ Main.CheckMp4Html5 = function() {
     return result;
 };
 
+Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
+    var element = document.getElementById(table), y = element.scrollHeight, division = itemsCount / ColoumnsCount;
+    console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
+};
+
 Main.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.

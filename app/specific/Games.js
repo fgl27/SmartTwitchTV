@@ -226,6 +226,7 @@ Games.loadDataSuccessFinish = function() {
 
             Games.loadingData = false;
             Games.loadingMore = false;
+            //Main.ScrollSize('stream_table_games', Games.itemsCount, Games.ColoumnsCount);
         });
 };
 
