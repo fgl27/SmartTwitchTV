@@ -198,7 +198,8 @@ Main.isExitDialogShown = function() {
 };
 
 Main.CounterDialog = function(x, y, coloumns, total) {
-    $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
+    if (total > 0) $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
+    else $("#dialog_counter_text").text('');
 };
 
 Main.showWarningDialog = function(text) {
