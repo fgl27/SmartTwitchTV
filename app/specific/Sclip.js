@@ -349,6 +349,11 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
             if (!Main.ThumbNull(my, mx, Sclip.Thumbnail) && (Main.ThumbNull(my, mx, Sclip.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
+
+                Sclip.imgMatrix[Sclip.imgMatrixCount] = preview_thumbnail;
+                Sclip.imgMatrixId[Sclip.imgMatrixCount] = Sclip.Thumbnail + row_id + '_' + coloumn_id;
+                Sclip.imgMatrixCount++;
+
                 Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
                 Sclip.nameMatrixCount++;
 
@@ -356,7 +361,7 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).setAttribute('data-durationseconds', video_duration);
                 document.getElementById(Sclip.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
                     '<div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + video_title + '</div>' +
                     '<div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div>' +

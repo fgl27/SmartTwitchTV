@@ -317,12 +317,17 @@ SChannels.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_
             if (!Main.ThumbNull(my, mx, SChannels.Thumbnail) && (Main.ThumbNull(my, mx, SChannels.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
+
+                SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
+                SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
+                SChannels.imgMatrixCount++;
+
                 SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
                 SChannels.nameMatrixCount++;
                 document.getElementById(SChannels.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', SChannels.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
                     '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
                 return true;

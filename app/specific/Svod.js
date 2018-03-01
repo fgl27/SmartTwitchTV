@@ -344,13 +344,18 @@ Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
                 row_id = my;
                 coloumn_id = mx;
                 preview_thumbnail = preview_thumbnail.replace("320x240", Main.VideoSize);
+
+                Svod.imgMatrix[Svod.imgMatrixCount] = preview_thumbnail;
+                Svod.imgMatrixId[Svod.imgMatrixCount] = Svod.Thumbnail + row_id + '_' + coloumn_id;
+                Svod.imgMatrixCount++;
+
                 Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
                 Svod.nameMatrixCount++;
                 document.getElementById(Svod.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Svod.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).setAttribute('data-durationseconds', duration);
                 document.getElementById(Svod.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
                     '<div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div>' +
                     '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +

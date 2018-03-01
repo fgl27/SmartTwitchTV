@@ -328,12 +328,17 @@ UserGames.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thu
                 row_id = my;
                 coloumn_id = mx;
                 preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
+
+                UserGames.imgMatrix[UserGames.imgMatrixCount] = preview_thumbnail;
+                UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
+                UserGames.imgMatrixCount++;
+
                 UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
                 UserGames.nameMatrixCount++;
                 document.getElementById(UserGames.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserGames.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
                 document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + preview_thumbnail + '"/>' +
+                    '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
                     '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
                     '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
                     '<div id="' + UserGames.followsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + follows_title + '</div>' +
