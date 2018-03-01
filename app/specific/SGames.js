@@ -20,7 +20,6 @@ SGames.isDialogOn = false;
 SGames.ItemsLimit = 100;
 SGames.ColoumnsCount = 5;
 SGames.ItemsReloadLimit = Math.floor((SGames.ItemsLimit / SGames.ColoumnsCount) / 2);
-SGames.newImg = new Image();
 SGames.blankCellCount = 0;
 SGames.itemsCountOffset = 0;
 SGames.LastClickFinish = true;
@@ -166,8 +165,6 @@ SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
     SGames.imgMatrix[SGames.imgMatrixCount] = preview_thumbnail;
     SGames.imgMatrixId[SGames.imgMatrixCount] = SGames.Thumbnail + row_id + '_' + coloumn_id;
     SGames.imgMatrixCount++;
-
-    if (SGames.imgMatrixCount <= (SGames.ColoumnsCount * 3)) SGames.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
         '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +

@@ -20,7 +20,6 @@ AGame.isDialogOn = false;
 AGame.ItemsLimit = 99;
 AGame.ColoumnsCount = 3;
 AGame.ItemsReloadLimit = Math.floor((AGame.ItemsLimit / AGame.ColoumnsCount) / 2);
-AGame.newImg = new Image();
 AGame.blankCellCount = 0;
 AGame.itemsCountOffset = 0;
 AGame.LastClickFinish = true;
@@ -189,8 +188,6 @@ AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     AGame.imgMatrix[AGame.imgMatrixCount] = preview_thumbnail;
     AGame.imgMatrixId[AGame.imgMatrixCount] = AGame.Thumbnail + row_id + '_' + coloumn_id;
     AGame.imgMatrixCount++;
-
-    if (AGame.imgMatrixCount <= (AGame.ColoumnsCount * 3)) AGame.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     AGame.nameMatrix[AGame.nameMatrixCount] = channel_name;
     AGame.nameMatrixCount++;

@@ -20,7 +20,6 @@ UserHost.isDialogOn = false;
 UserHost.ItemsLimit = 99;
 UserHost.ColoumnsCount = 3;
 UserHost.ItemsReloadLimit = Math.floor((UserHost.ItemsLimit / UserHost.ColoumnsCount) / 2);
-UserHost.newImg = new Image();
 UserHost.blankCellCount = 0;
 UserHost.itemsCountOffset = 0;
 UserHost.LastClickFinish = true;
@@ -195,8 +194,6 @@ UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
     UserHost.imgMatrix[UserHost.imgMatrixCount] = preview_thumbnail;
     UserHost.imgMatrixId[UserHost.imgMatrixCount] = UserHost.Thumbnail + row_id + '_' + coloumn_id;
     UserHost.imgMatrixCount++;
-
-    if (UserHost.imgMatrixCount <= (UserHost.ColoumnsCount * 3)) UserHost.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
     UserHost.nameMatrixCount++;

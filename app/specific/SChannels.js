@@ -20,7 +20,6 @@ SChannels.isDialogOn = false;
 SChannels.ItemsLimit = 96;
 SChannels.ColoumnsCount = 6;
 SChannels.ItemsReloadLimit = Math.floor((SChannels.ItemsLimit / SChannels.ColoumnsCount) / 2);
-SChannels.newImg = new Image();
 SChannels.blankCellCount = 0;
 SChannels.itemsCountOffset = 0;
 SChannels.LastClickFinish = true;
@@ -184,8 +183,6 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
     SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
     SChannels.imgMatrixCount++;
-
-    if (SChannels.imgMatrixCount <= (SChannels.ColoumnsCount * 3)) SChannels.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;

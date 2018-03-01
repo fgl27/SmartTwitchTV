@@ -20,7 +20,6 @@ Sclip.isDialogOn = false;
 Sclip.ItemsLimit = 99;
 Sclip.ColoumnsCount = 3;
 Sclip.ItemsReloadLimit = Math.floor((Sclip.ItemsLimit / Sclip.ColoumnsCount) / 2);
-Sclip.newImg = new Image();
 Sclip.blankCellCount = 0;
 Sclip.LastClickFinish = true;
 Sclip.keyClickDelayTime = 25;
@@ -214,8 +213,6 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Sclip.imgMatrix[Sclip.imgMatrixCount] = preview_thumbnail;
     Sclip.imgMatrixId[Sclip.imgMatrixCount] = Sclip.Thumbnail + row_id + '_' + coloumn_id;
     Sclip.imgMatrixCount++;
-
-    if (Sclip.imgMatrixCount <= (Sclip.ColoumnsCount * 3)) Sclip.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;

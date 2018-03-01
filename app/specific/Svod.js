@@ -20,7 +20,6 @@ Svod.isDialogOn = false;
 Svod.ItemsLimit = 99;
 Svod.ColoumnsCount = 3;
 Svod.ItemsReloadLimit = Math.floor((Svod.ItemsLimit / Svod.ColoumnsCount) / 2);
-Svod.newImg = new Image();
 Svod.blankCellCount = 0;
 Svod.itemsCountOffset = 0;
 Svod.LastClickFinish = true;
@@ -198,8 +197,6 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Svod.imgMatrix[Svod.imgMatrixCount] = preview_thumbnail;
     Svod.imgMatrixId[Svod.imgMatrixCount] = Svod.Thumbnail + row_id + '_' + coloumn_id;
     Svod.imgMatrixCount++;
-
-    if (Svod.imgMatrixCount <= (Svod.ColoumnsCount * 3)) Svod.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
     Svod.nameMatrixCount++;
