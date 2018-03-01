@@ -46,8 +46,11 @@ UserGames.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     if (UserGames.OldUserName !== Main.UserName) UserGames.status = false;
-    if (UserGames.status) Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-    else UserGames.StartLoad();
+    if (UserGames.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames,
+            Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
+        Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, UserGames.ColoumnsCount, UserGames.itemsCount);
+    } else UserGames.StartLoad();
 };
 
 UserGames.exit = function() {
@@ -368,6 +371,8 @@ UserGames.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
+
+    Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, UserGames.ColoumnsCount, UserGames.itemsCount);
 };
 
 UserGames.removeFocus = function() {

@@ -50,8 +50,11 @@ UserLive.init = function() {
     $('.label_agame_name').html(Main.UserName + STR_LIVE_CHANNELS);
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
     if (UserLive.OldUserName !== Main.UserName) UserLive.status = false;
-    if (UserLive.status) Main.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail, UserLive.cursorY, UserLive.cursorX, Main.UserLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else UserLive.StartLoad();
+    if (UserLive.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail, UserLive.cursorY, UserLive.cursorX, Main.UserLive, Main.ScrollOffSetMinusVideo,
+            Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(UserLive.cursorX, UserLive.cursorY, UserLive.ColoumnsCount, UserLive.itemsCount);
+    } else UserLive.StartLoad();
 };
 
 UserLive.exit = function() {
@@ -453,6 +456,8 @@ UserLive.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserLive.Thumbnail, UserLive.cursorY, UserLive.cursorX, Main.UserLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(UserLive.cursorX, UserLive.cursorY, UserLive.ColoumnsCount, UserLive.itemsCount);
 };
 
 UserLive.removeFocus = function() {

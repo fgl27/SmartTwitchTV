@@ -52,8 +52,11 @@ Svod.init = function() {
     $('.lable_user').html(Main.selectedChannelDisplayname);
     $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
-    if (Svod.status) Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else Svod.StartLoad();
+    if (Svod.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
+            Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(Svod.cursorX, Svod.cursorY, Svod.ColoumnsCount, Svod.itemsCount);
+    } else Svod.StartLoad();
 };
 
 Svod.exit = function() {
@@ -390,6 +393,8 @@ Svod.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(Svod.cursorX, Svod.cursorY, Svod.ColoumnsCount, Svod.itemsCount);
 };
 
 Svod.removeFocus = function() {

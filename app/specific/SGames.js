@@ -41,8 +41,11 @@ SGames.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
-    if (SGames.status) Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-    else SGames.StartLoad();
+    if (SGames.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames,
+            Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
+        Main.CounterDialog(SGames.cursorX, SGames.cursorY, SGames.ColoumnsCount, SGames.itemsCount);
+    } else SGames.StartLoad();
 };
 
 SGames.exit = function() {
@@ -199,6 +202,8 @@ SGames.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
+
+    Main.CounterDialog(SGames.cursorX, SGames.cursorY, SGames.ColoumnsCount, SGames.itemsCount);
 };
 
 SGames.removeFocus = function() {

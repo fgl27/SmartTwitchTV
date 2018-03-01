@@ -45,8 +45,11 @@ SLive.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
-    if (SLive.status) Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else SLive.StartLoad();
+    if (SLive.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo,
+            Main.ScrollOffSetVideo, false);
+        Main.CounterDialog(SLive.cursorX, SLive.cursorY, SLive.ColoumnsCount, SLive.itemsCount);
+    } else SLive.StartLoad();
 };
 
 SLive.exit = function() {
@@ -378,6 +381,8 @@ SLive.addFocus = function() {
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
+
+    Main.CounterDialog(SLive.cursorX, SLive.cursorY, SLive.ColoumnsCount, SLive.itemsCount);
 };
 
 SLive.removeFocus = function() {
