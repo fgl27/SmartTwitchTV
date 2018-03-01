@@ -20,7 +20,6 @@ UserGames.isDialogOn = false;
 UserGames.ItemsLimit = 100;
 UserGames.ColoumnsCount = 5;
 UserGames.ItemsReloadLimit = Math.floor((UserGames.ItemsLimit / UserGames.ColoumnsCount) / 2);
-UserGames.newImg = new Image();
 UserGames.blankCellCount = 0;
 UserGames.itemsCountOffset = 0;
 UserGames.LastClickFinish = true;
@@ -191,8 +190,6 @@ UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail
     UserGames.imgMatrix[UserGames.imgMatrixCount] = preview_thumbnail;
     UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
     UserGames.imgMatrixCount++;
-
-    if (UserGames.imgMatrixCount <= (UserGames.ColoumnsCount * 3)) UserGames.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
     UserGames.nameMatrixCount++;

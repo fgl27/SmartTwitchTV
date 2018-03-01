@@ -22,7 +22,6 @@ Live.isDialogOn = false;
 Live.ItemsLimit = 99;
 Live.ColoumnsCount = 3;
 Live.ItemsReloadLimit = Math.floor((Live.ItemsLimit / Live.ColoumnsCount) / 2);
-Live.newImg = new Image();
 Live.blankCellCount = 0;
 Live.itemsCountOffset = 0;
 Live.LastClickFinish = true;
@@ -176,8 +175,6 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
     Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
     Live.imgMatrixCount++;
-
-    if (Live.imgMatrixCount <= (Live.ColoumnsCount * 3)) Live.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;

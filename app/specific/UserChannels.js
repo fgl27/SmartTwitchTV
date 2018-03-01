@@ -19,7 +19,6 @@ UserChannels.loadingDataTimeout = 3500;
 UserChannels.ItemsLimit = 96;
 UserChannels.ColoumnsCount = 6;
 UserChannels.ItemsReloadLimit = Math.floor((UserChannels.ItemsLimit / UserChannels.ColoumnsCount) / 2);
-UserChannels.newImg = new Image();
 UserChannels.LastClickFinish = true;
 UserChannels.keyClickDelayTime = 25;
 UserChannels.UserChannelsList = [];
@@ -195,8 +194,6 @@ UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, cha
     UserChannels.imgMatrix[UserChannels.imgMatrixCount] = preview_thumbnail;
     UserChannels.imgMatrixId[UserChannels.imgMatrixCount] = UserChannels.Thumbnail + row_id + '_' + coloumn_id;
     UserChannels.imgMatrixCount++;
-
-    if (UserChannels.imgMatrixCount <= (UserChannels.ColoumnsCount * 3)) UserChannels.newImg.src = preview_thumbnail; //try to pre cache first 4 rows
 
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;

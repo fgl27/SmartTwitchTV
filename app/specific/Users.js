@@ -16,7 +16,6 @@ Users.loadingData = true;
 Users.imgMatrix = [];
 Users.imgMatrixId = [];
 Users.imgMatrixCount = 0;
-Users.newImg = new Image();
 
 //Variable initialization end
 
@@ -95,8 +94,6 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     Users.imgMatrix[Users.imgMatrixCount] = thumbnail;
     Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
     Users.imgMatrixCount++;
-
-    Users.newImg.src = thumbnail; //try to pre cache the img
 
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
