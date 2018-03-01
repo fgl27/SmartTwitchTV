@@ -169,6 +169,8 @@ SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
     SGames.imgMatrixId[SGames.imgMatrixCount] = SGames.Thumbnail + row_id + '_' + coloumn_id;
     SGames.imgMatrixCount++;
 
+    if (SGames.imgMatrixCount < (SGames.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
         '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
         '<div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +

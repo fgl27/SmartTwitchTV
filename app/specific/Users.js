@@ -95,6 +95,8 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
     Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
     Users.imgMatrixCount++;
 
+    Main.PreLoadAImage(thumbnail);
+
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
         '<div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +

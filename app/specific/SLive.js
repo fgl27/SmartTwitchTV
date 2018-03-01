@@ -193,6 +193,8 @@ SLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     SLive.imgMatrixId[SLive.imgMatrixCount] = SLive.Thumbnail + row_id + '_' + coloumn_id;
     SLive.imgMatrixCount++;
 
+    if (SLive.imgMatrixCount < (SLive.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
     SLive.nameMatrix[SLive.nameMatrixCount] = channel_name;
     SLive.nameMatrixCount++;
 
