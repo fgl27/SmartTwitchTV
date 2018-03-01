@@ -455,7 +455,8 @@ SChannels.handleKeyDown = function(event) {
             Main.selectedChannelChannelLogo = document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).src;
             document.body.removeEventListener("keydown", SChannels.handleKeyDown);
             Main.Before = Main.SChannels;
-            SChannelContent.init();
+            Main.Go = Main.SChannelContent;
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();

@@ -416,8 +416,8 @@ SLive.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                if (Main.Go === Main.Before) Main.Go = Main.Live;
-                else Main.Go = Main.Before;
+                if (Main.Go === Main.BeforeSearch) Main.Go = Main.Live;
+                else Main.Go = Main.BeforeSearch;
                 SLive.exit();
                 Main.SwitchScreen();
             }
