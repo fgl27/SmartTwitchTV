@@ -498,31 +498,45 @@ Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
     console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
 };
 
-Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
-    ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
-    $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
-    $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
-    $('#' + StreamTitleDiv + y + '_' + x).addClass(Main.classInfo);
-    $('#' + StreamGameDiv + y + '_' + x).addClass(Main.classInfo);
-    $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
-    $('#' + QualityDiv + y + '_' + x).addClass(Main.classInfo);
+Main.CellTd = function(row_id, coloumn_id, channel_name, Cell) {
+    return '<td id="' + Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>';
+};
+
+Main.VideoCellHtml = function(row_id, coloumn_id, CellArray, channel_display_name, stream_title, stream_game, viwers, quality) {
+    return '<img id="' + CellArray[0] + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + CellArray[1] + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + CellArray[2] + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
+        '<div id="' + CellArray[3] + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + CellArray[4] + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
+        '<div id="' + CellArray[5] + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
+        '<div id="' + CellArray[6] + row_id + '_' + coloumn_id +
+        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
+};
+
+Main.addFocusVideo = function(y, x, CellArray, screen, ColoumnsCount, itemsCount) {
+    $('#' + CellArray[0] + y + '_' + x).addClass(Main.classThumb);
+    $('#' + CellArray[1] + y + '_' + x).addClass(Main.classText);
+    $('#' + CellArray[2] + y + '_' + x).addClass(Main.classChannel);
+    $('#' + CellArray[3] + y + '_' + x).addClass(Main.classInfo);
+    $('#' + CellArray[4] + y + '_' + x).addClass(Main.classInfo);
+    $('#' + CellArray[5] + y + '_' + x).addClass(Main.classInfo);
+    $('#' + CellArray[6] + y + '_' + x).addClass(Main.classInfo);
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Thumbnail, y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(CellArray[0], y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 
     Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
 };
 
-Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
-    $('#' + Thumbnail + y + '_' + x).removeClass(Main.classThumb);
-    $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
-    $('#' + StreamTitleDiv + y + '_' + x).removeClass(Main.classInfo);
-    $('#' + StreamGameDiv + y + '_' + x).removeClass(Main.classInfo);
-    $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
-    $('#' + QualityDiv + y + '_' + x).removeClass(Main.classInfo);
+Main.removeFocusVideo = function(y, x, CellArray) {
+    $('#' + CellArray[0] + y + '_' + x).removeClass(Main.classThumb);
+    $('#' + CellArray[1] + y + '_' + x).removeClass(Main.classText);
+    $('#' + CellArray[2] + y + '_' + x).removeClass(Main.classChannel);
+    $('#' + CellArray[3] + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + CellArray[4] + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + CellArray[5] + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + CellArray[6] + y + '_' + x).removeClass(Main.classInfo);
 };
 
 Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {

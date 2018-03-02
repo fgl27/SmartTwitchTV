@@ -2,15 +2,7 @@
 //Variable initialization
 function Live() {}
 Live.Status = false;
-Live.Thumbnail = 'thumbnail_live';
-Live.ThumbnailDiv = 'live_thumbnail_div_';
-Live.DispNameDiv = 'live_display_name_';
-Live.StreamTitleDiv = 'live_stream_title_';
-Live.StreamGameDiv = 'live_stream_game_';
-Live.ViwersDiv = 'live_viwers_';
-Live.QualityDiv = 'live_quality_';
-Live.Cell = 'live_cell_';
-Live.EmptyCell = 'live_empty_';
+Live.ids = ['thumb_live', 'live_thumb_div_', 'live_name_', 'live_title_', 'live_game_', 'live_viwers_', 'live_quality_', 'live_cell_','live_empty_', 'stream_table_live'];
 Live.cursorY = 0;
 Live.cursorX = 0;
 Live.Exitcursor = 0;
@@ -45,7 +37,7 @@ Live.init = function() {
     $('#top_bar_live').removeClass('icon_center_label');
     $('#top_bar_live').addClass('icon_center_focus');
     if (Live.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(Live.ids[0], Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Live.cursorX, Live.cursorY, Live.ColoumnsCount, Live.itemsCount);
     } else Live.StartLoad();
 };
@@ -62,7 +54,7 @@ Live.StartLoad = function() {
     Live.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_live').empty();
+    $('#' + Live.ids[9]).empty();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
     Live.itemsCountOffset = 0;
@@ -149,7 +141,7 @@ Live.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Live.ColoumnsCount;
     if (response_items % Live.ColoumnsCount > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, stream,
+    var coloumn_id, row_id, row, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -160,50 +152,38 @@ Live.loadDataSuccess = function(responseText) {
             stream = response.streams[cursor];
             if (Live.CellExists(stream.channel.name)) coloumn_id--;
             else {
-                cell = Live.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
+                row.append(Live.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                     stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
-                row.append(cell);
+                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
             }
         }
 
         for (coloumn_id; coloumn_id < Live.ColoumnsCount; coloumn_id++) {
-            row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
+            row.append(Main.createCellEmpty(row_id, coloumn_id, Live.ids[8]));
         }
-        $('#stream_table_live').append(row);
+        $('#' + Live.ids[9]).append(row);
     }
 
     Live.loadDataSuccessFinish();
 };
 
-Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-    return $('<td id="' + Live.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality));
+Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumb, stream_title, stream_game, channel_display_name, viwers, quality) {
+    Live.CellMatrix(channel_name, preview_thumb, row_id, coloumn_id);
+    return $(Main.CellTd(row_id, coloumn_id, channel_name, Live.ids[7])).html(Main.VideoCellHtml(row_id, coloumn_id, Live.ids,
+        channel_display_name, stream_title, stream_game, viwers, quality));
 };
 
-Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
-    Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
+Live.CellMatrix = function(channel_name, preview_thumb, row_id, coloumn_id) {
+    preview_thumb = preview_thumb.replace("{width}x{height}", Main.VideoSize);
+    Live.imgMatrix[Live.imgMatrixCount] = preview_thumb;
+    Live.imgMatrixId[Live.imgMatrixCount] = Live.ids[0] + row_id + '_' + coloumn_id;
     Live.imgMatrixCount++;
 
-    if (Live.imgMatrixCount < (Live.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+    if (Live.imgMatrixCount < (Live.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumb); //try to pre cache first 3 rows
 
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
-};
-
-Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
-    return '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
-        '<div id="' + Live.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Live.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + Live.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + Live.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + Live.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
-        '<div id="' + Live.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
 };
 
 Live.CellExists = function(display_name) {
@@ -216,10 +196,10 @@ Live.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
+//prevent stream_text/title/info from load before the thumb and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 Live.loadDataSuccessFinish = function() {
-    $('#stream_table_live').imagesLoaded()
+    $('#' + Live.ids[9]).imagesLoaded()
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
@@ -245,7 +225,7 @@ Live.loadDataSuccessFinish = function() {
                 Live.checkVersion = true;
                 if (Main.checkVersion()) Main.showUpdateDialog();
             }
-            //Main.ScrollSize('stream_table_live', Live.itemsCount, Live.ColoumnsCount);
+            //Main.ScrollSize(Live.ids[9], Live.itemsCount, Live.ColoumnsCount);
         });
 };
 
@@ -320,22 +300,22 @@ Live.loadDataSuccessReplace = function(responseText) {
     Live.loadDataSuccessFinish();
 };
 
-Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb, stream_title, stream_game, channel_display_name, viwers, quality) {
     var my = 0,
         mx = 0;
     if (row_id < ((Live.ItemsLimit / Live.ColoumnsCount) - 1)) return false;
     for (my = row_id - (1 + Math.ceil(Live.blankCellCount / Live.ColoumnsCount)); my < row_id; my++) {
         for (mx = 0; mx < Live.ColoumnsCount; mx++) {
-            if (!Main.ThumbNull(my, mx, Live.Thumbnail) && (Main.ThumbNull(my, mx, Live.EmptyCell))) {
+            if (!Main.ThumbNull(my, mx, Live.ids[0]) && (Main.ThumbNull(my, mx, Live.ids[8]))) {
                 row_id = my;
                 coloumn_id = mx;
 
-                Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
+                Live.CellMatrix(channel_name, preview_thumb, row_id, coloumn_id);
 
-                document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Live.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(Live.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(Live.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
+                document.getElementById(Live.ids[8] + row_id + '_' + coloumn_id).setAttribute('id', Live.ids[7] + row_id + '_' + coloumn_id);
+                document.getElementById(Live.ids[7] + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
+                document.getElementById(Live.ids[7] + row_id + '_' + coloumn_id).innerHTML =
+                    Main.VideoCellHtml(row_id, coloumn_id, Live.ids, channel_display_name, stream_title, stream_game, viwers, quality);
                 return true;
             }
         }
@@ -352,13 +332,11 @@ Live.addFocus = function() {
         Live.loadDataRequest();
     }
 
-    Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
-        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Main.Live, Live.ColoumnsCount, Live.itemsCount);
+    Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.ids, Main.Live, Live.ColoumnsCount, Live.itemsCount);
 };
 
 Live.removeFocus = function() {
-    Main.removeFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
-        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv);
+    Main.removeFocusVideo(Live.cursorY, Live.cursorX, Live.ids);
 };
 
 Live.ExitCursorSet = function(value) {
@@ -401,13 +379,13 @@ Live.handleKeyDown = function(event) {
                 Live.ExitCursorSet(0);
                 Main.clearExitDialog();
                 Main.setExitDialog();
-            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.ids[0])) {
                 Live.removeFocus();
                 Live.cursorX--;
                 Live.addFocus();
             } else {
                 for (i = (Live.ColoumnsCount - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Live.cursorY - 1), i, Live.Thumbnail)) {
+                    if (Main.ThumbNull((Live.cursorY - 1), i, Live.ids[0])) {
                         Live.removeFocus();
                         Live.cursorY--;
                         Live.cursorX = i;
@@ -422,11 +400,11 @@ Live.handleKeyDown = function(event) {
                 Live.ExitCursorSet(1);
                 Main.clearExitDialog();
                 Main.setExitDialog();
-            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.ids[0])) {
                 Live.removeFocus();
                 Live.cursorX++;
                 Live.addFocus();
-            } else if (Main.ThumbNull((Live.cursorY + 1), 0, Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY + 1), 0, Live.ids[0])) {
                 Live.removeFocus();
                 Live.cursorY++;
                 Live.cursorX = 0;
@@ -434,8 +412,8 @@ Live.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Live.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Live.cursorY - 1), (Live.cursorX - i), Live.Thumbnail)) {
+            for (var i = 0; i < Live.ColoumnsCount; i++) {
+                if (Main.ThumbNull((Live.cursorY - 1), (Live.cursorX - i), Live.ids[0])) {
                     Live.removeFocus();
                     Live.cursorY--;
                     Live.cursorX = Live.cursorX - i;
@@ -445,8 +423,8 @@ Live.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Live.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Live.cursorY + 1), (Live.cursorX - i), Live.Thumbnail)) {
+            for (var i = 0; i < Live.ColoumnsCount; i++) {
+                if (Main.ThumbNull((Live.cursorY + 1), (Live.cursorX - i), Live.ids[0])) {
                     Live.removeFocus();
                     Live.cursorY++;
                     Live.cursorX = Live.cursorX - i;
@@ -483,8 +461,8 @@ Live.handleKeyDown = function(event) {
                     Main.HideExitDialog();
                 } else Main.HideExitDialog();
             } else {
-                Play.selectedChannel = $('#' + Live.Cell + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
-                Play.selectedChannelDisplayname = document.getElementById('' + Live.DispNameDiv + Live.cursorY + '_' + Live.cursorX).textContent;
+                Play.selectedChannel = $('#' + Live.ids[7] + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
+                Play.selectedChannelDisplayname = document.getElementById(Live.ids[4] + Live.cursorY + '_' + Live.cursorX).textContent;
                 document.body.removeEventListener("keydown", Live.handleKeyDown);
                 Main.openStream();
             }
