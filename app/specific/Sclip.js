@@ -90,17 +90,17 @@ Sclip.StartLoad = function() {
     Sclip.cursorX = 0;
     Sclip.cursorY = 0;
     Sclip.dataEnded = false;
-    Sclip.loadData();
+    Sclip.loadDataPrepare();
+    Sclip.loadDataRequest();
 };
 
-Sclip.loadData = function() {
+Sclip.loadDataPrepare = function() {
     Sclip.imgMatrix = [];
     Sclip.imgMatrixId = [];
     Sclip.imgMatrixCount = 0;
     Sclip.loadingData = true;
     Sclip.loadingDataTry = 0;
     Sclip.loadingDataTimeout = 3500;
-    Sclip.loadDataRequest();
 };
 
 Sclip.SetPeriod = function() {
@@ -265,6 +265,7 @@ Sclip.loadDataSuccessFinish = function() {
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
                 Sclip.loadingMore = true;
                 Sclip.loadingReplace = true;
+                Sclip.loadDataPrepare();
                 Sclip.loadDataReplace();
                 return;
             } else Sclip.blankCellCount = 0;
@@ -276,13 +277,6 @@ Sclip.loadDataSuccessFinish = function() {
 };
 
 Sclip.loadDataReplace = function() {
-    Sclip.loadingData = true;
-    Sclip.loadingDataTry = 0;
-    Sclip.loadingDataTimeout = 3500;
-    Sclip.loadDataRequestReplace();
-};
-
-Sclip.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -316,7 +310,7 @@ Sclip.loadDataErrorReplace = function() {
     Sclip.loadingDataTry++;
     if (Sclip.loadingDataTry < Sclip.loadingDataTryMax) {
         Sclip.loadingDataTimeout += (Sclip.loadingDataTry < 5) ? 250 : 3500;
-        Sclip.loadDataRequestReplace();
+        Sclip.loadDataReplace();
     }
 };
 
@@ -388,7 +382,8 @@ Sclip.addFocus = function() {
     if (((Sclip.cursorY + Sclip.ItemsReloadLimit) > (Sclip.itemsCount / Sclip.ColoumnsCount)) &&
         !Sclip.dataEnded && !Sclip.loadingMore) {
         Sclip.loadingMore = true;
-        Sclip.loadData();
+        Sclip.loadDataPrepare();
+        Sclip.loadDataRequest();
     }
 
     $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_thumbnail_focused');

@@ -56,13 +56,13 @@ SChannelContent.StartLoad = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     $('#stream_table_search_channel_a').empty();
-    SChannelContent.loadingMore = false;
     SChannelContent.itemsCountOffset = 0;
     SChannelContent.itemsCount = 0;
     SChannelContent.cursorX = 0;
     SChannelContent.cursorY = 0;
     SChannelContent.dataEnded = false;
-    SChannelContent.loadData();
+    SChannelContent.loadDataPrepare();
+    SChannelContent.loadDataRequest();
 };
 
 SChannelContent.loadData = function() {
@@ -72,7 +72,6 @@ SChannelContent.loadData = function() {
     SChannelContent.loadingData = true;
     SChannelContent.loadingDataTry = 0;
     SChannelContent.loadingDataTimeout = 3500;
-    SChannelContent.loadDataRequest();
 };
 
 SChannelContent.loadDataRequest = function() {
@@ -111,7 +110,6 @@ SChannelContent.loadDataError = function() {
         SChannelContent.loadDataRequest();
     } else {
         SChannelContent.loadingData = false;
-        SChannelContent.loadingMore = false;
         Main.HideLoadDialog();
         Main.showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -236,7 +234,7 @@ SChannelContent.keyEnter = function() {
 };
 
 SChannelContent.handleKeyDown = function(event) {
-    if (SChannelContent.loadingData && !SChannelContent.loadingMore) {
+    if (SChannelContent.loadingData) {
         event.preventDefault();
         return;
     } else if (!SChannelContent.LastClickFinish) {
@@ -274,7 +272,7 @@ SChannelContent.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!SChannelContent.loadingMore) SChannelContent.StartLoad();
+            SChannelContent.StartLoad();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

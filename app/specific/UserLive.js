@@ -85,14 +85,14 @@ UserLive.StartLoad = function() {
     UserLive.cursorY = 0;
     UserLive.dataEnded = false;
     UserLive.followerChannels = '';
-    UserLive.loadData();
+    UserLive.loadDataPrepare();
+    UserLive.loadChannels();
 };
 
-UserLive.loadData = function() {
+UserLive.loadDataPrepare = function() {
     UserLive.loadingData = true;
     UserLive.loadingDataTry = 0;
     UserLive.loadingDataTimeout = 3500;
-    UserLive.loadChannels();
 };
 
 UserLive.loadChannels = function() {
@@ -150,7 +150,8 @@ UserLive.loadChannelLive = function(responseText) {
 
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserLive.loadChannelOffsset += response_items;
-        UserLive.loadData();
+        UserLive.loadDataPrepare();
+        Live.loadDataRequest();
     } else { // end
         UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
         UserLive.imgMatrix = [];
@@ -313,23 +314,14 @@ UserLive.loadDataSuccessFinish = function() {
 
             if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
                 UserLive.loadingMore = true;
-                UserLive.loadDataReplace();
+                UserLive.loadDataPrepare();
+                UserLive.loadChannelsReplace();
                 return;
             } else UserLive.blankCellCount = 0;
 
             UserLive.loadingData = false;
             UserLive.loadingMore = false;
         });
-};
-
-UserLive.loadDataReplace = function() {
-    UserLive.imgMatrix = [];
-    UserLive.imgMatrixId = [];
-    UserLive.imgMatrixCount = 0;
-    UserLive.loadingData = true;
-    UserLive.loadingDataTry = 0;
-    UserLive.loadingDataTimeout = 3500;
-    UserLive.loadChannelsReplace();
 };
 
 UserLive.loadChannelsReplace = function() {
@@ -445,7 +437,8 @@ UserLive.addFocus = function() {
     if (((UserLive.cursorY + UserLive.ItemsReloadLimit) > (UserLive.itemsCount / UserLive.ColoumnsCount)) &&
         !UserLive.dataEnded && !UserLive.loadingMore) {
         UserLive.loadingMore = true;
-        UserLive.loadData();
+        UserLive.loadDataPrepare();
+        UserLive.loadDataRequest();
     }
 
     $('#' + UserLive.Thumbnail + UserLive.cursorY + '_' + UserLive.cursorX).addClass('stream_thumbnail_focused');
