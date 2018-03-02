@@ -518,6 +518,20 @@ Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Str
     $('#' + QualityDiv + y + '_' + x).removeClass(Main.classInfo);
 };
 
+Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
+    $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
+    $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
+    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
+    $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
+};
+
+Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
+    $('#' + Thumbnail + y + '_' + x).removeClass(Main.classThumb);
+    $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
+    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
+    $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
+};
+
 Main.ScrollHelper = {
     documentVerticalScrollPosition: function() {
         if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
