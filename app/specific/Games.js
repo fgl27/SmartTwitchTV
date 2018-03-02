@@ -346,13 +346,8 @@ Games.addFocus = function() {
         Games.loadDataRequest();
     }
 
-    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv);
-
-    window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-    }, 10);
-
-    Main.CounterDialog(Games.cursorX, Games.cursorY, Games.ColoumnsCount, Games.itemsCount);
+    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
+        Games.ColoumnsCount, Games.itemsCount);
 };
 
 Games.removeFocus = function() {

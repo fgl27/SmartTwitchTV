@@ -498,7 +498,8 @@ Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
     console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
 };
 
-Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
+Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
+    ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
     $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
     $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
@@ -524,11 +525,17 @@ Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Str
     $('#' + QualityDiv + y + '_' + x).removeClass(Main.classInfo);
 };
 
-Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
+Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
     $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
     $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
     $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
+
+    window.setTimeout(function() {
+        Main.ScrollHelper.scrollVerticalToElementById(Thumbnail, y, x, screen, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
+    }, 10);
+
+    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
 };
 
 Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
