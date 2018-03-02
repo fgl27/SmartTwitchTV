@@ -199,23 +199,15 @@ SChannelContent.loadDataSuccessFinish = function() {
 };
 
 SChannelContent.addFocus = function() {
-    $('#' + SChannelContent.Thumbnail + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + SChannelContent.ThumbnailDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_text_focused');
-    $('#' + SChannelContent.DispNameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_channel_focused');
-    $('#' + SChannelContent.StreamTitleDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_info_focused');
-    $('#' + SChannelContent.StreamGameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_info_focused');
-    $('#' + SChannelContent.ViwersDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_info_focused');
-    $('#' + SChannelContent.QualityDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).addClass('stream_info_focused');
+    Main.addFocusVideo(SChannelContent.cursorY, SChannelContent.cursorX, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+        SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
+        SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
 
 SChannelContent.removeFocus = function() {
-    $('#' + SChannelContent.Thumbnail + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + SChannelContent.ThumbnailDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_text_focused');
-    $('#' + SChannelContent.DispNameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_channel_focused');
-    $('#' + SChannelContent.StreamTitleDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_info_focused');
-    $('#' + SChannelContent.StreamGameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_info_focused');
-    $('#' + SChannelContent.ViwersDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_info_focused');
-    $('#' + SChannelContent.QualityDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusVideo(SChannelContent.cursorY, SChannelContent.cursorX, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+        SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
+        SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
 
 SChannelContent.keyClickDelay = function() {

@@ -377,13 +377,9 @@ Svod.addFocus = function() {
         Svod.loadDataRequest();
     }
 
-    $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_text_focused');
-    $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
+    Main.addFocusVideo(Svod.cursorY, Svod.cursorX, Svod.Thumbnail, Svod.ThumbnailDiv, Svod.DispNameDiv, Svod.StreamTitleDiv,
+        Svod.StreamGameDiv, Svod.ViwersDiv, Svod.QualityDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
@@ -392,13 +388,8 @@ Svod.addFocus = function() {
 };
 
 Svod.removeFocus = function() {
-    $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_text_focused');
-    $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusVideo(Svod.cursorY, Svod.cursorX, Svod.Thumbnail, Svod.ThumbnailDiv, Svod.DispNameDiv, Svod.StreamTitleDiv,
+        Svod.StreamGameDiv, Svod.ViwersDiv, Svod.QualityDiv);
 };
 
 Svod.keyClickDelay = function() {
