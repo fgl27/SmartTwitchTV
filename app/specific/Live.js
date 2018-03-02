@@ -172,16 +172,8 @@ Live.loadDataSuccess = function(responseText) {
 
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
-        '<div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
-        '<div id="quality_' + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality));
 };
 
 Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
@@ -194,6 +186,17 @@ Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) 
 
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
+};
+
+Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
+    return '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
+        '<div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
+        '<div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
+        '<div id="quality_' + row_id + '_' + coloumn_id +
+        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
 };
 
 Live.CellExists = function(display_name) {
@@ -325,14 +328,7 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
                 document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
-                    '<div id="thumbnail_div_' + row_id + '_' + coloumn_id + '" class="stream_text">' +
-                    '<div id="display_name_' + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-                    '<div id="stream_title_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-                    '<div id="stream_game_' + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-                    '<div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
-                    '<div id="quality_' + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
+                    Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
                 return true;
             }
         }
