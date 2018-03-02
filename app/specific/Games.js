@@ -346,10 +346,8 @@ Games.addFocus = function() {
         Games.loadDataRequest();
     }
 
-    $('#' + Games.Thumbnail + Games.cursorY + '_' + Games.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Games.ThumbnailDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_text_focused');
-    $('#' + Games.DispNameDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_channel_focused');
-    $('#' + Games.ViwersDiv + Games.cursorY + '_' + Games.cursorX).addClass('stream_info_focused');
+    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
@@ -358,10 +356,7 @@ Games.addFocus = function() {
 };
 
 Games.removeFocus = function() {
-    $('#' + Games.Thumbnail + Games.cursorY + '_' + Games.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Games.ThumbnailDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_text_focused');
-    $('#' + Games.DispNameDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_channel_focused');
-    $('#' + Games.ViwersDiv + Games.cursorY + '_' + Games.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv);
 };
 
 Games.keyClickDelay = function() {
