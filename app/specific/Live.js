@@ -67,17 +67,17 @@ Live.StartLoad = function() {
     Live.cursorX = 0;
     Live.cursorY = 0;
     Live.dataEnded = false;
-    Live.loadData();
+    Live.loadDataPrepare();
+    Live.loadDataRequest();
 };
 
-Live.loadData = function() {
+Live.loadDataPrepare = function() {
     Live.imgMatrix = [];
     Live.imgMatrixId = [];
     Live.imgMatrixCount = 0;
     Live.loadingData = true;
     Live.loadingDataTry = 0;
     Live.loadingDataTimeout = 3500;
-    Live.loadDataRequest();
 };
 
 Live.loadDataRequest = function() {
@@ -171,16 +171,7 @@ Live.loadDataSuccess = function(responseText) {
 };
 
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-
-    Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
-    Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
-    Live.imgMatrixCount++;
-
-    if (Live.imgMatrixCount < (Live.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
-    Live.nameMatrix[Live.nameMatrixCount] = channel_name;
-    Live.nameMatrixCount++;
+    Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
 
     return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
         '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
@@ -191,6 +182,18 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
         '<div id="viwers_' + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
         '<div id="quality_' + row_id + '_' + coloumn_id +
         '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
+};
+
+Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
+    Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
+    Live.imgMatrixCount++;
+
+    if (Live.imgMatrixCount < (Live.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+
+    Live.nameMatrix[Live.nameMatrixCount] = channel_name;
+    Live.nameMatrixCount++;
 };
 
 Live.CellExists = function(display_name) {
@@ -220,7 +223,8 @@ Live.loadDataSuccessFinish = function() {
 
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
-                Live.loadDataReplace();
+                Live.loadDataPrepare();
+                Live.loadDataRequestReplace();
                 return;
             } else Live.blankCellCount = 0;
 
@@ -233,16 +237,6 @@ Live.loadDataSuccessFinish = function() {
             }
             //Main.ScrollSize('stream_table_live', Live.itemsCount, Live.ColoumnsCount);
         });
-};
-
-Live.loadDataReplace = function() {
-    Live.imgMatrix = [];
-    Live.imgMatrixId = [];
-    Live.imgMatrixCount = 0;
-    Live.loadingData = true;
-    Live.loadingDataTry = 0;
-    Live.loadingDataTimeout = 3500;
-    Live.loadDataRequestReplace();
 };
 
 Live.loadDataRequestReplace = function() {
@@ -325,14 +319,9 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
             if (!Main.ThumbNull(my, mx, Live.Thumbnail) && (Main.ThumbNull(my, mx, Live.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
-                Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
-                Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
-                Live.imgMatrixCount++;
+                Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
 
-                Live.nameMatrix[Live.nameMatrixCount] = channel_name;
-                Live.nameMatrixCount++;
                 document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', 'cell_' + row_id + '_' + coloumn_id);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
                 document.getElementById('cell_' + row_id + '_' + coloumn_id).innerHTML =
