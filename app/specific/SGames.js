@@ -67,17 +67,17 @@ SGames.StartLoad = function() {
     SGames.itemsCount = 0;
     SGames.cursorX = 0;
     SGames.cursorY = 0;
-    SGames.loadData();
+    SGames.loadDataPrepare();
+    SGames.loadDataRequest();
 };
 
-SGames.loadData = function() {
+SGames.loadDataPrepare = function() {
     SGames.imgMatrix = [];
     SGames.imgMatrixId = [];
     SGames.imgMatrixCount = 0;
     SGames.loadingData = true;
     SGames.loadingDataTry = 0;
     SGames.loadingDataTimeout = 3500;
-    SGames.loadDataRequest();
 };
 
 SGames.loadDataRequest = function() {

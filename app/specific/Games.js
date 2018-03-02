@@ -71,17 +71,17 @@ Games.StartLoad = function() {
     Games.cursorX = 0;
     Games.cursorY = 0;
     Games.dataEnded = false;
-    Games.loadData();
+    Games.loadDataPrepare();
+    Games.loadDataRequest();
 };
 
-Games.loadData = function() {
+Games.loadDataPrepare = function() {
     Games.imgMatrix = [];
     Games.imgMatrixId = [];
     Games.imgMatrixCount = 0;
     Games.loadingData = true;
     Games.loadingDataTry = 0;
     Games.loadingDataTimeout = 3500;
-    Games.loadDataRequest();
 };
 
 Games.loadDataRequest = function() {
@@ -142,7 +142,8 @@ Games.loadDataSuccess = function(responseText) {
 
     if (response_items > Games.ItemsLimit) {
         Games.ItemsLimitOffset = 0;
-        Games.loadData();
+        Games.loadDataPrepare();
+        Games.loadDataRequest();
         return;
     } else if (response_items < Games.ItemsLimit) Games.dataEnded = true;
 
@@ -222,6 +223,7 @@ Games.loadDataSuccessFinish = function() {
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;
+                Games.loadDataPrepare();
                 Games.loadDataReplace();
                 return;
             } else Games.blankCellCount = 0;
@@ -233,16 +235,6 @@ Games.loadDataSuccessFinish = function() {
 };
 
 Games.loadDataReplace = function() {
-    Games.imgMatrix = [];
-    Games.imgMatrixId = [];
-    Games.imgMatrixCount = 0;
-    Games.loadingData = true;
-    Games.loadingDataTry = 0;
-    Games.loadingDataTimeout = 3500;
-    Games.loadDataRequestReplace();
-};
-
-Games.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -279,7 +271,7 @@ Games.loadDataErrorReplace = function() {
     Games.loadingDataTry++;
     if (Games.loadingDataTry < Games.loadingDataTryMax) {
         Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
-        Games.loadDataRequestReplace();
+        Games.loadDataReplace();
     }
 };
 
@@ -347,7 +339,8 @@ Games.addFocus = function() {
     if (((Games.cursorY + Games.ItemsReloadLimit) > (Games.itemsCount / Games.ColoumnsCount)) &&
         !Games.dataEnded && !Games.loadingMore) {
         Games.loadingMore = true;
-        Games.loadData();
+        Games.loadDataPrepare();
+        Games.loadDataRequest();
     }
 
     $('#' + Games.Thumbnail + Games.cursorY + '_' + Games.cursorX).addClass('stream_thumbnail_focused');

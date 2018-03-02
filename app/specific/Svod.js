@@ -83,17 +83,17 @@ Svod.StartLoad = function() {
     Svod.cursorX = 0;
     Svod.cursorY = 0;
     Svod.dataEnded = false;
-    Svod.loadData();
+    Svod.loadDataPrepare();
+    Svod.loadDataRequest();
 };
 
-Svod.loadData = function() {
+Svod.loadDataPrepare = function() {
     Svod.imgMatrix = [];
     Svod.imgMatrixId = [];
     Svod.imgMatrixCount = 0;
     Svod.loadingData = true;
     Svod.loadingDataTry = 0;
     Svod.loadingDataTimeout = 3500;
-    Svod.loadDataRequest();
 };
 
 Svod.loadDataRequest = function() {
@@ -248,6 +248,7 @@ Svod.loadDataSuccessFinish = function() {
 
             if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
                 Svod.loadingMore = true;
+                Svod.loadDataPrepare();
                 Svod.loadDataReplace();
                 return;
             } else Svod.blankCellCount = 0;
@@ -258,16 +259,6 @@ Svod.loadDataSuccessFinish = function() {
 };
 
 Svod.loadDataReplace = function() {
-    Svod.imgMatrix = [];
-    Svod.imgMatrixId = [];
-    Svod.imgMatrixCount = 0;
-    Svod.loadingData = true;
-    Svod.loadingDataTry = 0;
-    Svod.loadingDataTimeout = 3500;
-    Svod.loadDataRequestReplace();
-};
-
-Svod.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -306,7 +297,7 @@ Svod.loadDataErrorReplace = function() {
     Svod.loadingDataTry++;
     if (Svod.loadingDataTry < Svod.loadingDataTryMax) {
         Svod.loadingDataTimeout += (Svod.loadingDataTry < 5) ? 250 : 3500;
-        Svod.loadDataRequestReplace();
+        Svod.loadDataReplace();
     }
 };
 
@@ -382,7 +373,8 @@ Svod.addFocus = function() {
     if (((Svod.cursorY + Svod.ItemsReloadLimit) > (Svod.itemsCount / Svod.ColoumnsCount)) &&
         !Svod.dataEnded && !Svod.loadingMore) {
         Svod.loadingMore = true;
-        Svod.loadData();
+        Svod.loadDataPrepare();
+        Svod.loadDataRequest();
     }
 
     $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_thumbnail_focused');

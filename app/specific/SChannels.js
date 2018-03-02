@@ -79,17 +79,17 @@ SChannels.StartLoad = function() {
     SChannels.cursorX = 0;
     SChannels.cursorY = 0;
     SChannels.dataEnded = false;
-    SChannels.loadData();
+    SChannels.loadDataPrepare();
+    SChannels.loadDataRequest();
 };
 
-SChannels.loadData = function() {
+SChannels.loadDataPrepare = function() {
     SChannels.imgMatrix = [];
     SChannels.imgMatrixId = [];
     SChannels.imgMatrixCount = 0;
     SChannels.loadingData = true;
     SChannels.loadingDataTry = 0;
     SChannels.loadingDataTimeout = 3500;
-    SChannels.loadDataRequest();
 };
 
 SChannels.loadDataRequest = function() {
@@ -226,6 +226,7 @@ SChannels.loadDataSuccessFinish = function() {
 
             if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
                 SChannels.loadingMore = true;
+                SChannels.loadDataPrepare();
                 SChannels.loadDataReplace();
                 return;
             } else SChannels.blankCellCount = 0;
@@ -236,16 +237,6 @@ SChannels.loadDataSuccessFinish = function() {
 };
 
 SChannels.loadDataReplace = function() {
-    SChannels.imgMatrix = [];
-    SChannels.imgMatrixId = [];
-    SChannels.imgMatrixCount = 0;
-    SChannels.loadingData = true;
-    SChannels.loadingDataTry = 0;
-    SChannels.loadingDataTimeout = 3500;
-    SChannels.loadDataRequestReplace();
-};
-
-SChannels.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -283,7 +274,7 @@ SChannels.loadDataErrorReplace = function() {
     SChannels.loadingDataTry++;
     if (SChannels.loadingDataTry < SChannels.loadingDataTryMax) {
         SChannels.loadingDataTimeout += (SChannels.loadingDataTry < 5) ? 250 : 3500;
-        SChannels.loadDataRequestReplace();
+        SChannels.loadDataReplace();
     }
 };
 
@@ -347,7 +338,8 @@ SChannels.addFocus = function() {
     if (((SChannels.cursorY + SChannels.ItemsReloadLimit) > (SChannels.itemsCount / SChannels.ColoumnsCount)) &&
         !SChannels.dataEnded && !SChannels.loadingMore) {
         SChannels.loadingMore = true;
-        SChannels.loadData();
+        SChannels.loadDataPrepare();
+        SChannels.loadDataRequest();
     }
 
     $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_thumbnail_focused');

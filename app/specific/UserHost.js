@@ -81,17 +81,17 @@ UserHost.StartLoad = function() {
     UserHost.cursorX = 0;
     UserHost.cursorY = 0;
     UserHost.dataEnded = false;
-    UserHost.loadData();
+    UserHost.loadDataPrepare();
+    UserHost.loadChannels();
 };
 
-UserHost.loadData = function() {
+UserHost.loadDataPrepare = function() {
     UserHost.imgMatrix = [];
     UserHost.imgMatrixId = [];
     UserHost.imgMatrixCount = 0;
     UserHost.loadingData = true;
     UserHost.loadingDataTry = 0;
     UserHost.loadingDataTimeout = 3500;
-    UserHost.loadChannels();
 };
 
 UserHost.loadChannels = function() {
@@ -241,23 +241,14 @@ UserHost.loadDataSuccessFinish = function() {
 
             if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
                 UserHost.loadingMore = true;
-                UserHost.loadDataReplace();
+                UserHost.loadDataPrepare();
+                UserHost.loadChannelsReplace();
                 return;
             } else UserHost.blankCellCount = 0;
 
             UserHost.loadingData = false;
             UserHost.loadingMore = false;
         });
-};
-
-UserHost.loadDataReplace = function() {
-    UserHost.imgMatrix = [];
-    UserHost.imgMatrixId = [];
-    UserHost.imgMatrixCount = 0;
-    UserHost.loadingData = true;
-    UserHost.loadingDataTry = 0;
-    UserHost.loadingDataTimeout = 3500;
-    UserHost.loadChannelsReplace();
 };
 
 UserHost.loadChannelsReplace = function() {
@@ -369,7 +360,8 @@ UserHost.addFocus = function() {
     if (((UserHost.cursorY + UserHost.ItemsReloadLimit) > (UserHost.itemsCount / UserHost.ColoumnsCount)) &&
         !UserHost.dataEnded && !UserHost.loadingMore) {
         UserHost.loadingMore = true;
-        UserHost.loadData();
+        UserHost.loadDataPrepare();
+        UserHost.loadDataRequest();
     }
 
     $('#' + UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_thumbnail_focused');

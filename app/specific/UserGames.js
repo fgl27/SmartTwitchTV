@@ -79,17 +79,17 @@ UserGames.StartLoad = function() {
     UserGames.cursorX = 0;
     UserGames.cursorY = 0;
     UserGames.dataEnded = false;
-    UserGames.loadData();
+    UserGames.loadDataPrepare();
+    UserGames.loadChannels();
 };
 
-UserGames.loadData = function() {
+UserGames.loadDataPrepare = function() {
     UserGames.imgMatrix = [];
     UserGames.imgMatrixId = [];
     UserGames.imgMatrixCount = 0;
     UserGames.loadingData = true;
     UserGames.loadingDataTry = 0;
     UserGames.loadingDataTimeout = 3500;
-    UserGames.loadChannels();
 };
 
 UserGames.loadChannels = function() {
@@ -235,23 +235,14 @@ UserGames.loadDataSuccessFinish = function() {
 
             if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
                 UserGames.loadingMore = true;
-                UserGames.loadDataReplace();
+                UserGames.loadDataPrepare();
+                UserGames.loadChannelsReplace();
                 return;
             } else UserGames.blankCellCount = 0;
 
             UserGames.loadingData = false;
             UserGames.loadingMore = false;
         });
-};
-
-UserGames.loadDataReplace = function() {
-    UserGames.imgMatrix = [];
-    UserGames.imgMatrixId = [];
-    UserGames.imgMatrixCount = 0;
-    UserGames.loadingData = true;
-    UserGames.loadingDataTry = 0;
-    UserGames.loadingDataTimeout = 3500;
-    UserGames.loadChannelsReplace();
 };
 
 UserGames.loadChannelsReplace = function() {
@@ -363,7 +354,8 @@ UserGames.addFocus = function() {
     if (((UserGames.cursorY + UserGames.ItemsReloadLimit) > (UserGames.itemsCount / UserGames.ColoumnsCount)) &&
         !UserGames.dataEnded && !UserGames.loadingMore) {
         UserGames.loadingMore = true;
-        UserGames.loadData();
+        UserGames.loadDataPrepare();
+        UserGames.loadDataRequest();
     }
 
     $('#' + UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_thumbnail_focused');

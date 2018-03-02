@@ -234,7 +234,7 @@ Live.loadDataSuccessFinish = function() {
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
                 Live.loadDataPrepare();
-                Live.loadDataRequestReplace();
+                Live.loadDataReplace();
                 return;
             } else Live.blankCellCount = 0;
 
@@ -249,7 +249,7 @@ Live.loadDataSuccessFinish = function() {
         });
 };
 
-Live.loadDataRequestReplace = function() {
+Live.loadDataReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -286,7 +286,7 @@ Live.loadDataErrorReplace = function() {
     Live.loadingDataTry++;
     if (Live.loadingDataTry < Live.loadingDataTryMax) {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
-        Live.loadDataRequestReplace();
+        Live.loadDataReplace();
     }
 };
 

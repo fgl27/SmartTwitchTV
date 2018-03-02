@@ -75,17 +75,17 @@ SLive.StartLoad = function() {
     SLive.cursorX = 0;
     SLive.cursorY = 0;
     SLive.dataEnded = false;
-    SLive.loadData();
+    SLive.loadDataPrepare();
+    SLive.loadDataRequest();
 };
 
-SLive.loadData = function() {
+SLive.loadDataPrepare = function() {
     SLive.imgMatrix = [];
     SLive.imgMatrixId = [];
     SLive.imgMatrixCount = 0;
     SLive.loadingData = true;
     SLive.loadingDataTry = 0;
     SLive.loadingDataTimeout = 3500;
-    SLive.loadDataRequest();
 };
 
 SLive.loadDataRequest = function() {
@@ -238,6 +238,7 @@ SLive.loadDataSuccessFinish = function() {
 
             if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
                 SLive.loadingMore = true;
+                SLive.loadDataPrepare();
                 SLive.loadDataReplace();
                 return;
             } else SLive.blankCellCount = 0;
@@ -248,16 +249,6 @@ SLive.loadDataSuccessFinish = function() {
 };
 
 SLive.loadDataReplace = function() {
-    SLive.imgMatrix = [];
-    SLive.imgMatrixId = [];
-    SLive.imgMatrixCount = 0;
-    SLive.loadingData = true;
-    SLive.loadingDataTry = 0;
-    SLive.loadingDataTimeout = 3500;
-    SLive.loadDataRequestReplace();
-};
-
-SLive.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -295,7 +286,7 @@ SLive.loadDataErrorReplace = function() {
     SLive.loadingDataTry++;
     if (SLive.loadingDataTry < SLive.loadingDataTryMax) {
         SLive.loadingDataTimeout += (SLive.loadingDataTry < 5) ? 250 : 3500;
-        SLive.loadDataRequestReplace();
+        SLive.loadDataReplace();
     }
 };
 
@@ -370,7 +361,8 @@ SLive.addFocus = function() {
     if (((SLive.cursorY + SLive.ItemsReloadLimit) > (SLive.itemsCount / SLive.ColoumnsCount)) &&
         !SLive.dataEnded && !SLive.loadingMore) {
         SLive.loadingMore = true;
-        SLive.loadData();
+        SLive.loadDataPrepare();
+        SLive.loadDataRequest();
     }
 
     $('#' + SLive.Thumbnail + SLive.cursorY + '_' + SLive.cursorX).addClass('stream_thumbnail_focused');
