@@ -352,13 +352,9 @@ Live.addFocus = function() {
         Live.loadDataRequest();
     }
 
-    $('#' + Live.Thumbnail + Live.cursorY + '_' + Live.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Live.ThumbnailDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_text_focused');
-    $('#' + Live.DispNameDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_channel_focused');
-    $('#' + Live.StreamTitleDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
-    $('#' + Live.StreamGameDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
-    $('#' + Live.ViwersDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
-    $('#' + Live.QualityDiv + Live.cursorY + '_' + Live.cursorX).addClass('stream_info_focused');
+    Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
+        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
@@ -367,13 +363,8 @@ Live.addFocus = function() {
 };
 
 Live.removeFocus = function() {
-    $('#' + Live.Thumbnail + Live.cursorY + '_' + Live.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Live.ThumbnailDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_text_focused');
-    $('#' + Live.DispNameDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_channel_focused');
-    $('#' + Live.StreamTitleDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_info_focused');
-    $('#' + Live.StreamGameDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_info_focused');
-    $('#' + Live.ViwersDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_info_focused');
-    $('#' + Live.QualityDiv + Live.cursorY + '_' + Live.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
+        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv);
 };
 
 Live.ExitCursorSet = function(value) {

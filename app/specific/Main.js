@@ -55,6 +55,11 @@ Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
 
+Main.classThumb = 'stream_thumbnail_focused';
+Main.classText = 'stream_text_focused';
+Main.classChannel = 'stream_channel_focused';
+Main.classInfo = 'stream_info_focused';
+
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
 tizen.tvinputdevice.registerKey("MediaPlayPause");
@@ -88,7 +93,6 @@ Main.currentVersion = '';
 Main.minversion = '030118';
 Main.versonTag = '';
 //Variable initialization end
-
 
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
@@ -492,6 +496,26 @@ Main.CheckMp4Html5 = function() {
 Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
     var element = document.getElementById(table), y = element.scrollHeight, division = itemsCount / ColoumnsCount;
     console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
+};
+
+Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
+    $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
+    $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
+    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
+    $('#' + StreamTitleDiv + y + '_' + x).addClass(Main.classInfo);
+    $('#' + StreamGameDiv + y + '_' + x).addClass(Main.classInfo);
+    $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
+    $('#' + QualityDiv + y + '_' + x).addClass(Main.classInfo);
+};
+
+Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
+    $('#' + Thumbnail + y + '_' + x).removeClass(Main.classThumb);
+    $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
+    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
+    $('#' + StreamTitleDiv + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + StreamGameDiv + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
+    $('#' + QualityDiv + y + '_' + x).removeClass(Main.classInfo);
 };
 
 Main.ScrollHelper = {
