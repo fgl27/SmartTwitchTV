@@ -141,7 +141,7 @@ UserChannels.loadChannelLive = function(responseText) {
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserChannels.loadChannelOffsset += response_items;
         UserChannels.loadDataPrepare();
-        UserChannels.loadDataRequest();
+        UserChannels.loadChannels();
     } else { // end
         UserChannels.UserChannelsList.sort(function(a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -236,7 +236,7 @@ UserChannels.addFocus = function() {
         !UserChannels.dataEnded && !UserChannels.loadingMore) {
         UserChannels.loadingMore = true;
         UserChannels.loadDataPrepare();
-        UserChannels.loadDataRequest();
+        UserChannels.loadChannels();
     }
 
     $('#' + UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_thumbnail_focused');

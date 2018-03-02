@@ -151,7 +151,7 @@ UserLive.loadChannelLive = function(responseText) {
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserLive.loadChannelOffsset += response_items;
         UserLive.loadDataPrepare();
-        Live.loadDataRequest();
+        UserLive.loadChannels();
     } else { // end
         UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
         UserLive.imgMatrix = [];
@@ -438,7 +438,7 @@ UserLive.addFocus = function() {
         !UserLive.dataEnded && !UserLive.loadingMore) {
         UserLive.loadingMore = true;
         UserLive.loadDataPrepare();
-        UserLive.loadDataRequest();
+        UserLive.loadChannels();
     }
 
     Main.addFocusVideo(UserLive.cursorY, UserLive.cursorX, UserLive.Thumbnail, UserLive.ThumbnailDiv, UserLive.DispNameDiv, UserLive.StreamTitleDiv,

@@ -364,8 +364,8 @@ UserHost.addFocus = function() {
         UserHost.loadDataRequest();
     }
 
-    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.StreamTitleDiv,
-        UserHost.StreamGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
+    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
+        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
 
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
@@ -375,8 +375,8 @@ UserHost.addFocus = function() {
 };
 
 UserHost.removeFocus = function() {
-    Main.removeFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.StreamTitleDiv,
-        UserHost.StreamGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
+    Main.removeFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
+        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
 };
 
 UserHost.keyClickDelay = function() {

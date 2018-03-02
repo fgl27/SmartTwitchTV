@@ -65,7 +65,7 @@ SChannelContent.StartLoad = function() {
     SChannelContent.loadDataRequest();
 };
 
-SChannelContent.loadData = function() {
+SChannelContent.loadDataPrepare = function() {
     SChannelContent.imgMatrix = [];
     SChannelContent.imgMatrixId = [];
     SChannelContent.imgMatrixCount = 0;

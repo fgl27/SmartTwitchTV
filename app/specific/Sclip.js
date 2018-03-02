@@ -386,8 +386,13 @@ Sclip.addFocus = function() {
         Sclip.loadDataRequest();
     }
 
-    Main.addFocusVideo(Sclip.cursorY, Sclip.cursorX, Sclip.Thumbnail, Sclip.ThumbnailDiv, Sclip.DispNameDiv, Sclip.StreamTitleDiv,
-        Sclip.StreamGameDiv, Sclip.ViwersDiv, Sclip.QualityDiv);
+    $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_thumbnail_focused');
+    $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_text_focused');
+    $('#' + Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
+    $('#' + Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
+    $('#' + Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
+    $('#' + Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
+    $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
 
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
@@ -397,8 +402,13 @@ Sclip.addFocus = function() {
 };
 
 Sclip.removeFocus = function() {
-    Main.removeFocusVideo(Sclip.cursorY, Sclip.cursorX, Sclip.Thumbnail, Sclip.ThumbnailDiv, Sclip.DispNameDiv, Sclip.StreamTitleDiv,
-        Sclip.StreamGameDiv, Sclip.ViwersDiv, Sclip.QualityDiv);
+    $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_thumbnail_focused');
+    $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_text_focused');
+    $('#' + Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
+    $('#' + Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
+    $('#' + Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
+    $('#' + Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
+    $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
 };
 
 Sclip.keyClickDelay = function() {
