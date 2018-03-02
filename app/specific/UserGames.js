@@ -358,13 +358,8 @@ UserGames.addFocus = function() {
         UserGames.loadDataRequest();
     }
 
-    Main.addFocusGame(UserGames.cursorY, UserGames.cursorX, UserGames.Thumbnail, UserGames.ThumbnailDiv, UserGames.DispNameDiv, UserGames.ViwersDiv);
-
-    window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-    }, 10);
-
-    Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, UserGames.ColoumnsCount, UserGames.itemsCount);
+    Main.addFocusGame(UserGames.cursorY, UserGames.cursorX, UserGames.Thumbnail, UserGames.ThumbnailDiv, UserGames.DispNameDiv,
+        UserGames.ViwersDiv, Main.UserGames, UserGames.ColoumnsCount, UserGames.itemsCount);
 };
 
 UserGames.removeFocus = function() {
