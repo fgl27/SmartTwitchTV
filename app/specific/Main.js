@@ -498,7 +498,7 @@ Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
     console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
 };
 
-Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
+Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
     $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
     $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
@@ -506,6 +506,12 @@ Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Stream
     $('#' + StreamGameDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + QualityDiv + y + '_' + x).addClass(Main.classInfo);
+
+    window.setTimeout(function() {
+        Main.ScrollHelper.scrollVerticalToElementById(Thumbnail, y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+    }, 10);
+
+    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
 };
 
 Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {

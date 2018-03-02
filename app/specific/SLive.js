@@ -366,13 +366,7 @@ SLive.addFocus = function() {
     }
 
     Main.addFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
-        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv);
-
-    window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    }, 10);
-
-    Main.CounterDialog(SLive.cursorX, SLive.cursorY, SLive.ColoumnsCount, SLive.itemsCount);
+        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, Main.SLive, SLive.ColoumnsCount, SLive.itemsCount);
 };
 
 SLive.removeFocus = function() {
