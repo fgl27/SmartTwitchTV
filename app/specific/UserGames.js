@@ -358,10 +358,8 @@ UserGames.addFocus = function() {
         UserGames.loadDataRequest();
     }
 
-    $('#' + UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + UserGames.ThumbnailDiv + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_text_focused');
-    $('#' + UserGames.DispNameDiv + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_channel_focused');
-    $('#' + UserGames.ViwersDiv + UserGames.cursorY + '_' + UserGames.cursorX).addClass('stream_info_focused');
+    Main.addFocusGame(UserGames.cursorY, UserGames.cursorX, UserGames.Thumbnail, UserGames.ThumbnailDiv, UserGames.DispNameDiv, UserGames.ViwersDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
@@ -370,10 +368,7 @@ UserGames.addFocus = function() {
 };
 
 UserGames.removeFocus = function() {
-    $('#' + UserGames.Thumbnail + UserGames.cursorY + '_' + UserGames.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + UserGames.ThumbnailDiv + UserGames.cursorY + '_' + UserGames.cursorX).removeClass('stream_text_focused');
-    $('#' + UserGames.DispNameDiv + UserGames.cursorY + '_' + UserGames.cursorX).removeClass('stream_channel_focused');
-    $('#' + UserGames.ViwersDiv + UserGames.cursorY + '_' + UserGames.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusGame(UserGames.cursorY, UserGames.cursorX, UserGames.Thumbnail, UserGames.ThumbnailDiv, UserGames.DispNameDiv, UserGames.ViwersDiv);
 };
 
 UserGames.keyClickDelay = function() {

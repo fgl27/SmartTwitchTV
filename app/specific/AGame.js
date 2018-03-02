@@ -364,13 +364,9 @@ AGame.addFocus = function() {
         AGame.loadDataRequest();
     }
 
-    $('#' + AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + AGame.ThumbnailDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_text_focused');
-    $('#' + AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_channel_focused');
-    $('#' + AGame.StreamTitleDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
-    $('#' + AGame.StreamGameDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
-    $('#' + AGame.ViwersDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
-    $('#' + AGame.QualityDiv + AGame.cursorY + '_' + AGame.cursorX).addClass('stream_info_focused');
+    Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
+        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
@@ -379,13 +375,8 @@ AGame.addFocus = function() {
 };
 
 AGame.removeFocus = function() {
-    $('#' + AGame.Thumbnail + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + AGame.ThumbnailDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_text_focused');
-    $('#' + AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_channel_focused');
-    $('#' + AGame.StreamTitleDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_info_focused');
-    $('#' + AGame.StreamGameDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_info_focused');
-    $('#' + AGame.ViwersDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_info_focused');
-    $('#' + AGame.QualityDiv + AGame.cursorY + '_' + AGame.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
+        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv);
 };
 
 AGame.keyClickDelay = function() {

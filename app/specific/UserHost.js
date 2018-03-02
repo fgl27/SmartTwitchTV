@@ -364,12 +364,9 @@ UserHost.addFocus = function() {
         UserHost.loadDataRequest();
     }
 
-    $('#' + UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + UserHost.ThumbnailDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_text_focused');
-    $('#' + UserHost.DispNameDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_channel_focused');
-    $('#' + UserHost.hostsTitleDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_info_focused');
-    $('#' + UserHost.hostsGameDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_info_focused');
-    $('#' + UserHost.ViwersDiv + UserHost.cursorY + '_' + UserHost.cursorX).addClass('stream_info_focused');
+    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.StreamTitleDiv,
+        UserHost.StreamGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
+
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
@@ -378,12 +375,8 @@ UserHost.addFocus = function() {
 };
 
 UserHost.removeFocus = function() {
-    $('#' + UserHost.Thumbnail + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + UserHost.ThumbnailDiv + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_text_focused');
-    $('#' + UserHost.DispNameDiv + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_channel_focused');
-    $('#' + UserHost.hostsTitleDiv + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_info_focused');
-    $('#' + UserHost.hostsGameDiv + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_info_focused');
-    $('#' + UserHost.ViwersDiv + UserHost.cursorY + '_' + UserHost.cursorX).removeClass('stream_info_focused');
+    Main.removeFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.StreamTitleDiv,
+        UserHost.StreamGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
 };
 
 UserHost.keyClickDelay = function() {
