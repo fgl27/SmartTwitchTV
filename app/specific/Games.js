@@ -190,7 +190,7 @@ Games.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
     Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
     Games.imgMatrixCount++;
 
-    if (Games.imgMatrixCount < (Games.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+    if (Games.imgMatrixCount < (Games.ColoumnsCount * 3)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 
     Games.nameMatrix[Games.nameMatrixCount] = game_name;
     Games.nameMatrixCount++;
