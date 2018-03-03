@@ -157,8 +157,10 @@ Games.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Games.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             game = response.top[cursor];
-            if (Games.CellExists(game.game.name)) coloumn_id--;
-            else {
+            if (Games.CellExists(game.game.name)) {
+                coloumn_id--;
+                if (Games.dataEnded) Games.itemsCount--;
+            } else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
                     Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
                 row.append(cell);
@@ -295,7 +297,10 @@ Games.loadDataSuccessReplace = function(responseText) {
         }
     }
     Games.itemsCountOffset += cursor;
-    if (Games.ReplacedataEnded) Games.blankCellCount = 0;
+    if (Games.ReplacedataEnded) {
+        Games.itemsCount -= Games.blankCellCount;
+        Games.blankCellCount = 0;
+    }
     Games.loadDataSuccessFinish();
 };
 
