@@ -17,9 +17,6 @@ Sclip.loadingDataTry = 0;
 Sclip.loadingDataTryMax = 10;
 Sclip.loadingDataTimeout = 3500;
 Sclip.isDialogOn = false;
-Sclip.ItemsLimit = 99;
-Sclip.ColoumnsCount = 3;
-Sclip.ItemsReloadLimit = 0;
 Sclip.blankCellCount = 0;
 Sclip.LastClickFinish = true;
 Sclip.keyClickDelayTime = 25;
@@ -62,7 +59,7 @@ Sclip.init = function() {
     if (Sclip.status) {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Sclip.ColoumnsCount, Sclip.itemsCount);
+        Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
     } else Sclip.StartLoad();
 };
 
@@ -125,7 +122,7 @@ Sclip.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main.selectedChannel) + '&limit=' +
-            Sclip.ItemsLimit + '&period=' + encodeURIComponent(Sclip.period) +
+            Main.ItemsLimitVideo + '&period=' + encodeURIComponent(Sclip.period) +
             (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -169,24 +166,24 @@ Sclip.loadDataSuccess = function(responseText) {
     var response_items = response.clips.length;
     Sclip.cursor = response._cursor;
 
-    if (response_items < Sclip.ItemsLimit) Sclip.dataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) Sclip.dataEnded = true;
 
     var offset_itemsCount = Sclip.itemsCount;
     Sclip.itemsCount += response_items;
 
     Sclip.emptyContent = Sclip.itemsCount === 0;
 
-    var response_rows = response_items / Sclip.ColoumnsCount;
-    if (response_items % Sclip.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountVideo;
+    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, stream, vod_id, vod_offset,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Sclip.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < Sclip.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
             vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
             if (Sclip.CellExists(video.tracking_id)) coloumn_id--;
@@ -196,7 +193,7 @@ Sclip.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < Sclip.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Sclip.EmptyCell));
         }
         $('#stream_table_search_clip').append(row);
@@ -217,7 +214,7 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     Sclip.imgMatrixId[Sclip.imgMatrixCount] = Sclip.Thumbnail + row_id + '_' + coloumn_id;
     Sclip.imgMatrixCount++;
 
-    if (Sclip.imgMatrixCount < (Sclip.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (Sclip.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;
@@ -321,7 +318,7 @@ Sclip.loadDataSuccessReplace = function(responseText) {
 
     if (response_items < Sclip.blankCellCount) Sclip.ReplacedataEnded = true;
 
-    var row_id = Sclip.itemsCount / Sclip.ColoumnsCount;
+    var row_id = Sclip.itemsCount / Main.ColoumnsCountVideo;
 
     var coloumn_id, video, vod_id, mReplace = false,
         cursor = 0;
@@ -343,8 +340,8 @@ Sclip.loadDataSuccessReplace = function(responseText) {
 Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
     var my = 0,
         mx = 0;
-    for (my = row_id - (1 + Math.ceil(Sclip.blankCellCount / Sclip.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < Sclip.ColoumnsCount; mx++) {
+    for (my = row_id - (1 + Math.ceil(Sclip.blankCellCount / Main.ColoumnsCountVideo)); my < row_id; my++) {
+        for (mx = 0; mx < Main.ColoumnsCountVideo; mx++) {
             if (!Main.ThumbNull(my, mx, Sclip.Thumbnail) && (Main.ThumbNull(my, mx, Sclip.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -379,7 +376,7 @@ Sclip.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
 };
 
 Sclip.addFocus = function() {
-    if (((Sclip.cursorY + Sclip.ItemsReloadLimit) > (Sclip.itemsCount / Sclip.ColoumnsCount)) &&
+    if (((Sclip.cursorY + Main.ItemsReloadLimitVideo) > (Sclip.itemsCount / Main.ColoumnsCountVideo)) &&
         !Sclip.dataEnded && !Sclip.loadingMore) {
         Sclip.loadingMore = true;
         Sclip.loadDataPrepare();
@@ -398,7 +395,7 @@ Sclip.addFocus = function() {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 
-    Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Sclip.ColoumnsCount, Sclip.itemsCount);
+    Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
 };
 
 Sclip.removeFocus = function() {
@@ -443,7 +440,7 @@ Sclip.handleKeyDown = function(event) {
                 Sclip.cursorX--;
                 Sclip.addFocus();
             } else {
-                for (i = (Sclip.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
                     if (Main.ThumbNull((Sclip.cursorY - 1), i, Sclip.Thumbnail)) {
                         Sclip.removeFocus();
                         Sclip.cursorY--;
@@ -467,7 +464,7 @@ Sclip.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Sclip.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((Sclip.cursorY - 1), (Sclip.cursorX - i), Sclip.Thumbnail)) {
                     Sclip.removeFocus();
                     Sclip.cursorY--;
@@ -478,7 +475,7 @@ Sclip.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Sclip.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((Sclip.cursorY + 1), (Sclip.cursorX - i), Sclip.Thumbnail)) {
                     Sclip.removeFocus();
                     Sclip.cursorY++;

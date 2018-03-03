@@ -17,9 +17,6 @@ Svod.loadingDataTry = 0;
 Svod.loadingDataTryMax = 10;
 Svod.loadingDataTimeout = 3500;
 Svod.isDialogOn = false;
-Svod.ItemsLimit = 99;
-Svod.ColoumnsCount = 3;
-Svod.ItemsReloadLimit = 0;
 Svod.blankCellCount = 0;
 Svod.itemsCountOffset = 0;
 Svod.LastClickFinish = true;
@@ -55,7 +52,7 @@ Svod.init = function() {
     if (Svod.status) {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(Svod.cursorX, Svod.cursorY, Svod.ColoumnsCount, Svod.itemsCount);
+        Main.CounterDialog(Svod.cursorX, Svod.cursorY,Main.ColoumnsCountVideo, Svod.itemsCount);
     } else Svod.StartLoad();
 };
 
@@ -102,14 +99,14 @@ Svod.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
-        if (offset !== 0 && offset >= (Svod.MaxOffset - Svod.ItemsLimit)) {
-            offset = Svod.MaxOffset - Svod.ItemsLimit;
+        if (offset !== 0 && offset >= (Svod.MaxOffset -Main.ItemsLimitVideo)) {
+            offset = Svod.MaxOffset -Main.ItemsLimitVideo;
             Svod.dataEnded = true;
             Svod.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main.selectedChannel) + '/videos?limit=' +
-            Svod.ItemsLimit + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+           Main.ItemsLimitVideo + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Svod.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -152,24 +149,24 @@ Svod.loadDataSuccess = function(responseText) {
     var response_items = response.videos.length;
     Svod.MaxOffset = parseInt(response._total);
 
-    if (response_items < Svod.ItemsLimit) Svod.dataEnded = true;
+    if (response_items <Main.ItemsLimitVideo) Svod.dataEnded = true;
 
     var offset_itemsCount = Svod.itemsCount;
     Svod.itemsCount += response_items;
 
     Svod.emptyContent = Svod.itemsCount === 0;
 
-    var response_rows = response_items / Svod.ColoumnsCount;
-    if (response_items % Svod.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items /Main.ColoumnsCountVideo;
+    if (response_items %Main.ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Svod.ColoumnsCount + i;
+        row_id = offset_itemsCount /Main.ColoumnsCountVideo + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < Svod.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id <Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
             if (((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) || Svod.CellExists(video._id)) coloumn_id--;
             else {
@@ -180,7 +177,7 @@ Svod.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < Svod.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id <Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Svod.EmptyCell));
         }
         $('#stream_table_search_vod').append(row);
@@ -201,7 +198,7 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
     Svod.imgMatrixId[Svod.imgMatrixCount] = Svod.Thumbnail + row_id + '_' + coloumn_id;
     Svod.imgMatrixCount++;
 
-    if (Svod.imgMatrixCount < (Svod.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (Svod.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
     Svod.nameMatrixCount++;
@@ -264,13 +261,13 @@ Svod.loadDataReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
-        if (offset !== 0 && offset >= (Svod.MaxOffset - Svod.ItemsLimit)) {
-            offset = Svod.MaxOffset - Svod.ItemsLimit;
+        if (offset !== 0 && offset >= (Svod.MaxOffset -Main.ItemsLimitVideo)) {
+            offset = Svod.MaxOffset -Main.ItemsLimitVideo;
             Svod.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main.selectedChannel) + '/videos?limit=' +
-            Svod.ItemsLimit + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+           Main.ItemsLimitVideo + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Svod.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -306,9 +303,9 @@ Svod.loadDataSuccessReplace = function(responseText) {
     var response_items = response.videos.length;
     Svod.MaxOffset = parseInt(response._total);
 
-    if (response_items < Svod.ItemsLimit) Svod.ReplacedataEnded = true;
+    if (response_items <Main.ItemsLimitVideo) Svod.ReplacedataEnded = true;
 
-    var row_id = Svod.itemsCount / Svod.ColoumnsCount;
+    var row_id = Svod.itemsCount /Main.ColoumnsCountVideo;
 
     var coloumn_id, video, mReplace = false,
         cursor = 0;
@@ -333,9 +330,9 @@ Svod.loadDataSuccessReplace = function(responseText) {
 Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
     var my = 0,
         mx = 0;
-    if (row_id < ((Svod.ItemsLimit / Svod.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(Svod.blankCellCount / Svod.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < Svod.ColoumnsCount; mx++) {
+    if (row_id < ((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) - 1)) return false;
+    for (my = row_id - (1 + Math.ceil(Svod.blankCellCount /Main.ColoumnsCountVideo)); my < row_id; my++) {
+        for (mx = 0; mx <Main.ColoumnsCountVideo; mx++) {
             if (!Main.ThumbNull(my, mx, Svod.Thumbnail) && (Main.ThumbNull(my, mx, Svod.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -370,7 +367,7 @@ Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
 };
 
 Svod.addFocus = function() {
-    if (((Svod.cursorY + Svod.ItemsReloadLimit) > (Svod.itemsCount / Svod.ColoumnsCount)) &&
+    if (((Svod.cursorY +Main.ItemsReloadLimitVideo) > (Svod.itemsCount /Main.ColoumnsCountVideo)) &&
         !Svod.dataEnded && !Svod.loadingMore) {
         Svod.loadingMore = true;
         Svod.loadDataPrepare();
@@ -389,7 +386,7 @@ Svod.addFocus = function() {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 
-    Main.CounterDialog(Svod.cursorX, Svod.cursorY, Svod.ColoumnsCount, Svod.itemsCount);
+    Main.CounterDialog(Svod.cursorX, Svod.cursorY,Main.ColoumnsCountVideo, Svod.itemsCount);
 };
 
 Svod.removeFocus = function() {
@@ -434,7 +431,7 @@ Svod.handleKeyDown = function(event) {
                 Svod.cursorX--;
                 Svod.addFocus();
             } else {
-                for (i = (Svod.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
                     if (Main.ThumbNull((Svod.cursorY - 1), i, Svod.Thumbnail)) {
                         Svod.removeFocus();
                         Svod.cursorY--;
@@ -458,7 +455,7 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Svod.ColoumnsCount; i++) {
+            for (i = 0; i <Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((Svod.cursorY - 1), (Svod.cursorX - i), Svod.Thumbnail)) {
                     Svod.removeFocus();
                     Svod.cursorY--;
@@ -469,7 +466,7 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Svod.ColoumnsCount; i++) {
+            for (i = 0; i <Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((Svod.cursorY + 1), (Svod.cursorX - i), Svod.Thumbnail)) {
                     Svod.removeFocus();
                     Svod.cursorY++;

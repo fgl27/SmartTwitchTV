@@ -17,9 +17,6 @@ AGame.loadingDataTry = 0;
 AGame.loadingDataTryMax = 10;
 AGame.loadingDataTimeout = 3500;
 AGame.isDialogOn = false;
-AGame.ItemsLimit = 99;
-AGame.ColoumnsCount = 3;
-AGame.ItemsReloadLimit = 0;
 AGame.blankCellCount = 0;
 AGame.itemsCountOffset = 0;
 AGame.LastClickFinish = true;
@@ -50,7 +47,7 @@ AGame.init = function() {
     if ((Main.OldgameSelected === Main.gameSelected)) {
         Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(AGame.cursorX, AGame.cursorY, AGame.ColoumnsCount, AGame.itemsCount);
+        Main.CounterDialog(AGame.cursorX, AGame.cursorY, Main.ColoumnsCountVideo, AGame.itemsCount);
     } else AGame.StartLoad();
 };
 
@@ -98,14 +95,14 @@ AGame.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
-        if (offset !== 0 && offset >= (AGame.MaxOffset - AGame.ItemsLimit)) {
-            offset = AGame.MaxOffset - AGame.ItemsLimit;
+        if (offset !== 0 && offset >= (AGame.MaxOffset - Main.ItemsLimitVideo)) {
+            offset = AGame.MaxOffset - Main.ItemsLimitVideo;
             AGame.dataEnded = true;
             AGame.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + AGame.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = AGame.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -147,24 +144,24 @@ AGame.loadDataSuccess = function(responseText) {
     var response_items = response.streams.length;
     AGame.MaxOffset = parseInt(response._total);
 
-    if (response_items < AGame.ItemsLimit) AGame.dataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) AGame.dataEnded = true;
 
     var offset_itemsCount = AGame.itemsCount;
     AGame.itemsCount += response_items;
 
     AGame.emptyContent = AGame.itemsCount === 0;
 
-    var response_rows = response_items / AGame.ColoumnsCount;
-    if (response_items % AGame.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountVideo;
+    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / AGame.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < AGame.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (AGame.CellExists(stream.channel.name)) coloumn_id--;
             else {
@@ -176,7 +173,7 @@ AGame.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < AGame.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, AGame.EmptyCell));
         }
         $('#stream_table_a_game').append(row);
@@ -192,7 +189,7 @@ AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     AGame.imgMatrixId[AGame.imgMatrixCount] = AGame.Thumbnail + row_id + '_' + coloumn_id;
     AGame.imgMatrixCount++;
 
-    if (AGame.imgMatrixCount < (AGame.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (AGame.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     AGame.nameMatrix[AGame.nameMatrixCount] = channel_name;
     AGame.nameMatrixCount++;
@@ -253,13 +250,13 @@ AGame.loadDataReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
-        if (offset !== 0 && offset >= (AGame.MaxOffset - AGame.ItemsLimit)) {
-            offset = AGame.MaxOffset - AGame.ItemsLimit;
+        if (offset !== 0 && offset >= (AGame.MaxOffset - Main.ItemsLimitVideo)) {
+            offset = AGame.MaxOffset - Main.ItemsLimitVideo;
             AGame.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + AGame.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = AGame.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -294,9 +291,9 @@ AGame.loadDataSuccessReplace = function(responseText) {
     var response_items = response.streams.length;
     AGame.MaxOffset = parseInt(response._total);
 
-    if (response_items < AGame.ItemsLimit) AGame.ReplacedataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) AGame.ReplacedataEnded = true;
 
-    var row_id = AGame.itemsCount / AGame.ColoumnsCount;
+    var row_id = AGame.itemsCount / Main.ColoumnsCountVideo;
 
     var coloumn_id, stream, mReplace = false,
         cursor = 0;
@@ -321,9 +318,9 @@ AGame.loadDataSuccessReplace = function(responseText) {
 AGame.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     var my = 0,
         mx = 0;
-    if (row_id < ((AGame.ItemsLimit / AGame.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(AGame.blankCellCount / AGame.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < AGame.ColoumnsCount; mx++) {
+    if (row_id < ((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) - 1)) return false;
+    for (my = row_id - (1 + Math.ceil(AGame.blankCellCount / Main.ColoumnsCountVideo)); my < row_id; my++) {
+        for (mx = 0; mx < Main.ColoumnsCountVideo; mx++) {
             if (!Main.ThumbNull(my, mx, AGame.Thumbnail) && (Main.ThumbNull(my, mx, AGame.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -357,7 +354,7 @@ AGame.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
 };
 
 AGame.addFocus = function() {
-    if (((AGame.cursorY + AGame.ItemsReloadLimit) > (AGame.itemsCount / AGame.ColoumnsCount)) &&
+    if (((AGame.cursorY + Main.ItemsReloadLimitVideo) > (AGame.itemsCount / Main.ColoumnsCountVideo)) &&
         !AGame.dataEnded && !AGame.loadingMore) {
         AGame.loadingMore = true;
         AGame.loadDataPrepare();
@@ -365,7 +362,7 @@ AGame.addFocus = function() {
     }
 
     Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
-        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, AGame.ColoumnsCount, AGame.itemsCount);
+        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);
 };
 
 AGame.removeFocus = function() {
@@ -407,7 +404,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.cursorX--;
                 AGame.addFocus();
             } else {
-                for (i = (AGame.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
                     if (Main.ThumbNull((AGame.cursorY - 1), i, AGame.Thumbnail)) {
                         AGame.removeFocus();
                         AGame.cursorY--;
@@ -431,7 +428,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < AGame.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((AGame.cursorY - 1), (AGame.cursorX - i), AGame.Thumbnail)) {
                     AGame.removeFocus();
                     AGame.cursorY--;
@@ -442,7 +439,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < AGame.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((AGame.cursorY + 1), (AGame.cursorX - i), AGame.Thumbnail)) {
                     AGame.removeFocus();
                     AGame.cursorY++;

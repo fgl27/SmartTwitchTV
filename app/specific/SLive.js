@@ -17,9 +17,6 @@ SLive.loadingDataTry = 0;
 SLive.loadingDataTryMax = 10;
 SLive.loadingDataTimeout = 3500;
 SLive.isDialogOn = false;
-SLive.ItemsLimit = 99;
-SLive.ColoumnsCount = 3;
-SLive.ItemsReloadLimit = 0;
 SLive.blankCellCount = 0;
 SLive.itemsCountOffset = 0;
 SLive.LastClickFinish = true;
@@ -48,7 +45,7 @@ SLive.init = function() {
     if (SLive.status) {
         Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(SLive.cursorX, SLive.cursorY, SLive.ColoumnsCount, SLive.itemsCount);
+        Main.CounterDialog(SLive.cursorX, SLive.cursorY, Main.ColoumnsCountVideo, SLive.itemsCount);
     } else SLive.StartLoad();
 };
 
@@ -94,14 +91,14 @@ SLive.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (SLive.MaxOffset - SLive.ItemsLimit)) {
-            offset = SLive.MaxOffset - SLive.ItemsLimit;
+        if (offset !== 0 && offset >= (SLive.MaxOffset - Main.ItemsLimitVideo)) {
+            offset = SLive.MaxOffset - Main.ItemsLimitVideo;
             SLive.dataEnded = true;
             SLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SLive.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -143,24 +140,24 @@ SLive.loadDataSuccess = function(responseText) {
     var response_items = response.streams.length;
     SLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < SLive.ItemsLimit) SLive.dataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) SLive.dataEnded = true;
 
     var offset_itemsCount = SLive.itemsCount;
     SLive.itemsCount += response_items;
 
     SLive.emptyContent = SLive.itemsCount === 0;
 
-    var response_rows = response_items / SLive.ColoumnsCount;
-    if (response_items % SLive.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountVideo;
+    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / SLive.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < SLive.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (SLive.CellExists(stream.channel.name)) coloumn_id--;
             else {
@@ -172,7 +169,7 @@ SLive.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < SLive.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, SLive.EmptyCell));
         }
         $('#stream_table_search_live').append(row);
@@ -193,7 +190,7 @@ SLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
     SLive.imgMatrixId[SLive.imgMatrixCount] = SLive.Thumbnail + row_id + '_' + coloumn_id;
     SLive.imgMatrixCount++;
 
-    if (SLive.imgMatrixCount < (SLive.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (SLive.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     SLive.nameMatrix[SLive.nameMatrixCount] = channel_name;
     SLive.nameMatrixCount++;
@@ -254,13 +251,13 @@ SLive.loadDataReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (SLive.MaxOffset - SLive.ItemsLimit)) {
-            offset = SLive.MaxOffset - SLive.ItemsLimit;
+        if (offset !== 0 && offset >= (SLive.MaxOffset - Main.ItemsLimitVideo)) {
+            offset = SLive.MaxOffset - Main.ItemsLimitVideo;
             SLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SLive.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -295,9 +292,9 @@ SLive.loadDataSuccessReplace = function(responseText) {
     var response_items = response.streams.length;
     SLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < SLive.ItemsLimit) SLive.ReplacedataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) SLive.ReplacedataEnded = true;
 
-    var row_id = SLive.itemsCount / SLive.ColoumnsCount;
+    var row_id = SLive.itemsCount / Main.ColoumnsCountVideo;
 
     var coloumn_id, stream, mReplace = false,
         cursor = 0;
@@ -322,9 +319,9 @@ SLive.loadDataSuccessReplace = function(responseText) {
 SLive.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     var my = 0,
         mx = 0;
-    if (row_id < ((SLive.ItemsLimit / SLive.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(SLive.blankCellCount / SLive.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < SLive.ColoumnsCount; mx++) {
+    if (row_id < ((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) - 1)) return false;
+    for (my = row_id - (1 + Math.ceil(SLive.blankCellCount / Main.ColoumnsCountVideo)); my < row_id; my++) {
+        for (mx = 0; mx < Main.ColoumnsCountVideo; mx++) {
             if (!Main.ThumbNull(my, mx, SLive.Thumbnail) && (Main.ThumbNull(my, mx, SLive.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -358,7 +355,7 @@ SLive.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thum
 };
 
 SLive.addFocus = function() {
-    if (((SLive.cursorY + SLive.ItemsReloadLimit) > (SLive.itemsCount / SLive.ColoumnsCount)) &&
+    if (((SLive.cursorY + Main.ItemsReloadLimitVideo) > (SLive.itemsCount / Main.ColoumnsCountVideo)) &&
         !SLive.dataEnded && !SLive.loadingMore) {
         SLive.loadingMore = true;
         SLive.loadDataPrepare();
@@ -366,7 +363,7 @@ SLive.addFocus = function() {
     }
 
     Main.addFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
-        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, Main.SLive, SLive.ColoumnsCount, SLive.itemsCount);
+        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, Main.SLive, Main.ColoumnsCountVideo, SLive.itemsCount);
 };
 
 SLive.removeFocus = function() {
@@ -407,7 +404,7 @@ SLive.handleKeyDown = function(event) {
                 SLive.cursorX--;
                 SLive.addFocus();
             } else {
-                for (i = (SLive.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
                     if (Main.ThumbNull((SLive.cursorY - 1), i, SLive.Thumbnail)) {
                         SLive.removeFocus();
                         SLive.cursorY--;
@@ -431,7 +428,7 @@ SLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < SLive.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((SLive.cursorY - 1), (SLive.cursorX - i), SLive.Thumbnail)) {
                     SLive.removeFocus();
                     SLive.cursorY--;
@@ -442,7 +439,7 @@ SLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < SLive.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
                 if (Main.ThumbNull((SLive.cursorY + 1), (SLive.cursorX - i), SLive.Thumbnail)) {
                     SLive.removeFocus();
                     SLive.cursorY++;
