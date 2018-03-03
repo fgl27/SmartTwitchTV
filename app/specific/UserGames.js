@@ -17,9 +17,6 @@ UserGames.loadingDataTry = 0;
 UserGames.loadingDataTryMax = 10;
 UserGames.loadingDataTimeout = 3500;
 UserGames.isDialogOn = false;
-UserGames.ItemsLimit = 100;
-UserGames.ColoumnsCount = 5;
-UserGames.ItemsReloadLimit = 0;
 UserGames.blankCellCount = 0;
 UserGames.itemsCountOffset = 0;
 UserGames.LastClickFinish = true;
@@ -49,7 +46,7 @@ UserGames.init = function() {
     if (UserGames.status) {
         Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames,
             Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-        Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, UserGames.ColoumnsCount, UserGames.itemsCount);
+        Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, Main.ColoumnsCountGame, UserGames.itemsCount);
     } else UserGames.StartLoad();
 };
 
@@ -98,14 +95,14 @@ UserGames.loadChannels = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserGames.MaxOffset - UserGames.ItemsLimit)) {
-            offset = UserGames.MaxOffset - UserGames.ItemsLimit;
+        if (offset !== 0 && offset >= (UserGames.MaxOffset - Main.ItemsLimitGame)) {
+            offset = UserGames.MaxOffset - Main.ItemsLimitGame;
             UserGames.dataEnded = true;
             UserGames.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games/live?limit=' +
-            UserLive.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -147,24 +144,24 @@ UserGames.loadDataSuccess = function(responseText) {
     var response_items = response.follows.length;
     UserGames.MaxOffset = parseInt(response._total);
 
-    if (response_items < UserGames.ItemsLimit) UserGames.dataEnded = true;
+    if (response_items < Main.ItemsLimitGame) UserGames.dataEnded = true;
 
     var offset_itemsCount = UserGames.itemsCount;
     UserGames.itemsCount += response_items;
 
     UserGames.emptyContent = UserGames.itemsCount === 0;
 
-    var response_rows = response_items / UserGames.ColoumnsCount;
-    if (response_items % UserGames.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountGame;
+    if (response_items % Main.ColoumnsCountGame > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, follows,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / UserGames.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountGame + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < UserGames.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             follows = response.follows[cursor];
             if (UserGames.CellExists(follows.game.name)) coloumn_id--;
             else {
@@ -173,7 +170,7 @@ UserGames.loadDataSuccess = function(responseText) {
                 row.append(cell);
             }
         }
-        for (coloumn_id; coloumn_id < UserGames.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserGames.EmptyCell));
         }
         $('#stream_table_user_games').append(row);
@@ -194,7 +191,7 @@ UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail
     UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
     UserGames.imgMatrixCount++;
 
-    if (UserGames.imgMatrixCount < (UserGames.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (UserGames.imgMatrixCount < (Main.ColoumnsCountGame * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
     UserGames.nameMatrixCount++;
@@ -251,13 +248,13 @@ UserGames.loadChannelsReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserGames.MaxOffset - UserGames.ItemsLimit)) {
-            offset = UserGames.MaxOffset - UserGames.ItemsLimit;
+        if (offset !== 0 && offset >= (UserGames.MaxOffset - Main.ItemsLimitGame)) {
+            offset = UserGames.MaxOffset - Main.ItemsLimitGame;
             UserGames.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/follows?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + UserGames.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -292,9 +289,9 @@ UserGames.loadDataSuccessReplace = function(responseText) {
     var response_items = response.follows.length;
     UserGames.MaxOffset = parseInt(response._total);
 
-    if (response_items < UserGames.ItemsLimit) UserGames.ReplacedataEnded = true;
+    if (response_items < Main.ItemsLimitGame) UserGames.ReplacedataEnded = true;
 
-    var row_id = UserGames.itemsCount / UserGames.ColoumnsCount;
+    var row_id = UserGames.itemsCount / Main.ColoumnsCountGame;
 
     var coloumn_id, follows, mReplace = false,
         cursor = 0;
@@ -317,9 +314,9 @@ UserGames.loadDataSuccessReplace = function(responseText) {
 UserGames.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
     var my = 0,
         mx = 0;
-    if (row_id < ((UserGames.ItemsLimit / UserGames.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(UserGames.blankCellCount / UserGames.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < UserGames.ColoumnsCount; mx++) {
+    if (row_id < ((Main.ItemsLimitGame / Main.ColoumnsCountGame) - 1)) return false;
+    for (my = row_id - (1 + Math.ceil(UserGames.blankCellCount / Main.ColoumnsCountGame)); my < row_id; my++) {
+        for (mx = 0; mx < Main.ColoumnsCountGame; mx++) {
             if (!Main.ThumbNull(my, mx, UserGames.Thumbnail) && (Main.ThumbNull(my, mx, UserGames.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -351,7 +348,7 @@ UserGames.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thu
 };
 
 UserGames.addFocus = function() {
-    if (((UserGames.cursorY + UserGames.ItemsReloadLimit) > (UserGames.itemsCount / UserGames.ColoumnsCount)) &&
+    if (((UserGames.cursorY + Main.ItemsReloadLimitGame) > (UserGames.itemsCount / Main.ColoumnsCountGame)) &&
         !UserGames.dataEnded && !UserGames.loadingMore) {
         UserGames.loadingMore = true;
         UserGames.loadDataPrepare();
@@ -359,7 +356,7 @@ UserGames.addFocus = function() {
     }
 
     Main.addFocusGame(UserGames.cursorY, UserGames.cursorX, UserGames.Thumbnail, UserGames.ThumbnailDiv, UserGames.DispNameDiv,
-        UserGames.ViwersDiv, Main.UserGames, UserGames.ColoumnsCount, UserGames.itemsCount);
+        UserGames.ViwersDiv, Main.UserGames, Main.ColoumnsCountGame, UserGames.itemsCount);
 };
 
 UserGames.removeFocus = function() {
@@ -398,7 +395,7 @@ UserGames.handleKeyDown = function(event) {
                 UserGames.cursorX--;
                 UserGames.addFocus();
             } else {
-                for (i = (UserGames.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountGame - 1); i > -1; i--) {
                     if (Main.ThumbNull((UserGames.cursorY - 1), i, UserGames.Thumbnail)) {
                         UserGames.removeFocus();
                         UserGames.cursorY--;
@@ -422,7 +419,7 @@ UserGames.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < UserGames.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountGame; i++) {
                 if (Main.ThumbNull((UserGames.cursorY - 1), (UserGames.cursorX - i), UserGames.Thumbnail)) {
                     UserGames.removeFocus();
                     UserGames.cursorY--;
@@ -433,7 +430,7 @@ UserGames.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < UserGames.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountGame; i++) {
                 if (Main.ThumbNull((UserGames.cursorY + 1), (UserGames.cursorX - i), UserGames.Thumbnail)) {
                     UserGames.removeFocus();
                     UserGames.cursorY++;

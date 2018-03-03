@@ -54,6 +54,18 @@ Main.ScrollOffSetMinusGame = 0.535;
 Main.ReloadLimitOffsetGames = 1.35;
 Main.ReloadLimitOffsetVideos = 1.5;
 
+Main.ItemsLimitVideo = 99;
+Main.ColoumnsCountVideo = 3;
+Main.ItemsReloadLimitVideo = Math.floor((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) / Main.ReloadLimitOffsetVideos);
+
+Main.ItemsLimitGame = 95;
+Main.ColoumnsCountGame = 5;
+Main.ItemsReloadLimitGame = Math.floor((Main.ItemsLimitGame / Main.ColoumnsCountGame) / Main.ReloadLimitOffsetGames);
+
+Main.ItemsLimitChannel = 96;
+Main.ColoumnsCountChannel = 6;
+Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) / Main.ReloadLimitOffsetVideos);
+
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
@@ -157,19 +169,6 @@ Main.initWindows = function() {
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     $("#scene2").hide();
-    //Need to reload this values here because Main.ReloadLimitOffset* only fully load here
-    Live.ItemsReloadLimit = Math.floor((Live.ItemsLimit / Live.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    AGame.ItemsReloadLimit = Math.floor((AGame.ItemsLimit / AGame.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    Games.ItemsReloadLimit = Math.floor((Games.ItemsLimit / Games.ColoumnsCount) / Main.ReloadLimitOffsetGames);
-    SChannels.ItemsReloadLimit = Math.floor((SChannels.ItemsLimit / SChannels.ColoumnsCount) / Main.ReloadLimitOffsetGames);
-    Sclip.ItemsReloadLimit = Math.floor((Sclip.ItemsLimit / Sclip.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    SGames.ItemsReloadLimit = Math.floor((SGames.ItemsLimit / SGames.ColoumnsCount) / Main.ReloadLimitOffsetGames);
-    SLive.ItemsReloadLimit = Math.floor((SLive.ItemsLimit / SLive.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    Svod.ItemsReloadLimit = Math.floor((Svod.ItemsLimit / Svod.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    UserChannels.ItemsReloadLimit = Math.floor((UserChannels.ItemsLimit / UserChannels.ColoumnsCount) / Main.ReloadLimitOffsetGames);
-    UserGames.ItemsReloadLimit = Math.floor((UserGames.ItemsLimit / UserGames.ColoumnsCount) / Main.ReloadLimitOffsetGames);
-    UserHost.ItemsReloadLimit = Math.floor((UserHost.ItemsLimit / UserHost.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
-    UserLive.ItemsReloadLimit = Math.floor((UserLive.ItemsLimit / UserLive.ColoumnsCount) / Main.ReloadLimitOffsetVideos);
 };
 
 Main.showLoadDialog = function() {

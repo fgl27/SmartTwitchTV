@@ -17,9 +17,6 @@ SChannels.loadingDataTry = 0;
 SChannels.loadingDataTryMax = 10;
 SChannels.loadingDataTimeout = 3500;
 SChannels.isDialogOn = false;
-SChannels.ItemsLimit = 96;
-SChannels.ColoumnsCount = 6;
-SChannels.ItemsReloadLimit = 0;
 SChannels.blankCellCount = 0;
 SChannels.itemsCountOffset = 0;
 SChannels.LastClickFinish = true;
@@ -47,7 +44,7 @@ SChannels.init = function() {
     if (SChannels.status) {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels,
             Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
-        Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, SChannels.ColoumnsCount, SChannels.itemsCount);
+        Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, Main.ColoumnsCountChannel, SChannels.itemsCount);
     } else SChannels.StartLoad();
 };
 
@@ -98,14 +95,14 @@ SChannels.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset >= (SChannels.MaxOffset - SChannels.ItemsLimit)) {
-            offset = SChannels.MaxOffset - SChannels.ItemsLimit;
+        if (offset !== 0 && offset >= (SChannels.MaxOffset - Main.ItemsLimitChannel)) {
+            offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
             SChannels.dataEnded = true;
             SChannels.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -147,24 +144,24 @@ SChannels.loadDataSuccess = function(responseText) {
     var response_items = response.channels.length;
     SChannels.MaxOffset = parseInt(response._total);
 
-    if (response_items < SChannels.ItemsLimit) SChannels.dataEnded = true;
+    if (response_items < Main.ItemsLimitChannel) SChannels.dataEnded = true;
 
     var offset_itemsCount = SChannels.itemsCount;
     SChannels.itemsCount += response_items;
 
     SChannels.emptyContent = SChannels.itemsCount === 0;
 
-    var response_rows = response_items / SChannels.ColoumnsCount;
-    if (response_items % SChannels.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountChannel;
+    if (response_items % Main.ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, channels,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / SChannels.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountChannel + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < SChannels.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
@@ -173,7 +170,7 @@ SChannels.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < SChannels.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
         }
         $('#stream_table_search_channel').append(row);
@@ -187,7 +184,7 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbn
     SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
     SChannels.imgMatrixCount++;
 
-    if (SChannels.imgMatrixCount < (SChannels.ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (SChannels.imgMatrixCount < (Main.ColoumnsCountChannel * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
@@ -242,13 +239,13 @@ SChannels.loadDataReplace = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset >= (SChannels.MaxOffset - SChannels.ItemsLimit)) {
-            offset = SChannels.MaxOffset - SChannels.ItemsLimit;
+        if (offset !== 0 && offset >= (SChannels.MaxOffset - Main.ItemsLimitChannel)) {
+            offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
             SChannels.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + SChannels.ItemsLimit + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -283,9 +280,9 @@ SChannels.loadDataSuccessReplace = function(responseText) {
     var response_items = response.channels.length;
     SChannels.MaxOffset = parseInt(response._total);
 
-    if (response_items < SChannels.ItemsLimit) SChannels.ReplacedataEnded = true;
+    if (response_items < Main.ItemsLimitChannel) SChannels.ReplacedataEnded = true;
 
-    var row_id = SChannels.itemsCount / SChannels.ColoumnsCount;
+    var row_id = SChannels.itemsCount / Main.ColoumnsCountChannel;
 
     var coloumn_id, channels, mReplace = false,
         cursor = 0;
@@ -307,9 +304,9 @@ SChannels.loadDataSuccessReplace = function(responseText) {
 SChannels.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
     var my = 0,
         mx = 0;
-    if (row_id < ((SChannels.ItemsLimit / SChannels.ColoumnsCount) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(SChannels.blankCellCount / SChannels.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < SChannels.ColoumnsCount; mx++) {
+    if (row_id < ((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) - 1)) return false;
+    for (my = row_id - (1 + Math.ceil(SChannels.blankCellCount / Main.ColoumnsCountChannel)); my < row_id; my++) {
+        for (mx = 0; mx < Main.ColoumnsCountChannel; mx++) {
             if (!Main.ThumbNull(my, mx, SChannels.Thumbnail) && (Main.ThumbNull(my, mx, SChannels.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
@@ -335,7 +332,7 @@ SChannels.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_
 };
 
 SChannels.addFocus = function() {
-    if (((SChannels.cursorY + SChannels.ItemsReloadLimit) > (SChannels.itemsCount / SChannels.ColoumnsCount)) &&
+    if (((SChannels.cursorY + Main.ItemsReloadLimitChannel) > (SChannels.itemsCount / Main.ColoumnsCountChannel)) &&
         !SChannels.dataEnded && !SChannels.loadingMore) {
         SChannels.loadingMore = true;
         SChannels.loadDataPrepare();
@@ -349,7 +346,7 @@ SChannels.addFocus = function() {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
 
-    Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, SChannels.ColoumnsCount, SChannels.itemsCount);
+    Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, Main.ColoumnsCountChannel, SChannels.itemsCount);
 };
 
 SChannels.removeFocus = function() {
@@ -391,7 +388,7 @@ SChannels.handleKeyDown = function(event) {
                 SChannels.cursorX--;
                 SChannels.addFocus();
             } else {
-                for (i = (SChannels.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountChannel - 1); i > -1; i--) {
                     if (Main.ThumbNull((SChannels.cursorY - 1), i, SChannels.Thumbnail)) {
                         SChannels.removeFocus();
                         SChannels.cursorY--;
@@ -415,7 +412,7 @@ SChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < SChannels.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
                 if (Main.ThumbNull((SChannels.cursorY - 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
                     SChannels.removeFocus();
                     SChannels.cursorY--;
@@ -426,7 +423,7 @@ SChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < SChannels.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
                 if (Main.ThumbNull((SChannels.cursorY + 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
                     SChannels.removeFocus();
                     SChannels.cursorY++;

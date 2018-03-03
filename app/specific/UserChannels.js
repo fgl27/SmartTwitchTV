@@ -16,9 +16,6 @@ UserChannels.loadingData = false;
 UserChannels.loadingDataTry = 0;
 UserChannels.loadingDataTryMax = 10;
 UserChannels.loadingDataTimeout = 3500;
-UserChannels.ItemsLimit = 96;
-UserChannels.ColoumnsCount = 6;
-UserChannels.ItemsReloadLimit = 0;
 UserChannels.LastClickFinish = true;
 UserChannels.keyClickDelayTime = 25;
 UserChannels.UserChannelsList = [];
@@ -44,7 +41,7 @@ UserChannels.init = function() {
     if (UserChannels.status) {
         Main.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, Main.UserChannels,
             Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
-        Main.CounterDialog(UserChannels.cursorX, UserChannels.cursorY, UserChannels.ColoumnsCount, UserChannels.itemsCount);
+        Main.CounterDialog(UserChannels.cursorX, UserChannels.cursorY, Main.ColoumnsCountChannel, UserChannels.itemsCount);
     } else UserChannels.StartLoad();
 };
 
@@ -154,33 +151,33 @@ UserChannels.loadChannelLive = function(responseText) {
 };
 
 UserChannels.loadDataSuccess = function() {
-    var response_items = UserChannels.ItemsLimit;
+    var response_items = Main.ItemsLimitChannel;
     var offset_itemsCount = UserChannels.itemsCount;
     var rest = UserChannels.UserChannelsList.length - offset_itemsCount;
     if (rest < response_items) response_items = rest;
 
-    if (response_items < UserChannels.ItemsLimit) UserChannels.dataEnded = true;
+    if (response_items < Main.ItemsLimitChannel) UserChannels.dataEnded = true;
 
     UserChannels.itemsCount += response_items;
 
     UserChannels.emptyContent = UserChannels.itemsCount === 0;
 
-    var response_rows = response_items / UserChannels.ColoumnsCount;
-    if (response_items % UserChannels.ColoumnsCount > 0) response_rows++;
+    var response_rows = response_items / Main.ColoumnsCountChannel;
+    if (response_items % Main.ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row, channel,
         cursor = offset_itemsCount;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / UserChannels.ColoumnsCount + i;
+        row_id = offset_itemsCount / Main.ColoumnsCountChannel + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < UserChannels.ColoumnsCount && cursor < UserChannels.UserChannelsList.length; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountChannel && cursor < UserChannels.UserChannelsList.length; coloumn_id++, cursor++) {
             channel = UserChannels.UserChannelsList[cursor].split(",");
             row.append(UserChannels.createCell(row_id, coloumn_id, channel[0], channel[1], channel[2]));
         }
 
-        for (coloumn_id; coloumn_id < UserChannels.ColoumnsCount; coloumn_id++) {
+        for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserChannels.EmptyCell));
         }
         $('#stream_table_user_channels').append(row);
@@ -199,7 +196,7 @@ UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, cha
     UserChannels.imgMatrixId[UserChannels.imgMatrixCount] = UserChannels.Thumbnail + row_id + '_' + coloumn_id;
     UserChannels.imgMatrixCount++;
 
-    if (UserChannels.imgMatrixCount < (UserChannels.ColoumnsCount * 6)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
+    if (UserChannels.imgMatrixCount < (Main.ColoumnsCountChannel * 6)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;
@@ -232,7 +229,7 @@ UserChannels.loadDataSuccessFinish = function() {
 };
 
 UserChannels.addFocus = function() {
-    if (((UserChannels.cursorY + UserChannels.ItemsReloadLimit) > (UserChannels.itemsCount / UserChannels.ColoumnsCount)) &&
+    if (((UserChannels.cursorY + Main.ItemsReloadLimitChannel) > (UserChannels.itemsCount / Main.ColoumnsCountChannel)) &&
         !UserChannels.dataEnded && !UserChannels.loadingMore) {
         UserChannels.loadingMore = true;
         UserChannels.loadDataPrepare();
@@ -246,7 +243,7 @@ UserChannels.addFocus = function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, Main.UserChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
 
-    Main.CounterDialog(UserChannels.cursorX, UserChannels.cursorY, UserChannels.ColoumnsCount, UserChannels.itemsCount);
+    Main.CounterDialog(UserChannels.cursorX, UserChannels.cursorY, Main.ColoumnsCountChannel, UserChannels.itemsCount);
 };
 
 UserChannels.removeFocus = function() {
@@ -287,7 +284,7 @@ UserChannels.handleKeyDown = function(event) {
                 UserChannels.cursorX--;
                 UserChannels.addFocus();
             } else {
-                for (i = (UserChannels.ColoumnsCount - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountChannel - 1); i > -1; i--) {
                     if (Main.ThumbNull((UserChannels.cursorY - 1), i, UserChannels.Thumbnail)) {
                         UserChannels.removeFocus();
                         UserChannels.cursorY--;
@@ -311,7 +308,7 @@ UserChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < UserChannels.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
                 if (Main.ThumbNull((UserChannels.cursorY - 1), (UserChannels.cursorX - i), UserChannels.Thumbnail)) {
                     UserChannels.removeFocus();
                     UserChannels.cursorY--;
@@ -322,7 +319,7 @@ UserChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < UserChannels.ColoumnsCount; i++) {
+            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
                 if (Main.ThumbNull((UserChannels.cursorY + 1), (UserChannels.cursorX - i), UserChannels.Thumbnail)) {
                     UserChannels.removeFocus();
                     UserChannels.cursorY++;
