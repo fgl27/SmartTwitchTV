@@ -443,17 +443,20 @@ Main.Resume = function() {
     }
 };
 
-Main.LoadImages = function(imgVector, idVector, img_type) {
-    var loadImages, i;
 
-    loadImages = function(position, ImgObjet) {
+Main.LoadImagesPre = function(img_type) {
+    Main.LoadImages(Main.imgMatrix, Main.imgMatrixId, img_type);
+};
+
+Main.LoadImages = function(imgVector, idVector, img_type) {
+    var loadImages = function(position, ImgObjet) {
         ImgObjet.onerror = function() {
             this.src = img_type; //img fail to load use predefined
         };
         ImgObjet.src = imgVector[position];
     };
 
-    for (i = 0; i < imgVector.length; i++) {
+    for (var i = 0; i < imgVector.length; i++) {
         loadImages(i, document.getElementById(idVector[i]));
     }
 };
@@ -563,19 +566,6 @@ Main.CellMatrix = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, 
     Main.imgMatrixCount++;
 
     if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-};
-
-Main.LoadImagesNew = function(img_type) {
-    var loadImages = function(position, ImgObjet) {
-        ImgObjet.onerror = function() {
-            this.src = img_type; //img fail to load use predefined
-        };
-        ImgObjet.src = Main.imgMatrix[position];
-    };
-
-    for (var i = 0; i < Main.imgMatrix.length; i++) {
-        loadImages(i, document.getElementById(Main.imgMatrixId[i]));
-    }
 };
 
 Main.ScrollHelper = {
