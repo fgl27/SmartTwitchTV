@@ -211,8 +211,8 @@ Main.CounterDialog = function(x, y, coloumns, total) {
 };
 
 Main.SetItemsLimitReload = function(blankCellCount) {
-    Main.ItemsLimitReload = 6;
-    if (blankCellCount > (Main.ItemsLimitReload / 2)) Main.ItemsLimitReload = blankCellCount * 2;
+    Main.ItemsLimitReload = 12;
+    if (blankCellCount > (Main.ItemsLimitReload / 3)) Main.ItemsLimitReload = blankCellCount * 3;
     if (Main.ItemsLimitReload > 99) Main.ItemsLimitReload = 99;
 };
 

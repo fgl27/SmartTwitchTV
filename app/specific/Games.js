@@ -3,7 +3,7 @@
 function Games() {}
 Games.Status = false;
 Games.Thumbnail = 'thumbnail_games_';
-Games.EmptyCell = 'games_empty_';
+Games.EmptyCell = 'gamesempty_';
 Games.cursorY = 0;
 Games.cursorX = 0;
 Games.dataEnded = false;
@@ -16,6 +16,7 @@ Games.loadingDataTryMax = 10;
 Games.loadingDataTimeout = 3500;
 Games.isDialogOn = false;
 Games.blankCellCount = 0;
+Games.blankCellVector = [];
 Games.itemsCountOffset = 0;
 Games.LastClickFinish = true;
 Games.keyClickDelayTime = 25;
@@ -56,6 +57,7 @@ Games.StartLoad = function() {
     $('#stream_table_games').empty();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
+    Games.blankCellVector = [];
     Games.itemsCountOffset = 0;
     Games.ReplacedataEnded = false;
     Games.MaxOffset = 0;
@@ -120,10 +122,16 @@ Games.loadDataError = function() {
         Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
         Games.loadDataRequest();
     } else {
-        Games.loadingData = false;
-        Games.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!Games.loadingMore) {
+            Games.loadingData = false;
+            Main.HideLoadDialog();
+            Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            Games.loadingMore = false;
+            Games.dataEnded = true;
+            Games.ReplacedataEnded = true;
+            Games.loadDataSuccessFinish();
+        }
     }
 };
 
@@ -165,6 +173,7 @@ Games.loadDataSuccess = function(responseText) {
         }
         for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
+            Games.blankCellVector.push(Games.EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_games').append(row);
     }
@@ -222,7 +231,10 @@ Games.loadDataSuccessFinish = function() {
                 Games.loadDataPrepare();
                 Games.loadDataReplace();
                 return;
-            } else Games.blankCellCount = 0;
+            } else {
+                Games.blankCellCount = 0;
+                Games.blankCellVector = [];
+            }
 
             Games.loadingData = false;
             Games.loadingMore = false;
@@ -235,13 +247,15 @@ Games.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(Games.blankCellCount);
+
         var offset = Games.itemsCount + Games.itemsCountOffset;
         if (offset !== 0 && offset >= (Games.MaxOffset - Main.ItemsLimitGame)) {
             offset = Games.MaxOffset - Main.ItemsLimitGame;
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -268,55 +282,66 @@ Games.loadDataErrorReplace = function() {
     if (Games.loadingDataTry < Games.loadingDataTryMax) {
         Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
         Games.loadDataReplace();
+    } else {
+        Games.ReplacedataEnded = true;
+        Games.itemsCount -= Games.blankCellCount;
+        Games.blankCellCount = 0;
+        Games.blankCellVector = [];
+        Games.loadDataSuccessFinish();
     }
 };
 
 Games.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.top.length;
+    var game, index, cursor = 0;
+    var tempVector = Games.blankCellVector.slice();
+
     Games.MaxOffset = parseInt(response._total);
 
     if (response_items < Main.ItemsLimitGame) Games.ReplacedataEnded = true;
 
     var row_id = Games.itemsCount / Main.ColoumnsCountGame;
 
-    var game, cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
+    for (var i = 0; i < Games.blankCellVector.length && cursor < response_items; i++, cursor++) {
         game = response.top[cursor];
-        if (Games.CellExists(game.game.name)) Games.blankCellCount--;
-        else {
-            if (Games.replaceCellEmpty(row_id, game.game.name, game.game.box.template,
-                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER)) Games.blankCellCount--;
-            if (Games.blankCellCount === 0) break;
+        if (Games.CellExists(game.game.name)) {
+            Games.blankCellCount--;
+            i--;
+        } else {
+            Games.replaceCellEmpty(Games.blankCellVector[i], game.game.name, game.game.box.template,
+                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
+            Games.blankCellCount--;
+
+            index = tempVector.indexOf(tempVector[i]);
+            if (index > -1) {
+                tempVector.splice(index, 1);
+            }
         }
     }
+
+    Games.blankCellVector = tempVector;
+
     Games.itemsCountOffset += cursor;
     if (Games.ReplacedataEnded) {
         Games.itemsCount -= Games.blankCellCount;
         Games.blankCellCount = 0;
+        Games.blankCellVector = [];
     }
     Games.loadDataSuccessFinish();
 };
 
-Games.replaceCellEmpty = function(row_id, game_name, preview_thumbnail, viwers) {
-    var my, coloumn_id;
+Games.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
+    var splitedId = id.split("_");
+    var row_id = splitedId[1];
+    var coloumn_id = splitedId[2];
+    var cell = Games.Cell + row_id + '_' + coloumn_id;
 
-    for (my = row_id - (1 + Math.ceil(Games.blankCellCount / Main.ColoumnsCountGame)); my < row_id; my++) {
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
-            if (!Main.ThumbNull(my, coloumn_id, Games.Thumbnail) && (Main.ThumbNull(my, coloumn_id, Games.EmptyCell))) {
-                row_id = my;
+    Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
 
-                Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
-
-                document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
-                document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers);
-                return true;
-            }
-        }
-    }
-    return false;
+    document.getElementById(id).setAttribute('id', cell);
+    document.getElementById(cell).setAttribute('data-channelname', game_name);
+    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers);
 };
 
 Games.addFocus = function() {
@@ -351,6 +376,8 @@ Games.handleKeyDown = function(event) {
         window.setTimeout(Games.keyClickDelay, Games.keyClickDelayTime);
     }
 
+    var i;
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
@@ -368,7 +395,7 @@ Games.handleKeyDown = function(event) {
                 Games.cursorX--;
                 Games.addFocus();
             } else {
-                for (var i = (Main.ColoumnsCountGame - 1); i > -1; i--) {
+                for (i = (Main.ColoumnsCountGame - 1); i > -1; i--) {
                     if (Main.ThumbNull((Games.cursorY - 1), i, Games.Thumbnail)) {
                         Games.removeFocus();
                         Games.cursorY--;
@@ -392,7 +419,7 @@ Games.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (var i = 0; i < Main.ColoumnsCountGame; i++) {
+            for (i = 0; i < Main.ColoumnsCountGame; i++) {
                 if (Main.ThumbNull((Games.cursorY - 1), (Games.cursorX - i), Games.Thumbnail)) {
                     Games.removeFocus();
                     Games.cursorY--;
@@ -403,7 +430,7 @@ Games.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (var i = 0; i < Main.ColoumnsCountGame; i++) {
+            for (i = 0; i < Main.ColoumnsCountGame; i++) {
                 if (Main.ThumbNull((Games.cursorY + 1), (Games.cursorX - i), Games.Thumbnail)) {
                     Games.removeFocus();
                     Games.cursorY++;
