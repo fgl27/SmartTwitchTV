@@ -31,6 +31,7 @@ Live.keyClickDelayTime = 25;
 Live.ReplacedataEnded = false;
 Live.MaxOffset = 0;
 Live.checkVersion = false;
+Live.itemsCountCheck = false;
 
 //Variable initialization end
 
@@ -63,6 +64,7 @@ Live.StartLoad = function() {
     Live.blankCellVector = [];
     Live.itemsCountOffset = 0;
     Live.ReplacedataEnded = false;
+    Live.itemsCountCheck = false;
     Live.MaxOffset = 0;
     Live.nameMatrix = [];
     Live.nameMatrixCount = 0;
@@ -160,7 +162,6 @@ Live.loadDataSuccess = function(responseText) {
             stream = response.streams[cursor];
             if (Live.CellExists(stream.channel.name)) {
                 coloumn_id--;
-                if (Live.dataEnded) Live.itemsCount--;
             } else {
                 cell = Live.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
@@ -171,6 +172,10 @@ Live.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
+            if (Live.dataEnded && !Live.itemsCountCheck) {
+                Live.itemsCountCheck = true;
+                Live.itemsCount = (row_id * Main.ColoumnsCountGame) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
             Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
         }
@@ -302,7 +307,6 @@ Live.loadDataErrorReplace = function() {
         Live.loadDataReplace();
     } else {
         Live.ReplacedataEnded = true;
-        Live.itemsCount -= Live.blankCellCount;
         Live.blankCellCount = 0;
         Live.blankCellVector = [];
         Live.loadDataSuccessFinish();
@@ -340,7 +344,6 @@ Live.loadDataSuccessReplace = function(responseText) {
 
     Live.itemsCountOffset += cursor;
     if (Live.ReplacedataEnded) {
-        Live.itemsCount -= Live.blankCellCount;
         Live.blankCellCount = 0;
         Live.blankCellVector = [];
     } else Live.blankCellVector = tempVector;

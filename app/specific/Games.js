@@ -23,6 +23,7 @@ Games.keyClickDelayTime = 25;
 Games.ReplacedataEnded = false;
 Games.MaxOffset = 0;
 Main.ItemsLimitGameOffset = 1;
+Games.itemsCountCheck = false;
 
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
@@ -60,6 +61,7 @@ Games.StartLoad = function() {
     Games.blankCellVector = [];
     Games.itemsCountOffset = 0;
     Games.ReplacedataEnded = false;
+    Games.itemsCountCheck = false;
     Games.MaxOffset = 0;
     Games.nameMatrix = [];
     Games.nameMatrixCount = 0;
@@ -164,7 +166,6 @@ Games.loadDataSuccess = function(responseText) {
             game = response.top[cursor];
             if (Games.CellExists(game.game.name)) {
                 coloumn_id--;
-                if (Games.dataEnded) Games.itemsCount--;
             } else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
                     Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
@@ -172,6 +173,10 @@ Games.loadDataSuccess = function(responseText) {
             }
         }
         for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
+            if (Games.dataEnded && !Games.itemsCountCheck) {
+                Games.itemsCountCheck = true;
+                Games.itemsCount = (row_id * Main.ColoumnsCountGame) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
             Games.blankCellVector.push(Games.EmptyCell + row_id + '_' + coloumn_id);
         }
@@ -293,7 +298,6 @@ Games.loadDataErrorReplace = function() {
         Games.loadDataReplace();
     } else {
         Games.ReplacedataEnded = true;
-        Games.itemsCount -= Games.blankCellCount;
         Games.blankCellCount = 0;
         Games.blankCellVector = [];
         Games.loadDataSuccessFinish();
@@ -329,7 +333,6 @@ Games.loadDataSuccessReplace = function(responseText) {
 
     Games.itemsCountOffset += cursor;
     if (Games.ReplacedataEnded) {
-        Games.itemsCount -= Games.blankCellCount;
         Games.blankCellCount = 0;
         Games.blankCellVector = [];
     } else Games.blankCellVector = tempVector;
