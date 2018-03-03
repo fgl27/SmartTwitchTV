@@ -66,6 +66,8 @@ Main.ItemsLimitChannel = 96;
 Main.ColoumnsCountChannel = 6;
 Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) / Main.ReloadLimitOffsetVideos);
 
+Main.ItemsLimitReload = 6;
+
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
@@ -206,6 +208,12 @@ Main.isExitDialogShown = function() {
 Main.CounterDialog = function(x, y, coloumns, total) {
     if (total > 0) $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
     else $("#dialog_counter_text").text('');
+};
+
+Main.SetItemsLimitReload = function(blankCellCount) {
+    Main.ItemsLimitReload = 6;
+    if (blankCellCount > (Main.ItemsLimitReload / 2)) Main.ItemsLimitReload = blankCellCount * 2;
+    if (Main.ItemsLimitReload > 99) Main.ItemsLimitReload = 99;
 };
 
 Main.showWarningDialog = function(text) {
