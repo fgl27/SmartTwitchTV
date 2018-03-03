@@ -8,9 +8,6 @@ Games.cursorY = 0;
 Games.cursorX = 0;
 Games.dataEnded = false;
 Games.itemsCount = 0;
-Games.imgMatrix = [];
-Games.imgMatrixId = [];
-Games.imgMatrixCount = 0;
 Games.nameMatrix = [];
 Games.nameMatrixCount = 0;
 Games.loadingData = false;
@@ -76,9 +73,7 @@ Games.StartLoad = function() {
 };
 
 Games.loadDataPrepare = function() {
-    Games.imgMatrix = [];
-    Games.imgMatrixId = [];
-    Games.imgMatrixCount = 0;
+    Main.MatrixRst();
     Games.loadingData = true;
     Games.loadingDataTry = 0;
     Games.loadingDataTimeout = 3500;
@@ -97,7 +92,7 @@ Games.loadDataRequest = function() {
         }
 
         //TODO re check Games.ItemsLimitOffset workaround on the future "for some reason if offset=0 the response_items is one less then response_items"
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Games.ItemsLimit + (offset === 0 ? Games.ItemsLimitOffset : 0 )) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Games.ItemsLimit + (offset === 0 ? Games.ItemsLimitOffset : 0)) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -185,13 +180,7 @@ Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, vi
 };
 
 Games.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
-    Games.imgMatrix[Games.imgMatrixCount] = preview_thumbnail;
-    Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
-    Games.imgMatrixCount++;
-
-    if (Games.imgMatrixCount < (Games.ColoumnsCount * 3)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
+    Main.CellMatrix(preview_thumbnail, Games.ColoumnsCount, Games.Thumbnail, row_id, coloumn_id, Main.GameSize);
     Games.nameMatrix[Games.nameMatrixCount] = game_name;
     Games.nameMatrixCount++;
 };
@@ -227,7 +216,7 @@ Games.loadDataSuccessFinish = function() {
                 Games.addFocus();
             }
 
-            Main.LoadImages(Games.imgMatrix, Games.imgMatrixId, IMG_404_GAME);
+            Main.LoadImagesNew(IMG_404_GAME);
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;
@@ -319,14 +308,9 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbna
             if (!Main.ThumbNull(my, mx, Games.Thumbnail) && (Main.ThumbNull(my, mx, Games.EmptyCell))) {
                 row_id = my;
                 coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
 
-                Games.imgMatrix[Games.imgMatrixCount] = preview_thumbnail;
-                Games.imgMatrixId[Games.imgMatrixCount] = Games.Thumbnail + row_id + '_' + coloumn_id;
-                Games.imgMatrixCount++;
+                Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
 
-                Games.nameMatrix[Games.nameMatrixCount] = game_name;
-                Games.nameMatrixCount++;
                 document.getElementById(Games.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Games.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
                 document.getElementById(Games.Cell + row_id + '_' + coloumn_id).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers);
@@ -387,7 +371,7 @@ Games.handleKeyDown = function(event) {
                 Games.cursorX--;
                 Games.addFocus();
             } else {
-                for (i = (Games.ColoumnsCount - 1); i > -1; i--) {
+                for (var i = (Games.ColoumnsCount - 1); i > -1; i--) {
                     if (Main.ThumbNull((Games.cursorY - 1), i, Games.Thumbnail)) {
                         Games.removeFocus();
                         Games.cursorY--;
@@ -411,7 +395,7 @@ Games.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Games.ColoumnsCount; i++) {
+            for (var i = 0; i < Games.ColoumnsCount; i++) {
                 if (Main.ThumbNull((Games.cursorY - 1), (Games.cursorX - i), Games.Thumbnail)) {
                     Games.removeFocus();
                     Games.cursorY--;
@@ -422,7 +406,7 @@ Games.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Games.ColoumnsCount; i++) {
+            for (var i = 0; i < Games.ColoumnsCount; i++) {
                 if (Main.ThumbNull((Games.cursorY + 1), (Games.cursorX - i), Games.Thumbnail)) {
                     Games.removeFocus();
                     Games.cursorY++;

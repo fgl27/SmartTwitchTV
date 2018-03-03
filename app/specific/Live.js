@@ -16,9 +16,6 @@ Live.cursorX = 0;
 Live.Exitcursor = 0;
 Live.dataEnded = false;
 Live.itemsCount = 0;
-Live.imgMatrix = [];
-Live.imgMatrixId = [];
-Live.imgMatrixCount = 0;
 Live.nameMatrix = [];
 Live.nameMatrixCount = 0;
 Live.loadingData = false;
@@ -79,9 +76,7 @@ Live.StartLoad = function() {
 };
 
 Live.loadDataPrepare = function() {
-    Live.imgMatrix = [];
-    Live.imgMatrixId = [];
-    Live.imgMatrixCount = 0;
+    Main.MatrixRst();
     Live.loadingData = true;
     Live.loadingDataTry = 0;
     Live.loadingDataTimeout = 3500;
@@ -184,13 +179,7 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
 };
 
 Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    Live.imgMatrix[Live.imgMatrixCount] = preview_thumbnail;
-    Live.imgMatrixId[Live.imgMatrixCount] = Live.Thumbnail + row_id + '_' + coloumn_id;
-    Live.imgMatrixCount++;
-
-    if (Live.imgMatrixCount < (Live.ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
+    Main.CellMatrix(preview_thumbnail, Live.ColoumnsCount, Live.Thumbnail, row_id, coloumn_id, Main.VideoSize);
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
 };
@@ -229,7 +218,7 @@ Live.loadDataSuccessFinish = function() {
                 Live.addFocus();
             }
 
-            Main.LoadImages(Live.imgMatrix, Live.imgMatrixId, IMG_404_VIDEO);
+            Main.LoadImagesNew(IMG_404_VIDEO);
 
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
@@ -300,36 +289,31 @@ Live.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Live.itemsCount / Live.ColoumnsCount;
 
-    var coloumn_id, stream, mReplace = false,
-        cursor = 0;
+    var stream, cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         stream = response.streams[cursor];
-        if (Live.CellExists(stream.channel.name)) Games.blankCellCount--;
+        if (Live.CellExists(stream.channel.name)) Live.blankCellCount--;
         else {
-            mReplace = Live.replaceCellEmpty(row_id, coloumn_id, stream.channel.name, stream.preview.template,
+            if (Live.replaceCellEmpty(row_id, stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
-            if (mReplace) Live.blankCellCount--;
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language))) Live.blankCellCount--;
             if (Live.blankCellCount === 0) break;
         }
     }
-    Live.itemsCountOffset += cursor;
+    if (Live.blankCellCount > 0) Live.itemsCountOffset += cursor;
     if (Live.ReplacedataEnded) Live.blankCellCount = 0;
     Live.loadDataSuccessFinish();
 };
 
-Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+Live.replaceCellEmpty = function(row_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     var my = 0,
-        mx = 0;
-    if (row_id < ((Live.ItemsLimit / Live.ColoumnsCount) - 1)) return false;
+        coloumn_id = 0;
     for (my = row_id - (1 + Math.ceil(Live.blankCellCount / Live.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < Live.ColoumnsCount; mx++) {
-            if (!Main.ThumbNull(my, mx, Live.Thumbnail) && (Main.ThumbNull(my, mx, Live.EmptyCell))) {
+        for (coloumn_id = 0; coloumn_id < Live.ColoumnsCount; coloumn_id++) {
+            if (!Main.ThumbNull(my, coloumn_id, Live.Thumbnail) && (Main.ThumbNull(my, coloumn_id, Live.EmptyCell))) {
                 row_id = my;
-                coloumn_id = mx;
-
                 Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
 
                 document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Live.Cell + row_id + '_' + coloumn_id);
@@ -340,7 +324,6 @@ Live.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
             }
         }
     }
-
     return false;
 };
 
