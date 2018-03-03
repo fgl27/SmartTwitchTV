@@ -377,7 +377,6 @@ Live.keyClickDelay = function() {
 };
 
 Live.handleKeyDown = function(event) {
-    var i;
     if (Live.loadingData && !Live.loadingMore) {
         event.preventDefault();
         return;
@@ -388,6 +387,8 @@ Live.handleKeyDown = function(event) {
         Live.LastClickFinish = false;
         window.setTimeout(Live.keyClickDelay, Live.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
