@@ -10,7 +10,7 @@ Live.StreamGameDiv = 'live_stream_game_';
 Live.ViwersDiv = 'live_viwers_';
 Live.QualityDiv = 'live_quality_';
 Live.Cell = 'live_cell_';
-Live.EmptyCell = 'live_empty_';
+Live.EmptyCell = 'liveempty_';
 Live.cursorY = 0;
 Live.cursorX = 0;
 Live.Exitcursor = 0;
@@ -24,6 +24,7 @@ Live.loadingDataTryMax = 10;
 Live.loadingDataTimeout = 3500;
 Live.isDialogOn = false;
 Live.blankCellCount = 0;
+Live.blankCellVector = [];
 Live.itemsCountOffset = 0;
 Live.LastClickFinish = true;
 Live.keyClickDelayTime = 25;
@@ -59,6 +60,7 @@ Live.StartLoad = function() {
     $('#stream_table_live').empty();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
+    Live.blankCellVector = [];
     Live.itemsCountOffset = 0;
     Live.ReplacedataEnded = false;
     Live.MaxOffset = 0;
@@ -121,10 +123,16 @@ Live.loadDataError = function() {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
         Live.loadDataRequest();
     } else {
-        Live.loadingData = false;
-        Live.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!Live.loadingMore) {
+            Live.loadingData = false;
+            Main.HideLoadDialog();
+            Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            Live.loadingMore = false;
+            Live.dataEnded = true;
+            Live.ReplacedataEnded = true;
+            Live.loadDataSuccessFinish();
+        }
     }
 };
 
@@ -150,7 +158,7 @@ Live.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
-            if (Live.CellExists(stream.channel.name)){
+            if (Live.CellExists(stream.channel.name)) {
                 coloumn_id--;
                 if (Live.dataEnded) Live.itemsCount--;
             } else {
@@ -164,6 +172,7 @@ Live.loadDataSuccess = function(responseText) {
 
         for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
+            Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_live').append(row);
     }
@@ -224,7 +233,10 @@ Live.loadDataSuccessFinish = function() {
                 Live.loadDataPrepare();
                 Live.loadDataReplace();
                 return;
-            } else Live.blankCellCount = 0;
+            } else {
+                Live.blankCellCount = 0;
+                Live.blankCellVector = [];
+            }
 
             Live.loadingData = false;
             Live.loadingMore = false;
@@ -242,13 +254,15 @@ Live.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(Live.blankCellCount);
+
         var offset = Live.itemsCount + Live.itemsCountOffset;
         if (offset !== 0 && offset >= (Live.MaxOffset - Main.ItemsLimitVideo)) {
             offset = Live.MaxOffset - Main.ItemsLimitVideo;
             Live.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Live.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -275,58 +289,59 @@ Live.loadDataErrorReplace = function() {
     if (Live.loadingDataTry < Live.loadingDataTryMax) {
         Live.loadingDataTimeout += (Live.loadingDataTry < 5) ? 250 : 3500;
         Live.loadDataReplace();
+    } else {
+        Live.ReplacedataEnded = true;
+        Live.itemsCount -= Live.blankCellCount;
+        Live.blankCellCount = 0;
+        Live.blankCellVector = [];
+        Live.loadDataSuccessFinish();
     }
 };
 
 Live.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
+    var stream, cursor = 0;
 
     Live.MaxOffset = parseInt(response._total);
 
     if (response_items < Main.ItemsLimitVideo) Live.ReplacedataEnded = true;
 
-    var row_id = Live.itemsCount / Main.ColoumnsCountVideo;
-
-    var stream, cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
+    for (var i = 0; i < Live.blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
-        if (Live.CellExists(stream.channel.name)) Live.blankCellCount--;
-        else {
-            if (Live.replaceCellEmpty(row_id, stream.channel.name, stream.preview.template,
+        if (Live.CellExists(stream.channel.name)) {
+            Live.blankCellCount--;
+            i--;
+        } else {
+            Live.replaceCellEmpty(Live.blankCellVector[i], stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language))) Live.blankCellCount--;
-            if (Live.blankCellCount === 0) break;
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+            Live.blankCellCount--;
         }
     }
-    if (Live.blankCellCount > 0) Live.itemsCountOffset += cursor;
+
+    Live.itemsCountOffset += cursor;
     if (Live.ReplacedataEnded) {
         Live.itemsCount -= Live.blankCellCount;
         Live.blankCellCount = 0;
+        Live.blankCellVector = [];
     }
     Live.loadDataSuccessFinish();
 };
 
-Live.replaceCellEmpty = function(row_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var my, coloumn_id;
+Live.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+    var splitedId = id.split("_");
+    var row_id = splitedId[1];
+    var coloumn_id = splitedId[2];
+    var cell = Live.Cell + row_id + '_' + coloumn_id;
 
-    for (my = row_id - (1 + Math.ceil(Live.blankCellCount / Main.ColoumnsCountVideo)); my < row_id; my++) {
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
-            if (!Main.ThumbNull(my, coloumn_id, Live.Thumbnail) && (Main.ThumbNull(my, coloumn_id, Live.EmptyCell))) {
-                row_id = my;
-                Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
+    Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
 
-                document.getElementById(Live.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', Live.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(Live.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(Live.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
-                return true;
-            }
-        }
-    }
-    return false;
+    document.getElementById(id).setAttribute('id', cell);
+    document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).innerHTML =
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
 };
 
 Live.addFocus = function() {
@@ -362,6 +377,7 @@ Live.keyClickDelay = function() {
 };
 
 Live.handleKeyDown = function(event) {
+    var i;
     if (Live.loadingData && !Live.loadingMore) {
         event.preventDefault();
         return;
