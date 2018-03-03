@@ -214,32 +214,41 @@ Games.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 Games.loadDataSuccessFinish = function() {
-    $('#stream_table_games').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Games.Status) {
-                Main.HideLoadDialog();
-                Games.Status = true;
-                Games.addFocus();
-            }
+    if (!Games.Status) {
+        $('#stream_table_games').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+                if (!Games.Status) {
+                    Main.HideLoadDialog();
+                    Games.Status = true;
+                    Games.addFocus();
+                }
 
-            Main.LoadImagesPre(IMG_404_GAME);
+                Main.LoadImagesPre(IMG_404_GAME);
 
-            if (Games.blankCellCount > 0 && !Games.dataEnded) {
-                Games.loadingMore = true;
-                Games.loadDataPrepare();
-                Games.loadDataReplace();
-                return;
-            } else {
-                Games.blankCellCount = 0;
-                Games.blankCellVector = [];
-            }
+                Games.loadingData = false;
+                //Main.ScrollSize('stream_table_games', Games.itemsCount, Main.ColoumnsCountGame);
+            });
+    } else Games.loadDataSuccessFinishRun();
+};
 
-            Games.loadingData = false;
-            Games.loadingMore = false;
-            //Main.ScrollSize('stream_table_games', Games.itemsCount, Main.ColoumnsCountGame);
-        });
+Games.loadDataSuccessFinishRun = function() {
+    Main.LoadImagesPre(IMG_404_GAME);
+
+    if (Games.blankCellCount > 0 && !Games.dataEnded) {
+        Games.loadingMore = true;
+        Games.loadDataPrepare();
+        Games.loadDataReplace();
+        return;
+    } else {
+        Games.blankCellCount = 0;
+        Games.blankCellVector = [];
+    }
+
+    Games.loadingData = false;
+    Games.loadingMore = false;
+    //Main.ScrollSize('stream_table_games', Games.itemsCount, Main.ColoumnsCountGame);
 };
 
 Games.loadDataReplace = function() {
@@ -301,8 +310,6 @@ Games.loadDataSuccessReplace = function(responseText) {
 
     if (response_items < Main.ItemsLimitGame) Games.ReplacedataEnded = true;
 
-    var row_id = Games.itemsCount / Main.ColoumnsCountGame;
-
     for (var i = 0; i < Games.blankCellVector.length && cursor < response_items; i++, cursor++) {
         game = response.top[cursor];
         if (Games.CellExists(game.game.name)) {
@@ -320,14 +327,13 @@ Games.loadDataSuccessReplace = function(responseText) {
         }
     }
 
-    Games.blankCellVector = tempVector;
-
     Games.itemsCountOffset += cursor;
     if (Games.ReplacedataEnded) {
         Games.itemsCount -= Games.blankCellCount;
         Games.blankCellCount = 0;
         Games.blankCellVector = [];
-    }
+    } else Games.blankCellVector = tempVector;
+
     Games.loadDataSuccessFinish();
 };
 

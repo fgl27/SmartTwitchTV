@@ -213,40 +213,51 @@ Live.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
+//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names run only on the first screen load
+//source https://imagesloaded.desandro.com/
 Live.loadDataSuccessFinish = function() {
-    $('#stream_table_live').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Live.Status) {
-                Main.HideLoadDialog();
-                Live.Status = true;
-                Live.addFocus();
-            }
+    if (!Live.Status) {
+        $('#stream_table_live').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
 
-            Main.LoadImagesPre(IMG_404_VIDEO);
+                if (!Live.Status) {
+                    Main.HideLoadDialog();
+                    Live.Status = true;
+                    Live.addFocus();
+                }
 
-            if (Live.blankCellCount > 0 && !Live.dataEnded) {
-                Live.loadingMore = true;
-                Live.loadDataPrepare();
-                Live.loadDataReplace();
-                return;
-            } else {
-                Live.blankCellCount = 0;
-                Live.blankCellVector = [];
-            }
+                Main.LoadImagesPre(IMG_404_VIDEO);
 
-            Live.loadingData = false;
-            Live.loadingMore = false;
+                Live.loadingData = false;
 
-            if (!Live.checkVersion) {
-                Live.checkVersion = true;
-                if (Main.checkVersion()) Main.showUpdateDialog();
-            }
-            //Main.ScrollSize('stream_table_live', Live.itemsCount, Main.ColoumnsCountVideo);
-        });
+                if (!Live.checkVersion) {
+                    Live.checkVersion = true;
+                    if (Main.checkVersion()) Main.showUpdateDialog();
+                }
+            });
+    } else Live.loadDataSuccessFinishRun();
+};
+
+Live.loadDataSuccessFinishRun = function() {
+
+    Main.LoadImagesPre(IMG_404_VIDEO);
+
+    if (Live.blankCellCount > 0 && !Live.dataEnded) {
+        Live.loadingMore = true;
+        Live.loadDataPrepare();
+        Live.loadDataReplace();
+        return;
+    } else {
+        Live.blankCellCount = 0;
+        Live.blankCellVector = [];
+    }
+
+    Live.loadingData = false;
+    Live.loadingMore = false;
+    //Main.ScrollSize('stream_table_live', Live.itemsCount, Main.ColoumnsCountVideo);
+
 };
 
 Live.loadDataReplace = function() {
@@ -302,6 +313,7 @@ Live.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
     var stream, cursor = 0;
+    var tempVector = Live.blankCellVector.slice();
 
     Live.MaxOffset = parseInt(response._total);
 
@@ -318,6 +330,11 @@ Live.loadDataSuccessReplace = function(responseText) {
                 stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
                 Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             Live.blankCellCount--;
+
+            index = tempVector.indexOf(tempVector[i]);
+            if (index > -1) {
+                tempVector.splice(index, 1);
+            }
         }
     }
 
@@ -326,7 +343,8 @@ Live.loadDataSuccessReplace = function(responseText) {
         Live.itemsCount -= Live.blankCellCount;
         Live.blankCellCount = 0;
         Live.blankCellVector = [];
-    }
+    } else Live.blankCellVector = tempVector;
+
     Live.loadDataSuccessFinish();
 };
 
