@@ -153,8 +153,10 @@ Live.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Live.ColoumnsCount && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
-            if (Live.CellExists(stream.channel.name)) coloumn_id--;
-            else {
+            if (Live.CellExists(stream.channel.name)){
+                coloumn_id--;
+                if (Live.dataEnded) Live.itemsCount--;
+            } else {
                 cell = Live.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                     stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
@@ -303,7 +305,10 @@ Live.loadDataSuccessReplace = function(responseText) {
         }
     }
     if (Live.blankCellCount > 0) Live.itemsCountOffset += cursor;
-    if (Live.ReplacedataEnded) Live.blankCellCount = 0;
+    if (Live.ReplacedataEnded) {
+        Live.itemsCount -= Live.blankCellCount;
+        Live.blankCellCount = 0;
+    }
     Live.loadDataSuccessFinish();
 };
 
