@@ -313,8 +313,8 @@ Live.loadDataSuccessReplace = function(responseText) {
 };
 
 Live.replaceCellEmpty = function(row_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var my = 0,
-        coloumn_id = 0;
+    var my, coloumn_id;
+
     for (my = row_id - (1 + Math.ceil(Live.blankCellCount / Live.ColoumnsCount)); my < row_id; my++) {
         for (coloumn_id = 0; coloumn_id < Live.ColoumnsCount; coloumn_id++) {
             if (!Main.ThumbNull(my, coloumn_id, Live.Thumbnail) && (Main.ThumbNull(my, coloumn_id, Live.EmptyCell))) {

@@ -283,16 +283,14 @@ Games.loadDataSuccessReplace = function(responseText) {
 
     var row_id = Games.itemsCount / Games.ColoumnsCount;
 
-    var coloumn_id, game, mReplace = false,
-        cursor = 0;
+    var game, cursor = 0;
 
     for (cursor; cursor < response_items; cursor++) {
         game = response.top[cursor];
         if (Games.CellExists(game.game.name)) Games.blankCellCount--;
         else {
-            mReplace = Games.replaceCellEmpty(row_id, coloumn_id, game.game.name, game.game.box.template,
-                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
-            if (mReplace) Games.blankCellCount--;
+            if (Games.replaceCellEmpty(row_id, game.game.name, game.game.box.template,
+                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER)) Games.blankCellCount--;
             if (Games.blankCellCount === 0) break;
         }
     }
@@ -304,15 +302,13 @@ Games.loadDataSuccessReplace = function(responseText) {
     Games.loadDataSuccessFinish();
 };
 
-Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    var my = 0,
-        mx = 0;
-    if (row_id < ((Games.ItemsLimit / Games.ColoumnsCount) - 1)) return false;
+Games.replaceCellEmpty = function(row_id, game_name, preview_thumbnail, viwers) {
+    var my, coloumn_id;
+
     for (my = row_id - (1 + Math.ceil(Games.blankCellCount / Games.ColoumnsCount)); my < row_id; my++) {
-        for (mx = 0; mx < Games.ColoumnsCount; mx++) {
-            if (!Main.ThumbNull(my, mx, Games.Thumbnail) && (Main.ThumbNull(my, mx, Games.EmptyCell))) {
+        for (coloumn_id = 0; coloumn_id < Games.ColoumnsCount; coloumn_id++) {
+            if (!Main.ThumbNull(my, coloumn_id, Games.Thumbnail) && (Main.ThumbNull(my, coloumn_id, Games.EmptyCell))) {
                 row_id = my;
-                coloumn_id = mx;
 
                 Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
 
@@ -323,7 +319,6 @@ Games.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbna
             }
         }
     }
-
     return false;
 };
 
