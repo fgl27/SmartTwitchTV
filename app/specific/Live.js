@@ -220,7 +220,7 @@ Live.loadDataSuccessFinish = function() {
                 Live.addFocus();
             }
 
-            Main.LoadImagesNew(IMG_404_VIDEO);
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;

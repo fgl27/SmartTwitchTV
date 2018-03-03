@@ -218,7 +218,7 @@ Games.loadDataSuccessFinish = function() {
                 Games.addFocus();
             }
 
-            Main.LoadImagesNew(IMG_404_GAME);
+            Main.LoadImagesPre(IMG_404_GAME);
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;
