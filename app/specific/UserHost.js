@@ -165,7 +165,7 @@ UserHost.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             hosts = response.hosts[cursor];
-            if (UserHost.CellExists(hosts.target.channel.name)) coloumn_id--;
+            if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
                 cell = UserHost.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template,
                     hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
@@ -197,7 +197,7 @@ UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
 
     if (UserHost.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
-    UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
+    UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_display_name;
     UserHost.nameMatrixCount++;
 
     return $('<td id="' + UserHost.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
@@ -304,7 +304,7 @@ UserHost.loadDataSuccessReplace = function(responseText) {
 
     for (cursor; cursor < response_items; cursor++) {
         hosts = response.hosts[cursor];
-        if (UserHost.CellExists(hosts.target.channel.name)) UserHost.blankCellCount--;
+        if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) UserHost.blankCellCount--;
         else {
             mReplace = UserHost.replaceCellEmpty(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template,
                 hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
@@ -333,7 +333,7 @@ UserHost.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_t
                 UserHost.imgMatrixId[UserHost.imgMatrixCount] = UserHost.Thumbnail + row_id + '_' + coloumn_id;
                 UserHost.imgMatrixCount++;
 
-                UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
+                UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_display_name;
                 UserHost.nameMatrixCount++;
                 document.getElementById(UserHost.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserHost.Cell + row_id + '_' + coloumn_id);
                 document.getElementById(UserHost.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
