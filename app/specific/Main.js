@@ -40,6 +40,9 @@ Main.selectedChannelChannelLogo = '';
 Main.OldUserName = '';
 Main.SmartHubId = null;
 Main.UserName = null;
+Main.imgMatrix = [];
+Main.imgMatrixId = [];
+Main.imgMatrixCount = 0;
 
 Main.ScrollOffSetVideo = 275;
 Main.ScrollOffSetGame = 514;
@@ -494,7 +497,9 @@ Main.CheckMp4Html5 = function() {
 };
 
 Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
-    var element = document.getElementById(table), y = element.scrollHeight, division = itemsCount / ColoumnsCount;
+    var element = document.getElementById(table),
+        y = element.scrollHeight,
+        division = itemsCount / ColoumnsCount;
     console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
 };
 
@@ -543,6 +548,34 @@ Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Viwe
     $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
     $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
     $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
+};
+
+Main.MatrixRst = function() {
+    Main.imgMatrix = [];
+    Main.imgMatrixId = [];
+    Main.imgMatrixCount = 0;
+};
+
+Main.CellMatrix = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", VideoSize);
+    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
+    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
+    Main.imgMatrixCount++;
+
+    if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+};
+
+Main.LoadImagesNew = function(img_type) {
+    var loadImages = function(position, ImgObjet) {
+        ImgObjet.onerror = function() {
+            this.src = img_type; //img fail to load use predefined
+        };
+        ImgObjet.src = Main.imgMatrix[position];
+    };
+
+    for (var i = 0; i < Main.imgMatrix.length; i++) {
+        loadImages(i, document.getElementById(Main.imgMatrixId[i]));
+    }
 };
 
 Main.ScrollHelper = {
