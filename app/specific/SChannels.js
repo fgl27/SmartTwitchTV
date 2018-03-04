@@ -208,29 +208,36 @@ SChannels.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SChannels.loadDataSuccessFinish = function() {
-    $('#stream_table_search_channel').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SChannels.status) {
+    if (!SChannels.status) {
+        $('#stream_table_search_channel').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+
                 Main.HideLoadDialog();
                 SChannels.addFocus();
                 if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SChannels.status = true;
-            }
 
-            Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
+                Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
 
-            if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
-                SChannels.loadingMore = true;
-                SChannels.loadDataPrepare();
-                SChannels.loadDataReplace();
-                return;
-            } else SChannels.blankCellCount = 0;
+                SChannels.loadingData = false;
+            });
+    } else SChannels.loadDataSuccessFinishRun();
+};
 
-            SChannels.loadingData = false;
-            SChannels.loadingMore = false;
-        });
+SChannels.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
+
+    if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
+        SChannels.loadingMore = true;
+        SChannels.loadDataPrepare();
+        SChannels.loadDataReplace();
+        return;
+    } else SChannels.blankCellCount = 0;
+
+    SChannels.loadingData = false;
+    SChannels.loadingMore = false;
 };
 
 SChannels.loadDataReplace = function() {
@@ -370,6 +377,8 @@ SChannels.handleKeyDown = function(event) {
         SChannels.LastClickFinish = false;
         window.setTimeout(SChannels.keyClickDelay, SChannels.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

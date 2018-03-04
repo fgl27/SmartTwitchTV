@@ -224,11 +224,9 @@ Games.loadDataSuccessFinish = function() {
             .always({
                 background: false
             }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-                if (!Games.Status) {
-                    Main.HideLoadDialog();
-                    Games.Status = true;
-                    Games.addFocus();
-                }
+                Main.HideLoadDialog();
+                Games.Status = true;
+                Games.addFocus();
 
                 Main.LoadImagesPre(IMG_404_GAME);
 

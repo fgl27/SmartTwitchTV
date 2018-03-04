@@ -227,6 +227,8 @@ SGames.handleKeyDown = function(event) {
         window.setTimeout(SGames.keyClickDelay, SGames.keyClickDelayTime);
     }
 
+    var i;
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
