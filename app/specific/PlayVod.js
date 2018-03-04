@@ -22,6 +22,7 @@ PlayVod.qualities = [];
 PlayVod.qualityIndex = 0;
 
 PlayVod.created = '';
+PlayVod.retricted = '';
 
 PlayVod.loadingDataTry = 0;
 PlayVod.loadingDataTryMax = 10;
@@ -74,6 +75,7 @@ PlayVod.Start = function() {
     PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
     PlayVod.Canjump = false;
     PlayVod.Playing = false;
+    PlayVod.retricted = '';
     PlayVod.loadData();
 };
 
@@ -141,14 +143,20 @@ PlayVod.loadDataRequest = function() {
 };
 
 PlayVod.loadDataError = function() {
-    PlayVod.loadingDataTry++;
-    if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
-        PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
-        PlayVod.loadDataRequest();
-    } else {
+    if (PlayVod.retricted.length !== 0) {
         Play.HideBufferDialog();
-        Play.showWarningDialog(STR_IS_OFFLINE);
-        window.setTimeout(PlayVod.shutdownStream, 1500);
+        Play.showWarningDialog(STR_IS_SUB_ONLY);
+        window.setTimeout(PlayVod.shutdownStream, 4000);
+    } else {
+        PlayVod.loadingDataTry++;
+        if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
+            PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
+            PlayVod.loadDataRequest();
+        } else {
+            Play.HideBufferDialog();
+            Play.showWarningDialog(STR_IS_OFFLINE);
+            window.setTimeout(PlayVod.shutdownStream, 2000);
+        }
     }
 };
 
@@ -180,6 +188,7 @@ PlayVod.loadDataSuccess = function(responseText) {
     if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
+        PlayVod.retricted = $.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates;
         PlayVod.loadData();
     } else if (PlayVod.state == PlayVod.STATE_LOADING_PLAYLIST) {
         PlayVod.playlistResponse = responseText;
