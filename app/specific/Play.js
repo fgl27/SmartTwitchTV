@@ -35,7 +35,7 @@ Play.created = '';
 
 Play.loadingDataTry = 0;
 Play.loadingDataTryMax = 10;
-Play.loadingData = false;
+Play.isOn = false;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
 Play.offsettime = 0;
@@ -95,6 +95,7 @@ Play.Start = function() {
     Play.playlistResponse = 0;
     Play.playingTry = 0;
     Play.state = Play.STATE_LOADING_TOKEN;
+    Play.isOn = true;
     document.addEventListener('visibilitychange', Play.Resume, false);
     Play.Playing = false;
     Play.loadData();
@@ -161,7 +162,6 @@ Play.LoadLogo = function(ImgObjet, link) {
 };
 
 Play.loadData = function() {
-    Play.loadingData = true;
     Play.loadingDataTry = 0;
     Play.loadingDataTimeout = 3500;
     Play.loadDataRequest();
@@ -207,7 +207,7 @@ Play.loadDataRequest = function() {
 };
 
 Play.loadDataError = function() {
-    if (Play.loadingData) {
+    if (Play.isOn) {
         Play.loadingDataTry++;
         if (Play.loadingDataTry < Play.loadingDataTryMax) {
             Play.loadingDataTimeout += (Play.loadingDataTry < 5) ? 250 : 3500;
@@ -291,7 +291,6 @@ Play.extractQualities = function(input) {
     }
     Play.qualities = result;
     Play.state = Play.STATE_PLAYING;
-    Play.loadingData = false;
     SmartHub.SmartHubResume = false;
     Play.qualityChanged();
     Play.saveQualities();
@@ -478,9 +477,11 @@ Play.streamLiveAt = function(time) { //time in '2017-10-27T13:27:27Z'
 };
 
 Play.shutdownStream = function() {
-    Play.PreshutdownStream();
-    Play.exitMain();
-    Play.loadingData = false;
+    if (Play.isOn) {
+        Play.PreshutdownStream();
+        Play.exitMain();
+        Play.isOn = false;
+    }
 };
 
 Play.PreshutdownStream = function() {

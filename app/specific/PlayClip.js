@@ -14,6 +14,7 @@ PlayClip.JumpID = null;
 PlayClip.TimeToJump = 0;
 PlayClip.jumpCountMin = -12;
 PlayClip.jumpCountMax = 12;
+PlayClip.isOn = false;
 
 //Variable initialization end
 
@@ -38,6 +39,7 @@ PlayClip.Start = function() {
     PlayClip.TimeToJump = 0;
     PlayClip.jumpCountMin = -12;
     PlayClip.jumpCountMax = 12;
+    PlayClip.isOn = true;
 
     window.setTimeout(function() {
         Play.videojs.src({
@@ -96,16 +98,19 @@ PlayClip.PlayerCheck = function() {
 };
 
 PlayClip.shutdownStream = function() {
-    Play.ClearPlayer();
+    if (PlayClip.isOn) {
+        Play.ClearPlayer();
 
-    document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayClip.Resume);
-    $("#scene2_quality").show();
-    PlayClip.hidePanel();
+        document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
+        document.removeEventListener('visibilitychange', PlayClip.Resume);
+        $("#scene2_quality").show();
+        PlayClip.hidePanel();
 
-    Play.exitMain();
+        Play.exitMain();
 
-    window.clearInterval(PlayClip.streamCheck);
+        window.clearInterval(PlayClip.streamCheck);
+        PlayClip.isOn = false;
+    }
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
