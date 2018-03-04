@@ -26,6 +26,7 @@ var STR_CHANNEL = "Channel";
 var STR_LIVE_STREAMS = "Live streams";
 var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended";
+var STR_IS_SUB_ONLY = "This video is only available to subscribers. Current application version can\'t authenticate with Twitch to verify and allow this content even if you are subscriber, future update will.";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
 var STR_NO = "No";
 var STR_FOR_THIS = " for this ";
