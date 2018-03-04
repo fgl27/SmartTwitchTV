@@ -226,12 +226,9 @@ Live.loadDataSuccessFinish = function() {
             .always({
                 background: false
             }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-
-                if (!Live.Status) {
-                    Main.HideLoadDialog();
-                    Live.Status = true;
-                    Live.addFocus();
-                }
+                Main.HideLoadDialog();
+                Live.Status = true;
+                Live.addFocus();
 
                 Main.LoadImagesPre(IMG_404_VIDEO);
 

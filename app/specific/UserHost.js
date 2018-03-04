@@ -104,7 +104,7 @@ UserHost.loadChannels = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/followed/hosting?limit=' +
-           Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserHost.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -223,29 +223,35 @@ UserHost.CellExists = function(display_name) {
 //prevent hosts_text/title/info from load before the thumbnail and display a odd hosts_table squashed only with names source
 //https://imagesloaded.desandro.com/
 UserHost.loadDataSuccessFinish = function() {
-    $('#stream_table_user_host').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserHost.status) {
+    if (!UserHost.status) {
+        $('#stream_table_user_host').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
                 Main.HideLoadDialog();
                 UserHost.addFocus();
                 if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
                 else UserHost.status = true;
-            }
 
-            Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
+                Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
 
-            if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
-                UserHost.loadingMore = true;
-                UserHost.loadDataPrepare();
-                UserHost.loadChannelsReplace();
-                return;
-            } else UserHost.blankCellCount = 0;
+                UserHost.loadingData = false;
+            });
+    } else UserHost.loadDataSuccessFinishRun();
+};
 
-            UserHost.loadingData = false;
-            UserHost.loadingMore = false;
-        });
+UserHost.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
+
+    if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
+        UserHost.loadingMore = true;
+        UserHost.loadDataPrepare();
+        UserHost.loadChannelsReplace();
+        return;
+    } else UserHost.blankCellCount = 0;
+
+    UserHost.loadingData = false;
+    UserHost.loadingMore = false;
 };
 
 UserHost.loadChannelsReplace = function() {
@@ -385,6 +391,8 @@ UserHost.handleKeyDown = function(event) {
         UserHost.LastClickFinish = false;
         window.setTimeout(UserHost.keyClickDelay, UserHost.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

@@ -22,7 +22,6 @@ Sclip.LastClickFinish = true;
 Sclip.keyClickDelayTime = 25;
 Sclip.ReplacedataEnded = false;
 Sclip.MaxOffset = 0;
-Sclip.loadingReplace = false;
 Sclip.DurationSeconds = 0;
 Sclip.emptyContent = false;
 
@@ -73,7 +72,6 @@ Sclip.StartLoad = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     Sclip.lastselectedChannel = Main.selectedChannel;
-    Sclip.loadingReplace = false;
     Sclip.cursor = null;
     Sclip.status = false;
     $('#stream_table_search_clip').empty();
@@ -176,7 +174,7 @@ Sclip.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, stream, vod_id, vod_offset,
+    var coloumn_id, row_id, row, vod_id, video,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -246,31 +244,34 @@ Sclip.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 Sclip.loadDataSuccessFinish = function() {
-    $('#stream_table_search_clip').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Sclip.status) {
+    if (!Sclip.status) {
+        $('#stream_table_search_clip').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
                 Main.HideLoadDialog();
                 Sclip.addFocus();
                 if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
                 else Sclip.status = true;
-            }
 
-            Main.LoadImages(Sclip.imgMatrix, Sclip.imgMatrixId, IMG_404_VIDEO);
+                Main.LoadImages(Sclip.imgMatrix, Sclip.imgMatrixId, IMG_404_VIDEO);
 
-            if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
-                Sclip.loadingMore = true;
-                Sclip.loadingReplace = true;
-                Sclip.loadDataPrepare();
-                Sclip.loadDataReplace();
-                return;
-            } else Sclip.blankCellCount = 0;
+                Sclip.loadingData = false;
+            });
+    } else Sclip.loadDataSuccessFinishRun();
+};
 
-            Sclip.loadingReplace = false;
-            Sclip.loadingData = false;
-            Sclip.loadingMore = false;
-        });
+Sclip.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(Sclip.imgMatrix, Sclip.imgMatrixId, IMG_404_VIDEO);
+
+    if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
+        Sclip.loadingMore = true;
+        Sclip.loadDataPrepare();
+        Sclip.loadDataReplace();
+        return;
+    } else Sclip.blankCellCount = 0;
+    Sclip.loadingData = false;
+    Sclip.loadingMore = false;
 };
 
 Sclip.loadDataReplace = function() {
@@ -423,6 +424,8 @@ Sclip.handleKeyDown = function(event) {
         Sclip.LastClickFinish = false;
         window.setTimeout(Sclip.keyClickDelay, Sclip.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

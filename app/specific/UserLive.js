@@ -296,29 +296,34 @@ UserLive.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 UserLive.loadDataSuccessFinish = function() {
-    $('#stream_table_user_live').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserLive.status) {
+    if (!UserLive.status) {
+        $('#stream_table_user_live').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
                 Main.HideLoadDialog();
                 UserLive.addFocus();
                 if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
                 else UserLive.status = true;
-            }
 
-            Main.LoadImages(UserLive.imgMatrix, UserLive.imgMatrixId, IMG_404_VIDEO);
+                Main.LoadImages(UserLive.imgMatrix, UserLive.imgMatrixId, IMG_404_VIDEO);
+                UserLive.loadingData = false;
+            });
+    } else UserLive.loadDataSuccessFinishRun();
+};
 
-            if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
-                UserLive.loadingMore = true;
-                UserLive.loadDataPrepare();
-                UserLive.loadChannelsReplace();
-                return;
-            } else UserLive.blankCellCount = 0;
+UserLive.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(UserLive.imgMatrix, UserLive.imgMatrixId, IMG_404_VIDEO);
 
-            UserLive.loadingData = false;
-            UserLive.loadingMore = false;
-        });
+    if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
+        UserLive.loadingMore = true;
+        UserLive.loadDataPrepare();
+        UserLive.loadChannelsReplace();
+        return;
+    } else UserLive.blankCellCount = 0;
+
+    UserLive.loadingData = false;
+    UserLive.loadingMore = false;
 };
 
 UserLive.loadChannelsReplace = function() {
@@ -462,6 +467,8 @@ UserLive.handleKeyDown = function(event) {
         UserLive.LastClickFinish = false;
         window.setTimeout(UserLive.keyClickDelay, UserLive.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

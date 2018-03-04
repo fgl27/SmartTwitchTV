@@ -220,29 +220,36 @@ SLive.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SLive.loadDataSuccessFinish = function() {
-    $('#stream_table_search_live').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SLive.status) {
+    if (!SLive.status) {
+        $('#stream_table_search_live').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+
                 Main.HideLoadDialog();
                 SLive.addFocus();
                 if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SLive.status = true;
-            }
 
-            Main.LoadImages(SLive.imgMatrix, SLive.imgMatrixId, IMG_404_VIDEO);
+                Main.LoadImages(SLive.imgMatrix, SLive.imgMatrixId, IMG_404_VIDEO);
 
-            if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
-                SLive.loadingMore = true;
-                SLive.loadDataPrepare();
-                SLive.loadDataReplace();
-                return;
-            } else SLive.blankCellCount = 0;
+                SLive.loadingData = false;
+            });
+    } else SLive.loadDataSuccessFinishRun();
+};
 
-            SLive.loadingData = false;
-            SLive.loadingMore = false;
-        });
+SLive.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(SLive.imgMatrix, SLive.imgMatrixId, IMG_404_VIDEO);
+
+    if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
+        SLive.loadingMore = true;
+        SLive.loadDataPrepare();
+        SLive.loadDataReplace();
+        return;
+    } else SLive.blankCellCount = 0;
+
+    SLive.loadingData = false;
+    SLive.loadingMore = false;
 };
 
 SLive.loadDataReplace = function() {
@@ -386,6 +393,8 @@ SLive.handleKeyDown = function(event) {
         SLive.LastClickFinish = false;
         window.setTimeout(SLive.keyClickDelay, SLive.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

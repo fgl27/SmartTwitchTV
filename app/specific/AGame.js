@@ -219,29 +219,35 @@ AGame.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 AGame.loadDataSuccessFinish = function() {
-    $('#stream_table_a_game').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!AGame.status) {
+    if (!AGame.status) {
+        $('#stream_table_a_game').imagesLoaded()
+            .always({
+                background: false
+            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
                 Main.HideLoadDialog();
                 AGame.addFocus();
                 if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
                 else AGame.status = true;
-            }
 
-            Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
+                Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
 
-            if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
-                AGame.loadingMore = true;
-                AGame.loadDataPrepare();
-                AGame.loadDataReplace();
-                return;
-            } else AGame.blankCellCount = 0;
+                AGame.loadingData = false;
+            });
+    } else AGame.loadDataSuccessFinishRun();
+};
 
-            AGame.loadingData = false;
-            AGame.loadingMore = false;
-        });
+AGame.loadDataSuccessFinishRun = function() {
+    Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
+
+    if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
+        AGame.loadingMore = true;
+        AGame.loadDataPrepare();
+        AGame.loadDataReplace();
+        return;
+    } else AGame.blankCellCount = 0;
+
+    AGame.loadingData = false;
+    AGame.loadingMore = false;
 };
 
 AGame.loadDataReplace = function() {
@@ -385,6 +391,8 @@ AGame.handleKeyDown = function(event) {
         AGame.LastClickFinish = false;
         window.setTimeout(AGame.keyClickDelay, AGame.keyClickDelayTime);
     }
+
+    var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:

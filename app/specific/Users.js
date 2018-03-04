@@ -165,6 +165,8 @@ Users.handleKeyDown = function(event) {
         window.setTimeout(Users.keyClickDelay, Users.keyClickDelayTime);
     }
 
+    var i;
+
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
