@@ -26,6 +26,7 @@ PlayVod.retricted = '';
 
 PlayVod.loadingDataTry = 0;
 PlayVod.loadingDataTryMax = 10;
+PlayVod.loadingData = false;
 PlayVod.offsettime = 0;
 
 PlayVod.qualityName = [];
@@ -98,6 +99,7 @@ PlayVod.Resume = function() {
 };
 
 PlayVod.loadData = function() {
+    PlayVod.loadingData = true;
     PlayVod.loadingDataTry = 0;
     PlayVod.loadingDataTimeout = 3500;
     PlayVod.loadDataRequest();
@@ -143,19 +145,23 @@ PlayVod.loadDataRequest = function() {
 };
 
 PlayVod.loadDataError = function() {
-    if (PlayVod.retricted.length !== 0) {
-        Play.HideBufferDialog();
-        Play.showWarningDialog(STR_IS_SUB_ONLY);
-        window.setTimeout(PlayVod.shutdownStream, 4000);
-    } else {
-        PlayVod.loadingDataTry++;
-        if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
-            PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
-            PlayVod.loadDataRequest();
-        } else {
+    if (PlayVod.loadingData) {
+        if (PlayVod.retricted.length !== 0) {
             Play.HideBufferDialog();
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(PlayVod.shutdownStream, 2000);
+            Play.showWarningDialog(STR_IS_SUB_ONLY);
+            window.setTimeout(function() {
+                if (PlayVod.loadingData) PlayVod.shutdownStream();
+            }, 4000);
+        } else {
+            PlayVod.loadingDataTry++;
+            if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
+                PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
+                PlayVod.loadDataRequest();
+            } else {
+                Play.HideBufferDialog();
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(PlayVod.shutdownStream, 2000);
+            }
         }
     }
 };
@@ -230,6 +236,7 @@ PlayVod.extractQualities = function(input) {
     }
     PlayVod.qualities = result;
     PlayVod.state = Play.STATE_PLAYING;
+    PlayVod.loadingData = false;
     PlayVod.qualityChanged();
     PlayVod.saveQualities();
 };
@@ -344,6 +351,7 @@ PlayVod.updateCurrentTime = function(currentTime) {
 PlayVod.shutdownStream = function() {
     PlayVod.PreshutdownStream();
     Play.exitMain();
+    PlayVod.loadingData = false;
 };
 
 PlayVod.PreshutdownStream = function() {
