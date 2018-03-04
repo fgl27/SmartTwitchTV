@@ -26,7 +26,7 @@ PlayVod.retricted = '';
 
 PlayVod.loadingDataTry = 0;
 PlayVod.loadingDataTryMax = 10;
-PlayVod.loadingData = false;
+PlayVod.isOn = false;
 PlayVod.offsettime = 0;
 
 PlayVod.qualityName = [];
@@ -76,6 +76,7 @@ PlayVod.Start = function() {
     PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
     PlayVod.Canjump = false;
     PlayVod.Playing = false;
+    PlayVod.isOn = true;
     PlayVod.retricted = '';
     PlayVod.loadData();
 };
@@ -99,7 +100,6 @@ PlayVod.Resume = function() {
 };
 
 PlayVod.loadData = function() {
-    PlayVod.loadingData = true;
     PlayVod.loadingDataTry = 0;
     PlayVod.loadingDataTimeout = 3500;
     PlayVod.loadDataRequest();
@@ -145,12 +145,12 @@ PlayVod.loadDataRequest = function() {
 };
 
 PlayVod.loadDataError = function() {
-    if (PlayVod.loadingData) {
+    if (PlayVod.isOn) {
         if (PlayVod.retricted.length !== 0) {
             Play.HideBufferDialog();
             Play.showWarningDialog(STR_IS_SUB_ONLY);
             window.setTimeout(function() {
-                if (PlayVod.loadingData) PlayVod.shutdownStream();
+                if (PlayVod.isOn) PlayVod.shutdownStream();
             }, 4000);
         } else {
             PlayVod.loadingDataTry++;
@@ -236,7 +236,6 @@ PlayVod.extractQualities = function(input) {
     }
     PlayVod.qualities = result;
     PlayVod.state = Play.STATE_PLAYING;
-    PlayVod.loadingData = false;
     PlayVod.qualityChanged();
     PlayVod.saveQualities();
 };
@@ -349,9 +348,11 @@ PlayVod.updateCurrentTime = function(currentTime) {
 };
 
 PlayVod.shutdownStream = function() {
-    PlayVod.PreshutdownStream();
-    Play.exitMain();
-    PlayVod.loadingData = false;
+    if (PlayVod.isOn) {
+        PlayVod.PreshutdownStream();
+        Play.exitMain();
+        PlayVod.isOn = false;
+    }
 };
 
 PlayVod.PreshutdownStream = function() {
