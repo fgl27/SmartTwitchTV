@@ -78,6 +78,7 @@ UserHost.StartLoad = function() {
     UserHost.cursorX = 0;
     UserHost.cursorY = 0;
     UserHost.dataEnded = false;
+    Main.CounterDialogRst();
     UserHost.loadDataPrepare();
     UserHost.loadChannels();
 };

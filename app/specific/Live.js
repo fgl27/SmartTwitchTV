@@ -72,6 +72,7 @@ Live.StartLoad = function() {
     Live.cursorX = 0;
     Live.cursorY = 0;
     Live.dataEnded = false;
+    Main.CounterDialogRst();
     Live.loadDataPrepare();
     Live.loadDataRequest();
 };

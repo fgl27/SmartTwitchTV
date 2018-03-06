@@ -76,6 +76,7 @@ UserGames.StartLoad = function() {
     UserGames.cursorX = 0;
     UserGames.cursorY = 0;
     UserGames.dataEnded = false;
+    Main.CounterDialogRst();
     UserGames.loadDataPrepare();
     UserGames.loadChannels();
 };

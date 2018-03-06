@@ -72,6 +72,7 @@ SLive.StartLoad = function() {
     SLive.cursorX = 0;
     SLive.cursorY = 0;
     SLive.dataEnded = false;
+    Main.CounterDialogRst();
     SLive.loadDataPrepare();
     SLive.loadDataRequest();
 };

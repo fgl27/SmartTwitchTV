@@ -82,6 +82,7 @@ UserLive.StartLoad = function() {
     UserLive.cursorY = 0;
     UserLive.dataEnded = false;
     UserLive.followerChannels = '';
+    Main.CounterDialogRst();
     UserLive.loadDataPrepare();
     UserLive.loadChannels();
 };

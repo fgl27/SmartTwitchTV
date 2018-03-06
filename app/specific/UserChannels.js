@@ -66,6 +66,7 @@ UserChannels.StartLoad = function() {
     UserChannels.cursorX = 0;
     UserChannels.cursorY = 0;
     UserChannels.dataEnded = false;
+    Main.CounterDialogRst();
     UserChannels.UserChannelsList = [];
     UserChannels.loadDataPrepare();
     UserChannels.loadChannels();

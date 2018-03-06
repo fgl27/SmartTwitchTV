@@ -64,6 +64,7 @@ SGames.StartLoad = function() {
     SGames.itemsCount = 0;
     SGames.cursorX = 0;
     SGames.cursorY = 0;
+    Main.CounterDialogRst();
     SGames.loadDataPrepare();
     SGames.loadDataRequest();
 };

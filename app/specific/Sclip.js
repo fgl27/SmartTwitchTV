@@ -85,6 +85,7 @@ Sclip.StartLoad = function() {
     Sclip.cursorX = 0;
     Sclip.cursorY = 0;
     Sclip.dataEnded = false;
+    Main.CounterDialogRst();
     Sclip.loadDataPrepare();
     Sclip.loadDataRequest();
 };

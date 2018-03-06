@@ -76,6 +76,7 @@ SChannels.StartLoad = function() {
     SChannels.cursorX = 0;
     SChannels.cursorY = 0;
     SChannels.dataEnded = false;
+    Main.CounterDialogRst();
     SChannels.loadDataPrepare();
     SChannels.loadDataRequest();
 };
