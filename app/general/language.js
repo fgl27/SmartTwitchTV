@@ -43,6 +43,7 @@ var STR_QUALITY = "Quality";
 var STR_VIEWER = " Viewers";
 var STR_EXIT_AGAIN = "Click again to exit!";
 var STR_EXIT_MESSAGE = "Do you wanna to exit Twitch?";
+var STR_EXIT_MMINIMIZED = "(The app will be minimized)";
 var STR_EXIT = "Exit";
 var STR_CANCEL = "Cancel";
 var STR_NOT_LIVE = "[Not Live] ";
@@ -126,6 +127,7 @@ var STR_DOT = '<i class="fa fa-circle"style="font-size: 50%; vertical-align: mid
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
+var STR_EXIT_DIV_MESSAGE = STR_EXIT_MESSAGE + STR_BR + '<div class="about_text_title" style="font-size: 70%; font-weight: normal;">' + STR_EXIT_MMINIMIZED + '</div>';
 
 var STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
     STR_CONTROLS_MAIN_1 + STR_BR +

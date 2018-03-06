@@ -164,7 +164,7 @@ Main.initWindows = function() {
     $('.label_search_live').html(STR_LIVE_STREAMS);
     $('.label_exit_cancel').html(STR_CANCEL);
     $('.label_exit_exit').html(STR_EXIT);
-    $("#main_dialog_exit_text").text(STR_EXIT_MESSAGE);
+    document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_DIV_MESSAGE;
     $('.label_buffering').html(STR_BUFFERING);
     $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROL_KEY);
     $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT_KEY);
