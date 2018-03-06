@@ -322,7 +322,7 @@ Games.loadDataSuccessReplace = function(responseText) {
                 Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
             Games.blankCellCount--;
 
-            index = tempVector.indexOf(tempVector[i]);
+            var index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
                 tempVector.splice(index, 1);
             }
