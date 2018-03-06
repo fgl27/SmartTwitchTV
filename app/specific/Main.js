@@ -207,9 +207,13 @@ Main.isExitDialogShown = function() {
     return $("#main_dialog_exit").is(":visible");
 };
 
+Main.CounterDialogRst = function() {
+    $("#dialog_counter_text").text('');
+};
+
 Main.CounterDialog = function(x, y, coloumns, total) {
     if (total > 0) $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
-    else $("#dialog_counter_text").text('');
+    else Main.CounterDialogRst();
 };
 
 Main.SetItemsLimitReload = function(blankCellCount) {

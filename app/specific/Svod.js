@@ -80,6 +80,7 @@ Svod.StartLoad = function() {
     Svod.cursorX = 0;
     Svod.cursorY = 0;
     Svod.dataEnded = false;
+    Main.CounterDialogRst();
     Svod.loadDataPrepare();
     Svod.loadDataRequest();
 };

@@ -69,6 +69,7 @@ Games.StartLoad = function() {
     Games.cursorX = 0;
     Games.cursorY = 0;
     Games.dataEnded = false;
+    Main.CounterDialogRst();
     Games.loadDataPrepare();
     Games.loadDataRequest();
 };
