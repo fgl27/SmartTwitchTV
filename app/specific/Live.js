@@ -497,10 +497,10 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             if (Main.isExitDialogShown()) {
                 if (Live.Exitcursor) {
+                    Main.HideExitDialog();
                     try {
                         tizen.application.getCurrentApplication().hide();
                     } catch (e) {}
-                    Main.HideExitDialog();
                 } else Main.HideExitDialog();
             } else {
                 Play.selectedChannel = $('#' + Live.Cell + Live.cursorY + '_' + Live.cursorX).attr('data-channelname');
