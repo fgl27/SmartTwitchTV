@@ -38,6 +38,7 @@ Games.init = function() {
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
     if (Games.Status) {
+        Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
         Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games,
             Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
         Main.CounterDialog(Games.cursorX, Games.cursorY, Main.ColoumnsCountGame, Games.itemsCount);
@@ -250,10 +251,7 @@ Games.loadDataSuccessFinishRun = function() {
     }
 
     Games.loadingData = false;
-
-    window.setTimeout(function() {
-        Games.loadingMore = false;
-    }, 500);
+    Games.loadingMore = false;
 };
 
 Games.loadDataReplace = function() {
@@ -363,6 +361,7 @@ Games.addFocus = function() {
 
     Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
         Main.ColoumnsCountGame, Games.itemsCount);
+    console.log("position = " + document.getElementById('stream_table_games').offsetTop);
 };
 
 Games.removeFocus = function() {
@@ -392,7 +391,7 @@ Games.handleKeyDown = function(event) {
                 if (Main.Go === Main.Before) Main.Go = Main.Live;
                 else Main.Go = Main.Before;
                 Games.exit();
-                Main.SwitchScreen();
+                Main.SwitchScreen('stream_table_games');
             }
             break;
         case TvKeyCode.KEY_LEFT:
@@ -452,10 +451,11 @@ Games.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELUP:
             if (!Games.loadingMore) {
+                Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
                 Main.Before = Main.Games;
                 Main.Go = Main.Live;
                 Games.exit();
-                Main.SwitchScreen();
+                Main.SwitchScreen('stream_table_games');
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
@@ -463,7 +463,7 @@ Games.handleKeyDown = function(event) {
                 Main.Before = Main.Games;
                 Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
                 Games.exit();
-                Main.SwitchScreen();
+                Main.SwitchScreen('stream_table_games');
             }
             break;
         case TvKeyCode.KEY_PLAY:
@@ -475,7 +475,7 @@ Games.handleKeyDown = function(event) {
             Main.Before = Main.Go;
             Main.Go = Main.AGame;
             Games.exit();
-            Main.SwitchScreen();
+            Main.SwitchScreen('stream_table_games');
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
@@ -483,7 +483,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_GREEN:
             Main.Go = Main.Live;
             Games.exit();
-            Main.SwitchScreen();
+            Main.SwitchScreen('stream_table_games');
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();
@@ -492,7 +492,7 @@ Games.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.Games;
             Main.Go = Main.Search;
             Games.exit();
-            Main.SwitchScreen();
+            Main.SwitchScreen('stream_table_games');
             break;
         default:
             break;

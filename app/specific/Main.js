@@ -352,31 +352,78 @@ Main.StartPlayerLive = function() {
 
 Main.ReStartScreens = function() {
     $("#play_dialog_exit").hide();
-    Main.SwitchScreen();
+    Main.SwitchScreen(null);
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 };
 
-Main.SwitchScreen = function() {
+Main.SwitchScreenPosition = function(table_one, table_two) {
+    var TempTable1 = document.getElementById(table_one).innerHTML;
+    var TempTable2 = document.getElementById(table_two).innerHTML;
+
+    document.getElementById(table_one).innerHTML = TempTable2;
+    document.getElementById(table_two).innerHTML = TempTable1;
+
+    document.getElementById(table_one).setAttribute('id', 'temp_table');
+    document.getElementById(table_two).setAttribute('id', table_one);
+    document.getElementById('temp_table').setAttribute('id', table_two);
+};
+
+Main.SwitchScreen = function(table_from) {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.HideWarningDialog();
     Main.CounterDialogRst();
-    if (Main.Go === Main.Live) Live.init();
-    else if (Main.Go === Main.AddUser) AddUser.init();
-    else if (Main.Go === Main.Games) Games.init();
-    else if (Main.Go === Main.AGame) AGame.init();
-    else if (Main.Go === Main.Search) Search.init();
-    else if (Main.Go === Main.SGames) SGames.init();
-    else if (Main.Go === Main.SLive) SLive.init();
-    else if (Main.Go === Main.SChannelContent) SChannelContent.init();
-    else if (Main.Go === Main.Svod) Svod.init();
-    else if (Main.Go === Main.Sclip) Sclip.init();
-    else if (Main.Go === Main.Users) Users.init();
-    else if (Main.Go === Main.UserLive) UserLive.init();
-    else if (Main.Go === Main.UserHost) UserHost.init();
-    else if (Main.Go === Main.UserGames) UserGames.init();
-    else if (Main.Go === Main.UserChannels) UserChannels.init();
-    else if (Main.Go === Main.SChannels) SChannels.init();
-    else Live.init();
+    if (Main.Go === Main.Live) {
+        if (table_from != null) Main.SwitchScreenPosition(table_from, 'stream_table_live');
+        Live.init();
+    } else if (Main.Go === Main.AddUser) {
+//        Main.SwitchScreenPosition(table_from, 'stream_table_live');
+        AddUser.init();
+    } else if (Main.Go === Main.Games) {
+        if (table_from != null) Main.SwitchScreenPosition(table_from, 'stream_table_games');
+        Games.init();
+    } else if (Main.Go === Main.AGame) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_a_game');
+        AGame.init();
+    } else if (Main.Go === Main.Search) {
+//        Main.SwitchScreenPosition(table_from, 'stream_table_live');
+        Search.init();
+    } else if (Main.Go === Main.SGames) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_game');
+        SGames.init();
+    } else if (Main.Go === Main.SLive) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_live');
+        SLive.init();
+    } else if (Main.Go === Main.SChannelContent) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_channel_a');
+        SChannelContent.init();
+    } else if (Main.Go === Main.Svod) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_vod');
+        Svod.init();
+    } else if (Main.Go === Main.Sclip) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_clip');
+        Sclip.init();
+    } else if (Main.Go === Main.Users) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_user');
+        Users.init();
+    } else if (Main.Go === Main.UserLive) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_user_live');
+        UserLive.init();
+    } else if (Main.Go === Main.UserHost) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_user_host');
+        UserHost.init();
+    } else if (Main.Go === Main.UserGames) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_user_games');
+        UserGames.init();
+    } else if (Main.Go === Main.UserChannels) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_user_channels');
+        UserChannels.init();
+    } else if (Main.Go === Main.SChannels) {
+        Main.SwitchScreenPosition(table_from, 'stream_table_search_channel');
+        SChannels.init();
+    } else {
+        Main.SwitchScreenPosition(table_from, 'stream_table_live');
+        Live.init();
+    }
 };
 
 Main.ExitCurrent = function(ExitCurrent) {
