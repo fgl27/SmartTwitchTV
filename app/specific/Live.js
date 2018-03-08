@@ -41,7 +41,6 @@ Live.init = function() {
     $('#top_bar_live').removeClass('icon_center_label');
     $('#top_bar_live').addClass('icon_center_focus');
     if (Live.Status) {
-        Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
         Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Live.cursorX, Live.cursorY, Main.ColoumnsCountVideo, Live.itemsCount);
     } else Live.StartLoad();
@@ -259,7 +258,9 @@ Live.loadDataSuccessFinishRun = function() {
     }
 
     Live.loadingData = false;
-    Live.loadingMore = false;
+    window.setTimeout(function() {
+        Live.loadingMore = false;
+    }, 500);
 };
 
 Live.loadDataReplace = function() {
@@ -372,7 +373,6 @@ Live.addFocus = function() {
 
     Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
         Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Main.Live, Main.ColoumnsCountVideo, Live.itemsCount);
-    console.log("position = " + document.getElementById('stream_table_live').offsetTop);
 };
 
 Live.removeFocus = function() {
@@ -495,16 +495,15 @@ Live.handleKeyDown = function(event) {
                 Main.Before = Main.Live;
                 Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
                 Live.exit();
-                Main.SwitchScreen('stream_table_live');
+                Main.SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             if (!Live.loadingMore) {
-                Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
                 Main.Before = Main.Live;
                 Main.Go = Main.Games;
                 Live.exit();
-                Main.SwitchScreen('stream_table_live');
+                Main.SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_PLAY:
@@ -538,7 +537,7 @@ Live.handleKeyDown = function(event) {
             Main.BeforeSearch = Main.Live;
             Main.Go = Main.Search;
             Live.exit();
-            Main.SwitchScreen('stream_table_live');
+            Main.SwitchScreen();
             break;
         default:
             break;
