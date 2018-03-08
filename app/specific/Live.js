@@ -258,9 +258,12 @@ Live.loadDataSuccessFinishRun = function() {
     }
 
     Live.loadingData = false;
-    window.setTimeout(function() {
-        Live.loadingMore = false;
-    }, 500);
+    $('#stream_table_live').imagesLoaded()
+        .always({
+            background: false
+        }, function() {
+            Live.loadingMore = false;
+        });
 };
 
 Live.loadDataReplace = function() {

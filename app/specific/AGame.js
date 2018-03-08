@@ -248,9 +248,12 @@ AGame.loadDataSuccessFinishRun = function() {
     } else AGame.blankCellCount = 0;
 
     AGame.loadingData = false;
-    window.setTimeout(function() {
-        AGame.loadingMore = false;
-    }, 500);
+    $('#stream_table_a_game').imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            AGame.loadingMore = false;
+        });
 };
 
 AGame.loadDataReplace = function() {

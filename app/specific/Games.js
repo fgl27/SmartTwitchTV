@@ -251,9 +251,12 @@ Games.loadDataSuccessFinishRun = function() {
 
     Games.loadingData = false;
 
-    window.setTimeout(function() {
-        Games.loadingMore = false;
-    }, 500);
+    $('#stream_table_games').imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            Games.loadingMore = false;
+        });
 };
 
 Games.loadDataReplace = function() {
