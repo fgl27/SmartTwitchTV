@@ -314,7 +314,7 @@ Live.loadDataErrorReplace = function() {
 Live.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.streams.length;
-    var stream, cursor = 0;
+    var stream, index, cursor = 0;
     var tempVector = Live.blankCellVector.slice();
 
     Live.MaxOffset = parseInt(response._total);
@@ -333,7 +333,7 @@ Live.loadDataSuccessReplace = function(responseText) {
                 Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             Live.blankCellCount--;
 
-            var index = tempVector.indexOf(tempVector[i]);
+            index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
                 tempVector.splice(index, 1);
             }

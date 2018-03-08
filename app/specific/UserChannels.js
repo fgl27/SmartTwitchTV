@@ -233,7 +233,9 @@ UserChannels.loadDataSuccessFinishRun = function() {
     Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
 
     UserChannels.loadingData = false;
-    UserChannels.loadingMore = false;
+    window.setTimeout(function() {
+        UserChannels.loadingMore = false;
+    }, 500);
 };
 
 UserChannels.addFocus = function() {
@@ -265,10 +267,7 @@ UserChannels.keyClickDelay = function() {
 };
 
 UserChannels.handleKeyDown = function(event) {
-    if (UserChannels.loadingData && !UserChannels.loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!UserChannels.LastClickFinish) {
+    if ((UserChannels.loadingData && !UserChannels.loadingMore) || !UserChannels.LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -282,7 +281,7 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
-            else {
+            else if (!UserChannels.loadingMore) {
                 Main.Go = Main.Users;
                 UserChannels.exit();
                 Main.SwitchScreen();
@@ -344,14 +343,18 @@ UserChannels.handleKeyDown = function(event) {
             if (!UserChannels.loadingMore) UserChannels.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserLive;
-            UserChannels.exit();
-            Main.SwitchScreen();
+            if (!UserChannels.loadingMore) {
+                Main.Go = Main.UserLive;
+                UserChannels.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.UserGames;
-            UserChannels.exit();
-            Main.SwitchScreen();
+            if (!UserChannels.loadingMore) {
+                Main.Go = Main.UserGames;
+                UserChannels.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

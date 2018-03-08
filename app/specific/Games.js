@@ -232,7 +232,6 @@ Games.loadDataSuccessFinish = function() {
                 Main.LoadImagesPre(IMG_404_GAME);
 
                 Games.loadingData = false;
-                //Main.ScrollSize('stream_table_games', Games.itemsCount, Main.ColoumnsCountGame);
             });
     } else Games.loadDataSuccessFinishRun();
 };
@@ -251,8 +250,10 @@ Games.loadDataSuccessFinishRun = function() {
     }
 
     Games.loadingData = false;
-    Games.loadingMore = false;
-    //Main.ScrollSize('stream_table_games', Games.itemsCount, Main.ColoumnsCountGame);
+
+    window.setTimeout(function() {
+        Games.loadingMore = false;
+    }, 500);
 };
 
 Games.loadDataReplace = function() {
@@ -323,7 +324,7 @@ Games.loadDataSuccessReplace = function(responseText) {
                 Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
             Games.blankCellCount--;
 
-            var index = tempVector.indexOf(tempVector[i]);
+            index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
                 tempVector.splice(index, 1);
             }
@@ -373,10 +374,7 @@ Games.keyClickDelay = function() {
 };
 
 Games.handleKeyDown = function(event) {
-    if (Games.loadingData && !Games.loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Games.LastClickFinish) {
+    if ((Games.loadingData && !Games.loadingMore) || !Games.LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -390,7 +388,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
-            else {
+            else if (!Games.loadingMore) {
                 if (Main.Go === Main.Before) Main.Go = Main.Live;
                 else Main.Go = Main.Before;
                 Games.exit();
@@ -453,16 +451,20 @@ Games.handleKeyDown = function(event) {
             if (!Games.loadingMore) Games.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Before = Main.Games;
-            Main.Go = Main.Live;
-            Games.exit();
-            Main.SwitchScreen();
+            if (!Games.loadingMore) {
+                Main.Before = Main.Games;
+                Main.Go = Main.Live;
+                Games.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Before = Main.Games;
-            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
-            Games.exit();
-            Main.SwitchScreen();
+            if (!Games.loadingMore) {
+                Main.Before = Main.Games;
+                Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
+                Games.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
