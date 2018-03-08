@@ -233,9 +233,12 @@ UserChannels.loadDataSuccessFinishRun = function() {
     Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
 
     UserChannels.loadingData = false;
-    window.setTimeout(function() {
-        UserChannels.loadingMore = false;
-    }, 500);
+    $('#stream_table_user_channels').imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            UserChannels.loadingMore = false;
+        });
 };
 
 UserChannels.addFocus = function() {
