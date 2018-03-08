@@ -43,6 +43,7 @@ Main.UserName = null;
 Main.imgMatrix = [];
 Main.imgMatrixId = [];
 Main.imgMatrixCount = 0;
+Main.ScrollbarBlack = true;
 
 Main.ScrollOffSetVideo = 275;
 Main.ScrollOffSetGame = 514;
@@ -209,11 +210,46 @@ Main.isExitDialogShown = function() {
 
 Main.CounterDialogRst = function() {
     $("#dialog_counter_text").text('');
+    Main.Scrollbar(0, 0, 0);
 };
 
 Main.CounterDialog = function(x, y, coloumns, total) {
-    if (total > 0) $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
-    else Main.CounterDialogRst();
+    if (total > 0) {
+        $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
+        Main.Scrollbar(y, coloumns, total);
+    } else Main.CounterDialogRst();
+};
+
+Main.Scrollbar = function(y, coloumns, total) {
+    // min 100 max 1000 or the 900 + 100 below
+    if ((coloumns == 3 && (total > 9)) || (coloumns == 5 && (total > 10)) || (coloumns == 6 && (total > 12))) {
+        var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
+        var currentPositon = document.getElementById('scrollbar').offsetTop;
+
+        //If position are different it means previously animation did't ended, stop it and force set the value
+        if (currentPositon != Main.nextScrollPositon) {
+            $('#scrollbar').stop();
+            document.getElementById("scrollbar").style.top = Main.nextScrollPositon + "px";
+        }
+        Main.nextScrollPositon = nextPositon;
+
+        $('#scrollbar').animate({
+            top: nextPositon + 'px'
+        }, 800);
+
+        if (Main.ScrollbarBlack) {
+            Main.ScrollbarBlack = false;
+            window.setTimeout(function() {
+                document.getElementById("scrollbar").style.backgroundColor = "#777777";
+            }, (nextPositon == 100 ? 0 : 800));
+        }
+    } else {
+        $('#scrollbar').stop();
+        document.getElementById("scrollbar").style.backgroundColor = "#000000";
+        Main.nextScrollPositon = 100;
+        Main.ScrollbarBlack = true;
+        document.getElementById("scrollbar").style.top = "100px";
+    }
 };
 
 Main.SetItemsLimitReload = function(blankCellCount) {
@@ -323,7 +359,7 @@ Main.ReStartScreens = function() {
 Main.SwitchScreen = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.HideWarningDialog();
-    $("#dialog_counter_text").text('');
+    Main.CounterDialogRst();
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.AddUser) AddUser.init();
     else if (Main.Go === Main.Games) Games.init();
@@ -510,13 +546,6 @@ Main.CheckMp4Html5 = function() {
     } else result += "No video support at all, createElement video fail.";
 
     return result;
-};
-
-Main.ScrollSize = function(table, itemsCount, ColoumnsCount) {
-    var element = document.getElementById(table),
-        y = element.scrollHeight,
-        division = itemsCount / ColoumnsCount;
-    console.log("y " + y + " division " + (division) + " step size " + (y / (division)));
 };
 
 Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,

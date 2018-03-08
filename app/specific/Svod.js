@@ -211,10 +211,10 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
         '<div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div>' +
         '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + Svod.StreamDurationDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(duration) + '</div>' +
-        '<div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
+        '<div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
         '</div>' +
         '<div id="' + Svod.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
+        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
 };
 
 Svod.CellExists = function(display_name) {
@@ -362,10 +362,10 @@ Svod.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumb
                     '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
                     '<div id="' + Svod.StreamDurationDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(duration) + '</div>' +
                     '<div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
+                    '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
                     '</div>' +
                     '<div id="' + Svod.QualityDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
+                    '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
                 return true;
             }
         }

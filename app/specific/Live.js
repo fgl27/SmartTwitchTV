@@ -206,7 +206,7 @@ Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title,
         '<div id="' + Live.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
         '<div id="' + Live.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
         '<div id="' + Live.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
+        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
 };
 
 Live.CellExists = function(display_name) {
@@ -259,8 +259,6 @@ Live.loadDataSuccessFinishRun = function() {
 
     Live.loadingData = false;
     Live.loadingMore = false;
-    //Main.ScrollSize('stream_table_live', Live.itemsCount, Main.ColoumnsCountVideo);
-
 };
 
 Live.loadDataReplace = function() {

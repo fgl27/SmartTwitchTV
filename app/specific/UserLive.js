@@ -278,10 +278,10 @@ UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
         '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
+        '<div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
         '</div>' +
         '<div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>');
+        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
 };
 
 UserLive.CellExists = function(display_name) {
@@ -424,10 +424,10 @@ UserLive.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_t
                     '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
                     '<div id="' + UserLive.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
                     '<div id="' + UserLive.ViwersDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers +
+                    '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
                     '</div>' +
                     '<div id="' + UserLive.QualityDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info" style="width:35%; text-align: right; float: right; display: inline-block;">' + quality + '</div></div>';
+                    '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
                 return true;
             }
         }

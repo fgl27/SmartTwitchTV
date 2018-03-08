@@ -100,7 +100,7 @@
         div.stream_text {
             position: absolute;
             left: 7px;
-            bottom: 12px;
+            bottom: 7px;
             right: 7px;
             background-color: rgba(0, 0, 0, 0.5);
             padding: 2%;
@@ -116,7 +116,6 @@
         }
 
         div.stream_channel {
-            -webkit-font-smoothing: antialiased;
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -127,7 +126,6 @@
         }
 
         div.stream_channel_focused {
-            -webkit-font-smoothing: antialiased;
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -138,7 +136,6 @@
         }
 
         div.stream_user {
-            -webkit-font-smoothing: antialiased;
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -149,7 +146,6 @@
         }
 
         div.stream_user_focused {
-            -webkit-font-smoothing: antialiased;
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -160,7 +156,6 @@
         }
 
         div.stream_info {
-            -webkit-font-smoothing: antialiased;
             padding-top: 0.5%;
             width: 100%;
             text-align: left;
@@ -174,7 +169,6 @@
         }
 
         div.stream_info_games {
-            -webkit-font-smoothing: antialiased;
             padding-top: 0.5%;
             width: 100%;
             text-align: left;
@@ -186,7 +180,6 @@
         }
 
         div.stream_info_focused {
-            -webkit-font-smoothing: antialiased;
             padding-top: 0.5%;
             width: 100%;
             text-align: left;
@@ -277,7 +270,6 @@
         }
 
         div.about_text {
-            -webkit-font-smoothing: antialiased;
             display: inline-block;
             color: #FFFFFF;
             margin-left: 2%;
@@ -292,7 +284,6 @@
         }
 
         div.exit_text {
-            -webkit-font-smoothing: antialiased;
             display: inline-block;
             color: #FFFFFF;
             margin-left: 2%;
@@ -307,7 +298,6 @@
         }
 
         div.controls_text {
-            -webkit-font-smoothing: antialiased;
             display: inline-block;
             color: #FFFFFF;
             margin-left: 2%;
@@ -348,6 +338,36 @@
         .strokeloading {
             text-shadow: #545454 0px 0px 17px, #545454 0px 0px 14px, #545454 0px 0px 11px;
         }
+
+        div.scroll {
+            width: 10px;
+            height: 50px;
+            border-radius: 15px;
+            background-color: #777777;
+            position : absolute;
+            right : 0px;
+            top : 100px;
+        }
+
+        table.streams_tables {
+            width: 100%;
+            padding-top: 3.8%;
+            padding-left: 0.7%;
+            padding-right: 0.7%;
+            border: 0;
+            table-layout: fixed;
+        }
+
+        div.counter_class {
+            width: 100%;
+            text-align: left;
+            word-wrap: break-word;
+            color: #FFFFFF;
+            font-size: 152%;
+            font-weight: bold;
+            text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;
+        }
+
         /*cssend this is here so release_maker can work don't remove*/
     </style>
     <script src="$WEBAPIS/webapis/webapis.min.js" defer></script>
@@ -410,6 +430,9 @@
                 <div id="id_agame_name" class="icon_top_label label_agame_name" style="padding-left: 50%; height: 15px; line-height: 0;"></div>
             </div>
         </div>
+        <div id="scrollbar_size" class="screen_size" style="position: fixed; z-index:298; width: 1%; padding-left: 99%;">
+            <div id="scrollbar" class="scroll"></div>
+        </div>
         <div id="dialog_loading" class="screen_size" style="position: fixed; z-index:98; text-align: center; width: 100%; display:none;">
             <i class="fa fa-circle-o-notch fa-spin strokeloading" style="margin-top: 24%; font-size: 727%; color: #FFFFFF;"></i>
         </div>
@@ -434,53 +457,53 @@
             <div id="dialog_warning_text" class="strokedbig" style="display: inline-block; font-size: 300%; color: #FFFFFF;"></div>
         </div>
         <div id="dialog_counter" style="position: fixed; z-index:101; width: 100%; bottom: 0;">
-            <div style="float: right; width: auto; height: auto; display: inline-block; border-radius: 12px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.55));">
-                <div id="dialog_counter_text" class="stream_info" style="color: #FFFFFF;"></div>
+            <div style="float: right; width: auto; height: auto; display: inline-block; border-radius: 12px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
+                <div id="dialog_counter_text" class="counter_class"></div>
             </div>
         </div>
         <div id="blank_focus" class="screen_size"></div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_live" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_live" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_user" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_user" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_user_live" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_user_live" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_user_host" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_user_host" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_user_games" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_user_games" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_user_channels" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_user_channels" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_games" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_games" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_a_game" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_a_game" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_game" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_game" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_channel" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_channel" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_live" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_live" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_channel_a" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_channel_a" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_vod" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_vod" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <table id="stream_table_search_clip" style="width: 100%; padding-top: 3.8%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;"></table>
+        <table id="stream_table_search_clip" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <div id="search" class="openchannel">
