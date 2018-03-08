@@ -258,7 +258,9 @@ Live.loadDataSuccessFinishRun = function() {
     }
 
     Live.loadingData = false;
-    Live.loadingMore = false;
+    window.setTimeout(function() {
+        Live.loadingMore = false;
+    }, 500);
 };
 
 Live.loadDataReplace = function() {
@@ -399,10 +401,7 @@ Live.keyClickDelay = function() {
 };
 
 Live.handleKeyDown = function(event) {
-    if (Live.loadingData && !Live.loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Live.LastClickFinish) {
+    if ((Live.loadingData && !Live.loadingMore) || !Live.LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -492,16 +491,20 @@ Live.handleKeyDown = function(event) {
             if (!Live.loadingMore) Live.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Before = Main.Live;
-            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
-            Live.exit();
-            Main.SwitchScreen();
+            if (!Live.loadingMore) {
+                Main.Before = Main.Live;
+                Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
+                Live.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Before = Main.Live;
-            Main.Go = Main.Games;
-            Live.exit();
-            Main.SwitchScreen();
+            if (!Live.loadingMore) {
+                Main.Before = Main.Live;
+                Main.Go = Main.Games;
+                Live.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
