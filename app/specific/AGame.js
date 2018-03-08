@@ -248,7 +248,9 @@ AGame.loadDataSuccessFinishRun = function() {
     } else AGame.blankCellCount = 0;
 
     AGame.loadingData = false;
-    AGame.loadingMore = false;
+    window.setTimeout(function() {
+        AGame.loadingMore = false;
+    }, 500);
 };
 
 AGame.loadDataReplace = function() {
@@ -382,10 +384,7 @@ AGame.keyClickDelay = function() {
 };
 
 AGame.handleKeyDown = function(event) {
-    if (AGame.loadingData && !AGame.loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!AGame.LastClickFinish) {
+    if ((AGame.loadingData && !AGame.loadingMore) || !AGame.LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -399,7 +398,7 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
-            else {
+            else if (!AGame.loadingMore) {
                 Main.OldgameSelected = Main.gameSelected;
                 if (Main.Go === Main.Before) Main.Go = Main.Games;
                 else Main.Go = Main.Before;
@@ -463,14 +462,18 @@ AGame.handleKeyDown = function(event) {
             if (!AGame.loadingMore) AGame.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Live;
-            AGame.exit();
-            Main.SwitchScreen();
+            if (!AGame.loadingMore) {
+                Main.Go = Main.Live;
+                AGame.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
-            AGame.exit();
-            Main.SwitchScreen();
+            if (!AGame.loadingMore) {
+                Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
+                AGame.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
