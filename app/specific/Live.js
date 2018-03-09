@@ -58,7 +58,7 @@ Live.StartLoad = function() {
     Live.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_live').empty();
+    $('#stream_table_temp').empty();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
     Live.blankCellVector = [];
@@ -180,7 +180,7 @@ Live.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
             Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_live').append(row);
+        $('#stream_table_temp').append(row);
     }
 
     Live.loadDataSuccessFinish();
@@ -221,16 +221,22 @@ Live.CellExists = function(display_name) {
 
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names run only on the first screen load
 //source https://imagesloaded.desandro.com/
+//Load all content to a temp table so imagesLoaded only analysis the last 100 (100 is the max value that can be loaded) items loaded instead of all items
+//With is better then run it on all 1000+ items that the table can have
 Live.loadDataSuccessFinish = function() {
-    if (!Live.Status) {
-        $('#stream_table_live').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-                Main.HideLoadDialog();
+    $('#stream_table_temp').imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            if (!Live.Status) {
                 Live.Status = true;
-                Live.addFocus();
 
+                document.getElementById("stream_table_live").innerHTML = document.getElementById("stream_table_temp").innerHTML;
+                $('#stream_table_temp').empty();
+
+                Main.HideLoadDialog();
+                Live.addFocus();
+                $('#toolbar').show();
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 Live.loadingData = false;
@@ -239,30 +245,24 @@ Live.loadDataSuccessFinish = function() {
                     Live.checkVersion = true;
                     if (Main.checkVersion()) Main.showUpdateDialog();
                 }
-            });
-    } else Live.loadDataSuccessFinishRun();
-};
+            } else {
+                document.getElementById("stream_table_live").innerHTML += document.getElementById("stream_table_temp").innerHTML;
+                $('#stream_table_temp').empty();
+                Main.LoadImagesPre(IMG_404_VIDEO);
 
-Live.loadDataSuccessFinishRun = function() {
+                if (Live.blankCellCount > 0 && !Live.dataEnded) {
+                    Live.loadingMore = true;
+                    Live.loadDataPrepare();
+                    Live.loadDataReplace();
+                    return;
+                } else {
+                    Live.blankCellCount = 0;
+                    Live.blankCellVector = [];
+                }
 
-    Main.LoadImagesPre(IMG_404_VIDEO);
-
-    if (Live.blankCellCount > 0 && !Live.dataEnded) {
-        Live.loadingMore = true;
-        Live.loadDataPrepare();
-        Live.loadDataReplace();
-        return;
-    } else {
-        Live.blankCellCount = 0;
-        Live.blankCellVector = [];
-    }
-
-    Live.loadingData = false;
-    $('#stream_table_live').imagesLoaded()
-        .always({
-            background: false
-        }, function() {
-            Live.loadingMore = false;
+                Live.loadingData = false;
+                Live.loadingMore = false;
+            }
         });
 };
 
