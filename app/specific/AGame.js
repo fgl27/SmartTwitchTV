@@ -64,7 +64,7 @@ AGame.StartLoad = function() {
     AGame.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_a_game').empty();
+    $('#' + Main.TempTable).empty();
     AGame.loadingMore = false;
     AGame.blankCellCount = 0;
     AGame.itemsCountOffset = 0;
@@ -177,9 +177,8 @@ AGame.loadDataSuccess = function(responseText) {
         for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, AGame.EmptyCell));
         }
-        $('#stream_table_a_game').append(row);
+        $('#' + Main.TempTable).append(row);
     }
-
     AGame.loadDataSuccessFinish();
 };
 
@@ -220,39 +219,35 @@ AGame.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 AGame.loadDataSuccessFinish = function() {
-    if (!AGame.status) {
-        $('#stream_table_a_game').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-                Main.HideLoadDialog();
-                AGame.addFocus();
-                if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
-                else AGame.status = true;
-
-                Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
-
-                AGame.loadingData = false;
-            });
-    } else AGame.loadDataSuccessFinishRun();
-};
-
-AGame.loadDataSuccessFinishRun = function() {
-    Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
-
-    if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
-        AGame.loadingMore = true;
-        AGame.loadDataPrepare();
-        AGame.loadDataReplace();
-        return;
-    } else AGame.blankCellCount = 0;
-
-    AGame.loadingData = false;
-    $('#stream_table_a_game').imagesLoaded()
+    $('#' + Main.TempTable).imagesLoaded()
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            AGame.loadingMore = false;
+            if (!AGame.status) {
+                if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                else AGame.status = true;
+
+                Main.ReplaceTable('stream_table_a_game');
+
+                Main.HideLoadDialog();
+                AGame.addFocus();
+                Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
+
+                AGame.loadingData = false;
+            } else {
+                Main.AddTable('stream_table_a_game');
+                Main.LoadImages(AGame.imgMatrix, AGame.imgMatrixId, IMG_404_VIDEO);
+
+                if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
+                    AGame.loadingMore = true;
+                    AGame.loadDataPrepare();
+                    AGame.loadDataReplace();
+                    return;
+                } else AGame.blankCellCount = 0;
+
+                AGame.loadingData = false;
+                AGame.loadingMore = false;
+            }
         });
 };
 

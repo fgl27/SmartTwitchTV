@@ -69,6 +69,8 @@ Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.Coloumn
 
 Main.ItemsLimitReload = 6;
 
+Main.TempTable = "stream_table_temp";
+
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
@@ -437,6 +439,16 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
     ];
     time = new Date(time);
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
+};
+
+Main.ReplaceTable = function(table) {
+    document.getElementById(table).innerHTML = document.getElementById(Main.TempTable).innerHTML;
+    $('#' + Main.TempTable).empty();
+};
+
+Main.AddTable = function(table) {
+    document.getElementById(table).innerHTML += document.getElementById(Main.TempTable).innerHTML;
+    $('#' + Main.TempTable).empty();
 };
 
 Main.NetworkStateChangeListenerStart = function() {
