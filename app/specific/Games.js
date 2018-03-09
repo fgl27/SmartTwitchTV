@@ -468,12 +468,14 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
-            document.body.removeEventListener("keydown", Games.handleKeyDown);
-            Main.Before = Main.Go;
-            Main.Go = Main.AGame;
-            Games.exit();
-            Main.SwitchScreen();
+            if (!Games.loadingMore) {
+                Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
+                document.body.removeEventListener("keydown", Games.handleKeyDown);
+                Main.Before = Main.Go;
+                Main.Go = Main.AGame;
+                Games.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
