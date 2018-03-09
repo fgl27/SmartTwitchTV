@@ -359,13 +359,15 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Main.selectedChannel = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-channelname');
-            Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).textContent;
-            Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
-            document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
-            Main.Before = Main.UserChannels;
-            Main.Go = Main.SChannelContent;
-            Main.SwitchScreen();
+            if (!UserChannels.loadingMore) {
+                Main.selectedChannel = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-channelname');
+                Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).textContent;
+                Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
+                document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
+                Main.Before = Main.UserChannels;
+                Main.Go = Main.SChannelContent;
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();
