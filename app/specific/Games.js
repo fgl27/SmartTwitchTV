@@ -55,7 +55,7 @@ Games.StartLoad = function() {
     Games.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_games').empty();
+    $('#' + Main.TempTable).empty();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
     Games.blankCellVector = [];
@@ -181,7 +181,7 @@ Games.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
             Games.blankCellVector.push(Games.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_games').append(row);
+        $('#' + Main.TempTable).append(row);
     }
 
     Games.loadDataSuccessFinish();
@@ -220,42 +220,37 @@ Games.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 Games.loadDataSuccessFinish = function() {
-    if (!Games.Status) {
-        $('#stream_table_games').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-                Main.HideLoadDialog();
-                Games.Status = true;
-                Games.addFocus();
-
-                Main.LoadImagesPre(IMG_404_GAME);
-
-                Games.loadingData = false;
-            });
-    } else Games.loadDataSuccessFinishRun();
-};
-
-Games.loadDataSuccessFinishRun = function() {
-    Main.LoadImagesPre(IMG_404_GAME);
-
-    if (Games.blankCellCount > 0 && !Games.dataEnded) {
-        Games.loadingMore = true;
-        Games.loadDataPrepare();
-        Games.loadDataReplace();
-        return;
-    } else {
-        Games.blankCellCount = 0;
-        Games.blankCellVector = [];
-    }
-
-    Games.loadingData = false;
-
-    $('#stream_table_games').imagesLoaded()
+    $('#' + Main.TempTable).imagesLoaded()
         .always({
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            Games.loadingMore = false;
+            if (!Games.Status) {
+                Games.Status = true;
+
+                Main.ReplaceTable('stream_table_games');
+
+                Main.HideLoadDialog();
+                Games.addFocus();
+                Main.LoadImagesPre(IMG_404_GAME);
+
+                Games.loadingData = false;
+            } else {
+                Main.AddTable('stream_table_games');
+                Main.LoadImagesPre(IMG_404_GAME);
+
+                if (Games.blankCellCount > 0 && !Games.dataEnded) {
+                    Games.loadingMore = true;
+                    Games.loadDataPrepare();
+                    Games.loadDataReplace();
+                    return;
+                } else {
+                    Games.blankCellCount = 0;
+                    Games.blankCellVector = [];
+                }
+
+                Games.loadingData = false;
+                Games.loadingMore = false;
+            }
         });
 };
 
