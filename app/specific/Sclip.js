@@ -255,7 +255,8 @@ Sclip.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!Sclip.status) {
-                Sclip.status = true;
+                if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
+                else Sclip.status = true;
 
                 Main.ReplaceTable('stream_table_search_clip');
 

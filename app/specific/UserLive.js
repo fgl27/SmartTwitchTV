@@ -309,7 +309,8 @@ UserLive.loadDataSuccessFinish = function() {
             background: false
         }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
             if (!UserLive.status) {
-                UserLive.status = true;
+                if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+                else UserLive.status = true;
 
                 Main.ReplaceTable('stream_table_user_live');
 

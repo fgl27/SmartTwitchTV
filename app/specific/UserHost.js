@@ -7,11 +7,9 @@ UserHost.cursorY = 0;
 UserHost.cursorX = 0;
 UserHost.dataEnded = false;
 UserHost.itemsCount = 0;
-UserHost.imgMatrix = [];
-UserHost.imgMatrixId = [];
-UserHost.imgMatrixCount = 0;
 UserHost.nameMatrix = [];
 UserHost.nameMatrixCount = 0;
+UserHost.blankCellVector = [];
 UserHost.loadingData = false;
 UserHost.loadingDataTry = 0;
 UserHost.loadingDataTryMax = 10;
@@ -34,6 +32,7 @@ UserHost.Cell = 'hlive_cell_';
 UserHost.status = false;
 UserHost.followerChannels = '';
 UserHost.OldUserName = '';
+UserHost.itemsCountCheck = false;
 
 //Variable initialization end
 
@@ -66,13 +65,15 @@ UserHost.StartLoad = function() {
     Main.showLoadDialog();
     UserHost.OldUserName = Main.UserName;
     UserHost.status = false;
-    $('#stream_table_user_host').empty();
+    $('#' + Main.TempTable).empty();
     UserHost.loadingMore = false;
     UserHost.blankCellCount = 0;
     UserHost.itemsCountOffset = 0;
     UserHost.ReplacedataEnded = false;
     UserHost.MaxOffset = 0;
     UserHost.nameMatrix = [];
+    UserHost.blankCellVector = [];
+    UserHost.itemsCountCheck = false;
     UserHost.nameMatrixCount = 0;
     UserHost.itemsCount = 0;
     UserHost.cursorX = 0;
@@ -84,9 +85,7 @@ UserHost.StartLoad = function() {
 };
 
 UserHost.loadDataPrepare = function() {
-    UserHost.imgMatrix = [];
-    UserHost.imgMatrixId = [];
-    UserHost.imgMatrixCount = 0;
+    Main.MatrixRst();
     UserHost.loadingData = true;
     UserHost.loadingDataTry = 0;
     UserHost.loadingDataTimeout = 3500;
@@ -176,9 +175,14 @@ UserHost.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
+            if (UserHost.dataEnded && !UserHost.itemsCountCheck) {
+                UserHost.itemsCountCheck = true;
+                UserHost.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserHost.EmptyCell));
+            UserHost.blankCellVector.push(UserHost.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_user_host').append(row);
+        $('#' + Main.TempTable).append(row);
     }
 
     UserHost.loadDataSuccessFinish();
@@ -190,25 +194,25 @@ UserHost.createCellEmpty = function(row_id, coloumn_id) {
 };
 
 UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-
-    UserHost.imgMatrix[UserHost.imgMatrixCount] = preview_thumbnail;
-    UserHost.imgMatrixId[UserHost.imgMatrixCount] = UserHost.Thumbnail + row_id + '_' + coloumn_id;
-    UserHost.imgMatrixCount++;
-
-    if (UserHost.imgMatrixCount < (Main.ColoumnsCountVideo * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
-    UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_display_name;
-    UserHost.nameMatrixCount++;
-
+    UserHost.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + UserHost.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        UserHost.CellHtml(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers));
+};
+
+UserHost.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserHost.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
+    UserHost.nameMatrixCount++;
+};
+
+UserHost.CellHtml = function(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers) {
+    return '<img id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
         '<div id="' + UserHost.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserHost.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserHost.hostsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_title + '</div>' +
         '<div id="' + UserHost.hostsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_game + '</div>' +
         '<div id="' + UserHost.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' +
-        viwers + '</div></div>');
+        viwers + '</div></div>';
 };
 
 UserHost.CellExists = function(display_name) {
@@ -224,35 +228,39 @@ UserHost.CellExists = function(display_name) {
 //prevent hosts_text/title/info from load before the thumbnail and display a odd hosts_table squashed only with names source
 //https://imagesloaded.desandro.com/
 UserHost.loadDataSuccessFinish = function() {
-    if (!UserHost.status) {
-        $('#stream_table_user_host').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-                Main.HideLoadDialog();
-                UserHost.addFocus();
+    $('#' + Main.TempTable).imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            if (!UserHost.status) {
                 if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
                 else UserHost.status = true;
 
-                Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
+                Main.ReplaceTable('stream_table_user_host');
+
+                Main.HideLoadDialog();
+                UserHost.addFocus();
+                Main.LoadImagesPre(IMG_404_VIDEO);
 
                 UserHost.loadingData = false;
-            });
-    } else UserHost.loadDataSuccessFinishRun();
-};
+            } else {
+                Main.AddTable('stream_table_user_host');
+                Main.LoadImagesPre(IMG_404_VIDEO);
 
-UserHost.loadDataSuccessFinishRun = function() {
-    Main.LoadImages(UserHost.imgMatrix, UserHost.imgMatrixId, IMG_404_VIDEO);
+                if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
+                    UserHost.loadingMore = true;
+                    UserHost.loadDataPrepare();
+                    UserHost.loadDataReplace();
+                    return;
+                } else {
+                    UserHost.blankCellCount = 0;
+                    UserHost.blankCellVector = [];
+                }
 
-    if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
-        UserHost.loadingMore = true;
-        UserHost.loadDataPrepare();
-        UserHost.loadChannelsReplace();
-        return;
-    } else UserHost.blankCellCount = 0;
-
-    UserHost.loadingData = false;
-    UserHost.loadingMore = false;
+                UserHost.loadingData = false;
+                UserHost.loadingMore = false;
+            }
+        });
 };
 
 UserHost.loadChannelsReplace = function() {
@@ -294,70 +302,63 @@ UserHost.loadDataErrorReplace = function() {
     if (UserHost.loadingDataTry < UserHost.loadingDataTryMax) {
         UserHost.loadingDataTimeout += (UserHost.loadingDataTry < 5) ? 250 : 3500;
         UserHost.loadChannelsReplace();
+    } else {
+        UserHost.ReplacedataEnded = true;
+        UserHost.blankCellCount = 0;
+        UserHost.blankCellVector = [];
+        UserHost.loadDataSuccessFinish();
     }
 };
 
 UserHost.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
-    var response_items = response.hosts.length;
+    var response_items = response.streams.length;
+    var hosts, index, cursor = 0;
+    var tempVector = UserHost.blankCellVector.slice();
+
     UserHost.MaxOffset = parseInt(response._total);
 
     if (response_items < Main.ItemsLimitVideo) UserHost.ReplacedataEnded = true;
 
-    var row_id = UserHost.itemsCount / Main.ColoumnsCountVideo;
-
-    var coloumn_id, hosts, mReplace = false,
-        cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
+    for (var i = 0; i < UserHost.blankCellVector.length && cursor < response_items; i++, cursor++) {
         hosts = response.hosts[cursor];
-        if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) UserHost.blankCellCount--;
-        else {
-            mReplace = UserHost.replaceCellEmpty(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template,
+        if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) {
+            UserHost.blankCellCount--;
+            i--;
+        } else {
+            UserHost.replaceCellEmpty(UserHost.blankCellVector[i], hosts.target.channel.name, hosts.target.preview_urls.template,
                 hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                 Main.addCommas(hosts.target.viewers) + STR_VIEWER);
-            if (mReplace) UserHost.blankCellCount--;
-            if (UserHost.blankCellCount === 0) break;
-        }
-    }
-    UserHost.itemsCountOffset += cursor;
-    if (UserHost.ReplacedataEnded) UserHost.blankCellCount = 0;
-    UserHost.loadDataSuccessFinish();
-};
+            UserHost.blankCellCount--;
 
-UserHost.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
-    var my = 0,
-        mx = 0;
-    if (row_id < ((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(UserHost.blankCellCount / Main.ColoumnsCountVideo)); my < row_id; my++) {
-        for (mx = 0; mx < Main.ColoumnsCountVideo; mx++) {
-            if (!Main.ThumbNull(my, mx, UserHost.Thumbnail) && (Main.ThumbNull(my, mx, UserHost.EmptyCell))) {
-                row_id = my;
-                coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-
-                UserHost.imgMatrix[UserHost.imgMatrixCount] = preview_thumbnail;
-                UserHost.imgMatrixId[UserHost.imgMatrixCount] = UserHost.Thumbnail + row_id + '_' + coloumn_id;
-                UserHost.imgMatrixCount++;
-
-                UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_display_name;
-                UserHost.nameMatrixCount++;
-                document.getElementById(UserHost.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserHost.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(UserHost.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(UserHost.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
-                    '<div id="' + UserHost.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-                    '<div id="' + UserHost.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-                    '<div id="' + UserHost.hostsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_title + '</div>' +
-                    '<div id="' + UserHost.hostsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_game + '</div>' +
-                    '<div id="' + UserHost.ViwersDiv + row_id + '_' + coloumn_id +
-                    '"class="stream_info_games" style="width: 64%; display: inline-block;">' + viwers + '</div></div>';
-                return true;
+            index = tempVector.indexOf(tempVector[i]);
+            if (index > -1) {
+                tempVector.splice(index, 1);
             }
         }
     }
 
-    return false;
+    UserHost.itemsCountOffset += cursor;
+    if (UserHost.ReplacedataEnded) {
+        UserHost.blankCellCount = 0;
+        UserHost.blankCellVector = [];
+    } else UserHost.blankCellVector = tempVector;
+
+    UserHost.loadDataSuccessFinish();
+};
+
+UserHost.replaceCellEmpty = function(id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
+    var splitedId = id.split("_");
+    var row_id = splitedId[1];
+    var coloumn_id = splitedId[2];
+    var cell = UserHost.Cell + row_id + '_' + coloumn_id;
+
+    UserHost.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
+
+    document.getElementById(id).setAttribute('id', cell);
+    document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).innerHTML =
+        UserHost.CellHtml(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers);
 };
 
 UserHost.addFocus = function() {
@@ -365,7 +366,7 @@ UserHost.addFocus = function() {
         !UserHost.dataEnded && !UserHost.loadingMore) {
         UserHost.loadingMore = true;
         UserHost.loadDataPrepare();
-        UserHost.loadDataRequest();
+        UserHost.loadChannels();
     }
 
     Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
@@ -461,14 +462,18 @@ UserHost.handleKeyDown = function(event) {
             if (!UserHost.loadingMore) UserHost.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserGames;
-            UserHost.exit();
-            Main.SwitchScreen();
+            if (!UserHost.loadingMore) {
+                Main.Go = Main.UserGames;
+                UserHost.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.UserLive;
-            UserHost.exit();
-            Main.SwitchScreen();
+            if (!UserHost.loadingMore) {
+                Main.Go = Main.UserLive;
+                UserHost.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
