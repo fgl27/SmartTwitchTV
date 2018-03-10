@@ -2,7 +2,7 @@
 //Variable initialization
 function AGame() {}
 AGame.Thumbnail = 'thumbnail_agame_';
-AGame.EmptyCell = 'agame_empty_';
+AGame.EmptyCell = 'agameempty_';
 AGame.cursorY = 0;
 AGame.cursorX = 0;
 AGame.dataEnded = false;

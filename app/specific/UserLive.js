@@ -2,7 +2,7 @@
 //Variable initialization
 function UserLive() {}
 UserLive.Thumbnail = 'thumbnail_ulive_';
-UserLive.EmptyCell = 'ulive_empty_';
+UserLive.EmptyCell = 'uliveempty_';
 UserLive.cursorY = 0;
 UserLive.cursorX = 0;
 UserLive.dataEnded = false;
@@ -260,11 +260,6 @@ UserLive.loadDataSuccess = function(responseText) {
     }
 
     UserLive.loadDataSuccessFinish();
-};
-
-UserLive.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + UserLive.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {

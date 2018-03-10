@@ -2,7 +2,7 @@
 //Variable initialization
 function UserHost() {}
 UserHost.Thumbnail = 'thumbnail_hlive_';
-UserHost.EmptyCell = 'hlive_empty_';
+UserHost.EmptyCell = 'hliveempty_';
 UserHost.cursorY = 0;
 UserHost.cursorX = 0;
 UserHost.dataEnded = false;
@@ -186,11 +186,6 @@ UserHost.loadDataSuccess = function(responseText) {
     }
 
     UserHost.loadDataSuccessFinish();
-};
-
-UserHost.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + UserHost.EmptyCell + row_id + '_' + coloumn_id + '" class="hosts_cell" data-channelname=""></td>').html('');
 };
 
 UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {

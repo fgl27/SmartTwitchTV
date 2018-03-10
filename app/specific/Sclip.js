@@ -2,7 +2,7 @@
 //Variable initialization
 function Sclip() {}
 Sclip.Thumbnail = 'thumbnail_sclip_';
-Sclip.EmptyCell = 'sclip_empty_';
+Sclip.EmptyCell = 'sclipempty_';
 Sclip.cursorY = 0;
 Sclip.cursorX = 0;
 Sclip.dataEnded = false;
@@ -203,11 +203,6 @@ Sclip.loadDataSuccess = function(responseText) {
     }
 
     Sclip.loadDataSuccessFinish();
-};
-
-Sclip.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + Sclip.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
 Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
