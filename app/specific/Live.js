@@ -175,7 +175,7 @@ Live.loadDataSuccess = function(responseText) {
         for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
             if (Live.dataEnded && !Live.itemsCountCheck) {
                 Live.itemsCountCheck = true;
-                Live.itemsCount = (row_id * Main.ColoumnsCountGame) + coloumn_id;
+                Live.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
             row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
             Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
