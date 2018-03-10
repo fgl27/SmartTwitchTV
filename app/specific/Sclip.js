@@ -41,6 +41,7 @@ Sclip.views = '';
 Sclip.title = '';
 Sclip.lastselectedChannel = '';
 Sclip.playUrl = '';
+Sclip.itemsCountCheck = false;
 
 //Variable initialization end
 
@@ -80,6 +81,7 @@ Sclip.StartLoad = function() {
     Sclip.nameMatrix = [];
     Sclip.nameMatrixCount = 0;
     Sclip.blankCellVector = [];
+    Sclip.itemsCountCheck = false;
     Sclip.itemsCount = 0;
     Sclip.cursorX = 0;
     Sclip.cursorY = 0;

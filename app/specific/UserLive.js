@@ -34,6 +34,7 @@ UserLive.Cell = 'ulive_cell_';
 UserLive.status = false;
 UserLive.followerChannels = '';
 UserLive.OldUserName = '';
+UserLive.itemsCountCheck = false;
 
 //Variable initialization end
 
@@ -76,6 +77,7 @@ UserLive.StartLoad = function() {
     UserLive.nameMatrix = [];
     UserLive.nameMatrixCount = 0;
     UserLive.blankCellVector = [];
+    UserLive.itemsCountCheck = false;
     UserLive.itemsCount = 0;
     UserLive.cursorX = 0;
     UserLive.cursorY = 0;
@@ -539,14 +541,18 @@ UserLive.handleKeyDown = function(event) {
             if (!UserLive.loadingMore) UserLive.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserHost;
-            UserLive.exit();
-            Main.SwitchScreen();
+            if (!UserLive.loadingMore) {
+                Main.Go = Main.UserHost;
+                UserLive.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.UserChannels;
-            UserLive.exit();
-            Main.SwitchScreen();
+            if (!UserLive.loadingMore) {
+                Main.Go = Main.UserChannels;
+                UserLive.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
