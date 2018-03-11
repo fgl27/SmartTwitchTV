@@ -26,7 +26,7 @@
 html_file=("config.xml" "index.html" "master.css" "release/index.html");
 
 # add js folders here
-js_folders=("app/general/" "app/specific/");
+js_folders=("app/general/" "app/specific/" "app/translations/");
 
 # no changes needed to be done bellow this line
 

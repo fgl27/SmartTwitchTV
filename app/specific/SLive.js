@@ -41,7 +41,7 @@ SLive.init = function() {
     Main.cleanTopLabel();
     if (SLive.lastData !== Search.data) SLive.Status = false;
     $('.lable_user').html(STR_SEARCH);
-    $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
+    $('.label_agame_name').html(STR_LIVE + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     if (SLive.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo,

@@ -18,7 +18,7 @@ Search.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.lable_game').html('');
     $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_SEARCH);
-    document.getElementById("top_bar_spacing").style.paddingLeft = "40.5%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchLable + "%";
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     Search.cursorY = 0;
@@ -39,7 +39,7 @@ Search.exit = function() {
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);

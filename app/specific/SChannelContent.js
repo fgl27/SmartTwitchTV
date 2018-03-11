@@ -34,7 +34,7 @@ SChannelContent.init = function() {
     Main.Go = Main.SChannelContent;
     if (SChannelContent.lastselectedChannel !== Main.selectedChannel) SChannelContent.status = false;
     Main.cleanTopLabel();
-    document.getElementById("top_bar_spacing").style.paddingLeft = "21.5%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
     $('.lable_user').html(Main.selectedChannelDisplayname);
     $('.lable_game').html(STR_CHANNEL + STR_CONTENT);
     $('.label_agame_name').html('');

@@ -690,7 +690,8 @@ Play.qualityDisplay = function() {
 
     Play.quality = Play.qualities[Play.qualityIndex].id;
 
-    $('#quality_name').text(Play.quality);
+    if (Play.quality.indexOf('source') !== -1) $('#quality_name').text(Play.quality.replace("source", STR_SOURCE));
+    else $('#quality_name').text(Play.quality);
 };
 
 Play.getQualitiesCount = function() {

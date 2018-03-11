@@ -71,6 +71,15 @@ Main.ItemsLimitReload = 6;
 
 Main.TempTable = "stream_table_temp";
 
+Main.TopSpacingDefault = 30;
+Main.TopSpacingCleanTop = 34.5;
+Main.TopSpacingSearchLable = 40.5;
+Main.TopSpacingSearchUnder = 21.5;
+
+Main.TopAgameDefault = 50;
+Main.TopAgameDefaultCleanTop = 43.2;
+Main.TopAgameDefaultUser = 44;
+
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
@@ -117,6 +126,36 @@ Main.versonTag = '';
 // this function will be called only once the first time the app opens
 document.addEventListener("DOMContentLoaded", function() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
+});
+
+//TODO the day there is a translation add on if if the new values
+Main.loadTranslations = function(device) {
+
+    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+    var lang = device.language.split(".")[0];
+
+    if (lang.indexOf('pt_') !== -1) {
+        pt_BRLang();
+        Main.TopSpacingDefault = 25;
+
+        Main.TopSpacingSearchLable = 38.5;
+        Main.TopSpacingSearchUnder = 21.5;
+
+        Main.TopAgameDefault = 55;
+
+        Main.TopSpacingCleanTop = 32.5;
+        Main.TopAgameDefaultCleanTop = 43.2;
+
+        Main.TopAgameDefaultUser = 44;
+
+        document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
+        document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
+    } else console.log("language is " + lang);
+    DefaultLang();
+
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
     // pre load LOD img
@@ -138,19 +177,6 @@ document.addEventListener("DOMContentLoaded", function() {
     Main.PreLoadAImage(IMG_USER_MINUS);
     Main.PreLoadAImage(IMG_USER_PLUS);
     Main.PreLoadAImage(IMG_USER_UP);
-});
-
-//TODO the day there is a translation add on if if the new values
-Main.loadTranslations = function(device) {
-
-    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-    var lang = device.language.split(".")[0];
-
-    if (lang.indexOf('pt_') !== -1) console.log("loading language " + lang);
-    else console.log("language is " + lang);
 };
 
 Main.initWindows = function() {
@@ -164,7 +190,7 @@ Main.initWindows = function() {
     $('.label_agame').html('');
     $('.label_search_chanel').html(STR_CHANNELS);
     $('.label_search_game').html(STR_GAMES);
-    $('.label_search_live').html(STR_LIVE_STREAMS);
+    $('.label_search_live').html(STR_LIVE);
     $('.label_exit_cancel').html(STR_CANCEL);
     $('.label_exit_close').html(STR_CLOSE);
     $('.label_exit_minimize').html(STR_MINIMIZE);
@@ -414,8 +440,8 @@ Main.RestoreTopLabel = function() {
     $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "30%";
-    document.getElementById("id_agame_name").style.paddingLeft = "50%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
@@ -427,10 +453,10 @@ Main.cleanTopLabel = function() {
     $('.label_switch').html('');
     $('.lable_live').html('');
     $('.lable_game').html('');
-    document.getElementById("top_bar_spacing").style.paddingLeft = "34.5%";
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingCleanTop + "%";
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = "43.2%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultCleanTop + "%";
 };
 
 Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
