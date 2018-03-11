@@ -429,7 +429,8 @@ PlayVod.qualityDisplay = function() {
     }
 
     PlayVod.quality = PlayVod.qualities[PlayVod.qualityIndex].id;
-    $('#quality_name').text(PlayVod.quality);
+    if (PlayVod.quality.indexOf('source') !== -1) $('#quality_name').text(PlayVod.quality.replace("source", STR_SOURCE));
+    else $('#quality_name').text(PlayVod.quality);
 };
 
 PlayVod.getQualitiesCount = function() {

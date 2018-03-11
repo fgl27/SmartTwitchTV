@@ -38,7 +38,7 @@ UserGames.init = function() {
     Main.Go = Main.UserGames;
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = "44%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
@@ -53,7 +53,7 @@ UserGames.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     $('.label_agame_name').html('');
-    document.getElementById("id_agame_name").style.paddingLeft = "50%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserGames.handleKeyDown);
 };
 
@@ -316,7 +316,7 @@ UserGames.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             UserGames.replaceCellEmpty(UserGames.blankCellVector[i], follows.game.name, follows.game.box.template,
-                Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(follows.viewers) + STR_VIEWER);
+                Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viewers) + STR_VIEWER);
             UserGames.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);

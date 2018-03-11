@@ -169,7 +169,7 @@ Games.loadDataSuccess = function(responseText) {
                 coloumn_id--;
             } else {
                 cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
+                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(game.viewers) + STR_VIEWER);
                 row.append(cell);
             }
         }
