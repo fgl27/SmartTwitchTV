@@ -166,7 +166,7 @@ UserGames.loadDataSuccess = function(responseText) {
             if (UserGames.CellExists(follows.game.name)) coloumn_id--;
             else {
                 cell = UserGames.createCell(row_id, coloumn_id, follows.game.name, follows.game.box.template,
-                    Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(follows.viewers) + STR_VIEWER);
+                    Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viewers) + STR_VIEWER);
                 row.append(cell);
             }
         }
