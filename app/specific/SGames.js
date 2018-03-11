@@ -178,7 +178,7 @@ SGames.loadDataSuccessFinish = function() {
                 if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SGames.Status = true;
             }
-            Main.appendTable('stream_table_search_game');
+            Main.ReplaceTable('stream_table_search_game');
             Main.LoadImagesPre(IMG_404_GAME);
             SGames.loadingData = false;
         });

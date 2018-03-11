@@ -221,7 +221,7 @@ SChannels.loadDataSuccessFinish = function() {
                 if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SChannels.Status = true;
 
-                Main.appendTable('stream_table_search_channel');
+                Main.ReplaceTable('stream_table_search_channel');
 
                 Main.HideLoadDialog();
                 SChannels.addFocus();
@@ -229,7 +229,7 @@ SChannels.loadDataSuccessFinish = function() {
 
                 SChannels.loadingData = false;
             } else {
-                Main.appendTable('stream_table_search_channel');
+                Main.AddTable('stream_table_search_channel');
                 Main.LoadImagesPre(IMG_404_LOGO);
 
                 if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {

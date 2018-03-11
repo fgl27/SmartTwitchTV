@@ -229,7 +229,7 @@ Live.loadDataSuccessFinish = function() {
             if (!Live.Status) {
                 Live.Status = true;
 
-                Main.appendTable('stream_table_live');
+                Main.ReplaceTable('stream_table_live');
 
                 Main.HideLoadDialog();
                 Live.addFocus();
@@ -243,7 +243,7 @@ Live.loadDataSuccessFinish = function() {
                     if (Main.checkVersion()) Main.showUpdateDialog();
                 }
             } else {
-                Main.appendTable('stream_table_live');
+                Main.AddTable('stream_table_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Live.blankCellCount > 0 && !Live.dataEnded) {
