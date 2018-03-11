@@ -232,11 +232,9 @@ Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_c
 };
 
 Sclip.CellExists = function(display_name) {
-    for (var i = 0; i <= Sclip.nameMatrixCount; i++) {
-        if (display_name == Sclip.nameMatrix[i]) {
-            Sclip.blankCellCount++;
-            return true;
-        }
+    if (Sclip.nameMatrix.indexOf(display_name) > -1) {
+        Sclip.blankCellCount++;
+        return true;
     }
     return false;
 };

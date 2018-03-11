@@ -203,11 +203,9 @@ SChannels.CellHtml = function(row_id, coloumn_id, channel_name, preview_thumbnai
 };
 
 SChannels.CellExists = function(display_name) {
-    for (var i = 0; i <= SChannels.nameMatrixCount; i++) {
-        if (display_name == SChannels.nameMatrix[i]) {
-            SChannels.blankCellCount++;
-            return true;
-        }
+    if (SChannels.nameMatrix.indexOf(display_name) > -1) {
+        SChannels.blankCellCount++;
+        return true;
     }
     return false;
 };

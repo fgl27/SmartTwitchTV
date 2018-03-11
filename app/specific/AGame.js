@@ -211,11 +211,9 @@ AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title
 
 
 AGame.CellExists = function(display_name) {
-    for (var i = 0; i <= AGame.nameMatrixCount; i++) {
-        if (display_name == AGame.nameMatrix[i]) {
-            AGame.blankCellCount++;
-            return true;
-        }
+    if (AGame.nameMatrix.indexOf(display_name) > -1) {
+        AGame.blankCellCount++;
+        return true;
     }
     return false;
 };
