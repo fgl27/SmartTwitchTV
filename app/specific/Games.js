@@ -318,7 +318,7 @@ Games.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             Games.replaceCellEmpty(Games.blankCellVector[i], game.game.name, game.game.box.template,
-                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(game.viewers) + STR_VIEWER);
+                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(game.viewers) + STR_VIEWER);
             Games.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
