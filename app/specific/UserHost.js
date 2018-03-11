@@ -229,7 +229,7 @@ UserHost.loadDataSuccessFinish = function() {
                 if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
                 else UserHost.status = true;
 
-                Main.ReplaceTable('stream_table_user_host');
+                Main.appendTable('stream_table_user_host');
 
                 Main.HideLoadDialog();
                 UserHost.addFocus();
@@ -237,7 +237,7 @@ UserHost.loadDataSuccessFinish = function() {
 
                 UserHost.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_host');
+                Main.appendTable('stream_table_user_host');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {

@@ -223,7 +223,7 @@ UserGames.loadDataSuccessFinish = function() {
                 if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
                 else UserGames.Status = true;
 
-                Main.ReplaceTable('stream_table_user_games');
+                Main.appendTable('stream_table_user_games');
 
                 Main.HideLoadDialog();
                 UserGames.addFocus();
@@ -231,7 +231,7 @@ UserGames.loadDataSuccessFinish = function() {
 
                 UserGames.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_games');
+                Main.appendTable('stream_table_user_games');
                 Main.LoadImagesPre(IMG_404_GAME);
 
                 if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {

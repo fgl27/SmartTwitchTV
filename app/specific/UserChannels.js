@@ -208,7 +208,7 @@ UserChannels.loadDataSuccessFinish = function() {
                 if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
                 else UserChannels.Status = true;
 
-                Main.ReplaceTable('stream_table_user_channels');
+                Main.appendTable('stream_table_user_channels');
 
                 Main.HideLoadDialog();
                 UserChannels.addFocus();
@@ -216,7 +216,7 @@ UserChannels.loadDataSuccessFinish = function() {
 
                 UserChannels.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_channels');
+                Main.appendTable('stream_table_user_channels');
                 Main.LoadImagesPre(IMG_404_LOGO);
 
                 UserChannels.loadingData = false;
