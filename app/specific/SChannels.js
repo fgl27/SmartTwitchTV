@@ -50,7 +50,6 @@ SChannels.init = function() {
 SChannels.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels.handleKeyDown);
-    SChannels.Status = false;
 };
 
 SChannels.Postexit = function() {
