@@ -87,14 +87,14 @@ Games.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset !== 0 && offset >= (Games.MaxOffset - Main.ItemsLimitGame)) {
+        if (offset !== 0 && offset > (Games.MaxOffset - 1)) {
             offset = Games.MaxOffset - Main.ItemsLimitGame;
             Games.dataEnded = true;
             Games.ReplacedataEnded = true;
         }
 
-        //TODO re check Main.ItemsLimitGameOffset workaround on the future "for some reason if offset=0 the response_items is one less then response_items"
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main.ItemsLimitGame + (offset === 0 ? Main.ItemsLimitGameOffset : 0)) + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main.ItemsLimitGame + (offset === 0 ? Main.ItemsLimitGameOffset : 0)) +
+           '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -262,12 +262,13 @@ Games.loadDataReplace = function() {
         Main.SetItemsLimitReload(Games.blankCellCount);
 
         var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset !== 0 && offset >= (Games.MaxOffset - Main.ItemsLimitGame)) {
-            offset = Games.MaxOffset - Main.ItemsLimitGame;
+        if (offset !== 0 && offset > (Games.MaxOffset - 1)) {
+            offset = Games.MaxOffset - Main.ItemsLimitReload;
             Games.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' +
+            Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
