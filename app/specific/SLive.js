@@ -228,7 +228,7 @@ SLive.loadDataSuccessFinish = function() {
                 if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
                 else SLive.Status = true;
 
-                Main.appendTable('stream_table_search_live');
+                Main.ReplaceTable('stream_table_search_live');
 
                 Main.HideLoadDialog();
                 SLive.addFocus();
@@ -236,7 +236,7 @@ SLive.loadDataSuccessFinish = function() {
 
                 SLive.loadingData = false;
             } else {
-                Main.appendTable('stream_table_search_live');
+                Main.AddTable('stream_table_search_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (SLive.blankCellCount > 0 && !SLive.dataEnded) {

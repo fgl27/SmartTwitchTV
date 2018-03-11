@@ -225,7 +225,7 @@ Games.loadDataSuccessFinish = function() {
             if (!Games.Status) {
                 Games.Status = true;
 
-                Main.appendTable('stream_table_games');
+                Main.ReplaceTable('stream_table_games');
 
                 Main.HideLoadDialog();
                 Games.addFocus();
@@ -233,7 +233,7 @@ Games.loadDataSuccessFinish = function() {
 
                 Games.loadingData = false;
             } else {
-                Main.appendTable('stream_table_games');
+                Main.AddTable('stream_table_games');
                 Main.LoadImagesPre(IMG_404_GAME);
 
                 if (Games.blankCellCount > 0 && !Games.dataEnded) {

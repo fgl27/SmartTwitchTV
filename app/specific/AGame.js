@@ -229,7 +229,7 @@ AGame.loadDataSuccessFinish = function() {
                 if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
                 else AGame.status = true;
 
-                Main.appendTable('stream_table_a_game');
+                Main.ReplaceTable('stream_table_a_game');
 
                 Main.HideLoadDialog();
                 AGame.addFocus();
@@ -237,7 +237,7 @@ AGame.loadDataSuccessFinish = function() {
 
                 AGame.loadingData = false;
             } else {
-                Main.appendTable('stream_table_a_game');
+                Main.AddTable('stream_table_a_game');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (AGame.blankCellCount > 0 && !AGame.dataEnded) {

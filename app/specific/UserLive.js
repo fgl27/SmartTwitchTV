@@ -305,7 +305,7 @@ UserLive.loadDataSuccessFinish = function() {
                 if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
                 else UserLive.status = true;
 
-                Main.appendTable('stream_table_user_live');
+                Main.ReplaceTable('stream_table_user_live');
 
                 Main.HideLoadDialog();
                 UserLive.addFocus();
@@ -313,7 +313,7 @@ UserLive.loadDataSuccessFinish = function() {
 
                 UserLive.loadingData = false;
             } else {
-                Main.appendTable('stream_table_user_live');
+                Main.AddTable('stream_table_user_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {

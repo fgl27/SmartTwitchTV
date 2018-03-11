@@ -251,7 +251,7 @@ Sclip.loadDataSuccessFinish = function() {
                 if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
                 else Sclip.status = true;
 
-                Main.appendTable('stream_table_search_clip');
+                Main.ReplaceTable('stream_table_search_clip');
 
                 Main.HideLoadDialog();
                 Sclip.addFocus();
@@ -259,7 +259,7 @@ Sclip.loadDataSuccessFinish = function() {
 
                 Sclip.loadingData = false;
             } else {
-                Main.appendTable('stream_table_search_clip');
+                Main.AddTable('stream_table_search_clip');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {

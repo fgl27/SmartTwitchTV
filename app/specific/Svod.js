@@ -240,7 +240,7 @@ Svod.loadDataSuccessFinish = function() {
                 if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
                 else Svod.status = true;
 
-                Main.appendTable('stream_table_search_vod');
+                Main.ReplaceTable('stream_table_search_vod');
 
                 Main.HideLoadDialog();
                 Svod.addFocus();
@@ -249,7 +249,7 @@ Svod.loadDataSuccessFinish = function() {
                 Svod.loadingData = false;
 
             } else {
-                Main.appendTable('stream_table_search_vod');
+                Main.AddTable('stream_table_search_vod');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Svod.blankCellCount > 0 && !Svod.dataEnded) {

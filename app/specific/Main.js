@@ -462,8 +462,13 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 };
 
-Main.appendTable = function(table) {
-    $('#' + table).append(document.getElementById(Main.TempTable).innerHTML);
+Main.ReplaceTable = function(table) {
+    document.getElementById(table).innerHTML = document.getElementById(Main.TempTable).innerHTML;
+    $('#' + Main.TempTable).empty();
+};
+
+Main.AddTable = function(table) {
+    document.getElementById(table).innerHTML += document.getElementById(Main.TempTable).innerHTML;
     $('#' + Main.TempTable).empty();
 };
 
