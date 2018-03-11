@@ -231,7 +231,7 @@ UserGames.loadDataSuccessFinish = function() {
 
                 UserGames.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_games');
+                Main.appendTable('stream_table_user_games');
                 Main.LoadImagesPre(IMG_404_GAME);
 
                 if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {

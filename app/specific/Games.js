@@ -233,7 +233,7 @@ Games.loadDataSuccessFinish = function() {
 
                 Games.loadingData = false;
             } else {
-                Main.AddTable('stream_table_games');
+                Main.appendTable('stream_table_games');
                 Main.LoadImagesPre(IMG_404_GAME);
 
                 if (Games.blankCellCount > 0 && !Games.dataEnded) {

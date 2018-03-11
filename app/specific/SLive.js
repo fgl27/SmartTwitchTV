@@ -236,7 +236,7 @@ SLive.loadDataSuccessFinish = function() {
 
                 SLive.loadingData = false;
             } else {
-                Main.AddTable('stream_table_search_live');
+                Main.appendTable('stream_table_search_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (SLive.blankCellCount > 0 && !SLive.dataEnded) {

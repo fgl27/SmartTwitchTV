@@ -237,7 +237,7 @@ UserHost.loadDataSuccessFinish = function() {
 
                 UserHost.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_host');
+                Main.appendTable('stream_table_user_host');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {

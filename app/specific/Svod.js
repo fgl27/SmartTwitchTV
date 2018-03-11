@@ -249,7 +249,7 @@ Svod.loadDataSuccessFinish = function() {
                 Svod.loadingData = false;
 
             } else {
-                Main.AddTable('stream_table_search_vod');
+                Main.appendTable('stream_table_search_vod');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Svod.blankCellCount > 0 && !Svod.dataEnded) {

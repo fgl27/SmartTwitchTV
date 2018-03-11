@@ -237,7 +237,7 @@ AGame.loadDataSuccessFinish = function() {
 
                 AGame.loadingData = false;
             } else {
-                Main.AddTable('stream_table_a_game');
+                Main.appendTable('stream_table_a_game');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (AGame.blankCellCount > 0 && !AGame.dataEnded) {

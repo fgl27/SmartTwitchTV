@@ -313,7 +313,7 @@ UserLive.loadDataSuccessFinish = function() {
 
                 UserLive.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_live');
+                Main.appendTable('stream_table_user_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
