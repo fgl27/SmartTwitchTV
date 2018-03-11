@@ -96,7 +96,7 @@ SChannels.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset >= (SChannels.MaxOffset - Main.ItemsLimitChannel)) {
+        if (offset !== 0 && offset > (SChannels.MaxOffset - 1)) {
             offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
             SChannels.dataEnded = true;
             SChannels.ReplacedataEnded = true;
@@ -246,14 +246,16 @@ SChannels.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(SChannels.blankCellCount);
+
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset >= (SChannels.MaxOffset - Main.ItemsLimitChannel)) {
-            offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
+        if (offset !== 0 && offset > (SChannels.MaxOffset - 1)) {
+            offset = SChannels.MaxOffset - Main.ItemsLimitReload;
             SChannels.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};

@@ -96,7 +96,7 @@ UserGames.loadChannels = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserGames.MaxOffset - Main.ItemsLimitGame)) {
+        if (offset !== 0 && offset > (UserGames.MaxOffset - 1)) {
             offset = UserGames.MaxOffset - Main.ItemsLimitGame;
             UserGames.dataEnded = true;
             UserGames.ReplacedataEnded = true;
@@ -256,14 +256,16 @@ UserGames.loadChannelsReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(UserGames.blankCellCount);
+
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserGames.MaxOffset - Main.ItemsLimitGame)) {
-            offset = UserGames.MaxOffset - Main.ItemsLimitGame;
+        if (offset !== 0 && offset > (UserGames.MaxOffset - 1)) {
+            offset = UserGames.MaxOffset - Main.ItemsLimitReload;
             UserGames.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/follows?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};

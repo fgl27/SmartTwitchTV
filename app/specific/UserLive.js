@@ -170,7 +170,7 @@ UserLive.loadChannelUserLive = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserLive.MaxOffset - Main.ItemsLimitVideo)) {
+        if (offset !== 0 && offset > (UserLive.MaxOffset - 1)) {
             offset = UserLive.MaxOffset - Main.ItemsLimitVideo;
             UserLive.dataEnded = true;
             UserLive.ReplacedataEnded = true;
@@ -341,14 +341,16 @@ UserLive.loadChannelsReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(UserLive.blankCellCount);
+
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (UserLive.MaxOffset - Main.ItemsLimitVideo)) {
-            offset = UserLive.MaxOffset - Main.ItemsLimitVideo;
+        if (offset !== 0 && offset > (UserLive.MaxOffset - 1)) {
+            offset = UserLive.MaxOffset - Main.ItemsLimitReload;
             UserLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset, true);
+            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset, true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};

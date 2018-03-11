@@ -92,7 +92,7 @@ SLive.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (SLive.MaxOffset - Main.ItemsLimitVideo)) {
+        if (offset !== 0 && offset > (SLive.MaxOffset - 1)) {
             offset = SLive.MaxOffset - Main.ItemsLimitVideo;
             SLive.dataEnded = true;
             SLive.ReplacedataEnded = true;
@@ -258,14 +258,16 @@ SLive.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(SLive.blankCellCount);
+
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset >= (SLive.MaxOffset - Main.ItemsLimitVideo)) {
-            offset = SLive.MaxOffset - Main.ItemsLimitVideo;
+        if (offset !== 0 && offset > (SLive.MaxOffset - 1)) {
+            offset = SLive.MaxOffset - Main.ItemsLimitReload;
             SLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};

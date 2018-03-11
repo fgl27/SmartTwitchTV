@@ -95,7 +95,7 @@ AGame.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
-        if (offset !== 0 && offset >= (AGame.MaxOffset - Main.ItemsLimitVideo)) {
+        if (offset !== 0 && offset > (AGame.MaxOffset - 1)) {
             offset = AGame.MaxOffset - Main.ItemsLimitVideo;
             AGame.dataEnded = true;
             AGame.ReplacedataEnded = true;
@@ -260,14 +260,16 @@ AGame.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main.SetItemsLimitReload(AGame.blankCellCount);
+
         var offset = AGame.itemsCount + AGame.itemsCountOffset;
-        if (offset !== 0 && offset >= (AGame.MaxOffset - Main.ItemsLimitVideo)) {
-            offset = AGame.MaxOffset - Main.ItemsLimitVideo;
+        if (offset !== 0 && offset > (AGame.MaxOffset - 1)) {
+            offset = AGame.MaxOffset - Main.ItemsLimitReload;
             AGame.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = AGame.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
