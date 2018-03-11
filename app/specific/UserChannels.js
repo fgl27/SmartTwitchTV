@@ -187,7 +187,7 @@ UserChannels.loadDataSuccess = function() {
 };
 
 UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, channel_name, preview_thumbnail) {
-    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Thumbnail, row_id, coloumn_id);
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;
 
