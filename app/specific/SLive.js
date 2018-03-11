@@ -32,12 +32,14 @@ SLive.QualityDiv = 'slive_quality_';
 SLive.Cell = 'slive_cell_';
 SLive.Status = false;
 SLive.itemsCountCheck = false;
+SLive.lastData = '';
 
 //Variable initialization end
 
 SLive.init = function() {
     Main.Go = Main.SLive;
     Main.cleanTopLabel();
+    if (SLive.lastData !== Search.data) SLive.Status = false;
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_LIVE_STREAMS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
@@ -51,10 +53,10 @@ SLive.init = function() {
 SLive.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SLive.handleKeyDown);
-    SLive.Status = false;
 };
 
 SLive.StartLoad = function() {
+    SLive.lastData = Search.data;
     Main.HideWarningDialog();
     SLive.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
