@@ -455,18 +455,14 @@ AGame.handleKeyDown = function(event) {
             if (!AGame.loadingMore) AGame.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (!AGame.loadingMore) {
-                Main.Go = Main.Live;
-                AGame.exit();
-                Main.SwitchScreen();
-            }
+            Main.Go = Main.Live;
+            AGame.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!AGame.loadingMore) {
-                Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
-                AGame.exit();
-                Main.SwitchScreen();
-            }
+            Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
+            AGame.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

@@ -259,9 +259,6 @@ SChannelContent.handleKeyDown = function(event) {
             if (SChannelContent.cursorX > (!SChannelContent.skipImg ? 2 : 1)) SChannelContent.cursorX = 0;
             SChannelContent.addFocus();
             break;
-        case TvKeyCode.KEY_UP:
-        case TvKeyCode.KEY_DOWN:
-            break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
             SChannelContent.StartLoad();

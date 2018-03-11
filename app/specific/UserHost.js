@@ -464,11 +464,9 @@ UserHost.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!UserHost.loadingMore) {
-                Main.Go = Main.UserLive;
-                UserHost.exit();
-                Main.SwitchScreen();
-            }
+            Main.Go = Main.UserLive;
+            UserHost.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
