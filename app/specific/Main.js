@@ -467,8 +467,8 @@ Main.ReplaceTable = function(table) {
     $('#' + Main.TempTable).empty();
 };
 
-Main.AddTable = function(table) {
-    document.getElementById(table).innerHTML += document.getElementById(Main.TempTable).innerHTML;
+Main.appendTable = function(table) {
+    $('#' + table).append(document.getElementById(Main.TempTable).innerHTML);
     $('#' + Main.TempTable).empty();
 };
 

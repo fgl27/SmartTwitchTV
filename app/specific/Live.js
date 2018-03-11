@@ -243,7 +243,7 @@ Live.loadDataSuccessFinish = function() {
                     if (Main.checkVersion()) Main.showUpdateDialog();
                 }
             } else {
-                Main.AddTable('stream_table_live');
+                Main.appendTable('stream_table_live');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Live.blankCellCount > 0 && !Live.dataEnded) {

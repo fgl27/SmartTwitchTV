@@ -259,7 +259,7 @@ Sclip.loadDataSuccessFinish = function() {
 
                 Sclip.loadingData = false;
             } else {
-                Main.AddTable('stream_table_search_clip');
+                Main.appendTable('stream_table_search_clip');
                 Main.LoadImagesPre(IMG_404_VIDEO);
 
                 if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {

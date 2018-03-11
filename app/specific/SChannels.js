@@ -229,7 +229,7 @@ SChannels.loadDataSuccessFinish = function() {
 
                 SChannels.loadingData = false;
             } else {
-                Main.AddTable('stream_table_search_channel');
+                Main.appendTable('stream_table_search_channel');
                 Main.LoadImagesPre(IMG_404_LOGO);
 
                 if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {

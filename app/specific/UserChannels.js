@@ -216,7 +216,7 @@ UserChannels.loadDataSuccessFinish = function() {
 
                 UserChannels.loadingData = false;
             } else {
-                Main.AddTable('stream_table_user_channels');
+                Main.appendTable('stream_table_user_channels');
                 Main.LoadImagesPre(IMG_404_LOGO);
 
                 UserChannels.loadingData = false;
