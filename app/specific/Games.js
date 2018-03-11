@@ -94,7 +94,7 @@ Games.loadDataRequest = function() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main.ItemsLimitGame + (offset === 0 ? Main.ItemsLimitGameOffset : 0)) +
-           '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -204,7 +204,7 @@ Games.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
         '<div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
         '<div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
-         viwers + '</div></div>';
+        viwers + '</div></div>';
 };
 
 Games.CellExists = function(display_name) {
@@ -385,7 +385,7 @@ Games.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
-            else if (!Games.loadingMore) {
+            else {
                 if (Main.Go === Main.Before) Main.Go = Main.Live;
                 else Main.Go = Main.Before;
                 Games.exit();
@@ -448,20 +448,16 @@ Games.handleKeyDown = function(event) {
             if (!Games.loadingMore) Games.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (!Games.loadingMore) {
-                Main.Before = Main.Games;
-                Main.Go = Main.Live;
-                Games.exit();
-                Main.SwitchScreen();
-            }
+            Main.Before = Main.Games;
+            Main.Go = Main.Live;
+            Games.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!Games.loadingMore) {
-                Main.Before = Main.Games;
-                Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
-                Games.exit();
-                Main.SwitchScreen();
-            }
+            Main.Before = Main.Games;
+            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
+            Games.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:

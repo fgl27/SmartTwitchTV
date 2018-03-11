@@ -448,9 +448,11 @@ UserGames.handleKeyDown = function(event) {
             if (!UserGames.loadingMore) UserGames.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.UserChannels;
-            UserGames.exit();
-            Main.SwitchScreen();
+            if (!UserGames.loadingMore) {
+                Main.Go = Main.UserChannels;
+                UserGames.exit();
+                Main.SwitchScreen();
+            }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Go = Main.UserHost;

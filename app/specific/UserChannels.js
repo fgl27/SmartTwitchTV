@@ -331,18 +331,14 @@ UserChannels.handleKeyDown = function(event) {
             if (!UserChannels.loadingMore) UserChannels.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (!UserChannels.loadingMore) {
-                Main.Go = Main.UserLive;
-                UserChannels.exit();
-                Main.SwitchScreen();
-            }
+            Main.Go = Main.UserLive;
+            UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!UserChannels.loadingMore) {
-                Main.Go = Main.UserGames;
-                UserChannels.exit();
-                Main.SwitchScreen();
-            }
+            Main.Go = Main.UserGames;
+            UserChannels.exit();
+            Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -350,7 +346,8 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             if (!UserChannels.loadingMore) {
                 Main.selectedChannel = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-channelname');
-                Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).textContent;
+                Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY +
+                    '_' + UserChannels.cursorX).textContent;
                 Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
                 document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
                 Main.Before = Main.UserChannels;
