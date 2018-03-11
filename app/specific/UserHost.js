@@ -211,11 +211,9 @@ UserHost.CellHtml = function(row_id, coloumn_id, channel_display_name, hosts_tit
 };
 
 UserHost.CellExists = function(display_name) {
-    for (var i = 0; i <= UserHost.nameMatrixCount; i++) {
-        if (display_name == UserHost.nameMatrix[i]) {
-            UserHost.blankCellCount++;
-            return true;
-        }
+    if (UserHost.nameMatrix.indexOf(display_name) > -1) {
+        UserHost.blankCellCount++;
+        return true;
     }
     return false;
 };

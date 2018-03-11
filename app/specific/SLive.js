@@ -209,11 +209,9 @@ SLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title
 };
 
 SLive.CellExists = function(display_name) {
-    for (var i = 0; i <= SLive.nameMatrixCount; i++) {
-        if (display_name == SLive.nameMatrix[i]) {
-            SLive.blankCellCount++;
-            return true;
-        }
+    if (SLive.nameMatrix.indexOf(display_name) > -1) {
+        SLive.blankCellCount++;
+        return true;
     }
     return false;
 };

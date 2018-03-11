@@ -205,11 +205,9 @@ UserGames.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
 };
 
 UserGames.CellExists = function(display_name) {
-    for (var i = 0; i <= UserGames.nameMatrixCount; i++) {
-        if (display_name == UserGames.nameMatrix[i]) {
-            UserGames.blankCellCount++;
-            return true;
-        }
+    if (UserGames.nameMatrix.indexOf(display_name) > -1) {
+        UserGames.blankCellCount++;
+        return true;
     }
     return false;
 };

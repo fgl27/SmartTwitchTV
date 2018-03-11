@@ -222,11 +222,9 @@ Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title,
 };
 
 Svod.CellExists = function(display_name) {
-    for (var i = 0; i <= Svod.nameMatrixCount; i++) {
-        if (display_name == Svod.nameMatrix[i]) {
-            Svod.blankCellCount++;
-            return true;
-        }
+    if (Svod.nameMatrix.indexOf(display_name) > -1) {
+        Svod.blankCellCount++;
+        return true;
     }
     return false;
 };

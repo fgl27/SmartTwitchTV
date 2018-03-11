@@ -286,11 +286,9 @@ UserLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_ti
 };
 
 UserLive.CellExists = function(display_name) {
-    for (var i = 0; i <= UserLive.nameMatrixCount; i++) {
-        if (display_name == UserLive.nameMatrix[i]) {
-            UserLive.blankCellCount++;
-            return true;
-        }
+    if (UserLive.nameMatrix.indexOf(display_name) > -1) {
+        UserLive.blankCellCount++;
+        return true;
     }
     return false;
 };
