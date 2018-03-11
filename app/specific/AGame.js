@@ -43,7 +43,7 @@ AGame.init = function() {
     $('#top_bar_game').addClass('icon_center_focus');
     $('.lable_game').html(STR_AGAME);
     $('.label_agame_name').html(Main.gameSelected);
-    if ((Main.OldgameSelected === Main.gameSelected)) {
+    if ((Main.OldgameSelected === Main.gameSelected) && AGame.status) {
         Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
         Main.CounterDialog(AGame.cursorX, AGame.cursorY, Main.ColoumnsCountVideo, AGame.itemsCount);
