@@ -140,24 +140,19 @@ Main.loadTranslations = function(device) {
     if (lang.indexOf('pt_') !== -1) {
         pt_BRLang();
         Main.TopSpacingDefault = 25;
-
         Main.TopSpacingSearchLable = 38.5;
         Main.TopSpacingSearchUnder = 21.5;
-
         Main.TopAgameDefault = 55;
-
         Main.TopSpacingCleanTop = 32.5;
         Main.TopAgameDefaultCleanTop = 43.2;
-
         Main.TopAgameDefaultUser = 44;
-
-        document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
-        document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     } else console.log("language is " + lang);
     DefaultLang();
 
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
+    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     // pre load LOD img
     Main.PreLoadAImage(IMG_LOD_LOGO);
     Main.PreLoadAImage(IMG_LOD_GAME);
