@@ -2,16 +2,14 @@
 //Variable initialization
 function SChannels() {}
 SChannels.Thumbnail = 'thumbnail_schannels_';
-SChannels.EmptyCell = 'schannels_empty_';
+SChannels.EmptyCell = 'schannelsempty_';
 SChannels.cursorY = 0;
 SChannels.cursorX = 0;
 SChannels.dataEnded = false;
 SChannels.itemsCount = 0;
-SChannels.imgMatrix = [];
-SChannels.imgMatrixId = [];
-SChannels.imgMatrixCount = 0;
 SChannels.nameMatrix = [];
 SChannels.nameMatrixCount = 0;
+SChannels.blankCellVector = [];
 SChannels.loadingData = false;
 SChannels.loadingDataTry = 0;
 SChannels.loadingDataTryMax = 10;
@@ -29,19 +27,20 @@ SChannels.ThumbnailDiv = 'schannels_thumbnail_div_';
 SChannels.DispNameDiv = 'schannels_display_name_';
 SChannels.StreamTitleDiv = 'schannels_stream_title_';
 SChannels.Cell = 'schannels_cell_';
-SChannels.status = false;
+SChannels.Status = false;
 SChannels.lastData = '';
+SChannels.itemsCountCheck = false;
 
 //Variable initialization end
 
 SChannels.init = function() {
     Main.Go = Main.SChannels;
-    if (SChannels.lastData !== Search.data) SChannels.status = false;
+    if (SChannels.lastData !== Search.data) SChannels.Status = false;
     Main.cleanTopLabel();
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
-    if (SChannels.status) {
+    if (SChannels.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels,
             Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
         Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, Main.ColoumnsCountChannel, SChannels.itemsCount);
@@ -51,7 +50,7 @@ SChannels.init = function() {
 SChannels.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels.handleKeyDown);
-    SChannels.status = false;
+    SChannels.Status = false;
 };
 
 SChannels.Postexit = function() {
@@ -61,10 +60,10 @@ SChannels.Postexit = function() {
 SChannels.StartLoad = function() {
     SChannels.lastData = Search.data;
     Main.HideWarningDialog();
-    SChannels.status = false;
+    SChannels.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_search_channel').empty();
+    $('#' + Main.TempTable).empty();
     SChannels.loadingMore = false;
     SChannels.blankCellCount = 0;
     SChannels.itemsCountOffset = 0;
@@ -72,6 +71,8 @@ SChannels.StartLoad = function() {
     SChannels.MaxOffset = 0;
     SChannels.nameMatrix = [];
     SChannels.nameMatrixCount = 0;
+    SChannels.blankCellVector = [];
+    SChannels.itemsCountCheck = false;
     SChannels.itemsCount = 0;
     SChannels.cursorX = 0;
     SChannels.cursorY = 0;
@@ -82,9 +83,7 @@ SChannels.StartLoad = function() {
 };
 
 SChannels.loadDataPrepare = function() {
-    SChannels.imgMatrix = [];
-    SChannels.imgMatrixId = [];
-    SChannels.imgMatrixCount = 0;
+    Main.MatrixRst();
     SChannels.loadingData = true;
     SChannels.loadingDataTry = 0;
     SChannels.loadingDataTimeout = 3500;
@@ -172,28 +171,36 @@ SChannels.loadDataSuccess = function(responseText) {
         }
 
         for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
+            if (SChannels.dataEnded && !SChannels.itemsCountCheck) {
+                SChannels.itemsCountCheck = true;
+                SChannels.itemsCount = (row_id * Main.ColoumnsCountChannel) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
+            SChannels.blankCellVector.push(SChannels.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_search_channel').append(row);
+        $('#' + Main.TempTable).append(row);
     }
 
     SChannels.loadDataSuccessFinish();
 };
 
+
 SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
-    SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
-    SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
-    SChannels.imgMatrixCount++;
+    SChannels.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
+    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+        SChannels.CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name));
+};
 
-    if (SChannels.imgMatrixCount < (Main.ColoumnsCountChannel * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
+SChannels.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
+    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, SChannels.Thumbnail, row_id, coloumn_id);
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
+};
 
-    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
+SChannels.CellHtml = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
+    return '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
         '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
+        '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
 };
 
 SChannels.CellExists = function(display_name) {
@@ -209,36 +216,39 @@ SChannels.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SChannels.loadDataSuccessFinish = function() {
-    if (!SChannels.status) {
-        $('#stream_table_search_channel').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+    $('#' + Main.TempTable).imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            if (!SChannels.Status) {
+                if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+                else SChannels.Status = true;
+
+                Main.ReplaceTable('stream_table_search_channel');
 
                 Main.HideLoadDialog();
                 SChannels.addFocus();
-                if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-                else SChannels.status = true;
-
-                Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
+                Main.LoadImagesPre(IMG_404_LOGO);
 
                 SChannels.loadingData = false;
-            });
-    } else SChannels.loadDataSuccessFinishRun();
-};
+            } else {
+                Main.AddTable('stream_table_search_channel');
+                Main.LoadImagesPre(IMG_404_LOGO);
 
-SChannels.loadDataSuccessFinishRun = function() {
-    Main.LoadImages(SChannels.imgMatrix, SChannels.imgMatrixId, IMG_404_LOGO);
+                if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
+                    SChannels.loadingMore = true;
+                    SChannels.loadDataPrepare();
+                    SChannels.loadDataReplace();
+                    return;
+                } else {
+                    SChannels.blankCellCount = 0;
+                    SChannels.blankCellVector = [];
+                }
 
-    if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
-        SChannels.loadingMore = true;
-        SChannels.loadDataPrepare();
-        SChannels.loadDataReplace();
-        return;
-    } else SChannels.blankCellCount = 0;
-
-    SChannels.loadingData = false;
-    SChannels.loadingMore = false;
+                SChannels.loadingData = false;
+                SChannels.loadingMore = false;
+            }
+        });
 };
 
 SChannels.loadDataReplace = function() {
@@ -282,63 +292,61 @@ SChannels.loadDataErrorReplace = function() {
     if (SChannels.loadingDataTry < SChannels.loadingDataTryMax) {
         SChannels.loadingDataTimeout += (SChannels.loadingDataTry < 5) ? 250 : 3500;
         SChannels.loadDataReplace();
+    } else {
+        SChannels.ReplacedataEnded = true;
+        SChannels.blankCellCount = 0;
+        SChannels.blankCellVector = [];
+        SChannels.loadDataSuccessFinish();
     }
 };
 
 SChannels.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.channels.length;
+    var channels, index, cursor = 0;
+    var tempVector = SChannels.blankCellVector.slice();
+
     SChannels.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitChannel) SChannels.ReplacedataEnded = true;
+    if (response_items < Main.ItemsLimitVideo) SChannels.ReplacedataEnded = true;
 
-    var row_id = SChannels.itemsCount / Main.ColoumnsCountChannel;
-
-    var coloumn_id, channels, mReplace = false,
-        cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
+    for (var i = 0; i < SChannels.blankCellVector.length && cursor < response_items; i++, cursor++) {
         channels = response.channels[cursor];
-        if (SChannels.CellExists(channels.name)) SChannels.blankCellCount--;
-        else {
-            mReplace = SChannels.replaceCellEmpty(row_id, coloumn_id, channels.name, channels.logo, channels.display_name);
-            if (mReplace) SChannels.blankCellCount--;
-            if (SChannels.blankCellCount === 0) break;
-        }
-    }
-    SChannels.itemsCountOffset += cursor;
-    if (SChannels.ReplacedataEnded) SChannels.blankCellCount = 0;
-    SChannels.loadDataSuccessFinish();
-};
+        if (SChannels.CellExists(channels.name)) {
+            SChannels.blankCellCount--;
+            i--;
+        } else {
+            SChannels.replaceCellEmpty(SChannels.blankCellVector[i], channels.name, channels.logo, channels.display_name);
+            SChannels.blankCellCount--;
 
-SChannels.replaceCellEmpty = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
-    var my = 0,
-        mx = 0;
-    if (row_id < ((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(SChannels.blankCellCount / Main.ColoumnsCountChannel)); my < row_id; my++) {
-        for (mx = 0; mx < Main.ColoumnsCountChannel; mx++) {
-            if (!Main.ThumbNull(my, mx, SChannels.Thumbnail) && (Main.ThumbNull(my, mx, SChannels.EmptyCell))) {
-                row_id = my;
-                coloumn_id = mx;
-
-                SChannels.imgMatrix[SChannels.imgMatrixCount] = preview_thumbnail;
-                SChannels.imgMatrixId[SChannels.imgMatrixCount] = SChannels.Thumbnail + row_id + '_' + coloumn_id;
-                SChannels.imgMatrixCount++;
-
-                SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
-                SChannels.nameMatrixCount++;
-                document.getElementById(SChannels.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', SChannels.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', channel_name);
-                document.getElementById(SChannels.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
-                    '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-                    '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
-                return true;
+            index = tempVector.indexOf(tempVector[i]);
+            if (index > -1) {
+                tempVector.splice(index, 1);
             }
         }
     }
 
-    return false;
+    SChannels.itemsCountOffset += cursor;
+    if (SChannels.ReplacedataEnded) {
+        SChannels.blankCellCount = 0;
+        SChannels.blankCellVector = [];
+    } else SChannels.blankCellVector = tempVector;
+
+    SChannels.loadDataSuccessFinish();
+};
+
+SChannels.replaceCellEmpty = function(id, channel_name, preview_thumbnail, channel_display_name) {
+    var splitedId = id.split("_");
+    var row_id = splitedId[1];
+    var coloumn_id = splitedId[2];
+    var cell = SChannels.Cell + row_id + '_' + coloumn_id;
+
+    SChannels.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
+
+    document.getElementById(id).setAttribute('id', cell);
+    document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).innerHTML =
+        SChannels.CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name);
 };
 
 SChannels.addFocus = function() {
