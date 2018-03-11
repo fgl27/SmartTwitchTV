@@ -2,16 +2,14 @@
 //Variable initialization
 function UserGames() {}
 UserGames.Thumbnail = 'thumbnail_glive_';
-UserGames.EmptyCell = 'glive_empty_';
+UserGames.EmptyCell = 'gliveempty_';
 UserGames.cursorY = 0;
 UserGames.cursorX = 0;
 UserGames.dataEnded = false;
 UserGames.itemsCount = 0;
-UserGames.imgMatrix = [];
-UserGames.imgMatrixId = [];
-UserGames.imgMatrixCount = 0;
 UserGames.nameMatrix = [];
 UserGames.nameMatrixCount = 0;
+UserGames.blankCellVector = [];
 UserGames.loadingData = false;
 UserGames.loadingDataTry = 0;
 UserGames.loadingDataTryMax = 10;
@@ -24,12 +22,13 @@ UserGames.keyClickDelayTime = 25;
 UserGames.ReplacedataEnded = false;
 UserGames.MaxOffset = 0;
 UserGames.emptyContent = false;
+UserGames.itemsCountCheck = false;
 
 UserGames.ThumbnailDiv = 'glive_thumbnail_div_';
 UserGames.DispNameDiv = 'glive_display_name_';
 UserGames.ViwersDiv = 'glive_viwers_';
 UserGames.Cell = 'glive_cell_';
-UserGames.status = false;
+UserGames.Status = false;
 UserGames.followerChannels = '';
 UserGames.OldUserName = '';
 
@@ -42,8 +41,8 @@ UserGames.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = "44%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
-    if (UserGames.OldUserName !== Main.UserName) UserGames.status = false;
-    if (UserGames.status) {
+    if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
+    if (UserGames.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(UserGames.Thumbnail, UserGames.cursorY, UserGames.cursorX, Main.UserGames,
             Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
         Main.CounterDialog(UserGames.cursorX, UserGames.cursorY, Main.ColoumnsCountGame, UserGames.itemsCount);
@@ -63,14 +62,16 @@ UserGames.StartLoad = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
     UserGames.OldUserName = Main.UserName;
-    UserGames.status = false;
-    $('#stream_table_user_games').empty();
+    UserGames.Status = false;
+    $('#' + Main.TempTable).empty();
     UserGames.loadingMore = false;
     UserGames.blankCellCount = 0;
     UserGames.itemsCountOffset = 0;
     UserGames.ReplacedataEnded = false;
     UserGames.MaxOffset = 0;
     UserGames.nameMatrix = [];
+    UserGames.blankCellVector = [];
+    UserGames.itemsCountCheck = false;
     UserGames.nameMatrixCount = 0;
     UserGames.itemsCount = 0;
     UserGames.cursorX = 0;
@@ -78,19 +79,17 @@ UserGames.StartLoad = function() {
     UserGames.dataEnded = false;
     Main.CounterDialogRst();
     UserGames.loadDataPrepare();
-    UserGames.loadChannels();
+    UserGames.loadDataRequest();
 };
 
 UserGames.loadDataPrepare = function() {
-    UserGames.imgMatrix = [];
-    UserGames.imgMatrixId = [];
-    UserGames.imgMatrixCount = 0;
+    Main.MatrixRst();
     UserGames.loadingData = true;
     UserGames.loadingDataTry = 0;
     UserGames.loadingDataTimeout = 3500;
 };
 
-UserGames.loadChannels = function() {
+UserGames.loadDataRequest = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -131,7 +130,7 @@ UserGames.loadDataError = function() {
     UserGames.loadingDataTry++;
     if (UserGames.loadingDataTry < UserGames.loadingDataTryMax) {
         UserGames.loadingDataTimeout += (UserGames.loadingDataTry < 5) ? 250 : 3500;
-        UserGames.loadChannels();
+        UserGames.loadDataRequest();
     } else {
         UserGames.loadingData = false;
         UserGames.loadingMore = false;
@@ -172,37 +171,37 @@ UserGames.loadDataSuccess = function(responseText) {
             }
         }
         for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
+            if (UserGames.dataEnded && !UserGames.itemsCountCheck) {
+                UserGames.itemsCountCheck = true;
+                UserGames.itemsCount = (row_id * Main.ColoumnsCountGame) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserGames.EmptyCell));
+            UserGames.blankCellVector.push(UserGames.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_user_games').append(row);
+        $('#' + Main.TempTable).append(row);
     }
 
     UserGames.loadDataSuccessFinish();
 };
 
-UserGames.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + UserGames.EmptyCell + row_id + '_' + coloumn_id + '" class="follows_cell" data-channelname=""></td>').html('');
+UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
+    UserGames.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
+    return $('<td id="' + UserGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
+        UserGames.CellHtml(row_id, coloumn_id, game_name, viwers));
 };
 
-UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
-
-    UserGames.imgMatrix[UserGames.imgMatrixCount] = preview_thumbnail;
-    UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
-    UserGames.imgMatrixCount++;
-
-    if (UserGames.imgMatrixCount < (Main.ColoumnsCountGame * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
+UserGames.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, UserGames.Thumbnail, row_id, coloumn_id, Main.GameSize);
     UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
     UserGames.nameMatrixCount++;
+};
 
-    return $('<td id="' + UserGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
+UserGames.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
+    return '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
         '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
         '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
-        viwers + '</div></div>');
+        viwers + '</div></div>';
 };
 
 UserGames.CellExists = function(display_name) {
@@ -218,40 +217,42 @@ UserGames.CellExists = function(display_name) {
 //prevent follows_text/title/info from load before the thumbnail and display a odd follows_table squashed only with names source
 //https://imagesloaded.desandro.com/
 UserGames.loadDataSuccessFinish = function() {
-    if (!UserGames.status) {
-        $('#stream_table_user_games').imagesLoaded()
-            .always({
-                background: false
-            }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+    $('#' + Main.TempTable).imagesLoaded()
+        .always({
+            background: false
+        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
+            if (!UserGames.Status) {
+                if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                else UserGames.Status = true;
+
+                Main.ReplaceTable('stream_table_user_games');
 
                 Main.HideLoadDialog();
                 UserGames.addFocus();
-                if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-                else UserGames.status = true;
-
-                Main.LoadImages(UserGames.imgMatrix, UserGames.imgMatrixId, IMG_404_GAME);
+                Main.LoadImagesPre(IMG_404_GAME);
 
                 UserGames.loadingData = false;
+            } else {
+                Main.AddTable('stream_table_user_games');
+                Main.LoadImagesPre(IMG_404_GAME);
 
-            });
-    } else UserGames.loadDataSuccessFinishRun();
+                if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
+                    UserGames.loadingMore = true;
+                    UserGames.loadDataPrepare();
+                    UserGames.loadDataReplace();
+                    return;
+                } else {
+                    UserGames.blankCellCount = 0;
+                    UserGames.blankCellVector = [];
+                }
+
+                UserGames.loadingData = false;
+                UserGames.loadingMore = false;
+            }
+        });
 };
 
-UserGames.loadDataSuccessFinishRun = function() {
-    Main.LoadImages(UserGames.imgMatrix, UserGames.imgMatrixId, IMG_404_GAME);
-
-    if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
-        UserGames.loadingMore = true;
-        UserGames.loadDataPrepare();
-        UserGames.loadChannelsReplace();
-        return;
-    } else UserGames.blankCellCount = 0;
-
-    UserGames.loadingData = false;
-    UserGames.loadingMore = false;
-};
-
-UserGames.loadChannelsReplace = function() {
+UserGames.loadDataRequestReplace = function() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -291,68 +292,62 @@ UserGames.loadDataErrorReplace = function() {
     UserGames.loadingDataTry++;
     if (UserGames.loadingDataTry < UserGames.loadingDataTryMax) {
         UserGames.loadingDataTimeout += (UserGames.loadingDataTry < 5) ? 250 : 3500;
-        UserGames.loadChannelsReplace();
+        UserGames.loadDataRequestReplace();
+    } else {
+        UserGames.ReplacedataEnded = true;
+        UserGames.blankCellCount = 0;
+        UserGames.blankCellVector = [];
+        UserGames.loadDataSuccessFinish();
     }
 };
 
 UserGames.loadDataSuccessReplace = function(responseText) {
     var response = $.parseJSON(responseText);
     var response_items = response.follows.length;
+    var follows, index, cursor = 0;
+    var tempVector = UserGames.blankCellVector.slice();
+
     UserGames.MaxOffset = parseInt(response._total);
 
     if (response_items < Main.ItemsLimitGame) UserGames.ReplacedataEnded = true;
 
-    var row_id = UserGames.itemsCount / Main.ColoumnsCountGame;
-
-    var coloumn_id, follows, mReplace = false,
-        cursor = 0;
-
-    for (cursor; cursor < response_items; cursor++) {
+    for (var i = 0; i < UserGames.blankCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
-        if (UserGames.CellExists(follows.game.name)) UserGames.blankCellCount--;
-        else {
-            mReplace = UserGames.replaceCellEmpty(row_id, coloumn_id, follows.game.name, follows.game.box.template,
+        if (UserGames.CellExists(follows.game.name)) {
+            UserGames.blankCellCount--;
+            i--;
+        } else {
+            UserGames.replaceCellEmpty(UserGames.blankCellVector[i], follows.game.name, follows.game.box.template,
                 Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + ' for ' + Main.addCommas(follows.viewers) + STR_VIEWER);
-            if (mReplace) UserGames.blankCellCount--;
-            if (UserGames.blankCellCount === 0) break;
-        }
-    }
-    UserGames.itemsCountOffset += cursor;
-    if (UserGames.ReplacedataEnded) UserGames.blankCellCount = 0;
-    UserGames.loadDataSuccessFinish();
-};
+            UserGames.blankCellCount--;
 
-UserGames.replaceCellEmpty = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    var my = 0,
-        mx = 0;
-    if (row_id < ((Main.ItemsLimitGame / Main.ColoumnsCountGame) - 1)) return false;
-    for (my = row_id - (1 + Math.ceil(UserGames.blankCellCount / Main.ColoumnsCountGame)); my < row_id; my++) {
-        for (mx = 0; mx < Main.ColoumnsCountGame; mx++) {
-            if (!Main.ThumbNull(my, mx, UserGames.Thumbnail) && (Main.ThumbNull(my, mx, UserGames.EmptyCell))) {
-                row_id = my;
-                coloumn_id = mx;
-                preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
-
-                UserGames.imgMatrix[UserGames.imgMatrixCount] = preview_thumbnail;
-                UserGames.imgMatrixId[UserGames.imgMatrixCount] = UserGames.Thumbnail + row_id + '_' + coloumn_id;
-                UserGames.imgMatrixCount++;
-
-                UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
-                UserGames.nameMatrixCount++;
-                document.getElementById(UserGames.EmptyCell + row_id + '_' + coloumn_id).setAttribute('id', UserGames.Cell + row_id + '_' + coloumn_id);
-                document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).setAttribute('data-channelname', game_name);
-                document.getElementById(UserGames.Cell + row_id + '_' + coloumn_id).innerHTML =
-                    '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
-                    '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-                    '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-                    '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
-                    viwers + '</div></div>';
-                return true;
+            index = tempVector.indexOf(tempVector[i]);
+            if (index > -1) {
+                tempVector.splice(index, 1);
             }
         }
     }
 
-    return false;
+    UserGames.itemsCountOffset += cursor;
+    if (UserGames.ReplacedataEnded) {
+        UserGames.blankCellCount = 0;
+        UserGames.blankCellVector = [];
+    } else UserGames.blankCellVector = tempVector;
+
+    UserGames.loadDataSuccessFinish();
+};
+
+UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
+    var splitedId = id.split("_");
+    var row_id = splitedId[1];
+    var coloumn_id = splitedId[2];
+    var cell = UserGames.Cell + row_id + '_' + coloumn_id;
+
+    UserGames.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
+
+    document.getElementById(id).setAttribute('id', cell);
+    document.getElementById(cell).setAttribute('data-channelname', game_name);
+    document.getElementById(cell).innerHTML = UserGames.CellHtml(row_id, coloumn_id, game_name, viwers);
 };
 
 UserGames.addFocus = function() {
