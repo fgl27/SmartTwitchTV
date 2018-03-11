@@ -2,14 +2,11 @@
 //Variable initialization
 function UserChannels() {}
 UserChannels.Thumbnail = 'thumbnail_uchannel_';
-UserChannels.EmptyCell = 'uchannel_empty_';
+UserChannels.EmptyCell = 'uchannelempty_';
 UserChannels.cursorY = 0;
 UserChannels.cursorX = 0;
 UserChannels.dataEnded = false;
 UserChannels.itemsCount = 0;
-UserChannels.imgMatrix = [];
-UserChannels.imgMatrixId = [];
-UserChannels.imgMatrixCount = 0;
 UserChannels.nameMatrix = [];
 UserChannels.nameMatrixCount = 0;
 UserChannels.loadingData = false;
@@ -27,6 +24,7 @@ UserChannels.DispNameDiv = 'uchannel_display_name_';
 UserChannels.Cell = 'uchannel_cell_';
 UserChannels.Status = false;
 UserChannels.OldUserName = '';
+UserChannels.itemsCountCheck = false;
 
 //Variable initialization end
 
@@ -66,6 +64,7 @@ UserChannels.StartLoad = function() {
     UserChannels.cursorX = 0;
     UserChannels.cursorY = 0;
     UserChannels.dataEnded = false;
+    UserChannels.itemsCountCheck = false;
     Main.CounterDialogRst();
     UserChannels.UserChannelsList = [];
     UserChannels.loadDataPrepare();
@@ -144,9 +143,7 @@ UserChannels.loadChannelLive = function(responseText) {
         UserChannels.UserChannelsList.sort(function(a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
         });
-        UserChannels.imgMatrix = [];
-        UserChannels.imgMatrixId = [];
-        UserChannels.imgMatrixCount = 0;
+        Main.MatrixRst();
         UserChannels.loadDataSuccess();
     }
 };
@@ -177,28 +174,20 @@ UserChannels.loadDataSuccess = function() {
             channel = UserChannels.UserChannelsList[cursor].split(",");
             row.append(UserChannels.createCell(row_id, coloumn_id, channel[0], channel[1], channel[2]));
         }
-
         for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
+            if (UserChannels.dataEnded && !UserChannels.itemsCountCheck) {
+                UserChannels.itemsCountCheck = true;
+                UserChannels.itemsCount = (row_id * Main.ColoumnsCountChannel) + coloumn_id;
+            }
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserChannels.EmptyCell));
         }
         $('#' + Main.TempTable).append(row);
     }
-
     UserChannels.loadDataSuccessFinish();
 };
 
-UserChannels.createCellEmpty = function(row_id, coloumn_id) {
-    // id here can't be cell_ or it will conflict when loading anything below row 0 in MODE_FOLLOWER
-    return $('<td id="' + UserChannels.EmptyCell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
-};
-
 UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, channel_name, preview_thumbnail) {
-    UserChannels.imgMatrix[UserChannels.imgMatrixCount] = preview_thumbnail;
-    UserChannels.imgMatrixId[UserChannels.imgMatrixCount] = UserChannels.Thumbnail + row_id + '_' + coloumn_id;
-    UserChannels.imgMatrixCount++;
-
-    if (UserChannels.imgMatrixCount < (Main.ColoumnsCountChannel * 6)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
+    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Thumbnail, row_id, coloumn_id, Main.VideoSize);
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;
 
@@ -223,12 +212,12 @@ UserChannels.loadDataSuccessFinish = function() {
 
                 Main.HideLoadDialog();
                 UserChannels.addFocus();
-                Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
+                Main.LoadImagesPre(IMG_404_LOGO);
 
                 UserChannels.loadingData = false;
             } else {
                 Main.AddTable('stream_table_user_channels');
-                Main.LoadImages(UserChannels.imgMatrix, UserChannels.imgMatrixId, IMG_404_LOGO);
+                Main.LoadImagesPre(IMG_404_LOGO);
 
                 UserChannels.loadingData = false;
                 UserChannels.loadingMore = false;

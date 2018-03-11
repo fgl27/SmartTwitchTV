@@ -622,6 +622,14 @@ Main.CellMatrixVod = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_i
     if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 };
 
+Main.CellMatrixChannel = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
+    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
+    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
+    Main.imgMatrixCount++;
+
+    if (Main.imgMatrixCount < (ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+};
+
 Main.CellMatrix = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", VideoSize);
     Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
