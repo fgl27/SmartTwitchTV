@@ -1,5 +1,5 @@
 function pt_BRLang() {
-    console.log("loading language pt_BR")
+    console.log("loading language pt_BR");
     STR_REFRESH = "Atualizar (Guide/CH/Info)";
     STR_SEARCH = "Pesquisar";
     STR_CONTROLS = "Controles";
