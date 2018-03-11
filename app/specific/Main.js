@@ -613,6 +613,15 @@ Main.MatrixRst = function() {
     Main.imgMatrixCount = 0;
 };
 
+Main.CellMatrixVod = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
+    preview_thumbnail = preview_thumbnail.replace("320x240", VideoSize);
+    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
+    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
+    Main.imgMatrixCount++;
+
+    if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+};
+
 Main.CellMatrix = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", VideoSize);
     Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
