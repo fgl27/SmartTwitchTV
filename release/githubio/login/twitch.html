@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 <title>Generate a token with any scopes</title>
 <style>
+    body {
+        background-color: #111111;
+        font-family: sans-serif;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: 100;
+        letter-spacing: normal;
+        position: absolute;
+        overflow: hidden;
+        /*Prevent Scroling*/
+        z-index: 5;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .button {
+        width: auto;
+        height: auto;
+        line-height: 40px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 150%;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #454545;
+        border: 4px solid #FFFFFF;
+        display: inline-block;
+        text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
+    }
+
     .hidden {
         display: none;
     }
@@ -9,12 +44,20 @@
         width: 20em;
     }
 </style>
-<div id="auth">
-    <p id="pText">Allows the generation of an oauth token to use on Twitch.TV Samsung app
-        <button id="login">Authorize</button>
+<div id="auth" style="display: inline-block;">
+    <img style="float: center; width: 15%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo" />
+    <div>
+        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication code</p>
+    </div>
+    <div>
+        <button id="login" class="button">Authorize</button>
+    </div>
+<div id="about" style="position: absolute; bottom: 0; top: 300px; width: 100%; height: 100%;">
+                <div style="float: center; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from github.com/bhb27/smarttv-twitch</div>
 </div>
 <div id="t" class="hidden">
     <label for="token">Token: </label><input type="text" id="token" readonly>
+</div>
 </div>
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="twitch.js"></script>
