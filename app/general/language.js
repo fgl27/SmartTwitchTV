@@ -18,8 +18,16 @@ var STR_SINCE = "Since ";
 var STR_AGO = " ago";
 var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Write yours search...";
+var STR_PLACEHOLDER_OAUTH = "Write yours authentication code...";
 var STR_PLACEHOLDER_USER = "Write user name...";
 var STR_PLACEHOLDER_PRESS = "Press Enter to ";
+
+var STR_OAUTH_IN = "Enter the authentication code for user ";
+var STR_OAUTH_EXPLAIN = "Explanation how it works";
+
+var STR_OAUTH_WRONG = "You try to add a code for user ";
+var STR_OAUTH_WRONG2 = " but this code is for user ";
+
 var STR_CHANNELS = "Channels";
 var STR_CHANNEL = "Channel";
 var STR_GOBACK = "Back to previously screen (Return)";
@@ -52,6 +60,8 @@ var STR_LIVE_GAMES = " Games Live";
 var STR_USER_CHANNEL = " Followed Channels";
 var STR_USER_ADD = " Add User";
 var STR_USER_REMOVE = " Remove User";
+var STR_USER_CODE = " Add Autentication Code";
+var STR_USER_OAUTH = "Authentication process steps";
 var STR_USER_ERROR = "User doesn\'t exist";
 var STR_USER_HOSTING = " hosting ";
 var STR_USER_SET = " already set";

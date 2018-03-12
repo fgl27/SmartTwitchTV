@@ -143,6 +143,7 @@ Play.updateStreamInfo = function() {
                     if (!Play.LoadLogoSucess) Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                     Play.LoadLogoSucess = true;
                     Play.created = new Date(response.stream.created_at).getTime();
+                    console.log(response.stream.channel._id);
                 } catch (err) {}
             }
         }

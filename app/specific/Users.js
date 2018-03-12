@@ -65,17 +65,20 @@ Users.loadData = function() {
 
         row = $('<tr></tr>');
 
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_GAMES));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_GAMES, IMG_BLUR_GAME));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, (x === 0) ? STR_USER_ADD : STR_USER_MAKE_ONE));
+        if (x === 0) row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
+        else row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
+        coloumn_id++;
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CODE, IMG_USER_CODE));
 
         $('#stream_table_user').append(row);
     }
@@ -83,19 +86,12 @@ Users.loadData = function() {
     Users.loadDataSuccessFinish();
 };
 
-Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
-    var thumbnail = IMG_BLUR_VIDEO1;
-    if (coloumn_id === 1) thumbnail = IMG_BLUR_VIDEO2;
-    if (coloumn_id === 2) thumbnail = IMG_BLUR_GAME;
-    if (coloumn_id === 3) thumbnail = IMG_BLUR_VOD;
-    if (coloumn_id === 4) thumbnail = (row_id === 0) ? IMG_USER_PLUS : IMG_USER_UP;
-    if (coloumn_id === 5) thumbnail = IMG_USER_MINUS;
-
-    Users.imgMatrix[Users.imgMatrixCount] = thumbnail;
+Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+    Users.imgMatrix[Users.imgMatrixCount] = preview_thumbnail;
     Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
     Users.imgMatrixCount++;
 
-    Main.PreLoadAImage(thumbnail);
+    Main.PreLoadAImage(preview_thumbnail);
 
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
@@ -151,6 +147,7 @@ Users.keyEnter = function() {
         if (Users.cursorY === 0) AddUser.init();
         else AddUser.UserMakeOne(Users.cursorY);
     } else if (Users.cursorX === 5) AddUser.removeUser(Users.cursorY);
+    else if (Users.cursorX === 6) AddCode.init();
 };
 
 Users.handleKeyDown = function(event) {
