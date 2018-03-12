@@ -44,7 +44,7 @@ Svod.init = function() {
     if (Main.selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_VOD);
+    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH_VOD);
     $('.lable_user').html(Main.selectedChannelDisplayname);
     $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);

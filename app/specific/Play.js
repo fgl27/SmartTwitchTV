@@ -64,21 +64,21 @@ Play.PreStart = function() {
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     $("#play_dialog_exit_text").text(STR_EXIT_AGAIN);
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block;"><i class="fa fa-circle-o-notch fa-spin"></i></div>';
+        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i></div>';
     $("#chat_container").html(
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
         '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
-        '<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%;"></i> ' + STR_CONTROL_KEY;
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_CONTROL_KEY + '</div>';
 };
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     document.getElementById("stream_live_icon").innerHTML =
-        '<i class="fa fa-circle" style="color: red; font-size: 115%;"></i> ' + STR_LIVE.toUpperCase();
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_LIVE.toUpperCase() + '</div>';
     $("#stream_info_title").text("");
     Play.LoadLogoSucess = false;
     $("#stream_info_icon").attr("src", IMG_LOD_LOGO);
