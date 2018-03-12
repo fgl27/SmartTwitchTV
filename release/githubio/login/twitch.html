@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<title>Samsung TV Twitch.TV authorization Page</title>
+<title>Twitch.TV app for Samsung TV authorization page</title>
 <style>
+/*Original page from https://twitchstuff.3v.fi/tokengen/*/
     body {
         background-color: #111111;
         font-family: sans-serif;
@@ -9,8 +10,6 @@
         font-weight: 100;
         letter-spacing: normal;
         position: absolute;
-        overflow: hidden;
-        /*Prevent Scroling*/
         z-index: 5;
         padding: 0px;
         margin: 0px;
@@ -45,16 +44,16 @@
     }
 </style>
 <div id="auth" style="display: inline-block;">
-    <img style="float: center; width: 15%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo" />
-    <div>
+    <img style="position: flex; float: center; width: 25%; padding-top: 2%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo" />
+    <div style="position: flex; width: 100%; height: 100%;">
         <p id="pText" style="font-size: 200%; color: #FFFFFF;">Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication code</p>
     </div>
-    <div>
+    <div style="position: flex; width: 100%; height: 100%;">
         <button id="login" class="button">Authorize</button>
+        <div id="about" style="position: flex; width: 100%; height: 100%;">
+            <div style="float: center; padding-top: 6%; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/bhb27/smarttv-twitch">github.com/bhb27/smarttv-twitch</a></div>
+        </div>
     </div>
-<div id="about" style="position: absolute; bottom: 0; top: 300px; width: 100%; height: 100%;">
-                <div style="float: center; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/bhb27/smarttv-twitch">github.com/bhb27/smarttv-twitch</a></div>
-</div>
 </div>
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="twitch.js"></script>
