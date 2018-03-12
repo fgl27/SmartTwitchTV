@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<title>Generate a token with any scopes</title>
+<style>
+.hidden {
+	display: none;
+}
+input {
+	width: 20em;
+}
+</style>
+<div id="auth">
+	<p>Allows the generation of an oauth token to use on Twitch.TV Samsung app
+	<button id="login">Authorize</button>
+</div>
+<div id="t" class="hidden">
+	<label for="token">Token: </label><input type="text" id="token" readonly>
+</div>
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="twitch.js"></script>
+<script>
+Twitch.init({ clientId: 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx' }, function (error, status) {
+	if (error) {
+		console.error(error);
+	}
+	if (status.authenticated) {
+		document.getElementById('t').classList.remove('hidden');
+		var session = JSON.parse(sessionStorage.twitch_oauth_session);
+		document.getElementById('token').value = session.token;
+	}
+	$('#login').click(function () {
+		Twitch.login({
+			scope: ['user_read', 'user_follows_edit', 'user_subscriptions'],
+			force_verify: true
+		});
+	});
+	$('#token').focus(function () {
+		$(this).select();
+	});
+});
+</script>
+
