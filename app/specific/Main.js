@@ -524,12 +524,10 @@ Main.Resume = function() {
             } else {
                 window.clearInterval(Main.SmartHubId);
                 document.removeEventListener('visibilitychange', Main.Resume);
-                window.removeEventListener('appcontrol', SmartHub.EventListener);
             }
         }, 1500);
     }
 };
-
 
 Main.LoadImagesPre = function(img_type) {
     Main.LoadImages(Main.imgMatrix, Main.imgMatrixId, img_type);
