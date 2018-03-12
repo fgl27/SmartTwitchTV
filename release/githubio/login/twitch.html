@@ -68,7 +68,7 @@
         if (status.authenticated) {
             document.getElementById('login').classList.add('hidden');
             var session = JSON.parse(sessionStorage.twitch_oauth_session);
-            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app screen <br> <br> ' + session.token;
+            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app screen (There is only lower case letters)<br><br>' + session.token;
         }
         $('#login').click(function() {
             Twitch.login({
