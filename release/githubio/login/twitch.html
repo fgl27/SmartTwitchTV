@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<title>Generate a token with any scopes</title>
+<title>Samsung TV Twitch.TV authorization Page</title>
 <style>
     body {
         background-color: #111111;
@@ -53,10 +53,7 @@
         <button id="login" class="button">Authorize</button>
     </div>
 <div id="about" style="position: absolute; bottom: 0; top: 300px; width: 100%; height: 100%;">
-                <div style="float: center; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from github.com/bhb27/smarttv-twitch</div>
-</div>
-<div id="t" class="hidden">
-    <label for="token">Token: </label><input type="text" id="token" readonly>
+                <div style="float: center; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/bhb27/smarttv-twitch">github.com/bhb27/smarttv-twitch</a></div>
 </div>
 </div>
 <script src="//code.jquery.com/jquery.min.js"></script>
@@ -69,20 +66,15 @@
             console.error(error);
         }
         if (status.authenticated) {
-            document.getElementById('t').classList.remove('hidden');
             document.getElementById('login').classList.add('hidden');
-            document.getElementById("pText").innerHTML = 'Enter the bellow caracter on the app screen';
             var session = JSON.parse(sessionStorage.twitch_oauth_session);
-            document.getElementById('token').value = session.token;
+            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app screen <br> <br> ' + session.token;
         }
         $('#login').click(function() {
             Twitch.login({
                 scope: ['user_read', 'user_follows_edit', 'user_subscriptions'],
                 force_verify: true
             });
-        });
-        $('#token').focus(function() {
-            $(this).select();
         });
     });
 </script>
