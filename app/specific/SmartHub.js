@@ -51,10 +51,8 @@ SmartHub.Start = function() {
     SmartHub.loadingDataTryMax = 10;
     SmartHub.loadingDataTimeout = 3500;
     SmartHub.previewData = 0;
-    if (SmartHub.emptyUser) {
-        webapis.preview.setPreviewData(previewDataGeneratorEmpty());
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
-    } else SmartHub.loadDataRequest();
+    if (SmartHub.emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
+    else SmartHub.loadDataRequest();
 };
 
 SmartHub.loadDataRequest = function() {

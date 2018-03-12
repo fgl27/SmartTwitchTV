@@ -200,17 +200,18 @@ AddUser.RestoreUsers = function() {
             AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
         }
 
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
         document.addEventListener('visibilitychange', Main.Resume, false);
-
     } //else {
     //AddUser.UsernameArray[0] = ''; // hardcoded user 1
     //AddUser.UsernameArraySize++;
     //AddUser.UsernameArray[1] = ''; // hardcoded user 2
     //AddUser.UsernameArraySize++;
     //}
-    SmartHub.Start();
+    window.setTimeout(function() {
+        SmartHub.Start();
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+    }, 3500);
 };
 
 AddUser.SaveNewUser = function() {
@@ -223,15 +224,13 @@ AddUser.SaveNewUser = function() {
     AddUser.loadingData = false;
 
     if (AddUser.UsernameArray.length === 1) {
-        SmartHub.Start();
-
         window.clearInterval(Main.SmartHubId);
         document.removeEventListener('visibilitychange', Main.Resume);
-        window.removeEventListener('appcontrol', SmartHub.EventListener);
 
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
         document.addEventListener('visibilitychange', Main.Resume, false);
+
+        SmartHub.Start();
     }
 };
 
