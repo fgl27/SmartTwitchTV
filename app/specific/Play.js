@@ -71,14 +71,14 @@ Play.PreStart = function() {
         '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_CONTROL_KEY + '</div>';
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_CONTROL_KEY + '</div>';
 };
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     document.getElementById("stream_live_icon").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_LIVE.toUpperCase() + '</div>';
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_LIVE.toUpperCase() + '</div>';
     $("#stream_info_title").text("");
     Play.LoadLogoSucess = false;
     $("#stream_info_icon").attr("src", IMG_LOD_LOGO);
