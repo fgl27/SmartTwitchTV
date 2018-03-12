@@ -11,7 +11,7 @@ Search.keyBoardOn = false;
 
 Search.init = function() {
     Main.HideWarningDialog();
-    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
+    Main.IconLoad('.label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     $('.label_search').html('');
     $('.label_switch').html('');
     $('.lable_live').html('');
@@ -34,9 +34,9 @@ Search.exit = function() {
     document.body.removeEventListener("keydown", Search.handleKeyDown);
     Search.refreshInputFocusTools();
     Main.Go = Main.BeforeSearch;
-    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
-    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH_KEY);
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
+    Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
+    Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
+    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";

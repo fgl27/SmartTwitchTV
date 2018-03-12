@@ -23,7 +23,9 @@
             margin: 0px;
             -webkit-font-smoothing: antialiased;
         }
+
         /*cssstart this is here so release_maker can work don't remove*/
+
         div.screen_size {
             width: 1920px;
             height: 1080px;
@@ -344,9 +346,9 @@
             height: 50px;
             border-radius: 15px;
             background-color: #000000;
-            position : absolute;
-            right : 0px;
-            top : 100px;
+            position: absolute;
+            right: 0px;
+            top: 100px;
         }
 
         table.streams_tables {
@@ -371,7 +373,7 @@
         /*cssend this is here so release_maker can work don't remove*/
     </style>
     <script src="$WEBAPIS/webapis/webapis.min.js" defer></script>
-    <script src="https://bhb27.github.io/smarttv-twitch/release/githubio/js/jquery.slim.min.js" defer></script>
+    <script src="https://bhb27.github.io/smarttv-twitch/release/githubio/js/jquery.min.js" defer></script>
     <script src="app/general/language.js" defer></script>
     <script src="app/general/TVKeyValue.js" defer></script>
     <script src="app/general/imagesloaded.min.js" defer></script>
@@ -435,8 +437,8 @@
         <div id="scrollbar_size" class="screen_size" style="position: fixed; z-index:298; width: 1%; padding-left: 99%;">
             <div id="scrollbar" class="scroll"></div>
         </div>
-        <div id="dialog_loading" class="screen_size" style="position: fixed; z-index:98; text-align: center; width: 100%; display:none;">
-            <i class="fa fa-circle-o-notch fa-spin strokeloading" style="margin-top: 24%; font-size: 727%; color: #FFFFFF;"></i>
+        <div id="dialog_loading" class="screen_size" style="position: fixed; z-index:98; margin-top: 24%; text-align: center; width: 100%; display:none;">
+            <i class="icon icon-circle-o-notch fa fa-spin strokeloading" style="font-size: 727%; color: #FFFFFF;"></i>
         </div>
         <div id="dialog_about" style="position: fixed; z-index:100; width: 88%; margin-top: 5.5%; border-radius: 15px; border: 4px solid #FFFFFF; margin-left: 6%; background-color: rgba(0, 0, 0, 0.90); display:none;">
             <div id="dialog_about_text" class="about_text"></div>
@@ -559,7 +561,7 @@
                 <div id="dialog_controls_play_text" class="controls_text"></div>
             </div>
             <div id="play_dialog_simple_pause" style="position: fixed; z-index:5; text-align: center; width: 100%; margin-top: 27%; display:none;">
-                <i class="strokedbig fa fa-pause-circle" style="color: #FFFFFF; font-size: 850%;"></i>
+                <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 850%;"></i>
             </div>
             <div id="play_dialog_exit" style="position: fixed; z-index:6; text-align: center; width: 100%; margin-top: 17%; font-weight:bold; display:none;">
                 <div id="play_dialog_exit_text" class="strokedbig" style="display: inline-block; font-size: 329%; color: #FFFFFF;"></div>

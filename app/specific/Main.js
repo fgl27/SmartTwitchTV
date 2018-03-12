@@ -176,9 +176,11 @@ Main.loadTranslations = function(device) {
 
 Main.initWindows = function() {
     //set top bar labels
-    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
-    $('.label_search').html('<i class="fa fa-search" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SEARCH_KEY);
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
+    Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
+    Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
+    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
+    Main.IconLoad('.label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main.IconLoad('.label_about', 'icon-info-circle', STR_ABOUT_KEY);
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
     $('.lable_game').html(STR_GAMES);
@@ -191,11 +193,14 @@ Main.initWindows = function() {
     $('.label_exit_minimize').html(STR_MINIMIZE);
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     $('.label_buffering').html(STR_BUFFERING);
-    $('.label_controls').html('<i class="fa fa-question-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_CONTROL_KEY);
-    $('.label_about').html('<i class="fa fa-info-circle" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_ABOUT_KEY);
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     $("#scene2").hide();
+};
+
+Main.IconLoad = function(lable, icon, string) {
+    $(lable).html('<div style="vertical-align: middle; display: inline-block"><i class="' + icon +
+        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + string + '</div>');
 };
 
 Main.showLoadDialog = function() {
@@ -431,8 +436,8 @@ Main.openStream = function() {
 };
 
 Main.RestoreTopLabel = function() {
-    $('.label_refresh').html('<i class="fa fa-refresh" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_REFRESH);
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH);
+    Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
+    Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
@@ -444,7 +449,7 @@ Main.RestoreTopLabel = function() {
 };
 
 Main.cleanTopLabel = function() {
-    $('.label_refresh').html('<i class="fa fa-arrow-circle-left" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_GOBACK);
+    Main.IconLoad('.label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     $('.label_switch').html('');
     $('.lable_live').html('');
     $('.lable_game').html('');

@@ -52,7 +52,7 @@ Sclip.init = function() {
     Sclip.SetPeriod();
     $('.lable_user').html(Main.selectedChannelDisplayname);
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
-    $('.label_switch').html('<i class="fa fa-exchange" style="color: #FFFFFF; font-size: 115%; aria-hidden="true"></i> ' + STR_SWITCH_CLIP);
+    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
     if (Sclip.status) {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
