@@ -112,6 +112,7 @@ PlayVod.loadDataRequest = function() {
         var theUrl;
         if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
             theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token';
+//            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token?oauth_token=' + AddUser.OauthToken;
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
@@ -193,8 +194,17 @@ PlayVod.restore = function() {
 PlayVod.loadDataSuccess = function(responseText) {
     if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
-        PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
+
         PlayVod.retricted = $.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates;
+//        if (PlayVod.retricted.length !== 0) {
+            //if we have the oauth_token of this user check if he is a subscriber
+//            PlayVod.OauthToken = '?oauth_token='+ AddUser.OauthToken;
+            //PlayVod.state == PlayVod.STATE_LOADING_TOKEN
+          //  PlayVod.loadData();
+            //else PlayVod.loadDataError() because it will show the warning about missing authentication
+        //}
+
+        PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
         PlayVod.loadData();
     } else if (PlayVod.state == PlayVod.STATE_LOADING_PLAYLIST) {
         PlayVod.playlistResponse = responseText;

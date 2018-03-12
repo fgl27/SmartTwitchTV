@@ -27,6 +27,7 @@ Main.Sclip = 16;
 Main.Users = 17;
 Main.UserChannels = 18;
 Main.SChannels = 19;
+Main.AddCode = 20;
 Main.selectedChannel = '';
 Main.selectedChannelDisplayname = '';
 Main.selectedChannelLogo = '';
@@ -158,7 +159,6 @@ Main.loadTranslations = function(device) {
     Main.PreLoadAImage(IMG_LOD_LOGO);
     Main.PreLoadAImage(IMG_LOD_GAME);
     Main.PreLoadAImage(IMG_LOD_VIDEO);
-    Main.PreLoadAImage(IMG_USER_CODE);
     Main.initWindows();
     Live.init();
     Play.PreStart();
@@ -174,6 +174,7 @@ Main.loadTranslations = function(device) {
     Main.PreLoadAImage(IMG_USER_MINUS);
     Main.PreLoadAImage(IMG_USER_PLUS);
     Main.PreLoadAImage(IMG_USER_UP);
+    Main.PreLoadAImage(IMG_USER_CODE);
 };
 
 Main.initWindows = function() {

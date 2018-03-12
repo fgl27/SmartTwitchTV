@@ -6,6 +6,7 @@ AddUser.loadingDataTryMax = 10;
 AddUser.loadingDataTimeout = 3500;
 AddUser.UsernameArraySize = 0;
 AddUser.UsernameArray = [];
+AddUser.UserIdArray = [];
 AddUser.Followercount = 0;
 AddUser.Username = null;
 AddUser.loadingData = false;
@@ -235,6 +236,9 @@ AddUser.SaveNewUser = function() {
 };
 
 AddUser.removeUser = function(Position) {
+    var userCode = AddCode.UserExist(AddUser.UsernameArray[Position]);
+    if (userCode > -1) AddCode.removeUser(userCode);
+
     AddUser.UsernameArraySize--;
     localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
 
@@ -257,6 +261,9 @@ AddUser.removeUser = function(Position) {
 };
 
 AddUser.UserMakeOne = function(Position) {
+    var userCode = AddCode.UserExist(AddUser.UsernameArray[Position]);
+    if (userCode > -1) AddCode.UserMakeOne(userCode);
+
     AddUser.Username = AddUser.UsernameArray[0];
     AddUser.UsernameArray[0] = AddUser.UsernameArray[Position];
     AddUser.UsernameArray[Position] = AddUser.Username;
