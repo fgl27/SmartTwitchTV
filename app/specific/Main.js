@@ -111,6 +111,7 @@ var IMG_BLUR_VOD = "https://bhb27.github.io/smarttv-twitch/release/githubio/imag
 var IMG_USER_MINUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_minus.png";
 var IMG_USER_PLUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_plus.png";
 var IMG_USER_UP = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_up.png";
+var IMG_USER_CODE = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_code.png";
 var IMG_LOD_LOGO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/ch_logo.png";
 var IMG_LOD_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/game.png";
 var IMG_LOD_VIDEO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/video.png";
@@ -157,6 +158,7 @@ Main.loadTranslations = function(device) {
     Main.PreLoadAImage(IMG_LOD_LOGO);
     Main.PreLoadAImage(IMG_LOD_GAME);
     Main.PreLoadAImage(IMG_LOD_VIDEO);
+    Main.PreLoadAImage(IMG_USER_CODE);
     Main.initWindows();
     Live.init();
     Play.PreStart();
