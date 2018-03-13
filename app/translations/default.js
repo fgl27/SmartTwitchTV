@@ -1,7 +1,7 @@
 // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
 var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
 var STR_BR = "<br>";
-var STR_DOT = '<i class="fa fa-circle"style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  ";
+var STR_DOT = '<i class="icon-circle" style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  ";
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
@@ -13,6 +13,7 @@ var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_UPDATE_MAIN_HEADER = '';
+var STR_OAUTH_EXPLAIN = '';
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
@@ -79,4 +80,11 @@ function DefaultLang() {
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_UPDATE_MAIN_3 + STR_BR +
         STR_BR + STR_CLOSE_THIS + '</div>';
+
+    STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN2 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN3 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN4 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN5 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN6;
 }

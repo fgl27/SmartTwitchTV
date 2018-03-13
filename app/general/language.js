@@ -18,21 +18,14 @@ var STR_SINCE = "Since ";
 var STR_AGO = " ago";
 var STR_AGAME = "A Game";
 var STR_PLACEHOLDER_SEARCH = "Write yours search...";
-var STR_PLACEHOLDER_OAUTH = "Write yours authentication code...";
+var STR_PLACEHOLDER_OAUTH = "Write yours authentication key...";
 var STR_PLACEHOLDER_USER = "Write user name...";
 var STR_PLACEHOLDER_PRESS = "Press Enter to ";
-
-var STR_OAUTH_IN = "Enter the authentication code for user ";
-var STR_OAUTH_EXPLAIN = "Explanation how it works";
-
-var STR_OAUTH_WRONG = "You try to add a code for user ";
-var STR_OAUTH_WRONG2 = " but this code is for user ";
-
 var STR_CHANNELS = "Channels";
 var STR_CHANNEL = "Channel";
 var STR_GOBACK = "Back to previously screen (Return)";
 var STR_IS_OFFLINE = "The broadcast you were watching has ended";
-var STR_IS_SUB_ONLY = "This video is only available to subscribers. Current application version can\'t authenticate with Twitch to verify and allow this content even if you are subscriber, future update will.";
+var STR_IS_SUB_ONLY = "This video is only available to subscribers.";
 var STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
 var STR_NO = "No";
 var STR_FOR_THIS = " for this ";
@@ -60,8 +53,6 @@ var STR_LIVE_GAMES = " Games Live";
 var STR_USER_CHANNEL = " Followed Channels";
 var STR_USER_ADD = " Add User";
 var STR_USER_REMOVE = " Remove User";
-var STR_USER_CODE = " Add Autentication Code";
-var STR_USER_OAUTH = "Authentication process steps";
 var STR_USER_ERROR = "User doesn\'t exist";
 var STR_USER_HOSTING = " hosting ";
 var STR_USER_SET = " already set";
@@ -126,3 +117,23 @@ var STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\
 var STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";
 var STR_UPDATE_MAIN_2 = "Major changes:";
 var STR_UPDATE_MAIN_3 = "Temp update 1";
+
+var STR_OAUTH_IN = "Adding a authentication key allows the app to fallow/unfallow and access subscribed only past broadcast for the chosen user, enter the authentication key for user ";
+var STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
+var STR_OAUTH_EXPLAIN2 = "Access the site http://tiny.cc/twitchkey (using a computer or a smart phone)";
+var STR_OAUTH_EXPLAIN3 = "Click on the \"Authorize\" button it will take you to main Twitch.TV authentication site";
+var STR_OAUTH_EXPLAIN4 = "Login to Twitch.TV using the user name you are trying to add a key for, ";
+var STR_OAUTH_EXPLAIN5 = "Click on Authorize button of Twitch.TV site, if you agree with the requested permissions";
+var STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, write that key code bellow";
+var STR_USER_CODE = " Add Authentication key";
+var STR_USER_CODE_OK = "Authentication key added OK (Click to test key)";
+var STR_KEY_BAD = "Key test fail, it\'s needed to add new one";
+var STR_KEY_OK = "Key test OK";
+var STR_OAUTH_WRONG = "You try to add a key for user ";
+var STR_OAUTH_WRONG2 = " but this key is for user ";
+var STR_FALLOWING = " Following";
+var STR_FALLOW = " Follow";
+
+var STR_IS_SUB_NOOAUTH = " And you have not set a authentication key the app can\'t check yours sub status.";
+var STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
+var STR_OAUTH_FAIL = "Fail authentication check with the provider key, please check and try again";

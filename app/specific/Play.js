@@ -35,6 +35,10 @@ Play.created = '';
 
 Play.loadingDataTry = 0;
 Play.loadingDataTryMax = 10;
+
+Play.loadingInfoDataTry = 0;
+Play.loadingInfoDataTryMax = 15;
+
 Play.isOn = false;
 Play.ChatBackgroundID = null;
 Play.oldcurrentTime = 0;
@@ -52,6 +56,7 @@ Play.PlayerCheckQualityChanged = false;
 Play.Playing = false;
 Play.selectedChannel = '';
 Play.selectedChannelDisplayname = '';
+Play.Panelcouner = 0;
 
 //Variable initialization end
 
@@ -87,7 +92,9 @@ Play.Start = function() {
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
-    Play.updateStreamInfo();
+    Play.loadingInfoDataTry = 0;
+    Play.loadingInfoDataTimeout = 10000;
+    Play.updateStreamInfoStart();
     Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
     Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
     Play.qualitiesFound = 0;
@@ -118,11 +125,59 @@ Play.Resume = function() {
                 Play.RestoreFromResume = true;
                 Play.PlayerCheckOffset = 60;
                 Play.onPlayer();
-                Play.updateStreamInfo();
+                Play.loadingInfoDataTry = 0;
+                Play.loadingInfoDataTimeout = 10000;
+                Play.updateStreamInfoStart();
                 Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
                 Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
             }
         }, 500);
+    }
+};
+
+Play.updateStreamInfoStart = function() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    var response = $.parseJSON(xmlHttp.responseText);
+                    // log response json
+                    //console.log(response);
+                    $("#stream_info_title").text(response.stream.channel.status);
+                    $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
+                    Play.created = new Date(response.stream.created_at).getTime();
+                    AddCode.userChannel = response.stream.channel._id;
+                    Play.LoadLogoSucess = true;
+                    console.log('updateStreamInfoStart');
+                    console.log('AddCode.OauthToken ' + AddCode.OauthToken);
+                    if (AddCode.OauthToken !== '') {
+                        AddCode.CheckFallow();
+                        Play.showFallow();
+                    } else Play.hideFallow();
+                } else { // internet error
+                    Play.updateStreamInfoStartError();
+                }
+            }
+        };
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = Play.loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.send(null);
+    } catch (e) {
+        Play.updateStreamInfoStartError();
+    }
+};
+
+Play.updateStreamInfoStartError = function() {
+    Play.loadingInfoDataTry++;
+    if (Play.loadingInfoDataTry < Play.loadingInfoDataTryMax) {
+        Play.loadingInfoDataTimeout += (Play.loadingInfoDataTry < 5) ? 250 : 3500;
+        Play.updateStreamInfoStart();
     }
 };
 
@@ -136,14 +191,9 @@ Play.updateStreamInfo = function() {
             if (xmlHttp.status === 200) {
                 try {
                     var response = $.parseJSON(xmlHttp.responseText);
-                    // log response json
-                    //console.log(response);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     if (!Play.LoadLogoSucess) Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    Play.LoadLogoSucess = true;
-                    Play.created = new Date(response.stream.created_at).getTime();
-                    console.log(response.stream.channel._id);
                 } catch (err) {}
             }
         }
@@ -497,6 +547,8 @@ Play.exitMain = function() {
 };
 
 Play.ClearPlayer = function() {
+    AddCode.IsFallowing = false;
+    Play.setFallow();
     Play.videojs.pause();
     Play.offPlayer();
     Play.videojs.autoplay(false);
@@ -517,6 +569,18 @@ Play.ClearPlay = function() {
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
     window.clearInterval(Play.streamCheck);
+};
+
+Play.hideFallow = function() {
+    $("#scene2_heart").hide();
+};
+
+Play.showFallow = function() {
+    $("#scene2_heart").show();
+};
+
+Play.FallowVisible = function() {
+    return $("#scene2_heart").is(":visible");
 };
 
 Play.showBufferDialog = function() {
@@ -601,6 +665,8 @@ Play.hidePanel = function() {
 };
 
 Play.showPanel = function() {
+    Play.Panelcouner = 0;
+    Play.IconsFocus();
     Play.qualityIndexReset();
     Play.qualityDisplay();
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.streamLiveAt(Play.created) + STR_AGO;
@@ -775,6 +841,37 @@ Play.KeyPause = function() {
     }
 };
 
+Play.IconsFocus = function() {
+    if (Play.Panelcouner === 0) {
+        document.getElementById("scene2_quality").style.border = "3.5px solid #FFFFFF";
+        document.getElementById("scene2_quality").style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+
+        document.getElementById("scene2_heart").style.border = "3.5px solid rgba(0, 0, 0, 0)";
+        document.getElementById("scene2_heart").style.backgroundColor = "rgba(0, 0, 0, 0)";
+    } else if (Play.Panelcouner == 1) {
+        document.getElementById("scene2_heart").style.border = "3.5px solid #FFFFFF";
+        document.getElementById("scene2_heart").style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+
+        document.getElementById("scene2_quality").style.border = "3.5px solid rgba(0, 0, 0, 0)";
+        document.getElementById("scene2_quality").style.backgroundColor = "rgba(0, 0, 0, 0)";
+    }
+};
+
+Play.FallowUnfallow = function() {
+    if (AddCode.IsFallowing) AddCode.UnFallow();
+    else AddCode.Fallow();
+};
+
+Play.setFallow = function() {
+    if (AddCode.IsFallowing) {
+        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;"></i>';
+        document.getElementById("fallow_text").innerHTML = STR_FALLOWING;
+    } else {
+        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;"></i>';
+        document.getElementById("fallow_text").innerHTML = STR_FALLOW;
+    }
+};
+
 Play.KeyReturn = function(is_vod) {
     if (Play.isControlsDialogShown()) Play.HideControlsDialog();
     else if (Play.isPanelShown()) {
@@ -838,25 +935,37 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (Play.isChatShown()) {
+                if (!Play.isPanelShown() && Play.isChatShown()) {
                     Play.ChatBackground -= 0.05;
                     if (Play.ChatBackground < 0) Play.ChatBackground = 0;
                     Play.ChatBackgroundChange(true);
+                } else if (Play.isPanelShown() && Play.FallowVisible()) {
+                    Play.Panelcouner++;
+                    if (Play.Panelcouner > 1) Play.Panelcouner = 0;
+                    Play.IconsFocus();
+                    Play.clearHidePanel();
+                    Play.setHidePanel();
                 } else {
                     Play.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                if (Play.isChatShown()) {
+                if (!Play.isPanelShown() && Play.isChatShown()) {
                     Play.ChatBackground += 0.05;
                     if (Play.ChatBackground > 1) Play.ChatBackground = 1;
                     Play.ChatBackgroundChange(true);
+                } else if (Play.isPanelShown() && Play.FallowVisible()) {
+                    Play.Panelcouner--;
+                    if (Play.Panelcouner < 0) Play.Panelcouner = 1;
+                    Play.IconsFocus();
+                    Play.clearHidePanel();
+                    Play.setHidePanel();
                 } else {
                     Play.showPanel();
                 }
                 break;
             case TvKeyCode.KEY_UP:
-                if (Play.isPanelShown()) {
+                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
                     if (Play.qualityIndex > 0) {
                         Play.qualityIndex--;
                         Play.qualityDisplay();
@@ -873,7 +982,7 @@ Play.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_DOWN:
-                if (Play.isPanelShown()) {
+                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
                     if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
                         Play.qualityIndex++;
                         Play.qualityDisplay();
@@ -891,8 +1000,12 @@ Play.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    Play.qualityChanged();
-                    Play.clearPause();
+                    if (Play.Panelcouner === 0) {
+                        Play.qualityChanged();
+                        Play.clearPause();
+                    } else if (Play.Panelcouner === 1) {
+                        Play.FallowUnfallow();
+                    }
                 } else {
                     Play.showPanel();
                 }

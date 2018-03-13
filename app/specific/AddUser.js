@@ -21,7 +21,7 @@ AddUser.init = function() {
     AddUser.input = document.querySelector('#user_input');
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
     AddUser.inputFocus();
-    Search.ScrollHelper.scrollVerticalToElementById('user_input');
+    AddUser.ScrollHelper.scrollVerticalToElementById('user_input');
 };
 
 AddUser.exit = function() {
@@ -119,7 +119,7 @@ AddUser.KeyboardEvent = function(event) {
                     AddUser.loadingDataTimeout = 3500;
                     AddUser.loadingData = true;
                     Main.showLoadDialog();
-                    Search.ScrollHelper.scrollVerticalToElementById('blank_focus');
+                    AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
                     AddUser.loadDataRequest();
                 } else {
                     Main.HideLoadDialog();
@@ -212,6 +212,7 @@ AddUser.RestoreUsers = function() {
         SmartHub.Start();
         window.addEventListener('appcontrol', SmartHub.EventListener, false);
     }, 3500);
+    AddCode.RestoreUsers();
 };
 
 AddUser.SaveNewUser = function() {
@@ -257,12 +258,10 @@ AddUser.removeUser = function(Position) {
         AddUser.init();
         SmartHub.Start();
     }
+    AddCode.SetDefaultOAuth(Position);
 };
 
 AddUser.UserMakeOne = function(Position) {
-    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
-    if (userCode > -1) AddCode.UserMakeOne(userCode);
-
     AddUser.Username = AddUser.UsernameArray[0];
     AddUser.UsernameArray[0] = AddUser.UsernameArray[Position];
     AddUser.UsernameArray[Position] = AddUser.Username;
@@ -277,4 +276,36 @@ AddUser.UserCodeExist = function(user) {
 
 AddUser.IsUserSet = function() {
     return AddUser.UsernameArray.length > 0;
+};
+
+AddUser.ScrollHelper = {
+    documentVerticalScrollPosition: function() {
+        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
+        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
+        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
+        return 0; // None of the above.
+    },
+
+    viewportHeight: function() {
+        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
+    },
+
+    documentHeight: function() {
+        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
+    },
+
+    documentMaximumScrollPosition: function() {
+        return this.documentHeight() - this.viewportHeight();
+    },
+
+    elementVerticalClientPositionById: function(id) {
+        return document.getElementById(id).getBoundingClientRect().top;
+    },
+
+    scrollVerticalToElementById: function(id) {
+        if (document.getElementById(id) === null) {
+            return;
+        }
+        $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() - 60);
+    }
 };

@@ -129,9 +129,9 @@ SChannelContent.loadDataSuccess = function(responseText) {
         coloumn_id++;
     } else SChannelContent.skipImg = true;
 
-    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_PAST_BROA));
+    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_PAST_BROA, IMG_BLUR_VIDEO1_16));
     coloumn_id++;
-    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_CLIPS));
+    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_CLIPS, IMG_BLUR_VIDEO2_16));
 
     if (coloumn_id < 2) {
         coloumn_id++;
@@ -162,11 +162,8 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
         '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
 };
 
-SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type) {
-    var thumbnail = IMG_BLUR_VIDEO1;
-    if (coloumn_id == 1) thumbnail = IMG_BLUR_VIDEO2;
-
-    SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = thumbnail;
+SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+    SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
     SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Thumbnail + row_id + '_' + coloumn_id;
     SChannelContent.imgMatrixCount++;
 
