@@ -64,9 +64,8 @@ AddUser.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             AddUser.exit();
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();
@@ -115,7 +114,7 @@ AddUser.KeyboardEvent = function(event) {
                 document.getElementById("user_input").value = $('#user_input').val();
                 AddUser.Username = $('#user_input').val();
 
-                if (!AddUser.UserExist(AddUser.Username)) {
+                if (!AddUser.UserCodeExist(AddUser.Username)) {
                     AddUser.loadingDataTry = 0;
                     AddUser.loadingDataTimeout = 3500;
                     AddUser.loadingData = true;
@@ -236,7 +235,7 @@ AddUser.SaveNewUser = function() {
 };
 
 AddUser.removeUser = function(Position) {
-    var userCode = AddCode.UserExist(AddUser.UsernameArray[Position]);
+    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
     if (userCode > -1) AddCode.removeUser(userCode);
 
     AddUser.UsernameArraySize--;
@@ -261,7 +260,7 @@ AddUser.removeUser = function(Position) {
 };
 
 AddUser.UserMakeOne = function(Position) {
-    var userCode = AddCode.UserExist(AddUser.UsernameArray[Position]);
+    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
     if (userCode > -1) AddCode.UserMakeOne(userCode);
 
     AddUser.Username = AddUser.UsernameArray[0];
@@ -272,7 +271,7 @@ AddUser.UserMakeOne = function(Position) {
     SmartHub.Start();
 };
 
-AddUser.UserExist = function(user) {
+AddUser.UserCodeExist = function(user) {
     return AddUser.UsernameArray.indexOf(user) != -1;
 };
 
