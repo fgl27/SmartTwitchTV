@@ -108,6 +108,8 @@ var IMG_404_VIDEO = "https://bhb27.github.io/smarttv-twitch/release/githubio/ima
 var IMG_BLUR_GAME = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_game.png";
 var IMG_BLUR_VIDEO1 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_1.png";
 var IMG_BLUR_VIDEO2 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_2.png";
+var IMG_BLUR_VIDEO1_16 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_1_16.png";
+var IMG_BLUR_VIDEO2_16 = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_video_2_16.png";
 var IMG_BLUR_VOD = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/blur_vod.png";
 var IMG_USER_MINUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_minus.png";
 var IMG_USER_PLUS = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/user_plus.png";
@@ -170,6 +172,8 @@ Main.loadTranslations = function(device) {
     Main.PreLoadAImage(IMG_BLUR_GAME);
     Main.PreLoadAImage(IMG_BLUR_VIDEO1);
     Main.PreLoadAImage(IMG_BLUR_VIDEO2);
+    Main.PreLoadAImage(IMG_BLUR_VIDEO1_16);
+    Main.PreLoadAImage(IMG_BLUR_VIDEO2_16);
     Main.PreLoadAImage(IMG_BLUR_VOD);
     Main.PreLoadAImage(IMG_USER_MINUS);
     Main.PreLoadAImage(IMG_USER_PLUS);

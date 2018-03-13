@@ -71,7 +71,7 @@
         }
         $('#login').click(function() {
             Twitch.login({
-                scope: ['user_read', 'user_follows_edit', 'user_subscriptions'],
+                scope: ['user_follows_edit', 'user_subscriptions'],
                 force_verify: true
             });
         });

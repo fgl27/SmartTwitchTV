@@ -152,6 +152,23 @@ Users.keyEnter = function() {
     else if (Users.cursorX === 6) AddCode.init();
 };
 
+Users.checkKey = function(responseText) {
+    var json = $.parseJSON(responseText);
+    var scopes = json.token.authorization.scopes;
+    var scopesToTest = '';
+    for (var i = 0; i < scopes.length; i++) {
+        scopesToTest += scopes[i];
+    }
+    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' == Main.UserName
+        && json.token.valid + '' == 'true';
+};
+
+Users.SetKeyTitle = function(bool) {
+    console.log('SetKeyTitle bool ' + bool);
+    document.getElementById(Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    if (!bool) AddCode.removeUser(AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]));
+};
+
 Users.handleKeyDown = function(event) {
     if (Users.loadingData && !Users.loadingMore) {
         event.preventDefault();

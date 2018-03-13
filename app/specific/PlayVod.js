@@ -109,7 +109,7 @@ PlayVod.loadDataRequest = function() {
 
         var theUrl;
         if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token?oauth_token=' + AddCode.OauthToken;
+            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token' + (AddCode.OauthToken !== 0 ? '?oauth_token=' + AddCode.OauthToken : '');
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
@@ -185,11 +185,7 @@ PlayVod.loadDataSuccess = function(responseText) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
 
         if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates !== 0) {
-            Play.HideBufferDialog();
-            Play.showWarningDialog(STR_IS_SUB_ONLY);
-            window.setTimeout(function() {
-                if (PlayVod.isOn) PlayVod.shutdownStream();
-            }, 4000);
+            Play.loadDataCheckSub();
             return;
         }
 
@@ -199,6 +195,25 @@ PlayVod.loadDataSuccess = function(responseText) {
         PlayVod.playlistResponse = responseText;
         PlayVod.extractQualities(PlayVod.playlistResponse);
     }
+};
+
+PlayVod.loadDataCheckSub = function() {
+    if (AddCode.OauthToken !== 0) AddCode.CheckSub();
+    else {
+        Play.HideBufferDialog();
+        Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
+        window.setTimeout(function() {
+            if (PlayVod.isOn) PlayVod.shutdownStream();
+        }, 4000);
+    }
+};
+
+PlayVod.NotSub = function() {
+    Play.HideBufferDialog();
+    Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
+    window.setTimeout(function() {
+        if (PlayVod.isOn) PlayVod.shutdownStream();
+    }, 4000);
 };
 
 PlayVod.extractQualities = function(input) {
