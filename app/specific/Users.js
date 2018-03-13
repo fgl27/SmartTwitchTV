@@ -30,6 +30,7 @@ Users.init = function() {
 };
 
 Users.exit = function() {
+    AddCode.SetDefaultOAuth(0);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.body.removeEventListener("keydown", Users.handleKeyDown);
@@ -138,6 +139,7 @@ Users.keyClickDelay = function() {
 Users.keyEnter = function() {
     document.body.removeEventListener("keydown", Users.handleKeyDown);
     Main.UserName = AddUser.UsernameArray[Users.cursorY];
+    AddCode.SetDefaultOAuth(Users.cursorY);
 
     if (Users.cursorX === 0) UserLive.init();
     else if (Users.cursorX === 1) UserHost.init();
@@ -251,9 +253,8 @@ Users.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             Users.exit();
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();

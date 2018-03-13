@@ -22,7 +22,6 @@ PlayVod.qualities = [];
 PlayVod.qualityIndex = 0;
 
 PlayVod.created = '';
-PlayVod.retricted = '';
 
 PlayVod.loadingDataTry = 0;
 PlayVod.loadingDataTryMax = 10;
@@ -77,7 +76,6 @@ PlayVod.Start = function() {
     PlayVod.Canjump = false;
     PlayVod.Playing = false;
     PlayVod.isOn = true;
-    PlayVod.retricted = '';
     PlayVod.loadData();
 };
 
@@ -111,8 +109,7 @@ PlayVod.loadDataRequest = function() {
 
         var theUrl;
         if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token';
-//            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token?oauth_token=' + AddUser.OauthToken;
+            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token?oauth_token=' + AddCode.OauthToken;
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
@@ -147,22 +144,14 @@ PlayVod.loadDataRequest = function() {
 
 PlayVod.loadDataError = function() {
     if (PlayVod.isOn) {
-        if (PlayVod.retricted.length !== 0) {
-            Play.HideBufferDialog();
-            Play.showWarningDialog(STR_IS_SUB_ONLY);
-            window.setTimeout(function() {
-                if (PlayVod.isOn) PlayVod.shutdownStream();
-            }, 4000);
+        PlayVod.loadingDataTry++;
+        if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
+            PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
+            PlayVod.loadDataRequest();
         } else {
-            PlayVod.loadingDataTry++;
-            if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
-                PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
-                PlayVod.loadDataRequest();
-            } else {
-                Play.HideBufferDialog();
-                Play.showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(PlayVod.shutdownStream, 2000);
-            }
+            Play.HideBufferDialog();
+            Play.showWarningDialog(STR_IS_OFFLINE);
+            window.setTimeout(PlayVod.shutdownStream, 2000);
         }
     }
 };
@@ -195,14 +184,14 @@ PlayVod.loadDataSuccess = function(responseText) {
     if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
 
-        PlayVod.retricted = $.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates;
-//        if (PlayVod.retricted.length !== 0) {
-            //if we have the oauth_token of this user check if he is a subscriber
-//            PlayVod.OauthToken = '?oauth_token='+ AddUser.OauthToken;
-            //PlayVod.state == PlayVod.STATE_LOADING_TOKEN
-          //  PlayVod.loadData();
-            //else PlayVod.loadDataError() because it will show the warning about missing authentication
-        //}
+        if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates !== 0) {
+            Play.HideBufferDialog();
+            Play.showWarningDialog(STR_IS_SUB_ONLY);
+            window.setTimeout(function() {
+                if (PlayVod.isOn) PlayVod.shutdownStream();
+            }, 4000);
+            return;
+        }
 
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
         PlayVod.loadData();

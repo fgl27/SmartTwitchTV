@@ -516,6 +516,12 @@ Main.checkVersion = function() {
     } else return false;
 };
 
+Main.GoLive = function() {
+    AddCode.SetDefaultOAuth(0);
+    Main.Go = Main.Live;
+    Main.SwitchScreen();
+};
+
 Main.Resume = function() {
     if (document.hidden) {
         window.clearInterval(Main.SmartHubId);

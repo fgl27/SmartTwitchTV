@@ -71,9 +71,6 @@
 .icon-question-circle:before {
   content: "\65";
 }
-.icon-pause:before {
-  content: "\66";
-}
 .icon-refresh:before {
   content: "\67";
 }
@@ -85,4 +82,13 @@
 }
 .icon-info-circle:before {
   content: "\6a";
+}
+.icon-heart-o:before {
+  content: "\6b";
+}
+.icon-heart:before {
+  content: "\6c";
+}
+.icon-pause:before {
+  content: "\6d";
 }

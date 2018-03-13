@@ -273,9 +273,8 @@ SChannelContent.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             SChannelContent.exit();
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();

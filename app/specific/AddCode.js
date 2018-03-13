@@ -68,9 +68,8 @@ AddCode.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             AddCode.exit();
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();
@@ -141,72 +140,6 @@ AddCode.KeyboardEvent = function(event) {
     }
 };
 
-//Get user id
-AddCode.CheckId = function() {
-    try {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/user', true);
-        xmlHttp.timeout = AddCode.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
-        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode.OauthToken);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    try {
-                        AddCode.CheckIdSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
-                } else {
-                    AddCode.CheckIdError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        AddCode.CheckIdError();
-    }
-};
-
-AddCode.CheckIdError = function() {
-    AddCode.loadingDataTry++;
-    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
-        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
-        AddCode.CheckId();
-    } else {
-        Main.HideLoadDialog();
-        Main.showWarningDialog('OAuthError fail');
-    }
-};
-
-AddCode.CheckIdSuccess = function(responseText) {
-    console.log('OAuthId');
-    console.log(responseText);
-    AddCode.userId = $.parseJSON(responseText)._id;
-    AddCode.Username = $.parseJSON(responseText).name + '';
-
-    console.log('AddCode.userId ' + AddCode.userId);
-    console.log('AddCode.Username ' + AddCode.Username);
-    if (AddCode.Username == Main.UserName) {
-        console.log('CheckIdSuccess is Success ');
-        document.getElementById("oauth_input").value = '';
-        document.body.removeEventListener("keydown", AddCode.handleKeyDown);
-        AddCode.SaveNewUser()
-    } else {
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_OAUTH_WRONG + Main.UserName + STR_OAUTH_WRONG2 + AddCode.Username);
-        window.setTimeout(function() {
-            Main.HideWarningDialog();
-            AddUser.inputFocus();
-        }, 3500);
-    }
-};
-
 AddCode.RestoreUsers = function() {
     AddCode.UsercodeArray = [];
     AddCode.UsercodeArraySize = parseInt(localStorage.getItem('UsercodeArraySize')) || 0;
@@ -215,11 +148,11 @@ AddCode.RestoreUsers = function() {
             AddCode.UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
         }
     } //else {
-    //AddCode.UsercodeArray[0] = ''; // hardcoded user 1
+    //AddCode.UsercodeArray[0] = ''; // hardcoded code 1
     //AddCode.UsercodeArraySize++;
-    //AddCode.UsercodeArray[1] = ''; // hardcoded user 2
+    //AddCode.UsercodeArray[1] = ''; // hardcoded code 2
     //AddCode.UsercodeArraySize++;
-    }
+    //}
 };
 
 AddCode.SaveNewUser = function() {
@@ -265,11 +198,85 @@ AddCode.UserMakeOne = function(Position) {
     SmartHub.Start();
 };
 
-AddCode.UserExist = function(user) {
-    for (var i = 0; i < AddUser.UsercodeArray.length; i++) {
-        if ((user + ',') == AddUser.UsercodeArray[i]) return i;
+AddCode.UserCodeExist = function(user) {
+    for (var i = 0; i < AddCode.UsercodeArray.length; i++) {
+        if ((user + ',') == AddCode.UsercodeArray[i]) return i;
     }
     return -1;
+};
+
+//Get user id
+AddCode.CheckId = function() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/user', true);
+        xmlHttp.timeout = AddCode.loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode.OauthToken);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    try {
+                        AddCode.CheckIdSuccess(xmlHttp.responseText);
+                        return;
+                    } catch (e) {}
+                } else {
+                    AddCode.CheckIdError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        AddCode.CheckIdError();
+    }
+};
+
+AddCode.CheckIdError = function() {
+    AddCode.loadingDataTry++;
+    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
+        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
+        AddCode.CheckId();
+    } else {
+        Main.HideLoadDialog();
+        Main.showWarningDialog('CheckId fail');
+        window.setTimeout(function() {
+            Main.HideWarningDialog();
+            AddCode.inputFocus();
+        }, 3500);
+    }
+};
+
+AddCode.CheckIdSuccess = function(responseText) {
+    console.log('OAuthId');
+    console.log(responseText);
+    AddCode.userId = $.parseJSON(responseText)._id;
+    AddCode.Username = $.parseJSON(responseText).name + '';
+
+    console.log('AddCode.userId ' + AddCode.userId);
+    console.log('AddCode.Username ' + AddCode.Username);
+    if (AddCode.Username == Main.UserName) {
+        console.log('CheckIdSuccess is Success ');
+        document.getElementById("oauth_input").value = '';
+        document.body.removeEventListener("keydown", AddCode.handleKeyDown);
+        AddCode.SaveNewUser();
+    } else {
+        Main.HideLoadDialog();
+        Main.showWarningDialog(STR_OAUTH_WRONG + Main.UserName + STR_OAUTH_WRONG2 + AddCode.Username);
+        window.setTimeout(function() {
+            Main.HideWarningDialog();
+            AddCode.inputFocus();
+        }, 3500);
+    }
+};
+
+AddCode.SetDefaultOAuth = function(position) {
+    if (AddCode.UsercodeArray.length > 0) AddCode.OauthToken = AddCode.UsercodeArray[position].split(",")[2];
 };
 
 //Twitch autentication

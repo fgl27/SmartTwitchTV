@@ -514,9 +514,8 @@ Svod.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Main.Go = Main.Live;
             Svod.exit();
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();

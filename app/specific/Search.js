@@ -147,8 +147,7 @@ Search.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_GREEN:
             Search.exit();
-            Main.Go = Main.Live;
-            Main.SwitchScreen();
+            Main.GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();
