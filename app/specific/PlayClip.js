@@ -31,6 +31,15 @@ PlayClip.Start = function() {
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
+    Play.Panelcouner = 1;
+    Play.IconsFocus();
+
+    if (AddCode.OauthToken !== '') {
+        AddCode.userChannel = Main.selectedChannel_id;
+        AddCode.CheckFallow();
+        Play.showFallow();
+    } else Play.hideFallow();
+
     document.addEventListener('visibilitychange', PlayClip.Resume, false);
     PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
     PlayClip.Canjump = false;
@@ -256,6 +265,10 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_ENTER:
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
+            } else {
+                Play.FallowUnfallow();
+                PlayClip.clearHidePanel();
+                PlayClip.setHidePanel();
             }
             break;
         case TvKeyCode.KEY_RETURN:

@@ -129,7 +129,7 @@ UserChannels.loadChannelLive = function(responseText) {
     var existCount = 0;
 
     for (var x = TempCount; x < (TempCount + response_items); x++) {
-        ChannelTemp = response.follows[x - TempCount].channel.display_name + ',' +
+        ChannelTemp = response.follows[x - TempCount].channel.display_name + ',' + response.follows[x - TempCount].channel._id + ',' +
             response.follows[x - TempCount].channel.name + ',' + response.follows[x - TempCount].channel.logo;
         if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList[x - existCount] = ChannelTemp;
         else existCount++;
@@ -172,7 +172,7 @@ UserChannels.loadDataSuccess = function() {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountChannel && cursor < UserChannels.UserChannelsList.length; coloumn_id++, cursor++) {
             channel = UserChannels.UserChannelsList[cursor].split(",");
-            row.append(UserChannels.createCell(row_id, coloumn_id, channel[0], channel[1], channel[2]));
+            row.append(UserChannels.createCell(row_id, coloumn_id, channel[0], channel[1], channel[2], channel[3]));
         }
         for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
             if (UserChannels.dataEnded && !UserChannels.itemsCountCheck) {
@@ -186,12 +186,12 @@ UserChannels.loadDataSuccess = function() {
     UserChannels.loadDataSuccessFinish();
 };
 
-UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, channel_name, preview_thumbnail) {
+UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, _id, channel_name, preview_thumbnail) {
     Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Thumbnail, row_id, coloumn_id);
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;
 
-    return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '"></td>').html(
         '<img id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
         '<div id="' + UserChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
@@ -346,6 +346,7 @@ UserChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             if (!UserChannels.loadingMore) {
                 Main.selectedChannel = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-channelname');
+                Main.selectedChannel_id = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-id');
                 Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY +
                     '_' + UserChannels.cursorX).textContent;
                 Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).src;

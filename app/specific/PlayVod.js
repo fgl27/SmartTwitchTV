@@ -63,6 +63,12 @@ PlayVod.Start = function() {
     $("#stream_live_time").text(Svod.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
+    if (AddCode.OauthToken !== '') {
+        AddCode.userChannel = Main.selectedChannel_id;
+        AddCode.CheckFallow();
+        Play.showFallow();
+    } else Play.hideFallow();
+
     PlayVod.jumpCount = 0;
     PlayVod.IsJumping = false;
     PlayVod.tokenResponse = 0;
@@ -144,6 +150,12 @@ PlayVod.loadDataRequest = function() {
 
 PlayVod.loadDataError = function() {
     if (PlayVod.isOn) {
+        if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
+            console.log("loadDataSuccess restricted_bitrates true");
+            PlayVod.loadDataCheckSub();
+            return;
+        }
+
         PlayVod.loadingDataTry++;
         if (PlayVod.loadingDataTry < PlayVod.loadingDataTryMax) {
             PlayVod.loadingDataTimeout += (PlayVod.loadingDataTry < 5) ? 250 : 3500;
@@ -183,12 +195,6 @@ PlayVod.restore = function() {
 PlayVod.loadDataSuccess = function(responseText) {
     if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
-
-        if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates !== 0) {
-            Play.loadDataCheckSub();
-            return;
-        }
-
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
         PlayVod.loadData();
     } else if (PlayVod.state == PlayVod.STATE_LOADING_PLAYLIST) {
@@ -198,7 +204,7 @@ PlayVod.loadDataSuccess = function(responseText) {
 };
 
 PlayVod.loadDataCheckSub = function() {
-    if (AddCode.OauthToken !== 0) AddCode.CheckSub();
+    if (AddCode.OauthToken !== '') AddCode.CheckSub();
     else {
         Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
@@ -211,6 +217,14 @@ PlayVod.loadDataCheckSub = function() {
 PlayVod.NotSub = function() {
     Play.HideBufferDialog();
     Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
+    window.setTimeout(function() {
+        if (PlayVod.isOn) PlayVod.shutdownStream();
+    }, 4000);
+};
+
+PlayVod.isSub = function() {
+    Play.HideBufferDialog();
+    Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
     window.setTimeout(function() {
         if (PlayVod.isOn) PlayVod.shutdownStream();
     }, 4000);
@@ -390,6 +404,8 @@ PlayVod.hidePanel = function() {
 };
 
 PlayVod.showPanel = function() {
+    Play.Panelcouner = 0;
+    Play.IconsFocus();
     PlayVod.qualityIndexReset();
     Play.clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
@@ -575,19 +591,31 @@ PlayVod.handleKeyDown = function(e) {
                 localStorage.setItem('ChatEnable', 'false');
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (PlayVod.Canjump) {
+                if (Play.isPanelShown() && Play.FallowVisible()) {
+                    Play.Panelcouner++;
+                    if (Play.Panelcouner > 1) Play.Panelcouner = 0;
+                    Play.IconsFocus();
+                    PlayVod.clearHidePanel();
+                    PlayVod.setHidePanel();
+                } else if (PlayVod.Canjump) {
                     if (PlayVod.jumpCount > PlayVod.jumpCountMin) PlayVod.jumpCount--;
                     PlayVod.jumpStart();
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                if (PlayVod.Canjump) {
+                if (Play.isPanelShown() && Play.FallowVisible()) {
+                    Play.Panelcouner--;
+                    if (Play.Panelcouner < 0) Play.Panelcouner = 1;
+                    Play.IconsFocus();
+                    PlayVod.clearHidePanel();
+                    PlayVod.setHidePanel();
+                } else if (PlayVod.Canjump) {
                     if (PlayVod.jumpCount < PlayVod.jumpCountMax) PlayVod.jumpCount++;
                     PlayVod.jumpStart();
                 }
                 break;
             case TvKeyCode.KEY_UP:
-                if (Play.isPanelShown()) {
+                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
                     if (PlayVod.qualityIndex > 0) {
                         PlayVod.qualityIndex--;
                         PlayVod.qualityDisplay();
@@ -599,7 +627,7 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_DOWN:
-                if (Play.isPanelShown()) {
+                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
                     if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1) {
                         PlayVod.qualityIndex++;
                         PlayVod.qualityDisplay();
@@ -612,9 +640,15 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
-                    PlayVod.qualityChanged();
-                    Play.clearPause();
+                    if (Play.Panelcouner === 0) {
+                        if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
+                        PlayVod.qualityChanged();
+                        Play.clearPause();
+                    } else if (Play.Panelcouner === 1) {
+                        Play.FallowUnfallow();
+                        PlayVod.clearHidePanel();
+                        PlayVod.setHidePanel();
+                    }
                 } else {
                     PlayVod.showPanel();
                 }

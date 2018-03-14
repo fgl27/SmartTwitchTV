@@ -164,7 +164,7 @@ SChannels.loadDataSuccess = function(responseText) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
-                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels.logo, channels.display_name);
+                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels._id, channels.logo, channels.display_name);
                 row.append(cell);
             }
         }
@@ -184,9 +184,9 @@ SChannels.loadDataSuccess = function(responseText) {
 };
 
 
-SChannels.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
+SChannels.createCell = function(row_id, coloumn_id, channel_name, _id, preview_thumbnail, channel_display_name) {
     SChannels.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
+    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '"></td>').html(
         SChannels.CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name));
 };
 
@@ -313,7 +313,7 @@ SChannels.loadDataSuccessReplace = function(responseText) {
             SChannels.blankCellCount--;
             i--;
         } else {
-            SChannels.replaceCellEmpty(SChannels.blankCellVector[i], channels.name, channels.logo, channels.display_name);
+            SChannels.replaceCellEmpty(SChannels.blankCellVector[i], channels.name, channels._id, channels.logo, channels.display_name);
             SChannels.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -332,7 +332,7 @@ SChannels.loadDataSuccessReplace = function(responseText) {
     SChannels.loadDataSuccessFinish();
 };
 
-SChannels.replaceCellEmpty = function(id, channel_name, preview_thumbnail, channel_display_name) {
+SChannels.replaceCellEmpty = function(id, channel_name, _id, preview_thumbnail, channel_display_name) {
     var splitedId = id.split("_");
     var row_id = splitedId[1];
     var coloumn_id = splitedId[2];
@@ -342,6 +342,7 @@ SChannels.replaceCellEmpty = function(id, channel_name, preview_thumbnail, chann
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).setAttribute('data-id', _id);
     document.getElementById(cell).innerHTML =
         SChannels.CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name);
 };
@@ -460,6 +461,7 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_ENTER:
             if (!SChannels.loadingMore) {
                 Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
+                Main.selectedChannel_id = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-id');
                 Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
                 Main.selectedChannelChannelLogo = document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).src;
                 document.body.removeEventListener("keydown", SChannels.handleKeyDown);
