@@ -55,7 +55,7 @@ AddCode.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                Main.Go = Main.Before;
+                Main.Go = Main.Users;
                 AddCode.exit();
                 Main.SwitchScreen();
             }
