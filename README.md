@@ -13,6 +13,12 @@ In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) info
 ## [How the application looks](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/animated.gif)
 
+Twitch.TV authentication key
+===============
+
+To be able to fallow/Un fallow and access subscribed only past broadcast is needed to add a Twitch.TV authentication key in the app, the key is generated on the bellow link and through Twitch.TV web site
+## [Twitch.TV app for Samsung TV authorization page](https://bhb27.github.io/smarttv-twitch/release/githubio/login/twitch.html)
+
 About this fork
 ===============
 
