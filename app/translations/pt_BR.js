@@ -121,7 +121,7 @@ function pt_BRLang() {
     STR_USER_CODE = " Adicione uma chave de autenticação";
     STR_USER_CODE_OK = "Chave adicionada OK (Clique aqui para testa-la)";
     STR_KEY_BAD = "O teste da chave falhou, sera necessário adicionar uma nova";
-    STR_KEY_OK = "Chave testada OK";
+    STR_KEY_OK = "O teste da chave retornou OK";
     STR_OAUTH_WRONG = "Você esta tentando adicionar uma chave para o usuário ";
     STR_OAUTH_WRONG2 = " mas esta é para o usuário ";
     STR_FALLOWING = " Seguindo";
