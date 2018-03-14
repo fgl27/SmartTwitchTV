@@ -79,12 +79,11 @@ Users.loadData = function() {
         coloumn_id++;
         row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
         coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CODE, IMG_USER_CODE));
+        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, (AddCode.UserCodeExist(Main.UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
 
         $('#stream_table_user').append(row);
     }
 
-    Users.checkTitleStart();
     Users.loadDataSuccessFinish();
 };
 
@@ -112,6 +111,7 @@ Users.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Users.status = true;
                 Users.addFocus();
+                Users.checkTitleStart();
             }
 
             Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
