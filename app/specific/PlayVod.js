@@ -614,8 +614,8 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_UP:
-                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
-                    if (PlayVod.qualityIndex > 0) {
+                if (Play.isPanelShown()) {
+                    if (PlayVod.qualityIndex > 0 && (Play.Panelcouner === 0)) {
                         PlayVod.qualityIndex--;
                         PlayVod.qualityDisplay();
                     }
@@ -626,8 +626,8 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_DOWN:
-                if (Play.isPanelShown() && (Play.Panelcouner === 0)) {
-                    if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1) {
+                if (Play.isPanelShown()) {
+                    if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1 && (Play.Panelcouner === 0)) {
                         PlayVod.qualityIndex++;
                         PlayVod.qualityDisplay();
                     }
