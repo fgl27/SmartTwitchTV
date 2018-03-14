@@ -240,6 +240,7 @@ AddUser.removeUser = function(Position) {
     if (userCode > -1) AddCode.removeUser(userCode);
 
     AddUser.UsernameArraySize--;
+    if (AddUser.UsernameArraySize < 0) AddUser.UsernameArraySize = 0;
     localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
 
     var index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]);

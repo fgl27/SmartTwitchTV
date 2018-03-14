@@ -179,6 +179,7 @@ AddCode.SaveNewUser = function() {
 
 AddCode.removeUser = function(Position) {
     AddCode.UsercodeArraySize--;
+    if (AddCode.UsercodeArraySize < 0) AddCode.UsercodeArraySize = 0;
     localStorage.setItem('UsercodeArraySize', AddCode.UsercodeArraySize);
 
     var index = AddCode.UsercodeArray.indexOf(AddCode.UsercodeArray[Position]);
@@ -535,8 +536,6 @@ AddCode.RequestCheckSubError = function() {
     }
 };
 
-
-
 AddCode.CheckToken = function() {
     try {
 
@@ -549,7 +548,7 @@ AddCode.CheckToken = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    var bool = Users.checkKey(xmlHttp.responseText)
+                    var bool = Users.checkKey(xmlHttp.responseText);
                     Users.SetKeyTitle(bool);
                     Main.showWarningDialog(bool ? STR_KEY_OK : STR_KEY_BAD);
                     window.setTimeout(function() {
@@ -580,4 +579,38 @@ AddCode.CheckTokenError = function() {
             Main.HideWarningDialog();
         }, 4000);
     }
+};
+
+AddCode.CheckTokenStart = function(position) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode.OauthToken, true);
+        xmlHttp.timeout = AddCode.loadingDataTimeout;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Users.SetKeyTitleStart(Users.checkKey(xmlHttp.responseText), position);
+                    return;
+                } else {
+                    AddCode.CheckTokenStartError(position);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        AddCode.CheckTokenStartError(position);
+    }
+};
+
+AddCode.CheckTokenStartError = function(position) {
+    AddCode.loadingDataTry++;
+    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
+        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
+        AddCode.CheckTokenStart(position);
+    } else Users.SetKeyTitleStart(false, position);
 };
