@@ -151,11 +151,11 @@ Play.updateStreamInfoStart = function() {
                     $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                     Play.created = new Date(response.stream.created_at).getTime();
-                    AddCode.userChannel = response.stream.channel._id;
                     Play.LoadLogoSucess = true;
                     console.log('updateStreamInfoStart');
                     console.log('AddCode.OauthToken ' + AddCode.OauthToken);
                     if (AddCode.OauthToken !== '') {
+                        AddCode.userChannel = response.stream.channel._id;
                         AddCode.CheckFallow();
                         Play.showFallow();
                     } else Play.hideFallow();
@@ -1005,6 +1005,8 @@ Play.handleKeyDown = function(e) {
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
                         Play.FallowUnfallow();
+                        Play.clearHidePanel();
+                        Play.setHidePanel();
                     }
                 } else {
                     Play.showPanel();

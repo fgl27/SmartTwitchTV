@@ -522,6 +522,7 @@ AddCode.RequestCheckSub = function() {
                     console.log(xmlHttp.responseText);
                     AddCode.IsSub = true;
                     AddCode.loadingData = false;
+                    PlayVod.isSub();
                     return;
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
                     console.log('channel does not have a subscription program');
@@ -530,6 +531,7 @@ AddCode.RequestCheckSub = function() {
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         AddCode.IsSub = false;
                         AddCode.loadingData = false;
+                        PlayVod.NotSub();
                         return;
                     } else AddCode.RequestCheckSubError();
                 } else { // internet error
