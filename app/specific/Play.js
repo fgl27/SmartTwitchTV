@@ -145,15 +145,11 @@ Play.updateStreamInfoStart = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     var response = $.parseJSON(xmlHttp.responseText);
-                    // log response json
-                    //console.log(response);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                     Play.created = new Date(response.stream.created_at).getTime();
                     Play.LoadLogoSucess = true;
-                    console.log('updateStreamInfoStart');
-                    console.log('AddCode.OauthToken ' + AddCode.OauthToken);
                     if (AddCode.OauthToken !== '') {
                         AddCode.userChannel = response.stream.channel._id;
                         AddCode.CheckFallow();
@@ -296,8 +292,6 @@ Play.restore = function() {
 };
 
 Play.loadDataSuccess = function(responseText) {
-    // log response json
-    //console.log(JSON.stringify(responseText));
     if (Play.state == Play.STATE_LOADING_TOKEN) {
         Play.tokenResponse = $.parseJSON(responseText);
         Play.state = Play.STATE_LOADING_PLAYLIST;
