@@ -164,7 +164,6 @@ Users.checkKey = function(responseText) {
 };
 
 Users.SetKeyTitle = function(bool) {
-    console.log('SetKeyTitle bool ' + bool);
     document.getElementById(Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
     if (!bool) AddCode.removeUser(AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]));
 };

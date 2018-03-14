@@ -151,7 +151,6 @@ PlayVod.loadDataRequest = function() {
 PlayVod.loadDataError = function() {
     if (PlayVod.isOn) {
         if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
-            console.log("loadDataSuccess restricted_bitrates true");
             PlayVod.loadDataCheckSub();
             return;
         }
