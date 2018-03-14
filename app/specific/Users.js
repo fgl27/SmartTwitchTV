@@ -84,6 +84,7 @@ Users.loadData = function() {
         $('#stream_table_user').append(row);
     }
 
+    Users.checkTitleStart();
     Users.loadDataSuccessFinish();
 };
 
@@ -117,6 +118,23 @@ Users.loadDataSuccessFinish = function() {
 
             Users.loadingData = false;
         });
+};
+
+Users.checkTitleStart = function() {
+    for (var x = 0; x < AddUser.UsernameArray.length; x++) Users.checkTitleRun(x);
+};
+
+Users.checkTitleRun = function(position) {
+    Main.UserName = AddUser.UsernameArray[position];
+    AddCode.SetDefaultOAuth(position);
+    AddCode.loadingDataTry = 0;
+    AddCode.loadingDataTimeout = 10000;
+    AddCode.CheckTokenStart(position);
+};
+
+Users.SetKeyTitleStart = function(bool, position) {
+    document.getElementById(Users.DispNameDiv + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    if (!bool) AddCode.removeUser(AddCode.UserCodeExist(AddUser.UsernameArray[position]));
 };
 
 Users.addFocus = function() {
@@ -159,8 +177,7 @@ Users.checkKey = function(responseText) {
     for (var i = 0; i < scopes.length; i++) {
         scopesToTest += scopes[i];
     }
-    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' == Main.UserName
-        && json.token.valid + '' == 'true';
+    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' == Main.UserName && json.token.valid + '' == 'true';
 };
 
 Users.SetKeyTitle = function(bool) {
