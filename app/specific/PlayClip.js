@@ -33,7 +33,7 @@ PlayClip.Start = function() {
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
     $('#label_quality').html(STR_RESET + STR_CLIP);
-    document.getElementById("label_quality").style.paddingLeft = "32%";
+    document.getElementById("label_quality").style.paddingLeft = "27%";
     $("#quality_arrows").hide();
     $("#quality_name").hide();
     $("#scene2_speed").show();
@@ -385,7 +385,11 @@ PlayClip.handleKeyDown = function(e) {
                         type: "video/mp4",
                         src: Sclip.playUrl
                     });
+                    Play.showBufferDialog();
                     Play.clearPause();
+                    PlayClip.SpeedIndexPosition = 2;
+                    PlayClip.SpeedIndex = 2;
+                    PlayClip.speedDisplay();
                 } else if (Play.Panelcouner === 1) {
                     if (Play.noFallow) {
                         Play.showWarningDialog(STR_NOKEY_WARN);
