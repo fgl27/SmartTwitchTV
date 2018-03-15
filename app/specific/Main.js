@@ -453,6 +453,7 @@ Main.openStream = function() {
 Main.RestoreTopLabel = function() {
     Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
     Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
+    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
     $('#top_bar_user').addClass('icon_center_label');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
