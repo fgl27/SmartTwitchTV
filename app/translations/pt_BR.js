@@ -54,7 +54,7 @@ function pt_BRLang() {
     STR_USER_HOSTING = " hospedando ";
     STR_USER_SET = " já configurado";
     STR_USER_MAKE_ONE = "Tornar o Principal";
-    STR_USER_NUMBER_ONE = " (O conteúdo do usuário principal aparece no SmartHub Preview, e consegue seguir quando fornece uma chave de acesso)";
+    STR_USER_NUMBER_ONE = " (O conteúdo do usuário principal aparece no SmartHub Preview e consegue seguir quando fornece uma chave de acesso)";
     STR_CLIP_ALL = " (todos)";
     STR_JUMP_TIME = "Saltando ";
     STR_JUMP_T0 = " para ";
