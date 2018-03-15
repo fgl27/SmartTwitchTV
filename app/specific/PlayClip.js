@@ -15,6 +15,9 @@ PlayClip.TimeToJump = 0;
 PlayClip.jumpCountMin = -12;
 PlayClip.jumpCountMax = 12;
 PlayClip.isOn = false;
+PlayClip.speedArray = ['2x', '1.5x', '1x (Normal)', '0.5x', '0.25x'];
+PlayClip.SpeedIndex = 2;
+PlayClip.SpeedIndexPosition = 2;
 
 //Variable initialization end
 
@@ -34,10 +37,13 @@ PlayClip.Start = function() {
     document.getElementById("label_quality").style.paddingLeft = "32%";
     $("#quality_arrows").hide();
     $("#quality_name").hide();
+    $("#scene2_speed").show();
 
+    PlayClip.SpeedIndex = 2;
+    PlayClip.SpeedIndexPosition = 2;
     Play.IsWarning = false;
-    Play.Panelcouner = 0;
-    Play.IconsFocus();
+    Play.Panelcouner = 2;
+    PlayClip.IconsFocus();
 
     if (AddCode.OauthToken !== '') {
         AddCode.userChannel = Main.selectedChannel_id;
@@ -146,6 +152,10 @@ PlayClip.hidePanel = function() {
 
 PlayClip.showPanel = function() {
     Play.clock();
+    Play.Panelcouner = 2;
+    PlayClip.IconsFocus();
+    PlayClip.SpeedIndex = PlayClip.SpeedIndexPosition;
+    PlayClip.speedDisplay();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
     $("#scene_channel_panel").show();
     PlayClip.setHidePanel();
@@ -245,13 +255,87 @@ PlayClip.jumpStart = function() {
     PlayClip.JumpID = window.setTimeout(PlayClip.jump, 1500);
 };
 
+PlayClip.speed = function() {
+    var value = 1;
+    if (PlayClip.SpeedIndex === 0) value = 2;
+    else if (PlayClip.SpeedIndex == 1) value = 1.5;
+    else if (PlayClip.SpeedIndex == 3) value = 0.5;
+    else if (PlayClip.SpeedIndex == 4) value = 0.25;
+
+    Play.videojs.playbackRate(value);
+    PlayClip.clearHidePanel();
+    PlayClip.hidePanel();
+    PlayClip.SpeedIndexPosition = PlayClip.SpeedIndex;
+};
+
+PlayClip.speedDisplay = function() {
+    if (PlayClip.SpeedIndex === 0) {
+        $('#speed_arrow_up').css({
+            'opacity': 0.2
+        });
+        $('#speed_arrow_down').css({
+            'opacity': 1.0
+        });
+    } else if (PlayClip.SpeedIndex == PlayClip.speedArray.length - 1) {
+        $('#speed_arrow_up').css({
+            'opacity': 1.0
+        });
+        $('#speed_arrow_down').css({
+            'opacity': 0.2
+        });
+    } else {
+        $('#speed_arrow_up').css({
+            'opacity': 1.0
+        });
+        $('#speed_arrow_down').css({
+            'opacity': 1.0
+        });
+    }
+
+    $('#speed_name').text(PlayClip.speedArray[PlayClip.SpeedIndex]);
+};
+
+PlayClip.IconsFocus = function() {
+    Main.ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_speed", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+
+    if (Play.Panelcouner === 0) {
+        Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 1) {
+        Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 2) {
+        Main.ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 3) {
+        Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 4) {
+        Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+    }
+};
+
 PlayClip.handleKeyDown = function(e) {
     switch (e.keyCode) {
         case TvKeyCode.KEY_LEFT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner++;
-                if (Play.Panelcouner > 3) Play.Panelcouner = 0;
-                Play.IconsFocus();
+                if (Play.Panelcouner > 4) Play.Panelcouner = 0;
+                PlayClip.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
             } else if (PlayClip.Canjump) {
@@ -262,8 +346,8 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_RIGHT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner--;
-                if (Play.Panelcouner < 0) Play.Panelcouner = 3;
-                Play.IconsFocus();
+                if (Play.Panelcouner < 0) Play.Panelcouner = 4;
+                PlayClip.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
             } else if (PlayClip.Canjump) {
@@ -274,11 +358,23 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_UP:
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
+            } else if (Play.Panelcouner === 2) {
+                PlayClip.clearHidePanel();
+                PlayClip.setHidePanel();
+                PlayClip.SpeedIndex--;
+                if (PlayClip.SpeedIndex < 0) PlayClip.SpeedIndex = 0;
+                PlayClip.speedDisplay();
             }
             break;
         case TvKeyCode.KEY_DOWN:
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
+            } else if (Play.Panelcouner === 2) {
+                PlayClip.clearHidePanel();
+                PlayClip.setHidePanel();
+                PlayClip.SpeedIndex++;
+                if (PlayClip.SpeedIndex > 4) PlayClip.SpeedIndex = 4;
+                PlayClip.speedDisplay();
             }
             break;
         case TvKeyCode.KEY_ENTER:
@@ -305,11 +401,13 @@ PlayClip.handleKeyDown = function(e) {
                         PlayClip.setHidePanel();
                     }
                 } else if (Play.Panelcouner === 2) {
+                    PlayClip.speed();
+                } else if (Play.Panelcouner === 3) {
                     Main.Go = Main.SChannelContent;
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
                     window.setTimeout(PlayClip.shutdownStream, 10);
-                } else if (Play.Panelcouner === 3) {
+                } else if (Play.Panelcouner === 4) {
                     Main.BeforeSearch = Main.Go;
                     Main.Go = Main.Search;
                     window.clearTimeout(Play.exitID);
@@ -347,6 +445,7 @@ PlayClip.handleKeyDown = function(e) {
             Play.showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
+            Play.speed(0.5);
             break;
         default:
             break;
