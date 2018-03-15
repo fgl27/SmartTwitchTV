@@ -110,7 +110,9 @@ AddCode.RemoveinputFocus = function() {
     document.body.removeEventListener("keydown", AddCode.KeyboardEvent);
     document.body.addEventListener("keydown", AddCode.handleKeyDown, false);
     $('.label_placeholder_oauth').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH);
-    AddCode.keyBoardOn = false;
+    window.setTimeout(function() {
+        AddCode.keyBoardOn = false;
+    }, 250);
 };
 
 AddCode.KeyboardEvent = function(event) {

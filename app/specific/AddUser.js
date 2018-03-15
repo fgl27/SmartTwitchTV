@@ -96,7 +96,9 @@ AddUser.RemoveinputFocus = function() {
     document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
     document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
     $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER);
-    AddUser.keyBoardOn = false;
+    window.setTimeout(function() {
+        AddUser.keyBoardOn = false;
+    }, 250);
 };
 
 AddUser.KeyboardEvent = function(event) {
