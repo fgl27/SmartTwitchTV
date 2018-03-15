@@ -54,7 +54,7 @@ function pt_BRLang() {
     STR_USER_HOSTING = " hospedando ";
     STR_USER_SET = " já configurado";
     STR_USER_MAKE_ONE = "Tornar o Principal";
-    STR_USER_NUMBER_ONE = " (O conteúdo do usuário principal aparece no SmartHub Preview)";
+    STR_USER_NUMBER_ONE = " (O conteúdo do usuário principal aparece no SmartHub Preview, e consegue seguir quando fornece uma chave de acesso)";
     STR_CLIP_ALL = " (todos)";
     STR_JUMP_TIME = "Saltando ";
     STR_JUMP_T0 = " para ";
@@ -130,9 +130,9 @@ function pt_BRLang() {
     STR_IS_SUB_NOT_SUB = " E você não é um inscrito deste canal";
     STR_IS_SUB_IS_SUB = " Você é um inscrito deste canal, mas o aplicativo falha ao tentar autenticar, contate o desenvolvedor através do email no sobre";
     STR_OAUTH_FAIL = "Falhou o teste com a chave do informada, verifique e tente novamente";
-
     STR_NOKEY = "Sem chave";
     STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir";
     STR_RESET = "Reinicie o";
     STR_SPEED = "Velocidade";
+    STR_CHANNEL_CONT = "Conteúdo do canal";
 }
