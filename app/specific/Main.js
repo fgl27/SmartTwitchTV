@@ -210,6 +210,14 @@ Main.IconLoad = function(lable, icon, string) {
         '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + string + '</div>');
 };
 
+Main.ChangeBorder = function(div, value) {
+    document.getElementById(div).style.border = value;
+};
+
+Main.ChangebackgroundColor = function(div, value) {
+    document.getElementById(div).style.backgroundColor = value;
+};
+
 Main.showLoadDialog = function() {
     Main.HideExitDialog();
     $("#dialog_loading").show();
