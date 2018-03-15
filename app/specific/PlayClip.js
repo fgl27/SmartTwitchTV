@@ -31,6 +31,7 @@ PlayClip.Start = function() {
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
+    Play.IsWarning = false;
     Play.Panelcouner = 1;
     Play.IconsFocus();
 
@@ -123,7 +124,7 @@ PlayClip.shutdownStream = function() {
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
-    if (Play.WarningDialogVisible() && !PlayClip.IsJumping) Play.HideWarningDialog();
+    if (Play.WarningDialogVisible() && !PlayClip.IsJumping && !Play.IsWarning) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
     PlayClip.PlayerCheckCount = 0;
     PlayClip.Canjump = true;
@@ -241,13 +242,25 @@ PlayClip.jumpStart = function() {
 PlayClip.handleKeyDown = function(e) {
     switch (e.keyCode) {
         case TvKeyCode.KEY_LEFT:
-            if (PlayClip.Canjump) {
+            if (Play.isPanelShown()) {
+                Play.Panelcouner++;
+                if (Play.Panelcouner > 2) Play.Panelcouner = 1;
+                Play.IconsFocus();
+                PlayClip.clearHidePanel();
+                PlayClip.setHidePanel();
+            } else if (PlayClip.Canjump) {
                 if (PlayClip.jumpCount > PlayClip.jumpCountMin) PlayClip.jumpCount--;
                 PlayClip.jumpStart();
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (PlayClip.Canjump) {
+            if (Play.isPanelShown()) {
+                Play.Panelcouner--;
+                if (Play.Panelcouner < 1) Play.Panelcouner = 2;
+                Play.IconsFocus();
+                PlayClip.clearHidePanel();
+                PlayClip.setHidePanel();
+            } else if (PlayClip.Canjump) {
                 if (PlayClip.jumpCount < PlayClip.jumpCountMax) PlayClip.jumpCount++;
                 PlayClip.jumpStart();
             }
@@ -266,9 +279,26 @@ PlayClip.handleKeyDown = function(e) {
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
             } else {
-                Play.FallowUnfallow();
-                PlayClip.clearHidePanel();
-                PlayClip.setHidePanel();
+                if (Play.Panelcouner === 1) {
+                    if (Play.noFallow) {
+                        Play.showWarningDialog(STR_NOKEY_WARN);
+                        Play.IsWarning = true;
+                        window.setTimeout(function() {
+                            Play.HideWarningDialog();
+                            Play.IsWarning = false;
+                        }, 2000);
+                    } else {
+                        Play.FallowUnfallow();
+                        PlayClip.clearHidePanel();
+                        PlayClip.setHidePanel();
+                    }
+                } else if (Play.Panelcouner === 2) {
+                    Main.BeforeSearch = Main.Go;
+                    Main.Go = Main.Search;
+                    window.clearTimeout(Play.exitID);
+                    $("#play_dialog_exit").hide();
+                    window.setTimeout(PlayClip.shutdownStream, 10);
+                }
             }
             break;
         case TvKeyCode.KEY_RETURN:

@@ -69,6 +69,7 @@ PlayVod.Start = function() {
         Play.showFallow();
     } else Play.hideFallow();
 
+    Play.IsWarning = false;
     PlayVod.jumpCount = 0;
     PlayVod.IsJumping = false;
     PlayVod.tokenResponse = 0;
