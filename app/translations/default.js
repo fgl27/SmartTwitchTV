@@ -14,6 +14,7 @@ var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_UPDATE_MAIN_HEADER = '';
 var STR_OAUTH_EXPLAIN = '';
+var STR_SPACE = '&nbsp;';
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {

@@ -157,7 +157,7 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
         '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 50%; display: inline-block;">' +
-        '<i class="icon-circle" style="color: red; font-size: 100%; aria-hidden="true"></i> ' + viwers + '</div>' +
+        '<i class="icon-circle" style="color: red; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
         '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id +
         '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
 };
