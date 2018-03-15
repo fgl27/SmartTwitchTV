@@ -32,8 +32,7 @@ PlayClip.Start = function() {
     $("#stream_live_icon").text(Sclip.createdAt);
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
-    $('#quality_name').text(STR_RESET);
-    $('#label_quality').html(STR_CLIP + STR_RESET);
+    $('#label_quality').html(STR_RESET + STR_CLIP);
     document.getElementById("label_quality").style.paddingLeft = "32%";
     $("#quality_arrows").hide();
     $("#quality_name").hide();
