@@ -139,3 +139,5 @@ var STR_OAUTH_FAIL = "Fail authentication check with the provider key, please ch
 
 var STR_NOKEY = "No key";
 var STR_NOKEY_WARN = "Set a user and a authetication key to be able to fallow";
+var STR_RESET = "Restart";
+var STR_CLIP = "Clip ";

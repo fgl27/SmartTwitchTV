@@ -21,7 +21,6 @@ PlayClip.isOn = false;
 PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
-    $("#scene2_quality").hide();
     Play.hideChat();
     Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelChannelLogo);
     $('#stream_info_name').text(Sclip.title);
@@ -30,9 +29,14 @@ PlayClip.Start = function() {
     $("#stream_live_icon").text(Sclip.createdAt);
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
+    $('#quality_name').text(STR_RESET);
+    $('#label_quality').html(STR_CLIP + STR_RESET);
+    document.getElementById("label_quality").style.paddingLeft = "32%";
+    $("#quality_arrows").hide();
+    $("#quality_name").hide();
 
     Play.IsWarning = false;
-    Play.Panelcouner = 1;
+    Play.Panelcouner = 0;
     Play.IconsFocus();
 
     if (AddCode.OauthToken !== '') {
@@ -113,7 +117,10 @@ PlayClip.shutdownStream = function() {
 
         document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
         document.removeEventListener('visibilitychange', PlayClip.Resume);
-        $("#scene2_quality").show();
+        $('#label_quality').html(STR_QUALITY);
+        document.getElementById("label_quality").style.paddingLeft = "5%";
+        $("#quality_arrows").show();
+        $("#quality_name").show();
         PlayClip.hidePanel();
 
         Play.exitMain();
@@ -140,7 +147,6 @@ PlayClip.hidePanel = function() {
 PlayClip.showPanel = function() {
     Play.clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
-    $("#scene2_quality").hide();
     $("#scene_channel_panel").show();
     PlayClip.setHidePanel();
 };
@@ -244,7 +250,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_LEFT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner++;
-                if (Play.Panelcouner > 3) Play.Panelcouner = 1;
+                if (Play.Panelcouner > 3) Play.Panelcouner = 0;
                 Play.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
@@ -256,7 +262,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_RIGHT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner--;
-                if (Play.Panelcouner < 1) Play.Panelcouner = 3;
+                if (Play.Panelcouner < 0) Play.Panelcouner = 3;
                 Play.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
@@ -279,7 +285,13 @@ PlayClip.handleKeyDown = function(e) {
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
             } else {
-                if (Play.Panelcouner === 1) {
+                if (Play.Panelcouner === 0) {
+                    Play.videojs.src({
+                        type: "video/mp4",
+                        src: Sclip.playUrl
+                    });
+                    Play.clearPause();
+                } else if (Play.Panelcouner === 1) {
                     if (Play.noFallow) {
                         Play.showWarningDialog(STR_NOKEY_WARN);
                         Play.IsWarning = true;
