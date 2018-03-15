@@ -244,7 +244,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_LEFT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner++;
-                if (Play.Panelcouner > 2) Play.Panelcouner = 1;
+                if (Play.Panelcouner > 3) Play.Panelcouner = 1;
                 Play.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
@@ -256,7 +256,7 @@ PlayClip.handleKeyDown = function(e) {
         case TvKeyCode.KEY_RIGHT:
             if (Play.isPanelShown()) {
                 Play.Panelcouner--;
-                if (Play.Panelcouner < 1) Play.Panelcouner = 2;
+                if (Play.Panelcouner < 1) Play.Panelcouner = 3;
                 Play.IconsFocus();
                 PlayClip.clearHidePanel();
                 PlayClip.setHidePanel();
@@ -293,6 +293,11 @@ PlayClip.handleKeyDown = function(e) {
                         PlayClip.setHidePanel();
                     }
                 } else if (Play.Panelcouner === 2) {
+                    Main.Go = Main.SChannelContent;
+                    window.clearTimeout(Play.exitID);
+                    $("#play_dialog_exit").hide();
+                    window.setTimeout(PlayClip.shutdownStream, 10);
+                } else if (Play.Panelcouner === 3) {
                     Main.BeforeSearch = Main.Go;
                     Main.Go = Main.Search;
                     window.clearTimeout(Play.exitID);
