@@ -207,7 +207,7 @@ Main.initWindows = function() {
 
 Main.IconLoad = function(lable, icon, string) {
     $(lable).html('<div style="vertical-align: middle; display: inline-block"><i class="' + icon +
-        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + string + '</div>');
+        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
 };
 
 Main.ChangeBorder = function(div, value) {

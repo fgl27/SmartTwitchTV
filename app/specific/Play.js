@@ -67,8 +67,8 @@ Play.PreStart = function() {
     Play.videojs = videojs('video_live');
     $('#label_quality').html(STR_QUALITY);
     $('#label_speed').html(STR_SPEED);
-    document.getElementById("scene2_search_text").innerHTML = STR_SEARCH;
-    document.getElementById("scene2_channel_text").innerHTML = STR_CHANNEL_CONT;
+    document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
+    document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
     Play.ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
@@ -80,16 +80,16 @@ Play.PreStart = function() {
         '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
         '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
-    document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
+    document.getElementById("dialog_controls_play_text").innerHTML = STR_SPACE + STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_CONTROL_KEY + '</div>';
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>';
 };
 
 Play.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     document.getElementById("stream_live_icon").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_LIVE.toUpperCase() + '</div>';
+        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>';
     $("#stream_info_title").text("");
     Play.LoadLogoSucess = false;
     $("#stream_info_icon").attr("src", IMG_LOD_LOGO);
@@ -577,7 +577,7 @@ Play.ClearPlay = function() {
 };
 
 Play.hideFallow = function() {
-    document.getElementById("fallow_text").innerHTML = STR_NOKEY;
+    document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_NOKEY;
     Play.noFallow = true;
 };
 
@@ -879,10 +879,10 @@ Play.FallowUnfallow = function() {
 Play.setFallow = function() {
     if (AddCode.IsFallowing) {
         document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;"></i>';
-        document.getElementById("fallow_text").innerHTML = STR_FALLOWING;
+        document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOWING;
     } else {
         document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;"></i>';
-        document.getElementById("fallow_text").innerHTML = STR_FALLOW;
+        document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOW;
     }
 };
 
