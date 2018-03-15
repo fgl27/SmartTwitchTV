@@ -90,3 +90,6 @@
 .icon-pause:before {
   content: "\6d";
 }
+.icon-progress-3:before {
+  content: "\66";
+}
