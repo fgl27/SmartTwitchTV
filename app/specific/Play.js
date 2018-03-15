@@ -68,7 +68,7 @@ Play.PreStart = function() {
     $('#label_quality').html(STR_QUALITY);
     $('#label_speed').html(STR_SPEED);
     document.getElementById("scene2_search_text").innerHTML = STR_SEARCH;
-    document.getElementById("scene2_channel_text").innerHTML = STR_CHANNEL + STR_CONTENT;
+    document.getElementById("scene2_channel_text").innerHTML = STR_CHANNEL_CONT;
     Play.ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
