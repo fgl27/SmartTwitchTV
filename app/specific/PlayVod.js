@@ -363,7 +363,8 @@ PlayVod.PlayerCheck = function() {
 };
 
 PlayVod.updateCurrentTime = function(currentTime) {
-    if (Play.WarningDialogVisible() && !PlayVod.IsJumping) Play.HideWarningDialog();
+    if (Play.WarningDialogVisible() && !PlayVod.IsJumping && !Play.IsWarning) Play.HideWarningDialog();
+    if (Play.WarningDialogVisible() && !Play.IsWarning) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
     PlayVod.PlayerCheckCount = 0;
     PlayVod.PlayerCheckOffset = 0;
@@ -590,9 +591,9 @@ PlayVod.handleKeyDown = function(e) {
                 localStorage.setItem('ChatEnable', 'false');
                 break;
             case TvKeyCode.KEY_LEFT:
-                if (Play.isPanelShown() && Play.FallowVisible()) {
+                if (Play.isPanelShown()) {
                     Play.Panelcouner++;
-                    if (Play.Panelcouner > 1) Play.Panelcouner = 0;
+                    if (Play.Panelcouner > 2) Play.Panelcouner = 0;
                     Play.IconsFocus();
                     PlayVod.clearHidePanel();
                     PlayVod.setHidePanel();
@@ -602,9 +603,9 @@ PlayVod.handleKeyDown = function(e) {
                 }
                 break;
             case TvKeyCode.KEY_RIGHT:
-                if (Play.isPanelShown() && Play.FallowVisible()) {
+                if (Play.isPanelShown()) {
                     Play.Panelcouner--;
-                    if (Play.Panelcouner < 0) Play.Panelcouner = 1;
+                    if (Play.Panelcouner < 0) Play.Panelcouner = 2;
                     Play.IconsFocus();
                     PlayVod.clearHidePanel();
                     PlayVod.setHidePanel();
@@ -644,9 +645,24 @@ PlayVod.handleKeyDown = function(e) {
                         PlayVod.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
-                        Play.FallowUnfallow();
-                        PlayVod.clearHidePanel();
-                        PlayVod.setHidePanel();
+                        if (Play.noFallow) {
+                            Play.showWarningDialog(STR_NOKEY_WARN);
+                            Play.IsWarning = true;
+                            window.setTimeout(function() {
+                                Play.HideWarningDialog();
+                                Play.IsWarning = false;
+                            }, 2000);
+                        } else {
+                            Play.FallowUnfallow();
+                            PlayVod.clearHidePanel();
+                            PlayVod.setHidePanel();
+                        }
+                    } else if (Play.Panelcouner === 2) {
+                        Main.BeforeSearch = Main.Go;
+                        Main.Go = Main.Search;
+                        window.clearTimeout(Play.exitID);
+                        $("#play_dialog_exit").hide();
+                        window.setTimeout(PlayVod.shutdownStream, 10);
                     }
                 } else {
                     PlayVod.showPanel();
