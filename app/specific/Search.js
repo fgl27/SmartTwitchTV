@@ -206,7 +206,9 @@ Search.RemoveinputFocus = function() {
     document.body.removeEventListener("keydown", Search.KeyboardEvent);
     document.body.addEventListener("keydown", Search.handleKeyDown, false);
     $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH);
-    Search.keyBoardOn = false;
+    window.setTimeout(function() {
+        Search.keyBoardOn = false;
+    }, 250);
 };
 
 Search.KeyboardEvent = function(event) {
