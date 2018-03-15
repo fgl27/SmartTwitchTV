@@ -119,7 +119,7 @@ function pt_BRLang() {
     STR_OAUTH_EXPLAIN5 = "Clique no botão de autorizar no site do Twitch.TV se voce esta de acordo com as permissões";
     STR_OAUTH_EXPLAIN6 = "A pagina vai atualizar e mostrar a chave de acesso no centro (só tem letra minuscula), escreva esta no aplicativo";
     STR_USER_CODE = " Adicione uma chave de autenticação";
-    STR_USER_CODE_OK = "Chave adicionada OK (Clique aqui para testa-la)";
+    STR_USER_CODE_OK = "Chave adicionada OK (Clique para testar)";
     STR_KEY_BAD = "O teste da chave falhou, sera necessário adicionar uma nova";
     STR_KEY_OK = "O teste da chave retornou OK";
     STR_OAUTH_WRONG = "Você esta tentando adicionar uma chave para o usuário ";
