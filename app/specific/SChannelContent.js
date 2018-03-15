@@ -36,7 +36,7 @@ SChannelContent.init = function() {
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
     $('.lable_user').html(Main.selectedChannelDisplayname);
-    $('.lable_game').html(STR_CHANNEL + STR_CONTENT);
+    $('.lable_game').html(STR_CHANNEL_CONT);
     $('.label_agame_name').html('');
     document.body.addEventListener("keydown", SChannelContent.handleKeyDown, false);
     if (SChannelContent.status) Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
