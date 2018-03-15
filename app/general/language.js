@@ -1,11 +1,11 @@
-var STR_REFRESH = "Refresh (Guide(CH Press) or Info)";
+var STR_REFRESH = "Refresh (Guide or Info)";
 var STR_SEARCH = "Search";
 var STR_CONTROLS = "Controls";
 var STR_ABOUT = "About";
 var STR_SEARCH_EMPTY = "The text you entered is empty.";
 var STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
 var STR_SWITCH = "Switch (CH Up/Down)";
-var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide(CH Press) or Info)";
+var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide or Info)";
 var STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all) (CH Up/Down)";
 var STR_GO_TO = "Go to ";
 var STR_USER = "User ";

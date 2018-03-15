@@ -1,12 +1,12 @@
 function pt_BRLang() {
     console.log("loading language pt_BR");
-    STR_REFRESH = "Atualizar (Guide/CH/Info)";
+    STR_REFRESH = "Atualizar (Guide/Info)";
     STR_SEARCH = "Pesquisar";
     STR_CONTROLS = "Controles";
     STR_ABOUT = "Sobre";
     STR_SEARCH_EMPTY = "Nenhum texto foi inserido.";
     STR_SWITCH = "Trocar (CH Cima/Baixo)";
-    STR_SWITCH_VOD = "Transmissões Anteriores/Destaques (Guide/CH/Info)";
+    STR_SWITCH_VOD = "Transmissões Anteriores/Destaques (Guide/Info)";
     STR_SWITCH_CLIP = "Período (24h, 7d, 30d, todos) (CH Cima/Baixo)";
     STR_USER = "Usuário ";
     STR_LIVE = "Ao Vivo";
