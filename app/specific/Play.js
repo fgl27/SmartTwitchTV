@@ -480,6 +480,7 @@ Play.offPlayer = function() {
 Play.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible() && !Play.IsWarning) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
+    if (Play.isShowPauseDialogOn() && !Play.videojs.paused()) Play.clearPause();
     Play.PlayerCheckCount = 0;
     Play.PlayerCheckOffset = 0;
     Play.RestoreFromResume = false;
@@ -637,7 +638,6 @@ Play.clearPause = function() {
     Play.clearPauseEnd();
     Play.clearPauseStart();
     $("#play_dialog_simple_pause").hide();
-    if (Play.isPanelShown()) Play.hidePanel();
 };
 
 Play.showPauseDialog = function() {
@@ -840,6 +840,7 @@ Play.KeyPause = function() {
         Play.clearPause();
         Play.videojs.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
+        if (Play.isPanelShown()) Play.hidePanel();
     }
 };
 
