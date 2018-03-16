@@ -45,6 +45,7 @@ Main.imgMatrix = [];
 Main.imgMatrixId = [];
 Main.imgMatrixCount = 0;
 Main.ScrollbarBlack = true;
+Main.NetworkStateOK = true;
 
 Main.ScrollOffSetVideo = 275;
 Main.ScrollOffSetGame = 514;
@@ -203,6 +204,7 @@ Main.initWindows = function() {
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     $("#scene2").hide();
+    Main.NetworkStateChangeListenerStart();
 };
 
 Main.IconLoad = function(lable, icon, string) {
@@ -302,13 +304,17 @@ Main.SetItemsLimitReload = function(blankCellCount) {
 };
 
 Main.showWarningDialog = function(text) {
-    $("#dialog_warning_text").text(text);
+    $("#dialog_warning_text").text(!Main.NetworkStateOK ? STR_NET_DOWN : text);
     $("#dialog_warning").show();
 };
 
 Main.HideWarningDialog = function() {
     $("#dialog_warning_text").text('');
     $("#dialog_warning").hide();
+};
+
+Main.isWarningDialogShown = function() {
+    return $("#dialog_warning").is(":visible");
 };
 
 Main.showAboutDialog = function() {
@@ -401,7 +407,7 @@ Main.ReStartScreens = function() {
 
 Main.SwitchScreen = function() {
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.HideWarningDialog();
+    if (Main.NetworkStateOK) Main.HideWarningDialog();
     Main.CounterDialogRst();
     if (Main.Go === Main.Live) Live.init();
     else if (Main.Go === Main.AddUser) AddUser.init();
@@ -496,10 +502,25 @@ Main.appendTable = function(table) {
 Main.NetworkStateChangeListenerStart = function() {
     var onChange = function(data) {
         if (data == 1 || data == 4) { //network connected
-            console.log("conecteddata = " + data);
-        } else if (data == 2 || 5) {
-            console.log("conecteddata = " + data);
-        } else console.log("conecteddata = " + data);
+            Main.NetworkStateOK = true;
+            if (Main.isWarningDialogShown) {
+                Main.showWarningDialog(STR_NET_UP);
+                Main.SwitchScreen();
+            }
+            if (Play.WarningDialogVisible) Main.showWarningDialog(STR_NET_UP);
+            window.setTimeout(function() {
+                Main.HideWarningDialog();
+                Play.HideWarningDialog();
+            }, 1500);
+        } else if (data == 2 || 5) { //network down
+            Main.NetworkStateOK = false;
+            window.setTimeout(function() {
+                if (!Main.NetworkStateOK) { 
+                    Main.showWarningDialog('');
+                    Play.showWarningDialog(STR_NET_DOWN);
+                }
+            }, 5000);
+        }
     };
     try {
         Main.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
@@ -538,8 +559,10 @@ Main.GoLive = function() {
 Main.Resume = function() {
     if (document.hidden) {
         window.clearInterval(Main.SmartHubId);
+        Main.NetworkStateChangeListenerStop();
     } else {
         window.setTimeout(function() {
+            Main.NetworkStateChangeListenerStart();
             if (AddUser.UsernameArray.length > 0) {
                 if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
                 Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
