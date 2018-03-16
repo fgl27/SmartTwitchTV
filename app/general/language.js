@@ -142,3 +142,5 @@ var STR_RESET = "Restart the";
 var STR_CLIP = " Clip";
 var STR_SPEED = "Speed";
 var STR_CHANNEL_CONT = "Channel content";
+var STR_NET_DOWN = "Network is disconnect, the application can't work without INTERNET";
+var STR_NET_UP = "Network connection reestablished";
