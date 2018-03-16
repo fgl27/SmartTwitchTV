@@ -563,6 +563,8 @@ Main.Resume = function() {
     } else {
         window.setTimeout(function() {
             Main.NetworkStateChangeListenerStart();
+        }, 20000);
+        window.setTimeout(function() {
             if (AddUser.UsernameArray.length > 0) {
                 if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
                 Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
