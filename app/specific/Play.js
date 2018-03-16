@@ -641,7 +641,8 @@ Play.clearPause = function() {
 };
 
 Play.showPauseDialog = function() {
-    if (!Play.isShowPauseDialogOn()) {
+    if (!Play.videojs.paused()) Play.clearPause();
+    else if (!Play.isShowPauseDialogOn()) {
         $("#play_dialog_simple_pause").show();
         Play.pauseEndID = window.setTimeout(Play.showPauseDialog, 1500);
     } else {
