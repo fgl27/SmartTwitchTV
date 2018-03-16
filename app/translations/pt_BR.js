@@ -135,4 +135,6 @@ function pt_BRLang() {
     STR_RESET = "Reinicie o";
     STR_SPEED = "Velocidade";
     STR_CHANNEL_CONT = "Conteúdo do canal";
+    STR_NET_DOWN = "A rede esta desconectada, o aplicativo não funciona sem INTERNET";
+    STR_NET_UP = "Conexão de rede restabelecida";
 }
