@@ -138,6 +138,7 @@ PlayClip.shutdownStream = function() {
 PlayClip.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible() && !PlayClip.IsJumping && !Play.IsWarning) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
+    if (Play.isShowPauseDialogOn() && !Play.videojs.paused()) Play.clearPause();
     PlayClip.PlayerCheckCount = 0;
     PlayClip.Canjump = true;
 

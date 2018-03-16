@@ -365,8 +365,8 @@ PlayVod.PlayerCheck = function() {
 
 PlayVod.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible() && !PlayVod.IsJumping && !Play.IsWarning) Play.HideWarningDialog();
-    if (Play.WarningDialogVisible() && !Play.IsWarning) Play.HideWarningDialog();
     if (Play.BufferDialogVisible()) Play.HideBufferDialog();
+    if (Play.isShowPauseDialogOn() && !Play.videojs.paused()) Play.clearPause();
     PlayVod.PlayerCheckCount = 0;
     PlayVod.PlayerCheckOffset = 0;
     PlayVod.RestoreFromResume = false;
