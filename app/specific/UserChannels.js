@@ -30,6 +30,7 @@ UserChannels.itemsCountCheck = false;
 
 UserChannels.init = function() {
     Main.Go = Main.UserChannels;
+    SChannels.isLastSChannels = false;
     $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
