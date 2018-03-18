@@ -278,12 +278,10 @@ SmartHub.EventListener = function() {
                     Main.gameSelected = GameIdx;
                     Main.Go = Main.AGame;
 
+                    Main.ExitCurrent(ExitScreen);
                     if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else if (ExitToMain) {
-                        Main.ExitCurrent(ExitScreen);
-                        Main.SwitchScreen();
-                    }
+                    else if (ExitToMain) Main.SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
                     ScreenIdx = JSON.parse(actionData).screenIdx;
@@ -291,12 +289,10 @@ SmartHub.EventListener = function() {
                     ExitScreen = Main.Go;
                     Main.Go = ScreenIdx;
 
+                    Main.ExitCurrent(ExitScreen);
                     if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else if (ExitToMain) {
-                        Main.ExitCurrent(ExitScreen);
-                        Main.SwitchScreen();
-                    }
+                    else if (ExitToMain) Main.SwitchScreen();
                 }
             }
         }
