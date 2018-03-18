@@ -46,7 +46,7 @@
 <div id="auth" style="display: inline-block;">
     <img style="position: flex; float: center; width: 25%; padding-top: 2%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo" />
     <div style="position: flex; width: 100%; height: 100%;">
-        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code</p>
+        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code.<br>Is expected that you are already using the app, have set a user and click on the add a key featuring.</p>
     </div>
     <div style="position: flex; width: 100%; height: 100%;">
         <button id="login" class="button">Authorize</button>
@@ -67,7 +67,7 @@
         if (status.authenticated) {
             document.getElementById('login').classList.add('hidden');
             var session = JSON.parse(sessionStorage.twitch_oauth_session);
-            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app screen (There is only lower case letters)<br><br>' + session.token;
+            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app "add a key" screen acceded via "User" screen (There is only lower case letters)<br><br>' + session.token;
         }
         $('#login').click(function() {
             Twitch.login({
