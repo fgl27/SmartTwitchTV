@@ -239,7 +239,11 @@ SChannelContent.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                Main.Go = Main.Before;
+                if (Main.Before === Main.Svod || Main.Before === Main.Sclip) {
+                    Main.Go = Main.Before;
+                    Main.Before = SChannels.isLastSChannels ? Main.SChannels : Main.UserChannels;
+                    SChannels.isLastSChannels = false;
+                } else Main.Go = Main.Before;
                 SChannelContent.exit();
                 Main.SwitchScreen();
             }

@@ -30,11 +30,13 @@ SChannels.Cell = 'schannels_cell_';
 SChannels.Status = false;
 SChannels.lastData = '';
 SChannels.itemsCountCheck = false;
+SChannels.isLastSChannels = false;
 
 //Variable initialization end
 
 SChannels.init = function() {
     Main.Go = Main.SChannels;
+    SChannels.isLastSChannels = true;
     if (SChannels.lastData !== Search.data) SChannels.Status = false;
     Main.cleanTopLabel();
     $('.lable_user').html(STR_SEARCH);
