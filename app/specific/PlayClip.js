@@ -407,6 +407,7 @@ PlayClip.handleKeyDown = function(e) {
                 } else if (Play.Panelcouner === 2) {
                     PlayClip.speed();
                 } else if (Play.Panelcouner === 3) {
+                    Main.Before = Main.Go;
                     Main.Go = Main.SChannelContent;
                     window.clearTimeout(Play.exitID);
                     $("#play_dialog_exit").hide();
