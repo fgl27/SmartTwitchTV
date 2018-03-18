@@ -98,7 +98,6 @@ Play.Start = function() {
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
-    $("#scene2_speed").hide();
 
     Play.noFallow = false;
     Play.IsWarning = false;
