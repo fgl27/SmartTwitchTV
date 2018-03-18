@@ -386,7 +386,7 @@ Games.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                if (Main.Go === Main.Before) Main.Go = Main.Live;
+                if (Main.Go === Main.Before || Main.Before === Main.AGame) Main.Go = Main.Live;
                 else Main.Go = Main.Before;
                 Games.exit();
                 Main.SwitchScreen();
