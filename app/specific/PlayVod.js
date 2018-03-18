@@ -659,6 +659,7 @@ PlayVod.handleKeyDown = function(e) {
                             PlayVod.setHidePanel();
                         }
                     } else if (Play.Panelcouner === 2) {
+                        Main.Before = Main.Go;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();
