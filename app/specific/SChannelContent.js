@@ -216,7 +216,8 @@ SChannelContent.keyEnter = function() {
     var value = (!SChannelContent.skipImg ? 0 : 1);
     if (SChannelContent.cursorX === (0 - value)) {
         Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
-        Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY + '_' + SChannelContent.cursorX).textContent;
+        Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY +
+            '_' + SChannelContent.cursorX).textContent;
         Main.openStream();
     } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
     else if (SChannelContent.cursorX === (2 - value)) Sclip.init();
@@ -239,9 +240,8 @@ SChannelContent.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                if (Main.Before === Main.Svod || Main.Before === Main.Sclip) {
-                    Main.Go = Main.Before;
-                    Main.Before = SChannels.isLastSChannels ? Main.SChannels : Main.UserChannels;
+                if (Main.Before == Main.Svod || Main.Before == Main.Sclip || Main.Before == Main.SChannelContent) {
+                    Main.Go = SChannels.isLastSChannels ? Main.SChannels : Main.UserChannels;
                     SChannels.isLastSChannels = false;
                 } else Main.Go = Main.Before;
                 SChannelContent.exit();
