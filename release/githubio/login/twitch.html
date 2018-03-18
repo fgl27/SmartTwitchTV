@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <title>Twitch.TV app for Samsung TV authorization page</title>
 <style>
-/*Original page from https://twitchstuff.3v.fi/tokengen/*/
+    /*Original page from https://twitchstuff.3v.fi/tokengen/*/
+
     body {
         background-color: #111111;
         font-family: sans-serif;
@@ -44,14 +45,16 @@
     }
 </style>
 <div id="auth" style="display: inline-block;">
-    <img style="position: flex; float: center; width: 25%; padding-top: 2%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo" />
+    <div>
+        <img style="position: flex; float: center; width: 70%; padding-top: 2%;" src="https://bhb27.github.io/smarttv-twitch/screenshot/Add_key.png" alt="twitchkey" />
+    </div>
     <div style="position: flex; width: 100%; height: 100%;">
-        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code.<br>Is expected that you are already using the app, have set a user and click on the add a key featuring.</p>
+        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Is expected that you are already using the app, have set a user and have clicked on the add Authentication key featuring, and can see the above screen.<br><br>Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code.</p>
     </div>
     <div style="position: flex; width: 100%; height: 100%;">
         <button id="login" class="button">Authorize</button>
         <div id="about" style="position: flex; width: 100%; height: 100%;">
-            <div style="float: center; padding-top: 6%; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/bhb27/smarttv-twitch">github.com/bhb27/smarttv-twitch</a></div>
+            <div style="float: center; padding-top: 4%; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/bhb27/smarttv-twitch">github.com/bhb27/smarttv-twitch</a></div>
         </div>
     </div>
 </div>
@@ -67,7 +70,7 @@
         if (status.authenticated) {
             document.getElementById('login').classList.add('hidden');
             var session = JSON.parse(sessionStorage.twitch_oauth_session);
-            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the app "add a key" screen acceded via "User" screen (There is only lower case letters)<br><br>' + session.token;
+            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the above screen of the app (There is only lower case letters)<br><br>' + session.token;
         }
         $('#login').click(function() {
             Twitch.login({
