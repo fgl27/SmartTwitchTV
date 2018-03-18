@@ -111,7 +111,7 @@ Users.loadDataSuccessFinish = function() {
                 Main.HideLoadDialog();
                 Users.status = true;
                 Users.addFocus();
-                Users.checkTitleStart();
+                if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
             }
 
             Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
