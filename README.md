@@ -99,5 +99,7 @@ Installation guide Tizen studio (tested on Linux ubuntu 16.04 and windows 10 64 
 * If it fail during the instantiation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
 * This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
-## In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
-Inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
+## In doubt or a featuring request [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
+
+* If is a installation problem share the fail LOG and inform yours TV model, computer OS and detailed description of the problem.
+* If is a featuring request try to detailed it a much as possible if is something you can screen shot share the pic.
