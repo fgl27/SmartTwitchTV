@@ -3,10 +3,10 @@ smarttv-twitch
 
 This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not availably for most TV, that is way this project exist.
 
-The application was tested on 4k and 1080p Samsung TV running Tizen 2.4, it full supports all series 6 TV (or up) 1080p to 4k models, some series 5 TV have support but not all, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run Tizen version supported by the application.
+The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run Tizen version supported by the application.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for series 5 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the support is available a new application will be made to support Series 5 TV, and the proper info will be noted here and on the release page.
+Full support for all 2015 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the proper support is available a new application will be added on the release page (https://github.com/bhb27/smarttv-twitch/releases/) informing the support.
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
@@ -16,8 +16,11 @@ In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) info
 Twitch.TV authentication key
 ===============
 
-To be able to fallow/Un fallow and access subscribed only past broadcast is needed to add a Twitch.TV authentication key in the app, the key is generated on the bellow link and through Twitch.TV web site
-## [Twitch.TV app for Samsung TV authorization page](https://bhb27.github.io/smarttv-twitch/release/githubio/login/twitch.html)
+![Add_key](https://bhb27.github.io/smarttv-twitch/screenshot/Add_key.png)
+
+After setting up a user on the app you can add a Twitch.TV authentication key, to be able to fallow and access subscribed only past broadcast. The key is generated on the bellow link through Twitch.TV web site, the link is only a reference as it is displayed on the app screen
+
+## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkey)
 
 About this fork
 ===============
