@@ -129,6 +129,7 @@ echo -e "\\nCompressing Start\\n";
 sed_comp "${html_file[@]}";
 
 if which 'uglifyjs' >/dev/null  ; then
+        npm install uglify-js -g
 	js_comp_ugf "${js_folders[@]}";
         canuglifyjs=1;
 elif which 'yui-compressor' >/dev/null  ; then
