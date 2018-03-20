@@ -528,7 +528,6 @@ Live.handleKeyDown = function(event) {
             Main.showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            AddCode.teste();
             break;
         case TvKeyCode.KEY_YELLOW:
             Main.showControlsDialog();
