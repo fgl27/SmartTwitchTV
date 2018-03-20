@@ -380,13 +380,13 @@ PlayVod.shutdownStream = function() {
     if (PlayVod.isOn) {
         PlayVod.PreshutdownStream();
         Play.exitMain();
-        PlayVod.isOn = false;
     }
 };
 
 PlayVod.PreshutdownStream = function() {
     Play.ClearPlayer();
     PlayVod.ClearVod();
+    PlayVod.isOn = false;
 };
 
 PlayVod.ClearVod = function() {

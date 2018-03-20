@@ -260,11 +260,14 @@ SmartHub.EventListener = function() {
                     }
                     Play.selectedChannel = VideoIdx;
                     Play.selectedChannelDisplayname = VideoTitleIdx;
-                    if (Play.Playing) {
+                    if (Play.isOn) {
                         Play.PreshutdownStream();
                         window.setTimeout(Main.openStream, 10);
-                    } else if (PlayVod.Playing) {
+                    } else if (PlayVod.isOn) {
                         PlayVod.PreshutdownStream();
+                        window.setTimeout(Main.openStream, 10);
+                    } else if (PlayClip.isOn) {
+                        PlayClip.PreshutdownStream();
                         window.setTimeout(Main.openStream, 10);
                     } else {
                         Main.ExitCurrent(Main.Go);
@@ -279,8 +282,9 @@ SmartHub.EventListener = function() {
                     Main.Go = Main.AGame;
 
                     Main.ExitCurrent(ExitScreen);
-                    if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
-                    else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
+                    if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
+                    else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
+                    else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
                     else if (ExitToMain) Main.SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
@@ -290,8 +294,9 @@ SmartHub.EventListener = function() {
                     Main.Go = ScreenIdx;
 
                     Main.ExitCurrent(ExitScreen);
-                    if (Play.Playing) window.setTimeout(Play.shutdownStream, 10);
-                    else if (PlayVod.Playing) window.setTimeout(PlayVod.shutdownStream, 10);
+                    if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
+                    else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
+                    else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
                     else if (ExitToMain) Main.SwitchScreen();
                 }
             }
