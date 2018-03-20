@@ -659,7 +659,7 @@ PlayVod.handleKeyDown = function(e) {
                             PlayVod.setHidePanel();
                         }
                     } else if (Play.Panelcouner === 2) {
-                        Main.Before = Main.Go;
+                        if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();

@@ -204,12 +204,7 @@ AddUser.RestoreUsers = function() {
 
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
         document.addEventListener('visibilitychange', Main.Resume, false);
-    } //else {
-    //AddUser.UsernameArray[0] = ''; // hardcoded user 1
-    //AddUser.UsernameArraySize++;
-    //AddUser.UsernameArray[1] = ''; // hardcoded user 2
-    //AddUser.UsernameArraySize++;
-    //}
+    }
     window.setTimeout(function() {
         SmartHub.Start();
         window.addEventListener('appcontrol', SmartHub.EventListener, false);
