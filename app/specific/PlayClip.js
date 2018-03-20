@@ -32,11 +32,7 @@ PlayClip.Start = function() {
     $("#stream_live_icon").text(Sclip.createdAt);
     $("#stream_live_time").text(Sclip.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
-    $('#label_quality').html(STR_RESET + STR_CLIP);
-    document.getElementById("label_quality").style.paddingLeft = "27%";
-    $("#quality_arrows").hide();
-    $("#quality_name").hide();
-    $("#scene2_speed").show();
+    PlayClip.SetInfo();
 
     PlayClip.SpeedIndex = 2;
     PlayClip.SpeedIndexPosition = 2;
@@ -95,10 +91,23 @@ PlayClip.Start = function() {
 };
 
 PlayClip.Resume = function() {
-    if (document.hidden) {
-        PlayClip.shutdownStream();
-        Play.offPlayer();
-    }
+    if (document.hidden) PlayClip.shutdownStream();
+};
+
+PlayClip.SetInfo = function() {
+    $('#label_quality').html(STR_RESET + STR_CLIP);
+    document.getElementById("label_quality").style.paddingLeft = "27%";
+    $("#quality_arrows").hide();
+    $("#quality_name").hide();
+    $("#scene2_speed").show();
+};
+
+PlayClip.UnSetInfo = function() {
+    $('#label_quality').html(STR_QUALITY);
+    document.getElementById("label_quality").style.paddingLeft = "5%";
+    $("#quality_arrows").show();
+    $("#quality_name").show();
+    $("#scene2_speed").hide();
 };
 
 PlayClip.PlayerCheck = function() {
@@ -122,12 +131,8 @@ PlayClip.shutdownStream = function() {
 
         document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
         document.removeEventListener('visibilitychange', PlayClip.Resume);
-        $('#label_quality').html(STR_QUALITY);
-        document.getElementById("label_quality").style.paddingLeft = "5%";
-        $("#quality_arrows").show();
-        $("#quality_name").show();
         PlayClip.hidePanel();
-
+        PlayClip.UnSetInfo();
         Play.exitMain();
 
         window.clearInterval(PlayClip.streamCheck);
