@@ -18,7 +18,7 @@ Twitch.TV authentication key
 
 ![Add_key](https://bhb27.github.io/smarttv-twitch/screenshot/Add_key.png)
 
-After setting up a user on the app you can add a Twitch.TV authentication key, to be able to fallow and access subscribed only past broadcast. The key is generated on the bellow link through Twitch.TV web site, the link is only a reference as it is displayed on the app screen
+After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow and access subscribed only past broadcast as described on the above screen shot. The key is generated on the bellow link through Twitch.TV web site, the link bellow is the same showed on the application screen.
 
 ## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkey)
 
