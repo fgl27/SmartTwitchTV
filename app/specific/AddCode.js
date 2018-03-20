@@ -159,12 +159,7 @@ AddCode.RestoreUsers = function() {
         for (var x = 0; x < AddCode.UsercodeArraySize; x++) {
             AddCode.UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
         }
-    } //else {
-    //AddCode.UsercodeArray[0] = ''; // hardcoded code 1
-    //AddCode.UsercodeArraySize++;
-    //AddCode.UsercodeArray[1] = ''; // hardcoded code 2
-    //AddCode.UsercodeArraySize++;
-    //}
+    }
     AddCode.SetDefaultOAuth(0);
 };
 

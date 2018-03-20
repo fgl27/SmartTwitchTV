@@ -1036,7 +1036,7 @@ Play.handleKeyDown = function(e) {
                         Main.selectedChannel_id = AddCode.userChannel;
                         Main.selectedChannelDisplayname = Play.selectedChannelDisplayname;
                         Main.selectedChannelChannelLogo = Play.selectedChannelChannelLogo;
-                        Main.Before = Main.Go;
+                       if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();
