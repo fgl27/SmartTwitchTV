@@ -536,13 +536,13 @@ Play.shutdownStream = function() {
     if (Play.isOn) {
         Play.PreshutdownStream();
         Play.exitMain();
-        Play.isOn = false;
     }
 };
 
 Play.PreshutdownStream = function() {
     Play.ClearPlayer();
     Play.ClearPlay();
+    Play.isOn = false;
 };
 
 Play.exitMain = function() {

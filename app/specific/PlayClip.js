@@ -127,17 +127,20 @@ PlayClip.PlayerCheck = function() {
 
 PlayClip.shutdownStream = function() {
     if (PlayClip.isOn) {
-        Play.ClearPlayer();
-
-        document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
-        document.removeEventListener('visibilitychange', PlayClip.Resume);
-        PlayClip.hidePanel();
-        PlayClip.UnSetInfo();
+        PlayClip.PreshutdownStream();
         Play.exitMain();
-
-        window.clearInterval(PlayClip.streamCheck);
-        PlayClip.isOn = false;
     }
+};
+
+PlayClip.PreshutdownStream = function() {
+    Play.ClearPlayer();
+    document.body.removeEventListener("keydown", PlayClip.handleKeyDown);
+    document.removeEventListener('visibilitychange', PlayClip.Resume);
+    PlayClip.hidePanel();
+    PlayClip.UnSetInfo();
+
+    window.clearInterval(PlayClip.streamCheck);
+    PlayClip.isOn = false;
 };
 
 PlayClip.updateCurrentTime = function(currentTime) {
