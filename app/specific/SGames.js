@@ -167,8 +167,6 @@ SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
         '<div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div></div>');
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 SGames.loadDataSuccessFinish = function() {
     if (!SGames.Status) {
         Main.HideLoadDialog();

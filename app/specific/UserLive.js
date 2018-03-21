@@ -292,8 +292,6 @@ UserLive.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 UserLive.loadDataSuccessFinish = function() {
     if (!UserLive.status) {
         if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);

@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function SChannels() {}
-SChannels.Thumbnail = 'thumbnail_schannels_';
-SChannels.EmptyCell = 'schannelsempty_';
 SChannels.cursorY = 0;
 SChannels.cursorX = 0;
 SChannels.dataEnded = false;
@@ -23,6 +21,9 @@ SChannels.ReplacedataEnded = false;
 SChannels.MaxOffset = 0;
 SChannels.emptyContent = false;
 
+SChannels.Img = 'img_schannels';
+SChannels.Thumbnail = 'thumbnail_schannels_';
+SChannels.EmptyCell = 'schannelsempty_';
 SChannels.ThumbnailDiv = 'schannels_thumbnail_div_';
 SChannels.DispNameDiv = 'schannels_display_name_';
 SChannels.StreamTitleDiv = 'schannels_stream_title_';
@@ -193,13 +194,14 @@ SChannels.createCell = function(row_id, coloumn_id, channel_name, _id, preview_t
 };
 
 SChannels.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, SChannels.Thumbnail, row_id, coloumn_id);
+    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, SChannels.Img, row_id, coloumn_id);
     SChannels.nameMatrix[SChannels.nameMatrixCount] = channel_name;
     SChannels.nameMatrixCount++;
 };
 
 SChannels.CellHtml = function(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
-    return '<img id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
+    return '<div id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + SChannels.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + SChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
 };
@@ -212,45 +214,38 @@ SChannels.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 SChannels.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SChannels.Status) {
-                if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-                else SChannels.Status = true;
+    if (!SChannels.Status) {
+        if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else SChannels.Status = true;
 
-                Main.ReplaceTable('stream_table_search_channel');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    SChannels.addFocus();
-                    Main.LoadImagesPre(IMG_404_LOGO);
+        Main.ReplaceTable('stream_table_search_channel');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            SChannels.addFocus();
+            Main.LoadImagesPre(IMG_404_LOGO);
 
-                    SChannels.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_search_channel');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_LOGO);
-
-                    if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
-                        SChannels.loadingMore = true;
-                        SChannels.loadDataPrepare();
-                        SChannels.loadDataReplace();
-                        return;
-                    } else {
-                        SChannels.blankCellCount = 0;
-                        SChannels.blankCellVector = [];
-                    }
-
-                    SChannels.loadingData = false;
-                    SChannels.loadingMore = false;
-                });
-            }
+            SChannels.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_search_channel');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_LOGO);
+
+            if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
+                SChannels.loadingMore = true;
+                SChannels.loadDataPrepare();
+                SChannels.loadDataReplace();
+                return;
+            } else {
+                SChannels.blankCellCount = 0;
+                SChannels.blankCellVector = [];
+            }
+
+            SChannels.loadingData = false;
+            SChannels.loadingMore = false;
+        });
+    }
 };
 
 SChannels.loadDataReplace = function() {
