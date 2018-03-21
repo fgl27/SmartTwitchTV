@@ -179,8 +179,10 @@ SGames.loadDataSuccessFinish = function() {
                 else SGames.Status = true;
             }
             Main.ReplaceTable('stream_table_search_game');
-            Main.LoadImagesPre(IMG_404_GAME);
-            SGames.loadingData = false;
+            $(document).ready(function() {
+                Main.LoadImagesPre(IMG_404_GAME);
+                SGames.loadingData = false;
+            });
         });
 };
 

@@ -224,28 +224,31 @@ UserGames.loadDataSuccessFinish = function() {
                 else UserGames.Status = true;
 
                 Main.ReplaceTable('stream_table_user_games');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    UserGames.addFocus();
+                    Main.LoadImagesPre(IMG_404_GAME);
 
-                Main.HideLoadDialog();
-                UserGames.addFocus();
-                Main.LoadImagesPre(IMG_404_GAME);
-
-                UserGames.loadingData = false;
+                    UserGames.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_user_games');
-                Main.LoadImagesPre(IMG_404_GAME);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_GAME);
 
-                if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
-                    UserGames.loadingMore = true;
-                    UserGames.loadDataPrepare();
-                    UserGames.loadDataReplace();
-                    return;
-                } else {
-                    UserGames.blankCellCount = 0;
-                    UserGames.blankCellVector = [];
-                }
+                    if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
+                        UserGames.loadingMore = true;
+                        UserGames.loadDataPrepare();
+                        UserGames.loadDataReplace();
+                        return;
+                    } else {
+                        UserGames.blankCellCount = 0;
+                        UserGames.blankCellVector = [];
+                    }
 
-                UserGames.loadingData = false;
-                UserGames.loadingMore = false;
+                    UserGames.loadingData = false;
+                    UserGames.loadingMore = false;
+                });
             }
         });
 };

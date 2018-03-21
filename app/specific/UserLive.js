@@ -306,29 +306,31 @@ UserLive.loadDataSuccessFinish = function() {
                 else UserLive.status = true;
 
                 Main.ReplaceTable('stream_table_user_live');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    UserLive.addFocus();
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.HideLoadDialog();
-                UserLive.addFocus();
-                Main.LoadImagesPre(IMG_404_VIDEO);
-
-                UserLive.loadingData = false;
+                    UserLive.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_user_live');
-                Main.LoadImagesPre(IMG_404_VIDEO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
-                    UserLive.loadingMore = true;
-                    UserLive.loadDataPrepare();
-                    UserLive.loadChannelsReplace();
-                    return;
-                } else {
-                    UserLive.blankCellCount = 0;
-                    UserLive.blankCellVector = [];
-                }
+                    if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
+                        UserLive.loadingMore = true;
+                        UserLive.loadDataPrepare();
+                        UserLive.loadChannelsReplace();
+                        return;
+                    } else {
+                        UserLive.blankCellCount = 0;
+                        UserLive.blankCellVector = [];
+                    }
 
-                UserLive.loadingData = false;
-                UserLive.loadingMore = false;
-
+                    UserLive.loadingData = false;
+                    UserLive.loadingMore = false;
+                });
             }
         });
 };

@@ -224,28 +224,31 @@ SChannels.loadDataSuccessFinish = function() {
                 else SChannels.Status = true;
 
                 Main.ReplaceTable('stream_table_search_channel');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    SChannels.addFocus();
+                    Main.LoadImagesPre(IMG_404_LOGO);
 
-                Main.HideLoadDialog();
-                SChannels.addFocus();
-                Main.LoadImagesPre(IMG_404_LOGO);
-
-                SChannels.loadingData = false;
+                    SChannels.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_search_channel');
-                Main.LoadImagesPre(IMG_404_LOGO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_LOGO);
 
-                if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
-                    SChannels.loadingMore = true;
-                    SChannels.loadDataPrepare();
-                    SChannels.loadDataReplace();
-                    return;
-                } else {
-                    SChannels.blankCellCount = 0;
-                    SChannels.blankCellVector = [];
-                }
+                    if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
+                        SChannels.loadingMore = true;
+                        SChannels.loadDataPrepare();
+                        SChannels.loadDataReplace();
+                        return;
+                    } else {
+                        SChannels.blankCellCount = 0;
+                        SChannels.blankCellVector = [];
+                    }
 
-                SChannels.loadingData = false;
-                SChannels.loadingMore = false;
+                    SChannels.loadingData = false;
+                    SChannels.loadingMore = false;
+                });
             }
         });
 };

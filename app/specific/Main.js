@@ -491,12 +491,16 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
 
 Main.ReplaceTable = function(table) {
     document.getElementById(table).innerHTML = document.getElementById(Main.TempTable).innerHTML;
-    $('#' + Main.TempTable).empty();
+    $(document).ready(function() {
+        $('#' + Main.TempTable).empty();
+    });
 };
 
 Main.appendTable = function(table) {
     $('#' + table).append(document.getElementById(Main.TempTable).innerHTML);
-    $('#' + Main.TempTable).empty();
+    $(document).ready(function() {
+        $('#' + Main.TempTable).empty();
+    });
 };
 
 Main.NetworkStateChangeListenerStart = function() {

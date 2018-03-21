@@ -210,19 +210,21 @@ UserChannels.loadDataSuccessFinish = function() {
                 else UserChannels.Status = true;
 
                 Main.ReplaceTable('stream_table_user_channels');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    UserChannels.addFocus();
+                    Main.LoadImagesPre(IMG_404_LOGO);
 
-                Main.HideLoadDialog();
-                UserChannels.addFocus();
-                Main.LoadImagesPre(IMG_404_LOGO);
-
-                UserChannels.loadingData = false;
+                    UserChannels.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_user_channels');
-                Main.LoadImagesPre(IMG_404_LOGO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_LOGO);
 
-                UserChannels.loadingData = false;
-                UserChannels.loadingMore = false;
-
+                    UserChannels.loadingData = false;
+                    UserChannels.loadingMore = false;
+                });
             }
         });
 };

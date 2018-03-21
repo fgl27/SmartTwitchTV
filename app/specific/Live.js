@@ -230,34 +230,38 @@ Live.loadDataSuccessFinish = function() {
                 Live.Status = true;
 
                 Main.ReplaceTable('stream_table_live');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    Live.addFocus();
+                    $('#toolbar').show();
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.HideLoadDialog();
-                Live.addFocus();
-                $('#toolbar').show();
-                Main.LoadImagesPre(IMG_404_VIDEO);
-
-                Live.loadingData = false;
-
-                if (!Live.checkVersion) {
-                    Live.checkVersion = true;
-                    if (Main.checkVersion()) Main.showUpdateDialog();
-                }
+                    Live.loadingData = false;
+                });
+                // TODO reeneable this when there is a update
+                //if (!Live.checkVersion) {
+                //    Live.checkVersion = true;
+                //    if (Main.checkVersion()) Main.showUpdateDialog();
+                //}
             } else {
                 Main.appendTable('stream_table_live');
-                Main.LoadImagesPre(IMG_404_VIDEO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_VIDEO);
+                    console.log('in     ' + Date.now());
+                    if (Live.blankCellCount > 0 && !Live.dataEnded) {
+                        Live.loadingMore = true;
+                        Live.loadDataPrepare();
+                        Live.loadDataReplace();
+                        console.log('replace');
+                        return;
+                    } else {
+                        Live.blankCellCount = 0;
+                        Live.blankCellVector = [];
+                    }
 
-                if (Live.blankCellCount > 0 && !Live.dataEnded) {
-                    Live.loadingMore = true;
-                    Live.loadDataPrepare();
-                    Live.loadDataReplace();
-                    return;
-                } else {
-                    Live.blankCellCount = 0;
-                    Live.blankCellVector = [];
-                }
-
-                Live.loadingData = false;
-                Live.loadingMore = false;
+                    Live.loadingData = false;
+                    Live.loadingMore = false;
+                });
             }
         });
 };

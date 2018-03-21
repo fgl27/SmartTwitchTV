@@ -252,28 +252,31 @@ Sclip.loadDataSuccessFinish = function() {
                 else Sclip.status = true;
 
                 Main.ReplaceTable('stream_table_search_clip');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    Sclip.addFocus();
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.HideLoadDialog();
-                Sclip.addFocus();
-                Main.LoadImagesPre(IMG_404_VIDEO);
-
-                Sclip.loadingData = false;
+                    Sclip.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_search_clip');
-                Main.LoadImagesPre(IMG_404_VIDEO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
-                    Sclip.loadingMore = true;
-                    Sclip.loadDataPrepare();
-                    Sclip.loadDataReplace();
-                    return;
-                } else {
-                    Sclip.blankCellCount = 0;
-                    Sclip.blankCellVector = [];
-                }
+                    if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
+                        Sclip.loadingMore = true;
+                        Sclip.loadDataPrepare();
+                        Sclip.loadDataReplace();
+                        return;
+                    } else {
+                        Sclip.blankCellCount = 0;
+                        Sclip.blankCellVector = [];
+                    }
 
-                Sclip.loadingData = false;
-                Sclip.loadingMore = false;
+                    Sclip.loadingData = false;
+                    Sclip.loadingMore = false;
+                });
             }
         });
 
