@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function Svod() {}
-Svod.Thumbnail = 'thumbnail_svod_';
-Svod.EmptyCell = 'svodempty_';
 Svod.cursorY = 0;
 Svod.cursorX = 0;
 Svod.dataEnded = false;
@@ -25,6 +23,9 @@ Svod.DurationSeconds = 0;
 Svod.emptyContent = false;
 Svod.itemsCountCheck = false;
 
+Svod.Img = 'img_svod';
+Svod.Thumbnail = 'thumbnail_svod_';
+Svod.EmptyCell = 'svodempty_';
 Svod.ThumbnailDiv = 'svod_thumbnail_div_';
 Svod.DispNameDiv = 'svod_display_name_';
 Svod.StreamTitleDiv = 'svod_stream_title_';
@@ -204,13 +205,14 @@ Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
 };
 
 Svod.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrixVod(preview_thumbnail, Main.ColoumnsCountVideo, Svod.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrixVod(preview_thumbnail, Main.ColoumnsCountVideo, Svod.Img, row_id, coloumn_id, Main.VideoSize);
     Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
     Svod.nameMatrixCount++;
 };
 
 Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality) {
-    return '<img id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Svod.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div>' +
         '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -229,45 +231,38 @@ Svod.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 Svod.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Svod.status) {
-                if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-                else Svod.status = true;
+    if (!Svod.status) {
+        if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+        else Svod.status = true;
 
-                Main.ReplaceTable('stream_table_search_vod');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    Svod.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
+        Main.ReplaceTable('stream_table_search_vod');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            Svod.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                    Svod.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_search_vod');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
-                        Svod.loadingMore = true;
-                        Svod.loadDataPrepare();
-                        Svod.loadDataReplace();
-                        return;
-                    } else {
-                        Svod.blankCellCount = 0;
-                        Svod.blankCellVector = [];
-                    }
-
-                    Svod.loadingData = false;
-                    Svod.loadingMore = false;
-                });
-            }
+            Svod.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_search_vod');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+
+            if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
+                Svod.loadingMore = true;
+                Svod.loadDataPrepare();
+                Svod.loadDataReplace();
+                return;
+            } else {
+                Svod.blankCellCount = 0;
+                Svod.blankCellVector = [];
+            }
+
+            Svod.loadingData = false;
+            Svod.loadingMore = false;
+        });
+    }
 };
 
 Svod.loadDataReplace = function() {

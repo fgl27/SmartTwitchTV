@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function SChannelContent() {}
-SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
-SChannelContent.EmptyCell = 'schannels_cont_empty_';
 SChannelContent.cursorY = 0;
 SChannelContent.cursorX = 0;
 SChannelContent.dataEnded = false;
@@ -18,6 +16,9 @@ SChannelContent.LastClickFinish = true;
 SChannelContent.keyClickDelayTime = 25;
 SChannelContent.skipImg = false;
 
+SChannelContent.Img = 'img_schannels';
+SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
+SChannelContent.EmptyCell = 'schannels_cont_empty_';
 SChannelContent.ThumbnailDiv = 'schannels_cont_thumbnail_div_';
 SChannelContent.DispNameDiv = 'schannels_cont_display_name_';
 SChannelContent.StreamTitleDiv = 'schannels_cont_stream_title_';
@@ -147,11 +148,12 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
-    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Thumbnail + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
     SChannelContent.imgMatrixCount++;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
+        row_id + '_' + coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -164,11 +166,12 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
 
 SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
-    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Thumbnail + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
     SChannelContent.imgMatrixCount++;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<img id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
+        row_id + '_' + coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
@@ -177,22 +180,15 @@ SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stre
         '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 SChannelContent.loadDataSuccessFinish = function() {
-    $('#stream_table_search_channel_a').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SChannelContent.status) {
-                Main.HideLoadDialog();
-                SChannelContent.status = true;
-                SChannelContent.addFocus();
-                Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-            }
-            Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
-            SChannelContent.loadingData = false;
-        });
+    if (!SChannelContent.status) {
+        Main.HideLoadDialog();
+        SChannelContent.status = true;
+        SChannelContent.addFocus();
+        Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+    }
+    Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
+    SChannelContent.loadingData = false;
 };
 
 SChannelContent.addFocus = function() {

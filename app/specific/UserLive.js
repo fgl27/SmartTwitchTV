@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function UserLive() {}
-UserLive.Thumbnail = 'thumbnail_ulive_';
-UserLive.EmptyCell = 'uliveempty_';
 UserLive.cursorY = 0;
 UserLive.cursorX = 0;
 UserLive.dataEnded = false;
@@ -24,6 +22,9 @@ UserLive.MaxOffset = 0;
 UserLive.loadChannelOffsset = 0;
 UserLive.emptyContent = false;
 
+UserLive.Img = 'img_ulive';
+UserLive.Thumbnail = 'thumbnail_ulive_';
+UserLive.EmptyCell = 'uliveempty_';
 UserLive.ThumbnailDiv = 'ulive_thumbnail_div_';
 UserLive.DispNameDiv = 'ulive_display_name_';
 UserLive.StreamTitleDiv = 'ulive_stream_title_';
@@ -154,9 +155,6 @@ UserLive.loadChannelLive = function(responseText) {
         UserLive.loadChannels();
     } else { // end
         UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
-        UserLive.imgMatrix = [];
-        UserLive.imgMatrixId = [];
-        UserLive.imgMatrixCount = 0;
         UserLive.loadingData = true;
         UserLive.loadingDataTry = 0;
         UserLive.loadingDataTimeout = 3500;
@@ -269,13 +267,14 @@ UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
 };
 
 UserLive.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserLive.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserLive.Img, row_id, coloumn_id, Main.VideoSize);
     UserLive.nameMatrix[UserLive.nameMatrixCount] = channel_name;
     UserLive.nameMatrixCount++;
 };
 
 UserLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
-    return '<img id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + UserLive.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -296,43 +295,37 @@ UserLive.CellExists = function(display_name) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 UserLive.loadDataSuccessFinish = function() {
+    if (!UserLive.status) {
+        if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+        else UserLive.status = true;
 
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserLive.status) {
-                if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
-                else UserLive.status = true;
+        Main.ReplaceTable('stream_table_user_live');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            UserLive.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.ReplaceTable('stream_table_user_live');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    UserLive.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    UserLive.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_user_live');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
-                        UserLive.loadingMore = true;
-                        UserLive.loadDataPrepare();
-                        UserLive.loadChannelsReplace();
-                        return;
-                    } else {
-                        UserLive.blankCellCount = 0;
-                        UserLive.blankCellVector = [];
-                    }
-
-                    UserLive.loadingData = false;
-                    UserLive.loadingMore = false;
-                });
-            }
+            UserLive.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_user_live');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+
+            if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
+                UserLive.loadingMore = true;
+                UserLive.loadDataPrepare();
+                UserLive.loadChannelsReplace();
+                return;
+            } else {
+                UserLive.blankCellCount = 0;
+                UserLive.blankCellVector = [];
+            }
+
+            UserLive.loadingData = false;
+            UserLive.loadingMore = false;
+        });
+    }
 };
 
 

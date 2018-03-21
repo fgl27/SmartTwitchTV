@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function Sclip() {}
-Sclip.Thumbnail = 'thumbnail_sclip_';
-Sclip.EmptyCell = 'sclipempty_';
 Sclip.cursorY = 0;
 Sclip.cursorX = 0;
 Sclip.dataEnded = false;
@@ -23,6 +21,9 @@ Sclip.MaxOffset = 0;
 Sclip.DurationSeconds = 0;
 Sclip.emptyContent = false;
 
+Sclip.Img = 'img_sclip';
+Sclip.Thumbnail = 'thumbnail_sclip_';
+Sclip.EmptyCell = 'sclipempty_';
 Sclip.ThumbnailDiv = 'sclip_thumbnail_div_';
 Sclip.DispNameDiv = 'sclip_display_name_';
 Sclip.StreamTitleDiv = 'sclip_video_created_at_';
@@ -213,13 +214,14 @@ Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
 };
 
 Sclip.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Sclip.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Sclip.Img, row_id, coloumn_id, Main.VideoSize);
     Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
     Sclip.nameMatrixCount++;
 };
 
 Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game) {
-    return '<img id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Sclip.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + video_title + '</div>' +
         '<div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div>' +
@@ -239,47 +241,38 @@ Sclip.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 Sclip.loadDataSuccessFinish = function() {
+    if (!Sclip.status) {
+        if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
+        else Sclip.status = true;
 
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Sclip.status) {
-                if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
-                else Sclip.status = true;
+        Main.ReplaceTable('stream_table_search_clip');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            Sclip.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.ReplaceTable('stream_table_search_clip');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    Sclip.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    Sclip.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_search_clip');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
-                        Sclip.loadingMore = true;
-                        Sclip.loadDataPrepare();
-                        Sclip.loadDataReplace();
-                        return;
-                    } else {
-                        Sclip.blankCellCount = 0;
-                        Sclip.blankCellVector = [];
-                    }
-
-                    Sclip.loadingData = false;
-                    Sclip.loadingMore = false;
-                });
-            }
+            Sclip.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_search_clip');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
+            if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
+                Sclip.loadingMore = true;
+                Sclip.loadDataPrepare();
+                Sclip.loadDataReplace();
+                return;
+            } else {
+                Sclip.blankCellCount = 0;
+                Sclip.blankCellVector = [];
+            }
+
+            Sclip.loadingData = false;
+            Sclip.loadingMore = false;
+        });
+    }
 };
 
 Sclip.loadDataReplace = function() {

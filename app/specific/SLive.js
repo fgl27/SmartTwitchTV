@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function SLive() {}
-SLive.Thumbnail = 'thumbnail_slive_';
-SLive.EmptyCell = 'sliveempty_';
 SLive.cursorY = 0;
 SLive.cursorX = 0;
 SLive.dataEnded = false;
@@ -23,6 +21,9 @@ SLive.ReplacedataEnded = false;
 SLive.MaxOffset = 0;
 SLive.emptyContent = false;
 
+SLive.Img = 'img_slive';
+SLive.Thumbnail = 'thumbnail_slive_';
+SLive.EmptyCell = 'sliveempty_';
 SLive.ThumbnailDiv = 'slive_thumbnail_div_';
 SLive.DispNameDiv = 'slive_display_name_';
 SLive.StreamTitleDiv = 'slive_stream_title_';
@@ -192,13 +193,14 @@ SLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
 };
 
 SLive.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, SLive.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, SLive.Img, row_id, coloumn_id, Main.VideoSize);
     SLive.nameMatrix[SLive.nameMatrixCount] = channel_name;
     SLive.nameMatrixCount++;
 };
 
 SLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
-    return '<img id="' + SLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + SLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SLive.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + SLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + SLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -216,46 +218,38 @@ SLive.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 SLive.loadDataSuccessFinish = function() {
+    if (!SLive.Status) {
+        if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else SLive.Status = true;
 
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SLive.Status) {
-                if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-                else SLive.Status = true;
+        Main.ReplaceTable('stream_table_search_live');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            SLive.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.ReplaceTable('stream_table_search_live');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    SLive.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    SLive.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_search_live');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
-                        SLive.loadingMore = true;
-                        SLive.loadDataPrepare();
-                        SLive.loadDataReplace();
-                        return;
-                    } else {
-                        SLive.blankCellCount = 0;
-                        SLive.blankCellVector = [];
-                    }
-
-                    SLive.loadingData = false;
-                    SLive.loadingMore = false;
-                });
-            }
+            SLive.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_search_live');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+
+            if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
+                SLive.loadingMore = true;
+                SLive.loadDataPrepare();
+                SLive.loadDataReplace();
+                return;
+            } else {
+                SLive.blankCellCount = 0;
+                SLive.blankCellVector = [];
+            }
+
+            SLive.loadingData = false;
+            SLive.loadingMore = false;
+        });
+    }
 };
 
 SLive.loadDataReplace = function() {

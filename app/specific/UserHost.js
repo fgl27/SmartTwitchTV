@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function UserHost() {}
-UserHost.Thumbnail = 'thumbnail_hlive_';
-UserHost.EmptyCell = 'hliveempty_';
 UserHost.cursorY = 0;
 UserHost.cursorX = 0;
 UserHost.dataEnded = false;
@@ -23,6 +21,9 @@ UserHost.ReplacedataEnded = false;
 UserHost.MaxOffset = 0;
 UserHost.emptyContent = false;
 
+UserHost.Img = 'img_hlive';
+UserHost.Thumbnail = 'thumbnail_hlive_';
+UserHost.EmptyCell = 'hliveempty_';
 UserHost.ThumbnailDiv = 'hlive_thumbnail_div_';
 UserHost.DispNameDiv = 'hlive_display_name_';
 UserHost.hostsTitleDiv = 'hlive_hosts_title_';
@@ -195,13 +196,14 @@ UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbna
 };
 
 UserHost.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserHost.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserHost.Img, row_id, coloumn_id, Main.VideoSize);
     UserHost.nameMatrix[UserHost.nameMatrixCount] = channel_name;
     UserHost.nameMatrixCount++;
 };
 
 UserHost.CellHtml = function(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers) {
-    return '<img id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + UserHost.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + UserHost.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserHost.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserHost.hostsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_title + '</div>' +
@@ -218,45 +220,38 @@ UserHost.CellExists = function(display_name) {
     return false;
 };
 
-//prevent hosts_text/title/info from load before the thumbnail and display a odd hosts_table squashed only with names source
-//https://imagesloaded.desandro.com/
 UserHost.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserHost.status) {
-                if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
-                else UserHost.status = true;
+    if (!UserHost.status) {
+        if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+        else UserHost.status = true;
 
-                Main.ReplaceTable('stream_table_user_host');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    UserHost.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
+        Main.ReplaceTable('stream_table_user_host');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            UserHost.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                    UserHost.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_user_host');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
-                        UserHost.loadingMore = true;
-                        UserHost.loadDataPrepare();
-                        UserHost.loadDataReplace();
-                        return;
-                    } else {
-                        UserHost.blankCellCount = 0;
-                        UserHost.blankCellVector = [];
-                    }
-
-                    UserHost.loadingData = false;
-                    UserHost.loadingMore = false;
-                });
-            }
+            UserHost.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_user_host');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+
+            if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
+                UserHost.loadingMore = true;
+                UserHost.loadDataPrepare();
+                UserHost.loadDataReplace();
+                return;
+            } else {
+                UserHost.blankCellCount = 0;
+                UserHost.blankCellVector = [];
+            }
+
+            UserHost.loadingData = false;
+            UserHost.loadingMore = false;
+        });
+    }
 };
 
 UserHost.loadChannelsReplace = function() {
