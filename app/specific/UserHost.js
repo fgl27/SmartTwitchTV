@@ -348,17 +348,19 @@ UserHost.replaceCellEmpty = function(id, channel_name, preview_thumbnail, hosts_
 };
 
 UserHost.addFocus = function() {
+
+    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
+        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv, Main.UserHost, Main.ColoumnsCountVideo, UserHost.itemsCount);
+
+    if (UserHost.cursorY > 3) Main.LazyImgVideo(UserHost.Img, UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+
+
     if (((UserHost.cursorY + Main.ItemsReloadLimitVideo) > (UserHost.itemsCount / Main.ColoumnsCountVideo)) &&
         !UserHost.dataEnded && !UserHost.loadingMore) {
         UserHost.loadingMore = true;
         UserHost.loadDataPrepare();
         UserHost.loadChannels();
     }
-
-    if (UserHost.cursorY >= 4) Main.LazyImgVideo(UserHost.Img, UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
-    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
-        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv, Main.UserHost, Main.ColoumnsCountVideo, UserHost.itemsCount);
 };
 
 UserHost.removeFocus = function() {
