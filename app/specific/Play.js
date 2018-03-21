@@ -437,7 +437,7 @@ Play.onPlayer = function() {
             this.on('loadedmetadata', function() {
                 // sync chat and stream
                 document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-                    Play.selectedChannel + '&fade=100&bot_activity=true&prevent_clipping=false';
+                    Play.selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
             });
 
         });
