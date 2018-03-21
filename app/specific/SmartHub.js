@@ -164,15 +164,18 @@ function previewDataGeneratorEmpty() {
     var data = '{"sections":[';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
+    '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_USER_ADD + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_add_user.png","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"16by9","image_url":"' +
+    IMG_SMART_USER + '","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
+    '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
@@ -214,25 +217,28 @@ function previewDataGenerator() {
     if (SmartHub.usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.usergames.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] +
+            data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub.usergamesimg[i] +
                 '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
         } else {
-            data += ',{"title":"' + SmartHub.usergames[i] + '","image_ratio":"16by9","image_url":"' + SmartHub.usergamesimg[i] +
+            data += ',{"title":"' + SmartHub.usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub.usergamesimg[i] +
                 '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
         }
     }
     if (SmartHub.usergames.length > 0) data += ']},';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_live.png","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
+    '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_USER + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"16by9","image_url":"' + GIT_IO +
+    'smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"2by3","image_url":"https://bhb27.github.io/smarttv-twitch/release/githubio/images/smart_games.png","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
+    '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
