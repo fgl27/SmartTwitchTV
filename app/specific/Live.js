@@ -2,6 +2,7 @@
 //Variable initialization
 function Live() {}
 Live.Status = false;
+Live.Img =  'img_live';
 Live.Thumbnail = 'thumbnail_live';
 Live.ThumbnailDiv = 'live_thumbnail_div_';
 Live.DispNameDiv = 'live_display_name_';
@@ -193,13 +194,14 @@ Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, 
 };
 
 Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Live.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Live.Img, row_id, coloumn_id, Main.VideoSize);
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
 };
 
 Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
-    return '<img id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Live.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + Live.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Live.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + Live.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -217,53 +219,42 @@ Live.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names run only on the first screen load
-//source https://imagesloaded.desandro.com/
-//Load all content to a temp table so imagesLoaded only analysis the last 100 (100 is the max value that can be loaded) items loaded instead of all items
-//With is better then run it on all 1000+ items that the table can have
 Live.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Live.Status) {
-                Live.Status = true;
+    if (!Live.Status) {
+        Live.Status = true;
 
-                Main.ReplaceTable('stream_table_live');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    Live.addFocus();
-                    $('#toolbar').show();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
+        Main.ReplaceTable('stream_table_live');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            Live.addFocus();
+            $('#toolbar').show();
+            //Main.LoadImagesPre(IMG_404_VIDEO);
 
-                    Live.loadingData = false;
-                });
-                // TODO reeneable this when there is a update
-                //if (!Live.checkVersion) {
-                //    Live.checkVersion = true;
-                //    if (Main.checkVersion()) Main.showUpdateDialog();
-                //}
-            } else {
-                Main.appendTable('stream_table_live');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-                    console.log('in     ' + Date.now());
-                    if (Live.blankCellCount > 0 && !Live.dataEnded) {
-                        Live.loadingMore = true;
-                        Live.loadDataPrepare();
-                        Live.loadDataReplace();
-                        console.log('replace');
-                        return;
-                    } else {
-                        Live.blankCellCount = 0;
-                        Live.blankCellVector = [];
-                    }
-
-                    Live.loadingData = false;
-                    Live.loadingMore = false;
-                });
-            }
+            Live.loadingData = false;
         });
+        // TODO re enable this when there is a update
+        //if (!Live.checkVersion) {
+        //    Live.checkVersion = true;
+        //    if (Main.checkVersion()) Main.showUpdateDialog();
+        //}
+    } else {
+        Main.appendTable('stream_table_live');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+            if (Live.blankCellCount > 0 && !Live.dataEnded) {
+                Live.loadingMore = true;
+                Live.loadDataPrepare();
+                Live.loadDataReplace();
+                return;
+            } else {
+                Live.blankCellCount = 0;
+                Live.blankCellVector = [];
+            }
+
+            Live.loadingData = false;
+            Live.loadingMore = false;
+        });
+    }
 };
 
 Live.loadDataReplace = function() {
