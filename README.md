@@ -34,7 +34,6 @@ So I work alone writing a new application from scratch focusing on performance a
 
 Project Dependencies
 ==============
-* [imagesLoaded - JavaScript is all like "You images done yet or what?" by desandro](https://github.com/desandro/imagesloaded)
 * [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
 * [Video.js - HTML5 Video Player](https://github.com/videojs/video.js)
 * [jQuery - fast, small, and feature-rich JavaScript library](https://code.jquery.com/jquery/)
