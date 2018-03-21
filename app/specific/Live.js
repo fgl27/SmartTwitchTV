@@ -232,11 +232,10 @@ Live.loadDataSuccessFinish = function() {
 
             Live.loadingData = false;
         });
-        // TODO re enable this when there is a update
-        //if (!Live.checkVersion) {
-        //    Live.checkVersion = true;
-        //    if (Main.checkVersion()) Main.showUpdateDialog();
-        //}
+        if (!Live.checkVersion) {
+            Live.checkVersion = true;
+            if (Main.checkVersion()) Main.showUpdateDialog();
+        }
     } else {
         Main.appendTable('stream_table_live');
         $(document).ready(function() {
