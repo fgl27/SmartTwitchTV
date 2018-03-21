@@ -6,7 +6,6 @@ Svod.cursorX = 0;
 Svod.dataEnded = false;
 Svod.itemsCount = 0;
 Svod.nameMatrix = [];
-Svod.nameMatrixCount = 0;
 Svod.blankCellVector = [];
 Svod.loadingData = false;
 Svod.loadingDataTry = 0;
@@ -75,7 +74,6 @@ Svod.StartLoad = function() {
     Svod.ReplacedataEnded = false;
     Svod.MaxOffset = 0;
     Svod.nameMatrix = [];
-    Svod.nameMatrixCount = 0;
     Svod.blankCellVector = [];
     Svod.itemsCountCheck = false;
     Svod.itemsCount = 0;
@@ -88,7 +86,6 @@ Svod.StartLoad = function() {
 };
 
 Svod.loadDataPrepare = function() {
-    Main.MatrixRst();
     Svod.loadingData = true;
     Svod.loadingDataTry = 0;
     Svod.loadingDataTimeout = 3500;
@@ -198,21 +195,20 @@ Svod.loadDataSuccess = function(responseText) {
 };
 
 Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
-    Svod.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
         '" data-durationseconds=" ' + duration + '"></td>').html(
-        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality));
+        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name));
 };
 
-Svod.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrixVod(preview_thumbnail, Main.ColoumnsCountVideo, Svod.Img, row_id, coloumn_id, Main.VideoSize);
-    Svod.nameMatrix[Svod.nameMatrixCount] = channel_name;
-    Svod.nameMatrixCount++;
-};
+Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name) {
 
-Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality) {
+    Svod.nameMatrix.push(channel_name);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+
     return '<div id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Svod.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div>' +
         '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -240,14 +236,13 @@ Svod.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Svod.addFocus();
-            Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LazyImgStart(Svod.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Svod.loadingData = false;
         });
     } else {
         Main.appendTable('stream_table_search_vod');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_VIDEO);
 
             if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
                 Svod.loadingMore = true;
@@ -365,13 +360,11 @@ Svod.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_tit
     var coloumn_id = splitedId[2];
     var cell = Svod.Cell + row_id + '_' + coloumn_id;
 
-    Svod.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).setAttribute('data-durationseconds', duration);
     document.getElementById(cell).innerHTML =
-        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality);
+        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name);
 };
 
 Svod.addFocus = function() {
@@ -381,6 +374,8 @@ Svod.addFocus = function() {
         Svod.loadDataPrepare();
         Svod.loadDataRequest();
     }
+
+    if (Svod.cursorY >= 4) Main.LazyImgVideo(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
     $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_text_focused');

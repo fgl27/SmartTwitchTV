@@ -6,7 +6,6 @@ AGame.cursorX = 0;
 AGame.dataEnded = false;
 AGame.itemsCount = 0;
 AGame.nameMatrix = [];
-AGame.nameMatrixCount = 0;
 AGame.blankCellVector = [];
 AGame.loadingData = false;
 AGame.loadingDataTry = 0;
@@ -71,7 +70,6 @@ AGame.StartLoad = function() {
     AGame.ReplacedataEnded = false;
     AGame.MaxOffset = 0;
     AGame.nameMatrix = [];
-    AGame.nameMatrixCount = 0;
     AGame.blankCellVector = [];
     AGame.itemsCountCheck = false;
     AGame.itemsCount = 0;
@@ -84,7 +82,6 @@ AGame.StartLoad = function() {
 };
 
 AGame.loadDataPrepare = function() {
-    Main.MatrixRst();
     AGame.loadingData = true;
     AGame.loadingDataTry = 0;
     AGame.loadingDataTimeout = 3500;
@@ -188,20 +185,19 @@ AGame.loadDataSuccess = function(responseText) {
 };
 
 AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    AGame.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + AGame.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality));
+        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name));
 };
 
-AGame.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, AGame.Img, row_id, coloumn_id, Main.VideoSize);
-    AGame.nameMatrix[AGame.nameMatrixCount] = channel_name;
-    AGame.nameMatrixCount++;
-};
+AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
 
-AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
+    AGame.nameMatrix.push(channel_name);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+
     return '<div id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + AGame.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + AGame.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + AGame.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + AGame.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -229,15 +225,13 @@ AGame.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             AGame.addFocus();
-            Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LazyImgStart(AGame.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             AGame.loadingData = false;
         });
     } else {
         Main.appendTable('stream_table_a_game');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_VIDEO);
-
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
                 AGame.loadingMore = true;
                 AGame.loadDataPrepare();
@@ -345,12 +339,10 @@ AGame.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_ti
     var coloumn_id = splitedId[2];
     var cell = AGame.Cell + row_id + '_' + coloumn_id;
 
-    AGame.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).innerHTML =
-        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
+        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
 };
 
 AGame.addFocus = function() {
@@ -360,6 +352,8 @@ AGame.addFocus = function() {
         AGame.loadDataPrepare();
         AGame.loadDataRequest();
     }
+
+    if (AGame.cursorY >= 4) Main.LazyImgVideo(AGame.Img, AGame.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
     Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
         AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);

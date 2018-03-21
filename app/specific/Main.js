@@ -157,8 +157,6 @@ Main.loadTranslations = function(device) {
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
-    // pre load LOD img
-    Main.PreLoadAImage(IMG_LOD_LOGO);
     Main.initWindows();
     Live.init();
     Play.PreStart();

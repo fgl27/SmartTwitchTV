@@ -6,7 +6,6 @@ Sclip.cursorX = 0;
 Sclip.dataEnded = false;
 Sclip.itemsCount = 0;
 Sclip.nameMatrix = [];
-Sclip.nameMatrixCount = 0;
 Sclip.blankCellVector = [];
 Sclip.loadingData = false;
 Sclip.loadingDataTry = 0;
@@ -80,7 +79,6 @@ Sclip.StartLoad = function() {
     Sclip.ReplacedataEnded = false;
     Sclip.MaxOffset = 0;
     Sclip.nameMatrix = [];
-    Sclip.nameMatrixCount = 0;
     Sclip.blankCellVector = [];
     Sclip.itemsCountCheck = false;
     Sclip.itemsCount = 0;
@@ -93,7 +91,6 @@ Sclip.StartLoad = function() {
 };
 
 Sclip.loadDataPrepare = function() {
-    Main.MatrixRst();
     Sclip.loadingData = true;
     Sclip.loadingDataTry = 0;
     Sclip.loadingDataTimeout = 3500;
@@ -207,21 +204,20 @@ Sclip.loadDataSuccess = function(responseText) {
 };
 
 Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
-    Sclip.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
         '" data-durationseconds=" ' + video_duration + '"></td>').html(
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game));
+        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name));
 };
 
-Sclip.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Sclip.Img, row_id, coloumn_id, Main.VideoSize);
-    Sclip.nameMatrix[Sclip.nameMatrixCount] = channel_name;
-    Sclip.nameMatrixCount++;
-};
+Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name) {
 
-Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game) {
+    Sclip.nameMatrix.push(channel_name);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+
     return '<div id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Sclip.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + video_title + '</div>' +
         '<div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div>' +
@@ -250,15 +246,13 @@ Sclip.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Sclip.addFocus();
-            Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LazyImgStart(Sclip.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Sclip.loadingData = false;
         });
     } else {
         Main.appendTable('stream_table_search_clip');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_VIDEO);
-
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
                 Sclip.loadingMore = true;
                 Sclip.loadDataPrepare();
@@ -361,13 +355,11 @@ Sclip.replaceCellEmpty = function(id, channel_name, preview_thumbnail, video_cre
     var coloumn_id = splitedId[2];
     var cell = Sclip.Cell + row_id + '_' + coloumn_id;
 
-    Sclip.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).setAttribute('data-durationseconds', video_duration);
     document.getElementById(cell).innerHTML =
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game);
+        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name);
 };
 
 Sclip.addFocus = function() {
@@ -377,6 +369,8 @@ Sclip.addFocus = function() {
         Sclip.loadDataPrepare();
         Sclip.loadDataRequest();
     }
+
+    if (Sclip.cursorY >= 4) Main.LazyImgVideo(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
     $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_text_focused');
