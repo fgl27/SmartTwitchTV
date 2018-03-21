@@ -241,29 +241,31 @@ Svod.loadDataSuccessFinish = function() {
                 else Svod.status = true;
 
                 Main.ReplaceTable('stream_table_search_vod');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    Svod.addFocus();
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                Main.HideLoadDialog();
-                Svod.addFocus();
-                Main.LoadImagesPre(IMG_404_VIDEO);
-
-                Svod.loadingData = false;
-
+                    Svod.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_search_vod');
-                Main.LoadImagesPre(IMG_404_VIDEO);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_VIDEO);
 
-                if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
-                    Svod.loadingMore = true;
-                    Svod.loadDataPrepare();
-                    Svod.loadDataReplace();
-                    return;
-                } else {
-                    Svod.blankCellCount = 0;
-                    Svod.blankCellVector = [];
-                }
+                    if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
+                        Svod.loadingMore = true;
+                        Svod.loadDataPrepare();
+                        Svod.loadDataReplace();
+                        return;
+                    } else {
+                        Svod.blankCellCount = 0;
+                        Svod.blankCellVector = [];
+                    }
 
-                Svod.loadingData = false;
-                Svod.loadingMore = false;
+                    Svod.loadingData = false;
+                    Svod.loadingMore = false;
+                });
             }
         });
 };

@@ -19,7 +19,7 @@ Games.blankCellCount = 0;
 Games.blankCellVector = [];
 Games.itemsCountOffset = 0;
 Games.LastClickFinish = true;
-Games.keyClickDelayTime = 25;
+Games.keyClickDelayTime = 0;
 Games.ReplacedataEnded = false;
 Games.MaxOffset = 0;
 Main.ItemsLimitGameOffset = 1;
@@ -226,28 +226,31 @@ Games.loadDataSuccessFinish = function() {
                 Games.Status = true;
 
                 Main.ReplaceTable('stream_table_games');
+                $(document).ready(function() {
+                    Main.HideLoadDialog();
+                    Games.addFocus();
+                    Main.LoadImagesPre(IMG_404_GAME);
 
-                Main.HideLoadDialog();
-                Games.addFocus();
-                Main.LoadImagesPre(IMG_404_GAME);
-
-                Games.loadingData = false;
+                    Games.loadingData = false;
+                });
             } else {
                 Main.appendTable('stream_table_games');
-                Main.LoadImagesPre(IMG_404_GAME);
+                $(document).ready(function() {
+                    Main.LoadImagesPre(IMG_404_GAME);
 
-                if (Games.blankCellCount > 0 && !Games.dataEnded) {
-                    Games.loadingMore = true;
-                    Games.loadDataPrepare();
-                    Games.loadDataReplace();
-                    return;
-                } else {
-                    Games.blankCellCount = 0;
-                    Games.blankCellVector = [];
-                }
+                    if (Games.blankCellCount > 0 && !Games.dataEnded) {
+                        Games.loadingMore = true;
+                        Games.loadDataPrepare();
+                        Games.loadDataReplace();
+                        return;
+                    } else {
+                        Games.blankCellCount = 0;
+                        Games.blankCellVector = [];
+                    }
 
-                Games.loadingData = false;
-                Games.loadingMore = false;
+                    Games.loadingData = false;
+                    Games.loadingMore = false;
+                });
             }
         });
 };
