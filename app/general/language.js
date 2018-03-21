@@ -98,7 +98,7 @@ var STR_ABOUT_INFO_3 = "Developer information:";
 var STR_ABOUT_INFO_4 = "This is an open source applicationlication check it on my github";
 var STR_ABOUT_INFO_5 = "github.com/bhb27/smarttv-twitch";
 var STR_ABOUT_INFO_6 = "This application is licensed under the GNU General Public License v3.0, and uses following dependencies:";
-var STR_ABOUT_INFO_7 = "imagesLoaded - JavaScript is all like \"You images done yet or what?\" by desandro (https://github.com/desandro/imagesloaded)";
+
 var STR_ABOUT_INFO_8 = "Font Awesome - The iconic font and CSS toolkit by FortAwesome (https://github.com/FortAwesome/Font-Awesome)";
 var STR_ABOUT_INFO_9 = "Video.js - HTML5 Video Player (https://github.com/videojs/video.js)";
 var STR_ABOUT_INFO_10 = "jQuery - fast, small, and feature-rich JavaScript library (https://code.jquery.com/jquery/)";

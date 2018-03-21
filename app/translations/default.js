@@ -50,7 +50,6 @@ function DefaultLang() {
         STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_10 + STR_BR +

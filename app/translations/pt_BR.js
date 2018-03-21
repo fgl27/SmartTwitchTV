@@ -91,7 +91,6 @@ function pt_BRLang() {
     STR_ABOUT_INFO_4 = "Este é um aplicativo Open Source. Confira no meu GitHub";
     STR_ABOUT_INFO_5 = "github.com/bhb27/smarttv-twitch";
     STR_ABOUT_INFO_6 = "Este aplicativo está licenciado sob a Licença Pública GNU v3.0 e usa as seguintes dependências:";
-    STR_ABOUT_INFO_7 = "imagesLoaded - JavaScript is all like \"You images done yet or what?\" by desandro (https://github.com/desandro/imagesloaded)";
     STR_ABOUT_INFO_8 = "Font Awesome - The iconic font and CSS toolkit by FortAwesome (https://github.com/FortAwesome/Font-Awesome)";
     STR_ABOUT_INFO_9 = "Video.js - HTML5 Video Player (https://github.com/videojs/video.js)";
     STR_ABOUT_INFO_10 = "jQuery - fast, small, and feature-rich JavaScript library (https://code.jquery.com/jquery/)";
