@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function AGame() {}
-AGame.Thumbnail = 'thumbnail_agame_';
-AGame.EmptyCell = 'agameempty_';
 AGame.cursorY = 0;
 AGame.cursorX = 0;
 AGame.dataEnded = false;
@@ -23,6 +21,9 @@ AGame.ReplacedataEnded = false;
 AGame.MaxOffset = 0;
 AGame.emptyContent = false;
 
+AGame.Img = 'img_agame';
+AGame.Thumbnail = 'thumbnail_agame_';
+AGame.EmptyCell = 'agameempty_';
 AGame.ThumbnailDiv = 'agame_thumbnail_div_';
 AGame.DispNameDiv = 'agame_display_name_';
 AGame.StreamTitleDiv = 'agame_stream_title_';
@@ -193,13 +194,14 @@ AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail,
 };
 
 AGame.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, AGame.Thumbnail, row_id, coloumn_id, Main.VideoSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, AGame.Img, row_id, coloumn_id, Main.VideoSize);
     AGame.nameMatrix[AGame.nameMatrixCount] = channel_name;
     AGame.nameMatrixCount++;
 };
 
 AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
-    return '<img id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_VIDEO + '"/>' +
+    return '<div id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + AGame.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + AGame.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + AGame.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + AGame.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -218,42 +220,35 @@ AGame.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 AGame.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!AGame.status) {
-                if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-                else AGame.status = true;
+    if (!AGame.status) {
+        if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+        else AGame.status = true;
 
-                Main.ReplaceTable('stream_table_a_game');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    AGame.addFocus();
-                    Main.LoadImagesPre(IMG_404_VIDEO);
+        Main.ReplaceTable('stream_table_a_game');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            AGame.addFocus();
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
-                    AGame.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_a_game');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_VIDEO);
-
-                    if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
-                        AGame.loadingMore = true;
-                        AGame.loadDataPrepare();
-                        AGame.loadDataReplace();
-                        return;
-                    } else AGame.blankCellCount = 0;
-
-                    AGame.loadingData = false;
-                    AGame.loadingMore = false;
-                });
-            }
+            AGame.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_a_game');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_VIDEO);
+
+            if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
+                AGame.loadingMore = true;
+                AGame.loadDataPrepare();
+                AGame.loadDataReplace();
+                return;
+            } else AGame.blankCellCount = 0;
+
+            AGame.loadingData = false;
+            AGame.loadingMore = false;
+        });
+    }
 };
 
 AGame.loadDataReplace = function() {
