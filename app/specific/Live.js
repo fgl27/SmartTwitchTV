@@ -228,7 +228,7 @@ Live.loadDataSuccessFinish = function() {
             Main.HideLoadDialog();
             Live.addFocus();
             $('#toolbar').show();
-            //Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LoadImagesPre(IMG_404_VIDEO);
 
             Live.loadingData = false;
         });
