@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function UserChannels() {}
-UserChannels.Thumbnail = 'thumbnail_uchannel_';
-UserChannels.EmptyCell = 'uchannelempty_';
 UserChannels.cursorY = 0;
 UserChannels.cursorX = 0;
 UserChannels.dataEnded = false;
@@ -19,6 +17,9 @@ UserChannels.UserChannelsList = [];
 UserChannels.loadChannelOffsset = 0;
 UserChannels.emptyContent = false;
 
+UserChannels.Img = 'img_uchannel';
+UserChannels.Thumbnail = 'thumbnail_uchannel_';
+UserChannels.EmptyCell = 'uchannelempty_';
 UserChannels.ThumbnailDiv = 'uchannel_thumbnail_div_';
 UserChannels.DispNameDiv = 'uchannel_display_name_';
 UserChannels.Cell = 'uchannel_cell_';
@@ -188,45 +189,38 @@ UserChannels.loadDataSuccess = function() {
 };
 
 UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, _id, channel_name, preview_thumbnail) {
-    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Thumbnail, row_id, coloumn_id);
+    Main.CellMatrixChannel(preview_thumbnail, Main.ColoumnsCountChannel, UserChannels.Img, row_id, coloumn_id);
     UserChannels.nameMatrix[UserChannels.nameMatrixCount] = channel_name;
     UserChannels.nameMatrixCount++;
 
-    return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '"></td>').html(
-        '<img id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
+    return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '"></td>').html('<div id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels.Img +
+        row_id + '_' + coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + UserChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 UserChannels.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserChannels.Status) {
-                if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
-                else UserChannels.Status = true;
+    if (!UserChannels.Status) {
+        if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
+        else UserChannels.Status = true;
 
-                Main.ReplaceTable('stream_table_user_channels');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    UserChannels.addFocus();
-                    Main.LoadImagesPre(IMG_404_LOGO);
+        Main.ReplaceTable('stream_table_user_channels');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            UserChannels.addFocus();
+            Main.LoadImagesPre(IMG_404_LOGO);
 
-                    UserChannels.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_user_channels');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_LOGO);
-
-                    UserChannels.loadingData = false;
-                    UserChannels.loadingMore = false;
-                });
-            }
+            UserChannels.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_user_channels');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_LOGO);
+
+            UserChannels.loadingData = false;
+            UserChannels.loadingMore = false;
+        });
+    }
 };
 
 UserChannels.addFocus = function() {

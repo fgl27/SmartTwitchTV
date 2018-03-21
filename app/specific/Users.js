@@ -1,13 +1,14 @@
 /*jshint multistr: true */
 //Variable initialization
 function Users() {}
-Users.Thumbnail = 'thumbnail_users_';
 Users.cursorY = 0;
 Users.cursorX = 0;
 Users.LastClickFinish = true;
 Users.keyClickDelayTime = 25;
 Users.ColoumnsCount = 6;
 
+Users.Img = 'img_users';
+Users.Thumbnail = 'thumbnail_users_';
 Users.ThumbnailDiv = 'users_thumbnail_div_';
 Users.DispNameDiv = 'users_display_name_';
 Users.Cell = 'users_cell_';
@@ -89,35 +90,29 @@ Users.loadData = function() {
 
 Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
     Users.imgMatrix[Users.imgMatrixCount] = preview_thumbnail;
-    Users.imgMatrixId[Users.imgMatrixCount] = Users.Thumbnail + row_id + '_' + coloumn_id;
+    Users.imgMatrixId[Users.imgMatrixCount] = Users.Img + row_id + '_' + coloumn_id;
     Users.imgMatrixCount++;
 
     Main.PreLoadAImage(preview_thumbnail);
 
     return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<img id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_LOGO + '"/>' +
+        '<div id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + Users.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_user">' + stream_type + '</div></div>');
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 Users.loadDataSuccessFinish = function() {
-    $('#stream_table_user').imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Users.status) {
-                Main.HideLoadDialog();
-                Users.status = true;
-                Users.addFocus();
-                if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
-            }
+    if (!Users.status) {
+        Main.HideLoadDialog();
+        Users.status = true;
+        Users.addFocus();
+        if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
+    }
 
-            Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
+    Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
 
-            Users.loadingData = false;
-        });
+    Users.loadingData = false;
 };
 
 Users.checkTitleStart = function() {
