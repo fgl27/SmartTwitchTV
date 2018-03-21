@@ -40,6 +40,7 @@ Live.init = function() {
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
     $('#top_bar_live').removeClass('icon_center_label');
     $('#top_bar_live').addClass('icon_center_focus');
+    Main.YRst(Live.cursorY);
     if (Live.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Live.cursorX, Live.cursorY, Main.ColoumnsCountVideo, Live.itemsCount);

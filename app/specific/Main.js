@@ -647,6 +647,10 @@ Main.Ychange = function(y) {
     return position;
 };
 
+Main.YRst = function(y) {
+    Main.cursorY = y;
+};
+
 Main.PreLoadAImage = function(link) {
     Main.newImg.src = link;
 };

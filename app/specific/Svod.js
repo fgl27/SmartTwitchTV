@@ -48,6 +48,7 @@ Svod.init = function() {
     $('.lable_user').html(Main.selectedChannelDisplayname);
     $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
+    Main.YRst(Svod.cursorY);
     if (Svod.status) {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
