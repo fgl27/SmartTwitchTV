@@ -363,15 +363,6 @@ Sclip.replaceCellEmpty = function(id, channel_name, preview_thumbnail, video_cre
 };
 
 Sclip.addFocus = function() {
-    if (((Sclip.cursorY + Main.ItemsReloadLimitVideo) > (Sclip.itemsCount / Main.ColoumnsCountVideo)) &&
-        !Sclip.dataEnded && !Sclip.loadingMore) {
-        Sclip.loadingMore = true;
-        Sclip.loadDataPrepare();
-        Sclip.loadDataRequest();
-    }
-
-    if (Sclip.cursorY >= 4) Main.LazyImgVideo(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
     $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_text_focused');
     $('#' + Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
@@ -385,6 +376,15 @@ Sclip.addFocus = function() {
     }, 10);
 
     Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
+
+    if (Sclip.cursorY > 3) Main.LazyImgVideo(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+
+    if (((Sclip.cursorY + Main.ItemsReloadLimitVideo) > (Sclip.itemsCount / Main.ColoumnsCountVideo)) &&
+        !Sclip.dataEnded && !Sclip.loadingMore) {
+        Sclip.loadingMore = true;
+        Sclip.loadDataPrepare();
+        Sclip.loadDataRequest();
+    }
 };
 
 Sclip.removeFocus = function() {

@@ -346,17 +346,18 @@ AGame.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_ti
 };
 
 AGame.addFocus = function() {
+
+    Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
+        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);
+
+    if (AGame.cursorY > 3) Main.LazyImgVideo(AGame.Img, AGame.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+
     if (((AGame.cursorY + Main.ItemsReloadLimitVideo) > (AGame.itemsCount / Main.ColoumnsCountVideo)) &&
         !AGame.dataEnded && !AGame.loadingMore) {
         AGame.loadingMore = true;
         AGame.loadDataPrepare();
         AGame.loadDataRequest();
     }
-
-    if (AGame.cursorY >= 4) Main.LazyImgVideo(AGame.Img, AGame.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
-    Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
-        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);
 };
 
 AGame.removeFocus = function() {

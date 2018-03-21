@@ -368,14 +368,6 @@ Svod.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_tit
 };
 
 Svod.addFocus = function() {
-    if (((Svod.cursorY + Main.ItemsReloadLimitVideo) > (Svod.itemsCount / Main.ColoumnsCountVideo)) &&
-        !Svod.dataEnded && !Svod.loadingMore) {
-        Svod.loadingMore = true;
-        Svod.loadDataPrepare();
-        Svod.loadDataRequest();
-    }
-
-    if (Svod.cursorY >= 4) Main.LazyImgVideo(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
     $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_text_focused');
@@ -390,6 +382,15 @@ Svod.addFocus = function() {
     }, 10);
 
     Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
+
+    if (Svod.cursorY > 3) Main.LazyImgVideo(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+
+    if (((Svod.cursorY + Main.ItemsReloadLimitVideo) > (Svod.itemsCount / Main.ColoumnsCountVideo)) &&
+        !Svod.dataEnded && !Svod.loadingMore) {
+        Svod.loadingMore = true;
+        Svod.loadDataPrepare();
+        Svod.loadDataRequest();
+    }
 };
 
 Svod.removeFocus = function() {
