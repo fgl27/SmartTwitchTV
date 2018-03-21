@@ -2,7 +2,7 @@
 //Variable initialization
 function Live() {}
 Live.Status = false;
-Live.Img =  'img_live';
+Live.Img = 'img_live';
 Live.Thumbnail = 'thumbnail_live';
 Live.ThumbnailDiv = 'live_thumbnail_div_';
 Live.DispNameDiv = 'live_display_name_';
@@ -18,7 +18,6 @@ Live.ExitCursor = 0;
 Live.dataEnded = false;
 Live.itemsCount = 0;
 Live.nameMatrix = [];
-Live.nameMatrixCount = 0;
 Live.loadingData = false;
 Live.loadingDataTry = 0;
 Live.loadingDataTryMax = 10;
@@ -68,7 +67,6 @@ Live.StartLoad = function() {
     Live.itemsCountCheck = false;
     Live.MaxOffset = 0;
     Live.nameMatrix = [];
-    Live.nameMatrixCount = 0;
     Live.itemsCount = 0;
     Live.cursorX = 0;
     Live.cursorY = 0;
@@ -187,17 +185,13 @@ Live.loadDataSuccess = function(responseText) {
 };
 
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + Live.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail));
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name));
 };
 
-Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Live.nameMatrix[Live.nameMatrixCount] = channel_name;
-    Live.nameMatrixCount++;
-};
+Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
 
-Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail) {
+    Live.nameMatrix.push(channel_name);
 
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
     if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
@@ -349,11 +343,10 @@ Live.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_tit
     var coloumn_id = splitedId[2];
     var cell = Live.Cell + row_id + '_' + coloumn_id;
 
-    Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).innerHTML =
-        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail);
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
 };
 
 Live.addFocus = function() {

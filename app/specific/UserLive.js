@@ -90,7 +90,6 @@ UserLive.StartLoad = function() {
 };
 
 UserLive.loadDataPrepare = function() {
-    Main.MatrixRst();
     UserLive.loadingData = true;
     UserLive.loadingDataTry = 0;
     UserLive.loadingDataTimeout = 3500;
@@ -261,20 +260,24 @@ UserLive.loadDataSuccess = function(responseText) {
 };
 
 UserLive.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    UserLive.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + UserLive.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        UserLive.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality));
+        UserLive.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name));
 };
 
 UserLive.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, UserLive.Img, row_id, coloumn_id, Main.VideoSize);
     UserLive.nameMatrix[UserLive.nameMatrixCount] = channel_name;
     UserLive.nameMatrixCount++;
 };
 
-UserLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
+UserLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
+
+    UserLive.nameMatrix.push(channel_name);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+
     return '<div id="' + UserLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + UserLive.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + UserLive.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserLive.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserLive.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -301,15 +304,13 @@ UserLive.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             UserLive.addFocus();
-            Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LazyImgStart(UserLive.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             UserLive.loadingData = false;
         });
     } else {
         Main.appendTable('stream_table_user_live');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_VIDEO);
-
             if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
                 UserLive.loadingMore = true;
                 UserLive.loadDataPrepare();
@@ -421,12 +422,10 @@ UserLive.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream
     var coloumn_id = splitedId[2];
     var cell = UserLive.Cell + row_id + '_' + coloumn_id;
 
-    UserLive.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).innerHTML =
-        UserLive.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
+        UserLive.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
 };
 
 UserLive.addFocus = function() {
@@ -436,6 +435,8 @@ UserLive.addFocus = function() {
         UserLive.loadDataPrepare();
         UserLive.loadChannels();
     }
+
+    if (UserLive.cursorY >= 4) Main.LazyImgVideo(UserLive.Img, UserLive.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
     Main.addFocusVideo(UserLive.cursorY, UserLive.cursorX, UserLive.Thumbnail, UserLive.ThumbnailDiv, UserLive.DispNameDiv, UserLive.StreamTitleDiv,
         UserLive.StreamGameDiv, UserLive.ViwersDiv, UserLive.QualityDiv, Main.UserLive, Main.ColoumnsCountVideo, UserLive.itemsCount);
