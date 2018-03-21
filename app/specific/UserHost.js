@@ -43,6 +43,7 @@ UserHost.init = function() {
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
+    Main.YRst(UserHost.cursorY);
     if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
     if (UserHost.status) {
         Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo,

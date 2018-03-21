@@ -54,6 +54,7 @@ Sclip.init = function() {
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
     Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
+    Main.YRst(Sclip.cursorY);
     if (Sclip.status) {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);

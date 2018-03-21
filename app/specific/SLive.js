@@ -43,6 +43,7 @@ SLive.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_LIVE + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
+    Main.YRst(SLive.cursorY);
     if (SLive.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
