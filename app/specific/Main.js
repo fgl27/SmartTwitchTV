@@ -42,9 +42,6 @@ Main.selectedChannelChannelLogo = '';
 Main.OldUserName = '';
 Main.SmartHubId = null;
 Main.UserName = null;
-Main.imgMatrix = [];
-Main.imgMatrixId = [];
-Main.imgMatrixCount = 0;
 Main.ScrollbarBlack = true;
 Main.NetworkStateOK = true;
 
@@ -575,10 +572,6 @@ Main.Resume = function() {
     }
 };
 
-Main.LoadImagesPre = function(img_type) {
-    Main.LoadImages(Main.imgMatrix, Main.imgMatrixId, img_type);
-};
-
 Main.LoadImages = function(imgVector, idVector, img_type) {
     var loadImages = function(position, ImgObjet) {
         ImgObjet.onerror = function() {
@@ -762,38 +755,6 @@ Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Viwe
     $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
     $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
     $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
-};
-
-Main.MatrixRst = function() {
-    Main.imgMatrix = [];
-    Main.imgMatrixId = [];
-    Main.imgMatrixCount = 0;
-};
-
-Main.CellMatrixVod = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
-    preview_thumbnail = preview_thumbnail.replace("320x240", VideoSize);
-    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
-    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
-    Main.imgMatrixCount++;
-
-    if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-};
-
-Main.CellMatrixChannel = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id) {
-    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
-    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
-    Main.imgMatrixCount++;
-
-    if (Main.imgMatrixCount < (ColoumnsCount * 5)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-};
-
-Main.CellMatrix = function(preview_thumbnail, ColoumnsCount, Thumbnail, row_id, coloumn_id, VideoSize) {
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", VideoSize);
-    Main.imgMatrix[Main.imgMatrixCount] = preview_thumbnail;
-    Main.imgMatrixId[Main.imgMatrixCount] = Thumbnail + row_id + '_' + coloumn_id;
-    Main.imgMatrixCount++;
-
-    if (Main.imgMatrixCount < (ColoumnsCount * 4)) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 };
 
 Main.ScrollHelper = {
