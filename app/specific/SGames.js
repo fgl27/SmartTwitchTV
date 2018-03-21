@@ -2,8 +2,6 @@
 //Variable initialization
 function SGames() {}
 SGames.Status = false;
-SGames.Thumbnail = 'thumbnail_sgames_';
-SGames.EmptyCell = 'sgamesempty_';
 SGames.cursorY = 0;
 SGames.cursorX = 0;
 SGames.itemsCount = 0;
@@ -23,6 +21,9 @@ SGames.emptyContent = false;
 SGames.itemsCountCheck = false;
 SGames.lastData = '';
 
+SGames.Img = 'img_sgames';
+SGames.Thumbnail = 'thumbnail_sgames_';
+SGames.EmptyCell = 'sgamesempty_';
 SGames.ThumbnailDiv = 'sgame_thumbnail_div_';
 SGames.DispNameDiv = 'sgame_display_name_';
 SGames.Cell = 'sgame_cell_';
@@ -157,10 +158,11 @@ SGames.loadDataSuccess = function(responseText) {
 };
 
 SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, SGames.Thumbnail, row_id, coloumn_id, Main.GameSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, SGames.Img, row_id, coloumn_id, Main.GameSize);
 
     return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        '<img id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
+        '<div id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + SGames.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div></div>');
 };
@@ -168,22 +170,17 @@ SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
 //prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
 //https://imagesloaded.desandro.com/
 SGames.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!SGames.Status) {
-                Main.HideLoadDialog();
-                SGames.addFocus();
-                if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-                else SGames.Status = true;
-            }
-            Main.ReplaceTable('stream_table_search_game');
-            $(document).ready(function() {
-                Main.LoadImagesPre(IMG_404_GAME);
-                SGames.loadingData = false;
-            });
-        });
+    if (!SGames.Status) {
+        Main.HideLoadDialog();
+        SGames.addFocus();
+        if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else SGames.Status = true;
+    }
+    Main.ReplaceTable('stream_table_search_game');
+    $(document).ready(function() {
+        Main.LoadImagesPre(IMG_404_GAME);
+        SGames.loadingData = false;
+    });
 };
 
 SGames.addFocus = function() {

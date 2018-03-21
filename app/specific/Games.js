@@ -2,8 +2,6 @@
 //Variable initialization
 function Games() {}
 Games.Status = false;
-Games.Thumbnail = 'thumbnail_games_';
-Games.EmptyCell = 'gamesempty_';
 Games.cursorY = 0;
 Games.cursorX = 0;
 Games.dataEnded = false;
@@ -25,6 +23,9 @@ Games.MaxOffset = 0;
 Main.ItemsLimitGameOffset = 1;
 Games.itemsCountCheck = false;
 
+Games.Img = 'img_games';
+Games.Thumbnail = 'thumbnail_games_';
+Games.EmptyCell = 'gamesempty_';
 Games.ThumbnailDiv = 'game_thumbnail_div_';
 Games.DispNameDiv = 'game_display_name_';
 Games.ViwersDiv = 'game_viwers_';
@@ -194,13 +195,14 @@ Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, vi
 };
 
 Games.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, Games.Thumbnail, row_id, coloumn_id, Main.GameSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, Games.Img, row_id, coloumn_id, Main.GameSize);
     Games.nameMatrix[Games.nameMatrixCount] = game_name;
     Games.nameMatrixCount++;
 };
 
 Games.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
-    return '<img id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
+    return '<div id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + Games.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
         '<div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
@@ -215,44 +217,37 @@ Games.CellExists = function(display_name) {
     return false;
 };
 
-//prevent stream_text/title/info from load before the thumbnail and display a odd stream_table squashed only with names source
-//https://imagesloaded.desandro.com/
 Games.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!Games.Status) {
-                Games.Status = true;
+    if (!Games.Status) {
+        Games.Status = true;
 
-                Main.ReplaceTable('stream_table_games');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    Games.addFocus();
-                    Main.LoadImagesPre(IMG_404_GAME);
+        Main.ReplaceTable('stream_table_games');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            Games.addFocus();
+            Main.LoadImagesPre(IMG_404_GAME);
 
-                    Games.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_games');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_GAME);
-
-                    if (Games.blankCellCount > 0 && !Games.dataEnded) {
-                        Games.loadingMore = true;
-                        Games.loadDataPrepare();
-                        Games.loadDataReplace();
-                        return;
-                    } else {
-                        Games.blankCellCount = 0;
-                        Games.blankCellVector = [];
-                    }
-
-                    Games.loadingData = false;
-                    Games.loadingMore = false;
-                });
-            }
+            Games.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_games');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_GAME);
+
+            if (Games.blankCellCount > 0 && !Games.dataEnded) {
+                Games.loadingMore = true;
+                Games.loadDataPrepare();
+                Games.loadDataReplace();
+                return;
+            } else {
+                Games.blankCellCount = 0;
+                Games.blankCellVector = [];
+            }
+
+            Games.loadingData = false;
+            Games.loadingMore = false;
+        });
+    }
 };
 
 Games.loadDataReplace = function() {

@@ -1,8 +1,6 @@
 /*jshint multistr: true */
 //Variable initialization
 function UserGames() {}
-UserGames.Thumbnail = 'thumbnail_glive_';
-UserGames.EmptyCell = 'gliveempty_';
 UserGames.cursorY = 0;
 UserGames.cursorX = 0;
 UserGames.dataEnded = false;
@@ -24,6 +22,9 @@ UserGames.MaxOffset = 0;
 UserGames.emptyContent = false;
 UserGames.itemsCountCheck = false;
 
+UserGames.Img = 'img_glive';
+UserGames.Thumbnail = 'thumbnail_glive_';
+UserGames.EmptyCell = 'gliveempty_';
 UserGames.ThumbnailDiv = 'glive_thumbnail_div_';
 UserGames.DispNameDiv = 'glive_display_name_';
 UserGames.ViwersDiv = 'glive_viwers_';
@@ -191,13 +192,14 @@ UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail
 };
 
 UserGames.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, UserGames.Thumbnail, row_id, coloumn_id, Main.GameSize);
+    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, UserGames.Img, row_id, coloumn_id, Main.GameSize);
     UserGames.nameMatrix[UserGames.nameMatrixCount] = game_name;
     UserGames.nameMatrixCount++;
 };
 
 UserGames.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
-    return '<img id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + IMG_LOD_GAME + '"/>' +
+    return '<div id="' + UserGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + UserGames.Img + row_id + '_' +
+        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
         '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
         '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
@@ -212,45 +214,38 @@ UserGames.CellExists = function(display_name) {
     return false;
 };
 
-//prevent follows_text/title/info from load before the thumbnail and display a odd follows_table squashed only with names source
-//https://imagesloaded.desandro.com/
 UserGames.loadDataSuccessFinish = function() {
-    $('#' + Main.TempTable).imagesLoaded()
-        .always({
-            background: false
-        }, function() { //all images successfully loaded at least one is broken not a problem as the for "imgMatrix.length" will fix it all
-            if (!UserGames.Status) {
-                if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-                else UserGames.Status = true;
+    if (!UserGames.Status) {
+        if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+        else UserGames.Status = true;
 
-                Main.ReplaceTable('stream_table_user_games');
-                $(document).ready(function() {
-                    Main.HideLoadDialog();
-                    UserGames.addFocus();
-                    Main.LoadImagesPre(IMG_404_GAME);
+        Main.ReplaceTable('stream_table_user_games');
+        $(document).ready(function() {
+            Main.HideLoadDialog();
+            UserGames.addFocus();
+            Main.LoadImagesPre(IMG_404_GAME);
 
-                    UserGames.loadingData = false;
-                });
-            } else {
-                Main.appendTable('stream_table_user_games');
-                $(document).ready(function() {
-                    Main.LoadImagesPre(IMG_404_GAME);
-
-                    if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
-                        UserGames.loadingMore = true;
-                        UserGames.loadDataPrepare();
-                        UserGames.loadDataReplace();
-                        return;
-                    } else {
-                        UserGames.blankCellCount = 0;
-                        UserGames.blankCellVector = [];
-                    }
-
-                    UserGames.loadingData = false;
-                    UserGames.loadingMore = false;
-                });
-            }
+            UserGames.loadingData = false;
         });
+    } else {
+        Main.appendTable('stream_table_user_games');
+        $(document).ready(function() {
+            Main.LoadImagesPre(IMG_404_GAME);
+
+            if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {
+                UserGames.loadingMore = true;
+                UserGames.loadDataPrepare();
+                UserGames.loadDataReplace();
+                return;
+            } else {
+                UserGames.blankCellCount = 0;
+                UserGames.blankCellVector = [];
+            }
+
+            UserGames.loadingData = false;
+            UserGames.loadingMore = false;
+        });
+    }
 };
 
 UserGames.loadDataRequestReplace = function() {
