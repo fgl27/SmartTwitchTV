@@ -49,7 +49,7 @@ Main.ScrollbarBlack = true;
 Main.NetworkStateOK = true;
 
 Main.ScrollOffSetVideo = 275;
-Main.ScrollOffSetGame = 514;
+Main.ScrollOffSetGame = 523;
 
 Main.ScrollOffSetMinusVideo = 0.345;
 Main.ScrollOffSetMinusChannels = 0.430;
@@ -630,6 +630,34 @@ Main.LazyImgVideo = function(imgId, row_id, img_type, coloumns) {
             if (elem !== null) loadImages(elem);
 
             y = change > 0 ? row_id - 5 : row_id + 5;
+            elem = document.getElementById(imgId + y + '_' + x);
+            if (elem !== null) resetImages(elem);
+        }
+    }
+
+};
+
+Main.LazyImgGame = function(imgId, row_id, img_type, coloumns) {
+    var change = Main.Ychange(row_id);
+    if (change == 1 && row_id == 3) change = 0;
+    if (change !== 0) {
+        var x, y, elem, loadImages = function(ImgLoadObjet) {
+                ImgLoadObjet.onerror = function() {
+                    this.src = img_type; //img fail to load use predefined
+                };
+                ImgLoadObjet.src = ImgLoadObjet.getAttribute('data-src');
+                ImgLoadObjet.removeAttribute('data-src');
+            }, resetImages = function(ImgRstObjet) {
+                ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
+                ImgRstObjet.removeAttribute('src');
+            };
+
+        for (x = 0; x < coloumns; x++) {
+            y = change > 0 ? row_id + 3 : row_id - 3;
+            elem = document.getElementById(imgId + y + '_' + x);
+            if (elem !== null) loadImages(elem);
+
+            y = change > 0 ? row_id - 4 : row_id + 4;
             elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) resetImages(elem);
         }

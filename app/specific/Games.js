@@ -7,7 +7,6 @@ Games.cursorX = 0;
 Games.dataEnded = false;
 Games.itemsCount = 0;
 Games.nameMatrix = [];
-Games.nameMatrixCount = 0;
 Games.loadingData = false;
 Games.loadingDataTry = 0;
 Games.loadingDataTryMax = 10;
@@ -38,6 +37,7 @@ Games.init = function() {
     document.body.addEventListener("keydown", Games.handleKeyDown, false);
     $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
+    Main.YRst(Games.cursorY);
     if (Games.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games,
             Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
@@ -65,7 +65,6 @@ Games.StartLoad = function() {
     Games.itemsCountCheck = false;
     Games.MaxOffset = 0;
     Games.nameMatrix = [];
-    Games.nameMatrixCount = 0;
     Games.itemsCount = 0;
     Games.cursorX = 0;
     Games.cursorY = 0;
@@ -76,7 +75,6 @@ Games.StartLoad = function() {
 };
 
 Games.loadDataPrepare = function() {
-    Main.MatrixRst();
     Games.loadingData = true;
     Games.loadingDataTry = 0;
     Games.loadingDataTimeout = 3500;
@@ -189,20 +187,19 @@ Games.loadDataSuccess = function(responseText) {
 };
 
 Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        Games.CellHtml(row_id, coloumn_id, game_name, viwers));
+        Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name));
 };
 
-Games.CellMatrix = function(game_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, Games.Img, row_id, coloumn_id, Main.GameSize);
-    Games.nameMatrix[Games.nameMatrixCount] = game_name;
-    Games.nameMatrixCount++;
-};
+Games.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name) {
 
-Games.CellHtml = function(row_id, coloumn_id, game_name, viwers) {
+    Games.nameMatrix.push(game_name);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
+    if (row_id < 2) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
+
     return '<div id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + Games.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
         '<div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
@@ -225,14 +222,13 @@ Games.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Games.addFocus();
-            Main.LoadImagesPre(IMG_404_GAME);
+            Main.LazyImgStart(Games.Img, 0, 7, IMG_404_GAME, Main.ColoumnsCountGame);
 
             Games.loadingData = false;
         });
     } else {
         Main.appendTable('stream_table_games');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_GAME);
 
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;
@@ -341,23 +337,24 @@ Games.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
     var coloumn_id = splitedId[2];
     var cell = Games.Cell + row_id + '_' + coloumn_id;
 
-    Games.CellMatrix(game_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers);
+    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name);
 };
 
 Games.addFocus = function() {
+
+    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
+        Main.ColoumnsCountGame, Games.itemsCount);
+
+    if (Games.cursorY > 2) Main.LazyImgGame(Games.Img, Games.cursorY, IMG_404_GAME, Main.ColoumnsCountGame);
+
     if (((Games.cursorY + Main.ItemsReloadLimitGame) > (Games.itemsCount / Main.ColoumnsCountGame)) &&
         !Games.dataEnded && !Games.loadingMore) {
         Games.loadingMore = true;
         Games.loadDataPrepare();
         Games.loadDataRequest();
     }
-
-    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
-        Main.ColoumnsCountGame, Games.itemsCount);
 };
 
 Games.removeFocus = function() {
