@@ -5,8 +5,6 @@ SGames.Status = false;
 SGames.cursorY = 0;
 SGames.cursorX = 0;
 SGames.itemsCount = 0;
-SGames.nameMatrix = [];
-SGames.nameMatrixCount = 0;
 SGames.loadingData = false;
 SGames.loadingDataTry = 0;
 SGames.loadingDataTryMax = 10;
@@ -38,6 +36,7 @@ SGames.init = function() {
     $('.lable_user').html(STR_SEARCH);
     $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
+    Main.YRst(SGames.cursorY);
     if (SGames.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames,
             Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
@@ -70,7 +69,6 @@ SGames.StartLoad = function() {
 };
 
 SGames.loadDataPrepare = function() {
-    Main.MatrixRst();
     SGames.loadingData = true;
     SGames.loadingDataTry = 0;
     SGames.loadingDataTimeout = 3500;
@@ -158,11 +156,13 @@ SGames.loadDataSuccess = function(responseText) {
 };
 
 SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountGame, SGames.Img, row_id, coloumn_id, Main.GameSize);
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
+    if (row_id < 2) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
 
     return $('<td id="' + SGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
         '<div id="' + SGames.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + SGames.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + SGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div></div>');
 };
@@ -176,7 +176,7 @@ SGames.loadDataSuccessFinish = function() {
     }
     Main.ReplaceTable('stream_table_search_game');
     $(document).ready(function() {
-        Main.LoadImagesPre(IMG_404_GAME);
+        Main.LazyImgStart(SGames.Img, 0, 7, IMG_404_GAME, Main.ColoumnsCountGame);
         SGames.loadingData = false;
     });
 };
@@ -190,6 +190,9 @@ SGames.addFocus = function() {
     }, 10);
 
     Main.CounterDialog(SGames.cursorX, SGames.cursorY, Main.ColoumnsCountGame, SGames.itemsCount);
+
+    if (SGames.cursorY > 2) Main.LazyImgGame(SGames.Img, SGames.cursorY, IMG_404_GAME, Main.ColoumnsCountGame);
+
 };
 
 SGames.removeFocus = function() {
