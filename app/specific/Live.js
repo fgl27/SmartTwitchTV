@@ -79,7 +79,6 @@ Live.StartLoad = function() {
 };
 
 Live.loadDataPrepare = function() {
-    Main.MatrixRst();
     Live.loadingData = true;
     Live.loadingDataTry = 0;
     Live.loadingDataTimeout = 3500;
@@ -190,18 +189,21 @@ Live.loadDataSuccess = function(responseText) {
 Live.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
     return $('<td id="' + Live.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality));
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail));
 };
 
 Live.CellMatrix = function(channel_name, preview_thumbnail, row_id, coloumn_id) {
-    Main.CellMatrix(preview_thumbnail, Main.ColoumnsCountVideo, Live.Img, row_id, coloumn_id, Main.VideoSize);
     Live.nameMatrix[Live.nameMatrixCount] = channel_name;
     Live.nameMatrixCount++;
 };
 
-Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality) {
+Live.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail) {
+
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+
     return '<div id="' + Live.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Live.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" src="//:0"/></div>' +
+        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + Live.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + Live.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + Live.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
@@ -228,7 +230,7 @@ Live.loadDataSuccessFinish = function() {
             Main.HideLoadDialog();
             Live.addFocus();
             $('#toolbar').show();
-            Main.LoadImagesPre(IMG_404_VIDEO);
+            Main.LazyImgStart(Live.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Live.loadingData = false;
         });
@@ -239,7 +241,6 @@ Live.loadDataSuccessFinish = function() {
     } else {
         Main.appendTable('stream_table_live');
         $(document).ready(function() {
-            Main.LoadImagesPre(IMG_404_VIDEO);
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
                 Live.loadDataPrepare();
@@ -349,11 +350,10 @@ Live.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_tit
     var cell = Live.Cell + row_id + '_' + coloumn_id;
 
     Live.CellMatrix(channel_name, preview_thumbnail, row_id, coloumn_id);
-
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).innerHTML =
-        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality);
+        Live.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail);
 };
 
 Live.addFocus = function() {
@@ -363,7 +363,7 @@ Live.addFocus = function() {
         Live.loadDataPrepare();
         Live.loadDataRequest();
     }
-
+    if (Live.cursorY >= 4) Main.LazyImgVideo(Live.Img, Live.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
     Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
         Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Main.Live, Main.ColoumnsCountVideo, Live.itemsCount);
 };

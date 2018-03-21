@@ -6,6 +6,7 @@ Main.Hide = '';
 Main.Go = 1;
 Main.Before = 1;
 Main.BeforeSearch = 1;
+Main.cursorY = -1;
 Main.newImg = new Image();
 
 Main.Live = 1;
@@ -591,6 +592,61 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
     for (var i = 0; i < imgVector.length; i++) {
         loadImages(i, document.getElementById(idVector[i]));
     }
+};
+
+Main.LazyImgStart = function(imgId, row_id, total, img_type, coloumns) {
+    Main.Ychange(row_id);
+    var x, y, loadImages = function(ImgObjet) {
+        ImgObjet.onerror = function() {
+            this.src = img_type; //img fail to load use predefined
+        };
+        ImgObjet.src = ImgObjet.getAttribute('data-src');
+        ImgObjet.setAttribute('data-src', '//:0');
+    };
+    for (y = row_id; y < total; y++) {
+        for (x = 0; x < coloumns; x++) {
+            elem = document.getElementById(imgId + y + '_' + x, 0);
+            if (elem !== null) loadImages(elem);
+        }
+    }
+};
+
+Main.LazyImgVideo = function(imgId, row_id, img_type, coloumns) {
+    var change = Main.Ychange(row_id);
+    if (change == 1 && row_id == 4) change = 0;
+    if (change !== 0) {
+        var x, y, elem, loadImages = function(ImgLoadObjet) {
+                ImgLoadObjet.onerror = function() {
+                    this.src = img_type; //img fail to load use predefined
+                };
+                ImgLoadObjet.src = ImgLoadObjet.getAttribute('data-src');
+                ImgLoadObjet.removeAttribute('data-src');
+            }, resetImages = function(ImgRstObjet) {
+                ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
+                ImgRstObjet.removeAttribute('src');
+            };
+
+        for (x = 0; x < coloumns; x++) {
+            y = change > 0 ? row_id + 4 : row_id - 4;
+            elem = document.getElementById(imgId + y + '_' + x);
+            if (elem !== null) loadImages(elem);
+
+            y = change > 0 ? row_id - 5 : row_id + 5;
+            elem = document.getElementById(imgId + y + '_' + x);
+            if (elem !== null) resetImages(elem);
+        }
+    }
+
+};
+
+Main.Ychange = function(y) {
+    var position = 0;
+
+    if (Main.cursorY < y) position = 1;//going down
+    if (Main.cursorY > y) position = -1;//going up
+
+    Main.cursorY = y;
+    return position;
 };
 
 Main.PreLoadAImage = function(link) {
