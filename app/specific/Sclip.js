@@ -247,7 +247,7 @@ Sclip.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Sclip.addFocus();
-            Main.LazyImgStart(Sclip.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(Sclip.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Sclip.loadingData = false;
         });
@@ -378,7 +378,7 @@ Sclip.addFocus = function() {
 
     Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
 
-    if (Sclip.cursorY > 3) Main.LazyImgVideo(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+    if (Sclip.cursorY > 3) Main.LazyImg(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Sclip.cursorY + Main.ItemsReloadLimitVideo) > (Sclip.itemsCount / Main.ColoumnsCountVideo)) &&
         !Sclip.dataEnded && !Sclip.loadingMore) {

@@ -226,7 +226,7 @@ UserHost.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             UserHost.addFocus();
-            Main.LazyImgStart(UserHost.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(UserHost.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             UserHost.loadingData = false;
         });
@@ -353,7 +353,7 @@ UserHost.addFocus = function() {
     Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
         UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv, Main.UserHost, Main.ColoumnsCountVideo, UserHost.itemsCount);
 
-    if (UserHost.cursorY > 3) Main.LazyImgVideo(UserHost.Img, UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+    if (UserHost.cursorY > 3) Main.LazyImg(UserHost.Img, UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
 
     if (((UserHost.cursorY + Main.ItemsReloadLimitVideo) > (UserHost.itemsCount / Main.ColoumnsCountVideo)) &&

@@ -222,7 +222,7 @@ Games.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Games.addFocus();
-            Main.LazyImgStart(Games.Img, 0, 7, IMG_404_GAME, Main.ColoumnsCountGame);
+            Main.LazyImgStart(Games.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
 
             Games.loadingData = false;
         });
@@ -347,7 +347,7 @@ Games.addFocus = function() {
     Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
         Main.ColoumnsCountGame, Games.itemsCount);
 
-    if (Games.cursorY > 2) Main.LazyImgGame(Games.Img, Games.cursorY, IMG_404_GAME, Main.ColoumnsCountGame);
+    if (Games.cursorY > 2) Main.LazyImg(Games.Img, Games.cursorY, IMG_404_GAME, Main.ColoumnsCountGame, 3);
 
     if (((Games.cursorY + Main.ItemsReloadLimitGame) > (Games.itemsCount / Main.ColoumnsCountGame)) &&
         !Games.dataEnded && !Games.loadingMore) {

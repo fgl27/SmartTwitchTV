@@ -224,7 +224,7 @@ SLive.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             SLive.addFocus();
-            Main.LazyImgStart(SLive.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             SLive.loadingData = false;
         });
@@ -352,7 +352,7 @@ SLive.addFocus = function() {
     Main.addFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
         SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, Main.SLive, Main.ColoumnsCountVideo, SLive.itemsCount);
 
-    if (SLive.cursorY > 3) Main.LazyImgVideo(SLive.Img, SLive.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+    if (SLive.cursorY > 3) Main.LazyImg(SLive.Img, SLive.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((SLive.cursorY + Main.ItemsReloadLimitVideo) > (SLive.itemsCount / Main.ColoumnsCountVideo)) &&
         !SLive.dataEnded && !SLive.loadingMore) {
