@@ -205,7 +205,7 @@ UserChannels.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             UserChannels.addFocus();
-            Main.LazyImgStart(UserChannels.Img, 0, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
+            Main.LazyImgStart(UserChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
 
             UserChannels.loadingData = false;
         });
@@ -229,7 +229,7 @@ UserChannels.addFocus = function() {
 
     Main.CounterDialog(UserChannels.cursorX, UserChannels.cursorY, Main.ColoumnsCountChannel, UserChannels.itemsCount);
 
-    if (UserChannels.cursorY > 3) Main.LazyImgVideo(UserChannels.Img, UserChannels.cursorY, IMG_404_LOGO, Main.ColoumnsCountChannel);
+    if (UserChannels.cursorY > 3) Main.LazyImg(UserChannels.Img, UserChannels.cursorY, IMG_404_LOGO, Main.ColoumnsCountChannel, 4);
 
     if (((UserChannels.cursorY + Main.ItemsReloadLimitChannel) > (UserChannels.itemsCount / Main.ColoumnsCountChannel)) &&
         !UserChannels.dataEnded && !UserChannels.loadingMore) {

@@ -176,7 +176,7 @@ SGames.loadDataSuccessFinish = function() {
     }
     Main.ReplaceTable('stream_table_search_game');
     $(document).ready(function() {
-        Main.LazyImgStart(SGames.Img, 0, 7, IMG_404_GAME, Main.ColoumnsCountGame);
+        Main.LazyImgStart(SGames.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
         SGames.loadingData = false;
     });
 };
@@ -191,7 +191,7 @@ SGames.addFocus = function() {
 
     Main.CounterDialog(SGames.cursorX, SGames.cursorY, Main.ColoumnsCountGame, SGames.itemsCount);
 
-    if (SGames.cursorY > 2) Main.LazyImgGame(SGames.Img, SGames.cursorY, IMG_404_GAME, Main.ColoumnsCountGame);
+    if (SGames.cursorY > 2) Main.LazyImg(SGames.Img, SGames.cursorY, IMG_404_GAME, Main.ColoumnsCountGame, 3);
 
 };
 

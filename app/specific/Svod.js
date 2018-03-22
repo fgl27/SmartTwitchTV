@@ -237,7 +237,7 @@ Svod.loadDataSuccessFinish = function() {
         $(document).ready(function() {
             Main.HideLoadDialog();
             Svod.addFocus();
-            Main.LazyImgStart(Svod.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(Svod.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Svod.loadingData = false;
         });
@@ -384,7 +384,7 @@ Svod.addFocus = function() {
 
     Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
 
-    if (Svod.cursorY > 3) Main.LazyImgVideo(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+    if (Svod.cursorY > 3) Main.LazyImg(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Svod.cursorY + Main.ItemsReloadLimitVideo) > (Svod.itemsCount / Main.ColoumnsCountVideo)) &&
         !Svod.dataEnded && !Svod.loadingMore) {

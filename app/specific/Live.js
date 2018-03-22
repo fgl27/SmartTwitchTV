@@ -225,7 +225,7 @@ Live.loadDataSuccessFinish = function() {
             Main.HideLoadDialog();
             Live.addFocus();
             $('#toolbar').show();
-            Main.LazyImgStart(Live.Img, 0, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Live.loadingData = false;
         });
@@ -354,7 +354,7 @@ Live.addFocus = function() {
     Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
         Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Main.Live, Main.ColoumnsCountVideo, Live.itemsCount);
 
-    if (Live.cursorY > 3) Main.LazyImgVideo(Live.Img, Live.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+    if (Live.cursorY > 3) Main.LazyImg(Live.Img, Live.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Live.cursorY + Main.ItemsReloadLimitVideo) > (Live.itemsCount / Main.ColoumnsCountVideo)) &&
         !Live.dataEnded && !Live.loadingMore) {

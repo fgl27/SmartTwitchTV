@@ -589,28 +589,30 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
     }
 };
 
-Main.LazyImgStart = function(imgId, row_id, total, img_type, coloumns) {
-    Main.Ychange(row_id);
-    var x, y, loadImages = function(ImgObjet) {
+Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
+    var x, y = 0, loadImages = function(ImgObjet) {
         ImgObjet.onerror = function() {
             this.src = img_type; //img fail to load use predefined
         };
         ImgObjet.src = ImgObjet.getAttribute('data-src');
         ImgObjet.setAttribute('data-src', '//:0');
     };
-    for (y = row_id; y < total; y++) {
+    for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x, 0);
             if (elem !== null) loadImages(elem);
         }
     }
+    Main.Ychange(0);
 };
 
-Main.LazyImgVideo = function(imgId, row_id, img_type, coloumns) {
+Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) {//offset is one more then number if (cursorY > number)
     var change = Main.Ychange(row_id);
-    if (change == 1 && row_id == 4) change = 0;
-    if (change !== 0) {
-        var x, y, elem, loadImages = function(ImgLoadObjet) {
+
+    if (row_id == offset && change == 1) change = 0;
+
+    if (change) {
+        var x = 0, y, elem, loadImages = function(ImgLoadObjet) {
                 ImgLoadObjet.onerror = function() {
                     this.src = img_type; //img fail to load use predefined
                 };
@@ -621,52 +623,23 @@ Main.LazyImgVideo = function(imgId, row_id, img_type, coloumns) {
                 ImgRstObjet.removeAttribute('src');
             };
 
-        for (x = 0; x < coloumns; x++) {
-            y = change > 0 ? row_id + 4 : row_id - 4;
+        for (x; x < coloumns; x++) {
+            y = change > 0 ? row_id + offset : row_id - offset;
             elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) loadImages(elem);
 
-            y = change > 0 ? row_id - 5 : row_id + 5;
+            y = change > 0 ? row_id - offset - 1 : row_id + offset + 1;
             elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) resetImages(elem);
         }
     }
-
-};
-
-Main.LazyImgGame = function(imgId, row_id, img_type, coloumns) {
-    var change = Main.Ychange(row_id);
-    if (change == 1 && row_id == 3) change = 0;
-    if (change !== 0) {
-        var x, y, elem, loadImages = function(ImgLoadObjet) {
-                ImgLoadObjet.onerror = function() {
-                    this.src = img_type; //img fail to load use predefined
-                };
-                ImgLoadObjet.src = ImgLoadObjet.getAttribute('data-src');
-                ImgLoadObjet.removeAttribute('data-src');
-            }, resetImages = function(ImgRstObjet) {
-                ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
-                ImgRstObjet.removeAttribute('src');
-            };
-
-        for (x = 0; x < coloumns; x++) {
-            y = change > 0 ? row_id + 3 : row_id - 3;
-            elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) loadImages(elem);
-
-            y = change > 0 ? row_id - 4 : row_id + 4;
-            elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) resetImages(elem);
-        }
-    }
-
 };
 
 Main.Ychange = function(y) {
     var position = 0;
 
     if (Main.cursorY < y) position = 1;//going down
-    if (Main.cursorY > y) position = -1;//going up
+    else if (Main.cursorY > y) position = -1;//going up
 
     Main.cursorY = y;
     return position;
