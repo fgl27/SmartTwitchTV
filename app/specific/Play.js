@@ -787,9 +787,9 @@ Play.ChatSize = function(showDialog) {
     window.parent.document.getElementById("chat_frame").style.height = '100%'; // this value must equal to "Play.prototype.handleFocus" value
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     Play.ChatPosition();
+    if (showDialog) Play.showChatBackgroundDialog('Size ' + percentage + '%');
+
     localStorage.setItem('ChatSizeValue', Play.ChatSizeValue);
-    if (showDialog)
-        Play.showChatBackgroundDialog('Size ' + percentage + '%');
 };
 
 Play.ChatBackgroundChange = function(showDialog) {
@@ -799,9 +799,9 @@ Play.ChatBackgroundChange = function(showDialog) {
     else chat_value = chat_value.toFixed(2);
 
     document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
+    if (showDialog) Play.showChatBackgroundDialog('Brightness ' + (chat_value * 100).toFixed(0) + '%');
+
     localStorage.setItem('ChatBackgroundValue', Play.ChatBackground);
-    if (showDialog)
-        Play.showChatBackgroundDialog('Brightness ' + (chat_value * 100).toFixed(0) + '%');
 };
 
 Play.ChatPosition = function() {
