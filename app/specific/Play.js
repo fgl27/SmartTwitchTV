@@ -4,7 +4,7 @@ function Play() {
 }
 //Variable initialization
 Play.ChatPositions = 1;
-Play.ChatBackground = 0.5;
+Play.ChatBackground = 0.55;
 Play.ChatSizeValue = 3;
 Play.PanelHideID = '';
 Play.quality = "source";
@@ -70,7 +70,7 @@ Play.PreStart = function() {
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
     Play.ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
-    Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.5;
+    Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     $("#play_dialog_exit_text").text(STR_EXIT_AGAIN);
@@ -793,10 +793,15 @@ Play.ChatSize = function(showDialog) {
 };
 
 Play.ChatBackgroundChange = function(showDialog) {
-    document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + Play.ChatBackground + ")";
+    var chat_value = Play.ChatBackground - 0.05;//Do not save a 0 value for ChatBackgroundValue
+
+    if (chat_value < 0.05) chat_value = 0;
+    else chat_value = chat_value.toFixed(2);
+
+    document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
     localStorage.setItem('ChatBackgroundValue', Play.ChatBackground);
     if (showDialog)
-        Play.showChatBackgroundDialog('Brightness ' + (Play.ChatBackground.toFixed(2) * 100).toFixed(0) + '%');
+        Play.showChatBackgroundDialog('Brightness ' + (chat_value * 100).toFixed(0) + '%');
 };
 
 Play.ChatPosition = function() {
@@ -952,7 +957,7 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_LEFT:
                 if (!Play.isPanelShown() && Play.isChatShown()) {
                     Play.ChatBackground -= 0.05;
-                    if (Play.ChatBackground < 0) Play.ChatBackground = 0;
+                    if (Play.ChatBackground < 0.05) Play.ChatBackground = 0.05;
                     Play.ChatBackgroundChange(true);
                 } else if (Play.isPanelShown()) {
                     Play.Panelcouner++;
@@ -967,7 +972,7 @@ Play.handleKeyDown = function(e) {
             case TvKeyCode.KEY_RIGHT:
                 if (!Play.isPanelShown() && Play.isChatShown()) {
                     Play.ChatBackground += 0.05;
-                    if (Play.ChatBackground > 1) Play.ChatBackground = 1;
+                    if (Play.ChatBackground > 1.05) Play.ChatBackground = 1.05;
                     Play.ChatBackgroundChange(true);
                 } else if (Play.isPanelShown()) {
                     Play.Panelcouner--;
