@@ -132,11 +132,12 @@ Play.Resume = function() {
         window.setTimeout(function() {
             if (!SmartHub.SmartHubResume) {
                 Play.RestoreFromResume = true;
-                Play.PlayerCheckOffset = 60;
+                Play.PlayerCheckOffset = 80;
+                Play.PlayerCheckQualityChanged = false;
                 Play.onPlayer();
                 Play.loadingInfoDataTry = 0;
                 Play.loadingInfoDataTimeout = 10000;
-                Play.updateStreamInfoStart();
+                window.setTimeout(Play.updateStreamInfoStart, 7500); //7s is average time that takes to a stream to reload after a resume, so updateStreamInfoStart only after that
                 Play.streamInfoTimer = window.setInterval(Play.updateStreamInfo, 60000);
                 Play.streamCheck = window.setInterval(Play.PlayerCheck, 500);
             }
@@ -182,7 +183,7 @@ Play.updateStreamInfoStart = function() {
 Play.updateStreamInfoStartError = function() {
     Play.loadingInfoDataTry++;
     if (Play.loadingInfoDataTry < Play.loadingInfoDataTryMax) {
-        Play.loadingInfoDataTimeout += (Play.loadingInfoDataTry < 5) ? 250 : 3500;
+        Play.loadingInfoDataTimeout += 2000;
         Play.updateStreamInfoStart();
     }
 };
@@ -449,15 +450,15 @@ Play.PlayerCheck = function() {
     if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
         Play.PlayerCheckCount++;
         Play.showBufferDialog();
-        if (Play.PlayerCheckQualityChanged && !Play.RestoreFromResume) Play.PlayerCheckOffset = -30;
-        if (Play.PlayerCheckCount > (60 + Play.PlayerCheckOffset)) { //staled for 30 sec drop one quality
+        if (Play.PlayerCheckQualityChanged && !Play.RestoreFromResume) Play.PlayerCheckOffset = -10;
+        if (Play.PlayerCheckCount > (30 + Play.PlayerCheckOffset)) { //staled for 15 sec drop one quality
             Play.PlayerCheckCount = 0;
             if (Play.qualityIndex < Play.getQualitiesCount() - 1) {
-                Play.qualityIndex++;
+                if (Play.PlayerCheckQualityChanged) Play.qualityIndex++; //Don't change first time only reload
                 Play.qualityDisplay();
                 Play.qualityChanged();
-                Play.PlayerCheckQualityChanged = true; // half time on next check
-            } else { //staled too long drop the player
+                Play.PlayerCheckQualityChanged = true; // -5s on next check
+            } else { //staled too long close the player
                 Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(Play.shutdownStream, 1500);
@@ -574,6 +575,9 @@ Play.ClearPlay = function() {
     document.getElementById('chat_frame').src = 'about:blank';
     window.clearInterval(Play.streamInfoTimer);
     window.clearInterval(Play.streamCheck);
+    Play.PlayerCheckOffset = 0;
+    Play.RestoreFromResume = false;
+    Play.PlayerCheckQualityChanged = false;
 };
 
 Play.hideFallow = function() {
@@ -793,7 +797,7 @@ Play.ChatSize = function(showDialog) {
 };
 
 Play.ChatBackgroundChange = function(showDialog) {
-    var chat_value = Play.ChatBackground - 0.05;//Do not save a 0 value for ChatBackgroundValue
+    var chat_value = Play.ChatBackground - 0.05; //Do not save a 0 value for ChatBackgroundValue
 
     if (chat_value < 0.05) chat_value = 0;
     else chat_value = chat_value.toFixed(2);
@@ -1041,7 +1045,7 @@ Play.handleKeyDown = function(e) {
                         Main.selectedChannel_id = AddCode.userChannel;
                         Main.selectedChannelDisplayname = Play.selectedChannelDisplayname;
                         Main.selectedChannelChannelLogo = Play.selectedChannelChannelLogo;
-                       if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                        if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();

@@ -99,6 +99,9 @@ PlayVod.Resume = function() {
         Play.showBufferDialog();
         window.setTimeout(function() {
             Play.videojs.play();
+            PlayVod.PlayerCheckOffset = 80;
+            PlayVod.RestoreFromResume = true;
+            PlayVod.PlayerCheckQualityChanged = false;
             PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
         }, 500);
     }
@@ -343,16 +346,16 @@ PlayVod.PlayerCheck = function() {
     if (PlayVod.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
         PlayVod.PlayerCheckCount++;
         Play.showBufferDialog();
-        if (PlayVod.PlayerCheckQualityChanged && !PlayVod.RestoreFromResume) PlayVod.PlayerCheckOffset = -30;
-        if (PlayVod.PlayerCheckCount > (60 + PlayVod.PlayerCheckOffset)) { //staled for 30 sec drop one quality
+        if (PlayVod.PlayerCheckQualityChanged && !PlayVod.RestoreFromResume) PlayVod.PlayerCheckOffset = -10;
+        if (PlayVod.PlayerCheckCount > (30 + PlayVod.PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayVod.PlayerCheckCount = 0;
             if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1) {
-                PlayVod.qualityIndex++;
+                if (PlayVod.PlayerCheckQualityChanged) PlayVod.qualityIndex++; //Don't change first time only reload
                 PlayVod.qualityDisplay();
                 if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
                 PlayVod.qualityChanged();
-                PlayVod.PlayerCheckQualityChanged = true; // half time on next check
-            } else { //staled too long drop the player
+                PlayVod.PlayerCheckQualityChanged = true; // -5s on next check
+            } else { //staled too long close the player
                 Play.HideBufferDialog();
                 Play.showWarningDialog(STR_PLAYER_PROBLEM);
                 window.setTimeout(PlayVod.shutdownStream, 1500);
@@ -396,6 +399,9 @@ PlayVod.ClearVod = function() {
     PlayVod.offsettime = 0;
     window.clearInterval(PlayVod.streamInfoTimer);
     window.clearInterval(PlayVod.streamCheck);
+    PlayVod.PlayerCheckOffset = 0;
+    PlayVod.RestoreFromResume = false;
+    PlayVod.PlayerCheckQualityChanged = false;
 };
 
 PlayVod.hidePanel = function() {
