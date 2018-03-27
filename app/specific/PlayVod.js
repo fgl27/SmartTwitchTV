@@ -202,7 +202,10 @@ PlayVod.loadDataSuccess = function(responseText) {
         PlayVod.loadData();
     } else if (PlayVod.state == PlayVod.STATE_LOADING_PLAYLIST) {
         PlayVod.playlistResponse = responseText;
-        PlayVod.extractQualities(PlayVod.playlistResponse);
+        PlayVod.qualities = Play.extractQualities(PlayVod.playlistResponse);
+        PlayVod.state = Play.STATE_PLAYING;
+        PlayVod.qualityChanged();
+        PlayVod.saveQualities();
     }
 };
 
@@ -231,44 +234,6 @@ PlayVod.isSub = function() {
     window.setTimeout(function() {
         if (PlayVod.isOn) PlayVod.shutdownStream();
     }, 4000);
-};
-
-PlayVod.extractQualities = function(input) {
-    var result = [],
-        TempId = '',
-        TempId2 = '',
-        tempCount = 1;
-    var streams = Play.extractStreamDeclarations(input);
-
-    for (var i = 0; i < streams.length; i++) {
-        TempId = Play.extractQualityFromStream(streams[i]);
-        if (result.length === 0) {
-            result.push({
-                'id': TempId + ' (source)',
-                'url': streams[i].split("\n")[2]
-            });
-        } else if (result[i - tempCount].id !== TempId) {
-            TempId2 = result[i - tempCount].id;
-            if (TempId2.indexOf('ource') === -1) {
-                result.push({
-                    'id': TempId,
-                    'url': streams[i].split("\n")[2]
-                });
-            } else {
-                TempId2 = TempId2.split(" ")[0];
-                if (TempId2 !== TempId) {
-                    result.push({
-                        'id': TempId,
-                        'url': streams[i].split("\n")[2]
-                    });
-                } else tempCount++;
-            }
-        } else tempCount++;
-    }
-    PlayVod.qualities = result;
-    PlayVod.state = Play.STATE_PLAYING;
-    PlayVod.qualityChanged();
-    PlayVod.saveQualities();
 };
 
 PlayVod.qualityChanged = function() {

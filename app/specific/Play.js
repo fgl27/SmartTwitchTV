@@ -309,47 +309,38 @@ Play.loadDataSuccess = function(responseText) {
         Play.loadData();
     } else if (Play.state == Play.STATE_LOADING_PLAYLIST) {
         Play.playlistResponse = responseText;
-        Play.extractQualities(Play.playlistResponse);
+        Play.qualities = Play.extractQualities(Play.playlistResponse);
+        Play.state = Play.STATE_PLAYING;
+        SmartHub.SmartHubResume = false;
+        Play.qualityChanged();
+        Play.saveQualities();
     }
 };
 
 Play.extractQualities = function(input) {
     var result = [],
         TempId = '',
-        TempId2 = '',
         tempCount = 1;
 
     var streams = Play.extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
-        TempId = Play.extractQualityFromStream(streams[i]);
+        TempId = streams[i].split('NAME="')[1].split('"')[0];
+        //console.log('BANDWIDTH ' + streams[i].split('BANDWIDTH=')[1].split(',')[0]);
         if (result.length === 0) {
+            if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
             result.push({
                 'id': TempId,
                 'url': streams[i].split("\n")[2]
             });
-        } else if (result[i - tempCount].id !== TempId) {
-            TempId2 = result[i - tempCount].id;
-            if (TempId2.indexOf('ource') === -1) {
-                result.push({
-                    'id': TempId,
-                    'url': streams[i].split("\n")[2]
-                });
-            } else {
-                TempId2 = TempId2.split(" ")[0];
-                if (TempId2 !== TempId) {
-                    result.push({
-                        'id': TempId,
-                        'url': streams[i].split("\n")[2]
-                    });
-                } else tempCount++;
-            }
+        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !==  TempId + ' (source)') {
+            result.push({
+                'id': TempId,
+                'url': streams[i].split("\n")[2]
+            });
         } else tempCount++;
     }
-    Play.qualities = result;
-    Play.state = Play.STATE_PLAYING;
-    SmartHub.SmartHubResume = false;
-    Play.qualityChanged();
-    Play.saveQualities();
+
+    return result;
 };
 
 Play.extractStreamDeclarations = function(input) {
@@ -360,25 +351,6 @@ Play.extractStreamDeclarations = function(input) {
     while (match = myRegexp.exec(input)) result.push(match[0]);
 
     return result;
-};
-
-Play.extractQualityFromStream = function(input) {
-    var myRegexp = /#EXT-X-MEDIA:.*NAME=\"(\w+)\".*/g;
-    var match = myRegexp.exec(input);
-
-    var quality;
-    if (match !== null) quality = match[1];
-    else {
-        var values = input.split("\n")[0].split(":")[1].split(",");
-
-        var value, set = {};
-        for (var i = 0; i < values.length; i++) {
-            value = values[i].split("=");
-            set[value[0]] = value[1].replace(/"/g, '');
-        }
-        quality = set.NAME;
-    }
-    return quality;
 };
 
 Play.qualityChanged = function() {
