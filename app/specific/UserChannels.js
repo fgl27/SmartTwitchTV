@@ -344,7 +344,7 @@ UserChannels.handleKeyDown = function(event) {
                 Main.selectedChannel_id = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-id');
                 Main.selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY +
                     '_' + UserChannels.cursorX).textContent;
-                Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
+                Main.selectedChannelChannelLogo = document.getElementById(UserChannels.Img + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
                 document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
                 Main.Before = Main.UserChannels;
                 Main.Go = Main.SChannelContent;
