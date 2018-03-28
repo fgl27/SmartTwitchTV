@@ -62,7 +62,7 @@ SLive.StartLoad = function() {
     SLive.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_search_live').empty();
     SLive.loadingMore = false;
     SLive.blankCellCount = 0;
     SLive.itemsCountOffset = 0;
@@ -178,7 +178,7 @@ SLive.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, SLive.EmptyCell));
             SLive.blankCellVector.push(SLive.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_search_live').append(row);
     }
 
     SLive.loadDataSuccessFinish();
@@ -216,22 +216,16 @@ SLive.CellExists = function(display_name) {
 };
 
 SLive.loadDataSuccessFinish = function() {
-    if (!SLive.Status) {
-        if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-        else SLive.Status = true;
-
-        Main.ReplaceTable('stream_table_search_live');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!SLive.Status) {
+            if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            else SLive.Status = true;
             Main.HideLoadDialog();
             SLive.addFocus();
             Main.LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             SLive.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_search_live');
-        $(document).ready(function() {
-
+        } else {
             if (SLive.blankCellCount > 0 && !SLive.dataEnded) {
                 SLive.loadingMore = true;
                 SLive.loadDataPrepare();
@@ -244,8 +238,8 @@ SLive.loadDataSuccessFinish = function() {
 
             SLive.loadingData = false;
             SLive.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 SLive.loadDataReplace = function() {

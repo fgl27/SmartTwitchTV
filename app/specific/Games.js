@@ -56,7 +56,7 @@ Games.StartLoad = function() {
     Games.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_games').empty();
     Games.loadingMore = false;
     Games.blankCellCount = 0;
     Games.blankCellVector = [];
@@ -180,7 +180,7 @@ Games.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
             Games.blankCellVector.push(Games.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_games').append(row);
     }
 
     Games.loadDataSuccessFinish();
@@ -188,10 +188,10 @@ Games.loadDataSuccess = function(responseText) {
 
 Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
     return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name));
+        Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail));
 };
 
-Games.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name) {
+Games.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thumbnail) {
 
     Games.nameMatrix.push(game_name);
 
@@ -215,21 +215,15 @@ Games.CellExists = function(display_name) {
 };
 
 Games.loadDataSuccessFinish = function() {
-    if (!Games.Status) {
-        Games.Status = true;
-
-        Main.ReplaceTable('stream_table_games');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!Games.Status) {
+            Games.Status = true;
             Main.HideLoadDialog();
             Games.addFocus();
             Main.LazyImgStart(Games.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
 
             Games.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_games');
-        $(document).ready(function() {
-
+        } else {
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
                 Games.loadingMore = true;
                 Games.loadDataPrepare();
@@ -242,8 +236,8 @@ Games.loadDataSuccessFinish = function() {
 
             Games.loadingData = false;
             Games.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 Games.loadDataReplace = function() {
@@ -339,7 +333,7 @@ Games.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail, game_name);
+    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail);
 };
 
 Games.addFocus = function() {

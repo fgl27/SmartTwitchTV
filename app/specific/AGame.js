@@ -64,7 +64,7 @@ AGame.StartLoad = function() {
     AGame.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_a_game').empty();
     AGame.loadingMore = false;
     AGame.blankCellCount = 0;
     AGame.itemsCountOffset = 0;
@@ -180,8 +180,9 @@ AGame.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, AGame.EmptyCell));
             AGame.blankCellVector.push(AGame.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_a_game').append(row);
     }
+
     AGame.loadDataSuccessFinish();
 };
 
@@ -218,21 +219,16 @@ AGame.CellExists = function(display_name) {
 };
 
 AGame.loadDataSuccessFinish = function() {
-    if (!AGame.status) {
-        if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-        else AGame.status = true;
-
-        Main.ReplaceTable('stream_table_a_game');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!AGame.status) {
+            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else AGame.status = true;
             Main.HideLoadDialog();
             AGame.addFocus();
             Main.LazyImgStart(AGame.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             AGame.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_a_game');
-        $(document).ready(function() {
+        } else {
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
                 AGame.loadingMore = true;
                 AGame.loadDataPrepare();
@@ -242,8 +238,8 @@ AGame.loadDataSuccessFinish = function() {
 
             AGame.loadingData = false;
             AGame.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 AGame.loadDataReplace = function() {

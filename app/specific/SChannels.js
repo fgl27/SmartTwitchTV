@@ -65,7 +65,7 @@ SChannels.StartLoad = function() {
     SChannels.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_search_channel').empty();
     SChannels.loadingMore = false;
     SChannels.blankCellCount = 0;
     SChannels.itemsCountOffset = 0;
@@ -178,7 +178,7 @@ SChannels.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
             SChannels.blankCellVector.push(SChannels.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_search_channel').append(row);
     }
 
     SChannels.loadDataSuccessFinish();
@@ -211,22 +211,16 @@ SChannels.CellExists = function(display_name) {
 };
 
 SChannels.loadDataSuccessFinish = function() {
-    if (!SChannels.Status) {
-        if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-        else SChannels.Status = true;
-
-        Main.ReplaceTable('stream_table_search_channel');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!SChannels.Status) {
+            if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            else SChannels.Status = true;
             Main.HideLoadDialog();
             SChannels.addFocus();
             Main.LazyImgStart(SChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
 
             SChannels.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_search_channel');
-        $(document).ready(function() {
-
+        } else {
             if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {
                 SChannels.loadingMore = true;
                 SChannels.loadDataPrepare();
@@ -239,8 +233,8 @@ SChannels.loadDataSuccessFinish = function() {
 
             SChannels.loadingData = false;
             SChannels.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 SChannels.loadDataReplace = function() {

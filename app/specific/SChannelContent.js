@@ -181,14 +181,16 @@ SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stre
 };
 
 SChannelContent.loadDataSuccessFinish = function() {
-    if (!SChannelContent.status) {
-        Main.HideLoadDialog();
-        SChannelContent.status = true;
-        SChannelContent.addFocus();
-        Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    }
-    Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
-    SChannelContent.loadingData = false;
+    $(document).ready(function() {
+        if (!SChannelContent.status) {
+            Main.HideLoadDialog();
+            SChannelContent.status = true;
+            SChannelContent.addFocus();
+            Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        }
+        Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
+        SChannelContent.loadingData = false;
+    });
 };
 
 SChannelContent.addFocus = function() {

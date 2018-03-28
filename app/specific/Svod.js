@@ -68,7 +68,7 @@ Svod.StartLoad = function() {
     Svod.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_search_vod').empty();
     Svod.loadingMore = false;
     Svod.blankCellCount = 0;
     Svod.itemsCountOffset = 0;
@@ -189,7 +189,7 @@ Svod.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Svod.EmptyCell));
             Svod.blankCellVector.push(Svod.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_search_vod').append(row);
     }
 
     Svod.loadDataSuccessFinish();
@@ -229,22 +229,16 @@ Svod.CellExists = function(display_name) {
 };
 
 Svod.loadDataSuccessFinish = function() {
-    if (!Svod.status) {
-        if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-        else Svod.status = true;
-
-        Main.ReplaceTable('stream_table_search_vod');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!Svod.status) {
+            if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+            else Svod.status = true;
             Main.HideLoadDialog();
             Svod.addFocus();
             Main.LazyImgStart(Svod.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Svod.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_search_vod');
-        $(document).ready(function() {
-
+        } else {
             if (Svod.blankCellCount > 0 && !Svod.dataEnded) {
                 Svod.loadingMore = true;
                 Svod.loadDataPrepare();
@@ -257,8 +251,8 @@ Svod.loadDataSuccessFinish = function() {
 
             Svod.loadingData = false;
             Svod.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 Svod.loadDataReplace = function() {

@@ -55,7 +55,7 @@ SGames.StartLoad = function() {
     SGames.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_search_game').empty();
     SGames.itemsCountOffset = 0;
     SGames.ReplacedataEnded = false;
     SGames.itemsCountCheck = false;
@@ -149,7 +149,7 @@ SGames.loadDataSuccess = function(responseText) {
             }
             row.append(Main.createCellEmpty(row_id, coloumn_id, SGames.EmptyCell));
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_search_game').append(row);
     }
 
     SGames.loadDataSuccessFinish();
@@ -168,14 +168,13 @@ SGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
 };
 
 SGames.loadDataSuccessFinish = function() {
-    if (!SGames.Status) {
-        Main.HideLoadDialog();
-        SGames.addFocus();
-        if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-        else SGames.Status = true;
-    }
-    Main.ReplaceTable('stream_table_search_game');
     $(document).ready(function() {
+        if (!SGames.Status) {
+            Main.HideLoadDialog();
+            SGames.addFocus();
+            if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            else SGames.Status = true;
+        }
         Main.LazyImgStart(SGames.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
         SGames.loadingData = false;
     });

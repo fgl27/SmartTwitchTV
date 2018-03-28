@@ -66,7 +66,7 @@ UserHost.StartLoad = function() {
     Main.showLoadDialog();
     UserHost.OldUserName = Main.UserName;
     UserHost.status = false;
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_user_host').empty();
     UserHost.loadingMore = false;
     UserHost.blankCellCount = 0;
     UserHost.itemsCountOffset = 0;
@@ -181,7 +181,7 @@ UserHost.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserHost.EmptyCell));
             UserHost.blankCellVector.push(UserHost.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_user_host').append(row);
     }
 
     UserHost.loadDataSuccessFinish();
@@ -218,22 +218,16 @@ UserHost.CellExists = function(display_name) {
 };
 
 UserHost.loadDataSuccessFinish = function() {
-    if (!UserHost.status) {
-        if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
-        else UserHost.status = true;
-
-        Main.ReplaceTable('stream_table_user_host');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!UserHost.status) {
+            if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+            else UserHost.status = true;
             Main.HideLoadDialog();
             UserHost.addFocus();
             Main.LazyImgStart(UserHost.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             UserHost.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_user_host');
-        $(document).ready(function() {
-
+        } else {
             if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
                 UserHost.loadingMore = true;
                 UserHost.loadDataPrepare();
@@ -246,8 +240,8 @@ UserHost.loadDataSuccessFinish = function() {
 
             UserHost.loadingData = false;
             UserHost.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 UserHost.loadChannelsReplace = function() {
