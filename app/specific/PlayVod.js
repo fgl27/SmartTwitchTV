@@ -367,6 +367,8 @@ PlayVod.ClearVod = function() {
     PlayVod.PlayerCheckOffset = 0;
     PlayVod.RestoreFromResume = false;
     PlayVod.PlayerCheckQualityChanged = false;
+    AddCode.IsFallowing = false;
+    Play.setFallow();
 };
 
 PlayVod.hidePanel = function() {

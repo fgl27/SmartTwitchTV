@@ -525,8 +525,6 @@ Play.exitMain = function() {
 };
 
 Play.ClearPlayer = function() {
-    AddCode.IsFallowing = false;
-    Play.setFallow();
     Play.videojs.pause();
     Play.offPlayer();
     Play.videojs.autoplay(false);
@@ -550,6 +548,8 @@ Play.ClearPlay = function() {
     Play.PlayerCheckOffset = 0;
     Play.RestoreFromResume = false;
     Play.PlayerCheckQualityChanged = false;
+    AddCode.IsFallowing = false;
+    Play.setFallow();
 };
 
 Play.hideFallow = function() {
