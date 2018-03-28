@@ -77,7 +77,7 @@ Play.PreStart = function() {
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i></div>';
     $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute;" src="about:blank"></iframe>' +
+        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
         '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
@@ -754,13 +754,13 @@ Play.ChatSize = function(showDialog) {
         dialogTop = 25;
         Play.sizeOffset = 16;
     } else if (Play.ChatSizeValue == 1) {
-        containerHeight = 16;
+        containerHeight = 17;
         percentage = 33;
         dialogTop = 12.5;
-        Play.sizeOffset = 32;
+        Play.sizeOffset = 31;
     }
     document.getElementById("chat_container").style.height = containerHeight + '%';
-    window.parent.document.getElementById("chat_frame").style.height = '100%'; // this value must equal to "Play.prototype.handleFocus" value
+    //window.parent.document.getElementById("chat_frame").style.height = '100%';
     document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
     Play.ChatPosition();
     if (showDialog) Play.showChatBackgroundDialog('Size ' + percentage + '%');
