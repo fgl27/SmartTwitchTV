@@ -74,7 +74,7 @@ Sclip.StartLoad = function() {
     Sclip.lastselectedChannel = Main.selectedChannel;
     Sclip.cursor = null;
     Sclip.status = false;
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_search_clip').empty();
     Sclip.loadingMore = false;
     Sclip.blankCellCount = 0;
     Sclip.ReplacedataEnded = false;
@@ -198,7 +198,7 @@ Sclip.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Sclip.EmptyCell));
             Sclip.blankCellVector.push(Sclip.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_search_clip').append(row);
     }
 
     Sclip.loadDataSuccessFinish();
@@ -207,10 +207,10 @@ Sclip.loadDataSuccess = function(responseText) {
 Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
     return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
         '" data-durationseconds=" ' + video_duration + '"></td>').html(
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name));
+        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail));
 };
 
-Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name) {
+Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail) {
 
     Sclip.nameMatrix.push(channel_name);
 
@@ -239,21 +239,16 @@ Sclip.CellExists = function(display_name) {
 };
 
 Sclip.loadDataSuccessFinish = function() {
-    if (!Sclip.status) {
-        if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
-        else Sclip.status = true;
-
-        Main.ReplaceTable('stream_table_search_clip');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!Sclip.status) {
+            if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
+            else Sclip.status = true;
             Main.HideLoadDialog();
             Sclip.addFocus();
             Main.LazyImgStart(Sclip.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Sclip.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_search_clip');
-        $(document).ready(function() {
+        } else {
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
                 Sclip.loadingMore = true;
                 Sclip.loadDataPrepare();
@@ -266,8 +261,8 @@ Sclip.loadDataSuccessFinish = function() {
 
             Sclip.loadingData = false;
             Sclip.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 Sclip.loadDataReplace = function() {
@@ -360,7 +355,7 @@ Sclip.replaceCellEmpty = function(id, channel_name, preview_thumbnail, video_cre
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
     document.getElementById(cell).setAttribute('data-durationseconds', video_duration);
     document.getElementById(cell).innerHTML =
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail, channel_name);
+        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail);
 };
 
 Sclip.addFocus = function() {

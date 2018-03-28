@@ -103,16 +103,18 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, p
 };
 
 Users.loadDataSuccessFinish = function() {
-    if (!Users.status) {
-        Main.HideLoadDialog();
-        Users.status = true;
-        Users.addFocus();
-        if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
-    }
+    $(document).ready(function() {
+        if (!Users.status) {
+            Main.HideLoadDialog();
+            Users.status = true;
+            if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
+            Users.addFocus();
+        }
 
-    Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
+        Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
 
-    Users.loadingData = false;
+        Users.loadingData = false;
+    });
 };
 
 Users.checkTitleStart = function() {

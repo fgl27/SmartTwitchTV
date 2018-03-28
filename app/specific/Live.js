@@ -59,7 +59,7 @@ Live.StartLoad = function() {
     Live.Status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_live').empty();
     Live.loadingMore = false;
     Live.blankCellCount = 0;
     Live.blankCellVector = [];
@@ -179,7 +179,7 @@ Live.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, Live.EmptyCell));
             Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_live').append(row);
     }
 
     Live.loadDataSuccessFinish();
@@ -217,25 +217,20 @@ Live.CellExists = function(display_name) {
 };
 
 Live.loadDataSuccessFinish = function() {
-    if (!Live.Status) {
-        Live.Status = true;
-
-        Main.ReplaceTable('stream_table_live');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!Live.Status) {
+            Live.Status = true;
             Main.HideLoadDialog();
             Live.addFocus();
             $('#toolbar').show();
             Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             Live.loadingData = false;
-        });
-        if (!Live.checkVersion) {
-            Live.checkVersion = true;
-            if (Main.checkVersion()) Main.showUpdateDialog();
-        }
-    } else {
-        Main.appendTable('stream_table_live');
-        $(document).ready(function() {
+            if (!Live.checkVersion) {
+                Live.checkVersion = true;
+                if (Main.checkVersion()) Main.showUpdateDialog();
+            }
+        } else {
             if (Live.blankCellCount > 0 && !Live.dataEnded) {
                 Live.loadingMore = true;
                 Live.loadDataPrepare();
@@ -248,8 +243,8 @@ Live.loadDataSuccessFinish = function() {
 
             Live.loadingData = false;
             Live.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 Live.loadDataReplace = function() {

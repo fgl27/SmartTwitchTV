@@ -58,7 +58,7 @@ UserChannels.StartLoad = function() {
     Main.showLoadDialog();
     UserChannels.OldUserName = Main.UserName;
     UserChannels.Status = false;
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_user_channels').empty();
     UserChannels.loadingMore = false;
     UserChannels.loadChannelOffsset = 0;
     UserChannels.itemsCount = 0;
@@ -181,7 +181,7 @@ UserChannels.loadDataSuccess = function() {
             }
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserChannels.EmptyCell));
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_user_channels').append(row);
     }
     UserChannels.loadDataSuccessFinish();
 };
@@ -197,25 +197,20 @@ UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, _id
 };
 
 UserChannels.loadDataSuccessFinish = function() {
-    if (!UserChannels.Status) {
-        if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
-        else UserChannels.Status = true;
-
-        Main.ReplaceTable('stream_table_user_channels');
-        $(document).ready(function() {
+    $(document).ready(function() {
+        if (!UserChannels.Status) {
+            if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
+            else UserChannels.Status = true;
             Main.HideLoadDialog();
             UserChannels.addFocus();
             Main.LazyImgStart(UserChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
 
             UserChannels.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_user_channels');
-        $(document).ready(function() {
+        } else {
             UserChannels.loadingData = false;
             UserChannels.loadingMore = false;
-        });
-    }
+        }
+    });
 };
 
 UserChannels.addFocus = function() {

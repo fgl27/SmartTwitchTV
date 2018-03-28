@@ -69,8 +69,6 @@ Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.Coloumn
 
 Main.ItemsLimitReload = 6;
 
-Main.TempTable = "stream_table_temp";
-
 Main.TopSpacingDefault = 30;
 Main.TopSpacingCleanTop = 34.5;
 Main.TopSpacingSearchLable = 40.5;
@@ -483,20 +481,6 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
     ];
     time = new Date(time);
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
-};
-
-Main.ReplaceTable = function(table) {
-    document.getElementById(table).innerHTML = document.getElementById(Main.TempTable).innerHTML;
-    $(document).ready(function() {
-        $('#' + Main.TempTable).empty();
-    });
-};
-
-Main.appendTable = function(table) {
-    $('#' + table).append(document.getElementById(Main.TempTable).innerHTML);
-    $(document).ready(function() {
-        $('#' + Main.TempTable).empty();
-    });
 };
 
 Main.NetworkStateChangeListenerStart = function() {

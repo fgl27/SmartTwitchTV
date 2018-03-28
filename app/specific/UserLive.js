@@ -68,7 +68,7 @@ UserLive.StartLoad = function() {
     Main.showLoadDialog();
     UserLive.status = false;
     UserLive.OldUserName = Main.UserName;
-    $('#' + Main.TempTable).empty();
+    $('#stream_table_user_live').empty();
     UserLive.loadChannelOffsset = 0;
     UserLive.loadingMore = false;
     UserLive.blankCellCount = 0;
@@ -253,7 +253,7 @@ UserLive.loadDataSuccess = function(responseText) {
             row.append(Main.createCellEmpty(row_id, coloumn_id, UserLive.EmptyCell));
             UserLive.blankCellVector.push(UserLive.EmptyCell + row_id + '_' + coloumn_id);
         }
-        $('#' + Main.TempTable).append(row);
+        $('#stream_table_user_live').append(row);
     }
 
     UserLive.loadDataSuccessFinish();
@@ -296,21 +296,17 @@ UserLive.CellExists = function(display_name) {
 };
 
 UserLive.loadDataSuccessFinish = function() {
-    if (!UserLive.status) {
-        if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
-        else UserLive.status = true;
+    $(document).ready(function() {
+        if (!UserLive.status) {
+            if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+            else UserLive.status = true;
 
-        Main.ReplaceTable('stream_table_user_live');
-        $(document).ready(function() {
             Main.HideLoadDialog();
             UserLive.addFocus();
             Main.LazyImgStart(UserLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             UserLive.loadingData = false;
-        });
-    } else {
-        Main.appendTable('stream_table_user_live');
-        $(document).ready(function() {
+        } else {
             if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
                 UserLive.loadingMore = true;
                 UserLive.loadDataPrepare();
@@ -323,10 +319,9 @@ UserLive.loadDataSuccessFinish = function() {
 
             UserLive.loadingData = false;
             UserLive.loadingMore = false;
-        });
-    }
+        }
+    });
 };
-
 
 UserLive.loadChannelsReplace = function() {
     try {
