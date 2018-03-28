@@ -122,7 +122,7 @@ var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
 Main.version = 400;
 Main.stringVersion = '4.0.0';
 Main.currentVersion = '';
-Main.minversion = '032718';
+Main.minversion = '032818';
 Main.versonTag = '';
 //Variable initialization end
 
