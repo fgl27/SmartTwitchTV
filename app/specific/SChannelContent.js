@@ -182,10 +182,10 @@ SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stre
         row_id + '_' + coloumn_id + '" class="stream_img"></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
-        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
-        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" ></div>' +
-        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
+        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
+        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
+        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info hide" ></div>' +
+        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div></div>');
 };
 
 SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
@@ -198,11 +198,11 @@ SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_ty
         row_id + '_' + coloumn_id + '" class="stream_img_fallow"><div id="schannel_cont_heart" style="position: absolute; top: 5%; right: 6%;"></div></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
+        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
         '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + Main.addCommas(Main.selectedChannelViews) +
         STR_VIEWS + '</div>' +
         '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" >' + Main.addCommas(Main.selectedChannelFallower) + STR_FALLOWERS + '</div>' +
-        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
+        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div></div>');
 };
 
 SChannelContent.setFallow = function() {
