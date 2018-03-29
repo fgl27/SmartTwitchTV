@@ -17,6 +17,7 @@ AddCode.userChannel = '';
 AddCode.OauthToken = '';
 AddCode.IsFallowing = false;
 AddCode.IsSub = false;
+AddCode.PlayRequest = false;
 
 AddCode.init = function() {
     if (AddCode.OauthToken !== '') {
@@ -190,7 +191,8 @@ AddCode.removeUser = function(Position) {
 };
 
 AddCode.SetDefaultOAuth = function(position) {
-    if (AddCode.UsercodeArray.length > 0 && AddUser.UsernameArray.length > 0) {
+    if (AddCode.UsercodeArray.length > 0) Main.UserName = AddUser.UsernameArray[position];
+    if (AddUser.UsernameArray.length > 0) {
         var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
         if (userCode > -1) {
             var values = AddCode.UsercodeArray[userCode].split(",");
@@ -264,6 +266,7 @@ AddCode.CheckKeySuccess = function(responseText) {
         AddCode.loadingDataTry = 0;
         AddCode.loadingDataTimeout = 10000;
         AddCode.loadingData = true;
+        AddCode.isCheckFallow = false;
         AddCode.CheckId();
     } else {
         Main.HideLoadDialog();
@@ -290,7 +293,8 @@ AddCode.CheckId = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        AddCode.CheckIdSuccess(xmlHttp.responseText);
+                        if (AddCode.isCheckFallow) AddCode.CheckFallowId(xmlHttp.responseText);
+                        else AddCode.CheckIdSuccess(xmlHttp.responseText);
                         return;
                     } catch (e) {}
                 } else {
@@ -326,6 +330,19 @@ AddCode.CheckFallow = function() {
     AddCode.loadingDataTimeout = 10000;
     AddCode.loadingData = true;
     AddCode.IsFallowing = false;
+    if (AddCode.userId !== '') AddCode.RequestCheckFallow();
+    else {
+        AddCode.isCheckFallow = true;
+        AddCode.CheckId();
+    }
+};
+
+AddCode.CheckFallowId = function(responseText) {
+    AddCode.userId = $.parseJSON(responseText).users[0]._id;
+    AddCode.loadingDataTry = 0;
+    AddCode.loadingDataTimeout = 10000;
+    AddCode.loadingData = true;
+    AddCode.IsFallowing = false;
     AddCode.RequestCheckFallow();
 };
 
@@ -345,13 +362,15 @@ AddCode.RequestCheckFallow = function() {
                 if (xmlHttp.status === 200) { //yes
                     AddCode.IsFallowing = true;
                     AddCode.loadingData = false;
-                    Play.setFallow();
+                    if (AddCode.PlayRequest) Play.setFallow();
+                    else SChannelContent.setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //no
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         AddCode.IsFallowing = false;
                         AddCode.loadingData = false;
-                        Play.setFallow();
+                        if (AddCode.PlayRequest) Play.setFallow();
+                        else SChannelContent.setFallow();
                         return;
                     } else AddCode.RequestCheckFallowError();
                 } else { // internet error
@@ -373,7 +392,8 @@ AddCode.RequestCheckFallowError = function() {
         AddCode.RequestCheckFallow();
     } else {
         AddCode.loadingData = false;
-        Play.setFallow();
+        if (AddCode.PlayRequest) Play.setFallow();
+        else SChannelContent.setFallow();
     }
 };
 
@@ -401,7 +421,8 @@ AddCode.FallowRequest = function() {
                 if (xmlHttp.status === 200) {
                     AddCode.loadingData = false;
                     AddCode.IsFallowing = true;
-                    Play.setFallow();
+                    if (AddCode.PlayRequest) Play.setFallow();
+                    else SChannelContent.setFallow();
                     return;
                 } else {
                     AddCode.FallowRequestError();
@@ -422,7 +443,8 @@ AddCode.FallowRequestError = function() {
         AddCode.FallowRequest();
     } else {
         AddCode.loadingData = false;
-        Play.setFallow();
+        if (AddCode.PlayRequest) Play.setFallow();
+        else SChannelContent.setFallow();
     }
 };
 
@@ -450,7 +472,8 @@ AddCode.UnFallowRequest = function() {
                 if (xmlHttp.status === 204) { // not fallowing responseText is empty
                     AddCode.IsFallowing = false;
                     AddCode.loadingData = false;
-                    Play.setFallow();
+                    if (AddCode.PlayRequest) Play.setFallow();
+                    else SChannelContent.setFallow();
                     return;
                 } else {
                     AddCode.UnFallowRequestError();
@@ -471,7 +494,8 @@ AddCode.UnFallowRequestError = function() {
         AddCode.UnFallowRequest();
     } else {
         AddCode.loadingData = false;
-        Play.setFallow();
+        if (AddCode.PlayRequest) Play.setFallow();
+        else SChannelContent.setFallow();
     }
 };
 

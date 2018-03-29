@@ -57,9 +57,8 @@ Play.Playing = false;
 Play.selectedChannel = '';
 Play.selectedChannelDisplayname = '';
 Play.Panelcouner = 0;
-Play.noFallow = false;
 Play.IsWarning = false;
-Play.selectedChannelChannelLogo = '';
+Play.selectedChannelLogo = '';
 
 //Variable initialization end
 
@@ -99,7 +98,6 @@ Play.Start = function() {
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
 
-    Play.noFallow = false;
     Play.IsWarning = false;
     Play.loadingInfoDataTry = 0;
     Play.loadingInfoDataTimeout = 10000;
@@ -157,12 +155,15 @@ Play.updateStreamInfoStart = function() {
                     var response = $.parseJSON(xmlHttp.responseText);
                     $("#stream_info_title").text(response.stream.channel.status);
                     $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
-                    Play.selectedChannelChannelLogo = response.stream.channel.logo;
-                    Play.LoadLogo(document.getElementById('stream_info_icon'), Play.selectedChannelChannelLogo);
+                    Play.selectedChannelLogo = response.stream.channel.logo;
+                    Play.LoadLogo(document.getElementById('stream_info_icon'), Play.selectedChannelLogo);
                     Play.created = new Date(response.stream.created_at).getTime();
                     Play.LoadLogoSucess = true;
-                    if (AddCode.OauthToken !== '') {
+                    Play.selectedChannelViews = response.stream.channel.views;
+                    Play.selectedChannelFallower = response.stream.channel.followers;
+                    if (Main.UserName !== '') {
                         AddCode.userChannel = response.stream.channel._id;
+                        AddCode.PlayRequest = true;
                         AddCode.CheckFallow();
                         Play.showFallow();
                     } else Play.hideFallow();
@@ -548,13 +549,11 @@ Play.ClearPlay = function() {
     Play.PlayerCheckOffset = 0;
     Play.RestoreFromResume = false;
     Play.PlayerCheckQualityChanged = false;
-    AddCode.IsFallowing = false;
-    Play.setFallow();
 };
 
 Play.hideFallow = function() {
     document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_NOKEY;
-    Play.noFallow = true;
+    AddCode.IsFallowing = false;
 };
 
 Play.showFallow = function() {
@@ -854,8 +853,17 @@ Play.IconsFocus = function() {
 };
 
 Play.FallowUnfallow = function() {
-    if (AddCode.IsFallowing) AddCode.UnFallow();
-    else AddCode.Fallow();
+    if (AddCode.OauthToken !== '') {
+        if (AddCode.IsFallowing) AddCode.UnFallow();
+        else AddCode.Fallow();
+    } else {
+        Play.showWarningDialog(STR_NOKEY_WARN);
+        Play.IsWarning = true;
+        window.setTimeout(function() {
+            Play.HideWarningDialog();
+            Play.IsWarning = false;
+        }, 2000);
+    }
 };
 
 Play.setFallow = function() {
@@ -1000,24 +1008,18 @@ Play.handleKeyDown = function(e) {
                         Play.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
-                        if (Play.noFallow) {
-                            Play.showWarningDialog(STR_NOKEY_WARN);
-                            Play.IsWarning = true;
-                            window.setTimeout(function() {
-                                Play.HideWarningDialog();
-                                Play.IsWarning = false;
-                            }, 2000);
-                        } else {
                             Play.FallowUnfallow();
                             Play.clearHidePanel();
                             Play.setHidePanel();
-                        }
                     } else if (Play.Panelcouner === 2) {
                         Main.selectedChannel = Play.selectedChannel;
                         Main.selectedChannel_id = AddCode.userChannel;
                         Main.selectedChannelDisplayname = Play.selectedChannelDisplayname;
-                        Main.selectedChannelChannelLogo = Play.selectedChannelChannelLogo;
+                        Main.selectedChannelLogo = Play.selectedChannelLogo;
+                        Main.selectedChannelViews = Play.selectedChannelViews;
+                        Main.selectedChannelFallower = Play.selectedChannelFallower;
                         if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                        SChannelContent.UserChannels = AddCode.IsFallowing;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();

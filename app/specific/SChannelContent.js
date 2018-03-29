@@ -15,6 +15,7 @@ SChannelContent.itemsCountOffset = 0;
 SChannelContent.LastClickFinish = true;
 SChannelContent.keyClickDelayTime = 25;
 SChannelContent.skipImg = false;
+SChannelContent.UserChannels = false;
 
 SChannelContent.Img = 'img_schannels';
 SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
@@ -40,8 +41,11 @@ SChannelContent.init = function() {
     $('.lable_game').html(STR_CHANNEL_CONT);
     $('.label_agame_name').html('');
     document.body.addEventListener("keydown", SChannelContent.handleKeyDown, false);
-    if (SChannelContent.status) Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
-    else SChannelContent.StartLoad();
+    AddCode.PlayRequest = false;
+    if (SChannelContent.status) {
+        Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        SChannelContent.checkUser();
+    } else SChannelContent.StartLoad();
 };
 
 SChannelContent.exit = function() {
@@ -140,6 +144,10 @@ SChannelContent.loadDataSuccess = function(responseText) {
     }
 
     $('#stream_table_search_channel_a').append(row);
+ 
+    row = $('<tr></tr>');
+    row.append(SChannelContent.createFallow(1, 0, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname, Main.selectedChannelLogo));
+    $('#stream_table_search_channel_a').append(row);
 
     SChannelContent.loadDataSuccessFinish();
 };
@@ -180,6 +188,34 @@ SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stre
         '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
 };
 
+SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+    SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixCount++;
+
+    return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
+        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
+        row_id + '_' + coloumn_id + '" class="stream_img_fallow"><div id="schannel_cont_heart" style="position: absolute; top: 5%; right: 6%;"></div></div>' +
+        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
+        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div>' +
+        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + Main.addCommas(Main.selectedChannelViews) +
+        STR_VIEWS + '</div>' +
+        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" >' + Main.addCommas(Main.selectedChannelFallower) + STR_FALLOWERS + '</div>' +
+        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info"></div></div>');
+};
+
+SChannelContent.setFallow = function() {
+    if (AddCode.IsFallowing) {
+        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>';
+        document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOWING;
+    } else {
+        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>';
+        if (AddCode.OauthToken !== '') document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOW;
+        else document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_CANT_FALLOW + STR_NOKEY;
+    }
+};
+
 SChannelContent.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SChannelContent.status) {
@@ -188,19 +224,31 @@ SChannelContent.loadDataSuccessFinish = function() {
             SChannelContent.addFocus();
             Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         }
+        SChannelContent.checkUser();
         Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
         SChannelContent.loadingData = false;
     });
 };
 
+SChannelContent.checkUser = function() {
+        if (SChannelContent.UserChannels) SChannelContent.setFallow();
+        else if (Main.UserName !== '') {
+            AddCode.userChannel = Main.selectedChannel_id;
+            AddCode.PlayRequest = false;
+            AddCode.CheckFallow();
+        } else {
+            AddCode.IsFallowing = false;
+            SChannelContent.setFallow();
+        }};
+
 SChannelContent.addFocus = function() {
-    Main.addFocusVideo(SChannelContent.cursorY, SChannelContent.cursorX, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+    Main.addFocusVideo(SChannelContent.cursorY, SChannelContent.cursorY === 0 ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
         SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
         SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
 
 SChannelContent.removeFocus = function() {
-    Main.removeFocusVideo(SChannelContent.cursorY, SChannelContent.cursorX, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+    Main.removeFocusVideo(SChannelContent.cursorY, SChannelContent.cursorY === 0 ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
         SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
         SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
@@ -210,15 +258,27 @@ SChannelContent.keyClickDelay = function() {
 };
 
 SChannelContent.keyEnter = function() {
-    document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
-    var value = (!SChannelContent.skipImg ? 0 : 1);
-    if (SChannelContent.cursorX === (0 - value)) {
-        Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
-        Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY +
-            '_' + SChannelContent.cursorX).textContent;
-        Main.openStream();
-    } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
-    else if (SChannelContent.cursorX === (2 - value)) Sclip.init();
+    if (SChannelContent.cursorY) {
+        if (AddCode.OauthToken !== '') {
+            AddCode.PlayRequest = false;
+            AddCode.userChannel = Main.selectedChannel_id;
+            if (AddCode.IsFallowing) AddCode.UnFallow();
+            else AddCode.Fallow();
+        } else {
+            Main.showWarningDialog(STR_NOKEY_WARN);
+            window.setTimeout(Main.HideWarningDialog, 2000);
+        }
+    } else {
+        document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
+        var value = (!SChannelContent.skipImg ? 0 : 1);
+        if (SChannelContent.cursorX === (0 - value)) {
+            Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
+            Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY +
+                '_' + SChannelContent.cursorX).textContent;
+            Main.openStream();
+        } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
+        else if (SChannelContent.cursorX === (2 - value)) Sclip.init();
+    }
 };
 
 SChannelContent.handleKeyDown = function(event) {
@@ -256,6 +316,12 @@ SChannelContent.handleKeyDown = function(event) {
             SChannelContent.removeFocus();
             SChannelContent.cursorX++;
             if (SChannelContent.cursorX > (!SChannelContent.skipImg ? 2 : 1)) SChannelContent.cursorX = 0;
+            SChannelContent.addFocus();
+            break;
+        case TvKeyCode.KEY_UP:
+        case TvKeyCode.KEY_DOWN:
+            SChannelContent.removeFocus();
+            SChannelContent.cursorY = SChannelContent.cursorY === 0 ? 1 : 0;
             SChannelContent.addFocus();
             break;
         case TvKeyCode.KEY_INFO:

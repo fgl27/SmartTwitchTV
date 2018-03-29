@@ -55,7 +55,7 @@ PlayVod.Start = function() {
     Play.hideChat();
     $("#scene2_quality").show();
     $('#clip_label_quality').html(STR_QUALITY);
-    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelChannelLogo);
+    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
     $('#stream_info_name').text(Main.selectedChannelDisplayname);
     $("#stream_info_title").text(Svod.title);
     $("#stream_info_game").text(Svod.views);
@@ -63,8 +63,9 @@ PlayVod.Start = function() {
     $("#stream_live_time").text(Svod.Duration);
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
 
-    if (AddCode.OauthToken !== '') {
+    if (Main.UserName !== '') {
         AddCode.userChannel = Main.selectedChannel_id;
+        AddCode.PlayRequest = true;
         AddCode.CheckFallow();
         Play.showFallow();
     } else Play.hideFallow();
@@ -367,8 +368,6 @@ PlayVod.ClearVod = function() {
     PlayVod.PlayerCheckOffset = 0;
     PlayVod.RestoreFromResume = false;
     PlayVod.PlayerCheckQualityChanged = false;
-    AddCode.IsFallowing = false;
-    Play.setFallow();
 };
 
 PlayVod.hidePanel = function() {
@@ -619,18 +618,9 @@ PlayVod.handleKeyDown = function(e) {
                         PlayVod.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
-                        if (Play.noFallow) {
-                            Play.showWarningDialog(STR_NOKEY_WARN);
-                            Play.IsWarning = true;
-                            window.setTimeout(function() {
-                                Play.HideWarningDialog();
-                                Play.IsWarning = false;
-                            }, 2000);
-                        } else {
                             Play.FallowUnfallow();
                             PlayVod.clearHidePanel();
                             PlayVod.setHidePanel();
-                        }
                     } else if (Play.Panelcouner === 2) {
                         if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
                         Main.Go = Main.SChannelContent;
