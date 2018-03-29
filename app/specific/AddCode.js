@@ -228,10 +228,8 @@ AddCode.CheckKey = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        AddCode.CheckKeySuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    AddCode.CheckKeySuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     AddCode.CheckKeyError();
                 }
@@ -292,11 +290,9 @@ AddCode.CheckId = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        if (AddCode.isCheckFallow) AddCode.CheckFallowId(xmlHttp.responseText);
-                        else AddCode.CheckIdSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    if (AddCode.isCheckFallow) AddCode.CheckFallowId(xmlHttp.responseText);
+                    else AddCode.CheckIdSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     AddCode.CheckIdError();
                 }

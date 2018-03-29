@@ -160,12 +160,10 @@ AddUser.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        document.getElementById("user_input").value = '';
-                        document.body.removeEventListener("keydown", AddUser.handleKeyDown);
-                        AddUser.SaveNewUser();
-                        return;
-                    } catch (e) {}
+                    document.getElementById("user_input").value = '';
+                    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
+                    AddUser.SaveNewUser();
+                    return;
                 } else {
                     AddUser.loadDataError();
                 }
@@ -252,7 +250,7 @@ AddUser.removeUser = function(Position) {
         Users.status = false;
         Users.init();
         if (Position === 0) SmartHub.Start();
-    } else { 
+    } else {
         AddUser.init();
         SmartHub.Start();
     }

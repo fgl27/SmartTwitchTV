@@ -129,10 +129,8 @@ Sclip.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Sclip.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Sclip.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     Sclip.loadDataError();
                 }
@@ -281,10 +279,8 @@ Sclip.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Sclip.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Sclip.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

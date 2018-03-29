@@ -109,10 +109,8 @@ UserLive.loadChannels = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserLive.loadChannelLive(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserLive.loadChannelLive(xmlHttp.responseText);
+                    return;
                 } else {
                     UserLive.loadDataError();
                 }
@@ -182,10 +180,8 @@ UserLive.loadChannelUserLive = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserLive.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserLive.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     UserLive.loadDataErrorLive();
                 }
@@ -345,10 +341,8 @@ UserLive.loadChannelsReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserLive.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserLive.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

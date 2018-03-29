@@ -111,10 +111,8 @@ UserHost.loadChannels = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserHost.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserHost.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     UserHost.loadDataError();
                 }
@@ -266,10 +264,8 @@ UserHost.loadChannelsReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserHost.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserHost.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

@@ -103,10 +103,8 @@ Live.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Live.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Live.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     Live.loadDataError();
                 }
@@ -268,10 +266,8 @@ Live.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Live.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Live.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };
