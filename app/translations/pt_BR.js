@@ -134,10 +134,12 @@ function pt_BRLang() {
     STR_IS_SUB_IS_SUB = " Você é um inscrito deste canal, mas o aplicativo falha ao tentar autenticar, contate o desenvolvedor através do email no sobre";
     STR_OAUTH_FAIL = "Falhou o teste com a chave do informada, verifique e tente novamente";
     STR_NOKEY = "Sem chave";
-    STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir";
+    STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir ou deixar de seguir";
     STR_RESET = "Reinicie o";
     STR_SPEED = "Velocidade";
     STR_CHANNEL_CONT = "Conteúdo do canal";
     STR_NET_DOWN = "A rede esta desconectada, o aplicativo não funciona sem INTERNET";
     STR_NET_UP = "Conexão de rede restabelecida";
+    STR_FALLOWERS = " Seguidores";
+    STR_CANT_FALLOW = ", Não é possível seguir ou deixar de seguir ";
 }

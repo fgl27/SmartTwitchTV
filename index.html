@@ -114,12 +114,26 @@
             position: relative;
         }
 
+        div.stream_thumbnail_fallow {
+            width: 56.25%;
+            height: 0;
+            /* height / width * 100% of Main.VideoSize*/
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+
         div.stream_thumbnail_focused {
             outline: 7px outset #FFFFFF;
         }
 
         img.stream_img {
             width: 100%;
+            position: absolute;
+        }
+
+        img.stream_img_fallow {
+            height: 100%;
+            display: inline-block;
             position: absolute;
         }
 

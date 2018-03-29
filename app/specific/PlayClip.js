@@ -25,7 +25,7 @@ PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     Play.hideChat();
-    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelChannelLogo);
+    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
     $('#stream_info_name').text(Sclip.title);
     $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
     $("#stream_info_game").text(Sclip.views);
@@ -40,8 +40,9 @@ PlayClip.Start = function() {
     Play.Panelcouner = 2;
     PlayClip.IconsFocus();
 
-    if (AddCode.OauthToken !== '') {
+    if (Main.UserName !== '') {
         AddCode.userChannel = Main.selectedChannel_id;
+        AddCode.PlayRequest = true;
         AddCode.CheckFallow();
         Play.showFallow();
     } else Play.hideFallow();
@@ -400,18 +401,9 @@ PlayClip.handleKeyDown = function(e) {
                     PlayClip.SpeedIndex = 2;
                     PlayClip.speedDisplay();
                 } else if (Play.Panelcouner === 1) {
-                    if (Play.noFallow) {
-                        Play.showWarningDialog(STR_NOKEY_WARN);
-                        Play.IsWarning = true;
-                        window.setTimeout(function() {
-                            Play.HideWarningDialog();
-                            Play.IsWarning = false;
-                        }, 2000);
-                    } else {
                         Play.FallowUnfallow();
                         PlayClip.clearHidePanel();
                         PlayClip.setHidePanel();
-                    }
                 } else if (Play.Panelcouner === 2) {
                     PlayClip.speed();
                 } else if (Play.Panelcouner === 3) {

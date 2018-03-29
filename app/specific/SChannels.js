@@ -165,7 +165,7 @@ SChannels.loadDataSuccess = function(responseText) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
-                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels._id, channels.logo, channels.display_name);
+                cell = SChannels.createCell(row_id, coloumn_id, channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers);
                 row.append(cell);
             }
         }
@@ -185,8 +185,8 @@ SChannels.loadDataSuccess = function(responseText) {
 };
 
 
-SChannels.createCell = function(row_id, coloumn_id, channel_name, _id, preview_thumbnail, channel_display_name) {
-    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '"></td>').html(
+SChannels.createCell = function(row_id, coloumn_id, channel_name, _id, preview_thumbnail, channel_display_name, views, followers) {
+    return $('<td id="' + SChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '" data-views="' + views + '" data-followers="' + followers + '"></td>').html(
         SChannels.CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name));
 };
 
@@ -452,10 +452,14 @@ SChannels.handleKeyDown = function(event) {
                 Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
                 Main.selectedChannel_id = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-id');
                 Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
-                Main.selectedChannelChannelLogo = document.getElementById(SChannels.Img + SChannels.cursorY + '_' + SChannels.cursorX).src;
+                Main.selectedChannelLogo = document.getElementById(SChannels.Img + SChannels.cursorY + '_' + SChannels.cursorX).src;
+                Main.selectedChannelViews = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-views');
+                Main.selectedChannelFallower = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-followers');
                 document.body.removeEventListener("keydown", SChannels.handleKeyDown);
                 Main.Before = Main.SChannels;
                 Main.Go = Main.SChannelContent;
+                AddCode.IsFallowing = false;
+                SChannelContent.UserChannels = false;
                 Main.SwitchScreen();
             }
             break;

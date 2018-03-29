@@ -444,7 +444,7 @@ Games.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Main.Before = Main.Games;
-            Main.Go = (AddUser.IsUserSet()) ? Main.Users : Main.AddUser;
+            Main.Go = AddUser.IsUserSet() ? Main.Users : Main.AddUser;
             Games.exit();
             Main.SwitchScreen();
             break;

@@ -450,7 +450,7 @@ AGame.handleKeyDown = function(event) {
             Main.SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = (Main.UserName !== null) ? Main.Users : Main.AddUser;
+            Main.Go = AddUser.IsUserSet() ? Main.Users : Main.AddUser;
             AGame.exit();
             Main.SwitchScreen();
             break;
