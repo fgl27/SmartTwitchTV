@@ -88,10 +88,8 @@ SGames.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SGames.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SGames.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     SGames.loadDataError();
                 }

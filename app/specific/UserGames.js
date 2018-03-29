@@ -109,10 +109,8 @@ UserGames.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserGames.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserGames.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     UserGames.loadDataError();
                 }
@@ -260,10 +258,8 @@ UserGames.loadDataRequestReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserGames.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserGames.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

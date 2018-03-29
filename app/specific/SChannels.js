@@ -110,10 +110,8 @@ SChannels.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SChannels.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SChannels.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     SChannels.loadDataError();
                 }
@@ -259,10 +257,8 @@ SChannels.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SChannels.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SChannels.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

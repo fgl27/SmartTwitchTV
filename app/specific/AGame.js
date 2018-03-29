@@ -109,10 +109,8 @@ AGame.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        AGame.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    AGame.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     AGame.loadDataError();
                 }
@@ -264,10 +262,8 @@ AGame.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        AGame.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    AGame.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

@@ -107,10 +107,8 @@ SLive.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SLive.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SLive.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     SLive.loadDataError();
                 }
@@ -264,10 +262,8 @@ SLive.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SLive.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SLive.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

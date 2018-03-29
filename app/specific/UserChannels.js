@@ -92,10 +92,8 @@ UserChannels.loadChannels = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        UserChannels.loadChannelLive(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    UserChannels.loadChannelLive(xmlHttp.responseText);
+                    return;
                 } else {
                     UserChannels.loadDataError();
                 }
@@ -131,8 +129,8 @@ UserChannels.loadChannelLive = function(responseText) {
 
     for (var x = TempCount; x < (TempCount + response_items); x++) {
         ChannelTemp = response.follows[x - TempCount].channel.display_name + ',' + response.follows[x - TempCount].channel._id + ',' +
-            response.follows[x - TempCount].channel.name + ',' + response.follows[x - TempCount].channel.logo
-            + ',' + response.follows[x - TempCount].channel.views + ',' + response.follows[x - TempCount].channel.followers;
+            response.follows[x - TempCount].channel.name + ',' + response.follows[x - TempCount].channel.logo +
+            ',' + response.follows[x - TempCount].channel.views + ',' + response.follows[x - TempCount].channel.followers;
         if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList[x - existCount] = ChannelTemp;
         else existCount++;
     }

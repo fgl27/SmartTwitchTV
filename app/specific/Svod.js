@@ -115,11 +115,8 @@ Svod.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-
-                        Svod.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Svod.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     Svod.loadDataError();
                 }
@@ -280,10 +277,8 @@ Svod.loadDataReplace = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Svod.loadDataSuccessReplace(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    Svod.loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
                 }
             }
         };

@@ -92,10 +92,8 @@ SChannelContent.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        SChannelContent.loadDataSuccess(xmlHttp.responseText);
-                        return;
-                    } catch (e) {}
+                    SChannelContent.loadDataSuccess(xmlHttp.responseText);
+                    return;
                 } else {
                     SChannelContent.loadDataError();
                 }
