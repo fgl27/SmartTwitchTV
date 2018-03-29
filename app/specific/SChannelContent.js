@@ -192,8 +192,9 @@ SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_ty
     SChannelContent.imgMatrixCount++;
 
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
-        row_id + '_' + coloumn_id + '" class="stream_img_fallow"><div id="schannel_cont_heart" style="position: absolute; top: 5%; right: 6%;"></div></div>' +
+        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id +
+        '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
+         SChannelContent.Img + row_id + '_' + coloumn_id + '" class="stream_img_fallow"></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
