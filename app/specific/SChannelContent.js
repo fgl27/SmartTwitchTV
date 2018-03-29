@@ -17,7 +17,7 @@ SChannelContent.keyClickDelayTime = 25;
 SChannelContent.skipImg = false;
 SChannelContent.UserChannels = false;
 
-SChannelContent.Img = 'img_schannels';
+SChannelContent.Img = 'img_schannels_cont';
 SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
 SChannelContent.EmptyCell = 'schannels_cont_empty_';
 SChannelContent.ThumbnailDiv = 'schannels_cont_thumbnail_div_';
@@ -144,7 +144,7 @@ SChannelContent.loadDataSuccess = function(responseText) {
     }
 
     $('#stream_table_search_channel_a').append(row);
- 
+
     row = $('<tr></tr>');
     row.append(SChannelContent.createFallow(1, 0, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname, Main.selectedChannelLogo));
     $('#stream_table_search_channel_a').append(row);
@@ -211,8 +211,8 @@ SChannelContent.setFallow = function() {
         document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOWING;
     } else {
         document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>';
-        if (AddCode.OauthToken !== '') document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOW;
-        else document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_CANT_FALLOW + STR_NOKEY;
+        if (Main.UserName !== '') document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOW;
+        else document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_CANT_FALLOW;
     }
 };
 
@@ -231,15 +231,16 @@ SChannelContent.loadDataSuccessFinish = function() {
 };
 
 SChannelContent.checkUser = function() {
-        if (SChannelContent.UserChannels) SChannelContent.setFallow();
-        else if (Main.UserName !== '') {
-            AddCode.userChannel = Main.selectedChannel_id;
-            AddCode.PlayRequest = false;
-            AddCode.CheckFallow();
-        } else {
-            AddCode.IsFallowing = false;
-            SChannelContent.setFallow();
-        }};
+    if (SChannelContent.UserChannels) SChannelContent.setFallow();
+    else if (Main.UserName !== '') {
+        AddCode.userChannel = Main.selectedChannel_id;
+        AddCode.PlayRequest = false;
+        AddCode.CheckFallow();
+    } else {
+        AddCode.IsFallowing = false;
+        SChannelContent.setFallow();
+    }
+};
 
 SChannelContent.addFocus = function() {
     Main.addFocusVideo(SChannelContent.cursorY, SChannelContent.cursorY === 0 ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
