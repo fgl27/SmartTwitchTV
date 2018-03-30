@@ -414,7 +414,7 @@ AddCode.FallowRequest = function() {
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
+                if (xmlHttp.status === 200) { //success user now is fallowing the channel
                     AddCode.loadingData = false;
                     AddCode.IsFallowing = true;
                     if (AddCode.PlayRequest) Play.setFallow();
@@ -465,7 +465,7 @@ AddCode.UnFallowRequest = function() {
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 204) { // not fallowing responseText is empty
+                if (xmlHttp.status === 204) { //success user is now not fallowing the channel
                     AddCode.IsFallowing = false;
                     AddCode.loadingData = false;
                     if (AddCode.PlayRequest) Play.setFallow();
@@ -517,14 +517,14 @@ AddCode.RequestCheckSub = function() {
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) { //yes
+                if (xmlHttp.status === 200) { //success yes user is a SUB
                     AddCode.IsSub = true;
                     AddCode.loadingData = false;
                     PlayVod.isSub();
                     return;
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
                     console.log('channel does not have a subscription program');
-                } else if (xmlHttp.status === 404) { //no
+                } else if (xmlHttp.status === 404) { //success no user is not a sub
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         AddCode.IsSub = false;
                         AddCode.loadingData = false;
@@ -630,4 +630,84 @@ AddCode.CheckTokenStartError = function(position) {
         AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
         AddCode.CheckTokenStart(position);
     } else Users.SetKeyTitleStart(false, position);
+};
+
+AddCode.RequestFallowGame = function() {
+    console.log('RequestFallowGame');
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("PUT", ' https://api.twitch.tv/api/users/' + Main.UserName + '/follows/games/' + encodeURIComponent(Main.gameSelected) + '?oauth_token=' + AddCode.OauthToken, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) { //success we now fallow the game
+                    console.log(xmlHttp.status);
+                    return;
+                } else { // internet error
+                    console.log('error ' + xmlHttp.status);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {}
+};
+
+AddCode.RequestUnFallowGame = function() {
+    console.log('RequestUnFallowGame');
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("DELETE", ' https://api.twitch.tv/api/users/' + Main.UserName + '/follows/games/' + encodeURIComponent(Main.gameSelected) + '?oauth_token=' + AddCode.OauthToken, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 204) { // success we now unfallow the game
+                    console.log(xmlHttp.status);
+                    return;
+                } else { // internet error
+                    console.log('error ' + xmlHttp.status);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {}
+};
+
+AddCode.RequestCheckFallowGame = function() {
+    console.log('RequestCheckFallowGame');
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", ' https://api.twitch.tv/api/users/' + Main.UserName + '/follows/games/' + encodeURIComponent(Main.gameSelected), true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) { //success yes user fallows
+                    console.log(xmlHttp.status);
+                    return;
+                } else if (xmlHttp.status === 404) { //success no user doesnot fallows
+                    console.log(xmlHttp.status);
+                } else { // internet error
+                    console.log('error ' + xmlHttp.status);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {}
 };
