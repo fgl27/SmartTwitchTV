@@ -760,6 +760,7 @@ Main.ScrollHelper = {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
             cursorY = 0;
         }
+        if (cursorY == 0 && Screen == Main.AGame) OffsetPlus = OffsetPlus - 83;
 
         if (DuploYOffsetCheck) {
             DuploYOffsetCheck = (cursorY === 0 || cursorY === 1);

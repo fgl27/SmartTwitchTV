@@ -3,7 +3,7 @@
 function AddCode() {}
 AddCode.loadingDataTry = 0;
 AddCode.loadingDataTryMax = 10;
-AddCode.loadingDataTimeout = 3500;
+AddCode.loadingDataTimeout = 10000;
 AddCode.UsercodeArraySize = 0;
 AddCode.UsercodeArray = [];
 AddCode.UserIdArray = [];
@@ -21,8 +21,7 @@ AddCode.PlayRequest = false;
 
 AddCode.init = function() {
     if (AddCode.OauthToken !== '') {
-        AddCode.loadingDataTry = 0;
-        AddCode.loadingDataTimeout = 10000;
+        AddCode.TimeoutReset10();
         AddCode.CheckToken();
         Users.init();
         return;
@@ -131,9 +130,7 @@ AddCode.KeyboardEvent = function(event) {
                 document.getElementById("oauth_input").value = $('#oauth_input').val();
                 AddCode.OauthToken = $('#oauth_input').val();
 
-                AddCode.loadingDataTry = 0;
-                AddCode.loadingDataTimeout = 3500;
-                AddCode.loadingData = true;
+                AddCode.TimeoutReset10();
                 Main.showLoadDialog();
                 AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
                 AddCode.CheckKey();
@@ -261,9 +258,7 @@ AddCode.CheckKeyError = function() {
 AddCode.CheckKeySuccess = function(responseText) {
     if (Users.checkKey(responseText)) {
         AddCode.Username = $.parseJSON(responseText).token.user_name + '';
-        AddCode.loadingDataTry = 0;
-        AddCode.loadingDataTimeout = 10000;
-        AddCode.loadingData = true;
+        AddCode.TimeoutReset10();
         AddCode.isCheckFallow = false;
         AddCode.CheckId();
     } else {
@@ -322,9 +317,7 @@ AddCode.CheckIdSuccess = function(responseText) {
 };
 
 AddCode.CheckFallow = function() {
-    AddCode.loadingDataTry = 0;
-    AddCode.loadingDataTimeout = 10000;
-    AddCode.loadingData = true;
+    AddCode.TimeoutReset10();
     AddCode.IsFallowing = false;
     if (AddCode.userId !== '') AddCode.RequestCheckFallow();
     else {
@@ -335,9 +328,7 @@ AddCode.CheckFallow = function() {
 
 AddCode.CheckFallowId = function(responseText) {
     AddCode.userId = $.parseJSON(responseText).users[0]._id;
-    AddCode.loadingDataTry = 0;
-    AddCode.loadingDataTimeout = 10000;
-    AddCode.loadingData = true;
+    AddCode.TimeoutReset10();
     AddCode.IsFallowing = false;
     AddCode.RequestCheckFallow();
 };
@@ -394,9 +385,7 @@ AddCode.RequestCheckFallowError = function() {
 };
 
 AddCode.Fallow = function() {
-    AddCode.loadingDataTry = 0;
-    AddCode.loadingDataTimeout = 10000;
-    AddCode.loadingData = true;
+    AddCode.TimeoutReset10();
     AddCode.FallowRequest();
 };
 
@@ -435,19 +424,13 @@ AddCode.FallowRequest = function() {
 AddCode.FallowRequestError = function() {
     AddCode.loadingDataTry++;
     if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
-        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
+        AddCode.loadingDataTimeout += 3500;
         AddCode.FallowRequest();
-    } else {
-        AddCode.loadingData = false;
-        if (AddCode.PlayRequest) Play.setFallow();
-        else SChannelContent.setFallow();
     }
 };
 
 AddCode.UnFallow = function() {
-    AddCode.loadingDataTry = 0;
-    AddCode.loadingDataTimeout = 10000;
-    AddCode.loadingData = true;
+    AddCode.TimeoutReset10();
     AddCode.UnFallowRequest();
 };
 
@@ -486,21 +469,21 @@ AddCode.UnFallowRequest = function() {
 AddCode.UnFallowRequestError = function() {
     AddCode.loadingDataTry++;
     if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
-        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
+        AddCode.loadingDataTimeout += 3500;
         AddCode.UnFallowRequest();
-    } else {
-        AddCode.loadingData = false;
-        if (AddCode.PlayRequest) Play.setFallow();
-        else SChannelContent.setFallow();
     }
 };
 
 AddCode.CheckSub = function() {
+    AddCode.TimeoutReset10();
+    AddCode.IsSub = false;
+    AddCode.RequestCheckSub();
+};
+
+AddCode.TimeoutReset10 = function() {
     AddCode.loadingDataTry = 0;
     AddCode.loadingDataTimeout = 10000;
     AddCode.loadingData = true;
-    AddCode.IsSub = false;
-    AddCode.RequestCheckSub();
 };
 
 AddCode.RequestCheckSub = function() {
@@ -571,6 +554,7 @@ AddCode.CheckToken = function() {
                     window.setTimeout(function() {
                         Main.HideWarningDialog();
                     }, 4000);
+                    AddCode.loadingData = false;
                     return;
                 } else {
                     AddCode.CheckTokenError();
@@ -595,6 +579,7 @@ AddCode.CheckTokenError = function() {
         window.setTimeout(function() {
             Main.HideWarningDialog();
         }, 4000);
+        AddCode.loadingData = false;
     }
 };
 
@@ -627,18 +612,23 @@ AddCode.CheckTokenStart = function(position) {
 AddCode.CheckTokenStartError = function(position) {
     AddCode.loadingDataTry++;
     if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
-        AddCode.loadingDataTimeout += (AddCode.loadingDataTry < 5) ? 250 : 3500;
+        AddCode.loadingDataTimeout += 3500;
         AddCode.CheckTokenStart(position);
     } else Users.SetKeyTitleStart(false, position);
 };
 
+AddCode.FallowGame = function() {
+    AddCode.TimeoutReset10();
+    AddCode.RequestFallowGame();
+};
+
 AddCode.RequestFallowGame = function() {
-    console.log('RequestFallowGame');
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("PUT", ' https://api.twitch.tv/api/users/' + Main.UserName + '/follows/games/' + encodeURIComponent(Main.gameSelected) + '?oauth_token=' + AddCode.OauthToken, true);
+        xmlHttp.open("PUT", ' https://api.twitch.tv/api/users/' + Main.UserName + '/follows/games/' + encodeURIComponent(Main.gameSelected) +
+            '?oauth_token=' + AddCode.OauthToken, true);
         xmlHttp.timeout = 10000;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -646,20 +636,35 @@ AddCode.RequestFallowGame = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success we now fallow the game
-                    console.log(xmlHttp.status);
+                    AGame.fallowing = true;
+                    AGame.setFallow();
                     return;
                 } else { // internet error
-                    console.log('error ' + xmlHttp.status);
+                    AddCode.FallowGameRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
-    } catch (e) {}
+    } catch (e) {
+        AddCode.FallowGameRequestError();
+    }
+};
+
+AddCode.FallowGameRequestError = function() {
+    AddCode.loadingDataTry++;
+    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
+        AddCode.loadingDataTimeout += 3500;
+        AddCode.RequestFallowGame();
+    }
+};
+
+AddCode.UnFallowGame = function() {
+    AddCode.TimeoutReset10();
+    AddCode.RequestUnFallowGame();
 };
 
 AddCode.RequestUnFallowGame = function() {
-    console.log('RequestUnFallowGame');
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -672,16 +677,32 @@ AddCode.RequestUnFallowGame = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 204) { // success we now unfallow the game
-                    console.log(xmlHttp.status);
+                    AGame.fallowing = false;
+                    AGame.setFallow();
                     return;
                 } else { // internet error
-                    console.log('error ' + xmlHttp.status);
+                    AddCode.UnFallowGameRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
-    } catch (e) {}
+    } catch (e) {
+        AddCode.UnFallowGameRequestError();
+    }
+};
+
+AddCode.UnFallowGameRequestError = function() {
+    AddCode.loadingDataTry++;
+    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
+        AddCode.loadingDataTimeout += 3500;
+        AddCode.RequestUnFallowGame();
+    }
+};
+
+AddCode.CheckFallowGame = function() {
+    AddCode.TimeoutReset10();
+    AddCode.RequestCheckFallowGame();
 };
 
 AddCode.RequestCheckFallowGame = function() {
@@ -698,16 +719,33 @@ AddCode.RequestCheckFallowGame = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success yes user fallows
-                    console.log(xmlHttp.status);
+                    AGame.fallowing = true;
+                    AGame.setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //success no user doesnot fallows
-                    console.log(xmlHttp.status);
+                    AGame.fallowing = false;
+                    AGame.setFallow();
+                    return;
                 } else { // internet error
-                    console.log('error ' + xmlHttp.status);
+                    AddCode.CheckFallowGameError();
+                    return;
                 }
             }
         };
 
         xmlHttp.send(null);
-    } catch (e) {}
+    } catch (e) {
+        AddCode.CheckFallowGameError();
+    }
+};
+
+AddCode.CheckFallowGameError = function() {
+    AddCode.loadingDataTry++;
+    if (AddCode.loadingDataTry < AddCode.loadingDataTryMax) {
+        AddCode.loadingDataTimeout += 3500;
+        AddCode.RequestCheckFallowGame();
+    } else {
+        AGame.fallowing = false;
+        AGame.setFallow();
+    }
 };

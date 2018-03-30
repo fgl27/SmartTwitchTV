@@ -32,6 +32,8 @@ AGame.QualityDiv = 'agame_quality_';
 AGame.Cell = 'agame_cell_';
 AGame.status = false;
 AGame.itemsCountCheck = false;
+AGame.fallowing = false;
+AGame.UserGames = false;
 
 //Variable initialization end
 
@@ -52,6 +54,9 @@ AGame.init = function() {
 };
 
 AGame.exit = function() {
+    if (AGame.cursorY == -1) AGame.cursorY = 0;
+    AGame.removeFocusFallow();
+    AGame.addFocus();
     $('.label_agame_name').html('');
     $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", AGame.handleKeyDown);
@@ -151,8 +156,16 @@ AGame.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, stream,
+    var coloumn_id, row_id, row = $('<tr></tr>'),
+        cell, stream,
         cursor = 0;
+
+    row.append(Main.createCellEmpty('x', 0, AGame.EmptyCell));
+    row.append(Main.createCellEmpty('x', 1, AGame.EmptyCell));
+    row.append($('<td id="' + AGame.Cell + 'x_2" class="stream_cell" ></td>').html('<div id="' + AGame.Thumbnail +
+        'x_2" class="stream_thumbnail_fallow_game" ><div id="' + AGame.DispNameDiv +
+        'x_2" class="stream_channel_fallow_game"></div></div>'));
+    $('#stream_table_a_game').append(row);
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
@@ -207,7 +220,6 @@ AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title
         '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
 };
 
-
 AGame.CellExists = function(display_name) {
     if (AGame.nameMatrix.indexOf(display_name) > -1) {
         AGame.blankCellCount++;
@@ -221,10 +233,10 @@ AGame.loadDataSuccessFinish = function() {
         if (!AGame.status) {
             if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else AGame.status = true;
+            AGame.Checkfallow();
             Main.HideLoadDialog();
             AGame.addFocus();
             Main.LazyImgStart(AGame.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
             AGame.loadingData = false;
         } else {
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
@@ -238,6 +250,32 @@ AGame.loadDataSuccessFinish = function() {
             AGame.loadingMore = false;
         }
     });
+};
+
+AGame.Checkfallow = function() {
+    if (AGame.UserGames) {
+        AGame.fallowing = true;
+        AGame.setFallow();
+    } else if (Main.UserName !== '') AddCode.CheckFallowGame();
+    else {
+        AGame.fallowing = false;
+        AGame.setFallow();
+    }
+};
+
+AGame.setFallow = function() {
+    if (AGame.fallowing) document.getElementById(AGame.DispNameDiv + "x_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>' + STR_SPACE + STR_FALLOWING;
+    else document.getElementById(AGame.DispNameDiv + "x_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>' + STR_SPACE + (Main.UserName !== '' ? STR_FALLOW : STR_NOKEY);
+};
+
+AGame.fallow = function() {
+    if (AddCode.OauthToken !== '') {
+        if (AGame.fallowing) AddCode.UnFallowGame();
+        else AddCode.FallowGame();
+    } else {
+        Main.showWarningDialog(STR_NOKEY_WARN);
+        window.setTimeout(Main.HideWarningDialog, 2000);
+    }
 };
 
 AGame.loadDataReplace = function() {
@@ -358,6 +396,15 @@ AGame.removeFocus = function() {
         AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv);
 };
 
+
+AGame.addFocusFallow = function() {
+    $('#' + AGame.Thumbnail + 'x_2').addClass(Main.classThumb);
+};
+
+AGame.removeFocusFallow = function() {
+    $('#' + AGame.Thumbnail + 'x_2').removeClass(Main.classThumb);
+};
+
 AGame.keyClickDelay = function() {
     AGame.LastClickFinish = true;
 };
@@ -386,7 +433,15 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX - 1), AGame.Thumbnail)) {
+            if (!AGame.cursorY) {
+                AGame.removeFocus();
+                AGame.cursorY = -1;
+                AGame.addFocusFallow();
+            } else if (AGame.cursorY == -1) {
+                AGame.cursorY = 0;
+                AGame.removeFocusFallow();
+                AGame.addFocus();
+            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX - 1), AGame.Thumbnail)) {
                 AGame.removeFocus();
                 AGame.cursorX--;
                 AGame.addFocus();
@@ -403,7 +458,11 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX + 1), AGame.Thumbnail)) {
+            if (AGame.cursorY == -1) {
+                AGame.cursorY = 0;
+                AGame.removeFocusFallow();
+                AGame.addFocus();
+            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX + 1), AGame.Thumbnail)) {
                 AGame.removeFocus();
                 AGame.cursorX++;
                 AGame.addFocus();
@@ -415,24 +474,36 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((AGame.cursorY - 1), (AGame.cursorX - i), AGame.Thumbnail)) {
-                    AGame.removeFocus();
-                    AGame.cursorY--;
-                    AGame.cursorX = AGame.cursorX - i;
-                    AGame.addFocus();
-                    break;
+            if (!AGame.cursorY) {
+                AGame.removeFocus();
+                AGame.cursorY = -1;
+                AGame.addFocusFallow();
+            } else {
+                for (i = 0; i < Main.ColoumnsCountVideo; i++) {
+                    if (Main.ThumbNull((AGame.cursorY - 1), (AGame.cursorX - i), AGame.Thumbnail)) {
+                        AGame.removeFocus();
+                        AGame.cursorY--;
+                        AGame.cursorX = AGame.cursorX - i;
+                        AGame.addFocus();
+                        break;
+                    }
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((AGame.cursorY + 1), (AGame.cursorX - i), AGame.Thumbnail)) {
-                    AGame.removeFocus();
-                    AGame.cursorY++;
-                    AGame.cursorX = AGame.cursorX - i;
-                    AGame.addFocus();
-                    break;
+            if (AGame.cursorY == -1) {
+                AGame.cursorY = 0;
+                AGame.removeFocusFallow();
+                AGame.addFocus();
+            } else {
+                for (i = 0; i < Main.ColoumnsCountVideo; i++) {
+                    if (Main.ThumbNull((AGame.cursorY + 1), (AGame.cursorX - i), AGame.Thumbnail)) {
+                        AGame.removeFocus();
+                        AGame.cursorY++;
+                        AGame.cursorX = AGame.cursorX - i;
+                        AGame.addFocus();
+                        break;
+                    }
                 }
             }
             break;
@@ -454,11 +525,13 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Play.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
-            Play.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
-            document.body.removeEventListener("keydown", AGame.handleKeyDown);
-            Main.OldgameSelected = Main.gameSelected;
-            Main.openStream();
+            if (AGame.cursorY !== -1) {
+                Play.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
+                Play.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
+                document.body.removeEventListener("keydown", AGame.handleKeyDown);
+                Main.OldgameSelected = Main.gameSelected;
+                Main.openStream();
+            } else AGame.fallow();
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();

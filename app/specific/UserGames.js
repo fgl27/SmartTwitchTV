@@ -451,6 +451,7 @@ UserGames.handleKeyDown = function(event) {
             Main.gameSelected = $('#' + UserGames.Cell + UserGames.cursorY + '_' + UserGames.cursorX).attr('data-channelname');
             Main.Before = Main.UserGames;
             Main.Go = Main.AGame;
+            AGame.UserGames = true;
             UserGames.exit();
             Main.SwitchScreen();
             break;

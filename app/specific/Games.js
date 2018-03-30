@@ -453,6 +453,7 @@ Games.handleKeyDown = function(event) {
                 document.body.removeEventListener("keydown", Games.handleKeyDown);
                 Main.Before = Main.Go;
                 Main.Go = Main.AGame;
+                AGame.UserGames = false;
                 Games.exit();
                 Main.SwitchScreen();
             }
