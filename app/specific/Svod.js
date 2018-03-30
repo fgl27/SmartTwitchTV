@@ -202,7 +202,7 @@ Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title,
 
     Svod.nameMatrix.push(channel_name);
 
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    preview_thumbnail = preview_thumbnail.replace("320x240", Main.VideoSize);
     if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 
     return '<div id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Svod.Img + row_id + '_' +
