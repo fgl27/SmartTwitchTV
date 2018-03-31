@@ -318,29 +318,34 @@ Play.loadDataSuccess = function(responseText) {
 };
 
 Play.extractQualities = function(input) {
-    var result = [],
+    var Band,
+        result = [],
         TempId = '',
         tempCount = 1;
 
     var streams = Play.extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
         TempId = streams[i].split('NAME="')[1].split('"')[0];
-        //console.log('BANDWIDTH ' + streams[i].split('BANDWIDTH=')[1].split(',')[0]);
+        Band = Play.extractBand(streams[i].split('BANDWIDTH=')[1].split(',')[0]);
         if (result.length === 0) {
             if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
             result.push({
-                'id': TempId,
+                'id': TempId + Band,
                 'url': streams[i].split("\n")[2]
             });
         } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !==  TempId + ' (source)') {
             result.push({
-                'id': TempId,
+                'id': TempId + Band,
                 'url': streams[i].split("\n")[2]
             });
         } else tempCount++;
     }
 
     return result;
+};
+
+Play.extractBand = function(input) { 
+    return ' (' + parseFloat(parseInt(input) / 1000000).toFixed(2) + 'Mbps)';
 };
 
 Play.extractStreamDeclarations = function(input) {
