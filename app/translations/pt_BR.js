@@ -35,7 +35,6 @@ function pt_BRLang() {
     STR_DURATION = "Duração ";
     STR_VIEWS = " Visualizações";
     STR_BUFFERING = "Carregando ";
-    STR_QUALITY = "Qualidade";
     STR_VIEWER = " Espectadores";
     STR_EXIT_AGAIN = "Pressione novamente para sair!";
     STR_EXIT_MESSAGE = "Quer sair do Twitch?";
@@ -136,7 +135,6 @@ function pt_BRLang() {
     STR_NOKEY = "Sem chave";
     STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir ou deixar de seguir";
     STR_RESET = "Reinicie o";
-    STR_SPEED = "Velocidade";
     STR_CHANNEL_CONT = "Conteúdo do canal";
     STR_NET_DOWN = "A rede esta desconectada, o aplicativo não funciona sem INTERNET";
     STR_NET_UP = "Conexão de rede restabelecida";
