@@ -1043,6 +1043,7 @@ Play.handleKeyDown = function(e) {
                         Main.selectedChannelViews = Play.selectedChannelViews;
                         Main.selectedChannelFallower = Play.selectedChannelFallower;
                         if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                        Main.ExitCurrent(Main.Go);
                         SChannelContent.UserChannels = AddCode.IsFallowing;
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
