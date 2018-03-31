@@ -376,7 +376,7 @@ PlayVod.hidePanel = function() {
 
 PlayVod.showPanel = function() {
     Play.Panelcouner = 0;
-    Play.IconsFocus();
+    PlayVod.IconsFocus();
     PlayVod.qualityIndexReset();
     Play.clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
@@ -538,6 +538,34 @@ PlayVod.jumpStart = function() {
     PlayVod.JumpID = window.setTimeout(PlayVod.jump, 1500);
 };
 
+PlayVod.IconsFocus = function() {
+    Main.ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+
+    Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+
+    if (Play.Panelcouner === 0) {
+        Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 1) {
+        Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 2) {
+        Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 3) {
+        Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+    }
+};
+
 PlayVod.handleKeyDown = function(e) {
     if (PlayVod.state != PlayVod.STATE_PLAYING) {
         switch (e.keyCode) {
@@ -565,7 +593,7 @@ PlayVod.handleKeyDown = function(e) {
                 if (Play.isPanelShown()) {
                     Play.Panelcouner++;
                     if (Play.Panelcouner > 3) Play.Panelcouner = 0;
-                    Play.IconsFocus();
+                    PlayVod.IconsFocus();
                     PlayVod.clearHidePanel();
                     PlayVod.setHidePanel();
                 } else if (PlayVod.Canjump) {
@@ -577,7 +605,7 @@ PlayVod.handleKeyDown = function(e) {
                 if (Play.isPanelShown()) {
                     Play.Panelcouner--;
                     if (Play.Panelcouner < 0) Play.Panelcouner = 3;
-                    Play.IconsFocus();
+                    PlayVod.IconsFocus();
                     PlayVod.clearHidePanel();
                     PlayVod.setHidePanel();
                 } else if (PlayVod.Canjump) {

@@ -142,4 +142,5 @@ function pt_BRLang() {
     STR_NET_UP = "Conexão de rede restabelecida";
     STR_FALLOWERS = " Seguidores";
     STR_CANT_FALLOW = ", Não é possível seguir ou deixar de seguir ";
+    STR_GAME_CONT = "Conteúdo do jogo";
 }
