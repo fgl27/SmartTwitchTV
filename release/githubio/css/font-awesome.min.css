@@ -90,15 +90,15 @@
 .icon-pause:before {
   content: "\6d";
 }
-.icon-progress-3:before {
-  content: "\66";
-}
 .icon-twitch:before {
   content: "\6e";
 }
-.icon-bars:before {
-  content: "\6f";
-}
 .icon-videocamera:before {
   content: "\70";
+}
+.icon-gamepad:before {
+  content: "\71";
+}
+.icon-filmstrip:before {
+  content: "\6f";
 }
