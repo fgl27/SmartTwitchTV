@@ -96,7 +96,7 @@ PlayClip.Resume = function() {
 };
 
 PlayClip.SetInfo = function() {
-    $('#quality_name').html(STR_RESET + STR_CLIP);
+    $('#quality_name').html('<i class="icon-refresh" style="color: #FFFFFF; font-size: 90%; text-shadow: #000000 0px 0px 8.7px, #000000 0px 0px 8.7px, #000000 0px 0px 7px;"></i>' + STR_SPACE + STR_RESET + STR_CLIP);
     document.getElementById("quality_name").style.paddingLeft = "27%";
     document.getElementById("quality_name").style.backgroundColor = "rgba(0, 0, 0, 0)";
     $("#quality_arrows").hide();
