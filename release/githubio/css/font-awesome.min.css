@@ -69,6 +69,9 @@
 .icon-question-circle:before {
   content: "\65";
 }
+.icon-speedometer:before {
+  content: "\66";
+}
 .icon-refresh:before {
   content: "\67";
 }
@@ -93,12 +96,12 @@
 .icon-twitch:before {
   content: "\6e";
 }
+.icon-filmstrip:before {
+  content: "\6f";
+}
 .icon-videocamera:before {
   content: "\70";
 }
 .icon-gamepad:before {
   content: "\71";
-}
-.icon-filmstrip:before {
-  content: "\6f";
 }
