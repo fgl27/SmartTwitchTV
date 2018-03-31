@@ -65,7 +65,6 @@ Play.gameSelected = '';
 
 Play.PreStart = function() {
     Play.videojs = videojs('video_live');
-    $('#label_speed').html(STR_SPEED);
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
     document.getElementById("scene2_game_text").innerHTML = STR_SPACE + STR_GAME_CONT;
