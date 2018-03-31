@@ -59,6 +59,7 @@ Play.selectedChannelDisplayname = '';
 Play.Panelcouner = 0;
 Play.IsWarning = false;
 Play.selectedChannelLogo = '';
+Play.gameSelected = '';
 
 //Variable initialization end
 
@@ -67,6 +68,7 @@ Play.PreStart = function() {
     $('#label_speed').html(STR_SPEED);
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
+    document.getElementById("scene2_game_text").innerHTML = STR_SPACE + STR_GAME_CONT;
     Play.ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
@@ -96,6 +98,7 @@ Play.Start = function() {
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
     Play.ChatBackgroundChange(false);
+    $("#scene2_game").show();
 
     Play.IsWarning = false;
     Play.loadingInfoDataTry = 0;
@@ -153,7 +156,8 @@ Play.updateStreamInfoStart = function() {
                 if (xmlHttp.status === 200) {
                     var response = $.parseJSON(xmlHttp.responseText);
                     $("#stream_info_title").text(response.stream.channel.status);
-                    $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    Play.gameSelected = response.stream.game;
+                    $("#stream_info_game").text(STR_PLAYING + Play.gameSelected + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
                     Play.selectedChannelLogo = response.stream.channel.logo;
                     Play.LoadLogo(document.getElementById('stream_info_icon'), Play.selectedChannelLogo);
                     Play.created = new Date(response.stream.created_at).getTime();
@@ -333,7 +337,7 @@ Play.extractQualities = function(input) {
                 'id': TempId + Band,
                 'url': streams[i].split("\n")[2]
             });
-        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !==  TempId + ' (source)') {
+        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' (source)') {
             result.push({
                 'id': TempId + Band,
                 'url': streams[i].split("\n")[2]
@@ -344,8 +348,9 @@ Play.extractQualities = function(input) {
     return result;
 };
 
-Play.extractBand = function(input) { 
-    return ' (' + parseFloat(parseInt(input) / 1000000).toFixed(2) + 'Mbps)';
+Play.extractBand = function(input) {
+    imput = parseInt(input);
+    return input > 0 ? ' (' + parseFloat(input / 1000000).toFixed(2) + 'Mbps)' : '';
 };
 
 Play.extractStreamDeclarations = function(input) {
@@ -553,6 +558,7 @@ Play.ClearPlay = function() {
     Play.PlayerCheckOffset = 0;
     Play.RestoreFromResume = false;
     Play.PlayerCheckQualityChanged = false;
+    $("#scene2_game").hide();
 };
 
 Play.hideFallow = function() {
@@ -838,6 +844,9 @@ Play.IconsFocus = function() {
     Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
     Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
+    Main.ChangeBorder("scene2_game", "3.5px solid rgba(0, 0, 0, 0)");
+    Main.ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0)");
+
     Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
     Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
@@ -848,9 +857,12 @@ Play.IconsFocus = function() {
         Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner == 2) {
+        Main.ChangeBorder("scene2_game", "3.5px solid #FFFFFF");
+        Main.ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0.7)");
+    } else if (Play.Panelcouner == 3) {
         Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 3) {
+    } else if (Play.Panelcouner == 4) {
         Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
@@ -949,7 +961,7 @@ Play.handleKeyDown = function(e) {
                     Play.ChatBackgroundChange(true);
                 } else if (Play.isPanelShown()) {
                     Play.Panelcouner++;
-                    if (Play.Panelcouner > 3) Play.Panelcouner = 0;
+                    if (Play.Panelcouner > 4) Play.Panelcouner = 0;
                     Play.IconsFocus();
                     Play.clearHidePanel();
                     Play.setHidePanel();
@@ -964,7 +976,7 @@ Play.handleKeyDown = function(e) {
                     Play.ChatBackgroundChange(true);
                 } else if (Play.isPanelShown()) {
                     Play.Panelcouner--;
-                    if (Play.Panelcouner < 0) Play.Panelcouner = 3;
+                    if (Play.Panelcouner < 0) Play.Panelcouner = 4;
                     Play.IconsFocus();
                     Play.clearHidePanel();
                     Play.setHidePanel();
@@ -1012,10 +1024,19 @@ Play.handleKeyDown = function(e) {
                         Play.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
-                            Play.FallowUnfallow();
-                            Play.clearHidePanel();
-                            Play.setHidePanel();
+                        Play.FallowUnfallow();
+                        Play.clearHidePanel();
+                        Play.setHidePanel();
                     } else if (Play.Panelcouner === 2) {
+                        Main.Before = Main.Go;
+                        Main.ExitCurrent(Main.Before);
+                        Main.Go = Main.AGame;
+                        Main.gameSelected = Play.gameSelected;
+                        window.clearTimeout(Play.exitID);
+                        $("#play_dialog_exit").hide();
+                        Play.hideChat();
+                        window.setTimeout(Play.shutdownStream, 10);
+                    } else if (Play.Panelcouner === 3) {
                         Main.selectedChannel = Play.selectedChannel;
                         Main.selectedChannel_id = AddCode.userChannel;
                         Main.selectedChannelDisplayname = Play.selectedChannelDisplayname;
@@ -1029,7 +1050,7 @@ Play.handleKeyDown = function(e) {
                         $("#play_dialog_exit").hide();
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
-                    } else if (Play.Panelcouner === 3) {
+                    } else if (Play.Panelcouner === 4) {
                         Main.BeforeSearch = Main.Go;
                         Main.Go = Main.Search;
                         window.clearTimeout(Play.exitID);

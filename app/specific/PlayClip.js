@@ -106,7 +106,7 @@ PlayClip.SetInfo = function() {
 
 PlayClip.UnSetInfo = function() {
     document.getElementById("quality_name").style.backgroundColor = "rgba(255, 255, 255, 0.6)";
-    document.getElementById("quality_name").style.paddingLeft = "5%";
+    document.getElementById("quality_name").style.paddingLeft = "0%";
     $("#quality_arrows").show();
     $("#quality_video").show();
     $("#scene2_speed").hide();
