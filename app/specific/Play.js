@@ -64,7 +64,6 @@ Play.selectedChannelLogo = '';
 
 Play.PreStart = function() {
     Play.videojs = videojs('video_live');
-    $('#label_quality').html(STR_QUALITY);
     $('#label_speed').html(STR_SPEED);
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;

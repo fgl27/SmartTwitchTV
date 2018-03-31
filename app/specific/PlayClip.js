@@ -96,18 +96,19 @@ PlayClip.Resume = function() {
 };
 
 PlayClip.SetInfo = function() {
-    $('#label_quality').html(STR_RESET + STR_CLIP);
-    document.getElementById("label_quality").style.paddingLeft = "27%";
+    $('#quality_name').html(STR_RESET + STR_CLIP);
+    document.getElementById("quality_name").style.paddingLeft = "27%";
+    document.getElementById("quality_name").style.backgroundColor = "rgba(0, 0, 0, 0)";
     $("#quality_arrows").hide();
-    $("#quality_name").hide();
+    $("#quality_video").hide();
     $("#scene2_speed").show();
 };
 
 PlayClip.UnSetInfo = function() {
-    $('#label_quality').html(STR_QUALITY);
-    document.getElementById("label_quality").style.paddingLeft = "5%";
+    document.getElementById("quality_name").style.backgroundColor = "rgba(255, 255, 255, 0.6)";
+    document.getElementById("quality_name").style.paddingLeft = "5%";
     $("#quality_arrows").show();
-    $("#quality_name").show();
+    $("#quality_video").show();
     $("#scene2_speed").hide();
 };
 

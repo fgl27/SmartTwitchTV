@@ -53,8 +53,6 @@ PlayVod.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     Play.hideChat();
-    $("#scene2_quality").show();
-    $('#clip_label_quality').html(STR_QUALITY);
     Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
     $('#stream_info_name').text(Main.selectedChannelDisplayname);
     $("#stream_info_title").text(Svod.title);
