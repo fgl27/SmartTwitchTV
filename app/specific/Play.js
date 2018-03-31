@@ -1030,6 +1030,7 @@ Play.handleKeyDown = function(e) {
                         Main.Before = Main.Go;
                         Main.ExitCurrent(Main.Before);
                         Main.Go = Main.AGame;
+                        AGame.UserGames = false;
                         Main.gameSelected = Play.gameSelected;
                         window.clearTimeout(Play.exitID);
                         $("#play_dialog_exit").hide();
