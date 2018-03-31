@@ -11,6 +11,7 @@ Full support for all 2015 TV is under work, but there is a know bug from some TV
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
 ## [How the application looks](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
+The application never stops receiving updates the bellow images may be outdated
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/animated.gif)
 
 Twitch.TV authentication key
