@@ -96,3 +96,9 @@
 .icon-twitch:before {
   content: "\6e";
 }
+.icon-bars:before {
+  content: "\6f";
+}
+.icon-videocamera:before {
+  content: "\70";
+}
