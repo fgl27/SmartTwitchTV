@@ -23,7 +23,6 @@ Users.imgMatrixCount = 0;
 Users.init = function() {
     Main.Go = Main.Users;
     Main.HideWarningDialog();
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.body.addEventListener("keydown", Users.handleKeyDown, false);
     if (Users.status) Main.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail, Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
@@ -33,7 +32,6 @@ Users.init = function() {
 Users.exit = function() {
     AddCode.SetDefaultOAuth(0);
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
     document.body.removeEventListener("keydown", Users.handleKeyDown);
 };
 

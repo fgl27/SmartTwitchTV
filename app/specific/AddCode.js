@@ -27,7 +27,6 @@ AddCode.init = function() {
         return;
     } else {
         Main.Go = Main.AddCode;
-        $('#top_bar_user').removeClass('icon_center_label');
         $('#top_bar_user').addClass('icon_center_focus');
         Main.HideWarningDialog();
         AddCode.input = document.querySelector('#oauth_input');
@@ -42,7 +41,6 @@ AddCode.exit = function() {
     AddCode.RemoveinputFocus();
     document.body.removeEventListener("keydown", AddCode.handleKeyDown);
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
 };
 
 AddCode.handleKeyDown = function(event) {

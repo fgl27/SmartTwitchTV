@@ -30,7 +30,6 @@ UserChannels.itemsCountCheck = false;
 UserChannels.init = function() {
     Main.Go = Main.UserChannels;
     SChannels.isLastSChannels = false;
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_USER_CHANNEL);
@@ -46,7 +45,6 @@ UserChannels.init = function() {
 
 UserChannels.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserChannels.handleKeyDown);

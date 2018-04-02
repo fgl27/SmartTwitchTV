@@ -41,7 +41,6 @@ AGame.UserGames = false;
 AGame.init = function() {
     Main.Go = Main.AGame;
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
-    $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
     $('.lable_game').html(STR_AGAME);
     $('.label_agame_name').html(Main.gameSelected);
@@ -61,7 +60,6 @@ AGame.exit = function() {
     $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", AGame.handleKeyDown);
     $('#top_bar_game').removeClass('icon_center_focus');
-    $('#top_bar_game').addClass('icon_center_label');
 };
 
 AGame.StartLoad = function() {

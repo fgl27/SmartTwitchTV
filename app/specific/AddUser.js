@@ -15,7 +15,6 @@ AddUser.keyBoardOn = false;
 
 AddUser.init = function() {
     Main.Go = Main.AddUser;
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     Main.HideWarningDialog();
     AddUser.input = document.querySelector('#user_input');
@@ -28,7 +27,6 @@ AddUser.exit = function() {
     AddUser.RemoveinputFocus();
     document.body.removeEventListener("keydown", AddUser.handleKeyDown);
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
 };
 
 AddUser.handleKeyDown = function(event) {
