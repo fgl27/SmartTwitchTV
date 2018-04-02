@@ -16,6 +16,7 @@ SChannelContent.LastClickFinish = true;
 SChannelContent.keyClickDelayTime = 25;
 SChannelContent.skipImg = false;
 SChannelContent.UserChannels = false;
+SChannelContent.TargetName = undefined;
 
 SChannelContent.Img = 'img_schannels_cont';
 SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
@@ -66,6 +67,7 @@ SChannelContent.StartLoad = function() {
     SChannelContent.cursorX = 0;
     SChannelContent.cursorY = 0;
     SChannelContent.dataEnded = false;
+    SChannelContent.TargetName = undefined;
     SChannelContent.loadDataPrepare();
     SChannelContent.loadDataRequest();
 };
@@ -84,7 +86,7 @@ SChannelContent.loadDataRequest = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(Main.selectedChannel) + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SChannelContent.TargetName !== undefined ? SChannelContent.TargetName : Main.selectedChannel) + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannelContent.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -92,7 +94,11 @@ SChannelContent.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    SChannelContent.loadDataSuccess(xmlHttp.responseText);
+                    if ($.parseJSON(xmlHttp.responseText).stream !== null) SChannelContent.loadDataSuccess(xmlHttp.responseText);
+                    else {
+                        SChannelContent.loadDataPrepare();
+                        SChannelContent.loadDataCheckHost();
+                    }
                     return;
                 } else {
                     SChannelContent.loadDataError();
@@ -111,25 +117,65 @@ SChannelContent.loadDataError = function() {
     if (SChannelContent.loadingDataTry < SChannelContent.loadingDataTryMax) {
         SChannelContent.loadingDataTimeout += (SChannelContent.loadingDataTry < 5) ? 250 : 3500;
         SChannelContent.loadDataRequest();
-    } else {
-        SChannelContent.loadingData = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+    } else SChannelContent.loadDataSuccess(null);
+};
+
+SChannelContent.loadDataCheckHost = function() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main.selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = SChannelContent.loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    SChannelContent.CheckHost(xmlHttp.responseText);
+                    return;
+                } else SChannelContent.loadDataCheckHostError();
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        SChannelContent.loadDataCheckHostError();
     }
 };
 
-SChannelContent.loadDataSuccess = function(responseText) {
+SChannelContent.loadDataCheckHostError = function() {
+    SChannelContent.loadingDataTry++;
+    if (SChannelContent.loadingDataTry < SChannelContent.loadingDataTryMax) {
+        SChannelContent.loadingDataTimeout += 3500;
+        SChannelContent.loadDataCheckHost();
+    } else SChannelContent.loadDataSuccess(null);
+};
+
+SChannelContent.CheckHost = function(responseText) {
     var response = $.parseJSON(responseText);
+    SChannelContent.TargetName = response.hosts[0].target_login;
+    if (SChannelContent.TargetName !== undefined) {
+        SChannelContent.loadDataPrepare();
+        SChannelContent.loadDataRequest();
+    } else SChannelContent.loadDataSuccess(null);
+};
+
+SChannelContent.loadDataSuccess = function(responseText) {
     var row = $('<tr></tr>');
     var coloumn_id = 0;
 
-    if (response.stream !== null) {
-        var stream = response.stream;
-        row.append(SChannelContent.createCell(0, coloumn_id, stream.channel.name, stream.preview.template,
-            stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-            stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-            Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
-        coloumn_id++;
+    if (responseText !== null) {
+        var response = $.parseJSON(responseText);
+        if (response.stream !== null) {
+            var hosting = SChannelContent.TargetName !== undefined ? Main.selectedChannelDisplayname + STR_USER_HOSTING : '';
+            var stream = response.stream;
+            row.append(SChannelContent.createCell(0, coloumn_id, stream.channel.name, stream.preview.template,
+                stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
+                hosting + stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
+            coloumn_id++;
+        } else SChannelContent.skipImg = true;
     } else SChannelContent.skipImg = true;
 
     row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_PAST_BROA, IMG_BLUR_VIDEO1_16));
@@ -165,7 +211,7 @@ SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
         '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 50%; display: inline-block;">' +
-        '<i class="icon-circle" style="color: red; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
+        '<i class="icon-circle" style="color: ' + (SChannelContent.TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
         '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id +
         '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
 };
@@ -194,7 +240,7 @@ SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_ty
     return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
         '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
-         SChannelContent.Img + row_id + '_' + coloumn_id + '" class="stream_img_fallow"></div>' +
+        SChannelContent.Img + row_id + '_' + coloumn_id + '" class="stream_img_fallow"></div>' +
         '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
