@@ -35,7 +35,6 @@ Games.Cell = 'game_cell_';
 Games.init = function() {
     Main.Go = Main.Games;
     document.body.addEventListener("keydown", Games.handleKeyDown, false);
-    $('#top_bar_game').removeClass('icon_center_label');
     $('#top_bar_game').addClass('icon_center_focus');
     Main.YRst(Games.cursorY);
     if (Games.Status) {
@@ -48,7 +47,6 @@ Games.init = function() {
 Games.exit = function() {
     document.body.removeEventListener("keydown", Games.handleKeyDown);
     $('#top_bar_game').removeClass('icon_center_focus');
-    $('#top_bar_game').addClass('icon_center_label');
 };
 
 Games.StartLoad = function() {

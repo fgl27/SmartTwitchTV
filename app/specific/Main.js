@@ -51,7 +51,7 @@ Main.ScrollOffSetGame = 523;
 
 Main.ScrollOffSetMinusVideo = 0.345;
 Main.ScrollOffSetMinusChannels = 0.430;
-Main.ScrollOffSetMinusGame = 0.535;
+Main.ScrollOffSetMinusGame = 0.525;
 
 Main.ReloadLimitOffsetGames = 1.35;
 Main.ReloadLimitOffsetVideos = 1.5;
@@ -203,7 +203,7 @@ Main.initWindows = function() {
 };
 
 Main.IconLoad = function(lable, icon, string) {
-    $(lable).html('<div style="vertical-align: middle; display: inline-block"><i class="' + icon +
+    $(lable).html('<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
         '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
 };
 
@@ -456,7 +456,6 @@ Main.RestoreTopLabel = function() {
     Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
     Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     $('.lable_live').html(STR_LIVE);
@@ -471,7 +470,6 @@ Main.cleanTopLabel = function() {
     $('.lable_live').html('');
     $('.lable_game').html('');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingCleanTop + "%";
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultCleanTop + "%";
 };

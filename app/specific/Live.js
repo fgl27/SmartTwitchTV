@@ -38,7 +38,6 @@ Live.itemsCountCheck = false;
 Live.init = function() {
     Main.Go = Main.Live;
     document.body.addEventListener("keydown", Live.handleKeyDown, false);
-    $('#top_bar_live').removeClass('icon_center_label');
     $('#top_bar_live').addClass('icon_center_focus');
     Main.YRst(Live.cursorY);
     if (Live.Status) {
@@ -50,7 +49,6 @@ Live.init = function() {
 Live.exit = function() {
     document.body.removeEventListener("keydown", Live.handleKeyDown);
     $('#top_bar_live').removeClass('icon_center_focus');
-    $('#top_bar_live').addClass('icon_center_label');
     Main.HideExitDialog();
 };
 

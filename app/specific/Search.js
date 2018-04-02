@@ -19,7 +19,6 @@ Search.init = function() {
     $('.lable_game').html('');
     $('.label_placeholder_search').attr("placeholder", STR_PLACEHOLDER_SEARCH);
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchLable + "%";
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     Search.cursorY = 0;
     Search.cursorX = 0;
@@ -38,7 +37,6 @@ Search.exit = function() {
     Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
     Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
     $('.lable_live').html(STR_LIVE);
     $('.lable_user').html(STR_USER);
@@ -58,11 +56,7 @@ Search.refreshInputFocusTools = function() {
     $('#game_button').removeClass('button_search_focused');
     $('#live_button').removeClass('button_search_focused');
 
-    if (Search.cursorY === 0) {
-        $('#chanel_button').addClass('button_search');
-        $('#game_button').addClass('button_search');
-        $('#live_button').addClass('button_search');
-    } else {
+    if (Search.cursorY) {
         if (Search.cursorX === 0) $('#chanel_button').addClass('button_search_focused');
         else if (Search.cursorX == 1) $('#game_button').addClass('button_search_focused');
         else if (Search.cursorX == 2) $('#live_button').addClass('button_search_focused');

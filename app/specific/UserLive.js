@@ -41,7 +41,6 @@ UserLive.itemsCountCheck = false;
 
 UserLive.init = function() {
     Main.Go = Main.UserLive;
-    $('#top_bar_user').removeClass('icon_center_label');
     $('#top_bar_user').addClass('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_CHANNELS);
@@ -56,7 +55,6 @@ UserLive.init = function() {
 
 UserLive.exit = function() {
     $('#top_bar_user').removeClass('icon_center_focus');
-    $('#top_bar_user').addClass('icon_center_label');
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserLive.handleKeyDown);
