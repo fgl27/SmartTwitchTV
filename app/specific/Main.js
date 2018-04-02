@@ -45,6 +45,7 @@ Main.SmartHubId = null;
 Main.UserName = '';
 Main.ScrollbarBlack = true;
 Main.NetworkStateOK = true;
+Main.NetworkRefresh = false;
 
 Main.ScrollOffSetVideo = 275;
 Main.ScrollOffSetGame = 523;
@@ -299,6 +300,7 @@ Main.SetItemsLimitReload = function(blankCellCount) {
 };
 
 Main.showWarningDialog = function(text) {
+    if (!Main.NetworkStateOK && text == STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
     $("#dialog_warning_text").text(!Main.NetworkStateOK ? STR_NET_DOWN : text);
     $("#dialog_warning").show();
 };
@@ -486,11 +488,12 @@ Main.NetworkStateChangeListenerStart = function() {
     var onChange = function(data) {
         if (data == 1 || data == 4) { //network connected
             Main.NetworkStateOK = true;
-            if (Main.isWarningDialogShown) {
+            if (Main.isWarningDialogShown()) {
                 Main.showWarningDialog(STR_NET_UP);
-                Main.SwitchScreen();
+                if (Main.NetworkRefresh) Main.SwitchScreen();
+                Main.NetworkRefresh = false;
             }
-            if (Play.WarningDialogVisible) Main.showWarningDialog(STR_NET_UP);
+            if (Play.WarningDialogVisible()) Main.showWarningDialog(STR_NET_UP);
             window.setTimeout(function() {
                 Main.HideWarningDialog();
                 Play.HideWarningDialog();
