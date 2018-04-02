@@ -273,7 +273,7 @@ Main.Scrollbar = function(y, coloumns, total) {
 
         $('#scrollbar').animate({
             top: nextPositon + 'px'
-        }, 800);
+        }, 400);
 
         if (Main.ScrollbarBlack) {
             Main.ScrollbarBlack = false;
