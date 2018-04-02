@@ -76,9 +76,9 @@ Main.TopSpacingCleanTop = 34.5;
 Main.TopSpacingSearchLable = 40.5;
 Main.TopSpacingSearchUnder = 21.5;
 
-Main.TopAgameDefault = 50;
-Main.TopAgameDefaultCleanTop = 43.2;
-Main.TopAgameDefaultUser = 44;
+Main.TopAgameDefault = 49;
+Main.TopAgameDefaultCleanTop = 42.2;
+Main.TopAgameDefaultUser = 43;
 
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
@@ -146,11 +146,8 @@ Main.loadTranslations = function(device) {
         pt_BRLang();
         Main.TopSpacingDefault = 25;
         Main.TopSpacingSearchLable = 38.5;
-        Main.TopSpacingSearchUnder = 21.5;
-        Main.TopAgameDefault = 55;
+        Main.TopAgameDefault = 54;
         Main.TopSpacingCleanTop = 32.5;
-        Main.TopAgameDefaultCleanTop = 43.2;
-        Main.TopAgameDefaultUser = 44;
     } else console.log("language is " + lang);
     DefaultLang();
 
