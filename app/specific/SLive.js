@@ -144,7 +144,7 @@ SLive.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SLive.itemsCount;
     SLive.itemsCount += response_items;
 
-    SLive.emptyContent = SLive.itemsCount === 0;
+    SLive.emptyContent = !SLive.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;

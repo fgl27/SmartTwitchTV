@@ -215,7 +215,7 @@ UserLive.loadDataSuccess = function(responseText) {
     var offset_itemsCount = UserLive.itemsCount;
     UserLive.itemsCount += response_items;
 
-    UserLive.emptyContent = UserLive.itemsCount === 0;
+    UserLive.emptyContent = !UserLive.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;

@@ -371,7 +371,7 @@ Main.addCommas = function(nStr) {
 
 Main.videoqualitylang = function(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
-    if (video_height.indexOf('x') === 0) video_height = video_height.slice(-3);
+    if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
     if (average_fps > 58) average_fps = 60;
     else if (average_fps < 32) average_fps = 30;
@@ -745,7 +745,7 @@ Main.ScrollHelper = {
         var id = Thumbnail + cursorY + '_' + cursorX;
 
         if (document.getElementById(id) === null) {
-            if (cursorY === 0 && cursorX === 0) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
+            if (!cursorY && !cursorX) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
             return;
         } else if (Screen == Main.UserChannels || Screen == Main.SChannels) {
             if (!Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
@@ -761,12 +761,12 @@ Main.ScrollHelper = {
         if (cursorY == 0 && Screen == Main.AGame) OffsetPlus = OffsetPlus - 83;
 
         if (DuploYOffsetCheck) {
-            DuploYOffsetCheck = (cursorY === 0 || cursorY === 1);
+            DuploYOffsetCheck = (!cursorY || cursorY === 1);
             if (DuploYOffsetCheck) {
                 id = Thumbnail + '0_' + cursorX;
                 OffsetMinus = OffsetMinus - 0.085;
             }
-        } else DuploYOffsetCheck = (cursorY === 0);
+        } else DuploYOffsetCheck = (!cursorY);
 
         if (Main.Go === Screen) {
             $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) -

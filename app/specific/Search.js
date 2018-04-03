@@ -46,7 +46,7 @@ Search.exit = function() {
 
 Search.loadData = function() {
     Search.exit();
-    if (Search.cursorX === 0) SChannels.init();
+    if (!Search.cursorX) SChannels.init();
     else if (Search.cursorX == 1) SGames.init();
     else if (Search.cursorX == 2) SLive.init();
 };
@@ -57,7 +57,7 @@ Search.refreshInputFocusTools = function() {
     $('#live_button').removeClass('button_search_focused');
 
     if (Search.cursorY) {
-        if (Search.cursorX === 0) $('#chanel_button').addClass('button_search_focused');
+        if (!Search.cursorX) $('#chanel_button').addClass('button_search_focused');
         else if (Search.cursorX == 1) $('#game_button').addClass('button_search_focused');
         else if (Search.cursorX == 2) $('#live_button').addClass('button_search_focused');
     }
@@ -97,7 +97,7 @@ Search.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            if (Search.cursorY === 0) {
+            if (!Search.cursorY) {
                 Search.RemoveinputFocus();
                 Search.cursorY = 1;
                 Search.refreshInputFocusTools();
@@ -122,7 +122,7 @@ Search.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            if (Search.cursorY === 0) Search.inputFocus();
+            if (!Search.cursorY) Search.inputFocus();
             else {
                 if ($('#search_input').val() !== '' && $('#search_input').val() !== null) {
                     Search.data = $('#search_input').val();

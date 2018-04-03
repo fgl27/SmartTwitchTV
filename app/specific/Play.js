@@ -330,7 +330,7 @@ Play.extractQualities = function(input) {
     for (var i = 0; i < streams.length; i++) {
         TempId = streams[i].split('NAME="')[1].split('"')[0];
         Band = Play.extractBand(streams[i].split('BANDWIDTH=')[1].split(',')[0]);
-        if (result.length === 0) {
+        if (!result.length) {
             if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
             result.push({
                 'id': TempId + Band,
@@ -493,7 +493,7 @@ Play.timeS = function(time) {
     hours = Play.lessthanten(time);
 
     //final time 00:00 or 00:00:00
-    return (time === 0) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+    return (!time) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
 };
 
 Play.timeMs = function(time) {
@@ -718,7 +718,7 @@ Play.qualityIndexReset = function() {
 };
 
 Play.qualityDisplay = function() {
-    if (Play.qualityIndex === 0) {
+    if (!Play.qualityIndex) {
         $('#quality_arrow_up').css({
             'opacity': 0.2
         });
@@ -793,7 +793,7 @@ Play.ChatPosition = function() {
     var left = "75.3%",
         top = (51 + Play.sizeOffset + Play.sizePanelOffset) + '.5%';
 
-    if (Play.ChatPositions === 0) Play.ChatPositions = 6;
+    if (!Play.ChatPositions) Play.ChatPositions = 6;
 
     if (Play.ChatPositions < 7) {
         if (Play.ChatPositions > 1) top = "0.5%"; // top/lefth
@@ -849,7 +849,7 @@ Play.IconsFocus = function() {
     Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
     Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
-    if (Play.Panelcouner === 0) {
+    if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner == 1) {
@@ -985,7 +985,7 @@ Play.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_UP:
                 if (Play.isPanelShown()) {
-                    if (Play.qualityIndex > 0 && (Play.Panelcouner === 0)) {
+                    if (Play.qualityIndex > 0 && (!Play.Panelcouner)) {
                         Play.qualityIndex--;
                         Play.qualityDisplay();
                     }
@@ -1002,7 +1002,7 @@ Play.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_DOWN:
                 if (Play.isPanelShown()) {
-                    if (Play.qualityIndex < Play.getQualitiesCount() - 1 && (Play.Panelcouner === 0)) {
+                    if (Play.qualityIndex < Play.getQualitiesCount() - 1 && (!Play.Panelcouner)) {
                         Play.qualityIndex++;
                         Play.qualityDisplay();
                     }
@@ -1019,7 +1019,7 @@ Play.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    if (Play.Panelcouner === 0) {
+                    if (!Play.Panelcouner) {
                         Play.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {

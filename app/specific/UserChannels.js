@@ -155,7 +155,7 @@ UserChannels.loadDataSuccess = function() {
 
     UserChannels.itemsCount += response_items;
 
-    UserChannels.emptyContent = UserChannels.itemsCount === 0;
+    UserChannels.emptyContent = !UserChannels.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountChannel;
     if (response_items % Main.ColoumnsCountChannel > 0) response_rows++;

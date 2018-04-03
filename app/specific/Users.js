@@ -60,7 +60,7 @@ Users.loadData = function() {
         Main.UserName = AddUser.UsernameArray[x];
 
         header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + Main.UserName +
-            STR_CONTENT + ((x === 0) ? STR_USER_NUMBER_ONE : '') + '</div>');
+            STR_CONTENT + (!x ? STR_USER_NUMBER_ONE : '') + '</div>');
         $('#stream_table_user').find('tbody').append(header);
 
         row = $('<tr></tr>');
@@ -73,7 +73,7 @@ Users.loadData = function() {
         coloumn_id++;
         row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
         coloumn_id++;
-        if (x === 0) row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
+        if (!x) row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
         else row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
         coloumn_id++;
         row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
@@ -154,12 +154,12 @@ Users.keyEnter = function() {
     Main.UserName = AddUser.UsernameArray[Users.cursorY];
     AddCode.SetDefaultOAuth(Users.cursorY);
 
-    if (Users.cursorX === 0) UserLive.init();
+    if (!Users.cursorX) UserLive.init();
     else if (Users.cursorX === 1) UserHost.init();
     else if (Users.cursorX === 2) UserGames.init();
     else if (Users.cursorX === 3) UserChannels.init();
     else if (Users.cursorX === 4) {
-        if (Users.cursorY === 0) AddUser.init();
+        if (!Users.cursorY) AddUser.init();
         else AddUser.UserMakeOne(Users.cursorY);
     } else if (Users.cursorX === 5) AddUser.removeUser(Users.cursorY);
     else if (Users.cursorX === 6) AddCode.init();

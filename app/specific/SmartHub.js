@@ -23,7 +23,7 @@ SmartHub.emptyUser = false;
 //Variable initialization end
 
 SmartHub.Start = function() {
-    if (AddUser.UsernameArray.length === 0) {
+    if (!AddUser.UsernameArray.length) {
         window.clearInterval(Main.SmartHubId);
         document.removeEventListener('visibilitychange', Main.Resume);
         SmartHub.emptyUser = true;
@@ -60,7 +60,7 @@ SmartHub.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
         var theUrl;
 
-        if (SmartHub.previewData === 0) {
+        if (!SmartHub.previewData) {
             theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub.followerUsername) +
                 '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
         } else if (SmartHub.previewData === 1) {
@@ -113,7 +113,7 @@ SmartHub.previewDataSuccess = function(responseText) {
     var response_items, cursor = 0,
         game, stream, hosts;
 
-    if (SmartHub.previewData === 0) {
+    if (!SmartHub.previewData) {
         response_items = response.follows.length;
         SmartHub.followerChannels = '';
 
