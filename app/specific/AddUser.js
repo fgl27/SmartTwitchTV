@@ -4,7 +4,6 @@ function AddUser() {}
 AddUser.loadingDataTry = 0;
 AddUser.loadingDataTryMax = 10;
 AddUser.loadingDataTimeout = 3500;
-AddUser.UsernameArraySize = 0;
 AddUser.UsernameArray = [];
 AddUser.UserIdArray = [];
 AddUser.Followercount = 0;
@@ -190,29 +189,48 @@ AddUser.loadDataError = function() {
     }
 };
 
-AddUser.RestoreUsers = function() {
+AddUser.OldRestoreUsers = function() {
     AddUser.UsernameArray = [];
     AddUser.UsernameArraySize = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
-    if (AddUser.UsernameArraySize > 0) {
-        for (var x = 0; x < AddUser.UsernameArraySize; x++) {
-            AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
-        }
+    if (AddUser.UsernameArraySize > 0)
+        for (var x = 0; x < AddUser.UsernameArraySize; x++) AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
 
-        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', Main.Resume, false);
-    }
     window.setTimeout(function() {
         SmartHub.Start();
         window.addEventListener('appcontrol', SmartHub.EventListener, false);
+
+        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', Main.Resume, false);
     }, 3500);
-    AddCode.RestoreUsers();
+
+    if (!AddUser.UsernameArray.length) {
+        AddCode.RestoreUsers();
+        localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
+}   }
+};
+
+AddUser.RestoreUsers = function() {
+    AddUser.UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
+    if (!AddUser.UsernameArray.length) {
+        AddUser.OldRestoreUsers();
+        return;
+    }
+
+    window.setTimeout(function() {
+        SmartHub.Start();
+        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+
+        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', Main.Resume, false);
+    }, 3500);
+
+    if (!AddUser.UsernameArray.length) AddCode.RestoreUsers();
 };
 
 AddUser.SaveNewUser = function() {
-    AddUser.UsernameArray[AddUser.UsernameArraySize] = AddUser.Username;
-    localStorage.setItem('UsernameArray' + AddUser.UsernameArraySize, AddUser.Username);
-    AddUser.UsernameArraySize++;
-    localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
+    AddUser.UsernameArray.push(AddUser.Username);
+    localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
+
     Users.status = false;
     Users.init();
     AddUser.loadingData = false;
@@ -229,30 +247,31 @@ AddUser.SaveNewUser = function() {
 };
 
 AddUser.removeUser = function(Position) {
-    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
+
+    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]),
+        tempuser = '',
+        index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]),
+        x = 0;
+
+    // remove the code key
     if (userCode > -1) AddCode.removeUser(userCode);
 
-    AddUser.UsernameArraySize--;
-    if (AddUser.UsernameArraySize < 0) AddUser.UsernameArraySize = 0;
-    localStorage.setItem('UsernameArraySize', AddUser.UsernameArraySize);
+    // remove the user
+    if (index > -1) AddUser.UsernameArray.splice(index, 1);
 
-    var index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]);
-    if (index > -1) {
-        AddUser.UsernameArray.splice(index, 1);
-    }
-
-    for (var x = 0; x < AddUser.UsernameArray.length; x++) {
-        localStorage.setItem('UsernameArray' + x, AddUser.UsernameArray[x]);
-    }
+    // restart users and smarthub
     if (AddUser.UsernameArray.length > 0) {
         Users.status = false;
         Users.init();
-        if (Position === 0) SmartHub.Start();
+        if (!Position) SmartHub.Start();
     } else {
         AddUser.init();
         SmartHub.Start();
     }
     AddCode.SetDefaultOAuth(Position);
+
+    // reset localStorage usernames
+    localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
 };
 
 AddUser.UserMakeOne = function(Position) {
