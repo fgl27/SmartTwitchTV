@@ -191,30 +191,20 @@ AddUser.loadDataError = function() {
 
 AddUser.OldRestoreUsers = function() {
     AddUser.UsernameArray = [];
-    AddUser.UsernameArraySize = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
-    if (AddUser.UsernameArraySize > 0)
-        for (var x = 0; x < AddUser.UsernameArraySize; x++) AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
+    var size = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
+    if (size > 0)
+        for (var x = 0; x < size; x++) AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
 
-    window.setTimeout(function() {
-        SmartHub.Start();
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
-
-        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', Main.Resume, false);
-    }, 3500);
-
-    if (!AddUser.UsernameArray.length) {
-        AddCode.RestoreUsers();
-        localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
-}   }
+    AddUser.SaveUserArray();
 };
 
 AddUser.RestoreUsers = function() {
     AddUser.UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
-    if (!AddUser.UsernameArray.length) {
-        AddUser.OldRestoreUsers();
-        return;
-    }
+
+    //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
+    if (!AddUser.UsernameArray.length) AddUser.OldRestoreUsers();
+
+    if (AddUser.UsernameArray.length) AddCode.RestoreUsers();
 
     window.setTimeout(function() {
         SmartHub.Start();
@@ -223,13 +213,11 @@ AddUser.RestoreUsers = function() {
         Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
         document.addEventListener('visibilitychange', Main.Resume, false);
     }, 3500);
-
-    if (!AddUser.UsernameArray.length) AddCode.RestoreUsers();
 };
 
 AddUser.SaveNewUser = function() {
     AddUser.UsernameArray.push(AddUser.Username);
-    localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
+    AddUser.SaveUserArray();
 
     Users.status = false;
     Users.init();
@@ -248,16 +236,13 @@ AddUser.SaveNewUser = function() {
 
 AddUser.removeUser = function(Position) {
 
-    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]),
-        tempuser = '',
-        index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]),
-        x = 0;
+    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
 
     // remove the code key
     if (userCode > -1) AddCode.removeUser(userCode);
 
     // remove the user
-    if (index > -1) AddUser.UsernameArray.splice(index, 1);
+    AddUser.UsernameArray.splice(AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]), 1);
 
     // restart users and smarthub
     if (AddUser.UsernameArray.length > 0) {
@@ -271,6 +256,10 @@ AddUser.removeUser = function(Position) {
     AddCode.SetDefaultOAuth(Position);
 
     // reset localStorage usernames
+    AddUser.SaveUserArray();
+};
+
+AddUser.SaveUserArray = function() {
     localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
 };
 

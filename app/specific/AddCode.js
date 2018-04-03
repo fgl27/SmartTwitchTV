@@ -4,7 +4,6 @@ function AddCode() {}
 AddCode.loadingDataTry = 0;
 AddCode.loadingDataTryMax = 10;
 AddCode.loadingDataTimeout = 10000;
-AddCode.UsercodeArraySize = 0;
 AddCode.UsercodeArray = [];
 AddCode.UserIdArray = [];
 AddCode.Followercount = 0;
@@ -148,46 +147,46 @@ AddCode.KeyboardEvent = function(event) {
     }
 };
 
-AddCode.RestoreUsers = function() {
+AddCode.OldRestoreUsers = function() {
     AddCode.UsercodeArray = [];
-    AddCode.UsercodeArraySize = parseInt(localStorage.getItem('UsercodeArraySize')) || 0;
-    if (AddCode.UsercodeArraySize > 0) {
-        for (var x = 0; x < AddCode.UsercodeArraySize; x++) {
+    var size = parseInt(localStorage.getItem('UsercodeArraySize')) || 0;
+    if (size > 0)
+        for (var x = 0; x < size; x++)
             AddCode.UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
-        }
-    }
+
+    AddCode.SaveKeyArray();
+};
+
+AddCode.RestoreUsers = function() {
+    AddCode.UsercodeArray = JSON.parse(localStorage.getItem("userkeys")) || [];
+
+    //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
+    if (!AddCode.UsercodeArray.length) AddCode.OldRestoreUsers();
+
     AddCode.SetDefaultOAuth(0);
 };
 
 AddCode.SaveNewUser = function() {
-    var value = AddCode.Username + ',' + AddCode.userId + ',' + AddCode.OauthToken;
-    AddCode.UsercodeArray[AddCode.UsercodeArraySize] = value;
-    localStorage.setItem('UsercodeArray' + AddCode.UsercodeArraySize, value);
-    AddCode.UsercodeArraySize++;
-    localStorage.setItem('UsercodeArraySize', AddCode.UsercodeArraySize);
+    AddCode.UsercodeArray.push(AddCode.Username + ',' + AddCode.userId + ',' + AddCode.OauthToken);
+    AddCode.SaveKeyArray();
+
     Main.HideLoadDialog();
     Users.init();
     AddCode.loadingData = false;
 };
 
 AddCode.removeUser = function(Position) {
-    AddCode.UsercodeArraySize--;
-    if (AddCode.UsercodeArraySize < 0) AddCode.UsercodeArraySize = 0;
-    localStorage.setItem('UsercodeArraySize', AddCode.UsercodeArraySize);
+    AddCode.UsercodeArray.splice(AddCode.UsercodeArray.indexOf(AddCode.UsercodeArray[Position]), 1);
+    AddCode.SaveKeyArray();
+};
 
-    var index = AddCode.UsercodeArray.indexOf(AddCode.UsercodeArray[Position]);
-    if (index > -1) {
-        AddCode.UsercodeArray.splice(index, 1);
-    }
-
-    for (var x = 0; x < AddCode.UsercodeArray.length; x++) {
-        localStorage.setItem('UsercodeArray' + x, AddCode.UsercodeArray[x]);
-    }
+AddCode.SaveKeyArray = function() {
+    localStorage.setItem("userkeys", JSON.stringify(AddCode.UsercodeArray));
 };
 
 AddCode.SetDefaultOAuth = function(position) {
-    if (AddCode.UsercodeArray.length > 0) Main.UserName = AddUser.UsernameArray[position];
-    if (AddUser.UsernameArray.length > 0) {
+    if (AddUser.UsernameArray.length > 0) Main.UserName = AddUser.UsernameArray[position];
+    if (AddCode.UsercodeArray.length > 0) {
         var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
         if (userCode > -1) {
             var values = AddCode.UsercodeArray[userCode].split(",");
@@ -704,7 +703,6 @@ AddCode.CheckFallowGame = function() {
 };
 
 AddCode.RequestCheckFallowGame = function() {
-    console.log('RequestCheckFallowGame');
     try {
 
         var xmlHttp = new XMLHttpRequest();
