@@ -152,7 +152,7 @@ Svod.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Svod.itemsCount;
     Svod.itemsCount += response_items;
 
-    Svod.emptyContent = Svod.itemsCount === 0;
+    Svod.emptyContent = !Svod.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;

@@ -359,7 +359,7 @@ Live.removeFocus = function() {
 };
 
 Live.ExitCursorSet = function() {
-    if (Live.ExitCursor === 0) {
+    if (!Live.ExitCursor) {
         $('#exit_app_cancel').addClass('button_search_focused');
         $('#exit_app_minimize').removeClass('button_search_focused');
         $('#exit_app_close').removeClass('button_search_focused');

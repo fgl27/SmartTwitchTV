@@ -316,7 +316,7 @@ PlayVod.PlayerCheck = function() {
             if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1) {
                 if (PlayVod.PlayerCheckQualityChanged) PlayVod.qualityIndex++; //Don't change first time only reload
                 PlayVod.qualityDisplay();
-                if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
+                if (!PlayVod.offsettime) PlayVod.offsettime = Play.videojs.currentTime();
                 PlayVod.qualityChanged();
                 PlayVod.PlayerCheckQualityChanged = true; // -5s on next check
             } else { //staled too long close the player
@@ -406,7 +406,7 @@ PlayVod.qualityIndexReset = function() {
 };
 
 PlayVod.qualityDisplay = function() {
-    if (PlayVod.qualityIndex === 0) {
+    if (!PlayVod.qualityIndex) {
         $('#quality_arrow_up').css({
             'opacity': 0.2
         });
@@ -456,7 +456,7 @@ PlayVod.jumpStart = function() {
     var time = '',
         jumpTotime = '';
 
-    if (PlayVod.jumpCount === 0) {
+    if (!PlayVod.jumpCount) {
         PlayVod.TimeToJump = 0;
         PlayVod.jumpCountMin = -16;
         PlayVod.jumpCountMax = 16;
@@ -551,7 +551,7 @@ PlayVod.IconsFocus = function() {
     Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
     Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
-    if (Play.Panelcouner === 0) {
+    if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner == 1) {
@@ -615,7 +615,7 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_UP:
                 if (Play.isPanelShown()) {
-                    if (PlayVod.qualityIndex > 0 && (Play.Panelcouner === 0)) {
+                    if (PlayVod.qualityIndex > 0 && (!Play.Panelcouner)) {
                         PlayVod.qualityIndex--;
                         PlayVod.qualityDisplay();
                     }
@@ -627,7 +627,7 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_DOWN:
                 if (Play.isPanelShown()) {
-                    if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1 && (Play.Panelcouner === 0)) {
+                    if (PlayVod.qualityIndex < PlayVod.getQualitiesCount() - 1 && (!Play.Panelcouner)) {
                         PlayVod.qualityIndex++;
                         PlayVod.qualityDisplay();
                     }
@@ -639,8 +639,8 @@ PlayVod.handleKeyDown = function(e) {
                 break;
             case TvKeyCode.KEY_ENTER:
                 if (Play.isPanelShown()) {
-                    if (Play.Panelcouner === 0) {
-                        if (PlayVod.offsettime === 0) PlayVod.offsettime = Play.videojs.currentTime();
+                    if (!Play.Panelcouner) {
+                        if (!PlayVod.offsettime) PlayVod.offsettime = Play.videojs.currentTime();
                         PlayVod.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {

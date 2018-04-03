@@ -144,7 +144,7 @@ UserGames.loadDataSuccess = function(responseText) {
     var offset_itemsCount = UserGames.itemsCount;
     UserGames.itemsCount += response_items;
 
-    UserGames.emptyContent = UserGames.itemsCount === 0;
+    UserGames.emptyContent = !UserGames.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountGame;
     if (response_items % Main.ColoumnsCountGame > 0) response_rows++;

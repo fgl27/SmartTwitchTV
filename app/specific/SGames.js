@@ -123,7 +123,7 @@ SGames.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SGames.itemsCount;
     SGames.itemsCount += response_items;
 
-    SGames.emptyContent = SGames.itemsCount === 0;
+    SGames.emptyContent = !SGames.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountGame;
     if (response_items % Main.ColoumnsCountGame > 0) response_rows++;

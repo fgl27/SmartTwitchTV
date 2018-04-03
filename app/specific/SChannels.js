@@ -147,7 +147,7 @@ SChannels.loadDataSuccess = function(responseText) {
     var offset_itemsCount = SChannels.itemsCount;
     SChannels.itemsCount += response_items;
 
-    SChannels.emptyContent = SChannels.itemsCount === 0;
+    SChannels.emptyContent = !SChannels.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountChannel;
     if (response_items % Main.ColoumnsCountChannel > 0) response_rows++;

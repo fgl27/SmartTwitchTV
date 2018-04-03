@@ -149,7 +149,7 @@ AGame.loadDataSuccess = function(responseText) {
     var offset_itemsCount = AGame.itemsCount;
     AGame.itemsCount += response_items;
 
-    AGame.emptyContent = AGame.itemsCount === 0;
+    AGame.emptyContent = !AGame.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;

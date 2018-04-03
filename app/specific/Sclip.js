@@ -98,7 +98,7 @@ Sclip.loadDataPrepare = function() {
 };
 
 Sclip.SetPeriod = function() {
-    if (Sclip.periodNumber === 0) {
+    if (!Sclip.periodNumber) {
         $('.lable_game').html(STR_CLIPS + STR_CLIP_DAY);
         Sclip.period = 'day';
     } else if (Sclip.periodNumber === 1) {
@@ -166,7 +166,7 @@ Sclip.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Sclip.itemsCount;
     Sclip.itemsCount += response_items;
 
-    Sclip.emptyContent = Sclip.itemsCount === 0;
+    Sclip.emptyContent = !Sclip.itemsCount;
 
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;

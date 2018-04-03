@@ -288,13 +288,13 @@ SChannelContent.checkUser = function() {
 };
 
 SChannelContent.addFocus = function() {
-    Main.addFocusVideo(SChannelContent.cursorY, SChannelContent.cursorY === 0 ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+    Main.addFocusVideo(SChannelContent.cursorY, !SChannelContent.cursorY ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
         SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
         SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
 
 SChannelContent.removeFocus = function() {
-    Main.removeFocusVideo(SChannelContent.cursorY, SChannelContent.cursorY === 0 ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
+    Main.removeFocusVideo(SChannelContent.cursorY, !SChannelContent.cursorY ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
         SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
         SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
 };
@@ -367,7 +367,7 @@ SChannelContent.handleKeyDown = function(event) {
         case TvKeyCode.KEY_UP:
         case TvKeyCode.KEY_DOWN:
             SChannelContent.removeFocus();
-            SChannelContent.cursorY = SChannelContent.cursorY === 0 ? 1 : 0;
+            SChannelContent.cursorY = !SChannelContent.cursorY ? 1 : 0;
             SChannelContent.addFocus();
             break;
         case TvKeyCode.KEY_INFO:

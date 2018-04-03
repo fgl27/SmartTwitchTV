@@ -196,7 +196,7 @@ PlayClip.jumpStart = function() {
     var time = '',
         jumpTotime = '';
 
-    if (PlayClip.jumpCount === 0) {
+    if (!PlayClip.jumpCount) {
         PlayClip.TimeToJump = 0;
         PlayClip.jumpCountMin = -12;
         PlayClip.jumpCountMax = 12;
@@ -267,7 +267,7 @@ PlayClip.jumpStart = function() {
 
 PlayClip.speed = function() {
     var value = 1;
-    if (PlayClip.SpeedIndex === 0) value = 2;
+    if (!PlayClip.SpeedIndex) value = 2;
     else if (PlayClip.SpeedIndex == 1) value = 1.5;
     else if (PlayClip.SpeedIndex == 3) value = 0.5;
     else if (PlayClip.SpeedIndex == 4) value = 0.25;
@@ -279,7 +279,7 @@ PlayClip.speed = function() {
 };
 
 PlayClip.speedDisplay = function() {
-    if (PlayClip.SpeedIndex === 0) {
+    if (!PlayClip.SpeedIndex) {
         $('#speed_arrow_up').css({
             'opacity': 0.2
         });
@@ -321,7 +321,7 @@ PlayClip.IconsFocus = function() {
     Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
     Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
-    if (Play.Panelcouner === 0) {
+    if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner == 1) {
@@ -391,7 +391,7 @@ PlayClip.handleKeyDown = function(e) {
             if (!Play.isPanelShown()) {
                 PlayClip.showPanel();
             } else {
-                if (Play.Panelcouner === 0) {
+                if (!Play.Panelcouner) {
                     Play.videojs.src({
                         type: "video/mp4",
                         src: Sclip.playUrl
