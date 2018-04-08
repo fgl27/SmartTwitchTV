@@ -121,16 +121,13 @@ UserChannels.loadChannelLive = function(responseText) {
     var response = $.parseJSON(responseText);
 
     var response_items = response.follows.length;
-    var TempCount = UserChannels.UserChannelsList.length;
     var ChannelTemp = '';
-    var existCount = 0;
+    var x = 0;
 
-    for (var x = TempCount; x < (TempCount + response_items); x++) {
-        ChannelTemp = response.follows[x - TempCount].channel.display_name + ',' + response.follows[x - TempCount].channel._id + ',' +
-            response.follows[x - TempCount].channel.name + ',' + response.follows[x - TempCount].channel.logo +
-            ',' + response.follows[x - TempCount].channel.views + ',' + response.follows[x - TempCount].channel.followers;
-        if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList[x - existCount] = ChannelTemp;
-        else existCount++;
+    for (x; x < response_items; x++) {
+        ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
+            ',' + response.follows[x].channel.logo + ',' + response.follows[x].channel.views + ',' + response.follows[x].channel.followers;
+        if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList.push(ChannelTemp);
     }
 
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
