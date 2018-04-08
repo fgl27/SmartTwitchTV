@@ -120,9 +120,9 @@ UserChannels.loadDataError = function() {
 UserChannels.loadChannelLive = function(responseText) {
     var response = $.parseJSON(responseText);
 
-    var response_items = response.follows.length;
-    var ChannelTemp = '';
-    var x = 0;
+    var response_items = response.follows.length,
+        ChannelTemp = '',
+        x = 0;
 
     for (x; x < response_items; x++) {
         ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +

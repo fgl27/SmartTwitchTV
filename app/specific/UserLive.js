@@ -136,13 +136,15 @@ UserLive.loadDataError = function() {
 
 
 UserLive.loadChannelLive = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = $.parseJSON(responseText),
+        response_items = response.follows.length,
+        ChannelTemp = '',
+        x = 0;
 
-    var response_items = response.follows.length;
-
-    for (var x = 0; x < response_items; x++)
-        if (UserLive.followerChannels.indexOf(response.follows[x].channel.name + ',') === -1)
-            UserLive.followerChannels += response.follows[x].channel.name + ',';
+    for (x; x < response_items; x++) {
+        ChannelTemp = response.follows[x].channel.name + ',';
+        if (UserLive.followerChannels.indexOf(ChannelTemp) === -1) UserLive.followerChannels += ChannelTemp;
+    }
 
     if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserLive.loadChannelOffsset += response_items;
@@ -150,9 +152,7 @@ UserLive.loadChannelLive = function(responseText) {
         UserLive.loadChannels();
     } else { // end
         UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
-        UserLive.loadingData = true;
-        UserLive.loadingDataTry = 0;
-        UserLive.loadingDataTimeout = 3500;
+        UserLive.loadDataPrepare();
         UserLive.loadChannelUserLive();
     }
 };
