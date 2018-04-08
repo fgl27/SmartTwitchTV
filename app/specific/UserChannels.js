@@ -14,7 +14,6 @@ UserChannels.keyClickDelayTime = 25;
 UserChannels.UserChannelsList = [];
 UserChannels.loadChannelOffsset = 0;
 UserChannels.emptyContent = false;
-UserChannels._total = 0;
 
 UserChannels.Img = 'img_uchannel';
 UserChannels.Thumbnail = 'thumbnail_uchannel_';
@@ -66,68 +65,15 @@ UserChannels.StartLoad = function() {
     UserChannels.dataEnded = false;
     UserChannels.itemsCountCheck = false;
     Main.CounterDialogRst();
+    UserChannels.UserChannelsList = [];
     UserChannels.loadDataPrepare();
-    UserChannels.loadChannelsCheck();
+    UserChannels.loadChannels();
 };
 
 UserChannels.loadDataPrepare = function() {
     UserChannels.loadingData = true;
     UserChannels.loadingDataTry = 0;
     UserChannels.loadingDataTimeout = 3500;
-};
-
-UserChannels.loadChannelsCheck = function() {
-    try {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) + '/follows/channels?limit=1&offset=' +
-            UserChannels.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserChannels.loadChannelsCheckSucces(xmlHttp.responseText);
-                    return;
-                } else {
-                    UserChannels.loadDataCheckError();
-                }
-            }
-        };
-        xmlHttp.send(null);
-    } catch (e) {
-        UserChannels.loadDataCheckError();
-    }
-};
-
-UserChannels.loadDataCheckError = function() {
-    UserChannels.loadingDataTry++;
-    if (UserChannels.loadingDataTry < UserChannels.loadingDataTryMax) {
-        UserChannels.loadingDataTimeout += (UserChannels.loadingDataTry < 5) ? 250 : 3500;
-        UserChannels.loadChannelsCheck();
-    } else {
-        UserChannels.loadingData = false;
-        UserChannels.loadingMore = false;
-        UserChannels.Status = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
-    }
-};
-
-UserChannels.loadChannelsCheckSucces = function(responseText) {
-    var total = $.parseJSON(responseText)._total;
-
-    if (total != UserChannels._total) {
-        UserChannels._total = total;
-        UserChannels.UserChannelsList = [];
-        UserChannels.loadDataPrepare();
-        UserChannels.loadChannels();
-    } else {
-        UserChannels.loadDataSuccess();
-    }
 };
 
 UserChannels.loadChannels = function() {
@@ -194,7 +140,6 @@ UserChannels.loadChannelLive = function(responseText) {
         });
         UserChannels.loadDataSuccess();
     }
-
 };
 
 UserChannels.loadDataSuccess = function() {
