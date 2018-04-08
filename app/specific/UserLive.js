@@ -134,19 +134,19 @@ UserLive.loadDataError = function() {
     }
 };
 
-
 UserLive.loadChannelLive = function(responseText) {
     var response = $.parseJSON(responseText),
-        response_items = response.follows.length,
-        ChannelTemp = '',
-        x = 0;
+        response_items = response.follows.length;
 
-    for (x; x < response_items; x++) {
-        ChannelTemp = response.follows[x].channel.name + ',';
-        if (UserLive.followerChannels.indexOf(ChannelTemp) === -1) UserLive.followerChannels += ChannelTemp;
-    }
+    if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
+        var ChannelTemp = '',
+            x = 0;
 
-    if (response_items > 0) { // response_items here is not always 99 so check until it is 0
+        for (x; x < response_items; x++) {
+            ChannelTemp = response.follows[x].channel.name + ',';
+            if (UserLive.followerChannels.indexOf(ChannelTemp) === -1) UserLive.followerChannels += ChannelTemp;
+        }
+
         UserLive.loadChannelOffsset += response_items;
         UserLive.loadDataPrepare();
         UserLive.loadChannels();
@@ -156,7 +156,6 @@ UserLive.loadChannelLive = function(responseText) {
         UserLive.loadChannelUserLive();
     }
 };
-
 UserLive.loadChannelUserLive = function() {
     try {
 

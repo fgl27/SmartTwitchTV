@@ -118,19 +118,19 @@ UserChannels.loadDataError = function() {
 };
 
 UserChannels.loadChannelLive = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = $.parseJSON(responseText),
+        response_items = response.follows.length;
 
-    var response_items = response.follows.length,
-        ChannelTemp = '',
-        x = 0;
+    if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
+        var ChannelTemp = '';
+            x = 0;
 
-    for (x; x < response_items; x++) {
-        ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
-            ',' + response.follows[x].channel.logo + ',' + response.follows[x].channel.views + ',' + response.follows[x].channel.followers;
-        if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList.push(ChannelTemp);
-    }
+        for (x; x < response_items; x++) {
+            ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
+                ',' + response.follows[x].channel.logo + ',' + response.follows[x].channel.views + ',' + response.follows[x].channel.followers;
+            if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList.push(ChannelTemp);
+        }
 
-    if (response_items > 0) { // response_items here is not always 99 so check until it is 0
         UserChannels.loadChannelOffsset += response_items;
         UserChannels.loadDataPrepare();
         UserChannels.loadChannels();
