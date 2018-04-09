@@ -5,7 +5,7 @@ Users.cursorY = 0;
 Users.cursorX = 0;
 Users.LastClickFinish = true;
 Users.keyClickDelayTime = 25;
-Users.ColoumnsCount = 6;
+Users.ColoumnsCount = 7;
 
 Users.Img = 'img_users';
 Users.Thumbnail = 'thumbnail_users_';
@@ -213,6 +213,10 @@ Users.handleKeyDown = function(event) {
                 Users.removeFocus();
                 Users.cursorX--;
                 Users.addFocus();
+            } else if (!Main.ThumbNull((Users.cursorY - 1), 0, Users.Thumbnail)) {
+                Users.removeFocus();
+                Users.cursorX = Users.ColoumnsCount - 1;
+                Users.addFocus();
             } else {
                 for (i = (Users.ColoumnsCount - 1); i > -1; i--) {
                     if (Main.ThumbNull((Users.cursorY - 1), i, Users.Thumbnail)) {
@@ -233,6 +237,10 @@ Users.handleKeyDown = function(event) {
             } else if (Main.ThumbNull((Users.cursorY + 1), 0, Users.Thumbnail)) {
                 Users.removeFocus();
                 Users.cursorY++;
+                Users.cursorX = 0;
+                Users.addFocus();
+            } else {
+                Users.removeFocus();
                 Users.cursorX = 0;
                 Users.addFocus();
             }
