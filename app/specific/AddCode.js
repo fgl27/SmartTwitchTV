@@ -176,7 +176,8 @@ AddCode.SaveNewUser = function() {
 };
 
 AddCode.removeUser = function(Position) {
-    AddCode.UsercodeArray.splice(AddCode.UsercodeArray.indexOf(AddCode.UsercodeArray[Position]), 1);
+    var index = AddCode.UsercodeArray.indexOf(AddCode.UsercodeArray[Position]);
+    if (index > -1) AddCode.UsercodeArray.splice(index, 1);
     AddCode.SaveKeyArray();
 };
 
@@ -583,24 +584,30 @@ AddCode.CheckTokenError = function() {
 AddCode.CheckTokenStart = function(position) {
     try {
 
-        var xmlHttp = new XMLHttpRequest();
+        var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
+        if (userCode > -1) {
+            AddCode.OauthToken = AddCode.UsercodeArray[userCode].split(",")[2];
+            Main.UserName = AddUser.UsernameArray[position];
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode.OauthToken, true);
-        xmlHttp.timeout = AddCode.loadingDataTimeout;
-        xmlHttp.ontimeout = function() {};
+            var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Users.SetKeyTitleStart(Users.checkKey(xmlHttp.responseText), position);
-                    return;
-                } else {
-                    AddCode.CheckTokenStartError(position);
+            xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode.OauthToken, true);
+            xmlHttp.timeout = AddCode.loadingDataTimeout;
+            xmlHttp.ontimeout = function() {};
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+                    if (xmlHttp.status === 200) {
+                        Users.SetKeyTitleStart(Users.checkKey(xmlHttp.responseText), position);
+                        return;
+                    } else {
+                        AddCode.CheckTokenStartError(position);
+                    }
                 }
-            }
-        };
+            };
 
-        xmlHttp.send(null);
+            xmlHttp.send(null);
+        } else Users.SetKeyTitleStart(false, position);
     } catch (e) {
         AddCode.CheckTokenStartError(position);
     }

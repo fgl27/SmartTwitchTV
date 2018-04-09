@@ -120,8 +120,6 @@ Users.checkTitleStart = function() {
 };
 
 Users.checkTitleRun = function(position) {
-    Main.UserName = AddUser.UsernameArray[position];
-    AddCode.SetDefaultOAuth(position);
     AddCode.loadingDataTry = 0;
     AddCode.loadingDataTimeout = 10000;
     AddCode.CheckTokenStart(position);
@@ -129,7 +127,10 @@ Users.checkTitleRun = function(position) {
 
 Users.SetKeyTitleStart = function(bool, position) {
     document.getElementById(Users.DispNameDiv + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
-    if (!bool) AddCode.removeUser(AddCode.UserCodeExist(AddUser.UsernameArray[position]));
+    if (!bool) {
+        var user = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
+        if (user > -1) AddCode.removeUser(user);
+    }
 };
 
 Users.addFocus = function() {
@@ -177,7 +178,10 @@ Users.checkKey = function(responseText) {
 
 Users.SetKeyTitle = function(bool) {
     document.getElementById(Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
-    if (!bool) AddCode.removeUser(AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]));
+    if (!bool) {
+        var user = AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]);
+        if (user > -1) AddCode.removeUser(user);
+    }
 };
 
 Users.handleKeyDown = function(event) {
