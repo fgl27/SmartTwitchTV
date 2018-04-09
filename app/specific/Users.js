@@ -6,6 +6,8 @@ Users.cursorX = 0;
 Users.LastClickFinish = true;
 Users.keyClickDelayTime = 25;
 Users.ColoumnsCount = 7;
+Users.RemoveCursor = 0;
+Users.RemoveDialogID = null;
 
 Users.Img = 'img_users';
 Users.Thumbnail = 'thumbnail_users_';
@@ -151,7 +153,7 @@ Users.keyClickDelay = function() {
 };
 
 Users.keyEnter = function() {
-    document.body.removeEventListener("keydown", Users.handleKeyDown);
+    if (Users.cursorX != 5) document.body.removeEventListener("keydown", Users.handleKeyDown);
     Main.UserName = AddUser.UsernameArray[Users.cursorY];
     AddCode.SetDefaultOAuth(Users.cursorY);
 
@@ -162,7 +164,7 @@ Users.keyEnter = function() {
     else if (Users.cursorX === 4) {
         if (!Users.cursorY) AddUser.init();
         else AddUser.UserMakeOne(Users.cursorY);
-    } else if (Users.cursorX === 5) AddUser.removeUser(Users.cursorY);
+    } else if (Users.cursorX === 5) Users.showRemoveDialog();
     else if (Users.cursorX === 6) AddCode.init();
 };
 
@@ -181,6 +183,41 @@ Users.SetKeyTitle = function(bool) {
     if (!bool) {
         var user = AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]);
         if (user > -1) AddCode.removeUser(user);
+    }
+};
+
+Users.clearRemoveDialog = function() {
+    window.clearTimeout(Users.RemoveDialogID);
+};
+
+Users.setRemoveDialog = function() {
+    Users.RemoveDialogID = window.setTimeout(Users.HideRemoveDialog, 6000);
+};
+
+Users.showRemoveDialog = function() {
+    Users.setRemoveDialog();
+    document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + Main.UserName + '?';
+    $("#main_remove_dialog").show();
+};
+
+Users.HideRemoveDialog = function() {
+    Users.clearRemoveDialog();
+    $("#main_remove_dialog").hide();
+    Users.RemoveCursor = 0;
+    Users.RemoveCursorSet();
+};
+
+Users.isRemoveDialogShown = function() {
+    return $("#main_remove_dialog").is(":visible");
+};
+
+Users.RemoveCursorSet = function() {
+    if (!Users.RemoveCursor) {
+        $('#remove_cancel').addClass('button_search_focused');
+        $('#remove_yes').removeClass('button_search_focused');
+    } else {
+        $('#remove_cancel').removeClass('button_search_focused');
+        $('#remove_yes').addClass('button_search_focused');
     }
 };
 
@@ -209,7 +246,13 @@ Users.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.Thumbnail)) {
+            if (Users.isRemoveDialogShown()) {
+                Users.RemoveCursor--;
+                if (Users.RemoveCursor < 0) Users.RemoveCursor = 1;
+                Users.RemoveCursorSet();
+                Users.clearRemoveDialog();
+                Users.setRemoveDialog();
+            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.Thumbnail)) {
                 Users.removeFocus();
                 Users.cursorX--;
                 Users.addFocus();
@@ -230,7 +273,13 @@ Users.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.Thumbnail)) {
+            if (Users.isRemoveDialogShown()) {
+                Users.RemoveCursor++;
+                if (Users.RemoveCursor > 1) Users.RemoveCursor = 0;
+                Users.RemoveCursorSet();
+                Users.clearRemoveDialog();
+                Users.setRemoveDialog();
+            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.Thumbnail)) {
                 Users.removeFocus();
                 Users.cursorX++;
                 Users.addFocus();
@@ -287,7 +336,15 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Users.keyEnter();
+            if (Users.isRemoveDialogShown()) {
+                // HideExitDialog set Live.ExitCursor to 0, is better to hide befor exit, use temp var
+                var temp_RemoveCursor = Users.RemoveCursor;
+                Users.HideRemoveDialog();
+                if (temp_RemoveCursor) {
+                    document.body.removeEventListener("keydown", Users.handleKeyDown);
+                    AddUser.removeUser(Users.cursorY);
+                }
+            } else Users.keyEnter();
             break;
         case TvKeyCode.KEY_RED:
             Main.showAboutDialog();

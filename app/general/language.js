@@ -150,3 +150,5 @@ var STR_NET_UP = "Network connection reestablished";
 var STR_FALLOWERS = " Followers";
 var STR_CANT_FALLOW = ", Can\'t fallow or fallow ";
 var STR_GAME_CONT = "Game content";
+var STR_YES = "Yes";
+var STR_REMOVE_USER = "Are you shore you wanna to remove the user ";

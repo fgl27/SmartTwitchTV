@@ -118,7 +118,7 @@ function pt_BRLang() {
     STR_OAUTH_EXPLAIN2 = "Acesse o site http://tiny.cc/twitchkey (usando um computador ou smart phone)";
     STR_OAUTH_EXPLAIN3 = "Clique no botão \"Authorize\" assim vai abrir o site de autenticação do Twitch.TV";
     STR_OAUTH_EXPLAIN4 = "Faço login no Twitch.TV usando o usuário que você esta tentando adicionar a chave";
-    STR_OAUTH_EXPLAIN5 = "Clique no botão de autorizar no site do Twitch.TV se voce esta de acordo com as permissões";
+    STR_OAUTH_EXPLAIN5 = "Clique no botão de autorizar no site do Twitch.TV se você esta de acordo com as permissões";
     STR_OAUTH_EXPLAIN6 = "A pagina vai atualizar e mostrar a chave de acesso no centro (só tem letra minuscula), escreva esta no aplicativo";
     STR_USER_CODE = " Adicione uma chave de autenticação";
     STR_USER_CODE_OK = "Chave adicionada OK (Clique para testar)";
@@ -130,7 +130,7 @@ function pt_BRLang() {
     STR_FALLOW = " Seguir";
     STR_IS_SUB_NOOAUTH = " E você não definiu uma chave de autenticação, o aplicativo não pode verificar se é inscrito.";
     STR_IS_SUB_NOT_SUB = " E você não é um inscrito deste canal";
-    STR_IS_SUB_IS_SUB = " Você é um inscrito deste canal, mas o aplicativo falha ao tentar autenticar, contate o desenvolvedor através do email no sobre";
+    STR_IS_SUB_IS_SUB = " Você é um inscrito deste canal, mas o aplicativo falha ao tentar autenticar, contate o desenvolvedor através do e-mail no sobre";
     STR_OAUTH_FAIL = "Falhou o teste com a chave do informada, verifique e tente novamente";
     STR_NOKEY = "Sem Usuário";
     STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir ou deixar de seguir";
@@ -141,4 +141,6 @@ function pt_BRLang() {
     STR_FALLOWERS = " Seguidores";
     STR_CANT_FALLOW = ", Não é possível seguir ou deixar de seguir ";
     STR_GAME_CONT = "Conteúdo do jogo";
+    STR_YES = "Sim";
+    STR_REMOVE_USER = "Tem certeza que deseja remover o usuário ";
 }
