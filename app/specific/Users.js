@@ -337,7 +337,7 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (Users.isRemoveDialogShown()) {
-                // HideExitDialog set Live.ExitCursor to 0, is better to hide befor exit, use temp var
+                // HideRemoveDialog set Users.RemoveCursor to 0, is better to hide befor remove, use temp var
                 var temp_RemoveCursor = Users.RemoveCursor;
                 Users.HideRemoveDialog();
                 if (temp_RemoveCursor) {
