@@ -191,6 +191,8 @@ Main.initWindows = function() {
     $('.label_search_live').html(STR_LIVE);
     $('.label_exit_cancel').html(STR_CANCEL);
     $('.label_exit_close').html(STR_CLOSE);
+    $('.label_remove_cancel').html(STR_CANCEL);
+    $('.label_remove_yes').html(STR_YES);
     $('.label_exit_minimize').html(STR_MINIMIZE);
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     $('.label_buffering').html(STR_BUFFERING);
