@@ -242,7 +242,8 @@ AddUser.removeUser = function(Position) {
     if (userCode > -1) AddCode.removeUser(userCode);
 
     // remove the user
-    AddUser.UsernameArray.splice(AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]), 1);
+    var index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]);
+    if (index > -1) AddUser.UsernameArray.splice(index, 1);
 
     // restart users and smarthub
     if (AddUser.UsernameArray.length > 0) {
