@@ -431,7 +431,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (!AGame.cursorY) {
+            if (!AGame.cursorY && !AGame.cursorX) {
                 AGame.removeFocus();
                 AGame.cursorY = -1;
                 AGame.addFocusFallow();
