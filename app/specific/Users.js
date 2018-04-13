@@ -99,7 +99,7 @@ Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, p
         '<div id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + Users.Img + row_id + '_' +
         coloumn_id + '" class="stream_img"></div>' +
         '<div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_user">' + stream_type + '</div></div>');
+        '<div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info_user">' + stream_type + '</div></div>');
 };
 
 Users.loadDataSuccessFinish = function() {
@@ -138,14 +138,14 @@ Users.SetKeyTitleStart = function(bool, position) {
 Users.addFocus = function() {
     $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).addClass('stream_thumbnail_focused');
     $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_user_focused');
+    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_info_focused');
     Main.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail, Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
 };
 
 Users.removeFocus = function() {
     $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_user_focused');
+    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_info_focused');
 };
 
 Users.keyClickDelay = function() {
