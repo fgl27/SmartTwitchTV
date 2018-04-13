@@ -333,7 +333,7 @@ SChannels.replaceCellEmpty = function(id, channel_name, _id, preview_thumbnail, 
 SChannels.addFocus = function() {
     $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_thumbnail_focused');
     $('#' + SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_text_focused');
-    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_channel_focused');
+    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
@@ -353,7 +353,7 @@ SChannels.addFocus = function() {
 SChannels.removeFocus = function() {
     $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_text_focused');
-    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_channel_focused');
+    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_info_focused');
 };
 
 SChannels.keyClickDelay = function() {

@@ -211,7 +211,7 @@ UserChannels.addFocus = function() {
 
     $('#' + UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_thumbnail_focused');
     $('#' + UserChannels.ThumbnailDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_text_focused');
-    $('#' + UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_channel_focused');
+    $('#' + UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).addClass('stream_info_focused');
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, Main.UserChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
@@ -231,7 +231,7 @@ UserChannels.addFocus = function() {
 UserChannels.removeFocus = function() {
     $('#' + UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).removeClass('stream_thumbnail_focused');
     $('#' + UserChannels.ThumbnailDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).removeClass('stream_text_focused');
-    $('#' + UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).removeClass('stream_channel_focused');
+    $('#' + UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).removeClass('stream_info_focused');
 };
 
 UserChannels.keyClickDelay = function() {

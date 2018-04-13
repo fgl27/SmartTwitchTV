@@ -86,7 +86,6 @@ Main.GameSize = "340x475"; // default size 272x380
 
 Main.classThumb = 'stream_thumbnail_focused';
 Main.classText = 'stream_text_focused';
-Main.classChannel = 'stream_channel_focused';
 Main.classInfo = 'stream_info_focused';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
@@ -676,7 +675,7 @@ Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Stream
     ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
     $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
+    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + StreamTitleDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + StreamGameDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
@@ -692,7 +691,7 @@ Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Stream
 Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
     $('#' + Thumbnail + y + '_' + x).removeClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
+    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classInfo);
     $('#' + StreamTitleDiv + y + '_' + x).removeClass(Main.classInfo);
     $('#' + StreamGameDiv + y + '_' + x).removeClass(Main.classInfo);
     $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
@@ -702,7 +701,7 @@ Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Str
 Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
     $('#' + Thumbnail + y + '_' + x).addClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).addClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classChannel);
+    $('#' + DispNameDiv + y + '_' + x).addClass(Main.classInfo);
     $('#' + ViwersDiv + y + '_' + x).addClass(Main.classInfo);
 
     window.setTimeout(function() {
@@ -715,7 +714,7 @@ Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersD
 Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
     $('#' + Thumbnail + y + '_' + x).removeClass(Main.classThumb);
     $('#' + ThumbnailDiv + y + '_' + x).removeClass(Main.classText);
-    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classChannel);
+    $('#' + DispNameDiv + y + '_' + x).removeClass(Main.classInfo);
     $('#' + ViwersDiv + y + '_' + x).removeClass(Main.classInfo);
 };
 

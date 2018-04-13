@@ -28,16 +28,31 @@
 
         /*Do not add css comments on the same line as code, add it on a new line, TODO fix release maker to be able to do this*/
 
-        div.screen_size {
+        div.screen_size,
+        div.scroll_size {
             width: 1920px;
             height: 1080px;
         }
 
-        img.icon_top {
-            width: 1.0%;
+        div.scroll_size {
+            position: fixed;
+            z-index: 298;
+            width: 1%;
+            padding-left: 99%;
         }
 
-        div.icon_top_label {
+        div.scroll {
+            width: 10px;
+            height: 50px;
+            border-radius: 15px;
+            background-color: #000000;
+            position: absolute;
+            right: 4px;
+            top: 100px;
+        }
+
+        div.icon_top_label,
+        div.icon_center_label {
             width: auto;
             height: 10px;
             text-align: left;
@@ -50,15 +65,10 @@
         }
 
         div.icon_center_label {
-            width: auto;
             height: 18px;
-            text-align: left;
             color: rgba(255, 255, 255, 0.5);
             font-size: 50px;
             line-height: 8px;
-            display: inline-block;
-            font-weight: bold;
-            vertical-align: middle;
             padding-right: 0.7%;
             text-shadow: #000000 0px 0px 6px, #000000 0px 0px 6px, #000000 0px 0px 5px;
         }
@@ -68,12 +78,6 @@
             font-size: 67px;
             line-height: 7px;
             text-shadow: #000000 0px 0px 8px, #000000 0px 0px 8px, #000000 0px 0px 6px;
-        }
-
-        td.stream_cell_small {
-            padding: 7px;
-            position: relative;
-            width: 16.66%;
         }
 
         td.stream_cell {
@@ -89,36 +93,25 @@
             float: right;
         }
 
-        div.stream_thumbnail_video {
-            width: 100%;
-            height: 0;
-            /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 56.25%;
-            position: relative;
-        }
-
-        div.stream_thumbnail_game {
-            width: 100%;
-            height: 0;
-            /* height / width * 100% of Main.GameSize*/
-            padding-bottom: 139.70%;
-            position: relative;
-        }
-
+        div.stream_thumbnail_video,
+        div.stream_thumbnail_game,
         div.stream_thumbnail_channel {
             width: 100%;
             height: 0;
-            /* height / width * 100% of 300x300*/
-            padding-bottom: 100%;
             position: relative;
         }
 
-        div.stream_thumbnail_fallow {
-            width: 56.25%;
-            height: 0;
+        div.stream_thumbnail_video {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
-            position: relative;
+        }
+
+        div.stream_thumbnail_game {
+            padding-bottom: 139.70%;
+        }
+
+        div.stream_thumbnail_channel {
+            padding-bottom: 100%;
         }
 
         div.stream_thumbnail_focused {
@@ -153,20 +146,8 @@
             background-color: rgba(255, 255, 255, 0.85);
         }
 
+        div.stream_channel,
         div.stream_channel_fallow_game {
-            width: 77%;
-            padding-left: 22%;
-            height: 98%;
-            padding-top: 1.5%;
-            text-align: left;
-            word-wrap: break-word;
-            color: #FFFFFF;
-            font-size: 168%;
-            font-weight: bold;
-            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
-        }
-
-        div.stream_channel {
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -176,46 +157,35 @@
             text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
         }
 
-        div.stream_channel_focused {
-            color: #000000;
-            text-shadow: #FFFFFF 0px 0px 3.6px, #FFFFFF 0px 0px 3.6px, #FFFFFF 0px 0px 2.5px;
+        div.stream_channel_fallow_game {
+            width: 77%;
+            padding-left: 22%;
+            height: 98%;
+            padding-top: 1.5%;
+            font-size: 168%;
         }
 
-        div.stream_user {
+        div.stream_info,
+        div.stream_info_user,
+        div.stream_info_games {
             width: 100%;
             text-align: left;
             word-wrap: break-word;
             color: #FFFFFF;
             font-size: 170%;
             font-weight: bold;
-            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
-        }
-
-        div.stream_user_focused {
-            color: #000000;
-            text-shadow: #FFFFFF 0px 0px 3.6px, #FFFFFF 0px 0px 3.6px, #FFFFFF 0px 0px 2.5px;
+            text-shadow: #000000 0px 0px 4px, #000000 0px 0px 4px, #000000 0px 0px 3px;
         }
 
         div.stream_info {
-            width: 100%;
-            text-align: left;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            color: #FFFFFF;
             font-size: 137%;
-            font-weight: bold;
-            text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;
         }
 
         div.stream_info_games {
-            width: 100%;
-            text-align: left;
-            word-wrap: break-word;
-            color: #FFFFFF;
             font-size: 137%;
-            font-weight: bold;
-            text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;
         }
 
         div.stream_info_focused {
@@ -223,7 +193,7 @@
             text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;
         }
 
-        div.openchannel {
+        div.imput_text_box {
             width: 70%;
             margin-top: 23%;
             margin-left: 15%;
@@ -291,7 +261,9 @@
             font-weight: bold;
         }
 
-        div.about_text {
+        div.about_text,
+        div.exit_text,
+        div.controls_text {
             display: inline-block;
             color: #FFFFFF;
             margin-left: 2%;
@@ -302,37 +274,19 @@
             text-align: center;
             word-wrap: break-word;
             font-size: 175%;
-            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
+            text-shadow: #000000 0px 0px 4px, #000000 0px 0px 4px, #000000 0px 0px 3px;
         }
 
         div.exit_text {
-            display: inline-block;
-            color: #FFFFFF;
-            margin-left: 2%;
-            margin-right: 2%;
             margin-top: 2%;
             margin-bottom: 2%;
             width: 96%;
-            text-align: center;
-            word-wrap: break-word;
             font-size: 350%;
-            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
         }
 
         div.controls_text {
-            display: inline-block;
-            color: #FFFFFF;
-            margin-left: 2%;
-            margin-right: 2%;
-            margin-top: 1%;
-            margin-bottom: 1%;
-            width: 96%;
-            text-align: left;
-            word-wrap: break-word;
             font-size: 173%;
-            text-shadow: #000000 0px 0px 3.6px, #000000 0px 0px 3.6px, #000000 0px 0px 2.5px;
         }
-
 
         div.playsideinfo {
             color: #FFFFFF;
@@ -363,15 +317,17 @@
             margin-bottom: 6px;
         }
 
-        div.up {
+        div.up,
+        div.down {
             border-left: 9px solid transparent;
             border-right: 9px solid transparent;
+        }
+
+        div.up {
             border-bottom: 12px solid white;
         }
 
         div.down {
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
             border-top: 12px solid white;
         }
 
@@ -421,16 +377,6 @@
             text-shadow: #545454 0px 0px 17px, #545454 0px 0px 14px, #545454 0px 0px 11px;
         }
 
-        div.scroll {
-            width: 10px;
-            height: 50px;
-            border-radius: 15px;
-            background-color: #000000;
-            position: absolute;
-            right: 0px;
-            top: 100px;
-        }
-
         table.streams_tables {
             width: 100%;
             padding-top: 3.8%;
@@ -472,6 +418,20 @@
             overflow: hidden;
         }
 
+        div.toolbar {
+            z-index: 99;
+            position: fixed;
+            width: 100%;
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35));
+        }
+
+        div.twitchicon {
+            float: right;
+            padding-right: 0.5%;
+            padding-top: 0.5%;
+            width: 9.5%;
+        }
+
         .hide {
             display: none;
         }
@@ -511,9 +471,9 @@
 
 <body>
     <!-- bodystart this is here so release_maker can work don't remove-->
-    <div id="scene1" class="screen_size" style="z-index:98; position : absolute;left : 0px; top : 0px;">
-        <div id="toolbar" class="hide" style="z-index:99; position: fixed; width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35));">
-            <div style="float: right; padding-right: 0.5%; padding-top: 0.5%; width: 9.5%;">
+    <div id="scene1" class="screen_size">
+        <div id="toolbar" class="toolbar hide">
+            <div class="twitchicon">
                 <img style="float: right; width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
                 <div style="text-align: center;">
                     <div class="icon_top_label label_about" style="text-align: center;"></div>
@@ -540,7 +500,7 @@
                 <div id="id_agame_name" class="icon_top_label label_agame_name" style="line-height: 0;"></div>
             </div>
         </div>
-        <div id="scrollbar_size" class="screen_size" style="position: fixed; z-index:298; width: 1%; padding-left: 99%;">
+        <div id="scrollbar_size" class="scroll_size">
             <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs" style="z-index:98; margin-top: 24%; ">
@@ -580,13 +540,13 @@
         </div>
         <div id="blank_focus" class="screen_size"></div>
         <div class="screen_size"></div>
-        <div id="oauth" class="openchannel">
+        <div id="oauth" class="imput_text_box">
             <div id="oauth_text" class="strokedextramini" style="font-size: 190%; font-weight:bold;"></div>
             <input id="oauth_input" class="input_class label_placeholder_oauth" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <div id="search" class="openchannel">
+        <div id="search" class="imput_text_box">
             <input id="search_input" class="input_class label_placeholder_search" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
             <div id="chanel_button" class="button_search label_search_chanel"></div>
             <div id="game_button" class="button_search label_search_game"></div>
@@ -594,7 +554,7 @@
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
-        <div id="add_user" class="openchannel">
+        <div id="add_user" class="imput_text_box">
             <input id="user_input" class="input_class label_placeholder_user" type="text" placeholder="STR_PLACEHOLDER_USER" />
         </div>
         <div class="screen_size"></div>
@@ -640,7 +600,7 @@
         <!-- Prevent one table see the other-->
         <table id="stream_table_search_clip" class="streams_tables"></table>
     </div>
-    <div id="scene2" class="screen_size hide" style="z-index:99; position : absolute;left : 0px;top : 0px;">
+    <div id="scene2" class="screen_size hide">
         <video id="video_live" class="video-js" width="1920" height="1080" preload="metadata" style="background:black"></video>
         <div id="scene_channel_panel" style="display:flex; position: absolute; top: 0%; width: 100%; height : 100%; z-index: 1;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.040));">
