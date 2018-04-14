@@ -54,13 +54,12 @@ PlayVod.Start = function() {
     Play.showBufferDialog();
     Play.hideChat();
     Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
-    $('#stream_info_name').text(Main.selectedChannelDisplayname);
-    $("#stream_info_title").text(Svod.title);
-    $("#stream_info_game").text(Svod.views);
-    $("#stream_live_icon").text(Svod.createdAt);
-    $("#stream_live_time").text(Svod.Duration);
+    document.getElementById("stream_info_name").innerHTML = Main.selectedChannelDisplayname;
+    document.getElementById("stream_info_title").innerHTML = Svod.title;
+    document.getElementById("stream_info_game").innerHTML = Svod.views;
+    document.getElementById("stream_live_icon").innerHTML = Svod.createdAt;
+    document.getElementById("stream_live_time").innerHTML = Svod.Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
-
     if (Main.UserName !== '') {
         AddCode.userChannel = Main.selectedChannel_id;
         AddCode.PlayRequest = true;
@@ -407,31 +406,19 @@ PlayVod.qualityIndexReset = function() {
 
 PlayVod.qualityDisplay = function() {
     if (!PlayVod.qualityIndex) {
-        $('#quality_arrow_up').css({
-            'opacity': 0.2
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "0.2";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (PlayVod.qualityIndex === PlayVod.getQualitiesCount() - 1) {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 0.2
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "0.2";
     } else {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
     }
 
     PlayVod.quality = PlayVod.qualities[PlayVod.qualityIndex].id;
-    if (PlayVod.quality.indexOf('source') !== -1) $('#quality_name').text(PlayVod.quality.replace("source", STR_SOURCE));
-    else $('#quality_name').text(PlayVod.quality);
+    if (PlayVod.quality.indexOf('source') !== -1) document.getElementById("quality_name").innerHTML = PlayVod.quality.replace("source", STR_SOURCE);
+    else document.getElementById("quality_name").innerHTML = PlayVod.quality;
 };
 
 PlayVod.getQualitiesCount = function() {

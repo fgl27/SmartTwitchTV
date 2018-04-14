@@ -519,9 +519,10 @@ Svod.openStream = function() {
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
     document.getElementById('scene2').classList.remove('hide');
     PlayVod.hidePanel();
-    document.getElementById('play_clip_dialog_simple_pause').classList.add('hide');
-    document.getElementById('play_clip_dialog_exit').classList.add('hide');
-    document.getElementById('dialog_warning_play').classList.add('hide');
+    Play.hideChat();
+    Play.clearPause();
+    Play.HideWarningDialog();
+    document.getElementById('play_dialog_exit').classList.add('hide');
     document.getElementById('scene1').classList.add('hide');
     PlayVod.Start();
 };

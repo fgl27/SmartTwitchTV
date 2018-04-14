@@ -579,11 +579,11 @@ Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
             this.src = img_type; //img fail to load use predefined
         };
         ImgObjet.src = ImgObjet.getAttribute('data-src');
-        ImgObjet.setAttribute('data-src', '//:0');
+        ImgObjet.removeAttribute('data-src');
     };
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
-            elem = document.getElementById(imgId + y + '_' + x, 0);
+            elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) loadImages(elem);
         }
     }
