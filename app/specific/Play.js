@@ -578,7 +578,7 @@ Play.HideBufferDialog = function() {
 };
 
 Play.BufferDialogVisible = function() {
-    return $("#dialog_buffer_play").is(":visible");
+    return document.getElementById('dialog_buffer_play').className.indexOf('hide') === -1;
 };
 
 Play.showWarningDialog = function(text) {
@@ -592,7 +592,7 @@ Play.HideWarningDialog = function() {
 };
 
 Play.WarningDialogVisible = function() {
-    return $("#dialog_warning_play").is(":visible");
+    return document.getElementById('dialog_warning_play').className.indexOf('hide') === -1;
 };
 
 Play.showExitDialog = function() {
@@ -605,7 +605,7 @@ Play.showExitDialog = function() {
 };
 
 Play.ExitDialogVisible = function() {
-    return $("#play_dialog_exit").is(":visible");
+    return document.getElementById('play_dialog_exit').className.indexOf('hide') === -1;
 };
 
 // For some reason clearTimeout fail some time when two are set in a sequence on the same function
@@ -635,11 +635,11 @@ Play.showPauseDialog = function() {
 };
 
 Play.isShowPauseDialogOn = function() {
-    return $("#play_dialog_simple_pause").is(":visible");
+    return document.getElementById('play_dialog_simple_pause').className.indexOf('hide') === -1;
 };
 
 Play.isPanelShown = function() {
-    return $("#scene_channel_panel").is(":visible");
+    return document.getElementById('scene_channel_panel').className.indexOf('hide') === -1;
 };
 
 Play.hidePanel = function() {
@@ -682,7 +682,7 @@ Play.hideChat = function() {
 };
 
 Play.isChatShown = function() {
-    return $("#chat_container").is(":visible");
+    return document.getElementById('chat_container').className.indexOf('hide') === -1;
 };
 
 Play.showControlsDialog = function() {
@@ -695,7 +695,7 @@ Play.HideControlsDialog = function() {
 };
 
 Play.isControlsDialogShown = function() {
-    return $("#dialog_controls_play").is(":visible");
+    return document.getElementById('dialog_controls_play').className.indexOf('hide') === -1;
 };
 
 

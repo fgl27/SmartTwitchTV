@@ -197,18 +197,19 @@ Users.setRemoveDialog = function() {
 Users.showRemoveDialog = function() {
     Users.setRemoveDialog();
     document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + Main.UserName + '?';
-    $("#main_remove_dialog").show();
+    document.getElementById('main_remove_dialog').classList.remove('hide');
 };
 
 Users.HideRemoveDialog = function() {
     Users.clearRemoveDialog();
     $("#main_remove_dialog").hide();
+    document.getElementById('main_remove_dialog').classList.add('hide');
     Users.RemoveCursor = 0;
     Users.RemoveCursorSet();
 };
 
 Users.isRemoveDialogShown = function() {
-    return $("#main_remove_dialog").is(":visible");
+    return document.getElementById('main_remove_dialog').className.indexOf('hide') === -1;
 };
 
 Users.RemoveCursorSet = function() {
