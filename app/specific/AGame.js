@@ -53,7 +53,7 @@ AGame.init = function() {
 };
 
 AGame.exit = function() {
-    if (AGame.cursorY == -1) AGame.cursorY = 0;
+    if (AGame.cursorY === -1) AGame.cursorY = 0;
     AGame.removeFocusFallow();
     AGame.addFocus();
     $('.label_agame_name').html('');
@@ -435,7 +435,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.removeFocus();
                 AGame.cursorY = -1;
                 AGame.addFocusFallow();
-            } else if (AGame.cursorY == -1) {
+            } else if (AGame.cursorY === -1) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
@@ -456,7 +456,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (AGame.cursorY == -1) {
+            if (AGame.cursorY === -1) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
@@ -489,7 +489,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            if (AGame.cursorY == -1) {
+            if (AGame.cursorY === -1) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();

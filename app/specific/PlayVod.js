@@ -117,7 +117,7 @@ PlayVod.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var theUrl;
-        if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
+        if (PlayVod.state === PlayVod.STATE_LOADING_TOKEN) {
             theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token' + (AddCode.OauthToken !== 0 ? '?oauth_token=' + AddCode.OauthToken : '');
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
@@ -178,7 +178,7 @@ PlayVod.saveQualities = function() {
 
 PlayVod.restore = function() {
     for (var i = 0; i < PlayVod.qualityName.length; i++) {
-        if (PlayVod.qualityName[i] == Main.selectedChannel) {
+        if (PlayVod.qualityName[i] === Main.selectedChannel) {
             PlayVod.qualities = PlayVod.qualityLinks[i];
             PlayVod.qualitiesFound = true;
         }
@@ -195,11 +195,11 @@ PlayVod.restore = function() {
 };
 
 PlayVod.loadDataSuccess = function(responseText) {
-    if (PlayVod.state == PlayVod.STATE_LOADING_TOKEN) {
+    if (PlayVod.state === PlayVod.STATE_LOADING_TOKEN) {
         PlayVod.tokenResponse = $.parseJSON(responseText);
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
         PlayVod.loadData();
-    } else if (PlayVod.state == PlayVod.STATE_LOADING_PLAYLIST) {
+    } else if (PlayVod.state === PlayVod.STATE_LOADING_PLAYLIST) {
         PlayVod.playlistResponse = responseText;
         PlayVod.qualities = Play.extractQualities(PlayVod.playlistResponse);
         PlayVod.state = Play.STATE_PLAYING;
@@ -307,7 +307,7 @@ PlayVod.onPlayer = function() {
 };
 
 PlayVod.PlayerCheck = function() {
-    if (PlayVod.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
+    if (PlayVod.PlayerTime === Play.videojs.currentTime() && !Play.videojs.paused()) {
         PlayVod.PlayerCheckCount++;
         Play.showBufferDialog();
         if (PlayVod.PlayerCheckQualityChanged && !PlayVod.RestoreFromResume) PlayVod.PlayerCheckOffset = -10;
@@ -413,7 +413,7 @@ PlayVod.qualityDisplay = function() {
         $('#quality_arrow_down').css({
             'opacity': 1.0
         });
-    } else if (PlayVod.qualityIndex == PlayVod.getQualitiesCount() - 1) {
+    } else if (PlayVod.qualityIndex === PlayVod.getQualitiesCount() - 1) {
         $('#quality_arrow_up').css({
             'opacity': 1.0
         });
@@ -466,21 +466,21 @@ PlayVod.jumpStart = function() {
         }, 1500);
         return;
     } else if (PlayVod.jumpCount < 0) {
-        if (PlayVod.jumpCount == -1) PlayVod.TimeToJump = -5;
-        else if (PlayVod.jumpCount == -2) PlayVod.TimeToJump = -10;
-        else if (PlayVod.jumpCount == -3) PlayVod.TimeToJump = -15;
-        else if (PlayVod.jumpCount == -4) PlayVod.TimeToJump = -30;
-        else if (PlayVod.jumpCount == -5) PlayVod.TimeToJump = -60;
-        else if (PlayVod.jumpCount == -6) PlayVod.TimeToJump = -120;
-        else if (PlayVod.jumpCount == -7) PlayVod.TimeToJump = -300;
-        else if (PlayVod.jumpCount == -8) PlayVod.TimeToJump = -600;
-        else if (PlayVod.jumpCount == -9) PlayVod.TimeToJump = -900;
-        else if (PlayVod.jumpCount == -10) PlayVod.TimeToJump = -1800;
-        else if (PlayVod.jumpCount == -11) PlayVod.TimeToJump = -3600;
-        else if (PlayVod.jumpCount == -12) PlayVod.TimeToJump = -7200;
-        else if (PlayVod.jumpCount == -13) PlayVod.TimeToJump = -10800;
-        else if (PlayVod.jumpCount == -14) PlayVod.TimeToJump = -14400;
-        else if (PlayVod.jumpCount == -15) PlayVod.TimeToJump = -18000;
+        if (PlayVod.jumpCount === -1) PlayVod.TimeToJump = -5;
+        else if (PlayVod.jumpCount === -2) PlayVod.TimeToJump = -10;
+        else if (PlayVod.jumpCount === -3) PlayVod.TimeToJump = -15;
+        else if (PlayVod.jumpCount === -4) PlayVod.TimeToJump = -30;
+        else if (PlayVod.jumpCount === -5) PlayVod.TimeToJump = -60;
+        else if (PlayVod.jumpCount === -6) PlayVod.TimeToJump = -120;
+        else if (PlayVod.jumpCount === -7) PlayVod.TimeToJump = -300;
+        else if (PlayVod.jumpCount === -8) PlayVod.TimeToJump = -600;
+        else if (PlayVod.jumpCount === -9) PlayVod.TimeToJump = -900;
+        else if (PlayVod.jumpCount === -10) PlayVod.TimeToJump = -1800;
+        else if (PlayVod.jumpCount === -11) PlayVod.TimeToJump = -3600;
+        else if (PlayVod.jumpCount === -12) PlayVod.TimeToJump = -7200;
+        else if (PlayVod.jumpCount === -13) PlayVod.TimeToJump = -10800;
+        else if (PlayVod.jumpCount === -14) PlayVod.TimeToJump = -14400;
+        else if (PlayVod.jumpCount === -15) PlayVod.TimeToJump = -18000;
         else PlayVod.TimeToJump = -36000;
 
         time = PlayVod.TimeToJump + STR_SEC;
@@ -495,21 +495,21 @@ PlayVod.jumpStart = function() {
         PlayVod.TimeToJump = jumpTotime;
         jumpTotime = Play.timeS(jumpTotime);
     } else {
-        if (PlayVod.jumpCount == 1) PlayVod.TimeToJump = 5;
-        else if (PlayVod.jumpCount == 2) PlayVod.TimeToJump = 10;
-        else if (PlayVod.jumpCount == 3) PlayVod.TimeToJump = 15;
-        else if (PlayVod.jumpCount == 4) PlayVod.TimeToJump = 30;
-        else if (PlayVod.jumpCount == 5) PlayVod.TimeToJump = 60;
-        else if (PlayVod.jumpCount == 6) PlayVod.TimeToJump = 120;
-        else if (PlayVod.jumpCount == 7) PlayVod.TimeToJump = 300;
-        else if (PlayVod.jumpCount == 8) PlayVod.TimeToJump = 600;
-        else if (PlayVod.jumpCount == 9) PlayVod.TimeToJump = 900;
-        else if (PlayVod.jumpCount == 10) PlayVod.TimeToJump = 1800;
-        else if (PlayVod.jumpCount == 11) PlayVod.TimeToJump = 3600;
-        else if (PlayVod.jumpCount == 12) PlayVod.TimeToJump = 7200;
-        else if (PlayVod.jumpCount == 13) PlayVod.TimeToJump = 10800;
-        else if (PlayVod.jumpCount == 14) PlayVod.TimeToJump = 14400;
-        else if (PlayVod.jumpCount == 15) PlayVod.TimeToJump = 18000;
+        if (PlayVod.jumpCount === 1) PlayVod.TimeToJump = 5;
+        else if (PlayVod.jumpCount === 2) PlayVod.TimeToJump = 10;
+        else if (PlayVod.jumpCount === 3) PlayVod.TimeToJump = 15;
+        else if (PlayVod.jumpCount === 4) PlayVod.TimeToJump = 30;
+        else if (PlayVod.jumpCount === 5) PlayVod.TimeToJump = 60;
+        else if (PlayVod.jumpCount === 6) PlayVod.TimeToJump = 120;
+        else if (PlayVod.jumpCount === 7) PlayVod.TimeToJump = 300;
+        else if (PlayVod.jumpCount === 8) PlayVod.TimeToJump = 600;
+        else if (PlayVod.jumpCount === 9) PlayVod.TimeToJump = 900;
+        else if (PlayVod.jumpCount === 10) PlayVod.TimeToJump = 1800;
+        else if (PlayVod.jumpCount === 11) PlayVod.TimeToJump = 3600;
+        else if (PlayVod.jumpCount === 12) PlayVod.TimeToJump = 7200;
+        else if (PlayVod.jumpCount === 13) PlayVod.TimeToJump = 10800;
+        else if (PlayVod.jumpCount === 14) PlayVod.TimeToJump = 14400;
+        else if (PlayVod.jumpCount === 15) PlayVod.TimeToJump = 18000;
         else PlayVod.TimeToJump = 36000;
 
         time = PlayVod.TimeToJump + STR_SEC;
@@ -554,20 +554,20 @@ PlayVod.IconsFocus = function() {
     if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 1) {
+    } else if (Play.Panelcouner === 1) {
         Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 2) {
+    } else if (Play.Panelcouner === 2) {
         Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 3) {
+    } else if (Play.Panelcouner === 3) {
         Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 };
 
 PlayVod.handleKeyDown = function(e) {
-    if (PlayVod.state != PlayVod.STATE_PLAYING) {
+    if (PlayVod.state !== PlayVod.STATE_PLAYING) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_RETURN:
                 if (Play.ExitDialogVisible()) {
@@ -648,7 +648,7 @@ PlayVod.handleKeyDown = function(e) {
                             PlayVod.clearHidePanel();
                             PlayVod.setHidePanel();
                     } else if (Play.Panelcouner === 2) {
-                        if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                        if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
                         Main.ExitCurrent(Main.Go);
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);

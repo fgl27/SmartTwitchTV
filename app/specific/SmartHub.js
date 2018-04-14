@@ -256,12 +256,12 @@ SmartHub.EventListener = function() {
         SmartHub.SmartHubResume = true;
         appControlData = requestedAppControl.appControl.data;
         for (var i = 0; i < appControlData.length; i++) {
-            if (appControlData[i].key == 'PAYLOAD') {
+            if (appControlData[i].key === 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
                     VideoIdx = JSON.parse(actionData).videoIdx;
                     VideoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (Play.Playing && Play.selectedChannel == VideoIdx) {
+                    if (Play.Playing && Play.selectedChannel === VideoIdx) {
                         return;
                     }
                     Play.selectedChannel = VideoIdx;
