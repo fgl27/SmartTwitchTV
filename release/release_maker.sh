@@ -26,7 +26,7 @@
 html_file=("config.xml" "index.html" "master.css" "release/index.html");
 
 # add js folders here
-js_folders=("app/general/" "app/specific/" "app/translations/");
+js_folders=("app/languages/" "app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
 
@@ -155,7 +155,7 @@ master_maker "${js_folders[@]}"
 
 #Make a zip
 cd release/ || exit
-rm -rf release.zip
+rm -rf *.zip
 zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
 
 # Clean up release/ folder temp files and stash all over git changes

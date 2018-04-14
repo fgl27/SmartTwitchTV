@@ -1,3 +1,4 @@
+// Keep this file named as (zero)*** so it loads first in release_maker
 var STR_REFRESH = "Refresh (Guide or Info)";
 var STR_SEARCH = "Search";
 var STR_CONTROLS = "Controls";
