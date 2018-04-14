@@ -224,10 +224,10 @@ Live.CellExists = function(display_name) {
 Live.loadDataSuccessFinish = function() {
     if (!Live.Status) {
         Live.Status = true;
-        Main.HideLoadDialog();
-        Live.addFocus();
-        document.getElementById('toolbar').style.display = 'block';
         Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+        Main.HideLoadDialog();
+        document.getElementById('toolbar').style.display = 'block';
+        Live.addFocus();
 
         Live.loadingData = false;
         if (!Live.checkVersion) {
