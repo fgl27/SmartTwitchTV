@@ -92,8 +92,8 @@ PlayVod.Resume = function() {
         window.clearInterval(PlayVod.streamCheck);
         Play.clearPause();
     } else {
-        $("#scene2").show();
-        $("#scene1").hide();
+        document.getElementById('scene2').classList.remove('hide');
+        document.getElementById('scene1').classList.add('hide');
         Play.clearPause();
         Play.showBufferDialog();
         window.setTimeout(function() {
@@ -370,7 +370,7 @@ PlayVod.ClearVod = function() {
 
 PlayVod.hidePanel = function() {
     PlayVod.clearHidePanel();
-    $("#scene_channel_panel").hide();
+    document.getElementById('scene_channel_panel').classList.add('hide');
     PlayVod.quality = PlayVod.qualityPlaying;
 };
 
@@ -381,7 +381,7 @@ PlayVod.showPanel = function() {
     Play.clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
     PlayVod.qualityDisplay();
-    $("#scene_channel_panel").show();
+    document.getElementById('scene_channel_panel').classList.remove('hide');
     PlayVod.setHidePanel();
 };
 
@@ -572,7 +572,7 @@ PlayVod.handleKeyDown = function(e) {
             case TvKeyCode.KEY_RETURN:
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
-                    $("#play_dialog_exit").hide();
+                    document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayVod.shutdownStream, 10);
                 } else {
                     Play.showExitDialog();
@@ -652,13 +652,13 @@ PlayVod.handleKeyDown = function(e) {
                         Main.ExitCurrent(Main.Go);
                         Main.Go = Main.SChannelContent;
                         window.clearTimeout(Play.exitID);
-                        $("#play_dialog_exit").hide();
+                        document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod.shutdownStream, 10);
                     } else if (Play.Panelcouner === 3) {
                         Main.BeforeSearch = Main.Go;
                         Main.Go = Main.Search;
                         window.clearTimeout(Play.exitID);
-                        $("#play_dialog_exit").hide();
+                        document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod.shutdownStream, 10);
                     }
                 } else {

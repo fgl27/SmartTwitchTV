@@ -198,7 +198,6 @@ Main.initWindows = function() {
     $('.label_buffering').html(STR_BUFFERING);
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
-    $("#scene2").hide();
     Main.NetworkStateChangeListenerStart();
 };
 
@@ -217,11 +216,11 @@ Main.ChangebackgroundColor = function(div, value) {
 
 Main.showLoadDialog = function() {
     Main.HideExitDialog();
-    $("#dialog_loading").show();
+    document.getElementById('dialog_loading').classList.remove('hide');
 };
 
 Main.HideLoadDialog = function() {
-    $("#dialog_loading").hide();
+    document.getElementById('dialog_loading').classList.add('hide');
 };
 
 Main.clearExitDialog = function() {
@@ -234,12 +233,12 @@ Main.setExitDialog = function() {
 
 Main.showExitDialog = function() {
     Main.setExitDialog();
-    $("#main_dialog_exit").show();
+    document.getElementById('main_dialog_exit').classList.remove('hide');
 };
 
 Main.HideExitDialog = function() {
     Main.clearExitDialog();
-    $("#main_dialog_exit").hide();
+    document.getElementById('main_dialog_exit').classList.add('hide');
     Live.ExitCursor = 0;
     Live.ExitCursorSet();
 };
@@ -301,12 +300,12 @@ Main.SetItemsLimitReload = function(blankCellCount) {
 Main.showWarningDialog = function(text) {
     if (!Main.NetworkStateOK && text == STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
     $("#dialog_warning_text").text(!Main.NetworkStateOK ? STR_NET_DOWN : text);
-    $("#dialog_warning").show();
+    document.getElementById('dialog_warning').classList.remove('hide');
 };
 
 Main.HideWarningDialog = function() {
     $("#dialog_warning_text").text('');
-    $("#dialog_warning").hide();
+    document.getElementById('dialog_warning').classList.add('hide');
 };
 
 Main.isWarningDialogShown = function() {
@@ -317,11 +316,11 @@ Main.showAboutDialog = function() {
     Main.HideExitDialog();
     Main.HideControlsDialog();
     Main.HideUpdateDialog();
-    $("#dialog_about").show();
+    document.getElementById('dialog_about').classList.remove('hide');
 };
 
 Main.HideAboutDialog = function() {
-    $("#dialog_about").hide();
+    document.getElementById('dialog_about').classList.add('hide');
 };
 
 Main.isAboutDialogShown = function() {
@@ -332,11 +331,11 @@ Main.showControlsDialog = function() {
     Main.HideExitDialog();
     Main.HideAboutDialog();
     Main.HideUpdateDialog();
-    $("#dialog_controls").show();
+    document.getElementById('dialog_controls').classList.remove('hide');
 };
 
 Main.HideControlsDialog = function() {
-    $("#dialog_controls").hide();
+    document.getElementById('dialog_controls').classList.add('hide');
 };
 
 
@@ -348,11 +347,11 @@ Main.showUpdateDialog = function() {
     Main.HideExitDialog();
     Main.HideAboutDialog();
     Main.HideControlsDialog();
-    $("#dialog_update").show();
+    document.getElementById('dialog_update').classList.remove('hide');
 };
 
 Main.HideUpdateDialog = function() {
-    $("#dialog_update").hide();
+    document.getElementById('dialog_update').classList.add('hide');
 };
 
 Main.isUpdateDialogShown = function() {
@@ -396,7 +395,7 @@ Main.StartPlayerLive = function() {
 };
 
 Main.ReStartScreens = function() {
-    $("#play_dialog_exit").hide();
+    document.getElementById('play_dialog_exit').classList.add('hide');
     Main.SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 };
@@ -445,10 +444,10 @@ Main.ExitCurrent = function(ExitCurrent) {
 
 Main.openStream = function() {
     document.body.addEventListener("keydown", Play.handleKeyDown, false);
-    $("#scene2").show();
+    document.getElementById('scene2').classList.remove('hide');
     Play.hidePanel();
     Play.hideChat();
-    $("#scene1").hide();
+    document.getElementById('scene1').classList.add('hide');
     Play.Start();
 };
 
@@ -760,7 +759,7 @@ Main.ScrollHelper = {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
             cursorY = 0;
         }
-        if (cursorY == 0 && Screen == Main.AGame) OffsetPlus = OffsetPlus - 83;
+        if (!cursorY && Screen == Main.AGame) OffsetPlus = OffsetPlus - 83;
 
         if (DuploYOffsetCheck) {
             DuploYOffsetCheck = (!cursorY || cursorY === 1);

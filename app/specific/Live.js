@@ -226,7 +226,7 @@ Live.loadDataSuccessFinish = function() {
         Live.Status = true;
         Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
         Main.HideLoadDialog();
-        document.getElementById('toolbar').style.display = 'block';
+        document.getElementById('toolbar').classList.remove('hide');
         Live.addFocus();
 
         Live.loadingData = false;
