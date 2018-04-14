@@ -99,17 +99,17 @@ PlayClip.SetInfo = function() {
     $('#quality_name').html('<i class="icon-refresh" style="color: #FFFFFF; font-size: 90%; text-shadow: #000000 0px 0px 8.7px, #000000 0px 0px 8.7px, #000000 0px 0px 7px;"></i>' + STR_SPACE + STR_RESET + STR_CLIP);
     document.getElementById("quality_name").style.paddingLeft = "27%";
     document.getElementById("quality_name").style.backgroundColor = "rgba(0, 0, 0, 0)";
-    $("#quality_arrows").hide();
-    $("#quality_video").hide();
-    $("#scene2_speed").show();
+    document.getElementById('quality_arrows').classList.add('hide');
+    document.getElementById('quality_video').classList.add('hide');
+    document.getElementById('scene2_speed').classList.remove('hide');
 };
 
 PlayClip.UnSetInfo = function() {
     document.getElementById("quality_name").style.backgroundColor = "rgba(255, 255, 255, 0.6)";
     document.getElementById("quality_name").style.paddingLeft = "0%";
-    $("#quality_arrows").show();
-    $("#quality_video").show();
-    $("#scene2_speed").hide();
+    document.getElementById('quality_arrows').classList.remove('hide');
+    document.getElementById('quality_video').classList.remove('hide');
+    document.getElementById('scene2_speed').classList.add('hide');
 };
 
 PlayClip.PlayerCheck = function() {
@@ -157,7 +157,7 @@ PlayClip.updateCurrentTime = function(currentTime) {
 
 PlayClip.hidePanel = function() {
     PlayClip.clearHidePanel();
-    $("#scene_channel_panel").hide();
+    document.getElementById('scene_channel_panel').classList.add('hide');
 };
 
 PlayClip.showPanel = function() {
@@ -167,7 +167,7 @@ PlayClip.showPanel = function() {
     PlayClip.SpeedIndex = PlayClip.SpeedIndexPosition;
     PlayClip.speedDisplay();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(Play.videojs.currentTime());
-    $("#scene_channel_panel").show();
+    document.getElementById('scene_channel_panel').classList.remove('hide');
     PlayClip.setHidePanel();
 };
 
@@ -411,13 +411,13 @@ PlayClip.handleKeyDown = function(e) {
                     if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
                     Main.Go = Main.SChannelContent;
                     window.clearTimeout(Play.exitID);
-                    $("#play_dialog_exit").hide();
+                    document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip.shutdownStream, 10);
                 } else if (Play.Panelcouner === 4) {
                     Main.BeforeSearch = Main.Go;
                     Main.Go = Main.Search;
                     window.clearTimeout(Play.exitID);
-                    $("#play_dialog_exit").hide();
+                    document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip.shutdownStream, 10);
                 }
             }
@@ -429,7 +429,7 @@ PlayClip.handleKeyDown = function(e) {
             } else {
                 if (Play.ExitDialogVisible()) {
                     window.clearTimeout(Play.exitID);
-                    $("#play_dialog_exit").hide();
+                    document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip.shutdownStream, 10);
                 } else {
                     Play.showExitDialog();
