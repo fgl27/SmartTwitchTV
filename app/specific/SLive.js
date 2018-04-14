@@ -135,7 +135,7 @@ SLive.loadDataError = function() {
 };
 
 SLive.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     SLive.MaxOffset = parseInt(response._total);
 
@@ -288,7 +288,7 @@ SLive.loadDataErrorReplace = function() {
 };
 
 SLive.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, cursor = 0;
     var tempVector = SLive.blankCellVector.slice();

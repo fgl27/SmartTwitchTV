@@ -135,7 +135,7 @@ UserLive.loadDataError = function() {
 };
 
 UserLive.loadChannelLive = function(responseText) {
-    var response = $.parseJSON(responseText),
+    var response = JSON.parse(responseText),
         response_items = response.follows.length;
 
     if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
@@ -205,7 +205,7 @@ UserLive.loadDataErrorLive = function() {
 };
 
 UserLive.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     UserLive.MaxOffset = parseInt(response._total);
 
@@ -364,7 +364,7 @@ UserLive.loadDataErrorReplace = function() {
 };
 
 UserLive.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, cursor = 0;
     var tempVector = UserLive.blankCellVector.slice();

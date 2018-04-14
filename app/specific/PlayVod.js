@@ -152,7 +152,7 @@ PlayVod.loadDataRequest = function() {
 
 PlayVod.loadDataError = function() {
     if (PlayVod.isOn) {
-        if ($.parseJSON(PlayVod.tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
+        if (JSON.parse(PlayVod.tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
             PlayVod.loadDataCheckSub();
             return;
         }
@@ -195,7 +195,7 @@ PlayVod.restore = function() {
 
 PlayVod.loadDataSuccess = function(responseText) {
     if (PlayVod.state === PlayVod.STATE_LOADING_TOKEN) {
-        PlayVod.tokenResponse = $.parseJSON(responseText);
+        PlayVod.tokenResponse = JSON.parse(responseText);
         PlayVod.state = PlayVod.STATE_LOADING_PLAYLIST;
         PlayVod.loadData();
     } else if (PlayVod.state === PlayVod.STATE_LOADING_PLAYLIST) {

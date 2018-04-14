@@ -138,7 +138,7 @@ SChannels.loadDataError = function() {
 };
 
 SChannels.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.channels.length;
     SChannels.MaxOffset = parseInt(response._total);
 
@@ -283,7 +283,7 @@ SChannels.loadDataErrorReplace = function() {
 };
 
 SChannels.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.channels.length;
     var channels, index, cursor = 0;
     var tempVector = SChannels.blankCellVector.slice();

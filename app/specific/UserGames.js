@@ -135,7 +135,7 @@ UserGames.loadDataError = function() {
 };
 
 UserGames.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.follows.length;
     UserGames.MaxOffset = parseInt(response._total);
 
@@ -282,7 +282,7 @@ UserGames.loadDataErrorReplace = function() {
 };
 
 UserGames.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.follows.length;
     var follows, index, cursor = 0;
     var tempVector = UserGames.blankCellVector.slice();

@@ -118,7 +118,7 @@ UserChannels.loadDataError = function() {
 };
 
 UserChannels.loadChannelLive = function(responseText) {
-    var response = $.parseJSON(responseText),
+    var response = JSON.parse(responseText),
         response_items = response.follows.length;
 
     if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0

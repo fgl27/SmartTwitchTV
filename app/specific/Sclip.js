@@ -157,7 +157,7 @@ Sclip.loadDataError = function() {
 };
 
 Sclip.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.clips.length;
     Sclip.cursor = response._cursor;
 
@@ -305,7 +305,7 @@ Sclip.loadDataErrorReplace = function() {
 };
 
 Sclip.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.clips.length;
     var video, index, vod_id, cursor = 0;
     var tempVector = Sclip.blankCellVector.slice();

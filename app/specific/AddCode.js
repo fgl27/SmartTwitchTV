@@ -255,7 +255,7 @@ AddCode.CheckKeyError = function() {
 
 AddCode.CheckKeySuccess = function(responseText) {
     if (Users.checkKey(responseText)) {
-        AddCode.Username = $.parseJSON(responseText).token.user_name + '';
+        AddCode.Username = JSON.parse(responseText).token.user_name + '';
         AddCode.TimeoutReset10();
         AddCode.isCheckFallow = false;
         AddCode.CheckId();
@@ -307,7 +307,7 @@ AddCode.CheckIdError = function() {
 };
 
 AddCode.CheckIdSuccess = function(responseText) {
-    AddCode.userId = $.parseJSON(responseText).users[0]._id;
+    AddCode.userId = JSON.parse(responseText).users[0]._id;
     document.getElementById("oauth_input").value = '';
     document.body.removeEventListener("keydown", AddCode.handleKeyDown);
     Users.SetKeyTitle(true);
@@ -325,7 +325,7 @@ AddCode.CheckFallow = function() {
 };
 
 AddCode.CheckFallowId = function(responseText) {
-    AddCode.userId = $.parseJSON(responseText).users[0]._id;
+    AddCode.userId = JSON.parse(responseText).users[0]._id;
     AddCode.TimeoutReset10();
     AddCode.IsFallowing = false;
     AddCode.RequestCheckFallow();
