@@ -61,14 +61,17 @@ Main.ReloadLimitOffsetVideos = 1.5;
 Main.ItemsLimitVideo = 99;
 Main.ColoumnsCountVideo = 3;
 Main.ItemsReloadLimitVideo = Math.floor((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) / Main.ReloadLimitOffsetVideos);
+Main.videoPreload = 9;// Main.ColoumnsCountVideo * 3
 
 Main.ItemsLimitGame = 95;
 Main.ColoumnsCountGame = 5;
 Main.ItemsReloadLimitGame = Math.floor((Main.ItemsLimitGame / Main.ColoumnsCountGame) / Main.ReloadLimitOffsetGames);
+Main.gamePreload = 10;// Main.ColoumnsCountGame * 2
 
 Main.ItemsLimitChannel = 96;
 Main.ColoumnsCountChannel = 6;
 Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) / Main.ReloadLimitOffsetVideos);
+Main.channelPreload = 18;// Main.ColoumnsCountChannel * 2
 
 Main.ItemsLimitReload = 6;
 
