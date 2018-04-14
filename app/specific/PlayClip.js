@@ -26,11 +26,11 @@ PlayClip.Start = function() {
     Play.showBufferDialog();
     Play.hideChat();
     Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
-    $('#stream_info_name').text(Sclip.title);
-    $("#stream_info_title").text(Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game);
-    $("#stream_info_game").text(Sclip.views);
-    $("#stream_live_icon").text(Sclip.createdAt);
-    $("#stream_live_time").text(Sclip.Duration);
+    document.getElementById("stream_info_name").innerHTML = Sclip.title;
+    document.getElementById("stream_info_title").innerHTML = Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game;
+    document.getElementById("stream_info_game").innerHTML = Sclip.views;
+    document.getElementById("stream_live_icon").innerHTML = Sclip.createdAt;
+    document.getElementById("stream_live_time").innerHTML = Sclip.Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
     PlayClip.SetInfo();
 
@@ -96,7 +96,7 @@ PlayClip.Resume = function() {
 };
 
 PlayClip.SetInfo = function() {
-    $('#quality_name').html('<i class="icon-refresh" style="color: #FFFFFF; font-size: 90%; text-shadow: #000000 0px 0px 8.7px, #000000 0px 0px 8.7px, #000000 0px 0px 7px;"></i>' + STR_SPACE + STR_RESET + STR_CLIP);
+    document.getElementById("quality_name").innerHTML = '<i class="icon-refresh" style="color: #FFFFFF; font-size: 90%; text-shadow: #000000 0px 0px 8.7px, #000000 0px 0px 8.7px, #000000 0px 0px 7px;"></i>' + STR_SPACE + STR_RESET + STR_CLIP;
     document.getElementById("quality_name").style.paddingLeft = "27%";
     document.getElementById("quality_name").style.backgroundColor = "rgba(0, 0, 0, 0)";
     document.getElementById('quality_arrows').classList.add('hide');
@@ -280,29 +280,18 @@ PlayClip.speed = function() {
 
 PlayClip.speedDisplay = function() {
     if (!PlayClip.SpeedIndex) {
-        $('#speed_arrow_up').css({
-            'opacity': 0.2
-        });
-        $('#speed_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("speed_arrow_up").style.opacity = "0.2";
+        document.getElementById("speed_arrow_down").style.opacity = "1";
     } else if (PlayClip.SpeedIndex === PlayClip.speedArray.length - 1) {
-        $('#speed_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#speed_arrow_down').css({
-            'opacity': 0.2
-        });
+        document.getElementById("speed_arrow_up").style.opacity = "1";
+        document.getElementById("speed_arrow_down").style.opacity = "0.2";
+
     } else {
-        $('#speed_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#speed_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("speed_arrow_up").style.opacity = "1";
+        document.getElementById("speed_arrow_down").style.opacity = "1";
     }
 
-    $('#speed_name').text(PlayClip.speedArray[PlayClip.SpeedIndex]);
+    document.getElementById("speed_name").innerHTML = PlayClip.speedArray[PlayClip.SpeedIndex];
 };
 
 PlayClip.IconsFocus = function() {

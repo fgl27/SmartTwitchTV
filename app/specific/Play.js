@@ -72,13 +72,12 @@ Play.PreStart = function() {
     Play.ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play.ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play.ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    $("#play_dialog_exit_text").text(STR_EXIT_AGAIN);
+    document.getElementById("play_dialog_exit_text").innerHTML = STR_EXIT_AGAIN;
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i></div>';
-    $("#chat_container").html(
-        '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
+    document.getElementById("chat_container").innerHTML = '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
-        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
+        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>';
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
         '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>';
@@ -89,10 +88,10 @@ Play.Start = function() {
     Play.showBufferDialog();
     document.getElementById("stream_live_icon").innerHTML =
         '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>';
-    $("#stream_info_title").text("");
+    document.getElementById("stream_info_title").innerHTML = '';
     Play.LoadLogoSucess = false;
-    $("#stream_info_icon").attr("src", IMG_LOD_LOGO);
-    $("#stream_info_name").text(Play.selectedChannelDisplayname);
+    document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
+    document.getElementById("stream_info_name").innerHTML = Play.selectedChannelDisplayname;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play.timeS(0) + STR_AGO;
     Play.ChatSize(false);
@@ -154,9 +153,10 @@ Play.updateStreamInfoStart = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     var response = $.parseJSON(xmlHttp.responseText);
-                    $("#stream_info_title").text(response.stream.channel.status);
+                    document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     Play.gameSelected = response.stream.game;
-                    $("#stream_info_game").text(STR_PLAYING + Play.gameSelected + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play.gameSelected + STR_FOR +
+                        Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
                     Play.selectedChannelLogo = response.stream.channel.logo;
                     Play.LoadLogo(document.getElementById('stream_info_icon'), Play.selectedChannelLogo);
                     Play.created = new Date(response.stream.created_at).getTime();
@@ -201,8 +201,9 @@ Play.updateStreamInfo = function() {
             if (xmlHttp.status === 200) {
                 try {
                     var response = $.parseJSON(xmlHttp.responseText);
-                    $("#stream_info_title").text(response.stream.channel.status);
-                    $("#stream_info_game").text(STR_PLAYING + response.stream.game + STR_FOR + Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+                    document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
+                    document.getElementById("stream_info_game").innerHTML = STR_PLAYING + response.stream.game + STR_FOR +
+                        Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
                     if (!Play.LoadLogoSucess) Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                 } catch (err) {}
             }
@@ -582,12 +583,12 @@ Play.BufferDialogVisible = function() {
 };
 
 Play.showWarningDialog = function(text) {
-    $("#dialog_warning_play_text").text(text);
+    document.getElementById("dialog_warning_play_text").innerHTML = text;
     document.getElementById('dialog_warning_play').classList.remove('hide');
 };
 
 Play.HideWarningDialog = function() {
-    $("#dialog_warning_play_text").text('');
+    document.getElementById("dialog_warning_play_text").innerHTML = '';
     document.getElementById('dialog_warning_play').classList.add('hide');
 };
 
@@ -713,32 +714,20 @@ Play.qualityIndexReset = function() {
 
 Play.qualityDisplay = function() {
     if (!Play.qualityIndex) {
-        $('#quality_arrow_up').css({
-            'opacity': 0.2
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "0.2";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (Play.qualityIndex === Play.getQualitiesCount() - 1) {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 0.2
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "0.2";
     } else {
-        $('#quality_arrow_up').css({
-            'opacity': 1.0
-        });
-        $('#quality_arrow_down').css({
-            'opacity': 1.0
-        });
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
     }
 
     Play.quality = Play.qualities[Play.qualityIndex].id;
 
-    if (Play.quality.indexOf('source') !== -1) $('#quality_name').text(Play.quality.replace("source", STR_SOURCE));
-    else $('#quality_name').text(Play.quality);
+    if (Play.quality.indexOf('source') !== -1) document.getElementById("quality_name").innerHTML = Play.quality.replace("source", STR_SOURCE);
+    else document.getElementById("quality_name").innerHTML = Play.quality;
 };
 
 Play.getQualitiesCount = function() {
@@ -805,7 +794,7 @@ Play.ChatPosition = function() {
 
 Play.showChatBackgroundDialog = function(DialogText) {
     window.clearTimeout(Play.ChatBackgroundID);
-    $("#scene_channel_dialog_chat_text").text(DialogText);
+    document.getElementById("scene_channel_dialog_chat_text").innerHTML = DialogText;
     document.getElementById('scene_channel_dialog_chat').classList.remove('hide');
     Play.ChatBackgroundID = window.setTimeout(Play.hideChatBackgroundDialog, 1000);
 };
