@@ -32,6 +32,7 @@ Live.ReplacedataEnded = false;
 Live.MaxOffset = 0;
 Live.checkVersion = false;
 Live.itemsCountCheck = false;
+Live.imgCounter = 0;
 
 //Variable initialization end
 
@@ -70,6 +71,7 @@ Live.StartLoad = function() {
     Live.itemsCount = 0;
     Live.cursorX = 0;
     Live.cursorY = 0;
+    Live.imgCounter = 0;
     Live.dataEnded = false;
     Main.CounterDialogRst();
     Live.loadDataPrepare();
@@ -202,9 +204,14 @@ Live.createEmptyCell = function(id) {
 Live.CellHtml = function(id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
 
     Live.nameMatrix.push(channel_name);
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
+    if (Live.imgCounter < Main.videoPreload) { //try to pre cache first 3 rows
+        Main.PreLoadAImage(preview_thumbnail);
+        Live.imgCounter++;
+    }
 
     return '<div id="' + Live.Thumbnail + id + '" class="stream_thumbnail_video" ><img id="' + Live.Img + id +
-        '" class="stream_img" data-src="' + preview_thumbnail.replace("{width}x{height}", Main.VideoSize) + '"></div>' +
+        '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + Live.ThumbnailDiv + id + '" class="stream_text">' +
         '<div id="' + Live.DispNameDiv + id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + Live.StreamTitleDiv + id + '"class="stream_info">' + stream_title + '</div>' +
@@ -222,32 +229,34 @@ Live.CellExists = function(display_name) {
 };
 
 Live.loadDataSuccessFinish = function() {
-    if (!Live.Status) {
-        Live.Status = true;
-        Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-        Main.HideLoadDialog();
-        document.getElementById('toolbar').classList.remove('hide');
-        Live.addFocus();
+    $(document).ready(function() {
+        if (!Live.Status) {
+            Live.Status = true;
+            Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.HideLoadDialog();
+            document.getElementById('toolbar').classList.remove('hide');
+            Live.addFocus();
 
-        Live.loadingData = false;
-        if (!Live.checkVersion) {
-            Live.checkVersion = true;
-            if (Main.checkVersion()) Main.showUpdateDialog();
-        }
-    } else {
-        if (Live.blankCellCount > 0 && !Live.dataEnded) {
-            Live.loadingMore = true;
-            Live.loadDataPrepare();
-            Live.loadDataReplace();
-            return;
+            Live.loadingData = false;
+            if (!Live.checkVersion) {
+                Live.checkVersion = true;
+                if (Main.checkVersion()) Main.showUpdateDialog();
+            }
         } else {
-            Live.blankCellCount = 0;
-            Live.blankCellVector = [];
-        }
+            if (Live.blankCellCount > 0 && !Live.dataEnded) {
+                Live.loadingMore = true;
+                Live.loadDataPrepare();
+                Live.loadDataReplace();
+                return;
+            } else {
+                Live.blankCellCount = 0;
+                Live.blankCellVector = [];
+            }
 
-        Live.loadingData = false;
-        Live.loadingMore = false;
-    }
+            Live.loadingData = false;
+            Live.loadingMore = false;
+        }
+    });
 };
 
 Live.loadDataReplace = function() {
