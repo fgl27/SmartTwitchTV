@@ -95,7 +95,7 @@ SChannels.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset > (SChannels.MaxOffset - 1)) {
+        if (offset && offset > (SChannels.MaxOffset - 1)) {
             offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
             SChannels.dataEnded = true;
             SChannels.ReplacedataEnded = true;
@@ -243,7 +243,7 @@ SChannels.loadDataReplace = function() {
         Main.SetItemsLimitReload(SChannels.blankCellCount);
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
-        if (offset !== 0 && offset > (SChannels.MaxOffset - 1)) {
+        if (offset && offset > (SChannels.MaxOffset - 1)) {
             offset = SChannels.MaxOffset - Main.ItemsLimitReload;
             SChannels.ReplacedataEnded = true;
         }

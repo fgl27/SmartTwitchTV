@@ -162,7 +162,7 @@ UserLive.loadChannelUserLive = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset !== 0 && offset > (UserLive.MaxOffset - 1)) {
+        if (offset && offset > (UserLive.MaxOffset - 1)) {
             offset = UserLive.MaxOffset - Main.ItemsLimitVideo;
             UserLive.dataEnded = true;
             UserLive.ReplacedataEnded = true;
@@ -324,7 +324,7 @@ UserLive.loadChannelsReplace = function() {
         Main.SetItemsLimitReload(UserLive.blankCellCount);
 
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset !== 0 && offset > (UserLive.MaxOffset - 1)) {
+        if (offset && offset > (UserLive.MaxOffset - 1)) {
             offset = UserLive.MaxOffset - Main.ItemsLimitReload;
             UserLive.ReplacedataEnded = true;
         }

@@ -94,7 +94,7 @@ UserHost.loadChannels = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserHost.itemsCount + UserHost.itemsCountOffset;
-        if (offset !== 0 && offset > (UserHost.MaxOffset - 1)) {
+        if (offset && offset > (UserHost.MaxOffset - 1)) {
             offset = UserHost.MaxOffset - Main.ItemsLimitVideo;
             UserHost.dataEnded = true;
             UserHost.ReplacedataEnded = true;
@@ -248,7 +248,7 @@ UserHost.loadChannelsReplace = function() {
         Main.SetItemsLimitReload(UserHost.blankCellCount);
 
         var offset = UserHost.itemsCount + UserHost.itemsCountOffset;
-        if (offset !== 0 && offset > (UserHost.MaxOffset - 1)) {
+        if (offset && offset > (UserHost.MaxOffset - 1)) {
             offset = UserHost.MaxOffset - Main.ItemsLimitReload;
             UserHost.ReplacedataEnded = true;
         }
