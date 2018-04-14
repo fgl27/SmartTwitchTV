@@ -181,7 +181,7 @@ Search.ScrollHelper = {
         if (document.getElementById(id) === null) {
             return;
         }
-        $(window).scrollTop(this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 100);
+        window.scroll(0, this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 100);
     }
 };
 
