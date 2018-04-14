@@ -92,7 +92,7 @@ SLive.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset > (SLive.MaxOffset - 1)) {
+        if (offset && offset > (SLive.MaxOffset - 1)) {
             offset = SLive.MaxOffset - Main.ItemsLimitVideo;
             SLive.dataEnded = true;
             SLive.ReplacedataEnded = true;
@@ -248,7 +248,7 @@ SLive.loadDataReplace = function() {
         Main.SetItemsLimitReload(SLive.blankCellCount);
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
-        if (offset !== 0 && offset > (SLive.MaxOffset - 1)) {
+        if (offset && offset > (SLive.MaxOffset - 1)) {
             offset = SLive.MaxOffset - Main.ItemsLimitReload;
             SLive.ReplacedataEnded = true;
         }

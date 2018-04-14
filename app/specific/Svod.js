@@ -98,7 +98,7 @@ Svod.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
-        if (offset !== 0 && offset > (Svod.MaxOffset - 1)) {
+        if (offset && offset > (Svod.MaxOffset - 1)) {
             offset = Svod.MaxOffset - Main.ItemsLimitVideo;
             Svod.dataEnded = true;
             Svod.ReplacedataEnded = true;
@@ -261,7 +261,7 @@ Svod.loadDataReplace = function() {
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
 
-        if (offset !== 0 && offset > (Svod.MaxOffset - 1)) {
+        if (offset && offset > (Svod.MaxOffset - 1)) {
             offset = Svod.MaxOffset - Main.ItemsLimitReload;
             Svod.ReplacedataEnded = true;
         }

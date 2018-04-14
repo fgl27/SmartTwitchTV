@@ -92,7 +92,7 @@ UserGames.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset > (UserGames.MaxOffset - 1)) {
+        if (offset && offset > (UserGames.MaxOffset - 1)) {
             offset = UserGames.MaxOffset - Main.ItemsLimitGame;
             UserGames.dataEnded = true;
             UserGames.ReplacedataEnded = true;
@@ -242,7 +242,7 @@ UserGames.loadDataRequestReplace = function() {
         Main.SetItemsLimitReload(UserGames.blankCellCount);
 
         var offset = UserGames.itemsCount + UserGames.itemsCountOffset;
-        if (offset !== 0 && offset > (UserGames.MaxOffset - 1)) {
+        if (offset && offset > (UserGames.MaxOffset - 1)) {
             offset = UserGames.MaxOffset - Main.ItemsLimitReload;
             UserGames.ReplacedataEnded = true;
         }
