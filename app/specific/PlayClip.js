@@ -113,7 +113,7 @@ PlayClip.UnSetInfo = function() {
 };
 
 PlayClip.PlayerCheck = function() {
-    if (PlayClip.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
+    if (PlayClip.PlayerTime === Play.videojs.currentTime() && !Play.videojs.paused()) {
         PlayClip.PlayerCheckCount++;
         Play.showBufferDialog();
         if (PlayClip.PlayerCheckCount > 90) {
@@ -206,17 +206,17 @@ PlayClip.jumpStart = function() {
         }, 1500);
         return;
     } else if (PlayClip.jumpCount < 0) {
-        if (PlayClip.jumpCount == -1) PlayClip.TimeToJump = -5;
-        else if (PlayClip.jumpCount == -2) PlayClip.TimeToJump = -10;
-        else if (PlayClip.jumpCount == -3) PlayClip.TimeToJump = -15;
-        else if (PlayClip.jumpCount == -4) PlayClip.TimeToJump = -20;
-        else if (PlayClip.jumpCount == -5) PlayClip.TimeToJump = -25;
-        else if (PlayClip.jumpCount == -6) PlayClip.TimeToJump = -30;
-        else if (PlayClip.jumpCount == -7) PlayClip.TimeToJump = -35;
-        else if (PlayClip.jumpCount == -8) PlayClip.TimeToJump = -40;
-        else if (PlayClip.jumpCount == -9) PlayClip.TimeToJump = -45;
-        else if (PlayClip.jumpCount == -10) PlayClip.TimeToJump = -50;
-        else if (PlayClip.jumpCount == -11) PlayClip.TimeToJump = -55;
+        if (PlayClip.jumpCount === -1) PlayClip.TimeToJump = -5;
+        else if (PlayClip.jumpCount === -2) PlayClip.TimeToJump = -10;
+        else if (PlayClip.jumpCount === -3) PlayClip.TimeToJump = -15;
+        else if (PlayClip.jumpCount === -4) PlayClip.TimeToJump = -20;
+        else if (PlayClip.jumpCount === -5) PlayClip.TimeToJump = -25;
+        else if (PlayClip.jumpCount === -6) PlayClip.TimeToJump = -30;
+        else if (PlayClip.jumpCount === -7) PlayClip.TimeToJump = -35;
+        else if (PlayClip.jumpCount === -8) PlayClip.TimeToJump = -40;
+        else if (PlayClip.jumpCount === -9) PlayClip.TimeToJump = -45;
+        else if (PlayClip.jumpCount === -10) PlayClip.TimeToJump = -50;
+        else if (PlayClip.jumpCount === -11) PlayClip.TimeToJump = -55;
         else PlayClip.TimeToJump = -60;
 
         time = PlayClip.TimeToJump + STR_SEC;
@@ -229,17 +229,17 @@ PlayClip.jumpStart = function() {
         PlayClip.TimeToJump = jumpTotime;
         jumpTotime = Play.timeS(jumpTotime);
     } else {
-        if (PlayClip.jumpCount == 1) PlayClip.TimeToJump = 5;
-        else if (PlayClip.jumpCount == 2) PlayClip.TimeToJump = 10;
-        else if (PlayClip.jumpCount == 3) PlayClip.TimeToJump = 15;
-        else if (PlayClip.jumpCount == 4) PlayClip.TimeToJump = 20;
-        else if (PlayClip.jumpCount == 5) PlayClip.TimeToJump = 25;
-        else if (PlayClip.jumpCount == 6) PlayClip.TimeToJump = 30;
-        else if (PlayClip.jumpCount == 7) PlayClip.TimeToJump = 35;
-        else if (PlayClip.jumpCount == 8) PlayClip.TimeToJump = 40;
-        else if (PlayClip.jumpCount == 9) PlayClip.TimeToJump = 45;
-        else if (PlayClip.jumpCount == 10) PlayClip.TimeToJump = 50;
-        else if (PlayClip.jumpCount == 11) PlayClip.TimeToJump = 55;
+        if (PlayClip.jumpCount === 1) PlayClip.TimeToJump = 5;
+        else if (PlayClip.jumpCount === 2) PlayClip.TimeToJump = 10;
+        else if (PlayClip.jumpCount === 3) PlayClip.TimeToJump = 15;
+        else if (PlayClip.jumpCount === 4) PlayClip.TimeToJump = 20;
+        else if (PlayClip.jumpCount === 5) PlayClip.TimeToJump = 25;
+        else if (PlayClip.jumpCount === 6) PlayClip.TimeToJump = 30;
+        else if (PlayClip.jumpCount === 7) PlayClip.TimeToJump = 35;
+        else if (PlayClip.jumpCount === 8) PlayClip.TimeToJump = 40;
+        else if (PlayClip.jumpCount === 9) PlayClip.TimeToJump = 45;
+        else if (PlayClip.jumpCount === 10) PlayClip.TimeToJump = 50;
+        else if (PlayClip.jumpCount === 11) PlayClip.TimeToJump = 55;
         else PlayClip.TimeToJump = 60;
 
         time = PlayClip.TimeToJump + STR_SEC;
@@ -268,9 +268,9 @@ PlayClip.jumpStart = function() {
 PlayClip.speed = function() {
     var value = 1;
     if (!PlayClip.SpeedIndex) value = 2;
-    else if (PlayClip.SpeedIndex == 1) value = 1.5;
-    else if (PlayClip.SpeedIndex == 3) value = 0.5;
-    else if (PlayClip.SpeedIndex == 4) value = 0.25;
+    else if (PlayClip.SpeedIndex === 1) value = 1.5;
+    else if (PlayClip.SpeedIndex === 3) value = 0.5;
+    else if (PlayClip.SpeedIndex === 4) value = 0.25;
 
     Play.videojs.playbackRate(value);
     PlayClip.clearHidePanel();
@@ -286,7 +286,7 @@ PlayClip.speedDisplay = function() {
         $('#speed_arrow_down').css({
             'opacity': 1.0
         });
-    } else if (PlayClip.SpeedIndex == PlayClip.speedArray.length - 1) {
+    } else if (PlayClip.SpeedIndex === PlayClip.speedArray.length - 1) {
         $('#speed_arrow_up').css({
             'opacity': 1.0
         });
@@ -324,16 +324,16 @@ PlayClip.IconsFocus = function() {
     if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 1) {
+    } else if (Play.Panelcouner === 1) {
         Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 2) {
+    } else if (Play.Panelcouner === 2) {
         Main.ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 3) {
+    } else if (Play.Panelcouner === 3) {
         Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 4) {
+    } else if (Play.Panelcouner === 4) {
         Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
@@ -408,7 +408,7 @@ PlayClip.handleKeyDown = function(e) {
                 } else if (Play.Panelcouner === 2) {
                     PlayClip.speed();
                 } else if (Play.Panelcouner === 3) {
-                    if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                    if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
                     Main.Go = Main.SChannelContent;
                     window.clearTimeout(Play.exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');

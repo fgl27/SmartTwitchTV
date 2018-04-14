@@ -206,7 +206,7 @@ AddCode.SetemptyOAuth = function() {
 
 AddCode.UserCodeExist = function(user) {
     for (var i = 0; i < AddCode.UsercodeArray.length; i++) {
-        if (user == AddCode.UsercodeArray[i].split(",")[0]) return i;
+        if (user === AddCode.UsercodeArray[i].split(",")[0]) return i;
     }
     return -1;
 };

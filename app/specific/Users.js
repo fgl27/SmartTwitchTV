@@ -153,7 +153,7 @@ Users.keyClickDelay = function() {
 };
 
 Users.keyEnter = function() {
-    if (Users.cursorX != 5) document.body.removeEventListener("keydown", Users.handleKeyDown);
+    if (Users.cursorX !== 5) document.body.removeEventListener("keydown", Users.handleKeyDown);
     Main.UserName = AddUser.UsernameArray[Users.cursorY];
     AddCode.SetDefaultOAuth(Users.cursorY);
 
@@ -175,7 +175,7 @@ Users.checkKey = function(responseText) {
     for (var i = 0; i < scopes.length; i++) {
         scopesToTest += scopes[i];
     }
-    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' == Main.UserName && json.token.valid + '' == 'true';
+    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' === Main.UserName && json.token.valid + '' === 'true';
 };
 
 Users.SetKeyTitle = function(bool) {

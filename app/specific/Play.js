@@ -233,7 +233,7 @@ Play.loadDataRequest = function() {
         var xmlHttp = new XMLHttpRequest();
 
         var theUrl;
-        if (Play.state == Play.STATE_LOADING_TOKEN) {
+        if (Play.state === Play.STATE_LOADING_TOKEN) {
             theUrl = 'http://api.twitch.tv/api/channels/' + Play.selectedChannel + '/access_token';
         } else {
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play.selectedChannel +
@@ -289,7 +289,7 @@ Play.saveQualities = function() {
 
 Play.restore = function() {
     for (var i = 0; i < Play.qualityName.length; i++) {
-        if (Play.qualityName[i] == Play.selectedChannel) {
+        if (Play.qualityName[i] === Play.selectedChannel) {
             Play.qualities = Play.qualityLinks[i];
             Play.qualitiesFound = true;
         }
@@ -306,11 +306,11 @@ Play.restore = function() {
 };
 
 Play.loadDataSuccess = function(responseText) {
-    if (Play.state == Play.STATE_LOADING_TOKEN) {
+    if (Play.state === Play.STATE_LOADING_TOKEN) {
         Play.tokenResponse = $.parseJSON(responseText);
         Play.state = Play.STATE_LOADING_PLAYLIST;
         Play.loadData();
-    } else if (Play.state == Play.STATE_LOADING_PLAYLIST) {
+    } else if (Play.state === Play.STATE_LOADING_PLAYLIST) {
         Play.playlistResponse = responseText;
         Play.qualities = Play.extractQualities(Play.playlistResponse);
         Play.state = Play.STATE_PLAYING;
@@ -428,7 +428,7 @@ Play.onPlayer = function() {
 };
 
 Play.PlayerCheck = function() {
-    if (Play.PlayerTime == Play.videojs.currentTime() && !Play.videojs.paused()) {
+    if (Play.PlayerTime === Play.videojs.currentTime() && !Play.videojs.paused()) {
         Play.PlayerCheckCount++;
         Play.showBufferDialog();
         if (Play.PlayerCheckQualityChanged && !Play.RestoreFromResume) Play.PlayerCheckOffset = -10;
@@ -719,7 +719,7 @@ Play.qualityDisplay = function() {
         $('#quality_arrow_down').css({
             'opacity': 1.0
         });
-    } else if (Play.qualityIndex == Play.getQualitiesCount() - 1) {
+    } else if (Play.qualityIndex === Play.getQualitiesCount() - 1) {
         $('#quality_arrow_up').css({
             'opacity': 1.0
         });
@@ -750,12 +750,12 @@ Play.ChatSize = function(showDialog) {
         percentage = 100,
         dialogTop = 50;
     Play.sizeOffset = 0;
-    if (Play.ChatSizeValue == 2) {
+    if (Play.ChatSizeValue === 2) {
         containerHeight = 32;
         percentage = 66;
         dialogTop = 25;
         Play.sizeOffset = 16;
-    } else if (Play.ChatSizeValue == 1) {
+    } else if (Play.ChatSizeValue === 1) {
         containerHeight = 17;
         percentage = 33;
         dialogTop = 12.5;
@@ -846,16 +846,16 @@ Play.IconsFocus = function() {
     if (!Play.Panelcouner) {
         Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 1) {
+    } else if (Play.Panelcouner === 1) {
         Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 2) {
+    } else if (Play.Panelcouner === 2) {
         Main.ChangeBorder("scene2_game", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 3) {
+    } else if (Play.Panelcouner === 3) {
         Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play.Panelcouner == 4) {
+    } else if (Play.Panelcouner === 4) {
         Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
         Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
@@ -906,7 +906,7 @@ Play.KeyReturn = function(is_vod) {
 };
 
 Play.handleKeyDown = function(e) {
-    if (Play.state != Play.STATE_PLAYING) {
+    if (Play.state !== Play.STATE_PLAYING) {
         switch (e.keyCode) {
             case TvKeyCode.KEY_RETURN:
                 if (Play.ExitDialogVisible()) {
@@ -1037,7 +1037,7 @@ Play.handleKeyDown = function(e) {
                         Main.selectedChannelLogo = Play.selectedChannelLogo;
                         Main.selectedChannelViews = Play.selectedChannelViews;
                         Main.selectedChannelFallower = Play.selectedChannelFallower;
-                        if (Main.Go != Main.Svod && Main.Go != Main.Sclip && Main.Go != Main.SChannelContent) Main.Before = Main.Go;
+                        if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
                         Main.ExitCurrent(Main.Go);
                         SChannelContent.UserChannels = AddCode.IsFallowing;
                         Main.Go = Main.SChannelContent;

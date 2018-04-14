@@ -367,7 +367,7 @@ Live.ExitCursorSet = function() {
     document.getElementById('exit_app_minimize').classList.remove('button_search_focused');
     document.getElementById('exit_app_close').classList.remove('button_search_focused');
     if (!Live.ExitCursor) document.getElementById('exit_app_cancel').classList.add('button_search_focused');
-    else if (Live.ExitCursor == 1) document.getElementById('exit_app_minimize').classList.add('button_search_focused');
+    else if (Live.ExitCursor === 1) document.getElementById('exit_app_minimize').classList.add('button_search_focused');
     else document.getElementById('exit_app_close').classList.add('button_search_focused');
 };
 
@@ -490,8 +490,8 @@ Live.handleKeyDown = function(event) {
                 var temp_ExitCursor = Live.ExitCursor;
                 Main.HideExitDialog();
                 try {
-                    if (temp_ExitCursor == 1) tizen.application.getCurrentApplication().hide();
-                    else if (temp_ExitCursor == 2) tizen.application.getCurrentApplication().exit();
+                    if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
+                    else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
                 } catch (e) {}
             } else {
                 Play.selectedChannel = document.getElementById(Live.Cell + Live.cursorY + '_' + Live.cursorX).getAttribute('data-channelname');

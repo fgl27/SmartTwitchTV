@@ -274,7 +274,7 @@ AddUser.UserMakeOne = function(Position) {
 };
 
 AddUser.UserCodeExist = function(user) {
-    return AddUser.UsernameArray.indexOf(user) != -1;
+    return AddUser.UsernameArray.indexOf(user) !== -1;
 };
 
 AddUser.IsUserSet = function() {

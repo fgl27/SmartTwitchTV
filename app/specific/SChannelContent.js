@@ -344,7 +344,7 @@ SChannelContent.handleKeyDown = function(event) {
             if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
-                if (Main.Before == Main.Svod || Main.Before == Main.Sclip || Main.Before == Main.SChannelContent) {
+                if (Main.Before === Main.Svod || Main.Before === Main.Sclip || Main.Before === Main.SChannelContent) {
                     Main.Go = SChannels.isLastSChannels ? Main.SChannels : Main.UserChannels;
                     SChannels.isLastSChannels = false;
                 } else Main.Go = Main.Before;

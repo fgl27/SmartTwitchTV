@@ -261,12 +261,12 @@ Main.CounterDialog = function(x, y, coloumns, total) {
 
 Main.Scrollbar = function(y, coloumns, total) {
     // min 100 max 1000 or the 900 + 100 below
-    if ((coloumns == 3 && (total > 9)) || (coloumns == 5 && (total > 10)) || (coloumns == 6 && (total > 12))) {
+    if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
         var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
         var currentPositon = document.getElementById('scrollbar').offsetTop;
 
         //If position are different it means previously animation did't ended, stop it and force set the value
-        if (currentPositon != Main.nextScrollPositon) {
+        if (currentPositon !== Main.nextScrollPositon) {
             $('#scrollbar').stop();
             document.getElementById("scrollbar").style.top = Main.nextScrollPositon + "px";
         }
@@ -280,7 +280,7 @@ Main.Scrollbar = function(y, coloumns, total) {
             Main.ScrollbarBlack = false;
             window.setTimeout(function() {
                 document.getElementById("scrollbar").style.backgroundColor = "#777777";
-            }, (nextPositon == 100 ? 0 : 800));
+            }, (nextPositon === 100 ? 0 : 800));
         }
     } else {
         $('#scrollbar').stop();
@@ -298,7 +298,7 @@ Main.SetItemsLimitReload = function(blankCellCount) {
 };
 
 Main.showWarningDialog = function(text) {
-    if (!Main.NetworkStateOK && text == STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
+    if (!Main.NetworkStateOK && text === STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
     $("#dialog_warning_text").text(!Main.NetworkStateOK ? STR_NET_DOWN : text);
     document.getElementById('dialog_warning').classList.remove('hide');
 };
@@ -484,7 +484,7 @@ Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
 
 Main.NetworkStateChangeListenerStart = function() {
     var onChange = function(data) {
-        if (data == 1 || data == 4) { //network connected
+        if (data === 1 || data === 4) { //network connected
             Main.NetworkStateOK = true;
             if (Main.isWarningDialogShown()) {
                 Main.showWarningDialog(STR_NET_UP);
@@ -496,7 +496,7 @@ Main.NetworkStateChangeListenerStart = function() {
                 Main.HideWarningDialog();
                 Play.HideWarningDialog();
             }, 1500);
-        } else if (data == 2 || 5) { //network down
+        } else if (data === 2 || 5) { //network down
             Main.NetworkStateOK = false;
             window.setTimeout(function() {
                 if (!Main.NetworkStateOK) { 
@@ -593,7 +593,7 @@ Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
 Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) {//offset is one more then number if (cursorY > number)
     var change = Main.Ychange(row_id);
 
-    if (row_id == offset && change == 1) change = 0;
+    if (row_id === offset && change === 1) change = 0;
 
     if (change) {
         var x = 0, y, elem, loadImages = function(ImgLoadObjet) {
@@ -650,7 +650,7 @@ Main.CheckMp4Html5 = function() {
         var h264Test = VideoTest.canPlayType('video/mp4; codecs="avc1.42E01E"');
 
         if (h264Test) {
-            if (h264Test == "probably") result += " Full support for avc1.";
+            if (h264Test === "probably") result += " Full support for avc1.";
             else result += " Some support for avc1.(" + h264Test + ")";
         } else {
             result += "No video support for avc1.";
@@ -660,7 +660,7 @@ Main.CheckMp4Html5 = function() {
         h264Test = VideoTest.canPlayType('video/mp4; codecs="mp4a.40.2"');
 
         if (h264Test) {
-            if (h264Test == "probably") result += " Full support for mp4a.";
+            if (h264Test === "probably") result += " Full support for mp4a.";
             else result += " Some support for mp4a.(" + h264Test + ")";
         } else {
             result += " No video support for mp4a.";
@@ -748,18 +748,18 @@ Main.ScrollHelper = {
         if (document.getElementById(id) === null) {
             if (!cursorY && !cursorX) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
             return;
-        } else if (Screen == Main.UserChannels || Screen == Main.SChannels) {
+        } else if (Screen === Main.UserChannels || Screen === Main.SChannels) {
             if (!Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
                 if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
                 else cursorY = 0;
             }
         } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        } else if (cursorY == 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        } else if (cursorY === 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
             id = Thumbnail + (cursorY - 1) + '_' + cursorX;
             cursorY = 0;
         }
-        if (!cursorY && Screen == Main.AGame) OffsetPlus = OffsetPlus - 83;
+        if (!cursorY && Screen === Main.AGame) OffsetPlus = OffsetPlus - 83;
 
         if (DuploYOffsetCheck) {
             DuploYOffsetCheck = (!cursorY || cursorY === 1);

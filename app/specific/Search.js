@@ -47,8 +47,8 @@ Search.exit = function() {
 Search.loadData = function() {
     Search.exit();
     if (!Search.cursorX) SChannels.init();
-    else if (Search.cursorX == 1) SGames.init();
-    else if (Search.cursorX == 2) SLive.init();
+    else if (Search.cursorX === 1) SGames.init();
+    else if (Search.cursorX === 2) SLive.init();
 };
 
 Search.refreshInputFocusTools = function() {
@@ -58,8 +58,8 @@ Search.refreshInputFocusTools = function() {
 
     if (Search.cursorY) {
         if (!Search.cursorX) $('#chanel_button').addClass('button_search_focused');
-        else if (Search.cursorX == 1) $('#game_button').addClass('button_search_focused');
-        else if (Search.cursorX == 2) $('#live_button').addClass('button_search_focused');
+        else if (Search.cursorX === 1) $('#game_button').addClass('button_search_focused');
+        else if (Search.cursorX === 2) $('#live_button').addClass('button_search_focused');
     }
 };
 
