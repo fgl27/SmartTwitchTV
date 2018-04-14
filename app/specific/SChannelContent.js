@@ -94,7 +94,7 @@ SChannelContent.loadDataRequest = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    if ($.parseJSON(xmlHttp.responseText).stream !== null) SChannelContent.loadDataSuccess(xmlHttp.responseText);
+                    if (JSON.parse(xmlHttp.responseText).stream !== null) SChannelContent.loadDataSuccess(xmlHttp.responseText);
                     else {
                         SChannelContent.loadDataPrepare();
                         SChannelContent.loadDataCheckHost();
@@ -153,7 +153,7 @@ SChannelContent.loadDataCheckHostError = function() {
 };
 
 SChannelContent.CheckHost = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     SChannelContent.TargetName = response.hosts[0].target_login;
     if (SChannelContent.TargetName !== undefined) {
         SChannelContent.loadDataPrepare();
@@ -166,7 +166,7 @@ SChannelContent.loadDataSuccess = function(responseText) {
     var coloumn_id = 0;
 
     if (responseText !== null) {
-        var response = $.parseJSON(responseText);
+        var response = JSON.parse(responseText);
         if (response.stream !== null) {
             var hosting = SChannelContent.TargetName !== undefined ? Main.selectedChannelDisplayname + STR_USER_HOSTING : '';
             var stream = response.stream;

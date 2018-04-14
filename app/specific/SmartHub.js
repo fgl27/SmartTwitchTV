@@ -109,7 +109,7 @@ SmartHub.loadDataError = function() {
 };
 
 SmartHub.previewDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items, cursor = 0,
         game, stream, hosts;
 

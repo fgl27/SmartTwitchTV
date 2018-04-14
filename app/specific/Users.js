@@ -169,7 +169,7 @@ Users.keyEnter = function() {
 };
 
 Users.checkKey = function(responseText) {
-    var json = $.parseJSON(responseText);
+    var json = JSON.parse(responseText);
     var scopes = json.token.authorization.scopes;
     var scopesToTest = '';
     for (var i = 0; i < scopes.length; i++) {

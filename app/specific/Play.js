@@ -152,7 +152,7 @@ Play.updateStreamInfoStart = function() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    var response = $.parseJSON(xmlHttp.responseText);
+                    var response = JSON.parse(xmlHttp.responseText);
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     Play.gameSelected = response.stream.game;
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play.gameSelected + STR_FOR +
@@ -200,7 +200,7 @@ Play.updateStreamInfo = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 try {
-                    var response = $.parseJSON(xmlHttp.responseText);
+                    var response = JSON.parse(xmlHttp.responseText);
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + response.stream.game + STR_FOR +
                         Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
@@ -308,7 +308,7 @@ Play.restore = function() {
 
 Play.loadDataSuccess = function(responseText) {
     if (Play.state === Play.STATE_LOADING_TOKEN) {
-        Play.tokenResponse = $.parseJSON(responseText);
+        Play.tokenResponse = JSON.parse(responseText);
         Play.state = Play.STATE_LOADING_PLAYLIST;
         Play.loadData();
     } else if (Play.state === Play.STATE_LOADING_PLAYLIST) {

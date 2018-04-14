@@ -143,7 +143,7 @@ Svod.loadDataError = function() {
 };
 
 Svod.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.videos.length;
     Svod.MaxOffset = parseInt(response._total);
 
@@ -304,7 +304,7 @@ Svod.loadDataErrorReplace = function() {
 
 
 Svod.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.videos.length;
     var video, index, cursor = 0;
     var tempVector = Svod.blankCellVector.slice();

@@ -115,7 +115,7 @@ SGames.loadDataError = function() {
 };
 
 SGames.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = 0;
 
     if (response.games !== null) response_items = response.games.length;

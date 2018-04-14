@@ -134,7 +134,7 @@ Games.loadDataError = function() {
 };
 
 Games.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.top.length;
     Games.MaxOffset = parseInt(response._total);
 
@@ -284,7 +284,7 @@ Games.loadDataErrorReplace = function() {
 };
 
 Games.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.top.length;
     var game, index, cursor = 0;
     var tempVector = Games.blankCellVector.slice();

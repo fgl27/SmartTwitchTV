@@ -137,7 +137,7 @@ UserHost.loadDataError = function() {
 };
 
 UserHost.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.hosts.length;
     UserHost.MaxOffset = parseInt(response._total);
 
@@ -288,7 +288,7 @@ UserHost.loadDataErrorReplace = function() {
 };
 
 UserHost.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var hosts, index, cursor = 0;
     var tempVector = UserHost.blankCellVector.slice();

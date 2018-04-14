@@ -140,7 +140,7 @@ AGame.loadDataError = function() {
 };
 
 AGame.loadDataSuccess = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     AGame.MaxOffset = parseInt(response._total);
 
@@ -324,7 +324,7 @@ AGame.loadDataErrorReplace = function() {
 };
 
 AGame.loadDataSuccessReplace = function(responseText) {
-    var response = $.parseJSON(responseText);
+    var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, cursor = 0;
     var tempVector = AGame.blankCellVector.slice();
