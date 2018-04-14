@@ -28,6 +28,7 @@ UserHost.DispNameDiv = 'hlive_display_name_';
 UserHost.hostsTitleDiv = 'hlive_hosts_title_';
 UserHost.hostsGameDiv = 'hlive_hosts_game_';
 UserHost.ViwersDiv = 'hlive_viwers_';
+UserHost.QualityDiv = 'hlive_qua_';
 UserHost.Cell = 'hlive_cell_';
 UserHost.status = false;
 UserHost.followerChannels = '';
@@ -179,7 +180,6 @@ UserHost.loadDataSuccess = function(responseText) {
         }
         $('#stream_table_user_host').append(row);
     }
-
     UserHost.loadDataSuccessFinish();
 };
 
@@ -201,8 +201,8 @@ UserHost.CellHtml = function(row_id, coloumn_id, channel_display_name, hosts_tit
         '<div id="' + UserHost.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + UserHost.hostsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_title + '</div>' +
         '<div id="' + UserHost.hostsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_game + '</div>' +
-        '<div id="' + UserHost.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 64%; display: inline-block;">' +
-        viwers + '</div></div>';
+        '<div id="' + UserHost.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
+        '<div id="' + UserHost.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width:1%; float: right; display: inline-block;"></div></div>';
 };
 
 UserHost.CellExists = function(display_name) {
