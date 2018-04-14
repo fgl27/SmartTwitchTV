@@ -357,8 +357,8 @@ Play.extractStreamDeclarations = function(input) {
     var result = [];
 
     var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
-    var match;
-    while (match = myRegexp.exec(input)) result.push(match[0]);
+    var marray;
+    while (marray = myRegexp.exec(input)) result.push(marray[0]);
 
     return result;
 };
