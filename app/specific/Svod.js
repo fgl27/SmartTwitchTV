@@ -517,11 +517,11 @@ Svod.handleKeyDown = function(event) {
 Svod.openStream = function() {
     document.body.addEventListener("keydown", PlayVod.handleKeyDown, false);
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
-    $("#scene2").show();
+    document.getElementById('scene2').classList.remove('hide');
     PlayVod.hidePanel();
-    $("#play_clip_dialog_simple_pause").hide();
-    $("#play_clip_dialog_exit").hide();
-    $("#dialog_warning_play").hide();
-    $("#scene1").hide();
+    document.getElementById('play_clip_dialog_simple_pause').classList.add('hide');
+    document.getElementById('play_clip_dialog_exit').classList.add('hide');
+    document.getElementById('dialog_warning_play').classList.add('hide');
+    document.getElementById('scene1').classList.add('hide');
     PlayVod.Start();
 };

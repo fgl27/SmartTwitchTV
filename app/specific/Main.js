@@ -244,7 +244,7 @@ Main.HideExitDialog = function() {
 };
 
 Main.isExitDialogShown = function() {
-    return $("#main_dialog_exit").is(":visible");
+    return document.getElementById('main_dialog_exit').className.indexOf('hide') === -1;
 };
 
 Main.CounterDialogRst = function() {
@@ -309,7 +309,7 @@ Main.HideWarningDialog = function() {
 };
 
 Main.isWarningDialogShown = function() {
-    return $("#dialog_warning").is(":visible");
+    return document.getElementById('dialog_warning').className.indexOf('hide') === -1;
 };
 
 Main.showAboutDialog = function() {
@@ -324,7 +324,7 @@ Main.HideAboutDialog = function() {
 };
 
 Main.isAboutDialogShown = function() {
-    return $("#dialog_about").is(":visible");
+    return document.getElementById('dialog_about').className.indexOf('hide') === -1;
 };
 
 Main.showControlsDialog = function() {
@@ -340,7 +340,7 @@ Main.HideControlsDialog = function() {
 
 
 Main.isControlsDialogShown = function() {
-    return $("#dialog_controls").is(":visible");
+    return document.getElementById('dialog_controls').className.indexOf('hide') === -1;
 };
 
 Main.showUpdateDialog = function() {
@@ -355,7 +355,7 @@ Main.HideUpdateDialog = function() {
 };
 
 Main.isUpdateDialogShown = function() {
-    return $("#dialog_update").is(":visible");
+    return document.getElementById('dialog_update').className.indexOf('hide') === -1;
 };
 
 Main.addCommas = function(nStr) {

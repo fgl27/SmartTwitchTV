@@ -523,11 +523,11 @@ Sclip.handleKeyDown = function(event) {
 Sclip.openStream = function() {
     document.body.addEventListener("keydown", PlayClip.handleKeyDown, false);
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-    $("#scene2").show();
+    document.getElementById('scene2').classList.remove('hide');
     PlayClip.hidePanel();
-    $("#play_clip_dialog_simple_pause").hide();
-    $("#play_clip_dialog_exit").hide();
-    $("#dialog_warning_play").hide();
-    $("#scene1").hide();
+    document.getElementById('play_clip_dialog_simple_pause').classList.add('hide');
+    document.getElementById('play_clip_dialog_exit').classList.add('hide');
+    document.getElementById('dialog_warning_play').classList.add('hide');
+    document.getElementById('scene1').classList.add('hide');
     PlayClip.Start();
 };
