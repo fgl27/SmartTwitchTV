@@ -325,10 +325,18 @@ AddCode.CheckFallow = function() {
 };
 
 AddCode.CheckFallowId = function(responseText) {
-    AddCode.userId = JSON.parse(responseText).users[0]._id;
-    AddCode.TimeoutReset10();
-    AddCode.IsFallowing = false;
-    AddCode.RequestCheckFallow();
+    var users = JSON.parse(responseText).users[0];
+    if (users !== undefined) {
+        AddCode.userId = users._id;
+        AddCode.TimeoutReset10();
+        AddCode.IsFallowing = false;
+        AddCode.RequestCheckFallow();
+    } else {
+        AddCode.IsFallowing = false;
+        AddCode.loadingData = false;
+        if (AddCode.PlayRequest) Play.setFallow();
+        else SChannelContent.setFallow();
+    }
 };
 
 AddCode.RequestCheckFallow = function() {

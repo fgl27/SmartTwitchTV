@@ -338,9 +338,7 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-        console.log("KEY_ENTER");
             if (Users.isRemoveDialogShown()) {
-                console.log("if");
                 // HideRemoveDialog set Users.RemoveCursor to 0, is better to hide befor remove, use temp var
                 var temp_RemoveCursor = Users.RemoveCursor;
                 Users.HideRemoveDialog();
