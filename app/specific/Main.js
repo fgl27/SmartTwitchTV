@@ -730,6 +730,33 @@ Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Str
     document.getElementById(QualityDiv + y + '_' + x).classList.remove(Main.classInfo);
 };
 
+Main.addFocusVideoArray = function(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+    var id = y + '_' + x;
+    document.getElementById(idArray[0] + id).classList.add(Main.classThumb);
+    document.getElementById(idArray[2] + id).classList.add(Main.classText);
+    document.getElementById(idArray[3] + id).classList.add(Main.classInfo);
+    document.getElementById(idArray[4] + id).classList.add(Main.classInfo);
+    document.getElementById(idArray[5] + id).classList.add(Main.classInfo);
+    document.getElementById(idArray[6] + id).classList.add(Main.classInfo);
+    document.getElementById(idArray[7] + id).classList.add(Main.classInfo);
+
+    window.setTimeout(function() {
+        Main.ScrollHelper.scrollVerticalToElementById(idArray[0], y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+    }, 10);
+
+    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
+};
+
+Main.removeFocusVideoArray = function(id, idArray) {
+    document.getElementById(idArray[0] + id).classList.remove(Main.classThumb);
+    document.getElementById(idArray[2] + id).classList.remove(Main.classText);
+    document.getElementById(idArray[3] + id).classList.remove(Main.classInfo);
+    document.getElementById(idArray[4] + id).classList.remove(Main.classInfo);
+    document.getElementById(idArray[5] + id).classList.remove(Main.classInfo);
+    document.getElementById(idArray[6] + id).classList.remove(Main.classInfo);
+    document.getElementById(idArray[7] + id).classList.remove(Main.classInfo);
+};
+
 Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
     document.getElementById(Thumbnail + y + '_' + x).classList.add(Main.classThumb);
     document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main.classText);
