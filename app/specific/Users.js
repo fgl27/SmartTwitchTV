@@ -202,7 +202,6 @@ Users.showRemoveDialog = function() {
 
 Users.HideRemoveDialog = function() {
     Users.clearRemoveDialog();
-    $("#main_remove_dialog").hide();
     document.getElementById('main_remove_dialog').classList.add('hide');
     Users.RemoveCursor = 0;
     Users.RemoveCursorSet();
@@ -238,7 +237,9 @@ Users.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
+            if (Users.isRemoveDialogShown()) {
+                Users.HideRemoveDialog();
+            } else if (Main.isAboutDialogShown()) Main.HideAboutDialog();
             else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
             else {
                 Main.Go = Main.Live;
@@ -337,7 +338,9 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
+        console.log("KEY_ENTER");
             if (Users.isRemoveDialogShown()) {
+                console.log("if");
                 // HideRemoveDialog set Users.RemoveCursor to 0, is better to hide befor remove, use temp var
                 var temp_RemoveCursor = Users.RemoveCursor;
                 Users.HideRemoveDialog();
