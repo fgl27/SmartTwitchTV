@@ -162,8 +162,10 @@ Users.keyEnter = function() {
     else if (Users.cursorX === 2) UserGames.init();
     else if (Users.cursorX === 3) UserChannels.init();
     else if (Users.cursorX === 4) {
-        if (!Users.cursorY) AddUser.init();
-        else AddUser.UserMakeOne(Users.cursorY);
+        if (!Users.cursorY) {
+            Main.Before = Main.Users;
+            AddUser.init();
+        } else AddUser.UserMakeOne(Users.cursorY);
     } else if (Users.cursorX === 5) Users.showRemoveDialog();
     else if (Users.cursorX === 6) AddCode.init();
 };
