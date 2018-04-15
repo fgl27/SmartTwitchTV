@@ -150,14 +150,13 @@ Live.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
-            if (Live.CellExists(stream.channel.name)) {
-                coloumn_id--;
-            } else {
-                row.appendChild(Live.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name,
-                    [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
+            if (Live.CellExists(stream.channel.name)) coloumn_id--;
+            else {
+                row.appendChild(Live.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
                     Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)]));
+                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                ]));
             }
         }
 
@@ -177,7 +176,7 @@ Live.loadDataSuccess = function(responseText) {
 Live.createCell = function(row_id, id, channel_name, valuesArray) {
     Live.nameMatrix.push(channel_name);
     if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main.createCellVideo(channel_name, id, Live.ids, valuesArray);//[preview_thumbnail, channel_display_name, stream_title, stream_game, viwers, quality]
+    return Main.createCellVideo(channel_name, id, Live.ids, valuesArray); //[preview_thumbnail, channel_display_name, stream_title, stream_game, viwers, quality]
 };
 
 Live.CellExists = function(display_name) {
@@ -281,11 +280,12 @@ Live.loadDataSuccessReplace = function(responseText) {
             Live.blankCellCount--;
             i--;
         } else {
-            Live.replaceCellEmpty(Live.blankCellVector[i], stream.channel.name, 
-                [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
+            Live.nameMatrix.push(stream.channel.name);
+            Main.replaceVideo(Live.blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
                 Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)]);
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            ], Live.ids[8], Live.ids[9]);
             Live.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -302,16 +302,6 @@ Live.loadDataSuccessReplace = function(responseText) {
     } else Live.blankCellVector = tempVector;
 
     Live.loadDataSuccessFinish();
-};
-
-Live.replaceCellEmpty = function(id, channel_name, valuesArray) {
-    var splitedId = id.split(Live.ids[9])[1];
-    var element = document.getElementById(id);
-
-    Live.nameMatrix.push(channel_name);    
-    element.setAttribute('data-channelname', channel_name);
-    element.innerHTML = Main.VideoHtml(splitedId, Live.ids, valuesArray);
-    element.setAttribute('id', Live.ids[8] + splitedId);
 };
 
 Live.addFocus = function() {

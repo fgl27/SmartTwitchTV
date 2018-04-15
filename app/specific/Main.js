@@ -61,17 +61,17 @@ Main.ReloadLimitOffsetVideos = 1.5;
 Main.ItemsLimitVideo = 99;
 Main.ColoumnsCountVideo = 3;
 Main.ItemsReloadLimitVideo = Math.floor((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) / Main.ReloadLimitOffsetVideos);
-Main.videoPreload = 9;// Main.ColoumnsCountVideo * 3
+Main.videoPreload = 9; // Main.ColoumnsCountVideo * 3
 
 Main.ItemsLimitGame = 95;
 Main.ColoumnsCountGame = 5;
 Main.ItemsReloadLimitGame = Math.floor((Main.ItemsLimitGame / Main.ColoumnsCountGame) / Main.ReloadLimitOffsetGames);
-Main.gamePreload = 10;// Main.ColoumnsCountGame * 2
+Main.gamePreload = 10; // Main.ColoumnsCountGame * 2
 
 Main.ItemsLimitChannel = 96;
 Main.ColoumnsCountChannel = 6;
 Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) / Main.ReloadLimitOffsetVideos);
-Main.channelPreload = 18;// Main.ColoumnsCountChannel * 2
+Main.channelPreload = 18; // Main.ColoumnsCountChannel * 2
 
 Main.ItemsLimitReload = 6;
 
@@ -502,7 +502,7 @@ Main.NetworkStateChangeListenerStart = function() {
         } else if (data === 2 || 5) { //network down
             Main.NetworkStateOK = false;
             window.setTimeout(function() {
-                if (!Main.NetworkStateOK) { 
+                if (!Main.NetworkStateOK) {
                     Main.showWarningDialog('');
                     Play.showWarningDialog(STR_NET_DOWN);
                 }
@@ -577,13 +577,14 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
 };
 
 Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
-    var x, y = 0, loadImages = function(ImgObjet) {
-        ImgObjet.onerror = function() {
-            this.src = img_type; //img fail to load use predefined
+    var x, y = 0,
+        loadImages = function(ImgObjet) {
+            ImgObjet.onerror = function() {
+                this.src = img_type; //img fail to load use predefined
+            };
+            ImgObjet.src = ImgObjet.getAttribute('data-src');
+            ImgObjet.removeAttribute('data-src');
         };
-        ImgObjet.src = ImgObjet.getAttribute('data-src');
-        ImgObjet.removeAttribute('data-src');
-    };
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x);
@@ -593,19 +594,21 @@ Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
     Main.Ychange(0);
 };
 
-Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) {//offset is one more then number if (cursorY > number)
+Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
     var change = Main.Ychange(row_id);
 
     if (row_id === offset && change === 1) change = 0;
 
     if (change) {
-        var x = 0, y, elem, loadImages = function(ImgLoadObjet) {
+        var x = 0,
+            y, elem, loadImages = function(ImgLoadObjet) {
                 ImgLoadObjet.onerror = function() {
                     this.src = img_type; //img fail to load use predefined
                 };
                 ImgLoadObjet.src = ImgLoadObjet.getAttribute('data-src');
                 ImgLoadObjet.removeAttribute('data-src');
-            }, resetImages = function(ImgRstObjet) {
+            },
+            resetImages = function(ImgRstObjet) {
                 ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
                 ImgRstObjet.removeAttribute('src');
             };
@@ -625,8 +628,8 @@ Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) {//offset is 
 Main.Ychange = function(y) {
     var position = 0;
 
-    if (Main.cursorY < y) position = 1;//going down
-    else if (Main.cursorY > y) position = -1;//going up
+    if (Main.cursorY < y) position = 1; //going down
+    else if (Main.cursorY > y) position = -1; //going up
 
     Main.cursorY = y;
     return position;
@@ -661,6 +664,15 @@ Main.createCellVideo = function(channel_name, id, idArray, valuesArray) {
     Main.td.innerHTML = Main.VideoHtml(id, idArray, valuesArray);
 
     return Main.td;
+};
+
+Main.replaceVideo = function(id, channel_name, valuesArray, cell, splitedId) {
+    splitedId = id.split(splitedId)[1];
+    id = document.getElementById(id);
+    id.setAttribute('data-channelname', channel_name);
+    id.innerHTML = Main.VideoHtml(splitedId, Live.ids, valuesArray);
+    id.setAttribute('id', cell + splitedId);
+    console.log("splitedId " + splitedId + ' ' + channel_name);
 };
 
 Main.VideoHtml = function(id, idArray, valuesArray) {
