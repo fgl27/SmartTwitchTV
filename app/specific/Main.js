@@ -645,6 +645,35 @@ Main.createCellEmpty = function(row_id, coloumn_id, cell) {
     return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 };
 
+Main.createEmptyCell = function(id) {
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', id);
+    Main.td.className = 'stream_cell';
+
+    return Main.td;
+};
+
+Main.createCellVideo = function(channel_name, id, idArray, valuesArray) {
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', idArray[8] + id);
+    Main.td.setAttribute('data-channelname', channel_name);
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = Main.VideoHtml(id, idArray, valuesArray);
+
+    return Main.td;
+};
+
+Main.VideoHtml = function(id, idArray, valuesArray) {
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text">' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 64%; display: inline-block;">' + valuesArray[4] + '</div>' +
+        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
+};
+
 Main.CheckMp4Html5 = function() {
     var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
     if (!!document.createElement('video').canPlayType) {
