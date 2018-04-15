@@ -2,17 +2,7 @@
 //Variable initialization
 function Live() {}
 Live.Status = false;
-Live.Img = 'img_live';
-Live.Thumbnail = 'thumbnail_live';
-Live.ThumbnailDiv = 'live_thumbnail_div_';
-Live.DispNameDiv = 'live_display_name_';
-Live.StreamTitleDiv = 'live_stream_title_';
-Live.StreamGameDiv = 'live_stream_game_';
-Live.ViwersDiv = 'live_viwers_';
-Live.QualityDiv = 'live_quality_';
-Live.Cell = 'live_cell_';
-Live.EmptyCell = 'liveempty_';
-Live.idArray = [Live.Thumbnail, Live.Img, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv, Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Live.Cell];
+Live.idArray = ['l_thumb', 'l_img', 'l_thumbdiv_', 'l_displayname_', 'l_streamtitle_', 'l_streamgame_', 'l_viwers_', 'l_quality_', 'l_cell_', 'lempty_'];
 Live.cursorY = 0;
 Live.cursorX = 0;
 Live.ExitCursor = 0;
@@ -43,7 +33,7 @@ Live.init = function() {
     document.getElementById('top_bar_live').classList.add('icon_center_focus');
     Main.YRst(Live.cursorY);
     if (Live.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Live.Thumbnail, Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(Live.idArray[0], Live.cursorY, Live.cursorX, Main.Live, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Live.cursorX, Live.cursorY, Main.ColoumnsCountVideo, Live.itemsCount);
     } else Live.StartLoad();
 };
@@ -176,8 +166,8 @@ Live.loadDataSuccess = function(responseText) {
                 Live.itemsCountCheck = true;
                 Live.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(Main.createEmptyCell(Live.EmptyCell + row_id + '_' + coloumn_id));
-            Live.blankCellVector.push(Live.EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main.createEmptyCell(Live.idArray[9] + row_id + '_' + coloumn_id));
+            Live.blankCellVector.push(Live.idArray[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_live").appendChild(row);
     }
@@ -202,7 +192,7 @@ Live.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Live.Status) {
             Live.Status = true;
-            Main.LazyImgStart(Live.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(Live.idArray[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             Main.HideLoadDialog();
             document.getElementById('toolbar').classList.remove('hide');
             Live.addFocus();
@@ -315,20 +305,19 @@ Live.loadDataSuccessReplace = function(responseText) {
 };
 
 Live.replaceCellEmpty = function(id, channel_name, valuesArray) {
-    var splitedId = id.split(Live.EmptyCell)[1];
+    var splitedId = id.split(Live.idArray[9])[1];
     var element = document.getElementById(id);
 
     Live.nameMatrix.push(channel_name);    
     element.setAttribute('data-channelname', channel_name);
     element.innerHTML = Main.VideoHtml(splitedId, Live.idArray, valuesArray);
-    element.setAttribute('id', Live.Cell + splitedId);
+    element.setAttribute('id', Live.idArray[8] + splitedId);
 };
 
 Live.addFocus = function() {
-    Main.addFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
-        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv, Main.Live, Main.ColoumnsCountVideo, Live.itemsCount);
+    Main.addFocusVideoArray(Live.cursorY, Live.cursorX, Live.idArray, Main.Live, Main.ColoumnsCountVideo, Live.itemsCount);
 
-    if (Live.cursorY > 3) Main.LazyImg(Live.Img, Live.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (Live.cursorY > 3) Main.LazyImg(Live.idArray[1], Live.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Live.cursorY + Main.ItemsReloadLimitVideo) > (Live.itemsCount / Main.ColoumnsCountVideo)) &&
         !Live.dataEnded && !Live.loadingMore) {
@@ -339,8 +328,7 @@ Live.addFocus = function() {
 };
 
 Live.removeFocus = function() {
-    Main.removeFocusVideo(Live.cursorY, Live.cursorX, Live.Thumbnail, Live.ThumbnailDiv, Live.DispNameDiv, Live.StreamTitleDiv,
-        Live.StreamGameDiv, Live.ViwersDiv, Live.QualityDiv);
+    Main.removeFocusVideoArray(Live.cursorY + '_' + Live.cursorX, Live.idArray);
 };
 
 Live.ExitCursorSet = function() {
@@ -382,13 +370,13 @@ Live.handleKeyDown = function(event) {
                 Live.ExitCursorSet();
                 Main.clearExitDialog();
                 Main.setExitDialog();
-            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX - 1), Live.idArray[0])) {
                 Live.removeFocus();
                 Live.cursorX--;
                 Live.addFocus();
             } else {
                 for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Live.cursorY - 1), i, Live.Thumbnail)) {
+                    if (Main.ThumbNull((Live.cursorY - 1), i, Live.idArray[0])) {
                         Live.removeFocus();
                         Live.cursorY--;
                         Live.cursorX = i;
@@ -405,11 +393,11 @@ Live.handleKeyDown = function(event) {
                 Live.ExitCursorSet();
                 Main.clearExitDialog();
                 Main.setExitDialog();
-            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY), (Live.cursorX + 1), Live.idArray[0])) {
                 Live.removeFocus();
                 Live.cursorX++;
                 Live.addFocus();
-            } else if (Main.ThumbNull((Live.cursorY + 1), 0, Live.Thumbnail)) {
+            } else if (Main.ThumbNull((Live.cursorY + 1), 0, Live.idArray[0])) {
                 Live.removeFocus();
                 Live.cursorY++;
                 Live.cursorX = 0;
@@ -419,7 +407,7 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_UP:
             if (!Main.isExitDialogShown()) {
                 for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                    if (Main.ThumbNull((Live.cursorY - 1), (Live.cursorX - i), Live.Thumbnail)) {
+                    if (Main.ThumbNull((Live.cursorY - 1), (Live.cursorX - i), Live.idArray[0])) {
                         Live.removeFocus();
                         Live.cursorY--;
                         Live.cursorX = Live.cursorX - i;
@@ -432,7 +420,7 @@ Live.handleKeyDown = function(event) {
         case TvKeyCode.KEY_DOWN:
             if (!Main.isExitDialogShown()) {
                 for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                    if (Main.ThumbNull((Live.cursorY + 1), (Live.cursorX - i), Live.Thumbnail)) {
+                    if (Main.ThumbNull((Live.cursorY + 1), (Live.cursorX - i), Live.idArray[0])) {
                         Live.removeFocus();
                         Live.cursorY++;
                         Live.cursorX = Live.cursorX - i;
@@ -475,8 +463,8 @@ Live.handleKeyDown = function(event) {
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
                 } catch (e) {}
             } else {
-                Play.selectedChannel = document.getElementById(Live.Cell + Live.cursorY + '_' + Live.cursorX).getAttribute('data-channelname');
-                Play.selectedChannelDisplayname = document.getElementById(Live.DispNameDiv + Live.cursorY + '_' + Live.cursorX).textContent;
+                Play.selectedChannel = document.getElementById(Live.idArray[8] + Live.cursorY + '_' + Live.cursorX).getAttribute('data-channelname');
+                Play.selectedChannelDisplayname = document.getElementById(Live.idArray[3] + Live.cursorY + '_' + Live.cursorX).textContent;
                 document.body.removeEventListener("keydown", Live.handleKeyDown);
                 Main.openStream();
             }
