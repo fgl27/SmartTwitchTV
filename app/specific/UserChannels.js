@@ -122,8 +122,8 @@ UserChannels.loadChannelLive = function(responseText) {
         response_items = response.follows.length;
 
     if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
-        var ChannelTemp = '';
-        x = 0;
+        var ChannelTemp = '',
+            x = 0;
 
         for (x; x < response_items; x++) {
             ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
