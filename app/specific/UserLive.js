@@ -35,7 +35,6 @@ UserLive.init = function() {
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_CHANNELS);
-    document.getElementById('top_bar_live').classList.add('icon_center_focus');
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
     if (UserLive.OldUserName !== Main.UserName) UserLive.status = false;
     if (UserLive.status) {
