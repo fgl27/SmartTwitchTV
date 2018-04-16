@@ -22,7 +22,7 @@ UserLive.MaxOffset = 0;
 UserLive.loadChannelOffsset = 0;
 UserLive.emptyContent = false;
 
-UserLive.ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'lempty_'];
+UserLive.ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'ulempty_'];
 UserLive.status = false;
 UserLive.followerChannels = '';
 UserLive.OldUserName = '';
