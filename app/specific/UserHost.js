@@ -193,12 +193,13 @@ UserHost.CellExists = function(display_name) {
 UserHost.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!UserHost.status) {
-            if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
-            else UserHost.status = true;
             Main.HideLoadDialog();
-            UserHost.addFocus();
-            Main.LazyImgStart(UserHost.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
+            if (UserHost.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+            else {
+                UserHost.status = true;
+                UserHost.addFocus();
+                Main.LazyImgStart(UserHost.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            }
             UserHost.loadingData = false;
         } else {
             if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {

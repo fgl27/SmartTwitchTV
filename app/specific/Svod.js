@@ -228,12 +228,13 @@ Svod.CellExists = function(display_name) {
 Svod.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Svod.status) {
-            if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-            else Svod.status = true;
             Main.HideLoadDialog();
-            Svod.addFocus();
-            Main.LazyImgStart(Svod.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
+            if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+            else {
+                Svod.status = true;
+                Svod.addFocus();
+                Main.LazyImgStart(Svod.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            }
             Svod.loadingData = false;
         } else {
             if (Svod.blankCellCount > 0 && !Svod.dataEnded) {

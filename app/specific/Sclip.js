@@ -239,12 +239,13 @@ Sclip.CellExists = function(display_name) {
 Sclip.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Sclip.status) {
-            if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
-            else Sclip.status = true;
             Main.HideLoadDialog();
-            Sclip.addFocus();
-            Main.LazyImgStart(Sclip.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
+            if (Sclip.emptyContent) Main.showWarningDialog(STR_NO + STR_CLIPS);
+            else {
+                Sclip.status = true;
+                Sclip.addFocus();
+                Main.LazyImgStart(Sclip.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            }
             Sclip.loadingData = false;
         } else {
             if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {

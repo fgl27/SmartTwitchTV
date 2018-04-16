@@ -123,7 +123,7 @@ UserChannels.loadChannelLive = function(responseText) {
 
     if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
         var ChannelTemp = '';
-            x = 0;
+        x = 0;
 
         for (x; x < response_items; x++) {
             ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
@@ -193,12 +193,13 @@ UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, _id
 UserChannels.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!UserChannels.Status) {
-            if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
-            else UserChannels.Status = true;
             Main.HideLoadDialog();
-            UserChannels.addFocus();
-            Main.LazyImgStart(UserChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
-
+            if (UserChannels.emptyContent) Main.showWarningDialog(STR_NO + STR_USER_CHANNEL);
+            else {
+                UserChannels.Status = true;
+                UserChannels.addFocus();
+                Main.LazyImgStart(UserChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
+            }
             UserChannels.loadingData = false;
         } else {
             UserChannels.loadingData = false;
