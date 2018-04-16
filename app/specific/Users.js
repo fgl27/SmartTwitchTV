@@ -9,11 +9,7 @@ Users.ColoumnsCount = 7;
 Users.RemoveCursor = 0;
 Users.RemoveDialogID = null;
 
-Users.Img = 'img_users';
-Users.Thumbnail = 'thumbnail_users_';
-Users.ThumbnailDiv = 'users_thumbnail_div_';
-Users.DispNameDiv = 'users_display_name_';
-Users.Cell = 'users_cell_';
+Users.ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell'];
 Users.status = false;
 Users.loadingData = true;
 Users.imgMatrix = [];
@@ -25,15 +21,15 @@ Users.imgMatrixCount = 0;
 Users.init = function() {
     Main.Go = Main.Users;
     Main.HideWarningDialog();
-    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.body.addEventListener("keydown", Users.handleKeyDown, false);
-    if (Users.status) Main.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail, Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
+    if (Users.status) Main.ScrollHelper.scrollVerticalToElementById(Users.ids[0], Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
     else Users.StartLoad();
 };
 
 Users.exit = function() {
     AddCode.SetDefaultOAuth(0);
-    $('#top_bar_user').removeClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.body.removeEventListener("keydown", Users.handleKeyDown);
 };
 
@@ -42,7 +38,8 @@ Users.StartLoad = function() {
     Users.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_user').empty();
+    var table = document.getElementById('stream_table_user');
+    while (table.firstChild) table.removeChild(table.firstChild);
     Users.imgMatrix = [];
     Users.imgMatrixId = [];
     Users.imgMatrixCount = 0;
@@ -53,53 +50,59 @@ Users.StartLoad = function() {
 };
 
 Users.loadData = function() {
-    var row, coloumn_id, tbody = $('<tbody></tbody>'),
-        header;
-    $('#stream_table_user').append(tbody);
+    var row, coloumn_id, tbody = document.createElement('tbody');
 
     for (var x = 0; x < AddUser.UsernameArray.length; x++) {
         coloumn_id = 0;
         Main.UserName = AddUser.UsernameArray[x];
 
-        header = $('<tr class="follower_header"></tr>').html('<div class="follower_header">' + Main.UserName +
-            STR_CONTENT + (!x ? STR_USER_NUMBER_ONE : '') + '</div>');
-        $('#stream_table_user').find('tbody').append(header);
+        Main.td = document.createElement('tr');
+        Main.td.className = 'follower_header';
+        Main.td.innerHTML = '<div class="follower_header">' + Main.UserName +
+            STR_CONTENT + (!x ? STR_USER_NUMBER_ONE : '') + '</div>';
 
-        row = $('<tr></tr>');
+        document.getElementById("stream_table_user").appendChild(tbody);
+        document.getElementById("stream_table_user").appendChild(Main.td);
 
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
-        coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
-        coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_GAMES, IMG_BLUR_GAME));
-        coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
-        coloumn_id++;
-        if (!x) row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
-        else row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
-        coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
-        coloumn_id++;
-        row.append(Users.createChannelCell(x, coloumn_id, Main.selectedChannelDisplayname, (AddCode.UserCodeExist(Main.UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
+        row = document.createElement('tr');
 
-        $('#stream_table_user').append(row);
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
+        coloumn_id++;
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
+        coloumn_id++;
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_GAMES, IMG_BLUR_GAME));
+        coloumn_id++;
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
+        coloumn_id++;
+        if (!x) row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
+        else row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
+        coloumn_id++;
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
+        coloumn_id++;
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, (AddCode.UserCodeExist(Main.UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
+
+        document.getElementById("stream_table_user").appendChild(row);
     }
 
     Users.loadDataSuccessFinish();
 };
 
-Users.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+Users.createChannelCell = function(id, user_name, stream_type, preview_thumbnail) {
     Users.imgMatrix[Users.imgMatrixCount] = preview_thumbnail;
-    Users.imgMatrixId[Users.imgMatrixCount] = Users.Img + row_id + '_' + coloumn_id;
+    Users.imgMatrixId[Users.imgMatrixCount] = Users.ids[1] + id;
     Users.imgMatrixCount++;
 
     Main.PreLoadAImage(preview_thumbnail);
 
-    return $('<td id="' + Users.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<div id="' + Users.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + Users.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img"></div>' +
-        '<div id="' + Users.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Users.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info_user">' + stream_type + '</div></div>');
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', Users.ids[4] + id);
+    Main.td.setAttribute('data-channelname', user_name);
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = '<div id="' + Users.ids[0] + id + '" class="stream_thumbnail_channel" ><img id="' + Users.ids[1] + id + '" class="stream_img"></div>' +
+        '<div id="' + Users.ids[2] + id + '" class="stream_text">' +
+        '<div id="' + Users.ids[3] + id + '" class="stream_info_user">' + stream_type + '</div></div>';
+
+    return Main.td;
 };
 
 Users.loadDataSuccessFinish = function() {
@@ -128,7 +131,7 @@ Users.checkTitleRun = function(position) {
 };
 
 Users.SetKeyTitleStart = function(bool, position) {
-    document.getElementById(Users.DispNameDiv + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    document.getElementById(Users.ids[3] + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
     if (!bool) {
         var user = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
         if (user > -1) AddCode.removeUser(user);
@@ -136,16 +139,16 @@ Users.SetKeyTitleStart = function(bool, position) {
 };
 
 Users.addFocus = function() {
-    $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).addClass('stream_info_focused');
-    Main.ScrollHelper.scrollVerticalToElementById(Users.Thumbnail, Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
+    document.getElementById(Users.ids[0] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Users.ids[2] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_text_focused');
+    document.getElementById(Users.ids[3] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_info_focused');
+    Main.ScrollHelper.scrollVerticalToElementById(Users.ids[0], Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
 };
 
 Users.removeFocus = function() {
-    $('#' + Users.Thumbnail + Users.cursorY + '_' + Users.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Users.ThumbnailDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_text_focused');
-    $('#' + Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).removeClass('stream_info_focused');
+    document.getElementById(Users.ids[0] + Users.cursorY + '_' + Users.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Users.ids[2] + Users.cursorY + '_' + Users.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Users.ids[3] + Users.cursorY + '_' + Users.cursorX).classList.remove('stream_info_focused');
 };
 
 Users.keyClickDelay = function() {
@@ -181,7 +184,7 @@ Users.checkKey = function(responseText) {
 };
 
 Users.SetKeyTitle = function(bool) {
-    document.getElementById(Users.DispNameDiv + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    document.getElementById(Users.ids[3] + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
     if (!bool) {
         var user = AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]);
         if (user > -1) AddCode.removeUser(user);
@@ -215,11 +218,11 @@ Users.isRemoveDialogShown = function() {
 
 Users.RemoveCursorSet = function() {
     if (!Users.RemoveCursor) {
-        $('#remove_cancel').addClass('button_search_focused');
-        $('#remove_yes').removeClass('button_search_focused');
+        document.getElementById('remove_cancel').classList.add(Main.classThumb);
+        document.getElementById('remove_yes').classList.remove(Main.classThumb);
     } else {
-        $('#remove_cancel').removeClass('button_search_focused');
-        $('#remove_yes').addClass('button_search_focused');
+        document.getElementById('remove_cancel').classList.remove(Main.classThumb);
+        document.getElementById('remove_yes').classList.add(Main.classThumb);
     }
 };
 
@@ -256,17 +259,17 @@ Users.handleKeyDown = function(event) {
                 Users.RemoveCursorSet();
                 Users.clearRemoveDialog();
                 Users.setRemoveDialog();
-            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.Thumbnail)) {
+            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX--;
                 Users.addFocus();
-            } else if (!Main.ThumbNull((Users.cursorY - 1), 0, Users.Thumbnail)) {
+            } else if (!Main.ThumbNull((Users.cursorY - 1), 0, Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX = Users.ColoumnsCount - 1;
                 Users.addFocus();
             } else {
                 for (i = (Users.ColoumnsCount - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Users.cursorY - 1), i, Users.Thumbnail)) {
+                    if (Main.ThumbNull((Users.cursorY - 1), i, Users.ids[0])) {
                         Users.removeFocus();
                         Users.cursorY--;
                         Users.cursorX = i;
@@ -283,11 +286,11 @@ Users.handleKeyDown = function(event) {
                 Users.RemoveCursorSet();
                 Users.clearRemoveDialog();
                 Users.setRemoveDialog();
-            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.Thumbnail)) {
+            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX++;
                 Users.addFocus();
-            } else if (Main.ThumbNull((Users.cursorY + 1), 0, Users.Thumbnail)) {
+            } else if (Main.ThumbNull((Users.cursorY + 1), 0, Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorY++;
                 Users.cursorX = 0;
@@ -300,7 +303,7 @@ Users.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_UP:
             for (i = 0; i < Users.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Users.cursorY - 1), (Users.cursorX - i), Users.Thumbnail)) {
+                if (Main.ThumbNull((Users.cursorY - 1), (Users.cursorX - i), Users.ids[0])) {
                     Users.removeFocus();
                     Users.cursorY--;
                     Users.cursorX = Users.cursorX - i;
@@ -311,7 +314,7 @@ Users.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             for (i = 0; i < Users.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Users.cursorY + 1), (Users.cursorX - i), Users.Thumbnail)) {
+                if (Main.ThumbNull((Users.cursorY + 1), (Users.cursorX - i), Users.ids[0])) {
                     Users.removeFocus();
                     Users.cursorY++;
                     Users.cursorX = Users.cursorX - i;
