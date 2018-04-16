@@ -20,16 +20,7 @@ AGame.ReplacedataEnded = false;
 AGame.MaxOffset = 0;
 AGame.emptyContent = false;
 
-AGame.Img = 'img_agame';
-AGame.Thumbnail = 'thumbnail_agame_';
-AGame.EmptyCell = 'agameempty_';
-AGame.ThumbnailDiv = 'agame_thumbnail_div_';
-AGame.DispNameDiv = 'agame_display_name_';
-AGame.StreamTitleDiv = 'agame_stream_title_';
-AGame.StreamGameDiv = 'agame_stream_game_';
-AGame.ViwersDiv = 'agame_viwers_';
-AGame.QualityDiv = 'agame_quality_';
-AGame.Cell = 'agame_cell_';
+AGame.ids = ['ag_thumbdiv', 'ag_img', 'ag_infodiv', 'ag_displayname', 'ag_streamtitle', 'ag_streamgame', 'ag_viwers', 'ag_quality', 'ag_cell', 'agempty_'];
 AGame.status = false;
 AGame.itemsCountCheck = false;
 AGame.fallowing = false;
@@ -41,12 +32,12 @@ AGame.UserGames = false;
 AGame.init = function() {
     Main.Go = Main.AGame;
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
-    $('#top_bar_game').addClass('icon_center_focus');
+    document.getElementById('top_bar_game').classList.add('icon_center_focus');
     $('.lable_game').html(STR_AGAME);
     $('.label_agame_name').html(Main.gameSelected);
     Main.YRst(AGame.cursorY);
     if ((Main.OldgameSelected === Main.gameSelected) && AGame.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(AGame.Thumbnail, AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo,
+        Main.ScrollHelper.scrollVerticalToElementById(AGame.ids[0], AGame.cursorY, AGame.cursorX, Main.AGame, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
         Main.CounterDialog(AGame.cursorX, AGame.cursorY, Main.ColoumnsCountVideo, AGame.itemsCount);
     } else AGame.StartLoad();
@@ -59,7 +50,7 @@ AGame.exit = function() {
     $('.label_agame_name').html('');
     $('.lable_game').html(STR_GAMES);
     document.body.removeEventListener("keydown", AGame.handleKeyDown);
-    $('#top_bar_game').removeClass('icon_center_focus');
+    document.getElementById('top_bar_game').classList.remove('icon_center_focus');
 };
 
 AGame.StartLoad = function() {
@@ -67,7 +58,8 @@ AGame.StartLoad = function() {
     AGame.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_a_game').empty();
+    var table = document.getElementById('stream_table_a_game');
+    while (table.firstChild) table.removeChild(table.firstChild);
     AGame.loadingMore = false;
     AGame.blankCellCount = 0;
     AGame.itemsCountOffset = 0;
@@ -154,30 +146,35 @@ AGame.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row = $('<tr></tr>'),
-        cell, stream,
+    var coloumn_id, row_id, row = document.createElement('tr'),
+        stream,
         cursor = 0;
 
-    row.append(Main.createCellEmpty('x', 0, AGame.EmptyCell));
-    row.append(Main.createCellEmpty('x', 1, AGame.EmptyCell));
-    row.append($('<td id="' + AGame.Cell + 'x_2" class="stream_cell" ></td>').html('<div id="' + AGame.Thumbnail +
-        'x_2" class="stream_thumbnail_fallow_game" ><div id="' + AGame.DispNameDiv +
-        'x_2" class="stream_channel_fallow_game"></div></div>'));
-    $('#stream_table_a_game').append(row);
+    // Make the game fallowing cell
+    row.appendChild(Main.createEmptyCell('x', 0, AGame.ids[9]));
+    row.appendChild(Main.createEmptyCell('x', 1, AGame.ids[9]));
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', AGame.ids[8] + 'x_2');
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = '<div id="' + AGame.ids[0] +
+        'x_2" class="stream_thumbnail_fallow_game" ><div id="' + AGame.ids[3] +
+        'x_2" class="stream_channel_fallow_game"></div></div>';
+    row.appendChild(Main.td);
+    document.getElementById("stream_table_a_game").appendChild(row);
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (AGame.CellExists(stream.channel.name)) coloumn_id--;
             else {
-                cell = AGame.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-                    stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
-                row.append(cell);
+                row.appendChild(AGame.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
+                    Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
+                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                ]));
             }
         }
 
@@ -186,36 +183,19 @@ AGame.loadDataSuccess = function(responseText) {
                 AGame.itemsCountCheck = true;
                 AGame.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, AGame.EmptyCell));
-            AGame.blankCellVector.push(AGame.EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main.createEmptyCell(AGame.ids[9] + row_id + '_' + coloumn_id));
+            AGame.blankCellVector.push(AGame.ids[9] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_a_game').append(row);
+        document.getElementById("stream_table_a_game").appendChild(row);
     }
 
     AGame.loadDataSuccessFinish();
 };
 
-AGame.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    return $('<td id="' + AGame.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name));
-};
-
-AGame.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
-
+AGame.createCell = function(row_id, id, channel_name, valuesArray) {
     AGame.nameMatrix.push(channel_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + AGame.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + AGame.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + AGame.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + AGame.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + AGame.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + AGame.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + AGame.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 40%; display: inline-block;">' + viwers + '</div>' +
-        '<div id="' + AGame.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
+    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main.createCellVideo(channel_name, id, AGame.ids, valuesArray);
 };
 
 AGame.CellExists = function(display_name) {
@@ -234,7 +214,7 @@ AGame.loadDataSuccessFinish = function() {
             AGame.Checkfallow();
             Main.HideLoadDialog();
             AGame.addFocus();
-            Main.LazyImgStart(AGame.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(AGame.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             AGame.loadingData = false;
         } else {
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
@@ -262,8 +242,8 @@ AGame.Checkfallow = function() {
 };
 
 AGame.setFallow = function() {
-    if (AGame.fallowing) document.getElementById(AGame.DispNameDiv + "x_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>' + STR_SPACE + STR_FALLOWING;
-    else document.getElementById(AGame.DispNameDiv + "x_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>' + STR_SPACE + (Main.UserName !== '' ? STR_FALLOW : STR_NOKEY);
+    if (AGame.fallowing) document.getElementById(AGame.ids[3] + "x_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>' + STR_SPACE + STR_FALLOWING;
+    else document.getElementById(AGame.ids[3] + "x_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>' + STR_SPACE + (Main.UserName !== '' ? STR_FALLOW : STR_NOKEY);
 };
 
 AGame.fallow = function() {
@@ -340,10 +320,12 @@ AGame.loadDataSuccessReplace = function(responseText) {
             AGame.blankCellCount--;
             i--;
         } else {
-            AGame.replaceCellEmpty(AGame.blankCellVector[i], stream.channel.name, stream.preview.template,
-                stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-                stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+            Main.replaceVideo(AGame.blankCellVector[i],
+            stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
+                Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
+                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            ], AGame.ids[8], AGame.ids[9]);
             AGame.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -362,24 +344,11 @@ AGame.loadDataSuccessReplace = function(responseText) {
     AGame.loadDataSuccessFinish();
 };
 
-AGame.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = AGame.Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
-    document.getElementById(cell).innerHTML =
-        AGame.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
-};
-
 AGame.addFocus = function() {
 
-    Main.addFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
-        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);
+    Main.addFocusVideoArray(AGame.cursorY, AGame.cursorX, AGame.ids, Main.AGame, Main.ColoumnsCountVideo, AGame.itemsCount);
 
-    if (AGame.cursorY > 3) Main.LazyImg(AGame.Img, AGame.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (AGame.cursorY > 3) Main.LazyImg(AGame.ids[1], AGame.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((AGame.cursorY + Main.ItemsReloadLimitVideo) > (AGame.itemsCount / Main.ColoumnsCountVideo)) &&
         !AGame.dataEnded && !AGame.loadingMore) {
@@ -390,17 +359,15 @@ AGame.addFocus = function() {
 };
 
 AGame.removeFocus = function() {
-    Main.removeFocusVideo(AGame.cursorY, AGame.cursorX, AGame.Thumbnail, AGame.ThumbnailDiv, AGame.DispNameDiv, AGame.StreamTitleDiv,
-        AGame.StreamGameDiv, AGame.ViwersDiv, AGame.QualityDiv);
+    Main.removeFocusVideoArray(AGame.cursorY + '_' + AGame.cursorX, AGame.ids);
 };
 
-
 AGame.addFocusFallow = function() {
-    $('#' + AGame.Thumbnail + 'x_2').addClass(Main.classThumb);
+    document.getElementById(AGame.ids[0] + 'x_2').classList.add(Main.classThumb);
 };
 
 AGame.removeFocusFallow = function() {
-    $('#' + AGame.Thumbnail + 'x_2').removeClass(Main.classThumb);
+    document.getElementById(AGame.ids[0] + 'x_2').classList.remove(Main.classThumb);
 };
 
 AGame.keyClickDelay = function() {
@@ -439,13 +406,13 @@ AGame.handleKeyDown = function(event) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
-            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX - 1), AGame.Thumbnail)) {
+            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX - 1), AGame.ids[0])) {
                 AGame.removeFocus();
                 AGame.cursorX--;
                 AGame.addFocus();
             } else {
                 for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((AGame.cursorY - 1), i, AGame.Thumbnail)) {
+                    if (Main.ThumbNull((AGame.cursorY - 1), i, AGame.ids[0])) {
                         AGame.removeFocus();
                         AGame.cursorY--;
                         AGame.cursorX = i;
@@ -460,11 +427,11 @@ AGame.handleKeyDown = function(event) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
-            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX + 1), AGame.Thumbnail)) {
+            } else if (Main.ThumbNull((AGame.cursorY), (AGame.cursorX + 1), AGame.ids[0])) {
                 AGame.removeFocus();
                 AGame.cursorX++;
                 AGame.addFocus();
-            } else if (Main.ThumbNull((AGame.cursorY + 1), 0, AGame.Thumbnail)) {
+            } else if (Main.ThumbNull((AGame.cursorY + 1), 0, AGame.ids[0])) {
                 AGame.removeFocus();
                 AGame.cursorY++;
                 AGame.cursorX = 0;
@@ -478,7 +445,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.addFocusFallow();
             } else {
                 for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                    if (Main.ThumbNull((AGame.cursorY - 1), (AGame.cursorX - i), AGame.Thumbnail)) {
+                    if (Main.ThumbNull((AGame.cursorY - 1), (AGame.cursorX - i), AGame.ids[0])) {
                         AGame.removeFocus();
                         AGame.cursorY--;
                         AGame.cursorX = AGame.cursorX - i;
@@ -495,7 +462,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.addFocus();
             } else {
                 for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                    if (Main.ThumbNull((AGame.cursorY + 1), (AGame.cursorX - i), AGame.Thumbnail)) {
+                    if (Main.ThumbNull((AGame.cursorY + 1), (AGame.cursorX - i), AGame.ids[0])) {
                         AGame.removeFocus();
                         AGame.cursorY++;
                         AGame.cursorX = AGame.cursorX - i;
@@ -524,8 +491,8 @@ AGame.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (AGame.cursorY !== -1) {
-                Play.selectedChannel = $('#' + AGame.Cell + AGame.cursorY + '_' + AGame.cursorX).attr('data-channelname');
-                Play.selectedChannelDisplayname = document.getElementById(AGame.DispNameDiv + AGame.cursorY + '_' + AGame.cursorX).textContent;
+                Play.selectedChannel = document.getElementById(AGame.ids[8] + AGame.cursorY + '_' + AGame.cursorX).getAttribute('data-channelname');
+                Play.selectedChannelDisplayname = document.getElementById(AGame.ids[3] + AGame.cursorY + '_' + AGame.cursorX).textContent;
                 document.body.removeEventListener("keydown", AGame.handleKeyDown);
                 Main.OldgameSelected = Main.gameSelected;
                 Main.openStream();

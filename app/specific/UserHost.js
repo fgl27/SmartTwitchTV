@@ -20,7 +20,7 @@ UserHost.ReplacedataEnded = false;
 UserHost.MaxOffset = 0;
 UserHost.emptyContent = false;
 
-UserHost.ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'lempty_'];
+UserHost.ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'uhempty_'];
 UserHost.status = false;
 UserHost.followerChannels = '';
 UserHost.OldUserName = '';
