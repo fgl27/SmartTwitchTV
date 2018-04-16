@@ -20,16 +20,7 @@ UserHost.ReplacedataEnded = false;
 UserHost.MaxOffset = 0;
 UserHost.emptyContent = false;
 
-UserHost.Img = 'img_hlive';
-UserHost.Thumbnail = 'thumbnail_hlive_';
-UserHost.EmptyCell = 'hliveempty_';
-UserHost.ThumbnailDiv = 'hlive_thumbnail_div_';
-UserHost.DispNameDiv = 'hlive_display_name_';
-UserHost.hostsTitleDiv = 'hlive_hosts_title_';
-UserHost.hostsGameDiv = 'hlive_hosts_game_';
-UserHost.ViwersDiv = 'hlive_viwers_';
-UserHost.QualityDiv = 'hlive_qua_';
-UserHost.Cell = 'hlive_cell_';
+UserHost.ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'lempty_'];
 UserHost.status = false;
 UserHost.followerChannels = '';
 UserHost.OldUserName = '';
@@ -39,21 +30,21 @@ UserHost.itemsCountCheck = false;
 
 UserHost.init = function() {
     Main.Go = Main.UserHost;
-    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
     Main.YRst(UserHost.cursorY);
     if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
     if (UserHost.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(UserHost.Thumbnail, UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo,
+        Main.ScrollHelper.scrollVerticalToElementById(UserHost.ids[0], UserHost.cursorY, UserHost.cursorX, Main.UserHost, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
         Main.CounterDialog(UserHost.cursorX, UserHost.cursorY, Main.ColoumnsCountVideo, UserHost.itemsCount);
     } else UserHost.StartLoad();
 };
 
 UserHost.exit = function() {
-    $('#top_bar_user').removeClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     $('.label_agame_name').html('');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserHost.handleKeyDown);
@@ -65,7 +56,8 @@ UserHost.StartLoad = function() {
     Main.showLoadDialog();
     UserHost.OldUserName = Main.UserName;
     UserHost.status = false;
-    $('#stream_table_user_host').empty();
+    var table = document.getElementById('stream_table_user_host');
+    while (table.firstChild) table.removeChild(table.firstChild);
     UserHost.loadingMore = false;
     UserHost.blankCellCount = 0;
     UserHost.itemsCountOffset = 0;
@@ -152,21 +144,22 @@ UserHost.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, hosts,
+    var coloumn_id, row_id, row, hosts,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             hosts = response.hosts[cursor];
             if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
-                cell = UserHost.createCell(row_id, coloumn_id, hosts.target.channel.name, hosts.target.preview_urls.template,
-                    hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                    Main.addCommas(hosts.target.viewers) + STR_VIEWER);
-                row.append(cell);
+                row.appendChild(UserHost.createCell(row_id, row_id + '_' + coloumn_id,
+                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main.VideoSize),
+                        hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
+                        hosts.target.title, hosts.target.meta_game, Main.addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                    ]));
             }
         }
 
@@ -175,34 +168,18 @@ UserHost.loadDataSuccess = function(responseText) {
                 UserHost.itemsCountCheck = true;
                 UserHost.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, UserHost.EmptyCell));
-            UserHost.blankCellVector.push(UserHost.EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main.createEmptyCell(UserHost.ids[9] + row_id + '_' + coloumn_id));
+            UserHost.blankCellVector.push(UserHost.ids[9] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_user_host').append(row);
+        document.getElementById("stream_table_user_host").appendChild(row);
     }
     UserHost.loadDataSuccessFinish();
 };
 
-UserHost.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
-    return $('<td id="' + UserHost.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        UserHost.CellHtml(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers, preview_thumbnail, channel_name));
-};
-
-UserHost.CellHtml = function(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers, preview_thumbnail, channel_name) {
-
+UserHost.createCell = function(row_id, id, channel_name, valuesArray) {
     UserHost.nameMatrix.push(channel_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + UserHost.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + UserHost.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + UserHost.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + UserHost.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + UserHost.hostsTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_title + '</div>' +
-        '<div id="' + UserHost.hostsGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + hosts_game + '</div>' +
-        '<div id="' + UserHost.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width: 64%; display: inline-block;">' + viwers + '</div>' +
-        '<div id="' + UserHost.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info" style="width:1%; float: right; display: inline-block;"></div></div>';
+    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main.createCellVideo(channel_name, id, UserHost.ids, valuesArray);
 };
 
 UserHost.CellExists = function(display_name) {
@@ -220,7 +197,7 @@ UserHost.loadDataSuccessFinish = function() {
             else UserHost.status = true;
             Main.HideLoadDialog();
             UserHost.addFocus();
-            Main.LazyImgStart(UserHost.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            Main.LazyImgStart(UserHost.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
 
             UserHost.loadingData = false;
         } else {
@@ -303,9 +280,11 @@ UserHost.loadDataSuccessReplace = function(responseText) {
             UserHost.blankCellCount--;
             i--;
         } else {
-            UserHost.replaceCellEmpty(UserHost.blankCellVector[i], hosts.target.channel.name, hosts.target.preview_urls.template,
-                hosts.target.title, hosts.target.meta_game, hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                Main.addCommas(hosts.target.viewers) + STR_VIEWER);
+            Main.replaceVideo(UserHost.blankCellVector[i],
+                hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main.VideoSize),
+                    hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
+                    hosts.target.title, hosts.target.meta_game, Main.addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                ]);
             UserHost.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -328,7 +307,7 @@ UserHost.replaceCellEmpty = function(id, channel_name, preview_thumbnail, hosts_
     var splitedId = id.split("_");
     var row_id = splitedId[1];
     var coloumn_id = splitedId[2];
-    var cell = UserHost.Cell + row_id + '_' + coloumn_id;
+    var cell = UserHost.ids[8] + row_id + '_' + coloumn_id;
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', channel_name);
@@ -338,11 +317,9 @@ UserHost.replaceCellEmpty = function(id, channel_name, preview_thumbnail, hosts_
 
 UserHost.addFocus = function() {
 
-    Main.addFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
-        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv, Main.UserHost, Main.ColoumnsCountVideo, UserHost.itemsCount);
+    Main.addFocusVideoArray(UserHost.cursorY, UserHost.cursorX, UserHost.ids, Main.UserHost, Main.ColoumnsCountVideo, UserHost.itemsCount);
 
-    if (UserHost.cursorY > 3) Main.LazyImg(UserHost.Img, UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
-
+    if (UserHost.cursorY > 3) Main.LazyImg(UserHost.ids[1], UserHost.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((UserHost.cursorY + Main.ItemsReloadLimitVideo) > (UserHost.itemsCount / Main.ColoumnsCountVideo)) &&
         !UserHost.dataEnded && !UserHost.loadingMore) {
@@ -353,8 +330,7 @@ UserHost.addFocus = function() {
 };
 
 UserHost.removeFocus = function() {
-    Main.removeFocusVideo(UserHost.cursorY, UserHost.cursorX, UserHost.Thumbnail, UserHost.ThumbnailDiv, UserHost.DispNameDiv, UserHost.hostsTitleDiv,
-        UserHost.hostsGameDiv, UserHost.ViwersDiv, UserHost.QualityDiv);
+    Main.removeFocusVideoArray(UserHost.cursorY + '_' + UserHost.cursorX, UserHost.ids);
 };
 
 UserHost.keyClickDelay = function() {
@@ -386,13 +362,13 @@ UserHost.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((UserHost.cursorY), (UserHost.cursorX - 1), UserHost.Thumbnail)) {
+            if (Main.ThumbNull((UserHost.cursorY), (UserHost.cursorX - 1), UserHost.ids[0])) {
                 UserHost.removeFocus();
                 UserHost.cursorX--;
                 UserHost.addFocus();
             } else {
                 for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((UserHost.cursorY - 1), i, UserHost.Thumbnail)) {
+                    if (Main.ThumbNull((UserHost.cursorY - 1), i, UserHost.ids[0])) {
                         UserHost.removeFocus();
                         UserHost.cursorY--;
                         UserHost.cursorX = i;
@@ -403,11 +379,11 @@ UserHost.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((UserHost.cursorY), (UserHost.cursorX + 1), UserHost.Thumbnail)) {
+            if (Main.ThumbNull((UserHost.cursorY), (UserHost.cursorX + 1), UserHost.ids[0])) {
                 UserHost.removeFocus();
                 UserHost.cursorX++;
                 UserHost.addFocus();
-            } else if (Main.ThumbNull((UserHost.cursorY + 1), 0, UserHost.Thumbnail)) {
+            } else if (Main.ThumbNull((UserHost.cursorY + 1), 0, UserHost.ids[0])) {
                 UserHost.removeFocus();
                 UserHost.cursorY++;
                 UserHost.cursorX = 0;
@@ -416,7 +392,7 @@ UserHost.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_UP:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((UserHost.cursorY - 1), (UserHost.cursorX - i), UserHost.Thumbnail)) {
+                if (Main.ThumbNull((UserHost.cursorY - 1), (UserHost.cursorX - i), UserHost.ids[0])) {
                     UserHost.removeFocus();
                     UserHost.cursorY--;
                     UserHost.cursorX = UserHost.cursorX - i;
@@ -427,7 +403,7 @@ UserHost.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((UserHost.cursorY + 1), (UserHost.cursorX - i), UserHost.Thumbnail)) {
+                if (Main.ThumbNull((UserHost.cursorY + 1), (UserHost.cursorX - i), UserHost.ids[0])) {
                     UserHost.removeFocus();
                     UserHost.cursorY++;
                     UserHost.cursorX = UserHost.cursorX - i;
@@ -456,8 +432,8 @@ UserHost.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Play.selectedChannel = $('#' + UserHost.Cell + UserHost.cursorY + '_' + UserHost.cursorX).attr('data-channelname');
-            Play.selectedChannelDisplayname = document.getElementById(UserHost.DispNameDiv + UserHost.cursorY + '_' + UserHost.cursorX).textContent;
+            Play.selectedChannel = document.getElementById(UserHost.ids[8] + UserHost.cursorY + '_' + UserHost.cursorX).getAttribute('data-channelname');
+            Play.selectedChannelDisplayname = document.getElementById(UserHost.ids[3] + UserHost.cursorY + '_' + UserHost.cursorX).textContent.split(STR_USER_HOSTING)[1];
             document.body.removeEventListener("keydown", UserHost.handleKeyDown);
             Main.openStream();
             break;

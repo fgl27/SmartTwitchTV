@@ -321,6 +321,7 @@ SChannelContent.keyEnter = function() {
             Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
             Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY +
                 '_' + SChannelContent.cursorX).textContent;
+            if (Play.selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play.selectedChannelDisplayname = Play.selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
             Main.openStream();
         } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
         else if (SChannelContent.cursorX === (2 - value)) Sclip.init();
