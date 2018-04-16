@@ -209,12 +209,14 @@ AGame.CellExists = function(display_name) {
 AGame.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!AGame.status) {
-            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-            else AGame.status = true;
-            AGame.Checkfallow();
             Main.HideLoadDialog();
-            AGame.addFocus();
-            Main.LazyImgStart(AGame.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else {
+                AGame.status = true;
+                AGame.Checkfallow();
+                AGame.addFocus();
+                Main.LazyImgStart(AGame.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            }
             AGame.loadingData = false;
         } else {
             if (AGame.blankCellCount > 0 && !AGame.dataEnded) {
@@ -321,11 +323,11 @@ AGame.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             Main.replaceVideo(AGame.blankCellVector[i],
-            stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
-                Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-            ], AGame.ids[8], AGame.ids[9]);
+                stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
+                    Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
+                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                ], AGame.ids[8], AGame.ids[9]);
             AGame.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);

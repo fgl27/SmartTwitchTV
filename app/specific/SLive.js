@@ -216,12 +216,13 @@ SLive.CellExists = function(display_name) {
 SLive.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SLive.Status) {
-            if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-            else SLive.Status = true;
             Main.HideLoadDialog();
-            SLive.addFocus();
-            Main.LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
-
+            if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            else {
+                SLive.Status = true;
+                SLive.addFocus();
+                Main.LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+            }
             SLive.loadingData = false;
         } else {
             if (SLive.blankCellCount > 0 && !SLive.dataEnded) {

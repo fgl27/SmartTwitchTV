@@ -211,12 +211,13 @@ SChannels.CellExists = function(display_name) {
 SChannels.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SChannels.Status) {
-            if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-            else SChannels.Status = true;
             Main.HideLoadDialog();
-            SChannels.addFocus();
-            Main.LazyImgStart(SChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
-
+            if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            else {
+                SChannels.Status = true;
+                SChannels.addFocus();
+                Main.LazyImgStart(SChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
+            }
             SChannels.loadingData = false;
         } else {
             if (SChannels.blankCellCount > 0 && !SChannels.dataEnded) {

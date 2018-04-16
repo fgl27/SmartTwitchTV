@@ -210,12 +210,13 @@ UserGames.CellExists = function(display_name) {
 UserGames.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!UserGames.Status) {
-            if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-            else UserGames.Status = true;
             Main.HideLoadDialog();
-            UserGames.addFocus();
-            Main.LazyImgStart(UserGames.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
-
+            if (UserGames.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else {
+                UserGames.Status = true;
+                UserGames.addFocus();
+                Main.LazyImgStart(UserGames.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
+            }
             UserGames.loadingData = false;
         } else {
             if (UserGames.blankCellCount > 0 && !UserGames.dataEnded) {

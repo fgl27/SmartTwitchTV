@@ -169,9 +169,11 @@ SGames.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SGames.Status) {
             Main.HideLoadDialog();
-            SGames.addFocus();
             if (SGames.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-            else SGames.Status = true;
+            else {
+                SGames.Status = true;
+                SGames.addFocus();
+            }
         }
         Main.LazyImgStart(SGames.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
         SGames.loadingData = false;
