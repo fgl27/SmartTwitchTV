@@ -40,6 +40,7 @@ PlayVod.PlayerCheckOffset = 0;
 PlayVod.PlayerCheckQualityChanged = false;
 PlayVod.Canjump = false;
 PlayVod.Playing = false;
+Play.jumping = false;
 PlayVod.JumpID = null;
 PlayVod.TimeToJump = 0;
 PlayVod.IsJumping = false;
@@ -80,6 +81,7 @@ PlayVod.Start = function() {
     PlayVod.streamCheck = window.setInterval(PlayVod.PlayerCheck, 500);
     PlayVod.Canjump = false;
     PlayVod.Playing = false;
+    Play.jumping = false;
     PlayVod.isOn = true;
     PlayVod.loadData();
 };
@@ -267,7 +269,7 @@ PlayVod.onPlayer = function() {
         Play.videojs.ready(function() {
             this.isFullscreen(true);
             this.requestFullscreen();
-            this.autoplay(true);
+            this.autoplay(false);
 
             this.on('ended', function() {
                 Play.HideBufferDialog();
@@ -287,17 +289,23 @@ PlayVod.onPlayer = function() {
 
             this.on('loadedmetadata', function() { // reset position after quality change or back from resume
                 if (PlayVod.offsettime > 0 && PlayVod.offsettime !== this.currentTime()) {
-                    this.pause();
+                    Play.jumping = true;
                     this.currentTime(PlayVod.offsettime);
                     Play.showBufferDialog();
                     Play.clearPause();
-                    this.play();
-                }
+                } else this.autoplay(true);
                 PlayVod.Canjump = true;
             });
 
             this.on('playing', function() {
                 if (PlayVod.offsettime > 0) PlayVod.offsettime = 0;
+            });
+
+            this.on('canplaythrough', function() {
+                if (Play.jumping) {
+                    Play.jumping = false;
+                    this.play();
+                }
             });
 
         });
@@ -331,7 +339,7 @@ PlayVod.PlayerCheck = function() {
 
 PlayVod.updateCurrentTime = function(currentTime) {
     if (Play.WarningDialogVisible() && !PlayVod.IsJumping && !Play.IsWarning) Play.HideWarningDialog();
-    if (Play.BufferDialogVisible()) Play.HideBufferDialog();
+    if (Play.BufferDialogVisible() && !Play.jumping) Play.HideBufferDialog();
     if (Play.isShowPauseDialogOn() && !Play.videojs.paused()) Play.clearPause();
     PlayVod.PlayerCheckCount = 0;
     PlayVod.PlayerCheckOffset = 0;
@@ -631,9 +639,9 @@ PlayVod.handleKeyDown = function(e) {
                         PlayVod.qualityChanged();
                         Play.clearPause();
                     } else if (Play.Panelcouner === 1) {
-                            Play.FallowUnfallow();
-                            PlayVod.clearHidePanel();
-                            PlayVod.setHidePanel();
+                        Play.FallowUnfallow();
+                        PlayVod.clearHidePanel();
+                        PlayVod.setHidePanel();
                     } else if (Play.Panelcouner === 2) {
                         if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
                         Main.ExitCurrent(Main.Go);
