@@ -24,6 +24,7 @@ Live.MaxOffset = 0;
 Live.checkVersion = false;
 Live.itemsCountCheck = false;
 Live.imgCounter = 0;
+Live.emptyContent = false;
 
 //Variable initialization end
 
@@ -138,6 +139,8 @@ Live.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Live.itemsCount;
     Live.itemsCount += response_items;
 
+    Live.emptyContent = !Live.itemsCount;
+
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
@@ -190,12 +193,14 @@ Live.CellExists = function(display_name) {
 Live.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Live.Status) {
-            Live.Status = true;
-            Main.LazyImgStart(Live.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             Main.HideLoadDialog();
             document.getElementById('toolbar').classList.remove('hide');
-            Live.addFocus();
-
+            if (Live.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+            else {
+                Live.Status = true;
+                Main.LazyImgStart(Live.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                Live.addFocus();
+            }
             Live.loadingData = false;
             if (!Live.checkVersion) {
                 Live.checkVersion = true;

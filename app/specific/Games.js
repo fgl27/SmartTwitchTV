@@ -21,6 +21,7 @@ Games.ReplacedataEnded = false;
 Games.MaxOffset = 0;
 Main.ItemsLimitGameOffset = 1;
 Games.itemsCountCheck = false;
+Games.emptyContent = false;
 
 Games.Img = 'img_games';
 Games.Thumbnail = 'thumbnail_games_';
@@ -148,6 +149,8 @@ Games.loadDataSuccess = function(responseText) {
     var offset_itemsCount = Games.itemsCount;
     Games.itemsCount += response_items;
 
+    Games.emptyContent = !Games.itemsCount;
+
     var response_rows = response_items / Main.ColoumnsCountGame;
     if (response_items % Main.ColoumnsCountGame > 0) response_rows++;
 
@@ -213,11 +216,13 @@ Games.CellExists = function(display_name) {
 Games.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Games.Status) {
-            Games.Status = true;
             Main.HideLoadDialog();
-            Games.addFocus();
-            Main.LazyImgStart(Games.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
-
+            if (Games.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else {
+                Games.Status = true;
+                Games.addFocus();
+                Main.LazyImgStart(Games.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
+            }
             Games.loadingData = false;
         } else {
             if (Games.blankCellCount > 0 && !Games.dataEnded) {
