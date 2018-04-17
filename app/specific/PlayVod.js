@@ -90,6 +90,7 @@ PlayVod.Resume = function() {
     if (document.hidden) {
         Play.videojs.pause();
         PlayVod.offsettime = Play.videojs.currentTime();
+        Play.ClearPlayer();
         window.clearInterval(PlayVod.streamCheck);
         Play.clearPause();
     } else {
@@ -98,7 +99,8 @@ PlayVod.Resume = function() {
         Play.clearPause();
         Play.showBufferDialog();
         window.setTimeout(function() {
-            Play.videojs.play();
+            PlayVod.Playing =false;
+            PlayVod.onPlayer();
             PlayVod.PlayerCheckOffset = 80;
             PlayVod.RestoreFromResume = true;
             PlayVod.PlayerCheckQualityChanged = false;
