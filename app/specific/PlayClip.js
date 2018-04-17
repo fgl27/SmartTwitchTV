@@ -87,7 +87,7 @@ PlayClip.Start = function() {
             });
 
         });
-    }, 1000);
+    }, 500);
 
 };
 
