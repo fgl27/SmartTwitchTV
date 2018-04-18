@@ -490,10 +490,7 @@ Main.NetworkStateChangeListenerStart = function() {
                 Main.NetworkRefresh = false;
             }
             if (Play.WarningDialogVisible()) Main.showWarningDialog(STR_NET_UP);
-            window.setTimeout(function() {
-                Main.HideWarningDialog();
-                Play.HideWarningDialog();
-            }, 1500);
+            window.setTimeout(Main.HideExitDialog, 1500);
         } else if (data === 2 || 5) { //network down
             Main.NetworkStateOK = false;
             window.setTimeout(function() {

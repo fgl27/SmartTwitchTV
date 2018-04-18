@@ -44,9 +44,11 @@ AGame.init = function() {
 };
 
 AGame.exit = function() {
-    if (AGame.cursorY === -1) AGame.cursorY = 0;
-    AGame.removeFocusFallow();
-    AGame.addFocus();
+    if (AGame.status) {
+        if (AGame.cursorY === -1) AGame.cursorY = 0;
+        AGame.removeFocusFallow();
+        AGame.addFocus();
+    }
     document.getElementById('id_agame_name').innerHTML = '';
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.body.removeEventListener("keydown", AGame.handleKeyDown);
@@ -210,10 +212,14 @@ AGame.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!AGame.status) {
             Main.HideLoadDialog();
-            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
-            else {
+            AGame.Checkfallow();
+            if (AGame.emptyContent) {
+                Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                AGame.cursorY = -1;
+                Main.ScrollHelper.scrollVerticalToElementById(AGame.ids[0], 'x', 2, Main.AGame, 0.125, 0, false);
+                AGame.addFocusFallow();
+            } else {
                 AGame.status = true;
-                AGame.Checkfallow();
                 AGame.addFocus();
                 Main.LazyImgStart(AGame.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             }
@@ -254,7 +260,10 @@ AGame.fallow = function() {
         else AddCode.FallowGame();
     } else {
         Main.showWarningDialog(STR_NOKEY_WARN);
-        window.setTimeout(Main.HideWarningDialog, 2000);
+        window.setTimeout(function() {
+            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else Main.HideWarningDialog();
+        }, 2000);
     }
 };
 
@@ -404,7 +413,7 @@ AGame.handleKeyDown = function(event) {
                 AGame.removeFocus();
                 AGame.cursorY = -1;
                 AGame.addFocusFallow();
-            } else if (AGame.cursorY === -1) {
+            } else if (AGame.cursorY === -1 && !AGame.emptyContent) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
@@ -425,7 +434,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (AGame.cursorY === -1) {
+            if (AGame.cursorY === -1 && !AGame.emptyContent) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
@@ -441,7 +450,11 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            if (!AGame.cursorY) {
+            if (AGame.cursorY === -1 && !AGame.emptyContent) {
+                AGame.cursorY = 0;
+                AGame.removeFocusFallow();
+                AGame.addFocus();
+            } else if (!AGame.cursorY) {
                 AGame.removeFocus();
                 AGame.cursorY = -1;
                 AGame.addFocusFallow();
@@ -458,7 +471,7 @@ AGame.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            if (AGame.cursorY === -1) {
+            if (AGame.cursorY === -1 && !AGame.emptyContent) {
                 AGame.cursorY = 0;
                 AGame.removeFocusFallow();
                 AGame.addFocus();
