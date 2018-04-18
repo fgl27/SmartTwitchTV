@@ -14,10 +14,10 @@ AddUser.keyBoardOn = false;
 
 AddUser.init = function() {
     Main.Go = Main.AddUser;
-    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.add('icon_center_focus');
     Main.HideWarningDialog();
     AddUser.input = document.querySelector('#user_input');
-    $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
+    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
     AddUser.inputFocus();
     AddUser.ScrollHelper.scrollVerticalToElementById('user_input');
 };
@@ -25,7 +25,7 @@ AddUser.init = function() {
 AddUser.exit = function() {
     AddUser.RemoveinputFocus();
     document.body.removeEventListener("keydown", AddUser.handleKeyDown);
-    $('#top_bar_user').removeClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
 };
 
 AddUser.handleKeyDown = function(event) {
@@ -83,7 +83,7 @@ AddUser.inputFocus = function() {
     document.body.addEventListener("keydown", AddUser.KeyboardEvent, false);
     AddUser.input.addEventListener('input');
     AddUser.input.addEventListener('compositionend');
-    $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_USER);
+    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
     AddUser.input.focus();
     AddUser.keyBoardOn = true;
 };
@@ -92,7 +92,7 @@ AddUser.RemoveinputFocus = function() {
     AddUser.input.blur();
     document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
     document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
-    $('.label_placeholder_user').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER);
+    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
     window.setTimeout(function() {
         AddUser.keyBoardOn = false;
     }, 250);

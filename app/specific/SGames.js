@@ -33,8 +33,8 @@ SGames.init = function() {
     Main.Go = Main.SGames;
     Main.cleanTopLabel();
     if (SGames.lastData !== Search.data) SGames.Status = false;
-    $('.lable_user').html(STR_SEARCH);
-    $('.label_agame_name').html(STR_GAMES + ' ' + '\'' + Search.data + '\'');
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
+    document.getElementById('id_agame_name').innerHTML = STR_GAMES + ' ' + "'" + Search.data + "'";
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
     Main.YRst(SGames.cursorY);
     if (SGames.Status) {
@@ -181,9 +181,9 @@ SGames.loadDataSuccessFinish = function() {
 };
 
 SGames.addFocus = function() {
-    $('#' + SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_text_focused');
-    $('#' + SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).addClass('stream_info_focused');
+    document.getElementById(SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).classList.add('stream_text_focused');
+    document.getElementById(SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).classList.add('stream_info_focused');
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SGames.Thumbnail, SGames.cursorY, SGames.cursorX, Main.SGames, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
     }, 10);
@@ -195,9 +195,9 @@ SGames.addFocus = function() {
 };
 
 SGames.removeFocus = function() {
-    $('#' + SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_text_focused');
-    $('#' + SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).removeClass('stream_info_focused');
+    document.getElementById(SGames.Thumbnail + SGames.cursorY + '_' + SGames.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(SGames.ThumbnailDiv + SGames.cursorY + '_' + SGames.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(SGames.DispNameDiv + SGames.cursorY + '_' + SGames.cursorX).classList.remove('stream_info_focused');
 };
 
 SGames.keyClickDelay = function() {

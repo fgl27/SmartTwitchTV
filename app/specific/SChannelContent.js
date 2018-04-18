@@ -38,9 +38,9 @@ SChannelContent.init = function() {
     if (SChannelContent.lastselectedChannel !== Main.selectedChannel) SChannelContent.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
-    $('.lable_user').html(Main.selectedChannelDisplayname);
-    $('.lable_game').html(STR_CHANNEL_CONT);
-    $('.label_agame_name').html('');
+    document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
+    document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
+    document.getElementById('id_agame_name').innerHTML = '';
     document.body.addEventListener("keydown", SChannelContent.handleKeyDown, false);
     AddCode.PlayRequest = false;
     if (SChannelContent.status) {

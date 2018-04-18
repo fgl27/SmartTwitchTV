@@ -36,9 +36,9 @@ UserGames.OldUserName = '';
 
 UserGames.init = function() {
     Main.Go = Main.UserGames;
-    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
-    $('.label_agame_name').html(Main.UserName + STR_LIVE_GAMES);
+    document.getElementById('id_agame_name').innerHTML = Main.UserName + STR_LIVE_GAMES;
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
@@ -50,8 +50,8 @@ UserGames.init = function() {
 };
 
 UserGames.exit = function() {
-    $('#top_bar_user').removeClass('icon_center_focus');
-    $('.label_agame_name').html('');
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    document.getElementById('id_agame_name').innerHTML = '';
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserGames.handleKeyDown);
 };

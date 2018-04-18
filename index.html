@@ -477,26 +477,26 @@
             <div class="twitchicon">
                 <img style="float: right; width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
                 <div style="text-align: center;">
-                    <div class="icon_top_label label_about" style="text-align: center;"></div>
+                    <div id="label_about" class="icon_top_label" style="text-align: center;"></div>
                 </div>
             </div>
             <div style="padding-left: 1%; padding-top: 0.5%;">
                 <div style="padding-bottom: 0.3%;">
-                    <div class="icon_top_label label_controls"></div>
+                    <div id="label_controls" class="icon_top_label"></div>
                 </div>
-                <div class="icon_top_label label_refresh"></div>
+                <div id="label_refresh" class="icon_top_label"></div>
                 <div>
-                    <div class="icon_top_label label_search"></div>
+                    <div id="label_search" class="icon_top_label"></div>
                     <div id="top_bar_spacing" class="icon_center_label" style="padding-left: 30%;">
                     </div>
-                    <div id="top_bar_live" class="icon_center_label lable_live"></div>
+                    <div id="top_bar_live" class="icon_center_label"></div>
                     <div id="top_bar_user" class="icon_center_label lable_user"></div>
-                    <div id="top_bar_game" class="icon_center_label lable_game"></div>
+                    <div id="top_bar_game" class="icon_center_label"></div>
                     <div id="top_bar_etc" class="icon_center_label lable_etc">
                     </div>
                 </div>
                 <div>
-                    <div class="icon_top_label label_switch"></div>
+                    <div id="label_switch" class="icon_top_label"></div>
                 </div>
                 <div id="id_agame_name" class="icon_top_label label_agame_name" style="line-height: 0;"></div>
             </div>
@@ -510,16 +510,16 @@
         <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
             <div id="main_dialog_remove" class="exit_text"></div>
             <div style="text-align: center; margin-bottom: 4%;">
-                <div id="remove_cancel" class="button_search_focused button_search label_remove_cancel" style="margin-left: 0%;"></div>
-                <div id="remove_yes" class="button_search label_remove_yes"></div>
+                <div id="remove_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
+                <div id="remove_yes" class="button_search"></div>
             </div>
         </div>
         <div id="main_dialog_exit" class="dialog_exit hide">
             <div id="main_dialog_exit_text" class="exit_text"></div>
             <div style="text-align: center; margin-bottom: 4%;">
-                <div id="exit_app_cancel" class="button_search_focused button_search label_exit_cancel" style="margin-left: 0%;"></div>
-                <div id="exit_app_minimize" class="button_search label_exit_minimize"></div>
-                <div id="exit_app_close" class="button_search label_exit_close"></div>
+                <div id="exit_app_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
+                <div id="exit_app_minimize" class="button_search"></div>
+                <div id="exit_app_close" class="button_search"></div>
             </div>
         </div>
         <div id="dialog_warning" class="strokedbig dialogs hide" style="z-index:101; margin-top: 31%; ">
@@ -543,20 +543,20 @@
         <div class="screen_size"></div>
         <div id="oauth" class="imput_text_box">
             <div id="oauth_text" class="strokedextramini" style="font-size: 190%; font-weight:bold;"></div>
-            <input id="oauth_input" class="input_class label_placeholder_oauth" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
+            <input id="oauth_input" class="input_class" type="text" placeholder="" />
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <div id="search" class="imput_text_box">
-            <input id="search_input" class="input_class label_placeholder_search" type="text" placeholder="STR_PLACEHOLDER_SEARCH" />
-            <div id="chanel_button" class="button_search label_search_chanel"></div>
-            <div id="game_button" class="button_search label_search_game"></div>
-            <div id="live_button" class="button_search label_search_live"></div>
+            <input id="search_input" class="input_class" type="text" placeholder="" />
+            <div id="chanel_button" class="button_search"></div>
+            <div id="game_button" class="button_search"></div>
+            <div id="live_button" class="button_search"></div>
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <div id="add_user" class="imput_text_box">
-            <input id="user_input" class="input_class label_placeholder_user" type="text" placeholder="STR_PLACEHOLDER_USER" />
+            <input id="user_input" class="input_class" type="text" placeholder="" />
         </div>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->

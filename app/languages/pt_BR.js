@@ -143,4 +143,5 @@ function pt_BRLang() {
     STR_GAME_CONT = "Conteúdo do jogo";
     STR_YES = "Sim";
     STR_REMOVE_USER = "Tem certeza que deseja remover o usuário ";
+    STR_PLACEHOLDER_PRESS_UP = "Pressione a tecla pra cima para ";
 }
