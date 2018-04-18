@@ -121,6 +121,10 @@ Users.loadDataSuccessFinish = function() {
     });
 };
 
+Users.resetGameCell = function() {
+    for (var x = 0; x < AddUser.UsernameArray.length; x++) document.getElementById(Users.ids[3] + x + '_' + 2).innerHTML = (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
+};
+
 Users.checkTitleStart = function() {
     for (var x = 0; x < AddUser.UsernameArray.length; x++) Users.checkTitleRun(x);
 };
