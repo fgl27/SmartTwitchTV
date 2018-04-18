@@ -214,7 +214,7 @@ function previewDataGenerator() {
     }
     if (SmartHub.userhost.length > 0) data += ']},';
 
-    if (SmartHub.usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub.followerUsername + '","tiles":[';
+    if (SmartHub.usergames.length > 0) data += '{"title":"' + STR_FALLOW_GAMES + ' ' + SmartHub.followerUsername + '","tiles":[';
     for (i = 0; i < SmartHub.usergames.length; i++) {
         if (i < 1) {
             data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub.usergamesimg[i] +
