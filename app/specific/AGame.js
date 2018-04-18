@@ -261,7 +261,7 @@ AGame.fallow = function() {
     } else {
         Main.showWarningDialog(STR_NOKEY_WARN);
         window.setTimeout(function() {
-            if (AGame.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            if (AGame.emptyContent && Main.Go === Main.AGame) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else Main.HideWarningDialog();
         }, 2000);
     }
