@@ -1,114 +1,172 @@
 {
-	"_total": 5,
 	"follows": [{
-		"viewers": 43,
-		"channels": 15,
-		"game": {
-			"name": "ELEX",
-			"_id": 490465,
-			"giantbomb_id": 50584,
-			"box": {
-				"large": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-272x380.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-136x190.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-52x72.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-{width}x{height}.jpg"
-			},
-			"logo": {
-				"large": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-240x144.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-120x72.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-60x36.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-{width}x{height}.jpg"
-			},
-			"properties": {},
-			"_links": {}
-		}
+		"name": "Fortnite",
+		"popularity": 122070,
+		"_id": 33214,
+		"giantbomb_id": 37030,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "Fortnite",
+		"locale": "en-us"
 	}, {
-		"viewers": 22684,
-		"channels": 1009,
-		"game": {
-			"name": "Fortnite",
-			"_id": 33214,
-			"giantbomb_id": 37030,
-			"box": {
-				"large": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-272x380.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-136x190.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
-			},
-			"logo": {
-				"large": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-240x144.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-120x72.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-60x36.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-logoart/Fortnite-{width}x{height}.jpg"
-			},
-			"properties": {},
-			"_links": {}
-		}
+		"name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"popularity": 73111,
+		"_id": 493057,
+		"giantbomb_id": 54979,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+		"locale": "en-us"
 	}, {
-		"viewers": 89306,
-		"channels": 2076,
-		"game": {
-			"name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
-			"_id": 493057,
-			"giantbomb_id": 54979,
-			"box": {
-				"large": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-272x380.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-136x190.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-52x72.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
-			},
-			"logo": {
-				"large": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-240x144.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-120x72.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-60x36.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-logoart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
-			},
-			"properties": {},
-			"_links": {}
-		}
+		"name": "Magic Knight Rayearth",
+		"popularity": 0,
+		"_id": 17441,
+		"giantbomb_id": 19038,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Magic%20Knight%20Rayearth-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Magic%20Knight%20Rayearth-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Magic%20Knight%20Rayearth-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Magic%20Knight%20Rayearth-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Magic%20Knight%20Rayearth-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Magic%20Knight%20Rayearth-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Magic%20Knight%20Rayearth-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Magic%20Knight%20Rayearth-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "Magic Knight Rayearth",
+		"locale": "en-us"
 	}, {
-		"viewers": 44,
-		"channels": 16,
-		"game": {
-			"name": "South Park: The Fractured But Whole",
-			"_id": 490378,
-			"giantbomb_id": 49968,
-			"box": {
-				"large": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-272x380.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-136x190.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-52x72.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-{width}x{height}.jpg"
-			},
-			"logo": {
-				"large": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-240x144.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-120x72.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-60x36.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-{width}x{height}.jpg"
-			},
-			"properties": {},
-			"_links": {}
-		}
+		"name": "TwitchCon 2017",
+		"popularity": 0,
+		"_id": 497185,
+		"giantbomb_id": 0,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/TwitchCon%202017-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/TwitchCon%202017-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/TwitchCon%202017-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/TwitchCon%202017-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/TwitchCon%202017-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/TwitchCon%202017-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/TwitchCon%202017-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/TwitchCon%202017-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "TwitchCon 2017",
+		"locale": "en-us"
 	}, {
-		"viewers": 7225,
-		"channels": 56,
-		"game": {
-			"name": "Talk Shows",
-			"_id": 417752,
-			"giantbomb_id": 0,
-			"box": {
-				"large": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-272x380.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-136x190.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-52x72.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-{width}x{height}.jpg"
-			},
-			"logo": {
-				"large": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-240x144.jpg",
-				"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-120x72.jpg",
-				"small": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-60x36.jpg",
-				"template": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-{width}x{height}.jpg"
-			},
-			"properties": {},
-			"_links": {}
-		}
-	}]
+		"name": "ELEX",
+		"popularity": 12,
+		"_id": 490465,
+		"giantbomb_id": 50584,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/ELEX-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/ELEX-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "ELEX",
+		"locale": "en-us"
+	}, {
+		"name": "South Park: The Fractured But Whole",
+		"popularity": 8,
+		"_id": 490378,
+		"giantbomb_id": 49968,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/South%20Park:%20The%20Fractured%20But%20Whole-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/South%20Park:%20The%20Fractured%20But%20Whole-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "South Park: The Fractured But Whole",
+		"locale": "en-us"
+	}, {
+		"name": "Talk Shows",
+		"popularity": 1670,
+		"_id": 417752,
+		"giantbomb_id": 0,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/Talk%20Shows-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/Talk%20Shows-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "Talk Shows",
+		"locale": "en-us"
+	}, {
+		"name": "FIFA 18",
+		"popularity": 7465,
+		"_id": 495589,
+		"giantbomb_id": 58179,
+		"box": {
+			"large": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2018-272x380.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2018-136x190.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2018-52x72.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2018-{width}x{height}.jpg"
+		},
+		"logo": {
+			"large": "https://static-cdn.jtvnw.net/ttv-logoart/FIFA%2018-240x144.jpg",
+			"medium": "https://static-cdn.jtvnw.net/ttv-logoart/FIFA%2018-120x72.jpg",
+			"small": "https://static-cdn.jtvnw.net/ttv-logoart/FIFA%2018-60x36.jpg",
+			"template": "https://static-cdn.jtvnw.net/ttv-logoart/FIFA%2018-{width}x{height}.jpg"
+		},
+		"properties": {},
+		"_links": {},
+		"localized_name": "FIFA 18",
+		"locale": "en-us"
+	}],
+	"_total": 8
 }
