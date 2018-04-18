@@ -144,4 +144,5 @@ function pt_BRLang() {
     STR_YES = "Sim";
     STR_REMOVE_USER = "Tem certeza que deseja remover o usuário ";
     STR_PLACEHOLDER_PRESS_UP = "Pressione a tecla pra cima para ";
+    STR_FALLOW_GAMES = "Jogos seguidos";
 }

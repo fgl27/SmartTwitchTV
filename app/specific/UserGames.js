@@ -98,7 +98,7 @@ UserGames.loadDataRequest = function() {
             UserGames.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games/live?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games?limit=' +
             Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
@@ -158,10 +158,9 @@ UserGames.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             follows = response.follows[cursor];
-            if (UserGames.CellExists(follows.game.name)) coloumn_id--;
+            if (UserGames.CellExists(follows.name)) coloumn_id--;
             else {
-                cell = UserGames.createCell(row_id, coloumn_id, follows.game.name, follows.game.box.template,
-                    Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viewers) + STR_VIEWER);
+                cell = UserGames.createCell(row_id, coloumn_id, follows.name, follows.box.template);
                 row.append(cell);
             }
         }
@@ -179,12 +178,12 @@ UserGames.loadDataSuccess = function(responseText) {
     UserGames.loadDataSuccessFinish();
 };
 
-UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
+UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
     return $('<td id="' + UserGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        UserGames.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail));
+        UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail));
 };
 
-UserGames.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thumbnail) {
+UserGames.CellHtml = function(row_id, coloumn_id, game_name, preview_thumbnail) {
 
     UserGames.nameMatrix.push(game_name);
 
@@ -195,8 +194,7 @@ UserGames.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thu
         coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-        '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
-        viwers + '</div></div>';
+        '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games hide" ></div></div>';
 };
 
 UserGames.CellExists = function(display_name) {
@@ -248,8 +246,8 @@ UserGames.loadDataRequestReplace = function() {
             UserGames.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/follows?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games?limit=' +
+            Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -294,12 +292,11 @@ UserGames.loadDataSuccessReplace = function(responseText) {
 
     for (var i = 0; i < UserGames.blankCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
-        if (UserGames.CellExists(follows.game.name)) {
+        if (UserGames.CellExists(follows.name)) {
             UserGames.blankCellCount--;
             i--;
         } else {
-            UserGames.replaceCellEmpty(UserGames.blankCellVector[i], follows.game.name, follows.game.box.template,
-                Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viewers) + STR_VIEWER);
+            UserGames.replaceCellEmpty(UserGames.blankCellVector[i], row_id, coloumn_id, follows.name, follows.box.template);
             UserGames.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -318,7 +315,7 @@ UserGames.loadDataSuccessReplace = function(responseText) {
     UserGames.loadDataSuccessFinish();
 };
 
-UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
+UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail) {
     var splitedId = id.split("_");
     var row_id = splitedId[1];
     var coloumn_id = splitedId[2];
@@ -326,7 +323,7 @@ UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) 
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = UserGames.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail);
+    document.getElementById(cell).innerHTML = UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail);
 };
 
 UserGames.addFocus = function() {

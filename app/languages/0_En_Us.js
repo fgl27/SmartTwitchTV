@@ -154,3 +154,4 @@ var STR_GAME_CONT = "Game content";
 var STR_YES = "Yes";
 var STR_REMOVE_USER = "Are you sure you want to remove the user ";
 var STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
+var STR_FALLOW_GAMES = "Followed Games";
