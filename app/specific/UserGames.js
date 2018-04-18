@@ -20,6 +20,7 @@ UserGames.ReplacedataEnded = false;
 UserGames.MaxOffset = 0;
 UserGames.emptyContent = false;
 UserGames.itemsCountCheck = false;
+UserGames.live = true;
 
 UserGames.Img = 'img_glive';
 UserGames.Thumbnail = 'thumbnail_glive_';
@@ -36,9 +37,10 @@ UserGames.OldUserName = '';
 
 UserGames.init = function() {
     Main.Go = Main.UserGames;
+    Main.IconLoad('label_refresh', 'icon-switch', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES );
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
-    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + STR_FALLOW_GAMES;
+    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
@@ -50,6 +52,7 @@ UserGames.init = function() {
 };
 
 UserGames.exit = function() {
+    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('id_agame_name').innerHTML = '';
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
@@ -59,6 +62,7 @@ UserGames.exit = function() {
 UserGames.StartLoad = function() {
     Main.HideWarningDialog();
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
+    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
     Main.showLoadDialog();
     UserGames.OldUserName = Main.UserName;
     UserGames.Status = false;
@@ -98,8 +102,8 @@ UserGames.loadDataRequest = function() {
             UserGames.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games?limit=' +
-            Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games' + (UserGames.live ? '/live' : '') +
+            '?limit=' + Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -158,10 +162,19 @@ UserGames.loadDataSuccess = function(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             follows = response.follows[cursor];
-            if (UserGames.CellExists(follows.name)) coloumn_id--;
-            else {
-                cell = UserGames.createCell(row_id, coloumn_id, follows.name, follows.box.template);
-                row.append(cell);
+            if (UserGames.live) {
+                if (UserGames.CellExists(follows.game.name)) coloumn_id--;
+                else {
+                    cell = UserGames.createCell(row_id, coloumn_id, follows.game.name, follows.game.box.template,
+                        Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viewers) + STR_VIEWER);
+                    row.append(cell);
+                }
+            } else {
+                if (UserGames.CellExists(follows.name)) coloumn_id--;
+                else {
+                    cell = UserGames.createCell(row_id, coloumn_id, follows.name, follows.box.template, '');
+                    row.append(cell);
+                }
             }
         }
         for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
@@ -178,12 +191,12 @@ UserGames.loadDataSuccess = function(responseText) {
     UserGames.loadDataSuccessFinish();
 };
 
-UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail) {
+UserGames.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viewers) {
     return $('<td id="' + UserGames.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail));
+        UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers));
 };
 
-UserGames.CellHtml = function(row_id, coloumn_id, game_name, preview_thumbnail) {
+UserGames.CellHtml = function(row_id, coloumn_id, game_name, preview_thumbnail, viewers) {
 
     UserGames.nameMatrix.push(game_name);
 
@@ -194,7 +207,7 @@ UserGames.CellHtml = function(row_id, coloumn_id, game_name, preview_thumbnail) 
         coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
         '<div id="' + UserGames.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
         '<div id="' + UserGames.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-        '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games hide" ></div></div>';
+        '<div id="' + UserGames.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%;">' + viewers + '</div></div>';
 };
 
 UserGames.CellExists = function(display_name) {
@@ -246,8 +259,8 @@ UserGames.loadDataRequestReplace = function() {
             UserGames.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games?limit=' +
-            Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main.UserName) + '/follows/games' + (UserGames.live ? '/live' : '') +
+            '?limit=' + Main.ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main.clientId);
         xmlHttp.ontimeout = function() {};
@@ -292,18 +305,42 @@ UserGames.loadDataSuccessReplace = function(responseText) {
 
     for (var i = 0; i < UserGames.blankCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
-        if (UserGames.CellExists(follows.name)) {
-            UserGames.blankCellCount--;
-            i--;
-        } else {
-            UserGames.replaceCellEmpty(UserGames.blankCellVector[i], row_id, coloumn_id, follows.name, follows.box.template);
-            UserGames.blankCellCount--;
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
+
+
+
+        if (UserGames.live) {
+            if (UserGames.CellExists(follows.game.name)) {
+                UserGames.blankCellCount--;
+                i--;
+            } else {
+                UserGames.replaceCellEmpty(UserGames.blankCellVector[i], row_id, coloumn_id, follows.game.name, follows.game.box.template,
+                    Main.addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(follows.viwers) + STR_VIEWER);
+                UserGames.blankCellCount--;
+
+                index = tempVector.indexOf(tempVector[i]);
+                if (index > -1) {
+                    tempVector.splice(index, 1);
+                }
+            }
+        } else {
+            if (UserGames.CellExists(follows.name)) {
+                UserGames.blankCellCount--;
+                i--;
+            } else {
+                UserGames.replaceCellEmpty(UserGames.blankCellVector[i], row_id, coloumn_id, follows.name, follows.box.template, '');
+                UserGames.blankCellCount--;
+
+                index = tempVector.indexOf(tempVector[i]);
+                if (index > -1) {
+                    tempVector.splice(index, 1);
+                }
             }
         }
+
+
+
+
     }
 
     UserGames.itemsCountOffset += cursor;
@@ -315,7 +352,7 @@ UserGames.loadDataSuccessReplace = function(responseText) {
     UserGames.loadDataSuccessFinish();
 };
 
-UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail) {
+UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail, viewers) {
     var splitedId = id.split("_");
     var row_id = splitedId[1];
     var coloumn_id = splitedId[2];
@@ -323,7 +360,7 @@ UserGames.replaceCellEmpty = function(id, game_name, preview_thumbnail) {
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail);
+    document.getElementById(cell).innerHTML = UserGames.CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers);
 };
 
 UserGames.addFocus = function() {
@@ -426,7 +463,11 @@ UserGames.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!UserGames.loadingMore) UserGames.StartLoad();
+            if (!UserGames.loadingMore) {
+                UserGames.live = !UserGames.live;
+                UserGames.StartLoad();
+                localStorage.setItem('user_games_live', UserGames.live ? 'true' : 'false');
+            }
             break;
         case TvKeyCode.KEY_CHANNELUP:
             if (!UserGames.loadingMore) {
