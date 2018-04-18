@@ -464,6 +464,7 @@ UserGames.handleKeyDown = function(event) {
         case TvKeyCode.KEY_BLUE:
             Main.BeforeSearch = Main.UserGames;
             Main.Go = Main.Search;
+            AGame.UserGames = false;
             UserGames.exit();
             Main.SwitchScreen();
             break;
