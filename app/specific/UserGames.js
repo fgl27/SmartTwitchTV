@@ -38,7 +38,7 @@ UserGames.init = function() {
     Main.Go = Main.UserGames;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
-    document.getElementById('id_agame_name').innerHTML = Main.UserName + STR_FALLOW_GAMES;
+    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + STR_FALLOW_GAMES;
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
