@@ -70,7 +70,8 @@ Users.loadData = function() {
         coloumn_id++;
         row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_FALLOW_GAMES, IMG_BLUR_GAME));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
+            IMG_BLUR_GAME));
         coloumn_id++;
         row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
         coloumn_id++;

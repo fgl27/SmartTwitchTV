@@ -158,6 +158,7 @@ Main.loadTranslations = function(device) {
     Main.initWindows();
     Live.init();
     Play.PreStart();
+    UserGames.live = (localStorage.getItem('user_games_live') || 'true') === 'true' ? true : false;
     AddUser.RestoreUsers();
     // pre load All img
     Main.PreLoadAImage(IMG_404_VIDEO);
