@@ -40,7 +40,6 @@ UserGames.init = function() {
     Main.IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
-    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
@@ -305,10 +304,6 @@ UserGames.loadDataSuccessReplace = function(responseText) {
 
     for (var i = 0; i < UserGames.blankCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
-
-
-
-
         if (UserGames.live) {
             if (UserGames.CellExists(follows.game.name)) {
                 UserGames.blankCellCount--;
@@ -337,10 +332,6 @@ UserGames.loadDataSuccessReplace = function(responseText) {
                 }
             }
         }
-
-
-
-
     }
 
     UserGames.itemsCountOffset += cursor;
