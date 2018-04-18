@@ -26,10 +26,10 @@ AddCode.init = function() {
         return;
     } else {
         Main.Go = Main.AddCode;
-        $('#top_bar_user').addClass('icon_center_focus');
+        document.getElementById('top_bar_user').classList.add('icon_center_focus');
         Main.HideWarningDialog();
         AddCode.input = document.querySelector('#oauth_input');
-        $('.label_placeholder_oauth').attr("placeholder", STR_PLACEHOLDER_OAUTH);
+        document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
         document.getElementById("oauth_text").innerHTML = STR_OAUTH_IN + Main.UserName + STR_OAUTH_EXPLAIN;
         AddCode.inputFocus();
         AddUser.ScrollHelper.scrollVerticalToElementById('oauth_input');
@@ -39,7 +39,7 @@ AddCode.init = function() {
 AddCode.exit = function() {
     AddCode.RemoveinputFocus();
     document.body.removeEventListener("keydown", AddCode.handleKeyDown);
-    $('#top_bar_user').removeClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
 };
 
 AddCode.handleKeyDown = function(event) {
@@ -97,7 +97,7 @@ AddCode.inputFocus = function() {
     document.body.addEventListener("keydown", AddCode.KeyboardEvent, false);
     AddCode.input.addEventListener('input');
     AddCode.input.addEventListener('compositionend');
-    $('.label_placeholder_oauth').attr("placeholder", STR_PLACEHOLDER_OAUTH);
+    document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
     AddCode.input.focus();
     AddCode.keyBoardOn = true;
 };
@@ -106,7 +106,7 @@ AddCode.RemoveinputFocus = function() {
     AddCode.input.blur();
     document.body.removeEventListener("keydown", AddCode.KeyboardEvent);
     document.body.addEventListener("keydown", AddCode.handleKeyDown, false);
-    $('.label_placeholder_oauth').attr("placeholder", STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH);
+    document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
     window.setTimeout(function() {
         AddCode.keyBoardOn = false;
     }, 250);

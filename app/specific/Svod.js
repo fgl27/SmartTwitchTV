@@ -44,9 +44,9 @@ Svod.init = function() {
     if (Main.selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
-    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH_VOD);
-    $('.lable_user').html(Main.selectedChannelDisplayname);
-    $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD);
+    document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
+    document.getElementById('top_bar_game').innerHTML = Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
     Main.YRst(Svod.cursorY);
     if (Svod.status) {
@@ -62,7 +62,7 @@ Svod.exit = function() {
 };
 
 Svod.StartLoad = function() {
-    $('.lable_game').html(Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    document.getElementById('top_bar_game').innerHTML = Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
     Main.HideWarningDialog();
     Svod.lastselectedChannel = Main.selectedChannel;
     Svod.status = false;
@@ -359,14 +359,13 @@ Svod.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_tit
 };
 
 Svod.addFocus = function() {
-
-    $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_text_focused');
-    $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
-    $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).addClass('stream_info_focused');
+    document.getElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_text_focused');
+    document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
@@ -385,13 +384,13 @@ Svod.addFocus = function() {
 };
 
 Svod.removeFocus = function() {
-    $('#' + Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_text_focused');
-    $('#' + Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
-    $('#' + Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).removeClass('stream_info_focused');
+    document.getElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
 };
 
 Svod.keyClickDelay = function() {

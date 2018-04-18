@@ -36,7 +36,7 @@ Games.Cell = 'game_cell_';
 Games.init = function() {
     Main.Go = Main.Games;
     document.body.addEventListener("keydown", Games.handleKeyDown, false);
-    $('#top_bar_game').addClass('icon_center_focus');
+    document.getElementById('top_bar_game').classList.add('icon_center_focus');
     Main.YRst(Games.cursorY);
     if (Games.Status) {
         Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games,
@@ -47,7 +47,7 @@ Games.init = function() {
 
 Games.exit = function() {
     document.body.removeEventListener("keydown", Games.handleKeyDown);
-    $('#top_bar_game').removeClass('icon_center_focus');
+    document.getElementById('top_bar_game').classList.remove('icon_center_focus');
 };
 
 Games.StartLoad = function() {

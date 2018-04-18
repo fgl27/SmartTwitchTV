@@ -39,8 +39,8 @@ SChannels.init = function() {
     SChannels.isLastSChannels = true;
     if (SChannels.lastData !== Search.data) SChannels.Status = false;
     Main.cleanTopLabel();
-    $('.lable_user').html(STR_SEARCH);
-    $('.label_agame_name').html(STR_CHANNELS + ' ' + '\'' + Search.data + '\'');
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
+    document.getElementById('id_agame_name').innerHTML = STR_CHANNELS + ' ' + "'" + Search.data + "'";
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
     Main.YRst(SChannels.cursorY);
     if (SChannels.Status) {
@@ -332,9 +332,9 @@ SChannels.replaceCellEmpty = function(id, channel_name, _id, preview_thumbnail, 
 };
 
 SChannels.addFocus = function() {
-    $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_text_focused');
-    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).addClass('stream_info_focused');
+    document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.add('stream_text_focused');
+    document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.add('stream_info_focused');
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
     }, 10);
@@ -352,9 +352,9 @@ SChannels.addFocus = function() {
 };
 
 SChannels.removeFocus = function() {
-    $('#' + SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_text_focused');
-    $('#' + SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).removeClass('stream_info_focused');
+    document.getElementById(SChannels.Thumbnail + SChannels.cursorY + '_' + SChannels.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.remove('stream_info_focused');
 };
 
 SChannels.keyClickDelay = function() {

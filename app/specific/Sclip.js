@@ -50,9 +50,9 @@ Sclip.init = function() {
     if (Main.selectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
     Main.cleanTopLabel();
     Sclip.SetPeriod();
-    $('.lable_user').html(Main.selectedChannelDisplayname);
+    document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
-    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH_CLIP);
+    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
     Main.YRst(Sclip.cursorY);
     if (Sclip.status) {
@@ -99,16 +99,16 @@ Sclip.loadDataPrepare = function() {
 
 Sclip.SetPeriod = function() {
     if (!Sclip.periodNumber) {
-        $('.lable_game').html(STR_CLIPS + STR_CLIP_DAY);
+        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_DAY;
         Sclip.period = 'day';
     } else if (Sclip.periodNumber === 1) {
-        $('.lable_game').html(STR_CLIPS + STR_CLIP_WEEK);
+        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_WEEK;
         Sclip.period = 'week';
     } else if (Sclip.periodNumber === 2) {
-        $('.lable_game').html(STR_CLIPS + STR_CLIP_MONTH);
+        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_MONTH;
         Sclip.period = 'month';
     } else if (Sclip.periodNumber === 3) {
-        $('.lable_game').html(STR_CLIPS + STR_CLIP_ALL);
+        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_ALL;
         Sclip.period = 'all';
     }
 };
@@ -356,13 +356,13 @@ Sclip.replaceCellEmpty = function(id, channel_name, preview_thumbnail, video_cre
 };
 
 Sclip.addFocus = function() {
-    $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_thumbnail_focused');
-    $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_text_focused');
-    $('#' + Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
-    $('#' + Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
-    $('#' + Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
-    $('#' + Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
-    $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).addClass('stream_info_focused');
+    document.getElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_text_focused');
+    document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
         Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
@@ -381,13 +381,13 @@ Sclip.addFocus = function() {
 };
 
 Sclip.removeFocus = function() {
-    $('#' + Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_thumbnail_focused');
-    $('#' + Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_text_focused');
-    $('#' + Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
-    $('#' + Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
-    $('#' + Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
-    $('#' + Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
-    $('#' + Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).removeClass('stream_info_focused');
+    document.getElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
 };
 
 Sclip.keyClickDelay = function() {

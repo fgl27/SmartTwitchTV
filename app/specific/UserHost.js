@@ -32,7 +32,7 @@ UserHost.init = function() {
     Main.Go = Main.UserHost;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
-    $('.label_agame_name').html(Main.UserName + STR_LIVE_HOSTS);
+    document.getElementById('id_agame_name').innerHTML = Main.UserName + STR_LIVE_HOSTS;
     document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
     Main.YRst(UserHost.cursorY);
     if (UserHost.OldUserName !== Main.UserName) UserHost.status = false;
@@ -45,7 +45,7 @@ UserHost.init = function() {
 
 UserHost.exit = function() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    $('.label_agame_name').html('');
+    document.getElementById('id_agame_name').innerHTML = '';
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
     document.body.removeEventListener("keydown", UserHost.handleKeyDown);
 };

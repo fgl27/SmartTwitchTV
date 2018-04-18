@@ -177,33 +177,32 @@ Main.loadTranslations = function(device) {
 
 Main.initWindows = function() {
     //set top bar labels
-    Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
-    Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
-    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
-    Main.IconLoad('.label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    Main.IconLoad('.label_about', 'icon-info-circle', STR_ABOUT_KEY);
-    $('.lable_live').html(STR_LIVE);
-    $('.lable_user').html(STR_USER);
-    $('.lable_game').html(STR_GAMES);
-    $('.label_agame').html('');
-    $('.label_search_chanel').html(STR_CHANNELS);
-    $('.label_search_game').html(STR_GAMES);
-    $('.label_search_live').html(STR_LIVE);
-    $('.label_exit_cancel').html(STR_CANCEL);
-    $('.label_exit_close').html(STR_CLOSE);
-    $('.label_remove_cancel').html(STR_CANCEL);
-    $('.label_remove_yes').html(STR_YES);
-    $('.label_exit_minimize').html(STR_MINIMIZE);
+    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main.IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main.IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
+    document.getElementById('top_bar_live').innerHTML = STR_LIVE;
+    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('id_agame_name').innerHTML = '';
+    document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
+    document.getElementById('game_button').innerHTML = STR_GAMES;
+    document.getElementById('live_button').innerHTML = STR_LIVE;
+    document.getElementById('exit_app_cancel').innerHTML = STR_CANCEL;
+    document.getElementById('exit_app_close').innerHTML = STR_CLOSE;
+    document.getElementById('remove_cancel').innerHTML = STR_CANCEL;
+    document.getElementById('remove_yes').innerHTML = STR_YES;
+    document.getElementById('exit_app_minimize').innerHTML = STR_MINIMIZE;
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
-    $('.label_buffering').html(STR_BUFFERING);
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     Main.NetworkStateChangeListenerStart();
 };
 
 Main.IconLoad = function(lable, icon, string) {
-    $(lable).html('<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
-        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
+    document.getElementById(lable).innerHTML = '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
+        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>';
 };
 
 Main.ChangeBorder = function(div, value) {
@@ -248,13 +247,13 @@ Main.isExitDialogShown = function() {
 };
 
 Main.CounterDialogRst = function() {
-    $("#dialog_counter_text").text('');
+    document.getElementById('dialog_counter_text').innerHTML = '';
     Main.Scrollbar(0, 0, 0);
 };
 
 Main.CounterDialog = function(x, y, coloumns, total) {
     if (total > 0) {
-        $("#dialog_counter_text").text((y * coloumns) + (x + 1) + '/' + (total));
+        document.getElementById('dialog_counter_text').innerHTML = (y * coloumns) + (x + 1) + '/' + (total);
         Main.Scrollbar(y, coloumns, total);
     } else Main.CounterDialogRst();
 };
@@ -299,12 +298,11 @@ Main.SetItemsLimitReload = function(blankCellCount) {
 
 Main.showWarningDialog = function(text) {
     if (!Main.NetworkStateOK && text === STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
-    $("#dialog_warning_text").text(!Main.NetworkStateOK ? STR_NET_DOWN : text);
+    document.getElementById('dialog_warning_text').innerHTML = !Main.NetworkStateOK ? STR_NET_DOWN : text;
     document.getElementById('dialog_warning').classList.remove('hide');
 };
 
 Main.HideWarningDialog = function() {
-    $("#dialog_warning_text").text('');
     document.getElementById('dialog_warning').classList.add('hide');
 };
 
@@ -452,25 +450,25 @@ Main.openStream = function() {
 };
 
 Main.RestoreTopLabel = function() {
-    Main.IconLoad('.label_refresh', 'icon-refresh', STR_REFRESH);
-    Main.IconLoad('.label_search', 'icon-search', STR_SEARCH_KEY);
-    Main.IconLoad('.label_switch', 'icon-switch', STR_SWITCH);
-    $('#top_bar_user').removeClass('icon_center_focus');
+    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingDefault + "%";
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
-    $('.lable_live').html(STR_LIVE);
-    $('.lable_user').html(STR_USER);
-    $('.lable_game').html(STR_GAMES);
-    $('.label_agame_name').html('');
+    document.getElementById('top_bar_live').innerHTML = STR_LIVE;
+    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('id_agame_name').innerHTML = '';
 };
 
 Main.cleanTopLabel = function() {
-    Main.IconLoad('.label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
-    $('.label_switch').html('');
-    $('.lable_live').html('');
-    $('.lable_game').html('');
+    Main.IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+    document.getElementById('label_switch').innerHTML = '';
+    document.getElementById('top_bar_live').innerHTML = '';
+    document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingCleanTop + "%";
-    $('#top_bar_user').addClass('icon_center_focus');
+    document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultCleanTop + "%";
 };
 
