@@ -1,12 +1,12 @@
 // Keep this file named as (zero)*** so it loads first in release_maker
-var STR_REFRESH = "Refresh (Guide or Info)";
+var STR_REFRESH = "Refresh";
 var STR_SEARCH = "Search";
 var STR_CONTROLS = "Controls";
 var STR_ABOUT = "About";
 var STR_SEARCH_EMPTY = "The text you entered is empty.";
 var STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
 var STR_SWITCH = "Switch (CH Up/Down)";
-var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight (Guide or Info)";
+var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight";
 var STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all) (CH Up/Down)";
 var STR_GO_TO = "Go to ";
 var STR_USER = "User ";
@@ -156,3 +156,4 @@ var STR_REMOVE_USER = "Are you sure you want to remove the user ";
 var STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
 var STR_FALLOW_GAMES = "Followed Games";
 var STR_USER_GAMES_CHANGE = "Change between";
+var STR_GUIDE = " (Guide or Info)";

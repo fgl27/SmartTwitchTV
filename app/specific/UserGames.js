@@ -37,7 +37,7 @@ UserGames.OldUserName = '';
 
 UserGames.init = function() {
     Main.Go = Main.UserGames;
-    Main.IconLoad('label_refresh', 'icon-switch', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES );
+    Main.IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
     document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
