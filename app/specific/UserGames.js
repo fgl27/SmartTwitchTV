@@ -467,6 +467,7 @@ UserGames.handleKeyDown = function(event) {
                 UserGames.live = !UserGames.live;
                 UserGames.StartLoad();
                 localStorage.setItem('user_games_live', UserGames.live ? 'true' : 'false');
+                Users.resetGameCell();
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
