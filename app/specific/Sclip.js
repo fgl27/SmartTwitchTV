@@ -20,16 +20,7 @@ Sclip.MaxOffset = 0;
 Sclip.DurationSeconds = 0;
 Sclip.emptyContent = false;
 
-Sclip.Img = 'img_sclip';
-Sclip.Thumbnail = 'thumbnail_sclip_';
-Sclip.EmptyCell = 'sclipempty_';
-Sclip.ThumbnailDiv = 'sclip_thumbnail_div_';
-Sclip.DispNameDiv = 'sclip_display_name_';
-Sclip.StreamTitleDiv = 'sclip_video_created_at_';
-Sclip.StreamGameDiv = 'sclip_stream_sclip_';
-Sclip.viewsDiv = 'sclip_views_';
-Sclip.DurationDiv = 'sclip_duration_';
-Sclip.Cell = 'sclip_cell_';
+Sclip.ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_title', 'sc_createdon', 'sc_game', 'sc_viwers', 'sc_duration', 'sc_cell', 'scempty_'];
 Sclip.status = false;
 Sclip.highlight = false;
 Sclip.cursor = null;
@@ -56,7 +47,7 @@ Sclip.init = function() {
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
     Main.YRst(Sclip.cursorY);
     if (Sclip.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
+        Main.ScrollHelper.scrollVerticalToElementById(Sclip.ids[0], Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
     } else Sclip.StartLoad();
@@ -74,7 +65,8 @@ Sclip.StartLoad = function() {
     Sclip.lastselectedChannel = Main.selectedChannel;
     Sclip.cursor = null;
     Sclip.status = false;
-    $('#stream_table_search_clip').empty();
+    var table = document.getElementById('stream_table_search_clip');
+    while (table.firstChild) table.removeChild(table.firstChild);
     Sclip.loadingMore = false;
     Sclip.blankCellCount = 0;
     Sclip.ReplacedataEnded = false;
@@ -171,20 +163,22 @@ Sclip.loadDataSuccess = function(responseText) {
     var response_rows = response_items / Main.ColoumnsCountVideo;
     if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, vod_id, video,
+    var coloumn_id, row_id, row, video,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
             if (Sclip.CellExists(video.tracking_id)) coloumn_id--;
             else {
-                row.append(Sclip.createCell(row_id, coloumn_id, vod_id, video.thumbnails.medium, STR_STREAM_ON + Main.videoCreatedAt(video.created_at),
-                    video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS, video.game));
+                row.appendChild(Sclip.createCell(row_id, row_id + '_' + coloumn_id,
+                    video.thumbnails.medium.split('-preview')[0] + '.mp4' + video.duration, [video.thumbnails.medium,
+                    video.title, video.game, STR_STREAM_ON + Main.videoCreatedAt(video.created_at),
+                    Main.addCommas(video.views) + STR_VIEWER, STR_DURATION + Play.timeS(video.duration)
+                ]));
             }
         }
 
@@ -193,39 +187,19 @@ Sclip.loadDataSuccess = function(responseText) {
                 Sclip.itemsCountCheck = true;
                 Sclip.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, Sclip.EmptyCell));
-            Sclip.blankCellVector.push(Sclip.EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main.createEmptyCell(Sclip.ids[9] + row_id + '_' + coloumn_id));
+            Sclip.blankCellVector.push(Sclip.ids[9] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_search_clip').append(row);
+        document.getElementById("stream_table_search_clip").appendChild(row);
     }
 
     Sclip.loadDataSuccessFinish();
 };
 
-Sclip.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
-    return $('<td id="' + Sclip.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
-        '" data-durationseconds=" ' + video_duration + '"></td>').html(
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail));
-};
-
-Sclip.CellHtml = function(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail) {
-
-    Sclip.nameMatrix.push(channel_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + Sclip.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Sclip.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + Sclip.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Sclip.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + video_title + '</div>' +
-        '<div id="' + Sclip.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + game + '</div>' +
-        '<div id="' + Sclip.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + video_created_at + '</div>' +
-        '<div id="' + Sclip.viewsDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info_games" style="width: 40%; display: inline-block;">' + views + '</div>' +
-        '<div id="' + Sclip.DurationDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:40%; float: right; display: inline-block;">' +
-        STR_DURATION + Play.timeS(video_duration) + '</div></div>';
+Sclip.createCell = function(row_id, id, clip_id, valuesArray) {
+    Sclip.nameMatrix.push(clip_id);
+    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main.createCellVideo(clip_id, id, Sclip.ids, valuesArray);
 };
 
 Sclip.CellExists = function(display_name) {
@@ -244,7 +218,7 @@ Sclip.loadDataSuccessFinish = function() {
             else {
                 Sclip.status = true;
                 Sclip.addFocus();
-                Main.LazyImgStart(Sclip.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                Main.LazyImgStart(Sclip.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             }
             Sclip.loadingData = false;
         } else {
@@ -308,7 +282,7 @@ Sclip.loadDataErrorReplace = function() {
 Sclip.loadDataSuccessReplace = function(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
-    var video, index, vod_id, cursor = 0;
+    var video, index, cursor = 0;
     var tempVector = Sclip.blankCellVector.slice();
 
     Sclip.cursor = response._cursor;
@@ -321,15 +295,15 @@ Sclip.loadDataSuccessReplace = function(responseText) {
             Sclip.blankCellCount--;
             i--;
         } else {
-            vod_id = video.thumbnails.medium.split('-preview')[0] + '.mp4';
-            Sclip.replaceCellEmpty(Sclip.blankCellVector[i], vod_id, video.thumbnails.medium,
-                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.duration, video.title, Main.addCommas(video.views) + STR_VIEWS, video.game);
+            Main.replaceVideo(Svod.blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
+                    video.title, video.game, STR_STREAM_ON + Main.videoCreatedAt(video.created_at),
+                    Main.addCommas(video.views) + STR_VIEWER, STR_DURATION + Play.timeS(video.duration)
+                ]);
+
             Sclip.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            if (index > -1) tempVector.splice(index, 1);
         }
     }
 
@@ -342,35 +316,22 @@ Sclip.loadDataSuccessReplace = function(responseText) {
     Sclip.loadDataSuccessFinish();
 };
 
-Sclip.replaceCellEmpty = function(id, channel_name, preview_thumbnail, video_created_at, video_duration, video_title, views, game) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = Sclip.Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
-    document.getElementById(cell).setAttribute('data-durationseconds', video_duration);
-    document.getElementById(cell).innerHTML =
-        Sclip.CellHtml(row_id, coloumn_id, channel_name, video_title, video_created_at, video_duration, views, game, preview_thumbnail);
-};
-
 Sclip.addFocus = function() {
-    document.getElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_text_focused');
-    document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.ids[0] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Sclip.ids[2] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_text_focused');
+    document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Sclip.Thumbnail, Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(Sclip.ids[0], Sclip.cursorY, Sclip.cursorX, Main.Sclip, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 
     Main.CounterDialog(Sclip.cursorX, Sclip.cursorY, Main.ColoumnsCountVideo, Sclip.itemsCount);
 
-    if (Sclip.cursorY > 3) Main.LazyImg(Sclip.Img, Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (Sclip.cursorY > 3) Main.LazyImg(Sclip.ids[1], Sclip.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Sclip.cursorY + Main.ItemsReloadLimitVideo) > (Sclip.itemsCount / Main.ColoumnsCountVideo)) &&
         !Sclip.dataEnded && !Sclip.loadingMore) {
@@ -381,13 +342,13 @@ Sclip.addFocus = function() {
 };
 
 Sclip.removeFocus = function() {
-    document.getElementById(Sclip.Thumbnail + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(Sclip.ThumbnailDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_text_focused');
-    document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.ids[0] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Sclip.ids[2] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
 };
 
 Sclip.keyClickDelay = function() {
@@ -419,13 +380,13 @@ Sclip.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX - 1), Sclip.Thumbnail)) {
+            if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX - 1), Sclip.ids[0])) {
                 Sclip.removeFocus();
                 Sclip.cursorX--;
                 Sclip.addFocus();
             } else {
                 for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Sclip.cursorY - 1), i, Sclip.Thumbnail)) {
+                    if (Main.ThumbNull((Sclip.cursorY - 1), i, Sclip.ids[0])) {
                         Sclip.removeFocus();
                         Sclip.cursorY--;
                         Sclip.cursorX = i;
@@ -436,11 +397,11 @@ Sclip.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX + 1), Sclip.Thumbnail)) {
+            if (Main.ThumbNull((Sclip.cursorY), (Sclip.cursorX + 1), Sclip.ids[0])) {
                 Sclip.removeFocus();
                 Sclip.cursorX++;
                 Sclip.addFocus();
-            } else if (Main.ThumbNull((Sclip.cursorY + 1), 0, Sclip.Thumbnail)) {
+            } else if (Main.ThumbNull((Sclip.cursorY + 1), 0, Sclip.ids[0])) {
                 Sclip.removeFocus();
                 Sclip.cursorY++;
                 Sclip.cursorX = 0;
@@ -449,7 +410,7 @@ Sclip.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_UP:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Sclip.cursorY - 1), (Sclip.cursorX - i), Sclip.Thumbnail)) {
+                if (Main.ThumbNull((Sclip.cursorY - 1), (Sclip.cursorX - i), Sclip.ids[0])) {
                     Sclip.removeFocus();
                     Sclip.cursorY--;
                     Sclip.cursorX = Sclip.cursorX - i;
@@ -460,7 +421,7 @@ Sclip.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Sclip.cursorY + 1), (Sclip.cursorX - i), Sclip.Thumbnail)) {
+                if (Main.ThumbNull((Sclip.cursorY + 1), (Sclip.cursorX - i), Sclip.ids[0])) {
                     Sclip.removeFocus();
                     Sclip.cursorY++;
                     Sclip.cursorX = Sclip.cursorX - i;
@@ -491,13 +452,14 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Sclip.playUrl = $('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-channelname');
-            Sclip.DurationSeconds = parseInt($('#' + Sclip.Cell + Sclip.cursorY + '_' + Sclip.cursorX).attr('data-durationseconds'));
-            Sclip.Duration = document.getElementById(Sclip.DurationDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.views = document.getElementById(Sclip.viewsDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.title = document.getElementById(Sclip.DispNameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.createdAt = document.getElementById(Sclip.StreamTitleDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.game = document.getElementById(Sclip.StreamGameDiv + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.playUrl = document.getElementById(Sclip.ids[8] + Sclip.cursorY + '_' + Sclip.cursorX).getAttribute('data-channelname').split('.mp4');
+            Sclip.DurationSeconds = parseInt(Sclip.playUrl[1]);
+            Sclip.playUrl = Sclip.playUrl[0] + '.mp4';
+            Sclip.Duration = document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.views = document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.title = document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.createdAt = document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
+            Sclip.game = document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
             Sclip.openStream();
             break;
         case TvKeyCode.KEY_RED:
