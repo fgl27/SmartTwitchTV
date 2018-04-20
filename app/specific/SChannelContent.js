@@ -18,16 +18,7 @@ SChannelContent.skipImg = false;
 SChannelContent.UserChannels = false;
 SChannelContent.TargetName = undefined;
 
-SChannelContent.Img = 'img_schannels_cont';
-SChannelContent.Thumbnail = 'thumbnail_schannels_cont_';
-SChannelContent.EmptyCell = 'schannels_cont_empty_';
-SChannelContent.ThumbnailDiv = 'schannels_cont_thumbnail_div_';
-SChannelContent.DispNameDiv = 'schannels_cont_display_name_';
-SChannelContent.StreamTitleDiv = 'schannels_cont_stream_title_';
-SChannelContent.StreamGameDiv = 'schannels_cont_stream_game_';
-SChannelContent.ViwersDiv = 'schannels_cont_stream_viwers_';
-SChannelContent.QualityDiv = 'schannels_cont_stream_quality_';
-SChannelContent.Cell = 'schannels_cont_cell_';
+SChannelContent.ids = ['scc_thumbdiv', 'scc_img', 'scc_infodiv', 'scc_name', 'scc_createdon', 'scc_game', 'scc_viwers', 'scc_duration', 'scc_cell', 'sccempty_'];
 SChannelContent.status = false;
 SChannelContent.lastselectedChannel = '';
 
@@ -44,7 +35,7 @@ SChannelContent.init = function() {
     document.body.addEventListener("keydown", SChannelContent.handleKeyDown, false);
     AddCode.PlayRequest = false;
     if (SChannelContent.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.ids[0], SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         SChannelContent.checkUser();
     } else SChannelContent.StartLoad();
 };
@@ -61,7 +52,8 @@ SChannelContent.StartLoad = function() {
     SChannelContent.skipImg = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_search_channel_a').empty();
+    var table = document.getElementById('stream_table_search_channel_a');
+    while (table.firstChild) table.removeChild(table.firstChild);
     SChannelContent.itemsCountOffset = 0;
     SChannelContent.itemsCount = 0;
     SChannelContent.cursorX = 0;
@@ -162,7 +154,7 @@ SChannelContent.CheckHost = function(responseText) {
 };
 
 SChannelContent.loadDataSuccess = function(responseText) {
-    var row = $('<tr></tr>');
+    var row = document.createElement('tr');
     var coloumn_id = 0;
 
     if (responseText !== null) {
@@ -170,7 +162,7 @@ SChannelContent.loadDataSuccess = function(responseText) {
         if (response.stream !== null) {
             var hosting = SChannelContent.TargetName !== undefined ? Main.selectedChannelDisplayname + STR_USER_HOSTING : '';
             var stream = response.stream;
-            row.append(SChannelContent.createCell(0, coloumn_id, stream.channel.name, stream.preview.template,
+            row.appendChild(SChannelContent.createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
                 hosting + stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
                 Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
@@ -178,86 +170,103 @@ SChannelContent.loadDataSuccess = function(responseText) {
         } else SChannelContent.skipImg = true;
     } else SChannelContent.skipImg = true;
 
-    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_PAST_BROA, IMG_BLUR_VIDEO1_16));
+    row.appendChild(SChannelContent.createChannelCell('0_' + coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_PAST_BROA, IMG_BLUR_VIDEO1_16));
     coloumn_id++;
-    row.append(SChannelContent.createChannelCell(0, coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_CLIPS, IMG_BLUR_VIDEO2_16));
+    row.appendChild(SChannelContent.createChannelCell('0_' + coloumn_id, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname + STR_CLIPS, IMG_BLUR_VIDEO2_16));
 
     if (coloumn_id < 2) {
         coloumn_id++;
-        row.append(Main.createCellEmpty(0, coloumn_id, SChannelContent.EmptyCell));
+        row.appendChild(Main.createEmptyCell(SChannelContent.ids[9] + '0_' + coloumn_id));
     }
 
-    $('#stream_table_search_channel_a').append(row);
+    document.getElementById("stream_table_search_channel_a").appendChild(row);
 
-    row = $('<tr></tr>');
-    row.append(SChannelContent.createFallow(1, 0, Main.selectedChannelDisplayname, Main.selectedChannelDisplayname, Main.selectedChannelLogo));
-    $('#stream_table_search_channel_a').append(row);
+    row = document.createElement('tr');
+    row.appendChild(SChannelContent.createFallow('1_0', Main.selectedChannelDisplayname, Main.selectedChannelDisplayname, Main.selectedChannelLogo));
+    document.getElementById("stream_table_search_channel_a").appendChild(row);
 
     SChannelContent.loadDataSuccessFinish();
 };
 
-SChannelContent.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+//TODO revise this functions there is too many
+SChannelContent.createCell = function(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
 
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
-    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.ids[1] + id;
     SChannelContent.imgMatrixCount++;
 
-    return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
-        row_id + '_' + coloumn_id + '" class="stream_img"></div>' +
-        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 50%; display: inline-block;">' +
-        '<i class="icon-circle" style="color: ' + (SChannelContent.TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
-        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>');
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', SChannelContent.ids[8]+ id);
+    Main.td.setAttribute('data-channelname', channel_name);
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = '<div id="' + SChannelContent.ids[0] + id + '" class="stream_thumbnail_video" ><img id="' +
+        SChannelContent.ids[1] + id + '" class="stream_img"></div>' +
+        '<div id="' + SChannelContent.ids[2] + id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.ids[3] + id + '" class="stream_channel">' + channel_display_name + '</div>' +
+        '<div id="' + SChannelContent.ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + SChannelContent.ids[5] + id + '"class="stream_info">' + stream_game + '</div>' +
+        '<div id="' + SChannelContent.ids[6] + id + '"class="stream_info_games" style="width: 50%; display: inline-block;">' +
+        '<i class="icon-circle" style="color: ' +
+        (SChannelContent.TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
+        '<div id="' + SChannelContent.ids[7] + id +
+        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
+
+    return Main.td;
 };
 
-SChannelContent.createChannelCell = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+SChannelContent.createChannelCell = function(id, user_name, stream_type, preview_thumbnail) {
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
-    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.ids[1] + id;
     SChannelContent.imgMatrixCount++;
 
-    return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.Img +
-        row_id + '_' + coloumn_id + '" class="stream_img"></div>' +
-        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
-        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
-        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info hide" ></div>' +
-        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div></div>');
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', SChannelContent.ids[8]+ id);
+    Main.td.setAttribute('data-channelname', user_name);
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = '<div id="' + SChannelContent.ids[0] + id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent.ids[1] +
+        id + '" class="stream_img"></div>' +
+        '<div id="' + SChannelContent.ids[2] + id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
+        '<div id="' + SChannelContent.ids[4] + id + '"class="stream_info hide"></div>' +
+        '<div id="' + SChannelContent.ids[5] + id + '"class="stream_info hide"></div>' +
+        '<div id="' + SChannelContent.ids[6] + id + '"class="stream_info hide" ></div>' +
+        '<div id="' + SChannelContent.ids[7] + id + '"class="stream_info hide"></div></div>';
+
+    return Main.td;
 };
 
-SChannelContent.createFallow = function(row_id, coloumn_id, user_name, stream_type, preview_thumbnail) {
+SChannelContent.createFallow = function(id, user_name, stream_type, preview_thumbnail) {
     SChannelContent.imgMatrix[SChannelContent.imgMatrixCount] = preview_thumbnail;
-    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.Img + row_id + '_' + coloumn_id;
+    SChannelContent.imgMatrixId[SChannelContent.imgMatrixCount] = SChannelContent.ids[1] + id;
     SChannelContent.imgMatrixCount++;
 
-    return $('<td id="' + SChannelContent.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + user_name + '"></td>').html(
-        '<div id="' + SChannelContent.Thumbnail + row_id + '_' + coloumn_id +
+    Main.td = document.createElement('td');
+    Main.td.setAttribute('id', SChannelContent.ids[8]+ id);
+    Main.td.setAttribute('data-channelname', user_name);
+    Main.td.className = 'stream_cell';
+    Main.td.innerHTML = '<div id="' + SChannelContent.ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
-        SChannelContent.Img + row_id + '_' + coloumn_id + '" class="stream_img_fallow"></div>' +
-        '<div id="' + SChannelContent.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SChannelContent.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div>' +
-        '<div id="' + SChannelContent.StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + Main.addCommas(Main.selectedChannelViews) +
+        SChannelContent.ids[1] + id + '" class="stream_img_fallow"></div>' +
+        '<div id="' + SChannelContent.ids[2] + id + '" class="stream_text">' +
+        '<div id="' + SChannelContent.ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
+        '<div id="' + SChannelContent.ids[4] + id + '"class="stream_info hide"></div>' +
+        '<div id="' + SChannelContent.ids[5] + id + '"class="stream_info">' + Main.addCommas(Main.selectedChannelViews) +
         STR_VIEWS + '</div>' +
-        '<div id="' + SChannelContent.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info" >' + Main.addCommas(Main.selectedChannelFallower) + STR_FALLOWERS + '</div>' +
-        '<div id="' + SChannelContent.QualityDiv + row_id + '_' + coloumn_id + '"class="stream_info hide"></div></div>');
+        '<div id="' + SChannelContent.ids[6] + id + '"class="stream_info" >' + Main.addCommas(Main.selectedChannelFallower) + STR_FALLOWERS + '</div>' +
+        '<div id="' + SChannelContent.ids[7] + id + '"class="stream_info hide"></div></div>';
+
+    return Main.td;
 };
 
 SChannelContent.setFallow = function() {
     if (AddCode.IsFallowing) {
         document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>';
-        document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOWING;
+        document.getElementById(SChannelContent.ids[3] + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOWING;
     } else {
         document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>';
-        if (Main.UserName !== '') document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOW;
-        else document.getElementById(SChannelContent.DispNameDiv + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_CANT_FALLOW;
+        if (Main.UserName !== '') document.getElementById(SChannelContent.ids[3] + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_FALLOW;
+        else document.getElementById(SChannelContent.ids[3] + "1_0").innerHTML = Main.selectedChannelDisplayname + STR_CANT_FALLOW;
     }
 };
 
@@ -267,7 +276,7 @@ SChannelContent.loadDataSuccessFinish = function() {
             Main.HideLoadDialog();
             SChannelContent.status = true;
             SChannelContent.addFocus();
-            Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.Thumbnail, SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+            Main.ScrollHelper.scrollVerticalToElementById(SChannelContent.ids[0], SChannelContent.cursorY, SChannelContent.cursorX, Main.SChannelContent, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
         }
         SChannelContent.checkUser();
         Main.LoadImages(SChannelContent.imgMatrix, SChannelContent.imgMatrixId, IMG_404_VIDEO);
@@ -288,15 +297,18 @@ SChannelContent.checkUser = function() {
 };
 
 SChannelContent.addFocus = function() {
-    Main.addFocusVideo(SChannelContent.cursorY, !SChannelContent.cursorY ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
-        SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
-        SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
+    var id = SChannelContent.cursorY + '_' + (!SChannelContent.cursorY ? SChannelContent.cursorX : 0);
+    document.getElementById(SChannelContent.ids[0] + id).classList.add(Main.classThumb);
+    document.getElementById(SChannelContent.ids[2] + id).classList.add(Main.classText);
+    document.getElementById(SChannelContent.ids[3] + id).classList.add(Main.classInfo);
+    document.getElementById(SChannelContent.ids[4] + id).classList.add(Main.classInfo);
+    document.getElementById(SChannelContent.ids[5] + id).classList.add(Main.classInfo);
+    document.getElementById(SChannelContent.ids[6] + id).classList.add(Main.classInfo);
+    document.getElementById(SChannelContent.ids[7] + id).classList.add(Main.classInfo);
 };
 
 SChannelContent.removeFocus = function() {
-    Main.removeFocusVideo(SChannelContent.cursorY, !SChannelContent.cursorY ? SChannelContent.cursorX : 0, SChannelContent.Thumbnail, SChannelContent.ThumbnailDiv,
-        SChannelContent.DispNameDiv, SChannelContent.StreamTitleDiv,
-        SChannelContent.StreamGameDiv, SChannelContent.ViwersDiv, SChannelContent.QualityDiv);
+    Main.removeFocusVideoArray(SChannelContent.cursorY + '_' + (!SChannelContent.cursorY ? SChannelContent.cursorX : 0), SChannelContent.ids);
 };
 
 SChannelContent.keyClickDelay = function() {
@@ -318,8 +330,9 @@ SChannelContent.keyEnter = function() {
         document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
         var value = (!SChannelContent.skipImg ? 0 : 1);
         if (SChannelContent.cursorX === (0 - value)) {
-            Play.selectedChannel = $('#' + SChannelContent.Cell + SChannelContent.cursorY + '_' + SChannelContent.cursorX).attr('data-channelname');
-            Play.selectedChannelDisplayname = document.getElementById(SChannelContent.DispNameDiv + SChannelContent.cursorY +
+            Play.selectedChannel = document.getElementById(SChannelContent.ids[8]+ SChannelContent.cursorY +
+                '_' + SChannelContent.cursorX).getAttribute('data-channelname');
+            Play.selectedChannelDisplayname = document.getElementById(SChannelContent.ids[3] + SChannelContent.cursorY +
                 '_' + SChannelContent.cursorX).textContent;
             if (Play.selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play.selectedChannelDisplayname = Play.selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
             Main.openStream();
