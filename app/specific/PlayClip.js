@@ -97,16 +97,16 @@ PlayClip.SetInfo = function() {
     document.getElementById("quality_name").innerHTML = '<i class="icon-refresh" style="color: #FFFFFF; font-size: 90%; text-shadow: #000000 0px 0px 8.7px, #000000 0px 0px 8.7px, #000000 0px 0px 7px;"></i>' + STR_SPACE + STR_RESET + STR_CLIP;
     document.getElementById("quality_name").style.paddingLeft = "27%";
     document.getElementById("quality_name").style.backgroundColor = "rgba(0, 0, 0, 0)";
-    document.getElementById('quality_arrows').classList.add('hide');
-    document.getElementById('quality_video').classList.add('hide');
+    document.getElementById('quality_arrows').style.display = 'none';
+    document.getElementById('quality_video').style.display = 'none';
     document.getElementById('scene2_speed').classList.remove('hide');
 };
 
 PlayClip.UnSetInfo = function() {
     document.getElementById("quality_name").style.backgroundColor = "rgba(255, 255, 255, 0.6)";
     document.getElementById("quality_name").style.paddingLeft = "0%";
-    document.getElementById('quality_arrows').classList.remove('hide');
-    document.getElementById('quality_video').classList.remove('hide');
+    document.getElementById('quality_arrows').style.display = 'inline-block';
+    document.getElementById('quality_video').style.display = 'inline-block';
     document.getElementById('scene2_speed').classList.add('hide');
 };
 
