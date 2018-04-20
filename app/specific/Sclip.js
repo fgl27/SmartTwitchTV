@@ -38,6 +38,7 @@ Sclip.itemsCountCheck = false;
 
 Sclip.init = function() {
     Main.Go = Main.Sclip;
+    Main.SetStreamTitle(true);
     if (Main.selectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
     Main.cleanTopLabel();
     Sclip.SetPeriod();
@@ -56,6 +57,7 @@ Sclip.init = function() {
 Sclip.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Sclip.handleKeyDown);
+    Main.SetStreamTitle(false);
 };
 
 Sclip.StartLoad = function() {

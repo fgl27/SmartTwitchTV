@@ -88,6 +88,7 @@ Main.GameSize = "340x475"; // default size 272x380
 Main.classThumb = 'stream_thumbnail_focused';
 Main.classText = 'stream_text_focused';
 Main.classInfo = 'stream_info_focused';
+Main.TitleClass = 'stream_channel';
 
 tizen.tvinputdevice.registerKey("ChannelUp");
 tizen.tvinputdevice.registerKey("ChannelDown");
@@ -649,6 +650,11 @@ Main.createEmptyCell = function(id) {
     return Main.td;
 };
 
+Main.SetStreamTitle = function(boolean) {
+    if (boolean) Main.TitleClass = 'stream_info';
+    else Main.TitleClass = 'stream_channel';
+};
+
 Main.createCellVideo = function(channel_name, id, idArray, valuesArray) {
     Main.td = document.createElement('td');
     Main.td.setAttribute('id', idArray[8] + id);
@@ -671,7 +677,7 @@ Main.VideoHtml = function(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="' + Main.TitleClass + '">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 64%; display: inline-block;">' + valuesArray[4] + '</div>' +

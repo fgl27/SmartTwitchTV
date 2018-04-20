@@ -32,6 +32,7 @@ Svod.vodId = '';
 
 Svod.init = function() {
     Main.Go = Main.Svod;
+    Main.SetStreamTitle(true);
     if (Main.selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
     document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
@@ -50,6 +51,7 @@ Svod.init = function() {
 Svod.exit = function() {
     Main.RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
+    Main.SetStreamTitle(false);
 };
 
 Svod.StartLoad = function() {
