@@ -39,7 +39,7 @@ UserGames.init = function() {
     Main.Go = Main.UserGames;
     Main.IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefaultUser + "%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameUser + "%";
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
     if (UserGames.OldUserName !== Main.UserName) UserGames.Status = false;
@@ -54,7 +54,7 @@ UserGames.exit = function() {
     Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('id_agame_name').innerHTML = '';
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopAgameDefault + "%";
+    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameDefault + "%";
     document.body.removeEventListener("keydown", UserGames.handleKeyDown);
 };
 

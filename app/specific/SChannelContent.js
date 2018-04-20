@@ -28,7 +28,7 @@ SChannelContent.init = function() {
     Main.Go = Main.SChannelContent;
     if (SChannelContent.lastselectedChannel !== Main.selectedChannel) SChannelContent.status = false;
     Main.cleanTopLabel();
-    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
+    document.getElementById("controls_div").style.width = Main.TopBarCenterSearch + "%";
     document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
     document.getElementById('id_agame_name').innerHTML = '';
