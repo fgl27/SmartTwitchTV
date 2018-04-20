@@ -138,7 +138,7 @@ PlayVod.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         PlayVod.loadingDataTry = 0;
-                        PlayVod.loadDataSuccess(xmlHttp.responseText);
+                        if (PlayVod.isOn) PlayVod.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
 
                 } else {
@@ -189,7 +189,7 @@ PlayVod.restore = function() {
 
     if (PlayVod.qualitiesFound) {
         PlayVod.state = PlayVod.STATE_PLAYING;
-        PlayVod.qualityChanged();
+        if (PlayVod.isOn) PlayVod.qualityChanged();
     } else {
         Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
@@ -206,7 +206,7 @@ PlayVod.loadDataSuccess = function(responseText) {
         PlayVod.playlistResponse = responseText;
         PlayVod.qualities = Play.extractQualities(PlayVod.playlistResponse);
         PlayVod.state = Play.STATE_PLAYING;
-        PlayVod.qualityChanged();
+        if (PlayVod.isOn) PlayVod.qualityChanged();
         PlayVod.saveQualities();
     }
 };
@@ -254,7 +254,7 @@ PlayVod.qualityChanged = function() {
     }
 
     PlayVod.qualityPlaying = PlayVod.quality;
-    PlayVod.onPlayer();
+    if (PlayVod.isOn) PlayVod.onPlayer();
 };
 
 PlayVod.onPlayer = function() {
