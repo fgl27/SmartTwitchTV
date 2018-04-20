@@ -43,7 +43,7 @@ Sclip.init = function() {
     Main.cleanTopLabel();
     Sclip.SetPeriod();
     document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
-    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
+    document.getElementById("controls_div").style.width = Main.TopBarCenterSearch + "%";
     Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP);
     document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
     Main.YRst(Sclip.cursorY);

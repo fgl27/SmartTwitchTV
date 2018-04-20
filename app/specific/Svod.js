@@ -35,7 +35,7 @@ Svod.init = function() {
     Main.SetStreamTitle(true);
     if (Main.selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
     Main.cleanTopLabel();
-    document.getElementById("top_bar_spacing").style.paddingLeft = Main.TopSpacingSearchUnder + "%";
+    document.getElementById("controls_div").style.width = Main.TopBarCenterSearch + "%";
     Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD);
     document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
