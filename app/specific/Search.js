@@ -201,7 +201,7 @@ Search.RemoveinputFocus = function() {
     document.getElementById("search_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
     window.setTimeout(function() {
         Search.keyBoardOn = false;
-    }, 250);
+    }, 500);
 };
 
 Search.KeyboardEvent = function(event) {
