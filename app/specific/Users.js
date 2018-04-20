@@ -223,11 +223,11 @@ Users.isRemoveDialogShown = function() {
 
 Users.RemoveCursorSet = function() {
     if (!Users.RemoveCursor) {
-        document.getElementById('remove_cancel').classList.add(Main.classThumb);
-        document.getElementById('remove_yes').classList.remove(Main.classThumb);
+        document.getElementById('remove_cancel').classList.add('button_search_focused');
+        document.getElementById('remove_yes').classList.remove('button_search_focused');
     } else {
-        document.getElementById('remove_cancel').classList.remove(Main.classThumb);
-        document.getElementById('remove_yes').classList.add(Main.classThumb);
+        document.getElementById('remove_cancel').classList.remove('button_search_focused');
+        document.getElementById('remove_yes').classList.add('button_search_focused');
     }
 };
 

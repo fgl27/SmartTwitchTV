@@ -147,6 +147,7 @@ Main.loadTranslations = function(device) {
         Main.TopBarCenterDefault = 33.5;
         Main.TopBarCenterVod = 39.5;
         Main.TopBarAgameNameDefault = 56;
+        Main.TopBarAgameNameUser = 45;
     } else console.log("language is " + lang);
     DefaultLang();
 
