@@ -48,7 +48,6 @@ PlayClip.Start = function() {
     } else Play.hideFallow();
 
     document.addEventListener('visibilitychange', PlayClip.Resume, false);
-    PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
     PlayClip.Canjump = false;
     PlayClip.IsJumping = false;
     PlayClip.jumpCount = 0;
@@ -57,38 +56,37 @@ PlayClip.Start = function() {
     PlayClip.jumpCountMax = 12;
     PlayClip.isOn = true;
 
-    window.setTimeout(function() {
-        Play.videojs.src({
-            type: "video/mp4",
-            src: Sclip.playUrl
+    Play.videojs.src({
+        type: "video/mp4",
+        src: Sclip.playUrl
+    });
+
+    Play.videojs.ready(function() {
+        this.isFullscreen(true);
+        this.requestFullscreen();
+        this.autoplay(true);
+
+        this.on('ended', function() {
+            PlayClip.shutdownStream();
         });
 
-        Play.videojs.ready(function() {
-            this.isFullscreen(true);
-            this.requestFullscreen();
-            this.autoplay(true);
-
-            this.on('ended', function() {
-                PlayClip.shutdownStream();
-            });
-
-            this.on('timeupdate', function() {
-                PlayClip.updateCurrentTime(this.currentTime());
-            });
-
-            this.on('error', function() {
-                Play.HideBufferDialog();
-                Play.showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(PlayClip.shutdownStream, 1500);
-            });
-
-            this.on('loadedmetadata', function() {
-                PlayClip.Canjump = true;
-            });
-
+        this.on('timeupdate', function() {
+            PlayClip.updateCurrentTime(this.currentTime());
         });
-    }, 500);
 
+        this.on('error', function() {
+            Play.HideBufferDialog();
+            Play.showWarningDialog(STR_IS_OFFLINE);
+            window.setTimeout(PlayClip.shutdownStream, 1500);
+        });
+
+        this.on('loadedmetadata', function() {
+            PlayClip.Canjump = true;
+        });
+
+    });
+
+    PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
 };
 
 PlayClip.Resume = function() {
@@ -391,9 +389,9 @@ PlayClip.handleKeyDown = function(e) {
                     PlayClip.SpeedIndex = 2;
                     PlayClip.speedDisplay();
                 } else if (Play.Panelcouner === 1) {
-                        Play.FallowUnfallow();
-                        PlayClip.clearHidePanel();
-                        PlayClip.setHidePanel();
+                    Play.FallowUnfallow();
+                    PlayClip.clearHidePanel();
+                    PlayClip.setHidePanel();
                 } else if (Play.Panelcouner === 2) {
                     PlayClip.speed();
                 } else if (Play.Panelcouner === 3) {
