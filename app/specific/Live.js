@@ -194,7 +194,7 @@ Live.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Live.Status) {
             Main.HideLoadDialog();
-            document.getElementById('toolbar').classList.remove('hide');
+            document.getElementById('topbar').classList.remove('hide');
             if (Live.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Live.Status = true;
