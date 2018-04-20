@@ -253,7 +253,7 @@ Play.loadDataRequest = function() {
                 if (xmlHttp.status === 200) {
                     try {
                         Play.loadingDataTry = 0;
-                        Play.loadDataSuccess(xmlHttp.responseText);
+                        if (Play.isOn) Play.loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
                 } else {
                     if ((xmlHttp.responseText).indexOf('Bad auth token') !== -1) {
@@ -299,7 +299,7 @@ Play.restore = function() {
 
     if (Play.qualitiesFound) {
         Play.state = Play.STATE_PLAYING;
-        Play.qualityChanged();
+        if (Play.isOn) Play.qualityChanged();
     } else {
         Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_OFFLINE);
@@ -317,7 +317,7 @@ Play.loadDataSuccess = function(responseText) {
         Play.qualities = Play.extractQualities(Play.playlistResponse);
         Play.state = Play.STATE_PLAYING;
         SmartHub.SmartHubResume = false;
-        Play.qualityChanged();
+        if (Play.isOn) Play.qualityChanged();
         Play.saveQualities();
     }
 };
@@ -380,8 +380,7 @@ Play.qualityChanged = function() {
     }
 
     Play.qualityPlaying = Play.quality;
-    Play.onPlayer();
-
+    if (Play.isOn) Play.onPlayer();
 };
 
 Play.onPlayer = function() {
