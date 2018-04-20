@@ -22,16 +22,7 @@ Svod.DurationSeconds = 0;
 Svod.emptyContent = false;
 Svod.itemsCountCheck = false;
 
-Svod.Img = 'img_svod';
-Svod.Thumbnail = 'thumbnail_svod_';
-Svod.EmptyCell = 'svodempty_';
-Svod.ThumbnailDiv = 'svod_thumbnail_div_';
-Svod.DispNameDiv = 'svod_display_name_';
-Svod.StreamTitleDiv = 'svod_stream_title_';
-Svod.StreamDurationDiv = 'svod_stream_svod_';
-Svod.ViwersDiv = 'svod_viwers_';
-Svod.QualityDiv = 'svod_quality_';
-Svod.Cell = 'svod_cell_';
+Svod.ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_'];
 Svod.status = false;
 Svod.highlight = false;
 Svod.lastselectedChannel = '';
@@ -50,7 +41,7 @@ Svod.init = function() {
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
     Main.YRst(Svod.cursorY);
     if (Svod.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
+        Main.ScrollHelper.scrollVerticalToElementById(Svod.ids[0], Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
             Main.ScrollOffSetVideo, false);
         Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
     } else Svod.StartLoad();
@@ -68,7 +59,8 @@ Svod.StartLoad = function() {
     Svod.status = false;
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
     Main.showLoadDialog();
-    $('#stream_table_search_vod').empty();
+    var table = document.getElementById('stream_table_search_vod');
+    while (table.firstChild) table.removeChild(table.firstChild);
     Svod.loadingMore = false;
     Svod.blankCellCount = 0;
     Svod.itemsCountOffset = 0;
@@ -162,19 +154,20 @@ Svod.loadDataSuccess = function(responseText) {
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) {
+            if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) { //video content can be null sometimes the preview will 404
                 Svod.blankCellCount++;
                 coloumn_id--;
             } else if (Svod.CellExists(video._id)) coloumn_id--;
             else {
-                row.append(Svod.createCell(row_id, coloumn_id, video._id, video.preview,
-                    STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
-                    video.title, Main.addCommas(video.views) + STR_VIEWS,
-                    Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)));
+                row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id, [video.preview.replace("320x240", Main.VideoSize),
+                    video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
+                    Main.addCommas(video.views) + STR_VIEWER,
+                    Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
+                ]));
             }
         }
 
@@ -183,42 +176,23 @@ Svod.loadDataSuccess = function(responseText) {
                 Svod.itemsCountCheck = true;
                 Svod.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, Svod.EmptyCell));
-            Svod.blankCellVector.push(Svod.EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main.createEmptyCell(Svod.ids[9] + row_id + '_' + coloumn_id));
+            Svod.blankCellVector.push(Svod.ids[9] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_search_vod').append(row);
+        document.getElementById("stream_table_search_vod").appendChild(row);
     }
 
     Svod.loadDataSuccessFinish();
 };
 
-Svod.createCell = function(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
-    return $('<td id="' + Svod.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name +
-        '" data-durationseconds=" ' + duration + '"></td>').html(
-        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name));
+Svod.createCell = function(row_id, id, video_id, valuesArray) {
+    Svod.nameMatrix.push(video_id);
+    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main.createCellVideo(video_id, id, Svod.ids, valuesArray);
 };
 
-Svod.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name) {
-
-    Svod.nameMatrix.push(channel_name);
-
-    preview_thumbnail = preview_thumbnail.replace("320x240", Main.VideoSize);
-    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + Svod.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + Svod.Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + Svod.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Svod.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_info">' + channel_display_name + '</div>' +
-        '<div id="' + Svod.StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + Svod.StreamDurationDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + STR_DURATION + Play.timeS(duration) + '</div>' +
-        '<div id="' + Svod.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
-        '</div>' +
-        '<div id="' + Svod.QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
-};
-
-Svod.CellExists = function(display_name) {
-    if (Svod.nameMatrix.indexOf(display_name) > -1) {
+Svod.CellExists = function(video_id) {
+    if (Svod.nameMatrix.indexOf(video_id) > -1) {
         Svod.blankCellCount++;
         return true;
     }
@@ -233,7 +207,7 @@ Svod.loadDataSuccessFinish = function() {
             else {
                 Svod.status = true;
                 Svod.addFocus();
-                Main.LazyImgStart(Svod.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                Main.LazyImgStart(Svod.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
             }
             Svod.loadingData = false;
         } else {
@@ -322,16 +296,15 @@ Svod.loadDataSuccessReplace = function(responseText) {
             Svod.blankCellCount--;
             i--;
         } else {
-            Svod.replaceCellEmpty(Svod.blankCellVector[i], video._id, video.preview,
-                STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
-                video.title, Main.addCommas(video.views) + STR_VIEWS,
-                Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language));
+            Main.replaceVideo(Svod.blankCellVector[i], video._id, [video.preview.replace("320x240", Main.VideoSize),
+                video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
+                Main.addCommas(video.views) + STR_VIEWER,
+                Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
+            ]);
             Svod.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            if (index > -1) tempVector.splice(index, 1);
         }
     }
 
@@ -344,36 +317,22 @@ Svod.loadDataSuccessReplace = function(responseText) {
     Svod.loadDataSuccessFinish();
 };
 
-
-Svod.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_title, duration, channel_display_name, viwers, quality) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = Svod.Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
-    document.getElementById(cell).setAttribute('data-durationseconds', duration);
-    document.getElementById(cell).innerHTML =
-        Svod.CellHtml(row_id, coloumn_id, channel_display_name, stream_title, duration, viwers, quality, preview_thumbnail, channel_name);
-};
-
 Svod.addFocus = function() {
-    document.getElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_text_focused');
-    document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ids[0] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Svod.ids[2] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_text_focused');
+    document.getElementById(Svod.ids[3] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ids[4] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ids[5] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ids[6] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod.ids[7] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Svod.Thumbnail, Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        Main.ScrollHelper.scrollVerticalToElementById(Svod.ids[0], Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
     }, 10);
 
     Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
 
-    if (Svod.cursorY > 3) Main.LazyImg(Svod.Img, Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (Svod.cursorY > 3) Main.LazyImg(Svod.ids[1], Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
 
     if (((Svod.cursorY + Main.ItemsReloadLimitVideo) > (Svod.itemsCount / Main.ColoumnsCountVideo)) &&
         !Svod.dataEnded && !Svod.loadingMore) {
@@ -384,13 +343,13 @@ Svod.addFocus = function() {
 };
 
 Svod.removeFocus = function() {
-    document.getElementById(Svod.Thumbnail + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(Svod.ThumbnailDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_text_focused');
-    document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Svod.QualityDiv + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ids[0] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Svod.ids[2] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Svod.ids[3] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ids[4] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ids[5] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ids[6] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod.ids[7] + Svod.cursorY + '_' + Svod.cursorX).classList.remove('stream_info_focused');
 };
 
 Svod.keyClickDelay = function() {
@@ -422,13 +381,13 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX - 1), Svod.Thumbnail)) {
+            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX - 1), Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorX--;
                 Svod.addFocus();
             } else {
                 for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Svod.cursorY - 1), i, Svod.Thumbnail)) {
+                    if (Main.ThumbNull((Svod.cursorY - 1), i, Svod.ids[0])) {
                         Svod.removeFocus();
                         Svod.cursorY--;
                         Svod.cursorX = i;
@@ -439,11 +398,11 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX + 1), Svod.Thumbnail)) {
+            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX + 1), Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorX++;
                 Svod.addFocus();
-            } else if (Main.ThumbNull((Svod.cursorY + 1), 0, Svod.Thumbnail)) {
+            } else if (Main.ThumbNull((Svod.cursorY + 1), 0, Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorY++;
                 Svod.cursorX = 0;
@@ -452,7 +411,7 @@ Svod.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_UP:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Svod.cursorY - 1), (Svod.cursorX - i), Svod.Thumbnail)) {
+                if (Main.ThumbNull((Svod.cursorY - 1), (Svod.cursorX - i), Svod.ids[0])) {
                     Svod.removeFocus();
                     Svod.cursorY--;
                     Svod.cursorX = Svod.cursorX - i;
@@ -463,7 +422,7 @@ Svod.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Svod.cursorY + 1), (Svod.cursorX - i), Svod.Thumbnail)) {
+                if (Main.ThumbNull((Svod.cursorY + 1), (Svod.cursorX - i), Svod.ids[0])) {
                     Svod.removeFocus();
                     Svod.cursorY++;
                     Svod.cursorX = Svod.cursorX - i;
@@ -485,12 +444,12 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Svod.vodId = $('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-channelname').substr(1);
-            Svod.DurationSeconds = parseInt($('#' + Svod.Cell + Svod.cursorY + '_' + Svod.cursorX).attr('data-durationseconds'));
-            Svod.Duration = document.getElementById(Svod.StreamDurationDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
-            Svod.views = document.getElementById(Svod.ViwersDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
-            Svod.title = document.getElementById(Svod.DispNameDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
-            Svod.createdAt = document.getElementById(Svod.StreamTitleDiv + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.vodId = document.getElementById(Svod.ids[8] + Svod.cursorY + '_' + Svod.cursorX).getAttribute('data-channelname').substr(1);
+            Svod.DurationSeconds = parseInt(document.getElementById(Svod.ids[8] + Svod.cursorY + '_' + Svod.cursorX).getAttribute('data-durationseconds'));
+            Svod.Duration = document.getElementById(Svod.ids[5] + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.views = document.getElementById(Svod.ids[6] + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.title = document.getElementById(Svod.ids[3] + Svod.cursorY + '_' + Svod.cursorX).textContent;
+            Svod.createdAt = document.getElementById(Svod.ids[4] + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.openStream();
             break;
         case TvKeyCode.KEY_RED:
