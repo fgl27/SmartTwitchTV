@@ -164,7 +164,7 @@ Svod.loadDataSuccess = function(responseText) {
             } else if (Svod.CellExists(video._id)) coloumn_id--;
             else {
                 row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id, [video.preview.replace("320x240", Main.VideoSize),
-                    video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
+                    video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
                     Main.addCommas(video.views) + STR_VIEWER,
                     Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
                 ]));
@@ -297,7 +297,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             Main.replaceVideo(Svod.blankCellVector[i], video._id, [video.preview.replace("320x240", Main.VideoSize),
-                video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), video.length,
+                video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
                 Main.addCommas(video.views) + STR_VIEWER,
                 Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
             ]);
