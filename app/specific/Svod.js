@@ -163,7 +163,8 @@ Svod.loadDataSuccess = function(responseText) {
                 coloumn_id--;
             } else if (Svod.CellExists(video._id)) coloumn_id--;
             else {
-                row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id, [video.preview.replace("320x240", Main.VideoSize),
+                row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length,
+                [video.preview.replace("320x240", Main.VideoSize),
                     video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
                     Main.addCommas(video.views) + STR_VIEWER,
                     Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
@@ -296,7 +297,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
             Svod.blankCellCount--;
             i--;
         } else {
-            Main.replaceVideo(Svod.blankCellVector[i], video._id, [video.preview.replace("320x240", Main.VideoSize),
+            Main.replaceVideo(Svod.blankCellVector[i], video._id + '._.' + video.length, [video.preview.replace("320x240", Main.VideoSize),
                 video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
                 Main.addCommas(video.views) + STR_VIEWER,
                 Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
@@ -444,8 +445,9 @@ Svod.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Svod.vodId = document.getElementById(Svod.ids[8] + Svod.cursorY + '_' + Svod.cursorX).getAttribute('data-channelname').substr(1);
-            Svod.DurationSeconds = parseInt(document.getElementById(Svod.ids[8] + Svod.cursorY + '_' + Svod.cursorX).getAttribute('data-durationseconds'));
+            Svod.vodId = document.getElementById(Svod.ids[8] + Svod.cursorY + '_' + Svod.cursorX).getAttribute('data-channelname').split('._.');
+            Svod.DurationSeconds = parseInt(Svod.vodId[1]);
+            Svod.vodId = Svod.vodId[0].substr(1);
             Svod.Duration = document.getElementById(Svod.ids[5] + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.views = document.getElementById(Svod.ids[6] + Svod.cursorY + '_' + Svod.cursorX).textContent;
             Svod.title = document.getElementById(Svod.ids[3] + Svod.cursorY + '_' + Svod.cursorX).textContent;
