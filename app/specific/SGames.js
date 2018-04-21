@@ -33,8 +33,7 @@ SGames.init = function() {
     Main.Go = Main.SGames;
     Main.cleanTopLabel();
     if (SGames.lastData !== Search.data) SGames.Status = false;
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
-    document.getElementById('id_agame_name').innerHTML = STR_GAMES + ' ' + "'" + Search.data + "'";
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main.UnderCenter(STR_GAMES + ' ' + "'" + Search.data + "'");
     document.body.addEventListener("keydown", SGames.handleKeyDown, false);
     Main.YRst(SGames.cursorY);
     if (SGames.Status) {

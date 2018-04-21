@@ -38,6 +38,7 @@ UserGames.OldUserName = '';
 UserGames.init = function() {
     Main.Go = Main.UserGames;
     Main.IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
+    document.getElementById('top_bar_user').innerHTML = STR_USER + Main.UnderCenter(Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.body.addEventListener("keydown", UserGames.handleKeyDown, false);
     Main.YRst(UserGames.cursorY);
@@ -52,14 +53,13 @@ UserGames.init = function() {
 UserGames.exit = function() {
     Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.getElementById('id_agame_name').innerHTML = '';
+    document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.body.removeEventListener("keydown", UserGames.handleKeyDown);
 };
 
 UserGames.StartLoad = function() {
     Main.HideWarningDialog();
     Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    document.getElementById('id_agame_name').innerHTML = Main.UserName + ' ' + (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
     Main.showLoadDialog();
     UserGames.OldUserName = Main.UserName;
     UserGames.Status = false;

@@ -40,8 +40,7 @@ SLive.init = function() {
     Main.Go = Main.SLive;
     Main.cleanTopLabel();
     if (SLive.lastData !== Search.data) SLive.Status = false;
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
-    document.getElementById('id_agame_name').innerHTML = STR_LIVE + ' ' + "'" + Search.data + "'";
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main.UnderCenter(STR_LIVE + ' ' + "'" + Search.data + "'");
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
     Main.YRst(SLive.cursorY);
     if (SLive.Status) {
