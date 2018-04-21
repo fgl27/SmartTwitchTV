@@ -34,6 +34,7 @@ AGame.init = function() {
     document.body.addEventListener("keydown", AGame.handleKeyDown, false);
     document.getElementById('top_bar_game').classList.add('icon_center_focus');
     document.getElementById('top_bar_game').innerHTML = STR_AGAME;
+//    Main.setIdGameName('top_bar_game');
     document.getElementById('id_agame_name').innerHTML = Main.gameSelected;
     Main.YRst(AGame.cursorY);
     if ((Main.OldgameSelected === Main.gameSelected) && AGame.status) {

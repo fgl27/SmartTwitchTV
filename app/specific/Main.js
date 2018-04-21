@@ -72,14 +72,6 @@ Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.Coloumn
 
 Main.ItemsLimitReload = 6;
 
-Main.TopBarCenterDefault = 37;
-Main.TopBarCenterVod = 41.5;
-Main.TopBarCenterSearch = 28.5;
-
-Main.TopBarAgameNameDefault = 51;
-Main.TopBarAgameNameSearch = 46;
-Main.TopBarAgameNameUser = 44.5;
-
 Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 Main.VideoSize = "528x297"; // default size 640x360
 Main.GameSize = "340x475"; // default size 272x380
@@ -142,19 +134,12 @@ Main.loadTranslations = function(device) {
 
     var lang = device.language.split(".")[0];
 
-    if (lang.indexOf('pt_') !== -1) {
-        pt_BRLang();
-        Main.TopBarCenterDefault = 33.5;
-        Main.TopBarCenterVod = 39.5;
-        Main.TopBarAgameNameDefault = 56;
-        Main.TopBarAgameNameUser = 45;
-    } else console.log("language is " + lang);
+    if (lang.indexOf('pt_') !== -1) pt_BRLang();
+    else console.log("language is " + lang);
     DefaultLang();
 
     if (Main.isReleased) document.body.innerHTML = STR_BODY;
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
-    document.getElementById("controls_div").style.width = Main.TopBarCenterDefault + "%";
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameDefault + "%";
     Main.initWindows();
     Live.init();
     Play.PreStart();
@@ -455,8 +440,6 @@ Main.RestoreTopLabel = function() {
     Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.getElementById("controls_div").style.width = Main.TopBarCenterDefault + "%";
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameDefault + "%";
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
@@ -468,9 +451,7 @@ Main.cleanTopLabel = function() {
     document.getElementById('label_switch').innerHTML = '';
     document.getElementById('top_bar_live').innerHTML = '';
     document.getElementById('top_bar_game').innerHTML = '';
-    document.getElementById("controls_div").style.width = Main.TopBarCenterVod + "%";
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameSearch + "%";
 };
 
 Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'

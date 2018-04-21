@@ -64,6 +64,7 @@
 
         div.icon_center_label {
             max-width: 34%;
+            height: 100%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -432,7 +433,6 @@
             float: left;
             padding-left: 1%;
             padding-top: 0.5%;
-            width: 37%;
         }
 
         div.twitchicon {
@@ -482,7 +482,7 @@
 <body>
     <!-- bodystart this is here so release_maker can work don't remove-->
     <div id="scene1" class="screen_size">
-        <div id="topbar" class="topbar hide">
+        <div id="topbar" class="topbar">
             <div class="twitchicon">
                 <img style="float: right; width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
                 <div style="text-align: center;">
@@ -495,11 +495,11 @@
                 <div id="label_search" class="icon_top_label"></div>
                 <div id="label_switch" class="icon_top_label"></div>
             </div>
-            <div style="padding-top: 0.5%;">
+            <div style="position: fixed; text-align: center; width: 75%; margin-left: 12.5%; padding-top: 0.5%;">
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
                 <div id="top_bar_game" class="icon_center_label"></div>
-                <div id="id_agame_name" class="icon_top_label" style="line-height: 0;"></div>
+                <div id="id_agame_name" class="icon_top_label" style="text-align: center; line-height: 0;"></div>
             </div>
         </div>
         <div id="scrollbar_size" class="scroll_size">
