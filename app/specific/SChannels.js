@@ -39,8 +39,7 @@ SChannels.init = function() {
     SChannels.isLastSChannels = true;
     if (SChannels.lastData !== Search.data) SChannels.Status = false;
     Main.cleanTopLabel();
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
-    document.getElementById('id_agame_name').innerHTML = STR_CHANNELS + ' ' + "'" + Search.data + "'";
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main.UnderCenter(STR_CHANNELS + ' ' + "'" + Search.data + "'");
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
     Main.YRst(SChannels.cursorY);
     if (SChannels.Status) {

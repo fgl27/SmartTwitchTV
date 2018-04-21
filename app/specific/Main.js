@@ -171,7 +171,6 @@ Main.initWindows = function() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-    document.getElementById('id_agame_name').innerHTML = '';
     document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
     document.getElementById('game_button').innerHTML = STR_GAMES;
     document.getElementById('live_button').innerHTML = STR_LIVE;
@@ -443,7 +442,6 @@ Main.RestoreTopLabel = function() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-    document.getElementById('id_agame_name').innerHTML = '';
 };
 
 Main.cleanTopLabel = function() {
@@ -452,6 +450,10 @@ Main.cleanTopLabel = function() {
     document.getElementById('top_bar_live').innerHTML = '';
     document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
+};
+
+Main.UnderCenter = function(text) {
+    return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>'
 };
 
 Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'

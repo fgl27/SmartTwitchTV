@@ -31,7 +31,7 @@ UserChannels.init = function() {
     Main.Go = Main.UserChannels;
     SChannels.isLastSChannels = false;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById('id_agame_name').innerHTML = Main.UserName + STR_USER_CHANNEL;
+    document.getElementById('top_bar_user').innerHTML = STR_USER + Main.UnderCenter(Main.UserName + STR_USER_CHANNEL);
     document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
     Main.YRst(UserChannels.cursorY);
     if (UserChannels.OldUserName !== Main.UserName) UserChannels.Status = false;
@@ -44,8 +44,8 @@ UserChannels.init = function() {
 
 UserChannels.exit = function() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.getElementById('id_agame_name').innerHTML = '';
     document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
+    document.getElementById('top_bar_user').innerHTML = STR_USER;
 };
 
 UserChannels.StartLoad = function() {
