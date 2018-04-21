@@ -453,7 +453,7 @@ Main.cleanTopLabel = function() {
 };
 
 Main.UnderCenter = function(text) {
-    return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>'
+    return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>';
 };
 
 Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
