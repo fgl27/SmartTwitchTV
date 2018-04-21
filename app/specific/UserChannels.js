@@ -31,7 +31,6 @@ UserChannels.init = function() {
     Main.Go = Main.UserChannels;
     SChannels.isLastSChannels = false;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameUser + "%";
     document.getElementById('id_agame_name').innerHTML = Main.UserName + STR_USER_CHANNEL;
     document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
     Main.YRst(UserChannels.cursorY);
@@ -46,7 +45,6 @@ UserChannels.init = function() {
 UserChannels.exit = function() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('id_agame_name').innerHTML = '';
-    document.getElementById("id_agame_name").style.paddingLeft = Main.TopBarAgameNameDefault + "%";
     document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
 };
 

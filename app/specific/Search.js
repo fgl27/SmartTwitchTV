@@ -17,7 +17,6 @@ Search.init = function() {
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
     document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById("search_input").placeholder = STR_PLACEHOLDER_SEARCH;
-    document.getElementById("controls_div").style.width = Main.TopBarCenterVod + "%";
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     Search.cursorY = 0;
     Search.cursorX = 0;
@@ -36,7 +35,6 @@ Search.exit = function() {
     Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.getElementById("controls_div").style.width = Main.TopBarCenterDefault + "%";
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
