@@ -1,97 +1,95 @@
-/*jshint multistr: true */
-function Main() {}
 //Variable initialization
-Main.isReleased = false;
-Main.Hide = '';
-Main.Go = 1;
-Main.Before = 1;
-Main.BeforeSearch = 1;
-Main.cursorY = -1;
-Main.newImg = new Image();
+var main_isReleased = false;
+var main_Hide = '';
+var main_Go = 1;
+var main_Before = 1;
+var main_BeforeSearch = 1;
+var main_cursorY = -1;
+var main_newImg = new Image();
 
-Main.Live = 1;
-Main.AddUser = 2;
-Main.Games = 3;
-Main.AGame = 4;
-Main.UserLive = 5;
-Main.UserHost = 6;
-Main.UserGames = 7;
-Main.UserAGames = 8;
-Main.UserVod = 9;
-Main.UserAVod = 10;
-Main.Search = 11;
-Main.SGames = 12;
-Main.SLive = 13;
-Main.SChannelContent = 14;
-Main.Svod = 15;
-Main.Sclip = 16;
-Main.Users = 17;
-Main.UserChannels = 18;
-Main.SChannels = 19;
-Main.AddCode = 20;
-Main.selectedChannel = '';
-Main.selectedChannelDisplayname = '';
-Main.selectedChannelLogo = '';
-Main.selectedChannelViews = '';
-Main.selectedChannelFallower = '';
-Main.listenerID = null;
-Main.ExitDialogID = null;
-Main.selectedGame = '';
-Main.selectedGameDisplayname = '';
-Main.gameSelected = '';
-Main.OldgameSelected = null;
-Main.OldUserName = '';
-Main.SmartHubId = null;
-Main.UserName = '';
-Main.ScrollbarBlack = true;
-Main.NetworkStateOK = true;
-Main.NetworkRefresh = false;
-Main.td = '';
+var main_Live = 1;
+var main_addUser = 2;
+var main_games = 3;
+var main_aGame = 4;
+var main_UserLive = 5;
+var main_UserHost = 6;
+var main_usergames = 7;
+var main_UserVod = 8;
+var main_UserAVod = 9;
+var main_Search = 10;
+var main_sgames = 11;
+var main_SLive = 12;
+var main_SChannelContent = 13;
+var main_Svod = 14;
+var main_Sclip = 15;
+var main_Users = 16;
+var main_UserChannels = 17;
+var main_SChannels = 18;
+var main_addCode = 19;
+var main_selectedChannel = '';
+var main_selectedChannelDisplayname = '';
+var main_selectedChannelLogo = '';
+var main_selectedChannelViews = '';
+var main_selectedChannelFallower = '';
+var main_listenerID = null;
+var main_ExitDialogID = null;
+var main_selectedGame = '';
+var main_selectedGameDisplayname = '';
+var main_gameSelected = '';
+var main_OldgameSelected = null;
+var main_OldUserName = '';
+var main_SmartHubId = null;
+var main_UserName = '';
+var main_ScrollbarBlack = true;
+var main_NetworkStateOK = true;
+var main_NetworkRefresh = false;
+var main_td = '';
 
-Main.ScrollOffSetVideo = 275;
-Main.ScrollOffSetGame = 523;
+var main_ScrollOffSetVideo = 275;
+var main_ScrollOffSetGame = 523;
 
-Main.ScrollOffSetMinusVideo = 0.345;
-Main.ScrollOffSetMinusChannels = 0.430;
-Main.ScrollOffSetMinusGame = 0.525;
+//Offset value in relation to height of class screen_size, to change split the below by height and multiply with the new value
+var main_ScrollOffSetMinusVideo = 372;
+var main_ScrollOffSetMinusChannels = 464;
+var main_ScrollOffSetMinusGame = 567;
+var main_ScrollOffSetMinusDuploYOffsetCheck = 92;
+var main_ScrollOffSetMinusaddUser = 60;
+var main_ScrollOffSetMinusSearch = 100;
+var main_ScrollOffSetMinusAgame = 83;
 
-Main.ReloadLimitOffsetGames = 1.35;
-Main.ReloadLimitOffsetVideos = 1.5;
+//The values of thumbnail and related for it screen type
+var main_ReloadLimitOffsetGames = 1.35;
+var main_ReloadLimitOffsetVideos = 1.5;
 
-Main.ItemsLimitVideo = 99;
-Main.ColoumnsCountVideo = 3;
-Main.ItemsReloadLimitVideo = Math.floor((Main.ItemsLimitVideo / Main.ColoumnsCountVideo) / Main.ReloadLimitOffsetVideos);
+var main_ItemsLimitVideo = 99;
+var main_ColoumnsCountVideo = 3;
+var main_ItemsReloadLimitVideo = Math.floor((main_ItemsLimitVideo / main_ColoumnsCountVideo) / main_ReloadLimitOffsetVideos);
 
-Main.ItemsLimitGame = 95;
-Main.ColoumnsCountGame = 5;
-Main.ItemsReloadLimitGame = Math.floor((Main.ItemsLimitGame / Main.ColoumnsCountGame) / Main.ReloadLimitOffsetGames);
+var main_ItemsLimitGame = 95;
+var main_ColoumnsCountGame = 5;
+var main_ItemsReloadLimitGame = Math.floor((main_ItemsLimitGame / main_ColoumnsCountGame) / main_ReloadLimitOffsetGames);
 
-Main.ItemsLimitChannel = 96;
-Main.ColoumnsCountChannel = 6;
-Main.ItemsReloadLimitChannel = Math.floor((Main.ItemsLimitChannel / Main.ColoumnsCountChannel) / Main.ReloadLimitOffsetVideos);
+var main_ItemsLimitChannel = 96;
+var main_ColoumnsCountChannel = 6;
+var main_ItemsReloadLimitChannel = Math.floor((main_ItemsLimitChannel / main_ColoumnsCountChannel) / main_ReloadLimitOffsetVideos);
 
-Main.ItemsLimitReload = 6;
+// How many streams will be request on a reload
+var main_ItemsLimitReload = 6;
 
-Main.clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
-Main.VideoSize = "528x297"; // default size 640x360
-Main.GameSize = "340x475"; // default size 272x380
+var main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var main_VideoSize = "528x297"; // default size 640x360
+var main_GameSize = "340x475"; // default size 272x380
 
-Main.classThumb = 'stream_thumbnail_focused';
-Main.classText = 'stream_text_focused';
-Main.classInfo = 'stream_info_focused';
-Main.TitleClass = 'stream_channel';
+var main_classThumb = 'stream_thumbnail_focused';
+var main_classText = 'stream_text_focused';
+var main_classInfo = 'stream_info_focused';
+var main_TitleClass = 'stream_channel';
 
-tizen.tvinputdevice.registerKey("ChannelUp");
-tizen.tvinputdevice.registerKey("ChannelDown");
-tizen.tvinputdevice.registerKey("MediaPlayPause");
-tizen.tvinputdevice.registerKey("MediaPlay");
-tizen.tvinputdevice.registerKey("MediaPause");
-tizen.tvinputdevice.registerKey("ColorF0Red");
-tizen.tvinputdevice.registerKey("ColorF1Green");
-tizen.tvinputdevice.registerKey("ColorF2Yellow");
-tizen.tvinputdevice.registerKey("ColorF3Blue");
-tizen.tvinputdevice.registerKey("Guide");
-tizen.tvinputdevice.registerKey("Info");
+var main_version = 400;
+var main_stringVersion = '4.0.0';
+var main_currentVersion = '';
+var main_minversion = '042118';
+var main_versonTag = '';
 
 var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
@@ -112,62 +110,68 @@ var TEMP_MP4 = GIT_IO + "temp.mp4";
 var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
 var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
-
-Main.version = 400;
-Main.stringVersion = '4.0.0';
-Main.currentVersion = '';
-Main.minversion = '042018';
-Main.versonTag = '';
 //Variable initialization end
 
-// this function will be called only once the first time the app opens
+//Registering all used keys
+tizen.tvinputdevice.registerKey("ChannelUp");
+tizen.tvinputdevice.registerKey("ChannelDown");
+tizen.tvinputdevice.registerKey("MediaPlayPause");
+tizen.tvinputdevice.registerKey("MediaPlay");
+tizen.tvinputdevice.registerKey("MediaPause");
+tizen.tvinputdevice.registerKey("ColorF0Red");
+tizen.tvinputdevice.registerKey("ColorF1Green");
+tizen.tvinputdevice.registerKey("ColorF2Yellow");
+tizen.tvinputdevice.registerKey("ColorF3Blue");
+tizen.tvinputdevice.registerKey("Guide");
+tizen.tvinputdevice.registerKey("Info");
+
+// this function will be called only once the first time the app startup
 document.addEventListener("DOMContentLoaded", function() {
-    tizen.systeminfo.getPropertyValue('LOCALE', Main.loadTranslations);
+    tizen.systeminfo.getPropertyValue('LOCALE', main_loadTranslations);
 });
 
 //TODO the day there is a translation add on if if the new values
-Main.loadTranslations = function(device) {
+function main_loadTranslations(device) {
 
     // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
     var lang = device.language.split(".")[0];
-
     if (lang.indexOf('pt_') !== -1) pt_BRLang();
     else console.log("language is " + lang);
     DefaultLang();
-
-    if (Main.isReleased) document.body.innerHTML = STR_BODY;
-    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main.CheckMp4Html5();
-    Main.initWindows();
+    
+    if (main_isReleased) document.body.innerHTML = STR_BODY;
+    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + main_CheckMp4Html5();
+    main_initWindows();
     Live.init();
     Play.PreStart();
-    UserGames.live = (localStorage.getItem('user_games_live') || 'true') === 'true' ? true : false;
-    AddUser.RestoreUsers();
+    usergames_live = (localStorage.getItem('user_games_live') || 'true') === 'true' ? true : false;
+    addUser_RestoreUsers();
     // pre load All img
-    Main.PreLoadAImage(IMG_404_VIDEO);
-    Main.PreLoadAImage(IMG_404_GAME);
-    Main.PreLoadAImage(IMG_404_LOGO);
-    Main.PreLoadAImage(IMG_BLUR_GAME);
-    Main.PreLoadAImage(IMG_BLUR_VIDEO1);
-    Main.PreLoadAImage(IMG_BLUR_VIDEO2);
-    Main.PreLoadAImage(IMG_BLUR_VIDEO1_16);
-    Main.PreLoadAImage(IMG_BLUR_VIDEO2_16);
-    Main.PreLoadAImage(IMG_BLUR_VOD);
-    Main.PreLoadAImage(IMG_USER_MINUS);
-    Main.PreLoadAImage(IMG_USER_PLUS);
-    Main.PreLoadAImage(IMG_USER_UP);
-    Main.PreLoadAImage(IMG_USER_CODE);
-};
+    main_PreLoadAImage(IMG_404_VIDEO);
+    main_PreLoadAImage(IMG_404_GAME);
+    main_PreLoadAImage(IMG_404_LOGO);
+    main_PreLoadAImage(IMG_BLUR_GAME);
+    main_PreLoadAImage(IMG_BLUR_VIDEO1);
+    main_PreLoadAImage(IMG_BLUR_VIDEO2);
+    main_PreLoadAImage(IMG_BLUR_VIDEO1_16);
+    main_PreLoadAImage(IMG_BLUR_VIDEO2_16);
+    main_PreLoadAImage(IMG_BLUR_VOD);
+    main_PreLoadAImage(IMG_USER_MINUS);
+    main_PreLoadAImage(IMG_USER_PLUS);
+    main_PreLoadAImage(IMG_USER_UP);
+    main_PreLoadAImage(IMG_USER_CODE);
+}
 
-Main.initWindows = function() {
+function main_initWindows() {
     //set top bar labels
-    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
-    Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    Main.IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    Main.IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
+    main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
@@ -182,86 +186,86 @@ Main.initWindows = function() {
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
-    Main.NetworkStateChangeListenerStart();
-};
+    main_NetworkStateChangeListenerStart();
+}
 
-Main.IconLoad = function(lable, icon, string) {
+function main_IconLoad(lable, icon, string) {
     document.getElementById(lable).innerHTML = '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
         '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>';
-};
+}
 
-Main.ChangeBorder = function(div, value) {
+function main_ChangeBorder(div, value) {
     document.getElementById(div).style.border = value;
-};
+}
 
-Main.ChangebackgroundColor = function(div, value) {
+function main_ChangebackgroundColor(div, value) {
     document.getElementById(div).style.backgroundColor = value;
-};
+}
 
-Main.showLoadDialog = function() {
-    Main.HideExitDialog();
+function main_showLoadDialog() {
+    main_HideExitDialog();
     document.getElementById('dialog_loading').classList.remove('hide');
-};
+}
 
-Main.HideLoadDialog = function() {
+function main_HideLoadDialog() {
     document.getElementById('dialog_loading').classList.add('hide');
-};
+}
 
-Main.clearExitDialog = function() {
-    window.clearTimeout(Main.ExitDialogID);
-};
+function main_clearExitDialog() {
+    window.clearTimeout(main_ExitDialogID);
+}
 
-Main.setExitDialog = function() {
-    Main.ExitDialogID = window.setTimeout(Main.HideExitDialog, 6000);
-};
+function main_setExitDialog() {
+    main_ExitDialogID = window.setTimeout(main_HideExitDialog, 6000);
+}
 
-Main.showExitDialog = function() {
-    Main.setExitDialog();
+function main_showExitDialog() {
+    main_setExitDialog();
     document.getElementById('main_dialog_exit').classList.remove('hide');
-};
+}
 
-Main.HideExitDialog = function() {
-    Main.clearExitDialog();
+function main_HideExitDialog() {
+    main_clearExitDialog();
     document.getElementById('main_dialog_exit').classList.add('hide');
     Live.ExitCursor = 0;
     Live.ExitCursorSet();
-};
+}
 
-Main.isExitDialogShown = function() {
+function main_isExitDialogShown() {
     return document.getElementById('main_dialog_exit').className.indexOf('hide') === -1;
-};
+}
 
-Main.CounterDialogRst = function() {
+function main_CounterDialogRst() {
     document.getElementById('dialog_counter_text').innerHTML = '';
-    Main.Scrollbar(0, 0, 0);
-};
+    main_Scrollbar(0, 0, 0);
+}
 
-Main.CounterDialog = function(x, y, coloumns, total) {
+function main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) {
         document.getElementById('dialog_counter_text').innerHTML = (y * coloumns) + (x + 1) + '/' + (total);
-        Main.Scrollbar(y, coloumns, total);
-    } else Main.CounterDialogRst();
-};
+        main_Scrollbar(y, coloumns, total);
+    } else main_CounterDialogRst();
+}
 
-Main.Scrollbar = function(y, coloumns, total) {
+function main_Scrollbar(y, coloumns, total) {
     // min 100 max 1000 or the 900 + 100 below
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
         var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
         var currentPositon = document.getElementById('scrollbar').offsetTop;
 
         //If position are different it means previously animation did't ended, stop it and force set the value
-        if (currentPositon !== Main.nextScrollPositon) {
+        if (currentPositon !== main_nextScrollPositon) {
             $('#scrollbar').stop();
-            document.getElementById("scrollbar").style.top = Main.nextScrollPositon + "px";
+            document.getElementById("scrollbar").style.top = main_nextScrollPositon + "px";
         }
-        Main.nextScrollPositon = nextPositon;
+        main_nextScrollPositon = nextPositon;
 
         $('#scrollbar').animate({
             top: nextPositon + 'px'
         }, 400);
 
-        if (Main.ScrollbarBlack) {
-            Main.ScrollbarBlack = false;
+        if (main_ScrollbarBlack) {
+            main_ScrollbarBlack = false;
             window.setTimeout(function() {
                 document.getElementById("scrollbar").style.backgroundColor = "#777777";
             }, (nextPositon === 100 ? 0 : 800));
@@ -269,79 +273,79 @@ Main.Scrollbar = function(y, coloumns, total) {
     } else {
         $('#scrollbar').stop();
         document.getElementById("scrollbar").style.backgroundColor = "#000000";
-        Main.nextScrollPositon = 100;
-        Main.ScrollbarBlack = true;
+        main_nextScrollPositon = 100;
+        main_ScrollbarBlack = true;
         document.getElementById("scrollbar").style.top = "100px";
     }
-};
+}
 
-Main.SetItemsLimitReload = function(blankCellCount) {
-    Main.ItemsLimitReload = 12;
-    if (blankCellCount > (Main.ItemsLimitReload / 3)) Main.ItemsLimitReload = blankCellCount * 3;
-    if (Main.ItemsLimitReload > 99) Main.ItemsLimitReload = 99;
-};
+function main_SetItemsLimitReload(blankCellCount) {
+    main_ItemsLimitReload = 12;
+    if (blankCellCount > (main_ItemsLimitReload / 3)) main_ItemsLimitReload = blankCellCount * 3;
+    if (main_ItemsLimitReload > 99) main_ItemsLimitReload = 99;
+}
 
-Main.showWarningDialog = function(text) {
-    if (!Main.NetworkStateOK && text === STR_REFRESH_PROBLEM) Main.NetworkRefresh = true;
-    document.getElementById('dialog_warning_text').innerHTML = !Main.NetworkStateOK ? STR_NET_DOWN : text;
+function main_showWarningDialog(text) {
+    if (!main_NetworkStateOK && text === STR_REFRESH_PROBLEM) main_NetworkRefresh = true;
+    document.getElementById('dialog_warning_text').innerHTML = !main_NetworkStateOK ? STR_NET_DOWN : text;
     document.getElementById('dialog_warning').classList.remove('hide');
-};
+}
 
-Main.HideWarningDialog = function() {
+function main_HideWarningDialog() {
     document.getElementById('dialog_warning').classList.add('hide');
-};
+}
 
-Main.isWarningDialogShown = function() {
+function main_isWarningDialogShown() {
     return document.getElementById('dialog_warning').className.indexOf('hide') === -1;
-};
+}
 
-Main.showAboutDialog = function() {
-    Main.HideExitDialog();
-    Main.HideControlsDialog();
-    Main.HideUpdateDialog();
+function main_showAboutDialog() {
+    main_HideExitDialog();
+    main_HideControlsDialog();
+    main_HideUpdateDialog();
     document.getElementById('dialog_about').classList.remove('hide');
-};
+}
 
-Main.HideAboutDialog = function() {
+function main_HideAboutDialog() {
     document.getElementById('dialog_about').classList.add('hide');
-};
+}
 
-Main.isAboutDialogShown = function() {
+function main_isAboutDialogShown() {
     return document.getElementById('dialog_about').className.indexOf('hide') === -1;
-};
+}
 
-Main.showControlsDialog = function() {
-    Main.HideExitDialog();
-    Main.HideAboutDialog();
-    Main.HideUpdateDialog();
+function main_showControlsDialog() {
+    main_HideExitDialog();
+    main_HideAboutDialog();
+    main_HideUpdateDialog();
     document.getElementById('dialog_controls').classList.remove('hide');
-};
+}
 
-Main.HideControlsDialog = function() {
+function main_HideControlsDialog() {
     document.getElementById('dialog_controls').classList.add('hide');
-};
+}
 
 
-Main.isControlsDialogShown = function() {
+function main_isControlsDialogShown() {
     return document.getElementById('dialog_controls').className.indexOf('hide') === -1;
-};
+}
 
-Main.showUpdateDialog = function() {
-    Main.HideExitDialog();
-    Main.HideAboutDialog();
-    Main.HideControlsDialog();
+function main_showUpdateDialog() {
+    main_HideExitDialog();
+    main_HideAboutDialog();
+    main_HideControlsDialog();
     document.getElementById('dialog_update').classList.remove('hide');
-};
+}
 
-Main.HideUpdateDialog = function() {
+function main_HideUpdateDialog() {
     document.getElementById('dialog_update').classList.add('hide');
-};
+}
 
-Main.isUpdateDialogShown = function() {
+function main_isUpdateDialogShown() {
     return document.getElementById('dialog_update').className.indexOf('hide') === -1;
-};
+}
 
-Main.addCommas = function(nStr) {
+function main_addCommas(nStr) {
     nStr += '';
     var x = nStr.split('.');
     var x1 = x[0];
@@ -351,9 +355,9 @@ Main.addCommas = function(nStr) {
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
-};
+}
 
-Main.videoqualitylang = function(video_height, average_fps, language) {
+function main_videoqualitylang(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
@@ -362,184 +366,184 @@ Main.videoqualitylang = function(video_height, average_fps, language) {
     else average_fps = Math.ceil(average_fps);
 
     return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
-};
+}
 
-Main.is_playlist = function(content) {
+function main_is_playlist(content) {
     return (content.indexOf('live') !== -1) ? '' : STR_NOT_LIVE;
-};
+}
 
-Main.ThumbNull = function(y, x, thumbnail) {
+function main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x, 0) !== null;
-};
+}
 
-Main.StartPlayerLive = function() {
+function main_StartPlayerLive() {
     document.body.addEventListener("keydown", Play.handleKeyDown, false);
     Play.Start();
-};
+}
 
-Main.ReStartScreens = function() {
+function main_ReStartScreens() {
     document.getElementById('play_dialog_exit').classList.add('hide');
-    Main.SwitchScreen();
+    main_SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
-};
+}
 
-Main.SwitchScreen = function() {
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    if (Main.NetworkStateOK) Main.HideWarningDialog();
-    Main.CounterDialogRst();
-    if (Main.Go === Main.Live) Live.init();
-    else if (Main.Go === Main.AddUser) AddUser.init();
-    else if (Main.Go === Main.Games) Games.init();
-    else if (Main.Go === Main.AGame) AGame.init();
-    else if (Main.Go === Main.Search) Search.init();
-    else if (Main.Go === Main.SGames) SGames.init();
-    else if (Main.Go === Main.SLive) SLive.init();
-    else if (Main.Go === Main.SChannelContent) SChannelContent.init();
-    else if (Main.Go === Main.Svod) Svod.init();
-    else if (Main.Go === Main.Sclip) Sclip.init();
-    else if (Main.Go === Main.Users) Users.init();
-    else if (Main.Go === Main.UserLive) UserLive.init();
-    else if (Main.Go === Main.UserHost) UserHost.init();
-    else if (Main.Go === Main.UserGames) UserGames.init();
-    else if (Main.Go === Main.UserChannels) UserChannels.init();
-    else if (Main.Go === Main.SChannels) SChannels.init();
+function main_SwitchScreen() {
+    main_ScrollHelperBlank('blank_focus');
+    if (main_NetworkStateOK) main_HideWarningDialog();
+    main_CounterDialogRst();
+    if (main_Go === main_Live) Live.init();
+    else if (main_Go === main_addUser) addUser_init();
+    else if (main_Go === main_games) games_init();
+    else if (main_Go === main_aGame) aGame_init();
+    else if (main_Go === main_Search) Search.init();
+    else if (main_Go === main_sgames) sgames_init();
+    else if (main_Go === main_SLive) SLive.init();
+    else if (main_Go === main_SChannelContent) SChannelContent.init();
+    else if (main_Go === main_Svod) Svod.init();
+    else if (main_Go === main_Sclip) Sclip.init();
+    else if (main_Go === main_Users) Users.init();
+    else if (main_Go === main_UserLive) UserLive.init();
+    else if (main_Go === main_UserHost) UserHost.init();
+    else if (main_Go === main_usergames) usergames_init();
+    else if (main_Go === main_UserChannels) UserChannels.init();
+    else if (main_Go === main_SChannels) SChannels.init();
     else Live.init();
-};
+}
 
-Main.ExitCurrent = function(ExitCurrent) {
-    if (ExitCurrent === Main.Live) Live.exit();
-    else if (ExitCurrent === Main.AddUser) AddUser.exit();
-    else if (ExitCurrent === Main.Games) Games.exit();
-    else if (ExitCurrent === Main.AGame) AGame.exit();
-    else if (ExitCurrent === Main.Search) Search.exit();
-    else if (ExitCurrent === Main.SGames) SGames.exit();
-    else if (ExitCurrent === Main.SLive) SLive.exit();
-    else if (ExitCurrent === Main.SChannelContent) SChannelContent.exit();
-    else if (ExitCurrent === Main.Svod) Svod.exit();
-    else if (ExitCurrent === Main.Sclip) Sclip.exit();
-    else if (ExitCurrent === Main.Users) Users.exit();
-    else if (ExitCurrent === Main.UserLive) UserLive.exit();
-    else if (ExitCurrent === Main.UserHost) UserHost.exit();
-    else if (ExitCurrent === Main.UserGames) UserGames.exit();
-    else if (ExitCurrent === Main.UserChannels) UserChannels.exit();
-    else if (ExitCurrent === Main.SChannels) SChannels.exit();
-};
+function main_ExitCurrent(ExitCurrent) {
+    if (ExitCurrent === main_Live) Live.exit();
+    else if (ExitCurrent === main_addUser) addUser_exit();
+    else if (ExitCurrent === main_games) games_exit();
+    else if (ExitCurrent === main_aGame) aGame_exit();
+    else if (ExitCurrent === main_Search) Search.exit();
+    else if (ExitCurrent === main_sgames) sgames_exit();
+    else if (ExitCurrent === main_SLive) SLive.exit();
+    else if (ExitCurrent === main_SChannelContent) SChannelContent.exit();
+    else if (ExitCurrent === main_Svod) Svod.exit();
+    else if (ExitCurrent === main_Sclip) Sclip.exit();
+    else if (ExitCurrent === main_Users) Users.exit();
+    else if (ExitCurrent === main_UserLive) UserLive.exit();
+    else if (ExitCurrent === main_UserHost) UserHost.exit();
+    else if (ExitCurrent === main_usergames) usergames_exit();
+    else if (ExitCurrent === main_UserChannels) UserChannels.exit();
+    else if (ExitCurrent === main_SChannels) SChannels.exit();
+}
 
-Main.openStream = function() {
+function main_openStream() {
     document.body.addEventListener("keydown", Play.handleKeyDown, false);
     document.getElementById('scene2').classList.remove('hide');
     Play.hidePanel();
     Play.hideChat();
     document.getElementById('scene1').classList.add('hide');
     Play.Start();
-};
+}
 
-Main.RestoreTopLabel = function() {
-    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
-    Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+function main_RestoreTopLabel() {
+    main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-};
+}
 
-Main.cleanTopLabel = function() {
-    Main.IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+function main_cleanTopLabel() {
+    main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     document.getElementById('label_switch').innerHTML = '';
     document.getElementById('top_bar_live').innerHTML = '';
     document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-};
+}
 
-Main.UnderCenter = function(text) {
+function main_UnderCenter(text) {
     return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>';
-};
+}
 
-Main.videoCreatedAt = function(time) { //time in '2017-10-27T13:27:27Z'
+function main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
         "July", "Aug", "Sept", "Oct", "Nov", "Dec"
     ];
     time = new Date(time);
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
-};
+}
 
-Main.NetworkStateChangeListenerStart = function() {
+function main_NetworkStateChangeListenerStart() {
     var onChange = function(data) {
         if (data === 1 || data === 4) { //network connected
-            Main.NetworkStateOK = true;
-            if (Main.isWarningDialogShown()) {
-                Main.showWarningDialog(STR_NET_UP);
-                if (Main.NetworkRefresh) Main.SwitchScreen();
-                Main.NetworkRefresh = false;
+            main_NetworkStateOK = true;
+            if (main_isWarningDialogShown()) {
+                main_showWarningDialog(STR_NET_UP);
+                if (main_NetworkRefresh) main_SwitchScreen();
+                main_NetworkRefresh = false;
             }
-            if (Play.WarningDialogVisible()) Main.showWarningDialog(STR_NET_UP);
-            window.setTimeout(Main.HideExitDialog, 1500);
+            if (Play.WarningDialogVisible()) main_showWarningDialog(STR_NET_UP);
+            window.setTimeout(main_HideExitDialog, 1500);
         } else if (data === 2 || 5) { //network down
-            Main.NetworkStateOK = false;
+            main_NetworkStateOK = false;
             window.setTimeout(function() {
-                if (!Main.NetworkStateOK) {
-                    Main.showWarningDialog('');
+                if (!main_NetworkStateOK) {
+                    main_showWarningDialog('');
                     Play.showWarningDialog(STR_NET_DOWN);
                 }
             }, 5000);
         }
     };
     try {
-        Main.listenerID = webapis.network.addNetworkStateChangeListener(onChange);
+        main_listenerID = webapis.network.addNetworkStateChangeListener(onChange);
     } catch (e) {}
-};
+}
 
-Main.NetworkStateChangeListenerStop = function() {
+function main_NetworkStateChangeListenerStop() {
     try {
-        webapis.network.removeNetworkStateChangeListener(Main.listenerID);
+        webapis.network.removeNetworkStateChangeListener(main_listenerID);
     } catch (e) {}
-};
+}
 
-Main.checkVersion = function() {
+function main_checkVersion() {
     var version = null,
         value = 0;
     try {
         version = (tizen.application.getAppInfo().version);
     } catch (e) {}
     if (version !== null) {
-        Main.currentVersion = version;
-        Main.versonTag = STR_VERSION + version + '.' + Main.minversion + STR_BR;
+        main_currentVersion = version;
+        main_versonTag = STR_VERSION + version + '.' + main_minversion + STR_BR;
         version = version.split(".");
         value = parseInt(version[0] + version[1] + version[2]);
-        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main.versonTag + STR_ABOUT_INFO_0;
-        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main.currentVersion + STR_LATEST_VERSION + Main.stringVersion + STR_BR + STR_UPDATE_MAIN_0;
-        return value < Main.version;
+        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + main_versonTag + STR_ABOUT_INFO_0;
+        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + main_currentVersion + STR_LATEST_VERSION + main_stringVersion + STR_BR + STR_UPDATE_MAIN_0;
+        return value < main_version;
     } else return false;
-};
+}
 
-Main.GoLive = function() {
-    AddCode.SetDefaultOAuth(0);
-    Main.Go = Main.Live;
-    Main.SwitchScreen();
-};
+function main_GoLive() {
+    addCode_SetDefaultOAuth(0);
+    main_Go = main_Live;
+    main_SwitchScreen();
+}
 
-Main.Resume = function() {
+function main_Resume() {
     if (document.hidden) {
-        window.clearInterval(Main.SmartHubId);
-        Main.NetworkStateChangeListenerStop();
+        window.clearInterval(main_SmartHubId);
+        main_NetworkStateChangeListenerStop();
     } else {
         window.setTimeout(function() {
-            Main.NetworkStateChangeListenerStart();
+            main_NetworkStateChangeListenerStart();
         }, 20000);
         window.setTimeout(function() {
-            if (AddUser.UsernameArray.length > 0) {
+            if (addUser_UsernameArray.length > 0) {
                 if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
-                Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
+                main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
             } else {
-                window.clearInterval(Main.SmartHubId);
-                document.removeEventListener('visibilitychange', Main.Resume);
+                window.clearInterval(main_SmartHubId);
+                document.removeEventListener('visibilitychange', main_Resume);
             }
         }, 1500);
     }
-};
+}
 
-Main.LoadImages = function(imgVector, idVector, img_type) {
+function main_LoadImages(imgVector, idVector, img_type) {
     var loadImages = function(position, ImgObjet) {
         ImgObjet.onerror = function() {
             this.src = img_type; //img fail to load use predefined
@@ -550,9 +554,9 @@ Main.LoadImages = function(imgVector, idVector, img_type) {
     for (var i = 0; i < imgVector.length; i++) {
         loadImages(i, document.getElementById(idVector[i]));
     }
-};
+}
 
-Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
+function main_LazyImgStart(imgId, total, img_type, coloumns) {
     var x, y = 0,
         loadImages = function(ImgObjet) {
             ImgObjet.onerror = function() {
@@ -567,11 +571,11 @@ Main.LazyImgStart = function(imgId, total, img_type, coloumns) {
             if (elem !== null) loadImages(elem);
         }
     }
-    Main.Ychange(0);
-};
+    main_Ychange(0);
+}
 
-Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
-    var change = Main.Ychange(row_id);
+function main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
+    var change = main_Ychange(row_id);
 
     if (row_id === offset && change === 1) change = 0;
 
@@ -599,74 +603,74 @@ Main.LazyImg = function(imgId, row_id, img_type, coloumns, offset) { //offset is
             if (elem !== null) resetImages(elem);
         }
     }
-};
+}
 
-Main.Ychange = function(y) {
+function main_Ychange(y) {
     var position = 0;
 
-    if (Main.cursorY < y) position = 1; //going down
-    else if (Main.cursorY > y) position = -1; //going up
+    if (main_cursorY < y) position = 1; //going down
+    else if (main_cursorY > y) position = -1; //going up
 
-    Main.cursorY = y;
+    main_cursorY = y;
     return position;
-};
+}
 
-Main.YRst = function(y) {
-    Main.cursorY = y;
-};
+function main_YRst(y) {
+    main_cursorY = y;
+}
 
-Main.PreLoadAImage = function(link) {
-    Main.newImg.src = link;
-};
+function main_PreLoadAImage(link) {
+    main_newImg.src = link;
+}
 
-Main.createCellEmpty = function(row_id, coloumn_id, cell) {
+function main_createCellEmpty(row_id, coloumn_id, cell) {
     // id here can't be equal between screen
     return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
-};
+}
 
-Main.createEmptyCell = function(id) {
-    Main.td = document.createElement('td');
-    Main.td.setAttribute('id', id);
-    Main.td.className = 'stream_cell';
+function main_createEmptyCell(id) {
+    main_td = document.createElement('td');
+    main_td.setAttribute('id', id);
+    main_td.className = 'stream_cell';
 
-    return Main.td;
-};
+    return main_td;
+}
 
-Main.SetStreamTitle = function(boolean) {
-    if (boolean) Main.TitleClass = 'stream_info';
-    else Main.TitleClass = 'stream_channel';
-};
+function main_SetStreamTitle(boolean) {
+    if (boolean) main_TitleClass = 'stream_info';
+    else main_TitleClass = 'stream_channel';
+}
 
-Main.createCellVideo = function(channel_name, id, idArray, valuesArray) {
-    Main.td = document.createElement('td');
-    Main.td.setAttribute('id', idArray[8] + id);
-    Main.td.setAttribute('data-channelname', channel_name);
-    Main.td.className = 'stream_cell';
-    Main.td.innerHTML = Main.VideoHtml(id, idArray, valuesArray);
+function main_createCellVideo(channel_name, id, idArray, valuesArray) {
+    main_td = document.createElement('td');
+    main_td.setAttribute('id', idArray[8] + id);
+    main_td.setAttribute('data-channelname', channel_name);
+    main_td.className = 'stream_cell';
+    main_td.innerHTML = main_VideoHtml(id, idArray, valuesArray);
 
-    return Main.td;
-};
+    return main_td;
+}
 
-Main.replaceVideo = function(id, channel_name, valuesArray, cell, splitedId) {
+function main_replaceVideo(id, channel_name, valuesArray, cell, splitedId) {
     splitedId = id.split(splitedId)[1];
     id = document.getElementById(id);
     id.setAttribute('data-channelname', channel_name);
-    id.innerHTML = Main.VideoHtml(splitedId, Live.ids, valuesArray);
+    id.innerHTML = main_VideoHtml(splitedId, Live.ids, valuesArray);
     id.setAttribute('id', cell + splitedId);
-};
+}
 
-Main.VideoHtml = function(id, idArray, valuesArray) {
+function main_VideoHtml(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="' + Main.TitleClass + '">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="' + main_TitleClass + '">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 64%; display: inline-block;">' + valuesArray[4] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
-};
+}
 
-Main.CheckMp4Html5 = function() {
+function main_CheckMp4Html5() {
     var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
     if (!!document.createElement('video').canPlayType) {
 
@@ -693,167 +697,123 @@ Main.CheckMp4Html5 = function() {
     } else result += "No video support at all, createElement video fail.";
 
     return result;
-};
+}
 
-Main.addFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
+function main_addFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
     ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.add(Main.classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main.classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main.classInfo);
-    document.getElementById(StreamTitleDiv + y + '_' + x).classList.add(Main.classInfo);
-    document.getElementById(StreamGameDiv + y + '_' + x).classList.add(Main.classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main.classInfo);
-    document.getElementById(QualityDiv + y + '_' + x).classList.add(Main.classInfo);
+    document.getElementById(Thumbnail + y + '_' + x).classList.add(main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(StreamTitleDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(StreamGameDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(QualityDiv + y + '_' + x).classList.add(main_classInfo);
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Thumbnail, y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        main_ScrollHelper(Thumbnail, y, x, screen, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
     }, 10);
 
-    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
-};
+    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
 
-Main.removeFocusVideo = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.remove(Main.classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main.classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main.classInfo);
-    document.getElementById(StreamTitleDiv + y + '_' + x).classList.remove(Main.classInfo);
-    document.getElementById(StreamGameDiv + y + '_' + x).classList.remove(Main.classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main.classInfo);
-    document.getElementById(QualityDiv + y + '_' + x).classList.remove(Main.classInfo);
-};
+function main_removeFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.remove(main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(main_classInfo);
+    document.getElementById(StreamTitleDiv + y + '_' + x).classList.remove(main_classInfo);
+    document.getElementById(StreamGameDiv + y + '_' + x).classList.remove(main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(main_classInfo);
+    document.getElementById(QualityDiv + y + '_' + x).classList.remove(main_classInfo);
+}
 
-Main.addFocusVideoArray = function(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function main_addFocusVideoArray(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
-    document.getElementById(idArray[0] + id).classList.add(Main.classThumb);
-    document.getElementById(idArray[2] + id).classList.add(Main.classText);
-    document.getElementById(idArray[3] + id).classList.add(Main.classInfo);
-    document.getElementById(idArray[4] + id).classList.add(Main.classInfo);
-    document.getElementById(idArray[5] + id).classList.add(Main.classInfo);
-    document.getElementById(idArray[6] + id).classList.add(Main.classInfo);
-    document.getElementById(idArray[7] + id).classList.add(Main.classInfo);
+    document.getElementById(idArray[0] + id).classList.add(main_classThumb);
+    document.getElementById(idArray[2] + id).classList.add(main_classText);
+    document.getElementById(idArray[3] + id).classList.add(main_classInfo);
+    document.getElementById(idArray[4] + id).classList.add(main_classInfo);
+    document.getElementById(idArray[5] + id).classList.add(main_classInfo);
+    document.getElementById(idArray[6] + id).classList.add(main_classInfo);
+    document.getElementById(idArray[7] + id).classList.add(main_classInfo);
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(idArray[0], y, x, screen, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        main_ScrollHelper(idArray[0], y, x, screen, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
     }, 10);
 
-    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
-};
+    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
 
-Main.removeFocusVideoArray = function(id, idArray) {
-    document.getElementById(idArray[0] + id).classList.remove(Main.classThumb);
-    document.getElementById(idArray[2] + id).classList.remove(Main.classText);
-    document.getElementById(idArray[3] + id).classList.remove(Main.classInfo);
-    document.getElementById(idArray[4] + id).classList.remove(Main.classInfo);
-    document.getElementById(idArray[5] + id).classList.remove(Main.classInfo);
-    document.getElementById(idArray[6] + id).classList.remove(Main.classInfo);
-    document.getElementById(idArray[7] + id).classList.remove(Main.classInfo);
-};
+function main_removeFocusVideoArray(id, idArray) {
+    document.getElementById(idArray[0] + id).classList.remove(main_classThumb);
+    document.getElementById(idArray[2] + id).classList.remove(main_classText);
+    document.getElementById(idArray[3] + id).classList.remove(main_classInfo);
+    document.getElementById(idArray[4] + id).classList.remove(main_classInfo);
+    document.getElementById(idArray[5] + id).classList.remove(main_classInfo);
+    document.getElementById(idArray[6] + id).classList.remove(main_classInfo);
+    document.getElementById(idArray[7] + id).classList.remove(main_classInfo);
+}
 
-Main.addFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.add(Main.classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main.classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main.classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main.classInfo);
+function main_addFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.add(main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.add(main_classInfo);
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Thumbnail, y, x, screen, Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
+        main_ScrollHelper(Thumbnail, y, x, screen, main_ScrollOffSetMinusGame, main_ScrollOffSetGame, false);
     }, 10);
 
-    Main.CounterDialog(x, y, ColoumnsCount, itemsCount);
-};
+    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
 
-Main.removeFocusGame = function(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.remove(Main.classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main.classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main.classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main.classInfo);
-};
+function main_removeFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.remove(main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(main_classInfo);
+}
 
-Main.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
+//TODO split main_ScrollHelper in main_ScrollHelperVideo/game/channel/etc
+function main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
+    var id = Thumbnail + cursorY + '_' + cursorX;
 
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
-        var id = Thumbnail + cursorY + '_' + cursorX;
-
-        if (document.getElementById(id) === null) {
-            if (!cursorY && !cursorX) Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-            return;
-        } else if (Screen === Main.UserChannels || Screen === Main.SChannels) {
-            if (!Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
-                if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-                else cursorY = 0;
-            }
-        } else if (cursorY > 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
-            id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        } else if (cursorY === 1 && OffsetPlus !== Main.ScrollOffSetGame && !Main.ThumbNull((cursorY + 1), 0, Thumbnail)) {
-            id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-            cursorY = 0;
+    if (document.getElementById(id) === null) {
+        if (!cursorY && !cursorX) main_ScrollHelperBlank('blank_focus');
+        return;
+    } else if (Screen === main_UserChannels || Screen === main_SChannels) {
+        if (!main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+            if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+            else cursorY = 0;
         }
-        if (!cursorY && Screen === Main.AGame) OffsetPlus = OffsetPlus - 83;
+    } else if (cursorY > 1 && OffsetPlus !== main_ScrollOffSetGame && !main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+    } else if (cursorY === 1 && OffsetPlus !== main_ScrollOffSetGame && !main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        cursorY = 0;
+    }
+    if (!cursorY && Screen === main_aGame) OffsetPlus = OffsetPlus - main_ScrollOffSetMinusAgame;
 
+    if (DuploYOffsetCheck) {
+        DuploYOffsetCheck = (!cursorY || cursorY === 1);
         if (DuploYOffsetCheck) {
-            DuploYOffsetCheck = (!cursorY || cursorY === 1);
-            if (DuploYOffsetCheck) {
-                id = Thumbnail + '0_' + cursorX;
-                OffsetMinus = OffsetMinus - 0.085;
-            }
-        } else DuploYOffsetCheck = (!cursorY);
+            id = Thumbnail + '0_' + cursorX;
+            OffsetMinus = OffsetMinus - main_ScrollOffSetMinusDuploYOffsetCheck;
+        }
+    } else DuploYOffsetCheck = (!cursorY);
 
-        if (Main.Go === Screen) {
-            window.scroll(0, this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) -
-                OffsetMinus * this.viewportHeight() + (DuploYOffsetCheck ? OffsetPlus : 0));
-        } else return;
-    }
-};
+    if (main_Go === Screen) {
+        window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
+    } else return;
+}
 
+function main_ScrollHelperBlank(id) {
+    window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - main_ScrollOffSetMinusVideo);
+}
 
-Main.ScrollHelperBlank = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
+function main_documentVerticalScrollPosition() {
+     return document.body.scrollTop; 
+}
 
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        window.scroll(0, this.documentVerticalScrollPosition() +
-            this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight());
-    }
-};
+function main_elementVerticalClientPositionById(id) {
+    return document.getElementById(id).getBoundingClientRect().top;
+}

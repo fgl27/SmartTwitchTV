@@ -31,15 +31,15 @@ UserLive.itemsCountCheck = false;
 //Variable initialization end
 
 UserLive.init = function() {
-    Main.Go = Main.UserLive;
+    main_Go = main_UserLive;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + Main.UnderCenter(Main.UserName + STR_LIVE_CHANNELS);
+    document.getElementById('top_bar_user').innerHTML = STR_USER + main_UnderCenter(main_UserName + STR_LIVE_CHANNELS);
     document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
-    if (UserLive.OldUserName !== Main.UserName) UserLive.status = false;
+    if (UserLive.OldUserName !== main_UserName) UserLive.status = false;
     if (UserLive.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(UserLive.ids[0], UserLive.cursorY, UserLive.cursorX, Main.UserLive, Main.ScrollOffSetMinusVideo,
-            Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(UserLive.cursorX, UserLive.cursorY, Main.ColoumnsCountVideo, UserLive.itemsCount);
+        main_ScrollHelper(UserLive.ids[0], UserLive.cursorY, UserLive.cursorX, main_UserLive, main_ScrollOffSetMinusVideo,
+            main_ScrollOffSetVideo, false);
+        main_CounterDialog(UserLive.cursorX, UserLive.cursorY, main_ColoumnsCountVideo, UserLive.itemsCount);
     } else UserLive.StartLoad();
 };
 
@@ -50,11 +50,11 @@ UserLive.exit = function() {
 };
 
 UserLive.StartLoad = function() {
-    Main.HideWarningDialog();
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+    main_HideWarningDialog();
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     UserLive.status = false;
-    UserLive.OldUserName = Main.UserName;
+    UserLive.OldUserName = main_UserName;
     var table = document.getElementById('stream_table_user_live');
     while (table.firstChild) table.removeChild(table.firstChild);
     UserLive.loadChannelOffsset = 0;
@@ -72,7 +72,7 @@ UserLive.StartLoad = function() {
     UserLive.cursorY = 0;
     UserLive.dataEnded = false;
     UserLive.followerChannels = '';
-    Main.CounterDialogRst();
+    main_CounterDialogRst();
     UserLive.loadDataPrepare();
     UserLive.loadChannels();
 };
@@ -88,10 +88,10 @@ UserLive.loadChannels = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main.UserName) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(main_UserName) +
             '/follows/channels?limit=100&offset=' + UserLive.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -119,8 +119,8 @@ UserLive.loadDataError = function() {
     } else {
         UserLive.loadingData = false;
         UserLive.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -153,15 +153,15 @@ UserLive.loadChannelUserLive = function() {
 
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
         if (offset && offset > (UserLive.MaxOffset - 1)) {
-            offset = UserLive.MaxOffset - Main.ItemsLimitVideo;
+            offset = UserLive.MaxOffset - main_ItemsLimitVideo;
             UserLive.dataEnded = true;
             UserLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive.followerChannels) + '&limit=' +
-            Main.ItemsLimitVideo + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
+            main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -189,8 +189,8 @@ UserLive.loadDataErrorLive = function() {
     } else {
         UserLive.loadingData = false;
         UserLive.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -199,41 +199,41 @@ UserLive.loadDataSuccess = function(responseText) {
     var response_items = response.streams.length;
     UserLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) UserLive.dataEnded = true;
+    if (response_items < main_ItemsLimitVideo) UserLive.dataEnded = true;
 
     var offset_itemsCount = UserLive.itemsCount;
     UserLive.itemsCount += response_items;
 
     UserLive.emptyContent = !UserLive.itemsCount;
 
-    var response_rows = response_items / Main.ColoumnsCountVideo;
-    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / main_ColoumnsCountVideo;
+    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (UserLive.CellExists(stream.channel.name)) coloumn_id--;
             else {
-                row.appendChild(UserLive.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
-                    Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                row.appendChild(UserLive.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", main_VideoSize),
+                    main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game, main_addCommas(stream.viewers) + STR_VIEWER,
+                    main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                 ]));
             }
         }
 
-        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
+        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
             if (UserLive.dataEnded && !UserLive.itemsCountCheck) {
                 UserLive.itemsCountCheck = true;
-                UserLive.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
+                UserLive.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(Main.createEmptyCell(UserLive.ids[9] + row_id + '_' + coloumn_id));
+            row.appendChild(main_createEmptyCell(UserLive.ids[9] + row_id + '_' + coloumn_id));
             UserLive.blankCellVector.push(UserLive.ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_user_live").appendChild(row);
@@ -244,8 +244,8 @@ UserLive.loadDataSuccess = function(responseText) {
 
 UserLive.createCell = function(row_id, id, channel_name, valuesArray) {
     UserLive.nameMatrix.push(channel_name);
-    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main.createCellVideo(channel_name, id, UserLive.ids, valuesArray);
+    if (row_id < main_ColoumnsCountVideo) main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return main_createCellVideo(channel_name, id, UserLive.ids, valuesArray);
 };
 
 UserLive.CellExists = function(display_name) {
@@ -259,12 +259,12 @@ UserLive.CellExists = function(display_name) {
 UserLive.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!UserLive.status) {
-            Main.HideLoadDialog();
-            if (UserLive.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+            main_HideLoadDialog();
+            if (UserLive.emptyContent) main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 UserLive.status = true;
                 UserLive.addFocus();
-                Main.LazyImgStart(UserLive.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                main_LazyImgStart(UserLive.ids[1], 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
             }
             UserLive.loadingData = false;
         } else {
@@ -289,18 +289,18 @@ UserLive.loadChannelsReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main.SetItemsLimitReload(UserLive.blankCellCount);
+        main_SetItemsLimitReload(UserLive.blankCellCount);
 
         var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
         if (offset && offset > (UserLive.MaxOffset - 1)) {
-            offset = UserLive.MaxOffset - Main.ItemsLimitReload;
+            offset = UserLive.MaxOffset - main_ItemsLimitReload;
             UserLive.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main.gameSelected) +
-            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(main_gameSelected) +
+            '&limit=' + main_ItemsLimitReload + '&offset=' + offset, true);
         xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -339,7 +339,7 @@ UserLive.loadDataSuccessReplace = function(responseText) {
 
     UserLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) UserLive.ReplacedataEnded = true;
+    if (response_items < main_ItemsLimitVideo) UserLive.ReplacedataEnded = true;
 
 
     for (var i = 0; i < UserLive.blankCellVector.length && cursor < response_items; i++, cursor++) {
@@ -349,10 +349,10 @@ UserLive.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             UserLive.nameMatrix.push(stream.channel.name);
-            Main.replaceVideo(UserLive.blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main.VideoSize),
-                Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                stream.channel.status, stream.game, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            main_replaceVideo(UserLive.blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", main_VideoSize),
+                main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                stream.channel.status, stream.game, main_addCommas(stream.viewers) + STR_VIEWER,
+                main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
             ], UserLive.ids[8], UserLive.ids[9]);
             UserLive.blankCellCount--;
 
@@ -373,11 +373,11 @@ UserLive.loadDataSuccessReplace = function(responseText) {
 };
 
 UserLive.addFocus = function() {
-    Main.addFocusVideoArray(UserLive.cursorY, UserLive.cursorX, UserLive.ids, Main.UserLive, Main.ColoumnsCountVideo, UserLive.itemsCount);
+    main_addFocusVideoArray(UserLive.cursorY, UserLive.cursorX, UserLive.ids, main_UserLive, main_ColoumnsCountVideo, UserLive.itemsCount);
 
-    if (UserLive.cursorY > 3) Main.LazyImg(UserLive.ids[1], UserLive.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (UserLive.cursorY > 3) main_LazyImg(UserLive.ids[1], UserLive.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
 
-    if (((UserLive.cursorY + Main.ItemsReloadLimitVideo) > (UserLive.itemsCount / Main.ColoumnsCountVideo)) &&
+    if (((UserLive.cursorY + main_ItemsReloadLimitVideo) > (UserLive.itemsCount / main_ColoumnsCountVideo)) &&
         !UserLive.dataEnded && !UserLive.loadingMore) {
         UserLive.loadingMore = true;
         UserLive.loadDataPrepare();
@@ -386,7 +386,7 @@ UserLive.addFocus = function() {
 };
 
 UserLive.removeFocus = function() {
-    Main.removeFocusVideoArray(UserLive.cursorY + '_' + UserLive.cursorX, UserLive.ids);
+    main_removeFocusVideoArray(UserLive.cursorY + '_' + UserLive.cursorX, UserLive.ids);
 };
 
 UserLive.keyClickDelay = function() {
@@ -409,22 +409,22 @@ UserLive.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                Main.Go = Main.Users;
+                main_Go = main_Users;
                 UserLive.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((UserLive.cursorY), (UserLive.cursorX - 1), UserLive.ids[0])) {
+            if (main_ThumbNull((UserLive.cursorY), (UserLive.cursorX - 1), UserLive.ids[0])) {
                 UserLive.removeFocus();
                 UserLive.cursorX--;
                 UserLive.addFocus();
             } else {
-                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((UserLive.cursorY - 1), i, UserLive.ids[0])) {
+                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (main_ThumbNull((UserLive.cursorY - 1), i, UserLive.ids[0])) {
                         UserLive.removeFocus();
                         UserLive.cursorY--;
                         UserLive.cursorX = i;
@@ -435,11 +435,11 @@ UserLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((UserLive.cursorY), (UserLive.cursorX + 1), UserLive.ids[0])) {
+            if (main_ThumbNull((UserLive.cursorY), (UserLive.cursorX + 1), UserLive.ids[0])) {
                 UserLive.removeFocus();
                 UserLive.cursorX++;
                 UserLive.addFocus();
-            } else if (Main.ThumbNull((UserLive.cursorY + 1), 0, UserLive.ids[0])) {
+            } else if (main_ThumbNull((UserLive.cursorY + 1), 0, UserLive.ids[0])) {
                 UserLive.removeFocus();
                 UserLive.cursorY++;
                 UserLive.cursorX = 0;
@@ -447,8 +447,8 @@ UserLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((UserLive.cursorY - 1), (UserLive.cursorX - i), UserLive.ids[0])) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((UserLive.cursorY - 1), (UserLive.cursorX - i), UserLive.ids[0])) {
                     UserLive.removeFocus();
                     UserLive.cursorY--;
                     UserLive.cursorX = UserLive.cursorX - i;
@@ -458,8 +458,8 @@ UserLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((UserLive.cursorY + 1), (UserLive.cursorX - i), UserLive.ids[0])) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((UserLive.cursorY + 1), (UserLive.cursorX - i), UserLive.ids[0])) {
                     UserLive.removeFocus();
                     UserLive.cursorY++;
                     UserLive.cursorX = UserLive.cursorX - i;
@@ -474,16 +474,16 @@ UserLive.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELUP:
             if (!UserLive.loadingMore) {
-                Main.Go = Main.UserHost;
+                main_Go = main_UserHost;
                 UserLive.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             if (!UserLive.loadingMore) {
-                Main.Go = Main.UserChannels;
+                main_Go = main_UserChannels;
                 UserLive.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_PLAY:
@@ -493,24 +493,24 @@ UserLive.handleKeyDown = function(event) {
             Play.selectedChannel = document.getElementById(UserLive.ids[8] + UserLive.cursorY + '_' + UserLive.cursorX).getAttribute('data-channelname');
             Play.selectedChannelDisplayname = document.getElementById(UserLive.ids[3] + UserLive.cursorY + '_' + UserLive.cursorX).textContent;
             document.body.removeEventListener("keydown", UserLive.handleKeyDown);
-            Main.openStream();
+            main_openStream();
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             UserLive.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.UserLive;
-            Main.Go = Main.Search;
-            Main.OldgameSelected = Main.gameSelected;
+            main_BeforeSearch = main_UserLive;
+            main_Go = main_Search;
+            main_OldgameSelected = main_gameSelected;
             UserLive.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         default:
             break;

@@ -31,35 +31,35 @@ Svod.vodId = '';
 //Variable initialization end
 
 Svod.init = function() {
-    Main.Go = Main.Svod;
-    Main.SetStreamTitle(true);
-    if (Main.selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
-    Main.cleanTopLabel();
-    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD);
-    document.getElementById('top_bar_user').innerHTML = Main.selectedChannelDisplayname;
+    main_Go = main_Svod;
+    main_SetStreamTitle(true);
+    if (main_selectedChannel !== Svod.lastselectedChannel) Svod.status = false;
+    main_cleanTopLabel();
+    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD);
+    document.getElementById('top_bar_user').innerHTML = main_selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
     document.body.addEventListener("keydown", Svod.handleKeyDown, false);
-    Main.YRst(Svod.cursorY);
+    main_YRst(Svod.cursorY);
     if (Svod.status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Svod.ids[0], Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo,
-            Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
+        main_ScrollHelper(Svod.ids[0], Svod.cursorY, Svod.cursorX, main_Svod, main_ScrollOffSetMinusVideo,
+            main_ScrollOffSetVideo, false);
+        main_CounterDialog(Svod.cursorX, Svod.cursorY, main_ColoumnsCountVideo, Svod.itemsCount);
     } else Svod.StartLoad();
 };
 
 Svod.exit = function() {
-    Main.RestoreTopLabel();
+    main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
-    Main.SetStreamTitle(false);
+    main_SetStreamTitle(false);
 };
 
 Svod.StartLoad = function() {
     document.getElementById('top_bar_game').innerHTML = Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
-    Main.HideWarningDialog();
-    Svod.lastselectedChannel = Main.selectedChannel;
+    main_HideWarningDialog();
+    Svod.lastselectedChannel = main_selectedChannel;
     Svod.status = false;
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     var table = document.getElementById('stream_table_search_vod');
     while (table.firstChild) table.removeChild(table.firstChild);
     Svod.loadingMore = false;
@@ -74,7 +74,7 @@ Svod.StartLoad = function() {
     Svod.cursorX = 0;
     Svod.cursorY = 0;
     Svod.dataEnded = false;
-    Main.CounterDialogRst();
+    main_CounterDialogRst();
     Svod.loadDataPrepare();
     Svod.loadDataRequest();
 };
@@ -92,17 +92,17 @@ Svod.loadDataRequest = function() {
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
         if (offset && offset > (Svod.MaxOffset - 1)) {
-            offset = Svod.MaxOffset - Main.ItemsLimitVideo;
+            offset = Svod.MaxOffset - main_ItemsLimitVideo;
             Svod.dataEnded = true;
             Svod.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main.selectedChannel) + '/videos?limit=' +
-            Main.ItemsLimitVideo + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(main_selectedChannel) + '/videos?limit=' +
+            main_ItemsLimitVideo + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -130,8 +130,8 @@ Svod.loadDataError = function() {
     } else {
         Svod.loadingData = false;
         Svod.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -140,24 +140,24 @@ Svod.loadDataSuccess = function(responseText) {
     var response_items = response.videos.length;
     Svod.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) Svod.dataEnded = true;
+    if (response_items < main_ItemsLimitVideo) Svod.dataEnded = true;
 
     var offset_itemsCount = Svod.itemsCount;
     Svod.itemsCount += response_items;
 
     Svod.emptyContent = !Svod.itemsCount;
 
-    var response_rows = response_items / Main.ColoumnsCountVideo;
-    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / main_ColoumnsCountVideo;
+    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, video,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
             if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) { //video content can be null sometimes the preview will 404
                 Svod.blankCellCount++;
@@ -165,20 +165,20 @@ Svod.loadDataSuccess = function(responseText) {
             } else if (Svod.CellExists(video._id)) coloumn_id--;
             else {
                 row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length,
-                [video.preview.replace("320x240", Main.VideoSize),
-                    video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
-                    Main.addCommas(video.views) + STR_VIEWER,
-                    Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
+                [video.preview.replace("320x240", main_VideoSize),
+                    video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
+                    main_addCommas(video.views) + STR_VIEWER,
+                    main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
                 ]));
             }
         }
 
-        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
+        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
             if (Svod.dataEnded && !Svod.itemsCountCheck) {
                 Svod.itemsCountCheck = true;
-                Svod.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
+                Svod.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(Main.createEmptyCell(Svod.ids[9] + row_id + '_' + coloumn_id));
+            row.appendChild(main_createEmptyCell(Svod.ids[9] + row_id + '_' + coloumn_id));
             Svod.blankCellVector.push(Svod.ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_search_vod").appendChild(row);
@@ -189,8 +189,8 @@ Svod.loadDataSuccess = function(responseText) {
 
 Svod.createCell = function(row_id, id, video_id, valuesArray) {
     Svod.nameMatrix.push(video_id);
-    if (row_id < Main.ColoumnsCountVideo) Main.PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main.createCellVideo(video_id, id, Svod.ids, valuesArray);
+    if (row_id < main_ColoumnsCountVideo) main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return main_createCellVideo(video_id, id, Svod.ids, valuesArray);
 };
 
 Svod.CellExists = function(video_id) {
@@ -204,12 +204,12 @@ Svod.CellExists = function(video_id) {
 Svod.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Svod.status) {
-            Main.HideLoadDialog();
-            if (Svod.emptyContent) Main.showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+            main_HideLoadDialog();
+            if (Svod.emptyContent) main_showWarningDialog(STR_NO + (Svod.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 Svod.status = true;
                 Svod.addFocus();
-                Main.LazyImgStart(Svod.ids[1], 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                main_LazyImgStart(Svod.ids[1], 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
             }
             Svod.loadingData = false;
         } else {
@@ -234,21 +234,21 @@ Svod.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main.SetItemsLimitReload(Svod.blankCellCount);
+        main_SetItemsLimitReload(Svod.blankCellCount);
 
         var offset = Svod.itemsCount + Svod.itemsCountOffset;
 
         if (offset && offset > (Svod.MaxOffset - 1)) {
-            offset = Svod.MaxOffset - Main.ItemsLimitReload;
+            offset = Svod.MaxOffset - main_ItemsLimitReload;
             Svod.ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main.selectedChannel) + '/videos?limit=' +
-            Main.ItemsLimitReload + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(main_selectedChannel) + '/videos?limit=' +
+            main_ItemsLimitReload + '&broadcast_type=' + (Svod.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -288,7 +288,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
 
     Svod.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) Svod.ReplacedataEnded = true;
+    if (response_items < main_ItemsLimitVideo) Svod.ReplacedataEnded = true;
 
     for (var i = 0; i < Svod.blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
@@ -298,10 +298,10 @@ Svod.loadDataSuccessReplace = function(responseText) {
             Svod.blankCellCount--;
             i--;
         } else {
-            Main.replaceVideo(Svod.blankCellVector[i], video._id + '._.' + video.length, [video.preview.replace("320x240", Main.VideoSize),
-                video.title, STR_STREAM_ON + Main.videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
-                Main.addCommas(video.views) + STR_VIEWER,
-                Main.videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
+            main_replaceVideo(Svod.blankCellVector[i], video._id + '._.' + video.length, [video.preview.replace("320x240", main_VideoSize),
+                video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
+                main_addCommas(video.views) + STR_VIEWER,
+                main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
             ]);
             Svod.blankCellCount--;
 
@@ -329,14 +329,14 @@ Svod.addFocus = function() {
     document.getElementById(Svod.ids[7] + Svod.cursorY + '_' + Svod.cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(Svod.ids[0], Svod.cursorY, Svod.cursorX, Main.Svod, Main.ScrollOffSetMinusVideo, Main.ScrollOffSetVideo, false);
+        main_ScrollHelper(Svod.ids[0], Svod.cursorY, Svod.cursorX, main_Svod, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
     }, 10);
 
-    Main.CounterDialog(Svod.cursorX, Svod.cursorY, Main.ColoumnsCountVideo, Svod.itemsCount);
+    main_CounterDialog(Svod.cursorX, Svod.cursorY, main_ColoumnsCountVideo, Svod.itemsCount);
 
-    if (Svod.cursorY > 3) Main.LazyImg(Svod.ids[1], Svod.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (Svod.cursorY > 3) main_LazyImg(Svod.ids[1], Svod.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
 
-    if (((Svod.cursorY + Main.ItemsReloadLimitVideo) > (Svod.itemsCount / Main.ColoumnsCountVideo)) &&
+    if (((Svod.cursorY + main_ItemsReloadLimitVideo) > (Svod.itemsCount / main_ColoumnsCountVideo)) &&
         !Svod.dataEnded && !Svod.loadingMore) {
         Svod.loadingMore = true;
         Svod.loadDataPrepare();
@@ -374,22 +374,22 @@ Svod.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                Main.Go = Main.SChannelContent;
+                main_Go = main_SChannelContent;
                 Svod.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX - 1), Svod.ids[0])) {
+            if (main_ThumbNull((Svod.cursorY), (Svod.cursorX - 1), Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorX--;
                 Svod.addFocus();
             } else {
-                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Svod.cursorY - 1), i, Svod.ids[0])) {
+                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (main_ThumbNull((Svod.cursorY - 1), i, Svod.ids[0])) {
                         Svod.removeFocus();
                         Svod.cursorY--;
                         Svod.cursorX = i;
@@ -400,11 +400,11 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Svod.cursorY), (Svod.cursorX + 1), Svod.ids[0])) {
+            if (main_ThumbNull((Svod.cursorY), (Svod.cursorX + 1), Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorX++;
                 Svod.addFocus();
-            } else if (Main.ThumbNull((Svod.cursorY + 1), 0, Svod.ids[0])) {
+            } else if (main_ThumbNull((Svod.cursorY + 1), 0, Svod.ids[0])) {
                 Svod.removeFocus();
                 Svod.cursorY++;
                 Svod.cursorX = 0;
@@ -412,8 +412,8 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Svod.cursorY - 1), (Svod.cursorX - i), Svod.ids[0])) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((Svod.cursorY - 1), (Svod.cursorX - i), Svod.ids[0])) {
                     Svod.removeFocus();
                     Svod.cursorY--;
                     Svod.cursorX = Svod.cursorX - i;
@@ -423,8 +423,8 @@ Svod.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((Svod.cursorY + 1), (Svod.cursorX - i), Svod.ids[0])) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((Svod.cursorY + 1), (Svod.cursorX - i), Svod.ids[0])) {
                     Svod.removeFocus();
                     Svod.cursorY++;
                     Svod.cursorX = Svod.cursorX - i;
@@ -456,20 +456,20 @@ Svod.handleKeyDown = function(event) {
             Svod.openStream();
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             Svod.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.Svod;
-            Main.Go = Main.Search;
+            main_BeforeSearch = main_Svod;
+            main_Go = main_Search;
             Svod.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         default:
             break;

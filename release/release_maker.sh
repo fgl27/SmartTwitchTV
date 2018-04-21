@@ -112,7 +112,7 @@ master_maker() {
 echo -e "\\nStarting Release maker";
 
 # Prepare the release folder copy files to correct place and make new temp files
-sed -i 's/isReleased = false/isReleased = true/g' app/specific/Main.js;
+sed -i 's/main_isReleased = false/main_isReleased = true/g' app/specific/Main.js;
 cp -rf index.html master.css
 sed -i -n '/bodystart/,/bodyend/p' index.html
 sed -i -n '/cssstart/,/cssend/p' master.css

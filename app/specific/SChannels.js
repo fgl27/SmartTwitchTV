@@ -35,35 +35,35 @@ SChannels.isLastSChannels = false;
 //Variable initialization end
 
 SChannels.init = function() {
-    Main.Go = Main.SChannels;
+    main_Go = main_SChannels;
     SChannels.isLastSChannels = true;
     if (SChannels.lastData !== Search.data) SChannels.Status = false;
-    Main.cleanTopLabel();
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main.UnderCenter(STR_CHANNELS + ' ' + "'" + Search.data + "'");
+    main_cleanTopLabel();
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search.data + "'");
     document.body.addEventListener("keydown", SChannels.handleKeyDown, false);
-    Main.YRst(SChannels.cursorY);
+    main_YRst(SChannels.cursorY);
     if (SChannels.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels,
-            Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
-        Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, Main.ColoumnsCountChannel, SChannels.itemsCount);
+        main_ScrollHelper(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, main_SChannels,
+            main_ScrollOffSetMinusChannels, main_ScrollOffSetVideo, true);
+        main_CounterDialog(SChannels.cursorX, SChannels.cursorY, main_ColoumnsCountChannel, SChannels.itemsCount);
     } else SChannels.StartLoad();
 };
 
 SChannels.exit = function() {
-    Main.RestoreTopLabel();
+    main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels.handleKeyDown);
 };
 
 SChannels.Postexit = function() {
-    Main.SwitchScreen();
+    main_SwitchScreen();
 };
 
 SChannels.StartLoad = function() {
     SChannels.lastData = Search.data;
-    Main.HideWarningDialog();
+    main_HideWarningDialog();
     SChannels.Status = false;
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     $('#stream_table_search_channel').empty();
     SChannels.loadingMore = false;
     SChannels.blankCellCount = 0;
@@ -77,7 +77,7 @@ SChannels.StartLoad = function() {
     SChannels.cursorX = 0;
     SChannels.cursorY = 0;
     SChannels.dataEnded = false;
-    Main.CounterDialogRst();
+    main_CounterDialogRst();
     SChannels.loadDataPrepare();
     SChannels.loadDataRequest();
 };
@@ -95,15 +95,15 @@ SChannels.loadDataRequest = function() {
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
         if (offset && offset > (SChannels.MaxOffset - 1)) {
-            offset = SChannels.MaxOffset - Main.ItemsLimitChannel;
+            offset = SChannels.MaxOffset - main_ItemsLimitChannel;
             SChannels.dataEnded = true;
             SChannels.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + main_ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -131,8 +131,8 @@ SChannels.loadDataError = function() {
     } else {
         SChannels.loadingData = false;
         SChannels.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -141,24 +141,24 @@ SChannels.loadDataSuccess = function(responseText) {
     var response_items = response.channels.length;
     SChannels.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitChannel) SChannels.dataEnded = true;
+    if (response_items < main_ItemsLimitChannel) SChannels.dataEnded = true;
 
     var offset_itemsCount = SChannels.itemsCount;
     SChannels.itemsCount += response_items;
 
     SChannels.emptyContent = !SChannels.itemsCount;
 
-    var response_rows = response_items / Main.ColoumnsCountChannel;
-    if (response_items % Main.ColoumnsCountChannel > 0) response_rows++;
+    var response_rows = response_items / main_ColoumnsCountChannel;
+    if (response_items % main_ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, channels,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main.ColoumnsCountChannel + i;
+        row_id = offset_itemsCount / main_ColoumnsCountChannel + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
             if (SChannels.CellExists(channels.name)) coloumn_id--;
             else {
@@ -167,12 +167,12 @@ SChannels.loadDataSuccess = function(responseText) {
             }
         }
 
-        for (coloumn_id; coloumn_id < Main.ColoumnsCountChannel; coloumn_id++) {
+        for (coloumn_id; coloumn_id < main_ColoumnsCountChannel; coloumn_id++) {
             if (SChannels.dataEnded && !SChannels.itemsCountCheck) {
                 SChannels.itemsCountCheck = true;
-                SChannels.itemsCount = (row_id * Main.ColoumnsCountChannel) + coloumn_id;
+                SChannels.itemsCount = (row_id * main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
+            row.append(main_createCellEmpty(row_id, coloumn_id, SChannels.EmptyCell));
             SChannels.blankCellVector.push(SChannels.EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_search_channel').append(row);
@@ -191,7 +191,7 @@ SChannels.CellHtml = function(row_id, coloumn_id, channel_name, preview_thumbnai
 
     SChannels.nameMatrix.push(channel_name);
 
-    if (row_id < 5) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+    if (row_id < 5) main_PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 
     return '<div id="' + SChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + SChannels.Img +
         row_id + '_' + coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
@@ -210,12 +210,12 @@ SChannels.CellExists = function(display_name) {
 SChannels.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SChannels.Status) {
-            Main.HideLoadDialog();
-            if (SChannels.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            main_HideLoadDialog();
+            if (SChannels.emptyContent) main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SChannels.Status = true;
                 SChannels.addFocus();
-                Main.LazyImgStart(SChannels.Img, 9, IMG_404_LOGO, Main.ColoumnsCountChannel);
+                main_LazyImgStart(SChannels.Img, 9, IMG_404_LOGO, main_ColoumnsCountChannel);
             }
             SChannels.loadingData = false;
         } else {
@@ -240,18 +240,18 @@ SChannels.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main.SetItemsLimitReload(SChannels.blankCellCount);
+        main_SetItemsLimitReload(SChannels.blankCellCount);
 
         var offset = SChannels.itemsCount + SChannels.itemsCountOffset;
         if (offset && offset > (SChannels.MaxOffset - 1)) {
-            offset = SChannels.MaxOffset - Main.ItemsLimitReload;
+            offset = SChannels.MaxOffset - main_ItemsLimitReload;
             SChannels.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -290,7 +290,7 @@ SChannels.loadDataSuccessReplace = function(responseText) {
 
     SChannels.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) SChannels.ReplacedataEnded = true;
+    if (response_items < main_ItemsLimitVideo) SChannels.ReplacedataEnded = true;
 
     for (var i = 0; i < SChannels.blankCellVector.length && cursor < response_items; i++, cursor++) {
         channels = response.channels[cursor];
@@ -335,14 +335,14 @@ SChannels.addFocus = function() {
     document.getElementById(SChannels.ThumbnailDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.add('stream_text_focused');
     document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).classList.add('stream_info_focused');
     window.setTimeout(function() {
-        Main.ScrollHelper.scrollVerticalToElementById(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, Main.SChannels, Main.ScrollOffSetMinusChannels, Main.ScrollOffSetVideo, true);
+        main_ScrollHelper(SChannels.Thumbnail, SChannels.cursorY, SChannels.cursorX, main_SChannels, main_ScrollOffSetMinusChannels, main_ScrollOffSetVideo, true);
     }, 10);
 
-    Main.CounterDialog(SChannels.cursorX, SChannels.cursorY, Main.ColoumnsCountChannel, SChannels.itemsCount);
+    main_CounterDialog(SChannels.cursorX, SChannels.cursorY, main_ColoumnsCountChannel, SChannels.itemsCount);
 
-    if (SChannels.cursorY > 3) Main.LazyImg(SChannels.Img, SChannels.cursorY, IMG_404_LOGO, Main.ColoumnsCountChannel, 4);
+    if (SChannels.cursorY > 3) main_LazyImg(SChannels.Img, SChannels.cursorY, IMG_404_LOGO, main_ColoumnsCountChannel, 4);
 
-    if (((SChannels.cursorY + Main.ItemsReloadLimitChannel) > (SChannels.itemsCount / Main.ColoumnsCountChannel)) &&
+    if (((SChannels.cursorY + main_ItemsReloadLimitChannel) > (SChannels.itemsCount / main_ColoumnsCountChannel)) &&
         !SChannels.dataEnded && !SChannels.loadingMore) {
         SChannels.loadingMore = true;
         SChannels.loadDataPrepare();
@@ -376,23 +376,23 @@ SChannels.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                if (Main.Go === Main.Before) Main.Go = Main.Live;
-                else Main.Go = Main.Before;
+                if (main_Go === main_Before) main_Go = main_Live;
+                else main_Go = main_Before;
                 SChannels.exit();
                 SChannels.Postexit();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((SChannels.cursorY), (SChannels.cursorX - 1), SChannels.Thumbnail)) {
+            if (main_ThumbNull((SChannels.cursorY), (SChannels.cursorX - 1), SChannels.Thumbnail)) {
                 SChannels.removeFocus();
                 SChannels.cursorX--;
                 SChannels.addFocus();
             } else {
-                for (i = (Main.ColoumnsCountChannel - 1); i > -1; i--) {
-                    if (Main.ThumbNull((SChannels.cursorY - 1), i, SChannels.Thumbnail)) {
+                for (i = (main_ColoumnsCountChannel - 1); i > -1; i--) {
+                    if (main_ThumbNull((SChannels.cursorY - 1), i, SChannels.Thumbnail)) {
                         SChannels.removeFocus();
                         SChannels.cursorY--;
                         SChannels.cursorX = i;
@@ -403,11 +403,11 @@ SChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((SChannels.cursorY), (SChannels.cursorX + 1), SChannels.Thumbnail)) {
+            if (main_ThumbNull((SChannels.cursorY), (SChannels.cursorX + 1), SChannels.Thumbnail)) {
                 SChannels.removeFocus();
                 SChannels.cursorX++;
                 SChannels.addFocus();
-            } else if (Main.ThumbNull((SChannels.cursorY + 1), 0, SChannels.Thumbnail)) {
+            } else if (main_ThumbNull((SChannels.cursorY + 1), 0, SChannels.Thumbnail)) {
                 SChannels.removeFocus();
                 SChannels.cursorY++;
                 SChannels.cursorX = 0;
@@ -415,8 +415,8 @@ SChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
-                if (Main.ThumbNull((SChannels.cursorY - 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
+            for (i = 0; i < main_ColoumnsCountChannel; i++) {
+                if (main_ThumbNull((SChannels.cursorY - 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
                     SChannels.removeFocus();
                     SChannels.cursorY--;
                     SChannels.cursorX = SChannels.cursorX - i;
@@ -426,8 +426,8 @@ SChannels.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountChannel; i++) {
-                if (Main.ThumbNull((SChannels.cursorY + 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
+            for (i = 0; i < main_ColoumnsCountChannel; i++) {
+                if (main_ThumbNull((SChannels.cursorY + 1), (SChannels.cursorX - i), SChannels.Thumbnail)) {
                     SChannels.removeFocus();
                     SChannels.cursorY++;
                     SChannels.cursorX = SChannels.cursorX - i;
@@ -445,33 +445,33 @@ SChannels.handleKeyDown = function(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (!SChannels.loadingMore) {
-                Main.selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
-                Main.selectedChannel_id = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-id');
-                Main.selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
-                Main.selectedChannelLogo = document.getElementById(SChannels.Img + SChannels.cursorY + '_' + SChannels.cursorX).src;
-                Main.selectedChannelViews = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-views');
-                Main.selectedChannelFallower = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-followers');
+                main_selectedChannel = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-channelname');
+                main_selectedChannel_id = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-id');
+                main_selectedChannelDisplayname = document.getElementById(SChannels.DispNameDiv + SChannels.cursorY + '_' + SChannels.cursorX).textContent;
+                main_selectedChannelLogo = document.getElementById(SChannels.Img + SChannels.cursorY + '_' + SChannels.cursorX).src;
+                main_selectedChannelViews = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-views');
+                main_selectedChannelFallower = $('#' + SChannels.Cell + SChannels.cursorY + '_' + SChannels.cursorX).attr('data-followers');
                 document.body.removeEventListener("keydown", SChannels.handleKeyDown);
-                Main.Before = Main.SChannels;
-                Main.Go = Main.SChannelContent;
-                AddCode.IsFallowing = false;
+                main_Before = main_SChannels;
+                main_Go = main_SChannelContent;
+                addCode_IsFallowing = false;
                 SChannelContent.UserChannels = false;
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             SChannels.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.SChannels;
-            Main.Go = Main.Search;
+            main_BeforeSearch = main_SChannels;
+            main_Go = main_Search;
             SChannels.exit();
             SChannels.Postexit();
             break;

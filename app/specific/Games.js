@@ -1,269 +1,266 @@
-/*jshint multistr: true */
 //Variable initialization
-function Games() {}
-Games.Status = false;
-Games.cursorY = 0;
-Games.cursorX = 0;
-Games.dataEnded = false;
-Games.itemsCount = 0;
-Games.nameMatrix = [];
-Games.loadingData = false;
-Games.loadingDataTry = 0;
-Games.loadingDataTryMax = 10;
-Games.loadingDataTimeout = 3500;
-Games.isDialogOn = false;
-Games.blankCellCount = 0;
-Games.blankCellVector = [];
-Games.itemsCountOffset = 0;
-Games.LastClickFinish = true;
-Games.keyClickDelayTime = 0;
-Games.ReplacedataEnded = false;
-Games.MaxOffset = 0;
-Main.ItemsLimitGameOffset = 1;
-Games.itemsCountCheck = false;
-Games.emptyContent = false;
+var games_Status = false;
+var games_cursorY = 0;
+var games_cursorX = 0;
+var games_dataEnded = false;
+var games_itemsCount = 0;
+var games_nameMatrix = [];
+var games_loadingData = false;
+var games_loadingDataTry = 0;
+var games_loadingDataTryMax = 10;
+var games_loadingDataTimeout = 3500;
+var games_isDialogOn = false;
+var games_blankCellCount = 0;
+var games_blankCellVector = [];
+var games_itemsCountOffset = 0;
+var games_LastClickFinish = true;
+var games_keyClickDelayTime = 0;
+var games_ReplacedataEnded = false;
+var games_MaxOffset = 0;
+main_ItemsLimitGameOffset = 1;
+var games_itemsCountCheck = false;
+var games_emptyContent = false;
 
-Games.Img = 'img_games';
-Games.Thumbnail = 'thumbnail_games_';
-Games.EmptyCell = 'gamesempty_';
-Games.ThumbnailDiv = 'game_thumbnail_div_';
-Games.DispNameDiv = 'game_display_name_';
-Games.ViwersDiv = 'game_viwers_';
-Games.Cell = 'game_cell_';
-
+var games_Img = 'img_games';
+var games_Thumbnail = 'thumbnail_games_';
+var games_EmptyCell = 'gamesempty_';
+var games_ThumbnailDiv = 'game_thumbnail_div_';
+var games_DispNameDiv = 'game_display_name_';
+var games_ViwersDiv = 'game_viwers_';
+var games_Cell = 'game_cell_';
 //Variable initialization end
 
-Games.init = function() {
-    Main.Go = Main.Games;
-    document.body.addEventListener("keydown", Games.handleKeyDown, false);
+function games_init() {
+    main_Go = main_games;
+    document.body.addEventListener("keydown", games_handleKeyDown, false);
     document.getElementById('top_bar_game').classList.add('icon_center_focus');
-    Main.YRst(Games.cursorY);
-    if (Games.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(Games.Thumbnail, Games.cursorY, Games.cursorX, Main.Games,
-            Main.ScrollOffSetMinusGame, Main.ScrollOffSetGame, false);
-        Main.CounterDialog(Games.cursorX, Games.cursorY, Main.ColoumnsCountGame, Games.itemsCount);
-    } else Games.StartLoad();
-};
+    main_YRst(games_cursorY);
+    if (games_Status) {
+        main_ScrollHelper(games_Thumbnail, games_cursorY, games_cursorX, main_games,
+            main_ScrollOffSetMinusGame, main_ScrollOffSetGame, false);
+        main_CounterDialog(games_cursorX, games_cursorY, main_ColoumnsCountGame, games_itemsCount);
+    } else games_StartLoad();
+}
 
-Games.exit = function() {
-    document.body.removeEventListener("keydown", Games.handleKeyDown);
+function games_exit() {
+    document.body.removeEventListener("keydown", games_handleKeyDown);
     document.getElementById('top_bar_game').classList.remove('icon_center_focus');
-};
+}
 
-Games.StartLoad = function() {
-    Main.HideWarningDialog();
-    Games.Status = false;
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+function games_StartLoad() {
+    main_HideWarningDialog();
+    games_Status = false;
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     $('#stream_table_games').empty();
-    Games.loadingMore = false;
-    Games.blankCellCount = 0;
-    Games.blankCellVector = [];
-    Games.itemsCountOffset = 0;
-    Games.ReplacedataEnded = false;
-    Games.itemsCountCheck = false;
-    Games.MaxOffset = 0;
-    Games.nameMatrix = [];
-    Games.itemsCount = 0;
-    Games.cursorX = 0;
-    Games.cursorY = 0;
-    Games.dataEnded = false;
-    Main.CounterDialogRst();
-    Games.loadDataPrepare();
-    Games.loadDataRequest();
-};
+    games_loadingMore = false;
+    games_blankCellCount = 0;
+    games_blankCellVector = [];
+    games_itemsCountOffset = 0;
+    games_ReplacedataEnded = false;
+    games_itemsCountCheck = false;
+    games_MaxOffset = 0;
+    games_nameMatrix = [];
+    games_itemsCount = 0;
+    games_cursorX = 0;
+    games_cursorY = 0;
+    games_dataEnded = false;
+    main_CounterDialogRst();
+    games_loadDataPrepare();
+    games_loadDataRequest();
+}
 
-Games.loadDataPrepare = function() {
-    Games.loadingData = true;
-    Games.loadingDataTry = 0;
-    Games.loadingDataTimeout = 3500;
-};
+function games_loadDataPrepare() {
+    games_loadingData = true;
+    games_loadingDataTry = 0;
+    games_loadingDataTimeout = 3500;
+}
 
-Games.loadDataRequest = function() {
+function games_loadDataRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset && offset > (Games.MaxOffset - 1)) {
-            offset = Games.MaxOffset - Main.ItemsLimitGame;
-            Games.dataEnded = true;
-            Games.ReplacedataEnded = true;
+        var offset = games_itemsCount + games_itemsCountOffset;
+        if (offset && offset > (games_MaxOffset - 1)) {
+            offset = games_MaxOffset - main_ItemsLimitGame;
+            games_dataEnded = true;
+            games_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main.ItemsLimitGame + (!offset ? Main.ItemsLimitGameOffset : 0)) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (main_ItemsLimitGame + (!offset ? main_ItemsLimitGameOffset : 0)) +
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
-        xmlHttp.timeout = Games.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.timeout = games_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    Games.loadDataSuccess(xmlHttp.responseText);
+                    games_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    Games.loadDataError();
+                    games_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        Games.loadDataError();
+        games_loadDataError();
     }
-};
+}
 
-Games.loadDataError = function() {
-    Games.loadingDataTry++;
-    if (Games.loadingDataTry < Games.loadingDataTryMax) {
-        Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
-        Games.loadDataRequest();
+function games_loadDataError() {
+    games_loadingDataTry++;
+    if (games_loadingDataTry < games_loadingDataTryMax) {
+        games_loadingDataTimeout += (games_loadingDataTry < 5) ? 250 : 3500;
+        games_loadDataRequest();
     } else {
-        if (!Games.loadingMore) {
-            Games.loadingData = false;
-            Main.HideLoadDialog();
-            Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!games_loadingMore) {
+            games_loadingData = false;
+            main_HideLoadDialog();
+            main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
-            Games.loadingMore = false;
-            Games.dataEnded = true;
-            Games.ReplacedataEnded = true;
-            Games.loadDataSuccessFinish();
+            games_loadingMore = false;
+            games_dataEnded = true;
+            games_ReplacedataEnded = true;
+            games_loadDataSuccessFinish();
         }
     }
-};
+}
 
-Games.loadDataSuccess = function(responseText) {
+function games_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.top.length;
-    Games.MaxOffset = parseInt(response._total);
+    games_MaxOffset = parseInt(response._total);
 
-    if (response_items > Main.ItemsLimitGame) {
-        Main.ItemsLimitGameOffset = 0;
-        Games.loadDataPrepare();
-        Games.loadDataRequest();
+    if (response_items > main_ItemsLimitGame) {
+        main_ItemsLimitGameOffset = 0;
+        games_loadDataPrepare();
+        games_loadDataRequest();
         return;
-    } else if (response_items < Main.ItemsLimitGame) Games.dataEnded = true;
+    } else if (response_items < main_ItemsLimitGame) games_dataEnded = true;
 
-    var offset_itemsCount = Games.itemsCount;
-    Games.itemsCount += response_items;
+    var offset_itemsCount = games_itemsCount;
+    games_itemsCount += response_items;
 
-    Games.emptyContent = !Games.itemsCount;
+    games_emptyContent = !games_itemsCount;
 
-    var response_rows = response_items / Main.ColoumnsCountGame;
-    if (response_items % Main.ColoumnsCountGame > 0) response_rows++;
+    var response_rows = response_items / main_ColoumnsCountGame;
+    if (response_items % main_ColoumnsCountGame > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, game,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main.ColoumnsCountGame + i;
+        row_id = offset_itemsCount / main_ColoumnsCountGame + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             game = response.top[cursor];
-            if (Games.CellExists(game.game.name)) {
+            if (games_CellExists(game.game.name)) {
                 coloumn_id--;
             } else {
-                cell = Games.createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    Main.addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(game.viewers) + STR_VIEWER);
+                cell = games_createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
+                    main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + main_addCommas(game.viewers) + STR_VIEWER);
                 row.append(cell);
             }
         }
-        for (coloumn_id; coloumn_id < Main.ColoumnsCountGame; coloumn_id++) {
-            if (Games.dataEnded && !Games.itemsCountCheck) {
-                Games.itemsCountCheck = true;
-                Games.itemsCount = (row_id * Main.ColoumnsCountGame) + coloumn_id;
+        for (coloumn_id; coloumn_id < main_ColoumnsCountGame; coloumn_id++) {
+            if (games_dataEnded && !games_itemsCountCheck) {
+                games_itemsCountCheck = true;
+                games_itemsCount = (row_id * main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, Games.EmptyCell));
-            Games.blankCellVector.push(Games.EmptyCell + row_id + '_' + coloumn_id);
+            row.append(main_createCellEmpty(row_id, coloumn_id, games_EmptyCell));
+            games_blankCellVector.push(games_EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_games').append(row);
     }
 
-    Games.loadDataSuccessFinish();
-};
+    games_loadDataSuccessFinish();
+}
 
-Games.createCell = function(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    return $('<td id="' + Games.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail));
-};
+function games_createCell(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
+    return $('<td id="' + games_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
+        games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail));
+}
 
-Games.CellHtml = function(row_id, coloumn_id, game_name, viwers, preview_thumbnail) {
+function games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail) {
 
-    Games.nameMatrix.push(game_name);
+    games_nameMatrix.push(game_name);
 
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.GameSize);
-    if (row_id < 2) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", main_GameSize);
+    if (row_id < 2) main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
 
-    return '<div id="' + Games.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + Games.Img + row_id + '_' +
+    return '<div id="' + games_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + games_Img + row_id + '_' +
         coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + Games.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Games.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-        '<div id="' + Games.ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
+        '<div id="' + games_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + games_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
+        '<div id="' + games_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
         viwers + '</div></div>';
-};
+}
 
-Games.CellExists = function(display_name) {
-    if (Games.nameMatrix.indexOf(display_name) > -1) {
-        Games.blankCellCount++;
+function games_CellExists(display_name) {
+    if (games_nameMatrix.indexOf(display_name) > -1) {
+        games_blankCellCount++;
         return true;
     }
     return false;
-};
+}
 
-Games.loadDataSuccessFinish = function() {
+function games_loadDataSuccessFinish() {
     $(document).ready(function() {
-        if (!Games.Status) {
-            Main.HideLoadDialog();
-            if (Games.emptyContent) Main.showWarningDialog(STR_NO + STR_LIVE_GAMES);
+        if (!games_Status) {
+            main_HideLoadDialog();
+            if (games_emptyContent) main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else {
-                Games.Status = true;
-                Games.addFocus();
-                Main.LazyImgStart(Games.Img, 7, IMG_404_GAME, Main.ColoumnsCountGame);
+                games_Status = true;
+                games_addFocus();
+                main_LazyImgStart(games_Img, 7, IMG_404_GAME, main_ColoumnsCountGame);
             }
-            Games.loadingData = false;
+            games_loadingData = false;
         } else {
-            if (Games.blankCellCount > 0 && !Games.dataEnded) {
-                Games.loadingMore = true;
-                Games.loadDataPrepare();
-                Games.loadDataReplace();
+            if (games_blankCellCount > 0 && !games_dataEnded) {
+                games_loadingMore = true;
+                games_loadDataPrepare();
+                games_loadDataReplace();
                 return;
             } else {
-                Games.blankCellCount = 0;
-                Games.blankCellVector = [];
+                games_blankCellCount = 0;
+                games_blankCellVector = [];
             }
 
-            Games.loadingData = false;
-            Games.loadingMore = false;
+            games_loadingData = false;
+            games_loadingMore = false;
         }
     });
-};
+}
 
-Games.loadDataReplace = function() {
+function games_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main.SetItemsLimitReload(Games.blankCellCount);
+        main_SetItemsLimitReload(games_blankCellCount);
 
-        var offset = Games.itemsCount + Games.itemsCountOffset;
-        if (offset && offset > (Games.MaxOffset - 1)) {
-            offset = Games.MaxOffset - Main.ItemsLimitReload;
-            Games.ReplacedataEnded = true;
+        var offset = games_itemsCount + games_itemsCountOffset;
+        if (offset && offset > (games_MaxOffset - 1)) {
+            offset = games_MaxOffset - main_ItemsLimitReload;
+            games_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + main_ItemsLimitReload + '&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = Games.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.timeout = games_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    Games.loadDataSuccessReplace(xmlHttp.responseText);
+                    games_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
                 }
             }
@@ -271,42 +268,42 @@ Games.loadDataReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        Games.loadDataErrorReplace();
+        games_loadDataErrorReplace();
     }
-};
+}
 
-Games.loadDataErrorReplace = function() {
-    Games.loadingDataTry++;
-    if (Games.loadingDataTry < Games.loadingDataTryMax) {
-        Games.loadingDataTimeout += (Games.loadingDataTry < 5) ? 250 : 3500;
-        Games.loadDataReplace();
+function games_loadDataErrorReplace() {
+    games_loadingDataTry++;
+    if (games_loadingDataTry < games_loadingDataTryMax) {
+        games_loadingDataTimeout += (games_loadingDataTry < 5) ? 250 : 3500;
+        games_loadDataReplace();
     } else {
-        Games.ReplacedataEnded = true;
-        Games.blankCellCount = 0;
-        Games.blankCellVector = [];
-        Games.loadDataSuccessFinish();
+        games_ReplacedataEnded = true;
+        games_blankCellCount = 0;
+        games_blankCellVector = [];
+        games_loadDataSuccessFinish();
     }
-};
+}
 
-Games.loadDataSuccessReplace = function(responseText) {
+function games_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.top.length;
     var game, index, cursor = 0;
-    var tempVector = Games.blankCellVector.slice();
+    var tempVector = games_blankCellVector.slice();
 
-    Games.MaxOffset = parseInt(response._total);
+    games_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitGame) Games.ReplacedataEnded = true;
+    if (response_items < main_ItemsLimitGame) games_ReplacedataEnded = true;
 
-    for (var i = 0; i < Games.blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < games_blankCellVector.length && cursor < response_items; i++, cursor++) {
         game = response.top[cursor];
-        if (Games.CellExists(game.game.name)) {
-            Games.blankCellCount--;
+        if (games_CellExists(game.game.name)) {
+            games_blankCellCount--;
             i--;
         } else {
-            Games.replaceCellEmpty(Games.blankCellVector[i], game.game.name, game.game.box.template,
-                Main.addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main.addCommas(game.viewers) + STR_VIEWER);
-            Games.blankCellCount--;
+            games_replaceCellEmpty(games_blankCellVector[i], game.game.name, game.game.box.template,
+                main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + main_addCommas(game.viewers) + STR_VIEWER);
+            games_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
@@ -315,169 +312,169 @@ Games.loadDataSuccessReplace = function(responseText) {
         }
     }
 
-    Games.itemsCountOffset += cursor;
-    if (Games.ReplacedataEnded) {
-        Games.blankCellCount = 0;
-        Games.blankCellVector = [];
-    } else Games.blankCellVector = tempVector;
+    games_itemsCountOffset += cursor;
+    if (games_ReplacedataEnded) {
+        games_blankCellCount = 0;
+        games_blankCellVector = [];
+    } else games_blankCellVector = tempVector;
 
-    Games.loadDataSuccessFinish();
-};
+    games_loadDataSuccessFinish();
+}
 
-Games.replaceCellEmpty = function(id, game_name, preview_thumbnail, viwers) {
+function games_replaceCellEmpty(id, game_name, preview_thumbnail, viwers) {
     var splitedId = id.split("_");
     var row_id = splitedId[1];
     var coloumn_id = splitedId[2];
-    var cell = Games.Cell + row_id + '_' + coloumn_id;
+    var cell = games_Cell + row_id + '_' + coloumn_id;
 
     document.getElementById(id).setAttribute('id', cell);
     document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = Games.CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail);
-};
+    document.getElementById(cell).innerHTML = games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail);
+}
 
-Games.addFocus = function() {
+function games_addFocus() {
 
-    Main.addFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv, Main.Games,
-        Main.ColoumnsCountGame, Games.itemsCount);
+    main_addFocusGame(games_cursorY, games_cursorX, games_Thumbnail, games_ThumbnailDiv, games_DispNameDiv, games_ViwersDiv, main_games,
+        main_ColoumnsCountGame, games_itemsCount);
 
-    if (Games.cursorY > 2) Main.LazyImg(Games.Img, Games.cursorY, IMG_404_GAME, Main.ColoumnsCountGame, 3);
+    if (games_cursorY > 2) main_LazyImg(games_Img, games_cursorY, IMG_404_GAME, main_ColoumnsCountGame, 3);
 
-    if (((Games.cursorY + Main.ItemsReloadLimitGame) > (Games.itemsCount / Main.ColoumnsCountGame)) &&
-        !Games.dataEnded && !Games.loadingMore) {
-        Games.loadingMore = true;
-        Games.loadDataPrepare();
-        Games.loadDataRequest();
+    if (((games_cursorY + main_ItemsReloadLimitGame) > (games_itemsCount / main_ColoumnsCountGame)) &&
+        !games_dataEnded && !games_loadingMore) {
+        games_loadingMore = true;
+        games_loadDataPrepare();
+        games_loadDataRequest();
     }
-};
+}
 
-Games.removeFocus = function() {
-    Main.removeFocusGame(Games.cursorY, Games.cursorX, Games.Thumbnail, Games.ThumbnailDiv, Games.DispNameDiv, Games.ViwersDiv);
-};
+function games_removeFocus() {
+    main_removeFocusGame(games_cursorY, games_cursorX, games_Thumbnail, games_ThumbnailDiv, games_DispNameDiv, games_ViwersDiv);
+}
 
-Games.keyClickDelay = function() {
-    Games.LastClickFinish = true;
-};
+function games_keyClickDelay() {
+    games_LastClickFinish = true;
+}
 
-Games.handleKeyDown = function(event) {
-    if ((Games.loadingData && !Games.loadingMore) || !Games.LastClickFinish) {
+function games_handleKeyDown(event) {
+    if ((games_loadingData && !games_loadingMore) || !games_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
-        Games.LastClickFinish = false;
-        window.setTimeout(Games.keyClickDelay, Games.keyClickDelayTime);
+        games_LastClickFinish = false;
+        window.setTimeout(games_keyClickDelay, games_keyClickDelayTime);
     }
 
     var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                if (Main.Go === Main.Before || Main.Before === Main.AGame || Main.Before === Main.Search) Main.Go = Main.Live;
-                else Main.Go = Main.Before;
-                Games.exit();
-                Main.SwitchScreen();
+                if (main_Go === main_Before || main_Before === main_aGame || main_Before === main_Search) main_Go = main_Live;
+                else main_Go = main_Before;
+                games_exit();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((Games.cursorY), (Games.cursorX - 1), Games.Thumbnail)) {
-                Games.removeFocus();
-                Games.cursorX--;
-                Games.addFocus();
+            if (main_ThumbNull((games_cursorY), (games_cursorX - 1), games_Thumbnail)) {
+                games_removeFocus();
+                games_cursorX--;
+                games_addFocus();
             } else {
-                for (i = (Main.ColoumnsCountGame - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Games.cursorY - 1), i, Games.Thumbnail)) {
-                        Games.removeFocus();
-                        Games.cursorY--;
-                        Games.cursorX = i;
-                        Games.addFocus();
+                for (i = (main_ColoumnsCountGame - 1); i > -1; i--) {
+                    if (main_ThumbNull((games_cursorY - 1), i, games_Thumbnail)) {
+                        games_removeFocus();
+                        games_cursorY--;
+                        games_cursorX = i;
+                        games_addFocus();
                         break;
                     }
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((Games.cursorY), (Games.cursorX + 1), Games.Thumbnail)) {
-                Games.removeFocus();
-                Games.cursorX++;
-                Games.addFocus();
-            } else if (Main.ThumbNull((Games.cursorY + 1), 0, Games.Thumbnail)) {
-                Games.removeFocus();
-                Games.cursorY++;
-                Games.cursorX = 0;
-                Games.addFocus();
+            if (main_ThumbNull((games_cursorY), (games_cursorX + 1), games_Thumbnail)) {
+                games_removeFocus();
+                games_cursorX++;
+                games_addFocus();
+            } else if (main_ThumbNull((games_cursorY + 1), 0, games_Thumbnail)) {
+                games_removeFocus();
+                games_cursorY++;
+                games_cursorX = 0;
+                games_addFocus();
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountGame; i++) {
-                if (Main.ThumbNull((Games.cursorY - 1), (Games.cursorX - i), Games.Thumbnail)) {
-                    Games.removeFocus();
-                    Games.cursorY--;
-                    Games.cursorX = Games.cursorX - i;
-                    Games.addFocus();
+            for (i = 0; i < main_ColoumnsCountGame; i++) {
+                if (main_ThumbNull((games_cursorY - 1), (games_cursorX - i), games_Thumbnail)) {
+                    games_removeFocus();
+                    games_cursorY--;
+                    games_cursorX = games_cursorX - i;
+                    games_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountGame; i++) {
-                if (Main.ThumbNull((Games.cursorY + 1), (Games.cursorX - i), Games.Thumbnail)) {
-                    Games.removeFocus();
-                    Games.cursorY++;
-                    Games.cursorX = Games.cursorX - i;
-                    Games.addFocus();
+            for (i = 0; i < main_ColoumnsCountGame; i++) {
+                if (main_ThumbNull((games_cursorY + 1), (games_cursorX - i), games_Thumbnail)) {
+                    games_removeFocus();
+                    games_cursorY++;
+                    games_cursorX = games_cursorX - i;
+                    games_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!Games.loadingMore) Games.StartLoad();
+            if (!games_loadingMore) games_StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Before = Main.Games;
-            Main.Go = Main.Live;
-            Games.exit();
-            Main.SwitchScreen();
+            main_Before = main_games;
+            main_Go = main_Live;
+            games_exit();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Before = Main.Games;
-            Main.Go = AddUser.IsUserSet() ? Main.Users : Main.AddUser;
-            Games.exit();
-            Main.SwitchScreen();
+            main_Before = main_games;
+            main_Go = addUser_IsUserSet() ? main_Users : main_addUser;
+            games_exit();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            if (!Games.loadingMore) {
-                Main.gameSelected = $('#' + Games.Cell + Games.cursorY + '_' + Games.cursorX).attr('data-channelname');
-                document.body.removeEventListener("keydown", Games.handleKeyDown);
-                Main.Before = Main.Go;
-                Main.Go = Main.AGame;
-                AGame.UserGames = false;
-                Games.exit();
-                Main.SwitchScreen();
+            if (!games_loadingMore) {
+                main_gameSelected = $('#' + games_Cell + games_cursorY + '_' + games_cursorX).attr('data-channelname');
+                document.body.removeEventListener("keydown", games_handleKeyDown);
+                main_Before = main_Go;
+                main_Go = main_aGame;
+                aGame_Usergames = false;
+                games_exit();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Games.exit();
-            Main.GoLive();
+            games_exit();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.Games;
-            Main.Go = Main.Search;
-            Games.exit();
-            Main.SwitchScreen();
+            main_BeforeSearch = main_games;
+            main_Go = main_Search;
+            games_exit();
+            main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}

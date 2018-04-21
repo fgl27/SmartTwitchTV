@@ -23,13 +23,13 @@ SmartHub.emptyUser = false;
 //Variable initialization end
 
 SmartHub.Start = function() {
-    if (!AddUser.UsernameArray.length) {
-        window.clearInterval(Main.SmartHubId);
-        document.removeEventListener('visibilitychange', Main.Resume);
+    if (!addUser_UsernameArray.length) {
+        window.clearInterval(main_SmartHubId);
+        document.removeEventListener('visibilitychange', main_Resume);
         SmartHub.emptyUser = true;
     } else SmartHub.emptyUser = false;
 
-    SmartHub.followerUsername = AddUser.UsernameArray[0];
+    SmartHub.followerUsername = addUser_UsernameArray[0];
     SmartHub.userold = SmartHub.user.length;
     SmartHub.usergamesold = SmartHub.usergames.length;
     SmartHub.userhostold = SmartHub.userhost.length;
@@ -76,7 +76,7 @@ SmartHub.loadDataRequest = function() {
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SmartHub.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
 
         xmlHttp.ontimeout = function() {
 
@@ -127,16 +127,16 @@ SmartHub.previewDataSuccess = function(responseText) {
         for (cursor = 0; cursor < response_items; cursor++) {
             stream = response.streams[cursor];
             SmartHub.user[cursor] = stream.channel.name;
-            SmartHub.usertitle[cursor] = Main.is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
+            SmartHub.usertitle[cursor] = main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
             SmartHub.usersubtitle[cursor] = STR_PLAYING + stream.game;
-            SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", Main.VideoSize);
+            SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", main_VideoSize);
         }
     } else if (SmartHub.previewData === 2) {
         response_items = response.follows.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             game = response.follows[cursor];
             SmartHub.usergames[cursor] = game.game.name;
-            SmartHub.usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", Main.GameSize);
+            SmartHub.usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", main_GameSize);
         }
     } else if (SmartHub.previewData === 3) {
         response_items = response.hosts.length;
@@ -145,7 +145,7 @@ SmartHub.previewDataSuccess = function(responseText) {
             SmartHub.userhost[cursor] = hosts.target.channel.name;
             SmartHub.userhosttitle[cursor] = hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name;
             SmartHub.userhostsubtitle[cursor] = STR_PLAYING + hosts.target.meta_game;
-            SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", Main.VideoSize);
+            SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", main_VideoSize);
         }
     }
     if (SmartHub.previewData < 3) {
@@ -268,42 +268,42 @@ SmartHub.EventListener = function() {
                     Play.selectedChannelDisplayname = VideoTitleIdx;
                     if (Play.isOn) {
                         Play.PreshutdownStream();
-                        window.setTimeout(Main.openStream, 10);
+                        window.setTimeout(main_openStream, 10);
                     } else if (PlayVod.isOn) {
                         PlayVod.PreshutdownStream();
-                        window.setTimeout(Main.openStream, 10);
+                        window.setTimeout(main_openStream, 10);
                     } else if (PlayClip.isOn) {
                         PlayClip.PreshutdownStream();
-                        window.setTimeout(Main.openStream, 10);
+                        window.setTimeout(main_openStream, 10);
                     } else {
-                        Main.ExitCurrent(Main.Go);
-                        window.setTimeout(Main.openStream, 10);
+                        main_ExitCurrent(main_Go);
+                        window.setTimeout(main_openStream, 10);
                     }
 
                 } else if (JSON.parse(actionData).gameIdx) {
                     GameIdx = JSON.parse(actionData).gameIdx;
-                    ExitToMain = (GameIdx !== Main.gameSelected);
-                    ExitScreen = Main.Go;
-                    Main.gameSelected = GameIdx;
-                    Main.Go = Main.AGame;
+                    ExitToMain = (GameIdx !== main_gameSelected);
+                    ExitScreen = main_Go;
+                    main_gameSelected = GameIdx;
+                    main_Go = main_aGame;
 
-                    Main.ExitCurrent(ExitScreen);
+                    main_ExitCurrent(ExitScreen);
                     if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
                     else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
-                    else if (ExitToMain) Main.SwitchScreen();
+                    else if (ExitToMain) main_SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
                     ScreenIdx = JSON.parse(actionData).screenIdx;
-                    ExitToMain = (ScreenIdx !== Main.Go);
-                    ExitScreen = Main.Go;
-                    Main.Go = ScreenIdx;
+                    ExitToMain = (ScreenIdx !== main_Go);
+                    ExitScreen = main_Go;
+                    main_Go = ScreenIdx;
 
-                    Main.ExitCurrent(ExitScreen);
+                    main_ExitCurrent(ExitScreen);
                     if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
                     else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
                     else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
-                    else if (ExitToMain) Main.SwitchScreen();
+                    else if (ExitToMain) main_SwitchScreen();
                 }
             }
         }

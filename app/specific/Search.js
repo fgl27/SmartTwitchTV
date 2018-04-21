@@ -9,8 +9,8 @@ Search.keyBoardOn = false;
 //Variable initialization end
 
 Search.init = function() {
-    Main.HideWarningDialog();
-    Main.IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+    main_HideWarningDialog();
+    main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     document.getElementById('label_search').innerHTML = '';
     document.getElementById('label_switch').innerHTML = '';
     document.getElementById('top_bar_live').innerHTML = '';
@@ -23,17 +23,17 @@ Search.init = function() {
     Search.input = document.querySelector('#search_input');
     Search.refreshInputFocusTools();
     Search.inputFocus();
-    Search.ScrollHelper.scrollVerticalToElementById('search_input');
+    Search.scrollVerticalToElementById('search_input');
 };
 
 Search.exit = function() {
     Search.RemoveinputFocus();
     document.body.removeEventListener("keydown", Search.handleKeyDown);
     Search.refreshInputFocusTools();
-    Main.Go = Main.BeforeSearch;
-    Main.IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
-    Main.IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    Main.IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    main_Go = main_BeforeSearch;
+    main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
@@ -44,7 +44,7 @@ Search.exit = function() {
 Search.loadData = function() {
     Search.exit();
     if (!Search.cursorX) SChannels.init();
-    else if (Search.cursorX === 1) SGames.init();
+    else if (Search.cursorX === 1) sgames_init();
     else if (Search.cursorX === 2) SLive.init();
 };
 
@@ -65,11 +65,11 @@ Search.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
                 Search.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
@@ -109,11 +109,11 @@ Search.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_CHANNELUP:
             Search.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
             Search.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -126,22 +126,22 @@ Search.handleKeyDown = function(event) {
                     document.getElementById("search_input").value = '';
                     Search.loadData();
                 } else {
-                    Main.showWarningDialog(STR_SEARCH_EMPTY);
+                    main_showWarningDialog(STR_SEARCH_EMPTY);
                     window.setTimeout(function() {
-                        Main.HideWarningDialog();
+                        main_HideWarningDialog();
                     }, 1000);
                 }
             }
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             Search.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
             break;
@@ -150,36 +150,8 @@ Search.handleKeyDown = function(event) {
     }
 };
 
-Search.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        window.scroll(0, this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() + 100);
-    }
+Search.scrollVerticalToElementById = function(id) {
+    window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - main_ScrollOffSetMinusVideo + main_ScrollOffSetMinusSearch);
 };
 
 Search.inputFocus = function() {

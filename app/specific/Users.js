@@ -19,25 +19,25 @@ Users.imgMatrixCount = 0;
 //Variable initialization end
 
 Users.init = function() {
-    Main.Go = Main.Users;
-    Main.HideWarningDialog();
+    main_Go = main_Users;
+    main_HideWarningDialog();
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     document.body.addEventListener("keydown", Users.handleKeyDown, false);
-    if (Users.status) Main.ScrollHelper.scrollVerticalToElementById(Users.ids[0], Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
+    if (Users.status) main_ScrollHelper(Users.ids[0], Users.cursorY, Users.cursorX, main_Users, main_ScrollOffSetMinusChannels, 160, true);
     else Users.StartLoad();
 };
 
 Users.exit = function() {
-    AddCode.SetDefaultOAuth(0);
+    addCode_SetDefaultOAuth(0);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.body.removeEventListener("keydown", Users.handleKeyDown);
 };
 
 Users.StartLoad = function() {
-    Main.HideWarningDialog();
+    main_HideWarningDialog();
     Users.status = false;
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     var table = document.getElementById('stream_table_user');
     while (table.firstChild) table.removeChild(table.firstChild);
     Users.imgMatrix = [];
@@ -52,35 +52,35 @@ Users.StartLoad = function() {
 Users.loadData = function() {
     var row, coloumn_id, tbody = document.createElement('tbody');
 
-    for (var x = 0; x < AddUser.UsernameArray.length; x++) {
+    for (var x = 0; x < addUser_UsernameArray.length; x++) {
         coloumn_id = 0;
-        Main.UserName = AddUser.UsernameArray[x];
+        main_UserName = addUser_UsernameArray[x];
 
-        Main.td = document.createElement('tr');
-        Main.td.className = 'follower_header';
-        Main.td.innerHTML = '<div class="follower_header">' + Main.UserName +
+        main_td = document.createElement('tr');
+        main_td.className = 'follower_header';
+        main_td.innerHTML = '<div class="follower_header">' + main_UserName +
             STR_CONTENT + (!x ? STR_USER_NUMBER_ONE : '') + '</div>';
 
         document.getElementById("stream_table_user").appendChild(tbody);
-        document.getElementById("stream_table_user").appendChild(Main.td);
+        document.getElementById("stream_table_user").appendChild(main_td);
 
         row = document.createElement('tr');
 
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, (usergames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
             IMG_BLUR_GAME));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
         coloumn_id++;
-        if (!x) row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
-        else row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
+        if (!x) row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
+        else row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
         coloumn_id++;
-        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, Main.selectedChannelDisplayname, (AddCode.UserCodeExist(Main.UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
+        row.appendChild(Users.createChannelCell(x + '_' + coloumn_id, main_selectedChannelDisplayname, (addCode_UserCodeExist(main_UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -93,53 +93,53 @@ Users.createChannelCell = function(id, user_name, stream_type, preview_thumbnail
     Users.imgMatrixId[Users.imgMatrixCount] = Users.ids[1] + id;
     Users.imgMatrixCount++;
 
-    Main.PreLoadAImage(preview_thumbnail);
+    main_PreLoadAImage(preview_thumbnail);
 
-    Main.td = document.createElement('td');
-    Main.td.setAttribute('id', Users.ids[4] + id);
-    Main.td.setAttribute('data-channelname', user_name);
-    Main.td.className = 'stream_cell';
-    Main.td.innerHTML = '<div id="' + Users.ids[0] + id + '" class="stream_thumbnail_channel" ><img id="' + Users.ids[1] + id + '" class="stream_img"></div>' +
+    main_td = document.createElement('td');
+    main_td.setAttribute('id', Users.ids[4] + id);
+    main_td.setAttribute('data-channelname', user_name);
+    main_td.className = 'stream_cell';
+    main_td.innerHTML = '<div id="' + Users.ids[0] + id + '" class="stream_thumbnail_channel" ><img id="' + Users.ids[1] + id + '" class="stream_img"></div>' +
         '<div id="' + Users.ids[2] + id + '" class="stream_text">' +
         '<div id="' + Users.ids[3] + id + '" class="stream_info_user">' + stream_type + '</div></div>';
 
-    return Main.td;
+    return main_td;
 };
 
 Users.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!Users.status) {
-            Main.HideLoadDialog();
+            main_HideLoadDialog();
             Users.status = true;
-            if (AddCode.UsercodeArray.length > 0) Users.checkTitleStart();
+            if (addCode_UsercodeArray.length > 0) Users.checkTitleStart();
             Users.addFocus();
         }
 
-        Main.LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
+        main_LoadImages(Users.imgMatrix, Users.imgMatrixId, IMG_404_VIDEO);
 
         Users.loadingData = false;
     });
 };
 
 Users.resetGameCell = function() {
-    for (var x = 0; x < AddUser.UsernameArray.length; x++) document.getElementById(Users.ids[3] + x + '_' + 2).innerHTML = (UserGames.live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
+    for (var x = 0; x < addUser_UsernameArray.length; x++) document.getElementById(Users.ids[3] + x + '_' + 2).innerHTML = (usergames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
 };
 
 Users.checkTitleStart = function() {
-    for (var x = 0; x < AddUser.UsernameArray.length; x++) Users.checkTitleRun(x);
+    for (var x = 0; x < addUser_UsernameArray.length; x++) Users.checkTitleRun(x);
 };
 
 Users.checkTitleRun = function(position) {
-    AddCode.loadingDataTry = 0;
-    AddCode.loadingDataTimeout = 10000;
-    AddCode.CheckTokenStart(position);
+    addCode_loadingDataTry = 0;
+    addCode_loadingDataTimeout = 10000;
+    addCode_CheckTokenStart(position);
 };
 
 Users.SetKeyTitleStart = function(bool, position) {
     document.getElementById(Users.ids[3] + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
     if (!bool) {
-        var user = AddCode.UserCodeExist(AddUser.UsernameArray[position]);
-        if (user > -1) AddCode.removeUser(user);
+        var user = addCode_UserCodeExist(addUser_UsernameArray[position]);
+        if (user > -1) addCode_removeUser(user);
     }
 };
 
@@ -147,7 +147,7 @@ Users.addFocus = function() {
     document.getElementById(Users.ids[0] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_thumbnail_focused');
     document.getElementById(Users.ids[2] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_text_focused');
     document.getElementById(Users.ids[3] + Users.cursorY + '_' + Users.cursorX).classList.add('stream_info_focused');
-    Main.ScrollHelper.scrollVerticalToElementById(Users.ids[0], Users.cursorY, Users.cursorX, Main.Users, Main.ScrollOffSetMinusChannels, 160, true);
+    main_ScrollHelper(Users.ids[0], Users.cursorY, Users.cursorX, main_Users, main_ScrollOffSetMinusChannels, 160, true);
 };
 
 Users.removeFocus = function() {
@@ -162,20 +162,20 @@ Users.keyClickDelay = function() {
 
 Users.keyEnter = function() {
     if (Users.cursorX !== 5) document.body.removeEventListener("keydown", Users.handleKeyDown);
-    Main.UserName = AddUser.UsernameArray[Users.cursorY];
-    AddCode.SetDefaultOAuth(Users.cursorY);
+    main_UserName = addUser_UsernameArray[Users.cursorY];
+    addCode_SetDefaultOAuth(Users.cursorY);
 
     if (!Users.cursorX) UserLive.init();
     else if (Users.cursorX === 1) UserHost.init();
-    else if (Users.cursorX === 2) UserGames.init();
+    else if (Users.cursorX === 2) usergames_init();
     else if (Users.cursorX === 3) UserChannels.init();
     else if (Users.cursorX === 4) {
         if (!Users.cursorY) {
-            Main.Before = Main.Users;
-            AddUser.init();
-        } else AddUser.UserMakeOne(Users.cursorY);
+            main_Before = main_Users;
+            addUser_init();
+        } else addUser_UserMakeOne(Users.cursorY);
     } else if (Users.cursorX === 5) Users.showRemoveDialog();
-    else if (Users.cursorX === 6) AddCode.init();
+    else if (Users.cursorX === 6) addCode_init();
 };
 
 Users.checkKey = function(responseText) {
@@ -185,14 +185,14 @@ Users.checkKey = function(responseText) {
     for (var i = 0; i < scopes.length; i++) {
         scopesToTest += scopes[i];
     }
-    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' === Main.UserName && json.token.valid + '' === 'true';
+    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' === main_UserName && json.token.valid + '' === 'true';
 };
 
 Users.SetKeyTitle = function(bool) {
     document.getElementById(Users.ids[3] + Users.cursorY + '_' + Users.cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
     if (!bool) {
-        var user = AddCode.UserCodeExist(AddUser.UsernameArray[Users.cursorY]);
-        if (user > -1) AddCode.removeUser(user);
+        var user = addCode_UserCodeExist(addUser_UsernameArray[Users.cursorY]);
+        if (user > -1) addCode_removeUser(user);
     }
 };
 
@@ -206,7 +206,7 @@ Users.setRemoveDialog = function() {
 
 Users.showRemoveDialog = function() {
     Users.setRemoveDialog();
-    document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + Main.UserName + '?';
+    document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + main_UserName + '?';
     document.getElementById('main_remove_dialog').classList.remove('hide');
 };
 
@@ -249,12 +249,12 @@ Users.handleKeyDown = function(event) {
         case TvKeyCode.KEY_RETURN:
             if (Users.isRemoveDialogShown()) {
                 Users.HideRemoveDialog();
-            } else if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            } else if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                Main.Go = Main.Live;
+                main_Go = main_Live;
                 Users.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
@@ -264,17 +264,17 @@ Users.handleKeyDown = function(event) {
                 Users.RemoveCursorSet();
                 Users.clearRemoveDialog();
                 Users.setRemoveDialog();
-            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.ids[0])) {
+            } else if (main_ThumbNull((Users.cursorY), (Users.cursorX - 1), Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX--;
                 Users.addFocus();
-            } else if (!Main.ThumbNull((Users.cursorY - 1), 0, Users.ids[0])) {
+            } else if (!main_ThumbNull((Users.cursorY - 1), 0, Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX = Users.ColoumnsCount - 1;
                 Users.addFocus();
             } else {
                 for (i = (Users.ColoumnsCount - 1); i > -1; i--) {
-                    if (Main.ThumbNull((Users.cursorY - 1), i, Users.ids[0])) {
+                    if (main_ThumbNull((Users.cursorY - 1), i, Users.ids[0])) {
                         Users.removeFocus();
                         Users.cursorY--;
                         Users.cursorX = i;
@@ -291,11 +291,11 @@ Users.handleKeyDown = function(event) {
                 Users.RemoveCursorSet();
                 Users.clearRemoveDialog();
                 Users.setRemoveDialog();
-            } else if (Main.ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.ids[0])) {
+            } else if (main_ThumbNull((Users.cursorY), (Users.cursorX + 1), Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorX++;
                 Users.addFocus();
-            } else if (Main.ThumbNull((Users.cursorY + 1), 0, Users.ids[0])) {
+            } else if (main_ThumbNull((Users.cursorY + 1), 0, Users.ids[0])) {
                 Users.removeFocus();
                 Users.cursorY++;
                 Users.cursorX = 0;
@@ -308,7 +308,7 @@ Users.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_UP:
             for (i = 0; i < Users.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Users.cursorY - 1), (Users.cursorX - i), Users.ids[0])) {
+                if (main_ThumbNull((Users.cursorY - 1), (Users.cursorX - i), Users.ids[0])) {
                     Users.removeFocus();
                     Users.cursorY--;
                     Users.cursorX = Users.cursorX - i;
@@ -319,7 +319,7 @@ Users.handleKeyDown = function(event) {
             break;
         case TvKeyCode.KEY_DOWN:
             for (i = 0; i < Users.ColoumnsCount; i++) {
-                if (Main.ThumbNull((Users.cursorY + 1), (Users.cursorX - i), Users.ids[0])) {
+                if (main_ThumbNull((Users.cursorY + 1), (Users.cursorX - i), Users.ids[0])) {
                     Users.removeFocus();
                     Users.cursorY++;
                     Users.cursorX = Users.cursorX - i;
@@ -333,16 +333,16 @@ Users.handleKeyDown = function(event) {
             Users.StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Before = Main.Users;
-            Main.Go = Main.Games;
+            main_Before = main_Users;
+            main_Go = main_games;
             Users.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Before = Main.Users;
-            Main.Go = Main.Live;
+            main_Before = main_Users;
+            main_Go = main_Live;
             Users.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
@@ -354,25 +354,25 @@ Users.handleKeyDown = function(event) {
                 Users.HideRemoveDialog();
                 if (temp_RemoveCursor) {
                     document.body.removeEventListener("keydown", Users.handleKeyDown);
-                    AddUser.removeUser(Users.cursorY);
+                    addUser_removeUser(Users.cursorY);
                 }
             } else Users.keyEnter();
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             Users.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.Users;
-            Main.Go = Main.Search;
+            main_BeforeSearch = main_Users;
+            main_Go = main_Search;
             Users.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         default:
             break;

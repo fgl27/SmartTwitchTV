@@ -1,105 +1,103 @@
-/*jshint multistr: true */
 //Variable initialization
-function AddUser() {}
-AddUser.loadingDataTry = 0;
-AddUser.loadingDataTryMax = 10;
-AddUser.loadingDataTimeout = 3500;
-AddUser.UsernameArray = [];
-AddUser.UserIdArray = [];
-AddUser.Followercount = 0;
-AddUser.Username = null;
-AddUser.loadingData = false;
-AddUser.keyBoardOn = false;
+var addUser_loadingDataTry = 0;
+var addUser_loadingDataTryMax = 10;
+var addUser_loadingDataTimeout = 3500;
+var addUser_UsernameArray = [];
+var addUser_UserIdArray = [];
+var addUser_Followercount = 0;
+var addUser_Username = null;
+var addUser_loadingData = false;
+var addUser_keyBoardOn = false;
 //Variable initialization end
 
-AddUser.init = function() {
-    Main.Go = Main.AddUser;
+function addUser_init() {
+    main_Go = main_addUser;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    Main.HideWarningDialog();
-    AddUser.input = document.querySelector('#user_input');
+    main_HideWarningDialog();
+    addUser_input = document.querySelector('#user_input');
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
-    AddUser.inputFocus();
-    AddUser.ScrollHelper.scrollVerticalToElementById('user_input');
-};
+    addUser_inputFocus();
+    addUser_scrollVerticalToElementById('user_input');
+}
 
-AddUser.exit = function() {
-    AddUser.RemoveinputFocus();
-    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
+function addUser_exit() {
+    addUser_RemoveinputFocus();
+    document.body.removeEventListener("keydown", addUser_handleKeyDown);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-};
+}
 
-AddUser.handleKeyDown = function(event) {
-    if (AddUser.loadingData || AddUser.keyBoardOn) return;
+function addUser_handleKeyDown(event) {
+    if (addUser_loadingData || addUser_keyBoardOn) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                Main.Go = Main.Before;
-                AddUser.exit();
-                Main.SwitchScreen();
+                main_Go = main_Before;
+                addUser_exit();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            Main.Go = Main.Games;
-            AddUser.exit();
-            Main.SwitchScreen();
+            main_Go = main_games;
+            addUser_exit();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            Main.Go = Main.Live;
-            AddUser.exit();
-            Main.SwitchScreen();
+            main_Go = main_Live;
+            addUser_exit();
+            main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            AddUser.inputFocus();
+            addUser_inputFocus();
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            AddUser.exit();
-            Main.GoLive();
+            addUser_exit();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.Go;
-            Main.Go = Main.Search;
-            AddUser.exit();
-            Main.SwitchScreen();
+            main_BeforeSearch = main_Go;
+            main_Go = main_Search;
+            addUser_exit();
+            main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}
 
-AddUser.inputFocus = function() {
-    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
-    document.body.addEventListener("keydown", AddUser.KeyboardEvent, false);
-    AddUser.input.addEventListener('input');
-    AddUser.input.addEventListener('compositionend');
+function addUser_inputFocus() {
+    document.body.removeEventListener("keydown", addUser_handleKeyDown);
+    document.body.addEventListener("keydown", addUser_KeyboardEvent, false);
+    addUser_input.addEventListener('input');
+    addUser_input.addEventListener('compositionend');
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
-    AddUser.input.focus();
-    AddUser.keyBoardOn = true;
-};
+    addUser_input.focus();
+    addUser_keyBoardOn = true;
+}
 
-AddUser.RemoveinputFocus = function() {
-    AddUser.input.blur();
-    document.body.removeEventListener("keydown", AddUser.KeyboardEvent);
-    document.body.addEventListener("keydown", AddUser.handleKeyDown, false);
+function addUser_RemoveinputFocus() {
+    addUser_input.blur();
+    document.body.removeEventListener("keydown", addUser_KeyboardEvent);
+    document.body.addEventListener("keydown", addUser_handleKeyDown, false);
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
     window.setTimeout(function() {
-        AddUser.keyBoardOn = false;
+        addUser_keyBoardOn = false;
     }, 250);
-};
+}
 
-AddUser.KeyboardEvent = function(event) {
-    if (AddUser.loadingData) return;
+function addUser_KeyboardEvent(event) {
+    if (addUser_loadingData) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
@@ -111,25 +109,25 @@ AddUser.KeyboardEvent = function(event) {
             if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
 
                 document.getElementById("user_input").value = $('#user_input').val();
-                AddUser.Username = $('#user_input').val();
+                addUser_Username = $('#user_input').val();
 
-                if (!AddUser.UserCodeExist(AddUser.Username)) {
-                    AddUser.loadingDataTry = 0;
-                    AddUser.loadingDataTimeout = 3500;
-                    AddUser.loadingData = true;
-                    Main.showLoadDialog();
-                    AddUser.ScrollHelper.scrollVerticalToElementById('blank_focus');
-                    AddUser.loadDataRequest();
+                if (!addUser_UserCodeExist(addUser_Username)) {
+                    addUser_loadingDataTry = 0;
+                    addUser_loadingDataTimeout = 3500;
+                    addUser_loadingData = true;
+                    main_showLoadDialog();
+                    addUser_scrollVerticalToElementById('blank_focus');
+                    addUser_loadDataRequest();
                 } else {
-                    Main.HideLoadDialog();
-                    Main.showWarningDialog(STR_USER + AddUser.Username + STR_USER_SET);
+                    main_HideLoadDialog();
+                    main_showWarningDialog(STR_USER + addUser_Username + STR_USER_SET);
                     window.setTimeout(function() {
-                        Main.HideWarningDialog();
-                        AddUser.inputFocus();
+                        main_HideWarningDialog();
+                        addUser_inputFocus();
                     }, 1500);
                 }
             }
-            AddUser.RemoveinputFocus();
+            addUser_RemoveinputFocus();
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
@@ -142,173 +140,145 @@ AddUser.KeyboardEvent = function(event) {
         default:
             break;
     }
-};
+}
 
-AddUser.loadDataRequest = function() {
+function addUser_loadDataRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser.Username) + '/follows/channels?limit=1&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = AddUser.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(addUser_Username) + '/follows/channels?limit=1&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = addUser_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     document.getElementById("user_input").value = '';
-                    document.body.removeEventListener("keydown", AddUser.handleKeyDown);
-                    AddUser.SaveNewUser();
+                    document.body.removeEventListener("keydown", addUser_handleKeyDown);
+                    addUser_SaveNewUser();
                     return;
                 } else {
-                    AddUser.loadDataError();
+                    addUser_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        AddUser.loadDataError();
+        addUser_loadDataError();
     }
-};
+}
 
-AddUser.loadDataError = function() {
-    AddUser.loadingDataTry++;
-    if (AddUser.loadingDataTry < AddUser.loadingDataTryMax) {
-        AddUser.loadingDataTimeout += (AddUser.loadingDataTry < 5) ? 250 : 3500;
-        AddUser.loadDataRequest();
+function addUser_loadDataError() {
+    addUser_loadingDataTry++;
+    if (addUser_loadingDataTry < addUser_loadingDataTryMax) {
+        addUser_loadingDataTimeout += (addUser_loadingDataTry < 5) ? 250 : 3500;
+        addUser_loadDataRequest();
     } else {
-        AddUser.Username = null;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_USER_ERROR);
+        addUser_Username = null;
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_USER_ERROR);
         window.setTimeout(function() {
-            AddUser.init();
+            addUser_init();
         }, 1000);
-        AddUser.loadingData = false;
+        addUser_loadingData = false;
     }
-};
+}
 
-AddUser.OldRestoreUsers = function() {
-    AddUser.UsernameArray = [];
+function addUser_OldRestoreUsers() {
+    addUser_UsernameArray = [];
     var size = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
     if (size > 0)
-        for (var x = 0; x < size; x++) AddUser.UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
+        for (var x = 0; x < size; x++) addUser_UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
 
-    AddUser.SaveUserArray();
-};
+    addUser_SaveUserArray();
+}
 
-AddUser.RestoreUsers = function() {
-    AddUser.UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
+function addUser_RestoreUsers() {
+    addUser_UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
 
     //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
-    if (!AddUser.UsernameArray.length) AddUser.OldRestoreUsers();
+    if (!addUser_UsernameArray.length) addUser_OldRestoreUsers();
 
-    if (AddUser.UsernameArray.length) AddCode.RestoreUsers();
+    if (addUser_UsernameArray.length) addCode_RestoreUsers();
 
     window.setTimeout(function() {
         SmartHub.Start();
         window.addEventListener('appcontrol', SmartHub.EventListener, false);
 
-        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', Main.Resume, false);
+        main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', main_Resume, false);
     }, 3500);
-};
+}
 
-AddUser.SaveNewUser = function() {
-    AddUser.UsernameArray.push(AddUser.Username);
-    AddUser.SaveUserArray();
+function addUser_SaveNewUser() {
+    addUser_UsernameArray.push(addUser_Username);
+    addUser_SaveUserArray();
 
     Users.status = false;
     Users.init();
-    AddUser.loadingData = false;
+    addUser_loadingData = false;
 
-    if (AddUser.UsernameArray.length === 1) {
-        window.clearInterval(Main.SmartHubId);
-        document.removeEventListener('visibilitychange', Main.Resume);
+    if (addUser_UsernameArray.length === 1) {
+        window.clearInterval(main_SmartHubId);
+        document.removeEventListener('visibilitychange', main_Resume);
 
-        Main.SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', Main.Resume, false);
+        main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
+        document.addEventListener('visibilitychange', main_Resume, false);
 
         SmartHub.Start();
     }
-};
+}
 
-AddUser.removeUser = function(Position) {
+function addUser_removeUser(Position) {
 
-    var userCode = AddCode.UserCodeExist(AddUser.UsernameArray[Position]);
+    var userCode = addCode_UserCodeExist(addUser_UsernameArray[Position]);
 
     // remove the code key
-    if (userCode > -1) AddCode.removeUser(userCode);
+    if (userCode > -1) addCode_removeUser(userCode);
 
     // remove the user
-    var index = AddUser.UsernameArray.indexOf(AddUser.UsernameArray[Position]);
-    if (index > -1) AddUser.UsernameArray.splice(index, 1);
+    var index = addUser_UsernameArray.indexOf(addUser_UsernameArray[Position]);
+    if (index > -1) addUser_UsernameArray.splice(index, 1);
 
     // restart users and smarthub
-    if (AddUser.UsernameArray.length > 0) {
+    if (addUser_UsernameArray.length > 0) {
         Users.status = false;
         Users.init();
         if (!Position) SmartHub.Start();
     } else {
-        AddUser.init();
+        addUser_init();
         SmartHub.Start();
     }
-    AddCode.SetDefaultOAuth(Position);
+    addCode_SetDefaultOAuth(Position);
 
     // reset localStorage usernames
-    AddUser.SaveUserArray();
-};
+    addUser_SaveUserArray();
+}
 
-AddUser.SaveUserArray = function() {
-    localStorage.setItem("usernames", JSON.stringify(AddUser.UsernameArray));
-};
+function addUser_SaveUserArray() {
+    localStorage.setItem("usernames", JSON.stringify(addUser_UsernameArray));
+}
 
-AddUser.UserMakeOne = function(Position) {
-    AddUser.Username = AddUser.UsernameArray[0];
-    AddUser.UsernameArray[0] = AddUser.UsernameArray[Position];
-    AddUser.UsernameArray[Position] = AddUser.Username;
+function addUser_UserMakeOne(Position) {
+    addUser_Username = addUser_UsernameArray[0];
+    addUser_UsernameArray[0] = addUser_UsernameArray[Position];
+    addUser_UsernameArray[Position] = addUser_Username;
     Users.status = false;
     Users.init();
     SmartHub.Start();
-};
+}
 
-AddUser.UserCodeExist = function(user) {
-    return AddUser.UsernameArray.indexOf(user) !== -1;
-};
+function addUser_UserCodeExist(user) {
+    return addUser_UsernameArray.indexOf(user) !== -1;
+}
 
-AddUser.IsUserSet = function() {
-    return AddUser.UsernameArray.length > 0;
-};
+function addUser_IsUserSet() {
+    return addUser_UsernameArray.length > 0;
+}
 
-AddUser.ScrollHelper = {
-    documentVerticalScrollPosition: function() {
-        if (self.pageYOffset) return self.pageYOffset; // Firefox, Chrome, Opera, Safari.
-        if (document.documentElement && document.documentElement.scrollTop) return document.documentElement.scrollTop; // Internet Explorer 6 (standards mode).
-        if (document.body.scrollTop) return document.body.scrollTop; // Internet Explorer 6, 7 and 8.
-        return 0; // None of the above.
-    },
-
-    viewportHeight: function() {
-        return (document.compatMode === "CSS1Compat") ? document.documentElement.clientHeight : document.body.clientHeight;
-    },
-
-    documentHeight: function() {
-        return (document.height !== undefined) ? document.height : document.body.offsetHeight;
-    },
-
-    documentMaximumScrollPosition: function() {
-        return this.documentHeight() - this.viewportHeight();
-    },
-
-    elementVerticalClientPositionById: function(id) {
-        return document.getElementById(id).getBoundingClientRect().top;
-    },
-
-    scrollVerticalToElementById: function(id) {
-        if (document.getElementById(id) === null) {
-            return;
-        }
-        window.scroll(0, this.documentVerticalScrollPosition() + this.elementVerticalClientPositionById(id) - 0.345 * this.viewportHeight() - 60);
-    }
-};
+function addUser_scrollVerticalToElementById(id) {
+    window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - main_ScrollOffSetMinusVideo - main_ScrollOffSetMinusaddUser);
+}
