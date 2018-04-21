@@ -37,30 +37,30 @@ SLive.lastData = '';
 //Variable initialization end
 
 SLive.init = function() {
-    Main.Go = Main.SLive;
-    Main.cleanTopLabel();
+    main_Go = main_SLive;
+    main_cleanTopLabel();
     if (SLive.lastData !== Search.data) SLive.Status = false;
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main.UnderCenter(STR_LIVE + ' ' + "'" + Search.data + "'");
+    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + main_UnderCenter(STR_LIVE + ' ' + "'" + Search.data + "'");
     document.body.addEventListener("keydown", SLive.handleKeyDown, false);
-    Main.YRst(SLive.cursorY);
+    main_YRst(SLive.cursorY);
     if (SLive.Status) {
-        Main.ScrollHelper.scrollVerticalToElementById(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, Main.SLive, Main.ScrollOffSetMinusVideo,
-            Main.ScrollOffSetVideo, false);
-        Main.CounterDialog(SLive.cursorX, SLive.cursorY, Main.ColoumnsCountVideo, SLive.itemsCount);
+        main_ScrollHelper(SLive.Thumbnail, SLive.cursorY, SLive.cursorX, main_SLive, main_ScrollOffSetMinusVideo,
+            main_ScrollOffSetVideo, false);
+        main_CounterDialog(SLive.cursorX, SLive.cursorY, main_ColoumnsCountVideo, SLive.itemsCount);
     } else SLive.StartLoad();
 };
 
 SLive.exit = function() {
-    Main.RestoreTopLabel();
+    main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SLive.handleKeyDown);
 };
 
 SLive.StartLoad = function() {
     SLive.lastData = Search.data;
-    Main.HideWarningDialog();
+    main_HideWarningDialog();
     SLive.Status = false;
-    Main.ScrollHelperBlank.scrollVerticalToElementById('blank_focus');
-    Main.showLoadDialog();
+    main_ScrollHelperBlank('blank_focus');
+    main_showLoadDialog();
     $('#stream_table_search_live').empty();
     SLive.loadingMore = false;
     SLive.blankCellCount = 0;
@@ -74,7 +74,7 @@ SLive.StartLoad = function() {
     SLive.cursorX = 0;
     SLive.cursorY = 0;
     SLive.dataEnded = false;
-    Main.CounterDialogRst();
+    main_CounterDialogRst();
     SLive.loadDataPrepare();
     SLive.loadDataRequest();
 };
@@ -92,15 +92,15 @@ SLive.loadDataRequest = function() {
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
         if (offset && offset > (SLive.MaxOffset - 1)) {
-            offset = SLive.MaxOffset - Main.ItemsLimitVideo;
+            offset = SLive.MaxOffset - main_ItemsLimitVideo;
             SLive.dataEnded = true;
             SLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -128,8 +128,8 @@ SLive.loadDataError = function() {
     } else {
         SLive.loadingData = false;
         SLive.loadingMore = false;
-        Main.HideLoadDialog();
-        Main.showWarningDialog(STR_REFRESH_PROBLEM);
+        main_HideLoadDialog();
+        main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
 };
 
@@ -138,41 +138,41 @@ SLive.loadDataSuccess = function(responseText) {
     var response_items = response.streams.length;
     SLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) SLive.dataEnded = true;
+    if (response_items < main_ItemsLimitVideo) SLive.dataEnded = true;
 
     var offset_itemsCount = SLive.itemsCount;
     SLive.itemsCount += response_items;
 
     SLive.emptyContent = !SLive.itemsCount;
 
-    var response_rows = response_items / Main.ColoumnsCountVideo;
-    if (response_items % Main.ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / main_ColoumnsCountVideo;
+    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, cell, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main.ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < Main.ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (SLive.CellExists(stream.channel.name)) coloumn_id--;
             else {
                 cell = SLive.createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-                    stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                    Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+                    stream.channel.status, stream.game, main_is_playlist(JSON.stringify(stream.stream_type)) +
+                    stream.channel.display_name, main_addCommas(stream.viewers) + STR_VIEWER,
+                    main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
                 row.append(cell);
             }
         }
 
-        for (coloumn_id; coloumn_id < Main.ColoumnsCountVideo; coloumn_id++) {
+        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
             if (SLive.dataEnded && !SLive.itemsCountCheck) {
                 SLive.itemsCountCheck = true;
-                SLive.itemsCount = (row_id * Main.ColoumnsCountVideo) + coloumn_id;
+                SLive.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main.createCellEmpty(row_id, coloumn_id, SLive.EmptyCell));
+            row.append(main_createCellEmpty(row_id, coloumn_id, SLive.EmptyCell));
             SLive.blankCellVector.push(SLive.EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_search_live').append(row);
@@ -190,8 +190,8 @@ SLive.CellHtml = function(row_id, coloumn_id, channel_display_name, stream_title
 
     SLive.nameMatrix.push(channel_name);
 
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main.VideoSize);
-    if (row_id < 3) Main.PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
+    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", main_VideoSize);
+    if (row_id < 3) main_PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
 
     return '<div id="' + SLive.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SLive.Img + row_id + '_' +
         coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
@@ -215,12 +215,12 @@ SLive.CellExists = function(display_name) {
 SLive.loadDataSuccessFinish = function() {
     $(document).ready(function() {
         if (!SLive.Status) {
-            Main.HideLoadDialog();
-            if (SLive.emptyContent) Main.showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+            main_HideLoadDialog();
+            if (SLive.emptyContent) main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SLive.Status = true;
                 SLive.addFocus();
-                Main.LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, Main.ColoumnsCountVideo);
+                main_LazyImgStart(SLive.Img, 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
             }
             SLive.loadingData = false;
         } else {
@@ -245,16 +245,16 @@ SLive.loadDataReplace = function() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main.SetItemsLimitReload(SLive.blankCellCount);
+        main_SetItemsLimitReload(SLive.blankCellCount);
 
         var offset = SLive.itemsCount + SLive.itemsCountOffset;
         if (offset && offset > (SLive.MaxOffset - 1)) {
-            offset = SLive.MaxOffset - Main.ItemsLimitReload;
+            offset = SLive.MaxOffset - main_ItemsLimitReload;
             SLive.ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search.data) +
-            '&limit=' + Main.ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive.loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
@@ -295,7 +295,7 @@ SLive.loadDataSuccessReplace = function(responseText) {
 
     SLive.MaxOffset = parseInt(response._total);
 
-    if (response_items < Main.ItemsLimitVideo) SLive.ReplacedataEnded = true;
+    if (response_items < main_ItemsLimitVideo) SLive.ReplacedataEnded = true;
 
     for (var i = 0; i < SLive.blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
@@ -304,9 +304,9 @@ SLive.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             SLive.replaceCellEmpty(SLive.blankCellVector[i], stream.channel.name, stream.preview.template,
-                stream.channel.status, stream.game, Main.is_playlist(JSON.stringify(stream.stream_type)) +
-                stream.channel.display_name, Main.addCommas(stream.viewers) + STR_VIEWER,
-                Main.videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+                stream.channel.status, stream.game, main_is_playlist(JSON.stringify(stream.stream_type)) +
+                stream.channel.display_name, main_addCommas(stream.viewers) + STR_VIEWER,
+                main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             SLive.blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -339,12 +339,12 @@ SLive.replaceCellEmpty = function(id, channel_name, preview_thumbnail, stream_ti
 
 SLive.addFocus = function() {
 
-    Main.addFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
-        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, Main.SLive, Main.ColoumnsCountVideo, SLive.itemsCount);
+    main_addFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
+        SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv, main_SLive, main_ColoumnsCountVideo, SLive.itemsCount);
 
-    if (SLive.cursorY > 3) Main.LazyImg(SLive.Img, SLive.cursorY, IMG_404_VIDEO, Main.ColoumnsCountVideo, 4);
+    if (SLive.cursorY > 3) main_LazyImg(SLive.Img, SLive.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
 
-    if (((SLive.cursorY + Main.ItemsReloadLimitVideo) > (SLive.itemsCount / Main.ColoumnsCountVideo)) &&
+    if (((SLive.cursorY + main_ItemsReloadLimitVideo) > (SLive.itemsCount / main_ColoumnsCountVideo)) &&
         !SLive.dataEnded && !SLive.loadingMore) {
         SLive.loadingMore = true;
         SLive.loadDataPrepare();
@@ -353,7 +353,7 @@ SLive.addFocus = function() {
 };
 
 SLive.removeFocus = function() {
-    Main.removeFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
+    main_removeFocusVideo(SLive.cursorY, SLive.cursorX, SLive.Thumbnail, SLive.ThumbnailDiv, SLive.DispNameDiv, SLive.StreamTitleDiv,
         SLive.StreamGameDiv, SLive.ViwersDiv, SLive.QualityDiv);
 };
 
@@ -377,23 +377,23 @@ SLive.handleKeyDown = function(event) {
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (Main.isAboutDialogShown()) Main.HideAboutDialog();
-            else if (Main.isControlsDialogShown()) Main.HideControlsDialog();
+            if (main_isAboutDialogShown()) main_HideAboutDialog();
+            else if (main_isControlsDialogShown()) main_HideControlsDialog();
             else {
-                if (Main.Go === Main.BeforeSearch) Main.Go = Main.Live;
-                else Main.Go = Main.BeforeSearch;
+                if (main_Go === main_BeforeSearch) main_Go = main_Live;
+                else main_Go = main_BeforeSearch;
                 SLive.exit();
-                Main.SwitchScreen();
+                main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (Main.ThumbNull((SLive.cursorY), (SLive.cursorX - 1), SLive.Thumbnail)) {
+            if (main_ThumbNull((SLive.cursorY), (SLive.cursorX - 1), SLive.Thumbnail)) {
                 SLive.removeFocus();
                 SLive.cursorX--;
                 SLive.addFocus();
             } else {
-                for (i = (Main.ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main.ThumbNull((SLive.cursorY - 1), i, SLive.Thumbnail)) {
+                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (main_ThumbNull((SLive.cursorY - 1), i, SLive.Thumbnail)) {
                         SLive.removeFocus();
                         SLive.cursorY--;
                         SLive.cursorX = i;
@@ -404,11 +404,11 @@ SLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (Main.ThumbNull((SLive.cursorY), (SLive.cursorX + 1), SLive.Thumbnail)) {
+            if (main_ThumbNull((SLive.cursorY), (SLive.cursorX + 1), SLive.Thumbnail)) {
                 SLive.removeFocus();
                 SLive.cursorX++;
                 SLive.addFocus();
-            } else if (Main.ThumbNull((SLive.cursorY + 1), 0, SLive.Thumbnail)) {
+            } else if (main_ThumbNull((SLive.cursorY + 1), 0, SLive.Thumbnail)) {
                 SLive.removeFocus();
                 SLive.cursorY++;
                 SLive.cursorX = 0;
@@ -416,8 +416,8 @@ SLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((SLive.cursorY - 1), (SLive.cursorX - i), SLive.Thumbnail)) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((SLive.cursorY - 1), (SLive.cursorX - i), SLive.Thumbnail)) {
                     SLive.removeFocus();
                     SLive.cursorY--;
                     SLive.cursorX = SLive.cursorX - i;
@@ -427,8 +427,8 @@ SLive.handleKeyDown = function(event) {
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < Main.ColoumnsCountVideo; i++) {
-                if (Main.ThumbNull((SLive.cursorY + 1), (SLive.cursorX - i), SLive.Thumbnail)) {
+            for (i = 0; i < main_ColoumnsCountVideo; i++) {
+                if (main_ThumbNull((SLive.cursorY + 1), (SLive.cursorX - i), SLive.Thumbnail)) {
                     SLive.removeFocus();
                     SLive.cursorY++;
                     SLive.cursorX = SLive.cursorX - i;
@@ -448,23 +448,23 @@ SLive.handleKeyDown = function(event) {
             Play.selectedChannel = $('#' + SLive.Cell + SLive.cursorY + '_' + SLive.cursorX).attr('data-channelname');
             Play.selectedChannelDisplayname = document.getElementById(SLive.DispNameDiv + SLive.cursorY + '_' + SLive.cursorX).textContent;
             document.body.removeEventListener("keydown", SLive.handleKeyDown);
-            Main.openStream();
+            main_openStream();
             break;
         case TvKeyCode.KEY_RED:
-            Main.showAboutDialog();
+            main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
             SLive.exit();
-            Main.GoLive();
+            main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            Main.showControlsDialog();
+            main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            Main.BeforeSearch = Main.SLive;
-            Main.Go = Main.Search;
+            main_BeforeSearch = main_SLive;
+            main_Go = main_Search;
             SLive.exit();
-            Main.SwitchScreen();
+            main_SwitchScreen();
             break;
         default:
             break;

@@ -157,17 +157,17 @@ Play.updateStreamInfoStart = function() {
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     Play.gameSelected = response.stream.game;
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play.gameSelected + STR_FOR +
-                        Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
+                        main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
                     Play.selectedChannelLogo = response.stream.channel.logo;
                     Play.LoadLogo(document.getElementById('stream_info_icon'), Play.selectedChannelLogo);
                     Play.created = new Date(response.stream.created_at).getTime();
                     Play.LoadLogoSucess = true;
                     Play.selectedChannelViews = response.stream.channel.views;
                     Play.selectedChannelFallower = response.stream.channel.followers;
-                    if (Main.UserName !== '') {
-                        AddCode.userChannel = response.stream.channel._id;
-                        AddCode.PlayRequest = true;
-                        AddCode.CheckFallow();
+                    if (main_UserName !== '') {
+                        addCode_userChannel = response.stream.channel._id;
+                        addCode_PlayRequest = true;
+                        addCode_CheckFallow();
                         Play.showFallow();
                     } else Play.hideFallow();
                 } else { // internet error
@@ -177,7 +177,7 @@ Play.updateStreamInfoStart = function() {
         };
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Play.loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
         xmlHttp.send(null);
     } catch (e) {
         Play.updateStreamInfoStartError();
@@ -204,7 +204,7 @@ Play.updateStreamInfo = function() {
                     var response = JSON.parse(xmlHttp.responseText);
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + response.stream.game + STR_FOR +
-                        Main.addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
+                        main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
                     if (!Play.LoadLogoSucess) Play.LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                 } catch (err) {}
             }
@@ -212,7 +212,7 @@ Play.updateStreamInfo = function() {
     };
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play.selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+    xmlHttp.setRequestHeader('Client-ID', main_clientId);
     xmlHttp.send(null);
 };
 
@@ -244,7 +244,7 @@ Play.loadDataRequest = function() {
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
 
         xmlHttp.ontimeout = function() {};
 
@@ -532,7 +532,7 @@ Play.PreshutdownStream = function() {
 Play.exitMain = function() {
     document.getElementById('scene1').classList.remove('hide');
     document.getElementById('scene2').classList.add('hide');
-    Main.ReStartScreens();
+    main_ReStartScreens();
 };
 
 Play.ClearPlayer = function() {
@@ -564,7 +564,7 @@ Play.ClearPlay = function() {
 
 Play.hideFallow = function() {
     document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_NOKEY;
-    AddCode.IsFallowing = false;
+    addCode_IsFallowing = false;
 };
 
 Play.showFallow = function() {
@@ -818,43 +818,43 @@ Play.KeyPause = function() {
 };
 
 Play.IconsFocus = function() {
-    Main.ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_game", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_game", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
     if (!Play.Panelcouner) {
-        Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 1) {
-        Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 2) {
-        Main.ChangeBorder("scene2_game", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_game", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 3) {
-        Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 4) {
-        Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 };
 
 Play.FallowUnfallow = function() {
-    if (AddCode.OauthToken !== '') {
-        if (AddCode.IsFallowing) AddCode.UnFallow();
-        else AddCode.Fallow();
+    if (addCode_OauthToken !== '') {
+        if (addCode_IsFallowing) addCode_UnFallow();
+        else addCode_Fallow();
     } else {
         Play.showWarningDialog(STR_NOKEY_WARN);
         Play.IsWarning = true;
@@ -866,7 +866,7 @@ Play.FallowUnfallow = function() {
 };
 
 Play.setFallow = function() {
-    if (AddCode.IsFallowing) {
+    if (addCode_IsFallowing) {
         document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;"></i>';
         document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOWING;
     } else {
@@ -1011,33 +1011,33 @@ Play.handleKeyDown = function(e) {
                         Play.clearHidePanel();
                         Play.setHidePanel();
                     } else if (Play.Panelcouner === 2) {
-                        Main.Before = Main.Go;
-                        Main.ExitCurrent(Main.Before);
-                        Main.Go = Main.AGame;
-                        AGame.UserGames = false;
-                        Main.gameSelected = Play.gameSelected;
+                        main_Before = main_Go;
+                        main_ExitCurrent(main_Before);
+                        main_Go = main_aGame;
+                        aGame_Usergames = false;
+                        main_gameSelected = Play.gameSelected;
                         window.clearTimeout(Play.exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
                     } else if (Play.Panelcouner === 3) {
-                        Main.selectedChannel = Play.selectedChannel;
-                        Main.selectedChannel_id = AddCode.userChannel;
-                        Main.selectedChannelDisplayname = Play.selectedChannelDisplayname;
-                        Main.selectedChannelLogo = Play.selectedChannelLogo;
-                        Main.selectedChannelViews = Play.selectedChannelViews;
-                        Main.selectedChannelFallower = Play.selectedChannelFallower;
-                        if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
-                        Main.ExitCurrent(Main.Go);
-                        SChannelContent.UserChannels = AddCode.IsFallowing;
-                        Main.Go = Main.SChannelContent;
+                        main_selectedChannel = Play.selectedChannel;
+                        main_selectedChannel_id = addCode_userChannel;
+                        main_selectedChannelDisplayname = Play.selectedChannelDisplayname;
+                        main_selectedChannelLogo = Play.selectedChannelLogo;
+                        main_selectedChannelViews = Play.selectedChannelViews;
+                        main_selectedChannelFallower = Play.selectedChannelFallower;
+                        if (main_Go !== main_Svod && main_Go !== main_Sclip && main_Go !== main_SChannelContent) main_Before = main_Go;
+                        main_ExitCurrent(main_Go);
+                        SChannelContent.UserChannels = addCode_IsFallowing;
+                        main_Go = main_SChannelContent;
                         window.clearTimeout(Play.exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         Play.hideChat();
                         window.setTimeout(Play.shutdownStream, 10);
                     } else if (Play.Panelcouner === 4) {
-                        Main.BeforeSearch = Main.Go;
-                        Main.Go = Main.Search;
+                        main_BeforeSearch = main_Go;
+                        main_Go = main_Search;
                         window.clearTimeout(Play.exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         Play.hideChat();

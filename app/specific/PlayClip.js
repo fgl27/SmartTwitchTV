@@ -25,9 +25,9 @@ PlayClip.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     Play.hideChat();
-    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
+    Play.LoadLogo(document.getElementById('stream_info_icon'), main_selectedChannelLogo);
     document.getElementById("stream_info_name").innerHTML = Sclip.title;
-    document.getElementById("stream_info_title").innerHTML = Main.selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game;
+    document.getElementById("stream_info_title").innerHTML = main_selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game;
     document.getElementById("stream_info_game").innerHTML = Sclip.views;
     document.getElementById("stream_live_icon").innerHTML = Sclip.createdAt;
     document.getElementById("stream_live_time").innerHTML = Sclip.Duration;
@@ -40,10 +40,10 @@ PlayClip.Start = function() {
     Play.Panelcouner = 2;
     PlayClip.IconsFocus();
 
-    if (Main.UserName !== '') {
-        AddCode.userChannel = Main.selectedChannel_id;
-        AddCode.PlayRequest = true;
-        AddCode.CheckFallow();
+    if (main_UserName !== '') {
+        addCode_userChannel = main_selectedChannel_id;
+        addCode_PlayRequest = true;
+        addCode_CheckFallow();
         Play.showFallow();
     } else Play.hideFallow();
 
@@ -61,32 +61,33 @@ PlayClip.Start = function() {
         src: Sclip.playUrl
     });
 
-    Play.videojs.ready(function() {
-        this.isFullscreen(true);
-        this.requestFullscreen();
-        this.autoplay(true);
+    window.setTimeout(function() {
+        Play.videojs.ready(function() {
+            this.isFullscreen(true);
+            this.requestFullscreen();
+            this.autoplay(true);
 
-        this.on('ended', function() {
-            PlayClip.shutdownStream();
+            this.on('ended', function() {
+                PlayClip.shutdownStream();
+            });
+
+            this.on('timeupdate', function() {
+                PlayClip.updateCurrentTime(this.currentTime());
+            });
+
+            this.on('error', function() {
+                Play.HideBufferDialog();
+                Play.showWarningDialog(STR_IS_OFFLINE);
+                window.setTimeout(PlayClip.shutdownStream, 1500);
+            });
+
+            this.on('loadedmetadata', function() {
+                PlayClip.Canjump = true;
+            });
+
         });
-
-        this.on('timeupdate', function() {
-            PlayClip.updateCurrentTime(this.currentTime());
-        });
-
-        this.on('error', function() {
-            Play.HideBufferDialog();
-            Play.showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(PlayClip.shutdownStream, 1500);
-        });
-
-        this.on('loadedmetadata', function() {
-            PlayClip.Canjump = true;
-        });
-
-    });
-
-    PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
+        PlayClip.streamCheck = window.setInterval(PlayClip.PlayerCheck, 500);
+    }, 1000);
 };
 
 PlayClip.Resume = function() {
@@ -293,36 +294,36 @@ PlayClip.speedDisplay = function() {
 };
 
 PlayClip.IconsFocus = function() {
-    Main.ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_speed", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_speed", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
     if (!Play.Panelcouner) {
-        Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 1) {
-        Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 2) {
-        Main.ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 3) {
-        Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 4) {
-        Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 };
 
@@ -395,14 +396,14 @@ PlayClip.handleKeyDown = function(e) {
                 } else if (Play.Panelcouner === 2) {
                     PlayClip.speed();
                 } else if (Play.Panelcouner === 3) {
-                    if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
-                    Main.Go = Main.SChannelContent;
+                    if (main_Go !== main_Svod && main_Go !== main_Sclip && main_Go !== main_SChannelContent) main_Before = main_Go;
+                    main_Go = main_SChannelContent;
                     window.clearTimeout(Play.exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip.shutdownStream, 10);
                 } else if (Play.Panelcouner === 4) {
-                    Main.BeforeSearch = Main.Go;
-                    Main.Go = Main.Search;
+                    main_BeforeSearch = main_Go;
+                    main_Go = main_Search;
                     window.clearTimeout(Play.exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip.shutdownStream, 10);

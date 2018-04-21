@@ -54,17 +54,17 @@ PlayVod.Start = function() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play.showBufferDialog();
     Play.hideChat();
-    Play.LoadLogo(document.getElementById('stream_info_icon'), Main.selectedChannelLogo);
-    document.getElementById("stream_info_name").innerHTML = Main.selectedChannelDisplayname;
+    Play.LoadLogo(document.getElementById('stream_info_icon'), main_selectedChannelLogo);
+    document.getElementById("stream_info_name").innerHTML = main_selectedChannelDisplayname;
     document.getElementById("stream_info_title").innerHTML = Svod.title;
     document.getElementById("stream_info_game").innerHTML = Svod.views;
     document.getElementById("stream_live_icon").innerHTML = Svod.createdAt;
     document.getElementById("stream_live_time").innerHTML = Svod.Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play.timeS(0);
-    if (Main.UserName !== '') {
-        AddCode.userChannel = Main.selectedChannel_id;
-        AddCode.PlayRequest = true;
-        AddCode.CheckFallow();
+    if (main_UserName !== '') {
+        addCode_userChannel = main_selectedChannel_id;
+        addCode_PlayRequest = true;
+        addCode_CheckFallow();
         Play.showFallow();
     } else Play.hideFallow();
 
@@ -121,7 +121,7 @@ PlayVod.loadDataRequest = function() {
 
         var theUrl;
         if (PlayVod.state === PlayVod.STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token' + (AddCode.OauthToken !== 0 ? '?oauth_token=' + AddCode.OauthToken : '');
+            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token' + (addCode_OauthToken !== 0 ? '?oauth_token=' + addCode_OauthToken : '');
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod.tokenResponse.sig + '&nauth=' +
@@ -129,7 +129,7 @@ PlayVod.loadDataRequest = function() {
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main.clientId);
+        xmlHttp.setRequestHeader('Client-ID', main_clientId);
 
         xmlHttp.ontimeout = function() {};
 
@@ -181,7 +181,7 @@ PlayVod.saveQualities = function() {
 
 PlayVod.restore = function() {
     for (var i = 0; i < PlayVod.qualityName.length; i++) {
-        if (PlayVod.qualityName[i] === Main.selectedChannel) {
+        if (PlayVod.qualityName[i] === main_selectedChannel) {
             PlayVod.qualities = PlayVod.qualityLinks[i];
             PlayVod.qualitiesFound = true;
         }
@@ -212,7 +212,7 @@ PlayVod.loadDataSuccess = function(responseText) {
 };
 
 PlayVod.loadDataCheckSub = function() {
-    if (AddCode.OauthToken !== '') AddCode.CheckSub();
+    if (addCode_OauthToken !== '') addCode_CheckSub();
     else {
         Play.HideBufferDialog();
         Play.showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
@@ -536,30 +536,30 @@ PlayVod.jumpStart = function() {
 };
 
 PlayVod.IconsFocus = function() {
-    Main.ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
-    Main.ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+    main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
     if (!Play.Panelcouner) {
-        Main.ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 1) {
-        Main.ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 2) {
-        Main.ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
     } else if (Play.Panelcouner === 3) {
-        Main.ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        Main.ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+        main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 };
 
@@ -645,15 +645,15 @@ PlayVod.handleKeyDown = function(e) {
                         PlayVod.clearHidePanel();
                         PlayVod.setHidePanel();
                     } else if (Play.Panelcouner === 2) {
-                        if (Main.Go !== Main.Svod && Main.Go !== Main.Sclip && Main.Go !== Main.SChannelContent) Main.Before = Main.Go;
-                        Main.ExitCurrent(Main.Go);
-                        Main.Go = Main.SChannelContent;
+                        if (main_Go !== main_Svod && main_Go !== main_Sclip && main_Go !== main_SChannelContent) main_Before = main_Go;
+                        main_ExitCurrent(main_Go);
+                        main_Go = main_SChannelContent;
                         window.clearTimeout(Play.exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod.shutdownStream, 10);
                     } else if (Play.Panelcouner === 3) {
-                        Main.BeforeSearch = Main.Go;
-                        Main.Go = Main.Search;
+                        main_BeforeSearch = main_Go;
+                        main_Go = main_Search;
                         window.clearTimeout(Play.exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod.shutdownStream, 10);
