@@ -1,121 +1,118 @@
-/*jshint multistr: true */
 //Variable initialization
-function UserChannels() {}
-UserChannels.cursorY = 0;
-UserChannels.cursorX = 0;
-UserChannels.dataEnded = false;
-UserChannels.itemsCount = 0;
-UserChannels.loadingData = false;
-UserChannels.loadingDataTry = 0;
-UserChannels.loadingDataTryMax = 10;
-UserChannels.loadingDataTimeout = 3500;
-UserChannels.LastClickFinish = true;
-UserChannels.keyClickDelayTime = 25;
-UserChannels.UserChannelsList = [];
-UserChannels.loadChannelOffsset = 0;
-UserChannels.emptyContent = false;
+var UserChannels_cursorY = 0;
+var UserChannels_cursorX = 0;
+var UserChannels_dataEnded = false;
+var UserChannels_itemsCount = 0;
+var UserChannels_loadingData = false;
+var UserChannels_loadingDataTry = 0;
+var UserChannels_loadingDataTryMax = 10;
+var UserChannels_loadingDataTimeout = 3500;
+var UserChannels_LastClickFinish = true;
+var UserChannels_keyClickDelayTime = 25;
+var UserChannels_UserChannelsList = [];
+var UserChannels_loadChannelOffsset = 0;
+var UserChannels_emptyContent = false;
 
-UserChannels.Img = 'img_uchannel';
-UserChannels.Thumbnail = 'thumbnail_uchannel_';
-UserChannels.EmptyCell = 'uchannelempty_';
-UserChannels.ThumbnailDiv = 'uchannel_thumbnail_div_';
-UserChannels.DispNameDiv = 'uchannel_display_name_';
-UserChannels.Cell = 'uchannel_cell_';
-UserChannels.Status = false;
-UserChannels.OldUserName = '';
-UserChannels.itemsCountCheck = false;
-
+var UserChannels_Img = 'img_uchannel';
+var UserChannels_Thumbnail = 'thumbnail_uchannel_';
+var UserChannels_EmptyCell = 'uchannelempty_';
+var UserChannels_ThumbnailDiv = 'uchannel_thumbnail_div_';
+var UserChannels_DispNameDiv = 'uchannel_display_name_';
+var UserChannels_Cell = 'uchannel_cell_';
+var UserChannels_Status = false;
+var UserChannels_OldUserName = '';
+var UserChannels_itemsCountCheck = false;
 //Variable initialization end
 
-UserChannels.init = function() {
-    main_Go = main_UserChannels;
-    SChannels.isLastSChannels = false;
+function UserChannels_init() {
+    Main_Go = Main_UserChannels;
+    SChannels_isLastSChannels = false;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + main_UnderCenter(main_UserName + STR_USER_CHANNEL);
-    document.body.addEventListener("keydown", UserChannels.handleKeyDown, false);
-    main_YRst(UserChannels.cursorY);
-    if (UserChannels.OldUserName !== main_UserName) UserChannels.Status = false;
-    if (UserChannels.Status) {
-        main_ScrollHelper(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, main_UserChannels,
-            main_ScrollOffSetMinusChannels, main_ScrollOffSetVideo, true);
-        main_CounterDialog(UserChannels.cursorX, UserChannels.cursorY, main_ColoumnsCountChannel, UserChannels.itemsCount);
-    } else UserChannels.StartLoad();
-};
+    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL);
+    document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
+    Main_YRst(UserChannels_cursorY);
+    if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
+    if (UserChannels_Status) {
+        Main_ScrollHelper(UserChannels_Thumbnail, UserChannels_cursorY, UserChannels_cursorX, Main_UserChannels,
+            Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
+    } else UserChannels_StartLoad();
+}
 
-UserChannels.exit = function() {
+function UserChannels_exit() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
+    document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     document.getElementById('top_bar_user').innerHTML = STR_USER;
-};
+}
 
-UserChannels.StartLoad = function() {
-    main_HideWarningDialog();
-    main_ScrollHelperBlank('blank_focus');
-    main_showLoadDialog();
-    UserChannels.OldUserName = main_UserName;
-    UserChannels.Status = false;
+function UserChannels_StartLoad() {
+    Main_HideWarningDialog();
+    Main_ScrollHelperBlank('blank_focus');
+    Main_showLoadDialog();
+    UserChannels_OldUserName = Main_UserName;
+    UserChannels_Status = false;
     $('#stream_table_user_channels').empty();
-    UserChannels.loadingMore = false;
-    UserChannels.loadChannelOffsset = 0;
-    UserChannels.itemsCount = 0;
-    UserChannels.cursorX = 0;
-    UserChannels.cursorY = 0;
-    UserChannels.dataEnded = false;
-    UserChannels.itemsCountCheck = false;
-    main_CounterDialogRst();
-    UserChannels.UserChannelsList = [];
-    UserChannels.loadDataPrepare();
-    UserChannels.loadChannels();
-};
+    UserChannels_loadingMore = false;
+    UserChannels_loadChannelOffsset = 0;
+    UserChannels_itemsCount = 0;
+    UserChannels_cursorX = 0;
+    UserChannels_cursorY = 0;
+    UserChannels_dataEnded = false;
+    UserChannels_itemsCountCheck = false;
+    Main_CounterDialogRst();
+    UserChannels_UserChannelsList = [];
+    UserChannels_loadDataPrepare();
+    UserChannels_loadChannels();
+}
 
-UserChannels.loadDataPrepare = function() {
-    UserChannels.loadingData = true;
-    UserChannels.loadingDataTry = 0;
-    UserChannels.loadingDataTimeout = 3500;
-};
+function UserChannels_loadDataPrepare() {
+    UserChannels_loadingData = true;
+    UserChannels_loadingDataTry = 0;
+    UserChannels_loadingDataTimeout = 3500;
+}
 
-UserChannels.loadChannels = function() {
+function UserChannels_loadChannels() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(main_UserName) + '/follows/channels?limit=100&offset=' +
-            UserChannels.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserChannels.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main_UserName) + '/follows/channels?limit=100&offset=' +
+            UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = UserChannels_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserChannels.loadChannelLive(xmlHttp.responseText);
+                    UserChannels_loadChannelLive(xmlHttp.responseText);
                     return;
                 } else {
-                    UserChannels.loadDataError();
+                    UserChannels_loadDataError();
                 }
             }
         };
         xmlHttp.send(null);
     } catch (e) {
-        UserChannels.loadDataError();
+        UserChannels_loadDataError();
     }
-};
+}
 
-UserChannels.loadDataError = function() {
-    UserChannels.loadingDataTry++;
-    if (UserChannels.loadingDataTry < UserChannels.loadingDataTryMax) {
-        UserChannels.loadingDataTimeout += (UserChannels.loadingDataTry < 5) ? 250 : 3500;
-        UserChannels.loadChannels();
+function UserChannels_loadDataError() {
+    UserChannels_loadingDataTry++;
+    if (UserChannels_loadingDataTry < UserChannels_loadingDataTryMax) {
+        UserChannels_loadingDataTimeout += (UserChannels_loadingDataTry < 5) ? 250 : 3500;
+        UserChannels_loadChannels();
     } else {
-        UserChannels.loadingData = false;
-        UserChannels.loadingMore = false;
-        UserChannels.Status = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_REFRESH_PROBLEM);
+        UserChannels_loadingData = false;
+        UserChannels_loadingMore = false;
+        UserChannels_Status = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
-};
+}
 
-UserChannels.loadChannelLive = function(responseText) {
+function UserChannels_loadChannelLive(responseText) {
     var response = JSON.parse(responseText),
         response_items = response.follows.length;
 
@@ -126,239 +123,239 @@ UserChannels.loadChannelLive = function(responseText) {
         for (x; x < response_items; x++) {
             ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
                 ',' + response.follows[x].channel.logo + ',' + response.follows[x].channel.views + ',' + response.follows[x].channel.followers;
-            if (UserChannels.UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels.UserChannelsList.push(ChannelTemp);
+            if (UserChannels_UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels_UserChannelsList.push(ChannelTemp);
         }
 
-        UserChannels.loadChannelOffsset += response_items;
-        UserChannels.loadDataPrepare();
-        UserChannels.loadChannels();
+        UserChannels_loadChannelOffsset += response_items;
+        UserChannels_loadDataPrepare();
+        UserChannels_loadChannels();
     } else { // end
-        UserChannels.UserChannelsList.sort(function(a, b) {
+        UserChannels_UserChannelsList.sort(function(a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
         });
-        UserChannels.loadDataSuccess();
+        UserChannels_loadDataSuccess();
     }
-};
+}
 
-UserChannels.loadDataSuccess = function() {
-    var response_items = main_ItemsLimitChannel;
-    var offset_itemsCount = UserChannels.itemsCount;
-    var rest = UserChannels.UserChannelsList.length - offset_itemsCount;
+function UserChannels_loadDataSuccess() {
+    var response_items = Main_ItemsLimitChannel;
+    var offset_itemsCount = UserChannels_itemsCount;
+    var rest = UserChannels_UserChannelsList.length - offset_itemsCount;
     if (rest < response_items) response_items = rest;
 
-    if (response_items < main_ItemsLimitChannel) UserChannels.dataEnded = true;
+    if (response_items < Main_ItemsLimitChannel) UserChannels_dataEnded = true;
 
-    UserChannels.itemsCount += response_items;
+    UserChannels_itemsCount += response_items;
 
-    UserChannels.emptyContent = !UserChannels.itemsCount;
+    UserChannels_emptyContent = !UserChannels_itemsCount;
 
-    var response_rows = response_items / main_ColoumnsCountChannel;
-    if (response_items % main_ColoumnsCountChannel > 0) response_rows++;
+    var response_rows = response_items / Main_ColoumnsCountChannel;
+    if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row, channel,
         cursor = offset_itemsCount;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / main_ColoumnsCountChannel + i;
+        row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
         row = $('<tr></tr>');
 
-        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountChannel && cursor < UserChannels.UserChannelsList.length; coloumn_id++, cursor++) {
-            channel = UserChannels.UserChannelsList[cursor].split(",");
-            row.append(UserChannels.createCell(row_id, coloumn_id, channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]));
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < UserChannels_UserChannelsList.length; coloumn_id++, cursor++) {
+            channel = UserChannels_UserChannelsList[cursor].split(",");
+            row.append(UserChannels_createCell(row_id, coloumn_id, channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]));
         }
-        for (coloumn_id; coloumn_id < main_ColoumnsCountChannel; coloumn_id++) {
-            if (UserChannels.dataEnded && !UserChannels.itemsCountCheck) {
-                UserChannels.itemsCountCheck = true;
-                UserChannels.itemsCount = (row_id * main_ColoumnsCountChannel) + coloumn_id;
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
+            if (UserChannels_dataEnded && !UserChannels_itemsCountCheck) {
+                UserChannels_itemsCountCheck = true;
+                UserChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.append(main_createCellEmpty(row_id, coloumn_id, UserChannels.EmptyCell));
+            row.append(Main_createCellEmpty(row_id, coloumn_id, UserChannels_EmptyCell));
         }
         $('#stream_table_user_channels').append(row);
     }
-    UserChannels.loadDataSuccessFinish();
-};
+    UserChannels_loadDataSuccessFinish();
+}
 
-UserChannels.createCell = function(row_id, coloumn_id, channel_display_name, _id, channel_name, preview_thumbnail, views, followers) {
+function UserChannels_createCell(row_id, coloumn_id, channel_display_name, _id, channel_name, preview_thumbnail, views, followers) {
 
-    if (row_id < 5) main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
+    if (row_id < 5) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
 
-    return $('<td id="' + UserChannels.Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '" data-views="' + views + '" data-followers="' + followers + '"></td>').html('<div id="' + UserChannels.Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels.Img +
+    return $('<td id="' + UserChannels_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '" data-views="' + views + '" data-followers="' + followers + '"></td>').html('<div id="' + UserChannels_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels_Img +
         row_id + '_' + coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + UserChannels.ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + UserChannels.DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
-};
+        '<div id="' + UserChannels_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
+        '<div id="' + UserChannels_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
+}
 
-UserChannels.loadDataSuccessFinish = function() {
+function UserChannels_loadDataSuccessFinish() {
     $(document).ready(function() {
-        if (!UserChannels.Status) {
-            main_HideLoadDialog();
-            if (UserChannels.emptyContent) main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
+        if (!UserChannels_Status) {
+            Main_HideLoadDialog();
+            if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
             else {
-                UserChannels.Status = true;
-                UserChannels.addFocus();
-                main_LazyImgStart(UserChannels.Img, 9, IMG_404_LOGO, main_ColoumnsCountChannel);
+                UserChannels_Status = true;
+                UserChannels_addFocus();
+                Main_LazyImgStart(UserChannels_Img, 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
-            UserChannels.loadingData = false;
+            UserChannels_loadingData = false;
         } else {
-            UserChannels.loadingData = false;
-            UserChannels.loadingMore = false;
+            UserChannels_loadingData = false;
+            UserChannels_loadingMore = false;
         }
     });
-};
+}
 
-UserChannels.addFocus = function() {
-    document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(UserChannels.ThumbnailDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.add('stream_text_focused');
-    document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.add('stream_info_focused');
+function UserChannels_addFocus() {
+    document.getElementById(UserChannels_Thumbnail + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(UserChannels_ThumbnailDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_text_focused');
+    document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_info_focused');
     window.setTimeout(function() {
-        main_ScrollHelper(UserChannels.Thumbnail, UserChannels.cursorY, UserChannels.cursorX, main_UserChannels, main_ScrollOffSetMinusChannels, main_ScrollOffSetVideo, true);
+        Main_ScrollHelper(UserChannels_Thumbnail, UserChannels_cursorY, UserChannels_cursorX, Main_UserChannels, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
     }, 10);
 
-    main_CounterDialog(UserChannels.cursorX, UserChannels.cursorY, main_ColoumnsCountChannel, UserChannels.itemsCount);
+    Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
 
-    if (UserChannels.cursorY > 3) main_LazyImg(UserChannels.Img, UserChannels.cursorY, IMG_404_LOGO, main_ColoumnsCountChannel, 4);
+    if (UserChannels_cursorY > 3) Main_LazyImg(UserChannels_Img, UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
 
-    if (((UserChannels.cursorY + main_ItemsReloadLimitChannel) > (UserChannels.itemsCount / main_ColoumnsCountChannel)) &&
-        !UserChannels.dataEnded && !UserChannels.loadingMore) {
-        UserChannels.loadingMore = true;
-        UserChannels.loadDataPrepare();
-        UserChannels.loadChannels();
+    if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
+        !UserChannels_dataEnded && !UserChannels_loadingMore) {
+        UserChannels_loadingMore = true;
+        UserChannels_loadDataPrepare();
+        UserChannels_loadChannels();
     }
-};
+}
 
-UserChannels.removeFocus = function() {
-    document.getElementById(UserChannels.Thumbnail + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(UserChannels.ThumbnailDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.remove('stream_text_focused');
-    document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY + '_' + UserChannels.cursorX).classList.remove('stream_info_focused');
-};
+function UserChannels_removeFocus() {
+    document.getElementById(UserChannels_Thumbnail + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(UserChannels_ThumbnailDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_text_focused');
+    document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_info_focused');
+}
 
-UserChannels.keyClickDelay = function() {
-    UserChannels.LastClickFinish = true;
-};
+function UserChannels_keyClickDelay() {
+    UserChannels_LastClickFinish = true;
+}
 
-UserChannels.handleKeyDown = function(event) {
-    if ((UserChannels.loadingData && !UserChannels.loadingMore) || !UserChannels.LastClickFinish) {
+function UserChannels_handleKeyDown(event) {
+    if ((UserChannels_loadingData && !UserChannels_loadingMore) || !UserChannels_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
-        UserChannels.LastClickFinish = false;
-        window.setTimeout(UserChannels.keyClickDelay, UserChannels.keyClickDelayTime);
+        UserChannels_LastClickFinish = false;
+        window.setTimeout(UserChannels_keyClickDelay, UserChannels_keyClickDelayTime);
     }
 
     var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
-            else if (!UserChannels.loadingMore) {
-                main_Go = main_Users;
-                UserChannels.exit();
-                main_SwitchScreen();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (!UserChannels_loadingMore) {
+                Main_Go = Main_Users;
+                UserChannels_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (main_ThumbNull((UserChannels.cursorY), (UserChannels.cursorX - 1), UserChannels.Thumbnail)) {
-                UserChannels.removeFocus();
-                UserChannels.cursorX--;
-                UserChannels.addFocus();
+            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX - 1), UserChannels_Thumbnail)) {
+                UserChannels_removeFocus();
+                UserChannels_cursorX--;
+                UserChannels_addFocus();
             } else {
-                for (i = (main_ColoumnsCountChannel - 1); i > -1; i--) {
-                    if (main_ThumbNull((UserChannels.cursorY - 1), i, UserChannels.Thumbnail)) {
-                        UserChannels.removeFocus();
-                        UserChannels.cursorY--;
-                        UserChannels.cursorX = i;
-                        UserChannels.addFocus();
+                for (i = (Main_ColoumnsCountChannel - 1); i > -1; i--) {
+                    if (Main_ThumbNull((UserChannels_cursorY - 1), i, UserChannels_Thumbnail)) {
+                        UserChannels_removeFocus();
+                        UserChannels_cursorY--;
+                        UserChannels_cursorX = i;
+                        UserChannels_addFocus();
                         break;
                     }
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (main_ThumbNull((UserChannels.cursorY), (UserChannels.cursorX + 1), UserChannels.Thumbnail)) {
-                UserChannels.removeFocus();
-                UserChannels.cursorX++;
-                UserChannels.addFocus();
-            } else if (main_ThumbNull((UserChannels.cursorY + 1), 0, UserChannels.Thumbnail)) {
-                UserChannels.removeFocus();
-                UserChannels.cursorY++;
-                UserChannels.cursorX = 0;
-                UserChannels.addFocus();
+            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX + 1), UserChannels_Thumbnail)) {
+                UserChannels_removeFocus();
+                UserChannels_cursorX++;
+                UserChannels_addFocus();
+            } else if (Main_ThumbNull((UserChannels_cursorY + 1), 0, UserChannels_Thumbnail)) {
+                UserChannels_removeFocus();
+                UserChannels_cursorY++;
+                UserChannels_cursorX = 0;
+                UserChannels_addFocus();
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < main_ColoumnsCountChannel; i++) {
-                if (main_ThumbNull((UserChannels.cursorY - 1), (UserChannels.cursorX - i), UserChannels.Thumbnail)) {
-                    UserChannels.removeFocus();
-                    UserChannels.cursorY--;
-                    UserChannels.cursorX = UserChannels.cursorX - i;
-                    UserChannels.addFocus();
+            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
+                    UserChannels_removeFocus();
+                    UserChannels_cursorY--;
+                    UserChannels_cursorX = UserChannels_cursorX - i;
+                    UserChannels_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < main_ColoumnsCountChannel; i++) {
-                if (main_ThumbNull((UserChannels.cursorY + 1), (UserChannels.cursorX - i), UserChannels.Thumbnail)) {
-                    UserChannels.removeFocus();
-                    UserChannels.cursorY++;
-                    UserChannels.cursorX = UserChannels.cursorX - i;
-                    UserChannels.addFocus();
+            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                if (Main_ThumbNull((UserChannels_cursorY + 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
+                    UserChannels_removeFocus();
+                    UserChannels_cursorY++;
+                    UserChannels_cursorX = UserChannels_cursorX - i;
+                    UserChannels_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!UserChannels.loadingMore) UserChannels.StartLoad();
+            if (!UserChannels_loadingMore) UserChannels_StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            main_Go = main_UserLive;
-            UserChannels.exit();
-            main_SwitchScreen();
+            Main_Go = Main_UserLive;
+            UserChannels_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            main_Go = main_usergames;
-            UserChannels.exit();
-            main_SwitchScreen();
+            Main_Go = Main_usergames;
+            UserChannels_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            if (!UserChannels.loadingMore) {
-                main_selectedChannel = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-channelname');
-                main_selectedChannel_id = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-id');
-                main_selectedChannelViews = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-views');
-                main_selectedChannelFallower = $('#' + UserChannels.Cell + UserChannels.cursorY + '_' + UserChannels.cursorX).attr('data-followers');
-                main_selectedChannelDisplayname = document.getElementById(UserChannels.DispNameDiv + UserChannels.cursorY +
-                    '_' + UserChannels.cursorX).textContent;
-                main_selectedChannelLogo = document.getElementById(UserChannels.Img + UserChannels.cursorY + '_' + UserChannels.cursorX).src;
-                document.body.removeEventListener("keydown", UserChannels.handleKeyDown);
-                main_Before = main_UserChannels;
-                main_Go = main_SChannelContent;
-                addCode_IsFallowing = true;
-                SChannelContent.UserChannels = true;
-                main_SwitchScreen();
+            if (!UserChannels_loadingMore) {
+                Main_selectedChannel = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-channelname');
+                Main_selectedChannel_id = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-id');
+                Main_selectedChannelViews = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-views');
+                Main_selectedChannelFallower = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-followers');
+                Main_selectedChannelDisplayname = document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY +
+                    '_' + UserChannels_cursorX).textContent;
+                Main_selectedChannelLogo = document.getElementById(UserChannels_Img + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
+                document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
+                Main_Before = Main_UserChannels;
+                Main_Go = Main_SChannelContent;
+                AddCode_IsFallowing = true;
+                SChannelContent_UserChannels = true;
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            UserChannels.exit();
-            main_GoLive();
+            UserChannels_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_UserChannels;
-            main_Go = main_Search;
-            UserChannels.exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_UserChannels;
+            Main_Go = Main_Search;
+            UserChannels_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}

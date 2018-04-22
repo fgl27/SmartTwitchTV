@@ -1,103 +1,103 @@
 //Variable initialization
-var addUser_loadingDataTry = 0;
-var addUser_loadingDataTryMax = 10;
-var addUser_loadingDataTimeout = 3500;
-var addUser_UsernameArray = [];
-var addUser_UserIdArray = [];
-var addUser_Followercount = 0;
-var addUser_Username = null;
-var addUser_loadingData = false;
-var addUser_keyBoardOn = false;
+var AddUser_loadingDataTry = 0;
+var AddUser_loadingDataTryMax = 10;
+var AddUser_loadingDataTimeout = 3500;
+var AddUser_UsernameArray = [];
+var AddUser_UserIdArray = [];
+var AddUser_Followercount = 0;
+var AddUser_Username = null;
+var AddUser_loadingData = false;
+var AddUser_keyBoardOn = false;
 //Variable initialization end
 
-function addUser_init() {
-    main_Go = main_addUser;
+function AddUser_init() {
+    Main_Go = Main_addUser;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    main_HideWarningDialog();
-    addUser_input = document.querySelector('#user_input');
+    Main_HideWarningDialog();
+    AddUser_input = document.querySelector('#user_input');
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
-    addUser_inputFocus();
-    addUser_scrollVerticalToElementById('user_input');
+    AddUser_inputFocus();
+    AddUser_scrollVerticalToElementById('user_input');
 }
 
-function addUser_exit() {
-    addUser_RemoveinputFocus();
-    document.body.removeEventListener("keydown", addUser_handleKeyDown);
+function AddUser_exit() {
+    AddUser_RemoveinputFocus();
+    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
 }
 
-function addUser_handleKeyDown(event) {
-    if (addUser_loadingData || addUser_keyBoardOn) return;
+function AddUser_handleKeyDown(event) {
+    if (AddUser_loadingData || AddUser_keyBoardOn) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                main_Go = main_Before;
-                addUser_exit();
-                main_SwitchScreen();
+                Main_Go = Main_Before;
+                AddUser_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            main_Go = main_games;
-            addUser_exit();
-            main_SwitchScreen();
+            Main_Go = Main_games;
+            AddUser_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            main_Go = main_Live;
-            addUser_exit();
-            main_SwitchScreen();
+            Main_Go = Main_Live;
+            AddUser_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            addUser_inputFocus();
+            AddUser_inputFocus();
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            addUser_exit();
-            main_GoLive();
+            AddUser_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_Go;
-            main_Go = main_Search;
-            addUser_exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_Go;
+            Main_Go = Main_Search;
+            AddUser_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
 }
 
-function addUser_inputFocus() {
-    document.body.removeEventListener("keydown", addUser_handleKeyDown);
-    document.body.addEventListener("keydown", addUser_KeyboardEvent, false);
-    addUser_input.addEventListener('input');
-    addUser_input.addEventListener('compositionend');
+function AddUser_inputFocus() {
+    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+    document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
+    AddUser_input.addEventListener('input');
+    AddUser_input.addEventListener('compositionend');
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
-    addUser_input.focus();
-    addUser_keyBoardOn = true;
+    AddUser_input.focus();
+    AddUser_keyBoardOn = true;
 }
 
-function addUser_RemoveinputFocus() {
-    addUser_input.blur();
-    document.body.removeEventListener("keydown", addUser_KeyboardEvent);
-    document.body.addEventListener("keydown", addUser_handleKeyDown, false);
+function AddUser_RemoveinputFocus() {
+    AddUser_input.blur();
+    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
+    document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
     document.getElementById("user_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
     window.setTimeout(function() {
-        addUser_keyBoardOn = false;
+        AddUser_keyBoardOn = false;
     }, 250);
 }
 
-function addUser_KeyboardEvent(event) {
-    if (addUser_loadingData) return;
+function AddUser_KeyboardEvent(event) {
+    if (AddUser_loadingData) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
@@ -109,25 +109,25 @@ function addUser_KeyboardEvent(event) {
             if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
 
                 document.getElementById("user_input").value = $('#user_input').val();
-                addUser_Username = $('#user_input').val();
+                AddUser_Username = $('#user_input').val();
 
-                if (!addUser_UserCodeExist(addUser_Username)) {
-                    addUser_loadingDataTry = 0;
-                    addUser_loadingDataTimeout = 3500;
-                    addUser_loadingData = true;
-                    main_showLoadDialog();
-                    addUser_scrollVerticalToElementById('blank_focus');
-                    addUser_loadDataRequest();
+                if (!AddUser_UserCodeExist(AddUser_Username)) {
+                    AddUser_loadingDataTry = 0;
+                    AddUser_loadingDataTimeout = 3500;
+                    AddUser_loadingData = true;
+                    Main_showLoadDialog();
+                    AddUser_scrollVerticalToElementById('blank_focus');
+                    AddUser_loadDataRequest();
                 } else {
-                    main_HideLoadDialog();
-                    main_showWarningDialog(STR_USER + addUser_Username + STR_USER_SET);
+                    Main_HideLoadDialog();
+                    Main_showWarningDialog(STR_USER + AddUser_Username + STR_USER_SET);
                     window.setTimeout(function() {
-                        main_HideWarningDialog();
-                        addUser_inputFocus();
+                        Main_HideWarningDialog();
+                        AddUser_inputFocus();
                     }, 1500);
                 }
             }
-            addUser_RemoveinputFocus();
+            AddUser_RemoveinputFocus();
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
@@ -142,143 +142,143 @@ function addUser_KeyboardEvent(event) {
     }
 }
 
-function addUser_loadDataRequest() {
+function AddUser_loadDataRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(addUser_Username) + '/follows/channels?limit=1&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = addUser_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_Username) + '/follows/channels?limit=1&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = AddUser_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     document.getElementById("user_input").value = '';
-                    document.body.removeEventListener("keydown", addUser_handleKeyDown);
-                    addUser_SaveNewUser();
+                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+                    AddUser_SaveNewUser();
                     return;
                 } else {
-                    addUser_loadDataError();
+                    AddUser_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addUser_loadDataError();
+        AddUser_loadDataError();
     }
 }
 
-function addUser_loadDataError() {
-    addUser_loadingDataTry++;
-    if (addUser_loadingDataTry < addUser_loadingDataTryMax) {
-        addUser_loadingDataTimeout += (addUser_loadingDataTry < 5) ? 250 : 3500;
-        addUser_loadDataRequest();
+function AddUser_loadDataError() {
+    AddUser_loadingDataTry++;
+    if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
+        AddUser_loadingDataTimeout += (AddUser_loadingDataTry < 5) ? 250 : 3500;
+        AddUser_loadDataRequest();
     } else {
-        addUser_Username = null;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_USER_ERROR);
+        AddUser_Username = null;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_USER_ERROR);
         window.setTimeout(function() {
-            addUser_init();
+            AddUser_init();
         }, 1000);
-        addUser_loadingData = false;
+        AddUser_loadingData = false;
     }
 }
 
-function addUser_OldRestoreUsers() {
-    addUser_UsernameArray = [];
+function AddUser_OldRestoreUsers() {
+    AddUser_UsernameArray = [];
     var size = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
     if (size > 0)
-        for (var x = 0; x < size; x++) addUser_UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
+        for (var x = 0; x < size; x++) AddUser_UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
 
-    addUser_SaveUserArray();
+    AddUser_SaveUserArray();
 }
 
-function addUser_RestoreUsers() {
-    addUser_UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
+function AddUser_RestoreUsers() {
+    AddUser_UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
 
     //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
-    if (!addUser_UsernameArray.length) addUser_OldRestoreUsers();
+    if (!AddUser_UsernameArray.length) AddUser_OldRestoreUsers();
 
-    if (addUser_UsernameArray.length) addCode_RestoreUsers();
+    if (AddUser_UsernameArray.length) AddCode_RestoreUsers();
 
     window.setTimeout(function() {
-        SmartHub.Start();
-        window.addEventListener('appcontrol', SmartHub.EventListener, false);
+        SmartHub_Start();
+        window.addEventListener('appcontrol', SmartHub_EventListener, false);
 
-        main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', main_Resume, false);
+        Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+        document.addEventListener('visibilitychange', Main_Resume, false);
     }, 3500);
 }
 
-function addUser_SaveNewUser() {
-    addUser_UsernameArray.push(addUser_Username);
-    addUser_SaveUserArray();
+function AddUser_SaveNewUser() {
+    AddUser_UsernameArray.push(AddUser_Username);
+    AddUser_SaveUserArray();
 
-    Users.status = false;
-    Users.init();
-    addUser_loadingData = false;
+    Users_status = false;
+    Users_init();
+    AddUser_loadingData = false;
 
-    if (addUser_UsernameArray.length === 1) {
-        window.clearInterval(main_SmartHubId);
-        document.removeEventListener('visibilitychange', main_Resume);
+    if (AddUser_UsernameArray.length === 1) {
+        window.clearInterval(Main_SmartHubId);
+        document.removeEventListener('visibilitychange', Main_Resume);
 
-        main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
-        document.addEventListener('visibilitychange', main_Resume, false);
+        Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+        document.addEventListener('visibilitychange', Main_Resume, false);
 
-        SmartHub.Start();
+        SmartHub_Start();
     }
 }
 
-function addUser_removeUser(Position) {
+function AddUser_removeUser(Position) {
 
-    var userCode = addCode_UserCodeExist(addUser_UsernameArray[Position]);
+    var userCode = AddCode_UserCodeExist(AddUser_UsernameArray[Position]);
 
     // remove the code key
-    if (userCode > -1) addCode_removeUser(userCode);
+    if (userCode > -1) AddCode_removeUser(userCode);
 
     // remove the user
-    var index = addUser_UsernameArray.indexOf(addUser_UsernameArray[Position]);
-    if (index > -1) addUser_UsernameArray.splice(index, 1);
+    var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
+    if (index > -1) AddUser_UsernameArray.splice(index, 1);
 
     // restart users and smarthub
-    if (addUser_UsernameArray.length > 0) {
-        Users.status = false;
-        Users.init();
-        if (!Position) SmartHub.Start();
+    if (AddUser_UsernameArray.length > 0) {
+        Users_status = false;
+        Users_init();
+        if (!Position) SmartHub_Start();
     } else {
-        addUser_init();
-        SmartHub.Start();
+        AddUser_init();
+        SmartHub_Start();
     }
-    addCode_SetDefaultOAuth(Position);
+    AddCode_SetDefaultOAuth(Position);
 
     // reset localStorage usernames
-    addUser_SaveUserArray();
+    AddUser_SaveUserArray();
 }
 
-function addUser_SaveUserArray() {
-    localStorage.setItem("usernames", JSON.stringify(addUser_UsernameArray));
+function AddUser_SaveUserArray() {
+    localStorage.setItem("usernames", JSON.stringify(AddUser_UsernameArray));
 }
 
-function addUser_UserMakeOne(Position) {
-    addUser_Username = addUser_UsernameArray[0];
-    addUser_UsernameArray[0] = addUser_UsernameArray[Position];
-    addUser_UsernameArray[Position] = addUser_Username;
-    Users.status = false;
-    Users.init();
-    SmartHub.Start();
+function AddUser_UserMakeOne(Position) {
+    AddUser_Username = AddUser_UsernameArray[0];
+    AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
+    AddUser_UsernameArray[Position] = AddUser_Username;
+    Users_status = false;
+    Users_init();
+    SmartHub_Start();
 }
 
-function addUser_UserCodeExist(user) {
-    return addUser_UsernameArray.indexOf(user) !== -1;
+function AddUser_UserCodeExist(user) {
+    return AddUser_UsernameArray.indexOf(user) !== -1;
 }
 
-function addUser_IsUserSet() {
-    return addUser_UsernameArray.length > 0;
+function AddUser_IsUserSet() {
+    return AddUser_UsernameArray.length > 0;
 }
 
-function addUser_scrollVerticalToElementById(id) {
-    window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - main_ScrollOffSetMinusVideo - main_ScrollOffSetMinusaddUser);
+function AddUser_scrollVerticalToElementById(id) {
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo - Main_ScrollOffSetMinusaddUser);
 }

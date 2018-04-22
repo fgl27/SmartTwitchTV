@@ -1,130 +1,126 @@
-/*jshint multistr: true */
 //Variable initialization
-function UserLive() {}
-UserLive.cursorY = 0;
-UserLive.cursorX = 0;
-UserLive.dataEnded = false;
-UserLive.itemsCount = 0;
-UserLive.nameMatrix = [];
-UserLive.nameMatrixCount = 0;
-UserLive.blankCellVector = [];
-UserLive.loadingData = false;
-UserLive.loadingDataTry = 0;
-UserLive.loadingDataTryMax = 10;
-UserLive.loadingDataTimeout = 3500;
-UserLive.isDialogOn = false;
-UserLive.blankCellCount = 0;
-UserLive.itemsCountOffset = 0;
-UserLive.LastClickFinish = true;
-UserLive.keyClickDelayTime = 25;
-UserLive.ReplacedataEnded = false;
-UserLive.MaxOffset = 0;
-UserLive.loadChannelOffsset = 0;
-UserLive.emptyContent = false;
+var UserLive_cursorY = 0;
+var UserLive_cursorX = 0;
+var UserLive_dataEnded = false;
+var UserLive_itemsCount = 0;
+var UserLive_nameMatrix = [];
+var UserLive_nameMatrixCount = 0;
+var UserLive_blankCellVector = [];
+var UserLive_loadingData = false;
+var UserLive_loadingDataTry = 0;
+var UserLive_loadingDataTryMax = 10;
+var UserLive_loadingDataTimeout = 3500;
+var UserLive_blankCellCount = 0;
+var UserLive_itemsCountOffset = 0;
+var UserLive_LastClickFinish = true;
+var UserLive_keyClickDelayTime = 25;
+var UserLive_ReplacedataEnded = false;
+var UserLive_MaxOffset = 0;
+var UserLive_loadChannelOffsset = 0;
+var UserLive_emptyContent = false;
 
-UserLive.ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'ulempty_'];
-UserLive.status = false;
-UserLive.followerChannels = '';
-UserLive.OldUserName = '';
-UserLive.itemsCountCheck = false;
-
+var UserLive_ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'ulempty_'];
+var UserLive_status = false;
+var UserLive_followerChannels = '';
+var UserLive_OldUserName = '';
+var UserLive_itemsCountCheck = false;
 //Variable initialization end
 
-UserLive.init = function() {
-    main_Go = main_UserLive;
+function UserLive_init() {
+    Main_Go = Main_UserLive;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + main_UnderCenter(main_UserName + STR_LIVE_CHANNELS);
-    document.body.addEventListener("keydown", UserLive.handleKeyDown, false);
-    if (UserLive.OldUserName !== main_UserName) UserLive.status = false;
-    if (UserLive.status) {
-        main_ScrollHelper(UserLive.ids[0], UserLive.cursorY, UserLive.cursorX, main_UserLive, main_ScrollOffSetMinusVideo,
-            main_ScrollOffSetVideo, false);
-        main_CounterDialog(UserLive.cursorX, UserLive.cursorY, main_ColoumnsCountVideo, UserLive.itemsCount);
-    } else UserLive.StartLoad();
-};
+    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_CHANNELS);
+    document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
+    if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
+    if (UserLive_status) {
+        Main_ScrollHelper(UserLive_ids[0], UserLive_cursorY, UserLive_cursorX, Main_UserLive, Main_ScrollOffSetMinusVideo,
+            Main_ScrollOffSetVideo, false);
+        Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
+    } else UserLive_StartLoad();
+}
 
-UserLive.exit = function() {
+function UserLive_exit() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.body.removeEventListener("keydown", UserLive.handleKeyDown);
+    document.body.removeEventListener("keydown", UserLive_handleKeyDown);
     document.getElementById('top_bar_user').innerHTML = STR_USER;
-};
+}
 
-UserLive.StartLoad = function() {
-    main_HideWarningDialog();
-    main_ScrollHelperBlank('blank_focus');
-    main_showLoadDialog();
-    UserLive.status = false;
-    UserLive.OldUserName = main_UserName;
+function UserLive_StartLoad() {
+    Main_HideWarningDialog();
+    Main_ScrollHelperBlank('blank_focus');
+    Main_showLoadDialog();
+    UserLive_status = false;
+    UserLive_OldUserName = Main_UserName;
     var table = document.getElementById('stream_table_user_live');
     while (table.firstChild) table.removeChild(table.firstChild);
-    UserLive.loadChannelOffsset = 0;
-    UserLive.loadingMore = false;
-    UserLive.blankCellCount = 0;
-    UserLive.itemsCountOffset = 0;
-    UserLive.ReplacedataEnded = false;
-    UserLive.MaxOffset = 0;
-    UserLive.nameMatrix = [];
-    UserLive.nameMatrixCount = 0;
-    UserLive.blankCellVector = [];
-    UserLive.itemsCountCheck = false;
-    UserLive.itemsCount = 0;
-    UserLive.cursorX = 0;
-    UserLive.cursorY = 0;
-    UserLive.dataEnded = false;
-    UserLive.followerChannels = '';
-    main_CounterDialogRst();
-    UserLive.loadDataPrepare();
-    UserLive.loadChannels();
-};
+    UserLive_loadChannelOffsset = 0;
+    UserLive_loadingMore = false;
+    UserLive_blankCellCount = 0;
+    UserLive_itemsCountOffset = 0;
+    UserLive_ReplacedataEnded = false;
+    UserLive_MaxOffset = 0;
+    UserLive_nameMatrix = [];
+    UserLive_nameMatrixCount = 0;
+    UserLive_blankCellVector = [];
+    UserLive_itemsCountCheck = false;
+    UserLive_itemsCount = 0;
+    UserLive_cursorX = 0;
+    UserLive_cursorY = 0;
+    UserLive_dataEnded = false;
+    UserLive_followerChannels = '';
+    Main_CounterDialogRst();
+    UserLive_loadDataPrepare();
+    UserLive_loadChannels();
+}
 
-UserLive.loadDataPrepare = function() {
-    UserLive.loadingData = true;
-    UserLive.loadingDataTry = 0;
-    UserLive.loadingDataTimeout = 3500;
-};
+function UserLive_loadDataPrepare() {
+    UserLive_loadingData = true;
+    UserLive_loadingDataTry = 0;
+    UserLive_loadingDataTimeout = 3500;
+}
 
-UserLive.loadChannels = function() {
+function UserLive_loadChannels() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(main_UserName) +
-            '/follows/channels?limit=100&offset=' + UserLive.loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main_UserName) +
+            '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = UserLive_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserLive.loadChannelLive(xmlHttp.responseText);
+                    UserLive_loadChannelLive(xmlHttp.responseText);
                     return;
                 } else {
-                    UserLive.loadDataError();
+                    UserLive_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserLive.loadDataError();
+        UserLive_loadDataError();
     }
-};
+}
 
-UserLive.loadDataError = function() {
-    UserLive.loadingDataTry++;
-    if (UserLive.loadingDataTry < UserLive.loadingDataTryMax) {
-        UserLive.loadingDataTimeout += (UserLive.loadingDataTry < 5) ? 250 : 3500;
-        UserLive.loadChannels();
+function UserLive_loadDataError() {
+    UserLive_loadingDataTry++;
+    if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
+        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadChannels();
     } else {
-        UserLive.loadingData = false;
-        UserLive.loadingMore = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_REFRESH_PROBLEM);
+        UserLive_loadingData = false;
+        UserLive_loadingMore = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
-};
+}
 
-UserLive.loadChannelLive = function(responseText) {
+function UserLive_loadChannelLive(responseText) {
     var response = JSON.parse(responseText),
         response_items = response.follows.length;
 
@@ -134,179 +130,179 @@ UserLive.loadChannelLive = function(responseText) {
 
         for (x; x < response_items; x++) {
             ChannelTemp = response.follows[x].channel.name + ',';
-            if (UserLive.followerChannels.indexOf(ChannelTemp) === -1) UserLive.followerChannels += ChannelTemp;
+            if (UserLive_followerChannels.indexOf(ChannelTemp) === -1) UserLive_followerChannels += ChannelTemp;
         }
 
-        UserLive.loadChannelOffsset += response_items;
-        UserLive.loadDataPrepare();
-        UserLive.loadChannels();
+        UserLive_loadChannelOffsset += response_items;
+        UserLive_loadDataPrepare();
+        UserLive_loadChannels();
     } else { // end
-        UserLive.followerChannels = UserLive.followerChannels.slice(0, -1);
-        UserLive.loadDataPrepare();
-        UserLive.loadChannelUserLive();
+        UserLive_followerChannels = UserLive_followerChannels.slice(0, -1);
+        UserLive_loadDataPrepare();
+        UserLive_loadChannelUserLive();
     }
-};
-UserLive.loadChannelUserLive = function() {
+}
+function UserLive_loadChannelUserLive() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset && offset > (UserLive.MaxOffset - 1)) {
-            offset = UserLive.MaxOffset - main_ItemsLimitVideo;
-            UserLive.dataEnded = true;
-            UserLive.ReplacedataEnded = true;
+        var offset = UserLive_itemsCount + UserLive_itemsCountOffset;
+        if (offset && offset > (UserLive_MaxOffset - 1)) {
+            offset = UserLive_MaxOffset - Main_ItemsLimitVideo;
+            UserLive_dataEnded = true;
+            UserLive_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive.followerChannels) + '&limit=' +
-            main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
+            Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = UserLive_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserLive.loadDataSuccess(xmlHttp.responseText);
+                    UserLive_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    UserLive.loadDataErrorLive();
+                    UserLive_loadDataErrorLive();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserLive.loadDataErrorLive();
+        UserLive_loadDataErrorLive();
     }
-};
+}
 
-UserLive.loadDataErrorLive = function() {
-    UserLive.loadingDataTry++;
-    if (UserLive.loadingDataTry < UserLive.loadingDataTryMax) {
-        UserLive.loadingDataTimeout += (UserLive.loadingDataTry < 5) ? 250 : 3500;
-        UserLive.loadChannelUserLive();
+function UserLive_loadDataErrorLive() {
+    UserLive_loadingDataTry++;
+    if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
+        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadChannelUserLive();
     } else {
-        UserLive.loadingData = false;
-        UserLive.loadingMore = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_REFRESH_PROBLEM);
+        UserLive_loadingData = false;
+        UserLive_loadingMore = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
-};
+}
 
-UserLive.loadDataSuccess = function(responseText) {
+function UserLive_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
-    UserLive.MaxOffset = parseInt(response._total);
+    UserLive_MaxOffset = parseInt(response._total);
 
-    if (response_items < main_ItemsLimitVideo) UserLive.dataEnded = true;
+    if (response_items < Main_ItemsLimitVideo) UserLive_dataEnded = true;
 
-    var offset_itemsCount = UserLive.itemsCount;
-    UserLive.itemsCount += response_items;
+    var offset_itemsCount = UserLive_itemsCount;
+    UserLive_itemsCount += response_items;
 
-    UserLive.emptyContent = !UserLive.itemsCount;
+    UserLive_emptyContent = !UserLive_itemsCount;
 
-    var response_rows = response_items / main_ColoumnsCountVideo;
-    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / Main_ColoumnsCountVideo;
+    if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
-            if (UserLive.CellExists(stream.channel.name)) coloumn_id--;
+            if (UserLive_CellExists(stream.channel.name)) coloumn_id--;
             else {
-                row.appendChild(UserLive.createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", main_VideoSize),
-                    main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game, main_addCommas(stream.viewers) + STR_VIEWER,
-                    main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                row.appendChild(UserLive_createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game, Main_addCommas(stream.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                 ]));
             }
         }
 
-        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
-            if (UserLive.dataEnded && !UserLive.itemsCountCheck) {
-                UserLive.itemsCountCheck = true;
-                UserLive.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
+            if (UserLive_dataEnded && !UserLive_itemsCountCheck) {
+                UserLive_itemsCountCheck = true;
+                UserLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(main_createEmptyCell(UserLive.ids[9] + row_id + '_' + coloumn_id));
-            UserLive.blankCellVector.push(UserLive.ids[9] + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(UserLive_ids[9] + row_id + '_' + coloumn_id));
+            UserLive_blankCellVector.push(UserLive_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_user_live").appendChild(row);
     }
 
-    UserLive.loadDataSuccessFinish();
-};
+    UserLive_loadDataSuccessFinish();
+}
 
-UserLive.createCell = function(row_id, id, channel_name, valuesArray) {
-    UserLive.nameMatrix.push(channel_name);
-    if (row_id < main_ColoumnsCountVideo) main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return main_createCellVideo(channel_name, id, UserLive.ids, valuesArray);
-};
+function UserLive_createCell(row_id, id, channel_name, valuesArray) {
+    UserLive_nameMatrix.push(channel_name);
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main_createCellVideo(channel_name, id, UserLive_ids, valuesArray);
+}
 
-UserLive.CellExists = function(display_name) {
-    if (UserLive.nameMatrix.indexOf(display_name) > -1) {
-        UserLive.blankCellCount++;
+function UserLive_CellExists(display_name) {
+    if (UserLive_nameMatrix.indexOf(display_name) > -1) {
+        UserLive_blankCellCount++;
         return true;
     }
     return false;
-};
+}
 
-UserLive.loadDataSuccessFinish = function() {
+function UserLive_loadDataSuccessFinish() {
     $(document).ready(function() {
-        if (!UserLive.status) {
-            main_HideLoadDialog();
-            if (UserLive.emptyContent) main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+        if (!UserLive_status) {
+            Main_HideLoadDialog();
+            if (UserLive_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
-                UserLive.status = true;
-                UserLive.addFocus();
-                main_LazyImgStart(UserLive.ids[1], 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
+                UserLive_status = true;
+                UserLive_addFocus();
+                Main_LazyImgStart(UserLive_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            UserLive.loadingData = false;
+            UserLive_loadingData = false;
         } else {
-            if (UserLive.blankCellCount > 0 && !UserLive.dataEnded) {
-                UserLive.loadingMore = true;
-                UserLive.loadDataPrepare();
-                UserLive.loadChannelsReplace();
+            if (UserLive_blankCellCount > 0 && !UserLive_dataEnded) {
+                UserLive_loadingMore = true;
+                UserLive_loadDataPrepare();
+                UserLive_loadChannelsReplace();
                 return;
             } else {
-                UserLive.blankCellCount = 0;
-                UserLive.blankCellVector = [];
+                UserLive_blankCellCount = 0;
+                UserLive_blankCellVector = [];
             }
 
-            UserLive.loadingData = false;
-            UserLive.loadingMore = false;
+            UserLive_loadingData = false;
+            UserLive_loadingMore = false;
         }
     });
-};
+}
 
-UserLive.loadChannelsReplace = function() {
+function UserLive_loadChannelsReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        main_SetItemsLimitReload(UserLive.blankCellCount);
+        Main_SetItemsLimitReload(UserLive_blankCellCount);
 
-        var offset = UserLive.itemsCount + UserLive.itemsCountOffset;
-        if (offset && offset > (UserLive.MaxOffset - 1)) {
-            offset = UserLive.MaxOffset - main_ItemsLimitReload;
-            UserLive.ReplacedataEnded = true;
+        var offset = UserLive_itemsCount + UserLive_itemsCountOffset;
+        if (offset && offset > (UserLive_MaxOffset - 1)) {
+            offset = UserLive_MaxOffset - Main_ItemsLimitReload;
+            UserLive_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(main_gameSelected) +
-            '&limit=' + main_ItemsLimitReload + '&offset=' + offset, true);
-        xmlHttp.timeout = UserLive.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
+            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset, true);
+        xmlHttp.timeout = UserLive_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserLive.loadDataSuccessReplace(xmlHttp.responseText);
+                    UserLive_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
                 }
             }
@@ -314,47 +310,47 @@ UserLive.loadChannelsReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        UserLive.loadDataErrorReplace();
+        UserLive_loadDataErrorReplace();
     }
-};
+}
 
-UserLive.loadDataErrorReplace = function() {
-    UserLive.loadingDataTry++;
-    if (UserLive.loadingDataTry < UserLive.loadingDataTryMax) {
-        UserLive.loadingDataTimeout += (UserLive.loadingDataTry < 5) ? 250 : 3500;
-        UserLive.loadChannelsReplace();
+function UserLive_loadDataErrorReplace() {
+    UserLive_loadingDataTry++;
+    if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
+        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadChannelsReplace();
     } else {
-        UserLive.ReplacedataEnded = true;
-        UserLive.blankCellCount = 0;
-        UserLive.blankCellVector = [];
-        UserLive.loadDataSuccessFinish();
+        UserLive_ReplacedataEnded = true;
+        UserLive_blankCellCount = 0;
+        UserLive_blankCellVector = [];
+        UserLive_loadDataSuccessFinish();
     }
-};
+}
 
-UserLive.loadDataSuccessReplace = function(responseText) {
+function UserLive_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, cursor = 0;
-    var tempVector = UserLive.blankCellVector.slice();
+    var tempVector = UserLive_blankCellVector.slice();
 
-    UserLive.MaxOffset = parseInt(response._total);
+    UserLive_MaxOffset = parseInt(response._total);
 
-    if (response_items < main_ItemsLimitVideo) UserLive.ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitVideo) UserLive_ReplacedataEnded = true;
 
 
-    for (var i = 0; i < UserLive.blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < UserLive_blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
-        if (UserLive.CellExists(stream.channel.name)) {
-            UserLive.blankCellCount--;
+        if (UserLive_CellExists(stream.channel.name)) {
+            UserLive_blankCellCount--;
             i--;
         } else {
-            UserLive.nameMatrix.push(stream.channel.name);
-            main_replaceVideo(UserLive.blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", main_VideoSize),
-                main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                stream.channel.status, stream.game, main_addCommas(stream.viewers) + STR_VIEWER,
-                main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-            ], UserLive.ids[8], UserLive.ids[9]);
-            UserLive.blankCellCount--;
+            UserLive_nameMatrix.push(stream.channel.name);
+            Main_replaceVideo(UserLive_blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                stream.channel.status, stream.game, Main_addCommas(stream.viewers) + STR_VIEWER,
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            ], UserLive_ids[8], UserLive_ids[9]);
+            UserLive_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
@@ -363,156 +359,156 @@ UserLive.loadDataSuccessReplace = function(responseText) {
         }
     }
 
-    UserLive.itemsCountOffset += cursor;
-    if (UserLive.ReplacedataEnded) {
-        UserLive.blankCellCount = 0;
-        UserLive.blankCellVector = [];
-    } else UserLive.blankCellVector = tempVector;
+    UserLive_itemsCountOffset += cursor;
+    if (UserLive_ReplacedataEnded) {
+        UserLive_blankCellCount = 0;
+        UserLive_blankCellVector = [];
+    } else UserLive_blankCellVector = tempVector;
 
-    UserLive.loadDataSuccessFinish();
-};
+    UserLive_loadDataSuccessFinish();
+}
 
-UserLive.addFocus = function() {
-    main_addFocusVideoArray(UserLive.cursorY, UserLive.cursorX, UserLive.ids, main_UserLive, main_ColoumnsCountVideo, UserLive.itemsCount);
+function UserLive_addFocus() {
+    Main_addFocusVideoArray(UserLive_cursorY, UserLive_cursorX, UserLive_ids, Main_UserLive, Main_ColoumnsCountVideo, UserLive_itemsCount);
 
-    if (UserLive.cursorY > 3) main_LazyImg(UserLive.ids[1], UserLive.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
+    if (UserLive_cursorY > 3) Main_LazyImg(UserLive_ids[1], UserLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
-    if (((UserLive.cursorY + main_ItemsReloadLimitVideo) > (UserLive.itemsCount / main_ColoumnsCountVideo)) &&
-        !UserLive.dataEnded && !UserLive.loadingMore) {
-        UserLive.loadingMore = true;
-        UserLive.loadDataPrepare();
-        UserLive.loadChannels();
+    if (((UserLive_cursorY + Main_ItemsReloadLimitVideo) > (UserLive_itemsCount / Main_ColoumnsCountVideo)) &&
+        !UserLive_dataEnded && !UserLive_loadingMore) {
+        UserLive_loadingMore = true;
+        UserLive_loadDataPrepare();
+        UserLive_loadChannels();
     }
-};
+}
 
-UserLive.removeFocus = function() {
-    main_removeFocusVideoArray(UserLive.cursorY + '_' + UserLive.cursorX, UserLive.ids);
-};
+function UserLive_removeFocus() {
+    Main_removeFocusVideoArray(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
+}
 
-UserLive.keyClickDelay = function() {
-    UserLive.LastClickFinish = true;
-};
+function UserLive_keyClickDelay() {
+    UserLive_LastClickFinish = true;
+}
 
-UserLive.handleKeyDown = function(event) {
-    if (UserLive.loadingData && !UserLive.loadingMore) {
+function UserLive_handleKeyDown(event) {
+    if (UserLive_loadingData && !UserLive_loadingMore) {
         event.preventDefault();
         return;
-    } else if (!UserLive.LastClickFinish) {
+    } else if (!UserLive_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
-        UserLive.LastClickFinish = false;
-        window.setTimeout(UserLive.keyClickDelay, UserLive.keyClickDelayTime);
+        UserLive_LastClickFinish = false;
+        window.setTimeout(UserLive_keyClickDelay, UserLive_keyClickDelayTime);
     }
 
     var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                main_Go = main_Users;
-                UserLive.exit();
-                main_SwitchScreen();
+                Main_Go = Main_Users;
+                UserLive_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (main_ThumbNull((UserLive.cursorY), (UserLive.cursorX - 1), UserLive.ids[0])) {
-                UserLive.removeFocus();
-                UserLive.cursorX--;
-                UserLive.addFocus();
+            if (Main_ThumbNull((UserLive_cursorY), (UserLive_cursorX - 1), UserLive_ids[0])) {
+                UserLive_removeFocus();
+                UserLive_cursorX--;
+                UserLive_addFocus();
             } else {
-                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (main_ThumbNull((UserLive.cursorY - 1), i, UserLive.ids[0])) {
-                        UserLive.removeFocus();
-                        UserLive.cursorY--;
-                        UserLive.cursorX = i;
-                        UserLive.addFocus();
+                for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (Main_ThumbNull((UserLive_cursorY - 1), i, UserLive_ids[0])) {
+                        UserLive_removeFocus();
+                        UserLive_cursorY--;
+                        UserLive_cursorX = i;
+                        UserLive_addFocus();
                         break;
                     }
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (main_ThumbNull((UserLive.cursorY), (UserLive.cursorX + 1), UserLive.ids[0])) {
-                UserLive.removeFocus();
-                UserLive.cursorX++;
-                UserLive.addFocus();
-            } else if (main_ThumbNull((UserLive.cursorY + 1), 0, UserLive.ids[0])) {
-                UserLive.removeFocus();
-                UserLive.cursorY++;
-                UserLive.cursorX = 0;
-                UserLive.addFocus();
+            if (Main_ThumbNull((UserLive_cursorY), (UserLive_cursorX + 1), UserLive_ids[0])) {
+                UserLive_removeFocus();
+                UserLive_cursorX++;
+                UserLive_addFocus();
+            } else if (Main_ThumbNull((UserLive_cursorY + 1), 0, UserLive_ids[0])) {
+                UserLive_removeFocus();
+                UserLive_cursorY++;
+                UserLive_cursorX = 0;
+                UserLive_addFocus();
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((UserLive.cursorY - 1), (UserLive.cursorX - i), UserLive.ids[0])) {
-                    UserLive.removeFocus();
-                    UserLive.cursorY--;
-                    UserLive.cursorX = UserLive.cursorX - i;
-                    UserLive.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((UserLive_cursorY - 1), (UserLive_cursorX - i), UserLive_ids[0])) {
+                    UserLive_removeFocus();
+                    UserLive_cursorY--;
+                    UserLive_cursorX = UserLive_cursorX - i;
+                    UserLive_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((UserLive.cursorY + 1), (UserLive.cursorX - i), UserLive.ids[0])) {
-                    UserLive.removeFocus();
-                    UserLive.cursorY++;
-                    UserLive.cursorX = UserLive.cursorX - i;
-                    UserLive.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((UserLive_cursorY + 1), (UserLive_cursorX - i), UserLive_ids[0])) {
+                    UserLive_removeFocus();
+                    UserLive_cursorY++;
+                    UserLive_cursorX = UserLive_cursorX - i;
+                    UserLive_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!UserLive.loadingMore) UserLive.StartLoad();
+            if (!UserLive_loadingMore) UserLive_StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (!UserLive.loadingMore) {
-                main_Go = main_UserHost;
-                UserLive.exit();
-                main_SwitchScreen();
+            if (!UserLive_loadingMore) {
+                Main_Go = Main_UserHost;
+                UserLive_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!UserLive.loadingMore) {
-                main_Go = main_UserChannels;
-                UserLive.exit();
-                main_SwitchScreen();
+            if (!UserLive_loadingMore) {
+                Main_Go = Main_UserChannels;
+                UserLive_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserLive.ids[8] + UserLive.cursorY + '_' + UserLive.cursorX).getAttribute('data-channelname');
-            Play_selectedChannelDisplayname = document.getElementById(UserLive.ids[3] + UserLive.cursorY + '_' + UserLive.cursorX).textContent;
-            document.body.removeEventListener("keydown", UserLive.handleKeyDown);
-            main_openStream();
+            Play_selectedChannel = document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute('data-channelname');
+            Play_selectedChannelDisplayname = document.getElementById(UserLive_ids[3] + UserLive_cursorY + '_' + UserLive_cursorX).textContent;
+            document.body.removeEventListener("keydown", UserLive_handleKeyDown);
+            Main_openStream();
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            UserLive.exit();
-            main_GoLive();
+            UserLive_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_UserLive;
-            main_Go = main_Search;
-            main_OldgameSelected = main_gameSelected;
-            UserLive.exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_UserLive;
+            Main_Go = Main_Search;
+            Main_OldgameSelected = Main_gameSelected;
+            UserLive_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}

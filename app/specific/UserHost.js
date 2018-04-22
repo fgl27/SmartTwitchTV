@@ -1,244 +1,239 @@
-/*jshint multistr: true */
 //Variable initialization
-function UserHost() {}
-UserHost.cursorY = 0;
-UserHost.cursorX = 0;
-UserHost.dataEnded = false;
-UserHost.itemsCount = 0;
-UserHost.nameMatrix = [];
-UserHost.blankCellVector = [];
-UserHost.loadingData = false;
-UserHost.loadingDataTry = 0;
-UserHost.loadingDataTryMax = 10;
-UserHost.loadingDataTimeout = 3500;
-UserHost.isDialogOn = false;
-UserHost.blankCellCount = 0;
-UserHost.itemsCountOffset = 0;
-UserHost.LastClickFinish = true;
-UserHost.keyClickDelayTime = 25;
-UserHost.ReplacedataEnded = false;
-UserHost.MaxOffset = 0;
-UserHost.emptyContent = false;
+var UserHost_cursorY = 0;
+var UserHost_cursorX = 0;
+var UserHost_dataEnded = false;
+var UserHost_itemsCount = 0;
+var UserHost_nameMatrix = [];
+var UserHost_blankCellVector = [];
+var UserHost_loadingData = false;
+var UserHost_loadingDataTry = 0;
+var UserHost_loadingDataTryMax = 10;
+var UserHost_loadingDataTimeout = 3500;
+var UserHost_blankCellCount = 0;
+var UserHost_itemsCountOffset = 0;
+var UserHost_LastClickFinish = true;
+var UserHost_keyClickDelayTime = 25;
+var UserHost_ReplacedataEnded = false;
+var UserHost_MaxOffset = 0;
+var UserHost_emptyContent = false;
 
-UserHost.ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'uhempty_'];
-UserHost.status = false;
-UserHost.followerChannels = '';
-UserHost.OldUserName = '';
-UserHost.itemsCountCheck = false;
-
+var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'uhempty_'];
+var UserHost_status = false;
+var UserHost_OldUserName = '';
+var UserHost_itemsCountCheck = false;
 //Variable initialization end
 
-UserHost.init = function() {
-    main_Go = main_UserHost;
+function UserHost_init() {
+    Main_Go = Main_UserHost;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + main_UnderCenter(main_UserName + STR_LIVE_HOSTS);
-    document.body.addEventListener("keydown", UserHost.handleKeyDown, false);
-    main_YRst(UserHost.cursorY);
-    if (UserHost.OldUserName !== main_UserName) UserHost.status = false;
-    if (UserHost.status) {
-        main_ScrollHelper(UserHost.ids[0], UserHost.cursorY, UserHost.cursorX, main_UserHost, main_ScrollOffSetMinusVideo,
-            main_ScrollOffSetVideo, false);
-        main_CounterDialog(UserHost.cursorX, UserHost.cursorY, main_ColoumnsCountVideo, UserHost.itemsCount);
-    } else UserHost.StartLoad();
-};
+    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS);
+    document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
+    Main_YRst(UserHost_cursorY);
+    if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
+    if (UserHost_status) {
+        Main_ScrollHelper(UserHost_ids[0], UserHost_cursorY, UserHost_cursorX, Main_UserHost, Main_ScrollOffSetMinusVideo,
+            Main_ScrollOffSetVideo, false);
+        Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+    } else UserHost_StartLoad();
+}
 
-UserHost.exit = function() {
+function UserHost_exit() {
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.body.removeEventListener("keydown", UserHost.handleKeyDown);
+    document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     document.getElementById('top_bar_user').innerHTML = STR_USER;
-};
+}
 
-UserHost.StartLoad = function() {
-    main_HideWarningDialog();
-    main_ScrollHelperBlank('blank_focus');
-    main_showLoadDialog();
-    UserHost.OldUserName = main_UserName;
-    UserHost.status = false;
+function UserHost_StartLoad() {
+    Main_HideWarningDialog();
+    Main_ScrollHelperBlank('blank_focus');
+    Main_showLoadDialog();
+    UserHost_OldUserName = Main_UserName;
+    UserHost_status = false;
     var table = document.getElementById('stream_table_user_host');
     while (table.firstChild) table.removeChild(table.firstChild);
-    UserHost.loadingMore = false;
-    UserHost.blankCellCount = 0;
-    UserHost.itemsCountOffset = 0;
-    UserHost.ReplacedataEnded = false;
-    UserHost.MaxOffset = 0;
-    UserHost.nameMatrix = [];
-    UserHost.blankCellVector = [];
-    UserHost.itemsCountCheck = false;
-    UserHost.itemsCount = 0;
-    UserHost.cursorX = 0;
-    UserHost.cursorY = 0;
-    UserHost.dataEnded = false;
-    main_CounterDialogRst();
-    UserHost.loadDataPrepare();
-    UserHost.loadChannels();
-};
+    UserHost_loadingMore = false;
+    UserHost_blankCellCount = 0;
+    UserHost_itemsCountOffset = 0;
+    UserHost_ReplacedataEnded = false;
+    UserHost_MaxOffset = 0;
+    UserHost_nameMatrix = [];
+    UserHost_blankCellVector = [];
+    UserHost_itemsCountCheck = false;
+    UserHost_itemsCount = 0;
+    UserHost_cursorX = 0;
+    UserHost_cursorY = 0;
+    UserHost_dataEnded = false;
+    Main_CounterDialogRst();
+    UserHost_loadDataPrepare();
+    UserHost_loadChannels();
+}
 
-UserHost.loadDataPrepare = function() {
-    UserHost.loadingData = true;
-    UserHost.loadingDataTry = 0;
-    UserHost.loadingDataTimeout = 3500;
-};
+function UserHost_loadDataPrepare() {
+    UserHost_loadingData = true;
+    UserHost_loadingDataTry = 0;
+    UserHost_loadingDataTimeout = 3500;
+}
 
-UserHost.loadChannels = function() {
+function UserHost_loadChannels() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        var offset = UserHost.itemsCount + UserHost.itemsCountOffset;
-        if (offset && offset > (UserHost.MaxOffset - 1)) {
-            offset = UserHost.MaxOffset - main_ItemsLimitVideo;
-            UserHost.dataEnded = true;
-            UserHost.ReplacedataEnded = true;
+        var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
+        if (offset && offset > (UserHost_MaxOffset - 1)) {
+            offset = UserHost_MaxOffset - Main_ItemsLimitVideo;
+            UserHost_dataEnded = true;
+            UserHost_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(main_UserName) + '/followed/hosting?limit=' +
-            main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserHost.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/followed/hosting?limit=' +
+            Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = UserHost_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserHost.loadDataSuccess(xmlHttp.responseText);
+                    UserHost_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    UserHost.loadDataError();
+                    UserHost_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserHost.loadDataError();
+        UserHost_loadDataError();
     }
-};
+}
 
-UserHost.loadDataError = function() {
-    UserHost.loadingDataTry++;
-    if (UserHost.loadingDataTry < UserHost.loadingDataTryMax) {
-        UserHost.loadingDataTimeout += (UserHost.loadingDataTry < 5) ? 250 : 3500;
-        UserHost.loadChannels();
+function UserHost_loadDataError() {
+    UserHost_loadingDataTry++;
+    if (UserHost_loadingDataTry < UserHost_loadingDataTryMax) {
+        UserHost_loadingDataTimeout += (UserHost_loadingDataTry < 5) ? 250 : 3500;
+        UserHost_loadChannels();
     } else {
-        UserHost.loadingData = false;
-        UserHost.loadingMore = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_REFRESH_PROBLEM);
+        UserHost_loadingData = false;
+        UserHost_loadingMore = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
-};
+}
 
-UserHost.loadDataSuccess = function(responseText) {
+function UserHost_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.hosts.length;
-    UserHost.MaxOffset = parseInt(response._total);
+    UserHost_MaxOffset = parseInt(response._total);
 
-    if (response_items < main_ItemsLimitVideo) UserHost.dataEnded = true;
+    if (response_items < Main_ItemsLimitVideo) UserHost_dataEnded = true;
 
-    var offset_itemsCount = UserHost.itemsCount;
-    UserHost.itemsCount += response_items;
+    var offset_itemsCount = UserHost_itemsCount;
+    UserHost_itemsCount += response_items;
 
-    UserHost.emptyContent = !UserHost.itemsCount;
+    UserHost_emptyContent = !UserHost_itemsCount;
 
-    var response_rows = response_items / main_ColoumnsCountVideo;
-    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / Main_ColoumnsCountVideo;
+    if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, hosts,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             hosts = response.hosts[cursor];
-            if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
+            if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
-                row.appendChild(UserHost.createCell(row_id, row_id + '_' + coloumn_id,
-                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", main_VideoSize),
+                row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
+                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                        hosts.target.title, hosts.target.meta_game, main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                        hosts.target.title, hosts.target.meta_game, Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                     ]));
             }
         }
 
-        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
-            if (UserHost.dataEnded && !UserHost.itemsCountCheck) {
-                UserHost.itemsCountCheck = true;
-                UserHost.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
+            if (UserHost_dataEnded && !UserHost_itemsCountCheck) {
+                UserHost_itemsCountCheck = true;
+                UserHost_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(main_createEmptyCell(UserHost.ids[9] + row_id + '_' + coloumn_id));
-            UserHost.blankCellVector.push(UserHost.ids[9] + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(UserHost_ids[9] + row_id + '_' + coloumn_id));
+            UserHost_blankCellVector.push(UserHost_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_user_host").appendChild(row);
     }
-    UserHost.loadDataSuccessFinish();
-};
+    UserHost_loadDataSuccessFinish();
+}
 
-UserHost.createCell = function(row_id, id, channel_name, valuesArray) {
-    UserHost.nameMatrix.push(channel_name);
-    if (row_id < main_ColoumnsCountVideo) main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return main_createCellVideo(channel_name, id, UserHost.ids, valuesArray);
-};
+function UserHost_createCell(row_id, id, channel_name, valuesArray) {
+    UserHost_nameMatrix.push(channel_name);
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main_createCellVideo(channel_name, id, UserHost_ids, valuesArray);
+}
 
-UserHost.CellExists = function(display_name) {
-    if (UserHost.nameMatrix.indexOf(display_name) > -1) {
-        UserHost.blankCellCount++;
+function UserHost_CellExists(display_name) {
+    if (UserHost_nameMatrix.indexOf(display_name) > -1) {
+        UserHost_blankCellCount++;
         return true;
     }
     return false;
-};
+}
 
-UserHost.loadDataSuccessFinish = function() {
+function UserHost_loadDataSuccessFinish() {
     $(document).ready(function() {
-        if (!UserHost.status) {
-            main_HideLoadDialog();
-            if (UserHost.emptyContent) main_showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+        if (!UserHost_status) {
+            Main_HideLoadDialog();
+            if (UserHost_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_HOSTS);
             else {
-                UserHost.status = true;
-                UserHost.addFocus();
-                main_LazyImgStart(UserHost.ids[1], 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
+                UserHost_status = true;
+                UserHost_addFocus();
+                Main_LazyImgStart(UserHost_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            UserHost.loadingData = false;
+            UserHost_loadingData = false;
         } else {
-            if (UserHost.blankCellCount > 0 && !UserHost.dataEnded) {
-                UserHost.loadingMore = true;
-                UserHost.loadDataPrepare();
-                UserHost.loadDataReplace();
+            if (UserHost_blankCellCount > 0 && !UserHost_dataEnded) {
+                UserHost_loadingMore = true;
+                UserHost_loadDataPrepare();
+                UserHost_loadDataReplace();
                 return;
             } else {
-                UserHost.blankCellCount = 0;
-                UserHost.blankCellVector = [];
+                UserHost_blankCellCount = 0;
+                UserHost_blankCellVector = [];
             }
 
-            UserHost.loadingData = false;
-            UserHost.loadingMore = false;
+            UserHost_loadingData = false;
+            UserHost_loadingMore = false;
         }
     });
-};
+}
 
-UserHost.loadChannelsReplace = function() {
+function UserHost_loadChannelsReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        main_SetItemsLimitReload(UserHost.blankCellCount);
+        Main_SetItemsLimitReload(UserHost_blankCellCount);
 
-        var offset = UserHost.itemsCount + UserHost.itemsCountOffset;
-        if (offset && offset > (UserHost.MaxOffset - 1)) {
-            offset = UserHost.MaxOffset - main_ItemsLimitReload;
-            UserHost.ReplacedataEnded = true;
+        var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
+        if (offset && offset > (UserHost_MaxOffset - 1)) {
+            offset = UserHost_MaxOffset - Main_ItemsLimitReload;
+            UserHost_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/hosts?game=' + encodeURIComponent(main_gameSelected) +
-            '&limit=' + main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserHost.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/hosts?game=' + encodeURIComponent(Main_gameSelected) +
+            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = UserHost_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserHost.loadDataSuccessReplace(xmlHttp.responseText);
+                    UserHost_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
                 }
             }
@@ -246,45 +241,45 @@ UserHost.loadChannelsReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        UserHost.loadDataErrorReplace();
+        UserHost_loadDataErrorReplace();
     }
-};
+}
 
-UserHost.loadDataErrorReplace = function() {
-    UserHost.loadingDataTry++;
-    if (UserHost.loadingDataTry < UserHost.loadingDataTryMax) {
-        UserHost.loadingDataTimeout += (UserHost.loadingDataTry < 5) ? 250 : 3500;
-        UserHost.loadChannelsReplace();
+function UserHost_loadDataErrorReplace() {
+    UserHost_loadingDataTry++;
+    if (UserHost_loadingDataTry < UserHost_loadingDataTryMax) {
+        UserHost_loadingDataTimeout += (UserHost_loadingDataTry < 5) ? 250 : 3500;
+        UserHost_loadChannelsReplace();
     } else {
-        UserHost.ReplacedataEnded = true;
-        UserHost.blankCellCount = 0;
-        UserHost.blankCellVector = [];
-        UserHost.loadDataSuccessFinish();
+        UserHost_ReplacedataEnded = true;
+        UserHost_blankCellCount = 0;
+        UserHost_blankCellVector = [];
+        UserHost_loadDataSuccessFinish();
     }
-};
+}
 
-UserHost.loadDataSuccessReplace = function(responseText) {
+function UserHost_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var hosts, index, cursor = 0;
-    var tempVector = UserHost.blankCellVector.slice();
+    var tempVector = UserHost_blankCellVector.slice();
 
-    UserHost.MaxOffset = parseInt(response._total);
+    UserHost_MaxOffset = parseInt(response._total);
 
-    if (response_items < main_ItemsLimitVideo) UserHost.ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitVideo) UserHost_ReplacedataEnded = true;
 
-    for (var i = 0; i < UserHost.blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < UserHost_blankCellVector.length && cursor < response_items; i++, cursor++) {
         hosts = response.hosts[cursor];
-        if (UserHost.CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) {
-            UserHost.blankCellCount--;
+        if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) {
+            UserHost_blankCellCount--;
             i--;
         } else {
-            main_replaceVideo(UserHost.blankCellVector[i],
-                hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", main_VideoSize),
+            Main_replaceVideo(UserHost_blankCellVector[i],
+                hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                    hosts.target.title, hosts.target.meta_game, main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                    hosts.target.title, hosts.target.meta_game, Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                 ]);
-            UserHost.blankCellCount--;
+            UserHost_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
@@ -293,166 +288,154 @@ UserHost.loadDataSuccessReplace = function(responseText) {
         }
     }
 
-    UserHost.itemsCountOffset += cursor;
-    if (UserHost.ReplacedataEnded) {
-        UserHost.blankCellCount = 0;
-        UserHost.blankCellVector = [];
-    } else UserHost.blankCellVector = tempVector;
+    UserHost_itemsCountOffset += cursor;
+    if (UserHost_ReplacedataEnded) {
+        UserHost_blankCellCount = 0;
+        UserHost_blankCellVector = [];
+    } else UserHost_blankCellVector = tempVector;
 
-    UserHost.loadDataSuccessFinish();
-};
+    UserHost_loadDataSuccessFinish();
+}
 
-UserHost.replaceCellEmpty = function(id, channel_name, preview_thumbnail, hosts_title, hosts_game, channel_display_name, viwers) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = UserHost.ids[8] + row_id + '_' + coloumn_id;
+function UserHost_addFocus() {
 
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
-    document.getElementById(cell).innerHTML =
-        UserHost.CellHtml(row_id, coloumn_id, channel_display_name, hosts_title, hosts_game, viwers, preview_thumbnail, channel_name);
-};
+    Main_addFocusVideoArray(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_UserHost, Main_ColoumnsCountVideo, UserHost_itemsCount);
 
-UserHost.addFocus = function() {
+    if (UserHost_cursorY > 3) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
-    main_addFocusVideoArray(UserHost.cursorY, UserHost.cursorX, UserHost.ids, main_UserHost, main_ColoumnsCountVideo, UserHost.itemsCount);
-
-    if (UserHost.cursorY > 3) main_LazyImg(UserHost.ids[1], UserHost.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
-
-    if (((UserHost.cursorY + main_ItemsReloadLimitVideo) > (UserHost.itemsCount / main_ColoumnsCountVideo)) &&
-        !UserHost.dataEnded && !UserHost.loadingMore) {
-        UserHost.loadingMore = true;
-        UserHost.loadDataPrepare();
-        UserHost.loadChannels();
+    if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
+        !UserHost_dataEnded && !UserHost_loadingMore) {
+        UserHost_loadingMore = true;
+        UserHost_loadDataPrepare();
+        UserHost_loadChannels();
     }
-};
+}
 
-UserHost.removeFocus = function() {
-    main_removeFocusVideoArray(UserHost.cursorY + '_' + UserHost.cursorX, UserHost.ids);
-};
+function UserHost_removeFocus() {
+    Main_removeFocusVideoArray(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
+}
 
-UserHost.keyClickDelay = function() {
-    UserHost.LastClickFinish = true;
-};
+function UserHost_keyClickDelay() {
+    UserHost_LastClickFinish = true;
+}
 
-UserHost.handleKeyDown = function(event) {
-    if (UserHost.loadingData && !UserHost.loadingMore) {
+function UserHost_handleKeyDown(event) {
+    if (UserHost_loadingData && !UserHost_loadingMore) {
         event.preventDefault();
         return;
-    } else if (!UserHost.LastClickFinish) {
+    } else if (!UserHost_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
-        UserHost.LastClickFinish = false;
-        window.setTimeout(UserHost.keyClickDelay, UserHost.keyClickDelayTime);
+        UserHost_LastClickFinish = false;
+        window.setTimeout(UserHost_keyClickDelay, UserHost_keyClickDelayTime);
     }
 
     var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                main_Go = main_Users;
-                UserHost.exit();
-                main_SwitchScreen();
+                Main_Go = Main_Users;
+                UserHost_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (main_ThumbNull((UserHost.cursorY), (UserHost.cursorX - 1), UserHost.ids[0])) {
-                UserHost.removeFocus();
-                UserHost.cursorX--;
-                UserHost.addFocus();
+            if (Main_ThumbNull((UserHost_cursorY), (UserHost_cursorX - 1), UserHost_ids[0])) {
+                UserHost_removeFocus();
+                UserHost_cursorX--;
+                UserHost_addFocus();
             } else {
-                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (main_ThumbNull((UserHost.cursorY - 1), i, UserHost.ids[0])) {
-                        UserHost.removeFocus();
-                        UserHost.cursorY--;
-                        UserHost.cursorX = i;
-                        UserHost.addFocus();
+                for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (Main_ThumbNull((UserHost_cursorY - 1), i, UserHost_ids[0])) {
+                        UserHost_removeFocus();
+                        UserHost_cursorY--;
+                        UserHost_cursorX = i;
+                        UserHost_addFocus();
                         break;
                     }
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (main_ThumbNull((UserHost.cursorY), (UserHost.cursorX + 1), UserHost.ids[0])) {
-                UserHost.removeFocus();
-                UserHost.cursorX++;
-                UserHost.addFocus();
-            } else if (main_ThumbNull((UserHost.cursorY + 1), 0, UserHost.ids[0])) {
-                UserHost.removeFocus();
-                UserHost.cursorY++;
-                UserHost.cursorX = 0;
-                UserHost.addFocus();
+            if (Main_ThumbNull((UserHost_cursorY), (UserHost_cursorX + 1), UserHost_ids[0])) {
+                UserHost_removeFocus();
+                UserHost_cursorX++;
+                UserHost_addFocus();
+            } else if (Main_ThumbNull((UserHost_cursorY + 1), 0, UserHost_ids[0])) {
+                UserHost_removeFocus();
+                UserHost_cursorY++;
+                UserHost_cursorX = 0;
+                UserHost_addFocus();
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((UserHost.cursorY - 1), (UserHost.cursorX - i), UserHost.ids[0])) {
-                    UserHost.removeFocus();
-                    UserHost.cursorY--;
-                    UserHost.cursorX = UserHost.cursorX - i;
-                    UserHost.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((UserHost_cursorY - 1), (UserHost_cursorX - i), UserHost_ids[0])) {
+                    UserHost_removeFocus();
+                    UserHost_cursorY--;
+                    UserHost_cursorX = UserHost_cursorX - i;
+                    UserHost_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((UserHost.cursorY + 1), (UserHost.cursorX - i), UserHost.ids[0])) {
-                    UserHost.removeFocus();
-                    UserHost.cursorY++;
-                    UserHost.cursorX = UserHost.cursorX - i;
-                    UserHost.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((UserHost_cursorY + 1), (UserHost_cursorX - i), UserHost_ids[0])) {
+                    UserHost_removeFocus();
+                    UserHost_cursorY++;
+                    UserHost_cursorX = UserHost_cursorX - i;
+                    UserHost_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
-            if (!UserHost.loadingMore) UserHost.StartLoad();
+            if (!UserHost_loadingMore) UserHost_StartLoad();
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            if (!UserHost.loadingMore) {
-                main_Go = main_usergames;
-                UserHost.exit();
-                main_SwitchScreen();
+            if (!UserHost_loadingMore) {
+                Main_Go = Main_usergames;
+                UserHost_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            main_Go = main_UserLive;
-            UserHost.exit();
-            main_SwitchScreen();
+            Main_Go = Main_UserLive;
+            UserHost_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserHost.ids[8] + UserHost.cursorY + '_' + UserHost.cursorX).getAttribute('data-channelname');
-            Play_selectedChannelDisplayname = document.getElementById(UserHost.ids[3] + UserHost.cursorY + '_' + UserHost.cursorX).textContent.split(STR_USER_HOSTING)[1];
-            document.body.removeEventListener("keydown", UserHost.handleKeyDown);
-            main_openStream();
+            Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute('data-channelname');
+            Play_selectedChannelDisplayname = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent.split(STR_USER_HOSTING)[1];
+            document.body.removeEventListener("keydown", UserHost_handleKeyDown);
+            Main_openStream();
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            UserHost.exit();
-            main_GoLive();
+            UserHost_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_UserHost;
-            main_Go = main_Search;
-            UserHost.exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_UserHost;
+            Main_Go = Main_Search;
+            UserHost_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}

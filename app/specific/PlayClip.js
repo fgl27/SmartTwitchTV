@@ -20,12 +20,12 @@ function PlayClip_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    Play_LoadLogo(document.getElementById('stream_info_icon'), main_selectedChannelLogo);
-    document.getElementById("stream_info_name").innerHTML = Sclip.title;
-    document.getElementById("stream_info_title").innerHTML = main_selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip.game;
-    document.getElementById("stream_info_game").innerHTML = Sclip.views;
-    document.getElementById("stream_live_icon").innerHTML = Sclip.createdAt;
-    document.getElementById("stream_live_time").innerHTML = Sclip.Duration;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+    document.getElementById("stream_info_name").innerHTML = Sclip_title;
+    document.getElementById("stream_info_title").innerHTML = Main_selectedChannelDisplayname + ' ' + STR_PLAYING + Sclip_game;
+    document.getElementById("stream_info_game").innerHTML = Sclip_views;
+    document.getElementById("stream_live_icon").innerHTML = Sclip_createdAt;
+    document.getElementById("stream_live_time").innerHTML = Sclip_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
     PlayClip_SetInfo();
 
@@ -35,10 +35,10 @@ function PlayClip_Start() {
     Play_Panelcouner = 2;
     PlayClip_IconsFocus();
 
-    if (main_UserName !== '') {
-        addCode_userChannel = main_selectedChannel_id;
-        addCode_PlayRequest = true;
-        addCode_CheckFallow();
+    if (Main_UserName !== '') {
+        AddCode_userChannel = Main_selectedChannel_id;
+        AddCode_PlayRequest = true;
+        AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
 
@@ -55,7 +55,7 @@ function PlayClip_Start() {
     $(document).ready(function() {
         Play_videojs.src({
             type: "video/mp4",
-            src: Sclip.playUrl
+            src: Sclip_playUrl
         });
 
         Play_videojs.ready(function() {
@@ -240,7 +240,7 @@ function PlayClip_jumpStart() {
         time = PlayClip_TimeToJump + STR_SEC;
 
         jumpTotime = Play_videojs.currentTime() + PlayClip_TimeToJump;
-        if (jumpTotime > Sclip.DurationSeconds) {
+        if (jumpTotime > Sclip_DurationSeconds) {
             PlayClip_TimeToJump = 0;
             PlayClip_jumpCountMax = PlayClip_jumpCount;
             Play_showWarningDialog(STR_JUMP_CANCEL + STR_JUMP_TIME_BIG);
@@ -290,36 +290,36 @@ function PlayClip_speedDisplay() {
 }
 
 function PlayClip_IconsFocus() {
-    main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_speed", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_speed", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
     if (!Play_Panelcouner) {
-        main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 1) {
-        main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 2) {
-        main_ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_speed", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_speed", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 3) {
-        main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 4) {
-        main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 }
 
@@ -378,7 +378,7 @@ function PlayClip_handleKeyDown(e) {
                 if (!Play_Panelcouner) {
                     Play_videojs.src({
                         type: "video/mp4",
-                        src: Sclip.playUrl
+                        src: Sclip_playUrl
                     });
                     Play_showBufferDialog();
                     Play_clearPause();
@@ -392,14 +392,14 @@ function PlayClip_handleKeyDown(e) {
                 } else if (Play_Panelcouner === 2) {
                     PlayClip_speed();
                 } else if (Play_Panelcouner === 3) {
-                    if (main_Go !== main_Svod && main_Go !== main_Sclip && main_Go !== main_SChannelContent) main_Before = main_Go;
-                    main_Go = main_SChannelContent;
+                    if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_Before = Main_Go;
+                    Main_Go = Main_SChannelContent;
                     window.clearTimeout(Play_exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip_shutdownStream, 10);
                 } else if (Play_Panelcouner === 4) {
-                    main_BeforeSearch = main_Go;
-                    main_Go = main_Search;
+                    Main_BeforeSearch = Main_Go;
+                    Main_Go = Main_Search;
                     window.clearTimeout(Play_exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
                     window.setTimeout(PlayClip_shutdownStream, 10);
