@@ -469,7 +469,7 @@ function Main_cleanTopLabel() {
 }
 
 function Main_UnderCenter(text) {
-    return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>';
+    return '<div style="font-size: 30%; position: fixed; line-height: 0; text-shadow: #000000 0px 0px 5.7px, #000000 0px 0px 5.7px, #000000 0px 0px 4px">' + text + '</div>';
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
