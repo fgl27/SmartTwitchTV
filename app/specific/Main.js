@@ -84,7 +84,7 @@ var Main_TitleClass = 'stream_channel';
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
 var Main_currentVersion = '';
-var Main_minversion = '042118';
+var Main_minversion = '042218';
 var Main_versonTag = '';
 
 var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
