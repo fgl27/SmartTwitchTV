@@ -9,7 +9,6 @@ var UserGames_loadingData = false;
 var UserGames_loadingDataTry = 0;
 var UserGames_loadingDataTryMax = 10;
 var UserGames_loadingDataTimeout = 3500;
-var UserGames_isDialogOn = false;
 var UserGames_blankCellCount = 0;
 var UserGames_itemsCountOffset = 0;
 var UserGames_LastClickFinish = true;
@@ -28,8 +27,8 @@ var UserGames_DispNameDiv = 'glive_display_name_';
 var UserGames_ViwersDiv = 'glive_viwers_';
 var UserGames_Cell = 'glive_cell_';
 var UserGames_Status = false;
-var UserGames_followerChannels = '';
 var UserGames_OldUserName = '';
+var UserGames_loadingMore = false;
 //Variable initialization end
 
 function UserGames_init() {
@@ -241,7 +240,7 @@ function UserGames_loadDataSuccessFinish() {
     });
 }
 
-function UserGames_loadDataRequestReplace() {
+function UserGames_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -265,21 +264,21 @@ function UserGames_loadDataRequestReplace() {
                 if (xmlHttp.status === 200) {
                     UserGames_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else UserGames_loadDataReplaceError();
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserGames_loadDataErrorReplace();
+        UserGames_loadDataReplaceError();
     }
 }
 
-function UserGames_loadDataErrorReplace() {
+function UserGames_loadDataReplaceError() {
     UserGames_loadingDataTry++;
     if (UserGames_loadingDataTry < UserGames_loadingDataTryMax) {
         UserGames_loadingDataTimeout += (UserGames_loadingDataTry < 5) ? 250 : 3500;
-        UserGames_loadDataRequestReplace();
+        UserGames_loadDataReplace();
     } else {
         UserGames_ReplacedataEnded = true;
         UserGames_blankCellCount = 0;
@@ -305,7 +304,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
-                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], row_id, coloumn_id, follows.game.name, follows.game.box.template,
+                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], follows.game.name, follows.game.box.template,
                     Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viwers) + STR_VIEWER);
                 UserGames_blankCellCount--;
 
@@ -319,7 +318,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
-                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], row_id, coloumn_id, follows.name, follows.box.template, '');
+                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], follows.name, follows.box.template, '');
                 UserGames_blankCellCount--;
 
                 index = tempVector.indexOf(tempVector[i]);
@@ -388,7 +387,7 @@ function UserGames_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -397,7 +396,7 @@ function UserGames_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX - 1), UserGames_Thumbnail)) {
                 UserGames_removeFocus();
                 UserGames_cursorX--;
@@ -414,7 +413,7 @@ function UserGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX + 1), UserGames_Thumbnail)) {
                 UserGames_removeFocus();
                 UserGames_cursorX++;
@@ -426,7 +425,7 @@ function UserGames_handleKeyDown(event) {
                 UserGames_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
                 if (Main_ThumbNull((UserGames_cursorY - 1), (UserGames_cursorX - i), UserGames_Thumbnail)) {
                     UserGames_removeFocus();
@@ -437,7 +436,7 @@ function UserGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
                 if (Main_ThumbNull((UserGames_cursorY + 1), (UserGames_cursorX - i), UserGames_Thumbnail)) {
                     UserGames_removeFocus();
@@ -448,8 +447,8 @@ function UserGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!UserGames_loadingMore) {
                 UserGames_live = !UserGames_live;
                 UserGames_StartLoad();
@@ -457,43 +456,43 @@ function UserGames_handleKeyDown(event) {
                 Users_resetGameCell();
             }
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             if (!UserGames_loadingMore) {
                 Main_Go = Main_UserChannels;
                 UserGames_exit();
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = Main_UserHost;
             UserGames_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             Main_gameSelected = $('#' + UserGames_Cell + UserGames_cursorY + '_' + UserGames_cursorX).attr('data-channelname');
             Main_Before = Main_usergames;
             Main_Go = Main_aGame;
-            AGame_UserGames_= true;
+            AGame_UserGames = true;
             UserGames_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             UserGames_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_usergames;
             Main_Go = Main_Search;
-            AGame_UserGames_= false;
+            AGame_UserGames = false;
             UserGames_exit();
             Main_SwitchScreen();
             break;

@@ -1,6 +1,5 @@
 //Variable initialization
 var Main_isReleased = false;
-var Main_Hide = '';
 var Main_Go = 1;
 var Main_Before = 1;
 var Main_BeforeSearch = 1;
@@ -14,18 +13,16 @@ var Main_aGame = 4;
 var Main_UserLive = 5;
 var Main_UserHost = 6;
 var Main_usergames = 7;
-var Main_UserVod = 8;
-var Main_UserAVod = 9;
-var Main_Search = 10;
-var Main_sgames = 11;
-var Main_SLive = 12;
-var Main_SChannelContent = 13;
-var Main_Svod = 14;
-var Main_Sclip = 15;
-var Main_Users = 16;
-var Main_UserChannels = 17;
-var Main_SChannels = 18;
-var Main_addCode = 19;
+var Main_Search = 8;
+var Main_sgames = 9;
+var Main_SLive = 10;
+var Main_SChannelContent = 11;
+var Main_Svod = 12;
+var Main_Sclip = 13;
+var Main_Users = 14;
+var Main_UserChannels = 15;
+var Main_SChannels = 16;
+var Main_addCode = 17;
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
@@ -33,17 +30,16 @@ var Main_selectedChannelViews = '';
 var Main_selectedChannelFallower = '';
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
-var Main_selectedGame = '';
-var Main_selectedGameDisplayname = '';
 var Main_gameSelected = '';
+var Main_selectedChannel_id = '';
 var Main_OldgameSelected = null;
-var Main_OldUserName = '';
 var Main_SmartHubId = null;
 var Main_UserName = '';
 var Main_ScrollbarBlack = true;
 var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
 var Main_td = '';
+var Main_nextScrollPositon = '';
 
 var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
@@ -112,14 +108,14 @@ var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
 
 //function vars
-var Main_loadImg = function(ImgObjet, Src) {
+var Main_loadImg = function(ImgObjet, Src, img_type) {
     ImgObjet.onerror = function() {
         this.src = img_type; //img fail to load use predefined
     };
     ImgObjet.src = Src;
 };
 
-var Main_lazyLoad = function(ImgObjet) {
+var Main_lazyLoad = function(ImgObjet, img_type) {
     ImgObjet.onerror = function() {
         this.src = img_type; //img fail to load use predefined
     };
@@ -397,11 +393,6 @@ function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x, 0) !== null;
 }
 
-function Main_StartPlayerLive() {
-    document.body.addEventListener("keydown", Play_handleKeyDown, false);
-    Play_Start();
-}
-
 function Main_ReStartScreens() {
     document.getElementById('play_dialog_exit').classList.add('hide');
     Main_SwitchScreen();
@@ -565,15 +556,15 @@ function Main_Resume() {
 }
 
 function Main_LoadImages(imgVector, idVector, img_type) {
-    for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i]);
+    for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i], img_type);
 }
 
 function Main_LazyImgStart(imgId, total, img_type, coloumns) {
-    var x, y = 0;
+    var x, y = 0, elem;
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) Main_lazyLoad(elem);
+            if (elem !== null) Main_lazyLoad(elem, img_type);
         }
     }
     Main_Ychange(0);

@@ -3,11 +3,10 @@ var AddUser_loadingDataTry = 0;
 var AddUser_loadingDataTryMax = 10;
 var AddUser_loadingDataTimeout = 3500;
 var AddUser_UsernameArray = [];
-var AddUser_UserIdArray = [];
-var AddUser_Followercount = 0;
 var AddUser_Username = null;
 var AddUser_loadingData = false;
 var AddUser_keyBoardOn = false;
+var AddUser_input = null;
 //Variable initialization end
 
 function AddUser_init() {
@@ -30,7 +29,7 @@ function AddUser_handleKeyDown(event) {
     if (AddUser_loadingData || AddUser_keyBoardOn) return;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -39,33 +38,33 @@ function AddUser_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Main_Go = Main_games;
             AddUser_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = Main_Live;
             AddUser_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             AddUser_inputFocus();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             AddUser_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_Go;
             Main_Go = Main_Search;
             AddUser_exit();
@@ -100,12 +99,12 @@ function AddUser_KeyboardEvent(event) {
     if (AddUser_loadingData) return;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
+        case KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("user_input").value = '';
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_DONE:
-        case TvKeyCode.KEY_KEYBOARD_CANCEL:
+        case KEY_KEYBOARD_DONE:
+        case KEY_KEYBOARD_CANCEL:
             if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
 
                 document.getElementById("user_input").value = $('#user_input').val();
@@ -129,11 +128,11 @@ function AddUser_KeyboardEvent(event) {
             }
             AddUser_RemoveinputFocus();
             break;
-        case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
+        case KEY_KEYBOARD_BACKSPACE:
             document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_SPACE:
+        case KEY_KEYBOARD_SPACE:
             document.getElementById("user_input").value = $('#user_input').val() + ' ';
             event.preventDefault();
             break;

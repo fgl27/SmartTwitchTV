@@ -3,6 +3,7 @@ var Search_cursorY = 0;
 var Search_cursorX = 0;
 var Search_data = '';
 var Search_keyBoardOn = false;
+var Search_input = '';
 //Variable initialization end
 
 function Search_init() {
@@ -61,7 +62,7 @@ function Search_handleKeyDown(event) {
     if (Search_keyBoardOn) return;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -69,28 +70,28 @@ function Search_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Search_cursorY === 1) {
                 Search_cursorX--;
                 if (Search_cursorX < 0) Search_cursorX = 2;
                 Search_refreshInputFocusTools();
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Search_cursorY === 1) {
                 Search_cursorX++;
                 if (Search_cursorX > 2) Search_cursorX = 0;
                 Search_refreshInputFocusTools();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             if (Search_cursorY === 1) {
                 Search_cursorY = 0;
                 Search_refreshInputFocusTools();
                 Search_inputFocus();
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             if (!Search_cursorY) {
                 Search_RemoveinputFocus();
                 Search_cursorY = 1;
@@ -101,21 +102,21 @@ function Search_handleKeyDown(event) {
                 Search_inputFocus();
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Search_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Search_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (!Search_cursorY) Search_inputFocus();
             else {
                 if ($('#search_input').val() !== '' && $('#search_input').val() !== null) {
@@ -130,17 +131,17 @@ function Search_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             Search_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             break;
         default:
             break;
@@ -173,22 +174,22 @@ function Search_RemoveinputFocus() {
 
 function Search_KeyboardEvent(event) {
     switch (event.keyCode) {
-        case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
+        case KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("search_input").value = '';
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_DONE:
-        case TvKeyCode.KEY_KEYBOARD_CANCEL:
+        case KEY_KEYBOARD_DONE:
+        case KEY_KEYBOARD_CANCEL:
             document.getElementById("search_input").value = $('#search_input').val();
             Search_RemoveinputFocus();
             Search_cursorY = 1;
             Search_refreshInputFocusTools();
             break;
-        case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
+        case KEY_KEYBOARD_BACKSPACE:
             document.getElementById("search_input").value = $('#search_input').val().slice(0, -1);
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_SPACE:
+        case KEY_KEYBOARD_SPACE:
             document.getElementById("search_input").value = $('#search_input').val() + ' ';
             event.preventDefault();
             break;

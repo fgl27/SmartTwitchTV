@@ -325,7 +325,7 @@ function PlayClip_IconsFocus() {
 
 function PlayClip_handleKeyDown(e) {
     switch (e.keyCode) {
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Play_isPanelShown()) {
                 Play_Panelcouner++;
                 if (Play_Panelcouner > 4) Play_Panelcouner = 0;
@@ -337,7 +337,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_jumpStart();
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Play_isPanelShown()) {
                 Play_Panelcouner--;
                 if (Play_Panelcouner < 0) Play_Panelcouner = 4;
@@ -349,7 +349,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_jumpStart();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             if (!Play_isPanelShown()) {
                 PlayClip_showPanel();
             } else if (Play_Panelcouner === 2) {
@@ -360,7 +360,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_speedDisplay();
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             if (!Play_isPanelShown()) {
                 PlayClip_showPanel();
             } else if (Play_Panelcouner === 2) {
@@ -371,7 +371,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_speedDisplay();
             }
             break;
-        case TvKeyCode.KEY_ENTER:
+        case KEY_ENTER:
             if (!Play_isPanelShown()) {
                 PlayClip_showPanel();
             } else {
@@ -406,7 +406,7 @@ function PlayClip_handleKeyDown(e) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Play_isControlsDialogShown()) Play_HideControlsDialog();
             else if (Play_isPanelShown()) {
                 PlayClip_hidePanel();
@@ -420,22 +420,21 @@ function PlayClip_handleKeyDown(e) {
                 }
             }
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
             Play_KeyPause();
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             Play_hideChat();
             Play_ChatEnable = false;
             localStorage.setItem('ChatEnable', 'false');
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Play_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
-            Play_speed(0.5);
+        case KEY_BLUE:
             break;
         default:
             break;

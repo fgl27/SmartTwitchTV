@@ -22,6 +22,7 @@ var Live_checkVersion = false;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
 var Live_emptyContent = false;
+var Live_loadingMore = false;
 //Variable initialization end
 
 function Live_init() {
@@ -347,14 +348,14 @@ function Live_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isUpdateDialogShown()) Main_HideUpdateDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isExitDialogShown()) Main_HideExitDialog();
             else Main_showExitDialog();
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_isExitDialogShown()) {
                 Live_ExitCursor--;
                 if (Live_ExitCursor < 0) Live_ExitCursor = 2;
@@ -377,7 +378,7 @@ function Live_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_isExitDialogShown()) {
                 Live_ExitCursor++;
                 if (Live_ExitCursor > 2) Live_ExitCursor = 0;
@@ -395,7 +396,7 @@ function Live_handleKeyDown(event) {
                 Live_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             if (!Main_isExitDialogShown()) {
                 for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                     if (Main_ThumbNull((Live_cursorY - 1), (Live_cursorX - i), Live_ids[0])) {
@@ -408,7 +409,7 @@ function Live_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             if (!Main_isExitDialogShown()) {
                 for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                     if (Main_ThumbNull((Live_cursorY + 1), (Live_cursorX - i), Live_ids[0])) {
@@ -421,11 +422,11 @@ function Live_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!Live_loadingMore) Live_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             if (!Live_loadingMore) {
                 Main_Before = Main_Live;
                 Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
@@ -433,7 +434,7 @@ function Live_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             if (!Live_loadingMore) {
                 Main_Before = Main_Live;
                 Main_Go = Main_games;
@@ -441,10 +442,10 @@ function Live_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (Main_isExitDialogShown()) {
                 // HideExitDialog set Live_ExitCursor to 0, is better to hide befor exit, use temp var
                 var temp_ExitCursor = Live_ExitCursor;
@@ -460,15 +461,15 @@ function Live_handleKeyDown(event) {
                 Main_openStream();
             }
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_Live;
             Main_Go = Main_Search;
             Live_exit();
