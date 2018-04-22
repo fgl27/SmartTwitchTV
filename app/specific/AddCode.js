@@ -332,7 +332,7 @@ function addCode_CheckFallowId(responseText) {
     } else {
         addCode_IsFallowing = false;
         addCode_loadingData = false;
-        if (addCode_PlayRequest) Play.setFallow();
+        if (addCode_PlayRequest) Play_setFallow();
         else SChannelContent.setFallow();
     }
 }
@@ -353,14 +353,14 @@ function addCode_RequestCheckFallow() {
                 if (xmlHttp.status === 200) { //yes
                     addCode_IsFallowing = true;
                     addCode_loadingData = false;
-                    if (addCode_PlayRequest) Play.setFallow();
+                    if (addCode_PlayRequest) Play_setFallow();
                     else SChannelContent.setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //no
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         addCode_IsFallowing = false;
                         addCode_loadingData = false;
-                        if (addCode_PlayRequest) Play.setFallow();
+                        if (addCode_PlayRequest) Play_setFallow();
                         else SChannelContent.setFallow();
                         return;
                     } else addCode_RequestCheckFallowError();
@@ -383,7 +383,7 @@ function addCode_RequestCheckFallowError() {
         addCode_RequestCheckFallow();
     } else {
         addCode_loadingData = false;
-        if (addCode_PlayRequest) Play.setFallow();
+        if (addCode_PlayRequest) Play_setFallow();
         else SChannelContent.setFallow();
     }
 }
@@ -410,7 +410,7 @@ function addCode_FallowRequest() {
                 if (xmlHttp.status === 200) { //success user now is fallowing the channel
                     addCode_loadingData = false;
                     addCode_IsFallowing = true;
-                    if (addCode_PlayRequest) Play.setFallow();
+                    if (addCode_PlayRequest) Play_setFallow();
                     else SChannelContent.setFallow();
                     return;
                 } else {
@@ -455,7 +455,7 @@ function addCode_UnFallowRequest() {
                 if (xmlHttp.status === 204) { //success user is now not fallowing the channel
                     addCode_IsFallowing = false;
                     addCode_loadingData = false;
-                    if (addCode_PlayRequest) Play.setFallow();
+                    if (addCode_PlayRequest) Play_setFallow();
                     else SChannelContent.setFallow();
                     return;
                 } else {
@@ -507,7 +507,7 @@ function addCode_RequestCheckSub() {
                 if (xmlHttp.status === 200) { //success yes user is a SUB
                     addCode_IsSub = true;
                     addCode_loadingData = false;
-                    PlayVod.isSub();
+                    PlayVod_isSub();
                     return;
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
                     console.log('channel does not have a subscription program');
@@ -515,7 +515,7 @@ function addCode_RequestCheckSub() {
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         addCode_IsSub = false;
                         addCode_loadingData = false;
-                        PlayVod.NotSub();
+                        PlayVod_NotSub();
                         return;
                     } else addCode_RequestCheckSubError();
                 } else { // internet error

@@ -261,19 +261,19 @@ SmartHub.EventListener = function() {
                 if (JSON.parse(actionData).videoIdx) {
                     VideoIdx = JSON.parse(actionData).videoIdx;
                     VideoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (Play.Playing && Play.selectedChannel === VideoIdx) {
+                    if (Play_Playing && Play_selectedChannel === VideoIdx) {
                         return;
                     }
-                    Play.selectedChannel = VideoIdx;
-                    Play.selectedChannelDisplayname = VideoTitleIdx;
-                    if (Play.isOn) {
-                        Play.PreshutdownStream();
+                    Play_selectedChannel = VideoIdx;
+                    Play_selectedChannelDisplayname = VideoTitleIdx;
+                    if (Play_isOn) {
+                        Play_PreshutdownStream();
                         window.setTimeout(main_openStream, 10);
-                    } else if (PlayVod.isOn) {
-                        PlayVod.PreshutdownStream();
+                    } else if (PlayVod_isOn) {
+                        PlayVod_PreshutdownStream();
                         window.setTimeout(main_openStream, 10);
-                    } else if (PlayClip.isOn) {
-                        PlayClip.PreshutdownStream();
+                    } else if (PlayClip_isOn) {
+                        PlayClip_PreshutdownStream();
                         window.setTimeout(main_openStream, 10);
                     } else {
                         main_ExitCurrent(main_Go);
@@ -288,9 +288,9 @@ SmartHub.EventListener = function() {
                     main_Go = main_aGame;
 
                     main_ExitCurrent(ExitScreen);
-                    if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
-                    else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
+                    if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
+                    else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
+                    else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
                     else if (ExitToMain) main_SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
@@ -300,9 +300,9 @@ SmartHub.EventListener = function() {
                     main_Go = ScreenIdx;
 
                     main_ExitCurrent(ExitScreen);
-                    if (Play.isOn) window.setTimeout(Play.shutdownStream, 10);
-                    else if (PlayVod.isOn) window.setTimeout(PlayVod.shutdownStream, 10);
-                    else if (PlayClip.isOn) window.setTimeout(PlayClip.shutdownStream, 10);
+                    if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
+                    else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
+                    else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
                     else if (ExitToMain) main_SwitchScreen();
                 }
             }

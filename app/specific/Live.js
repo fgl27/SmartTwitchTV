@@ -458,8 +458,8 @@ Live.handleKeyDown = function(event) {
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
                 } catch (e) {}
             } else {
-                Play.selectedChannel = document.getElementById(Live.ids[8] + Live.cursorY + '_' + Live.cursorX).getAttribute('data-channelname');
-                Play.selectedChannelDisplayname = document.getElementById(Live.ids[3] + Live.cursorY + '_' + Live.cursorX).textContent;
+                Play_selectedChannel = document.getElementById(Live.ids[8] + Live.cursorY + '_' + Live.cursorX).getAttribute('data-channelname');
+                Play_selectedChannelDisplayname = document.getElementById(Live.ids[3] + Live.cursorY + '_' + Live.cursorX).textContent;
                 document.body.removeEventListener("keydown", Live.handleKeyDown);
                 main_openStream();
             }

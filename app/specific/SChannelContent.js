@@ -329,11 +329,11 @@ SChannelContent.keyEnter = function() {
         document.body.removeEventListener("keydown", SChannelContent.handleKeyDown);
         var value = (!SChannelContent.skipImg ? 0 : 1);
         if (SChannelContent.cursorX === (0 - value)) {
-            Play.selectedChannel = document.getElementById(SChannelContent.ids[8]+ SChannelContent.cursorY +
+            Play_selectedChannel = document.getElementById(SChannelContent.ids[8]+ SChannelContent.cursorY +
                 '_' + SChannelContent.cursorX).getAttribute('data-channelname');
-            Play.selectedChannelDisplayname = document.getElementById(SChannelContent.ids[3] + SChannelContent.cursorY +
+            Play_selectedChannelDisplayname = document.getElementById(SChannelContent.ids[3] + SChannelContent.cursorY +
                 '_' + SChannelContent.cursorX).textContent;
-            if (Play.selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play.selectedChannelDisplayname = Play.selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+            if (Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
             main_openStream();
         } else if (SChannelContent.cursorX === (1 - value)) Svod.init();
         else if (SChannelContent.cursorX === (2 - value)) Sclip.init();
