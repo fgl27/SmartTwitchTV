@@ -229,7 +229,7 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
-    if (Users_loadingData && !Users_loadingMore) {
+    if (Users_loadingData) {
         event.preventDefault();
         return;
     } else if (!Users_LastClickFinish) {
@@ -243,7 +243,7 @@ function Users_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Users_isRemoveDialogShown()) {
                 Users_HideRemoveDialog();
             } else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -254,7 +254,7 @@ function Users_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {
                 Users_RemoveCursor--;
                 if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
@@ -281,7 +281,7 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Users_isRemoveDialogShown()) {
                 Users_RemoveCursor++;
                 if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
@@ -303,7 +303,7 @@ function Users_handleKeyDown(event) {
                 Users_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Users_ColoumnsCount; i++) {
                 if (Main_ThumbNull((Users_cursorY - 1), (Users_cursorX - i), Users_ids[0])) {
                     Users_removeFocus();
@@ -314,7 +314,7 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Users_ColoumnsCount; i++) {
                 if (Main_ThumbNull((Users_cursorY + 1), (Users_cursorX - i), Users_ids[0])) {
                     Users_removeFocus();
@@ -325,26 +325,26 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             Users_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Main_Before = Main_Users;
             Main_Go = Main_games;
             Users_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Before = Main_Users;
             Main_Go = Main_Live;
             Users_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (Users_isRemoveDialogShown()) {
                 // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
                 var temp_RemoveCursor = Users_RemoveCursor;
@@ -355,17 +355,17 @@ function Users_handleKeyDown(event) {
                 }
             } else Users_keyEnter();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             Users_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_Users;
             Main_Go = Main_Search;
             Users_exit();

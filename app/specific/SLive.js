@@ -30,6 +30,7 @@ var SLive_Cell = 'slive_cell_';
 var SLive_Status = false;
 var SLive_itemsCountCheck = false;
 var SLive_lastData = '';
+var SLive_loadingMore = false;
 //Variable initialization end
 
 function SLive_init() {
@@ -372,7 +373,7 @@ function SLive_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -382,7 +383,7 @@ function SLive_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX - 1), SLive_Thumbnail)) {
                 SLive_removeFocus();
                 SLive_cursorX--;
@@ -399,7 +400,7 @@ function SLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX + 1), SLive_Thumbnail)) {
                 SLive_removeFocus();
                 SLive_cursorX++;
@@ -411,7 +412,7 @@ function SLive_handleKeyDown(event) {
                 SLive_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((SLive_cursorY - 1), (SLive_cursorX - i), SLive_Thumbnail)) {
                     SLive_removeFocus();
@@ -422,7 +423,7 @@ function SLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((SLive_cursorY + 1), (SLive_cursorX - i), SLive_Thumbnail)) {
                     SLive_removeFocus();
@@ -433,30 +434,30 @@ function SLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!SLive_loadingMore) SLive_StartLoad();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             Play_selectedChannel = $('#' + SLive_Cell + SLive_cursorY + '_' + SLive_cursorX).attr('data-channelname');
             Play_selectedChannelDisplayname = document.getElementById(SLive_DispNameDiv + SLive_cursorY + '_' + SLive_cursorX).textContent;
             document.body.removeEventListener("keydown", SLive_handleKeyDown);
             Main_openStream();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             SLive_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_SLive;
             Main_Go = Main_Search;
             SLive_exit();

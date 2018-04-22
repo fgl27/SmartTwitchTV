@@ -14,7 +14,7 @@ var SChannelContent_LastClickFinish = true;
 var SChannelContent_keyClickDelayTime = 25;
 var SChannelContent_skipImg = false;
 var SChannelContent_UserChannels = false;
-var SChannelContent_TargetName = undefined;
+var SChannelContent_TargetName;
 var SChannelContent_ids = ['scc_thumbdiv', 'scc_img', 'scc_infodiv', 'scc_name', 'scc_createdon', 'scc_game', 'scc_viwers', 'scc_duration', 'scc_cell', 'sccempty_'];
 var SChannelContent_status = false;
 var SChannelContent_lastselectedChannel = '';
@@ -62,7 +62,6 @@ function SChannelContent_StartLoad() {
 function SChannelContent_loadDataPrepare() {
     SChannelContent_imgMatrix = [];
     SChannelContent_imgMatrixId = [];
-    SChannelContent_imgMatrixCount = 0;
     SChannelContent_loadingData = true;
     SChannelContent_loadingDataTry = 0;
     SChannelContent_loadingDataTimeout = 3500;
@@ -187,9 +186,8 @@ function SChannelContent_loadDataSuccess(responseText) {
 function SChannelContent_createCell(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
     preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_VideoSize);
 
-    SChannelContent_imgMatrix[SChannelContent_imgMatrixCount] = preview_thumbnail;
-    SChannelContent_imgMatrixId[SChannelContent_imgMatrixCount] = SChannelContent_ids[1] + id;
-    SChannelContent_imgMatrixCount++;
+    SChannelContent_imgMatrix.push(preview_thumbnail);
+    SChannelContent_imgMatrixId.push(SChannelContent_ids[1] + id);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8]+ id);
@@ -211,9 +209,8 @@ function SChannelContent_createCell(id, channel_name, preview_thumbnail, stream_
 }
 
 function SChannelContent_createChannelCell(id, user_name, stream_type, preview_thumbnail) {
-    SChannelContent_imgMatrix[SChannelContent_imgMatrixCount] = preview_thumbnail;
-    SChannelContent_imgMatrixId[SChannelContent_imgMatrixCount] = SChannelContent_ids[1] + id;
-    SChannelContent_imgMatrixCount++;
+    SChannelContent_imgMatrix.push(preview_thumbnail);
+    SChannelContent_imgMatrixId.push(SChannelContent_ids[1] + id);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8]+ id);
@@ -232,9 +229,8 @@ function SChannelContent_createChannelCell(id, user_name, stream_type, preview_t
 }
 
 function SChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
-    SChannelContent_imgMatrix[SChannelContent_imgMatrixCount] = preview_thumbnail;
-    SChannelContent_imgMatrixId[SChannelContent_imgMatrixCount] = SChannelContent_ids[1] + id;
-    SChannelContent_imgMatrixCount++;
+    SChannelContent_imgMatrix.push(preview_thumbnail);
+    SChannelContent_imgMatrixId.push(SChannelContent_ids[1] + id);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8]+ id);
@@ -349,7 +345,7 @@ function SChannelContent_handleKeyDown(event) {
     }
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -361,45 +357,45 @@ function SChannelContent_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             SChannelContent_removeFocus();
             SChannelContent_cursorX--;
             if (SChannelContent_cursorX < 0) SChannelContent_cursorX = (!SChannelContent_skipImg ? 2 : 1);
             SChannelContent_addFocus();
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             SChannelContent_removeFocus();
             SChannelContent_cursorX++;
             if (SChannelContent_cursorX > (!SChannelContent_skipImg ? 2 : 1)) SChannelContent_cursorX = 0;
             SChannelContent_addFocus();
             break;
-        case TvKeyCode.KEY_UP:
-        case TvKeyCode.KEY_DOWN:
+        case KEY_UP:
+        case KEY_DOWN:
             SChannelContent_removeFocus();
             SChannelContent_cursorY = !SChannelContent_cursorY ? 1 : 0;
             SChannelContent_addFocus();
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             SChannelContent_StartLoad();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             SChannelContent_keyEnter();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             SChannelContent_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_SChannelContent;
             Main_Go = Main_Search;
             Main_RestoreTopLabel();

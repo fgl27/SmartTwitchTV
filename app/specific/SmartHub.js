@@ -17,6 +17,12 @@ var SmartHub_userhostimg = [];
 var SmartHub_followerChannels = '';
 var SmartHub_LastUpdate = 0;
 var SmartHub_emptyUser = false;
+var SmartHub_SmartHubResume = false;
+var SmartHub_followerUsername = '';
+var SmartHub_userold = 0;
+var SmartHub_usergamesold = 0;
+var SmartHub_userhostold = 0;
+var SmartHub_previewData = 0;
 //Variable initialization end
 
 function SmartHub_Start() {
@@ -99,8 +105,6 @@ function SmartHub_loadDataError() {
     if (SmartHub_loadingDataTry < SmartHub_loadingDataTryMax) {
         SmartHub_loadingDataTimeout += (SmartHub_loadingDataTry < 5) ? 250 : 3500;
         SmartHub_loadDataRequest();
-    } else {
-        SmartHub_loadingData = false;
     }
 }
 

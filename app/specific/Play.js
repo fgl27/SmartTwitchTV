@@ -56,6 +56,12 @@ var Play_Panelcouner = 0;
 var Play_IsWarning = false;
 var Play_selectedChannelLogo = '';
 var Play_gameSelected = '';
+var Play_videojs = null;
+var Play_LoadLogoSucess = false;
+var Play_loadingInfoDataTimeout = 10000;
+var Play_selectedChannelViews = '';
+var Play_selectedChannelFallower = '';
+var Play_loadingDataTimeout = 3500;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -345,7 +351,7 @@ function Play_extractQualities(input) {
 }
 
 function Play_extractBand(input) {
-    imput = parseInt(input);
+    input = parseInt(input);
     return input > 0 ? ' (' + parseFloat(input / 1000000).toFixed(2) + 'Mbps)' : '';
 }
 
@@ -893,7 +899,7 @@ function Play_KeyReturn(is_vod) {
 function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
-            case TvKeyCode.KEY_RETURN:
+            case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     window.clearTimeout(Play_exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
@@ -908,8 +914,8 @@ function Play_handleKeyDown(e) {
         }
     } else {
         switch (e.keyCode) {
-            case TvKeyCode.KEY_INFO:
-            case TvKeyCode.KEY_CHANNELGUIDE:
+            case KEY_INFO:
+            case KEY_CHANNELGUIDE:
                 if (!Play_isChatShown()) {
                     Play_showChat();
                     Play_ChatEnable = true;
@@ -920,19 +926,19 @@ function Play_handleKeyDown(e) {
                     localStorage.setItem('ChatEnable', 'false');
                 }
                 break;
-            case TvKeyCode.KEY_CHANNELUP:
+            case KEY_CHANNELUP:
                 if (Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                 }
                 break;
-            case TvKeyCode.KEY_CHANNELDOWN:
+            case KEY_CHANNELDOWN:
                 if (Play_isChatShown()) {
                     Play_ChatPositions--;
                     Play_ChatPosition();
                 }
                 break;
-            case TvKeyCode.KEY_LEFT:
+            case KEY_LEFT:
                 if (!Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatBackground -= 0.05;
                     if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
@@ -947,7 +953,7 @@ function Play_handleKeyDown(e) {
                     Play_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_RIGHT:
+            case KEY_RIGHT:
                 if (!Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatBackground += 0.05;
                     if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
@@ -962,7 +968,7 @@ function Play_handleKeyDown(e) {
                     Play_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_UP:
+            case KEY_UP:
                 if (Play_isPanelShown()) {
                     if (Play_qualityIndex > 0 && (!Play_Panelcouner)) {
                         Play_qualityIndex--;
@@ -979,7 +985,7 @@ function Play_handleKeyDown(e) {
                     Play_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_DOWN:
+            case KEY_DOWN:
                 if (Play_isPanelShown()) {
                     if (Play_qualityIndex < Play_getQualitiesCount() - 1 && (!Play_Panelcouner)) {
                         Play_qualityIndex++;
@@ -996,7 +1002,7 @@ function Play_handleKeyDown(e) {
                     Play_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_ENTER:
+            case KEY_ENTER:
                 if (Play_isPanelShown()) {
                     if (!Play_Panelcouner) {
                         Play_qualityChanged();
@@ -1009,7 +1015,7 @@ function Play_handleKeyDown(e) {
                         Main_Before = Main_Go;
                         Main_ExitCurrent(Main_Before);
                         Main_Go = Main_aGame;
-                        AGame_Usergames = false;
+                        AGame_UserGames = false;
                         Main_gameSelected = Play_gameSelected;
                         window.clearTimeout(Play_exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
@@ -1042,18 +1048,18 @@ function Play_handleKeyDown(e) {
                     Play_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_RETURN:
+            case KEY_RETURN:
                 Play_KeyReturn(false);
                 break;
-            case TvKeyCode.KEY_PLAY:
-            case TvKeyCode.KEY_PAUSE:
-            case TvKeyCode.KEY_PLAYPAUSE:
+            case KEY_PLAY:
+            case KEY_PAUSE:
+            case KEY_PLAYPAUSE:
                 Play_KeyPause();
                 break;
-            case TvKeyCode.KEY_YELLOW:
+            case KEY_YELLOW:
                 Play_showControlsDialog();
                 break;
-            case TvKeyCode.KEY_BLUE:
+            case KEY_BLUE:
                 break;
             default:
                 break;

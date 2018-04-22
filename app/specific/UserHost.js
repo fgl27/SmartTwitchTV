@@ -21,6 +21,7 @@ var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh
 var UserHost_status = false;
 var UserHost_OldUserName = '';
 var UserHost_itemsCountCheck = false;
+var UserHost_loadingMore = false;
 //Variable initialization end
 
 function UserHost_init() {
@@ -211,7 +212,7 @@ function UserHost_loadDataSuccessFinish() {
     });
 }
 
-function UserHost_loadChannelsReplace() {
+function UserHost_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -235,21 +236,21 @@ function UserHost_loadChannelsReplace() {
                 if (xmlHttp.status === 200) {
                     UserHost_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else UserHost_loadDataReplaceError();
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        UserHost_loadDataErrorReplace();
+        UserHost_loadDataReplaceError();
     }
 }
 
-function UserHost_loadDataErrorReplace() {
+function UserHost_loadDataReplaceError() {
     UserHost_loadingDataTry++;
     if (UserHost_loadingDataTry < UserHost_loadingDataTryMax) {
         UserHost_loadingDataTimeout += (UserHost_loadingDataTry < 5) ? 250 : 3500;
-        UserHost_loadChannelsReplace();
+        UserHost_loadDataReplace();
     } else {
         UserHost_ReplacedataEnded = true;
         UserHost_blankCellCount = 0;
@@ -334,7 +335,7 @@ function UserHost_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -343,7 +344,7 @@ function UserHost_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((UserHost_cursorY), (UserHost_cursorX - 1), UserHost_ids[0])) {
                 UserHost_removeFocus();
                 UserHost_cursorX--;
@@ -360,7 +361,7 @@ function UserHost_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((UserHost_cursorY), (UserHost_cursorX + 1), UserHost_ids[0])) {
                 UserHost_removeFocus();
                 UserHost_cursorX++;
@@ -372,7 +373,7 @@ function UserHost_handleKeyDown(event) {
                 UserHost_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((UserHost_cursorY - 1), (UserHost_cursorX - i), UserHost_ids[0])) {
                     UserHost_removeFocus();
@@ -383,7 +384,7 @@ function UserHost_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((UserHost_cursorY + 1), (UserHost_cursorX - i), UserHost_ids[0])) {
                     UserHost_removeFocus();
@@ -394,42 +395,42 @@ function UserHost_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!UserHost_loadingMore) UserHost_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             if (!UserHost_loadingMore) {
                 Main_Go = Main_usergames;
                 UserHost_exit();
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = Main_UserLive;
             UserHost_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute('data-channelname');
             Play_selectedChannelDisplayname = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent.split(STR_USER_HOSTING)[1];
             document.body.removeEventListener("keydown", UserHost_handleKeyDown);
             Main_openStream();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             UserHost_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_UserHost;
             Main_Go = Main_Search;
             UserHost_exit();

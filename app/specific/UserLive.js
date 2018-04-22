@@ -24,6 +24,7 @@ var UserLive_status = false;
 var UserLive_followerChannels = '';
 var UserLive_OldUserName = '';
 var UserLive_itemsCountCheck = false;
+var UserLive_loadingMore = false;
 //Variable initialization end
 
 function UserLive_init() {
@@ -404,7 +405,7 @@ function UserLive_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -413,7 +414,7 @@ function UserLive_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((UserLive_cursorY), (UserLive_cursorX - 1), UserLive_ids[0])) {
                 UserLive_removeFocus();
                 UserLive_cursorX--;
@@ -430,7 +431,7 @@ function UserLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((UserLive_cursorY), (UserLive_cursorX + 1), UserLive_ids[0])) {
                 UserLive_removeFocus();
                 UserLive_cursorX++;
@@ -442,7 +443,7 @@ function UserLive_handleKeyDown(event) {
                 UserLive_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((UserLive_cursorY - 1), (UserLive_cursorX - i), UserLive_ids[0])) {
                     UserLive_removeFocus();
@@ -453,7 +454,7 @@ function UserLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
                 if (Main_ThumbNull((UserLive_cursorY + 1), (UserLive_cursorX - i), UserLive_ids[0])) {
                     UserLive_removeFocus();
@@ -464,44 +465,44 @@ function UserLive_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!UserLive_loadingMore) UserLive_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             if (!UserLive_loadingMore) {
                 Main_Go = Main_UserHost;
                 UserLive_exit();
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             if (!UserLive_loadingMore) {
                 Main_Go = Main_UserChannels;
                 UserLive_exit();
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             Play_selectedChannel = document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute('data-channelname');
             Play_selectedChannelDisplayname = document.getElementById(UserLive_ids[3] + UserLive_cursorY + '_' + UserLive_cursorX).textContent;
             document.body.removeEventListener("keydown", UserLive_handleKeyDown);
             Main_openStream();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             UserLive_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_UserLive;
             Main_Go = Main_Search;
             Main_OldgameSelected = Main_gameSelected;

@@ -41,6 +41,8 @@ var PlayVod_IsJumping = false;
 var PlayVod_jumpCount = 0;
 var PlayVod_jumpCountMin = -16;
 var PlayVod_jumpCountMax = 16;
+var PlayVod_loadingDataTimeout = 3500;
+var PlayVod_qualitiesFound = false;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -61,6 +63,7 @@ function PlayVod_Start() {
         Play_showFallow();
     } else Play_hideFallow();
 
+    PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
@@ -559,7 +562,7 @@ function PlayVod_IconsFocus() {
 function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== PlayVod_STATE_PLAYING) {
         switch (e.keyCode) {
-            case TvKeyCode.KEY_RETURN:
+            case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     window.clearTimeout(Play_exitID);
                     document.getElementById('play_dialog_exit').classList.add('hide');
@@ -573,13 +576,13 @@ function PlayVod_handleKeyDown(e) {
         }
     } else {
         switch (e.keyCode) {
-            case TvKeyCode.KEY_INFO:
-            case TvKeyCode.KEY_CHANNELGUIDE:
+            case KEY_INFO:
+            case KEY_CHANNELGUIDE:
                 Play_hideChat();
                 Play_ChatEnable = false;
                 localStorage.setItem('ChatEnable', 'false');
                 break;
-            case TvKeyCode.KEY_LEFT:
+            case KEY_LEFT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner++;
                     if (Play_Panelcouner > 3) Play_Panelcouner = 0;
@@ -591,7 +594,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_jumpStart();
                 }
                 break;
-            case TvKeyCode.KEY_RIGHT:
+            case KEY_RIGHT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner--;
                     if (Play_Panelcouner < 0) Play_Panelcouner = 3;
@@ -603,7 +606,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_jumpStart();
                 }
                 break;
-            case TvKeyCode.KEY_UP:
+            case KEY_UP:
                 if (Play_isPanelShown()) {
                     if (PlayVod_qualityIndex > 0 && (!Play_Panelcouner)) {
                         PlayVod_qualityIndex--;
@@ -615,7 +618,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_DOWN:
+            case KEY_DOWN:
                 if (Play_isPanelShown()) {
                     if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && (!Play_Panelcouner)) {
                         PlayVod_qualityIndex++;
@@ -627,7 +630,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_ENTER:
+            case KEY_ENTER:
                 if (Play_isPanelShown()) {
                     if (!Play_Panelcouner) {
                         if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
@@ -655,18 +658,18 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_showPanel();
                 }
                 break;
-            case TvKeyCode.KEY_RETURN:
+            case KEY_RETURN:
                 Play_KeyReturn(true);
                 break;
-            case TvKeyCode.KEY_PLAY:
-            case TvKeyCode.KEY_PAUSE:
-            case TvKeyCode.KEY_PLAYPAUSE:
+            case KEY_PLAY:
+            case KEY_PAUSE:
+            case KEY_PLAYPAUSE:
                 Play_KeyPause();
                 break;
-            case TvKeyCode.KEY_YELLOW:
+            case KEY_YELLOW:
                 Play_showControlsDialog();
                 break;
-            case TvKeyCode.KEY_BLUE:
+            case KEY_BLUE:
                 break;
             default:
                 break;

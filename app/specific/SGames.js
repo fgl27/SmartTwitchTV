@@ -7,7 +7,6 @@ var SGames_loadingData = false;
 var SGames_loadingDataTry = 0;
 var SGames_loadingDataTryMax = 10;
 var SGames_loadingDataTimeout = 3500;
-var SGames_isDialogOn = false;
 var SGames_itemsCountOffset = 0;
 var SGames_LastClickFinish = true;
 var SGames_keyClickDelayTime = 25;
@@ -215,7 +214,7 @@ function SGames_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -225,7 +224,7 @@ function SGames_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX - 1), SGames_Thumbnail)) {
                 SGames_removeFocus();
                 SGames_cursorX--;
@@ -242,7 +241,7 @@ function SGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX + 1), SGames_Thumbnail)) {
                 SGames_removeFocus();
                 SGames_cursorX++;
@@ -254,7 +253,7 @@ function SGames_handleKeyDown(event) {
                 SGames_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
                 if (Main_ThumbNull((SGames_cursorY - 1), (SGames_cursorX - i), SGames_Thumbnail)) {
                     SGames_removeFocus();
@@ -265,7 +264,7 @@ function SGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
                 if (Main_ThumbNull((SGames_cursorY + 1), (SGames_cursorX - i), SGames_Thumbnail)) {
                     SGames_removeFocus();
@@ -276,14 +275,14 @@ function SGames_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             SGames_StartLoad();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             Main_gameSelected = $('#' + SGames_Cell + SGames_cursorY + '_' + SGames_cursorX).attr('data-channelname');
             document.body.removeEventListener("keydown", SGames_handleKeyDown);
             Main_Before = Main_Go;
@@ -291,17 +290,17 @@ function SGames_handleKeyDown(event) {
             SGames_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             SGames_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_sgames;
             Main_Go = Main_Search;
             SGames_exit();

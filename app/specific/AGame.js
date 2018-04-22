@@ -9,7 +9,6 @@ var AGame_loadingData = false;
 var AGame_loadingDataTry = 0;
 var AGame_loadingDataTryMax = 10;
 var AGame_loadingDataTimeout = 3500;
-var AGame_isDialogOn = false;
 var AGame_blankCellCount = 0;
 var AGame_itemsCountOffset = 0;
 var AGame_LastClickFinish = true;
@@ -22,7 +21,8 @@ var AGame_ids = ['ag_thumbdiv', 'ag_img', 'ag_infodiv', 'ag_displayname', 'ag_st
 var AGame_status = false;
 var AGame_itemsCountCheck = false;
 var AGame_fallowing = false;
-var AGame_Usergames = false;
+var AGame_UserGames = false;
+var AGame_loadingMore = false;
 //Variable initialization end
 
 function AGame_init() {
@@ -233,7 +233,7 @@ function AGame_loadDataSuccessFinish() {
 }
 
 function AGame_Checkfallow() {
-    if (AGame_Usergames) {
+    if (AGame_UserGames) {
         AGame_fallowing = true;
         AGame_setFallow();
     } else if (Main_UserName !== '') AddCode_CheckFallowGame();
@@ -391,7 +391,7 @@ function AGame_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (!AGame_loadingMore) {
@@ -402,7 +402,7 @@ function AGame_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (!AGame_cursorY && !AGame_cursorX) {
                 AGame_removeFocus();
                 AGame_cursorY = -1;
@@ -427,7 +427,7 @@ function AGame_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (AGame_cursorY === -1 && !AGame_emptyContent) {
                 AGame_cursorY = 0;
                 AGame_removeFocusFallow();
@@ -443,7 +443,7 @@ function AGame_handleKeyDown(event) {
                 AGame_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             if (AGame_cursorY === -1 && !AGame_emptyContent) {
                 AGame_cursorY = 0;
                 AGame_removeFocusFallow();
@@ -464,7 +464,7 @@ function AGame_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             if (AGame_cursorY === -1 && !AGame_emptyContent) {
                 AGame_cursorY = 0;
                 AGame_removeFocusFallow();
@@ -481,24 +481,24 @@ function AGame_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!AGame_loadingMore) AGame_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Main_Go = Main_Live;
             AGame_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
             AGame_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (AGame_cursorY !== -1) {
                 Play_selectedChannel = document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute('data-channelname');
                 Play_selectedChannelDisplayname = document.getElementById(AGame_ids[3] + AGame_cursorY + '_' + AGame_cursorX).textContent;
@@ -507,17 +507,17 @@ function AGame_handleKeyDown(event) {
                 Main_openStream();
             } else AGame_fallow();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             AGame_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_aGame;
             Main_Go = Main_Search;
             Main_OldgameSelected = Main_gameSelected;

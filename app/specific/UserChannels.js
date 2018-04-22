@@ -22,6 +22,7 @@ var UserChannels_Cell = 'uchannel_cell_';
 var UserChannels_Status = false;
 var UserChannels_OldUserName = '';
 var UserChannels_itemsCountCheck = false;
+var UserChannels_loadingMore = false;
 //Variable initialization end
 
 function UserChannels_init() {
@@ -245,7 +246,7 @@ function UserChannels_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (!UserChannels_loadingMore) {
@@ -254,7 +255,7 @@ function UserChannels_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX - 1), UserChannels_Thumbnail)) {
                 UserChannels_removeFocus();
                 UserChannels_cursorX--;
@@ -271,7 +272,7 @@ function UserChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX + 1), UserChannels_Thumbnail)) {
                 UserChannels_removeFocus();
                 UserChannels_cursorX++;
@@ -283,7 +284,7 @@ function UserChannels_handleKeyDown(event) {
                 UserChannels_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
                 if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
                     UserChannels_removeFocus();
@@ -294,7 +295,7 @@ function UserChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
                 if (Main_ThumbNull((UserChannels_cursorY + 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
                     UserChannels_removeFocus();
@@ -305,24 +306,24 @@ function UserChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!UserChannels_loadingMore) UserChannels_StartLoad();
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Main_Go = Main_UserLive;
             UserChannels_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = Main_usergames;
             UserChannels_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (!UserChannels_loadingMore) {
                 Main_selectedChannel = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-channelname');
                 Main_selectedChannel_id = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-id');
@@ -339,17 +340,17 @@ function UserChannels_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             UserChannels_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_UserChannels;
             Main_Go = Main_Search;
             UserChannels_exit();

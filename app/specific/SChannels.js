@@ -27,6 +27,7 @@ var SChannels_Status = false;
 var SChannels_lastData = '';
 var SChannels_itemsCountCheck = false;
 var SChannels_isLastSChannels = false;
+var SChannels_loadingMore = false;
 //Variable initialization end
 
 function SChannels_init() {
@@ -370,7 +371,7 @@ function SChannels_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -380,7 +381,7 @@ function SChannels_handleKeyDown(event) {
                 SChannels_Postexit();
             }
             break;
-        case TvKeyCode.KEY_LEFT:
+        case KEY_LEFT:
             if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX - 1), SChannels_Thumbnail)) {
                 SChannels_removeFocus();
                 SChannels_cursorX--;
@@ -397,7 +398,7 @@ function SChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_RIGHT:
+        case KEY_RIGHT:
             if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX + 1), SChannels_Thumbnail)) {
                 SChannels_removeFocus();
                 SChannels_cursorX++;
@@ -409,7 +410,7 @@ function SChannels_handleKeyDown(event) {
                 SChannels_addFocus();
             }
             break;
-        case TvKeyCode.KEY_UP:
+        case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
                 if (Main_ThumbNull((SChannels_cursorY - 1), (SChannels_cursorX - i), SChannels_Thumbnail)) {
                     SChannels_removeFocus();
@@ -420,7 +421,7 @@ function SChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_DOWN:
+        case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
                 if (Main_ThumbNull((SChannels_cursorY + 1), (SChannels_cursorX - i), SChannels_Thumbnail)) {
                     SChannels_removeFocus();
@@ -431,14 +432,14 @@ function SChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case TvKeyCode.KEY_INFO:
-        case TvKeyCode.KEY_CHANNELGUIDE:
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
             if (!SChannels_loadingMore) SChannels_StartLoad();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             if (!SChannels_loadingMore) {
                 Main_selectedChannel = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-channelname');
                 Main_selectedChannel_id = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-id');
@@ -454,17 +455,17 @@ function SChannels_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             SChannels_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_SChannels;
             Main_Go = Main_Search;
             SChannels_exit();

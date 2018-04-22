@@ -3,8 +3,6 @@ var AddCode_loadingDataTry = 0;
 var AddCode_loadingDataTryMax = 10;
 var AddCode_loadingDataTimeout = 10000;
 var AddCode_UsercodeArray = [];
-var AddCode_UserIdArray = [];
-var AddCode_Followercount = 0;
 var AddCode_Username = null;
 var AddCode_loadingData = false;
 var AddCode_keyBoardOn = false;
@@ -14,6 +12,8 @@ var AddCode_OauthToken = '';
 var AddCode_IsFallowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
+var AddCode_input = '';
+var AddCode_isCheckFallow = false;
 //Variable initialization end
 
 function AddCode_init() {
@@ -44,7 +44,7 @@ function AddCode_handleKeyDown(event) {
     if (AddCode_loadingData || AddCode_keyBoardOn) return;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_RETURN:
+        case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
@@ -53,33 +53,33 @@ function AddCode_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case TvKeyCode.KEY_CHANNELUP:
+        case KEY_CHANNELUP:
             Main_Go = Main_games;
             AddCode_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_CHANNELDOWN:
+        case KEY_CHANNELDOWN:
             Main_Go = Main_Live;
             AddCode_exit();
             Main_SwitchScreen();
             break;
-        case TvKeyCode.KEY_PLAY:
-        case TvKeyCode.KEY_PAUSE:
-        case TvKeyCode.KEY_PLAYPAUSE:
-        case TvKeyCode.KEY_ENTER:
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
             AddCode_inputFocus();
             break;
-        case TvKeyCode.KEY_RED:
+        case KEY_RED:
             Main_showAboutDialog();
             break;
-        case TvKeyCode.KEY_GREEN:
+        case KEY_GREEN:
             AddCode_exit();
             Main_GoLive();
             break;
-        case TvKeyCode.KEY_YELLOW:
+        case KEY_YELLOW:
             Main_showControlsDialog();
             break;
-        case TvKeyCode.KEY_BLUE:
+        case KEY_BLUE:
             Main_BeforeSearch = Main_Go;
             Main_Go = Main_Search;
             AddCode_exit();
@@ -114,12 +114,12 @@ function AddCode_KeyboardEvent(event) {
     if (AddCode_loadingData) return;
 
     switch (event.keyCode) {
-        case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
+        case KEY_KEYBOARD_DELETE_ALL:
             document.getElementById("oauth_input").value = '';
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_DONE:
-        case TvKeyCode.KEY_KEYBOARD_CANCEL:
+        case KEY_KEYBOARD_DONE:
+        case KEY_KEYBOARD_CANCEL:
             if ($('#oauth_input').val() !== '' && $('#oauth_input').val() !== null) {
 
                 document.getElementById("oauth_input").value = $('#oauth_input').val();
@@ -132,11 +132,11 @@ function AddCode_KeyboardEvent(event) {
             }
             AddCode_RemoveinputFocus();
             break;
-        case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
+        case KEY_KEYBOARD_BACKSPACE:
             document.getElementById("oauth_input").value = $('#oauth_input').val().slice(0, -1);
             event.preventDefault();
             break;
-        case TvKeyCode.KEY_KEYBOARD_SPACE:
+        case KEY_KEYBOARD_SPACE:
             document.getElementById("oauth_input").value = $('#oauth_input').val() + ' ';
             event.preventDefault();
             break;
@@ -578,7 +578,7 @@ function AddCode_CheckTokenError() {
         AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
         AddCode_CheckToken();
     } else {
-        Main_showWarningDialog(STR_USER_CODE_BAD);
+        Main_showWarningDialog(STR_KEY_BAD);
         Users_SetKeyTitle(false);
         window.setTimeout(function() {
             Main_HideWarningDialog();
