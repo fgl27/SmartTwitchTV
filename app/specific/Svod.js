@@ -166,7 +166,7 @@ Svod.loadDataSuccess = function(responseText) {
             else {
                 row.appendChild(Svod.createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length,
                 [video.preview.replace("320x240", main_VideoSize),
-                    video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
+                    video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
                     main_addCommas(video.views) + STR_VIEWER,
                     main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
                 ]));
@@ -299,7 +299,7 @@ Svod.loadDataSuccessReplace = function(responseText) {
             i--;
         } else {
             main_replaceVideo(Svod.blankCellVector[i], video._id + '._.' + video.length, [video.preview.replace("320x240", main_VideoSize),
-                video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play.timeS(video.length),
+                video.title, STR_STREAM_ON + main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
                 main_addCommas(video.views) + STR_VIEWER,
                 main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
             ]);
@@ -477,14 +477,14 @@ Svod.handleKeyDown = function(event) {
 };
 
 Svod.openStream = function() {
-    document.body.addEventListener("keydown", PlayVod.handleKeyDown, false);
+    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     document.body.removeEventListener("keydown", Svod.handleKeyDown);
     document.getElementById('scene2').classList.remove('hide');
-    PlayVod.hidePanel();
-    Play.hideChat();
-    Play.clearPause();
-    Play.HideWarningDialog();
+    PlayVod_hidePanel();
+    Play_hideChat();
+    Play_clearPause();
+    Play_HideWarningDialog();
     document.getElementById('play_dialog_exit').classList.add('hide');
     document.getElementById('scene1').classList.add('hide');
-    PlayVod.Start();
+    PlayVod_Start();
 };

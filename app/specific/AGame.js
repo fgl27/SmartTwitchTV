@@ -500,8 +500,8 @@ function aGame_handleKeyDown(event) {
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
             if (aGame_cursorY !== -1) {
-                Play.selectedChannel = document.getElementById(aGame_ids[8] + aGame_cursorY + '_' + aGame_cursorX).getAttribute('data-channelname');
-                Play.selectedChannelDisplayname = document.getElementById(aGame_ids[3] + aGame_cursorY + '_' + aGame_cursorX).textContent;
+                Play_selectedChannel = document.getElementById(aGame_ids[8] + aGame_cursorY + '_' + aGame_cursorX).getAttribute('data-channelname');
+                Play_selectedChannelDisplayname = document.getElementById(aGame_ids[3] + aGame_cursorY + '_' + aGame_cursorX).textContent;
                 document.body.removeEventListener("keydown", aGame_handleKeyDown);
                 main_OldgameSelected = main_gameSelected;
                 main_openStream();

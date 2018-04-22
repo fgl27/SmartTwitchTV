@@ -146,7 +146,7 @@ function main_loadTranslations(device) {
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + main_CheckMp4Html5();
     main_initWindows();
     Live.init();
-    Play.PreStart();
+    Play_PreStart();
     usergames_live = (localStorage.getItem('user_games_live') || 'true') === 'true' ? true : false;
     addUser_RestoreUsers();
     // pre load All img
@@ -377,8 +377,8 @@ function main_ThumbNull(y, x, thumbnail) {
 }
 
 function main_StartPlayerLive() {
-    document.body.addEventListener("keydown", Play.handleKeyDown, false);
-    Play.Start();
+    document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Play_Start();
 }
 
 function main_ReStartScreens() {
@@ -397,7 +397,7 @@ function main_SwitchScreen() {
     else if (main_Go === main_aGame) aGame_init();
     else if (main_Go === main_Search) Search.init();
     else if (main_Go === main_sgames) sgames_init();
-    else if (main_Go === main_SLive) SLive.init();
+    else if (main_Go === main_SLive) SLive_init();
     else if (main_Go === main_SChannelContent) SChannelContent.init();
     else if (main_Go === main_Svod) Svod.init();
     else if (main_Go === main_Sclip) Sclip.init();
@@ -417,7 +417,7 @@ function main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === main_aGame) aGame_exit();
     else if (ExitCurrent === main_Search) Search.exit();
     else if (ExitCurrent === main_sgames) sgames_exit();
-    else if (ExitCurrent === main_SLive) SLive.exit();
+    else if (ExitCurrent === main_SLive) SLive_exit();
     else if (ExitCurrent === main_SChannelContent) SChannelContent.exit();
     else if (ExitCurrent === main_Svod) Svod.exit();
     else if (ExitCurrent === main_Sclip) Sclip.exit();
@@ -430,12 +430,12 @@ function main_ExitCurrent(ExitCurrent) {
 }
 
 function main_openStream() {
-    document.body.addEventListener("keydown", Play.handleKeyDown, false);
+    document.body.addEventListener("keydown", Play_handleKeyDown, false);
     document.getElementById('scene2').classList.remove('hide');
-    Play.hidePanel();
-    Play.hideChat();
+    Play_hidePanel();
+    Play_hideChat();
     document.getElementById('scene1').classList.add('hide');
-    Play.Start();
+    Play_Start();
 }
 
 function main_RestoreTopLabel() {
@@ -477,14 +477,14 @@ function main_NetworkStateChangeListenerStart() {
                 if (main_NetworkRefresh) main_SwitchScreen();
                 main_NetworkRefresh = false;
             }
-            if (Play.WarningDialogVisible()) main_showWarningDialog(STR_NET_UP);
+            if (Play_WarningDialogVisible()) main_showWarningDialog(STR_NET_UP);
             window.setTimeout(main_HideExitDialog, 1500);
         } else if (data === 2 || 5) { //network down
             main_NetworkStateOK = false;
             window.setTimeout(function() {
                 if (!main_NetworkStateOK) {
                     main_showWarningDialog('');
-                    Play.showWarningDialog(STR_NET_DOWN);
+                    Play_showWarningDialog(STR_NET_DOWN);
                 }
             }, 5000);
         }
