@@ -110,6 +110,27 @@ var TEMP_MP4 = GIT_IO + "temp.mp4";
 var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
 var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
+
+//function vars
+var main_loadImg = function(ImgObjet, Src) {
+    ImgObjet.onerror = function() {
+        this.src = img_type; //img fail to load use predefined
+    };
+    ImgObjet.src = Src;
+};
+
+var main_lazyLoad = function(ImgObjet) {
+    ImgObjet.onerror = function() {
+        this.src = img_type; //img fail to load use predefined
+    };
+    ImgObjet.src = ImgObjet.getAttribute('data-src');
+    ImgObjet.removeAttribute('data-src');
+};
+
+var main_lazyUnLoad = function(ImgRstObjet) {
+    ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
+    ImgRstObjet.removeAttribute('src');
+};
 //Variable initialization end
 
 //Registering all used keys
@@ -544,31 +565,15 @@ function main_Resume() {
 }
 
 function main_LoadImages(imgVector, idVector, img_type) {
-    var loadImages = function(position, ImgObjet) {
-        ImgObjet.onerror = function() {
-            this.src = img_type; //img fail to load use predefined
-        };
-        ImgObjet.src = imgVector[position];
-    };
-
-    for (var i = 0; i < imgVector.length; i++) {
-        loadImages(i, document.getElementById(idVector[i]));
-    }
+    for (var i = 0; i < imgVector.length; i++) main_loadImg(document.getElementById(idVector[i]), imgVector[i]);
 }
 
 function main_LazyImgStart(imgId, total, img_type, coloumns) {
-    var x, y = 0,
-        loadImages = function(ImgObjet) {
-            ImgObjet.onerror = function() {
-                this.src = img_type; //img fail to load use predefined
-            };
-            ImgObjet.src = ImgObjet.getAttribute('data-src');
-            ImgObjet.removeAttribute('data-src');
-        };
+    var x, y = 0;
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) loadImages(elem);
+            if (elem !== null) main_lazyLoad(elem);
         }
     }
     main_Ychange(0);
@@ -576,31 +581,20 @@ function main_LazyImgStart(imgId, total, img_type, coloumns) {
 
 function main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
     var change = main_Ychange(row_id);
-
     if (row_id === offset && change === 1) change = 0;
 
     if (change) {
         var x = 0,
-            y, elem, loadImages = function(ImgLoadObjet) {
-                ImgLoadObjet.onerror = function() {
-                    this.src = img_type; //img fail to load use predefined
-                };
-                ImgLoadObjet.src = ImgLoadObjet.getAttribute('data-src');
-                ImgLoadObjet.removeAttribute('data-src');
-            },
-            resetImages = function(ImgRstObjet) {
-                ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
-                ImgRstObjet.removeAttribute('src');
-            };
+            y, elem;
 
         for (x; x < coloumns; x++) {
             y = change > 0 ? row_id + offset : row_id - offset;
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) loadImages(elem);
+            if (elem !== null) main_lazyLoad(elem);
 
             y = change > 0 ? row_id - offset - 1 : row_id + offset + 1;
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) resetImages(elem);
+            if (elem !== null) main_lazyUnLoad(elem);
         }
     }
 }
