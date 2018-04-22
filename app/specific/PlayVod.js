@@ -47,17 +47,17 @@ function PlayVod_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    Play_LoadLogo(document.getElementById('stream_info_icon'), main_selectedChannelLogo);
-    document.getElementById("stream_info_name").innerHTML = main_selectedChannelDisplayname;
-    document.getElementById("stream_info_title").innerHTML = Svod.title;
-    document.getElementById("stream_info_game").innerHTML = Svod.views;
-    document.getElementById("stream_live_icon").innerHTML = Svod.createdAt;
-    document.getElementById("stream_live_time").innerHTML = Svod.Duration;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+    document.getElementById("stream_info_name").innerHTML = Main_selectedChannelDisplayname;
+    document.getElementById("stream_info_title").innerHTML = Svod_title;
+    document.getElementById("stream_info_game").innerHTML = Svod_views;
+    document.getElementById("stream_live_icon").innerHTML = Svod_createdAt;
+    document.getElementById("stream_live_time").innerHTML = Svod_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
-    if (main_UserName !== '') {
-        addCode_userChannel = main_selectedChannel_id;
-        addCode_PlayRequest = true;
-        addCode_CheckFallow();
+    if (Main_UserName !== '') {
+        AddCode_userChannel = Main_selectedChannel_id;
+        AddCode_PlayRequest = true;
+        AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
 
@@ -114,15 +114,15 @@ function PlayVod_loadDataRequest() {
 
         var theUrl;
         if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + Svod.vodId + '/access_token' + (addCode_OauthToken !== 0 ? '?oauth_token=' + addCode_OauthToken : '');
+            theUrl = 'https://api.twitch.tv/api/vods/' + Svod_vodId + '/access_token' + (AddCode_OauthToken !== 0 ? '?oauth_token=' + AddCode_OauthToken : '');
         } else {
-            theUrl = 'http://usher.twitch.tv/vod/' + Svod.vodId +
+            theUrl = 'http://usher.twitch.tv/vod/' + Svod_vodId +
                 '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod_tokenResponse.sig + '&nauth=' +
                 escape(PlayVod_tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
 
         xmlHttp.ontimeout = function() {};
 
@@ -167,14 +167,14 @@ function PlayVod_loadDataError() {
 }
 
 function PlayVod_saveQualities() {
-    PlayVod_qualityName[PlayVod_qualityCount] = Svod.vodId;
+    PlayVod_qualityName[PlayVod_qualityCount] = Svod_vodId;
     PlayVod_qualityLinks[PlayVod_qualityCount] = PlayVod_qualities;
     PlayVod_qualityCount++;
 }
 
 function PlayVod_restore() {
     for (var i = 0; i < PlayVod_qualityName.length; i++) {
-        if (PlayVod_qualityName[i] === main_selectedChannel) {
+        if (PlayVod_qualityName[i] === Main_selectedChannel) {
             PlayVod_qualities = PlayVod_qualityLinks[i];
             PlayVod_qualitiesFound = true;
         }
@@ -205,7 +205,7 @@ function PlayVod_loadDataSuccess(responseText) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (addCode_OauthToken !== '') addCode_CheckSub();
+    if (AddCode_OauthToken !== '') AddCode_CheckSub();
     else {
         Play_HideBufferDialog();
         Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
@@ -507,7 +507,7 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump > 1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
         jumpTotime = Play_videojs.currentTime() + PlayVod_TimeToJump;
-        if (jumpTotime > Svod.DurationSeconds) {
+        if (jumpTotime > Svod_DurationSeconds) {
             PlayVod_TimeToJump = 0;
             PlayVod_jumpCountMax = PlayVod_jumpCount;
             Play_showWarningDialog(STR_JUMP_CANCEL + STR_JUMP_TIME_BIG);
@@ -529,30 +529,30 @@ function PlayVod_jumpStart() {
 }
 
 function PlayVod_IconsFocus() {
-    main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
 
-    main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
+    Main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
     if (!Play_Panelcouner) {
-        main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 1) {
-        main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 2) {
-        main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
     } else if (Play_Panelcouner === 3) {
-        main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+        Main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
     }
 }
 
@@ -638,15 +638,15 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_clearHidePanel();
                         PlayVod_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        if (main_Go !== main_Svod && main_Go !== main_Sclip && main_Go !== main_SChannelContent) main_Before = main_Go;
-                        main_ExitCurrent(main_Go);
-                        main_Go = main_SChannelContent;
+                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_Before = Main_Go;
+                        Main_ExitCurrent(Main_Go);
+                        Main_Go = Main_SChannelContent;
                         window.clearTimeout(Play_exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
-                        main_BeforeSearch = main_Go;
-                        main_Go = main_Search;
+                        Main_BeforeSearch = Main_Go;
+                        Main_Go = Main_Search;
                         window.clearTimeout(Play_exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod_shutdownStream, 10);

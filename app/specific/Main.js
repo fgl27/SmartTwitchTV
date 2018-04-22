@@ -1,95 +1,95 @@
 //Variable initialization
-var main_isReleased = false;
-var main_Hide = '';
-var main_Go = 1;
-var main_Before = 1;
-var main_BeforeSearch = 1;
-var main_cursorY = -1;
-var main_newImg = new Image();
+var Main_isReleased = false;
+var Main_Hide = '';
+var Main_Go = 1;
+var Main_Before = 1;
+var Main_BeforeSearch = 1;
+var Main_cursorY = -1;
+var Main_newImg = new Image();
 
-var main_Live = 1;
-var main_addUser = 2;
-var main_games = 3;
-var main_aGame = 4;
-var main_UserLive = 5;
-var main_UserHost = 6;
-var main_usergames = 7;
-var main_UserVod = 8;
-var main_UserAVod = 9;
-var main_Search = 10;
-var main_sgames = 11;
-var main_SLive = 12;
-var main_SChannelContent = 13;
-var main_Svod = 14;
-var main_Sclip = 15;
-var main_Users = 16;
-var main_UserChannels = 17;
-var main_SChannels = 18;
-var main_addCode = 19;
-var main_selectedChannel = '';
-var main_selectedChannelDisplayname = '';
-var main_selectedChannelLogo = '';
-var main_selectedChannelViews = '';
-var main_selectedChannelFallower = '';
-var main_listenerID = null;
-var main_ExitDialogID = null;
-var main_selectedGame = '';
-var main_selectedGameDisplayname = '';
-var main_gameSelected = '';
-var main_OldgameSelected = null;
-var main_OldUserName = '';
-var main_SmartHubId = null;
-var main_UserName = '';
-var main_ScrollbarBlack = true;
-var main_NetworkStateOK = true;
-var main_NetworkRefresh = false;
-var main_td = '';
+var Main_Live = 1;
+var Main_addUser = 2;
+var Main_games = 3;
+var Main_aGame = 4;
+var Main_UserLive = 5;
+var Main_UserHost = 6;
+var Main_usergames = 7;
+var Main_UserVod = 8;
+var Main_UserAVod = 9;
+var Main_Search = 10;
+var Main_sgames = 11;
+var Main_SLive = 12;
+var Main_SChannelContent = 13;
+var Main_Svod = 14;
+var Main_Sclip = 15;
+var Main_Users = 16;
+var Main_UserChannels = 17;
+var Main_SChannels = 18;
+var Main_addCode = 19;
+var Main_selectedChannel = '';
+var Main_selectedChannelDisplayname = '';
+var Main_selectedChannelLogo = '';
+var Main_selectedChannelViews = '';
+var Main_selectedChannelFallower = '';
+var Main_listenerID = null;
+var Main_ExitDialogID = null;
+var Main_selectedGame = '';
+var Main_selectedGameDisplayname = '';
+var Main_gameSelected = '';
+var Main_OldgameSelected = null;
+var Main_OldUserName = '';
+var Main_SmartHubId = null;
+var Main_UserName = '';
+var Main_ScrollbarBlack = true;
+var Main_NetworkStateOK = true;
+var Main_NetworkRefresh = false;
+var Main_td = '';
 
-var main_ScrollOffSetVideo = 275;
-var main_ScrollOffSetGame = 523;
+var Main_ScrollOffSetVideo = 275;
+var Main_ScrollOffSetGame = 523;
 
 //Offset value in relation to height of class screen_size, to change split the below by height and multiply with the new value
-var main_ScrollOffSetMinusVideo = 372;
-var main_ScrollOffSetMinusChannels = 464;
-var main_ScrollOffSetMinusGame = 567;
-var main_ScrollOffSetMinusDuploYOffsetCheck = 92;
-var main_ScrollOffSetMinusaddUser = 60;
-var main_ScrollOffSetMinusSearch = 100;
-var main_ScrollOffSetMinusAgame = 83;
+var Main_ScrollOffSetMinusVideo = 372;
+var Main_ScrollOffSetMinusChannels = 464;
+var Main_ScrollOffSetMinusGame = 567;
+var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
+var Main_ScrollOffSetMinusaddUser = 60;
+var Main_ScrollOffSetMinusSearch = 100;
+var Main_ScrollOffSetMinusAgame = 83;
 
 //The values of thumbnail and related for it screen type
-var main_ReloadLimitOffsetGames = 1.35;
-var main_ReloadLimitOffsetVideos = 1.5;
+var Main_ReloadLimitOffsetGames = 1.35;
+var Main_ReloadLimitOffsetVideos = 1.5;
 
-var main_ItemsLimitVideo = 99;
-var main_ColoumnsCountVideo = 3;
-var main_ItemsReloadLimitVideo = Math.floor((main_ItemsLimitVideo / main_ColoumnsCountVideo) / main_ReloadLimitOffsetVideos);
+var Main_ItemsLimitVideo = 99;
+var Main_ColoumnsCountVideo = 3;
+var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
 
-var main_ItemsLimitGame = 95;
-var main_ColoumnsCountGame = 5;
-var main_ItemsReloadLimitGame = Math.floor((main_ItemsLimitGame / main_ColoumnsCountGame) / main_ReloadLimitOffsetGames);
+var Main_ItemsLimitGame = 95;
+var Main_ColoumnsCountGame = 5;
+var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
 
-var main_ItemsLimitChannel = 96;
-var main_ColoumnsCountChannel = 6;
-var main_ItemsReloadLimitChannel = Math.floor((main_ItemsLimitChannel / main_ColoumnsCountChannel) / main_ReloadLimitOffsetVideos);
+var Main_ItemsLimitChannel = 96;
+var Main_ColoumnsCountChannel = 6;
+var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
 // How many streams will be request on a reload
-var main_ItemsLimitReload = 6;
+var Main_ItemsLimitReload = 6;
 
-var main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
-var main_VideoSize = "528x297"; // default size 640x360
-var main_GameSize = "340x475"; // default size 272x380
+var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var Main_VideoSize = "528x297"; // default size 640x360
+var Main_GameSize = "340x475"; // default size 272x380
 
-var main_classThumb = 'stream_thumbnail_focused';
-var main_classText = 'stream_text_focused';
-var main_classInfo = 'stream_info_focused';
-var main_TitleClass = 'stream_channel';
+var Main_classThumb = 'stream_thumbnail_focused';
+var Main_classText = 'stream_text_focused';
+var Main_classInfo = 'stream_info_focused';
+var Main_TitleClass = 'stream_channel';
 
-var main_version = 400;
-var main_stringVersion = '4.0.0';
-var main_currentVersion = '';
-var main_minversion = '042118';
-var main_versonTag = '';
+var Main_version = 400;
+var Main_stringVersion = '4.0.0';
+var Main_currentVersion = '';
+var Main_minversion = '042118';
+var Main_versonTag = '';
 
 var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
@@ -112,14 +112,14 @@ var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
 
 //function vars
-var main_loadImg = function(ImgObjet, Src) {
+var Main_loadImg = function(ImgObjet, Src) {
     ImgObjet.onerror = function() {
         this.src = img_type; //img fail to load use predefined
     };
     ImgObjet.src = Src;
 };
 
-var main_lazyLoad = function(ImgObjet) {
+var Main_lazyLoad = function(ImgObjet) {
     ImgObjet.onerror = function() {
         this.src = img_type; //img fail to load use predefined
     };
@@ -127,7 +127,7 @@ var main_lazyLoad = function(ImgObjet) {
     ImgObjet.removeAttribute('data-src');
 };
 
-var main_lazyUnLoad = function(ImgRstObjet) {
+var Main_lazyUnLoad = function(ImgRstObjet) {
     ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
     ImgRstObjet.removeAttribute('src');
 };
@@ -148,11 +148,11 @@ tizen.tvinputdevice.registerKey("Info");
 
 // this function will be called only once the first time the app startup
 document.addEventListener("DOMContentLoaded", function() {
-    tizen.systeminfo.getPropertyValue('LOCALE', main_loadTranslations);
+    tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
 });
 
 //TODO the day there is a translation add on if if the new values
-function main_loadTranslations(device) {
+function Main_loadTranslations(device) {
 
     // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
@@ -163,36 +163,36 @@ function main_loadTranslations(device) {
     else console.log("language is " + lang);
     DefaultLang();
     
-    if (main_isReleased) document.body.innerHTML = STR_BODY;
-    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + main_CheckMp4Html5();
-    main_initWindows();
-    Live.init();
+    if (Main_isReleased) document.body.innerHTML = STR_BODY;
+    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
+    Main_initWindows();
+    Live_init();
     Play_PreStart();
-    usergames_live = (localStorage.getItem('user_games_live') || 'true') === 'true' ? true : false;
-    addUser_RestoreUsers();
+    UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+    AddUser_RestoreUsers();
     // pre load All img
-    main_PreLoadAImage(IMG_404_VIDEO);
-    main_PreLoadAImage(IMG_404_GAME);
-    main_PreLoadAImage(IMG_404_LOGO);
-    main_PreLoadAImage(IMG_BLUR_GAME);
-    main_PreLoadAImage(IMG_BLUR_VIDEO1);
-    main_PreLoadAImage(IMG_BLUR_VIDEO2);
-    main_PreLoadAImage(IMG_BLUR_VIDEO1_16);
-    main_PreLoadAImage(IMG_BLUR_VIDEO2_16);
-    main_PreLoadAImage(IMG_BLUR_VOD);
-    main_PreLoadAImage(IMG_USER_MINUS);
-    main_PreLoadAImage(IMG_USER_PLUS);
-    main_PreLoadAImage(IMG_USER_UP);
-    main_PreLoadAImage(IMG_USER_CODE);
+    Main_PreLoadAImage(IMG_404_VIDEO);
+    Main_PreLoadAImage(IMG_404_GAME);
+    Main_PreLoadAImage(IMG_404_LOGO);
+    Main_PreLoadAImage(IMG_BLUR_GAME);
+    Main_PreLoadAImage(IMG_BLUR_VIDEO1);
+    Main_PreLoadAImage(IMG_BLUR_VIDEO2);
+    Main_PreLoadAImage(IMG_BLUR_VIDEO1_16);
+    Main_PreLoadAImage(IMG_BLUR_VIDEO2_16);
+    Main_PreLoadAImage(IMG_BLUR_VOD);
+    Main_PreLoadAImage(IMG_USER_MINUS);
+    Main_PreLoadAImage(IMG_USER_PLUS);
+    Main_PreLoadAImage(IMG_USER_UP);
+    Main_PreLoadAImage(IMG_USER_CODE);
 }
 
-function main_initWindows() {
+function Main_initWindows() {
     //set top bar labels
-    main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
-    main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
@@ -207,86 +207,86 @@ function main_initWindows() {
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
-    main_NetworkStateChangeListenerStart();
+    Main_NetworkStateChangeListenerStart();
 }
 
-function main_IconLoad(lable, icon, string) {
+function Main_IconLoad(lable, icon, string) {
     document.getElementById(lable).innerHTML = '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
         '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>';
 }
 
-function main_ChangeBorder(div, value) {
+function Main_ChangeBorder(div, value) {
     document.getElementById(div).style.border = value;
 }
 
-function main_ChangebackgroundColor(div, value) {
+function Main_ChangebackgroundColor(div, value) {
     document.getElementById(div).style.backgroundColor = value;
 }
 
-function main_showLoadDialog() {
-    main_HideExitDialog();
+function Main_showLoadDialog() {
+    Main_HideExitDialog();
     document.getElementById('dialog_loading').classList.remove('hide');
 }
 
-function main_HideLoadDialog() {
+function Main_HideLoadDialog() {
     document.getElementById('dialog_loading').classList.add('hide');
 }
 
-function main_clearExitDialog() {
-    window.clearTimeout(main_ExitDialogID);
+function Main_clearExitDialog() {
+    window.clearTimeout(Main_ExitDialogID);
 }
 
-function main_setExitDialog() {
-    main_ExitDialogID = window.setTimeout(main_HideExitDialog, 6000);
+function Main_setExitDialog() {
+    Main_ExitDialogID = window.setTimeout(Main_HideExitDialog, 6000);
 }
 
-function main_showExitDialog() {
-    main_setExitDialog();
+function Main_showExitDialog() {
+    Main_setExitDialog();
     document.getElementById('main_dialog_exit').classList.remove('hide');
 }
 
-function main_HideExitDialog() {
-    main_clearExitDialog();
+function Main_HideExitDialog() {
+    Main_clearExitDialog();
     document.getElementById('main_dialog_exit').classList.add('hide');
-    Live.ExitCursor = 0;
-    Live.ExitCursorSet();
+    Live_ExitCursor = 0;
+    Live_ExitCursorSet();
 }
 
-function main_isExitDialogShown() {
+function Main_isExitDialogShown() {
     return document.getElementById('main_dialog_exit').className.indexOf('hide') === -1;
 }
 
-function main_CounterDialogRst() {
+function Main_CounterDialogRst() {
     document.getElementById('dialog_counter_text').innerHTML = '';
-    main_Scrollbar(0, 0, 0);
+    Main_Scrollbar(0, 0, 0);
 }
 
-function main_CounterDialog(x, y, coloumns, total) {
+function Main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) {
         document.getElementById('dialog_counter_text').innerHTML = (y * coloumns) + (x + 1) + '/' + (total);
-        main_Scrollbar(y, coloumns, total);
-    } else main_CounterDialogRst();
+        Main_Scrollbar(y, coloumns, total);
+    } else Main_CounterDialogRst();
 }
 
-function main_Scrollbar(y, coloumns, total) {
+function Main_Scrollbar(y, coloumns, total) {
     // min 100 max 1000 or the 900 + 100 below
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
         var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
         var currentPositon = document.getElementById('scrollbar').offsetTop;
 
         //If position are different it means previously animation did't ended, stop it and force set the value
-        if (currentPositon !== main_nextScrollPositon) {
+        if (currentPositon !== Main_nextScrollPositon) {
             $('#scrollbar').stop();
-            document.getElementById("scrollbar").style.top = main_nextScrollPositon + "px";
+            document.getElementById("scrollbar").style.top = Main_nextScrollPositon + "px";
         }
-        main_nextScrollPositon = nextPositon;
+        Main_nextScrollPositon = nextPositon;
 
         $('#scrollbar').animate({
             top: nextPositon + 'px'
         }, 400);
 
-        if (main_ScrollbarBlack) {
-            main_ScrollbarBlack = false;
+        if (Main_ScrollbarBlack) {
+            Main_ScrollbarBlack = false;
             window.setTimeout(function() {
                 document.getElementById("scrollbar").style.backgroundColor = "#777777";
             }, (nextPositon === 100 ? 0 : 800));
@@ -294,79 +294,79 @@ function main_Scrollbar(y, coloumns, total) {
     } else {
         $('#scrollbar').stop();
         document.getElementById("scrollbar").style.backgroundColor = "#000000";
-        main_nextScrollPositon = 100;
-        main_ScrollbarBlack = true;
+        Main_nextScrollPositon = 100;
+        Main_ScrollbarBlack = true;
         document.getElementById("scrollbar").style.top = "100px";
     }
 }
 
-function main_SetItemsLimitReload(blankCellCount) {
-    main_ItemsLimitReload = 12;
-    if (blankCellCount > (main_ItemsLimitReload / 3)) main_ItemsLimitReload = blankCellCount * 3;
-    if (main_ItemsLimitReload > 99) main_ItemsLimitReload = 99;
+function Main_SetItemsLimitReload(blankCellCount) {
+    Main_ItemsLimitReload = 12;
+    if (blankCellCount > (Main_ItemsLimitReload / 3)) Main_ItemsLimitReload = blankCellCount * 3;
+    if (Main_ItemsLimitReload > 99) Main_ItemsLimitReload = 99;
 }
 
-function main_showWarningDialog(text) {
-    if (!main_NetworkStateOK && text === STR_REFRESH_PROBLEM) main_NetworkRefresh = true;
-    document.getElementById('dialog_warning_text').innerHTML = !main_NetworkStateOK ? STR_NET_DOWN : text;
+function Main_showWarningDialog(text) {
+    if (!Main_NetworkStateOK && text === STR_REFRESH_PROBLEM) Main_NetworkRefresh = true;
+    document.getElementById('dialog_warning_text').innerHTML = !Main_NetworkStateOK ? STR_NET_DOWN : text;
     document.getElementById('dialog_warning').classList.remove('hide');
 }
 
-function main_HideWarningDialog() {
+function Main_HideWarningDialog() {
     document.getElementById('dialog_warning').classList.add('hide');
 }
 
-function main_isWarningDialogShown() {
+function Main_isWarningDialogShown() {
     return document.getElementById('dialog_warning').className.indexOf('hide') === -1;
 }
 
-function main_showAboutDialog() {
-    main_HideExitDialog();
-    main_HideControlsDialog();
-    main_HideUpdateDialog();
+function Main_showAboutDialog() {
+    Main_HideExitDialog();
+    Main_HideControlsDialog();
+    Main_HideUpdateDialog();
     document.getElementById('dialog_about').classList.remove('hide');
 }
 
-function main_HideAboutDialog() {
+function Main_HideAboutDialog() {
     document.getElementById('dialog_about').classList.add('hide');
 }
 
-function main_isAboutDialogShown() {
+function Main_isAboutDialogShown() {
     return document.getElementById('dialog_about').className.indexOf('hide') === -1;
 }
 
-function main_showControlsDialog() {
-    main_HideExitDialog();
-    main_HideAboutDialog();
-    main_HideUpdateDialog();
+function Main_showControlsDialog() {
+    Main_HideExitDialog();
+    Main_HideAboutDialog();
+    Main_HideUpdateDialog();
     document.getElementById('dialog_controls').classList.remove('hide');
 }
 
-function main_HideControlsDialog() {
+function Main_HideControlsDialog() {
     document.getElementById('dialog_controls').classList.add('hide');
 }
 
 
-function main_isControlsDialogShown() {
+function Main_isControlsDialogShown() {
     return document.getElementById('dialog_controls').className.indexOf('hide') === -1;
 }
 
-function main_showUpdateDialog() {
-    main_HideExitDialog();
-    main_HideAboutDialog();
-    main_HideControlsDialog();
+function Main_showUpdateDialog() {
+    Main_HideExitDialog();
+    Main_HideAboutDialog();
+    Main_HideControlsDialog();
     document.getElementById('dialog_update').classList.remove('hide');
 }
 
-function main_HideUpdateDialog() {
+function Main_HideUpdateDialog() {
     document.getElementById('dialog_update').classList.add('hide');
 }
 
-function main_isUpdateDialogShown() {
+function Main_isUpdateDialogShown() {
     return document.getElementById('dialog_update').className.indexOf('hide') === -1;
 }
 
-function main_addCommas(nStr) {
+function Main_addCommas(nStr) {
     nStr += '';
     var x = nStr.split('.');
     var x1 = x[0];
@@ -378,7 +378,7 @@ function main_addCommas(nStr) {
     return x1 + x2;
 }
 
-function main_videoqualitylang(video_height, average_fps, language) {
+function Main_videoqualitylang(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
@@ -389,68 +389,68 @@ function main_videoqualitylang(video_height, average_fps, language) {
     return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
 }
 
-function main_is_playlist(content) {
+function Main_is_playlist(content) {
     return (content.indexOf('live') !== -1) ? '' : STR_NOT_LIVE;
 }
 
-function main_ThumbNull(y, x, thumbnail) {
+function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x, 0) !== null;
 }
 
-function main_StartPlayerLive() {
+function Main_StartPlayerLive() {
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
     Play_Start();
 }
 
-function main_ReStartScreens() {
+function Main_ReStartScreens() {
     document.getElementById('play_dialog_exit').classList.add('hide');
-    main_SwitchScreen();
+    Main_SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 }
 
-function main_SwitchScreen() {
-    main_ScrollHelperBlank('blank_focus');
-    if (main_NetworkStateOK) main_HideWarningDialog();
-    main_CounterDialogRst();
-    if (main_Go === main_Live) Live.init();
-    else if (main_Go === main_addUser) addUser_init();
-    else if (main_Go === main_games) games_init();
-    else if (main_Go === main_aGame) aGame_init();
-    else if (main_Go === main_Search) Search.init();
-    else if (main_Go === main_sgames) sgames_init();
-    else if (main_Go === main_SLive) SLive_init();
-    else if (main_Go === main_SChannelContent) SChannelContent.init();
-    else if (main_Go === main_Svod) Svod.init();
-    else if (main_Go === main_Sclip) Sclip.init();
-    else if (main_Go === main_Users) Users.init();
-    else if (main_Go === main_UserLive) UserLive.init();
-    else if (main_Go === main_UserHost) UserHost.init();
-    else if (main_Go === main_usergames) usergames_init();
-    else if (main_Go === main_UserChannels) UserChannels.init();
-    else if (main_Go === main_SChannels) SChannels.init();
-    else Live.init();
+function Main_SwitchScreen() {
+    Main_ScrollHelperBlank('blank_focus');
+    if (Main_NetworkStateOK) Main_HideWarningDialog();
+    Main_CounterDialogRst();
+    if (Main_Go === Main_Live) Live_init();
+    else if (Main_Go === Main_addUser) AddUser_init();
+    else if (Main_Go === Main_games) Games_init();
+    else if (Main_Go === Main_aGame) AGame_init();
+    else if (Main_Go === Main_Search) Search_init();
+    else if (Main_Go === Main_sgames) SGames_init();
+    else if (Main_Go === Main_SLive) SLive_init();
+    else if (Main_Go === Main_SChannelContent) SChannelContent_init();
+    else if (Main_Go === Main_Svod) Svod_init();
+    else if (Main_Go === Main_Sclip) Sclip_init();
+    else if (Main_Go === Main_Users) Users_init();
+    else if (Main_Go === Main_UserLive) UserLive_init();
+    else if (Main_Go === Main_UserHost) UserHost_init();
+    else if (Main_Go === Main_usergames) UserGames_init();
+    else if (Main_Go === Main_UserChannels) UserChannels_init();
+    else if (Main_Go === Main_SChannels) SChannels_init();
+    else Live_init();
 }
 
-function main_ExitCurrent(ExitCurrent) {
-    if (ExitCurrent === main_Live) Live.exit();
-    else if (ExitCurrent === main_addUser) addUser_exit();
-    else if (ExitCurrent === main_games) games_exit();
-    else if (ExitCurrent === main_aGame) aGame_exit();
-    else if (ExitCurrent === main_Search) Search.exit();
-    else if (ExitCurrent === main_sgames) sgames_exit();
-    else if (ExitCurrent === main_SLive) SLive_exit();
-    else if (ExitCurrent === main_SChannelContent) SChannelContent.exit();
-    else if (ExitCurrent === main_Svod) Svod.exit();
-    else if (ExitCurrent === main_Sclip) Sclip.exit();
-    else if (ExitCurrent === main_Users) Users.exit();
-    else if (ExitCurrent === main_UserLive) UserLive.exit();
-    else if (ExitCurrent === main_UserHost) UserHost.exit();
-    else if (ExitCurrent === main_usergames) usergames_exit();
-    else if (ExitCurrent === main_UserChannels) UserChannels.exit();
-    else if (ExitCurrent === main_SChannels) SChannels.exit();
+function Main_ExitCurrent(ExitCurrent) {
+    if (ExitCurrent === Main_Live) Live_exit();
+    else if (ExitCurrent === Main_addUser) AddUser_exit();
+    else if (ExitCurrent === Main_games) Games_exit();
+    else if (ExitCurrent === Main_aGame) AGame_exit();
+    else if (ExitCurrent === Main_Search) Search_exit();
+    else if (ExitCurrent === Main_sgames) SGames_exit();
+    else if (ExitCurrent === Main_SLive) SLive_exit();
+    else if (ExitCurrent === Main_SChannelContent) SChannelContent_exit();
+    else if (ExitCurrent === Main_Svod) Svod_exit();
+    else if (ExitCurrent === Main_Sclip) Sclip_exit();
+    else if (ExitCurrent === Main_Users) Users_exit();
+    else if (ExitCurrent === Main_UserLive) UserLive_exit();
+    else if (ExitCurrent === Main_UserHost) UserHost_exit();
+    else if (ExitCurrent === Main_usergames) UserGames_exit();
+    else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
+    else if (ExitCurrent === Main_SChannels) SChannels_exit();
 }
 
-function main_openStream() {
+function Main_openStream() {
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
     document.getElementById('scene2').classList.remove('hide');
     Play_hidePanel();
@@ -459,29 +459,29 @@ function main_openStream() {
     Play_Start();
 }
 
-function main_RestoreTopLabel() {
-    main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
-    main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+function Main_RestoreTopLabel() {
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
 }
 
-function main_cleanTopLabel() {
-    main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+function Main_cleanTopLabel() {
+    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     document.getElementById('label_switch').innerHTML = '';
     document.getElementById('top_bar_live').innerHTML = '';
     document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
 }
 
-function main_UnderCenter(text) {
+function Main_UnderCenter(text) {
     return '<div style="font-size: 30%; position: fixed; line-height: 0;">' + text + '</div>';
 }
 
-function main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
+function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
         "July", "Aug", "Sept", "Oct", "Nov", "Dec"
     ];
@@ -489,98 +489,98 @@ function main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 }
 
-function main_NetworkStateChangeListenerStart() {
+function Main_NetworkStateChangeListenerStart() {
     var onChange = function(data) {
         if (data === 1 || data === 4) { //network connected
-            main_NetworkStateOK = true;
-            if (main_isWarningDialogShown()) {
-                main_showWarningDialog(STR_NET_UP);
-                if (main_NetworkRefresh) main_SwitchScreen();
-                main_NetworkRefresh = false;
+            Main_NetworkStateOK = true;
+            if (Main_isWarningDialogShown()) {
+                Main_showWarningDialog(STR_NET_UP);
+                if (Main_NetworkRefresh) Main_SwitchScreen();
+                Main_NetworkRefresh = false;
             }
-            if (Play_WarningDialogVisible()) main_showWarningDialog(STR_NET_UP);
-            window.setTimeout(main_HideExitDialog, 1500);
+            if (Play_WarningDialogVisible()) Main_showWarningDialog(STR_NET_UP);
+            window.setTimeout(Main_HideExitDialog, 1500);
         } else if (data === 2 || 5) { //network down
-            main_NetworkStateOK = false;
+            Main_NetworkStateOK = false;
             window.setTimeout(function() {
-                if (!main_NetworkStateOK) {
-                    main_showWarningDialog('');
+                if (!Main_NetworkStateOK) {
+                    Main_showWarningDialog('');
                     Play_showWarningDialog(STR_NET_DOWN);
                 }
             }, 5000);
         }
     };
     try {
-        main_listenerID = webapis.network.addNetworkStateChangeListener(onChange);
+        Main_listenerID = webapis.network.addNetworkStateChangeListener(onChange);
     } catch (e) {}
 }
 
-function main_NetworkStateChangeListenerStop() {
+function Main_NetworkStateChangeListenerStop() {
     try {
-        webapis.network.removeNetworkStateChangeListener(main_listenerID);
+        webapis.network.removeNetworkStateChangeListener(Main_listenerID);
     } catch (e) {}
 }
 
-function main_checkVersion() {
+function Main_checkVersion() {
     var version = null,
         value = 0;
     try {
         version = (tizen.application.getAppInfo().version);
     } catch (e) {}
     if (version !== null) {
-        main_currentVersion = version;
-        main_versonTag = STR_VERSION + version + '.' + main_minversion + STR_BR;
+        Main_currentVersion = version;
+        Main_versonTag = STR_VERSION + version + '.' + Main_minversion + STR_BR;
         version = version.split(".");
         value = parseInt(version[0] + version[1] + version[2]);
-        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + main_versonTag + STR_ABOUT_INFO_0;
-        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + main_currentVersion + STR_LATEST_VERSION + main_stringVersion + STR_BR + STR_UPDATE_MAIN_0;
-        return value < main_version;
+        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0;
+        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0;
+        return value < Main_version;
     } else return false;
 }
 
-function main_GoLive() {
-    addCode_SetDefaultOAuth(0);
-    main_Go = main_Live;
-    main_SwitchScreen();
+function Main_GoLive() {
+    AddCode_SetDefaultOAuth(0);
+    Main_Go = Main_Live;
+    Main_SwitchScreen();
 }
 
-function main_Resume() {
+function Main_Resume() {
     if (document.hidden) {
-        window.clearInterval(main_SmartHubId);
-        main_NetworkStateChangeListenerStop();
+        window.clearInterval(Main_SmartHubId);
+        Main_NetworkStateChangeListenerStop();
     } else {
         window.setTimeout(function() {
-            main_NetworkStateChangeListenerStart();
+            Main_NetworkStateChangeListenerStart();
         }, 20000);
         window.setTimeout(function() {
-            if (addUser_UsernameArray.length > 0) {
-                if ((new Date().getTime() - 590000) > SmartHub.LastUpdate) SmartHub.Start();
-                main_SmartHubId = window.setInterval(SmartHub.Start, 600000);
+            if (AddUser_UsernameArray.length > 0) {
+                if ((new Date().getTime() - 590000) > SmartHub_LastUpdate) SmartHub_Start();
+                Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
             } else {
-                window.clearInterval(main_SmartHubId);
-                document.removeEventListener('visibilitychange', main_Resume);
+                window.clearInterval(Main_SmartHubId);
+                document.removeEventListener('visibilitychange', Main_Resume);
             }
         }, 1500);
     }
 }
 
-function main_LoadImages(imgVector, idVector, img_type) {
-    for (var i = 0; i < imgVector.length; i++) main_loadImg(document.getElementById(idVector[i]), imgVector[i]);
+function Main_LoadImages(imgVector, idVector, img_type) {
+    for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i]);
 }
 
-function main_LazyImgStart(imgId, total, img_type, coloumns) {
+function Main_LazyImgStart(imgId, total, img_type, coloumns) {
     var x, y = 0;
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) main_lazyLoad(elem);
+            if (elem !== null) Main_lazyLoad(elem);
         }
     }
-    main_Ychange(0);
+    Main_Ychange(0);
 }
 
-function main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
-    var change = main_Ychange(row_id);
+function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
+    var change = Main_Ychange(row_id);
     if (row_id === offset && change === 1) change = 0;
 
     if (change) {
@@ -590,81 +590,81 @@ function main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is o
         for (x; x < coloumns; x++) {
             y = change > 0 ? row_id + offset : row_id - offset;
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) main_lazyLoad(elem);
+            if (elem !== null) Main_lazyLoad(elem);
 
             y = change > 0 ? row_id - offset - 1 : row_id + offset + 1;
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) main_lazyUnLoad(elem);
+            if (elem !== null) Main_lazyUnLoad(elem);
         }
     }
 }
 
-function main_Ychange(y) {
+function Main_Ychange(y) {
     var position = 0;
 
-    if (main_cursorY < y) position = 1; //going down
-    else if (main_cursorY > y) position = -1; //going up
+    if (Main_cursorY < y) position = 1; //going down
+    else if (Main_cursorY > y) position = -1; //going up
 
-    main_cursorY = y;
+    Main_cursorY = y;
     return position;
 }
 
-function main_YRst(y) {
-    main_cursorY = y;
+function Main_YRst(y) {
+    Main_cursorY = y;
 }
 
-function main_PreLoadAImage(link) {
-    main_newImg.src = link;
+function Main_PreLoadAImage(link) {
+    Main_newImg.src = link;
 }
 
-function main_createCellEmpty(row_id, coloumn_id, cell) {
+function Main_createCellEmpty(row_id, coloumn_id, cell) {
     // id here can't be equal between screen
     return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
 }
 
-function main_createEmptyCell(id) {
-    main_td = document.createElement('td');
-    main_td.setAttribute('id', id);
-    main_td.className = 'stream_cell';
+function Main_createEmptyCell(id) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', id);
+    Main_td.className = 'stream_cell';
 
-    return main_td;
+    return Main_td;
 }
 
-function main_SetStreamTitle(boolean) {
-    if (boolean) main_TitleClass = 'stream_info';
-    else main_TitleClass = 'stream_channel';
+function Main_SetStreamTitle(boolean) {
+    if (boolean) Main_TitleClass = 'stream_info';
+    else Main_TitleClass = 'stream_channel';
 }
 
-function main_createCellVideo(channel_name, id, idArray, valuesArray) {
-    main_td = document.createElement('td');
-    main_td.setAttribute('id', idArray[8] + id);
-    main_td.setAttribute('data-channelname', channel_name);
-    main_td.className = 'stream_cell';
-    main_td.innerHTML = main_VideoHtml(id, idArray, valuesArray);
+function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', idArray[8] + id);
+    Main_td.setAttribute('data-channelname', channel_name);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = Main_VideoHtml(id, idArray, valuesArray);
 
-    return main_td;
+    return Main_td;
 }
 
-function main_replaceVideo(id, channel_name, valuesArray, cell, splitedId) {
+function Main_replaceVideo(id, channel_name, valuesArray, cell, splitedId) {
     splitedId = id.split(splitedId)[1];
     id = document.getElementById(id);
     id.setAttribute('data-channelname', channel_name);
-    id.innerHTML = main_VideoHtml(splitedId, Live.ids, valuesArray);
+    id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
     id.setAttribute('id', cell + splitedId);
 }
 
-function main_VideoHtml(id, idArray, valuesArray) {
+function Main_VideoHtml(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="' + main_TitleClass + '">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="' + Main_TitleClass + '">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 64%; display: inline-block;">' + valuesArray[4] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
 }
 
-function main_CheckMp4Html5() {
+function Main_CheckMp4Html5() {
     var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
     if (!!document.createElement('video').canPlayType) {
 
@@ -693,121 +693,121 @@ function main_CheckMp4Html5() {
     return result;
 }
 
-function main_addFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
+function Main_addFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
     ViwersDiv, QualityDiv, screen, ColoumnsCount, itemsCount) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.add(main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.add(main_classInfo);
-    document.getElementById(StreamTitleDiv + y + '_' + x).classList.add(main_classInfo);
-    document.getElementById(StreamGameDiv + y + '_' + x).classList.add(main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.add(main_classInfo);
-    document.getElementById(QualityDiv + y + '_' + x).classList.add(main_classInfo);
+    document.getElementById(Thumbnail + y + '_' + x).classList.add(Main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main_classInfo);
+    document.getElementById(StreamTitleDiv + y + '_' + x).classList.add(Main_classInfo);
+    document.getElementById(StreamGameDiv + y + '_' + x).classList.add(Main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main_classInfo);
+    document.getElementById(QualityDiv + y + '_' + x).classList.add(Main_classInfo);
 
     window.setTimeout(function() {
-        main_ScrollHelper(Thumbnail, y, x, screen, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
+        Main_ScrollHelper(Thumbnail, y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
     }, 10);
 
-    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
-function main_removeFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.remove(main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(main_classInfo);
-    document.getElementById(StreamTitleDiv + y + '_' + x).classList.remove(main_classInfo);
-    document.getElementById(StreamGameDiv + y + '_' + x).classList.remove(main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(main_classInfo);
-    document.getElementById(QualityDiv + y + '_' + x).classList.remove(main_classInfo);
+function Main_removeFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv, ViwersDiv, QualityDiv) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.remove(Main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main_classInfo);
+    document.getElementById(StreamTitleDiv + y + '_' + x).classList.remove(Main_classInfo);
+    document.getElementById(StreamGameDiv + y + '_' + x).classList.remove(Main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main_classInfo);
+    document.getElementById(QualityDiv + y + '_' + x).classList.remove(Main_classInfo);
 }
 
-function main_addFocusVideoArray(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function Main_addFocusVideoArray(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
-    document.getElementById(idArray[0] + id).classList.add(main_classThumb);
-    document.getElementById(idArray[2] + id).classList.add(main_classText);
-    document.getElementById(idArray[3] + id).classList.add(main_classInfo);
-    document.getElementById(idArray[4] + id).classList.add(main_classInfo);
-    document.getElementById(idArray[5] + id).classList.add(main_classInfo);
-    document.getElementById(idArray[6] + id).classList.add(main_classInfo);
-    document.getElementById(idArray[7] + id).classList.add(main_classInfo);
+    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.add(Main_classText);
+    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
+    document.getElementById(idArray[4] + id).classList.add(Main_classInfo);
+    document.getElementById(idArray[5] + id).classList.add(Main_classInfo);
+    document.getElementById(idArray[6] + id).classList.add(Main_classInfo);
+    document.getElementById(idArray[7] + id).classList.add(Main_classInfo);
 
     window.setTimeout(function() {
-        main_ScrollHelper(idArray[0], y, x, screen, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
+        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
     }, 10);
 
-    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
-function main_removeFocusVideoArray(id, idArray) {
-    document.getElementById(idArray[0] + id).classList.remove(main_classThumb);
-    document.getElementById(idArray[2] + id).classList.remove(main_classText);
-    document.getElementById(idArray[3] + id).classList.remove(main_classInfo);
-    document.getElementById(idArray[4] + id).classList.remove(main_classInfo);
-    document.getElementById(idArray[5] + id).classList.remove(main_classInfo);
-    document.getElementById(idArray[6] + id).classList.remove(main_classInfo);
-    document.getElementById(idArray[7] + id).classList.remove(main_classInfo);
+function Main_removeFocusVideoArray(id, idArray) {
+    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
+    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
+    document.getElementById(idArray[4] + id).classList.remove(Main_classInfo);
+    document.getElementById(idArray[5] + id).classList.remove(Main_classInfo);
+    document.getElementById(idArray[6] + id).classList.remove(Main_classInfo);
+    document.getElementById(idArray[7] + id).classList.remove(Main_classInfo);
 }
 
-function main_addFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.add(main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.add(main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.add(main_classInfo);
+function Main_addFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.add(Main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main_classInfo);
 
     window.setTimeout(function() {
-        main_ScrollHelper(Thumbnail, y, x, screen, main_ScrollOffSetMinusGame, main_ScrollOffSetGame, false);
+        Main_ScrollHelper(Thumbnail, y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
     }, 10);
 
-    main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
-function main_removeFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.remove(main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(main_classInfo);
+function Main_removeFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
+    document.getElementById(Thumbnail + y + '_' + x).classList.remove(Main_classThumb);
+    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main_classText);
+    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main_classInfo);
+    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main_classInfo);
 }
 
-//TODO split main_ScrollHelper in main_ScrollHelperVideo/game/channel/etc
-function main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
+//TODO split Main_ScrollHelper in Main_ScrollHelperVideo/game/channel/etc
+function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
     var id = Thumbnail + cursorY + '_' + cursorX;
 
     if (document.getElementById(id) === null) {
-        if (!cursorY && !cursorX) main_ScrollHelperBlank('blank_focus');
+        if (!cursorY && !cursorX) Main_ScrollHelperBlank('blank_focus');
         return;
-    } else if (Screen === main_UserChannels || Screen === main_SChannels) {
-        if (!main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+    } else if (Screen === Main_UserChannels || Screen === Main_SChannels) {
+        if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
             if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
             else cursorY = 0;
         }
-    } else if (cursorY > 1 && OffsetPlus !== main_ScrollOffSetGame && !main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+    } else if (cursorY > 1 && OffsetPlus !== Main_ScrollOffSetGame && !Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
         id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-    } else if (cursorY === 1 && OffsetPlus !== main_ScrollOffSetGame && !main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+    } else if (cursorY === 1 && OffsetPlus !== Main_ScrollOffSetGame && !Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
         id = Thumbnail + (cursorY - 1) + '_' + cursorX;
         cursorY = 0;
     }
-    if (!cursorY && Screen === main_aGame) OffsetPlus = OffsetPlus - main_ScrollOffSetMinusAgame;
+    if (!cursorY && Screen === Main_aGame) OffsetPlus = OffsetPlus - Main_ScrollOffSetMinusAgame;
 
     if (DuploYOffsetCheck) {
         DuploYOffsetCheck = (!cursorY || cursorY === 1);
         if (DuploYOffsetCheck) {
             id = Thumbnail + '0_' + cursorX;
-            OffsetMinus = OffsetMinus - main_ScrollOffSetMinusDuploYOffsetCheck;
+            OffsetMinus = OffsetMinus - Main_ScrollOffSetMinusDuploYOffsetCheck;
         }
     } else DuploYOffsetCheck = (!cursorY);
 
-    if (main_Go === Screen) {
-        window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
+    if (Main_Go === Screen) {
+        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
     } else return;
 }
 
-function main_ScrollHelperBlank(id) {
-    window.scroll(0, main_documentVerticalScrollPosition() + main_elementVerticalClientPositionById(id) - main_ScrollOffSetMinusVideo);
+function Main_ScrollHelperBlank(id) {
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo);
 }
 
-function main_documentVerticalScrollPosition() {
+function Main_documentVerticalScrollPosition() {
      return document.body.scrollTop; 
 }
 
-function main_elementVerticalClientPositionById(id) {
+function Main_elementVerticalClientPositionById(id) {
     return document.getElementById(id).getBoundingClientRect().top;
 }

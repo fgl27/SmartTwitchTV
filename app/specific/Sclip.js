@@ -1,261 +1,256 @@
-/*jshint multistr: true */
 //Variable initialization
-function Sclip() {}
-Sclip.cursorY = 0;
-Sclip.cursorX = 0;
-Sclip.dataEnded = false;
-Sclip.itemsCount = 0;
-Sclip.nameMatrix = [];
-Sclip.blankCellVector = [];
-Sclip.loadingData = false;
-Sclip.loadingDataTry = 0;
-Sclip.loadingDataTryMax = 10;
-Sclip.loadingDataTimeout = 3500;
-Sclip.isDialogOn = false;
-Sclip.blankCellCount = 0;
-Sclip.LastClickFinish = true;
-Sclip.keyClickDelayTime = 25;
-Sclip.ReplacedataEnded = false;
-Sclip.MaxOffset = 0;
-Sclip.DurationSeconds = 0;
-Sclip.emptyContent = false;
+var Sclip_cursorY = 0;
+var Sclip_cursorX = 0;
+var Sclip_dataEnded = false;
+var Sclip_itemsCount = 0;
+var Sclip_nameMatrix = [];
+var Sclip_blankCellVector = [];
+var Sclip_loadingData = false;
+var Sclip_loadingDataTry = 0;
+var Sclip_loadingDataTryMax = 10;
+var Sclip_loadingDataTimeout = 3500;
+var Sclip_blankCellCount = 0;
+var Sclip_LastClickFinish = true;
+var Sclip_keyClickDelayTime = 25;
+var Sclip_ReplacedataEnded = false;
+var Sclip_MaxOffset = 0;
+var Sclip_DurationSeconds = 0;
+var Sclip_emptyContent = false;
 
-Sclip.ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_title', 'sc_createdon', 'sc_game', 'sc_viwers', 'sc_duration', 'sc_cell', 'scempty_'];
-Sclip.status = false;
-Sclip.highlight = false;
-Sclip.cursor = null;
-Sclip.periodNumber = 1;
-Sclip.period = 'week';
-Sclip.Duration = 0;
-Sclip.game = '';
-Sclip.views = '';
-Sclip.title = '';
-Sclip.lastselectedChannel = '';
-Sclip.playUrl = '';
-Sclip.itemsCountCheck = false;
-
+var Sclip_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_title', 'sc_createdon', 'sc_game', 'sc_viwers', 'sc_duration', 'sc_cell', 'scempty_'];
+var Sclip_status = false;
+var Sclip_cursor = null;
+var Sclip_periodNumber = 1;
+var Sclip_period = 'week';
+var Sclip_Duration = 0;
+var Sclip_game = '';
+var Sclip_views = '';
+var Sclip_title = '';
+var Sclip_lastselectedChannel = '';
+var Sclip_playUrl = '';
+var Sclip_itemsCountCheck = false;
 //Variable initialization end
 
-Sclip.init = function() {
-    main_Go = main_Sclip;
-    main_SetStreamTitle(true);
-    if (main_selectedChannel !== Sclip.lastselectedChannel) Sclip.status = false;
-    main_cleanTopLabel();
-    Sclip.SetPeriod();
-    document.getElementById('top_bar_user').innerHTML = main_selectedChannelDisplayname;
-    main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP);
-    document.body.addEventListener("keydown", Sclip.handleKeyDown, false);
-    main_YRst(Sclip.cursorY);
-    if (Sclip.status) {
-        main_ScrollHelper(Sclip.ids[0], Sclip.cursorY, Sclip.cursorX, main_Sclip, main_ScrollOffSetMinusVideo,
-            main_ScrollOffSetVideo, false);
-        main_CounterDialog(Sclip.cursorX, Sclip.cursorY, main_ColoumnsCountVideo, Sclip.itemsCount);
-    } else Sclip.StartLoad();
-};
+function Sclip_init() {
+    Main_Go = Main_Sclip;
+    Main_SetStreamTitle(true);
+    if (Main_selectedChannel !== Sclip_lastselectedChannel) Sclip_status = false;
+    Main_cleanTopLabel();
+    Sclip_SetPeriod();
+    document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP);
+    document.body.addEventListener("keydown", Sclip_handleKeyDown, false);
+    Main_YRst(Sclip_cursorY);
+    if (Sclip_status) {
+        Main_ScrollHelper(Sclip_ids[0], Sclip_cursorY, Sclip_cursorX, Main_Sclip, Main_ScrollOffSetMinusVideo,
+            Main_ScrollOffSetVideo, false);
+        Main_CounterDialog(Sclip_cursorX, Sclip_cursorY, Main_ColoumnsCountVideo, Sclip_itemsCount);
+    } else Sclip_StartLoad();
+}
 
-Sclip.exit = function() {
-    main_RestoreTopLabel();
-    document.body.removeEventListener("keydown", Sclip.handleKeyDown);
-    main_SetStreamTitle(false);
-};
+function Sclip_exit() {
+    Main_RestoreTopLabel();
+    document.body.removeEventListener("keydown", Sclip_handleKeyDown);
+    Main_SetStreamTitle(false);
+}
 
-Sclip.StartLoad = function() {
-    main_HideWarningDialog();
-    main_ScrollHelperBlank('blank_focus');
-    main_showLoadDialog();
-    Sclip.lastselectedChannel = main_selectedChannel;
-    Sclip.cursor = null;
-    Sclip.status = false;
+function Sclip_StartLoad() {
+    Main_HideWarningDialog();
+    Main_ScrollHelperBlank('blank_focus');
+    Main_showLoadDialog();
+    Sclip_lastselectedChannel = Main_selectedChannel;
+    Sclip_cursor = null;
+    Sclip_status = false;
     var table = document.getElementById('stream_table_search_clip');
     while (table.firstChild) table.removeChild(table.firstChild);
-    Sclip.loadingMore = false;
-    Sclip.blankCellCount = 0;
-    Sclip.ReplacedataEnded = false;
-    Sclip.MaxOffset = 0;
-    Sclip.nameMatrix = [];
-    Sclip.blankCellVector = [];
-    Sclip.itemsCountCheck = false;
-    Sclip.itemsCount = 0;
-    Sclip.cursorX = 0;
-    Sclip.cursorY = 0;
-    Sclip.dataEnded = false;
-    main_CounterDialogRst();
-    Sclip.loadDataPrepare();
-    Sclip.loadDataRequest();
-};
+    Sclip_loadingMore = false;
+    Sclip_blankCellCount = 0;
+    Sclip_ReplacedataEnded = false;
+    Sclip_MaxOffset = 0;
+    Sclip_nameMatrix = [];
+    Sclip_blankCellVector = [];
+    Sclip_itemsCountCheck = false;
+    Sclip_itemsCount = 0;
+    Sclip_cursorX = 0;
+    Sclip_cursorY = 0;
+    Sclip_dataEnded = false;
+    Main_CounterDialogRst();
+    Sclip_loadDataPrepare();
+    Sclip_loadDataRequest();
+}
 
-Sclip.loadDataPrepare = function() {
-    Sclip.loadingData = true;
-    Sclip.loadingDataTry = 0;
-    Sclip.loadingDataTimeout = 3500;
-};
+function Sclip_loadDataPrepare() {
+    Sclip_loadingData = true;
+    Sclip_loadingDataTry = 0;
+    Sclip_loadingDataTimeout = 3500;
+}
 
-Sclip.SetPeriod = function() {
-    if (!Sclip.periodNumber) {
+function Sclip_SetPeriod() {
+    if (!Sclip_periodNumber) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_DAY;
-        Sclip.period = 'day';
-    } else if (Sclip.periodNumber === 1) {
+        Sclip_period = 'day';
+    } else if (Sclip_periodNumber === 1) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_WEEK;
-        Sclip.period = 'week';
-    } else if (Sclip.periodNumber === 2) {
+        Sclip_period = 'week';
+    } else if (Sclip_periodNumber === 2) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_MONTH;
-        Sclip.period = 'month';
-    } else if (Sclip.periodNumber === 3) {
+        Sclip_period = 'month';
+    } else if (Sclip_periodNumber === 3) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_ALL;
-        Sclip.period = 'all';
+        Sclip_period = 'all';
     }
-};
+}
 
-Sclip.loadDataRequest = function() {
+function Sclip_loadDataRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(main_selectedChannel) + '&limit=' +
-            main_ItemsLimitVideo + '&period=' + encodeURIComponent(Sclip.period) +
-            (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)) + '&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = Sclip.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main_selectedChannel) + '&limit=' +
+            Main_ItemsLimitVideo + '&period=' + encodeURIComponent(Sclip_period) +
+            (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = Sclip_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    Sclip.loadDataSuccess(xmlHttp.responseText);
+                    Sclip_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    Sclip.loadDataError();
+                    Sclip_loadDataError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        Sclip.loadDataError();
+        Sclip_loadDataError();
     }
-};
+}
 
-Sclip.loadDataError = function() {
-    Sclip.loadingDataTry++;
-    if (Sclip.loadingDataTry < Sclip.loadingDataTryMax) {
-        Sclip.loadingDataTimeout += (Sclip.loadingDataTry < 5) ? 250 : 3500;
-        Sclip.loadDataRequest();
+function Sclip_loadDataError() {
+    Sclip_loadingDataTry++;
+    if (Sclip_loadingDataTry < Sclip_loadingDataTryMax) {
+        Sclip_loadingDataTimeout += (Sclip_loadingDataTry < 5) ? 250 : 3500;
+        Sclip_loadDataRequest();
     } else {
-        Sclip.loadingData = false;
-        Sclip.loadingMore = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_REFRESH_PROBLEM);
+        Sclip_loadingData = false;
+        Sclip_loadingMore = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
-};
+}
 
-Sclip.loadDataSuccess = function(responseText) {
+function Sclip_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
-    Sclip.cursor = response._cursor;
+    Sclip_cursor = response._cursor;
 
-    if (response_items < main_ItemsLimitVideo) Sclip.dataEnded = true;
+    if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
 
-    var offset_itemsCount = Sclip.itemsCount;
-    Sclip.itemsCount += response_items;
+    var offset_itemsCount = Sclip_itemsCount;
+    Sclip_itemsCount += response_items;
 
-    Sclip.emptyContent = !Sclip.itemsCount;
+    Sclip_emptyContent = !Sclip_itemsCount;
 
-    var response_rows = response_items / main_ColoumnsCountVideo;
-    if (response_items % main_ColoumnsCountVideo > 0) response_rows++;
+    var response_rows = response_items / Main_ColoumnsCountVideo;
+    if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, video,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / main_ColoumnsCountVideo + i;
+        row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Sclip.CellExists(video.tracking_id)) coloumn_id--;
+            if (Sclip_CellExists(video.tracking_id)) coloumn_id--;
             else {
-                row.appendChild(Sclip.createCell(row_id, row_id + '_' + coloumn_id,
+                row.appendChild(Sclip_createCell(row_id, row_id + '_' + coloumn_id,
                     video.thumbnails.medium.split('-preview')[0] + '.mp4' + video.duration, [video.thumbnails.medium,
-                    video.title, video.game, STR_STREAM_ON + main_videoCreatedAt(video.created_at),
-                    main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
+                    video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
                 ]));
             }
         }
 
-        for (coloumn_id; coloumn_id < main_ColoumnsCountVideo; coloumn_id++) {
-            if (Sclip.dataEnded && !Sclip.itemsCountCheck) {
-                Sclip.itemsCountCheck = true;
-                Sclip.itemsCount = (row_id * main_ColoumnsCountVideo) + coloumn_id;
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
+            if (Sclip_dataEnded && !Sclip_itemsCountCheck) {
+                Sclip_itemsCountCheck = true;
+                Sclip_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.appendChild(main_createEmptyCell(Sclip.ids[9] + row_id + '_' + coloumn_id));
-            Sclip.blankCellVector.push(Sclip.ids[9] + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(Sclip_ids[9] + row_id + '_' + coloumn_id));
+            Sclip_blankCellVector.push(Sclip_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_search_clip").appendChild(row);
     }
 
-    Sclip.loadDataSuccessFinish();
-};
+    Sclip_loadDataSuccessFinish();
+}
 
-Sclip.createCell = function(row_id, id, clip_id, valuesArray) {
-    Sclip.nameMatrix.push(clip_id);
-    if (row_id < main_ColoumnsCountVideo) main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return main_createCellVideo(clip_id, id, Sclip.ids, valuesArray);
-};
+function Sclip_createCell(row_id, id, clip_id, valuesArray) {
+    Sclip_nameMatrix.push(clip_id);
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main_createCellVideo(clip_id, id, Sclip_ids, valuesArray);
+}
 
-Sclip.CellExists = function(display_name) {
-    if (Sclip.nameMatrix.indexOf(display_name) > -1) {
-        Sclip.blankCellCount++;
+function Sclip_CellExists(display_name) {
+    if (Sclip_nameMatrix.indexOf(display_name) > -1) {
+        Sclip_blankCellCount++;
         return true;
     }
     return false;
-};
+}
 
-Sclip.loadDataSuccessFinish = function() {
+function Sclip_loadDataSuccessFinish() {
     $(document).ready(function() {
-        if (!Sclip.status) {
-            main_HideLoadDialog();
-            if (Sclip.emptyContent) main_showWarningDialog(STR_NO + STR_CLIPS);
+        if (!Sclip_status) {
+            Main_HideLoadDialog();
+            if (Sclip_emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
             else {
-                Sclip.status = true;
-                Sclip.addFocus();
-                main_LazyImgStart(Sclip.ids[1], 9, IMG_404_VIDEO, main_ColoumnsCountVideo);
+                Sclip_status = true;
+                Sclip_addFocus();
+                Main_LazyImgStart(Sclip_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Sclip.loadingData = false;
+            Sclip_loadingData = false;
         } else {
-            if (Sclip.blankCellCount > 0 && !Sclip.dataEnded) {
-                Sclip.loadingMore = true;
-                Sclip.loadDataPrepare();
-                Sclip.loadDataReplace();
+            if (Sclip_blankCellCount > 0 && !Sclip_dataEnded) {
+                Sclip_loadingMore = true;
+                Sclip_loadDataPrepare();
+                Sclip_loadDataReplace();
                 return;
             } else {
-                Sclip.blankCellCount = 0;
-                Sclip.blankCellVector = [];
+                Sclip_blankCellCount = 0;
+                Sclip_blankCellVector = [];
             }
 
-            Sclip.loadingData = false;
-            Sclip.loadingMore = false;
+            Sclip_loadingData = false;
+            Sclip_loadingMore = false;
         }
     });
-};
+}
 
-Sclip.loadDataReplace = function() {
+function Sclip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(main_selectedChannel) + '&limit=' +
-            Sclip.blankCellCount + '&period=' + Sclip.period + (Sclip.cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip.cursor)) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main_selectedChannel) + '&limit=' +
+            Sclip_blankCellCount + '&period=' + Sclip_period + (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
             '&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = Sclip.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.timeout = Sclip_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    Sclip.loadDataSuccessReplace(xmlHttp.responseText);
+                    Sclip_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
                 }
             }
@@ -263,170 +258,170 @@ Sclip.loadDataReplace = function() {
 
         xmlHttp.send(null);
     } catch (e) {
-        Sclip.loadDataErrorReplace();
+        Sclip_loadDataErrorReplace();
     }
-};
+}
 
-Sclip.loadDataErrorReplace = function() {
-    Sclip.loadingDataTry++;
-    if (Sclip.loadingDataTry < Sclip.loadingDataTryMax) {
-        Sclip.loadingDataTimeout += (Sclip.loadingDataTry < 5) ? 250 : 3500;
-        Sclip.loadDataReplace();
+function Sclip_loadDataErrorReplace() {
+    Sclip_loadingDataTry++;
+    if (Sclip_loadingDataTry < Sclip_loadingDataTryMax) {
+        Sclip_loadingDataTimeout += (Sclip_loadingDataTry < 5) ? 250 : 3500;
+        Sclip_loadDataReplace();
     } else {
-        Sclip.ReplacedataEnded = true;
-        Sclip.blankCellCount = 0;
-        Sclip.blankCellVector = [];
-        Sclip.loadDataSuccessFinish();
+        Sclip_ReplacedataEnded = true;
+        Sclip_blankCellCount = 0;
+        Sclip_blankCellVector = [];
+        Sclip_loadDataSuccessFinish();
     }
-};
+}
 
-Sclip.loadDataSuccessReplace = function(responseText) {
+function Sclip_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
     var video, index, cursor = 0;
-    var tempVector = Sclip.blankCellVector.slice();
+    var tempVector = Sclip_blankCellVector.slice();
 
-    Sclip.cursor = response._cursor;
+    Sclip_cursor = response._cursor;
 
-    if (response_items < Sclip.blankCellCount) Sclip.ReplacedataEnded = true;
+    if (response_items < Sclip_blankCellCount) Sclip_ReplacedataEnded = true;
 
-    for (var i = 0; i < Sclip.blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < Sclip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Sclip.CellExists(video.tracking_id)) {
-            Sclip.blankCellCount--;
+        if (Sclip_CellExists(video.tracking_id)) {
+            Sclip_blankCellCount--;
             i--;
         } else {
-            main_replaceVideo(Svod.blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
-                    video.title, video.game, STR_STREAM_ON + main_videoCreatedAt(video.created_at),
-                    main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
+            Main_replaceVideo(Svod_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
+                    video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
                 ]);
 
-            Sclip.blankCellCount--;
+            Sclip_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
         }
     }
 
-    Sclip.itemsCountOffset += cursor;
-    if (Sclip.ReplacedataEnded) {
-        Sclip.blankCellCount = 0;
-        Sclip.blankCellVector = [];
-    } else Sclip.blankCellVector = tempVector;
+    Sclip_itemsCountOffset += cursor;
+    if (Sclip_ReplacedataEnded) {
+        Sclip_blankCellCount = 0;
+        Sclip_blankCellVector = [];
+    } else Sclip_blankCellVector = tempVector;
 
-    Sclip.loadDataSuccessFinish();
-};
+    Sclip_loadDataSuccessFinish();
+}
 
-Sclip.addFocus = function() {
-    document.getElementById(Sclip.ids[0] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(Sclip.ids[2] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_text_focused');
-    document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
-    document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).classList.add('stream_info_focused');
+function Sclip_addFocus() {
+    document.getElementById(Sclip_ids[0] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_thumbnail_focused');
+    document.getElementById(Sclip_ids[2] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_text_focused');
+    document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
-        main_ScrollHelper(Sclip.ids[0], Sclip.cursorY, Sclip.cursorX, main_Sclip, main_ScrollOffSetMinusVideo, main_ScrollOffSetVideo, false);
+        Main_ScrollHelper(Sclip_ids[0], Sclip_cursorY, Sclip_cursorX, Main_Sclip, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
     }, 10);
 
-    main_CounterDialog(Sclip.cursorX, Sclip.cursorY, main_ColoumnsCountVideo, Sclip.itemsCount);
+    Main_CounterDialog(Sclip_cursorX, Sclip_cursorY, Main_ColoumnsCountVideo, Sclip_itemsCount);
 
-    if (Sclip.cursorY > 3) main_LazyImg(Sclip.ids[1], Sclip.cursorY, IMG_404_VIDEO, main_ColoumnsCountVideo, 4);
+    if (Sclip_cursorY > 3) Main_LazyImg(Sclip_ids[1], Sclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
-    if (((Sclip.cursorY + main_ItemsReloadLimitVideo) > (Sclip.itemsCount / main_ColoumnsCountVideo)) &&
-        !Sclip.dataEnded && !Sclip.loadingMore) {
-        Sclip.loadingMore = true;
-        Sclip.loadDataPrepare();
-        Sclip.loadDataRequest();
+    if (((Sclip_cursorY + Main_ItemsReloadLimitVideo) > (Sclip_itemsCount / Main_ColoumnsCountVideo)) &&
+        !Sclip_dataEnded && !Sclip_loadingMore) {
+        Sclip_loadingMore = true;
+        Sclip_loadDataPrepare();
+        Sclip_loadDataRequest();
     }
-};
+}
 
-Sclip.removeFocus = function() {
-    document.getElementById(Sclip.ids[0] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(Sclip.ids[2] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_text_focused');
-    document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).classList.remove('stream_info_focused');
-};
+function Sclip_removeFocus() {
+    document.getElementById(Sclip_ids[0] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_thumbnail_focused');
+    document.getElementById(Sclip_ids[2] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_text_focused');
+    document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+}
 
-Sclip.keyClickDelay = function() {
-    Sclip.LastClickFinish = true;
-};
+function Sclip_keyClickDelay() {
+    Sclip_LastClickFinish = true;
+}
 
-Sclip.handleKeyDown = function(event) {
-    if (Sclip.loadingData && !Sclip.loadingMore) {
+function Sclip_handleKeyDown(event) {
+    if (Sclip_loadingData && !Sclip_loadingMore) {
         event.preventDefault();
         return;
-    } else if (!Sclip.LastClickFinish) {
+    } else if (!Sclip_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
-        Sclip.LastClickFinish = false;
-        window.setTimeout(Sclip.keyClickDelay, Sclip.keyClickDelayTime);
+        Sclip_LastClickFinish = false;
+        window.setTimeout(Sclip_keyClickDelay, Sclip_keyClickDelayTime);
     }
 
     var i;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                main_Go = main_SChannelContent;
-                Sclip.exit();
-                main_SwitchScreen();
+                Main_Go = Main_SChannelContent;
+                Sclip_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_LEFT:
-            if (main_ThumbNull((Sclip.cursorY), (Sclip.cursorX - 1), Sclip.ids[0])) {
-                Sclip.removeFocus();
-                Sclip.cursorX--;
-                Sclip.addFocus();
+            if (Main_ThumbNull((Sclip_cursorY), (Sclip_cursorX - 1), Sclip_ids[0])) {
+                Sclip_removeFocus();
+                Sclip_cursorX--;
+                Sclip_addFocus();
             } else {
-                for (i = (main_ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (main_ThumbNull((Sclip.cursorY - 1), i, Sclip.ids[0])) {
-                        Sclip.removeFocus();
-                        Sclip.cursorY--;
-                        Sclip.cursorX = i;
-                        Sclip.addFocus();
+                for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (Main_ThumbNull((Sclip_cursorY - 1), i, Sclip_ids[0])) {
+                        Sclip_removeFocus();
+                        Sclip_cursorY--;
+                        Sclip_cursorX = i;
+                        Sclip_addFocus();
                         break;
                     }
                 }
             }
             break;
         case TvKeyCode.KEY_RIGHT:
-            if (main_ThumbNull((Sclip.cursorY), (Sclip.cursorX + 1), Sclip.ids[0])) {
-                Sclip.removeFocus();
-                Sclip.cursorX++;
-                Sclip.addFocus();
-            } else if (main_ThumbNull((Sclip.cursorY + 1), 0, Sclip.ids[0])) {
-                Sclip.removeFocus();
-                Sclip.cursorY++;
-                Sclip.cursorX = 0;
-                Sclip.addFocus();
+            if (Main_ThumbNull((Sclip_cursorY), (Sclip_cursorX + 1), Sclip_ids[0])) {
+                Sclip_removeFocus();
+                Sclip_cursorX++;
+                Sclip_addFocus();
+            } else if (Main_ThumbNull((Sclip_cursorY + 1), 0, Sclip_ids[0])) {
+                Sclip_removeFocus();
+                Sclip_cursorY++;
+                Sclip_cursorX = 0;
+                Sclip_addFocus();
             }
             break;
         case TvKeyCode.KEY_UP:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((Sclip.cursorY - 1), (Sclip.cursorX - i), Sclip.ids[0])) {
-                    Sclip.removeFocus();
-                    Sclip.cursorY--;
-                    Sclip.cursorX = Sclip.cursorX - i;
-                    Sclip.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((Sclip_cursorY - 1), (Sclip_cursorX - i), Sclip_ids[0])) {
+                    Sclip_removeFocus();
+                    Sclip_cursorY--;
+                    Sclip_cursorX = Sclip_cursorX - i;
+                    Sclip_addFocus();
                     break;
                 }
             }
             break;
         case TvKeyCode.KEY_DOWN:
-            for (i = 0; i < main_ColoumnsCountVideo; i++) {
-                if (main_ThumbNull((Sclip.cursorY + 1), (Sclip.cursorX - i), Sclip.ids[0])) {
-                    Sclip.removeFocus();
-                    Sclip.cursorY++;
-                    Sclip.cursorX = Sclip.cursorX - i;
-                    Sclip.addFocus();
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((Sclip_cursorY + 1), (Sclip_cursorX - i), Sclip_ids[0])) {
+                    Sclip_removeFocus();
+                    Sclip_cursorY++;
+                    Sclip_cursorX = Sclip_cursorX - i;
+                    Sclip_addFocus();
                     break;
                 }
             }
@@ -434,59 +429,59 @@ Sclip.handleKeyDown = function(event) {
         case TvKeyCode.KEY_INFO:
         case TvKeyCode.KEY_CHANNELGUIDE:
         case TvKeyCode.KEY_CHANNELUP:
-            if (!Sclip.loadingMore) {
-                Sclip.periodNumber++;
-                if (Sclip.periodNumber > 3) Sclip.periodNumber = 0;
-                Sclip.SetPeriod();
-                Sclip.StartLoad();
+            if (!Sclip_loadingMore) {
+                Sclip_periodNumber++;
+                if (Sclip_periodNumber > 3) Sclip_periodNumber = 0;
+                Sclip_SetPeriod();
+                Sclip_StartLoad();
             }
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            if (!Sclip.loadingMore) {
-                Sclip.periodNumber--;
-                if (Sclip.periodNumber < 0) Sclip.periodNumber = 3;
-                Sclip.SetPeriod();
-                Sclip.StartLoad();
+            if (!Sclip_loadingMore) {
+                Sclip_periodNumber--;
+                if (Sclip_periodNumber < 0) Sclip_periodNumber = 3;
+                Sclip_SetPeriod();
+                Sclip_StartLoad();
             }
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            Sclip.playUrl = document.getElementById(Sclip.ids[8] + Sclip.cursorY + '_' + Sclip.cursorX).getAttribute('data-channelname').split('.mp4');
-            Sclip.DurationSeconds = parseInt(Sclip.playUrl[1]);
-            Sclip.playUrl = Sclip.playUrl[0] + '.mp4';
-            Sclip.Duration = document.getElementById(Sclip.ids[7] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.views = document.getElementById(Sclip.ids[6] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.title = document.getElementById(Sclip.ids[3] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.createdAt = document.getElementById(Sclip.ids[4] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.game = document.getElementById(Sclip.ids[5] + Sclip.cursorY + '_' + Sclip.cursorX).textContent;
-            Sclip.openStream();
+            Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute('data-channelname').split('.mp4');
+            Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
+            Sclip_playUrl = Sclip_playUrl[0] + '.mp4';
+            Sclip_Duration = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_title = document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_createdAt = document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_game = document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_openStream();
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            Sclip.exit();
-            main_GoLive();
+            Sclip_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_Sclip;
-            main_Go = main_Search;
-            Sclip.exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_Sclip;
+            Main_Go = Main_Search;
+            Sclip_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
-};
+}
 
-Sclip.openStream = function() {
+function Sclip_openStream() {
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    document.body.removeEventListener("keydown", Sclip.handleKeyDown);
+    document.body.removeEventListener("keydown", Sclip_handleKeyDown);
     document.getElementById('scene2').classList.remove('hide');
     Play_hideChat();
     Play_clearPause();
@@ -496,4 +491,4 @@ Sclip.openStream = function() {
     document.getElementById('scene1').classList.add('hide');
 
     PlayClip_Start();
-};
+}

@@ -1,164 +1,160 @@
-/*jshint multistr: true */
 //Variable initialization
-function SmartHub() {}
-SmartHub.loadingDataTry = 0;
-SmartHub.loadingDataTryMax = 10;
-SmartHub.loadingDataTimeout = 3500;
-SmartHub.user = [];
-SmartHub.usertitle = [];
-SmartHub.usersubtitle = [];
-SmartHub.userimg = [];
+var SmartHub_loadingDataTry = 0;
+var SmartHub_loadingDataTryMax = 10;
+var SmartHub_loadingDataTimeout = 3500;
+var SmartHub_user = [];
+var SmartHub_usertitle = [];
+var SmartHub_usersubtitle = [];
+var SmartHub_userimg = [];
 
-SmartHub.usergamesimg = [];
-SmartHub.usergames = [];
+var SmartHub_usergamesimg = [];
+var SmartHub_usergames = [];
 
-SmartHub.userhost = [];
-SmartHub.userhosttitle = [];
-SmartHub.userhostsubtitle = [];
-SmartHub.userhostimg = [];
-SmartHub.followerChannels = '';
-SmartHub.LastUpdate = 0;
-SmartHub.emptyUser = false;
-
+var SmartHub_userhost = [];
+var SmartHub_userhosttitle = [];
+var SmartHub_userhostsubtitle = [];
+var SmartHub_userhostimg = [];
+var SmartHub_followerChannels = '';
+var SmartHub_LastUpdate = 0;
+var SmartHub_emptyUser = false;
 //Variable initialization end
 
-SmartHub.Start = function() {
-    if (!addUser_UsernameArray.length) {
-        window.clearInterval(main_SmartHubId);
-        document.removeEventListener('visibilitychange', main_Resume);
-        SmartHub.emptyUser = true;
-    } else SmartHub.emptyUser = false;
+function SmartHub_Start() {
+    if (!AddUser_UsernameArray.length) {
+        window.clearInterval(Main_SmartHubId);
+        document.removeEventListener('visibilitychange', Main_Resume);
+        SmartHub_emptyUser = true;
+    } else SmartHub_emptyUser = false;
 
-    SmartHub.followerUsername = addUser_UsernameArray[0];
-    SmartHub.userold = SmartHub.user.length;
-    SmartHub.usergamesold = SmartHub.usergames.length;
-    SmartHub.userhostold = SmartHub.userhost.length;
+    SmartHub_followerUsername = AddUser_UsernameArray[0];
+    SmartHub_userold = SmartHub_user.length;
+    SmartHub_usergamesold = SmartHub_usergames.length;
+    SmartHub_userhostold = SmartHub_userhost.length;
 
-    SmartHub.user = [];
-    SmartHub.usertitle = [];
-    SmartHub.usersubtitle = [];
-    SmartHub.userimg = [];
+    SmartHub_user = [];
+    SmartHub_usertitle = [];
+    SmartHub_usersubtitle = [];
+    SmartHub_userimg = [];
 
-    SmartHub.usergamesimg = [];
-    SmartHub.usergames = [];
+    SmartHub_usergamesimg = [];
+    SmartHub_usergames = [];
 
-    SmartHub.userhost = [];
-    SmartHub.userhosttitle = [];
-    SmartHub.userhostsubtitle = [];
-    SmartHub.userhostimg = [];
+    SmartHub_userhost = [];
+    SmartHub_userhosttitle = [];
+    SmartHub_userhostsubtitle = [];
+    SmartHub_userhostimg = [];
 
-    SmartHub.loadingDataTry = 0;
-    SmartHub.loadingDataTryMax = 10;
-    SmartHub.loadingDataTimeout = 3500;
-    SmartHub.previewData = 0;
-    if (SmartHub.emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
-    else SmartHub.loadDataRequest();
-};
+    SmartHub_loadingDataTry = 0;
+    SmartHub_loadingDataTryMax = 10;
+    SmartHub_loadingDataTimeout = 3500;
+    SmartHub_previewData = 0;
+    if (SmartHub_emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
+    else SmartHub_loadDataRequest();
+}
 
-SmartHub.loadDataRequest = function() {
+function SmartHub_loadDataRequest() {
     try {
         var xmlHttp = new XMLHttpRequest();
         var theUrl;
 
-        if (!SmartHub.previewData) {
-            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub.followerUsername) +
+        if (!SmartHub_previewData) {
+            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub_followerUsername) +
                 '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
-        } else if (SmartHub.previewData === 1) {
-            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub.followerChannels) + '&limit=21&' +
+        } else if (SmartHub_previewData === 1) {
+            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub_followerChannels) + '&limit=21&' +
                 Math.round(Math.random() * 1e7);
-        } else if (SmartHub.previewData === 2) { // user games
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/follows/games/live?limit=6&' +
+        } else if (SmartHub_previewData === 2) { // user games
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/follows/games/live?limit=6&' +
                 Math.round(Math.random() * 1e7);
-        } else if (SmartHub.previewData === 3) { //user SmartHub host
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub.followerUsername) + '/followed/hosting?limit=10&' +
+        } else if (SmartHub_previewData === 3) { //user SmartHub host
+            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/followed/hosting?limit=10&' +
                 Math.round(Math.random() * 1e7);
         }
 
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = SmartHub.loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.timeout = SmartHub_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
 
-        xmlHttp.ontimeout = function() {
-
-        };
+        xmlHttp.ontimeout = function() {};
+        
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     try {
-                        SmartHub.previewDataSuccess(xmlHttp.responseText);
+                        SmartHub_previewDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
                 } else {
-                    SmartHub.loadDataError();
+                    SmartHub_loadDataError();
                 }
             }
         };
         xmlHttp.send(null);
     } catch (error) {
-        SmartHub.loadDataError();
+        SmartHub_loadDataError();
     }
-};
+}
 
-SmartHub.loadDataError = function() {
-    SmartHub.loadingDataTry++;
-    if (SmartHub.loadingDataTry < SmartHub.loadingDataTryMax) {
-        SmartHub.loadingDataTimeout += (SmartHub.loadingDataTry < 5) ? 250 : 3500;
-        SmartHub.loadDataRequest();
+function SmartHub_loadDataError() {
+    SmartHub_loadingDataTry++;
+    if (SmartHub_loadingDataTry < SmartHub_loadingDataTryMax) {
+        SmartHub_loadingDataTimeout += (SmartHub_loadingDataTry < 5) ? 250 : 3500;
+        SmartHub_loadDataRequest();
     } else {
-        SmartHub.loadingData = false;
+        SmartHub_loadingData = false;
     }
-};
+}
 
-SmartHub.previewDataSuccess = function(responseText) {
+function SmartHub_previewDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items, cursor = 0,
         game, stream, hosts;
 
-    if (!SmartHub.previewData) {
+    if (!SmartHub_previewData) {
         response_items = response.follows.length;
-        SmartHub.followerChannels = '';
+        SmartHub_followerChannels = '';
 
         for (var x = 0; x < response_items; x++) {
-            SmartHub.followerChannels += response.follows[x].channel.name + ',';
+            SmartHub_followerChannels += response.follows[x].channel.name + ',';
 
         }
-        SmartHub.followerChannels = SmartHub.followerChannels.slice(0, -1);
-    } else if (SmartHub.previewData === 1) {
+        SmartHub_followerChannels = SmartHub_followerChannels.slice(0, -1);
+    } else if (SmartHub_previewData === 1) {
         response_items = response.streams.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             stream = response.streams[cursor];
-            SmartHub.user[cursor] = stream.channel.name;
-            SmartHub.usertitle[cursor] = main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
-            SmartHub.usersubtitle[cursor] = STR_PLAYING + stream.game;
-            SmartHub.userimg[cursor] = (stream.preview.template).replace("{width}x{height}", main_VideoSize);
+            SmartHub_user[cursor] = stream.channel.name;
+            SmartHub_usertitle[cursor] = Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name;
+            SmartHub_usersubtitle[cursor] = STR_PLAYING + stream.game;
+            SmartHub_userimg[cursor] = (stream.preview.template).replace("{width}x{height}", Main_VideoSize);
         }
-    } else if (SmartHub.previewData === 2) {
+    } else if (SmartHub_previewData === 2) {
         response_items = response.follows.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             game = response.follows[cursor];
-            SmartHub.usergames[cursor] = game.game.name;
-            SmartHub.usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", main_GameSize);
+            SmartHub_usergames[cursor] = game.game.name;
+            SmartHub_usergamesimg[cursor] = (game.game.box.template).replace("{width}x{height}", Main_GameSize);
         }
-    } else if (SmartHub.previewData === 3) {
+    } else if (SmartHub_previewData === 3) {
         response_items = response.hosts.length;
         for (cursor = 0; cursor < response_items; cursor++) {
             hosts = response.hosts[cursor];
-            SmartHub.userhost[cursor] = hosts.target.channel.name;
-            SmartHub.userhosttitle[cursor] = hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name;
-            SmartHub.userhostsubtitle[cursor] = STR_PLAYING + hosts.target.meta_game;
-            SmartHub.userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", main_VideoSize);
+            SmartHub_userhost[cursor] = hosts.target.channel.name;
+            SmartHub_userhosttitle[cursor] = hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name;
+            SmartHub_userhostsubtitle[cursor] = STR_PLAYING + hosts.target.meta_game;
+            SmartHub_userhostimg[cursor] = (hosts.target.preview_urls.template).replace("{width}x{height}", Main_VideoSize);
         }
     }
-    if (SmartHub.previewData < 3) {
-        SmartHub.previewData++;
-        SmartHub.loadingDataTry = 0;
-        SmartHub.loadingDataTryMax = 10;
-        SmartHub.loadingDataTimeout = 3500;
-        SmartHub.loadDataRequest();
+    if (SmartHub_previewData < 3) {
+        SmartHub_previewData++;
+        SmartHub_loadingDataTry = 0;
+        SmartHub_loadingDataTryMax = 10;
+        SmartHub_loadingDataTimeout = 3500;
+        SmartHub_loadDataRequest();
     } else {
-        SmartHub.LastUpdate = new Date().getTime();
+        SmartHub_LastUpdate = new Date().getTime();
         webapis.preview.setPreviewData(previewDataGenerator());
     }
-};
+}
 
 function previewDataGeneratorEmpty() {
     var data = '{"sections":[';
@@ -186,45 +182,45 @@ function previewDataGenerator() {
     var data = '{"sections":[';
     var i = 0;
 
-    if (SmartHub.user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub.followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub.user.length; i++) {
+    if (SmartHub_user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub_followerUsername + '","tiles":[';
+    for (i = 0; i < SmartHub_user.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
+            data += '{"title":"' + SmartHub_usertitle[i] + '","subtitle":"' + SmartHub_usersubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub_userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub_user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_usertitle[i] + '\\\"}","is_playable":true}';
         } else {
-            data += ',{"title":"' + SmartHub.usertitle[i] + '","subtitle":"' + SmartHub.usersubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub.userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub.user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.usertitle[i] + '\\\"}","is_playable":true}';
+            data += ',{"title":"' + SmartHub_usertitle[i] + '","subtitle":"' + SmartHub_usersubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub_userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub_user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_usertitle[i] + '\\\"}","is_playable":true}';
         }
     }
-    if (SmartHub.user.length > 0) data += ']},';
+    if (SmartHub_user.length > 0) data += ']},';
 
-    if (SmartHub.userhost.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub.followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub.userhost.length; i++) {
+    if (SmartHub_userhost.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
+    for (i = 0; i < SmartHub_userhost.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
+            data += '{"title":"' + SmartHub_userhosttitle[i] + '","subtitle":"' + SmartHub_userhostsubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub_userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub_userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhosttitle[i] + '\\\"}","is_playable":true}';
         } else {
-            data += ',{"title":"' + SmartHub.userhosttitle[i] + '","subtitle":"' + SmartHub.userhostsubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub.userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub.userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub.userhosttitle[i] + '\\\"}","is_playable":true}';
+            data += ',{"title":"' + SmartHub_userhosttitle[i] + '","subtitle":"' + SmartHub_userhostsubtitle[i] +
+                '","image_ratio":"16by9","image_url":"' + SmartHub_userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
+                SmartHub_userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhosttitle[i] + '\\\"}","is_playable":true}';
         }
     }
-    if (SmartHub.userhost.length > 0) data += ']},';
+    if (SmartHub_userhost.length > 0) data += ']},';
 
-    if (SmartHub.usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub.followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub.usergames.length; i++) {
+    if (SmartHub_usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub_followerUsername + '","tiles":[';
+    for (i = 0; i < SmartHub_usergames.length; i++) {
         if (i < 1) {
-            data += '{"title":"' + SmartHub.usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub.usergamesimg[i] +
-                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
+            data += '{"title":"' + SmartHub_usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub_usergamesimg[i] +
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i] + '\\\"}","is_playable":false}';
         } else {
-            data += ',{"title":"' + SmartHub.usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub.usergamesimg[i] +
-                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub.usergames[i] + '\\\"}","is_playable":false}';
+            data += ',{"title":"' + SmartHub_usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub_usergamesimg[i] +
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i] + '\\\"}","is_playable":false}';
         }
     }
-    if (SmartHub.usergames.length > 0) data += ']},';
+    if (SmartHub_usergames.length > 0) data += ']},';
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
@@ -245,7 +241,7 @@ function previewDataGenerator() {
     return data;
 }
 
-SmartHub.EventListener = function() {
+function SmartHub_EventListener() {
     var requestedAppControl;
     try {
         requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
@@ -253,7 +249,7 @@ SmartHub.EventListener = function() {
     var appControlData, actionData, VideoIdx, VideoTitleIdx, GameIdx, ScreenIdx, ExitScreen, ExitToMain = false;
 
     if (requestedAppControl) {
-        SmartHub.SmartHubResume = true;
+        SmartHub_SmartHubResume = true;
         appControlData = requestedAppControl.appControl.data;
         for (var i = 0; i < appControlData.length; i++) {
             if (appControlData[i].key === 'PAYLOAD') {
@@ -268,44 +264,44 @@ SmartHub.EventListener = function() {
                     Play_selectedChannelDisplayname = VideoTitleIdx;
                     if (Play_isOn) {
                         Play_PreshutdownStream();
-                        window.setTimeout(main_openStream, 10);
+                        window.setTimeout(Main_openStream, 10);
                     } else if (PlayVod_isOn) {
                         PlayVod_PreshutdownStream();
-                        window.setTimeout(main_openStream, 10);
+                        window.setTimeout(Main_openStream, 10);
                     } else if (PlayClip_isOn) {
                         PlayClip_PreshutdownStream();
-                        window.setTimeout(main_openStream, 10);
+                        window.setTimeout(Main_openStream, 10);
                     } else {
-                        main_ExitCurrent(main_Go);
-                        window.setTimeout(main_openStream, 10);
+                        Main_ExitCurrent(Main_Go);
+                        window.setTimeout(Main_openStream, 10);
                     }
 
                 } else if (JSON.parse(actionData).gameIdx) {
                     GameIdx = JSON.parse(actionData).gameIdx;
-                    ExitToMain = (GameIdx !== main_gameSelected);
-                    ExitScreen = main_Go;
-                    main_gameSelected = GameIdx;
-                    main_Go = main_aGame;
+                    ExitToMain = (GameIdx !== Main_gameSelected);
+                    ExitScreen = Main_Go;
+                    Main_gameSelected = GameIdx;
+                    Main_Go = Main_aGame;
 
-                    main_ExitCurrent(ExitScreen);
+                    Main_ExitCurrent(ExitScreen);
                     if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
                     else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
                     else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
-                    else if (ExitToMain) main_SwitchScreen();
+                    else if (ExitToMain) Main_SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
                     ScreenIdx = JSON.parse(actionData).screenIdx;
-                    ExitToMain = (ScreenIdx !== main_Go);
-                    ExitScreen = main_Go;
-                    main_Go = ScreenIdx;
+                    ExitToMain = (ScreenIdx !== Main_Go);
+                    ExitScreen = Main_Go;
+                    Main_Go = ScreenIdx;
 
-                    main_ExitCurrent(ExitScreen);
+                    Main_ExitCurrent(ExitScreen);
                     if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
                     else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
                     else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
-                    else if (ExitToMain) main_SwitchScreen();
+                    else if (ExitToMain) Main_SwitchScreen();
                 }
             }
         }
     }
-};
+}

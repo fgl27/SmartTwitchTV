@@ -1,117 +1,117 @@
 //Variable initialization
-var addCode_loadingDataTry = 0;
-var addCode_loadingDataTryMax = 10;
-var addCode_loadingDataTimeout = 10000;
-var addCode_UsercodeArray = [];
-var addCode_UserIdArray = [];
-var addCode_Followercount = 0;
-var addCode_Username = null;
-var addCode_loadingData = false;
-var addCode_keyBoardOn = false;
-var addCode_userId = '';
-var addCode_userChannel = '';
-var addCode_OauthToken = '';
-var addCode_IsFallowing = false;
-var addCode_IsSub = false;
-var addCode_PlayRequest = false;
+var AddCode_loadingDataTry = 0;
+var AddCode_loadingDataTryMax = 10;
+var AddCode_loadingDataTimeout = 10000;
+var AddCode_UsercodeArray = [];
+var AddCode_UserIdArray = [];
+var AddCode_Followercount = 0;
+var AddCode_Username = null;
+var AddCode_loadingData = false;
+var AddCode_keyBoardOn = false;
+var AddCode_userId = '';
+var AddCode_userChannel = '';
+var AddCode_OauthToken = '';
+var AddCode_IsFallowing = false;
+var AddCode_IsSub = false;
+var AddCode_PlayRequest = false;
 //Variable initialization end
 
-function addCode_init() {
-    if (addCode_OauthToken !== '') {
-        addCode_TimeoutReset10();
-        addCode_CheckToken();
-        Users.init();
+function AddCode_init() {
+    if (AddCode_OauthToken !== '') {
+        AddCode_TimeoutReset10();
+        AddCode_CheckToken();
+        Users_init();
         return;
     } else {
-        main_Go = main_addCode;
+        Main_Go = Main_addCode;
         document.getElementById('top_bar_user').classList.add('icon_center_focus');
-        main_HideWarningDialog();
-        addCode_input = document.querySelector('#oauth_input');
+        Main_HideWarningDialog();
+        AddCode_input = document.querySelector('#oauth_input');
         document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
-        document.getElementById("oauth_text").innerHTML = STR_OAUTH_IN + main_UserName + STR_OAUTH_EXPLAIN;
-        addCode_inputFocus();
-        addUser_scrollVerticalToElementById('oauth_input');
+        document.getElementById("oauth_text").innerHTML = STR_OAUTH_IN + Main_UserName + STR_OAUTH_EXPLAIN;
+        AddCode_inputFocus();
+        AddUser_scrollVerticalToElementById('oauth_input');
     }
 }
 
-function addCode_exit() {
-    addCode_RemoveinputFocus();
-    document.body.removeEventListener("keydown", addCode_handleKeyDown);
+function AddCode_exit() {
+    AddCode_RemoveinputFocus();
+    document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
 }
 
-function addCode_handleKeyDown(event) {
-    if (addCode_loadingData || addCode_keyBoardOn) return;
+function AddCode_handleKeyDown(event) {
+    if (AddCode_loadingData || AddCode_keyBoardOn) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_RETURN:
-            if (main_isAboutDialogShown()) main_HideAboutDialog();
-            else if (main_isControlsDialogShown()) main_HideControlsDialog();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                main_Go = main_Users;
-                addCode_exit();
-                main_SwitchScreen();
+                Main_Go = Main_Users;
+                AddCode_exit();
+                Main_SwitchScreen();
             }
             break;
         case TvKeyCode.KEY_CHANNELUP:
-            main_Go = main_games;
-            addCode_exit();
-            main_SwitchScreen();
+            Main_Go = Main_games;
+            AddCode_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_CHANNELDOWN:
-            main_Go = main_Live;
-            addCode_exit();
-            main_SwitchScreen();
+            Main_Go = Main_Live;
+            AddCode_exit();
+            Main_SwitchScreen();
             break;
         case TvKeyCode.KEY_PLAY:
         case TvKeyCode.KEY_PAUSE:
         case TvKeyCode.KEY_PLAYPAUSE:
         case TvKeyCode.KEY_ENTER:
-            addCode_inputFocus();
+            AddCode_inputFocus();
             break;
         case TvKeyCode.KEY_RED:
-            main_showAboutDialog();
+            Main_showAboutDialog();
             break;
         case TvKeyCode.KEY_GREEN:
-            addCode_exit();
-            main_GoLive();
+            AddCode_exit();
+            Main_GoLive();
             break;
         case TvKeyCode.KEY_YELLOW:
-            main_showControlsDialog();
+            Main_showControlsDialog();
             break;
         case TvKeyCode.KEY_BLUE:
-            main_BeforeSearch = main_Go;
-            main_Go = main_Search;
-            addCode_exit();
-            main_SwitchScreen();
+            Main_BeforeSearch = Main_Go;
+            Main_Go = Main_Search;
+            AddCode_exit();
+            Main_SwitchScreen();
             break;
         default:
             break;
     }
 }
 
-function addCode_inputFocus() {
-    document.body.removeEventListener("keydown", addCode_handleKeyDown);
-    document.body.addEventListener("keydown", addCode_KeyboardEvent, false);
-    addCode_input.addEventListener('input');
-    addCode_input.addEventListener('compositionend');
+function AddCode_inputFocus() {
+    document.body.removeEventListener("keydown", AddCode_handleKeyDown);
+    document.body.addEventListener("keydown", AddCode_KeyboardEvent, false);
+    AddCode_input.addEventListener('input');
+    AddCode_input.addEventListener('compositionend');
     document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
-    addCode_input.focus();
-    addCode_keyBoardOn = true;
+    AddCode_input.focus();
+    AddCode_keyBoardOn = true;
 }
 
-function addCode_RemoveinputFocus() {
-    addCode_input.blur();
-    document.body.removeEventListener("keydown", addCode_KeyboardEvent);
-    document.body.addEventListener("keydown", addCode_handleKeyDown, false);
+function AddCode_RemoveinputFocus() {
+    AddCode_input.blur();
+    document.body.removeEventListener("keydown", AddCode_KeyboardEvent);
+    document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
     document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
     window.setTimeout(function() {
-        addCode_keyBoardOn = false;
+        AddCode_keyBoardOn = false;
     }, 250);
 }
 
-function addCode_KeyboardEvent(event) {
-    if (addCode_loadingData) return;
+function AddCode_KeyboardEvent(event) {
+    if (AddCode_loadingData) return;
 
     switch (event.keyCode) {
         case TvKeyCode.KEY_KEYBOARD_DELETE_ALL:
@@ -123,14 +123,14 @@ function addCode_KeyboardEvent(event) {
             if ($('#oauth_input').val() !== '' && $('#oauth_input').val() !== null) {
 
                 document.getElementById("oauth_input").value = $('#oauth_input').val();
-                addCode_OauthToken = $('#oauth_input').val();
+                AddCode_OauthToken = $('#oauth_input').val();
 
-                addCode_TimeoutReset10();
-                main_showLoadDialog();
-                addUser_scrollVerticalToElementById('blank_focus');
-                addCode_CheckKey();
+                AddCode_TimeoutReset10();
+                Main_showLoadDialog();
+                AddUser_scrollVerticalToElementById('blank_focus');
+                AddCode_CheckKey();
             }
-            addCode_RemoveinputFocus();
+            AddCode_RemoveinputFocus();
             break;
         case TvKeyCode.KEY_KEYBOARD_BACKSPACE:
             document.getElementById("oauth_input").value = $('#oauth_input').val().slice(0, -1);
@@ -145,598 +145,598 @@ function addCode_KeyboardEvent(event) {
     }
 }
 
-function addCode_OldRestoreUsers() {
-    addCode_UsercodeArray = [];
+function AddCode_OldRestoreUsers() {
+    AddCode_UsercodeArray = [];
     var size = parseInt(localStorage.getItem('UsercodeArraySize')) || 0;
     if (size > 0)
         for (var x = 0; x < size; x++)
-            addCode_UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
+            AddCode_UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
 
-    addCode_SaveKeyArray();
+    AddCode_SaveKeyArray();
 }
 
-function addCode_RestoreUsers() {
-    addCode_UsercodeArray = JSON.parse(localStorage.getItem("userkeys")) || [];
+function AddCode_RestoreUsers() {
+    AddCode_UsercodeArray = JSON.parse(localStorage.getItem("userkeys")) || [];
 
     //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
-    if (!addCode_UsercodeArray.length) addCode_OldRestoreUsers();
+    if (!AddCode_UsercodeArray.length) AddCode_OldRestoreUsers();
 
-    addCode_SetDefaultOAuth(0);
+    AddCode_SetDefaultOAuth(0);
 }
 
-function addCode_SaveNewUser() {
-    addCode_UsercodeArray.push(addCode_Username + ',' + addCode_userId + ',' + addCode_OauthToken);
-    addCode_SaveKeyArray();
+function AddCode_SaveNewUser() {
+    AddCode_UsercodeArray.push(AddCode_Username + ',' + AddCode_userId + ',' + AddCode_OauthToken);
+    AddCode_SaveKeyArray();
 
-    main_HideLoadDialog();
-    Users.init();
-    addCode_loadingData = false;
+    Main_HideLoadDialog();
+    Users_init();
+    AddCode_loadingData = false;
 }
 
-function addCode_removeUser(Position) {
-    var index = addCode_UsercodeArray.indexOf(addCode_UsercodeArray[Position]);
-    if (index > -1) addCode_UsercodeArray.splice(index, 1);
-    addCode_SaveKeyArray();
+function AddCode_removeUser(Position) {
+    var index = AddCode_UsercodeArray.indexOf(AddCode_UsercodeArray[Position]);
+    if (index > -1) AddCode_UsercodeArray.splice(index, 1);
+    AddCode_SaveKeyArray();
 }
 
-function addCode_SaveKeyArray() {
-    localStorage.setItem("userkeys", JSON.stringify(addCode_UsercodeArray));
+function AddCode_SaveKeyArray() {
+    localStorage.setItem("userkeys", JSON.stringify(AddCode_UsercodeArray));
 }
 
-function addCode_SetDefaultOAuth(position) {
-    if (addUser_UsernameArray.length > 0) main_UserName = addUser_UsernameArray[position];
-    if (addCode_UsercodeArray.length > 0) {
-        var userCode = addCode_UserCodeExist(addUser_UsernameArray[position]);
+function AddCode_SetDefaultOAuth(position) {
+    if (AddUser_UsernameArray.length > 0) Main_UserName = AddUser_UsernameArray[position];
+    if (AddCode_UsercodeArray.length > 0) {
+        var userCode = AddCode_UserCodeExist(AddUser_UsernameArray[position]);
         if (userCode > -1) {
-            var values = addCode_UsercodeArray[userCode].split(",");
-            addCode_Username = values[0];
-            addCode_userId = values[1];
-            addCode_OauthToken = values[2];
-        } else addCode_SetemptyOAuth();
-    } else addCode_SetemptyOAuth();
+            var values = AddCode_UsercodeArray[userCode].split(",");
+            AddCode_Username = values[0];
+            AddCode_userId = values[1];
+            AddCode_OauthToken = values[2];
+        } else AddCode_SetemptyOAuth();
+    } else AddCode_SetemptyOAuth();
 }
 
-function addCode_SetemptyOAuth() {
-    addCode_Username = '';
-    addCode_userId = '';
-    addCode_OauthToken = '';
+function AddCode_SetemptyOAuth() {
+    AddCode_Username = '';
+    AddCode_userId = '';
+    AddCode_OauthToken = '';
 }
 
-function addCode_UserCodeExist(user) {
-    for (var i = 0; i < addCode_UsercodeArray.length; i++) {
-        if (user === addCode_UsercodeArray[i].split(",")[0]) return i;
+function AddCode_UserCodeExist(user) {
+    for (var i = 0; i < AddCode_UsercodeArray.length; i++) {
+        if (user === AddCode_UsercodeArray[i].split(",")[0]) return i;
     }
     return -1;
 }
 
-function addCode_CheckKey() {
+function AddCode_CheckKey() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + addCode_OauthToken, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode_OauthToken, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    addCode_CheckKeySuccess(xmlHttp.responseText);
+                    AddCode_CheckKeySuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    addCode_CheckKeyError();
+                    AddCode_CheckKeyError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_CheckKeyError();
+        AddCode_CheckKeyError();
     }
 }
 
-function addCode_CheckKeyError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += (addCode_loadingDataTry < 5) ? 250 : 3500;
-        addCode_CheckKey();
+function AddCode_CheckKeyError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_CheckKey();
     } else {
-        addCode_loadingData = false;
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_OAUTH_FAIL);
+        AddCode_loadingData = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_OAUTH_FAIL);
         window.setTimeout(function() {
-            main_HideWarningDialog();
-            addCode_inputFocus();
+            Main_HideWarningDialog();
+            AddCode_inputFocus();
         }, 4000);
     }
 }
 
-function addCode_CheckKeySuccess(responseText) {
-    if (Users.checkKey(responseText)) {
-        addCode_Username = JSON.parse(responseText).token.user_name + '';
-        addCode_TimeoutReset10();
-        addCode_isCheckFallow = false;
-        addCode_CheckId();
+function AddCode_CheckKeySuccess(responseText) {
+    if (Users_checkKey(responseText)) {
+        AddCode_Username = JSON.parse(responseText).token.user_name + '';
+        AddCode_TimeoutReset10();
+        AddCode_isCheckFallow = false;
+        AddCode_CheckId();
     } else {
-        main_HideLoadDialog();
-        main_showWarningDialog(STR_OAUTH_WRONG + main_UserName + STR_OAUTH_WRONG2 + addCode_Username);
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_OAUTH_WRONG + Main_UserName + STR_OAUTH_WRONG2 + AddCode_Username);
         window.setTimeout(function() {
-            main_HideWarningDialog();
-            addCode_inputFocus();
+            Main_HideWarningDialog();
+            AddCode_inputFocus();
         }, 3500);
     }
 }
 
-function addCode_CheckId() {
+function AddCode_CheckId() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + main_UserName, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_UserName, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    if (addCode_isCheckFallow) addCode_CheckFallowId(xmlHttp.responseText);
-                    else addCode_CheckIdSuccess(xmlHttp.responseText);
+                    if (AddCode_isCheckFallow) AddCode_CheckFallowId(xmlHttp.responseText);
+                    else AddCode_CheckIdSuccess(xmlHttp.responseText);
                     return;
                 } else {
-                    addCode_CheckIdError();
+                    AddCode_CheckIdError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_CheckIdError();
+        AddCode_CheckIdError();
     }
 }
 
-function addCode_CheckIdError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += (addCode_loadingDataTry < 5) ? 250 : 3500;
-        addCode_CheckId();
+function AddCode_CheckIdError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_CheckId();
     }
 }
 
-function addCode_CheckIdSuccess(responseText) {
-    addCode_userId = JSON.parse(responseText).users[0]._id;
+function AddCode_CheckIdSuccess(responseText) {
+    AddCode_userId = JSON.parse(responseText).users[0]._id;
     document.getElementById("oauth_input").value = '';
-    document.body.removeEventListener("keydown", addCode_handleKeyDown);
-    Users.SetKeyTitle(true);
-    addCode_SaveNewUser();
+    document.body.removeEventListener("keydown", AddCode_handleKeyDown);
+    Users_SetKeyTitle(true);
+    AddCode_SaveNewUser();
 }
 
-function addCode_CheckFallow() {
-    addCode_TimeoutReset10();
-    addCode_IsFallowing = false;
-    if (addCode_userId !== '') addCode_RequestCheckFallow();
+function AddCode_CheckFallow() {
+    AddCode_TimeoutReset10();
+    AddCode_IsFallowing = false;
+    if (AddCode_userId !== '') AddCode_RequestCheckFallow();
     else {
-        addCode_isCheckFallow = true;
-        addCode_CheckId();
+        AddCode_isCheckFallow = true;
+        AddCode_CheckId();
     }
 }
 
-function addCode_CheckFallowId(responseText) {
+function AddCode_CheckFallowId(responseText) {
     var users = JSON.parse(responseText).users[0];
     if (users !== undefined) {
-        addCode_userId = users._id;
-        addCode_TimeoutReset10();
-        addCode_IsFallowing = false;
-        addCode_RequestCheckFallow();
+        AddCode_userId = users._id;
+        AddCode_TimeoutReset10();
+        AddCode_IsFallowing = false;
+        AddCode_RequestCheckFallow();
     } else {
-        addCode_IsFallowing = false;
-        addCode_loadingData = false;
-        if (addCode_PlayRequest) Play_setFallow();
-        else SChannelContent.setFallow();
+        AddCode_IsFallowing = false;
+        AddCode_loadingData = false;
+        if (AddCode_PlayRequest) Play_setFallow();
+        else SChannelContent_setFallow();
     }
 }
 
-function addCode_RequestCheckFallow() {
+function AddCode_RequestCheckFallow() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + addCode_userId + '/follows/channels/' + addCode_userChannel, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //yes
-                    addCode_IsFallowing = true;
-                    addCode_loadingData = false;
-                    if (addCode_PlayRequest) Play_setFallow();
-                    else SChannelContent.setFallow();
+                    AddCode_IsFallowing = true;
+                    AddCode_loadingData = false;
+                    if (AddCode_PlayRequest) Play_setFallow();
+                    else SChannelContent_setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //no
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                        addCode_IsFallowing = false;
-                        addCode_loadingData = false;
-                        if (addCode_PlayRequest) Play_setFallow();
-                        else SChannelContent.setFallow();
+                        AddCode_IsFallowing = false;
+                        AddCode_loadingData = false;
+                        if (AddCode_PlayRequest) Play_setFallow();
+                        else SChannelContent_setFallow();
                         return;
-                    } else addCode_RequestCheckFallowError();
+                    } else AddCode_RequestCheckFallowError();
                 } else { // internet error
-                    addCode_RequestCheckFallowError();
+                    AddCode_RequestCheckFallowError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_RequestCheckFallowError();
+        AddCode_RequestCheckFallowError();
     }
 }
 
-function addCode_RequestCheckFallowError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += (addCode_loadingDataTry < 5) ? 250 : 3500;
-        addCode_RequestCheckFallow();
+function AddCode_RequestCheckFallowError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_RequestCheckFallow();
     } else {
-        addCode_loadingData = false;
-        if (addCode_PlayRequest) Play_setFallow();
-        else SChannelContent.setFallow();
+        AddCode_loadingData = false;
+        if (AddCode_PlayRequest) Play_setFallow();
+        else SChannelContent_setFallow();
     }
 }
 
-function addCode_Fallow() {
-    addCode_TimeoutReset10();
-    addCode_FallowRequest();
+function AddCode_Fallow() {
+    AddCode_TimeoutReset10();
+    AddCode_FallowRequest();
 }
 
-function addCode_FallowRequest() {
+function AddCode_FallowRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + addCode_userId + '/follows/channels/' + addCode_userChannel, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
-        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + addCode_OauthToken);
+        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success user now is fallowing the channel
-                    addCode_loadingData = false;
-                    addCode_IsFallowing = true;
-                    if (addCode_PlayRequest) Play_setFallow();
-                    else SChannelContent.setFallow();
+                    AddCode_loadingData = false;
+                    AddCode_IsFallowing = true;
+                    if (AddCode_PlayRequest) Play_setFallow();
+                    else SChannelContent_setFallow();
                     return;
                 } else {
-                    addCode_FallowRequestError();
+                    AddCode_FallowRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_FallowRequestError();
+        AddCode_FallowRequestError();
     }
 }
 
-function addCode_FallowRequestError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_FallowRequest();
+function AddCode_FallowRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_FallowRequest();
     }
 }
 
-function addCode_UnFallow() {
-    addCode_TimeoutReset10();
-    addCode_UnFallowRequest();
+function AddCode_UnFallow() {
+    AddCode_TimeoutReset10();
+    AddCode_UnFallowRequest();
 }
 
-function addCode_UnFallowRequest() {
+function AddCode_UnFallowRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + addCode_userId + '/follows/channels/' + addCode_userChannel, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
-        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + addCode_OauthToken);
+        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 204) { //success user is now not fallowing the channel
-                    addCode_IsFallowing = false;
-                    addCode_loadingData = false;
-                    if (addCode_PlayRequest) Play_setFallow();
-                    else SChannelContent.setFallow();
+                    AddCode_IsFallowing = false;
+                    AddCode_loadingData = false;
+                    if (AddCode_PlayRequest) Play_setFallow();
+                    else SChannelContent_setFallow();
                     return;
                 } else {
-                    addCode_UnFallowRequestError();
+                    AddCode_UnFallowRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_UnFallowRequestError();
+        AddCode_UnFallowRequestError();
     }
 }
 
-function addCode_UnFallowRequestError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_UnFallowRequest();
+function AddCode_UnFallowRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_UnFallowRequest();
     }
 }
 
-function addCode_CheckSub() {
-    addCode_TimeoutReset10();
-    addCode_IsSub = false;
-    addCode_RequestCheckSub();
+function AddCode_CheckSub() {
+    AddCode_TimeoutReset10();
+    AddCode_IsSub = false;
+    AddCode_RequestCheckSub();
 }
 
-function addCode_TimeoutReset10() {
-    addCode_loadingDataTry = 0;
-    addCode_loadingDataTimeout = 10000;
-    addCode_loadingData = true;
+function AddCode_TimeoutReset10() {
+    AddCode_loadingDataTry = 0;
+    AddCode_loadingDataTimeout = 10000;
+    AddCode_loadingData = true;
 }
 
-function addCode_RequestCheckSub() {
+function AddCode_RequestCheckSub() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + addCode_userId + '/subscriptions/' + addCode_userChannel, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/subscriptions/' + AddCode_userChannel, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
-        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + addCode_OauthToken);
+        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success yes user is a SUB
-                    addCode_IsSub = true;
-                    addCode_loadingData = false;
+                    AddCode_IsSub = true;
+                    AddCode_loadingData = false;
                     PlayVod_isSub();
                     return;
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
                     console.log('channel does not have a subscription program');
                 } else if (xmlHttp.status === 404) { //success no user is not a sub
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                        addCode_IsSub = false;
-                        addCode_loadingData = false;
+                        AddCode_IsSub = false;
+                        AddCode_loadingData = false;
                         PlayVod_NotSub();
                         return;
-                    } else addCode_RequestCheckSubError();
+                    } else AddCode_RequestCheckSubError();
                 } else { // internet error
-                    addCode_RequestCheckSubError();
+                    AddCode_RequestCheckSubError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_RequestCheckSubError();
+        AddCode_RequestCheckSubError();
     }
 }
 
-function addCode_RequestCheckSubError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += (addCode_loadingDataTry < 5) ? 250 : 3500;
-        addCode_RequestCheckSub();
+function AddCode_RequestCheckSubError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_RequestCheckSub();
     } else {
-        addCode_loadingData = false;
+        AddCode_loadingData = false;
     }
 }
 
-function addCode_CheckToken() {
+function AddCode_CheckToken() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + addCode_OauthToken, true);
-        xmlHttp.timeout = addCode_loadingDataTimeout;
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode_OauthToken, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    var bool = Users.checkKey(xmlHttp.responseText);
-                    Users.SetKeyTitle(bool);
-                    main_showWarningDialog(bool ? STR_KEY_OK : STR_KEY_BAD);
+                    var bool = Users_checkKey(xmlHttp.responseText);
+                    Users_SetKeyTitle(bool);
+                    Main_showWarningDialog(bool ? STR_KEY_OK : STR_KEY_BAD);
                     window.setTimeout(function() {
-                        main_HideWarningDialog();
+                        Main_HideWarningDialog();
                     }, 4000);
-                    addCode_loadingData = false;
+                    AddCode_loadingData = false;
                     return;
                 } else {
-                    addCode_CheckTokenError();
+                    AddCode_CheckTokenError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_CheckTokenError();
+        AddCode_CheckTokenError();
     }
 }
 
-function addCode_CheckTokenError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += (addCode_loadingDataTry < 5) ? 250 : 3500;
-        addCode_CheckToken();
+function AddCode_CheckTokenError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_CheckToken();
     } else {
-        main_showWarningDialog(STR_USER_CODE_BAD);
-        Users.SetKeyTitle(false);
+        Main_showWarningDialog(STR_USER_CODE_BAD);
+        Users_SetKeyTitle(false);
         window.setTimeout(function() {
-            main_HideWarningDialog();
+            Main_HideWarningDialog();
         }, 4000);
-        addCode_loadingData = false;
+        AddCode_loadingData = false;
     }
 }
 
-function addCode_CheckTokenStart(position) {
+function AddCode_CheckTokenStart(position) {
     try {
 
-        var userCode = addCode_UserCodeExist(addUser_UsernameArray[position]);
+        var userCode = AddCode_UserCodeExist(AddUser_UsernameArray[position]);
         if (userCode > -1) {
-            addCode_OauthToken = addCode_UsercodeArray[userCode].split(",")[2];
-            main_UserName = addUser_UsernameArray[position];
+            AddCode_OauthToken = AddCode_UsercodeArray[userCode].split(",")[2];
+            Main_UserName = AddUser_UsernameArray[position];
 
             var xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + addCode_OauthToken, true);
-            xmlHttp.timeout = addCode_loadingDataTimeout;
+            xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=' + AddCode_OauthToken, true);
+            xmlHttp.timeout = AddCode_loadingDataTimeout;
             xmlHttp.ontimeout = function() {};
 
             xmlHttp.onreadystatechange = function() {
                 if (xmlHttp.readyState === 4) {
                     if (xmlHttp.status === 200) {
-                        Users.SetKeyTitleStart(Users.checkKey(xmlHttp.responseText), position);
+                        Users_SetKeyTitleStart(Users_checkKey(xmlHttp.responseText), position);
                         return;
                     } else {
-                        addCode_CheckTokenStartError(position);
+                        AddCode_CheckTokenStartError(position);
                     }
                 }
             };
 
             xmlHttp.send(null);
-        } else Users.SetKeyTitleStart(false, position);
+        } else Users_SetKeyTitleStart(false, position);
     } catch (e) {
-        addCode_CheckTokenStartError(position);
+        AddCode_CheckTokenStartError(position);
     }
 }
 
-function addCode_CheckTokenStartError(position) {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_CheckTokenStart(position);
-    } else Users.SetKeyTitleStart(false, position);
+function AddCode_CheckTokenStartError(position) {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_CheckTokenStart(position);
+    } else Users_SetKeyTitleStart(false, position);
 }
 
-function addCode_FallowGame() {
-    addCode_TimeoutReset10();
-    addCode_RequestFallowGame();
+function AddCode_FallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestFallowGame();
 }
 
-function addCode_RequestFallowGame() {
+function AddCode_RequestFallowGame() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("PUT", ' https://api.twitch.tv/api/users/' + main_UserName + '/follows/games/' + encodeURIComponent(main_gameSelected) +
-            '?oauth_token=' + addCode_OauthToken, true);
+        xmlHttp.open("PUT", ' https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected) +
+            '?oauth_token=' + AddCode_OauthToken, true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success we now fallow the game
-                    aGame_fallowing = true;
-                    aGame_setFallow();
+                    AGame_fallowing = true;
+                    AGame_setFallow();
                     return;
                 } else { // internet error
-                    addCode_FallowGameRequestError();
+                    AddCode_FallowGameRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_FallowGameRequestError();
+        AddCode_FallowGameRequestError();
     }
 }
 
-function addCode_FallowGameRequestError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_RequestFallowGame();
+function AddCode_FallowGameRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_RequestFallowGame();
     }
 }
 
-function addCode_UnFallowGame() {
-    addCode_TimeoutReset10();
-    addCode_RequestUnFallowGame();
+function AddCode_UnFallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestUnFallowGame();
 }
 
-function addCode_RequestUnFallowGame() {
+function AddCode_RequestUnFallowGame() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("DELETE", ' https://api.twitch.tv/api/users/' + main_UserName + '/follows/games/' + encodeURIComponent(main_gameSelected) + '?oauth_token=' + addCode_OauthToken, true);
+        xmlHttp.open("DELETE", ' https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected) + '?oauth_token=' + AddCode_OauthToken, true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 204) { // success we now unfallow the game
-                    aGame_fallowing = false;
-                    aGame_setFallow();
+                    AGame_fallowing = false;
+                    AGame_setFallow();
                     return;
                 } else { // internet error
-                    addCode_UnFallowGameRequestError();
+                    AddCode_UnFallowGameRequestError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_UnFallowGameRequestError();
+        AddCode_UnFallowGameRequestError();
     }
 }
 
-function addCode_UnFallowGameRequestError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_RequestUnFallowGame();
+function AddCode_UnFallowGameRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_RequestUnFallowGame();
     }
 }
 
-function addCode_CheckFallowGame() {
-    addCode_TimeoutReset10();
-    addCode_RequestCheckFallowGame();
+function AddCode_CheckFallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestCheckFallowGame();
 }
 
-function addCode_RequestCheckFallowGame() {
+function AddCode_RequestCheckFallowGame() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", ' https://api.twitch.tv/api/users/' + main_UserName + '/follows/games/' + encodeURIComponent(main_gameSelected), true);
+        xmlHttp.open("GET", ' https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected), true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', main_clientId);
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success yes user fallows
-                    aGame_fallowing = true;
-                    aGame_setFallow();
+                    AGame_fallowing = true;
+                    AGame_setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //success no user doesnot fallows
-                    aGame_fallowing = false;
-                    aGame_setFallow();
+                    AGame_fallowing = false;
+                    AGame_setFallow();
                     return;
                 } else { // internet error
-                    addCode_CheckFallowGameError();
+                    AddCode_CheckFallowGameError();
                     return;
                 }
             }
@@ -744,17 +744,17 @@ function addCode_RequestCheckFallowGame() {
 
         xmlHttp.send(null);
     } catch (e) {
-        addCode_CheckFallowGameError();
+        AddCode_CheckFallowGameError();
     }
 }
 
-function addCode_CheckFallowGameError() {
-    addCode_loadingDataTry++;
-    if (addCode_loadingDataTry < addCode_loadingDataTryMax) {
-        addCode_loadingDataTimeout += 3500;
-        addCode_RequestCheckFallowGame();
+function AddCode_CheckFallowGameError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 3500;
+        AddCode_RequestCheckFallowGame();
     } else {
-        aGame_fallowing = false;
-        aGame_setFallow();
+        AGame_fallowing = false;
+        AGame_setFallow();
     }
 }
