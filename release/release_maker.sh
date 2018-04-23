@@ -1,5 +1,5 @@
 #!/bin/bash
-#code compressor using uglifyjs or yui-compressor and sed, runs on linux shell base system
+#code compressor using uglifyjs and sed, runs on linux shell base system
 
 #instalation of uglifyjs has more then one step
 #1# Donwload npm/node and https://nodejs.org/en/
@@ -15,9 +15,8 @@
 # now install uglifyjs via terminal
 # npm install uglify-js -g
 
-#installation of yui-compressor and sed is via more used apt-get
+#installation of sed is via more used apt-get
 
-#sudo apt-get install yui-compressor
 #sudo apt-get install sed
 
 #exec this file or drag this .sh file to terminal to generate a released
@@ -33,25 +32,39 @@ js_folders=("app/languages/" "app/general/" "app/specific/");
 # Exit if sed is not available
 if ! which 'sed' >/dev/null  ; then
 	echo -e "\\ncan't run sed it's not installed";
-        echo -e "Install using command:";
-        echo -e "sudo apt-get install sed\\n";
+	echo -e "Install using command:";
+	echo -e "sudo apt-get install sed\\n";
 	echo -e "Release maker aborted"
+	exit;
+fi;
+
+# Exit if uglifyjs is not available
+canuglifyjs=0;
+if which 'uglifyjs' >/dev/null  ; then
+	# call this .sh and 1 "this.sh 1" to update uglify-js
+	if [ "$1" == 1 ]; then
+		npm install uglify-js -g
+	fi;
+	canuglifyjs=1;
+else
+	echo -e "\\ncan't run uglifyjs or yui as it is not installed";
+	echo -e "To install uglifyjs read the release maker notes on the top\\n";
+	echo -e ".js files not compressed.\\n"
 	exit;
 fi;
 
 # this .sh folder used for cd back and for
 mainfolder="$(dirname ""$(dirname "$0")"")";
-canuglifyjs=0;
 
 cd "$mainfolder" || exit
 
 # sed_comp cleans/compress up html/xml related files
 sed_comp() {
-        array=( "$@" );
+	array=( "$@" );
 	for i in "${array[@]}"; do
 		echo -e "sed compressing $i";
-                sed -i -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' "$i";
-                sed -i "/\\/\\*.*\\*\\//d;/\\/\\*/,/\\*\\// d" "$i";
+		sed -i -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' "$i";
+		sed -i "/\\/\\*.*\\*\\//d;/\\/\\*/,/\\*\\// d" "$i";
 		sed -i '/^\(\s*\)\/\//d' "$i";
 		sed -i 's/^[ \t]*//g; s/[ \t]*$//g' "$i";
 		sed -i ':a;N;$!ba;s/\n/ /g' "$i";
@@ -69,39 +82,14 @@ sed_comp() {
 	echo -e "";
 }
 
-# yui-compressor cleans/compress up js related files
-js_comp_yuo() {
-        array=( "$@" );
-	for i in "${array[@]}"; do
-		cd "$i" || exit;
-		for x in *.js; do
-			echo -e "yui-compressor $x";
-			yui-compressor "$x" -o "$x";
-		done
-		cd - &> /dev/null || exit;
-	done
-}
-
-# uglifyjs cleans/compress up js related files, is better then yui-compressor
+# uglifyjs cleans/compress js related files
 js_comp_ugf() {
-        array=( "$@" );
+	array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "uglifyjs $x";
+			echo -e "Including compresed version of $x to master.js";
 			uglifyjs "$x" -c -m -o "$x";
-		done
-		cd - &> /dev/null || exit;
-	done
-}
-
-# copy all files to release/master.js
-master_maker() {
-        array=( "$@" );
-	for i in "${array[@]}"; do
-		cd "$i" || exit;
-		for x in *.js; do
-			echo -e "Including $x to master.js";
 			cat "$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
@@ -127,32 +115,13 @@ echo -e "\\nCompressing Start\\n";
 # run the cleans/compress tools
 sed_comp "${html_file[@]}";
 
-if which 'uglifyjs' >/dev/null  ; then
-	if [ "$1" == 1 ]; then
-        	npm install uglify-js -g
-        fi;
-	js_comp_ugf "${js_folders[@]}";
-        canuglifyjs=1;
-elif which 'yui-compressor' >/dev/null  ; then
-	js_comp_yuo "${js_folders[@]}";
-else
-	echo -e "\\ncan't run uglifyjs or yui-compressor as they are not installed";
-        echo -e "To install uglifyjs read the release maker notes on the top\\n";
-        echo -e "Install yui-compressor using command:";
-        echo -e "sudo apt-get install yui-compressor\\n";
-	echo -e ".js files not compressed.\\n"
-fi;
-
-echo -e "\\nCompression done\\n";
-
-echo -e "\\nMaking new files up\\n";
-
 # Include STR_BODY to release/master, STR_BODY has the content of index.html body
 cp -rf config.xml release/config.xml
 echo "var STR_BODY='""$(cat index.html)""';" > release/master.js;
 
-# Runs the copy all files to release/master.js
-master_maker "${js_folders[@]}"
+if [ "$canuglifyjs" == 1 ]; then
+	js_comp_ugf "${js_folders[@]}";
+fi;
 
 #Make a zip
 cd release/ || exit
@@ -176,13 +145,13 @@ cd release/ || exit
 
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
-	echo -e "\\nuglifyjs master.js";
+	echo -e "uglifyjs master.js";
 	uglifyjs master.js -c -m toplevel -o master.js;
 fi;
 
-echo -e "\\nMaking done\\n";
+echo -e "Compression done\\n";
 
-echo -e "Release zip generated at $mainfolder/release/release.zip\\n";
+echo -e "Release done, zip generated at $mainfolder/release/release.zip\\n";
 
 # copy master.js temp files to githubio/js/
 cp -rf master.js githubio/js/master.js;
