@@ -82,7 +82,7 @@ function SmartHub_loadDataRequest() {
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
 
         xmlHttp.ontimeout = function() {};
-        
+
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
@@ -165,17 +165,17 @@ function previewDataGeneratorEmpty() {
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
-    '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+        '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_USER_ADD + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"16by9","image_url":"' +
-    IMG_SMART_USER + '","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
+        IMG_SMART_USER + '","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
-    '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+        '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';
@@ -228,17 +228,17 @@ function previewDataGenerator() {
 
     data += '{"title":"' + STR_LIVE + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
-    '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
+        '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_USER + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"16by9","image_url":"' + GIT_IO +
-    'smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
+        'smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
     data += ']},';
 
     data += '{"title":"' + STR_GAMES + '","tiles":[';
     data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
-    '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
+        '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
     data += ']}';
 
     data += ']}';

@@ -174,9 +174,9 @@ function Sclip_loadDataSuccess(responseText) {
             else {
                 row.appendChild(Sclip_createCell(row_id, row_id + '_' + coloumn_id,
                     video.thumbnails.medium.split('-preview')[0] + '.mp4' + video.duration, [video.thumbnails.medium,
-                    video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                    Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
-                ]));
+                        video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                        Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
+                    ]));
             }
         }
 
@@ -294,9 +294,9 @@ function Sclip_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Main_replaceVideo(Svod_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
-                    video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                    Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
-                ]);
+                video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
+            ]);
 
             Sclip_blankCellCount--;
 

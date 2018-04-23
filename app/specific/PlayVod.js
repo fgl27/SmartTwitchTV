@@ -95,7 +95,7 @@ function PlayVod_Resume() {
         Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
-            PlayVod_Playing =false;
+            PlayVod_Playing = false;
             PlayVod_onPlayer();
             PlayVod_PlayerCheckOffset = 80;
             PlayVod_RestoreFromResume = true;
