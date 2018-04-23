@@ -143,6 +143,7 @@ function UserLive_loadChannelLive(responseText) {
         UserLive_loadChannelUserLive();
     }
 }
+
 function UserLive_loadChannelUserLive() {
     try {
 

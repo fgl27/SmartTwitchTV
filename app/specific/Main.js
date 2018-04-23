@@ -158,7 +158,7 @@ function Main_loadTranslations(device) {
     if (lang.indexOf('pt_') !== -1) pt_BRLang();
     else console.log("language is " + lang);
     DefaultLang();
-    
+
     if (Main_isReleased) document.body.innerHTML = STR_BODY;
     else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
     Main_initWindows();
@@ -560,7 +560,8 @@ function Main_LoadImages(imgVector, idVector, img_type) {
 }
 
 function Main_LazyImgStart(imgId, total, img_type, coloumns) {
-    var x, y = 0, elem;
+    var x, y = 0,
+        elem;
     for (y; y < total; y++) {
         for (x = 0; x < coloumns; x++) {
             elem = document.getElementById(imgId + y + '_' + x);
@@ -796,7 +797,7 @@ function Main_ScrollHelperBlank(id) {
 }
 
 function Main_documentVerticalScrollPosition() {
-     return document.body.scrollTop; 
+    return document.body.scrollTop;
 }
 
 function Main_elementVerticalClientPositionById(id) {

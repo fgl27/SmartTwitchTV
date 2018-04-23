@@ -165,8 +165,7 @@ function Svod_loadDataSuccess(responseText) {
                 coloumn_id--;
             } else if (Svod_CellExists(video._id)) coloumn_id--;
             else {
-                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length,
-                [video.preview.replace("320x240", Main_VideoSize),
+                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length, [video.preview.replace("320x240", Main_VideoSize),
                     video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
                     Main_addCommas(video.views) + STR_VIEWER,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
