@@ -27,7 +27,8 @@ cd "$mainfolder" || exit
 
 # js-beautify indent all the *.js code
 js_beautify() {
-        array=( "$@" );
+	js-beautify index.html -o index.html;
+	array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
@@ -46,7 +47,7 @@ if which 'js-beautify' >/dev/null ; then
 	js_beautify "${js_folders[@]}";
 else
 	echo -e "\\ncan't run js-beautify because it is not installed";
-        echo -e "To install js-beautify read the beautify.sh notes on the top of the file\\n";
+	echo -e "To install js-beautify read the beautify.sh notes on the top of the file\\n";
 	echo -e ".js files not beautified.\\n";
 	exit;
 fi;
