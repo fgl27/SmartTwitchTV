@@ -38,7 +38,9 @@ Project Dependencies
 * [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
 * [Video.js - HTML5 Video Player](https://github.com/videojs/video.js)
 * [jQuery - fast, small, and feature-rich JavaScript library](https://code.jquery.com/jquery/)
-* [UglifyJS is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
+* [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
+* [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
+* [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
 * [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
 Controls

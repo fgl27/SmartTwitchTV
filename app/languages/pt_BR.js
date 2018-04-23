@@ -90,10 +90,6 @@ function pt_BRLang() {
     STR_ABOUT_INFO_4 = "Este é um aplicativo Open Source. Confira no meu GitHub";
     STR_ABOUT_INFO_5 = "github.com/bhb27/smarttv-twitch";
     STR_ABOUT_INFO_6 = "Este aplicativo está licenciado sob a Licença Pública GNU v3.0 e usa as seguintes dependências:";
-    STR_ABOUT_INFO_8 = "Font Awesome - The iconic font and CSS toolkit by FortAwesome (https://github.com/FortAwesome/Font-Awesome)";
-    STR_ABOUT_INFO_9 = "Video.js - HTML5 Video Player (https://github.com/videojs/video.js)";
-    STR_ABOUT_INFO_10 = "jQuery - fast, small, and feature-rich JavaScript library (https://code.jquery.com/jquery/)";
-    STR_ABOUT_INFO_11 = "Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API (http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)";
     STR_CONTROLS_PLAY_1 = "Exibir Informações: Pressione a tecla selecionar caso o Chat esteja sendo exibido ou use as Setas Direcionais.";
     STR_CONTROLS_PLAY_2 = "Fechar um vídeo: Pressione retornar duas vezes seguidas em menos de três segundos";
     STR_CONTROLS_PLAY_3 = "Pausar/Reproduzir: Pressione PLAY ou PAUSE.";
