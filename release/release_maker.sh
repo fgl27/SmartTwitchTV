@@ -20,7 +20,7 @@
 #sudo apt-get install yui-compressor
 #sudo apt-get install sed
 
-#exect this file or drag this .sh file to terminal to generate a released
+#exec this file or drag this .sh file to terminal to generate a released
 
 # add html files here, master.css here is a temp file generate by this .sh it has the css content of index.html
 html_file=("config.xml" "index.html" "master.css" "release/index.html");
@@ -184,7 +184,7 @@ echo -e "\\nMaking done\\n";
 
 echo -e "Release zip generated at $mainfolder/release/release.zip\\n";
 
-# compy master.js temp files to githubio/js/
+# copy master.js temp files to githubio/js/
 cp -rf master.js githubio/js/master.js;
 cd - &> /dev/null || exit;
 

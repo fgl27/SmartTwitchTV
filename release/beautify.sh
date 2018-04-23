@@ -12,10 +12,10 @@
 # export NODEJS_HOME=/usr/lib/nodejs/node
 # export PATH=$NODEJS_HOME/bin:$PATH
 
-# now install uglifyjs via terminal
+# now install js-beautify via terminal
 # npm install js-beautify -g
 
-#exect this file or drag this .sh file to terminal to generate a released
+#to exec this file or drag this .sh file to terminal to generate a released
 
 # add js folders here
 js_folders=("app/languages/" "app/general/" "app/specific/");
@@ -25,7 +25,7 @@ mainfolder="$(dirname ""$(dirname "$0")"")";
 
 cd "$mainfolder" || exit
 
-# uglifyjs cleans/compress up js related files, is better then yui-compressor
+# js-beautify indent all the *.js code
 js_beautify() {
         array=( "$@" );
 	for i in "${array[@]}"; do
@@ -51,7 +51,7 @@ else
 	exit;
 fi;
 
-# Warn if a change was detected to master.js or master.css file
+# Warn if a change was detected to src files
 git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
 	echo -e "Is necessary to update github as below files are modify:\\n"
