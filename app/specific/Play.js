@@ -360,7 +360,7 @@ function Play_extractStreamDeclarations(input) {
 
     var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
     var marray;
-    while (marray = myRegexp.exec(input)) result.push(marray[0]);
+    while (marray = myRegexp.exec(input)) result.push(marray[0]); // jshint ignore:line 
 
     return result;
 }
