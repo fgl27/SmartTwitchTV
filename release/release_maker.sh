@@ -40,8 +40,7 @@ if ! which 'sed' >/dev/null  ; then
 fi;
 
 # this .sh folder used for cd back and for
-sh_folder="$(dirname "$0")";
-mainfolder="$(dirname "$sh_folder")";
+mainfolder="$(dirname ""$(dirname "$0")"")";
 canuglifyjs=0;
 
 cd "$mainfolder" || exit
@@ -129,7 +128,9 @@ echo -e "\\nCompressing Start\\n";
 sed_comp "${html_file[@]}";
 
 if which 'uglifyjs' >/dev/null  ; then
-        npm install uglify-js -g
+	if [ "$1" == 1 ]; then
+        	npm install uglify-js -g
+        fi;
 	js_comp_ugf "${js_folders[@]}";
         canuglifyjs=1;
 elif which 'yui-compressor' >/dev/null  ; then
