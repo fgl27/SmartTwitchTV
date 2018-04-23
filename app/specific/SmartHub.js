@@ -19,9 +19,6 @@ var SmartHub_LastUpdate = 0;
 var SmartHub_emptyUser = false;
 var SmartHub_SmartHubResume = false;
 var SmartHub_followerUsername = '';
-var SmartHub_userold = 0;
-var SmartHub_usergamesold = 0;
-var SmartHub_userhostold = 0;
 var SmartHub_previewData = 0;
 //Variable initialization end
 
@@ -33,10 +30,14 @@ function SmartHub_Start() {
     } else SmartHub_emptyUser = false;
 
     SmartHub_followerUsername = AddUser_UsernameArray[0];
-    SmartHub_userold = SmartHub_user.length;
-    SmartHub_usergamesold = SmartHub_usergames.length;
-    SmartHub_userhostold = SmartHub_userhost.length;
+    SmartHub_cleanVector();
+    SmartHub_loadDataRequestPrepare();
+    SmartHub_previewData = 0;
+    if (SmartHub_emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
+    else SmartHub_loadDataRequest();
+}
 
+function SmartHub_cleanVector() {
     SmartHub_user = [];
     SmartHub_usertitle = [];
     SmartHub_usersubtitle = [];
@@ -49,13 +50,12 @@ function SmartHub_Start() {
     SmartHub_userhosttitle = [];
     SmartHub_userhostsubtitle = [];
     SmartHub_userhostimg = [];
+}
 
+function SmartHub_loadDataRequestPrepare() {
     SmartHub_loadingDataTry = 0;
     SmartHub_loadingDataTryMax = 10;
-    SmartHub_loadingDataTimeout = 3500;
-    SmartHub_previewData = 0;
-    if (SmartHub_emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
-    else SmartHub_loadDataRequest();
+    SmartHub_loadingDataTimeout = 10000;
 }
 
 function SmartHub_loadDataRequest() {
@@ -103,9 +103,9 @@ function SmartHub_loadDataRequest() {
 function SmartHub_loadDataError() {
     SmartHub_loadingDataTry++;
     if (SmartHub_loadingDataTry < SmartHub_loadingDataTryMax) {
-        SmartHub_loadingDataTimeout += (SmartHub_loadingDataTry < 5) ? 250 : 3500;
+        SmartHub_loadingDataTimeout += 1000;
         SmartHub_loadDataRequest();
-    }
+    } else SmartHub_cleanVector();
 }
 
 function SmartHub_previewDataSuccess(responseText) {
@@ -119,7 +119,6 @@ function SmartHub_previewDataSuccess(responseText) {
 
         for (var x = 0; x < response_items; x++) {
             SmartHub_followerChannels += response.follows[x].channel.name + ',';
-
         }
         SmartHub_followerChannels = SmartHub_followerChannels.slice(0, -1);
     } else if (SmartHub_previewData === 1) {
@@ -150,99 +149,91 @@ function SmartHub_previewDataSuccess(responseText) {
     }
     if (SmartHub_previewData < 3) {
         SmartHub_previewData++;
-        SmartHub_loadingDataTry = 0;
-        SmartHub_loadingDataTryMax = 10;
-        SmartHub_loadingDataTimeout = 3500;
+        SmartHub_loadDataRequestPrepare();
         SmartHub_loadDataRequest();
     } else {
         SmartHub_LastUpdate = new Date().getTime();
         webapis.preview.setPreviewData(previewDataGenerator());
+        // Cleanup vector from Memory
+        window.setTimeout(SmartHub_cleanVector, 1000);
     }
 }
 
 function previewDataGeneratorEmpty() {
-    var data = '{"sections":[';
-
-    data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
-        '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
-    data += ']},';
-
-    data += '{"title":"' + STR_USER_ADD + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"16by9","image_url":"' +
-        IMG_SMART_USER + '","action_data":"{\\\"screenIdx\\\": 2}","is_playable":false}';
-    data += ']},';
-
-    data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
-        '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
-    data += ']}';
-
-    data += ']}';
-    return data;
+    return '{"sections":[' + previewDataGeneratorEnd(true);
 }
 
 function previewDataGenerator() {
-    var data = '{"sections":[';
-    var i = 0;
+    var data = '{"sections":[',
+        i, vectorSize;
 
-    if (SmartHub_user.length > 0) data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub_followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub_user.length; i++) {
-        if (i < 1) {
-            data += '{"title":"' + SmartHub_usertitle[i] + '","subtitle":"' + SmartHub_usersubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub_userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub_user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_usertitle[i] + '\\\"}","is_playable":true}';
-        } else {
-            data += ',{"title":"' + SmartHub_usertitle[i] + '","subtitle":"' + SmartHub_usersubtitle[i] +
+    // new lines separates it blocks to make easier to add new blocks, just copy/paste a block
+
+    vectorSize = SmartHub_user.length;
+    if (vectorSize > 0) {
+        data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub_followerUsername + '","tiles":[';
+        for (i = 0; i < vectorSize; i++) {
+            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usertitle[i] + '","subtitle":"' + SmartHub_usersubtitle[i] +
                 '","image_ratio":"16by9","image_url":"' + SmartHub_userimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
                 SmartHub_user[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_usertitle[i] + '\\\"}","is_playable":true}';
         }
+        data += ']},';
     }
-    if (SmartHub_user.length > 0) data += ']},';
 
-    if (SmartHub_userhost.length > 0) data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub_userhost.length; i++) {
-        if (i < 1) {
-            data += '{"title":"' + SmartHub_userhosttitle[i] + '","subtitle":"' + SmartHub_userhostsubtitle[i] +
-                '","image_ratio":"16by9","image_url":"' + SmartHub_userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
-                SmartHub_userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhosttitle[i] + '\\\"}","is_playable":true}';
-        } else {
-            data += ',{"title":"' + SmartHub_userhosttitle[i] + '","subtitle":"' + SmartHub_userhostsubtitle[i] +
+    vectorSize = SmartHub_userhost.length;
+    if (vectorSize > 0) {
+        data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
+        for (i = 0; i < vectorSize; i++) {
+            data += (!i ? '' : ',') + '{"title":"' + SmartHub_userhosttitle[i] + '","subtitle":"' + SmartHub_userhostsubtitle[i] +
                 '","image_ratio":"16by9","image_url":"' + SmartHub_userhostimg[i] + '","action_data":"{\\\"videoIdx\\\": \\\"' +
                 SmartHub_userhost[i] + '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhosttitle[i] + '\\\"}","is_playable":true}';
         }
+        data += ']},';
     }
-    if (SmartHub_userhost.length > 0) data += ']},';
 
-    if (SmartHub_usergames.length > 0) data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub_followerUsername + '","tiles":[';
-    for (i = 0; i < SmartHub_usergames.length; i++) {
-        if (i < 1) {
-            data += '{"title":"' + SmartHub_usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub_usergamesimg[i] +
-                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i] + '\\\"}","is_playable":false}';
-        } else {
-            data += ',{"title":"' + SmartHub_usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub_usergamesimg[i] +
+    vectorSize = SmartHub_usergames.length;
+    if (vectorSize > 0) {
+        data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub_followerUsername + '","tiles":[';
+        for (i = 0; i < vectorSize; i++) {
+            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usergames[i] + '","image_ratio":"2by3","image_url":"' + SmartHub_usergamesimg[i] +
                 '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i] + '\\\"}","is_playable":false}';
         }
+        data += ']},';
     }
-    if (SmartHub_usergames.length > 0) data += ']},';
 
-    data += '{"title":"' + STR_LIVE + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
-        '","action_data":"{\\\"screenIdx\\\": 1}","is_playable":false}';
-    data += ']},';
+    return data + previewDataGeneratorEnd(false);
+}
 
-    data += '{"title":"' + STR_USER + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"16by9","image_url":"' + GIT_IO +
-        'smart_users.png","action_data":"{\\\"screenIdx\\\": 17}","is_playable":false}';
-    data += ']},';
+function previewDataGeneratorEnd(IsAddUser) {
+    var UserThumb = '';
 
-    data += '{"title":"' + STR_GAMES + '","tiles":[';
-    data += '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
-        '","action_data":"{\\\"screenIdx\\\": 3}","is_playable":false}';
-    data += ']}';
+    if (IsAddUser) {
+        UserThumb = '{"title":"' + STR_USER_ADD + '","tiles":[' +
+            '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"16by9","image_url":"' +
+            IMG_SMART_ADD_USER + '","action_data":"{\\\"screenIdx\\\": ' + Main_addUser + '}","is_playable":false}' +
+            ']},';
+    } else {
+        UserThumb = '{"title":"' + STR_USER + '","tiles":[' +
+            '{"title":"' + STR_GO_TO + STR_USER + '","image_ratio":"16by9","image_url":"' + IMG_SMART_USER +
+            '","action_data":"{\\\"screenIdx\\\": ' + Main_Users + '}","is_playable":false}' +
+            ']},';
+    }
 
-    data += ']}';
-    return data;
+    // new lines separates it blocks to make easier to add new blocks, just copy/paste a block
+
+    return '{"title":"' + STR_LIVE + '","tiles":[' +
+        '{"title":"' + STR_GO_TO + STR_LIVE + '","image_ratio":"16by9","image_url":"' + IMG_SMART_LIVE +
+        '","action_data":"{\\\"screenIdx\\\": ' + Main_Live + '}","is_playable":false}' +
+        ']},' +
+
+        UserThumb +
+
+        '{"title":"' + STR_GAMES + '","tiles":[' +
+        '{"title":"' + STR_GO_TO + STR_GAMES + '","image_ratio":"16by9","image_url":"' + IMG_SMART_GAME +
+        '","action_data":"{\\\"screenIdx\\\": ' + Main_games + '}","is_playable":false}' +
+        ']}' +
+
+        ']}';
 }
 
 function SmartHub_EventListener() {
@@ -259,27 +250,21 @@ function SmartHub_EventListener() {
             if (appControlData[i].key === 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
+
                     VideoIdx = JSON.parse(actionData).videoIdx;
                     VideoTitleIdx = JSON.parse(actionData).videoTitleIdx;
-                    if (Play_Playing && Play_selectedChannel === VideoIdx) {
-                        return;
-                    }
+
+                    if (Play_Playing && Play_selectedChannel === VideoIdx) return;
+
                     Play_selectedChannel = VideoIdx;
                     Play_selectedChannelDisplayname = VideoTitleIdx;
-                    if (Play_isOn) {
-                        Play_PreshutdownStream();
-                        window.setTimeout(Main_openStream, 10);
-                    } else if (PlayVod_isOn) {
-                        PlayVod_PreshutdownStream();
-                        window.setTimeout(Main_openStream, 10);
-                    } else if (PlayClip_isOn) {
-                        PlayClip_PreshutdownStream();
-                        window.setTimeout(Main_openStream, 10);
-                    } else {
-                        Main_ExitCurrent(Main_Go);
-                        window.setTimeout(Main_openStream, 10);
-                    }
 
+                    if (Play_isOn) Play_PreshutdownStream();
+                    else if (PlayVod_isOn) PlayVod_PreshutdownStream();
+                    else if (PlayClip_isOn) PlayClip_PreshutdownStream();
+                    else Main_ExitCurrent(Main_Go);
+
+                    window.setTimeout(Main_openStream, 10);
                 } else if (JSON.parse(actionData).gameIdx) {
                     GameIdx = JSON.parse(actionData).gameIdx;
                     ExitToMain = (GameIdx !== Main_gameSelected);

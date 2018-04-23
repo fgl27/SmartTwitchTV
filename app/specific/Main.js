@@ -105,7 +105,8 @@ var IMG_LOD_LOGO = GIT_IO + "ch_logo.png";
 var TEMP_MP4 = GIT_IO + "temp.mp4";
 var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
 var IMG_SMART_GAME = GIT_IO + "smart_games.png";
-var IMG_SMART_USER = GIT_IO + "smart_add_user.png";
+var IMG_SMART_USER = GIT_IO + "smart_users.png";
+var IMG_SMART_ADD_USER = GIT_IO + "smart_add_user.png";
 
 //function vars
 var Main_loadImg = function(ImgObjet, Src, img_type) {
