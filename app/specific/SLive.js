@@ -159,7 +159,7 @@ function SLive_loadDataSuccess(responseText) {
                 cell = SLive_createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
                     stream.channel.display_name,
-                    Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
                 row.append(cell);
             }
@@ -304,7 +304,7 @@ function SLive_loadDataSuccessReplace(responseText) {
             SLive_replaceCellEmpty(SLive_blankCellVector[i], stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
                 stream.channel.display_name,
-                Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             SLive_blankCellCount--;
 

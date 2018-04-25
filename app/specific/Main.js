@@ -1,8 +1,5 @@
 //Variable initialization
 var Main_isReleased = false;
-var Main_Go = 1;
-var Main_Before = 1;
-var Main_BeforeSearch = 1;
 var Main_cursorY = -1;
 var Main_newImg = new Image();
 
@@ -23,6 +20,13 @@ var Main_Users = 14;
 var Main_UserChannels = 15;
 var Main_SChannels = 16;
 var Main_addCode = 17;
+
+var Main_Go = 1;
+var Main_Before = 1;
+var Main_BeforeSearch = 1;
+var Main_BeforeChannel = 1;
+var Main_BeforeAgame = Main_games;
+
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
@@ -80,7 +84,6 @@ var Main_GameSize = "340x475"; // default size 272x380
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_classText = 'stream_text_focused';
 var Main_classInfo = 'stream_info_focused';
-var Main_TitleClass = 'stream_channel';
 
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
@@ -633,11 +636,6 @@ function Main_createEmptyCell(id) {
     return Main_td;
 }
 
-function Main_SetStreamTitle(boolean) {
-    if (boolean) Main_TitleClass = 'stream_info';
-    else Main_TitleClass = 'stream_channel';
-}
-
 function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
@@ -648,23 +646,24 @@ function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
     return Main_td;
 }
 
-function Main_replaceVideo(id, channel_name, valuesArray, cell, splitedId) {
-    splitedId = id.split(splitedId)[1];
+function Main_replaceVideo(id, channel_name, valuesArray, ids) {
+    var splitedId = id.split(ids[9])[1];
     id = document.getElementById(id);
     id.setAttribute('data-channelname', channel_name);
-    id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
-    id.setAttribute('id', cell + splitedId);
+    id.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
+    id.setAttribute('id', ids[8] + splitedId);
 }
 
 function Main_VideoHtml(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="' + Main_TitleClass + '">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 66%; display: inline-block;">' + valuesArray[4] + '</div>' +
-        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
 function Main_CheckMp4Html5() {

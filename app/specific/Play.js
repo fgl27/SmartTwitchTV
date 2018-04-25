@@ -1017,8 +1017,8 @@ function Play_handleKeyDown(e) {
                         Play_clearHidePanel();
                         Play_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        Main_Before = Main_Go;
-                        Main_ExitCurrent(Main_Before);
+                        Main_BeforeAgame = Main_Go;
+                        Main_ExitCurrent(Main_Go);
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
                         Main_gameSelected = Play_gameSelected;
@@ -1033,7 +1033,7 @@ function Play_handleKeyDown(e) {
                         Main_selectedChannelLogo = Play_selectedChannelLogo;
                         Main_selectedChannelViews = Play_selectedChannelViews;
                         Main_selectedChannelFallower = Play_selectedChannelFallower;
-                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_Before = Main_Go;
+                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeChannel = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         SChannelContent_UserChannels = AddCode_IsFallowing;
                         Main_Go = Main_SChannelContent;

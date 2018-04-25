@@ -221,7 +221,7 @@ function UserLive_loadDataSuccess(responseText) {
                 row.appendChild(UserLive_createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
-                    Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                 ]));
             }
@@ -351,9 +351,9 @@ function UserLive_loadDataSuccessReplace(responseText) {
             Main_replaceVideo(UserLive_blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
-                Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-            ], UserLive_ids[8], UserLive_ids[9]);
+            ], UserLive_ids);
             UserLive_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);

@@ -448,7 +448,7 @@ function SChannels_handleKeyDown(event) {
                 Main_selectedChannelViews = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-views');
                 Main_selectedChannelFallower = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-followers');
                 document.body.removeEventListener("keydown", SChannels_handleKeyDown);
-                Main_Before = Main_SChannels;
+                Main_BeforeChannel = Main_SChannels;
                 Main_Go = Main_SChannelContent;
                 AddCode_IsFallowing = false;
                 SChannelContent_UserChannels = false;

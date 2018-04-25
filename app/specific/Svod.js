@@ -19,8 +19,9 @@ var Svod_DurationSeconds = 0;
 var Svod_emptyContent = false;
 var Svod_itemsCountCheck = false;
 var Svod_language = '';
+var Svod_game = '';
 
-var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_'];
+var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_', 'svgame'];
 var Svod_status = false;
 var Svod_highlight = false;
 var Svod_lastselectedChannel = '';
@@ -34,7 +35,6 @@ var Svod_loadingMore = false;
 
 function Svod_init() {
     Main_Go = Main_Svod;
-    Main_SetStreamTitle(true);
     if (Main_selectedChannel !== Svod_lastselectedChannel) Svod_status = false;
     Main_cleanTopLabel();
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD);
@@ -52,7 +52,6 @@ function Svod_init() {
 function Svod_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod_handleKeyDown);
-    Main_SetStreamTitle(false);
 }
 
 function Svod_StartLoad() {
@@ -166,11 +165,13 @@ function Svod_loadDataSuccess(responseText) {
                 coloumn_id--;
             } else if (Svod_CellExists(video._id)) coloumn_id--;
             else {
-                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id, video._id + ',' + video.length + ',' + video.language, [video.preview.replace("320x240", Main_VideoSize),
-                    video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
-                    Main_addCommas(video.views) + STR_VIEWS,
-                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
-                ]));
+                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id,
+                    video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+                        video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                        video.game, Main_addCommas(video.views) + STR_VIEWS,
+                        Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                        STR_DURATION + Play_timeS(video.length)
+                    ]));
             }
         }
 
@@ -191,7 +192,39 @@ function Svod_loadDataSuccess(responseText) {
 function Svod_createCell(row_id, id, video_id, valuesArray) {
     Svod_nameMatrix.push(video_id);
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(video_id, id, Svod_ids, valuesArray);
+    return Svod_createCellVideo(video_id, id, valuesArray);
+}
+
+function Svod_createCellVideo(vod_id, id, valuesArray) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', Svod_ids[8] + id);
+    Main_td.setAttribute('data-channelname', vod_id);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = Svod_VideoHtml(id, valuesArray);
+
+    return Main_td;
+}
+
+function Svod_replaceVideo(id, vod_id, valuesArray) {
+    splitedId = id.split(Svod_ids[9])[1];
+    id = document.getElementById(id);
+    id.setAttribute('data-channelname', vod_id);
+    id.innerHTML = Main_VideoHtml(splitedId, valuesArray);
+    id.setAttribute('id', Svod_ids[8] + splitedId);
+}
+
+function Svod_VideoHtml(id, valuesArray) {
+    return '<div id="' + Svod_ids[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + Svod_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
+        '<div id="' + Svod_ids[2] + id + '" class="stream_text">' +
+        '<div id="' + Svod_ids[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + Svod_ids[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div>' +
+        '<div>' +
+        '<div id="' + Svod_ids[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
+        '<div id="' + Svod_ids[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
+        '<div id="' + Svod_ids[10] + id + '"class="stream_info">' + STR_START + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + Svod_ids[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
 function Svod_CellExists(video_id) {
@@ -299,10 +332,11 @@ function Svod_loadDataSuccessReplace(responseText) {
             Svod_blankCellCount--;
             i--;
         } else {
-            Main_replaceVideo(Svod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language, [video.preview.replace("320x240", Main_VideoSize),
-                video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
-                Main_addCommas(video.views) + STR_VIEWER,
-                Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
+            Svod_replaceVideo(Svod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+                video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                video.game, Main_addCommas(video.views) + STR_VIEWS,
+                Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                STR_DURATION + Play_timeS(video.length)
             ]);
             Svod_blankCellCount--;
 
@@ -328,6 +362,7 @@ function Svod_addFocus() {
     document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).classList.add('stream_info_focused');
     document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).classList.add('stream_info_focused');
     document.getElementById(Svod_ids[7] + Svod_cursorY + '_' + Svod_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Svod_ids[10] + Svod_cursorY + '_' + Svod_cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
         Main_ScrollHelper(Svod_ids[0], Svod_cursorY, Svod_cursorX, Main_Svod, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
@@ -353,6 +388,7 @@ function Svod_removeFocus() {
     document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).classList.remove('stream_info_focused');
     document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).classList.remove('stream_info_focused');
     document.getElementById(Svod_ids[7] + Svod_cursorY + '_' + Svod_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Svod_ids[10] + Svod_cursorY + '_' + Svod_cursorX).classList.remove('stream_info_focused');
 }
 
 function Svod_keyClickDelay() {
@@ -450,11 +486,14 @@ function Svod_handleKeyDown(event) {
             Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute('data-channelname').split(',');
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
             Svod_language = Svod_vodId[2];
+            Svod_game = Svod_vodId[3];
             Svod_vodId = Svod_vodId[0].substr(1);
-            Svod_Duration = document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).textContent;
-            Svod_views = document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).textContent;
+
             Svod_title = document.getElementById(Svod_ids[3] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_createdAt = document.getElementById(Svod_ids[4] + Svod_cursorY + '_' + Svod_cursorX).textContent;
+            Svod_Duration = document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).textContent;
+            Svod_views = document.getElementById(Svod_ids[10] + Svod_cursorY + '_' + Svod_cursorX).textContent +
+                ', ' + document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_openStream();
             break;
         case KEY_RED:

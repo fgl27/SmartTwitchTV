@@ -349,10 +349,10 @@ function SChannelContent_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (Main_Before === Main_Svod || Main_Before === Main_Sclip || Main_Before === Main_SChannelContent) {
+                if (Main_BeforeChannel === Main_Svod || Main_BeforeChannel === Main_Sclip || Main_BeforeChannel === Main_SChannelContent) {
                     Main_Go = SChannels_isLastSChannels ? Main_SChannels : Main_UserChannels;
                     SChannels_isLastSChannels = false;
-                } else Main_Go = Main_Before;
+                } else Main_Go = Main_BeforeChannel;
                 SChannelContent_exit();
                 Main_SwitchScreen();
             }

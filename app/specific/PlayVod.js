@@ -62,6 +62,7 @@ function PlayVod_Start() {
         AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
+    document.getElementById('scene2_game').classList.remove('hide');
 
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -371,6 +372,7 @@ function PlayVod_ClearVod() {
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
     PlayVod_PlayerCheckQualityChanged = false;
+    document.getElementById('scene2_game').classList.add('hide');
 }
 
 function PlayVod_hidePanel() {
@@ -381,7 +383,7 @@ function PlayVod_hidePanel() {
 
 function PlayVod_showPanel() {
     Play_Panelcouner = 0;
-    PlayVod_IconsFocus();
+    Play_IconsFocus();
     PlayVod_qualityIndexReset();
     Play_clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
@@ -531,34 +533,6 @@ function PlayVod_jumpStart() {
     PlayVod_JumpID = window.setTimeout(PlayVod_jump, 1500);
 }
 
-function PlayVod_IconsFocus() {
-    Main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
-
-    if (!Play_Panelcouner) {
-        Main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 1) {
-        Main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 2) {
-        Main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 3) {
-        Main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
-    }
-}
-
 function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== PlayVod_STATE_PLAYING) {
         switch (e.keyCode) {
@@ -585,8 +559,8 @@ function PlayVod_handleKeyDown(e) {
             case KEY_LEFT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner++;
-                    if (Play_Panelcouner > 3) Play_Panelcouner = 0;
-                    PlayVod_IconsFocus();
+                    if (Play_Panelcouner > 4) Play_Panelcouner = 0;
+                    Play_IconsFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (PlayVod_Canjump) {
@@ -597,8 +571,8 @@ function PlayVod_handleKeyDown(e) {
             case KEY_RIGHT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner--;
-                    if (Play_Panelcouner < 0) Play_Panelcouner = 3;
-                    PlayVod_IconsFocus();
+                    if (Play_Panelcouner < 0) Play_Panelcouner = 4;
+                    Play_IconsFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (PlayVod_Canjump) {
@@ -641,7 +615,16 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_clearHidePanel();
                         PlayVod_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_Before = Main_Go;
+                        Main_BeforeAgame = Main_Go;
+                        Main_ExitCurrent(Main_Go);
+                        Main_Go = Main_aGame;
+                        AGame_UserGames = false;
+                        Main_gameSelected = Svod_game;
+                        window.clearTimeout(Play_exitID);
+                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        window.setTimeout(PlayVod_shutdownStream, 10);
+                    } else if (Play_Panelcouner === 3) {
+                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeChannel = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_SChannelContent;
                         window.clearTimeout(Play_exitID);
