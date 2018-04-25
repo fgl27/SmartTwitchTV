@@ -122,15 +122,15 @@ function UserLive_loadDataError() {
 }
 
 function UserLive_loadChannelLive(responseText) {
-    var response = JSON.parse(responseText),
-        response_items = response.follows.length;
+    var response = JSON.parse(responseText).follows,
+        response_items = response.length;
 
-    if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
+    if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
         var ChannelTemp = '',
             x = 0;
 
         for (x; x < response_items; x++) {
-            ChannelTemp = response.follows[x].channel.name + ',';
+            ChannelTemp = response[x].channel.name + ',';
             if (UserLive_followerChannels.indexOf(ChannelTemp) === -1) UserLive_followerChannels += ChannelTemp;
         }
 

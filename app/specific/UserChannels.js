@@ -52,7 +52,8 @@ function UserChannels_StartLoad() {
     Main_showLoadDialog();
     UserChannels_OldUserName = Main_UserName;
     UserChannels_Status = false;
-    $('#stream_table_user_channels').empty();
+    var table = document.getElementById('stream_table_user_channels');
+    while (table.firstChild) table.removeChild(table.firstChild);
     UserChannels_loadingMore = false;
     UserChannels_loadChannelOffsset = 0;
     UserChannels_itemsCount = 0;
@@ -114,16 +115,16 @@ function UserChannels_loadDataError() {
 }
 
 function UserChannels_loadChannelLive(responseText) {
-    var response = JSON.parse(responseText),
-        response_items = response.follows.length;
+    var response = JSON.parse(responseText).follows,
+        response_items = response.length;
 
-    if (response_items > 0) { // response_items here is not always 99 because banned channels, so check until it is 0
+    if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
         var ChannelTemp = '',
             x = 0;
 
         for (x; x < response_items; x++) {
-            ChannelTemp = response.follows[x].channel.display_name + ',' + response.follows[x].channel._id + ',' + response.follows[x].channel.name +
-                ',' + response.follows[x].channel.logo + ',' + response.follows[x].channel.views + ',' + response.follows[x].channel.followers;
+            ChannelTemp = response[x].channel.display_name + ',' + response[x].channel._id + ',' + response[x].channel.name +
+                ',' + response[x].channel.logo + ',' + response[x].channel.views + ',' + response[x].channel.followers;
             if (UserChannels_UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels_UserChannelsList.push(ChannelTemp);
         }
 
@@ -158,32 +159,45 @@ function UserChannels_loadDataSuccess() {
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < UserChannels_UserChannelsList.length; coloumn_id++, cursor++) {
             channel = UserChannels_UserChannelsList[cursor].split(",");
-            row.append(UserChannels_createCell(row_id, coloumn_id, channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]));
+            row.appendChild(UserChannels_createCell(row_id, row_id + '_' + coloumn_id,
+                channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]));
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
             if (UserChannels_dataEnded && !UserChannels_itemsCountCheck) {
                 UserChannels_itemsCountCheck = true;
                 UserChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, UserChannels_EmptyCell));
+            row.appendChild(Main_createEmptyCell(UserChannels_EmptyCell + row_id + '_' + coloumn_id));
         }
-        $('#stream_table_user_channels').append(row);
+        document.getElementById('stream_table_user_channels').appendChild(row);
     }
     UserChannels_loadDataSuccessFinish();
 }
 
-function UserChannels_createCell(row_id, coloumn_id, channel_display_name, _id, channel_name, preview_thumbnail, views, followers) {
+function UserChannels_createCell(row_id, id, channel_display_name, _id, channel_name, preview_thumbnail, views, followers) {
 
-    if (row_id < 5) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
+    if (row_id < 4) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
 
-    return $('<td id="' + UserChannels_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '" data-views="' + views + '" data-followers="' + followers + '"></td>').html('<div id="' + UserChannels_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels_Img +
-        row_id + '_' + coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + UserChannels_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + UserChannels_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>');
+    Main_td = document.createElement('td');
+
+    Main_td.setAttribute('id', UserChannels_Cell + id);
+    Main_td.setAttribute('data-channelname', channel_name);
+    Main_td.setAttribute('data-id', _id);
+    Main_td.setAttribute('data-views', views);
+    Main_td.setAttribute('data-followers', followers);
+
+    Main_td.className = 'stream_cell';
+
+    Main_td.innerHTML = '<div id="' + UserChannels_Thumbnail + id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels_Img +
+        id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
+        '<div id="' + UserChannels_ThumbnailDiv + id + '" class="stream_text">' +
+        '<div id="' + UserChannels_DispNameDiv + id + '" class="stream_channel">' + channel_display_name + '</div></div>';
+
+    return Main_td;
 }
 
 function UserChannels_loadDataSuccessFinish() {
@@ -325,10 +339,10 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!UserChannels_loadingMore) {
-                Main_selectedChannel = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-channelname');
-                Main_selectedChannel_id = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-id');
-                Main_selectedChannelViews = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-views');
-                Main_selectedChannelFallower = $('#' + UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).attr('data-followers');
+                Main_selectedChannel = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-channelname');
+                Main_selectedChannel_id = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
+                Main_selectedChannelViews = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-views');
+                Main_selectedChannelFallower = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-followers');
                 Main_selectedChannelDisplayname = document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY +
                     '_' + UserChannels_cursorX).textContent;
                 Main_selectedChannelLogo = document.getElementById(UserChannels_Img + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
