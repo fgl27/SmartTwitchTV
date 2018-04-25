@@ -62,6 +62,7 @@ var Play_loadingInfoDataTimeout = 10000;
 var Play_selectedChannelViews = '';
 var Play_selectedChannelFallower = '';
 var Play_loadingDataTimeout = 3500;
+var Play_Lang = '';
 //Variable initialization end
 
 function Play_PreStart() {
@@ -157,8 +158,9 @@ function Play_updateStreamInfoStart() {
                     var response = JSON.parse(xmlHttp.responseText);
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     Play_gameSelected = response.stream.game;
+                    Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play_gameSelected + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang;
                     Play_selectedChannelLogo = response.stream.channel.logo;
                     Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
                     Play_created = response.stream.created_at;
@@ -205,7 +207,7 @@ function Play_updateStreamInfo() {
                     var response = JSON.parse(xmlHttp.responseText);
                     document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + response.stream.game + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang;
                     if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                 } catch (err) {}
             }

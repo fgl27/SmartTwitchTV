@@ -18,6 +18,7 @@ var Svod_MaxOffset = 0;
 var Svod_DurationSeconds = 0;
 var Svod_emptyContent = false;
 var Svod_itemsCountCheck = false;
+var Svod_language = '';
 
 var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_'];
 var Svod_status = false;
@@ -165,9 +166,9 @@ function Svod_loadDataSuccess(responseText) {
                 coloumn_id--;
             } else if (Svod_CellExists(video._id)) coloumn_id--;
             else {
-                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id, video._id + '._.' + video.length, [video.preview.replace("320x240", Main_VideoSize),
+                row.appendChild(Svod_createCell(row_id, row_id + '_' + coloumn_id, video._id + ',' + video.length + ',' + video.language, [video.preview.replace("320x240", Main_VideoSize),
                     video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
-                    Main_addCommas(video.views) + STR_VIEWER,
+                    Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
                 ]));
             }
@@ -298,7 +299,7 @@ function Svod_loadDataSuccessReplace(responseText) {
             Svod_blankCellCount--;
             i--;
         } else {
-            Main_replaceVideo(Svod_blankCellVector[i], video._id + '._.' + video.length, [video.preview.replace("320x240", Main_VideoSize),
+            Main_replaceVideo(Svod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language, [video.preview.replace("320x240", Main_VideoSize),
                 video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), STR_DURATION + Play_timeS(video.length),
                 Main_addCommas(video.views) + STR_VIEWER,
                 Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language)
@@ -446,8 +447,9 @@ function Svod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute('data-channelname').split('._.');
+            Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute('data-channelname').split(',');
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
+            Svod_language = Svod_vodId[2];
             Svod_vodId = Svod_vodId[0].substr(1);
             Svod_Duration = document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_views = document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).textContent;
