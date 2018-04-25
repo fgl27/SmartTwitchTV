@@ -662,8 +662,8 @@ function Main_VideoHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[3] + id + '" class="' + Main_TitleClass + '">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 64%; display: inline-block;">' + valuesArray[4] + '</div>' +
-        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
+        '<div id="' + idArray[6] + id + '"class="stream_info" style="width: 66%; display: inline-block;">' + valuesArray[4] + '</div>' +
+        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; display: inline-block;">' + valuesArray[5] + '</div></div>';
 }
 
 function Main_CheckMp4Html5() {
