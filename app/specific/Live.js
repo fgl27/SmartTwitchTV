@@ -286,7 +286,8 @@ function Live_loadDataSuccessReplace(responseText) {
             Live_nameMatrix.push(stream.channel.name);
             Main_replaceVideo(Live_blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                stream.channel.status, stream.game, Main_addCommas(stream.viewers) + STR_VIEWER,
+                stream.channel.status, stream.game,
+                Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
             ], Live_ids[8], Live_ids[9]);
             Live_blankCellCount--;

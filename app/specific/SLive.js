@@ -158,7 +158,8 @@ function SLive_loadDataSuccess(responseText) {
             else {
                 cell = SLive_createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
                     stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                    stream.channel.display_name, Main_addCommas(stream.viewers) + STR_VIEWER,
+                    stream.channel.display_name,
+                    Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
                 row.append(cell);
             }
@@ -196,9 +197,9 @@ function SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, 
         '<div id="' + SLive_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
         '<div id="' + SLive_StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + SLive_StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + SLive_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 40%; display: inline-block;">' + viwers +
+        '<div id="' + SLive_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 66%; display: inline-block;">' + viwers +
         '</div>' + '<div id="' + SLive_QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
+        '"class="stream_info" style="width:33%; float: right; display: inline-block;">' + quality + '</div></div>';
 }
 
 function SLive_CellExists(display_name) {
@@ -302,7 +303,8 @@ function SLive_loadDataSuccessReplace(responseText) {
         } else {
             SLive_replaceCellEmpty(SLive_blankCellVector[i], stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                stream.channel.display_name, Main_addCommas(stream.viewers) + STR_VIEWER,
+                stream.channel.display_name,
+                Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
             SLive_blankCellCount--;
 
