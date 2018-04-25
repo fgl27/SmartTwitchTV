@@ -161,7 +161,7 @@ function Play_updateStreamInfoStart() {
                         Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER;
                     Play_selectedChannelLogo = response.stream.channel.logo;
                     Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
-                    Play_created = new Date(response.stream.created_at).getTime();
+                    Play_created = response.stream.created_at;
                     Play_LoadLogoSucess = true;
                     Play_selectedChannelViews = response.stream.channel.views;
                     Play_selectedChannelFallower = response.stream.channel.followers;
@@ -513,8 +513,7 @@ function Play_timeMs(time) {
 }
 
 function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
-    var date2_ms = new Date().getTime();
-    return Play_timeMs(date2_ms - time);
+    return Play_timeMs((new Date().getTime()) - (new Date(time).getTime()));
 }
 
 function Play_shutdownStream() {
