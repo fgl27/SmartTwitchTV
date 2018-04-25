@@ -160,3 +160,6 @@ var STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
 var STR_FALLOW_GAMES = "Followed Games";
 var STR_USER_GAMES_CHANGE = "Change between";
 var STR_GUIDE = " (Guide or Info)";
+var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+    "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+];

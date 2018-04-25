@@ -40,6 +40,7 @@ var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
 var Main_td = '';
 var Main_nextScrollPositon = '';
+var Main_IsDayFirst = false;
 
 var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
@@ -155,8 +156,10 @@ function Main_loadTranslations(device) {
     // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
     var lang = device.language.split(".")[0];
-    if (lang.indexOf('pt_') !== -1) pt_BRLang();
-    else console.log("language is " + lang);
+    if (lang.indexOf('pt_') !== -1) {
+        pt_BRLang();
+        Main_IsDayFirst = true;
+    }else console.log("language is " + lang);
     DefaultLang();
 
     Main_Checktylesheet();
@@ -483,11 +486,9 @@ function Main_UnderCenter(text) {
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-        "July", "Aug", "Sept", "Oct", "Nov", "Dec"
-    ];
     time = new Date(time);
-    return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
+    if (Main_IsDayFirst) return + time.getDate() + ' ' + monthNames[time.getMonth()] + ', ' + time.getFullYear();
+    else return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 }
 
 function Main_NetworkStateChangeListenerStart() {
