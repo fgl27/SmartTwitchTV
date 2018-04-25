@@ -148,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
 });
 
-//TODO the day there is a translation add on if if the new values
 function Main_loadTranslations(device) {
 
     // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
@@ -160,27 +159,13 @@ function Main_loadTranslations(device) {
     else console.log("language is " + lang);
     DefaultLang();
 
-    if (Main_isReleased) document.body.innerHTML = STR_BODY;
-    else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
-    Main_initWindows();
-    Live_init();
-    Play_PreStart();
-    UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
-    AddUser_RestoreUsers();
-    // pre load All img
-    Main_PreLoadAImage(IMG_404_VIDEO);
-    Main_PreLoadAImage(IMG_404_GAME);
-    Main_PreLoadAImage(IMG_404_LOGO);
-    Main_PreLoadAImage(IMG_BLUR_GAME);
-    Main_PreLoadAImage(IMG_BLUR_VIDEO1);
-    Main_PreLoadAImage(IMG_BLUR_VIDEO2);
-    Main_PreLoadAImage(IMG_BLUR_VIDEO1_16);
-    Main_PreLoadAImage(IMG_BLUR_VIDEO2_16);
-    Main_PreLoadAImage(IMG_BLUR_VOD);
-    Main_PreLoadAImage(IMG_USER_MINUS);
-    Main_PreLoadAImage(IMG_USER_PLUS);
-    Main_PreLoadAImage(IMG_USER_UP);
-    Main_PreLoadAImage(IMG_USER_CODE);
+    Main_Checktylesheet();
+    $(document).ready(function() {
+        if (Main_isReleased) document.body.innerHTML = STR_BODY;
+        else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
+
+        $(document).ready(Main_initWindows);
+    });
 }
 
 function Main_initWindows() {
@@ -204,7 +189,31 @@ function Main_initWindows() {
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
-    Main_NetworkStateChangeListenerStart();
+
+    UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+    $(document).ready(function() {
+
+        Play_PreStart();
+        AddUser_RestoreUsers();
+        Live_init();
+
+        // pre load All img
+        Main_PreLoadAImage(IMG_404_VIDEO);
+        Main_PreLoadAImage(IMG_404_GAME);
+        Main_PreLoadAImage(IMG_404_LOGO);
+        Main_PreLoadAImage(IMG_BLUR_GAME);
+        Main_PreLoadAImage(IMG_BLUR_VIDEO1);
+        Main_PreLoadAImage(IMG_BLUR_VIDEO2);
+        Main_PreLoadAImage(IMG_BLUR_VIDEO1_16);
+        Main_PreLoadAImage(IMG_BLUR_VIDEO2_16);
+        Main_PreLoadAImage(IMG_BLUR_VOD);
+        Main_PreLoadAImage(IMG_USER_MINUS);
+        Main_PreLoadAImage(IMG_USER_PLUS);
+        Main_PreLoadAImage(IMG_USER_UP);
+        Main_PreLoadAImage(IMG_USER_CODE);
+
+        window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
+    });
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -803,4 +812,19 @@ function Main_documentVerticalScrollPosition() {
 
 function Main_elementVerticalClientPositionById(id) {
     return document.getElementById(id).getBoundingClientRect().top;
+}
+
+function Main_Checktylesheet() {
+    var stylesheet = document.styleSheets;
+    for (var i = 0; i < stylesheet.length; i++)
+        if (stylesheet[i].href !== null)
+            if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
+}
+
+function Main_LoadStylesheet(path) {
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = path;
+
+    document.getElementsByTagName("head")[0].appendChild(link);
 }
