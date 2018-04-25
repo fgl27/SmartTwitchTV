@@ -35,7 +35,6 @@ var Sclip_loadingMore = false;
 
 function Sclip_init() {
     Main_Go = Main_Sclip;
-    Main_SetStreamTitle(true);
     if (Main_selectedChannel !== Sclip_lastselectedChannel) Sclip_status = false;
     Main_cleanTopLabel();
     Sclip_SetPeriod();
@@ -53,7 +52,6 @@ function Sclip_init() {
 function Sclip_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Sclip_handleKeyDown);
-    Main_SetStreamTitle(false);
 }
 
 function Sclip_StartLoad() {
@@ -174,7 +172,7 @@ function Sclip_loadDataSuccess(responseText) {
             else {
                 row.appendChild(Sclip_createCell(row_id, row_id + '_' + coloumn_id,
                     video.thumbnails.medium.split('-preview')[0] + '.mp4' + video.duration, [video.thumbnails.medium,
-                        video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                        video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), video.game,
                         Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration)
                     ]));
             }
@@ -197,7 +195,37 @@ function Sclip_loadDataSuccess(responseText) {
 function Sclip_createCell(row_id, id, clip_id, valuesArray) {
     Sclip_nameMatrix.push(clip_id);
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(clip_id, id, Sclip_ids, valuesArray);
+    return Sclip_createCellVideo(clip_id, id, valuesArray);
+}
+
+function Sclip_createCellVideo(clip_id, id, valuesArray) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', Sclip_ids[8] + id);
+    Main_td.setAttribute('data-channelname', clip_id);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = Sclip_VideoHtml(id, Sclip_ids, valuesArray);
+
+    return Main_td;
+}
+
+function Sclip_replaceVideo(id, clip_id, valuesArray) {
+    var splitedId = id.split(Sclip_ids[9])[1];
+    id = document.getElementById(id);
+    id.setAttribute('data-channelname', clip_id);
+    id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
+    id.setAttribute('id', Sclip_ids[8] + splitedId);
+}
+
+function Sclip_VideoHtml(id, Sclip_ids, valuesArray) {
+    return '<div id="' + Sclip_ids[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + Sclip_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
+        '<div id="' + Sclip_ids[2] + id + '" class="stream_text">' +
+        '<div id="' + Sclip_ids[3] + id + '" class="stream_info" style="font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + Sclip_ids[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
+        '<div id="' + Sclip_ids[7] + id + '"class="stream_info" style="width:39%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div>' +
+        '<div id="' + Sclip_ids[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + Sclip_ids[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
 function Sclip_CellExists(display_name) {
@@ -293,7 +321,7 @@ function Sclip_loadDataSuccessReplace(responseText) {
             Sclip_blankCellCount--;
             i--;
         } else {
-            Main_replaceVideo(Svod_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
+            Sclip_replaceVideo(Sclip_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
                 video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                 Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
             ]);
@@ -452,11 +480,12 @@ function Sclip_handleKeyDown(event) {
             Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute('data-channelname').split('.mp4');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
             Sclip_playUrl = Sclip_playUrl[0] + '.mp4';
+
             Sclip_Duration = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_title = document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
-            Sclip_createdAt = document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
-            Sclip_game = document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_createdAt = document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_game = document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_openStream();
             break;
         case KEY_RED:

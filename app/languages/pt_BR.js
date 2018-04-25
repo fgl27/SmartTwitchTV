@@ -146,4 +146,5 @@ function pt_BRLang() {
     monthNames = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun",
         "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     ];
+    STR_START = "Começou ";
 }

@@ -152,7 +152,8 @@ function UserHost_loadDataSuccess(responseText) {
                 row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
                     hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                        hosts.target.title, hosts.target.meta_game, Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                        hosts.target.title, hosts.target.meta_game,
+                        STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) + Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                     ]));
             }
         }
@@ -278,8 +279,9 @@ function UserHost_loadDataSuccessReplace(responseText) {
             Main_replaceVideo(UserHost_blankCellVector[i],
                 hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
-                    hosts.target.title, hosts.target.meta_game, Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
-                ]);
+                    hosts.target.title, hosts.target.meta_game,
+                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) + Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                ], UserHost_ids);
             UserHost_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);

@@ -163,3 +163,4 @@ var STR_GUIDE = " (Guide or Info)";
 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
     "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 ];
+var STR_START = "Start ";

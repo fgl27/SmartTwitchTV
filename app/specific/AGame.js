@@ -169,7 +169,7 @@ function AGame_loadDataSuccess(responseText) {
                 row.appendChild(AGame_createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
-                    Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                 ]));
             }
@@ -330,9 +330,9 @@ function AGame_loadDataSuccessReplace(responseText) {
                 stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
-                    Main_addCommas(stream.viewers) + STR_VIEWER + ', ' + STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + '.',
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-                ], AGame_ids[8], AGame_ids[9]);
+                ], AGame_ids);
             AGame_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -398,8 +398,8 @@ function AGame_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (!AGame_loadingMore) {
                 Main_OldgameSelected = Main_gameSelected;
-                if (Main_Go === Main_Before) Main_Go = Main_games;
-                else Main_Go = Main_Before;
+                if (Main_Go === Main_BeforeAgame) Main_Go = Main_games;
+                else Main_Go = Main_BeforeAgame;
                 AGame_exit();
                 Main_SwitchScreen();
             }
