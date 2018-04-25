@@ -50,6 +50,7 @@ function Search_refreshInputFocusTools() {
     document.getElementById('chanel_button').classList.remove('button_search_focused');
     document.getElementById('game_button').classList.remove('button_search_focused');
     document.getElementById('live_button').classList.remove('button_search_focused');
+    document.getElementById("search_input").value = $('#search_input').val();
 
     if (Search_cursorY) {
         if (!Search_cursorX) document.getElementById('chanel_button').classList.add('button_search_focused');

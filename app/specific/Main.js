@@ -159,7 +159,7 @@ function Main_loadTranslations(device) {
     if (lang.indexOf('pt_') !== -1) {
         pt_BRLang();
         Main_IsDayFirst = true;
-    }else console.log("language is " + lang);
+    } else console.log("language is " + lang);
     DefaultLang();
 
     Main_Checktylesheet();
@@ -487,7 +487,7 @@ function Main_UnderCenter(text) {
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     time = new Date(time);
-    if (Main_IsDayFirst) return + time.getDate() + ' ' + monthNames[time.getMonth()] + ', ' + time.getFullYear();
+    if (Main_IsDayFirst) return +time.getDate() + ' ' + monthNames[time.getMonth()] + ', ' + time.getFullYear();
     else return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 }
 

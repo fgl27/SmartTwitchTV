@@ -476,7 +476,7 @@ function Play_updateCurrentTime(currentTime) {
 
 function Play_clock(currentTime) {
     var date = new Date(),
-    dayMonth;
+        dayMonth;
 
     if (Main_IsDayFirst) dayMonth = date.getDate() + '/' + monthNames[date.getMonth()];
     else dayMonth = monthNames[date.getMonth()] + '/' + date.getDate();

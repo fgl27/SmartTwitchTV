@@ -144,6 +144,6 @@ function pt_BRLang() {
     STR_USER_GAMES_CHANGE = "Troque entre";
     STR_GUIDE = " (Guia ou Info)";
     monthNames = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun",
-    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-];
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+    ];
 }
