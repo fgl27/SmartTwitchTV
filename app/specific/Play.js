@@ -475,9 +475,13 @@ function Play_updateCurrentTime(currentTime) {
 }
 
 function Play_clock(currentTime) {
-    var today = (new Date()).toString().split(' ');
-    var time = today[4].toString().split(':');
-    document.getElementById("stream_clock").innerHTML = today[2].toString() + '/' + today[1].toString() + ' ' + time[0] + ':' + time[1];
+    var date = new Date(),
+    dayMonth;
+
+    if (Main_IsDayFirst) dayMonth = date.getDate() + '/' + monthNames[date.getMonth()];
+    else dayMonth = monthNames[date.getMonth()] + '/' + date.getDate();
+
+    document.getElementById("stream_clock").innerHTML = dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
 }
 
 function Play_lessthanten(time) {
