@@ -615,7 +615,11 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_clearHidePanel();
                         PlayVod_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        Main_BeforeAgame = Main_Go;
+                        if (Main_Go !== Main_aGame) {
+                            Main_BeforeAgame = Main_Go;
+                            if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeAgame2 = Main_Go;
+                            else Main_BeforeAgame2 = Main_BeforeChannel2;
+                        }
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
@@ -624,7 +628,11 @@ function PlayVod_handleKeyDown(e) {
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
-                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeChannel = Main_Go;
+                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) {
+                            Main_BeforeChannel = Main_Go;
+                            if (Main_Go !== Main_aGame) Main_BeforeChannel2 = Main_Go;
+                            else Main_BeforeChannel2 = Main_BeforeAgame2;
+                        }
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_SChannelContent;
                         window.clearTimeout(Play_exitID);

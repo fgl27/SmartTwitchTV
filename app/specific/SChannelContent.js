@@ -350,9 +350,17 @@ function SChannelContent_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 if (Main_BeforeChannel === Main_Svod || Main_BeforeChannel === Main_Sclip || Main_BeforeChannel === Main_SChannelContent) {
-                    Main_Go = SChannels_isLastSChannels ? Main_SChannels : Main_UserChannels;
+                    if (SChannels_Status && SChannels_isLastSChannels) Main_Go = Main_SChannels;
+                    else if (UserChannels_Status) Main_Go = Main_UserChannels;
+                    else {
+                        Main_Go = Main_BeforeChannel2;
+                        Main_BeforeChannel = Main_BeforeChannel2;
+                    }
                     SChannels_isLastSChannels = false;
-                } else Main_Go = Main_BeforeChannel;
+                } else {
+                    Main_Go = Main_BeforeChannel;
+                    Main_BeforeChannel = Main_Before;
+                }
                 SChannelContent_exit();
                 Main_SwitchScreen();
             }
