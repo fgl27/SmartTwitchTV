@@ -223,7 +223,7 @@ function Svod_VideoHtml(id, valuesArray) {
         '<div>' +
         '<div id="' + Svod_ids[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
         '<div id="' + Svod_ids[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + Svod_ids[10] + id + '"class="stream_info">' + STR_START + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + Svod_ids[10] + id + '"class="stream_info">' + STR_STARTED + STR_PLAYING + valuesArray[3] + '</div>' +
         '<div id="' + Svod_ids[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
