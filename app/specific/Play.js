@@ -1017,7 +1017,11 @@ function Play_handleKeyDown(e) {
                         Play_clearHidePanel();
                         Play_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        Main_BeforeAgame = Main_Go;
+                        if (Main_Go !== Main_aGame) {
+                            Main_BeforeAgame = Main_Go;
+                            if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeAgame2 = Main_Go;
+                            else Main_BeforeAgame2 = Main_BeforeChannel2;
+                        }
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
@@ -1033,7 +1037,11 @@ function Play_handleKeyDown(e) {
                         Main_selectedChannelLogo = Play_selectedChannelLogo;
                         Main_selectedChannelViews = Play_selectedChannelViews;
                         Main_selectedChannelFallower = Play_selectedChannelFallower;
-                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeChannel = Main_Go;
+                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) {
+                            Main_BeforeChannel = Main_Go;
+                            if (Main_Go !== Main_aGame) Main_BeforeChannel2 = Main_Go;
+                            else Main_BeforeChannel2 = Main_BeforeAgame2;
+                        }
                         Main_ExitCurrent(Main_Go);
                         SChannelContent_UserChannels = AddCode_IsFallowing;
                         Main_Go = Main_SChannelContent;

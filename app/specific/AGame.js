@@ -399,7 +399,10 @@ function AGame_handleKeyDown(event) {
             else if (!AGame_loadingMore) {
                 Main_OldgameSelected = Main_gameSelected;
                 if (Main_Go === Main_BeforeAgame) Main_Go = Main_games;
-                else Main_Go = Main_BeforeAgame;
+                else {
+                    Main_Go = Main_BeforeAgame;
+                    Main_BeforeAgame = Main_BeforeAgame2;
+                }
                 AGame_exit();
                 Main_SwitchScreen();
             }

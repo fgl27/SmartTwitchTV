@@ -25,7 +25,9 @@ var Main_Go = 1;
 var Main_Before = 1;
 var Main_BeforeSearch = 1;
 var Main_BeforeChannel = 1;
+var Main_BeforeChannel2 = 1;
 var Main_BeforeAgame = Main_games;
+var Main_BeforeAgame2 = Main_games;
 
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
