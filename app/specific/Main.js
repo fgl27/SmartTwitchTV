@@ -492,7 +492,7 @@ function Main_UnderCenter(text) {
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     time = new Date(time);
-    if (Main_IsDayFirst) return +time.getDate() + ' ' + monthNames[time.getMonth()] + ', ' + time.getFullYear();
+    if (Main_IsDayFirst) return time.getDate() + ' ' + monthNames[time.getMonth()] + ', ' + time.getFullYear();
     else return monthNames[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 }
 
