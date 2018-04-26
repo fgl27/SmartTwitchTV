@@ -158,7 +158,8 @@ function SChannelContent_loadDataSuccess(responseText) {
             var stream = response.stream;
             row.appendChild(SChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
                 stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                hosting + stream.channel.display_name, Main_addCommas(stream.viewers) + STR_VIEWER,
+                hosting + stream.channel.display_name,
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
             coloumn_id++;
         } else SChannelContent_skipImg = true;
@@ -193,17 +194,18 @@ function SChannelContent_createCell(id, channel_name, preview_thumbnail, stream_
     Main_td.setAttribute('id', SChannelContent_ids[8] + id);
     Main_td.setAttribute('data-channelname', channel_name);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><img id="' +
-        SChannelContent_ids[1] + id + '" class="stream_img"></div>' +
+    Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + SChannelContent_ids[1] + id + '" class="stream_img"></div>' +
         '<div id="' + SChannelContent_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + SChannelContent_ids[3] + id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + SChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + SChannelContent_ids[5] + id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + SChannelContent_ids[6] + id + '"class="stream_info_games" style="width: 50%; display: inline-block;">' +
+        '<div id="' + SChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         '<i class="icon-circle" style="color: ' +
-        (SChannelContent_TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 100%; aria-hidden="true"></i> ' + STR_SPACE + viwers + '</div>' +
-        '<div id="' + SChannelContent_ids[7] + id +
-        '"class="stream_info" style="width:35%; float: right; display: inline-block;">' + quality + '</div></div>';
+        (SChannelContent_TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
+        channel_display_name + '</div>' +
+        '<div id="' + SChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
+        quality + '</div>' +
+        '<div id="' + SChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + SChannelContent_ids[5] + id + '"class="stream_info">' + STR_PLAYING + stream_game + '</div>' +
+        '<div id="' + SChannelContent_ids[6] + id + '"class="stream_info">' + viwers + '</div>' + '</div>';
 
     return Main_td;
 }
