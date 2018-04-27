@@ -91,7 +91,7 @@ var Main_classInfo = 'stream_info_focused';
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
 var Main_currentVersion = '';
-var Main_minversion = '042518';
+var Main_minversion = '042718';
 var Main_versonTag = '';
 
 var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
