@@ -375,8 +375,8 @@ function SChannels_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (Main_Go === Main_Before) Main_Go = Main_Live;
-                else Main_Go = Main_Before;
+                if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
+                else Main_Go = Main_BeforeSearch;
                 SChannels_exit();
                 SChannels_Postexit();
             }
