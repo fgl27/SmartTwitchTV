@@ -466,7 +466,6 @@ function SChannels_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_SChannels;
             Main_Go = Main_Search;
             SChannels_exit();
             SChannels_Postexit();

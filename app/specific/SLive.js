@@ -460,7 +460,6 @@ function SLive_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_SLive;
             Main_Go = Main_Search;
             SLive_exit();
             Main_SwitchScreen();
