@@ -301,7 +301,6 @@ function SGames_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_sgames;
             Main_Go = Main_Search;
             SGames_exit();
             Main_SwitchScreen();
