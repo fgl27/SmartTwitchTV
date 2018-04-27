@@ -639,7 +639,8 @@ function PlayVod_handleKeyDown(e) {
                         document.getElementById('play_dialog_exit').classList.add('hide');
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
-                        Main_BeforeSearch = Main_Go;
+                        if (!Search_isSearching) Main_BeforeSearch = Main_Go;
+                        Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
                         window.clearTimeout(Play_exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');

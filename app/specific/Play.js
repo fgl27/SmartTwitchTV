@@ -1050,7 +1050,8 @@ function Play_handleKeyDown(e) {
                         Play_hideChat();
                         window.setTimeout(Play_shutdownStream, 10);
                     } else if (Play_Panelcouner === 4) {
-                        Main_BeforeSearch = Main_Go;
+                        if (!Search_isSearching) Main_BeforeSearch = Main_Go;
+                        Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
                         window.clearTimeout(Play_exitID);
                         document.getElementById('play_dialog_exit').classList.add('hide');
