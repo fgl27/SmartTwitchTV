@@ -451,7 +451,7 @@ function Games_handleKeyDown(event) {
             if (!Games_loadingMore) {
                 Main_gameSelected = $('#' + Games_Cell + Games_cursorY + '_' + Games_cursorX).attr('data-channelname');
                 document.body.removeEventListener("keydown", Games_handleKeyDown);
-                Main_Before = Main_Go;
+                Main_BeforeAgame = Main_Go;
                 Main_Go = Main_aGame;
                 AGame_UserGames = false;
                 Games_exit();
