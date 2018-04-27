@@ -507,7 +507,7 @@ function Svod_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Svod;
+            if (!Search_isSearching) Main_BeforeSearch = Main_Svod;
             Main_Go = Main_Search;
             Svod_exit();
             Main_SwitchScreen();

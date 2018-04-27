@@ -4,6 +4,7 @@ var Search_cursorX = 0;
 var Search_data = '';
 var Search_keyBoardOn = false;
 var Search_input = '';
+var Search_isSearching = false;
 //Variable initialization end
 
 function Search_init() {

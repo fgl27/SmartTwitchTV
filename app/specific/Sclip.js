@@ -499,7 +499,7 @@ function Sclip_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Sclip;
+            if (!Search_isSearching) Main_BeforeSearch = Main_Sclip;
             Main_Go = Main_Search;
             Sclip_exit();
             Main_SwitchScreen();
