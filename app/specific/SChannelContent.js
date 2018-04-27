@@ -406,7 +406,7 @@ function SChannelContent_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_SChannelContent;
+            if (!Search_isSearching) Main_BeforeSearch = Main_SChannelContent;
             Main_Go = Main_Search;
             Main_RestoreTopLabel();
             document.body.removeEventListener("keydown", SChannelContent_handleKeyDown);

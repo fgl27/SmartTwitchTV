@@ -33,6 +33,7 @@ var SChannels_loadingMore = false;
 function SChannels_init() {
     Main_Go = Main_SChannels;
     SChannels_isLastSChannels = true;
+    Search_isSearching = true;
     if (SChannels_lastData !== Search_data) SChannels_Status = false;
     Main_cleanTopLabel();
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search_data + "'");
@@ -48,6 +49,7 @@ function SChannels_init() {
 function SChannels_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels_handleKeyDown);
+    Search_isSearching = false;
 }
 
 function SChannels_Postexit() {
