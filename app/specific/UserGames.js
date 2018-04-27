@@ -473,7 +473,8 @@ function UserGames_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_gameSelected = $('#' + UserGames_Cell + UserGames_cursorY + '_' + UserGames_cursorX).attr('data-channelname');
-            Main_Before = Main_usergames;
+            Main_BeforeAgame = Main_usergames;
+            Main_BeforeAgameisSet = true;
             Main_Go = Main_aGame;
             AGame_UserGames = true;
             UserGames_exit();
