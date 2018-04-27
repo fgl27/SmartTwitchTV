@@ -508,7 +508,6 @@ function UserLive_handleKeyDown(event) {
         case KEY_BLUE:
             Main_BeforeSearch = Main_UserLive;
             Main_Go = Main_Search;
-            Main_OldgameSelected = Main_gameSelected;
             UserLive_exit();
             Main_SwitchScreen();
             break;
