@@ -394,15 +394,13 @@ function PlayClip_handleKeyDown(e) {
                 } else if (Play_Panelcouner === 3) {
                     if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_Before = Main_Go;
                     Main_Go = Main_SChannelContent;
-                    window.clearTimeout(Play_exitID);
-                    document.getElementById('play_dialog_exit').classList.add('hide');
+                    Play_CleanHideExit();
                     window.setTimeout(PlayClip_shutdownStream, 10);
                 } else if (Play_Panelcouner === 4) {
                     if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                     Main_ExitCurrent(Main_Go);
                     Main_Go = Main_Search;
-                    window.clearTimeout(Play_exitID);
-                    document.getElementById('play_dialog_exit').classList.add('hide');
+                    Play_CleanHideExit();
                     window.setTimeout(PlayClip_shutdownStream, 10);
                 }
             }
@@ -413,8 +411,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_hidePanel();
             } else {
                 if (Play_ExitDialogVisible()) {
-                    window.clearTimeout(Play_exitID);
-                    document.getElementById('play_dialog_exit').classList.add('hide');
+                    Play_CleanHideExit();
                     window.setTimeout(PlayClip_shutdownStream, 10);
                 } else {
                     Play_showExitDialog();

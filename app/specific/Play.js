@@ -608,8 +608,13 @@ function Play_showExitDialog() {
         document.getElementById('play_dialog_exit').classList.remove('hide');
         Play_exitID = window.setTimeout(Play_showExitDialog, 3000);
     } else {
-        document.getElementById('play_dialog_exit').classList.add('hide');
+        Play_CleanHideExit();
     }
+}
+
+function Play_CleanHideExit() {
+    window.clearTimeout(Play_exitID);
+    document.getElementById('play_dialog_exit').classList.add('hide');
 }
 
 function Play_ExitDialogVisible() {
@@ -666,6 +671,7 @@ function Play_showPanel() {
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
     Play_clock();
+    Play_CleanHideExit();
     document.getElementById('scene_channel_panel').classList.remove('hide');
     Play_setHidePanel();
     Play_sizePanelOffset = -4;
@@ -694,7 +700,7 @@ function Play_isChatShown() {
 }
 
 function Play_showControlsDialog() {
-    document.getElementById('play_dialog_exit').classList.add('hide');
+    Play_CleanHideExit();
     document.getElementById('dialog_controls_play').classList.remove('hide');
 }
 
@@ -887,8 +893,7 @@ function Play_KeyReturn(is_vod) {
         Play_hidePanel();
     } else {
         if (Play_ExitDialogVisible()) {
-            window.clearTimeout(Play_exitID);
-            document.getElementById('play_dialog_exit').classList.add('hide');
+            Play_CleanHideExit();
             Play_hideChat();
             if (is_vod) window.setTimeout(PlayVod_shutdownStream, 10);
             else window.setTimeout(Play_shutdownStream, 10);
@@ -906,8 +911,7 @@ function Play_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
-                    window.clearTimeout(Play_exitID);
-                    document.getElementById('play_dialog_exit').classList.add('hide');
+                    Play_CleanHideExit();
                     Play_hideChat();
                     window.setTimeout(Play_shutdownStream, 10);
                 } else {
@@ -1026,8 +1030,7 @@ function Play_handleKeyDown(e) {
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
                         Main_gameSelected = Play_gameSelected;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         Play_hideChat();
                         window.setTimeout(Play_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
@@ -1046,16 +1049,14 @@ function Play_handleKeyDown(e) {
                         Main_ExitCurrent(Main_Go);
                         SChannelContent_UserChannels = AddCode_IsFallowing;
                         Main_Go = Main_SChannelContent;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         Play_hideChat();
                         window.setTimeout(Play_shutdownStream, 10);
                     } else if (Play_Panelcouner === 4) {
                         if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         Play_hideChat();
                         window.setTimeout(Play_shutdownStream, 10);
                     }

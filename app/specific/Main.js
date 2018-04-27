@@ -413,7 +413,7 @@ function Main_ThumbNull(y, x, thumbnail) {
 }
 
 function Main_ReStartScreens() {
-    document.getElementById('play_dialog_exit').classList.add('hide');
+    Play_isPanelShown();
     Main_SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
 }

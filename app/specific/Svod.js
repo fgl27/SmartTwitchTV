@@ -525,7 +525,7 @@ function Svod_openStream() {
     Play_hideChat();
     Play_clearPause();
     Play_HideWarningDialog();
-    document.getElementById('play_dialog_exit').classList.add('hide');
+    Play_CleanHideExit();
     document.getElementById('scene1').classList.add('hide');
     PlayVod_Start();
 }

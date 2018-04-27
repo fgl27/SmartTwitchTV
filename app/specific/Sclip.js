@@ -517,7 +517,7 @@ function Sclip_openStream() {
     Play_clearPause();
     Play_HideWarningDialog();
     document.getElementById('scene_channel_panel').classList.add('hide');
-    document.getElementById('play_dialog_exit').classList.add('hide');
+    Play_CleanHideExit();
     document.getElementById('scene1').classList.add('hide');
 
     PlayClip_Start();
