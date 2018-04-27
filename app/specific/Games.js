@@ -453,6 +453,7 @@ function Games_handleKeyDown(event) {
                 document.body.removeEventListener("keydown", Games_handleKeyDown);
                 Main_BeforeAgame = Main_Go;
                 Main_Go = Main_aGame;
+                Main_BeforeAgameisSet = true;
                 AGame_UserGames = false;
                 Games_exit();
                 Main_SwitchScreen();

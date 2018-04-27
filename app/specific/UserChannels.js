@@ -349,6 +349,7 @@ function UserChannels_handleKeyDown(event) {
                 document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
                 Main_BeforeChannel = Main_UserChannels;
                 Main_Go = Main_SChannelContent;
+                Main_BeforeChannelisSet = true;
                 AddCode_IsFallowing = true;
                 SChannelContent_UserChannels = true;
                 Main_SwitchScreen();

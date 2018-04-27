@@ -1017,11 +1017,11 @@ function Play_handleKeyDown(e) {
                         Play_clearHidePanel();
                         Play_setHidePanel();
                     } else if (Play_Panelcouner === 2) {
-                        if (Main_Go !== Main_aGame) {
-                            Main_BeforeAgame = Main_Go;
-                            if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) Main_BeforeAgame2 = Main_Go;
-                            else Main_BeforeAgame2 = Main_BeforeChannel2;
+                        if (!Main_BeforeAgameisSet) {
+                            Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
+                            Main_BeforeAgameisSet = true;
                         }
+
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
@@ -1031,17 +1031,18 @@ function Play_handleKeyDown(e) {
                         Play_hideChat();
                         window.setTimeout(Play_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
+                        if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
+                            Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
+                            Main_BeforeChannelisSet = true;
+                        }
+
                         Main_selectedChannel = Play_selectedChannel;
                         Main_selectedChannel_id = AddCode_userChannel;
                         Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
                         Main_selectedChannelLogo = Play_selectedChannelLogo;
                         Main_selectedChannelViews = Play_selectedChannelViews;
                         Main_selectedChannelFallower = Play_selectedChannelFallower;
-                        if (Main_Go !== Main_Svod && Main_Go !== Main_Sclip && Main_Go !== Main_SChannelContent) {
-                            Main_BeforeChannel = Main_Go;
-                            if (Main_Go !== Main_aGame) Main_BeforeChannel2 = Main_Go;
-                            else Main_BeforeChannel2 = Main_BeforeAgame2;
-                        }
+
                         Main_ExitCurrent(Main_Go);
                         SChannelContent_UserChannels = AddCode_IsFallowing;
                         Main_Go = Main_SChannelContent;

@@ -55,7 +55,6 @@ function SLive_exit() {
 
 function SLive_StartLoad() {
     SLive_lastData = Search_data;
-    Search_isSearching = false;
     Main_HideWarningDialog();
     SLive_Status = false;
     Main_ScrollHelperBlank('blank_focus');
@@ -384,6 +383,7 @@ function SLive_handleKeyDown(event) {
                 if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
                 else Main_Go = Main_BeforeSearch;
                 SLive_exit();
+                Search_isSearching = false;
                 Main_SwitchScreen();
             }
             break;
@@ -456,6 +456,7 @@ function SLive_handleKeyDown(event) {
             break;
         case KEY_GREEN:
             SLive_exit();
+            Search_isSearching = false;
             Main_GoLive();
             break;
         case KEY_YELLOW:

@@ -43,7 +43,6 @@ function SGames_init() {
 function SGames_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SGames_handleKeyDown);
-    Search_isSearching = false;
 }
 
 function SGames_StartLoad() {
@@ -223,6 +222,7 @@ function SGames_handleKeyDown(event) {
                 if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
                 else Main_Go = Main_BeforeSearch;
                 SGames_exit();
+                Search_isSearching = false;
                 Main_SwitchScreen();
             }
             break;
@@ -289,7 +289,9 @@ function SGames_handleKeyDown(event) {
             document.body.removeEventListener("keydown", SGames_handleKeyDown);
             Main_BeforeAgame = Main_Go;
             Main_Go = Main_aGame;
+            Main_BeforeAgameisSet = true;
             SGames_exit();
+            Search_isSearching = false;
             Main_SwitchScreen();
             break;
         case KEY_RED:
@@ -297,6 +299,7 @@ function SGames_handleKeyDown(event) {
             break;
         case KEY_GREEN:
             SGames_exit();
+            Search_isSearching = false;
             Main_GoLive();
             break;
         case KEY_YELLOW:

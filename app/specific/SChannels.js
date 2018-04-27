@@ -49,7 +49,6 @@ function SChannels_init() {
 function SChannels_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SChannels_handleKeyDown);
-    Search_isSearching = false;
 }
 
 function SChannels_Postexit() {
@@ -380,6 +379,7 @@ function SChannels_handleKeyDown(event) {
                 if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
                 else Main_Go = Main_BeforeSearch;
                 SChannels_exit();
+                Search_isSearching = false;
                 SChannels_Postexit();
             }
             break;
@@ -452,6 +452,7 @@ function SChannels_handleKeyDown(event) {
                 document.body.removeEventListener("keydown", SChannels_handleKeyDown);
                 Main_BeforeChannel = Main_SChannels;
                 Main_Go = Main_SChannelContent;
+                Main_BeforeChannelisSet = true;
                 AddCode_IsFallowing = false;
                 SChannelContent_UserChannels = false;
                 Main_SwitchScreen();
@@ -462,6 +463,7 @@ function SChannels_handleKeyDown(event) {
             break;
         case KEY_GREEN:
             SChannels_exit();
+            Search_isSearching = false;
             Main_GoLive();
             break;
         case KEY_YELLOW:

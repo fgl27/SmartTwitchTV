@@ -25,9 +25,10 @@ var Main_Go = 1;
 var Main_Before = 1;
 var Main_BeforeSearch = 1;
 var Main_BeforeChannel = 1;
-var Main_BeforeChannel2 = 1;
 var Main_BeforeAgame = 1;
-var Main_BeforeAgame2 = 1;
+
+var Main_BeforeChannelisSet = false;
+var Main_BeforeAgameisSet = false;
 
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
@@ -420,6 +421,12 @@ function Main_ReStartScreens() {
 function Main_SwitchScreen() {
     Main_ScrollHelperBlank('blank_focus');
     if (Main_NetworkStateOK) Main_HideWarningDialog();
+
+    if (Main_Go !== Main_SChannelContent && Main_Go !== Main_aGame) {
+        Main_BeforeAgameisSet = false;
+        Main_BeforeChannelisSet = false;
+    }
+
     Main_CounterDialogRst();
     if (Main_Go === Main_Live) Live_init();
     else if (Main_Go === Main_addUser) AddUser_init();
