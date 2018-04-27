@@ -35,6 +35,7 @@ var SLive_loadingMore = false;
 
 function SLive_init() {
     Main_Go = Main_SLive;
+    Search_isSearching = true;
     Main_cleanTopLabel();
     if (SLive_lastData !== Search_data) SLive_Status = false;
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Search_data + "'");
@@ -54,6 +55,7 @@ function SLive_exit() {
 
 function SLive_StartLoad() {
     SLive_lastData = Search_data;
+    Search_isSearching = false;
     Main_HideWarningDialog();
     SLive_Status = false;
     Main_ScrollHelperBlank('blank_focus');
