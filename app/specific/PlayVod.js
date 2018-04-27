@@ -538,8 +538,7 @@ function PlayVod_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
-                    window.clearTimeout(Play_exitID);
-                    document.getElementById('play_dialog_exit').classList.add('hide');
+                    Play_CleanHideExit();
                     window.setTimeout(PlayVod_shutdownStream, 10);
                 } else {
                     Play_showExitDialog();
@@ -624,8 +623,7 @@ function PlayVod_handleKeyDown(e) {
                         Main_Go = Main_aGame;
                         AGame_UserGames = false;
                         Main_gameSelected = Svod_game;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
                         if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
@@ -635,15 +633,13 @@ function PlayVod_handleKeyDown(e) {
 
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_SChannelContent;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     } else if (Play_Panelcouner === 3) {
                         if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
-                        window.clearTimeout(Play_exitID);
-                        document.getElementById('play_dialog_exit').classList.add('hide');
+                        Play_CleanHideExit();
                         window.setTimeout(PlayVod_shutdownStream, 10);
                     }
                 } else {
