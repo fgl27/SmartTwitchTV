@@ -50,8 +50,7 @@ function UserHost_StartLoad() {
     Main_showLoadDialog();
     UserHost_OldUserName = Main_UserName;
     UserHost_status = false;
-    var table = document.getElementById('stream_table_user_host');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_user_host');
     UserHost_loadingMore = false;
     UserHost_blankCellCount = 0;
     UserHost_itemsCountOffset = 0;

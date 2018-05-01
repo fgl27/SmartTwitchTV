@@ -61,8 +61,7 @@ function Sclip_StartLoad() {
     Sclip_lastselectedChannel = Main_selectedChannel;
     Sclip_cursor = null;
     Sclip_status = false;
-    var table = document.getElementById('stream_table_search_clip');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_search_clip');
     Sclip_loadingMore = false;
     Sclip_blankCellCount = 0;
     Sclip_ReplacedataEnded = false;

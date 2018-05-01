@@ -54,8 +54,7 @@ function AGame_StartLoad() {
     AGame_status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    var table = document.getElementById('stream_table_a_game');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_a_game');
     AGame_loadingMore = false;
     AGame_blankCellCount = 0;
     AGame_itemsCountOffset = 0;

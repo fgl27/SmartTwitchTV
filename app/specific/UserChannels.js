@@ -52,8 +52,7 @@ function UserChannels_StartLoad() {
     Main_showLoadDialog();
     UserChannels_OldUserName = Main_UserName;
     UserChannels_Status = false;
-    var table = document.getElementById('stream_table_user_channels');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_user_channels');
     UserChannels_loadingMore = false;
     UserChannels_loadChannelOffsset = 0;
     UserChannels_itemsCount = 0;

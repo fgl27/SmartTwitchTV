@@ -52,8 +52,7 @@ function UserLive_StartLoad() {
     Main_showLoadDialog();
     UserLive_status = false;
     UserLive_OldUserName = Main_UserName;
-    var table = document.getElementById('stream_table_user_live');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_user_live');
     UserLive_loadChannelOffsset = 0;
     UserLive_loadingMore = false;
     UserLive_blankCellCount = 0;
