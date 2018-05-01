@@ -177,10 +177,13 @@ function UserHost_createCell(row_id, id, channel_name, valuesArray) {
 }
 
 function UserHost_CellExists(display_name) {
-    if (UserHost_nameMatrix.indexOf(display_name) > -1) {
-        UserHost_blankCellCount++;
-        return true;
+    for (var i = 0; i < UserHost_nameMatrix.length; i++) {
+        if (display_name === UserHost_nameMatrix[i]) {
+            UserHost_blankCellCount++;
+            return true;
+        }
     }
+
     return false;
 }
 

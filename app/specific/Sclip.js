@@ -228,9 +228,11 @@ function Sclip_VideoHtml(id, Sclip_ids, valuesArray) {
 }
 
 function Sclip_CellExists(display_name) {
-    if (Sclip_nameMatrix.indexOf(display_name) > -1) {
-        Sclip_blankCellCount++;
-        return true;
+    for (var i = 0; i < Sclip_nameMatrix.length; i++) {
+        if (display_name === Sclip_nameMatrix[i]) {
+            Sclip_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }

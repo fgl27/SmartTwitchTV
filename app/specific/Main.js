@@ -575,6 +575,20 @@ function Main_empty(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
 }
 
+function Main_blankCellCount() {
+    this.val = 0;
+}
+
+function Main_CellExists(name, vector, counter) {
+    for (var i = 0; i < vector.length; i++) {
+        if (name === vector[i]) {
+            counter.val++;
+            return true;
+        }
+    }
+    return false;
+}
+
 function Main_LoadImages(imgVector, idVector, img_type) {
     for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i], img_type);
 }

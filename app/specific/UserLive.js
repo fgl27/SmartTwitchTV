@@ -247,9 +247,11 @@ function UserLive_createCell(row_id, id, channel_name, valuesArray) {
 }
 
 function UserLive_CellExists(display_name) {
-    if (UserLive_nameMatrix.indexOf(display_name) > -1) {
-        UserLive_blankCellCount++;
-        return true;
+    for (var i = 0; i < UserLive_nameMatrix.length; i++) {
+        if (display_name === UserLive_nameMatrix[i]) {
+            UserLive_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }

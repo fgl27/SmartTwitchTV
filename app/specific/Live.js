@@ -180,9 +180,11 @@ function Live_createCell(row_id, id, channel_name, valuesArray) {
 }
 
 function Live_CellExists(display_name) {
-    if (Live_nameMatrix.indexOf(display_name) > -1) {
-        Live_blankCellCount++;
-        return true;
+    for (var i = 0; i < Live_nameMatrix.length; i++) {
+        if (display_name === Live_nameMatrix[i]) {
+            Live_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }
