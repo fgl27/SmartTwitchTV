@@ -10,11 +10,11 @@ var Search_isSearching = false;
 function Search_init() {
     Main_HideWarningDialog();
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
-    document.getElementById('label_search').innerHTML = '';
-    document.getElementById('label_switch').innerHTML = '';
-    document.getElementById('top_bar_live').innerHTML = '';
+    Main_empty('label_search');
+    Main_empty('label_switch');
+    Main_empty('top_bar_live');
+    Main_empty('top_bar_game');
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
-    document.getElementById('top_bar_game').innerHTML = '';
     document.getElementById("search_input").placeholder = STR_PLACEHOLDER_SEARCH;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     Search_cursorY = 0;

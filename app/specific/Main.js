@@ -272,7 +272,7 @@ function Main_isExitDialogShown() {
 }
 
 function Main_CounterDialogRst() {
-    document.getElementById('dialog_counter_text').innerHTML = '';
+    Main_empty('dialog_counter_text');
     Main_Scrollbar(0, 0, 0);
 }
 
@@ -479,9 +479,9 @@ function Main_RestoreTopLabel() {
 
 function Main_cleanTopLabel() {
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
-    document.getElementById('label_switch').innerHTML = '';
-    document.getElementById('top_bar_live').innerHTML = '';
-    document.getElementById('top_bar_game').innerHTML = '';
+    Main_empty('label_switch');
+    Main_empty('top_bar_live');
+    Main_empty('top_bar_game');
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
 }
 
@@ -568,6 +568,11 @@ function Main_Resume() {
             }
         }, 1500);
     }
+}
+
+function Main_empty(el) {
+    el = document.getElementById(el);
+    while (el.firstChild) el.removeChild(el.firstChild);
 }
 
 function Main_LoadImages(imgVector, idVector, img_type) {

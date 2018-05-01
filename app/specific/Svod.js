@@ -61,8 +61,7 @@ function Svod_StartLoad() {
     Svod_status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    var table = document.getElementById('stream_table_search_vod');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_search_vod');
     Svod_loadingMore = false;
     Svod_blankCellCount = 0;
     Svod_itemsCountOffset = 0;

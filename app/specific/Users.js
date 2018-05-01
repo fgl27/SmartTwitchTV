@@ -35,8 +35,7 @@ function Users_StartLoad() {
     Users_status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    var table = document.getElementById('stream_table_user');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_user');
     Users_imgMatrix = [];
     Users_imgMatrixId = [];
     Users_imgMatrixCount = 0;

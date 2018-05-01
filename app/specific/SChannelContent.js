@@ -26,7 +26,7 @@ function SChannelContent_init() {
     Main_cleanTopLabel();
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
-    document.getElementById('id_agame_name').innerHTML = '';
+    Main_empty('id_agame_name');
     document.body.addEventListener("keydown", SChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
     if (SChannelContent_status) {
@@ -47,8 +47,7 @@ function SChannelContent_StartLoad() {
     SChannelContent_skipImg = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    var table = document.getElementById('stream_table_search_channel_a');
-    while (table.firstChild) table.removeChild(table.firstChild);
+    Main_empty('stream_table_search_channel_a');
     SChannelContent_itemsCountOffset = 0;
     SChannelContent_itemsCount = 0;
     SChannelContent_cursorX = 0;

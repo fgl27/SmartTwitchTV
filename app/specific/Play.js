@@ -91,7 +91,7 @@ function Play_Start() {
     Play_showBufferDialog();
     document.getElementById("stream_live_icon").innerHTML =
         '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>';
-    document.getElementById("stream_info_title").innerHTML = '';
+    Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
     document.getElementById("stream_info_name").innerHTML = Play_selectedChannelDisplayname;
