@@ -197,10 +197,13 @@ function SChannels_CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail,
 }
 
 function SChannels_CellExists(display_name) {
-    if (SChannels_nameMatrix.indexOf(display_name) > -1) {
-        SChannels_blankCellCount++;
-        return true;
+    for (var i = 0; i < SChannels_nameMatrix.length; i++) {
+        if (display_name === SChannels_nameMatrix[i]) {
+            SChannels_blankCellCount++;
+            return true;
+        }
     }
+
     return false;
 }
 

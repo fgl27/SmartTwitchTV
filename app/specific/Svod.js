@@ -227,9 +227,11 @@ function Svod_VideoHtml(id, valuesArray) {
 }
 
 function Svod_CellExists(video_id) {
-    if (Svod_nameMatrix.indexOf(video_id) > -1) {
-        Svod_blankCellCount++;
-        return true;
+    for (var i = 0; i < Svod_nameMatrix.length; i++) {
+        if (video_id === Svod_nameMatrix[i]) {
+            Svod_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }

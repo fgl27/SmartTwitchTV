@@ -204,10 +204,13 @@ function SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, 
 }
 
 function SLive_CellExists(display_name) {
-    if (SLive_nameMatrix.indexOf(display_name) > -1) {
-        SLive_blankCellCount++;
-        return true;
+    for (var i = 0; i < SLive_nameMatrix.length; i++) {
+        if (display_name === SLive_nameMatrix[i]) {
+            SLive_blankCellCount++;
+            return true;
+        }
     }
+
     return false;
 }
 

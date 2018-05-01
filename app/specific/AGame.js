@@ -195,9 +195,11 @@ function AGame_createCell(row_id, id, channel_name, valuesArray) {
 }
 
 function AGame_CellExists(display_name) {
-    if (AGame_nameMatrix.indexOf(display_name) > -1) {
-        AGame_blankCellCount++;
-        return true;
+    for (var i = 0; i < AGame_nameMatrix.length; i++) {
+        if (display_name === AGame_nameMatrix[i]) {
+            AGame_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }

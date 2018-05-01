@@ -203,9 +203,11 @@ function Games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail
 }
 
 function Games_CellExists(display_name) {
-    if (Games_nameMatrix.indexOf(display_name) > -1) {
-        Games_blankCellCount++;
-        return true;
+    for (var i = 0; i < Games_nameMatrix.length; i++) {
+        if (display_name === Games_nameMatrix[i]) {
+            Games_blankCellCount++;
+            return true;
+        }
     }
     return false;
 }
