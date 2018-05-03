@@ -263,7 +263,7 @@ function SChannelContent_setFallow() {
 }
 
 function SChannelContent_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!SChannelContent_status) {
             Main_HideLoadDialog();
             SChannelContent_status = true;

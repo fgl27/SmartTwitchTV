@@ -257,7 +257,7 @@ function UserLive_CellExists(display_name) {
 }
 
 function UserLive_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!UserLive_status) {
             Main_HideLoadDialog();
             if (UserLive_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);

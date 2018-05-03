@@ -237,7 +237,7 @@ function Svod_CellExists(video_id) {
 }
 
 function Svod_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!Svod_status) {
             Main_HideLoadDialog();
             if (Svod_emptyContent) Main_showWarningDialog(STR_NO + (Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);

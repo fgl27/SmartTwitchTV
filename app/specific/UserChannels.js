@@ -200,7 +200,7 @@ function UserChannels_createCell(row_id, id, channel_display_name, _id, channel_
 }
 
 function UserChannels_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!UserChannels_Status) {
             Main_HideLoadDialog();
             if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);

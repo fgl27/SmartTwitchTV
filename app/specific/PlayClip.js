@@ -52,7 +52,7 @@ function PlayClip_Start() {
     PlayClip_isOn = true;
 
     //(document).ready to prevent clip start playing before the scene load and start all visual interfaces, prevents video on the top of everything
-    $(document).ready(function() {
+    Main_ready(function() {
         Play_videojs.src({
             type: "video/mp4",
             src: Sclip_playUrl

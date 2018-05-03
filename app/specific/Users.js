@@ -103,7 +103,7 @@ function Users_createChannelCell(id, user_name, stream_type, preview_thumbnail) 
 }
 
 function Users_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!Users_status) {
             Main_HideLoadDialog();
             Users_status = true;
