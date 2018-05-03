@@ -169,11 +169,11 @@ function Main_loadTranslations(device) {
     DefaultLang();
 
     Main_Checktylesheet();
-    $(document).ready(function() {
+    Main_ready(function() {
         if (Main_isReleased) document.body.innerHTML = STR_BODY;
         else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
 
-        $(document).ready(Main_initWindows);
+        Main_ready(Main_initWindows);
     });
 }
 
@@ -200,7 +200,7 @@ function Main_initWindows() {
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
 
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
-    $(document).ready(function() {
+    Main_ready(function() {
 
         Play_PreStart();
         AddUser_RestoreUsers();
@@ -847,4 +847,14 @@ function Main_LoadStylesheet(path) {
     link.href = path;
 
     document.getElementsByTagName("head")[0].appendChild(link);
+}
+
+//adapted from https://code.jquery.com/jquery-3.3.1.js
+function Main_ready(func) {
+    if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)) {
+
+        // Handle it asynchronously to allow scripts the opportunity to delay ready
+        window.setTimeout(func);
+
+    } else document.addEventListener("DOMContentLoaded", func);
 }

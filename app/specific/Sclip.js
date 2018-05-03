@@ -238,7 +238,7 @@ function Sclip_CellExists(display_name) {
 }
 
 function Sclip_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!Sclip_status) {
             Main_HideLoadDialog();
             if (Sclip_emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);

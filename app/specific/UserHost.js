@@ -188,7 +188,7 @@ function UserHost_CellExists(display_name) {
 }
 
 function UserHost_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!UserHost_status) {
             Main_HideLoadDialog();
             if (UserHost_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_HOSTS);

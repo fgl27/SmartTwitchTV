@@ -215,7 +215,7 @@ function UserGames_CellExists(display_name) {
 }
 
 function UserGames_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!UserGames_Status) {
             Main_HideLoadDialog();
             if (UserGames_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);

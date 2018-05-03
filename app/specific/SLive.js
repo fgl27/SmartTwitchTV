@@ -215,7 +215,7 @@ function SLive_CellExists(display_name) {
 }
 
 function SLive_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!SLive_Status) {
             Main_HideLoadDialog();
             if (SLive_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);

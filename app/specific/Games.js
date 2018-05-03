@@ -213,7 +213,7 @@ function Games_CellExists(display_name) {
 }
 
 function Games_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!Games_Status) {
             Main_HideLoadDialog();
             if (Games_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);

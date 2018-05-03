@@ -208,7 +208,7 @@ function SChannels_CellExists(display_name) {
 }
 
 function SChannels_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!SChannels_Status) {
             Main_HideLoadDialog();
             if (SChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);

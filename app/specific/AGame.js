@@ -205,7 +205,7 @@ function AGame_CellExists(display_name) {
 }
 
 function AGame_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!AGame_status) {
             Main_HideLoadDialog();
             AGame_Checkfallow();

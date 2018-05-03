@@ -162,7 +162,7 @@ function SGames_createCell(row_id, coloumn_id, game_name, preview_thumbnail) {
 }
 
 function SGames_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!SGames_Status) {
             Main_HideLoadDialog();
             if (SGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);

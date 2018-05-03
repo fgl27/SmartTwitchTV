@@ -190,7 +190,7 @@ function Live_CellExists(display_name) {
 }
 
 function Live_loadDataSuccessFinish() {
-    $(document).ready(function() {
+    Main_ready(function() {
         if (!Live_Status) {
             Main_HideLoadDialog();
             document.getElementById('topbar').classList.remove('hide');
