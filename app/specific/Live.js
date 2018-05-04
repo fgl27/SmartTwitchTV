@@ -27,8 +27,8 @@ var Live_loadingMore = false;
 
 function Live_init() {
     Main_Go = Main_Live;
-    document.body.addEventListener("keydown", Live_handleKeyDown, false);
     document.getElementById('top_bar_live').classList.add('icon_center_focus');
+    document.body.addEventListener("keydown", Live_handleKeyDown, false);
     Main_YRst(Live_cursorY);
     if (Live_Status) {
         Main_ScrollHelper(Live_ids[0], Live_cursorY, Live_cursorX, Main_Live, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
