@@ -27,7 +27,7 @@ function AddCode_init() {
         document.getElementById('top_bar_user').classList.add('icon_center_focus');
         Main_HideWarningDialog();
         AddCode_input = document.querySelector('#oauth_input');
-        document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
+        Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
         document.getElementById("oauth_text").innerHTML = STR_OAUTH_IN + Main_UserName + STR_OAUTH_EXPLAIN;
         AddCode_inputFocus();
         AddUser_scrollVerticalToElementById('oauth_input');
@@ -95,7 +95,7 @@ function AddCode_inputFocus() {
     document.body.addEventListener("keydown", AddCode_KeyboardEvent, false);
     AddCode_input.addEventListener('input');
     AddCode_input.addEventListener('compositionend');
-    document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_OAUTH;
+    Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
     AddCode_input.focus();
     AddCode_keyBoardOn = true;
 }
@@ -104,7 +104,7 @@ function AddCode_RemoveinputFocus() {
     AddCode_input.blur();
     document.body.removeEventListener("keydown", AddCode_KeyboardEvent);
     document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
-    document.getElementById("oauth_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
+    Main_AddCodeInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
     window.setTimeout(function() {
         AddCode_keyBoardOn = false;
     }, 250);
@@ -115,15 +115,14 @@ function AddCode_KeyboardEvent(event) {
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_DELETE_ALL:
-            document.getElementById("oauth_input").value = '';
+            Main_AddCodeInput.value = '';
             event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
-            if ($('#oauth_input').val() !== '' && $('#oauth_input').val() !== null) {
+            if (Main_AddCodeInput.value !== '' && Main_AddCodeInput.value !== null) {
 
-                document.getElementById("oauth_input").value = $('#oauth_input').val();
-                AddCode_OauthToken = $('#oauth_input').val();
+                AddCode_OauthToken = Main_AddCodeInput.value;
 
                 AddCode_TimeoutReset10();
                 Main_showLoadDialog();
@@ -133,11 +132,11 @@ function AddCode_KeyboardEvent(event) {
             AddCode_RemoveinputFocus();
             break;
         case KEY_KEYBOARD_BACKSPACE:
-            document.getElementById("oauth_input").value = $('#oauth_input').val().slice(0, -1);
+            Main_AddCodeInput.value = Main_AddCodeInput.value.slice(0, -1);
             event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
-            document.getElementById("oauth_input").value = $('#oauth_input').val() + ' ';
+            Main_AddCodeInput.value = Main_AddCodeInput.value + ' ';
             event.preventDefault();
             break;
         default:
@@ -306,7 +305,7 @@ function AddCode_CheckIdError() {
 
 function AddCode_CheckIdSuccess(responseText) {
     AddCode_userId = JSON.parse(responseText).users[0]._id;
-    document.getElementById("oauth_input").value = '';
+    Main_AddCodeInput.value = '';
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     Users_SetKeyTitle(true);
     AddCode_SaveNewUser();
