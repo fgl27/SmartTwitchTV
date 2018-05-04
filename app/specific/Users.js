@@ -93,7 +93,7 @@ function Users_createChannelCell(id, user_name, stream_type, preview_thumbnail) 
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Users_ids[4] + id);
-    Main_td.setAttribute('data-channelname', user_name);
+    Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><img id="' + Users_ids[1] + id + '" class="stream_img"></div>' +
         '<div id="' + Users_ids[2] + id + '" class="stream_text">' +

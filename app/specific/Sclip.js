@@ -200,7 +200,7 @@ function Sclip_createCell(row_id, id, clip_id, valuesArray) {
 function Sclip_createCellVideo(clip_id, id, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Sclip_ids[8] + id);
-    Main_td.setAttribute('data-channelname', clip_id);
+    Main_td.setAttribute(Main_DataAttribute, clip_id);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Sclip_VideoHtml(id, Sclip_ids, valuesArray);
 
@@ -210,7 +210,7 @@ function Sclip_createCellVideo(clip_id, id, valuesArray) {
 function Sclip_replaceVideo(id, clip_id, valuesArray) {
     var splitedId = id.split(Sclip_ids[9])[1];
     id = document.getElementById(id);
-    id.setAttribute('data-channelname', clip_id);
+    id.setAttribute(Main_DataAttribute, clip_id);
     id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
     id.setAttribute('id', Sclip_ids[8] + splitedId);
 }
@@ -478,7 +478,7 @@ function Sclip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute('data-channelname').split('.mp4');
+            Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute(Main_DataAttribute).split('.mp4');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
             Sclip_playUrl = Sclip_playUrl[0] + '.mp4';
 

@@ -197,7 +197,7 @@ function Svod_createCell(row_id, id, video_id, valuesArray) {
 function Svod_createCellVideo(vod_id, id, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Svod_ids[8] + id);
-    Main_td.setAttribute('data-channelname', vod_id);
+    Main_td.setAttribute(Main_DataAttribute, vod_id);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Svod_VideoHtml(id, valuesArray);
 
@@ -207,7 +207,7 @@ function Svod_createCellVideo(vod_id, id, valuesArray) {
 function Svod_replaceVideo(id, vod_id, valuesArray) {
     splitedId = id.split(Svod_ids[9])[1];
     id = document.getElementById(id);
-    id.setAttribute('data-channelname', vod_id);
+    id.setAttribute(Main_DataAttribute, vod_id);
     id.innerHTML = Main_VideoHtml(splitedId, valuesArray);
     id.setAttribute('id', Svod_ids[8] + splitedId);
 }
@@ -484,7 +484,7 @@ function Svod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute('data-channelname').split(',');
+            Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute(Main_DataAttribute).split(',');
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
             Svod_language = Svod_vodId[2];
             Svod_game = Svod_vodId[3];

@@ -184,7 +184,7 @@ function UserChannels_createCell(row_id, id, channel_display_name, _id, channel_
     Main_td = document.createElement('td');
 
     Main_td.setAttribute('id', UserChannels_Cell + id);
-    Main_td.setAttribute('data-channelname', channel_name);
+    Main_td.setAttribute(Main_DataAttribute, channel_name);
     Main_td.setAttribute('data-id', _id);
     Main_td.setAttribute('data-views', views);
     Main_td.setAttribute('data-followers', followers);
@@ -338,7 +338,7 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!UserChannels_loadingMore) {
-                Main_selectedChannel = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-channelname');
+                Main_selectedChannel = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
                 Main_selectedChannel_id = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
                 Main_selectedChannelViews = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-views');
                 Main_selectedChannelFallower = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-followers');

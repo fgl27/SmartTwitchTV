@@ -285,7 +285,7 @@ function SGames_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_gameSelected = $('#' + SGames_Cell + SGames_cursorY + '_' + SGames_cursorX).attr('data-channelname');
+            Main_gameSelected = $('#' + SGames_Cell + SGames_cursorY + '_' + SGames_cursorX).attr(Main_DataAttribute);
             document.body.removeEventListener("keydown", SGames_handleKeyDown);
             Main_BeforeAgame = Main_Go;
             Main_Go = Main_aGame;

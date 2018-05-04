@@ -335,7 +335,7 @@ function SLive_replaceCellEmpty(id, channel_name, preview_thumbnail, stream_titl
     var cell = SLive_Cell + row_id + '_' + coloumn_id;
 
     document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).setAttribute(Main_DataAttribute, channel_name);
     document.getElementById(cell).innerHTML =
         SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
 }
@@ -449,7 +449,7 @@ function SLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = $('#' + SLive_Cell + SLive_cursorY + '_' + SLive_cursorX).attr('data-channelname');
+            Play_selectedChannel = $('#' + SLive_Cell + SLive_cursorY + '_' + SLive_cursorX).attr(Main_DataAttribute);
             Play_selectedChannelDisplayname = document.getElementById(SLive_DispNameDiv + SLive_cursorY + '_' + SLive_cursorX).textContent;
             document.body.removeEventListener("keydown", SLive_handleKeyDown);
             Main_openStream();

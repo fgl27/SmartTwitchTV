@@ -502,7 +502,7 @@ function AGame_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (AGame_cursorY !== -1) {
-                Play_selectedChannel = document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute('data-channelname');
+                Play_selectedChannel = document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute(Main_DataAttribute);
                 Play_selectedChannelDisplayname = document.getElementById(AGame_ids[3] + AGame_cursorY + '_' + AGame_cursorX).textContent;
                 document.body.removeEventListener("keydown", AGame_handleKeyDown);
                 Main_OldgameSelected = Main_gameSelected;
