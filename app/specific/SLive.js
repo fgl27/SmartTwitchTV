@@ -16,21 +16,12 @@ var SLive_keyClickDelayTime = 25;
 var SLive_ReplacedataEnded = false;
 var SLive_MaxOffset = 0;
 var SLive_emptyContent = false;
-
-var SLive_Img = 'img_slive';
-var SLive_Thumbnail = 'thumbnail_slive_';
-var SLive_EmptyCell = 'sliveempty_';
-var SLive_ThumbnailDiv = 'slive_thumbnail_div_';
-var SLive_DispNameDiv = 'slive_display_name_';
-var SLive_StreamTitleDiv = 'slive_stream_title_';
-var SLive_StreamGameDiv = 'slive_stream_slive_';
-var SLive_ViwersDiv = 'slive_viwers_';
-var SLive_QualityDiv = 'slive_quality_';
-var SLive_Cell = 'slive_cell_';
 var SLive_Status = false;
 var SLive_itemsCountCheck = false;
 var SLive_lastData = '';
 var SLive_loadingMore = false;
+
+var SLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', 'sl_streamtitle', 'sl_streamgame', 'sl_viwers', 'sl_quality', 'sl_cell', 'slempty_'];
 //Variable initialization end
 
 function SLive_init() {
@@ -42,7 +33,7 @@ function SLive_init() {
     document.body.addEventListener("keydown", SLive_handleKeyDown, false);
     Main_YRst(SLive_cursorY);
     if (SLive_Status) {
-        Main_ScrollHelper(SLive_Thumbnail, SLive_cursorY, SLive_cursorX, Main_SLive, Main_ScrollOffSetMinusVideo,
+        Main_ScrollHelper(SLive_ids[0], SLive_cursorY, SLive_cursorX, Main_SLive, Main_ScrollOffSetMinusVideo,
             Main_ScrollOffSetVideo, false);
         Main_CounterDialog(SLive_cursorX, SLive_cursorY, Main_ColoumnsCountVideo, SLive_itemsCount);
     } else SLive_StartLoad();
@@ -59,7 +50,7 @@ function SLive_StartLoad() {
     SLive_Status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    $('#stream_table_search_live').empty();
+    Main_empty('stream_table_search_live');
     SLive_loadingMore = false;
     SLive_blankCellCount = 0;
     SLive_itemsCountOffset = 0;
@@ -146,24 +137,22 @@ function SLive_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, stream,
+    var coloumn_id, row_id, row, stream,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             if (SLive_CellExists(stream.channel.name)) coloumn_id--;
-            else {
-                cell = SLive_createCell(row_id, coloumn_id, stream.channel.name, stream.preview.template,
-                    stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                    stream.channel.display_name,
-                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
-                row.append(cell);
-            }
+            else row.appendChild(SLive_createCell(row_id, row_id + '_' + coloumn_id, stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                stream.channel.status, stream.game,
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            ]));
         }
 
         for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
@@ -171,36 +160,19 @@ function SLive_loadDataSuccess(responseText) {
                 SLive_itemsCountCheck = true;
                 SLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main_createEmptyCell(SLive_EmptyCell + row_id + '_' + coloumn_id));
-            SLive_blankCellVector.push(SLive_EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(SLive_ids[9] + row_id + '_' + coloumn_id));
+            SLive_blankCellVector.push(SLive_ids[9] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_search_live').append(row);
+        document.getElementById("stream_table_search_live").appendChild(row);
     }
 
     SLive_loadDataSuccessFinish();
 }
 
-function SLive_createCell(row_id, coloumn_id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    return $('<td id="' + SLive_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '"></td>').html(
-        SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name));
-}
-
-function SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name) {
-
+function SLive_createCell(row_id, id, channel_name, valuesArray) {
     SLive_nameMatrix.push(channel_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_VideoSize);
-    if (row_id < 3) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + SLive_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_video" ><img id="' + SLive_Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + SLive_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SLive_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div>' +
-        '<div id="' + SLive_StreamTitleDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + SLive_StreamGameDiv + row_id + '_' + coloumn_id + '"class="stream_info">' + stream_game + '</div>' +
-        '<div id="' + SLive_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 66%; display: inline-block;">' + viwers +
-        '</div>' + '<div id="' + SLive_QualityDiv + row_id + '_' + coloumn_id +
-        '"class="stream_info" style="width:33%; float: right; display: inline-block;">' + quality + '</div></div>';
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    return Main_createCellVideo(channel_name, id, SLive_ids, valuesArray);
 }
 
 function SLive_CellExists(display_name) {
@@ -222,7 +194,7 @@ function SLive_loadDataSuccessFinish() {
             else {
                 SLive_Status = true;
                 SLive_addFocus();
-                Main_LazyImgStart(SLive_Img, 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(SLive_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
             SLive_loadingData = false;
         } else {
@@ -305,17 +277,16 @@ function SLive_loadDataSuccessReplace(responseText) {
             SLive_blankCellCount--;
             i--;
         } else {
-            SLive_replaceCellEmpty(SLive_blankCellVector[i], stream.channel.name, stream.preview.template,
-                stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                stream.channel.display_name,
+            Main_replaceVideo(Live_blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language));
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+            ], SLive_ids);
             SLive_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            if (index > -1) tempVector.splice(index, 1);
         }
     }
 
@@ -328,24 +299,10 @@ function SLive_loadDataSuccessReplace(responseText) {
     SLive_loadDataSuccessFinish();
 }
 
-function SLive_replaceCellEmpty(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = SLive_Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute(Main_DataAttribute, channel_name);
-    document.getElementById(cell).innerHTML =
-        SLive_CellHtml(row_id, coloumn_id, channel_display_name, stream_title, stream_game, viwers, quality, preview_thumbnail, channel_name);
-}
-
 function SLive_addFocus() {
+    Main_addFocusVideoArray(SLive_cursorY, SLive_cursorX, SLive_ids, Main_SLive, Main_ColoumnsCountVideo, SLive_itemsCount);
 
-    Main_addFocusVideo(SLive_cursorY, SLive_cursorX, SLive_Thumbnail, SLive_ThumbnailDiv, SLive_DispNameDiv, SLive_StreamTitleDiv,
-        SLive_StreamGameDiv, SLive_ViwersDiv, SLive_QualityDiv, Main_SLive, Main_ColoumnsCountVideo, SLive_itemsCount);
-
-    if (SLive_cursorY > 3) Main_LazyImg(SLive_Img, SLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (SLive_cursorY > 3) Main_LazyImg(SLive_ids[1], SLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
     if (((SLive_cursorY + Main_ItemsReloadLimitVideo) > (SLive_itemsCount / Main_ColoumnsCountVideo)) &&
         !SLive_dataEnded && !SLive_loadingMore) {
@@ -356,8 +313,7 @@ function SLive_addFocus() {
 }
 
 function SLive_removeFocus() {
-    Main_removeFocusVideo(SLive_cursorY, SLive_cursorX, SLive_Thumbnail, SLive_ThumbnailDiv, SLive_DispNameDiv, SLive_StreamTitleDiv,
-        SLive_StreamGameDiv, SLive_ViwersDiv, SLive_QualityDiv);
+    Main_removeFocusVideoArray(SLive_cursorY + '_' + SLive_cursorX, SLive_ids);
 }
 
 function SLive_keyClickDelay() {
@@ -391,13 +347,13 @@ function SLive_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX - 1), SLive_Thumbnail)) {
+            if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX - 1), SLive_ids[0])) {
                 SLive_removeFocus();
                 SLive_cursorX--;
                 SLive_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main_ThumbNull((SLive_cursorY - 1), i, SLive_Thumbnail)) {
+                    if (Main_ThumbNull((SLive_cursorY - 1), i, SLive_ids[0])) {
                         SLive_removeFocus();
                         SLive_cursorY--;
                         SLive_cursorX = i;
@@ -408,11 +364,11 @@ function SLive_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX + 1), SLive_Thumbnail)) {
+            if (Main_ThumbNull((SLive_cursorY), (SLive_cursorX + 1), SLive_ids[0])) {
                 SLive_removeFocus();
                 SLive_cursorX++;
                 SLive_addFocus();
-            } else if (Main_ThumbNull((SLive_cursorY + 1), 0, SLive_Thumbnail)) {
+            } else if (Main_ThumbNull((SLive_cursorY + 1), 0, SLive_ids[0])) {
                 SLive_removeFocus();
                 SLive_cursorY++;
                 SLive_cursorX = 0;
@@ -421,7 +377,7 @@ function SLive_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((SLive_cursorY - 1), (SLive_cursorX - i), SLive_Thumbnail)) {
+                if (Main_ThumbNull((SLive_cursorY - 1), (SLive_cursorX - i), SLive_ids[0])) {
                     SLive_removeFocus();
                     SLive_cursorY--;
                     SLive_cursorX = SLive_cursorX - i;
@@ -432,7 +388,7 @@ function SLive_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((SLive_cursorY + 1), (SLive_cursorX - i), SLive_Thumbnail)) {
+                if (Main_ThumbNull((SLive_cursorY + 1), (SLive_cursorX - i), SLive_ids[0])) {
                     SLive_removeFocus();
                     SLive_cursorY++;
                     SLive_cursorX = SLive_cursorX - i;
@@ -449,8 +405,8 @@ function SLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = $('#' + SLive_Cell + SLive_cursorY + '_' + SLive_cursorX).attr(Main_DataAttribute);
-            Play_selectedChannelDisplayname = document.getElementById(SLive_DispNameDiv + SLive_cursorY + '_' + SLive_cursorX).textContent;
+            Play_selectedChannel = document.getElementById(SLive_ids[8] + SLive_cursorY + '_' + SLive_cursorX).getAttribute(Main_DataAttribute);
+            Play_selectedChannelDisplayname = document.getElementById(SLive_ids[3] + SLive_cursorY + '_' + SLive_cursorX).textContent;
             document.body.removeEventListener("keydown", SLive_handleKeyDown);
             Main_openStream();
             break;
