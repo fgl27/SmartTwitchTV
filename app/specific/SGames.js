@@ -10,20 +10,13 @@ var SGames_loadingDataTimeout = 3500;
 var SGames_itemsCountOffset = 0;
 var SGames_LastClickFinish = true;
 var SGames_keyClickDelayTime = 25;
-var SGames_ReplacedataEnded = false;
 var SGames_MaxOffset = 0;
 var SGames_emptyContent = false;
 var SGames_itemsCountCheck = false;
 var SGames_lastData = '';
 
-var SGames_Img = 'img_sgames';
-var SGames_Thumbnail = 'thumbnail_SGames_';
-var SGames_EmptyCell = 'sgamesempty_';
-var SGames_ThumbnailDiv = 'sgame_thumbnail_div_';
-var SGames_DispNameDiv = 'sgame_display_name_';
-var SGames_Cell = 'sgame_cell_';
+var SGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_'];
 //Variable initialization end
-
 
 function SGames_init() {
     Main_Go = Main_sgames;
@@ -34,7 +27,7 @@ function SGames_init() {
     document.body.addEventListener("keydown", SGames_handleKeyDown, false);
     Main_YRst(SGames_cursorY);
     if (SGames_Status) {
-        Main_ScrollHelper(SGames_Thumbnail, SGames_cursorY, SGames_cursorX, Main_sgames,
+        Main_ScrollHelper(SGames_ids[0], SGames_cursorY, SGames_cursorX, Main_sgames,
             Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_CounterDialog(SGames_cursorX, SGames_cursorY, Main_ColoumnsCountGame, SGames_itemsCount);
     } else SGames_StartLoad();
@@ -51,9 +44,8 @@ function SGames_StartLoad() {
     SGames_Status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    $('#stream_table_search_game').empty();
+    Main_empty('stream_table_search_game');
     SGames_itemsCountOffset = 0;
-    SGames_ReplacedataEnded = false;
     SGames_itemsCountCheck = false;
     SGames_MaxOffset = 0;
     SGames_itemsCount = 0;
@@ -124,41 +116,33 @@ function SGames_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountGame;
     if (response_items % Main_ColoumnsCountGame > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, game,
+    var coloumn_id, row_id, row, game,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountGame + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             game = response.games[cursor];
-            cell = SGames_createCell(row_id, coloumn_id, game.name, game.box.template);
-            row.append(cell);
+            row.appendChild(SGames_createCell(row_id, row_id + '_' + coloumn_id, [game.name, game.box.template.replace("{width}x{height}", Main_GameSize), '']));
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountGame; coloumn_id++) {
             if (!SGames_itemsCountCheck) {
                 SGames_itemsCountCheck = true;
                 SGames_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createEmptyCell(SGames_EmptyCell + row_id + '_' + coloumn_id));
+            row.appendChild(Main_createEmptyCell(SGames_ids[6] + row_id + '_' + coloumn_id));
         }
-        $('#stream_table_search_game').append(row);
+        document.getElementById("stream_table_search_game").appendChild(row);
     }
 
     SGames_loadDataSuccessFinish();
 }
 
-function SGames_createCell(row_id, coloumn_id, game_name, preview_thumbnail) {
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_GameSize);
-    if (row_id < 2) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
-
-    return $('<td id="' + SGames_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        '<div id="' + SGames_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + SGames_Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + SGames_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SGames_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div></div>');
+function SGames_createCell(row_id, id, valuesArray) {
+    if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
+    return Main_createCellGame(id, SGames_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
 }
 
 function SGames_loadDataSuccessFinish() {
@@ -171,29 +155,20 @@ function SGames_loadDataSuccessFinish() {
                 SGames_addFocus();
             }
         }
-        Main_LazyImgStart(SGames_Img, 7, IMG_404_GAME, Main_ColoumnsCountGame);
+        Main_LazyImgStart(SGames_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
         SGames_loadingData = false;
     });
 }
 
 function SGames_addFocus() {
-    document.getElementById(SGames_Thumbnail + SGames_cursorY + '_' + SGames_cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(SGames_ThumbnailDiv + SGames_cursorY + '_' + SGames_cursorX).classList.add('stream_text_focused');
-    document.getElementById(SGames_DispNameDiv + SGames_cursorY + '_' + SGames_cursorX).classList.add('stream_info_focused');
-    window.setTimeout(function() {
-        Main_ScrollHelper(SGames_Thumbnail, SGames_cursorY, SGames_cursorX, Main_sgames, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
-    }, 10);
-
-    Main_CounterDialog(SGames_cursorX, SGames_cursorY, Main_ColoumnsCountGame, SGames_itemsCount);
-
-    if (SGames_cursorY > 2) Main_LazyImg(SGames_Img, SGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
+    Main_addFocusGame(SGames_cursorY, SGames_cursorX, SGames_ids, Main_sgames,
+        Main_ColoumnsCountGame, Games_itemsCount);
+    if (SGames_cursorY > 2) Main_LazyImg(SGames_ids[1], SGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
 }
 
 function SGames_removeFocus() {
-    document.getElementById(SGames_Thumbnail + SGames_cursorY + '_' + SGames_cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(SGames_ThumbnailDiv + SGames_cursorY + '_' + SGames_cursorX).classList.remove('stream_text_focused');
-    document.getElementById(SGames_DispNameDiv + SGames_cursorY + '_' + SGames_cursorX).classList.remove('stream_info_focused');
+    Main_removeFocusGame(SGames_cursorY, SGames_cursorX, SGames_ids);
 }
 
 function SGames_keyClickDelay() {
@@ -227,13 +202,13 @@ function SGames_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX - 1), SGames_Thumbnail)) {
+            if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX - 1), SGames_ids[0])) {
                 SGames_removeFocus();
                 SGames_cursorX--;
                 SGames_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountGame - 1); i > -1; i--) {
-                    if (Main_ThumbNull((SGames_cursorY - 1), i, SGames_Thumbnail)) {
+                    if (Main_ThumbNull((SGames_cursorY - 1), i, SGames_ids[0])) {
                         SGames_removeFocus();
                         SGames_cursorY--;
                         SGames_cursorX = i;
@@ -244,11 +219,11 @@ function SGames_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX + 1), SGames_Thumbnail)) {
+            if (Main_ThumbNull((SGames_cursorY), (SGames_cursorX + 1), SGames_ids[0])) {
                 SGames_removeFocus();
                 SGames_cursorX++;
                 SGames_addFocus();
-            } else if (Main_ThumbNull((SGames_cursorY + 1), 0, SGames_Thumbnail)) {
+            } else if (Main_ThumbNull((SGames_cursorY + 1), 0, SGames_ids[0])) {
                 SGames_removeFocus();
                 SGames_cursorY++;
                 SGames_cursorX = 0;
@@ -257,7 +232,7 @@ function SGames_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((SGames_cursorY - 1), (SGames_cursorX - i), SGames_Thumbnail)) {
+                if (Main_ThumbNull((SGames_cursorY - 1), (SGames_cursorX - i), SGames_ids[0])) {
                     SGames_removeFocus();
                     SGames_cursorY--;
                     SGames_cursorX = SGames_cursorX - i;
@@ -268,7 +243,7 @@ function SGames_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((SGames_cursorY + 1), (SGames_cursorX - i), SGames_Thumbnail)) {
+                if (Main_ThumbNull((SGames_cursorY + 1), (SGames_cursorX - i), SGames_ids[0])) {
                     SGames_removeFocus();
                     SGames_cursorY++;
                     SGames_cursorX = SGames_cursorX - i;
@@ -285,7 +260,7 @@ function SGames_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_gameSelected = $('#' + SGames_Cell + SGames_cursorY + '_' + SGames_cursorX).attr(Main_DataAttribute);
+            Main_gameSelected = document.getElementById(SGames_ids[5] + SGames_cursorY + '_' + SGames_cursorX).getAttribute(Main_DataAttribute);
             document.body.removeEventListener("keydown", SGames_handleKeyDown);
             Main_BeforeAgame = Main_Go;
             Main_Go = Main_aGame;
