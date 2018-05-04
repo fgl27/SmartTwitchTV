@@ -546,7 +546,7 @@ function Main_checkVersion() {
         value = 0;
 
     try {
-        Appversion = (tizen.application.getAppInfo().version);
+        Appversion = tizen.application.getAppInfo().version;
         // Retrieving Platform Information https://developer.samsung.com/tv/develop/guides/fundamentals/retrieving-platform-information
         TizenVersion = tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version");
         fw = webapis.productinfo.getFirmware();
