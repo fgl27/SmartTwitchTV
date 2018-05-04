@@ -141,7 +141,7 @@ function SGames_loadDataSuccess(responseText) {
                 SGames_itemsCountCheck = true;
                 SGames_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, SGames_EmptyCell));
+            row.append(Main_createEmptyCell(SGames_EmptyCell + row_id + '_' + coloumn_id));
         }
         $('#stream_table_search_game').append(row);
     }

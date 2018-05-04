@@ -646,11 +646,6 @@ function Main_PreLoadAImage(link) {
     Main_newImg.src = link;
 }
 
-function Main_createCellEmpty(row_id, coloumn_id, cell) {
-    // id here can't be equal between screen
-    return $('<td id="' + cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname=""></td>').html('');
-}
-
 function Main_createEmptyCell(id) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', id);

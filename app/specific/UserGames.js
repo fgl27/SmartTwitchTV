@@ -176,7 +176,7 @@ function UserGames_loadDataSuccess(responseText) {
                 UserGames_itemsCountCheck = true;
                 UserGames_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, UserGames_EmptyCell));
+            row.append(Main_createEmptyCell(UserGames_EmptyCell + row_id + '_' + coloumn_id));
             UserGames_blankCellVector.push(UserGames_EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_user_games').append(row);
