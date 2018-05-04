@@ -660,7 +660,7 @@ function Play_hidePanel() {
     document.getElementById('scene_channel_panel').classList.add('hide');
     Play_quality = Play_qualityPlaying;
     Play_sizePanelOffset = 0;
-    if (Play_ChatPositions === 1) Play_ChatPosition();
+    if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
 }
 
 function Play_showPanel() {
@@ -675,7 +675,7 @@ function Play_showPanel() {
     document.getElementById('scene_channel_panel').classList.remove('hide');
     Play_setHidePanel();
     Play_sizePanelOffset = -4;
-    if (Play_ChatPositions === 1) Play_ChatPosition();
+    if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
 }
 
 function Play_clearHidePanel() {
@@ -787,17 +787,18 @@ function Play_ChatBackgroundChange(showDialog) {
 function Play_ChatPosition() {
     //default
     var left = "75.3%",
-        top = (51 + Play_sizeOffset + Play_sizePanelOffset) + '.5%';
+        top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%';
 
-    if (!Play_ChatPositions) Play_ChatPositions = 6;
+    if (!Play_ChatPositions) Play_ChatPositions = 8;
 
-    if (Play_ChatPositions < 7) {
-        if (Play_ChatPositions > 1) top = "0.5%"; // top/lefth
-        if (Play_ChatPositions > 2) left = "38.3%"; // top/midle
-        if (Play_ChatPositions > 3) left = "0%"; // top/right
-
-        if (Play_ChatPositions > 4) top = (51 + Play_sizeOffset) + '.5%'; // bottom/lefth
-        if (Play_ChatPositions > 5) left = "38.3%"; // bottom/midle
+    if (Play_ChatPositions < 9) {
+        if (Play_ChatPositions > 1) top = "33%"; // center/lefth
+        if (Play_ChatPositions > 2) top = "0%"; // top/lefth
+        if (Play_ChatPositions > 3) left = "38.3%"; // top/midle
+        if (Play_ChatPositions > 4) left = "0%"; // top/right
+        if (Play_ChatPositions > 5) top = "33%"; // center/right
+        if (Play_ChatPositions > 6) top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%'; // bottom/lefth
+        if (Play_ChatPositions > 7) left = "38.3%"; // bottom/midle
     } else Play_ChatPositions = 1;
 
     document.getElementById("chat_container").style.top = top;
