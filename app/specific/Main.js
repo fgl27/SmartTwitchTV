@@ -684,6 +684,33 @@ function Main_VideoHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
+function Main_createCellGame(id, idArray, valuesArray) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', idArray[5] + id);
+    Main_td.setAttribute('data-channelname', valuesArray[0]);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = Main_GameHtml(id, idArray, valuesArray);
+
+    return Main_td;
+}
+
+function Main_replaceGame(id, valuesArray, ids) {
+    var splitedId = id.split(ids[6])[1];
+    id = document.getElementById(id);
+    id.setAttribute('data-channelname', valuesArray[0]);
+    id.innerHTML = Main_GameHtml(splitedId, ids, valuesArray);
+    id.setAttribute('id', ids[5] + splitedId);
+}
+
+function Main_GameHtml(id, idArray, valuesArray) {
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game" >' +
+        '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[1] + '"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text">' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div>' +
+        '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
+        valuesArray[2] + '</div></div>';
+}
+
 function Main_CheckMp4Html5() {
     var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
     if (!!document.createElement('video').canPlayType) {
@@ -773,9 +800,9 @@ function Main_addFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv
     document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main_classInfo);
     document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main_classInfo);
 
-    window.setTimeout(function() {
+    Main_ready(function() {
         Main_ScrollHelper(Thumbnail, y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
-    }, 10);
+    });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
@@ -785,6 +812,27 @@ function Main_removeFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, Viwers
     document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main_classText);
     document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main_classInfo);
     document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main_classInfo);
+}
+
+function Main_addFocusGameArray(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+    var id = y + '_' + x;
+    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.add(Main_classText);
+    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
+    document.getElementById(idArray[4] + id).classList.add(Main_classInfo);
+
+    Main_ready(function() {
+        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+    });
+
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
+
+function Main_removeFocusGameArray(id, idArray) {
+    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
+    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
+    document.getElementById(idArray[4] + id).classList.remove(Main_classInfo);
 }
 
 //TODO split Main_ScrollHelper in Main_ScrollHelperVideo/game/channel/etc
