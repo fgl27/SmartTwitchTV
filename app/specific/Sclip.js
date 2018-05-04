@@ -17,7 +17,7 @@ var Sclip_MaxOffset = 0;
 var Sclip_DurationSeconds = 0;
 var Sclip_emptyContent = false;
 
-var Sclip_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_title', 'sc_createdon', 'sc_game', 'sc_viwers', 'sc_duration', 'sc_cell', 'scempty_'];
+var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_'];
 var Sclip_status = false;
 var Sclip_cursor = null;
 var Sclip_periodNumber = 1;
