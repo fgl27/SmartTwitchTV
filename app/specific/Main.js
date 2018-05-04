@@ -802,27 +802,7 @@ function Main_removeFocusVideoArray(id, idArray) {
     document.getElementById(idArray[7] + id).classList.remove(Main_classInfo);
 }
 
-function Main_addFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv, screen, ColoumnsCount, itemsCount) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.add(Main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.add(Main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.add(Main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main_classInfo);
-
-    Main_ready(function() {
-        Main_ScrollHelper(Thumbnail, y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
-    });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-}
-
-function Main_removeFocusGame(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, ViwersDiv) {
-    document.getElementById(Thumbnail + y + '_' + x).classList.remove(Main_classThumb);
-    document.getElementById(ThumbnailDiv + y + '_' + x).classList.remove(Main_classText);
-    document.getElementById(DispNameDiv + y + '_' + x).classList.remove(Main_classInfo);
-    document.getElementById(ViwersDiv + y + '_' + x).classList.remove(Main_classInfo);
-}
-
-function Main_addFocusGameArray(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
     document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
     document.getElementById(idArray[2] + id).classList.add(Main_classText);
@@ -836,7 +816,7 @@ function Main_addFocusGameArray(y, x, idArray, screen, ColoumnsCount, itemsCount
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
-function Main_removeFocusGameArray(id, idArray) {
+function Main_removeFocusGame(id, idArray) {
     document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
     document.getElementById(idArray[2] + id).classList.remove(Main_classText);
     document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);

@@ -303,7 +303,7 @@ function Games_loadDataSuccessReplace(responseText) {
 
 function Games_addFocus() {
 
-    Main_addFocusGameArray(Games_cursorY, Games_cursorX, Game_ids, Main_games,
+    Main_addFocusGame(Games_cursorY, Games_cursorX, Game_ids, Main_games,
         Main_ColoumnsCountGame, Games_itemsCount);
 
     if (Games_cursorY > 2) Main_LazyImg(Game_ids[1], Games_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
@@ -317,7 +317,7 @@ function Games_addFocus() {
 }
 
 function Games_removeFocus() {
-    Main_removeFocusGameArray(Games_cursorY + '_' + Games_cursorX, Game_ids);
+    Main_removeFocusGame(Games_cursorY + '_' + Games_cursorX, Game_ids);
 }
 
 function Games_keyClickDelay() {

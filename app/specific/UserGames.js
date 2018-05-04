@@ -18,17 +18,11 @@ var UserGames_MaxOffset = 0;
 var UserGames_emptyContent = false;
 var UserGames_itemsCountCheck = false;
 var UserGames_live = true;
-
-var UserGames_Img = 'img_glive';
-var UserGames_Thumbnail = 'thumbnail_glive_';
-var UserGames_EmptyCell = 'gliveempty_';
-var UserGames_ThumbnailDiv = 'glive_thumbnail_div_';
-var UserGames_DispNameDiv = 'glive_display_name_';
-var UserGames_ViwersDiv = 'glive_viwers_';
-var UserGames_Cell = 'glive_cell_';
 var UserGames_Status = false;
 var UserGames_OldUserName = '';
 var UserGames_loadingMore = false;
+
+var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'ug_viwers', 'ug_cell', 'ugempty_'];
 //Variable initialization end
 
 function UserGames_init() {
@@ -40,7 +34,7 @@ function UserGames_init() {
     if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
     if (UserGames_Status) {
         document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
-        Main_ScrollHelper(UserGames_Thumbnail, UserGames_cursorY, UserGames_cursorX, Main_usergames,
+        Main_ScrollHelper(UserGames_ids[0], UserGames_cursorY, UserGames_cursorX, Main_usergames,
             Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_CounterDialog(UserGames_cursorX, UserGames_cursorY, Main_ColoumnsCountGame, UserGames_itemsCount);
     } else UserGames_StartLoad();
@@ -60,7 +54,7 @@ function UserGames_StartLoad() {
     Main_showLoadDialog();
     UserGames_OldUserName = Main_UserName;
     UserGames_Status = false;
-    $('#stream_table_user_games').empty();
+    Main_empty('stream_table_user_games');
     UserGames_loadingMore = false;
     UserGames_blankCellCount = 0;
     UserGames_itemsCountOffset = 0;
@@ -152,23 +146,18 @@ function UserGames_loadDataSuccess(responseText) {
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountGame + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             follows = response.follows[cursor];
             if (UserGames_live) {
                 if (UserGames_CellExists(follows.game.name)) coloumn_id--;
-                else {
-                    cell = UserGames_createCell(row_id, coloumn_id, follows.game.name, follows.game.box.template,
-                        Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viewers) + STR_VIEWER);
-                    row.append(cell);
-                }
+                else row.appendChild(UserGames_createCell(row_id, row_id + '_' + coloumn_id, [follows.game.name, follows.game.box.template.replace("{width}x{height}", Main_GameSize),
+                    Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viewers) + STR_VIEWER
+                ]));
             } else {
                 if (UserGames_CellExists(follows.name)) coloumn_id--;
-                else {
-                    cell = UserGames_createCell(row_id, coloumn_id, follows.name, follows.box.template, '');
-                    row.append(cell);
-                }
+                else row.appendChild(UserGames_createCell(row_id, row_id + '_' + coloumn_id, [follows.name, follows.box.template.replace("{width}x{height}", Main_GameSize), '']));
             }
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountGame; coloumn_id++) {
@@ -176,32 +165,19 @@ function UserGames_loadDataSuccess(responseText) {
                 UserGames_itemsCountCheck = true;
                 UserGames_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createEmptyCell(UserGames_EmptyCell + row_id + '_' + coloumn_id));
-            UserGames_blankCellVector.push(UserGames_EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(UserGames_ids[6] + row_id + '_' + coloumn_id));
+            UserGames_blankCellVector.push(UserGames_ids[6] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_user_games').append(row);
+        document.getElementById("stream_table_user_games").appendChild(row);
     }
 
     UserGames_loadDataSuccessFinish();
 }
 
-function UserGames_createCell(row_id, coloumn_id, game_name, preview_thumbnail, viewers) {
-    return $('<td id="' + UserGames_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        UserGames_CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers));
-}
-
-function UserGames_CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers) {
-
-    UserGames_nameMatrix.push(game_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_GameSize);
-    if (row_id < 2) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
-
-    return '<div id="' + UserGames_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + UserGames_Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + UserGames_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + UserGames_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-        '<div id="' + UserGames_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%;">' + viewers + '</div></div>';
+function UserGames_createCell(row_id, id, valuesArray) {
+    UserGames_nameMatrix.push(valuesArray[0]);
+    if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
+    return Main_createCellGame(id, UserGames_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
 }
 
 function UserGames_CellExists(display_name) {
@@ -222,7 +198,7 @@ function UserGames_loadDataSuccessFinish() {
             else {
                 UserGames_Status = true;
                 UserGames_addFocus();
-                Main_LazyImgStart(UserGames_Img, 7, IMG_404_GAME, Main_ColoumnsCountGame);
+                Main_LazyImgStart(UserGames_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
             UserGames_loadingData = false;
         } else {
@@ -306,21 +282,23 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
-                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], follows.game.name, follows.game.box.template,
-                    Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viwers) + STR_VIEWER);
+                Main_replaceGame(UserGames_blankCellVector[i], [follows.game.name,
+                    follows.game.box.template.replace("{width}x{height}", Main_GameSize),
+                    Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viewers) + STR_VIEWER
+                ], UserGames_ids);
                 UserGames_blankCellCount--;
 
                 index = tempVector.indexOf(tempVector[i]);
-                if (index > -1) {
-                    tempVector.splice(index, 1);
-                }
+                if (index > -1) tempVector.splice(index, 1);
             }
         } else {
             if (UserGames_CellExists(follows.name)) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
-                UserGames_replaceCellEmpty(UserGames_blankCellVector[i], follows.name, follows.box.template, '');
+                Main_replaceGame(UserGames_blankCellVector[i], [follows.name,
+                    follows.box.template.replace("{width}x{height}", Main_GameSize), ''
+                ], UserGames_ids);
                 UserGames_blankCellCount--;
 
                 index = tempVector.indexOf(tempVector[i]);
@@ -340,23 +318,11 @@ function UserGames_loadDataSuccessReplace(responseText) {
     UserGames_loadDataSuccessFinish();
 }
 
-function UserGames_replaceCellEmpty(id, game_name, preview_thumbnail, viewers) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = UserGames_Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute(Main_DataAttribute, game_name);
-    document.getElementById(cell).innerHTML = UserGames_CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers);
-}
-
 function UserGames_addFocus() {
 
-    Main_addFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_Thumbnail, UserGames_ThumbnailDiv, UserGames_DispNameDiv,
-        UserGames_ViwersDiv, Main_usergames, Main_ColoumnsCountGame, UserGames_itemsCount);
+    Main_addFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_ids, Main_usergames, Main_ColoumnsCountGame, UserGames_itemsCount);
 
-    if (UserGames_cursorY > 2) Main_LazyImg(UserGames_Img, UserGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
+    if (UserGames_cursorY > 2) Main_LazyImg(UserGames_ids[1], UserGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((UserGames_cursorY + Main_ItemsReloadLimitGame) > (UserGames_itemsCount / Main_ColoumnsCountGame)) &&
         !UserGames_dataEnded && !UserGames_loadingMore) {
@@ -367,7 +333,7 @@ function UserGames_addFocus() {
 }
 
 function UserGames_removeFocus() {
-    Main_removeFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_Thumbnail, UserGames_ThumbnailDiv, UserGames_DispNameDiv, UserGames_ViwersDiv);
+    Main_removeFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_ids);
 }
 
 function UserGames_keyClickDelay() {
@@ -399,13 +365,13 @@ function UserGames_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX - 1), UserGames_Thumbnail)) {
+            if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX - 1), UserGames_ids[0])) {
                 UserGames_removeFocus();
                 UserGames_cursorX--;
                 UserGames_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountGame - 1); i > -1; i--) {
-                    if (Main_ThumbNull((UserGames_cursorY - 1), i, UserGames_Thumbnail)) {
+                    if (Main_ThumbNull((UserGames_cursorY - 1), i, UserGames_ids[0])) {
                         UserGames_removeFocus();
                         UserGames_cursorY--;
                         UserGames_cursorX = i;
@@ -416,11 +382,11 @@ function UserGames_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX + 1), UserGames_Thumbnail)) {
+            if (Main_ThumbNull((UserGames_cursorY), (UserGames_cursorX + 1), UserGames_ids[0])) {
                 UserGames_removeFocus();
                 UserGames_cursorX++;
                 UserGames_addFocus();
-            } else if (Main_ThumbNull((UserGames_cursorY + 1), 0, UserGames_Thumbnail)) {
+            } else if (Main_ThumbNull((UserGames_cursorY + 1), 0, UserGames_ids[0])) {
                 UserGames_removeFocus();
                 UserGames_cursorY++;
                 UserGames_cursorX = 0;
@@ -429,7 +395,7 @@ function UserGames_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((UserGames_cursorY - 1), (UserGames_cursorX - i), UserGames_Thumbnail)) {
+                if (Main_ThumbNull((UserGames_cursorY - 1), (UserGames_cursorX - i), UserGames_ids[0])) {
                     UserGames_removeFocus();
                     UserGames_cursorY--;
                     UserGames_cursorX = UserGames_cursorX - i;
@@ -440,7 +406,7 @@ function UserGames_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((UserGames_cursorY + 1), (UserGames_cursorX - i), UserGames_Thumbnail)) {
+                if (Main_ThumbNull((UserGames_cursorY + 1), (UserGames_cursorX - i), UserGames_ids[0])) {
                     UserGames_removeFocus();
                     UserGames_cursorY++;
                     UserGames_cursorX = UserGames_cursorX - i;
@@ -474,7 +440,7 @@ function UserGames_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_gameSelected = $('#' + UserGames_Cell + UserGames_cursorY + '_' + UserGames_cursorX).attr(Main_DataAttribute);
+            Main_gameSelected = document.getElementById(UserGames_ids[5] + UserGames_cursorY + '_' + UserGames_cursorX).getAttribute(Main_DataAttribute);
             Main_BeforeAgame = Main_usergames;
             Main_BeforeAgameisSet = true;
             Main_Go = Main_aGame;
