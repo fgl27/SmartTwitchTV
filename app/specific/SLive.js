@@ -171,7 +171,7 @@ function SLive_loadDataSuccess(responseText) {
                 SLive_itemsCountCheck = true;
                 SLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, SLive_EmptyCell));
+            row.append(Main_createEmptyCell(SLive_EmptyCell + row_id + '_' + coloumn_id));
             SLive_blankCellVector.push(SLive_EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_search_live').append(row);

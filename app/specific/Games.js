@@ -173,7 +173,7 @@ function Games_loadDataSuccess(responseText) {
                 Games_itemsCountCheck = true;
                 Games_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, Games_EmptyCell));
+            row.append(Main_createEmptyCell(Games_EmptyCell + row_id + '_' + coloumn_id));
             Games_blankCellVector.push(Games_EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_games').append(row);

@@ -169,7 +169,7 @@ function SChannels_loadDataSuccess(responseText) {
                 SChannels_itemsCountCheck = true;
                 SChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.append(Main_createCellEmpty(row_id, coloumn_id, SChannels_EmptyCell));
+            row.append(Main_createEmptyCell(SChannels_EmptyCell + row_id + '_' + coloumn_id));
             SChannels_blankCellVector.push(SChannels_EmptyCell + row_id + '_' + coloumn_id);
         }
         $('#stream_table_search_channel').append(row);
