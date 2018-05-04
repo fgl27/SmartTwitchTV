@@ -6,7 +6,7 @@ This is an application for Samsung SmartTV's designed to watch Twitch.tv broadca
 The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run Tizen version supported by the application.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for all 2015 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, once the proper support is available a new application will be added on the release page (https://github.com/bhb27/smarttv-twitch/releases/) informing the support.
+Full support for all 2015 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, but as I don't have a 2015 TV model I can't test, if you wanna this app to support yours TV post that you wanna to help on the open issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/bhb27/smarttv-twitch/issues/12)
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
@@ -95,7 +95,7 @@ Installation guide **Tizen Studio** (tested on Linux ubuntu 18.04 and windows 10
 * Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
 * Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
 * Wait for it to load
-* **[Download and extract the release_4_0_0.zip file Click here, this is the application recipe file](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0/release_4_0_0.zip)**
+* **[Download and extract the release_4.0.0_V2.zip file Click here, this is the application recipe file](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0_V2/release_4.0.0_V2.zip)**
 * Back on **Tizen Studio**, Left click on the folder symbol with **BasicProject-tv-samsung-X.0** on the left corner under project explorer just to select the folder(**BasicProject-tv-samsung-X.0** is the default name give when you created a project on the past step, if you change the name click on that)
 * Top menu > **File** > Import > General > File System ... next > Browser to find the extracted folder from the release_X_X_X.zip ... > click Select All, mark Overwrite existing ... > Finish
 * Wait for it to load
