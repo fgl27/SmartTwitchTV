@@ -9,20 +9,15 @@ var UserChannels_loadingDataTryMax = 10;
 var UserChannels_loadingDataTimeout = 3500;
 var UserChannels_LastClickFinish = true;
 var UserChannels_keyClickDelayTime = 25;
-var UserChannels_UserChannelsList = [];
+var UserChannels_List = [];
 var UserChannels_loadChannelOffsset = 0;
 var UserChannels_emptyContent = false;
-
-var UserChannels_Img = 'img_uchannel';
-var UserChannels_Thumbnail = 'thumbnail_uchannel_';
-var UserChannels_EmptyCell = 'uchannelempty_';
-var UserChannels_ThumbnailDiv = 'uchannel_thumbnail_div_';
-var UserChannels_DispNameDiv = 'uchannel_display_name_';
-var UserChannels_Cell = 'uchannel_cell_';
 var UserChannels_Status = false;
 var UserChannels_OldUserName = '';
 var UserChannels_itemsCountCheck = false;
 var UserChannels_loadingMore = false;
+
+var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname', 'uc_cell', 'ucempty_'];
 //Variable initialization end
 
 function UserChannels_init() {
@@ -34,7 +29,7 @@ function UserChannels_init() {
     Main_YRst(UserChannels_cursorY);
     if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
     if (UserChannels_Status) {
-        Main_ScrollHelper(UserChannels_Thumbnail, UserChannels_cursorY, UserChannels_cursorX, Main_UserChannels,
+        Main_ScrollHelper(UserChannels_ids[0], UserChannels_cursorY, UserChannels_cursorX, Main_UserChannels,
             Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
     } else UserChannels_StartLoad();
@@ -61,7 +56,7 @@ function UserChannels_StartLoad() {
     UserChannels_dataEnded = false;
     UserChannels_itemsCountCheck = false;
     Main_CounterDialogRst();
-    UserChannels_UserChannelsList = [];
+    UserChannels_List = [];
     UserChannels_loadDataPrepare();
     UserChannels_loadChannels();
 }
@@ -124,14 +119,14 @@ function UserChannels_loadChannelLive(responseText) {
         for (x; x < response_items; x++) {
             ChannelTemp = response[x].channel.display_name + ',' + response[x].channel._id + ',' + response[x].channel.name +
                 ',' + response[x].channel.logo + ',' + response[x].channel.views + ',' + response[x].channel.followers;
-            if (UserChannels_UserChannelsList.indexOf(ChannelTemp) === -1) UserChannels_UserChannelsList.push(ChannelTemp);
+            if (UserChannels_List.indexOf(ChannelTemp) === -1) UserChannels_List.push(ChannelTemp);
         }
 
         UserChannels_loadChannelOffsset += response_items;
         UserChannels_loadDataPrepare();
         UserChannels_loadChannels();
     } else { // end
-        UserChannels_UserChannelsList.sort(function(a, b) {
+        UserChannels_List.sort(function(a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
         });
         UserChannels_loadDataSuccess();
@@ -141,7 +136,7 @@ function UserChannels_loadChannelLive(responseText) {
 function UserChannels_loadDataSuccess() {
     var response_items = Main_ItemsLimitChannel;
     var offset_itemsCount = UserChannels_itemsCount;
-    var rest = UserChannels_UserChannelsList.length - offset_itemsCount;
+    var rest = UserChannels_List.length - offset_itemsCount;
     if (rest < response_items) response_items = rest;
 
     if (response_items < Main_ItemsLimitChannel) UserChannels_dataEnded = true;
@@ -153,50 +148,32 @@ function UserChannels_loadDataSuccess() {
     var response_rows = response_items / Main_ColoumnsCountChannel;
     if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
-    var coloumn_id, row_id, row, channel,
+    var coloumn_id, row_id, row,
         cursor = offset_itemsCount;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
         row = document.createElement('tr');
 
-        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < UserChannels_UserChannelsList.length; coloumn_id++, cursor++) {
-            channel = UserChannels_UserChannelsList[cursor].split(",");
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < UserChannels_List.length; coloumn_id++, cursor++) {
             row.appendChild(UserChannels_createCell(row_id, row_id + '_' + coloumn_id,
-                channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]));
+                UserChannels_List[cursor].split(",")));
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
             if (UserChannels_dataEnded && !UserChannels_itemsCountCheck) {
                 UserChannels_itemsCountCheck = true;
                 UserChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.appendChild(Main_createEmptyCell(UserChannels_EmptyCell + row_id + '_' + coloumn_id));
+            row.appendChild(Main_createEmptyCell(UserChannels_ids[5] + row_id + '_' + coloumn_id));
         }
         document.getElementById('stream_table_user_channels').appendChild(row);
     }
     UserChannels_loadDataSuccessFinish();
 }
 
-function UserChannels_createCell(row_id, id, channel_display_name, _id, channel_name, preview_thumbnail, views, followers) {
-
-    if (row_id < 4) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 4 rows
-
-    Main_td = document.createElement('td');
-
-    Main_td.setAttribute('id', UserChannels_Cell + id);
-    Main_td.setAttribute(Main_DataAttribute, channel_name);
-    Main_td.setAttribute('data-id', _id);
-    Main_td.setAttribute('data-views', views);
-    Main_td.setAttribute('data-followers', followers);
-
-    Main_td.className = 'stream_cell';
-
-    Main_td.innerHTML = '<div id="' + UserChannels_Thumbnail + id + '" class="stream_thumbnail_channel" ><img id="' + UserChannels_Img +
-        id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + UserChannels_ThumbnailDiv + id + '" class="stream_text">' +
-        '<div id="' + UserChannels_DispNameDiv + id + '" class="stream_channel">' + channel_display_name + '</div></div>';
-
-    return Main_td;
+function UserChannels_createCell(row_id, id, valuesArray) {
+    if (row_id < 4) Main_PreLoadAImage(valuesArray[3]); //try to pre cache first 4 rows
+    return Main_createCellChannel(id, UserChannels_ids, valuesArray);
 }
 
 function UserChannels_loadDataSuccessFinish() {
@@ -207,7 +184,7 @@ function UserChannels_loadDataSuccessFinish() {
             else {
                 UserChannels_Status = true;
                 UserChannels_addFocus();
-                Main_LazyImgStart(UserChannels_Img, 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
+                Main_LazyImgStart(UserChannels_ids[1], 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
             UserChannels_loadingData = false;
         } else {
@@ -218,16 +195,9 @@ function UserChannels_loadDataSuccessFinish() {
 }
 
 function UserChannels_addFocus() {
-    document.getElementById(UserChannels_Thumbnail + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(UserChannels_ThumbnailDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_text_focused');
-    document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.add('stream_info_focused');
-    window.setTimeout(function() {
-        Main_ScrollHelper(UserChannels_Thumbnail, UserChannels_cursorY, UserChannels_cursorX, Main_UserChannels, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
-    }, 10);
+    Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_UserChannels, Main_ColoumnsCountChannel, UserChannels_itemsCount);
 
-    Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
-
-    if (UserChannels_cursorY > 3) Main_LazyImg(UserChannels_Img, UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
+    if (UserChannels_cursorY > 3) Main_LazyImg(UserChannels_ids[1], UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
 
     if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
         !UserChannels_dataEnded && !UserChannels_loadingMore) {
@@ -238,9 +208,7 @@ function UserChannels_addFocus() {
 }
 
 function UserChannels_removeFocus() {
-    document.getElementById(UserChannels_Thumbnail + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(UserChannels_ThumbnailDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_text_focused');
-    document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY + '_' + UserChannels_cursorX).classList.remove('stream_info_focused');
+    Main_removeFocusChannel(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
 }
 
 function UserChannels_keyClickDelay() {
@@ -269,13 +237,13 @@ function UserChannels_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX - 1), UserChannels_Thumbnail)) {
+            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX - 1), UserChannels_ids[0])) {
                 UserChannels_removeFocus();
                 UserChannels_cursorX--;
                 UserChannels_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountChannel - 1); i > -1; i--) {
-                    if (Main_ThumbNull((UserChannels_cursorY - 1), i, UserChannels_Thumbnail)) {
+                    if (Main_ThumbNull((UserChannels_cursorY - 1), i, UserChannels_ids[0])) {
                         UserChannels_removeFocus();
                         UserChannels_cursorY--;
                         UserChannels_cursorX = i;
@@ -286,11 +254,11 @@ function UserChannels_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX + 1), UserChannels_Thumbnail)) {
+            if (Main_ThumbNull((UserChannels_cursorY), (UserChannels_cursorX + 1), UserChannels_ids[0])) {
                 UserChannels_removeFocus();
                 UserChannels_cursorX++;
                 UserChannels_addFocus();
-            } else if (Main_ThumbNull((UserChannels_cursorY + 1), 0, UserChannels_Thumbnail)) {
+            } else if (Main_ThumbNull((UserChannels_cursorY + 1), 0, UserChannels_ids[0])) {
                 UserChannels_removeFocus();
                 UserChannels_cursorY++;
                 UserChannels_cursorX = 0;
@@ -299,7 +267,7 @@ function UserChannels_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
+                if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_ids[0])) {
                     UserChannels_removeFocus();
                     UserChannels_cursorY--;
                     UserChannels_cursorX = UserChannels_cursorX - i;
@@ -310,7 +278,7 @@ function UserChannels_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((UserChannels_cursorY + 1), (UserChannels_cursorX - i), UserChannels_Thumbnail)) {
+                if (Main_ThumbNull((UserChannels_cursorY + 1), (UserChannels_cursorX - i), UserChannels_ids[0])) {
                     UserChannels_removeFocus();
                     UserChannels_cursorY++;
                     UserChannels_cursorX = UserChannels_cursorX - i;
@@ -338,13 +306,13 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!UserChannels_loadingMore) {
-                Main_selectedChannel = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
-                Main_selectedChannel_id = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
-                Main_selectedChannelViews = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-views');
-                Main_selectedChannelFallower = document.getElementById(UserChannels_Cell + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-followers');
-                Main_selectedChannelDisplayname = document.getElementById(UserChannels_DispNameDiv + UserChannels_cursorY +
+                Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
+                Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
+                Main_selectedChannelViews = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-views');
+                Main_selectedChannelFallower = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-followers');
+                Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
                     '_' + UserChannels_cursorX).textContent;
-                Main_selectedChannelLogo = document.getElementById(UserChannels_Img + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
+                Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
                 document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
                 Main_BeforeChannel = Main_UserChannels;
                 Main_Go = Main_SChannelContent;
