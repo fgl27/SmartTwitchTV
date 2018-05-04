@@ -42,12 +42,13 @@ var Main_selectedChannel_id = '';
 var Main_OldgameSelected = null;
 var Main_SmartHubId = null;
 var Main_UserName = '';
-var Main_ScrollbarBlack = true;
+var Main_ScrollbarIsHide = true;
 var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
 var Main_td = '';
 var Main_nextScrollPositon = '';
 var Main_IsDayFirst = false;
+var Main_ScrollbarElement;
 
 var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
@@ -198,6 +199,7 @@ function Main_initWindows() {
     document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
+    Main_ScrollbarElement = document.getElementById("scrollbar");
 
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
     Main_ready(function() {
@@ -284,34 +286,35 @@ function Main_CounterDialog(x, y, coloumns, total) {
 }
 
 function Main_Scrollbar(y, coloumns, total) {
-    // min 100 max 1000 or the 900 + 100 below
+    //if show the scroll, else reset it's position and hide by setting it's color equal to parent background
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
-        var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
-        var currentPositon = document.getElementById('scrollbar').offsetTop;
 
-        //If position are different it means previously animation did't ended, stop it and force set the value
+        // min 100 max 1000 or the 900 + 100 below
+        var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
+        var currentPositon = Main_ScrollbarElement.offsetTop;
+
+        //If position are different it means previously animation didn't ended yet, stop it and force set the value
         if (currentPositon !== Main_nextScrollPositon) {
-            $('#scrollbar').stop();
-            document.getElementById("scrollbar").style.top = Main_nextScrollPositon + "px";
+            Main_ScrollbarElement.style.transition = 'none';
+            Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
+            Main_ScrollbarElement.style.transition = '';
         }
         Main_nextScrollPositon = nextPositon;
 
-        $('#scrollbar').animate({
-            top: nextPositon + 'px'
-        }, 400);
+        Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
 
-        if (Main_ScrollbarBlack) {
-            Main_ScrollbarBlack = false;
-            window.setTimeout(function() {
-                document.getElementById("scrollbar").style.backgroundColor = "#777777";
-            }, (nextPositon === 100 ? 0 : 800));
+        if (Main_ScrollbarIsHide) {
+            Main_ScrollbarIsHide = false;
+            Main_ScrollbarElement.style.backgroundColor = "#777777";
         }
     } else {
-        $('#scrollbar').stop();
-        document.getElementById("scrollbar").style.backgroundColor = "#000000";
+        Main_ScrollbarElement.style.backgroundColor = "#000000";
         Main_nextScrollPositon = 100;
-        Main_ScrollbarBlack = true;
-        document.getElementById("scrollbar").style.top = "100px";
+        Main_ScrollbarIsHide = true;
+        //Prevent to show the move during the hide transition
+        window.setTimeout(function() {
+            Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
+        }, 400);
     }
 }
 
