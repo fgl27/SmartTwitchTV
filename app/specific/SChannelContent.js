@@ -300,7 +300,7 @@ function SChannelContent_addFocus() {
 }
 
 function SChannelContent_removeFocus() {
-    Main_removeFocusVideoArray(SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0), SChannelContent_ids);
+    Main_removeFocusVideo(SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0), SChannelContent_ids);
 }
 
 function SChannelContent_keyClickDelay() {
