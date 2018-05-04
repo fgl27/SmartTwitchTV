@@ -49,6 +49,10 @@ var Main_td = '';
 var Main_nextScrollPositon = '';
 var Main_IsDayFirst = false;
 var Main_ScrollbarElement;
+var Main_SearchInput;
+var Main_SearchInput;
+var Main_AddUserInput;
+var Main_AddCodeInput;
 
 var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
@@ -201,6 +205,9 @@ function Main_initWindows() {
     document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
     document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
     Main_ScrollbarElement = document.getElementById("scrollbar");
+    Main_SearchInput = document.getElementById("search_input");
+    Main_AddUserInput = document.getElementById("user_input");
+    Main_AddCodeInput = document.getElementById("oauth_input");
 
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
     Main_ready(function() {

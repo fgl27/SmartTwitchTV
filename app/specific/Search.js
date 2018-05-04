@@ -15,7 +15,7 @@ function Search_init() {
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
-    document.getElementById("search_input").placeholder = STR_PLACEHOLDER_SEARCH;
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     Search_cursorY = 0;
     Search_cursorX = 0;
@@ -37,7 +37,7 @@ function Search_exit() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-    document.getElementById("search_input").value = '';
+    Main_SearchInput.value = '';
 }
 
 function Search_loadData() {
@@ -51,7 +51,6 @@ function Search_refreshInputFocusTools() {
     document.getElementById('chanel_button').classList.remove('button_search_focused');
     document.getElementById('game_button').classList.remove('button_search_focused');
     document.getElementById('live_button').classList.remove('button_search_focused');
-    document.getElementById("search_input").value = $('#search_input').val();
 
     if (Search_cursorY) {
         if (!Search_cursorX) document.getElementById('chanel_button').classList.add('button_search_focused');
@@ -121,9 +120,9 @@ function Search_handleKeyDown(event) {
         case KEY_ENTER:
             if (!Search_cursorY) Search_inputFocus();
             else {
-                if ($('#search_input').val() !== '' && $('#search_input').val() !== null) {
-                    Search_data = $('#search_input').val();
-                    document.getElementById("search_input").value = '';
+                if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
+                    Search_data = Main_SearchInput.value;
+                    Main_SearchInput.value = '';
                     Search_loadData();
                 } else {
                     Main_showWarningDialog(STR_SEARCH_EMPTY);
@@ -159,7 +158,7 @@ function Search_inputFocus() {
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
     Search_input.addEventListener('input');
     Search_input.addEventListener('compositionend');
-    document.getElementById("search_input").placeholder = STR_PLACEHOLDER_SEARCH;
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Search_input.focus();
     Search_keyBoardOn = true;
 }
@@ -168,7 +167,7 @@ function Search_RemoveinputFocus() {
     Search_input.blur();
     document.body.removeEventListener("keydown", Search_KeyboardEvent);
     document.body.addEventListener("keydown", Search_handleKeyDown, false);
-    document.getElementById("search_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
     window.setTimeout(function() {
         Search_keyBoardOn = false;
     }, 500);
@@ -177,22 +176,21 @@ function Search_RemoveinputFocus() {
 function Search_KeyboardEvent(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_DELETE_ALL:
-            document.getElementById("search_input").value = '';
+            Main_SearchInput.value = '';
             event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
-            document.getElementById("search_input").value = $('#search_input').val();
             Search_RemoveinputFocus();
             Search_cursorY = 1;
             Search_refreshInputFocusTools();
             break;
         case KEY_KEYBOARD_BACKSPACE:
-            document.getElementById("search_input").value = $('#search_input').val().slice(0, -1);
+            Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
             event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
-            document.getElementById("search_input").value = $('#search_input').val() + ' ';
+            Main_SearchInput.value = Main_SearchInput.value + ' ';
             event.preventDefault();
             break;
         default:

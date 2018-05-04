@@ -14,7 +14,7 @@ function AddUser_init() {
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
     Main_HideWarningDialog();
     AddUser_input = document.querySelector('#user_input');
-    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     AddUser_inputFocus();
     AddUser_scrollVerticalToElementById('user_input');
 }
@@ -80,7 +80,7 @@ function AddUser_inputFocus() {
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
     AddUser_input.addEventListener('input');
     AddUser_input.addEventListener('compositionend');
-    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_USER;
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     AddUser_input.focus();
     AddUser_keyBoardOn = true;
 }
@@ -89,7 +89,7 @@ function AddUser_RemoveinputFocus() {
     AddUser_input.blur();
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
     document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
-    document.getElementById("user_input").placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
     window.setTimeout(function() {
         AddUser_keyBoardOn = false;
     }, 250);
@@ -100,15 +100,13 @@ function AddUser_KeyboardEvent(event) {
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_DELETE_ALL:
-            document.getElementById("user_input").value = '';
+            Main_AddUserInput.value = '';
             event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
-            if ($('#user_input').val() !== '' && $('#user_input').val() !== null) {
-
-                document.getElementById("user_input").value = $('#user_input').val();
-                AddUser_Username = $('#user_input').val();
+            if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
+                AddUser_Username = Main_AddUserInput.value;
 
                 if (!AddUser_UserCodeExist(AddUser_Username)) {
                     AddUser_loadingDataTry = 0;
@@ -129,11 +127,11 @@ function AddUser_KeyboardEvent(event) {
             AddUser_RemoveinputFocus();
             break;
         case KEY_KEYBOARD_BACKSPACE:
-            document.getElementById("user_input").value = $('#user_input').val().slice(0, -1);
+            Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
             event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
-            document.getElementById("user_input").value = $('#user_input').val() + ' ';
+            Main_AddUserInput.value = Main_AddUserInput.value + ' ';
             event.preventDefault();
             break;
         default:
@@ -154,7 +152,7 @@ function AddUser_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    document.getElementById("user_input").value = '';
+                    Main_AddUserInput.value = '';
                     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
                     AddUser_SaveNewUser();
                     return;
