@@ -21,13 +21,7 @@ var Games_itemsCountCheck = false;
 var Games_emptyContent = false;
 var Games_loadingMore = false;
 
-var Games_Img = 'img_games';
-var Games_Thumbnail = 'thumbnail_Games_';
-var Games_EmptyCell = 'gamesempty_';
-var Games_ThumbnailDiv = 'game_thumbnail_div_';
-var Games_DispNameDiv = 'game_display_name_';
-var Games_ViwersDiv = 'game_viwers_';
-var Games_Cell = 'game_cell_';
+var Game_ids = ['g_thumbdiv', 'g_img', 'g_infodiv', 'g_displayname', 'g_viwers', 'g_cell', 'gempty_'];
 //Variable initialization end
 
 function Games_init() {
@@ -36,7 +30,7 @@ function Games_init() {
     document.getElementById('top_bar_game').classList.add('icon_center_focus');
     Main_YRst(Games_cursorY);
     if (Games_Status) {
-        Main_ScrollHelper(Games_Thumbnail, Games_cursorY, Games_cursorX, Main_games,
+        Main_ScrollHelper(Game_ids[0], Games_cursorY, Games_cursorX, Main_games,
             Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_CounterDialog(Games_cursorX, Games_cursorY, Main_ColoumnsCountGame, Games_itemsCount);
     } else Games_StartLoad();
@@ -52,7 +46,7 @@ function Games_StartLoad() {
     Games_Status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    $('#stream_table_games').empty();
+    Main_empty('stream_table_games');
     Games_loadingMore = false;
     Games_blankCellCount = 0;
     Games_blankCellVector = [];
@@ -151,55 +145,39 @@ function Games_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountGame;
     if (response_items % Main_ColoumnsCountGame > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, game,
+    var coloumn_id, row_id, row, game,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountGame + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             game = response.top[cursor];
             if (Games_CellExists(game.game.name)) {
                 coloumn_id--;
-            } else {
-                cell = Games_createCell(row_id, coloumn_id, game.game.name, game.game.box.template,
-                    Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER);
-                row.append(cell);
-            }
+            } else row.appendChild(Games_createCell(row_id, row_id + '_' + coloumn_id, [game.game.name, game.game.box.template.replace("{width}x{height}", Main_GameSize),
+                Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
+            ]));
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountGame; coloumn_id++) {
             if (Games_dataEnded && !Games_itemsCountCheck) {
                 Games_itemsCountCheck = true;
                 Games_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.append(Main_createEmptyCell(Games_EmptyCell + row_id + '_' + coloumn_id));
-            Games_blankCellVector.push(Games_EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(Game_ids[6] + row_id + '_' + coloumn_id));
+            Games_blankCellVector.push(Game_ids[6] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_games').append(row);
+        document.getElementById("stream_table_games").appendChild(row);
     }
 
     Games_loadDataSuccessFinish();
 }
 
-function Games_createCell(row_id, coloumn_id, game_name, preview_thumbnail, viwers) {
-    return $('<td id="' + Games_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + game_name + '"></td>').html(
-        Games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail));
-}
-
-function Games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail) {
-
-    Games_nameMatrix.push(game_name);
-
-    preview_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_GameSize);
-    if (row_id < 2) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 2 rows
-
-    return '<div id="' + Games_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_game" ><img id="' + Games_Img + row_id + '_' +
-        coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + Games_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + Games_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + game_name + '</div>' +
-        '<div id="' + Games_ViwersDiv + row_id + '_' + coloumn_id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
-        viwers + '</div></div>';
+function Games_createCell(row_id, id, valuesArray) {
+    Games_nameMatrix.push(valuesArray[0]);
+    if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
+    return Main_createCellGame(id, Game_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
 }
 
 function Games_CellExists(display_name) {
@@ -220,7 +198,7 @@ function Games_loadDataSuccessFinish() {
             else {
                 Games_Status = true;
                 Games_addFocus();
-                Main_LazyImgStart(Games_Img, 7, IMG_404_GAME, Main_ColoumnsCountGame);
+                Main_LazyImgStart(Game_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
             Games_loadingData = false;
         } else {
@@ -303,14 +281,14 @@ function Games_loadDataSuccessReplace(responseText) {
             Games_blankCellCount--;
             i--;
         } else {
-            Games_replaceCellEmpty(Games_blankCellVector[i], game.game.name, game.game.box.template,
-                Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER);
+            Main_replaceGame(Games_blankCellVector[i], [game.game.name,
+                game.game.box.template.replace("{width}x{height}", Main_GameSize),
+                Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
+            ], Game_ids);
             Games_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            if (index > -1) tempVector.splice(index, 1);
         }
     }
 
@@ -323,23 +301,12 @@ function Games_loadDataSuccessReplace(responseText) {
     Games_loadDataSuccessFinish();
 }
 
-function Games_replaceCellEmpty(id, game_name, preview_thumbnail, viwers) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = Games_Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', game_name);
-    document.getElementById(cell).innerHTML = Games_CellHtml(row_id, coloumn_id, game_name, viwers, preview_thumbnail);
-}
-
 function Games_addFocus() {
 
-    Main_addFocusGame(Games_cursorY, Games_cursorX, Games_Thumbnail, Games_ThumbnailDiv, Games_DispNameDiv, Games_ViwersDiv, Main_games,
+    Main_addFocusGameArray(Games_cursorY, Games_cursorX, Game_ids, Main_games,
         Main_ColoumnsCountGame, Games_itemsCount);
 
-    if (Games_cursorY > 2) Main_LazyImg(Games_Img, Games_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
+    if (Games_cursorY > 2) Main_LazyImg(Game_ids[1], Games_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((Games_cursorY + Main_ItemsReloadLimitGame) > (Games_itemsCount / Main_ColoumnsCountGame)) &&
         !Games_dataEnded && !Games_loadingMore) {
@@ -350,7 +317,7 @@ function Games_addFocus() {
 }
 
 function Games_removeFocus() {
-    Main_removeFocusGame(Games_cursorY, Games_cursorX, Games_Thumbnail, Games_ThumbnailDiv, Games_DispNameDiv, Games_ViwersDiv);
+    Main_removeFocusGameArray(Games_cursorY + '_' + Games_cursorX, Game_ids);
 }
 
 function Games_keyClickDelay() {
@@ -380,13 +347,13 @@ function Games_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((Games_cursorY), (Games_cursorX - 1), Games_Thumbnail)) {
+            if (Main_ThumbNull((Games_cursorY), (Games_cursorX - 1), Game_ids[0])) {
                 Games_removeFocus();
                 Games_cursorX--;
                 Games_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountGame - 1); i > -1; i--) {
-                    if (Main_ThumbNull((Games_cursorY - 1), i, Games_Thumbnail)) {
+                    if (Main_ThumbNull((Games_cursorY - 1), i, Game_ids[0])) {
                         Games_removeFocus();
                         Games_cursorY--;
                         Games_cursorX = i;
@@ -397,11 +364,11 @@ function Games_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((Games_cursorY), (Games_cursorX + 1), Games_Thumbnail)) {
+            if (Main_ThumbNull((Games_cursorY), (Games_cursorX + 1), Game_ids[0])) {
                 Games_removeFocus();
                 Games_cursorX++;
                 Games_addFocus();
-            } else if (Main_ThumbNull((Games_cursorY + 1), 0, Games_Thumbnail)) {
+            } else if (Main_ThumbNull((Games_cursorY + 1), 0, Game_ids[0])) {
                 Games_removeFocus();
                 Games_cursorY++;
                 Games_cursorX = 0;
@@ -410,7 +377,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((Games_cursorY - 1), (Games_cursorX - i), Games_Thumbnail)) {
+                if (Main_ThumbNull((Games_cursorY - 1), (Games_cursorX - i), Game_ids[0])) {
                     Games_removeFocus();
                     Games_cursorY--;
                     Games_cursorX = Games_cursorX - i;
@@ -421,7 +388,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((Games_cursorY + 1), (Games_cursorX - i), Games_Thumbnail)) {
+                if (Main_ThumbNull((Games_cursorY + 1), (Games_cursorX - i), Game_ids[0])) {
                     Games_removeFocus();
                     Games_cursorY++;
                     Games_cursorX = Games_cursorX - i;
@@ -451,7 +418,7 @@ function Games_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!Games_loadingMore) {
-                Main_gameSelected = $('#' + Games_Cell + Games_cursorY + '_' + Games_cursorX).attr('data-channelname');
+                Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute('data-channelname');
                 document.body.removeEventListener("keydown", Games_handleKeyDown);
                 Main_BeforeAgame = Main_Go;
                 Main_Go = Main_aGame;
