@@ -63,7 +63,7 @@ function pt_BRLang() {
     STR_MIN = " Min";
     STR_HR = " H";
     STR_SOURCE = "Original";
-    STR_VERSION = "Versão ";
+    STR_VERSION = "Versão: ";
     STR_TWITCH_TV = "Twitch.TV";
     STR_CLOSE_THIS = "Pressione retornar para fechar este.";
     STR_PLAYER = "Relacionado ao Player:";

@@ -539,16 +539,28 @@ function Main_NetworkStateChangeListenerStop() {
 }
 
 function Main_checkVersion() {
-    var version = null,
+    var Appversion = null,
+        TizenVersion = null,
+        tvModel = null,
+        fw = null,
         value = 0;
+
     try {
-        version = (tizen.application.getAppInfo().version);
+        Appversion = (tizen.application.getAppInfo().version);
+        // Retrieving Platform Information https://developer.samsung.com/tv/develop/guides/fundamentals/retrieving-platform-information
+        TizenVersion = tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version");
+        fw = webapis.productinfo.getFirmware();
+        tvModel = webapis.productinfo.getModel();
     } catch (e) {}
-    if (version !== null) {
-        Main_currentVersion = version;
-        Main_versonTag = STR_VERSION + version + '.' + Main_minversion + STR_BR;
-        version = version.split(".");
-        value = parseInt(version[0] + version[1] + version[2]);
+
+    if (Appversion !== null && TizenVersion !== null && tvModel !== null && fw !== null) {
+        Main_currentVersion = Appversion;
+
+        Main_versonTag = 'APP ' + STR_VERSION + Appversion + '.' + Main_minversion + STR_BR + 'Tizen ' + STR_VERSION +
+            TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + tvModel + STR_SPACE + STR_SPACE + '|' +
+            STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
+        Appversion = Appversion.split(".");
+        value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
         document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0;
         document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0;
         return value < Main_version;
