@@ -191,7 +191,7 @@ function SChannelContent_createCell(id, channel_name, preview_thumbnail, stream_
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8] + id);
-    Main_td.setAttribute('data-channelname', channel_name);
+    Main_td.setAttribute(Main_DataAttribute, channel_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + SChannelContent_ids[1] + id + '" class="stream_img"></div>' +
@@ -215,7 +215,7 @@ function SChannelContent_createChannelCell(id, user_name, stream_type, preview_t
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8] + id);
-    Main_td.setAttribute('data-channelname', user_name);
+    Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent_ids[1] +
         id + '" class="stream_img"></div>' +
@@ -235,7 +235,7 @@ function SChannelContent_createFallow(id, user_name, stream_type, preview_thumbn
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8] + id);
-    Main_td.setAttribute('data-channelname', user_name);
+    Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
@@ -323,7 +323,7 @@ function SChannelContent_keyEnter() {
         var value = (!SChannelContent_skipImg ? 0 : 1);
         if (SChannelContent_cursorX === (0 - value)) {
             Play_selectedChannel = document.getElementById(SChannelContent_ids[8] + SChannelContent_cursorY +
-                '_' + SChannelContent_cursorX).getAttribute('data-channelname');
+                '_' + SChannelContent_cursorX).getAttribute(Main_DataAttribute);
             Play_selectedChannelDisplayname = document.getElementById(SChannelContent_ids[3] + SChannelContent_cursorY +
                 '_' + SChannelContent_cursorX).textContent;
             if (Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];

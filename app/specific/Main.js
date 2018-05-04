@@ -88,6 +88,7 @@ var Main_GameSize = "340x475"; // default size 272x380
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_classText = 'stream_text_focused';
 var Main_classInfo = 'stream_info_focused';
+var Main_DataAttribute = 'data_attribute';
 
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
@@ -657,7 +658,7 @@ function Main_createEmptyCell(id) {
 function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute('data-channelname', channel_name);
+    Main_td.setAttribute(Main_DataAttribute, channel_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Main_VideoHtml(id, idArray, valuesArray);
 
@@ -667,7 +668,7 @@ function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
 function Main_replaceVideo(id, channel_name, valuesArray, ids) {
     var splitedId = id.split(ids[9])[1];
     id = document.getElementById(id);
-    id.setAttribute('data-channelname', channel_name);
+    id.setAttribute(Main_DataAttribute, channel_name);
     id.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
     id.setAttribute('id', ids[8] + splitedId);
 }
@@ -687,7 +688,7 @@ function Main_VideoHtml(id, idArray, valuesArray) {
 function Main_createCellGame(id, idArray, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[5] + id);
-    Main_td.setAttribute('data-channelname', valuesArray[0]);
+    Main_td.setAttribute(Main_DataAttribute, valuesArray[0]);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Main_GameHtml(id, idArray, valuesArray);
 
@@ -697,7 +698,7 @@ function Main_createCellGame(id, idArray, valuesArray) {
 function Main_replaceGame(id, valuesArray, ids) {
     var splitedId = id.split(ids[6])[1];
     id = document.getElementById(id);
-    id.setAttribute('data-channelname', valuesArray[0]);
+    id.setAttribute(Main_DataAttribute, valuesArray[0]);
     id.innerHTML = Main_GameHtml(splitedId, ids, valuesArray);
     id.setAttribute('id', ids[5] + splitedId);
 }

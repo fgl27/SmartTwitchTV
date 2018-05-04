@@ -324,7 +324,7 @@ function SChannels_replaceCellEmpty(id, channel_name, _id, preview_thumbnail, ch
     var cell = SChannels_Cell + row_id + '_' + coloumn_id;
 
     document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', channel_name);
+    document.getElementById(cell).setAttribute(Main_DataAttribute, channel_name);
     document.getElementById(cell).setAttribute('data-id', _id);
     document.getElementById(cell).innerHTML =
         SChannels_CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name);
@@ -446,7 +446,7 @@ function SChannels_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!SChannels_loadingMore) {
-                Main_selectedChannel = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-channelname');
+                Main_selectedChannel = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr(Main_DataAttribute);
                 Main_selectedChannel_id = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-id');
                 Main_selectedChannelDisplayname = document.getElementById(SChannels_DispNameDiv + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
                 Main_selectedChannelLogo = document.getElementById(SChannels_Img + SChannels_cursorY + '_' + SChannels_cursorX).src;

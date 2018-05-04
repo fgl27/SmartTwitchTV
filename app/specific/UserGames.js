@@ -347,7 +347,7 @@ function UserGames_replaceCellEmpty(id, game_name, preview_thumbnail, viewers) {
     var cell = UserGames_Cell + row_id + '_' + coloumn_id;
 
     document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute('data-channelname', game_name);
+    document.getElementById(cell).setAttribute(Main_DataAttribute, game_name);
     document.getElementById(cell).innerHTML = UserGames_CellHtml(row_id, coloumn_id, game_name, preview_thumbnail, viewers);
 }
 
@@ -474,7 +474,7 @@ function UserGames_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_gameSelected = $('#' + UserGames_Cell + UserGames_cursorY + '_' + UserGames_cursorX).attr('data-channelname');
+            Main_gameSelected = $('#' + UserGames_Cell + UserGames_cursorY + '_' + UserGames_cursorX).attr(Main_DataAttribute);
             Main_BeforeAgame = Main_usergames;
             Main_BeforeAgameisSet = true;
             Main_Go = Main_aGame;

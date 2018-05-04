@@ -418,7 +418,7 @@ function Games_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!Games_loadingMore) {
-                Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute('data-channelname');
+                Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute(Main_DataAttribute);
                 document.body.removeEventListener("keydown", Games_handleKeyDown);
                 Main_BeforeAgame = Main_Go;
                 Main_Go = Main_aGame;

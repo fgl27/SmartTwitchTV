@@ -491,7 +491,7 @@ function UserLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute('data-channelname');
+            Play_selectedChannel = document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute(Main_DataAttribute);
             Play_selectedChannelDisplayname = document.getElementById(UserLive_ids[3] + UserLive_cursorY + '_' + UserLive_cursorX).textContent;
             document.body.removeEventListener("keydown", UserLive_handleKeyDown);
             Main_openStream();
