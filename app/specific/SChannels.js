@@ -16,18 +16,13 @@ var SChannels_keyClickDelayTime = 25;
 var SChannels_ReplacedataEnded = false;
 var SChannels_MaxOffset = 0;
 var SChannels_emptyContent = false;
-
-var SChannels_Img = 'img_schannels';
-var SChannels_Thumbnail = 'thumbnail_schannels_';
-var SChannels_EmptyCell = 'schannelsempty_';
-var SChannels_ThumbnailDiv = 'schannels_thumbnail_div_';
-var SChannels_DispNameDiv = 'schannels_display_name_';
-var SChannels_Cell = 'schannels_cell_';
 var SChannels_Status = false;
 var SChannels_lastData = '';
 var SChannels_itemsCountCheck = false;
 var SChannels_isLastSChannels = false;
 var SChannels_loadingMore = false;
+
+var SChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_'];
 //Variable initialization end
 
 function SChannels_init() {
@@ -40,7 +35,7 @@ function SChannels_init() {
     document.body.addEventListener("keydown", SChannels_handleKeyDown, false);
     Main_YRst(SChannels_cursorY);
     if (SChannels_Status) {
-        Main_ScrollHelper(SChannels_Thumbnail, SChannels_cursorY, SChannels_cursorX, Main_SChannels,
+        Main_ScrollHelper(SChannels_ids[0], SChannels_cursorY, SChannels_cursorX, Main_SChannels,
             Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
         Main_CounterDialog(SChannels_cursorX, SChannels_cursorY, Main_ColoumnsCountChannel, SChannels_itemsCount);
     } else SChannels_StartLoad();
@@ -61,7 +56,7 @@ function SChannels_StartLoad() {
     SChannels_Status = false;
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
-    $('#stream_table_search_channel').empty();
+    Main_empty('stream_table_search_channel');
     SChannels_loadingMore = false;
     SChannels_blankCellCount = 0;
     SChannels_itemsCountOffset = 0;
@@ -148,20 +143,17 @@ function SChannels_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountChannel;
     if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, channels,
+    var coloumn_id, row_id, row, channels,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
-        row = $('<tr></tr>');
+        row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
             if (SChannels_CellExists(channels.name)) coloumn_id--;
-            else {
-                cell = SChannels_createCell(row_id, coloumn_id, channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers);
-                row.append(cell);
-            }
+            else row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers]));
         }
 
         for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
@@ -169,31 +161,20 @@ function SChannels_loadDataSuccess(responseText) {
                 SChannels_itemsCountCheck = true;
                 SChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
-            row.append(Main_createEmptyCell(SChannels_EmptyCell + row_id + '_' + coloumn_id));
-            SChannels_blankCellVector.push(SChannels_EmptyCell + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(SChannels_ids[5] + row_id + '_' + coloumn_id));
+            SChannels_blankCellVector.push(SChannels_ids[5] + row_id + '_' + coloumn_id);
         }
-        $('#stream_table_search_channel').append(row);
+        document.getElementById('stream_table_search_channel').appendChild(row);
     }
 
     SChannels_loadDataSuccessFinish();
 }
 
 
-function SChannels_createCell(row_id, coloumn_id, channel_name, _id, preview_thumbnail, channel_display_name, views, followers) {
-    return $('<td id="' + SChannels_Cell + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + channel_name + '" data-id="' + _id + '" data-views="' + views + '" data-followers="' + followers + '"></td>').html(
-        SChannels_CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name));
-}
-
-function SChannels_CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name) {
-
-    SChannels_nameMatrix.push(channel_name);
-
-    if (row_id < 5) Main_PreLoadAImage(preview_thumbnail); //try to pre cache first 3 rows
-
-    return '<div id="' + SChannels_Thumbnail + row_id + '_' + coloumn_id + '" class="stream_thumbnail_channel" ><img id="' + SChannels_Img +
-        row_id + '_' + coloumn_id + '" class="stream_img" data-src="' + preview_thumbnail + '"></div>' +
-        '<div id="' + SChannels_ThumbnailDiv + row_id + '_' + coloumn_id + '" class="stream_text">' +
-        '<div id="' + SChannels_DispNameDiv + row_id + '_' + coloumn_id + '" class="stream_channel">' + channel_display_name + '</div></div>';
+function SChannels_createCell(row_id, id, valuesArray) {
+    SChannels_nameMatrix.push(valuesArray[1]);
+    if (row_id < 4) Main_PreLoadAImage(valuesArray[2]); //try to pre cache first 4 rows
+    return Main_createCellChannel(id, SChannels_ids, valuesArray);
 }
 
 function SChannels_CellExists(display_name) {
@@ -215,7 +196,7 @@ function SChannels_loadDataSuccessFinish() {
             else {
                 SChannels_Status = true;
                 SChannels_addFocus();
-                Main_LazyImgStart(SChannels_Img, 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
+                Main_LazyImgStart(SChannels_ids[1], 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
             SChannels_loadingData = false;
         } else {
@@ -298,7 +279,7 @@ function SChannels_loadDataSuccessReplace(responseText) {
             SChannels_blankCellCount--;
             i--;
         } else {
-            SChannels_replaceCellEmpty(SChannels_blankCellVector[i], channels.name, channels._id, channels.logo, channels.display_name);
+            SChannels_replaceCellEmpty(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers], SChannels_ids);
             SChannels_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -317,30 +298,10 @@ function SChannels_loadDataSuccessReplace(responseText) {
     SChannels_loadDataSuccessFinish();
 }
 
-function SChannels_replaceCellEmpty(id, channel_name, _id, preview_thumbnail, channel_display_name) {
-    var splitedId = id.split("_");
-    var row_id = splitedId[1];
-    var coloumn_id = splitedId[2];
-    var cell = SChannels_Cell + row_id + '_' + coloumn_id;
-
-    document.getElementById(id).setAttribute('id', cell);
-    document.getElementById(cell).setAttribute(Main_DataAttribute, channel_name);
-    document.getElementById(cell).setAttribute('data-id', _id);
-    document.getElementById(cell).innerHTML =
-        SChannels_CellHtml(row_id, coloumn_id, channel_name, preview_thumbnail, channel_display_name);
-}
-
 function SChannels_addFocus() {
-    document.getElementById(SChannels_Thumbnail + SChannels_cursorY + '_' + SChannels_cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(SChannels_ThumbnailDiv + SChannels_cursorY + '_' + SChannels_cursorX).classList.add('stream_text_focused');
-    document.getElementById(SChannels_DispNameDiv + SChannels_cursorY + '_' + SChannels_cursorX).classList.add('stream_info_focused');
-    window.setTimeout(function() {
-        Main_ScrollHelper(SChannels_Thumbnail, SChannels_cursorY, SChannels_cursorX, Main_SChannels, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
-    }, 10);
+    Main_addFocusChannel(SChannels_cursorY, SChannels_cursorX, SChannels_ids, Main_SChannels, Main_ColoumnsCountChannel, SChannels_itemsCount);
 
-    Main_CounterDialog(SChannels_cursorX, SChannels_cursorY, Main_ColoumnsCountChannel, SChannels_itemsCount);
-
-    if (SChannels_cursorY > 3) Main_LazyImg(SChannels_Img, SChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
+    if (SChannels_cursorY > 3) Main_LazyImg(SChannels_ids[1], SChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
 
     if (((SChannels_cursorY + Main_ItemsReloadLimitChannel) > (SChannels_itemsCount / Main_ColoumnsCountChannel)) &&
         !SChannels_dataEnded && !SChannels_loadingMore) {
@@ -351,9 +312,7 @@ function SChannels_addFocus() {
 }
 
 function SChannels_removeFocus() {
-    document.getElementById(SChannels_Thumbnail + SChannels_cursorY + '_' + SChannels_cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(SChannels_ThumbnailDiv + SChannels_cursorY + '_' + SChannels_cursorX).classList.remove('stream_text_focused');
-    document.getElementById(SChannels_DispNameDiv + SChannels_cursorY + '_' + SChannels_cursorX).classList.remove('stream_info_focused');
+    Main_removeFocusChannel(SChannels_cursorY + '_' + SChannels_cursorX, SChannels_ids);
 }
 
 function SChannels_keyClickDelay() {
@@ -387,13 +346,13 @@ function SChannels_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX - 1), SChannels_Thumbnail)) {
+            if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX - 1), SChannels_ids[0])) {
                 SChannels_removeFocus();
                 SChannels_cursorX--;
                 SChannels_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountChannel - 1); i > -1; i--) {
-                    if (Main_ThumbNull((SChannels_cursorY - 1), i, SChannels_Thumbnail)) {
+                    if (Main_ThumbNull((SChannels_cursorY - 1), i, SChannels_ids[0])) {
                         SChannels_removeFocus();
                         SChannels_cursorY--;
                         SChannels_cursorX = i;
@@ -404,11 +363,11 @@ function SChannels_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX + 1), SChannels_Thumbnail)) {
+            if (Main_ThumbNull((SChannels_cursorY), (SChannels_cursorX + 1), SChannels_ids[0])) {
                 SChannels_removeFocus();
                 SChannels_cursorX++;
                 SChannels_addFocus();
-            } else if (Main_ThumbNull((SChannels_cursorY + 1), 0, SChannels_Thumbnail)) {
+            } else if (Main_ThumbNull((SChannels_cursorY + 1), 0, SChannels_ids[0])) {
                 SChannels_removeFocus();
                 SChannels_cursorY++;
                 SChannels_cursorX = 0;
@@ -417,7 +376,7 @@ function SChannels_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((SChannels_cursorY - 1), (SChannels_cursorX - i), SChannels_Thumbnail)) {
+                if (Main_ThumbNull((SChannels_cursorY - 1), (SChannels_cursorX - i), SChannels_ids[0])) {
                     SChannels_removeFocus();
                     SChannels_cursorY--;
                     SChannels_cursorX = SChannels_cursorX - i;
@@ -428,7 +387,7 @@ function SChannels_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((SChannels_cursorY + 1), (SChannels_cursorX - i), SChannels_Thumbnail)) {
+                if (Main_ThumbNull((SChannels_cursorY + 1), (SChannels_cursorX - i), SChannels_ids[0])) {
                     SChannels_removeFocus();
                     SChannels_cursorY++;
                     SChannels_cursorX = SChannels_cursorX - i;
@@ -446,12 +405,12 @@ function SChannels_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!SChannels_loadingMore) {
-                Main_selectedChannel = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr(Main_DataAttribute);
-                Main_selectedChannel_id = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-id');
-                Main_selectedChannelDisplayname = document.getElementById(SChannels_DispNameDiv + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
-                Main_selectedChannelLogo = document.getElementById(SChannels_Img + SChannels_cursorY + '_' + SChannels_cursorX).src;
-                Main_selectedChannelViews = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-views');
-                Main_selectedChannelFallower = $('#' + SChannels_Cell + SChannels_cursorY + '_' + SChannels_cursorX).attr('data-followers');
+                Main_selectedChannel = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute(Main_DataAttribute);
+                Main_selectedChannel_id = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-id');
+                Main_selectedChannelDisplayname = document.getElementById(SChannels_ids[3] + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
+                Main_selectedChannelLogo = document.getElementById(SChannels_ids[1] + SChannels_cursorY + '_' + SChannels_cursorX).src;
+                Main_selectedChannelViews = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-views');
+                Main_selectedChannelFallower = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-followers');
                 document.body.removeEventListener("keydown", SChannels_handleKeyDown);
                 Main_BeforeChannel = Main_SChannels;
                 Main_Go = Main_SChannelContent;
