@@ -639,7 +639,7 @@ function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is o
         for (x; x < coloumns; x++) {
             y = change > 0 ? row_id + offset : row_id - offset;
             elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) Main_lazyLoad(elem);
+            if (elem !== null) Main_lazyLoad(elem, img_type);
 
             y = change > 0 ? row_id - offset - 1 : row_id + offset + 1;
             elem = document.getElementById(imgId + y + '_' + x);
