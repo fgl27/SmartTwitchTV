@@ -117,8 +117,8 @@ function UserChannels_loadChannelLive(responseText) {
             x = 0;
 
         for (x; x < response_items; x++) {
-            ChannelTemp = response[x].channel.display_name + ',' + response[x].channel._id + ',' + response[x].channel.name +
-                ',' + response[x].channel.logo + ',' + response[x].channel.views + ',' + response[x].channel.followers;
+            ChannelTemp = response[x].channel.name + ',' + response[x].channel._id + ',' + response[x].channel.logo +
+                ',' + response[x].channel.display_name + ',' + response[x].channel.views + ',' + response[x].channel.followers;
             if (UserChannels_List.indexOf(ChannelTemp) === -1) UserChannels_List.push(ChannelTemp);
         }
 
@@ -172,7 +172,7 @@ function UserChannels_loadDataSuccess() {
 }
 
 function UserChannels_createCell(row_id, id, valuesArray) {
-    if (row_id < 4) Main_PreLoadAImage(valuesArray[3]); //try to pre cache first 4 rows
+    if (row_id < 4) Main_PreLoadAImage(valuesArray[2]); //try to pre cache first 4 rows
     return Main_createCellChannel(id, UserChannels_ids, valuesArray);
 }
 
