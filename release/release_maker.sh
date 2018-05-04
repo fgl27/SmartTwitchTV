@@ -126,7 +126,7 @@ fi;
 #Make a zip
 cd release/ || exit
 rm -rf *.zip
-zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh \*githubio\*
+zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh beautify.sh jshint.sh \*githubio\*
 
 # Clean up release/ folder temp files and stash all over git changes
 rm -rf app/
