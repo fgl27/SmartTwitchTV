@@ -354,7 +354,7 @@ function AGame_loadDataSuccessReplace(responseText) {
 
 function AGame_addFocus() {
 
-    Main_addFocusVideoArray(AGame_cursorY, AGame_cursorX, AGame_ids, Main_aGame, Main_ColoumnsCountVideo, AGame_itemsCount);
+    Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_aGame, Main_ColoumnsCountVideo, AGame_itemsCount);
 
     if (AGame_cursorY > 3) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
@@ -367,7 +367,7 @@ function AGame_addFocus() {
 }
 
 function AGame_removeFocus() {
-    Main_removeFocusVideoArray(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
+    Main_removeFocusVideo(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
 }
 
 function AGame_addFocusFallow() {
