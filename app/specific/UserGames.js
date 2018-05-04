@@ -333,7 +333,7 @@ function UserGames_addFocus() {
 }
 
 function UserGames_removeFocus() {
-    Main_removeFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_ids);
+    Main_removeFocusGame(UserGames_cursorY + '_' + UserGames_cursorX, UserGames_ids);
 }
 
 function UserGames_keyClickDelay() {
