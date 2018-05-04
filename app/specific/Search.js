@@ -190,7 +190,7 @@ function Search_KeyboardEvent(event) {
             event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
-            Main_SearchInput.value = Main_SearchInput.value + ' ';
+            Main_SearchInput.value += ' ';
             event.preventDefault();
             break;
         default:

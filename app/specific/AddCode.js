@@ -136,7 +136,7 @@ function AddCode_KeyboardEvent(event) {
             event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
-            Main_AddCodeInput.value = Main_AddCodeInput.value + ' ';
+            Main_AddCodeInput.value += ' ';
             event.preventDefault();
             break;
         default:
