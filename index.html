@@ -74,14 +74,36 @@
             font-size: 55px;
             font-weight: bold;
             padding-right: 0.7%;
-            text-shadow: 2px 0 0 #000000,
+            transition: 0.5s;
+            will-change: color, font-size, text-shadow;
+            text-shadow: 1px 0 0 #000000,
+            1px -1px 0 #000000,
+            1px 1px 0 #000000,
+            0 1px 0 #000000,
+            -1px 0 0 #000000,
+            -1px 1px 0 #000000,
+            -1px -1px 0 #000000,
+            0 -1px 0 #000000,
+            0 2px 0 #444444,
+            0 3px 0 #333333,
+            0 4px 0 #222222,
+            0 6px 0 #000000,
+            2px -1px 0 #000000,
             2px -2px 0 #000000,
-            2px 2px 0 #000000,
-            0 2px 0 #000000,
-            -2px 0 0 #000000,
-            -2px 2px 0 #000000,
+            2px -3px 0 #000000,
+            -2px -1px 0 #000000,
             -2px -2px 0 #000000,
-            0 -2px 0 #000000;
+            -2px -3px 0 #000000,
+            2px 2px 0 #000000,
+            2px 3px 0 #000000,
+            2px 4px 0 #000000,
+            2px 5px 0 #000000,
+            2px 6px 0 #000000,
+            -2px 2px 0 #000000,
+            -2px 3px 0 #000000,
+            -2px 4px 0 #000000,
+            -2px 5px 0 #000000,
+            -2px 6px 0 #000000;
         }
 
         div.icon_center_focus {
@@ -95,9 +117,9 @@
             -1px 1px 0 #000000,
             -1px -1px 0 #000000,
             0 -1px 0 #000000,
-            0 2px 0 #666666,
-            0 3px 0 #555555,
-            0 4px 0 #444444,
+            0 2px 0 #777777,
+            0 3px 0 #666666,
+            0 4px 0 #555555,
             0 6px 0 #000000,
             2px -1px 0 #000000,
             2px -2px 0 #000000,
@@ -153,6 +175,7 @@
 
         div.stream_thumbnail_focused {
             outline: 7px outset #FFFFFF;
+            transition: 0.85s;
         }
 
         img.stream_img {
@@ -181,6 +204,7 @@
 
         div.stream_text_focused {
             background-color: rgba(255, 255, 255, 0.85);
+            transition: 0.85s;
         }
 
         div.stream_channel,
@@ -228,6 +252,7 @@
         div.stream_info_focused {
             color: #000000;
             text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;
+            transition: 0.85s;
         }
 
         div.imput_text_box {
@@ -278,6 +303,7 @@
             background-color: #454545;
             border: 4px solid #FFFFFF;
             text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
+            transition: 0.5s;
         }
 
         .follower_header {
@@ -378,6 +404,7 @@
             vertical-align: middle;
             text-align: center;
             border: 3.5px solid rgba(0, 0, 0, 0);
+            transition: 0.5s;
         }
 
         div.info_dialogs {
@@ -454,6 +481,7 @@
             height: 48%;
             background-color: rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            transition: 0.5s;
         }
 
         div.topbar {
