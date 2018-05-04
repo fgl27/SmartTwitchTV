@@ -662,6 +662,36 @@ function Main_createEmptyCell(id) {
     return Main_td;
 }
 
+function Main_createCellChannel(id, idArray, valuesArray) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', idArray[4] + id);
+
+    Main_td.setAttribute(Main_DataAttribute, valuesArray[2]);
+    Main_td.setAttribute('data-id', valuesArray[1]);
+    Main_td.setAttribute('data-views', valuesArray[4]);
+    Main_td.setAttribute('data-followers', valuesArray[5]);
+
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = Main_ChannelHtml(id, idArray, valuesArray);
+
+    return Main_td;
+}
+
+function Main_replaceChannel(id, channel_name, valuesArray, ids) {
+    var splitedId = id.split(ids[5])[1];
+    id = document.getElementById(id);
+    id.setAttribute(Main_DataAttribute, channel_name);
+    id.innerHTML = Main_ChannelHtml(splitedId, ids, valuesArray);
+    id.setAttribute('id', ids[4] + splitedId);
+}
+
+function Main_ChannelHtml(id, idArray, valuesArray) {
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><img id="' + idArray[1] +
+        id + '" class="stream_img" data-src="' + valuesArray[3] + '"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text">' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div></div>';
+}
+
 function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
@@ -746,6 +776,25 @@ function Main_CheckMp4Html5() {
     } else result += "No video support at all, createElement video fail.";
 
     return result;
+}
+
+function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+    var id = y + '_' + x;
+    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.add(Main_classText);
+    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
+
+    Main_ready(function() {
+        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+    });
+
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
+
+function Main_removeFocusChannel(id, idArray) {
+    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
+    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
+    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
 }
 
 function Main_addFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTitleDiv, StreamGameDiv,
