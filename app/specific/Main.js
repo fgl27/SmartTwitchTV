@@ -295,9 +295,9 @@ function Main_Scrollbar(y, coloumns, total) {
 
         //If position are different it means previously animation didn't ended yet, stop it and force set the value
         if (currentPositon !== Main_nextScrollPositon) {
-            Main_ScrollbarElement.style.transition = 'none';
+            Main_ScrollbarElement.classList.remove('scrolltransition');
             Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
-            Main_ScrollbarElement.style.transition = '';
+            Main_ScrollbarElement.classList.add('scrolltransition');
         }
         Main_nextScrollPositon = nextPositon;
 
@@ -723,9 +723,9 @@ function Main_addFocusVideo(y, x, Thumbnail, ThumbnailDiv, DispNameDiv, StreamTi
     document.getElementById(ViwersDiv + y + '_' + x).classList.add(Main_classInfo);
     document.getElementById(QualityDiv + y + '_' + x).classList.add(Main_classInfo);
 
-    window.setTimeout(function() {
+    Main_ready(function() {
         Main_ScrollHelper(Thumbnail, y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
-    }, 10);
+    });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
@@ -750,9 +750,9 @@ function Main_addFocusVideoArray(y, x, idArray, screen, ColoumnsCount, itemsCoun
     document.getElementById(idArray[6] + id).classList.add(Main_classInfo);
     document.getElementById(idArray[7] + id).classList.add(Main_classInfo);
 
-    window.setTimeout(function() {
+    Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
-    }, 10);
+    });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
