@@ -1,5 +1,5 @@
 #!/bin/bash
-#code compressor using uglifyjs and sed, runs on linux shell base system
+#code compressor using uglifyjs, sed and cleancss, runs on linux shell base system
 
 #instalation of uglifyjs has more then one step
 #1# Donwload npm/node and https://nodejs.org/en/
@@ -15,9 +15,11 @@
 # now install uglifyjs via terminal
 # npm install uglify-js -g
 
-#installation of sed is via more used apt-get
+#installation of sed and cleancss is via more used apt-get
 
-#sudo apt-get install sed
+#sudo apt-get install sed cleancss
+
+# there is a nodejs version of cleancss but the bin works well with bash
 
 #exec this file or drag this .sh file to terminal to generate a released
 
@@ -51,6 +53,16 @@ else
 	echo -e "To install uglifyjs read the release maker notes on the top\\n";
 	echo -e ".js files not compressed.\\n"
 	exit;
+fi;
+
+# Exit if uglifyjs is not available
+cancleancss=1;
+if ! which 'cleancss' >/dev/null  ; then
+	echo -e "\\ncan't run cleancss it's not installed";
+	echo -e "Install using command:";
+	echo -e "sudo apt-get install cleancss\\n";
+	echo -e "Release wil work but it can be more compressed using cleancss"
+	cancleancss=0;
 fi;
 
 # this .sh folder used for cd back and for
@@ -138,6 +150,11 @@ rm -rf .tproject release/.tproject
 cd - &> /dev/null || exit;
 git stash &> /dev/null;
 
+# Compress using cleancss
+if [ "$cancleancss" == 1 ]; then
+	cleancss master.css -o master.css
+	cleancss release/githubio/css/font-awesome.css -o release/githubio/css/font-awesome.min.css
+fi;
 # Copy master.css to its place, it's the css content of index.html
 cp -rf master.css release/githubio/css/master.css
 rm -rf master.css;
