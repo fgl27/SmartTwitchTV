@@ -23,7 +23,6 @@ var Vod_game = '';
 var Vod_period = 'week';
 var Vod_periodNumber = 2;
 var Vod_isVod = false;
-var Vod_ChannelName = '';
 
 var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'svempty_', 'vgame'];
 var Vod_status = false;
@@ -99,7 +98,9 @@ function Vod_loadDataRequest() {
             Vod_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo + '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&sort=views&&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
+            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset +
+            '&sort=views&&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
@@ -280,9 +281,9 @@ function Vod_loadDataReplace() {
             Vod_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main_selectedChannel) + '/videos?limit=' +
-            Main_ItemsLimitReload + '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
-            Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
+            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset +
+            '&sort=views&&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
@@ -335,12 +336,13 @@ function Vod_loadDataSuccessReplace(responseText) {
             Vod_blankCellCount--;
             i--;
         } else {
-            Vod_replaceVideo(Vod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
-                video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                video.game, Main_addCommas(video.views) + STR_VIEWS,
-                Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                STR_DURATION + Play_timeS(video.length)
-            ]);
+            Vod_replaceVideo(Vod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' +
+                video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                    video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                    STR_DURATION + Play_timeS(video.length)
+                ]);
             Vod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -504,7 +506,7 @@ function Vod_handleKeyDown(event) {
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
             Svod_language = Svod_vodId[2];
             Svod_game = Svod_vodId[3];
-            Vod_ChannelName = Svod_vodId[4];
+            Main_selectedChannel = Svod_vodId[4];
             Svod_vodId = Svod_vodId[0].substr(1);
 
             Svod_title = '';

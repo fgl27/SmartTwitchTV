@@ -36,7 +36,6 @@ function PlayClip_Start() {
     PlayClip_IconsFocus();
 
     if (Main_UserName !== '') {
-        AddCode_userChannel = Main_selectedChannel_id;
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
         Play_showFallow();

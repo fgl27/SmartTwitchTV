@@ -153,7 +153,7 @@ function SChannels_loadDataSuccess(responseText) {
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
             if (SChannels_CellExists(channels.name)) coloumn_id--;
-            else row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers]));
+            else row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, channels._id, channels.logo, channels.display_name]));
         }
 
         for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
@@ -279,7 +279,7 @@ function SChannels_loadDataSuccessReplace(responseText) {
             SChannels_blankCellCount--;
             i--;
         } else {
-            SChannels_replaceCellEmpty(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name, channels.views, channels.followers], SChannels_ids);
+            SChannels_replaceCellEmpty(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
             SChannels_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -409,8 +409,6 @@ function SChannels_handleKeyDown(event) {
                 Main_selectedChannel_id = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-id');
                 Main_selectedChannelDisplayname = document.getElementById(SChannels_ids[3] + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
                 Main_selectedChannelLogo = document.getElementById(SChannels_ids[1] + SChannels_cursorY + '_' + SChannels_cursorX).src;
-                Main_selectedChannelViews = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-views');
-                Main_selectedChannelFallower = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-followers');
                 document.body.removeEventListener("keydown", SChannels_handleKeyDown);
                 Main_BeforeChannel = Main_SChannels;
                 Main_Go = Main_SChannelContent;

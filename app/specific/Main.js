@@ -34,8 +34,6 @@ var Main_BeforeAgameisSet = false;
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
-var Main_selectedChannelViews = '';
-var Main_selectedChannelFallower = '';
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
 var Main_gameSelected = '';
@@ -691,8 +689,6 @@ function Main_createCellChannel(id, idArray, valuesArray) {
 
     Main_td.setAttribute(Main_DataAttribute, valuesArray[0]);
     Main_td.setAttribute('data-id', valuesArray[1]);
-    Main_td.setAttribute('data-views', valuesArray[4]);
-    Main_td.setAttribute('data-followers', valuesArray[5]);
 
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Main_ChannelHtml(id, idArray, valuesArray);
@@ -706,8 +702,6 @@ function Main_replaceChannel(id, valuesArray, ids) {
 
     id.setAttribute(Main_DataAttribute, valuesArray[0]);
     id.setAttribute('data-id', valuesArray[1]);
-    id.setAttribute('data-views', valuesArray[4]);
-    id.setAttribute('data-followers', valuesArray[5]);
 
     id.innerHTML = Main_ChannelHtml(splitedId, ids, valuesArray);
     id.setAttribute('id', ids[4] + splitedId);

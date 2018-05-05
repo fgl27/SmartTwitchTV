@@ -54,13 +54,10 @@ var Play_selectedChannel = '';
 var Play_selectedChannelDisplayname = '';
 var Play_Panelcouner = 0;
 var Play_IsWarning = false;
-var Play_selectedChannelLogo = '';
 var Play_gameSelected = '';
 var Play_videojs = null;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
-var Play_selectedChannelViews = '';
-var Play_selectedChannelFallower = '';
 var Play_loadingDataTimeout = 3500;
 var Play_Lang = '';
 //Variable initialization end
@@ -161,14 +158,12 @@ function Play_updateStreamInfoStart() {
                     Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
                     document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play_gameSelected + STR_FOR +
                         Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang;
-                    Play_selectedChannelLogo = response.stream.channel.logo;
-                    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
+                    Main_selectedChannelLogo = response.stream.channel.logo;
+                    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
                     Play_created = response.stream.created_at;
                     Play_LoadLogoSucess = true;
-                    Play_selectedChannelViews = response.stream.channel.views;
-                    Play_selectedChannelFallower = response.stream.channel.followers;
+                    Main_selectedChannel_id = response.stream.channel._id;
                     if (Main_UserName !== '') {
-                        AddCode_userChannel = response.stream.channel._id;
                         AddCode_PlayRequest = true;
                         AddCode_CheckFallow();
                         Play_showFallow();
@@ -1041,11 +1036,7 @@ function Play_handleKeyDown(e) {
                         }
 
                         Main_selectedChannel = Play_selectedChannel;
-                        Main_selectedChannel_id = AddCode_userChannel;
                         Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
-                        Main_selectedChannelLogo = Play_selectedChannelLogo;
-                        Main_selectedChannelViews = Play_selectedChannelViews;
-                        Main_selectedChannelFallower = Play_selectedChannelFallower;
 
                         Main_ExitCurrent(Main_Go);
                         SChannelContent_UserChannels = AddCode_IsFallowing;
