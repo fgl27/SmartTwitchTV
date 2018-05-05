@@ -147,4 +147,5 @@ function pt_BRLang() {
         "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     ];
     STR_STARTED = "Começou ";
+    STR_VIDEOS = "Vídeo";
 }

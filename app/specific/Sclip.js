@@ -20,7 +20,7 @@ var Sclip_emptyContent = false;
 var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_'];
 var Sclip_status = false;
 var Sclip_cursor = null;
-var Sclip_periodNumber = 1;
+var Sclip_periodNumber = 2;
 var Sclip_period = 'week';
 var Sclip_Duration = 0;
 var Sclip_game = '';
@@ -39,7 +39,7 @@ function Sclip_init() {
     Main_cleanTopLabel();
     Sclip_SetPeriod();
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
     document.body.addEventListener("keydown", Sclip_handleKeyDown, false);
     Main_YRst(Sclip_cursorY);
     if (Sclip_status) {
@@ -85,19 +85,20 @@ function Sclip_loadDataPrepare() {
 }
 
 function Sclip_SetPeriod() {
-    if (!Sclip_periodNumber) {
+    if (Sclip_periodNumber === 1) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_DAY;
         Sclip_period = 'day';
-    } else if (Sclip_periodNumber === 1) {
+    } else if (Sclip_periodNumber === 2) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_WEEK;
         Sclip_period = 'week';
-    } else if (Sclip_periodNumber === 2) {
+    } else if (Sclip_periodNumber === 3) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_MONTH;
         Sclip_period = 'month';
-    } else if (Sclip_periodNumber === 3) {
+    } else if (Sclip_periodNumber === 4) {
         document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_ALL;
         Sclip_period = 'all';
     }
+    localStorage.setItem('sclip_periodNumber', Sclip_periodNumber);
 }
 
 function Sclip_loadDataRequest() {
@@ -461,7 +462,7 @@ function Sclip_handleKeyDown(event) {
         case KEY_CHANNELUP:
             if (!Sclip_loadingMore) {
                 Sclip_periodNumber++;
-                if (Sclip_periodNumber > 3) Sclip_periodNumber = 0;
+                if (Sclip_periodNumber > 4) Sclip_periodNumber = 1;
                 Sclip_SetPeriod();
                 Sclip_StartLoad();
             }
@@ -469,7 +470,7 @@ function Sclip_handleKeyDown(event) {
         case KEY_CHANNELDOWN:
             if (!Sclip_loadingMore) {
                 Sclip_periodNumber--;
-                if (Sclip_periodNumber < 0) Sclip_periodNumber = 3;
+                if (Sclip_periodNumber < 1) Sclip_periodNumber = 4;
                 Sclip_SetPeriod();
                 Sclip_StartLoad();
             }
