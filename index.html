@@ -531,6 +531,7 @@
     <script src="app/specific/SChannels.js" defer></script>
     <script src="app/specific/SChannelContent.js" defer></script>
     <script src="app/specific/Svod.js" defer></script>
+    <script src="app/specific/Vod.js" defer></script>
     <script src="app/specific/Sclip.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
@@ -562,7 +563,7 @@
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
                 <div id="top_bar_game" class="icon_center_label"></div>
-                <div id="id_agame_name" class="icon_top_label" style="text-align: center; line-height: 0;"></div>
+                <div id="top_bar_vod" class="icon_center_label"></div>
             </div>
         </div>
         <div id="scrollbar_size" class="scroll_size">
@@ -664,6 +665,9 @@
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <table id="stream_table_search_clip" class="streams_tables"></table>
+        <div class="screen_size"></div>
+        <!-- Prevent clip be display at the bottom do to end of body-->
+        <table id="stream_table_vod" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent clip be display at the bottom do to end of body-->
     </div>

@@ -20,6 +20,7 @@ var Main_Users = 14;
 var Main_UserChannels = 15;
 var Main_SChannels = 16;
 var Main_addCode = 17;
+var Main_Vod = 18;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -193,6 +194,7 @@ function Main_initWindows() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
     document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
     document.getElementById('game_button').innerHTML = STR_GAMES;
     document.getElementById('live_button').innerHTML = STR_LIVE;
@@ -210,6 +212,12 @@ function Main_initWindows() {
     Main_AddCodeInput = document.getElementById("oauth_input");
 
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+    Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
+    Svod_highlight = (localStorage.getItem('Svod_highlight') || 'false') === 'true' ? true : false;
+
+    Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
+    Sclip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
+
     Main_ready(function() {
 
         Play_PreStart();
@@ -447,6 +455,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_usergames) UserGames_init();
     else if (Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_Go === Main_SChannels) SChannels_init();
+    else if (Main_Go === Main_Vod) Vod_init();
     else Live_init();
 }
 
@@ -486,6 +495,7 @@ function Main_RestoreTopLabel() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
 }
 
 function Main_cleanTopLabel() {
@@ -493,6 +503,7 @@ function Main_cleanTopLabel() {
     Main_empty('label_switch');
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
+    Main_empty('top_bar_vod');
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
 }
 

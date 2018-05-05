@@ -26,7 +26,6 @@ function SChannelContent_init() {
     Main_cleanTopLabel();
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
-    Main_empty('id_agame_name');
     document.body.addEventListener("keydown", SChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
     if (SChannelContent_status) {
