@@ -67,7 +67,6 @@ function PlayVod_Start() {
     document.getElementById("stream_live_time").innerHTML = Svod_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
     if (Main_UserName !== '') {
-        AddCode_userChannel = Main_selectedChannel_id;
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
         Play_showFallow();
@@ -97,7 +96,7 @@ function PlayVod_updateStreamInfo() {
     try {
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Vod_ChannelName, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_selectedChannel, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -107,8 +106,14 @@ function PlayVod_updateStreamInfo() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     var users = JSON.parse(xmlHttp.responseText).users[0];
-                    if (users !== undefined) Play_LoadLogo(document.getElementById('stream_info_icon'), users.logo);
-                    else Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
+                    if (users !== undefined) {
+                        Main_selectedChannelLogo = users.logo;
+                        Main_selectedChannel_id = users._id;
+                    } else {
+                        Main_selectedChannelLogo = IMG_404_LOGO;
+                        Main_selectedChannel_id = '';
+                    }
+                    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
                     return;
                 } else {
                     PlayVod_updateStreamInfoError();

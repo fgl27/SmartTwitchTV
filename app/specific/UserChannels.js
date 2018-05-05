@@ -117,8 +117,8 @@ function UserChannels_loadChannelLive(responseText) {
             x = 0;
 
         for (x; x < response_items; x++) {
-            ChannelTemp = response[x].channel.name + ',' + response[x].channel._id + ',' + response[x].channel.logo +
-                ',' + response[x].channel.display_name + ',' + response[x].channel.views + ',' + response[x].channel.followers;
+            ChannelTemp = response[x].channel.name + ',' + response[x].channel._id + ',' +
+                response[x].channel.logo + ',' + response[x].channel.display_name;
             if (UserChannels_List.indexOf(ChannelTemp) === -1) UserChannels_List.push(ChannelTemp);
         }
 
@@ -308,8 +308,6 @@ function UserChannels_handleKeyDown(event) {
             if (!UserChannels_loadingMore) {
                 Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
                 Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
-                Main_selectedChannelViews = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-views');
-                Main_selectedChannelFallower = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-followers');
                 Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
                     '_' + UserChannels_cursorX).textContent;
                 Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
