@@ -105,7 +105,7 @@ function Clip_loadDataRequest() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitVideo +
             '&period=' + encodeURIComponent(Clip_period) +
-            (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
+            (Clip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Clip_cursor)) +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Clip_loadingDataTimeout;
