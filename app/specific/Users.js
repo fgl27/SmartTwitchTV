@@ -247,7 +247,9 @@ function Users_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Main_Go = Main_Live;
+                if (Main_Before === Main_Users) Main_Go = Main_Live;
+                else Main_Go = Main_Before;
+                Main_Before = Main_Users;
                 Users_exit();
                 Main_SwitchScreen();
             }
