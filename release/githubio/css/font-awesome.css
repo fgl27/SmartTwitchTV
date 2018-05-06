@@ -102,9 +102,9 @@
 .icon-speedometer:before {
   content: "\66";
 }
-.icon-calendar:before {
-  content: "\72";
-}
 .icon-refresh:before {
   content: "\73";
+}
+.icon-calendar:before {
+  content: "\67";
 }
