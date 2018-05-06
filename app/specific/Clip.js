@@ -416,7 +416,9 @@ function Clip_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_Before;
+                if (Main_Before === Main_Clip) Main_Go = Main_Live;
+                else Main_Go = Main_Before;
+                Main_Before = Main_Clip;
                 Clip_exit();
                 Main_SwitchScreen();
             }

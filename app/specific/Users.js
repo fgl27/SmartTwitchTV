@@ -243,9 +243,8 @@ function Users_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Users_isRemoveDialogShown()) {
-                Users_HideRemoveDialog();
-            } else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_Live;
