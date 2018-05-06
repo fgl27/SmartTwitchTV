@@ -22,6 +22,10 @@ var PlayVod_loadingDataTryMax = 10;
 var PlayVod_isOn = false;
 var PlayVod_offsettime = 0;
 
+var PlayVod_loadingInfoDataTry = 0;
+var PlayVod_loadingInfoDataTryMax = 15;
+var PlayVod_loadingInfoDataTimeout = 10000;
+
 var PlayVod_qualityName = [];
 var PlayVod_qualityLinks = [];
 var PlayVod_qualityCount = 0;
@@ -49,7 +53,13 @@ function PlayVod_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+    if (!Vod_isVod) Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+    else {
+        PlayVod_loadingInfoDataTry = 0;
+        PlayVod_loadingInfoDataTryMax = 15;
+        PlayVod_loadingInfoDataTimeout = 10000;
+        PlayVod_updateStreamInfo();
+    }
     document.getElementById("stream_info_name").innerHTML = Main_selectedChannelDisplayname;
     document.getElementById("stream_info_title").innerHTML = Svod_title;
     document.getElementById("stream_info_game").innerHTML = Svod_views + ', [' + (Svod_language).toUpperCase() + ']';
@@ -57,12 +67,10 @@ function PlayVod_Start() {
     document.getElementById("stream_live_time").innerHTML = Svod_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
     if (Main_UserName !== '') {
-        AddCode_userChannel = Main_selectedChannel_id;
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
-    document.getElementById('scene2_game').classList.remove('hide');
 
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -81,6 +89,57 @@ function PlayVod_Start() {
     Play_jumping = false;
     PlayVod_isOn = true;
     PlayVod_loadData();
+}
+
+function PlayVod_updateStreamInfo() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_selectedChannel, true);
+        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    var users = JSON.parse(xmlHttp.responseText).users[0];
+                    if (users !== undefined) {
+                        Main_selectedChannelLogo = users.logo;
+                        Main_selectedChannel_id = users._id;
+                    } else {
+                        Main_selectedChannelLogo = IMG_404_LOGO;
+                        Main_selectedChannel_id = '';
+                    }
+                    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+                    return;
+                } else {
+                    PlayVod_updateStreamInfoError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        PlayVod_updateStreamInfoError();
+    }
+}
+
+function PlayVod_updateStreamInfoError() {
+    PlayVod_loadingInfoDataTry++;
+    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+        PlayVod_loadingInfoDataTimeout += 2000;
+        PlayVod_updateStreamInfo();
+    } else Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
+}
+
+function PlayVod_updateStreamInfoEndError() {
+    PlayVod_loadingInfoDataTry++;
+    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+        PlayVod_loadingInfoDataTimeout += 2000;
+        PlayVod_updateStreamInfoend();
+    }
 }
 
 function PlayVod_Resume() {
@@ -360,6 +419,7 @@ function PlayVod_PreshutdownStream() {
     Play_ClearPlayer();
     PlayVod_ClearVod();
     PlayVod_isOn = false;
+    Vod_isVod = false;
 }
 
 function PlayVod_ClearVod() {
@@ -372,7 +432,6 @@ function PlayVod_ClearVod() {
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
     PlayVod_PlayerCheckQualityChanged = false;
-    document.getElementById('scene2_game').classList.add('hide');
 }
 
 function PlayVod_hidePanel() {

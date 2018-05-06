@@ -488,11 +488,14 @@ function AGame_handleKeyDown(event) {
             if (!AGame_loadingMore) AGame_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_Live;
+            Main_Before = Main_aGame;
+            Main_Go = Main_Vod;
+            Main_OldgameSelected = Main_gameSelected;
             AGame_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
+            Main_Before = Main_aGame;
             Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
             AGame_exit();
             Main_SwitchScreen();

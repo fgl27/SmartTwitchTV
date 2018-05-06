@@ -438,7 +438,7 @@ function Live_handleKeyDown(event) {
         case KEY_CHANNELDOWN:
             if (!Live_loadingMore) {
                 Main_Before = Main_Live;
-                Main_Go = Main_games;
+                Main_Go = Main_Vod;
                 Live_exit();
                 Main_SwitchScreen();
             }

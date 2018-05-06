@@ -403,7 +403,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_CHANNELUP:
             Main_Before = Main_games;
-            Main_Go = Main_Live;
+            Main_Go = Main_Vod;
             Games_exit();
             Main_SwitchScreen();
             break;
