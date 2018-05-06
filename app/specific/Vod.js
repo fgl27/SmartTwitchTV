@@ -419,8 +419,7 @@ function Vod_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (Main_Go === Main_Before || Main_Before === Main_aGame || Main_Before === Main_Search) Main_Go = Main_games;
-                else Main_Go = Main_Before;
+                Main_Go = Main_Before;
                 Games_exit();
                 Main_SwitchScreen();
                 Vod_exit();
