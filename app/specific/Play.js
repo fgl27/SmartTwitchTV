@@ -81,6 +81,7 @@ function Play_PreStart() {
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
         '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>';
+    document.getElementById('scene2_speed').style.display = 'none';
 }
 
 function Play_Start() {
