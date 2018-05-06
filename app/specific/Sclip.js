@@ -460,6 +460,8 @@ function Sclip_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
+            Sclip_StartLoad();
+            break;
         case KEY_CHANNELUP:
             if (!Sclip_loadingMore) {
                 Sclip_periodNumber++;

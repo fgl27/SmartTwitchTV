@@ -106,7 +106,7 @@ function AddUser_KeyboardEvent(event) {
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-                AddUser_Username = Main_AddUserInput.value;
+                AddUser_Username = 'fglfgl27'; //Main_AddUserInput.value;
 
                 if (!AddUser_UserCodeExist(AddUser_Username)) {
                     AddUser_loadingDataTry = 0;
