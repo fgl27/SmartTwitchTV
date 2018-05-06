@@ -10,10 +10,12 @@ var Search_isSearching = false;
 function Search_init() {
     Main_HideWarningDialog();
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_empty('label_search');
-    Main_empty('label_switch');
-    Main_empty('top_bar_live');
-    Main_empty('top_bar_game');
+    document.getElementById('label_search').style.display = 'none';
+    document.getElementById('label_switch').style.display = 'none';
+    document.getElementById('top_bar_live').style.display = 'none';
+    document.getElementById('top_bar_game').style.display = 'none';
+    document.getElementById('top_bar_vod').style.display = 'none';
+    document.getElementById('top_bar_clip').style.display = 'none';
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
@@ -30,13 +32,15 @@ function Search_exit() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_Go = Main_BeforeSearch;
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
-    document.getElementById('top_bar_live').innerHTML = STR_LIVE;
+    document.getElementById('label_search').style.display = 'block';
+    document.getElementById('label_switch').style.display = 'block';
+    document.getElementById('top_bar_live').style.display = 'inline-block';
+    document.getElementById('top_bar_game').style.display = 'inline-block';
+    document.getElementById('top_bar_vod').style.display = 'inline-block';
+    document.getElementById('top_bar_clip').style.display = 'inline-block';
     document.getElementById('top_bar_user').innerHTML = STR_USER;
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_SearchInput.value = '';
 }
 
