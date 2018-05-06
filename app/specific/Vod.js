@@ -36,7 +36,7 @@ function Vod_init() {
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + ' (C)');
-    Main_IconLoad('label_controls', 'icon-switch', STR_SWITCH_CLIP + STR_GUIDE);
+    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + STR_GUIDE);
 
     Main_YRst(Vod_cursorY);
     if (Vod_status) {

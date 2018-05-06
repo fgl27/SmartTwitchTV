@@ -40,7 +40,7 @@ function Sclip_init() {
     Main_cleanTopLabel();
     Sclip_SetPeriod();
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+    Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
     document.body.addEventListener("keydown", Sclip_handleKeyDown, false);
     Main_YRst(Sclip_cursorY);
     if (Sclip_status) {
