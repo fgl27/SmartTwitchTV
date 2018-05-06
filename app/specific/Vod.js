@@ -337,13 +337,13 @@ function Vod_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Vod_replaceVideo(Vod_blankCellVector[i],
-            video._id + ',' + video.length + ',' + video.language + ',' +
-                    video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
-                        video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                        video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                        Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                        STR_DURATION + Play_timeS(video.length)
-                    ]);
+                video._id + ',' + video.length + ',' + video.language + ',' +
+                video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                    video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                    STR_DURATION + Play_timeS(video.length)
+                ]);
             Vod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);

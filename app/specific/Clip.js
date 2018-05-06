@@ -174,9 +174,8 @@ function Clip_loadDataSuccess(responseText) {
                     video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
                     video.broadcaster.logo.replace("150x150", "300x300") +
-                    ',' + video.broadcaster.id,
-                     [video.thumbnails.medium, video.broadcaster.display_name,
-                     STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    ',' + video.broadcaster.id, [video.thumbnails.medium, video.broadcaster.display_name,
+                        STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_PLAYING + video.game,
                         Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration),
                         '[' + video.language.toUpperCase() + ']'
