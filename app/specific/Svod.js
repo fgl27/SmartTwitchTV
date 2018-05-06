@@ -37,7 +37,7 @@ function Svod_init() {
     Main_Go = Main_Svod;
     if (Main_selectedChannel !== Svod_lastselectedChannel) Svod_status = false;
     Main_cleanTopLabel();
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_GUIDE);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_KEY_UP_DOWN);
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
     document.body.addEventListener("keydown", Svod_handleKeyDown, false);
     Main_YRst(Svod_cursorY);
@@ -473,13 +473,15 @@ function Svod_handleKeyDown(event) {
             break;
         case KEY_CHANNELUP:
         case KEY_CHANNELDOWN:
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
             if (!Svod_loadingMore) {
                 Svod_highlight = !Svod_highlight;
                 localStorage.setItem('Svod_highlight', Svod_highlight ? 'true' : 'false');
                 Svod_StartLoad();
             }
+            break;
+        case KEY_INFO:
+        case KEY_CHANNELGUIDE:
+            if (!Svod_loadingMore) Svod_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

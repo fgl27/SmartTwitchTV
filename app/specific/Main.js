@@ -490,6 +490,7 @@ function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
@@ -498,7 +499,7 @@ function Main_RestoreTopLabel() {
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_empty('label_switch');
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
