@@ -418,7 +418,6 @@ function Clip_handleKeyDown(event) {
             else {
                 if (Main_Before === Main_Clip) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
-                Main_Before = Main_Clip;
                 Clip_exit();
                 Main_SwitchScreen();
             }
