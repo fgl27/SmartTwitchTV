@@ -21,7 +21,6 @@ var Clip_status = false;
 var Clip_cursor = null;
 var Clip_periodNumber = 2;
 var Clip_period = 'week';
-var Clip_lastselectedChannel = '';
 var Clip_itemsCountCheck = false;
 var Clip_loadingMore = false;
 //Variable initialization end
@@ -208,7 +207,7 @@ function Clip_createCellVideo(clip_id, id, valuesArray) {
     Main_td.setAttribute('id', Clip_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, clip_id);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = Clip_VideoHtml(id, Clip_ids, valuesArray);
+    Main_td.innerHTML = Clip_VideoHtml(id, valuesArray);
 
     return Main_td;
 }
@@ -217,11 +216,11 @@ function Clip_replaceVideo(id, clip_id, valuesArray) {
     var splitedId = id.split(Clip_ids[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, clip_id);
-    id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
+    id.innerHTML = Clip_VideoHtml(splitedId, valuesArray);
     id.setAttribute('id', Clip_ids[8] + splitedId);
 }
 
-function Clip_VideoHtml(id, Clip_ids, valuesArray) {
+function Clip_VideoHtml(id, valuesArray) {
     return '<div id="' + Clip_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + Clip_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + Clip_ids[2] + id + '" class="stream_text">' +

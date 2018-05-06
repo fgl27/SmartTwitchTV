@@ -15,11 +15,8 @@ var Vod_LastClickFinish = true;
 var Vod_keyClickDelayTime = 25;
 var Vod_ReplacedataEnded = false;
 var Vod_MaxOffset = 0;
-var Vod_DurationSeconds = 0;
 var Vod_emptyContent = false;
 var Vod_itemsCountCheck = false;
-var Vod_language = '';
-var Vod_game = '';
 var Vod_period = 'week';
 var Vod_periodNumber = 2;
 var Vod_isVod = false;
@@ -211,7 +208,7 @@ function Vod_replaceVideo(id, vod_id, valuesArray) {
     splitedId = id.split(Vod_ids[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, vod_id);
-    id.innerHTML = Main_VideoHtml(splitedId, valuesArray);
+    id.innerHTML = Vod_VideoHtml(splitedId, valuesArray);
     id.setAttribute('id', Vod_ids[8] + splitedId);
 }
 
@@ -275,15 +272,14 @@ function Vod_loadDataReplace() {
         Main_SetItemsLimitReload(Vod_blankCellCount);
 
         var offset = Vod_itemsCount + Vod_itemsCountOffset;
-
         if (offset && offset > (Vod_MaxOffset - 1)) {
             offset = Vod_MaxOffset - Main_ItemsLimitReload;
             Vod_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
-            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset +
-            '&sort=views&&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
+            '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
@@ -330,9 +326,8 @@ function Vod_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Vod_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) {
-            i--;
-        } else if (Vod_CellExists(video._id)) {
+        if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) i--;
+        else if (Vod_CellExists(video._id)) {
             Vod_blankCellCount--;
             i--;
         } else {

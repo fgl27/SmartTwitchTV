@@ -207,7 +207,7 @@ function Sclip_createCellVideo(clip_id, id, valuesArray) {
     Main_td.setAttribute('id', Sclip_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, clip_id);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = Sclip_VideoHtml(id, Sclip_ids, valuesArray);
+    Main_td.innerHTML = Sclip_VideoHtml(id, valuesArray);
 
     return Main_td;
 }
@@ -216,11 +216,11 @@ function Sclip_replaceVideo(id, clip_id, valuesArray) {
     var splitedId = id.split(Sclip_ids[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, clip_id);
-    id.innerHTML = Main_VideoHtml(splitedId, Live_ids, valuesArray);
+    id.innerHTML = Sclip_VideoHtml(splitedId, valuesArray);
     id.setAttribute('id', Sclip_ids[8] + splitedId);
 }
 
-function Sclip_VideoHtml(id, Sclip_ids, valuesArray) {
+function Sclip_VideoHtml(id, valuesArray) {
     return '<div id="' + Sclip_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + Sclip_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + Sclip_ids[2] + id + '" class="stream_text">' +
