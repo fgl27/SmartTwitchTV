@@ -32,7 +32,7 @@ function Clip_init() {
     document.getElementById('top_bar_clip').classList.add('icon_center_focus');
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ' (C)');
-    Main_IconLoad('label_controls', 'icon-switch', STR_SWITCH_CLIP + STR_GUIDE);
+    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + STR_GUIDE);
 
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     Main_YRst(Clip_cursorY);
