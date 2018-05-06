@@ -330,10 +330,17 @@ function Clip_loadDataSuccessReplace(responseText) {
             Clip_blankCellCount--;
             i--;
         } else {
-            Clip_replaceVideo(Clip_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
-                video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
-            ]);
+            Clip_replaceVideo(Clip_blankCellVector[i],
+                video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
+                video.duration + ',' + video.game + ',' + video.broadcaster.name +
+                ',' + video.broadcaster.display_name + ',' +
+                video.broadcaster.logo.replace("150x150", "300x300") +
+                ',' + video.broadcaster.id, [video.thumbnails.medium, video.broadcaster.display_name,
+                    STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    video.title + STR_BR + STR_PLAYING + video.game,
+                    Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration),
+                    '[' + video.language.toUpperCase() + ']'
+                ]);
 
             Clip_blankCellCount--;
 

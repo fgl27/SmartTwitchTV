@@ -17,7 +17,7 @@ var Sclip_MaxOffset = 0;
 var Sclip_DurationSeconds = 0;
 var Sclip_emptyContent = false;
 
-var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_'];
+var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_', 'sp_lang'];
 var Sclip_status = false;
 var Sclip_cursor = null;
 var Sclip_periodNumber = 2;
@@ -176,7 +176,8 @@ function Sclip_loadDataSuccess(responseText) {
                     video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
                     video.duration + ',' + video.game, [video.thumbnails.medium,
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), video.game,
-                        Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration)
+                        Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration),
+                        '[' + video.language.toUpperCase() + ']'
                     ]));
             }
         }
@@ -223,7 +224,9 @@ function Sclip_VideoHtml(id, Sclip_ids, valuesArray) {
     return '<div id="' + Sclip_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + Sclip_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
         '<div id="' + Sclip_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + Sclip_ids[3] + id + '" class="stream_info" style="font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + Sclip_ids[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + Sclip_ids[10] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[6] + '</div>' +
         '<div id="' + Sclip_ids[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
         '<div id="' + Sclip_ids[7] + id + '"class="stream_info" style="width:39%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
@@ -328,7 +331,8 @@ function Sclip_loadDataSuccessReplace(responseText) {
         } else {
             Sclip_replaceVideo(Sclip_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
                 video.title, video.game, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration)
+                Main_addCommas(video.views) + STR_VIEWER, STR_DURATION + Play_timeS(video.duration),
+                '[' + video.language.toUpperCase() + ']'
             ]);
 
             Sclip_blankCellCount--;
@@ -354,6 +358,7 @@ function Sclip_addFocus() {
     document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
     document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
     document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
+    document.getElementById(Sclip_ids[10] + Sclip_cursorY + '_' + Sclip_cursorX).classList.add('stream_info_focused');
 
     window.setTimeout(function() {
         Main_ScrollHelper(Sclip_ids[0], Sclip_cursorY, Sclip_cursorX, Main_Sclip, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
@@ -379,6 +384,7 @@ function Sclip_removeFocus() {
     document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
     document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
     document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
+    document.getElementById(Sclip_ids[10] + Sclip_cursorY + '_' + Sclip_cursorX).classList.remove('stream_info_focused');
 }
 
 function Sclip_keyClickDelay() {
@@ -489,11 +495,12 @@ function Sclip_handleKeyDown(event) {
             Main_gameSelected = Sclip_playUrl[2];
             Sclip_playUrl = Sclip_playUrl[0];
 
-            Sclip_Duration = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
-            Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_title = document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_createdAt = document.getElementById(Sclip_ids[4] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_game = document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_Duration = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_language = document.getElementById(Sclip_ids[10] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_openStream();
             break;
         case KEY_RED:
