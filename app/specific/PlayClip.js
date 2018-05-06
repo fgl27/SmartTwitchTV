@@ -390,6 +390,7 @@ function PlayClip_handleKeyDown(e) {
                         Main_BeforeChannelisSet = true;
                     }
 
+                    Main_ExitCurrent(Main_Go);
                     Main_Go = Main_SChannelContent;
                     Play_CleanHideExit();
                     window.setTimeout(PlayClip_shutdownStream, 10);
