@@ -474,6 +474,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_usergames) UserGames_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SChannels) SChannels_exit();
+    else if (ExitCurrent === Main_Vod) Vod_exit();
 }
 
 function Main_openStream() {

@@ -488,7 +488,7 @@ function AGame_handleKeyDown(event) {
             if (!AGame_loadingMore) AGame_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_Live;
+            Main_Go = Main_Vod;
             AGame_exit();
             Main_SwitchScreen();
             break;
