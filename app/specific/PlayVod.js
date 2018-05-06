@@ -71,7 +71,6 @@ function PlayVod_Start() {
         AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
-    document.getElementById('scene2_game').classList.remove('hide');
 
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -433,7 +432,6 @@ function PlayVod_ClearVod() {
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
     PlayVod_PlayerCheckQualityChanged = false;
-    document.getElementById('scene2_game').classList.add('hide');
 }
 
 function PlayVod_hidePanel() {

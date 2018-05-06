@@ -96,7 +96,6 @@ function Play_Start() {
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_timeS(0) + STR_AGO;
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
-    document.getElementById('scene2_game').classList.remove('hide');
 
     Play_IsWarning = false;
     Play_loadingInfoDataTry = 0;
@@ -560,7 +559,6 @@ function Play_ClearPlay() {
     Play_PlayerCheckOffset = 0;
     Play_RestoreFromResume = false;
     Play_PlayerCheckQualityChanged = false;
-    document.getElementById('scene2_game').classList.add('hide');
 }
 
 function Play_hideFallow() {

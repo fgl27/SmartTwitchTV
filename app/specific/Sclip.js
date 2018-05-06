@@ -171,7 +171,8 @@ function Sclip_loadDataSuccess(responseText) {
             if (Sclip_CellExists(video.tracking_id)) coloumn_id--;
             else {
                 row.appendChild(Sclip_createCell(row_id, row_id + '_' + coloumn_id,
-                    video.thumbnails.medium.split('-preview')[0] + '.mp4' + video.duration, [video.thumbnails.medium,
+                    video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
+                    video.duration + ',' + video.game, [video.thumbnails.medium,
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at), video.game,
                         Main_addCommas(video.views) + STR_VIEWS, STR_DURATION + Play_timeS(video.duration)
                     ]));
@@ -479,9 +480,10 @@ function Sclip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute(Main_DataAttribute).split('.mp4');
+            Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute(Main_DataAttribute).split(',');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
-            Sclip_playUrl = Sclip_playUrl[0] + '.mp4';
+            Main_gameSelected = Sclip_playUrl[2];
+            Sclip_playUrl = Sclip_playUrl[0];
 
             Sclip_Duration = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
