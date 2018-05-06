@@ -208,7 +208,7 @@ function Svod_replaceVideo(id, vod_id, valuesArray) {
     splitedId = id.split(Svod_ids[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, vod_id);
-    id.innerHTML = Main_VideoHtml(splitedId, valuesArray);
+    id.innerHTML = Svod_VideoHtml(splitedId, valuesArray);
     id.setAttribute('id', Svod_ids[8] + splitedId);
 }
 
