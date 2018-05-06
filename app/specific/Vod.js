@@ -422,7 +422,6 @@ function Vod_handleKeyDown(event) {
             else {
                 if (Main_Before === Main_Vod) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
-                Main_Before = Main_Vod;
                 Vod_exit();
                 Main_SwitchScreen();
             }
