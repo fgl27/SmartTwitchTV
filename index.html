@@ -371,7 +371,6 @@
 
         div.playmulti {
             border-radius: 4px;
-            width: auto;
             display: inline-block;
             background-color: rgba(255, 255, 255, 0.6);
         }
@@ -399,13 +398,13 @@
         }
 
         div.playbotton {
+            display: inline-block;
             box-sizing: border-box;
-            position: absolute;
-            bottom: 0;
             height: 43px;
             border-radius: 12px;
             vertical-align: middle;
             text-align: center;
+            margin-right: 1%;
             border: 3.5px solid rgba(0, 0, 0, 0);
         }
 
@@ -696,11 +695,33 @@
                     <div id="stream_info_game"></div>
                 </div>
             </div>
-            <div style="z-order:-100; position: absolute; bottom: 0; width: 100%; height: 53px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040));">
-            </div>
-            <div id="scene2_quality" class="playbotton" style="z-order:2; right: 2%; width: 27%;">
-                <div style="float: right; width: 100%; text-align: left; vertical-align: middle; height: auto; display: inline-block;">
-                    <div id="quality_video" style="padding-left: 2%; vertical-align: middle; display: inline-block">
+            <div style="z-order:-100; position: absolute; bottom: 0; width: 100%; height: 53px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040)); text-align: center;">
+                <div id="scene2_search" class="playbotton" style="z-order:6; width: 12%;">
+                    <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
+                        <i class="icon-search strokicon"></i>
+                    </div>
+                    <div id="scene2_search_text" class="strokedextramini playbottontext"></div>
+                </div>
+                <div id="scene2_channel" class="playbotton" style="z-order:5; width: 19%;">
+                    <div id="channel_icon" style="vertical-align: middle; display: inline-block">
+                        <i class="icon-filmstrip strokicon"></i>
+                    </div>
+                    <div id="scene2_channel_text" class="strokedextramini playbottontext"></div>
+                </div>
+                <div id="scene2_game" class="playbotton" style="z-order:5; width: 18%;">
+                    <div id="game_icon" style="vertical-align: middle; display: inline-block">
+                        <i class="icon-gamepad strokicon" style="font-size: 238%;"></i>
+                    </div>
+                    <div id="scene2_game_text" class="strokedextramini playbottontext"></div>
+                </div>
+                <div id="scene2_heart" class="playbotton" style="z-order:3; width: 15%;">
+                    <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
+                        <i class="icon-heart-o strokicon"></i>
+                    </div>
+                    <div id="fallow_text" class="strokedextramini playbottontext"></div>
+                </div>
+                <div id="scene2_quality" class="playbotton" style="z-order:2; width: 28%; margin-right: 0;">
+                    <div id="quality_video" style="vertical-align: middle; display: inline-block">
                         <i class="icon-videocamera strokicon"></i>
                     </div>
                     <div id="quality_arrows" style="height: auto; display: inline-block;">&nbsp;
@@ -709,12 +730,10 @@
                             <div id="quality_arrow_down" class="down"></div>
                         </div>&nbsp;&nbsp;
                     </div>
-                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%;"></div>
+                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%; width: 80%;"></div>
                 </div>
-            </div>
-            <div id="scene2_speed" class="playbotton hide" style="z-order:2; right: 6%; width: 19%;">
-                <div style="float: right; width: 100%; text-align: left; vertical-align: middle; height: auto; display: inline-block;">
-                    <div id="spped_icon" style="padding-left: 12%; vertical-align: middle; display: inline-block">
+                <div id="scene2_speed" class="playbotton" style="z-order:2; width: 18%; margin-right: 0;">
+                    <div id="spped_icon" style="vertical-align: middle; display: inline-block">
                         <i class="icon-speedometer strokicon" style="font-size: 225%;"></i>
                     </div>
                     <div id="speed_arrows" style="height: auto; display: inline-block;">&nbsp;
@@ -723,32 +742,8 @@
                             <div id="speed_arrow_down" class="down"></div>
                         </div>&nbsp;&nbsp;
                     </div>
-                    <div id="speed_name" class="strokedextramini playmulti" style="font-size: 205%;"></div>
+                    <div id="speed_name" class="strokedextramini playmulti" style="font-size: 205%; width: 55%;"></div>
                 </div>
-            </div>
-            <div id="scene2_heart" class="playbotton" style="z-order:3; left: 55.5%; width: 13%;">
-                <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
-                    <i class="icon-heart-o strokicon"></i>
-                </div>
-                <div id="fallow_text" class="strokedextramini playbottontext"></div>
-            </div>
-            <div id="scene2_game" class="playbotton" style="z-order:5; left: 36%; width: 18%;">
-                <div id="game_icon" style="vertical-align: middle; display: inline-block">
-                    <i class="icon-gamepad strokicon" style="font-size: 238%;"></i>
-                </div>
-                <div id="scene2_game_text" class="strokedextramini playbottontext"></div>
-            </div>
-            <div id="scene2_channel" class="playbotton" style="z-order:5; left: 15%; width: 19%;">
-                <div id="channel_icon" style="vertical-align: middle; display: inline-block">
-                    <i class="icon-filmstrip strokicon"></i>
-                </div>
-                <div id="scene2_channel_text" class="strokedextramini playbottontext"></div>
-            </div>
-            <div id="scene2_search" class="playbotton" style="z-order:6; left: 2%; width: 12%;">
-                <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
-                    <i class="icon-search strokicon"></i>
-                </div>
-                <div id="scene2_search_text" class="strokedextramini playbottontext"></div>
             </div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; top: 4%; width: 100%; height : 50%; z-index: 2;">

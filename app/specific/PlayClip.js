@@ -90,13 +90,13 @@ function PlayClip_Resume() {
 }
 
 function PlayClip_SetInfo() {
-    document.getElementById('scene2_quality').classList.add('hide');
-    document.getElementById('scene2_speed').classList.remove('hide');
+    document.getElementById('scene2_quality').style.display = 'none';
+    document.getElementById('scene2_speed').style.display = 'inline-block';
 }
 
 function PlayClip_UnSetInfo() {
-    document.getElementById('scene2_speed').classList.add('hide');
-    document.getElementById('scene2_quality').classList.remove('hide');
+    document.getElementById('scene2_quality').style.display = 'inline-block';
+    document.getElementById('scene2_speed').style.display = 'none';
 }
 
 function PlayClip_PlayerCheck() {
