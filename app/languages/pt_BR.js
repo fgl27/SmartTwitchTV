@@ -79,11 +79,11 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_5 = "Forçar Encerramento  do aplicativo (caso necessário): Pressione retornar até o aplicativo seja encerrado.";
     STR_CONTROLS_MAIN_6 = "Alternar entre Telas: CH Cima (Tela da Direita) ou CH Baixo (Tela da Esquerda).";
     STR_CONTROLS_MAIN_7 = "Algumas telas irão atualizar o conteúdo (como as Transmissões Anteriores, por exemplo), ao invés de mudarem completamente.";
-    STR_CONTROLS_MAIN_8 = "Voltar para Ao Vivo: Botão Verde(B)";
+    STR_CONTROLS_MAIN_8 = "Voltar para Ao Vivo: Botão Verde (B)";
     STR_CONTROLS_MAIN_9 = "Pesquisar: Botão Azul(D)";
     STR_CONTROLS_MAIN_10 = "Após inserir o conteúdo da busca, pressione retornar ou clique em CONCLUÍDO e use as Setas Direcionais (esquerda/direita) para escolher o tipo de busca. Pressione a tecla selecionar ou PLAY/PAUSE para confirmar.";
-    STR_CONTROLS_MAIN_11 = "Controles: Botão Amarelo(C)";
-    STR_CONTROLS_MAIN_12 = "Sobre: Botão Vermelho(A)";
+    STR_CONTROLS_MAIN_11 = "Controles: Botão Amarelo (C)";
+    STR_CONTROLS_MAIN_12 = "Sobre: Botão Vermelho (A)";
     STR_ABOUT_INFO_1 = "Este é um aplicativo não oficial do Twitch.TV, desenvolvido por um individuo no seu tempo livre, feito para TVs que não possuem uma versão oficial. Seu uso é gratuito.";
     STR_ABOUT_INFO_2 = "Em 99% das vezes, o aplicativo se atualizará sozinho para adicionar correções e novas funções. O aplicativo avisará ao usuário quando houver necessidade de ser atualizado manualmente (através de uma nova instalação pelo computador no caso ter ter usado o computar pra instalar).";
     STR_ABOUT_INFO_3 = "Sobre o Desenvolvedor:";
@@ -102,7 +102,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_10 = "Brilho do Chat (Se o chat esta visível): Setas Direcionais (esquerda/direita).";
     STR_CONTROLS_PLAY_11 = "Forçar atualização do Chat (caso necessário): Pressione a tecla selecionar duas vezes. No primeiro clique, a qualidade continuará a mesma, mas após o segundo, o vídeo e o chat serão recarregados.";
     STR_CONTROLS_PLAY_12 = "Altere a velocidade (apenas disponível para clipes): abra o painel de informações, navegue usando o botão Direcional (esquerda / direita), use a tecla direcional (para cima / baixo) para escolher a nova velocidade depois de pressionar a tecla Selecionar para confirmar a alteração";
-    STR_CONTROLS_PLAY_13 = "Reinicie um clipe (também pode ser usado no caso do clipe congelar): Abra o painel de informações, navegue usando o botão direcional (esquerda / direita) para \"Reiniciar o Clipe\" e pressione a tecla selecionar";
+    STR_CONTROLS_PLAY_13 = "Reinicie um clipe (também pode ser usado no caso do clipe congelar): Botão Azul (D)";
     STR_CONTROLS_PLAY_14 = "Inicie uma pesquisa: abra o painel de informações, navegue usando o botão Direcional (esquerda / direita) para \"Pesquisar\" e pressione a tecla selecionar";
     STR_CONTROLS_PLAY_15 = "Abra o conteúdo do canal: abra o painel de informações, navegue usando o botão direcional (esquerda / direita) para \"Conteúdo do canal\" e pressione a tecla selecionar";
     STR_UPDATE_MAIN_1 = "Há uma atualização disponível, mas o app não pôde ser atualizado automaticamente ";
