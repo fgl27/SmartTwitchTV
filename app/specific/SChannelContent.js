@@ -28,6 +28,7 @@ function SChannelContent_init() {
     Main_Go = Main_SChannelContent;
     if (SChannelContent_lastselectedChannel !== Main_selectedChannel) SChannelContent_status = false;
     Main_cleanTopLabel();
+    Main_selectedChannelDisplayname = Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
     document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
     document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
     document.body.addEventListener("keydown", SChannelContent_handleKeyDown, false);

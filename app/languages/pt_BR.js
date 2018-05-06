@@ -42,7 +42,7 @@ function pt_BRLang() {
     STR_CLOSE = "Fechar";
     STR_MINIMIZE = "Minimizar";
     STR_CANCEL = "Cancelar";
-    STR_NOT_LIVE = "[Retransmissão] ";
+    STR_NOT_LIVE = "Retransmissão | ";
     STR_LIVE_CHANNELS = " Canais Ao Vivo";
     STR_LIVE_HOSTS = " Hosts Ao Vivo";
     STR_LIVE_GAMES = " Jogos Ao Vivo";
