@@ -99,8 +99,8 @@ function Vod_loadDataRequest() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
-            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset +
-            '&sort=views&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
+            '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
