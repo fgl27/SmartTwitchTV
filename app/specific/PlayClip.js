@@ -23,7 +23,7 @@ function PlayClip_Start() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
     document.getElementById("stream_info_name").innerHTML = Main_selectedChannelDisplayname;
     document.getElementById("stream_info_title").innerHTML = Sclip_title;
-    document.getElementById("stream_info_game").innerHTML = Sclip_game + ', ' + Sclip_views;
+    document.getElementById("stream_info_game").innerHTML = Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language;
     document.getElementById("stream_live_icon").innerHTML = Sclip_createdAt;
     document.getElementById("stream_live_time").innerHTML = Sclip_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);

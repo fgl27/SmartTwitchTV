@@ -21,6 +21,7 @@ var Main_UserChannels = 15;
 var Main_SChannels = 16;
 var Main_addCode = 17;
 var Main_Vod = 18;
+var Main_Clip = 19;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -184,7 +185,7 @@ function Main_loadTranslations(device) {
 
 function Main_initWindows() {
     //set top bar labels
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
@@ -193,6 +194,7 @@ function Main_initWindows() {
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
+    document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
     document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
     document.getElementById('game_button').innerHTML = STR_GAMES;
     document.getElementById('live_button').innerHTML = STR_LIVE;
@@ -215,6 +217,7 @@ function Main_initWindows() {
 
     Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
     Sclip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
+    Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
 
     Main_ready(function() {
 
@@ -454,6 +457,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_Go === Main_SChannels) SChannels_init();
     else if (Main_Go === Main_Vod) Vod_init();
+    else if (Main_Go === Main_Clip) Clip_init();
     else Live_init();
 }
 
@@ -475,6 +479,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SChannels) SChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
+    else if (ExitCurrent === Main_Clip) Clip_exit();
 }
 
 function Main_openStream() {
@@ -487,7 +492,7 @@ function Main_openStream() {
 }
 
 function Main_RestoreTopLabel() {
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
@@ -496,6 +501,7 @@ function Main_RestoreTopLabel() {
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
+    document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
 }
 
 function Main_cleanTopLabel() {
@@ -504,6 +510,7 @@ function Main_cleanTopLabel() {
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');
+    Main_empty('top_bar_clip');
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
 }
 

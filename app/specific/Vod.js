@@ -52,7 +52,7 @@ function Vod_exit() {
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
     document.getElementById('top_bar_vod').classList.remove('icon_center_focus');
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
 }
 
@@ -336,13 +336,14 @@ function Vod_loadDataSuccessReplace(responseText) {
             Vod_blankCellCount--;
             i--;
         } else {
-            Vod_replaceVideo(Vod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' +
-                video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
-                    video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                    video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                    STR_DURATION + Play_timeS(video.length)
-                ]);
+            Vod_replaceVideo(Vod_blankCellVector[i],
+            video._id + ',' + video.length + ',' + video.language + ',' +
+                    video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                        video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                        video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                        Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                        STR_DURATION + Play_timeS(video.length)
+                    ]);
             Vod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -420,8 +421,6 @@ function Vod_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_Before;
-                Games_exit();
-                Main_SwitchScreen();
                 Vod_exit();
                 Main_SwitchScreen();
             }
@@ -478,13 +477,13 @@ function Vod_handleKeyDown(event) {
             }
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_games;
-            Main_Go = Main_Live;
+            Main_Before = Main_Vod;
+            Main_Go = Main_Clip;
             Vod_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_games;
+            Main_Before = Main_Vod;
             Main_Go = Main_games;
             Vod_exit();
             Main_SwitchScreen();

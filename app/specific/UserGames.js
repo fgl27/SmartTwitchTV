@@ -41,7 +41,7 @@ function UserGames_init() {
 }
 
 function UserGames_exit() {
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.body.removeEventListener("keydown", UserGames_handleKeyDown);

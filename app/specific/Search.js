@@ -30,7 +30,7 @@ function Search_exit() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_Go = Main_BeforeSearch;
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');

@@ -29,6 +29,7 @@ var Sclip_title = '';
 var Sclip_lastselectedChannel = '';
 var Sclip_playUrl = '';
 var Sclip_createdAt = '';
+var Sclip_language = '';
 var Sclip_itemsCountCheck = false;
 var Sclip_loadingMore = false;
 //Variable initialization end
@@ -117,6 +118,7 @@ function Sclip_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
+console.log(xmlHttp.responseText);
                     Sclip_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
