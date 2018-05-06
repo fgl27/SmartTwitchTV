@@ -1,13 +1,13 @@
 function pt_BRLang() {
     console.log("loading language pt_BR");
-    STR_REFRESH = "Atualizar";
+    STR_REFRESH = "Atualizar e voltar pro topo";
     STR_SEARCH = "Pesquisar";
     STR_CONTROLS = "Controles";
     STR_ABOUT = "Sobre";
     STR_SEARCH_EMPTY = "Nenhum texto foi inserido.";
-    STR_SWITCH = "Trocar (CH Cima/Baixo)";
+    STR_SWITCH = "Trocar de tela";
     STR_SWITCH_VOD = "Transmissões Anteriores/Destaques";
-    STR_SWITCH_CLIP = "Período (24h, 7d, 30d, todos) (CH Cima/Baixo)";
+    STR_SWITCH_CLIP = "Período (24h, 7d, 30d, todos)";
     STR_USER = "Usuário ";
     STR_LIVE = "Ao Vivo";
     STR_GAMES = "Jogos";
@@ -147,4 +147,6 @@ function pt_BRLang() {
         "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     ];
     STR_STARTED = "Começou ";
+    STR_VIDEOS = "Vídeo";
+    STR_KEY_UP_DOWN = ' (CH Cima/Baixo)';
 }

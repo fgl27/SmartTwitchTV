@@ -77,7 +77,6 @@
             font-size: 55px;
             font-weight: bold;
             padding-right: 0.7%;
-            transition: 0.4s;
             text-shadow: 1px 0 0 #000000,
             1px -1px 0 #000000,
             1px 1px 0 #000000,
@@ -310,6 +309,8 @@
 
         .follower_header {
             width: 1890px;
+            max-height: 250px;
+            overflow: hidden;
             text-align: left;
             word-wrap: break-word;
             color: white;
@@ -531,6 +532,7 @@
     <script src="app/specific/SChannels.js" defer></script>
     <script src="app/specific/SChannelContent.js" defer></script>
     <script src="app/specific/Svod.js" defer></script>
+    <script src="app/specific/Vod.js" defer></script>
     <script src="app/specific/Sclip.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
@@ -554,15 +556,15 @@
             </div>
             <div id="controls_div" class="controls_div">
                 <div id="label_controls" class="icon_top_label"></div>
-                <div id="label_refresh" class="icon_top_label"></div>
                 <div id="label_search" class="icon_top_label"></div>
+                <div id="label_refresh" class="icon_top_label"></div>
                 <div id="label_switch" class="icon_top_label"></div>
             </div>
             <div style="position: fixed; text-align: center; width: 72%; margin-left: 14%;">
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
                 <div id="top_bar_game" class="icon_center_label"></div>
-                <div id="id_agame_name" class="icon_top_label" style="text-align: center; line-height: 0;"></div>
+                <div id="top_bar_vod" class="icon_center_label"></div>
             </div>
         </div>
         <div id="scrollbar_size" class="scroll_size">
@@ -666,6 +668,9 @@
         <table id="stream_table_search_clip" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent clip be display at the bottom do to end of body-->
+        <table id="stream_table_vod" class="streams_tables"></table>
+        <div class="screen_size"></div>
+        <!-- Prevent clip be display at the bottom do to end of body-->
     </div>
     <div id="scene2" class="screen_size hide">
         <div id="chat_container" class="chat_container hide">
@@ -702,13 +707,7 @@
                     <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%;"></div>
                 </div>
             </div>
-            <div id="scene2_heart" class="playbotton" style="z-order:3; left: 55.5%; width: 13%;">
-                <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
-                    <i class="icon-heart-o strokicon"></i>
-                </div>
-                <div id="fallow_text" class="strokedextramini playbottontext"></div>
-            </div>
-            <div id="scene2_speed" class="playbotton hide" style="z-order:4; left: 37%; width: 18%;">
+            <div id="scene2_speed" class="playbotton hide" style="z-order:2; right: 6%; width: 19%;">
                 <div style="float: right; width: 100%; text-align: left; vertical-align: middle; height: auto; display: inline-block;">
                     <div id="spped_icon" style="padding-left: 12%; vertical-align: middle; display: inline-block">
                         <i class="icon-speedometer strokicon" style="font-size: 225%;"></i>
@@ -722,7 +721,13 @@
                     <div id="speed_name" class="strokedextramini playmulti" style="font-size: 205%;"></div>
                 </div>
             </div>
-            <div id="scene2_game" class="playbotton hide" style="z-order:5; left: 36%; width: 18%;">
+            <div id="scene2_heart" class="playbotton" style="z-order:3; left: 55.5%; width: 13%;">
+                <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
+                    <i class="icon-heart-o strokicon"></i>
+                </div>
+                <div id="fallow_text" class="strokedextramini playbottontext"></div>
+            </div>
+            <div id="scene2_game" class="playbotton" style="z-order:5; left: 36%; width: 18%;">
                 <div id="game_icon" style="vertical-align: middle; display: inline-block">
                     <i class="icon-gamepad strokicon" style="font-size: 238%;"></i>
                 </div>

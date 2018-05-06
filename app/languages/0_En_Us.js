@@ -1,13 +1,13 @@
 // Keep this file named as (zero)*** so it loads first in release_maker
-var STR_REFRESH = "Refresh";
+var STR_REFRESH = "Refresh and back to top";
 var STR_SEARCH = "Search";
 var STR_CONTROLS = "Controls";
 var STR_ABOUT = "About";
 var STR_SEARCH_EMPTY = "The text you entered is empty.";
 var STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
-var STR_SWITCH = "Switch (CH Up/Down)";
+var STR_SWITCH = "Switch screen";
 var STR_SWITCH_VOD = "Switch Past Broadcast and Highlight";
-var STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all) (CH Up/Down)";
+var STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all)";
 var STR_GO_TO = "Go to ";
 var STR_USER = "User ";
 var STR_LIVE = "Live";
@@ -163,3 +163,5 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
     "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 ];
 var STR_STARTED = "Started ";
+var STR_KEY_UP_DOWN = " (CH Up/Down)";
+var STR_VIDEOS = "Videos";

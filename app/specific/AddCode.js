@@ -7,7 +7,6 @@ var AddCode_Username = null;
 var AddCode_loadingData = false;
 var AddCode_keyBoardOn = false;
 var AddCode_userId = '';
-var AddCode_userChannel = '';
 var AddCode_OauthToken = '';
 var AddCode_IsFallowing = false;
 var AddCode_IsSub = false;
@@ -341,7 +340,7 @@ function AddCode_RequestCheckFallow() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -397,7 +396,7 @@ function AddCode_FallowRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -442,7 +441,7 @@ function AddCode_UnFallowRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + AddCode_userChannel, true);
+        xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -494,7 +493,7 @@ function AddCode_RequestCheckSub() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/subscriptions/' + AddCode_userChannel, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/subscriptions/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.setRequestHeader('Client-ID', Main_clientId);
         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');

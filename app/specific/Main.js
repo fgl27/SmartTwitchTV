@@ -20,6 +20,7 @@ var Main_Users = 14;
 var Main_UserChannels = 15;
 var Main_SChannels = 16;
 var Main_addCode = 17;
+var Main_Vod = 18;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -33,8 +34,6 @@ var Main_BeforeAgameisSet = false;
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
-var Main_selectedChannelViews = '';
-var Main_selectedChannelFallower = '';
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
 var Main_gameSelected = '';
@@ -193,6 +192,7 @@ function Main_initWindows() {
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
     document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
     document.getElementById('game_button').innerHTML = STR_GAMES;
     document.getElementById('live_button').innerHTML = STR_LIVE;
@@ -210,6 +210,12 @@ function Main_initWindows() {
     Main_AddCodeInput = document.getElementById("oauth_input");
 
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+    Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
+    Svod_highlight = (localStorage.getItem('Svod_highlight') || 'false') === 'true' ? true : false;
+
+    Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
+    Sclip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
+
     Main_ready(function() {
 
         Play_PreStart();
@@ -447,6 +453,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_usergames) UserGames_init();
     else if (Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_Go === Main_SChannels) SChannels_init();
+    else if (Main_Go === Main_Vod) Vod_init();
     else Live_init();
 }
 
@@ -467,6 +474,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_usergames) UserGames_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SChannels) SChannels_exit();
+    else if (ExitCurrent === Main_Vod) Vod_exit();
 }
 
 function Main_openStream() {
@@ -482,17 +490,20 @@ function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH);
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     document.getElementById('top_bar_user').classList.remove('icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_empty('label_switch');
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
+    Main_empty('top_bar_vod');
     document.getElementById('top_bar_user').classList.add('icon_center_focus');
 }
 
@@ -680,8 +691,6 @@ function Main_createCellChannel(id, idArray, valuesArray) {
 
     Main_td.setAttribute(Main_DataAttribute, valuesArray[0]);
     Main_td.setAttribute('data-id', valuesArray[1]);
-    Main_td.setAttribute('data-views', valuesArray[4]);
-    Main_td.setAttribute('data-followers', valuesArray[5]);
 
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Main_ChannelHtml(id, idArray, valuesArray);
@@ -695,8 +704,6 @@ function Main_replaceChannel(id, valuesArray, ids) {
 
     id.setAttribute(Main_DataAttribute, valuesArray[0]);
     id.setAttribute('data-id', valuesArray[1]);
-    id.setAttribute('data-views', valuesArray[4]);
-    id.setAttribute('data-followers', valuesArray[5]);
 
     id.innerHTML = Main_ChannelHtml(splitedId, ids, valuesArray);
     id.setAttribute('id', ids[4] + splitedId);
