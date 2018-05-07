@@ -32,8 +32,8 @@ function Vod_init() {
     document.getElementById('top_bar_vod').classList.add('icon_center_focus');
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + ' (C)');
-    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
+    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + ' (C)');
 
     Main_YRst(Vod_cursorY);
     if (Vod_status) {
@@ -487,8 +487,8 @@ function Vod_handleKeyDown(event) {
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
             if (!Vod_loadingMore) {
-                Vod_periodNumber++;
-                if (Vod_periodNumber > 4) Vod_periodNumber = 1;
+                Vod_highlight = !Vod_highlight;
+                localStorage.setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
                 Vod_StartLoad();
             }
             break;
@@ -520,8 +520,8 @@ function Vod_handleKeyDown(event) {
             break;
         case KEY_YELLOW:
             if (!Vod_loadingMore) {
-                Vod_highlight = !Vod_highlight;
-                localStorage.setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
+                Vod_periodNumber++;
+                if (Vod_periodNumber > 4) Vod_periodNumber = 1;
                 Vod_StartLoad();
             }
             break;

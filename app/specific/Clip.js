@@ -30,8 +30,8 @@ function Clip_init() {
     Clip_SetPeriod();
     document.getElementById('top_bar_clip').classList.add('icon_center_focus');
 
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ' (C)');
-    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + ' (C)');
 
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     Main_YRst(Clip_cursorY);
@@ -474,12 +474,7 @@ function Clip_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Clip_loadingMore) {
-                Clip_periodNumber++;
-                if (Clip_periodNumber > 4) Clip_periodNumber = 1;
-                Clip_SetPeriod();
-                Clip_StartLoad();
-            }
+            Clip_StartLoad();
             break;
         case KEY_CHANNELUP:
             Main_Before = Main_Clip;
@@ -522,7 +517,12 @@ function Clip_handleKeyDown(event) {
             Main_GoLive();
             break;
         case KEY_YELLOW:
-            Clip_StartLoad();
+            if (!Clip_loadingMore) {
+                Clip_periodNumber++;
+                if (Clip_periodNumber > 4) Clip_periodNumber = 1;
+                Clip_SetPeriod();
+                Clip_StartLoad();
+            }
             break;
         case KEY_BLUE:
             if (!Search_isSearching) Main_BeforeSearch = Main_Clip;
