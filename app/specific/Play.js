@@ -123,8 +123,8 @@ function Play_Resume() {
         window.clearInterval(Play_streamInfoTimer);
         window.clearInterval(Play_streamCheck);
     } else {
-        document.getElementById('scene2').classList.remove('hide');
-        document.getElementById('scene1').classList.add('hide');
+        Main_ShowElement('scene2');
+        Main_HideElement('scene1');
         Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
@@ -531,8 +531,8 @@ function Play_PreshutdownStream() {
 }
 
 function Play_exitMain() {
-    document.getElementById('scene1').classList.remove('hide');
-    document.getElementById('scene2').classList.add('hide');
+    Main_ShowElement('scene1');
+    Main_HideElement('scene2');
     Main_ReStartScreens();
 }
 
@@ -568,38 +568,38 @@ function Play_hideFallow() {
 }
 
 function Play_showFallow() {
-    document.getElementById('scene2_heart').classList.remove('hide');
+    Main_ShowElement('scene2_heart');
 }
 
 function Play_showBufferDialog() {
-    document.getElementById('dialog_buffer_play').classList.remove('hide');
+    Main_ShowElement('dialog_buffer_play');
 }
 
 function Play_HideBufferDialog() {
-    document.getElementById('dialog_buffer_play').classList.add('hide');
+    Main_HideElement('dialog_buffer_play');
 }
 
 function Play_BufferDialogVisible() {
-    return document.getElementById('dialog_buffer_play').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_buffer_play');
 }
 
 function Play_showWarningDialog(text) {
     document.getElementById("dialog_warning_play_text").innerHTML = text;
-    document.getElementById('dialog_warning_play').classList.remove('hide');
+    Main_ShowElement('dialog_warning_play');
 }
 
 function Play_HideWarningDialog() {
     document.getElementById("dialog_warning_play_text").innerHTML = '';
-    document.getElementById('dialog_warning_play').classList.add('hide');
+    Main_HideElement('dialog_warning_play');
 }
 
 function Play_WarningDialogVisible() {
-    return document.getElementById('dialog_warning_play').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_warning_play');
 }
 
 function Play_showExitDialog() {
     if (!Play_ExitDialogVisible()) {
-        document.getElementById('play_dialog_exit').classList.remove('hide');
+        Main_ShowElement('play_dialog_exit');
         Play_exitID = window.setTimeout(Play_showExitDialog, 3000);
     } else {
         Play_CleanHideExit();
@@ -608,11 +608,11 @@ function Play_showExitDialog() {
 
 function Play_CleanHideExit() {
     window.clearTimeout(Play_exitID);
-    document.getElementById('play_dialog_exit').classList.add('hide');
+    Main_HideElement('play_dialog_exit');
 }
 
 function Play_ExitDialogVisible() {
-    return document.getElementById('play_dialog_exit').className.indexOf('hide') === -1;
+    return Main_isElementShowing('play_dialog_exit');
 }
 
 // For some reason clearTimeout fail some time when two are set in a sequence on the same function
@@ -627,31 +627,31 @@ function Play_clearPauseStart() {
 function Play_clearPause() {
     Play_clearPauseEnd();
     Play_clearPauseStart();
-    document.getElementById('play_dialog_simple_pause').classList.add('hide');
+    Main_HideElement('play_dialog_simple_pause');
 }
 
 function Play_showPauseDialog() {
     if (!Play_videojs.paused()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
-        document.getElementById('play_dialog_simple_pause').classList.remove('hide');
+        Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
     } else {
-        document.getElementById('play_dialog_simple_pause').classList.add('hide');
+        Main_HideElement('play_dialog_simple_pause');
         Play_pauseStartID = window.setTimeout(Play_showPauseDialog, 8000); // time in ms
     }
 }
 
 function Play_isShowPauseDialogOn() {
-    return document.getElementById('play_dialog_simple_pause').className.indexOf('hide') === -1;
+    return Main_isElementShowing('play_dialog_simple_pause');
 }
 
 function Play_isPanelShown() {
-    return document.getElementById('scene_channel_panel').className.indexOf('hide') === -1;
+    return Main_isElementShowing('scene_channel_panel');
 }
 
 function Play_hidePanel() {
     Play_clearHidePanel();
-    document.getElementById('scene_channel_panel').classList.add('hide');
+    Main_HideElement('scene_channel_panel');
     Play_quality = Play_qualityPlaying;
     Play_sizePanelOffset = 0;
     if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
@@ -666,7 +666,7 @@ function Play_showPanel() {
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
     Play_clock();
     Play_CleanHideExit();
-    document.getElementById('scene_channel_panel').classList.remove('hide');
+    Main_ShowElement('scene_channel_panel');
     Play_setHidePanel();
     Play_sizePanelOffset = -4;
     if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
@@ -682,28 +682,28 @@ function Play_setHidePanel() {
 
 function Play_showChat() {
     Play_ChatPosition();
-    document.getElementById('chat_container').classList.remove('hide');
+    Main_ShowElement('chat_container');
 }
 
 function Play_hideChat() {
-    document.getElementById('chat_container').classList.add('hide');
+    Main_HideElement('chat_container');
 }
 
 function Play_isChatShown() {
-    return document.getElementById('chat_container').className.indexOf('hide') === -1;
+    return Main_isElementShowing('chat_container');
 }
 
 function Play_showControlsDialog() {
     Play_CleanHideExit();
-    document.getElementById('dialog_controls_play').classList.remove('hide');
+    Main_ShowElement('dialog_controls_play');
 }
 
 function Play_HideControlsDialog() {
-    document.getElementById('dialog_controls_play').classList.add('hide');
+    Main_HideElement('dialog_controls_play');
 }
 
 function Play_isControlsDialogShown() {
-    return document.getElementById('dialog_controls_play').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_controls_play');
 }
 
 
@@ -803,12 +803,12 @@ function Play_ChatPosition() {
 function Play_showChatBackgroundDialog(DialogText) {
     window.clearTimeout(Play_ChatBackgroundID);
     document.getElementById("scene_channel_dialog_chat_text").innerHTML = DialogText;
-    document.getElementById('scene_channel_dialog_chat').classList.remove('hide');
+    Main_ShowElement('scene_channel_dialog_chat');
     Play_ChatBackgroundID = window.setTimeout(Play_hideChatBackgroundDialog, 1000);
 }
 
 function Play_hideChatBackgroundDialog() {
-    document.getElementById('scene_channel_dialog_chat').classList.add('hide');
+    Main_HideElement('scene_channel_dialog_chat');
 }
 
 function Play_KeyPause() {

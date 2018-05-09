@@ -539,14 +539,14 @@ function Vod_handleKeyDown(event) {
 function Vod_openStream() {
     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
-    document.getElementById('scene2').classList.remove('hide');
+    Main_ShowElement('scene2');
     PlayVod_hidePanel();
     Play_hideChat();
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
     Vod_isVod = true;
-    document.getElementById('scene1').classList.add('hide');
+    Main_HideElement('scene1');
     PlayVod_Start();
 }
 

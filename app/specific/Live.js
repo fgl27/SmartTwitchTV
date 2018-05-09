@@ -191,7 +191,7 @@ function Live_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Live_Status) {
             Main_HideLoadDialog();
-            document.getElementById('topbar').classList.remove('hide');
+            Main_ShowElement('topbar');
             if (Live_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Live_Status = true;

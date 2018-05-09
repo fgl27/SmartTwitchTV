@@ -150,8 +150,8 @@ function PlayVod_Resume() {
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
     } else {
-        document.getElementById('scene2').classList.remove('hide');
-        document.getElementById('scene1').classList.add('hide');
+        Main_ShowElement('scene2');
+        Main_HideElement('scene1');
         Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
@@ -436,7 +436,7 @@ function PlayVod_ClearVod() {
 
 function PlayVod_hidePanel() {
     PlayVod_clearHidePanel();
-    document.getElementById('scene_channel_panel').classList.add('hide');
+    Main_HideElement('scene_channel_panel');
     PlayVod_quality = PlayVod_qualityPlaying;
 }
 
@@ -447,7 +447,7 @@ function PlayVod_showPanel() {
     Play_clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
     PlayVod_qualityDisplay();
-    document.getElementById('scene_channel_panel').classList.remove('hide');
+    Main_ShowElement('scene_channel_panel');
     PlayVod_setHidePanel();
 }
 

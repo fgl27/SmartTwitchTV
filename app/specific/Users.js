@@ -203,18 +203,18 @@ function Users_setRemoveDialog() {
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
     document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + Main_UserName + '?';
-    document.getElementById('main_remove_dialog').classList.remove('hide');
+    Main_ShowElement('main_remove_dialog');
 }
 
 function Users_HideRemoveDialog() {
     Users_clearRemoveDialog();
-    document.getElementById('main_remove_dialog').classList.add('hide');
+    Main_HideElement('main_remove_dialog');
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 }
 
 function Users_isRemoveDialogShown() {
-    return document.getElementById('main_remove_dialog').className.indexOf('hide') === -1;
+    return Main_isElementShowing('main_remove_dialog');
 }
 
 function Users_RemoveCursorSet() {
