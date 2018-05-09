@@ -225,6 +225,12 @@ function Main_initWindows() {
         AddUser_RestoreUsers();
         Live_init();
 
+        //Hide all input element and show after html has load
+        //to prevent a odd random situation were they show when the app first open
+        Main_ShowElement('oauth');
+        Main_ShowElement('search');
+        Main_ShowElement('add_user');
+
         // pre load All img
         Main_PreLoadAImage(IMG_404_VIDEO);
         Main_PreLoadAImage(IMG_404_GAME);
@@ -247,6 +253,14 @@ function Main_initWindows() {
 function Main_IconLoad(lable, icon, string) {
     document.getElementById(lable).innerHTML = '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
         '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>';
+}
+
+function Main_HideElement(element) {
+    document.getElementById(element).style.display = 'none';
+}
+
+function Main_ShowElement(element) {
+    document.getElementById(element).style.display = 'block';
 }
 
 function Main_ChangeBorder(div, value) {
