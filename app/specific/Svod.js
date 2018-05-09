@@ -524,12 +524,12 @@ function Svod_handleKeyDown(event) {
 function Svod_openStream() {
     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     document.body.removeEventListener("keydown", Svod_handleKeyDown);
-    document.getElementById('scene2').classList.remove('hide');
+    Main_ShowElement('scene2');
     PlayVod_hidePanel();
     Play_hideChat();
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    document.getElementById('scene1').classList.add('hide');
+    Main_HideElement('scene1');
     PlayVod_Start();
 }

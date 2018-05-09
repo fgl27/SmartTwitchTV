@@ -144,7 +144,7 @@ function PlayClip_updateCurrentTime(currentTime) {
 
 function PlayClip_hidePanel() {
     PlayClip_clearHidePanel();
-    document.getElementById('scene_channel_panel').classList.add('hide');
+    Main_HideElement('scene_channel_panel');
 }
 
 function PlayClip_showPanel() {
@@ -154,7 +154,7 @@ function PlayClip_showPanel() {
     PlayClip_SpeedIndex = PlayClip_SpeedIndexPosition;
     PlayClip_speedDisplay();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
-    document.getElementById('scene_channel_panel').classList.remove('hide');
+    Main_ShowElement('scene_channel_panel');
     PlayClip_setHidePanel();
 }
 

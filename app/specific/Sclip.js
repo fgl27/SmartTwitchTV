@@ -527,13 +527,12 @@ function Sclip_handleKeyDown(event) {
 function Sclip_openStream() {
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     document.body.removeEventListener("keydown", Sclip_handleKeyDown);
-    document.getElementById('scene2').classList.remove('hide');
+    Main_ShowElement('scene2');
     Play_hideChat();
     Play_clearPause();
     Play_HideWarningDialog();
-    document.getElementById('scene_channel_panel').classList.add('hide');
     Play_CleanHideExit();
-    document.getElementById('scene1').classList.add('hide');
+    Main_HideElement('scene1');
 
     PlayClip_Start();
 }

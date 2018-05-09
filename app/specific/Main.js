@@ -256,11 +256,15 @@ function Main_IconLoad(lable, icon, string) {
 }
 
 function Main_HideElement(element) {
-    document.getElementById(element).style.display = 'none';
+    document.getElementById(element).classList.add('hide');
 }
 
 function Main_ShowElement(element) {
-    document.getElementById(element).style.display = 'block';
+    document.getElementById(element).classList.remove('hide');
+}
+
+function Main_isElementShowing(element) {
+    return document.getElementById(element).className.indexOf('hide') === -1;
 }
 
 function Main_ChangeBorder(div, value) {
@@ -273,11 +277,11 @@ function Main_ChangebackgroundColor(div, value) {
 
 function Main_showLoadDialog() {
     Main_HideExitDialog();
-    document.getElementById('dialog_loading').classList.remove('hide');
+    Main_ShowElement('dialog_loading');
 }
 
 function Main_HideLoadDialog() {
-    document.getElementById('dialog_loading').classList.add('hide');
+    Main_HideElement('dialog_loading');
 }
 
 function Main_clearExitDialog() {
@@ -290,18 +294,18 @@ function Main_setExitDialog() {
 
 function Main_showExitDialog() {
     Main_setExitDialog();
-    document.getElementById('main_dialog_exit').classList.remove('hide');
+    Main_ShowElement('main_dialog_exit');
 }
 
 function Main_HideExitDialog() {
     Main_clearExitDialog();
-    document.getElementById('main_dialog_exit').classList.add('hide');
+    Main_HideElement('main_dialog_exit');
     Live_ExitCursor = 0;
     Live_ExitCursorSet();
 }
 
 function Main_isExitDialogShown() {
-    return document.getElementById('main_dialog_exit').className.indexOf('hide') === -1;
+    return Main_isElementShowing('main_dialog_exit');
 }
 
 function Main_CounterDialogRst() {
@@ -358,61 +362,61 @@ function Main_SetItemsLimitReload(blankCellCount) {
 function Main_showWarningDialog(text) {
     if (!Main_NetworkStateOK && text === STR_REFRESH_PROBLEM) Main_NetworkRefresh = true;
     document.getElementById('dialog_warning_text').innerHTML = !Main_NetworkStateOK ? STR_NET_DOWN : text;
-    document.getElementById('dialog_warning').classList.remove('hide');
+    Main_ShowElement('dialog_warning');
 }
 
 function Main_HideWarningDialog() {
-    document.getElementById('dialog_warning').classList.add('hide');
+    Main_HideElement('dialog_warning');
 }
 
 function Main_isWarningDialogShown() {
-    return document.getElementById('dialog_warning').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_warning');
 }
 
 function Main_showAboutDialog() {
     Main_HideExitDialog();
     Main_HideControlsDialog();
     Main_HideUpdateDialog();
-    document.getElementById('dialog_about').classList.remove('hide');
+    Main_ShowElement('dialog_about');
 }
 
 function Main_HideAboutDialog() {
-    document.getElementById('dialog_about').classList.add('hide');
+    Main_HideElement('dialog_about');
 }
 
 function Main_isAboutDialogShown() {
-    return document.getElementById('dialog_about').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_about');
 }
 
 function Main_showControlsDialog() {
     Main_HideExitDialog();
     Main_HideAboutDialog();
     Main_HideUpdateDialog();
-    document.getElementById('dialog_controls').classList.remove('hide');
+    Main_ShowElement('dialog_controls');
 }
 
 function Main_HideControlsDialog() {
-    document.getElementById('dialog_controls').classList.add('hide');
+    Main_HideElement('dialog_controls');
 }
 
 
 function Main_isControlsDialogShown() {
-    return document.getElementById('dialog_controls').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_controls');
 }
 
 function Main_showUpdateDialog() {
     Main_HideExitDialog();
     Main_HideAboutDialog();
     Main_HideControlsDialog();
-    document.getElementById('dialog_update').classList.remove('hide');
+    Main_ShowElement('dialog_update');
 }
 
 function Main_HideUpdateDialog() {
-    document.getElementById('dialog_update').classList.add('hide');
+    Main_HideElement('dialog_update');
 }
 
 function Main_isUpdateDialogShown() {
-    return document.getElementById('dialog_update').className.indexOf('hide') === -1;
+    return Main_isElementShowing('dialog_update');
 }
 
 function Main_addCommas(value) {
@@ -498,10 +502,10 @@ function Main_ExitCurrent(ExitCurrent) {
 
 function Main_openStream() {
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
-    document.getElementById('scene2').classList.remove('hide');
+    Main_ShowElement('scene2');
     Play_hidePanel();
     Play_hideChat();
-    document.getElementById('scene1').classList.add('hide');
+    Main_HideElement('scene1');
     Play_Start();
 }
 
