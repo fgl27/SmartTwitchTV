@@ -21,7 +21,7 @@ var Svod_itemsCountCheck = false;
 var Svod_language = '';
 var Svod_game = '';
 
-var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_', 'svgame'];
+var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_', 'sv_game'];
 var Svod_status = false;
 var Svod_highlight = false;
 var Svod_lastselectedChannel = '';
