@@ -21,7 +21,7 @@ var Gvod_period = 'week';
 var Gvod_periodNumber = 2;
 var Vod_isVod = false;
 
-var Gvod_ids = ['gv_thumbdiv', 'gv_img', 'gv_infodiv', 'gv_title', 'gv_streamon', 'gv_duration', 'gv_viwers', 'gv_quality', 'gv_cell', 'gsvempty_', 'vgame'];
+var Gvod_ids = ['gv_thumbdiv', 'gv_img', 'gv_infodiv', 'gv_title', 'gv_streamon', 'gv_duration', 'gv_viwers', 'gv_quality', 'gv_cell', 'gsvempty_', 'gv_game'];
 var Gvod_status = false;
 var Gvod_highlight = false;
 var Gvod_loadingMore = false;
