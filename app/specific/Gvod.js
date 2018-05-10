@@ -49,8 +49,7 @@ function Gvod_init() {
 function Gvod_exit() {
     document.body.removeEventListener("keydown", Gvod_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
-
-    document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(Main_gameSelected);
+    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
 
     Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
