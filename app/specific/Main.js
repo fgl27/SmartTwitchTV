@@ -22,6 +22,8 @@ var Main_SChannels = 16;
 var Main_addCode = 17;
 var Main_Vod = 18;
 var Main_Clip = 19;
+var Main_Gvod = 20;
+var Main_Gclip = 21;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -214,10 +216,13 @@ function Main_initWindows() {
     UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
     Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
     Svod_highlight = (localStorage.getItem('Svod_highlight') || 'false') === 'true' ? true : false;
+    Gvod_highlight = (localStorage.getItem('Gvod_highlight') || 'false') === 'true' ? true : false;
 
     Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
     Sclip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
     Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
+    Gclip_periodNumber = parseInt(localStorage.getItem('Gclip_periodNumber')) || 2;
+    Gvod_periodNumber = parseInt(localStorage.getItem('Gvod_periodNumber')) || 2;
 
     Main_ready(function() {
 
@@ -484,6 +489,8 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_SChannels) SChannels_init();
     else if (Main_Go === Main_Vod) Vod_init();
     else if (Main_Go === Main_Clip) Clip_init();
+    else if (Main_Go === Main_Gvod) Gvod_init();
+    else if (Main_Go === Main_Gclip) Gclip_init();
     else Live_init();
 }
 
@@ -506,6 +513,8 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_SChannels) SChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
     else if (ExitCurrent === Main_Clip) Clip_exit();
+    else if (ExitCurrent === Main_Gvod) Gvod_exit();
+    else if (ExitCurrent === Main_Gclip) Gclip_exit();
 }
 
 function Main_openStream() {

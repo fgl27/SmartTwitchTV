@@ -147,10 +147,10 @@
         }
 
         div.stream_thumbnail_fallow_game {
+            margin-left: 25%;
             width: 50%;
             height: 0;
             padding-bottom: 7%;
-            float: right;
         }
 
         div.stream_thumbnail_video,
@@ -220,8 +220,7 @@
         }
 
         div.stream_channel_fallow_game {
-            width: 77%;
-            padding-left: 22%;
+            text-align: center;
             height: 98%;
             padding-top: 1.5%;
             font-size: 168%;
@@ -531,8 +530,10 @@
     <script src="app/specific/SChannels.js" defer></script>
     <script src="app/specific/SChannelContent.js" defer></script>
     <script src="app/specific/Svod.js" defer></script>
+    <script src="app/specific/Gvod.js" defer></script>
     <script src="app/specific/Vod.js" defer></script>
     <script src="app/specific/Sclip.js" defer></script>
+    <script src="app/specific/Gclip.js" defer></script>
     <script src="app/specific/Clip.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
@@ -673,6 +674,12 @@
         <div class="screen_size"></div>
         <!-- Prevent clip be display at the bottom do to end of body-->
         <table id="stream_table_clip" class="streams_tables"></table>
+        <div class="screen_size"></div>
+        <!-- Prevent clip be display at the bottom do to end of body-->
+        <table id="stream_table_gclip" class="streams_tables"></table>
+        <div class="screen_size"></div>
+        <!-- Prevent clip be display at the bottom do to end of body-->
+        <table id="stream_table_gvod" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent clip be display at the bottom do to end of body-->
     </div>

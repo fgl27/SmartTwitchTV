@@ -374,7 +374,7 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_Panelcouner === 2) {
-                    if (!Main_BeforeAgameisSet) {
+                    if (!Main_BeforeAgameisSet && Main_Go !== Main_Gclip) {
                         Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
                         Main_BeforeAgameisSet = true;
                     }
