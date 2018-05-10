@@ -106,7 +106,8 @@ function AddUser_KeyboardEvent(event) {
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-                AddUser_Username = Main_AddUserInput.value;
+                if (Main_isReleased) AddUser_Username = Main_AddUserInput.value;
+                else AddUser_Username = 'testtwitch27';
 
                 if (!AddUser_UserCodeExist(AddUser_Username)) {
                     AddUser_loadingDataTry = 0;
