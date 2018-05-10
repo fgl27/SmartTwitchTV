@@ -202,6 +202,12 @@ function Live_loadDataSuccessFinish() {
             if (!Live_checkVersion) {
                 Live_checkVersion = true;
                 if (Main_checkVersion()) Main_showUpdateDialog();
+
+                //Hide all input element and show after html has load
+                //to prevent a odd random situation were they show when the app first open
+                document.getElementById('oauth').style.display = 'block';
+                document.getElementById('search').style.display = 'block';
+                document.getElementById('add_user').style.display = 'block';
             }
         } else {
             if (Live_blankCellCount > 0 && !Live_dataEnded) {
