@@ -152,7 +152,7 @@ function SChannels_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
-            if (SChannels_CellExists(channels.name)) coloumn_id--;
+            if (SChannels_CellExists(channels._id)) coloumn_id--;
             else row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, channels._id, channels.logo, channels.display_name]));
         }
 
@@ -279,6 +279,7 @@ function SChannels_loadDataSuccessReplace(responseText) {
             SChannels_blankCellCount--;
             i--;
         } else {
+            SChannels_nameMatrix.push(channels.name);
             SChannels_replaceCellEmpty(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
             SChannels_blankCellCount--;
 

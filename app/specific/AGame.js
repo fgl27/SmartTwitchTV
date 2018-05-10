@@ -28,7 +28,7 @@ var AGame_loadingMore = false;
 function AGame_init() {
     Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
-    document.getElementById('top_bar_game').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_game', 'icon_center_focus');
     document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(Main_gameSelected);
     Main_YRst(AGame_cursorY);
     if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
@@ -46,7 +46,7 @@ function AGame_exit() {
     }
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.body.removeEventListener("keydown", AGame_handleKeyDown);
-    document.getElementById('top_bar_game').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_game', 'icon_center_focus');
 }
 
 function AGame_StartLoad() {
@@ -327,6 +327,7 @@ function AGame_loadDataSuccessReplace(responseText) {
             AGame_blankCellCount--;
             i--;
         } else {
+            AGame_nameMatrix.push(stream.channel.name);
             Main_replaceVideo(AGame_blankCellVector[i],
                 stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
@@ -371,11 +372,11 @@ function AGame_removeFocus() {
 }
 
 function AGame_addFocusFallow() {
-    document.getElementById(AGame_ids[0] + 'x_2').classList.add(Main_classThumb);
+    Main_AddClass(AGame_ids[0] + 'x_2', Main_classThumb);
 }
 
 function AGame_removeFocusFallow() {
-    document.getElementById(AGame_ids[0] + 'x_2').classList.remove(Main_classThumb);
+    Main_RemoveClass(AGame_ids[0] + 'x_2', Main_classThumb);
 }
 
 function AGame_keyClickDelay() {

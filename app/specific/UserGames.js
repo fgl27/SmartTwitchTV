@@ -28,7 +28,7 @@ var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'u
 function UserGames_init() {
     Main_Go = Main_usergames;
     Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", UserGames_handleKeyDown, false);
     Main_YRst(UserGames_cursorY);
     if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
@@ -42,7 +42,7 @@ function UserGames_init() {
 
 function UserGames_exit() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.body.removeEventListener("keydown", UserGames_handleKeyDown);
 }
@@ -282,6 +282,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
+                UserGames_nameMatrix.push(follows.game.name);
                 Main_replaceGame(UserGames_blankCellVector[i], [follows.game.name,
                     follows.game.box.template.replace("{width}x{height}", Main_GameSize),
                     Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viewers) + STR_VIEWER
@@ -296,6 +297,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 UserGames_blankCellCount--;
                 i--;
             } else {
+                UserGames_nameMatrix.push(follows.name);
                 Main_replaceGame(UserGames_blankCellVector[i], [follows.name,
                     follows.box.template.replace("{width}x{height}", Main_GameSize), ''
                 ], UserGames_ids);

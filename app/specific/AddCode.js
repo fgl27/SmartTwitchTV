@@ -23,7 +23,7 @@ function AddCode_init() {
         return;
     } else {
         Main_Go = Main_addCode;
-        document.getElementById('top_bar_user').classList.add('icon_center_focus');
+        Main_AddClass('top_bar_user', 'icon_center_focus');
         Main_HideWarningDialog();
         AddCode_input = document.querySelector('#oauth_input');
         Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
@@ -36,7 +36,7 @@ function AddCode_init() {
 function AddCode_exit() {
     AddCode_RemoveinputFocus();
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
 }
 
 function AddCode_handleKeyDown(event) {

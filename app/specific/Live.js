@@ -27,7 +27,7 @@ var Live_loadingMore = false;
 
 function Live_init() {
     Main_Go = Main_Live;
-    document.getElementById('top_bar_live').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_live', 'icon_center_focus');
     document.body.addEventListener("keydown", Live_handleKeyDown, false);
     Main_YRst(Live_cursorY);
     if (Live_Status) {
@@ -38,7 +38,7 @@ function Live_init() {
 
 function Live_exit() {
     document.body.removeEventListener("keydown", Live_handleKeyDown);
-    document.getElementById('top_bar_live').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_live', 'icon_center_focus');
     Main_HideExitDialog();
 }
 
@@ -325,12 +325,12 @@ function Live_removeFocus() {
 }
 
 function Live_ExitCursorSet() {
-    document.getElementById('exit_app_cancel').classList.remove('button_search_focused');
-    document.getElementById('exit_app_minimize').classList.remove('button_search_focused');
-    document.getElementById('exit_app_close').classList.remove('button_search_focused');
-    if (!Live_ExitCursor) document.getElementById('exit_app_cancel').classList.add('button_search_focused');
-    else if (Live_ExitCursor === 1) document.getElementById('exit_app_minimize').classList.add('button_search_focused');
-    else document.getElementById('exit_app_close').classList.add('button_search_focused');
+    Main_RemoveClass('exit_app_cancel', 'button_search_focused');
+    Main_RemoveClass('exit_app_minimize', 'button_search_focused');
+    Main_RemoveClass('exit_app_close', 'button_search_focused');
+    if (!Live_ExitCursor) Main_AddClass('exit_app_cancel', 'button_search_focused');
+    else if (Live_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_search_focused');
+    else Main_AddClass('exit_app_close', 'button_search_focused');
 }
 
 function Live_keyClickDelay() {

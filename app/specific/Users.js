@@ -18,7 +18,7 @@ var Users_imgMatrixCount = 0;
 function Users_init() {
     Main_Go = Main_Users;
     Main_HideWarningDialog();
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
     if (Users_status) Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
     else Users_StartLoad();
@@ -26,7 +26,7 @@ function Users_init() {
 
 function Users_exit() {
     AddCode_SetDefaultOAuth(0);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
 }
 
@@ -140,16 +140,16 @@ function Users_SetKeyTitleStart(bool, position) {
 }
 
 function Users_addFocus() {
-    document.getElementById(Users_ids[0] + Users_cursorY + '_' + Users_cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(Users_ids[2] + Users_cursorY + '_' + Users_cursorX).classList.add('stream_text_focused');
-    document.getElementById(Users_ids[3] + Users_cursorY + '_' + Users_cursorX).classList.add('stream_info_focused');
+    Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    Main_AddClass(Users_ids[2] + Users_cursorY + '_' + Users_cursorX, 'stream_text_focused');
+    Main_AddClass(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, 'stream_info_focused');
     Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
 }
 
 function Users_removeFocus() {
-    document.getElementById(Users_ids[0] + Users_cursorY + '_' + Users_cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(Users_ids[2] + Users_cursorY + '_' + Users_cursorX).classList.remove('stream_text_focused');
-    document.getElementById(Users_ids[3] + Users_cursorY + '_' + Users_cursorX).classList.remove('stream_info_focused');
+    Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    Main_RemoveClass(Users_ids[2] + Users_cursorY + '_' + Users_cursorX, 'stream_text_focused');
+    Main_RemoveClass(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, 'stream_info_focused');
 }
 
 function Users_keyClickDelay() {
@@ -219,11 +219,11 @@ function Users_isRemoveDialogShown() {
 
 function Users_RemoveCursorSet() {
     if (!Users_RemoveCursor) {
-        document.getElementById('remove_cancel').classList.add('button_search_focused');
-        document.getElementById('remove_yes').classList.remove('button_search_focused');
+        Main_AddClass('remove_cancel', 'button_search_focused');
+        Main_RemoveClass('remove_yes', 'button_search_focused');
     } else {
-        document.getElementById('remove_cancel').classList.remove('button_search_focused');
-        document.getElementById('remove_yes').classList.add('button_search_focused');
+        Main_RemoveClass('remove_cancel', 'button_search_focused');
+        Main_AddClass('remove_yes', 'button_search_focused');
     }
 }
 

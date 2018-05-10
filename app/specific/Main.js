@@ -267,6 +267,14 @@ function Main_isElementShowing(element) {
     return document.getElementById(element).className.indexOf('hide') === -1;
 }
 
+function Main_AddClass(element, mclass) {
+    document.getElementById(element).classList.add(mclass);
+}
+
+function Main_RemoveClass(element, mclass) {
+    document.getElementById(element).classList.remove(mclass);
+}
+
 function Main_ChangeBorder(div, value) {
     document.getElementById(div).style.border = value;
 }
@@ -514,7 +522,7 @@ function Main_RestoreTopLabel() {
     Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
@@ -529,7 +537,7 @@ function Main_cleanTopLabel() {
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');
     Main_empty('top_bar_clip');
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
 }
 
 function Main_UnderCenter(text) {
@@ -827,11 +835,40 @@ function Main_CheckMp4Html5() {
     return result;
 }
 
+function Main_addFocusVod(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+    var id = y + '_' + x;
+    Main_AddClass(idArray[0] + id, 'stream_thumbnail_focused');
+    Main_AddClass(idArray[2] + id, 'stream_text_focused');
+    Main_AddClass(idArray[3] + id, 'stream_info_focused');
+    Main_AddClass(idArray[4] + id, 'stream_info_focused');
+    Main_AddClass(idArray[5] + id, 'stream_info_focused');
+    Main_AddClass(idArray[6] + id, 'stream_info_focused');
+    Main_AddClass(idArray[7] + id, 'stream_info_focused');
+    Main_AddClass(idArray[10] + id, 'stream_info_focused');
+
+    Main_ready(function() {
+        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+    });
+
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+}
+
+function Main_removeFocusVod(idArray, id) {
+    Main_RemoveClass(idArray[0] + id, 'stream_thumbnail_focused');
+    Main_RemoveClass(idArray[2] + id, 'stream_text_focused');
+    Main_RemoveClass(idArray[3] + id, 'stream_info_focused');
+    Main_RemoveClass(idArray[4] + id, 'stream_info_focused');
+    Main_RemoveClass(idArray[5] + id, 'stream_info_focused');
+    Main_RemoveClass(idArray[6] + id, 'stream_info_focused');
+    Main_RemoveClass(idArray[7] + id, 'stream_info_focused');
+    Main_RemoveClass(idArray[10] + id, 'stream_info_focused');
+}
+
 function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
-    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.add(Main_classText);
-    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
+    Main_AddClass(idArray[0] + id, Main_classThumb);
+    Main_AddClass(idArray[2] + id, Main_classText);
+    Main_AddClass(idArray[3] + id, Main_classInfo);
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
@@ -841,20 +878,20 @@ function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) 
 }
 
 function Main_removeFocusChannel(id, idArray) {
-    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
-    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
+    Main_RemoveClass(idArray[0] + id, Main_classThumb);
+    Main_RemoveClass(idArray[2] + id, Main_classText);
+    Main_RemoveClass(idArray[3] + id, Main_classInfo);
 }
 
 function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
-    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.add(Main_classText);
-    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
-    document.getElementById(idArray[4] + id).classList.add(Main_classInfo);
-    document.getElementById(idArray[5] + id).classList.add(Main_classInfo);
-    document.getElementById(idArray[6] + id).classList.add(Main_classInfo);
-    document.getElementById(idArray[7] + id).classList.add(Main_classInfo);
+    Main_AddClass(idArray[0] + id, Main_classThumb);
+    Main_AddClass(idArray[2] + id, Main_classText);
+    Main_AddClass(idArray[3] + id, Main_classInfo);
+    Main_AddClass(idArray[4] + id, Main_classInfo);
+    Main_AddClass(idArray[5] + id, Main_classInfo);
+    Main_AddClass(idArray[6] + id, Main_classInfo);
+    Main_AddClass(idArray[7] + id, Main_classInfo);
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
@@ -864,21 +901,21 @@ function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
 }
 
 function Main_removeFocusVideo(id, idArray) {
-    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
-    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
-    document.getElementById(idArray[4] + id).classList.remove(Main_classInfo);
-    document.getElementById(idArray[5] + id).classList.remove(Main_classInfo);
-    document.getElementById(idArray[6] + id).classList.remove(Main_classInfo);
-    document.getElementById(idArray[7] + id).classList.remove(Main_classInfo);
+    Main_RemoveClass(idArray[0] + id, Main_classThumb);
+    Main_RemoveClass(idArray[2] + id, Main_classText);
+    Main_RemoveClass(idArray[3] + id, Main_classInfo);
+    Main_RemoveClass(idArray[4] + id, Main_classInfo);
+    Main_RemoveClass(idArray[5] + id, Main_classInfo);
+    Main_RemoveClass(idArray[6] + id, Main_classInfo);
+    Main_RemoveClass(idArray[7] + id, Main_classInfo);
 }
 
 function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     var id = y + '_' + x;
-    document.getElementById(idArray[0] + id).classList.add(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.add(Main_classText);
-    document.getElementById(idArray[3] + id).classList.add(Main_classInfo);
-    document.getElementById(idArray[4] + id).classList.add(Main_classInfo);
+    Main_AddClass(idArray[0] + id, Main_classThumb);
+    Main_AddClass(idArray[2] + id, Main_classText);
+    Main_AddClass(idArray[3] + id, Main_classInfo);
+    Main_AddClass(idArray[4] + id, Main_classInfo);
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
@@ -888,10 +925,10 @@ function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
 }
 
 function Main_removeFocusGame(id, idArray) {
-    document.getElementById(idArray[0] + id).classList.remove(Main_classThumb);
-    document.getElementById(idArray[2] + id).classList.remove(Main_classText);
-    document.getElementById(idArray[3] + id).classList.remove(Main_classInfo);
-    document.getElementById(idArray[4] + id).classList.remove(Main_classInfo);
+    Main_RemoveClass(idArray[0] + id, Main_classThumb);
+    Main_RemoveClass(idArray[2] + id, Main_classText);
+    Main_RemoveClass(idArray[3] + id, Main_classInfo);
+    Main_RemoveClass(idArray[4] + id, Main_classInfo);
 }
 
 //TODO split Main_ScrollHelper in Main_ScrollHelperVideo/game/channel/etc

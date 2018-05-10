@@ -11,7 +11,7 @@ var AddUser_input = null;
 
 function AddUser_init() {
     Main_Go = Main_addUser;
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
     AddUser_input = document.querySelector('#user_input');
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -22,7 +22,7 @@ function AddUser_init() {
 function AddUser_exit() {
     AddUser_RemoveinputFocus();
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
 }
 
 function AddUser_handleKeyDown(event) {

@@ -29,7 +29,7 @@ var Vod_loadingMore = false;
 
 function Vod_init() {
     Main_Go = Main_Vod;
-    document.getElementById('top_bar_vod').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_vod', 'icon_center_focus');
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
@@ -47,7 +47,7 @@ function Vod_init() {
 function Vod_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
-    document.getElementById('top_bar_vod').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_vod', 'icon_center_focus');
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
@@ -163,6 +163,7 @@ function Vod_loadDataSuccess(responseText) {
                 coloumn_id--;
             } else if (Vod_CellExists(video._id)) coloumn_id--;
             else {
+                Vod_nameMatrix.push(video._id);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video._id + ',' + video.length + ',' + video.language + ',' +
                     video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
@@ -170,7 +171,7 @@ function Vod_loadDataSuccess(responseText) {
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                         STR_DURATION + Play_timeS(video.length)
-                    ]));
+                    ], Vod_ids));
             }
         }
 
@@ -188,42 +189,41 @@ function Vod_loadDataSuccess(responseText) {
     Vod_loadDataSuccessFinish();
 }
 
-function Vod_createCell(row_id, id, video_id, valuesArray) {
-    Vod_nameMatrix.push(video_id);
+function Vod_createCell(row_id, id, video_id, valuesArray, idArray) {
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Vod_createCellVideo(video_id, id, valuesArray);
+    return Vod_createCellVideo(video_id, id, valuesArray, idArray);
 }
 
-function Vod_createCellVideo(vod_id, id, valuesArray) {
+function Vod_createCellVideo(vod_id, id, valuesArray, idArray) {
     Main_td = document.createElement('td');
-    Main_td.setAttribute('id', Vod_ids[8] + id);
+    Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, vod_id);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = Vod_VideoHtml(id, valuesArray);
+    Main_td.innerHTML = Vod_VideoHtml(id, valuesArray, idArray);
 
     return Main_td;
 }
 
-function Vod_replaceVideo(id, vod_id, valuesArray) {
-    splitedId = id.split(Vod_ids[9])[1];
+function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
+    splitedId = id.split(idArray[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, vod_id);
-    id.innerHTML = Vod_VideoHtml(splitedId, valuesArray);
-    id.setAttribute('id', Vod_ids[8] + splitedId);
+    id.innerHTML = Vod_VideoHtml(splitedId, valuesArray, idArray);
+    id.setAttribute('id', idArray[8] + splitedId);
 }
 
-function Vod_VideoHtml(id, valuesArray) {
-    return '<div id="' + Vod_ids[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + Vod_ids[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
-        '<div id="' + Vod_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + Vod_ids[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
-        '<div id="' + Vod_ids[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+function Vod_VideoHtml(id, valuesArray, idArray) {
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text">' +
+        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
         '<div>' +
-        '<div id="' + Vod_ids[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
-        '<div id="' + Vod_ids[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + Vod_ids[10] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
-        '<div id="' + Vod_ids[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
+        '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
+        '<div id="' + idArray[10] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
 function Vod_CellExists(video_id) {
@@ -331,6 +331,7 @@ function Vod_loadDataSuccessReplace(responseText) {
             Vod_blankCellCount--;
             i--;
         } else {
+            Vod_nameMatrix.push(video._id);
             Vod_replaceVideo(Vod_blankCellVector[i],
                 video._id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
@@ -338,7 +339,7 @@ function Vod_loadDataSuccessReplace(responseText) {
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                     STR_DURATION + Play_timeS(video.length)
-                ]);
+                ], Vod_ids);
             Vod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -356,20 +357,7 @@ function Vod_loadDataSuccessReplace(responseText) {
 }
 
 function Vod_addFocus() {
-    document.getElementById(Vod_ids[0] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_thumbnail_focused');
-    document.getElementById(Vod_ids[2] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_text_focused');
-    document.getElementById(Vod_ids[3] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-    document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-    document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-    document.getElementById(Vod_ids[6] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-    document.getElementById(Vod_ids[7] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-    document.getElementById(Vod_ids[10] + Vod_cursorY + '_' + Vod_cursorX).classList.add('stream_info_focused');
-
-    window.setTimeout(function() {
-        Main_ScrollHelper(Vod_ids[0], Vod_cursorY, Vod_cursorX, Main_Vod, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
-    }, 10);
-
-    Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
+    Main_addFocusVod(Vod_cursorY, Vod_cursorX, Vod_ids, Main_Vod, Main_ColoumnsCountVideo, Vod_itemsCount);
 
     if (Vod_cursorY > 3) Main_LazyImg(Vod_ids[1], Vod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
@@ -382,14 +370,7 @@ function Vod_addFocus() {
 }
 
 function Vod_removeFocus() {
-    document.getElementById(Vod_ids[0] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_thumbnail_focused');
-    document.getElementById(Vod_ids[2] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_text_focused');
-    document.getElementById(Vod_ids[3] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Vod_ids[6] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Vod_ids[7] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
-    document.getElementById(Vod_ids[10] + Vod_cursorY + '_' + Vod_cursorX).classList.remove('stream_info_focused');
+    Main_removeFocusVod(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
 }
 
 function Vod_keyClickDelay() {

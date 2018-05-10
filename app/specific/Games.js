@@ -27,7 +27,7 @@ var Game_ids = ['g_thumbdiv', 'g_img', 'g_infodiv', 'g_displayname', 'g_viwers',
 function Games_init() {
     Main_Go = Main_games;
     document.body.addEventListener("keydown", Games_handleKeyDown, false);
-    document.getElementById('top_bar_game').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_game', 'icon_center_focus');
     Main_YRst(Games_cursorY);
     if (Games_Status) {
         Main_ScrollHelper(Game_ids[0], Games_cursorY, Games_cursorX, Main_games,
@@ -38,7 +38,7 @@ function Games_init() {
 
 function Games_exit() {
     document.body.removeEventListener("keydown", Games_handleKeyDown);
-    document.getElementById('top_bar_game').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_game', 'icon_center_focus');
 }
 
 function Games_StartLoad() {
@@ -281,6 +281,7 @@ function Games_loadDataSuccessReplace(responseText) {
             Games_blankCellCount--;
             i--;
         } else {
+            Games_nameMatrix.push(game.game.name);
             Main_replaceGame(Games_blankCellVector[i], [game.game.name,
                 game.game.box.template.replace("{width}x{height}", Main_GameSize),
                 Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER

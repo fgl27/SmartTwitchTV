@@ -23,7 +23,7 @@ var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname',
 function UserChannels_init() {
     Main_Go = Main_UserChannels;
     SChannels_isLastSChannels = false;
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL);
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
     Main_YRst(UserChannels_cursorY);
@@ -36,7 +36,7 @@ function UserChannels_init() {
 }
 
 function UserChannels_exit() {
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     document.getElementById('top_bar_user').innerHTML = STR_USER;
 }
