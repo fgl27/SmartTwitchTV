@@ -402,7 +402,6 @@ function PlayVod_updateCurrentTime(currentTime) {
     PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
-    PlayVod_PlayerCheckQualityChanged = false;
     PlayVod_Canjump = true;
 
     if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(currentTime);
@@ -666,6 +665,7 @@ function PlayVod_handleKeyDown(e) {
                 if (Play_isPanelShown()) {
                     if (!Play_Panelcouner) {
                         if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+                        PlayVod_PlayerCheckQualityChanged = false;
                         PlayVod_qualityChanged();
                         Play_clearPause();
                     } else if (Play_Panelcouner === 1) {

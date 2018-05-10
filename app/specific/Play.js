@@ -465,7 +465,6 @@ function Play_updateCurrentTime(currentTime) {
     Play_PlayerCheckCount = 0;
     Play_PlayerCheckOffset = 0;
     Play_RestoreFromResume = false;
-    Play_PlayerCheckQualityChanged = false;
 
     Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14 buffer size from twitch
     if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
@@ -1009,6 +1008,7 @@ function Play_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isPanelShown()) {
                     if (!Play_Panelcouner) {
+                        Play_PlayerCheckQualityChanged = false;
                         Play_qualityChanged();
                         Play_clearPause();
                     } else if (Play_Panelcouner === 1) {
