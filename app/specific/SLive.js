@@ -277,6 +277,7 @@ function SLive_loadDataSuccessReplace(responseText) {
             SLive_blankCellCount--;
             i--;
         } else {
+            SLive_nameMatrix.push(stream.channel.name);
             Main_replaceVideo(Live_blankCellVector[i], stream.channel.name, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,

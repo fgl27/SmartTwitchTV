@@ -26,7 +26,7 @@ var UserHost_loadingMore = false;
 
 function UserHost_init() {
     Main_Go = Main_UserHost;
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS);
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
     Main_YRst(UserHost_cursorY);
@@ -39,7 +39,7 @@ function UserHost_init() {
 }
 
 function UserHost_exit() {
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     document.getElementById('top_bar_user').innerHTML = STR_USER;
 }
@@ -149,10 +149,11 @@ function UserHost_loadDataSuccess(responseText) {
             if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
                 row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
-                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                         hosts.target.title, hosts.target.meta_game,
-                        STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) + Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                        STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
+                        Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                     ]));
             }
         }
@@ -278,6 +279,7 @@ function UserHost_loadDataSuccessReplace(responseText) {
             UserHost_blankCellCount--;
             i--;
         } else {
+            UserHost_nameMatrix.push(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name);
             Main_replaceVideo(UserHost_blankCellVector[i],
                 hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,

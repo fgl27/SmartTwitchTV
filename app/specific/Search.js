@@ -18,7 +18,7 @@ function Search_init() {
     document.getElementById('top_bar_clip').style.display = 'none';
     document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    document.getElementById('top_bar_user').classList.add('icon_center_focus');
+    Main_AddClass('top_bar_user', 'icon_center_focus');
     Search_cursorY = 0;
     Search_cursorX = 0;
     Search_input = document.querySelector('#search_input');
@@ -39,7 +39,7 @@ function Search_exit() {
     document.getElementById('top_bar_vod').style.display = 'inline-block';
     document.getElementById('top_bar_clip').style.display = 'inline-block';
     document.getElementById('top_bar_user').innerHTML = STR_USER;
-    document.getElementById('top_bar_user').classList.remove('icon_center_focus');
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_SearchInput.value = '';
 }
@@ -52,14 +52,14 @@ function Search_loadData() {
 }
 
 function Search_refreshInputFocusTools() {
-    document.getElementById('chanel_button').classList.remove('button_search_focused');
-    document.getElementById('game_button').classList.remove('button_search_focused');
-    document.getElementById('live_button').classList.remove('button_search_focused');
+    Main_RemoveClass('chanel_button', 'button_search_focused');
+    Main_RemoveClass('game_button', 'button_search_focused');
+    Main_RemoveClass('live_button', 'button_search_focused');
 
     if (Search_cursorY) {
-        if (!Search_cursorX) document.getElementById('chanel_button').classList.add('button_search_focused');
-        else if (Search_cursorX === 1) document.getElementById('game_button').classList.add('button_search_focused');
-        else if (Search_cursorX === 2) document.getElementById('live_button').classList.add('button_search_focused');
+        if (!Search_cursorX) Main_AddClass('chanel_button', 'button_search_focused');
+        else if (Search_cursorX === 1) Main_AddClass('game_button', 'button_search_focused');
+        else if (Search_cursorX === 2) Main_AddClass('live_button', 'button_search_focused');
     }
 }
 
