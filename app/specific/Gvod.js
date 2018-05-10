@@ -55,11 +55,10 @@ function Gvod_exit() {
     Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-
-    Gvod_OldgameSelected = Main_gameSelected;
 }
 
 function Gvod_StartLoad() {
+    Gvod_OldgameSelected = Main_gameSelected;
     Gvod_SetPeriod();
     Main_HideWarningDialog();
     Gvod_status = false;

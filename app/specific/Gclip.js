@@ -51,11 +51,10 @@ function Gclip_exit() {
 
     Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-
-    Gclip_OldgameSelected = Main_gameSelected;
 }
 
 function Gclip_StartLoad() {
+    Gclip_OldgameSelected = Main_gameSelected;
     Main_HideWarningDialog();
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
