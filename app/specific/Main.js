@@ -230,12 +230,6 @@ function Main_initWindows() {
         AddUser_RestoreUsers();
         Live_init();
 
-        //Hide all input element and show after html has load
-        //to prevent a odd random situation were they show when the app first open
-        Main_ShowElement('oauth');
-        Main_ShowElement('search');
-        Main_ShowElement('add_user');
-
         // pre load All img
         Main_PreLoadAImage(IMG_404_VIDEO);
         Main_PreLoadAImage(IMG_404_GAME);
