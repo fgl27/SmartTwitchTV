@@ -51,7 +51,7 @@ function Gvod_exit() {
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
 
-    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
 }
