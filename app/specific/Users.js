@@ -141,15 +141,11 @@ function Users_SetKeyTitleStart(bool, position) {
 
 function Users_addFocus() {
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
-    Main_AddClass(Users_ids[2] + Users_cursorY + '_' + Users_cursorX, 'stream_text_focused');
-    Main_AddClass(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, 'stream_info_focused');
     Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
 }
 
 function Users_removeFocus() {
     Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
-    Main_RemoveClass(Users_ids[2] + Users_cursorY + '_' + Users_cursorX, 'stream_text_focused');
-    Main_RemoveClass(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, 'stream_info_focused');
 }
 
 function Users_keyClickDelay() {

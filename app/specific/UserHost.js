@@ -319,7 +319,7 @@ function UserHost_addFocus() {
 }
 
 function UserHost_removeFocus() {
-    Main_removeFocusVideo(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
+    Main_removeFocus(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
 }
 
 function UserHost_keyClickDelay() {

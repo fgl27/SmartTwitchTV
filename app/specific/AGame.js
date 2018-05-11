@@ -388,7 +388,7 @@ function AGame_addFocus() {
 }
 
 function AGame_removeFocus() {
-    Main_removeFocusVideo(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
+    Main_removeFocus(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
 }
 
 function AGame_addFocusFallow() {

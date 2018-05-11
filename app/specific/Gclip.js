@@ -332,7 +332,7 @@ function Gclip_loadDataSuccessReplace(responseText) {
 }
 
 function Gclip_addFocus() {
-    Main_addFocusVod(Gclip_cursorY, Gclip_cursorX, Gclip_ids, Main_Gclip, Main_ColoumnsCountVideo, Gclip_itemsCount);
+    Main_addFocusVideo(Gclip_cursorY, Gclip_cursorX, Gclip_ids, Main_Gclip, Main_ColoumnsCountVideo, Gclip_itemsCount);
 
     if (Gclip_cursorY > 3) Main_LazyImg(Gclip_ids[1], Gclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
 
@@ -345,7 +345,7 @@ function Gclip_addFocus() {
 }
 
 function Gclip_removeFocus() {
-    Main_removeFocusVod(Gclip_ids, Gclip_cursorY + '_' + Gclip_cursorX);
+    Main_removeFocus(Gclip_cursorY + '_' + Gclip_cursorX, Gclip_ids);
 }
 
 function Gclip_keyClickDelay() {
