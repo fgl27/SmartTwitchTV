@@ -662,19 +662,21 @@ function Main_LazyImgStart(imgId, total, img_type, coloumns) {
 }
 
 function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
-    var change = Main_Ychange(row_id);
+    var change = Main_Ychange(row_id),
+        mbool;
     if (row_id === offset && change === 1) change = 0;
 
     if (change) {
         var x = 0,
             y, elem;
+        mbool = change > 0;
 
         for (x; x < coloumns; x++) {
-            y = change > 0 ? row_id + offset : row_id - offset;
+            y = mbool ? row_id + offset : row_id - offset;
             elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) Main_lazyLoad(elem, img_type);
 
-            y = change > 0 ? row_id - offset - 1 : row_id + offset + 1;
+            y = mbool ? row_id - offset - 1 : row_id + offset + 1;
             elem = document.getElementById(imgId + y + '_' + x);
             if (elem !== null) Main_lazyUnLoad(elem);
         }
