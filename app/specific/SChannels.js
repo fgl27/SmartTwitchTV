@@ -313,7 +313,7 @@ function SChannels_addFocus() {
 }
 
 function SChannels_removeFocus() {
-    Main_removeFocusChannel(SChannels_cursorY + '_' + SChannels_cursorX, SChannels_ids);
+    Main_removeFocus(SChannels_cursorY + '_' + SChannels_cursorX, SChannels_ids);
 }
 
 function SChannels_keyClickDelay() {

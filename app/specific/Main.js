@@ -92,8 +92,6 @@ var Main_VideoSize = "528x297"; // default size 640x360
 var Main_GameSize = "340x475"; // default size 272x380
 
 var Main_classThumb = 'stream_thumbnail_focused';
-var Main_classText = 'stream_text_focused';
-var Main_classInfo = 'stream_info_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_version = 400;
@@ -826,100 +824,47 @@ function Main_CheckMp4Html5() {
     return result;
 }
 
-function Main_addFocusVod(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    var id = y + '_' + x;
-    Main_AddClass(idArray[0] + id, 'stream_thumbnail_focused');
-    Main_AddClass(idArray[2] + id, 'stream_text_focused');
-    Main_AddClass(idArray[3] + id, 'stream_info_focused');
-    Main_AddClass(idArray[4] + id, 'stream_info_focused');
-    Main_AddClass(idArray[5] + id, 'stream_info_focused');
-    Main_AddClass(idArray[6] + id, 'stream_info_focused');
-    Main_AddClass(idArray[7] + id, 'stream_info_focused');
-    Main_AddClass(idArray[10] + id, 'stream_info_focused');
-
-    Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
-    });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-}
-
-function Main_removeFocusVod(idArray, id) {
-    Main_RemoveClass(idArray[0] + id, 'stream_thumbnail_focused');
-    Main_RemoveClass(idArray[2] + id, 'stream_text_focused');
-    Main_RemoveClass(idArray[3] + id, 'stream_info_focused');
-    Main_RemoveClass(idArray[4] + id, 'stream_info_focused');
-    Main_RemoveClass(idArray[5] + id, 'stream_info_focused');
-    Main_RemoveClass(idArray[6] + id, 'stream_info_focused');
-    Main_RemoveClass(idArray[7] + id, 'stream_info_focused');
-    Main_RemoveClass(idArray[10] + id, 'stream_info_focused');
-}
-
 function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    var id = y + '_' + x;
-    Main_AddClass(idArray[0] + id, Main_classThumb);
-    Main_AddClass(idArray[2] + id, Main_classText);
-    Main_AddClass(idArray[3] + id, Main_classInfo);
-
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        var id = y + '_' + x;
+        Main_AddClass(idArray[0] + id, Main_classThumb);
+
+        Main_ready(function() {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        });
+
+        Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-}
-
-function Main_removeFocusChannel(id, idArray) {
-    Main_RemoveClass(idArray[0] + id, Main_classThumb);
-    Main_RemoveClass(idArray[2] + id, Main_classText);
-    Main_RemoveClass(idArray[3] + id, Main_classInfo);
 }
 
 function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    var id = y + '_' + x;
-    Main_AddClass(idArray[0] + id, Main_classThumb);
-    Main_AddClass(idArray[2] + id, Main_classText);
-    Main_AddClass(idArray[3] + id, Main_classInfo);
-    Main_AddClass(idArray[4] + id, Main_classInfo);
-    Main_AddClass(idArray[5] + id, Main_classInfo);
-    Main_AddClass(idArray[6] + id, Main_classInfo);
-    Main_AddClass(idArray[7] + id, Main_classInfo);
-
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+        var id = y + '_' + x;
+        Main_AddClass(idArray[0] + id, Main_classThumb);
+
+        Main_ready(function() {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+        });
+
+        Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-}
-
-function Main_removeFocusVideo(id, idArray) {
-    Main_RemoveClass(idArray[0] + id, Main_classThumb);
-    Main_RemoveClass(idArray[2] + id, Main_classText);
-    Main_RemoveClass(idArray[3] + id, Main_classInfo);
-    Main_RemoveClass(idArray[4] + id, Main_classInfo);
-    Main_RemoveClass(idArray[5] + id, Main_classInfo);
-    Main_RemoveClass(idArray[6] + id, Main_classInfo);
-    Main_RemoveClass(idArray[7] + id, Main_classInfo);
 }
 
 function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    var id = y + '_' + x;
-    Main_AddClass(idArray[0] + id, Main_classThumb);
-    Main_AddClass(idArray[2] + id, Main_classText);
-    Main_AddClass(idArray[3] + id, Main_classInfo);
-    Main_AddClass(idArray[4] + id, Main_classInfo);
-
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
-    });
+        var id = y + '_' + x;
+        Main_AddClass(idArray[0] + id, Main_classThumb);
 
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+        Main_ready(function() {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+        });
+
+        Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+    });
 }
 
-function Main_removeFocusGame(id, idArray) {
+function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
-    Main_RemoveClass(idArray[2] + id, Main_classText);
-    Main_RemoveClass(idArray[3] + id, Main_classInfo);
-    Main_RemoveClass(idArray[4] + id, Main_classInfo);
 }
 
 //TODO split Main_ScrollHelper in Main_ScrollHelperVideo/game/channel/etc

@@ -360,17 +360,11 @@ function SChannelContent_checkUser() {
 
 function SChannelContent_addFocus() {
     var id = SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0);
-    document.getElementById(SChannelContent_ids[0] + id).classList.add(Main_classThumb);
-    document.getElementById(SChannelContent_ids[2] + id).classList.add(Main_classText);
-    document.getElementById(SChannelContent_ids[3] + id).classList.add(Main_classInfo);
-    document.getElementById(SChannelContent_ids[4] + id).classList.add(Main_classInfo);
-    document.getElementById(SChannelContent_ids[5] + id).classList.add(Main_classInfo);
-    document.getElementById(SChannelContent_ids[6] + id).classList.add(Main_classInfo);
-    document.getElementById(SChannelContent_ids[7] + id).classList.add(Main_classInfo);
+    Main_AddClass(SChannelContent_ids[0] + id, Main_classThumb);
 }
 
 function SChannelContent_removeFocus() {
-    Main_removeFocusVideo(SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0), SChannelContent_ids);
+    Main_removeFocus(SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0), SChannelContent_ids);
 }
 
 function SChannelContent_keyClickDelay() {

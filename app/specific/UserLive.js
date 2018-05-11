@@ -387,7 +387,7 @@ function UserLive_addFocus() {
 }
 
 function UserLive_removeFocus() {
-    Main_removeFocusVideo(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
+    Main_removeFocus(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
 }
 
 function UserLive_keyClickDelay() {

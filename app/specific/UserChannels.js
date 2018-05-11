@@ -208,7 +208,7 @@ function UserChannels_addFocus() {
 }
 
 function UserChannels_removeFocus() {
-    Main_removeFocusChannel(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
+    Main_removeFocus(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
 }
 
 function UserChannels_keyClickDelay() {

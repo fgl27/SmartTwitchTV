@@ -327,7 +327,7 @@ function Live_addFocus() {
 }
 
 function Live_removeFocus() {
-    Main_removeFocusVideo(Live_cursorY + '_' + Live_cursorX, Live_ids);
+    Main_removeFocus(Live_cursorY + '_' + Live_cursorX, Live_ids);
 }
 
 function Live_ExitCursorSet() {
