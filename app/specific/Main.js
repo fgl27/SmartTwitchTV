@@ -333,17 +333,7 @@ function Main_Scrollbar(y, coloumns, total) {
 
         // min 100 max 1000 or the 900 + 100 below
         var nextPositon = Math.ceil(900 / (Math.ceil(total / coloumns) - 1) * y + 100);
-        var currentPositon = Main_ScrollbarElement.offsetTop;
-
-        //If position are different it means previously animation didn't ended yet, stop it and force set the value
-        if (currentPositon !== Main_nextScrollPositon) {
-            Main_ScrollbarElement.classList.remove('scrolltransition');
-            Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
-            Main_ScrollbarElement.classList.add('scrolltransition');
-        }
-        Main_nextScrollPositon = nextPositon;
-
-        Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
+        Main_ScrollbarElement.style.top = nextPositon + "px";
 
         if (Main_ScrollbarIsHide) {
             Main_ScrollbarIsHide = false;
@@ -351,12 +341,8 @@ function Main_Scrollbar(y, coloumns, total) {
         }
     } else {
         Main_ScrollbarElement.style.backgroundColor = "#000000";
-        Main_nextScrollPositon = 100;
+        Main_ScrollbarElement.style.top = "100px";
         Main_ScrollbarIsHide = true;
-        //Prevent to show the move during the hide transition
-        window.setTimeout(function() {
-            Main_ScrollbarElement.style.top = Main_nextScrollPositon + "px";
-        }, 400);
     }
 }
 
