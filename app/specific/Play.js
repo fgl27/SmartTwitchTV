@@ -889,8 +889,8 @@ function Play_KeyReturn(is_vod) {
         if (Play_ExitDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
-            if (is_vod) window.setTimeout(PlayVod_shutdownStream, 10);
-            else window.setTimeout(Play_shutdownStream, 10);
+            if (is_vod) Main_ready(PlayVod_shutdownStream);
+            else Main_ready(Play_shutdownStream);
         } else if (Play_WarningDialogVisible()) {
             Play_HideWarningDialog();
             Play_showExitDialog();
@@ -907,7 +907,7 @@ function Play_handleKeyDown(e) {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
                     Play_hideChat();
-                    window.setTimeout(Play_shutdownStream, 10);
+                    Main_ready(Play_shutdownStream);
                 } else {
                     Play_showExitDialog();
                 }
@@ -1027,7 +1027,7 @@ function Play_handleKeyDown(e) {
                         Main_gameSelected = Play_gameSelected;
                         Play_CleanHideExit();
                         Play_hideChat();
-                        window.setTimeout(Play_shutdownStream, 10);
+                        Main_ready(Play_shutdownStream);
                     } else if (Play_Panelcouner === 3) {
                         if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
                             Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
@@ -1042,14 +1042,14 @@ function Play_handleKeyDown(e) {
                         Main_Go = Main_SChannelContent;
                         Play_CleanHideExit();
                         Play_hideChat();
-                        window.setTimeout(Play_shutdownStream, 10);
+                        Main_ready(Play_shutdownStream);
                     } else if (Play_Panelcouner === 4) {
                         if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
                         Play_CleanHideExit();
                         Play_hideChat();
-                        window.setTimeout(Play_shutdownStream, 10);
+                        Main_ready(Play_shutdownStream);
                     }
                 } else {
                     Play_showPanel();
