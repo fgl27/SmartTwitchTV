@@ -14,6 +14,8 @@ var SGames_MaxOffset = 0;
 var SGames_emptyContent = false;
 var SGames_itemsCountCheck = false;
 var SGames_lastData = '';
+var SGames_return = false;
+var SGames_gameSelectedOld = '';
 
 var SGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_'];
 //Variable initialization end
@@ -34,8 +36,10 @@ function SGames_init() {
 }
 
 function SGames_exit() {
-    Main_RestoreTopLabel();
+    if (!Search_isSearching) Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SGames_handleKeyDown);
+    SGames_return = false;
+    Main_gameSelected = SGames_gameSelectedOld;
 }
 
 function SGames_StartLoad() {
@@ -196,8 +200,8 @@ function SGames_handleKeyDown(event) {
             else {
                 if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
                 else Main_Go = Main_BeforeSearch;
-                SGames_exit();
                 Search_isSearching = false;
+                SGames_exit();
                 Main_SwitchScreen();
             }
             break;
@@ -260,21 +264,20 @@ function SGames_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
+            SGames_gameSelectedOld = Main_gameSelected;
+            SGames_exit();
             Main_gameSelected = document.getElementById(SGames_ids[5] + SGames_cursorY + '_' + SGames_cursorX).getAttribute(Main_DataAttribute);
             document.body.removeEventListener("keydown", SGames_handleKeyDown);
-            Main_BeforeAgame = Main_Go;
             Main_Go = Main_aGame;
-            Main_BeforeAgameisSet = true;
-            SGames_exit();
-            Search_isSearching = false;
+            SGames_return = true;
             Main_SwitchScreen();
             break;
         case KEY_RED:
             Main_showAboutDialog();
             break;
         case KEY_GREEN:
-            SGames_exit();
             Search_isSearching = false;
+            SGames_exit();
             Main_GoLive();
             break;
         case KEY_YELLOW:
