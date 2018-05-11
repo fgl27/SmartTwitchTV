@@ -72,15 +72,15 @@ var Main_ScrollOffSetMinusAgame = 83;
 var Main_ReloadLimitOffsetGames = 1.35;
 var Main_ReloadLimitOffsetVideos = 1.5;
 
-var Main_ItemsLimitVideo = 99;
+var Main_ItemsLimitVideo = 45;
 var Main_ColoumnsCountVideo = 3;
 var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
 
-var Main_ItemsLimitGame = 95;
+var Main_ItemsLimitGame = 45;
 var Main_ColoumnsCountGame = 5;
 var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
 
-var Main_ItemsLimitChannel = 96;
+var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
 var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
