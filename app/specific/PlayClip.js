@@ -383,7 +383,7 @@ function PlayClip_handleKeyDown(e) {
                     Main_Go = Main_aGame;
                     AGame_UserGames = false;
                     Play_CleanHideExit();
-                    window.setTimeout(PlayClip_shutdownStream, 10);
+                    Main_ready(PlayClip_shutdownStream);
                 } else if (Play_Panelcouner === 3) {
                     if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
                         Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
@@ -393,13 +393,13 @@ function PlayClip_handleKeyDown(e) {
                     Main_ExitCurrent(Main_Go);
                     Main_Go = Main_SChannelContent;
                     Play_CleanHideExit();
-                    window.setTimeout(PlayClip_shutdownStream, 10);
+                    Main_ready(PlayClip_shutdownStream);
                 } else if (Play_Panelcouner === 4) {
                     if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                     Main_ExitCurrent(Main_Go);
                     Main_Go = Main_Search;
                     Play_CleanHideExit();
-                    window.setTimeout(PlayClip_shutdownStream, 10);
+                    Main_ready(PlayClip_shutdownStream);
                 }
             }
             break;
@@ -410,7 +410,7 @@ function PlayClip_handleKeyDown(e) {
             } else {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
-                    window.setTimeout(PlayClip_shutdownStream, 10);
+                    Main_ready(PlayClip_shutdownStream);
                 } else {
                     Play_showExitDialog();
                 }

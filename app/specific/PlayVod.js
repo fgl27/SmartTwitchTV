@@ -597,7 +597,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
-                    window.setTimeout(PlayVod_shutdownStream, 10);
+                    Main_ready(PlayVod_shutdownStream);
                 } else {
                     Play_showExitDialog();
                 }
@@ -683,7 +683,7 @@ function PlayVod_handleKeyDown(e) {
                         AGame_UserGames = false;
                         Main_gameSelected = Svod_game;
                         Play_CleanHideExit();
-                        window.setTimeout(PlayVod_shutdownStream, 10);
+                        Main_ready(PlayVod_shutdownStream);
                     } else if (Play_Panelcouner === 3) {
                         if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
                             Main_BeforeChannel = Main_BeforeAgameisSet ? Main_BeforeAgame : Main_Go;
@@ -693,13 +693,13 @@ function PlayVod_handleKeyDown(e) {
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_SChannelContent;
                         Play_CleanHideExit();
-                        window.setTimeout(PlayVod_shutdownStream, 10);
+                        Main_ready(PlayVod_shutdownStream);
                     } else if (Play_Panelcouner === 3) {
                         if (!Search_isSearching) Main_BeforeSearch = Main_Go;
                         Main_ExitCurrent(Main_Go);
                         Main_Go = Main_Search;
                         Play_CleanHideExit();
-                        window.setTimeout(PlayVod_shutdownStream, 10);
+                        Main_ready(PlayVod_shutdownStream);
                     }
                 } else {
                     PlayVod_showPanel();
