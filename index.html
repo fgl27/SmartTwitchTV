@@ -51,10 +51,6 @@
             top: 100px;
         }
 
-        .scrolltransition {
-            transition: 0.4s;
-        }
-
         div.icon_top_label {
             width: auto;
             height: 20px;
@@ -175,7 +171,7 @@
         }
 
         div.stream_thumbnail_focused {
-            transition: 0.5s cubic-bezier(0.45, 0.1, 0.25, 1);
+            transition: outline 0.4s cubic-bezier(0.45, 0.1, 0.25, 1);
             outline: 7px outset #FFFFFF;
         }
 
@@ -204,8 +200,8 @@
         }
 
         div.stream_text_focused {
+            transition: background 0.4s cubic-bezier(0.45, 0.1, 0.25, 1);
             background-color: rgba(255, 255, 255, 0.85);
-            transition: 0.5s cubic-bezier(0.45, 0.1, 0.25, 1);
         }
 
         div.stream_channel,
@@ -250,9 +246,11 @@
         }
 
         div.stream_info_focused {
+            transition-duration: 0.4s;
+            transition-property: color, text-shadow;
+            transition-timing-function: cubic-bezier(0.45, 0.1, 0.25, 1);
             color: #000000;
             text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;
-            transition: 0.5s cubic-bezier(0.45, 0.1, 0.25, 1);
         }
 
         div.imput_text_box {
@@ -295,10 +293,10 @@
             border: 4px solid #AAAAAA;
             display: inline-block;
             text-shadow: #FFFFFF 0px 0px 7.2px, #FFFFFF 0px 0px 7.2px, #FFFFFF 0px 0px 5px;
-            transition: 0.4s;
         }
 
         div.button_search_focused {
+            transition: 0.4s;
             padding-top: 0.5%;
             color: #FFFFFF;
             background-color: #454545;
@@ -570,7 +568,7 @@
             </div>
         </div>
         <div id="scrollbar_size" class="scroll_size">
-            <div id="scrollbar" class="scroll scrolltransition"></div>
+            <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs" style="z-index:98; margin-top: 24%; ">
             <i class="icon icon-circle-o-notch fa fa-spin strokeloading" style="font-size: 727%;"></i>
