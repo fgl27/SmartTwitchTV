@@ -28,6 +28,7 @@ var AGame_loadingMore = false;
 function AGame_init() {
     Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
+    if (Search_isSearching) Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_AddClass('top_bar_game', 'icon_center_focus');
     document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_LIVE +
         ': ' + Main_gameSelected);
@@ -420,7 +421,8 @@ function AGame_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (!AGame_loadingMore) {
                 Main_OldgameSelected = Main_gameSelected;
-                Main_Go = Main_BeforeAgame;
+                if (!SGames_return) Main_Go = Main_BeforeAgame;
+                else Main_Go = Main_sgames;
                 AGame_exit();
                 Main_SwitchScreen();
             }
@@ -518,17 +520,21 @@ function AGame_handleKeyDown(event) {
             if (!AGame_loadingMore) AGame_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_aGame;
-            Main_Go = Main_Vod;
-            Main_OldgameSelected = Main_gameSelected;
-            AGame_exit();
-            Main_SwitchScreen();
+            if (!Search_isSearching) {
+                Main_Before = Main_aGame;
+                Main_Go = Main_Vod;
+                Main_OldgameSelected = Main_gameSelected;
+                AGame_exit();
+                Main_SwitchScreen();
+            }
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_aGame;
-            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
-            AGame_exit();
-            Main_SwitchScreen();
+            if (!Search_isSearching) {
+                Main_Before = Main_aGame;
+                Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+                AGame_exit();
+                Main_SwitchScreen();
+            }
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
