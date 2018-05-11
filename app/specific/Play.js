@@ -645,12 +645,12 @@ function Play_isShowPauseDialogOn() {
 }
 
 function Play_isPanelShown() {
-    return Main_isElementShowing('scene_channel_panel');
+    return document.getElementById("scene_channel_panel").style.opacity === '1';
 }
 
 function Play_hidePanel() {
     Play_clearHidePanel();
-    Main_HideElement('scene_channel_panel');
+    document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
     Play_sizePanelOffset = 0;
     if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
@@ -665,7 +665,7 @@ function Play_showPanel() {
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
     Play_clock();
     Play_CleanHideExit();
-    Main_ShowElement('scene_channel_panel');
+    document.getElementById("scene_channel_panel").style.opacity = "1";
     Play_setHidePanel();
     Play_sizePanelOffset = -4;
     if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();

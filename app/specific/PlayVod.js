@@ -435,7 +435,7 @@ function PlayVod_ClearVod() {
 
 function PlayVod_hidePanel() {
     PlayVod_clearHidePanel();
-    Main_HideElement('scene_channel_panel');
+    document.getElementById("scene_channel_panel").style.opacity = "0";
     PlayVod_quality = PlayVod_qualityPlaying;
 }
 
@@ -446,7 +446,7 @@ function PlayVod_showPanel() {
     Play_clock();
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
     PlayVod_qualityDisplay();
-    Main_ShowElement('scene_channel_panel');
+    document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayVod_setHidePanel();
 }
 
