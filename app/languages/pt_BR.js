@@ -149,4 +149,7 @@ function pt_BRLang() {
     STR_STARTED = "Começou ";
     STR_VIDEOS = "Vídeo";
     STR_KEY_UP_DOWN = ' (CH Cima/Baixo)';
+    STR_CLIP_TO_VOD = "Abrir a transmissão no ponto deste clipe";
+    STR_STREAM_END = "saindo em ";
+    STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
 }

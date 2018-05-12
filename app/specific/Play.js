@@ -60,6 +60,9 @@ var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 3500;
 var Play_Lang = '';
+var Play_Endcouner = 0;
+var Play_EndTextCounter = 3;
+var Play_EndTextID = null;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -68,6 +71,12 @@ function Play_PreStart() {
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
     document.getElementById("scene2_game_text").innerHTML = STR_SPACE + STR_GAME_CONT;
+
+    document.getElementById("dialog_end_replay_text").innerHTML = STR_REPLAY;
+    document.getElementById("dialog_end_vod_text").innerHTML = STR_CLIP_TO_VOD;
+    document.getElementById("dialog_end_channel_text").innerHTML = STR_CHANNEL_CONT;
+    document.getElementById("dialog_end_game_text").innerHTML = STR_GAME_CONT;
+
     Play_ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
@@ -81,7 +90,6 @@ function Play_PreStart() {
     document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
     document.getElementById("stream_controls").innerHTML =
         '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>';
-    document.getElementById('scene2_speed').style.display = 'none';
 }
 
 function Play_Start() {
@@ -113,6 +121,7 @@ function Play_Start() {
     document.addEventListener('visibilitychange', Play_Resume, false);
     Play_Playing = false;
     Play_loadData();
+    Play_EndSet(1);
 }
 
 function Play_Resume() {
@@ -275,8 +284,7 @@ function Play_loadDataError() {
             Play_loadDataRequest();
         } else {
             Play_HideBufferDialog();
-            Play_showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(Play_shutdownStream, 2000);
+            Play_PannelEnterStart(1);
         }
     }
 }
@@ -300,8 +308,7 @@ function Play_restore() {
         if (Play_isOn) Play_qualityChanged();
     } else {
         Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_OFFLINE);
-        window.setTimeout(Play_shutdownStream, 1500);
+        Play_PannelEnterStart(1);
     }
 }
 
@@ -400,9 +407,7 @@ function Play_onPlayer() {
             this.autoplay(true);
 
             this.on('ended', function() {
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(Play_shutdownStream, 1500);
+                Play_PannelEnterStart(1);
             });
 
             this.on('timeupdate', function() {
@@ -410,9 +415,7 @@ function Play_onPlayer() {
             });
 
             this.on('error', function() {
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_PLAYER_PROBLEM);
-                window.setTimeout(Play_shutdownStream, 1500);
+                Play_PannelEnterStart(1);
             });
 
             this.on('loadedmetadata', function() {
@@ -545,6 +548,7 @@ function Play_ClearPlayer() {
     });
     Play_clearPause();
     Play_HideWarningDialog();
+    Play_HideEndDialog();
 }
 
 function Play_ClearPlay() {
@@ -705,7 +709,6 @@ function Play_isControlsDialogShown() {
     return Main_isElementShowing('dialog_controls_play');
 }
 
-
 function Play_qualityIndexReset() {
     Play_qualityIndex = 0;
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
@@ -857,6 +860,153 @@ function Play_IconsFocus() {
     }
 }
 
+function Play_showEndDialog(PlayVodClip) {
+    Play_state = Play_STATE_PLAYING;
+    PlayVod_state = Play_STATE_PLAYING;
+    Play_CleanHideExit();
+    Play_HideControlsDialog();
+    Play_EndIconsFocus(PlayVodClip);
+    Main_ShowElement('dialog_end_stream');
+}
+
+function Play_HideEndDialog() {
+    Main_HideElement('dialog_end_stream');
+    Play_EndTextClear();
+    Play_Endcouner = 0;
+}
+
+function Play_isEndDialogShown() {
+    return Main_isElementShowing('dialog_end_stream');
+}
+
+function Play_EndIconsFocus(PlayVodClip) {
+    Main_ChangeBorder("dialog_end_replay", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("dialog_end_replay", "rgba(0, 0, 0, 0)");
+
+    Main_ChangeBorder("dialog_end_vod", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("dialog_end_vod", "rgba(0, 0, 0, 0)");
+
+    Main_ChangeBorder("dialog_end_channel", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("dialog_end_channel", "rgba(0, 0, 0, 0)");
+
+    Main_ChangeBorder("dialog_end_game", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("dialog_end_game", "rgba(0, 0, 0, 0)");
+
+    if (PlayVodClip === 1 && Play_Endcouner < 2) Play_Endcouner += 2;
+
+    if (!Play_Endcouner) {
+        Main_ChangeBorder("dialog_end_replay", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("dialog_end_replay", "rgba(150,150,150, 0.7)");
+    } else if (Play_Endcouner === 1) {
+        Main_ChangeBorder("dialog_end_vod", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("dialog_end_vod", "rgba(150,150,150, 0.7)");
+    } else if (Play_Endcouner === 2) {
+        Main_ChangeBorder("dialog_end_channel", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("dialog_end_channel", "rgba(150,150,150, 0.7)");
+    } else if (Play_Endcouner === 3) {
+        Main_ChangeBorder("dialog_end_game", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("dialog_end_game", "rgba(150,150,150, 0.7)");
+    }
+}
+
+function Play_EndText(PlayVodClip) {
+    document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+        Play_EndTextCounter + '...';
+    Play_EndTextCounter--;
+    if (Play_EndTextCounter === -1) {
+        document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+            '0...';
+        Play_CleanHideExit();
+        Play_hideChat();
+        if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
+        else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
+        else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+    } else {
+        Play_EndTextID = window.setTimeout(function() {
+            Play_EndText(PlayVodClip);
+        }, 1000);
+    }
+}
+
+function Play_EndTextClear() {
+    window.clearTimeout(Play_EndTextID);
+    document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT;
+}
+
+function Play_EndEnterPressed(PlayVodClip) {
+    if (!Play_Endcouner) {
+        if (PlayVodClip === 2) {
+            PlayVod_offsettime = 0;
+            PlayVod_PlayerCheckQualityChanged = false;
+            PlayVod_qualityChanged();
+            Play_clearPause();
+        } else if (PlayVodClip === 3) PlayClip_Restart();
+    } else if (Play_Endcouner === 1) PlayClip_OpenVod();
+    else if (Play_Endcouner === 2) Play_OpenChannel(PlayVodClip);
+    else if (Play_Endcouner === 3) Play_OpenGame(PlayVodClip);
+    Play_HideEndDialog();
+}
+
+function Play_EndSet(PlayVodClip) {
+    document.getElementById('dialog_end_replay').style.display = 'inline-block';
+    document.getElementById('dialog_end_vod').style.display = 'inline-block';
+    if (PlayVodClip === 1) {
+        document.getElementById('dialog_end_replay').style.display = 'none';
+        document.getElementById('dialog_end_vod').style.display = 'none';
+    } else if (PlayVodClip > 1) document.getElementById('dialog_end_vod').style.display = 'none';
+}
+
+function Play_OpenChannel(PlayVodClip) {
+    if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
+        Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
+        Main_BeforeChannelisSet = true;
+    }
+
+    Main_ExitCurrent(Main_Go);
+    Main_Go = Main_SChannelContent;
+
+    if (PlayVodClip === 1) {
+        Main_selectedChannel = Play_selectedChannel;
+        Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
+        SChannelContent_UserChannels = AddCode_IsFallowing;
+        Play_hideChat();
+        Main_ready(Play_shutdownStream);
+    } else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
+    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+}
+
+function Play_OpenSearch(PlayVodClip) {
+    if (!Search_isSearching) Main_BeforeSearch = Main_Go;
+    Main_ExitCurrent(Main_Go);
+    Main_Go = Main_Search;
+
+    if (PlayVodClip === 1) {
+        Play_hideChat();
+        Main_ready(Play_shutdownStream);
+    } else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
+    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+}
+
+function Play_OpenGame(PlayVodClip) {
+    if (!Main_BeforeAgameisSet && Main_Go !== Main_Gvod && Main_Go !== Main_Gclip) {
+        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
+        Main_BeforeAgameisSet = true;
+    }
+
+    Main_ExitCurrent(Main_Go);
+    Main_Go = Main_aGame;
+    AGame_UserGames = false;
+
+    if (PlayVodClip === 1) {
+        Main_gameSelected = Play_gameSelected;
+        Play_hideChat();
+        Main_ready(Play_shutdownStream);
+    } else if (PlayVodClip === 2) {
+        Main_gameSelected = Svod_game;
+        Main_ready(PlayVod_shutdownStream);
+    } else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+}
+
 function Play_FallowUnfallow() {
     if (AddCode_OauthToken !== '') {
         if (AddCode_IsFallowing) AddCode_UnFallow();
@@ -871,6 +1021,45 @@ function Play_FallowUnfallow() {
     }
 }
 
+// PlayVodClip | play = 1 | vod = 2 | clip = 1
+function Play_PannelEnterPressed(PlayVodClip) {
+    if (!Play_Panelcouner) {
+        if (PlayVodClip === 1) {
+            Play_PlayerCheckQualityChanged = false;
+            Play_qualityChanged();
+            Play_clearPause();
+        }
+        if (PlayVodClip === 2) {
+            if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+            PlayVod_PlayerCheckQualityChanged = false;
+            PlayVod_qualityChanged();
+            Play_clearPause();
+        } else if (PlayVodClip === 3) PlayClip_speed();
+    } else if (Play_Panelcouner === 1) {
+        Play_FallowUnfallow();
+
+        if (PlayVodClip === 1) {
+            Play_clearHidePanel();
+            Play_setHidePanel();
+        }
+        if (PlayVodClip === 2) {
+            PlayVod_clearHidePanel();
+            PlayVod_setHidePanel();
+        } else if (PlayVodClip === 3) {
+            PlayClip_clearHidePanel();
+            PlayClip_setHidePanel();
+        }
+    } else if (Play_Panelcouner === 2) Play_OpenGame(PlayVodClip);
+    else if (Play_Panelcouner === 3) Play_OpenChannel(PlayVodClip);
+    else if (Play_Panelcouner === 4) Play_OpenSearch(PlayVodClip);
+}
+
+function Play_PannelEnterStart(PlayVodClip) {
+    Play_showEndDialog(PlayVodClip);
+    Play_EndTextCounter = 3;
+    Play_EndText(PlayVodClip);
+}
+
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
         document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;"></i>';
@@ -883,7 +1072,10 @@ function Play_setFallow() {
 
 function Play_KeyReturn(is_vod) {
     if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-    else if (Play_isPanelShown()) {
+    if (Play_isEndDialogShown() && !Play_ExitDialogVisible()) {
+        Play_EndTextClear();
+        Play_showExitDialog();
+    } else if (Play_isPanelShown()) {
         Play_hidePanel();
     } else {
         if (Play_ExitDialogVisible()) {
@@ -952,6 +1144,11 @@ function Play_handleKeyDown(e) {
                     Play_IconsFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
+                } else if (Play_isEndDialogShown()) {
+                    Play_EndTextClear();
+                    Play_Endcouner--;
+                    if (Play_Endcouner < 0) Play_Endcouner = 3;
+                    Play_EndIconsFocus(1);
                 } else {
                     Play_showPanel();
                 }
@@ -967,6 +1164,11 @@ function Play_handleKeyDown(e) {
                     Play_IconsFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
+                } else if (Play_isEndDialogShown()) {
+                    Play_EndTextClear();
+                    Play_Endcouner++;
+                    if (Play_Endcouner > 3) Play_Endcouner = 0;
+                    Play_EndIconsFocus(1);
                 } else {
                     Play_showPanel();
                 }
@@ -984,7 +1186,8 @@ function Play_handleKeyDown(e) {
                         Play_ChatSizeValue++;
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 100%');
-                } else {
+                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                else {
                     Play_showPanel();
                 }
                 break;
@@ -1001,59 +1204,15 @@ function Play_handleKeyDown(e) {
                         Play_ChatSizeValue--;
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 33%');
-                } else {
+                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                else {
                     Play_showPanel();
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isPanelShown()) {
-                    if (!Play_Panelcouner) {
-                        Play_PlayerCheckQualityChanged = false;
-                        Play_qualityChanged();
-                        Play_clearPause();
-                    } else if (Play_Panelcouner === 1) {
-                        Play_FallowUnfallow();
-                        Play_clearHidePanel();
-                        Play_setHidePanel();
-                    } else if (Play_Panelcouner === 2) {
-                        if (!Main_BeforeAgameisSet) {
-                            Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
-                            Main_BeforeAgameisSet = true;
-                        }
-
-                        Main_ExitCurrent(Main_Go);
-                        Main_Go = Main_aGame;
-                        AGame_UserGames = false;
-                        Main_gameSelected = Play_gameSelected;
-                        Play_CleanHideExit();
-                        Play_hideChat();
-                        Main_ready(Play_shutdownStream);
-                    } else if (Play_Panelcouner === 3) {
-                        if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
-                            Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
-                            Main_BeforeChannelisSet = true;
-                        }
-
-                        Main_selectedChannel = Play_selectedChannel;
-                        Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
-
-                        Main_ExitCurrent(Main_Go);
-                        SChannelContent_UserChannels = AddCode_IsFallowing;
-                        Main_Go = Main_SChannelContent;
-                        Play_CleanHideExit();
-                        Play_hideChat();
-                        Main_ready(Play_shutdownStream);
-                    } else if (Play_Panelcouner === 4) {
-                        if (!Search_isSearching) Main_BeforeSearch = Main_Go;
-                        Main_ExitCurrent(Main_Go);
-                        Main_Go = Main_Search;
-                        Play_CleanHideExit();
-                        Play_hideChat();
-                        Main_ready(Play_shutdownStream);
-                    }
-                } else {
-                    Play_showPanel();
-                }
+                if (Play_isEndDialogShown()) Play_EndEnterPressed(1);
+                else if (Play_isPanelShown()) Play_PannelEnterPressed(1);
+                else Play_showPanel();
                 break;
             case KEY_RETURN:
                 Play_KeyReturn(false);

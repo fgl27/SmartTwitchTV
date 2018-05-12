@@ -89,6 +89,7 @@ function PlayVod_Start() {
     Play_jumping = false;
     PlayVod_isOn = true;
     PlayVod_loadData();
+    Play_EndSet(2);
 }
 
 function PlayVod_updateStreamInfo() {
@@ -223,8 +224,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadDataRequest();
         } else {
             Play_HideBufferDialog();
-            Play_showWarningDialog(STR_IS_OFFLINE);
-            window.setTimeout(PlayVod_shutdownStream, 2000);
+            Play_PannelEnterStart(2);
         }
     }
 }
@@ -248,8 +248,7 @@ function PlayVod_restore() {
         if (PlayVod_isOn) PlayVod_qualityChanged();
     } else {
         Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_OFFLINE);
-        window.setTimeout(PlayVod_shutdownStream, 1500);
+        Play_PannelEnterStart(2);
     }
 }
 
@@ -330,9 +329,7 @@ function PlayVod_onPlayer() {
             this.autoplay(false);
 
             this.on('ended', function() {
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_IS_OFFLINE);
-                window.setTimeout(PlayVod_shutdownStream, 1500);
+                Play_PannelEnterStart(2);
             });
 
             this.on('timeupdate', function() {
@@ -340,9 +337,7 @@ function PlayVod_onPlayer() {
             });
 
             this.on('error', function() {
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_PLAYER_PROBLEM);
-                window.setTimeout(PlayVod_shutdownStream, 1500);
+                Play_PannelEnterStart(2);
             });
 
             this.on('loadedmetadata', function() { // reset position after quality change or back from resume
@@ -620,6 +615,12 @@ function PlayVod_handleKeyDown(e) {
                     Play_IconsFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
+                } else if (Play_isEndDialogShown()) {
+                    Play_EndTextClear();
+                    Play_Endcouner--;
+                    if (Play_Endcouner < 0) Play_Endcouner = 3;
+                    if (Play_Endcouner === 1) Play_Endcouner = 0;
+                    Play_EndIconsFocus(2);
                 } else if (PlayVod_Canjump) {
                     if (PlayVod_jumpCount > PlayVod_jumpCountMin) PlayVod_jumpCount--;
                     PlayVod_jumpStart();
@@ -632,6 +633,12 @@ function PlayVod_handleKeyDown(e) {
                     Play_IconsFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
+                } else if (Play_isEndDialogShown()) {
+                    Play_EndTextClear();
+                    Play_Endcouner++;
+                    if (Play_Endcouner > 3) Play_Endcouner = 0;
+                    if (Play_Endcouner === 1) Play_Endcouner = 2;
+                    Play_EndIconsFocus(2);
                 } else if (PlayVod_Canjump) {
                     if (PlayVod_jumpCount < PlayVod_jumpCountMax) PlayVod_jumpCount++;
                     PlayVod_jumpStart();
@@ -645,7 +652,8 @@ function PlayVod_handleKeyDown(e) {
                     }
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else {
+                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                else {
                     PlayVod_showPanel();
                 }
                 break;
@@ -657,53 +665,15 @@ function PlayVod_handleKeyDown(e) {
                     }
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else {
+                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                else {
                     PlayVod_showPanel();
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isPanelShown()) {
-                    if (!Play_Panelcouner) {
-                        if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
-                        PlayVod_PlayerCheckQualityChanged = false;
-                        PlayVod_qualityChanged();
-                        Play_clearPause();
-                    } else if (Play_Panelcouner === 1) {
-                        Play_FallowUnfallow();
-                        PlayVod_clearHidePanel();
-                        PlayVod_setHidePanel();
-                    } else if (Play_Panelcouner === 2) {
-                        if (!Main_BeforeAgameisSet && Main_Go !== Main_Gvod) {
-                            Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
-                            Main_BeforeAgameisSet = true;
-                        }
-
-                        Main_ExitCurrent(Main_Go);
-                        Main_Go = Main_aGame;
-                        AGame_UserGames = false;
-                        Main_gameSelected = Svod_game;
-                        Play_CleanHideExit();
-                        Main_ready(PlayVod_shutdownStream);
-                    } else if (Play_Panelcouner === 3) {
-                        if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) {
-                            Main_BeforeChannel = Main_BeforeAgameisSet ? Main_BeforeAgame : Main_Go;
-                            Main_BeforeChannelisSet = true;
-                        }
-
-                        Main_ExitCurrent(Main_Go);
-                        Main_Go = Main_SChannelContent;
-                        Play_CleanHideExit();
-                        Main_ready(PlayVod_shutdownStream);
-                    } else if (Play_Panelcouner === 3) {
-                        if (!Search_isSearching) Main_BeforeSearch = Main_Go;
-                        Main_ExitCurrent(Main_Go);
-                        Main_Go = Main_Search;
-                        Play_CleanHideExit();
-                        Main_ready(PlayVod_shutdownStream);
-                    }
-                } else {
-                    PlayVod_showPanel();
-                }
+                if (Play_isEndDialogShown()) Play_EndEnterPressed(2);
+                else if (Play_isPanelShown()) Play_PannelEnterPressed(2);
+                else PlayVod_showPanel();
                 break;
             case KEY_RETURN:
                 Play_KeyReturn(true);
