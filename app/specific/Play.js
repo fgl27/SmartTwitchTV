@@ -863,6 +863,11 @@ function Play_IconsFocus() {
 function Play_showEndDialog(PlayVodClip) {
     Play_state = Play_STATE_PLAYING;
     PlayVod_state = Play_STATE_PLAYING;
+    Play_hideChat();
+    Play_hidePanel();
+    PlayClip_hidePanel();
+    PlayVod_hidePanel();
+    Play_HideWarningDialog();
     Play_CleanHideExit();
     Play_HideControlsDialog();
     Play_EndIconsFocus(PlayVodClip);
