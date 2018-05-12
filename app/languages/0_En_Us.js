@@ -165,3 +165,7 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 var STR_STARTED = "Started ";
 var STR_KEY_UP_DOWN = " (CH Up/Down)";
 var STR_VIDEOS = "Videos";
+var STR_REPLAY = "Replay";
+var STR_CLIP_TO_VOD = "Open the Stream at this clip position";
+var STR_STREAM_END = "exiting in ";
+var STR_STREAM_END_EXIT = 'press "Return" to exit';

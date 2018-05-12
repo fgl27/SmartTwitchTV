@@ -493,6 +493,17 @@
             display: none;
         }
 
+        div.dialog_end_icons {
+            vertical-align: top;
+            display: inline-block;
+            padding-top: 1%;
+            padding-bottom: 1%;
+            padding-right: 1%;
+            padding-left: 1%;
+            width: 20%;
+            border-radius: 15px;
+        }
+
         /*cssend this is here so release_maker can work don't remove*/
     </style>
     <script src="$WEBAPIS/webapis/webapis.min.js" defer></script>
@@ -672,7 +683,7 @@
         </div>
         <div id="scene_channel_panel" class="screen_size" style="position: fixed; z-index: 2; opacity: 0; 
  transition: 0.4s;">
-            <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.040));">
+            <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.04));">
                 <div class="playsideinfo" style="float: right; padding-right: 0.5%; padding-top: 1.5%;">
                     <div id="stream_live_icon"></div>
                     <div id="stream_live_time"></div>
@@ -724,35 +735,43 @@
                     </div>
                     <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%; width: 80%;"></div>
                 </div>
-                <div id="scene2_speed" class="playbotton" style="z-order:2; width: 18%; margin-right: 0;">
-                    <div id="spped_icon" style="vertical-align: middle; display: inline-block">
-                        <i class="icon-speedometer strokicon" style="font-size: 225%;"></i>
-                    </div>
-                    <div id="speed_arrows" style="height: auto; display: inline-block;">&nbsp;
-                        <div style="display: inline-block;">
-                            <div id="speed_arrow_up" class="up"></div>
-                            <div id="speed_arrow_down" class="down"></div>
-                        </div>&nbsp;&nbsp;
-                    </div>
-                    <div id="speed_name" class="strokedextramini playmulti" style="font-size: 205%; width: 55%;"></div>
-                </div>
             </div>
         </div>
-        <div id="scene2_dialogs" style="display:flex; position: absolute; top: 4%; width: 100%; height : 50%; z-index: 2;">
+        <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
+            <div id="dialog_end_stream" class="dialogs hide" style="z-index:4; font-size: 250%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
+                <div id="dialog_end_stream_text" class="strokedbig" style="margin-top: 25%; font-size: 175%; padding-bottom: 2%;">
+                </div>
+                <div id="dialog_end_replay" class="dialog_end_icons">
+                    <i class="icon-refresh strokicon" style="font-size: 250%;"></i>
+                    <div id="dialog_end_replay_text" class="strokedbig"></div>
+                </div>
+                <div id="dialog_end_vod" class="dialog_end_icons">
+                    <i class="icon-videocamera strokicon" style="font-size: 250%;"></i>
+                    <div id="dialog_end_vod_text" class="strokedbig"></div>
+                </div>
+                <div id="dialog_end_channel" class="dialog_end_icons">
+                    <i class="icon-filmstrip strokicon" style="font-size: 250%;"></i>
+                    <div id="dialog_end_channel_text" class="strokedbig"></div>
+                </div>
+                <div id="dialog_end_game" class="dialog_end_icons">
+                    <i class="icon-gamepad strokicon" style="font-size: 250%;"></i>
+                    <div id="dialog_end_game_text" class="strokedbig"></div>
+                </div>
+            </div>
             <div id="dialog_controls_play" class="info_dialogs hide" style="width: 98%; margin-left: 1%;">
                 <div id="dialog_controls_play_text" class="controls_text"></div>
             </div>
-            <div id="play_dialog_simple_pause" class="dialogs hide" style="z-index:5; margin-top: 27%; ">
+            <div id="play_dialog_simple_pause" class="dialogs hide" style="z-index:5; margin-top: 31%; ">
                 <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 850%;"></i>
             </div>
-            <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 17%;">
-                <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 329%;"></div>
+            <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
+                <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 350%;"></div>
             </div>
-            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 20%;">
+            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 24%;">
                 <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 350%;"></div>
             </div>
-            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 24%;">
-                <div id="dialog_buffer_play_text" class="strokedbig" style="font-size: 300%;"></div>
+            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 28%;">
+                <div id="dialog_buffer_play_text" class="strokedbig" style="font-size: 310%;"></div>
             </div>
         </div>
         <video id="video_live" class="video-js" width="1920" height="1080" preload="metadata" poster="https://bhb27.github.io/smarttv-twitch/release/githubio/images/video_poster.png" style="background:black"></video>
