@@ -1062,7 +1062,9 @@ function Play_PannelEnterPressed(PlayVodClip) {
 function Play_PannelEnterStart(PlayVodClip) {
     Play_showEndDialog(PlayVodClip);
     Play_EndTextCounter = 3;
-    Play_EndText(PlayVodClip);
+    Main_ready(function() {
+        Play_EndText(PlayVodClip);
+    });
 }
 
 function Play_setFallow() {
