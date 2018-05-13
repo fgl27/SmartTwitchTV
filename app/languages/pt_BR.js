@@ -23,7 +23,7 @@ function pt_BRLang() {
     STR_CHANNELS = "Canais";
     STR_CHANNEL = "Canal";
     STR_GOBACK = "Voltar (retornar)";
-    STR_IS_OFFLINE = "A transmissão que você estava assistindo acabou.";
+    STR_IS_OFFLINE = " acabou";
     STR_REFRESH_PROBLEM = "Não foi possível carregar. Atualize para tentar novamente.";
     STR_PLAYER_PROBLEM = "Não foi possível carregar o conteúdo do vídeo, pois a conexão falhou, encerrando...";
     STR_NO = "Não há";
@@ -147,7 +147,8 @@ function pt_BRLang() {
         "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     ];
     STR_STARTED = "Começou ";
-    STR_VIDEOS = "Vídeo";
+    STR_VIDEOS = "Vídeos";
+    STR_VIDEO = " Vídeo";
     STR_KEY_UP_DOWN = ' (CH Cima/Baixo)';
     STR_CLIP_TO_VOD = "Abrir a transmissão no ponto deste clipe";
     STR_STREAM_END = "saindo em ";

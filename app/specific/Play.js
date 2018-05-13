@@ -63,6 +63,7 @@ var Play_Lang = '';
 var Play_Endcouner = 0;
 var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
+var Play_DialogEndText = '';
 //Variable initialization end
 
 function Play_PreStart() {
@@ -860,7 +861,7 @@ function Play_IconsFocus() {
     }
 }
 
-function Play_showEndDialog(PlayVodClip) {
+function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = Play_STATE_PLAYING;
     PlayVod_state = Play_STATE_PLAYING;
     Play_hideChat();
@@ -871,6 +872,9 @@ function Play_showEndDialog(PlayVodClip) {
     Play_CleanHideExit();
     Play_HideControlsDialog();
     Play_EndIconsFocus(PlayVodClip);
+}
+
+function Play_showEndDialog(PlayVodClip) {
     Main_ShowElement('dialog_end_stream');
 }
 
@@ -915,11 +919,14 @@ function Play_EndIconsFocus(PlayVodClip) {
 }
 
 function Play_EndText(PlayVodClip) {
-    document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+    if (PlayVodClip === 1) Play_DialogEndText = Play_selectedChannelDisplayname + ' ' + STR_LIVE;
+    else if (PlayVodClip === 2) Play_DialogEndText = Main_selectedChannelDisplayname + STR_VIDEO;
+    else if (PlayVodClip === 3) Play_DialogEndText = Main_selectedChannelDisplayname + STR_CLIP;
+    document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
         Play_EndTextCounter + '...';
     Play_EndTextCounter--;
     if (Play_EndTextCounter === -1) {
-        document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+        document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
             '0...';
         Play_CleanHideExit();
         Play_hideChat();
@@ -935,7 +942,7 @@ function Play_EndText(PlayVodClip) {
 
 function Play_EndTextClear() {
     window.clearTimeout(Play_EndTextID);
-    document.getElementById("dialog_end_stream_text").innerHTML = STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT;
+    document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT;
 }
 
 function Play_EndEnterPressed(PlayVodClip) {
@@ -1060,10 +1067,11 @@ function Play_PannelEnterPressed(PlayVodClip) {
 }
 
 function Play_PannelEnterStart(PlayVodClip) {
-    Play_showEndDialog(PlayVodClip);
+    Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
         Play_EndText(PlayVodClip);
+        Play_showEndDialog(PlayVodClip);
     });
 }
 
