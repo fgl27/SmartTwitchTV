@@ -1,0 +1,21 @@
+"https://clips.twitch.tv/api/v2/clips/TriumphantCulturedBatBuddhaBar/status"
+{
+	"status": "created",
+	"quality_options": [{
+		"quality": "1080",
+		"source": "https://clips-media-assets2.twitch.tv/28666187584-offset-25746.mp4",
+		"frame_rate": 50
+	}, {
+		"quality": "720",
+		"source": "https://clips-media-assets2.twitch.tv/AT-cm%7C28666187584-offset-25746-720.mp4",
+		"frame_rate": 50
+	}, {
+		"quality": "480",
+		"source": "https://clips-media-assets2.twitch.tv/AT-cm%7C28666187584-offset-25746-480.mp4",
+		"frame_rate": 25
+	}, {
+		"quality": "360",
+		"source": "https://clips-media-assets2.twitch.tv/AT-cm%7C28666187584-offset-25746-360.mp4",
+		"frame_rate": 25
+	}]
+}
