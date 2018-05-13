@@ -339,9 +339,8 @@ function PlayClip_handleKeyDown(e) {
             }
             break;
         case KEY_UP:
-            if (!Play_isPanelShown()) {
-                PlayClip_showPanel();
-            } else if (Play_isEndDialogShown()) Play_EndTextClear();
+            if (Play_isEndDialogShown()) Play_EndTextClear();
+            else if (!Play_isPanelShown()) PlayClip_showPanel();
             else if (Play_Panelcouner === 0) {
                 PlayClip_clearHidePanel();
                 PlayClip_setHidePanel();
@@ -351,9 +350,8 @@ function PlayClip_handleKeyDown(e) {
             }
             break;
         case KEY_DOWN:
-            if (!Play_isPanelShown()) {
-                PlayClip_showPanel();
-            } else if (Play_isEndDialogShown()) Play_EndTextClear();
+            if (Play_isEndDialogShown()) Play_EndTextClear();
+            else if (!Play_isPanelShown()) PlayClip_showPanel();
             else if (Play_Panelcouner === 0) {
                 PlayClip_clearHidePanel();
                 PlayClip_setHidePanel();
@@ -369,9 +367,8 @@ function PlayClip_handleKeyDown(e) {
             break;
         case KEY_RETURN:
             if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-            else if (Play_isPanelShown()) {
-                PlayClip_hidePanel();
-            } else {
+            else if (Play_isPanelShown()) PlayClip_hidePanel();
+            else {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
                     Main_ready(PlayClip_shutdownStream);
@@ -383,7 +380,7 @@ function PlayClip_handleKeyDown(e) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
-            Play_KeyPause();
+            if (!Play_isEndDialogShown()) Play_KeyPause();
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
@@ -392,10 +389,10 @@ function PlayClip_handleKeyDown(e) {
             localStorage.setItem('ChatEnable', 'false');
             break;
         case KEY_YELLOW:
-            Play_showControlsDialog();
+            if (!Play_isEndDialogShown()) Play_showControlsDialog();
             break;
         case KEY_BLUE:
-            PlayClip_Restart();
+            if (!Play_isEndDialogShown()) PlayClip_Restart();
             break;
         default:
             break;
