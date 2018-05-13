@@ -547,7 +547,7 @@ function Main_NetworkStateChangeListenerStart() {
                 Main_NetworkRefresh = false;
             }
             if (Play_WarningDialogVisible()) Main_showWarningDialog(STR_NET_UP);
-            window.setTimeout(Main_HideExitDialog, 1500);
+            window.setTimeout(Main_HideWarningDialog, 1500);
         } else if (data === 2 || 5) { //network down
             Main_NetworkStateOK = false;
             window.setTimeout(function() {
