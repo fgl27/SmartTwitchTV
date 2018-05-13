@@ -869,6 +869,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     PlayClip_hidePanel();
     PlayVod_hidePanel();
     Play_HideWarningDialog();
+    Play_HideBufferDialog();
     Play_CleanHideExit();
     Play_HideControlsDialog();
     Play_EndIconsFocus(PlayVodClip);
