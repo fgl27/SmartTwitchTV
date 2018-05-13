@@ -1067,7 +1067,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
 }
 
 function Play_PannelEnterStart(PlayVodClip) {
-    Play_PrepareshowEndDialog();
+    Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = 3;
     Main_ready(function() {
         Play_EndText(PlayVodClip);
