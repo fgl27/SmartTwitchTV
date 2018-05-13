@@ -169,11 +169,11 @@ function Sclip_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Sclip_CellExists(video.tracking_id)) coloumn_id--;
+            if (Sclip_CellExists(video.slug)) coloumn_id--;
             else {
-                Sclip_nameMatrix.push(video.tracking_id);
+                Sclip_nameMatrix.push(video.slug);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
+                    video.slug + ',' +
                     video.duration + ',' + video.game, [video.thumbnails.medium,
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
@@ -288,12 +288,12 @@ function Sclip_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Sclip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Sclip_CellExists(video.tracking_id)) {
+        if (Sclip_CellExists(video.slug)) {
             Sclip_blankCellCount--;
             i--;
         } else {
-            Sclip_nameMatrix.push(video.tracking_id);
-            Vod_replaceVideo(Sclip_blankCellVector[i], video.thumbnails.medium.split('-preview')[0] + '.mp4', [video.thumbnails.medium,
+            Sclip_nameMatrix.push(video.slug);
+            Vod_replaceVideo(Sclip_blankCellVector[i], video.slug, [video.thumbnails.medium,
                 video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                 STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                 '[' + video.language.toUpperCase() + ']',

@@ -14,6 +14,9 @@ var PlayClip_speedArray = ['2x', '1.5x', '1x (Normal)', '0.5x', '0.25x'];
 var PlayClip_SpeedIndex = 2;
 var PlayClip_SpeedIndexPosition = 2;
 var PlayClip_PanelHideID = null;
+var PlayClip_loadingDataTry = 0;
+var PlayClip_loadingDataTimeout = 3500;
+var PlayClip_loadingDataTryMax = 10;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -51,7 +54,51 @@ function PlayClip_Start() {
     PlayClip_jumpCountMax = 12;
     PlayClip_isOn = true;
 
-    //(document).ready to prevent clip start playing before the scene load and start all visual interfaces, prevents video on the top of everything
+    PlayClip_loadData();
+}
+
+function PlayClip_loadData() {
+    PlayClip_loadingDataTry = 0;
+    PlayClip_loadingDataTimeout = 3500;
+    PlayClip_loadDataRequest();
+}
+
+function PlayClip_loadDataRequest() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + Sclip_playUrl + '/status', true);
+        xmlHttp.timeout = PlayClip_loadingDataTimeout;
+        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) PlayClip_Play(xmlHttp.responseText);
+                else PlayClip_loadDataError();
+            }
+        };
+        xmlHttp.send(null);
+    } catch (error) {
+        PlayClip_loadDataError();
+    }
+}
+
+function PlayClip_loadDataError() {
+    PlayClip_loadingDataTry++;
+    if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
+        PlayClip_loadingDataTimeout += 1000;
+        PlayClip_loadDataRequest();
+    } else {
+        Play_HideBufferDialog();
+        Play_PannelEnterStart(3);
+    }
+}
+
+function PlayClip_Play(response) {
+    //Main_ready to prevent clip start playing before the document finish loading and cause odd visual effects
+    Sclip_playUrl = JSON.parse(response).quality_options[0].source;
     Main_ready(function() {
         Play_videojs.src({
             type: "video/mp4",

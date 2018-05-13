@@ -166,11 +166,11 @@ function Clip_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Clip_CellExists(video.tracking_id)) coloumn_id--;
+            if (Clip_CellExists(video.slug)) coloumn_id--;
             else {
-                Clip_nameMatrix.push(video.tracking_id);
+                Clip_nameMatrix.push(video.slug);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
+                    video.slug + ',' +
                     video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
                     video.broadcaster.logo.replace("150x150", "300x300") +
@@ -288,13 +288,13 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Clip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Clip_CellExists(video.tracking_id)) {
+        if (Clip_CellExists(video.slug)) {
             Clip_blankCellCount--;
             i--;
         } else {
-            Clip_nameMatrix.push(video.tracking_id);
+            Clip_nameMatrix.push(video.slug);
             Vod_replaceVideo(Clip_blankCellVector[i],
-                video.thumbnails.medium.split('-preview')[0] + '.mp4' + ',' +
+                video.slug + ',' +
                 video.duration + ',' + video.game + ',' + video.broadcaster.name +
                 ',' + video.broadcaster.display_name + ',' +
                 video.broadcaster.logo.replace("150x150", "300x300") +
