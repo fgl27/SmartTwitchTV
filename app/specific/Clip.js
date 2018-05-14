@@ -108,8 +108,8 @@ function Clip_loadDataRequest() {
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Clip_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -244,8 +244,8 @@ function Clip_loadDataReplace() {
             Clip_blankCellCount + '&period=' + Clip_period + (Clip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Clip_cursor)) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Clip_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

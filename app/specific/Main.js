@@ -88,6 +88,9 @@ var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_Col
 var Main_ItemsLimitReload = 6;
 
 var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var Main_clientIdHeader = 'Client-ID';
+var Main_AcceptHeader = 'Accept';
+var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
 var Main_VideoSize = "528x297"; // default size 640x360
 var Main_GameSize = "340x475"; // default size 272x380
 

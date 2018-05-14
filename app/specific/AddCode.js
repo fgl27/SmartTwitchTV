@@ -272,8 +272,8 @@ function AddCode_CheckId() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_UserName, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -342,8 +342,8 @@ function AddCode_RequestCheckFallow() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -398,8 +398,8 @@ function AddCode_FallowRequest() {
 
         xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
@@ -443,8 +443,8 @@ function AddCode_UnFallowRequest() {
 
         xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/follows/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
@@ -495,8 +495,8 @@ function AddCode_RequestCheckSub() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + AddCode_userId + '/subscriptions/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddCode_OauthToken);
         xmlHttp.ontimeout = function() {};
 
@@ -638,7 +638,7 @@ function AddCode_RequestFallowGame() {
         xmlHttp.open("PUT", 'https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected) +
             '?oauth_token=' + AddCode_OauthToken, true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -679,7 +679,7 @@ function AddCode_RequestUnFallowGame() {
 
         xmlHttp.open("DELETE", 'https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected) + '?oauth_token=' + AddCode_OauthToken, true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -720,7 +720,7 @@ function AddCode_RequestCheckFallowGame() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + Main_UserName + '/follows/games/' + encodeURIComponent(Main_gameSelected), true);
         xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

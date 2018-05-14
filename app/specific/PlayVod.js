@@ -98,8 +98,8 @@ function PlayVod_updateStreamInfo() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_selectedChannel, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -189,7 +189,7 @@ function PlayVod_loadDataRequest() {
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
         xmlHttp.ontimeout = function() {};
 

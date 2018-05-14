@@ -102,7 +102,7 @@ function Svod_loadDataRequest() {
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -246,7 +246,7 @@ function Svod_loadDataReplace() {
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

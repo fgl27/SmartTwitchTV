@@ -86,7 +86,7 @@ function Games_loadDataRequest() {
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -234,7 +234,7 @@ function Games_loadDataReplace() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

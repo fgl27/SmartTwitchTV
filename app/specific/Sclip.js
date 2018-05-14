@@ -111,8 +111,8 @@ function Sclip_loadDataRequest() {
             Main_ItemsLimitVideo + '&period=' + encodeURIComponent(Sclip_period) +
             (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -244,8 +244,8 @@ function Sclip_loadDataReplace() {
             Sclip_blankCellCount + '&period=' + Sclip_period + (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
