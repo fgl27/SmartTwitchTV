@@ -116,6 +116,7 @@ function Live_loadDataError() {
             Live_loadingData = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_ShowElement('topbar');
         } else {
             Live_loadingMore = false;
             Live_dataEnded = true;
