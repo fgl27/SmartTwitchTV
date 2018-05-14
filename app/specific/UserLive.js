@@ -87,7 +87,7 @@ function UserLive_loadChannels() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main_UserName) +
             '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -158,7 +158,7 @@ function UserLive_loadChannelUserLive() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
             Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -300,7 +300,7 @@ function UserLive_loadChannelsReplace() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
             '&limit=' + Main_ItemsLimitReload + '&offset=' + offset, true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

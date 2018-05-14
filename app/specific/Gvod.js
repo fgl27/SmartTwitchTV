@@ -105,7 +105,7 @@ function Gvod_loadDataRequest() {
             '&period=' + Gvod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Gvod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -251,7 +251,7 @@ function Gvod_loadDataReplace() {
             '&period=' + Gvod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Gvod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

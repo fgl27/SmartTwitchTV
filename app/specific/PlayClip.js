@@ -69,7 +69,7 @@ function PlayClip_loadDataRequest() {
 
         xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + Sclip_playUrl + '/status', true);
         xmlHttp.timeout = PlayClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
         xmlHttp.ontimeout = function() {};
 

@@ -77,7 +77,7 @@ function SChannelContent_loadDataRequest() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(SChannelContent_TargetName !== undefined ? SChannelContent_TargetName : Main_selectedChannel) + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannelContent_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -122,7 +122,7 @@ function SChannelContent_loadDataCheckHost() {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannelContent_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -171,8 +171,8 @@ function SChannelContent_GetStreamerInfo() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
-        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

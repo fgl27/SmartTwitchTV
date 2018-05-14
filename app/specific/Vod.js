@@ -100,7 +100,7 @@ function Vod_loadDataRequest() {
             '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -282,7 +282,7 @@ function Vod_loadDataReplace() {
             '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
-        xmlHttp.setRequestHeader('Client-ID', Main_clientId);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
