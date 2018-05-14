@@ -171,7 +171,17 @@
         }
 
         div.stream_thumbnail_focused {
-            outline: 15px groove #DCDCDC;
+            outline: 7px outset;
+            animation: whitetogray 2.5s infinite alternate;
+        }
+
+        @-webkit-keyframes whitetogray {
+            0% {
+                outline-color: #FFFFFF;
+            }
+            100% {
+                outline-color: #A7A7A7;
+            }
         }
 
         img.stream_img {
