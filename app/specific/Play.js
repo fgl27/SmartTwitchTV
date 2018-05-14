@@ -133,21 +133,24 @@ function Play_Resume() {
         window.clearInterval(Play_streamInfoTimer);
         window.clearInterval(Play_streamCheck);
     } else {
+        Play_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
         Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
-                Play_RestoreFromResume = true;
-                Play_PlayerCheckOffset = 80;
-                Play_PlayerCheckQualityChanged = false;
-                Play_onPlayer();
-                Play_loadingInfoDataTry = 0;
-                Play_loadingInfoDataTimeout = 10000;
-                window.setTimeout(Play_updateStreamInfoStart, 7500); //7s is average time that takes to a stream to reload after a resume, so updateStreamInfoStart only after that
-                Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-                Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+                if (Play_isOn) {
+                    Play_RestoreFromResume = true;
+                    Play_PlayerCheckOffset = 80;
+                    Play_PlayerCheckQualityChanged = false;
+                    Play_onPlayer();
+                    Play_loadingInfoDataTry = 0;
+                    Play_loadingInfoDataTimeout = 10000;
+                    window.setTimeout(Play_updateStreamInfoStart, 7500); //7s is average time that takes to a stream to reload after a resume, so updateStreamInfoStart only after that
+                    Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
+                    Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+                }
             }
         }, 500);
     }
