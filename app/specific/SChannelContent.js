@@ -324,10 +324,10 @@ function SChannelContent_createFallow(id, user_name, stream_type, preview_thumbn
 
 function SChannelContent_setFallow() {
     if (AddCode_IsFallowing) {
-        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>';
+        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>';
         document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_FALLOWING;
     } else {
-        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>';
+        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>';
         if (Main_UserName !== '') document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_FALLOW;
         else document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_CANT_FALLOW;
     }

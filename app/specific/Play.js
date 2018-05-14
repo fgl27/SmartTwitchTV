@@ -1081,10 +1081,10 @@ function Play_PannelEnterStart(PlayVodClip) {
 
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
-        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 3px, #FFFFFF 0px 0px 2px;"></i>';
+        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0 0 3px, #FFFFFF 0 0 3px, #FFFFFF 0 0 2px;"></i>';
         document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOWING;
     } else {
-        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0px 0px 3px, #000000 0px 0px 3px, #000000 0px 0px 2px;"></i>';
+        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0 0 3px, #000000 0 0 3px, #000000 0 0 2px;"></i>';
         document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOW;
     }
 }

@@ -252,8 +252,8 @@ function AGame_Checkfallow() {
 }
 
 function AGame_setFallow() {
-    if (AGame_fallowing) document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 10px, #FFFFFF 0px 0px 8px;"></i>' + STR_SPACE + STR_FALLOWING;
-    else document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0px 0px 10px, #000000 0px 0px 10px, #000000 0px 0px 8px;"></i>' + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY);
+    if (AGame_fallowing) document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_FALLOWING;
+    else document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY);
 }
 
 function AGame_fallow() {
