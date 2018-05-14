@@ -151,17 +151,20 @@ function PlayVod_Resume() {
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
     } else {
+        PlayVod_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
         Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
-            PlayVod_Playing = false;
-            PlayVod_onPlayer();
-            PlayVod_PlayerCheckOffset = 80;
-            PlayVod_RestoreFromResume = true;
-            PlayVod_PlayerCheckQualityChanged = false;
-            PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+            if (PlayVod_isOn) {
+                PlayVod_Playing = false;
+                PlayVod_onPlayer();
+                PlayVod_PlayerCheckOffset = 80;
+                PlayVod_RestoreFromResume = true;
+                PlayVod_PlayerCheckQualityChanged = false;
+                PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+            }
         }, 500);
     }
 }
