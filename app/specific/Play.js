@@ -675,7 +675,7 @@ function Play_showPanel() {
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     Play_setHidePanel();
-    Play_sizePanelOffset = -4;
+    Play_sizePanelOffset = -5;
     if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
 }
 
