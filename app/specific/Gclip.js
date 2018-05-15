@@ -109,8 +109,10 @@ function Gclip_loadDataRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main_SetItemsLimitReload(Gclip_blankCellCount);
+
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
+            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReload +
             '&period=' + encodeURIComponent(Gclip_period) +
             (Gclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Gclip_cursor)) + '&' +
             Math.round(Math.random() * 1e7), true);
