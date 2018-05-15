@@ -246,7 +246,7 @@ function Gvod_loadDataReplace() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
+            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReload +
             '&broadcast_type=' + (Gvod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
             '&period=' + Gvod_period + '&' + Math.round(Math.random() * 1e7), true);
 

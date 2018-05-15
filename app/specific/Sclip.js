@@ -240,8 +240,11 @@ function Sclip_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        Main_SetItemsLimitReload(Sclip_blankCellCount);
+
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' + encodeURIComponent(Main_selectedChannel) + '&limit=' +
-            Sclip_blankCellCount + '&period=' + Sclip_period + (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
+            Main_ItemsLimitReload + '&period=' + Sclip_period +
+            (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
