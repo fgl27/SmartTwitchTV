@@ -97,8 +97,9 @@ function Svod_loadDataRequest() {
             Svod_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main_selectedChannel) + '/videos?limit=' +
-            Main_ItemsLimitVideo + '&broadcast_type=' + (Svod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
+            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitVideo +
+            '&broadcast_type=' + (Svod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod_loadingDataTimeout;
@@ -241,8 +242,9 @@ function Svod_loadDataReplace() {
             Svod_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + encodeURIComponent(Main_selectedChannel) + '/videos?limit=' +
-            Main_ItemsLimitReload + '&broadcast_type=' + (Svod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
+            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitReload + '&broadcast_type=' +
+            (Svod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Svod_loadingDataTimeout;
