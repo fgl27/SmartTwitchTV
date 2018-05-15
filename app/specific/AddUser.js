@@ -202,13 +202,17 @@ function AddUser_RestoreUsers() {
 
     if (AddUser_UsernameArray.length) AddCode_RestoreUsers();
 
-    window.setTimeout(function() {
-        SmartHub_Start();
-        window.addEventListener('appcontrol', SmartHub_EventListener, false);
+    Main_TizenVersion = parseFloat(tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version")) >= 2.4;
 
-        Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
-        document.addEventListener('visibilitychange', Main_Resume, false);
-    }, 3500);
+    if (Main_TizenVersion) {
+        window.setTimeout(function() {
+            SmartHub_Start();
+            window.addEventListener('appcontrol', SmartHub_EventListener, false);
+
+            Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+            document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
+        }, 3500);
+    }
 }
 
 function AddUser_SaveNewUser() {
@@ -219,12 +223,12 @@ function AddUser_SaveNewUser() {
     Users_init();
     AddUser_loadingData = false;
 
-    if (AddUser_UsernameArray.length === 1) {
+    if (Main_TizenVersion && AddUser_UsernameArray.length === 1) {
         window.clearInterval(Main_SmartHubId);
-        document.removeEventListener('visibilitychange', Main_Resume);
+        document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
 
         Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
-        document.addEventListener('visibilitychange', Main_Resume, false);
+        document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
 
         SmartHub_Start();
     }

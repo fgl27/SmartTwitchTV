@@ -102,6 +102,7 @@ var Main_stringVersion = '4.0.0';
 var Main_currentVersion = '';
 var Main_minversion = '051418';
 var Main_versonTag = '';
+var Main_TizenVersion;
 
 var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
@@ -247,6 +248,7 @@ function Main_initWindows() {
         Main_PreLoadAImage(IMG_USER_CODE);
 
         window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
+        document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
     });
 }
 
@@ -607,23 +609,28 @@ function Main_GoLive() {
     Main_SwitchScreen();
 }
 
-function Main_Resume() {
-    if (document.hidden) {
-        window.clearInterval(Main_SmartHubId);
-        Main_NetworkStateChangeListenerStop();
-    } else {
+// right after the TV comes from standby the network can lag, delay the check
+function Main_ResumeNetwork() {
+    if (document.hidden) Main_NetworkStateChangeListenerStop();
+    else {
         window.setTimeout(function() {
             Main_NetworkStateChangeListenerStart();
         }, 20000);
+    }
+}
+
+function Main_ResumeSmarthub() {
+    if (document.hidden) window.clearInterval(Main_SmartHubId);
+    else {
         window.setTimeout(function() {
             if (AddUser_UsernameArray.length > 0) {
                 if ((new Date().getTime() - 590000) > SmartHub_LastUpdate) SmartHub_Start();
                 Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
             } else {
                 window.clearInterval(Main_SmartHubId);
-                document.removeEventListener('visibilitychange', Main_Resume);
+                document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
             }
-        }, 1500);
+        }, 10000);
     }
 }
 
