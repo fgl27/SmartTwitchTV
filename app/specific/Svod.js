@@ -233,17 +233,17 @@ function Svod_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(Svod_blankCellCount);
+        Main_SetItemsLimitReplace(Svod_blankCellCount);
 
         var offset = Svod_itemsCount + Svod_itemsCountOffset;
 
         if (offset && offset > (Svod_MaxOffset - 1)) {
-            offset = Svod_MaxOffset - Main_ItemsLimitReload;
+            offset = Svod_MaxOffset - Main_ItemsLimitReplace;
             Svod_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
-            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitReload + '&broadcast_type=' +
+            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
             (Svod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 

@@ -221,16 +221,16 @@ function SChannels_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(SChannels_blankCellCount);
+        Main_SetItemsLimitReplace(SChannels_blankCellCount);
 
         var offset = SChannels_itemsCount + SChannels_itemsCountOffset;
         if (offset && offset > (SChannels_MaxOffset - 1)) {
-            offset = SChannels_MaxOffset - Main_ItemsLimitReload;
+            offset = SChannels_MaxOffset - Main_ItemsLimitReplace;
             SChannels_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
-            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SChannels_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};

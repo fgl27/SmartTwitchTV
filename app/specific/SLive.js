@@ -219,16 +219,16 @@ function SLive_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(SLive_blankCellCount);
+        Main_SetItemsLimitReplace(SLive_blankCellCount);
 
         var offset = SLive_itemsCount + SLive_itemsCountOffset;
         if (offset && offset > (SLive_MaxOffset - 1)) {
-            offset = SLive_MaxOffset - Main_ItemsLimitReload;
+            offset = SLive_MaxOffset - Main_ItemsLimitReplace;
             SLive_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
-            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SLive_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
         xmlHttp.ontimeout = function() {};
