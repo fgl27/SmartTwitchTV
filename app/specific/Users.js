@@ -326,7 +326,7 @@ function Users_handleKeyDown(event) {
             break;
         case KEY_CHANNELUP:
             Main_Before = Main_Users;
-            Main_Go = Main_games;
+            Main_Go = Main_Featured;
             Users_exit();
             Main_SwitchScreen();
             break;

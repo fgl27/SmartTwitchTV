@@ -525,6 +525,7 @@
     <script src="app/specific/Main.js" defer></script>
     <script src="app/specific/Live.js" defer></script>
     <script src="app/specific/Play.js" defer></script>
+    <script src="app/specific/Featured.js" defer></script>
     <script src="app/specific/AddUser.js" defer></script>
     <script src="app/specific/AddCode.js" defer></script>
     <script src="app/specific/Games.js" defer></script>
@@ -569,6 +570,7 @@
             <div style="position: fixed; text-align: center; width: 72%; margin-left: 14%;">
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
+                <div id="top_bar_featured" class="icon_center_label"></div>
                 <div id="top_bar_game" class="icon_center_label"></div>
                 <div id="top_bar_vod" class="icon_center_label"></div>
                 <div id="top_bar_clip" class="icon_center_label"></div>
@@ -643,6 +645,9 @@
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <table id="stream_table_user_host" class="streams_tables"></table>
+        <div class="screen_size"></div>
+        <!-- Prevent one table see the other-->
+        <table id="stream_table_featured" class="streams_tables"></table>
         <div class="screen_size"></div>
         <!-- Prevent one table see the other-->
         <table id="stream_table_user_games" class="streams_tables"></table>

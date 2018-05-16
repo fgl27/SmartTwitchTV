@@ -170,3 +170,4 @@ var STR_REPLAY = "Replay";
 var STR_CLIP_TO_VOD = "Open the Stream at this clip position";
 var STR_STREAM_END = "exiting in ";
 var STR_STREAM_END_EXIT = 'press "Return" to exit';
+var STR_FEATURED = 'Featured';

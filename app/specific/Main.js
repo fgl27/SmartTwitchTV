@@ -24,6 +24,7 @@ var Main_Vod = 18;
 var Main_Clip = 19;
 var Main_Gvod = 20;
 var Main_Gclip = 21;
+var Main_Featured = 22;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -196,6 +197,7 @@ function Main_initWindows() {
     Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
+    document.getElementById('top_bar_featured').innerHTML = STR_FEATURED;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
     document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
@@ -474,6 +476,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_Clip) Clip_init();
     else if (Main_Go === Main_Gvod) Gvod_init();
     else if (Main_Go === Main_Gclip) Gclip_init();
+    else if (Main_Go === Main_Featured) Featured_init();
     else Live_init();
 }
 
@@ -498,6 +501,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_Clip) Clip_exit();
     else if (ExitCurrent === Main_Gvod) Gvod_exit();
     else if (ExitCurrent === Main_Gclip) Gclip_exit();
+    else if (ExitCurrent === Main_Featured) Featured_exit();
 }
 
 function Main_openStream() {
@@ -517,6 +521,7 @@ function Main_RestoreTopLabel() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.getElementById('top_bar_live').innerHTML = STR_LIVE;
     document.getElementById('top_bar_user').innerHTML = STR_USER;
+    document.getElementById('top_bar_featured').innerHTML = STR_FEATURED;
     document.getElementById('top_bar_game').innerHTML = STR_GAMES;
     document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
     document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
@@ -529,6 +534,7 @@ function Main_cleanTopLabel() {
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');
     Main_empty('top_bar_clip');
+    Main_empty('top_bar_featured');
     Main_AddClass('top_bar_user', 'icon_center_focus');
 }
 

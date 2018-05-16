@@ -13,6 +13,7 @@ function Search_init() {
     document.getElementById('label_search').style.display = 'none';
     document.getElementById('label_switch').style.display = 'none';
     document.getElementById('top_bar_live').style.display = 'none';
+    document.getElementById('top_bar_featured').style.display = 'none';
     document.getElementById('top_bar_game').style.display = 'none';
     document.getElementById('top_bar_vod').style.display = 'none';
     document.getElementById('top_bar_clip').style.display = 'none';
@@ -35,6 +36,7 @@ function Search_exit() {
     document.getElementById('label_search').style.display = 'block';
     document.getElementById('label_switch').style.display = 'block';
     document.getElementById('top_bar_live').style.display = 'inline-block';
+    document.getElementById('top_bar_featured').style.display = 'inline-block';
     document.getElementById('top_bar_game').style.display = 'inline-block';
     document.getElementById('top_bar_vod').style.display = 'inline-block';
     document.getElementById('top_bar_clip').style.display = 'inline-block';
