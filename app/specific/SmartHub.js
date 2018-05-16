@@ -18,7 +18,7 @@ var SmartHub_previewData = 0;
 function SmartHub_Start() {
     if (!AddUser_UsernameArray.length) {
         window.clearInterval(Main_SmartHubId);
-        document.removeEventListener('visibilitychange', Main_Resume);
+        document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
         SmartHub_emptyUser = true;
     } else SmartHub_emptyUser = false;
 
