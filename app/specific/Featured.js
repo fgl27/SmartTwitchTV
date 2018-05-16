@@ -218,11 +218,11 @@ function Featured_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(Featured_blankCellCount);
+        Main_SetItemsLimitReplace(Featured_blankCellCount);
 
         var offset = Featured_itemsCount + Featured_itemsCountOffset;
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReload +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
             '&offset=' + offset + (AddCode_OauthToken !== '' ? '&oauth_token=' + AddCode_OauthToken : '') +
             '&' + Math.round(Math.random() * 1e7), true);
 

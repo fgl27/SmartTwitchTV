@@ -221,16 +221,16 @@ function UserHost_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(UserHost_blankCellCount);
+        Main_SetItemsLimitReplace(UserHost_blankCellCount);
 
         var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
         if (offset && offset > (UserHost_MaxOffset - 1)) {
-            offset = UserHost_MaxOffset - Main_ItemsLimitReload;
+            offset = UserHost_MaxOffset - Main_ItemsLimitReplace;
             UserHost_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/hosts?game=' + encodeURIComponent(Main_gameSelected) +
-            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserHost_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};

@@ -269,15 +269,15 @@ function Vod_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(Vod_blankCellCount);
+        Main_SetItemsLimitReplace(Vod_blankCellCount);
 
         var offset = Vod_itemsCount + Vod_itemsCountOffset;
         if (offset && offset > (Vod_MaxOffset - 1)) {
-            offset = Vod_MaxOffset - Main_ItemsLimitReload;
+            offset = Vod_MaxOffset - Main_ItemsLimitReplace;
             Vod_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReload +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReplace +
             '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
             '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
 

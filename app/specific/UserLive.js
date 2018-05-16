@@ -289,16 +289,16 @@ function UserLive_loadChannelsReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(UserLive_blankCellCount);
+        Main_SetItemsLimitReplace(UserLive_blankCellCount);
 
         var offset = UserLive_itemsCount + UserLive_itemsCountOffset;
         if (offset && offset > (UserLive_MaxOffset - 1)) {
-            offset = UserLive_MaxOffset - Main_ItemsLimitReload;
+            offset = UserLive_MaxOffset - Main_ItemsLimitReplace;
             UserLive_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
-            '&limit=' + Main_ItemsLimitReload + '&offset=' + offset, true);
+            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset, true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};

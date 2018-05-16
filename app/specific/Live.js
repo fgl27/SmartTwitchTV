@@ -232,15 +232,15 @@ function Live_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(Live_blankCellCount);
+        Main_SetItemsLimitReplace(Live_blankCellCount);
 
         var offset = Live_itemsCount + Live_itemsCountOffset;
         if (offset && offset > (Live_MaxOffset - 1)) {
-            offset = Live_MaxOffset - Main_ItemsLimitReload;
+            offset = Live_MaxOffset - Main_ItemsLimitReplace;
             Live_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Live_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};

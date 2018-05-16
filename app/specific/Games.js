@@ -223,15 +223,15 @@ function Games_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(Games_blankCellCount);
+        Main_SetItemsLimitReplace(Games_blankCellCount);
 
         var offset = Games_itemsCount + Games_itemsCountOffset;
         if (offset && offset > (Games_MaxOffset - 1)) {
-            offset = Games_MaxOffset - Main_ItemsLimitReload;
+            offset = Games_MaxOffset - Main_ItemsLimitReplace;
             Games_ReplacedataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitReload + '&offset=' + offset + '&' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Games_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

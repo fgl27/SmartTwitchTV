@@ -223,11 +223,11 @@ function UserGames_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReload(UserGames_blankCellCount);
+        Main_SetItemsLimitReplace(UserGames_blankCellCount);
 
         var offset = UserGames_itemsCount + UserGames_itemsCountOffset;
         if (offset && offset > (UserGames_MaxOffset - 1)) {
-            offset = UserGames_MaxOffset - Main_ItemsLimitReload;
+            offset = UserGames_MaxOffset - Main_ItemsLimitReplace;
             UserGames_ReplacedataEnded = true;
         }
 

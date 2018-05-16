@@ -86,7 +86,7 @@ var Main_ColoumnsCountChannel = 6;
 var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
 // How many streams will be request on a reload
-var Main_ItemsLimitReload = 6;
+var Main_ItemsLimitReplace = 6;
 
 var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 var Main_clientIdHeader = 'Client-ID';
@@ -351,10 +351,10 @@ function Main_Scrollbar(y, coloumns, total) {
     }
 }
 
-function Main_SetItemsLimitReload(blankCellCount) {
-    Main_ItemsLimitReload = 12;
-    if (blankCellCount > (Main_ItemsLimitReload / 3)) Main_ItemsLimitReload = blankCellCount * 3;
-    if (Main_ItemsLimitReload > 99) Main_ItemsLimitReload = 99;
+function Main_SetItemsLimitReplace(blankCellCount) {
+    Main_ItemsLimitReplace = 12;
+    if (blankCellCount > (Main_ItemsLimitReplace / 3)) Main_ItemsLimitReplace = blankCellCount * 3;
+    if (Main_ItemsLimitReplace > 99) Main_ItemsLimitReplace = 99;
 }
 
 function Main_showWarningDialog(text) {
