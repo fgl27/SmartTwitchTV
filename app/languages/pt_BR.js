@@ -153,4 +153,5 @@ function pt_BRLang() {
     STR_CLIP_TO_VOD = "Abrir a transmissão no ponto deste clipe";
     STR_STREAM_END = "saindo em ";
     STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
+    STR_FEATURED = 'Destaques';
 }

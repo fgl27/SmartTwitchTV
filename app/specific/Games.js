@@ -410,7 +410,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_CHANNELDOWN:
             Main_Before = Main_games;
-            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+            Main_Go = Main_Featured;
             Games_exit();
             Main_SwitchScreen();
             break;
