@@ -531,7 +531,7 @@ function AGame_handleKeyDown(event) {
         case KEY_CHANNELDOWN:
             if (!Search_isSearching) {
                 Main_Before = Main_aGame;
-                Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+                Main_Go = Main_Featured;
                 AGame_exit();
                 Main_SwitchScreen();
             }
