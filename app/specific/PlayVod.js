@@ -36,7 +36,6 @@ var PlayVod_PlayerCheckCount = 0;
 var PlayVod_RestoreFromResume = false;
 var PlayVod_PlayerCheckOffset = 0;
 var PlayVod_PlayerCheckQualityChanged = false;
-var PlayVod_Canjump = false;
 var PlayVod_Playing = false;
 var Play_jumping = false;
 var PlayVod_JumpID = null;
@@ -47,6 +46,8 @@ var PlayVod_jumpCountMin = -16;
 var PlayVod_jumpCountMax = 16;
 var PlayVod_loadingDataTimeout = 3500;
 var PlayVod_qualitiesFound = false;
+var PlayVod_currentTime = 0;
+var PlayVod_JustStartPlaying = true;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -65,13 +66,14 @@ function PlayVod_Start() {
     document.getElementById("stream_info_game").innerHTML = Svod_views + ', [' + (Svod_language).toUpperCase() + ']';
     document.getElementById("stream_live_icon").innerHTML = Svod_createdAt;
     document.getElementById("stream_live_time").innerHTML = Svod_Duration;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
 
+    PlayVod_currentTime = 0;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
@@ -84,7 +86,6 @@ function PlayVod_Start() {
     PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', PlayVod_Resume, false);
     PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
-    PlayVod_Canjump = false;
     PlayVod_Playing = false;
     Play_jumping = false;
     PlayVod_isOn = true;
@@ -146,7 +147,7 @@ function PlayVod_updateStreamInfoEndError() {
 function PlayVod_Resume() {
     if (document.hidden) {
         Play_avplay.pause();
-        PlayVod_offsettime = Play_avplay.currentTime();
+        PlayVod_offsettime = Play_avplay.getCurrentTime();
         Play_ClearPlayer();
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
@@ -315,62 +316,46 @@ function PlayVod_qualityChanged() {
     if (PlayVod_isOn) PlayVod_onPlayer();
 }
 
+var PlayVod_listener = {
+    oncurrentplaytime: function(currentTime) {
+        if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
+    },
+    onstreamcompleted: function() {
+        PlayVod_PannelEnterStart(2);
+    }
+};
+
 function PlayVod_onPlayer() {
     Play_showBufferDialog();
-    Play_avplay.src({
-        type: "application/x-mpegURL",
-        src: PlayVod_playingUrl
-    });
-    PlayVod_Canjump = false;
-    Play_HideWarningDialog();
-    PlayVod_hidePanel();
+    try {
+        Play_avplay.stop();
+        Play_avplay.open(PlayVod_playingUrl);
 
-    if (!PlayVod_Playing) {
-        Play_avplay.ready(function() {
-            this.isFullscreen(true);
-            this.requestFullscreen();
-            this.autoplay(false);
+        if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
+            Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+            Play_clearPause();
+        }
 
-            this.on('ended', function() {
-                Play_PannelEnterStart(2);
-            });
-
-            this.on('timeupdate', function() {
-                PlayVod_updateCurrentTime(this.currentTime());
-            });
-
-            this.on('error', function() {
-                Play_PannelEnterStart(2);
-            });
-
-            this.on('loadedmetadata', function() { // reset position after quality change or back from resume
-                if (PlayVod_offsettime > 0 && PlayVod_offsettime !== this.currentTime()) {
-                    Play_jumping = true;
-                    this.currentTime(PlayVod_offsettime);
-                    Play_showBufferDialog();
-                    Play_clearPause();
-                } else this.autoplay(true);
-                PlayVod_Canjump = true;
-            });
-
-            this.on('playing', function() {
-                if (PlayVod_offsettime > 0) PlayVod_offsettime = 0;
-            });
-
-            this.on('canplaythrough', function() {
-                if (Play_jumping) {
-                    Play_jumping = false;
-                    this.play();
-                }
-            });
-
-        });
-        PlayVod_Playing = true;
+        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        Play_avplay.setListener(PlayVod_listener);
+    } catch (e) {
+        console.log(e);
     }
+
+    PlayVod_JustStartPlaying = true;
+    Play_avplay.prepareAsync(function() {
+        Play_avplay.play();
+        PlayVod_Playing = true;
+    });
+
+    Main_ready(function() {
+        Play_HideWarningDialog();
+        PlayVod_hidePanel();
+    });
 }
 
 function PlayVod_PlayerCheck() {
-    if (!Play_avplay.paused() && PlayVod_PlayerTime === Play_avplay.currentTime()) {
+    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
         Play_showBufferDialog();
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -10;
@@ -379,30 +364,30 @@ function PlayVod_PlayerCheck() {
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change first time only reload
                 PlayVod_qualityDisplay();
-                if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.currentTime();
+                if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
                 PlayVod_qualityChanged();
                 PlayVod_PlayerCheckQualityChanged = true; // -5s on next check
-            } else { //staled too long close the player
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_PLAYER_PROBLEM);
-                window.setTimeout(PlayVod_shutdownStream, 1500);
-            }
+            } else PlayVod_PannelEnterStart(2); //staled too long close the player
         }
     }
-    if (!Play_avplay.paused()) Play_avplay.play();
-    PlayVod_PlayerTime = Play_avplay.currentTime();
+    PlayVod_PlayerTime = PlayVod_currentTime;
 }
 
 function PlayVod_updateCurrentTime(currentTime) {
+    PlayVod_currentTime = currentTime;
+
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (Play_BufferDialogVisible() && !Play_jumping) Play_HideBufferDialog();
-    if (Play_isShowPauseDialogOn() && !Play_avplay.paused()) Play_clearPause();
+
+    //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
+    if (!PlayVod_JustStartPlaying && Play_isplaying() && Play_BufferDialogVisible()) Play_HideBufferDialog();
+    else PlayVod_JustStartPlaying = false;
+
     PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
-    PlayVod_Canjump = true;
 
-    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(currentTime);
+    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(currentTime);
 }
 
 function PlayVod_shutdownStream() {
@@ -442,7 +427,8 @@ function PlayVod_showPanel() {
     Play_IconsFocus();
     PlayVod_qualityIndexReset();
     Play_clock();
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_avplay.currentTime());
+    Play_CleanHideExit();
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime());
     PlayVod_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayVod_setHidePanel();
@@ -490,15 +476,42 @@ function PlayVod_getQualitiesCount() {
 }
 
 function PlayVod_jump() {
-    if (!Play_avplay.paused()) Play_avplay.pause();
-    Play_avplay.currentTime(PlayVod_TimeToJump);
+    if (Play_isIdleOrPlaying()) Play_avplay.pause();
+
+    if (PlayVod_TimeToJump > 0) {
+        PlayVod_TimeToJump -= 2;
+        try {
+            Play_avplay.jumpForward(PlayVod_TimeToJump * 1000);
+        } catch (e) {
+            Play_HideWarningDialog();
+            console.log(e);
+        }
+    } else {
+        PlayVod_TimeToJump += 2;
+        try {
+            Play_avplay.jumpBackward(PlayVod_TimeToJump * -1000);
+        } catch (e) {
+            Play_HideWarningDialog();
+            console.log(e);
+        }
+    }
+
     PlayVod_jumpCount = 0;
     PlayVod_jumpCountMin = -16;
     PlayVod_jumpCountMax = 16;
     PlayVod_IsJumping = false;
-    PlayVod_Canjump = false;
-    Play_avplay.play();
+    if (!Play_isIdleOrPlaying()) Play_avplay.play();
     Play_clearPause();
+}
+
+function PlayVod_jumpCancel() {
+    PlayVod_TimeToJump = 0;
+    PlayVod_jumpCountMin = -16;
+    PlayVod_jumpCountMax = 16;
+    Play_showWarningDialog(STR_JUMP_CANCEL);
+    PlayVod_JumpID = window.setTimeout(function() {
+        PlayVod_IsJumping = false;
+    }, 1500);
 }
 
 function PlayVod_jumpStart() {
@@ -508,13 +521,7 @@ function PlayVod_jumpStart() {
         jumpTotime = '';
 
     if (!PlayVod_jumpCount) {
-        PlayVod_TimeToJump = 0;
-        PlayVod_jumpCountMin = -16;
-        PlayVod_jumpCountMax = 16;
-        Play_showWarningDialog(STR_JUMP_CANCEL);
-        PlayVod_JumpID = window.setTimeout(function() {
-            PlayVod_IsJumping = false;
-        }, 1500);
+        PlayVod_jumpCancel();
         return;
     } else if (PlayVod_jumpCount < 0) {
         if (PlayVod_jumpCount === -1) PlayVod_TimeToJump = -5;
@@ -538,12 +545,11 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump < -30) time = (PlayVod_TimeToJump / 60) + STR_MIN;
         if (PlayVod_TimeToJump < -1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
-        jumpTotime = Play_avplay.currentTime() + PlayVod_TimeToJump;
+        jumpTotime = (Play_avplay.getCurrentTime() / 1000) + PlayVod_TimeToJump;
         if (jumpTotime < 0) {
             PlayVod_jumpCountMin = PlayVod_jumpCount;
             jumpTotime = 0;
         }
-        PlayVod_TimeToJump = jumpTotime;
         jumpTotime = Play_timeS(jumpTotime);
     } else {
         if (PlayVod_jumpCount === 1) PlayVod_TimeToJump = 5;
@@ -567,7 +573,7 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump > 30) time = (PlayVod_TimeToJump / 60) + STR_MIN;
         if (PlayVod_TimeToJump > 1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
-        jumpTotime = Play_avplay.currentTime() + PlayVod_TimeToJump;
+        jumpTotime = (Play_avplay.getCurrentTime() / 1000) + PlayVod_TimeToJump;
         if (jumpTotime > Svod_DurationSeconds) {
             PlayVod_TimeToJump = 0;
             PlayVod_jumpCountMax = PlayVod_jumpCount;
@@ -579,7 +585,6 @@ function PlayVod_jumpStart() {
             }, 1500);
             return;
         } else {
-            PlayVod_TimeToJump = jumpTotime;
             jumpTotime = Play_timeS(jumpTotime);
         }
 
@@ -624,7 +629,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_Endcouner < 0) Play_Endcouner = 3;
                     if (Play_Endcouner === 1) Play_Endcouner = 0;
                     Play_EndIconsFocus(2);
-                } else if (PlayVod_Canjump) {
+                } else if (!Play_BufferDialogVisible()) {
                     if (PlayVod_jumpCount > PlayVod_jumpCountMin) PlayVod_jumpCount--;
                     PlayVod_jumpStart();
                 }
@@ -642,7 +647,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_Endcouner > 3) Play_Endcouner = 0;
                     if (Play_Endcouner === 1) Play_Endcouner = 2;
                     Play_EndIconsFocus(2);
-                } else if (PlayVod_Canjump) {
+                } else if (!Play_BufferDialogVisible()) {
                     if (PlayVod_jumpCount < PlayVod_jumpCountMax) PlayVod_jumpCount++;
                     PlayVod_jumpStart();
                 }
