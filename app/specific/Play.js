@@ -55,7 +55,7 @@ var Play_selectedChannelDisplayname = '';
 var Play_Panelcouner = 0;
 var Play_IsWarning = false;
 var Play_gameSelected = '';
-var Play_videojs = null;
+var Play_avplay = null;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 3500;
@@ -64,10 +64,12 @@ var Play_Endcouner = 0;
 var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
+var Play_currentTime = 0;
+var Play_JustStartPlaying = true;
 //Variable initialization end
 
 function Play_PreStart() {
-    Play_videojs = videojs('video_live');
+    Play_avplay = (window.tizen && window.webapis.avplay) || {};
     Play_ClearPlayer();
     document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
     document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
@@ -102,11 +104,12 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
     document.getElementById("stream_info_name").innerHTML = Play_selectedChannelDisplayname;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(0);
-    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_timeS(0) + STR_AGO;
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
+    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_timeMs(0) + STR_AGO;
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
 
+    Play_currentTime = 0;
     Play_IsWarning = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 10000;
@@ -392,49 +395,53 @@ function Play_qualityChanged() {
     if (Play_isOn) Play_onPlayer();
 }
 
-function Play_onPlayer() {
+var Play_listener = {
+    oncurrentplaytime: function(currentTime) {
+        if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
+    },
+    onstreamcompleted: function() {
+        Play_PannelEnterStart(1);
+    }
+};
+
+Play_onPlayer = function() {
     Play_showBufferDialog();
-    Play_videojs.src({
-        type: "application/x-mpegURL",
-        src: Play_playingUrl
+    try {
+        Play_avplay.stop();
+        Play_avplay.open(Play_playingUrl);
+        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        Play_avplay.setListener(Play_listener);
+    } catch (e) {
+        console.log(e);
+    }
+
+    Play_JustStartPlaying = true;
+    Play_avplay.prepareAsync(function() {
+        Play_avplay.play();
+        Play_Playing = true;
     });
 
-    Play_offsettime = Play_oldcurrentTime;
-    Play_HideWarningDialog();
-    Play_hidePanel();
-    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    Main_ready(function() {
 
-    if (!Play_Playing) {
-        Play_videojs.ready(function() {
-            this.isFullscreen(true);
-            this.requestFullscreen();
-            this.autoplay(true);
+        // sync chat and stream
+        document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
 
-            this.on('ended', function() {
-                Play_PannelEnterStart(1);
-            });
+        Play_offsettime = Play_oldcurrentTime;
+        Play_HideWarningDialog();
+        Play_hidePanel();
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    });
+};
 
-            this.on('timeupdate', function() {
-                Play_updateCurrentTime(this.currentTime());
-            });
-
-            this.on('error', function() {
-                Play_PannelEnterStart(1);
-            });
-
-            this.on('loadedmetadata', function() {
-                // sync chat and stream
-                document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' +
-                    Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
-            });
-
-        });
-        Play_Playing = true;
-    }
-}
+// If idle or playing, the media is be played or process to
+// So we use PlayerCheck to avaluate if we are staled fro too long or not and drop the quality
+Play_isIdleOrPlaying = function() {
+    var state = Play_avplay.getState();
+    return state === 'IDLE' || state === 'PLAYING';
+};
 
 function Play_PlayerCheck() {
-    if (!Play_videojs.paused() && Play_PlayerTime === Play_videojs.currentTime()) {
+    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
         Play_showBufferDialog();
         if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -10;
@@ -445,36 +452,35 @@ function Play_PlayerCheck() {
                 Play_qualityDisplay();
                 Play_qualityChanged();
                 Play_PlayerCheckQualityChanged = true; // -5s on next check
-            } else { //staled too long close the player
-                Play_HideBufferDialog();
-                Play_showWarningDialog(STR_PLAYER_PROBLEM);
-                window.setTimeout(Play_shutdownStream, 1500);
-            }
+            } else Play_PannelEnterStart(1); //staled for too long close the player
         }
     }
-    if (!Play_videojs.paused()) Play_videojs.play();
-    Play_PlayerTime = Play_videojs.currentTime();
+    Play_PlayerTime = Play_currentTime;
 }
 
+Play_isplaying = function() {
+    return Play_avplay.getState() === 'PLAYING';
+};
+
 function Play_offPlayer() {
-    Play_videojs.off('ended', null);
-    Play_videojs.off('timeupdate', null);
-    Play_videojs.off('error', null);
-    Play_videojs.off('loadedmetadata', null);
-    Play_videojs.off('playing', null);
-    Play_videojs.off('canplaythrough', null);
+    Play_avplay.stop();
 }
 
 function Play_updateCurrentTime(currentTime) {
+    Play_currentTime = currentTime;
+
     if (Play_WarningDialogVisible() && !Play_IsWarning) Play_HideWarningDialog();
-    if (Play_BufferDialogVisible()) Play_HideBufferDialog();
-    if (Play_isShowPauseDialogOn() && !Play_videojs.paused()) Play_clearPause();
+
+    //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
+    if (!Play_JustStartPlaying && Play_isplaying() && Play_BufferDialogVisible()) Play_HideBufferDialog();
+    else Play_JustStartPlaying = false;
+
     Play_PlayerCheckCount = 0;
     Play_PlayerCheckOffset = 0;
     Play_RestoreFromResume = false;
 
-    Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14 buffer size from twitch
-    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
+    Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14 buffer size from twitch
+    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_oldcurrentTime);
 }
 
 function Play_clock(currentTime) {
@@ -507,7 +513,9 @@ function Play_timeS(time) {
 }
 
 function Play_timeMs(time) {
-    var minutes, hours;
+    var seconds, minutes, hours;
+
+    seconds = Play_lessthanten(parseInt(time / 1000) % 60);
 
     time = Math.floor(time / 1000 / 60);
     minutes = Play_lessthanten(time % 60);
@@ -516,7 +524,7 @@ function Play_timeMs(time) {
     hours = Play_lessthanten(time);
 
     //final time 00:00 or 00:00:00
-    return hours + ":" + minutes;
+    return (!time) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
 }
 
 function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
@@ -543,13 +551,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
-    Play_videojs.pause();
     Play_offPlayer();
-    Play_videojs.autoplay(false);
-    Play_videojs.src({
-        type: "video/mp4",
-        src: TEMP_MP4
-    });
     Play_clearPause();
     Play_HideWarningDialog();
     Play_HideEndDialog();
@@ -638,7 +640,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
-    if (!Play_videojs.paused()) Play_clearPause();
+    if (Play_isplaying()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
@@ -670,7 +672,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_oldcurrentTime);
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_oldcurrentTime);
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
@@ -818,15 +820,17 @@ function Play_hideChatBackgroundDialog() {
 }
 
 function Play_KeyPause() {
-    if (!Play_videojs.paused()) {
-        Play_videojs.pause();
+    if (Play_isplaying()) {
+        window.clearInterval(Play_streamCheck);
+        Play_avplay.pause();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
         Play_showPauseDialog();
     } else {
         Play_clearPause();
-        Play_videojs.play();
+        Play_avplay.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
         if (Play_isPanelShown()) Play_hidePanel();
+        Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
     }
 }
 
@@ -1046,7 +1050,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
             Play_clearPause();
         }
         if (PlayVodClip === 2) {
-            if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+            if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();

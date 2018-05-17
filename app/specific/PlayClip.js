@@ -100,12 +100,12 @@ function PlayClip_Play(response) {
     //Main_ready to prevent clip start playing before the document finish loading and cause odd visual effects
     Sclip_playUrl = JSON.parse(response).quality_options[0].source;
     Main_ready(function() {
-        Play_videojs.src({
+        Play_avplay.src({
             type: "video/mp4",
             src: Sclip_playUrl
         });
 
-        Play_videojs.ready(function() {
+        Play_avplay.ready(function() {
             this.isFullscreen(true);
             this.requestFullscreen();
             this.autoplay(true);
@@ -150,7 +150,7 @@ function PlayClip_SpeedToQuality(bool) {
 }
 
 function PlayClip_PlayerCheck() {
-    if (!Play_videojs.paused() && PlayClip_PlayerTime === Play_videojs.currentTime()) {
+    if (!Play_avplay.paused() && PlayClip_PlayerTime === Play_avplay.currentTime()) {
         PlayClip_PlayerCheckCount++;
         Play_showBufferDialog();
         if (PlayClip_PlayerCheckCount > 90) {
@@ -160,8 +160,8 @@ function PlayClip_PlayerCheck() {
             window.setTimeout(PlayClip_shutdownStream, 1500);
         }
     }
-    if (!Play_videojs.paused()) Play_videojs.play();
-    PlayClip_PlayerTime = Play_videojs.currentTime();
+    if (!Play_avplay.paused()) Play_avplay.play();
+    PlayClip_PlayerTime = Play_avplay.currentTime();
 }
 
 function PlayClip_shutdownStream() {
@@ -185,7 +185,7 @@ function PlayClip_PreshutdownStream() {
 function PlayClip_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayClip_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (Play_BufferDialogVisible()) Play_HideBufferDialog();
-    if (Play_isShowPauseDialogOn() && !Play_videojs.paused()) Play_clearPause();
+    if (Play_isShowPauseDialogOn() && !Play_avplay.paused()) Play_clearPause();
     PlayClip_PlayerCheckCount = 0;
     PlayClip_Canjump = true;
 
@@ -203,7 +203,7 @@ function PlayClip_showPanel() {
     Play_IconsFocus();
     PlayClip_SpeedIndex = PlayClip_SpeedIndexPosition;
     PlayClip_speedDisplay();
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_avplay.currentTime());
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();
 }
@@ -217,14 +217,14 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_jump() {
-    if (!Play_videojs.paused()) Play_videojs.pause();
-    Play_videojs.currentTime(PlayClip_TimeToJump);
+    if (!Play_avplay.paused()) Play_avplay.pause();
+    Play_avplay.currentTime(PlayClip_TimeToJump);
     PlayClip_jumpCount = 0;
     PlayClip_jumpCountMin = -12;
     PlayClip_jumpCountMax = 12;
     PlayClip_IsJumping = false;
     PlayClip_Canjump = false;
-    Play_videojs.play();
+    Play_avplay.play();
 }
 
 function PlayClip_jumpStart() {
@@ -258,7 +258,7 @@ function PlayClip_jumpStart() {
 
         time = PlayClip_TimeToJump + STR_SEC;
 
-        jumpTotime = Play_videojs.currentTime() + PlayClip_TimeToJump;
+        jumpTotime = Play_avplay.currentTime() + PlayClip_TimeToJump;
         if (jumpTotime < 0) {
             PlayClip_jumpCountMin = PlayClip_jumpCount;
             jumpTotime = 0;
@@ -281,7 +281,7 @@ function PlayClip_jumpStart() {
 
         time = PlayClip_TimeToJump + STR_SEC;
 
-        jumpTotime = Play_videojs.currentTime() + PlayClip_TimeToJump;
+        jumpTotime = Play_avplay.currentTime() + PlayClip_TimeToJump;
         if (jumpTotime > Sclip_DurationSeconds) {
             PlayClip_TimeToJump = 0;
             PlayClip_jumpCountMax = PlayClip_jumpCount;
@@ -309,7 +309,7 @@ function PlayClip_speed() {
     else if (PlayClip_SpeedIndex === 3) value = 0.5;
     else if (PlayClip_SpeedIndex === 4) value = 0.25;
 
-    Play_videojs.playbackRate(value);
+    Play_avplay.playbackRate(value);
     PlayClip_clearHidePanel();
     PlayClip_hidePanel();
     PlayClip_SpeedIndexPosition = PlayClip_SpeedIndex;
@@ -332,7 +332,7 @@ function PlayClip_speedDisplay() {
 }
 
 function PlayClip_Restart() {
-    Play_videojs.src({
+    Play_avplay.src({
         type: "video/mp4",
         src: Sclip_playUrl
     });

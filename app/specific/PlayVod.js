@@ -145,8 +145,8 @@ function PlayVod_updateStreamInfoEndError() {
 
 function PlayVod_Resume() {
     if (document.hidden) {
-        Play_videojs.pause();
-        PlayVod_offsettime = Play_videojs.currentTime();
+        Play_avplay.pause();
+        PlayVod_offsettime = Play_avplay.currentTime();
         Play_ClearPlayer();
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
@@ -317,7 +317,7 @@ function PlayVod_qualityChanged() {
 
 function PlayVod_onPlayer() {
     Play_showBufferDialog();
-    Play_videojs.src({
+    Play_avplay.src({
         type: "application/x-mpegURL",
         src: PlayVod_playingUrl
     });
@@ -326,7 +326,7 @@ function PlayVod_onPlayer() {
     PlayVod_hidePanel();
 
     if (!PlayVod_Playing) {
-        Play_videojs.ready(function() {
+        Play_avplay.ready(function() {
             this.isFullscreen(true);
             this.requestFullscreen();
             this.autoplay(false);
@@ -370,7 +370,7 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_PlayerCheck() {
-    if (!Play_videojs.paused() && PlayVod_PlayerTime === Play_videojs.currentTime()) {
+    if (!Play_avplay.paused() && PlayVod_PlayerTime === Play_avplay.currentTime()) {
         PlayVod_PlayerCheckCount++;
         Play_showBufferDialog();
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -10;
@@ -379,7 +379,7 @@ function PlayVod_PlayerCheck() {
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change first time only reload
                 PlayVod_qualityDisplay();
-                if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+                if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.currentTime();
                 PlayVod_qualityChanged();
                 PlayVod_PlayerCheckQualityChanged = true; // -5s on next check
             } else { //staled too long close the player
@@ -389,14 +389,14 @@ function PlayVod_PlayerCheck() {
             }
         }
     }
-    if (!Play_videojs.paused()) Play_videojs.play();
-    PlayVod_PlayerTime = Play_videojs.currentTime();
+    if (!Play_avplay.paused()) Play_avplay.play();
+    PlayVod_PlayerTime = Play_avplay.currentTime();
 }
 
 function PlayVod_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (Play_BufferDialogVisible() && !Play_jumping) Play_HideBufferDialog();
-    if (Play_isShowPauseDialogOn() && !Play_videojs.paused()) Play_clearPause();
+    if (Play_isShowPauseDialogOn() && !Play_avplay.paused()) Play_clearPause();
     PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerCheckOffset = 0;
     PlayVod_RestoreFromResume = false;
@@ -442,7 +442,7 @@ function PlayVod_showPanel() {
     Play_IconsFocus();
     PlayVod_qualityIndexReset();
     Play_clock();
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_videojs.currentTime());
+    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeS(Play_avplay.currentTime());
     PlayVod_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayVod_setHidePanel();
@@ -490,14 +490,14 @@ function PlayVod_getQualitiesCount() {
 }
 
 function PlayVod_jump() {
-    if (!Play_videojs.paused()) Play_videojs.pause();
-    Play_videojs.currentTime(PlayVod_TimeToJump);
+    if (!Play_avplay.paused()) Play_avplay.pause();
+    Play_avplay.currentTime(PlayVod_TimeToJump);
     PlayVod_jumpCount = 0;
     PlayVod_jumpCountMin = -16;
     PlayVod_jumpCountMax = 16;
     PlayVod_IsJumping = false;
     PlayVod_Canjump = false;
-    Play_videojs.play();
+    Play_avplay.play();
     Play_clearPause();
 }
 
@@ -538,7 +538,7 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump < -30) time = (PlayVod_TimeToJump / 60) + STR_MIN;
         if (PlayVod_TimeToJump < -1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
-        jumpTotime = Play_videojs.currentTime() + PlayVod_TimeToJump;
+        jumpTotime = Play_avplay.currentTime() + PlayVod_TimeToJump;
         if (jumpTotime < 0) {
             PlayVod_jumpCountMin = PlayVod_jumpCount;
             jumpTotime = 0;
@@ -567,7 +567,7 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump > 30) time = (PlayVod_TimeToJump / 60) + STR_MIN;
         if (PlayVod_TimeToJump > 1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
-        jumpTotime = Play_videojs.currentTime() + PlayVod_TimeToJump;
+        jumpTotime = Play_avplay.currentTime() + PlayVod_TimeToJump;
         if (jumpTotime > Svod_DurationSeconds) {
             PlayVod_TimeToJump = 0;
             PlayVod_jumpCountMax = PlayVod_jumpCount;
