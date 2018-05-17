@@ -55,7 +55,7 @@ var Play_selectedChannelDisplayname = '';
 var Play_Panelcouner = 0;
 var Play_IsWarning = false;
 var Play_gameSelected = '';
-var Play_avplay = null;
+var Play_avplay;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 3500;
@@ -404,7 +404,7 @@ var Play_listener = {
     }
 };
 
-Play_onPlayer = function() {
+function Play_onPlayer() {
     Play_showBufferDialog();
     try {
         Play_avplay.stop();
@@ -431,14 +431,14 @@ Play_onPlayer = function() {
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
-};
+}
 
 // If idle or playing, the media is be played or process to
 // So we use PlayerCheck to avaluate if we are staled fro too long or not and drop the quality
-Play_isIdleOrPlaying = function() {
+function Play_isIdleOrPlaying() {
     var state = Play_avplay.getState();
     return state === 'IDLE' || state === 'PLAYING';
-};
+}
 
 function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
@@ -458,9 +458,9 @@ function Play_PlayerCheck() {
     Play_PlayerTime = Play_currentTime;
 }
 
-Play_isplaying = function() {
+function Play_isplaying() {
     return Play_avplay.getState() === 'PLAYING';
-};
+}
 
 function Play_offPlayer() {
     Play_avplay.stop();
@@ -1050,7 +1050,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
             Play_clearPause();
         }
         if (PlayVodClip === 2) {
-            if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
+            PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();
@@ -1101,7 +1101,11 @@ function Play_KeyReturn(is_vod) {
     } else if (Play_isPanelShown()) {
         Play_hidePanel();
     } else {
-        if (Play_ExitDialogVisible()) {
+        if (is_vod && Play_WarningDialogVisible() && PlayVod_IsJumping) {
+            window.clearTimeout(PlayVod_JumpID);
+            PlayVod_jumpCount = 0;
+            PlayVod_jumpCancel();
+        } else if (Play_ExitDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
             if (is_vod) Main_ready(PlayVod_shutdownStream);
