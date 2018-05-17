@@ -335,7 +335,7 @@ function Featured_handleKeyDown(event) {
             else {
                 if (Main_Before === Main_Featured) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
-                Featured__exit();
+                Featured_exit();
                 Main_SwitchScreen();
             }
             break;
