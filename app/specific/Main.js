@@ -931,8 +931,10 @@ function Main_elementVerticalClientPositionById(id) {
 function Main_Checktylesheet() {
     var stylesheet = document.styleSheets;
     for (var i = 0; i < stylesheet.length; i++)
-        if (stylesheet[i].href !== null)
+        if (stylesheet[i].href !== null && stylesheet[i].href.indexOf('video-js') === -1)
             if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
+
+    // video-js is a old stylesheet present on old releases no need to try to reload it as is empty
 }
 
 function Main_LoadStylesheet(path) {
@@ -945,7 +947,8 @@ function Main_LoadStylesheet(path) {
 
 //adapted from https://code.jquery.com/jquery-3.3.1.js
 function Main_ready(func) {
-    if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)) {
+    if (document.readyState === "complete" ||
+        (document.readyState !== "loading" && !document.documentElement.doScroll)) {
 
         // Handle it asynchronously to allow scripts the opportunity to delay ready
         window.setTimeout(func);
