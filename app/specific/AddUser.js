@@ -39,7 +39,7 @@ function AddUser_handleKeyDown(event) {
             }
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_games;
+            Main_Go = Main_Featured;
             AddUser_exit();
             Main_SwitchScreen();
             break;

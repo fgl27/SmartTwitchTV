@@ -67,6 +67,7 @@ var Play_DialogEndText = '';
 var Play_currentTime = 0;
 var Play_JustStartPlaying = true;
 var Play_bufferingcomplete = false;
+var Play_offsettimeMinus = 0;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -103,11 +104,13 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
     Main_textContent("stream_info_name", Play_selectedChannelDisplayname);
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
-    Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
     Main_textContent("dialog_buffer_play_percentage", 0);
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
+
+    Play_offsettimeMinus = 0;
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
 
     Play_currentTime = 0;
     Play_IsWarning = false;
@@ -517,6 +520,7 @@ function Play_lessthanten(time) {
 
 function Play_timeS(time) {
     var seconds, minutes, hours;
+    time += Play_offsettimeMinus / 1000;
 
     seconds = Play_lessthanten(parseInt(time) % 60);
 
@@ -532,6 +536,9 @@ function Play_timeS(time) {
 
 function Play_timeMs(time) {
     var seconds, minutes, hours;
+
+    if (time < 0 && !Play_offsettimeMinus) Play_offsettimeMinus = time * -1;
+    time += Play_offsettimeMinus;
 
     seconds = Play_lessthanten(parseInt(time / 1000) % 60);
 
@@ -759,7 +766,7 @@ function Play_qualityDisplay() {
     Play_quality = Play_qualities[Play_qualityIndex].id;
 
     if (Play_quality.indexOf('source') !== -1) Main_textContent("quality_name", Play_quality.replace("source", STR_SOURCE));
-    else dMain_textContent("quality_name", Play_quality);
+    else Main_textContent("quality_name", Play_quality);
 }
 
 function Play_getQualitiesCount() {
