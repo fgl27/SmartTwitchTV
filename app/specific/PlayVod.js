@@ -85,7 +85,6 @@ function PlayVod_Start() {
     PlayVod_jumpCountMax = 16;
     PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', PlayVod_Resume, false);
-    PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
     PlayVod_Playing = false;
     Play_jumping = false;
     PlayVod_isOn = true;
@@ -317,11 +316,14 @@ function PlayVod_qualityChanged() {
 }
 
 var PlayVod_listener = {
+    onbufferingstart: function() {
+        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+    },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
-        PlayVod_PannelEnterStart(2);
+        Play_PannelEnterStart(2);
     }
 };
 
@@ -351,13 +353,15 @@ function PlayVod_onPlayer() {
     Main_ready(function() {
         Play_HideWarningDialog();
         PlayVod_hidePanel();
+        window.clearInterval(PlayVod_streamCheck);
+        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
     });
 }
 
 function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
-        Play_showBufferDialog();
+        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -10;
         if (PlayVod_PlayerCheckCount > (30 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayVod_PlayerCheckCount = 0;
@@ -367,7 +371,10 @@ function PlayVod_PlayerCheck() {
                 if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
                 PlayVod_qualityChanged();
                 PlayVod_PlayerCheckQualityChanged = true; // -5s on next check
-            } else PlayVod_PannelEnterStart(2); //staled too long close the player
+            } else {
+                Play_avplay.stop();
+                Play_PannelEndStart(2); //staled for too long close the player
+            }
         }
     }
     PlayVod_PlayerTime = PlayVod_currentTime;
@@ -689,7 +696,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (!Play_isEndDialogShown()) Play_KeyPause();
+                if (!Play_isEndDialogShown()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
