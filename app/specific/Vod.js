@@ -48,7 +48,7 @@ function Vod_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
     Main_RemoveClass('top_bar_vod', 'icon_center_focus');
-    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
+    Main_textContent('top_bar_vod', STR_VIDEOS);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
 }
@@ -533,16 +533,16 @@ function Vod_openStream() {
 
 function Vod_SetPeriod() {
     if (Vod_periodNumber === 1) {
-        document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY);
+        Main_innerHTML('top_bar_vod', STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY));
         Vod_period = 'day';
     } else if (Vod_periodNumber === 2) {
-        document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK);
+        Main_innerHTML('top_bar_vod', STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK));
         Vod_period = 'week';
     } else if (Vod_periodNumber === 3) {
-        document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH);
+        Main_innerHTML('top_bar_vod', STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH));
         Vod_period = 'month';
     } else if (Vod_periodNumber === 4) {
-        document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL);
+        Main_innerHTML('top_bar_vod', STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL));
         Vod_period = 'all';
     }
     localStorage.setItem('vod_periodNumber', Vod_periodNumber);

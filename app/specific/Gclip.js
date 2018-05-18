@@ -47,7 +47,7 @@ function Gclip_init() {
 function Gclip_exit() {
     document.body.removeEventListener("keydown", Gclip_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    Main_innerHTML('top_bar_game', STR_GAMES);
 
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
@@ -85,20 +85,20 @@ function Gclip_loadDataPrepare() {
 
 function Gclip_SetPeriod() {
     if (Gclip_periodNumber === 1) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_CLIPS +
-            STR_CLIP_DAY + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+            STR_CLIP_DAY + ': ' + Main_gameSelected));
         Gclip_period = 'day';
     } else if (Gclip_periodNumber === 2) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_CLIPS +
-            STR_CLIP_WEEK + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+            STR_CLIP_WEEK + ': ' + Main_gameSelected));
         Gclip_period = 'week';
     } else if (Gclip_periodNumber === 3) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_CLIPS +
-            STR_CLIP_MONTH + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+            STR_CLIP_MONTH + ': ' + Main_gameSelected));
         Gclip_period = 'month';
     } else if (Gclip_periodNumber === 4) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_CLIPS +
-            STR_CLIP_ALL + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+            STR_CLIP_ALL + ': ' + Main_gameSelected));
         Gclip_period = 'all';
     }
     localStorage.setItem('Gclip_periodNumber', Gclip_periodNumber);

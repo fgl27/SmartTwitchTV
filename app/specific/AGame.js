@@ -30,8 +30,8 @@ function AGame_init() {
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
     if (Search_isSearching) Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_AddClass('top_bar_game', 'icon_center_focus');
-    document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter(STR_LIVE +
-        ': ' + Main_gameSelected);
+    Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
+        ': ' + Main_gameSelected));
     Main_YRst(AGame_cursorY);
     if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
         Main_ScrollHelper(AGame_ids[0], AGame_cursorY, AGame_cursorX, Main_aGame, Main_ScrollOffSetMinusVideo,
@@ -46,7 +46,7 @@ function AGame_exit() {
         AGame_removeFocusFallow();
         AGame_addFocus();
     }
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    Main_innerHTML('top_bar_game', STR_GAMES);
     document.body.removeEventListener("keydown", AGame_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
 }
@@ -252,8 +252,8 @@ function AGame_Checkfallow() {
 }
 
 function AGame_setFallow() {
-    if (AGame_fallowing) document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_FALLOWING;
-    else document.getElementById(AGame_ids[3] + "y_2").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY);
+    if (AGame_fallowing) Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_FALLOWING);
+    else Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY));
 }
 
 function AGame_fallow() {

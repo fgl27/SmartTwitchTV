@@ -27,7 +27,7 @@ function AddCode_init() {
         Main_HideWarningDialog();
         AddCode_input = document.querySelector('#oauth_input');
         Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
-        document.getElementById("oauth_text").innerHTML = STR_OAUTH_IN + Main_UserName + STR_OAUTH_EXPLAIN;
+        Main_innerHTML("oauth_text", STR_OAUTH_IN + Main_UserName + STR_OAUTH_EXPLAIN);
         AddCode_inputFocus();
         AddUser_scrollVerticalToElementById('oauth_input');
     }

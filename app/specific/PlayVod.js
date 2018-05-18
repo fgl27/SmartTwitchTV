@@ -62,13 +62,13 @@ function PlayVod_Start() {
         PlayVod_loadingInfoDataTimeout = 10000;
         PlayVod_updateStreamInfo();
     }
-    document.getElementById("stream_info_name").innerHTML = Main_selectedChannelDisplayname;
-    document.getElementById("stream_info_title").innerHTML = Svod_title;
-    document.getElementById("stream_info_game").innerHTML = Svod_views + ', [' + (Svod_language).toUpperCase() + ']';
-    document.getElementById("stream_live_icon").innerHTML = Svod_createdAt;
-    document.getElementById("stream_live_time").innerHTML = Svod_Duration;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
-    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+    Main_textContent("stream_info_title", Svod_title);
+    Main_innerHTML("stream_info_game", Svod_views + ', [' + (Svod_language).toUpperCase() + ']');
+    Main_textContent("stream_live_icon", Svod_createdAt);
+    Main_textContent("stream_live_time", Svod_Duration);
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_textContent("dialog_buffer_play_percentage", 0);
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
@@ -325,15 +325,15 @@ var PlayVod_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayVod_bufferingcomplete = true;
-        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        Main_textContent("dialog_buffer_play_percentage", 0);
         PlayVod_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
         else {
             Play_HideBufferDialog();
             PlayVod_bufferingcomplete = true;
-            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+            Main_textContent("dialog_buffer_play_percentage", 0);
             PlayVod_RestoreFromResume = false;
         }
     },
@@ -404,7 +404,7 @@ function PlayVod_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (PlayVod_bufferingcomplete) Play_HideBufferDialog();
 
-    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(currentTime);
+    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(currentTime));
 }
 
 function PlayVod_shutdownStream() {
@@ -445,7 +445,7 @@ function PlayVod_showPanel() {
     PlayVod_qualityIndexReset();
     Play_clock();
     Play_CleanHideExit();
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime());
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime()));
     PlayVod_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayVod_setHidePanel();
@@ -484,8 +484,8 @@ function PlayVod_qualityDisplay() {
     }
 
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-    if (PlayVod_quality.indexOf('source') !== -1) document.getElementById("quality_name").innerHTML = PlayVod_quality.replace("source", STR_SOURCE);
-    else document.getElementById("quality_name").innerHTML = PlayVod_quality;
+    if (PlayVod_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayVod_quality.replace("source", STR_SOURCE));
+    else Main_textContent("quality_name", PlayVod_quality);
 }
 
 function PlayVod_getQualitiesCount() {

@@ -29,8 +29,8 @@ function SChannelContent_init() {
     if (SChannelContent_lastselectedChannel !== Main_selectedChannel) SChannelContent_status = false;
     Main_cleanTopLabel();
     Main_selectedChannelDisplayname = Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
-    document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
-    document.getElementById('top_bar_game').innerHTML = STR_CHANNEL_CONT;
+    Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
+    Main_textContent('top_bar_game', STR_CHANNEL_CONT);
     document.body.addEventListener("keydown", SChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
     if (SChannelContent_status) {
@@ -324,12 +324,12 @@ function SChannelContent_createFallow(id, user_name, stream_type, preview_thumbn
 
 function SChannelContent_setFallow() {
     if (AddCode_IsFallowing) {
-        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>';
-        document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_FALLOWING;
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
+        Main_textContent(SChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOWING);
     } else {
-        document.getElementById("schannel_cont_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>';
-        if (Main_UserName !== '') document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_FALLOW;
-        else document.getElementById(SChannelContent_ids[3] + "1_0").innerHTML = Main_selectedChannelDisplayname + STR_CANT_FALLOW;
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
+        if (Main_UserName !== '') Main_textContent(SChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOW);
+        else Main_textContent(SChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_CANT_FALLOW);
     }
 }
 

@@ -35,13 +35,13 @@ function PlayClip_Start() {
     Play_showBufferDialog();
     Play_hideChat();
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-    document.getElementById("stream_info_name").innerHTML = Main_selectedChannelDisplayname;
-    document.getElementById("stream_info_title").innerHTML = Sclip_title;
-    document.getElementById("stream_info_game").innerHTML = Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language;
-    document.getElementById("stream_live_icon").innerHTML = Sclip_createdAt;
-    document.getElementById("stream_live_time").innerHTML = Sclip_Duration;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
-    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+    Main_textContent("stream_info_title", Sclip_title);
+    Main_innerHTML("stream_info_game", Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language);
+    Main_textContent("stream_live_icon", Sclip_createdAt);
+    Main_textContent("stream_live_time", Sclip_Duration);
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_textContent("dialog_buffer_play_percentage", 0);
 
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
@@ -117,14 +117,14 @@ var PlayClip_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
-        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        Main_textContent("dialog_buffer_play_percentage", 0);
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
         else {
             Play_HideBufferDialog();
             PlayClip_bufferingcomplete = true;
-            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+            Main_textContent("dialog_buffer_play_percentage", 0);
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -267,7 +267,7 @@ function PlayClip_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayClip_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (PlayClip_bufferingcomplete) Play_HideBufferDialog();
 
-    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(currentTime);
+    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(currentTime));
 }
 
 function PlayClip_hidePanel() {
@@ -282,7 +282,7 @@ function PlayClip_showPanel() {
     Play_IconsFocus();
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime());
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime()));
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();
 }
@@ -317,8 +317,8 @@ function PlayClip_qualityDisplay() {
 
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
-    if (PlayClip_quality.indexOf('source') !== -1) document.getElementById("quality_name").innerHTML = PlayClip_quality.replace("source", STR_SOURCE);
-    else document.getElementById("quality_name").innerHTML = PlayClip_quality;
+    if (PlayClip_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayClip_quality.replace("source", STR_SOURCE));
+    else Main_textContent("quality_name", PlayClip_quality);
 }
 
 function PlayClip_clearHidePanel() {

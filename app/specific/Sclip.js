@@ -39,7 +39,7 @@ function Sclip_init() {
     if (Main_selectedChannel !== Sclip_lastselectedChannel) Sclip_status = false;
     Main_cleanTopLabel();
     Sclip_SetPeriod();
-    document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
+    Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
     Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
     document.body.addEventListener("keydown", Sclip_handleKeyDown, false);
     Main_YRst(Sclip_cursorY);
@@ -87,16 +87,16 @@ function Sclip_loadDataPrepare() {
 
 function Sclip_SetPeriod() {
     if (Sclip_periodNumber === 1) {
-        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_DAY;
+        Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_DAY);
         Sclip_period = 'day';
     } else if (Sclip_periodNumber === 2) {
-        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_WEEK;
+        Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_WEEK);
         Sclip_period = 'week';
     } else if (Sclip_periodNumber === 3) {
-        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_MONTH;
+        Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_MONTH);
         Sclip_period = 'month';
     } else if (Sclip_periodNumber === 4) {
-        document.getElementById('top_bar_game').innerHTML = STR_CLIPS + STR_CLIP_ALL;
+        Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_ALL);
         Sclip_period = 'all';
     }
     localStorage.setItem('sclip_periodNumber', Sclip_periodNumber);

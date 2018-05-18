@@ -38,11 +38,11 @@ function Svod_init() {
     if (Main_selectedChannel !== Svod_lastselectedChannel) Svod_status = false;
     Main_cleanTopLabel();
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_KEY_UP_DOWN);
-    document.getElementById('top_bar_user').innerHTML = Main_selectedChannelDisplayname;
+    Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
     document.body.addEventListener("keydown", Svod_handleKeyDown, false);
     Main_YRst(Svod_cursorY);
     if (Svod_status) {
-        document.getElementById('top_bar_game').innerHTML = Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
+        Main_textContent('top_bar_game', Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
         Main_ScrollHelper(Svod_ids[0], Svod_cursorY, Svod_cursorX, Main_Svod, Main_ScrollOffSetMinusVideo,
             Main_ScrollOffSetVideo, false);
         Main_CounterDialog(Svod_cursorX, Svod_cursorY, Main_ColoumnsCountVideo, Svod_itemsCount);
@@ -55,7 +55,7 @@ function Svod_exit() {
 }
 
 function Svod_StartLoad() {
-    document.getElementById('top_bar_game').innerHTML = Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA;
+    Main_textContent('top_bar_game', Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     Main_HideWarningDialog();
     Svod_lastselectedChannel = Main_selectedChannel;
     Svod_status = false;

@@ -30,7 +30,7 @@ var UserLive_loadingMore = false;
 function UserLive_init() {
     Main_Go = Main_UserLive;
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_CHANNELS);
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_CHANNELS));
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
     if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
     if (UserLive_status) {
@@ -43,7 +43,7 @@ function UserLive_init() {
 function UserLive_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserLive_handleKeyDown);
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    Main_textContent('top_bar_user', STR_USER);
 }
 
 function UserLive_StartLoad() {

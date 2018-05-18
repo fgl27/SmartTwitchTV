@@ -29,7 +29,7 @@ function SLive_init() {
     Search_isSearching = true;
     Main_cleanTopLabel();
     if (SLive_lastData !== Search_data) SLive_Status = false;
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Search_data + "'");
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SLive_handleKeyDown, false);
     Main_YRst(SLive_cursorY);
     if (SLive_Status) {
