@@ -41,6 +41,7 @@ function PlayClip_Start() {
     document.getElementById("stream_live_icon").innerHTML = Sclip_createdAt;
     document.getElementById("stream_live_time").innerHTML = Sclip_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
+    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
 
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
@@ -116,6 +117,15 @@ var PlayClip_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
+        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    },
+    onbufferingprogress: function(percent) {
+        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        else {
+            Play_HideBufferDialog();
+            PlayClip_bufferingcomplete = true;
+            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        }
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);

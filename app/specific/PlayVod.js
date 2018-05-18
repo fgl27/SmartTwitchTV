@@ -68,6 +68,7 @@ function PlayVod_Start() {
     document.getElementById("stream_live_icon").innerHTML = Svod_createdAt;
     document.getElementById("stream_live_time").innerHTML = Svod_Duration;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
+    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
@@ -324,6 +325,15 @@ var PlayVod_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayVod_bufferingcomplete = true;
+        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    },
+    onbufferingprogress: function(percent) {
+        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        else {
+            Play_HideBufferDialog();
+            PlayVod_bufferingcomplete = true;
+            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        }
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
