@@ -61,9 +61,9 @@ var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
 
 //Offset value in relation to height of class screen_size, to change split the below by height and multiply with the new value
-var Main_ScrollOffSetMinusVideo = 372;
-var Main_ScrollOffSetMinusChannels = 464;
-var Main_ScrollOffSetMinusGame = 567;
+var Main_ScrollOffSetMinusVideo = 362;
+var Main_ScrollOffSetMinusChannels = 454;
+var Main_ScrollOffSetMinusGame = 557;
 var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
 var Main_ScrollOffSetMinusaddUser = 60;
 var Main_ScrollOffSetMinusSearch = 100;

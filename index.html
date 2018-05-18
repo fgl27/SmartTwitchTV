@@ -43,10 +43,11 @@
         div.scroll {
             width: 10px;
             height: 50px;
+            border: 2px solid #000000;
             border-radius: 15px;
             background-color: #000000;
             position: absolute;
-            right: 4px;
+            right: 2px;
             top: 100px;
         }
 
@@ -136,7 +137,7 @@
         }
 
         td.stream_cell {
-            padding: 7px;
+            padding: 6px;
             position: relative;
             width: 33.33%;
         }
@@ -170,17 +171,9 @@
         }
 
         div.stream_thumbnail_focused {
-            outline: 7px outset;
-            animation: whitetogray 2.5s infinite alternate;
-        }
-
-        @-webkit-keyframes whitetogray {
-            0% {
-                outline-color: #FFFFFF;
-            }
-            100% {
-                outline-color: #A7A7A7;
-            }
+            outline: 6px solid #FFFFFF;
+            outline-offset: 4px;
+            box-shadow: 0 0 0 4px #000000;
         }
 
         img.stream_img {
@@ -200,9 +193,9 @@
 
         div.stream_text {
             position: absolute;
-            bottom: 7px;
-            right: 7px;
-            left: 7px;
+            bottom: 5px;
+            right: 6px;
+            left: 6px;
             background-color: rgba(0, 0, 0, 0.5);
             padding: 1%;
         }
@@ -436,10 +429,9 @@
         }
 
         table.streams_tables {
-            width: 100%;
+            width: 99%;
             padding-top: 3.8%;
-            padding-left: 0.7%;
-            padding-right: 0.7%;
+            padding-left: 5px;
             border: 0;
             table-layout: fixed;
         }
