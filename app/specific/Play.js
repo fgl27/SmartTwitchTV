@@ -1126,7 +1126,7 @@ function Play_setFallow() {
 
 function Play_KeyReturn(is_vod) {
     if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-    if (Play_isEndDialogShown() && !Play_ExitDialogVisible()) {
+    else if (Play_isEndDialogShown() && !Play_ExitDialogVisible()) {
         Play_EndTextClear();
         Play_showExitDialog();
     } else if (Play_isPanelShown()) {
