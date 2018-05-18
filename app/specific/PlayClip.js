@@ -224,6 +224,7 @@ function PlayClip_Resume() {
 function PlayClip_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
         PlayClip_PlayerCheckCount++;
+        PlayClip_PlayerCheckOffset = 0;
         if (PlayClip_PlayerCheckQualityChanged) PlayClip_PlayerCheckOffset = -3;
         if (PlayClip_PlayerCheckCount > (10 + PlayClip_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayClip_PlayerCheckCount = 0;
@@ -237,7 +238,7 @@ function PlayClip_PlayerCheck() {
                 Play_PannelEndStart(3); //staled for too long close the player
             }
         }
-    }
+    } else PlayClip_PlayerCheckCount = 0;
 
     PlayClip_PlayerTime = PlayClip_currentTime;
 }
@@ -264,11 +265,7 @@ function PlayClip_updateCurrentTime(currentTime) {
     PlayClip_currentTime = currentTime;
 
     if (Play_WarningDialogVisible() && !PlayClip_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
-
-    //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
     if (PlayClip_bufferingcomplete) Play_HideBufferDialog();
-
-    PlayClip_PlayerCheckCount = 0;
 
     if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(currentTime);
 }
