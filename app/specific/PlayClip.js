@@ -27,6 +27,7 @@ var PlayClip_PlayerCheckQualityChanged = false;
 var PlayClip_PlayerCheckOffset = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
+var PlayClip_bufferingcomplete = false;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -109,7 +110,12 @@ function PlayClip_loadDataError() {
 
 var PlayClip_listener = {
     onbufferingstart: function() {
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        Play_showBufferDialog();
+        PlayClip_bufferingcomplete = false;
+    },
+    onbufferingcomplete: function() {
+        Play_HideBufferDialog();
+        PlayClip_bufferingcomplete = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
@@ -208,7 +214,6 @@ function PlayClip_Resume() {
 function PlayClip_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
         PlayClip_PlayerCheckCount++;
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         if (PlayClip_PlayerCheckQualityChanged) PlayClip_PlayerCheckOffset = -3;
         if (PlayClip_PlayerCheckCount > (10 + PlayClip_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayClip_PlayerCheckCount = 0;
@@ -251,8 +256,7 @@ function PlayClip_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayClip_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
 
     //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
-    if (!PlayClip_JustStartPlaying && Play_isplaying() && Play_BufferDialogVisible()) Play_HideBufferDialog();
-    else PlayClip_JustStartPlaying = false;
+    if (PlayClip_bufferingcomplete) Play_HideBufferDialog();
 
     PlayClip_PlayerCheckCount = 0;
 

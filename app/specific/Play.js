@@ -66,6 +66,7 @@ var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
 var Play_JustStartPlaying = true;
+var Play_bufferingcomplete = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -396,7 +397,12 @@ function Play_qualityChanged() {
 
 var Play_listener = {
     onbufferingstart: function() {
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        Play_showBufferDialog();
+        Play_bufferingcomplete = false;
+    },
+    onbufferingcomplete: function() {
+        Play_HideBufferDialog();
+        Play_bufferingcomplete = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
@@ -447,7 +453,6 @@ function Play_isIdleOrPlaying() {
 function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -10;
         if (Play_PlayerCheckCount > (30 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             Play_PlayerCheckCount = 0;
@@ -478,9 +483,7 @@ function Play_updateCurrentTime(currentTime) {
 
     if (Play_WarningDialogVisible() && !Play_IsWarning) Play_HideWarningDialog();
 
-    //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
-    if (!Play_JustStartPlaying && Play_isplaying() && Play_BufferDialogVisible()) Play_HideBufferDialog();
-    else Play_JustStartPlaying = false;
+    if (Play_bufferingcomplete) Play_HideBufferDialog();
 
     Play_PlayerCheckCount = 0;
     Play_PlayerCheckOffset = 0;
