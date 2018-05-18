@@ -153,7 +153,7 @@ function Play_Resume() {
                     Play_loadingInfoDataTimeout = 10000;
                     window.setTimeout(Play_updateStreamInfoStart, 7500); //7s is average time that takes to a stream to reload after a resume, so updateStreamInfoStart only after that
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-                    Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+                    Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
                 }
             }
         }, 500);
@@ -405,13 +405,16 @@ var Play_listener = {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
         document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        Play_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
+        //percent has a -2 offset
         if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
         else {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
             document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+            Play_RestoreFromResume = false;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -449,7 +452,7 @@ function Play_onPlayer() {
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+        Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
     });
 }
 
@@ -463,8 +466,9 @@ function Play_isIdleOrPlaying() {
 function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
-        if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -10;
-        if (Play_PlayerCheckCount > (30 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
+        Play_PlayerCheckOffset = 0;
+        if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -3;
+        if (Play_PlayerCheckCount > (10 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             Play_PlayerCheckCount = 0;
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change first time only reload
@@ -476,7 +480,7 @@ function Play_PlayerCheck() {
                 Play_PannelEndStart(1); //staled for too long close the player
             }
         }
-    }
+    } else Play_PlayerCheckCount = 0;
     Play_PlayerTime = Play_currentTime;
 }
 
@@ -492,14 +496,9 @@ function Play_updateCurrentTime(currentTime) {
     Play_currentTime = currentTime;
 
     if (Play_WarningDialogVisible() && !Play_IsWarning) Play_HideWarningDialog();
-
     if (Play_bufferingcomplete) Play_HideBufferDialog();
 
-    Play_PlayerCheckCount = 0;
-    Play_PlayerCheckOffset = 0;
-    Play_RestoreFromResume = false;
-
-    Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14 buffer size from twitch
+    Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14s buffer size from twitch
     if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_oldcurrentTime);
 }
 
@@ -854,8 +853,8 @@ function Play_KeyPause(PlayVodClip) {
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
         if (Play_isPanelShown()) Play_hidePanel();
 
-        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
-        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
+        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
         else if (PlayVodClip === 3) PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, 1500);
     }
 }

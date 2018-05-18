@@ -165,7 +165,7 @@ function PlayVod_Resume() {
                 PlayVod_PlayerCheckOffset = 80;
                 PlayVod_RestoreFromResume = true;
                 PlayVod_PlayerCheckQualityChanged = false;
-                PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+                PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
             }
         }, 500);
     }
@@ -326,6 +326,7 @@ var PlayVod_listener = {
         Play_HideBufferDialog();
         PlayVod_bufferingcomplete = true;
         document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        PlayVod_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
         if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
@@ -333,6 +334,7 @@ var PlayVod_listener = {
             Play_HideBufferDialog();
             PlayVod_bufferingcomplete = true;
             document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+            PlayVod_RestoreFromResume = false;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -370,15 +372,16 @@ function PlayVod_onPlayer() {
         Play_HideWarningDialog();
         PlayVod_hidePanel();
         window.clearInterval(PlayVod_streamCheck);
-        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
     });
 }
 
 function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
-        if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -10;
-        if (PlayVod_PlayerCheckCount > (30 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
+        PlayVod_PlayerCheckOffset = 0;
+        if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -3;
+        if (PlayVod_PlayerCheckCount > (10 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayVod_PlayerCheckCount = 0;
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change first time only reload
@@ -391,7 +394,7 @@ function PlayVod_PlayerCheck() {
                 Play_PannelEndStart(2); //staled for too long close the player
             }
         }
-    }
+    } else PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerTime = PlayVod_currentTime;
 }
 
@@ -400,10 +403,6 @@ function PlayVod_updateCurrentTime(currentTime) {
 
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (PlayVod_bufferingcomplete) Play_HideBufferDialog();
-
-    PlayVod_PlayerCheckCount = 0;
-    PlayVod_PlayerCheckOffset = 0;
-    PlayVod_RestoreFromResume = false;
 
     if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(currentTime);
 }
