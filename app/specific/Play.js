@@ -87,7 +87,7 @@ function Play_PreStart() {
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     document.getElementById("play_dialog_exit_text").innerHTML = STR_EXIT_AGAIN;
     document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i></div>';
+        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i><div id="dialog_buffer_play_percentage" style="display:flex; font-weight: bold; font-size: 38%; transform: translate(0,-220%);">0</div></div>';
     document.getElementById("chat_container").innerHTML = '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
         '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>';
@@ -107,6 +107,7 @@ function Play_Start() {
     document.getElementById("stream_info_name").innerHTML = Play_selectedChannelDisplayname;
     document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
     document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_timeMs(0) + STR_AGO;
+    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
 
@@ -403,6 +404,15 @@ var Play_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
+        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    },
+    onbufferingprogress: function(percent) {
+        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        else {
+            Play_HideBufferDialog();
+            Play_bufferingcomplete = true;
+            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        }
     },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
