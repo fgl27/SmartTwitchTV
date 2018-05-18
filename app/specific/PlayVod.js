@@ -67,13 +67,16 @@ function PlayVod_Start() {
     Main_innerHTML("stream_info_game", Svod_views + ', [' + (Svod_language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", Svod_createdAt);
     Main_textContent("stream_live_time", Svod_Duration);
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+
     Main_textContent("dialog_buffer_play_percentage", 0);
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
         Play_showFallow();
     } else Play_hideFallow();
+
+    Play_offsettimeMinus = 0;
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
 
     PlayVod_currentTime = 0;
     PlayVod_qualitiesFound = false;
@@ -405,7 +408,7 @@ function PlayVod_updateCurrentTime(currentTime) {
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
     if (PlayVod_bufferingcomplete) Play_HideBufferDialog();
 
-    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(currentTime));
+    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayVod_currentTime));
 }
 
 function PlayVod_shutdownStream() {
@@ -446,7 +449,7 @@ function PlayVod_showPanel() {
     PlayVod_qualityIndexReset();
     Play_clock();
     Play_CleanHideExit();
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime()));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayVod_currentTime));
     PlayVod_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayVod_setHidePanel();
@@ -497,7 +500,6 @@ function PlayVod_jump() {
     if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
     if (PlayVod_TimeToJump > 0) {
-        PlayVod_TimeToJump -= 2;
         try {
             Play_avplay.jumpForward(PlayVod_TimeToJump * 1000);
         } catch (e) {
@@ -505,7 +507,6 @@ function PlayVod_jump() {
             console.log(e);
         }
     } else {
-        PlayVod_TimeToJump += 2;
         try {
             Play_avplay.jumpBackward(PlayVod_TimeToJump * -1000);
         } catch (e) {

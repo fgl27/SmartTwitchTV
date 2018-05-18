@@ -40,8 +40,10 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_game", Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language);
     Main_textContent("stream_live_icon", Sclip_createdAt);
     Main_textContent("stream_live_time", Sclip_Duration);
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("dialog_buffer_play_percentage", 0);
+
+    Play_offsettimeMinus = 0;
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
 
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
@@ -283,7 +285,7 @@ function PlayClip_showPanel() {
     Play_IconsFocus();
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_avplay.getCurrentTime()));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayClip_currentTime));
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();
 }
@@ -334,7 +336,6 @@ function PlayClip_jump() {
     if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
     if (PlayClip_TimeToJump > 0) {
-        PlayClip_TimeToJump -= 2;
         try {
             Play_avplay.jumpForward(PlayClip_TimeToJump * 1000);
         } catch (e) {
@@ -342,7 +343,6 @@ function PlayClip_jump() {
             console.log(e);
         }
     } else {
-        PlayClip_TimeToJump += 2;
         try {
             Play_avplay.jumpBackward(PlayClip_TimeToJump * -1000);
         } catch (e) {
