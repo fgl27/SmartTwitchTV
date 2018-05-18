@@ -48,6 +48,7 @@ var PlayVod_loadingDataTimeout = 3500;
 var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
+var PlayVod_bufferingcomplete = false;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -317,7 +318,12 @@ function PlayVod_qualityChanged() {
 
 var PlayVod_listener = {
     onbufferingstart: function() {
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        Play_showBufferDialog();
+        PlayVod_bufferingcomplete = false;
+    },
+    onbufferingcomplete: function() {
+        Play_HideBufferDialog();
+        PlayVod_bufferingcomplete = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
@@ -361,7 +367,6 @@ function PlayVod_onPlayer() {
 function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
-        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -10;
         if (PlayVod_PlayerCheckCount > (30 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayVod_PlayerCheckCount = 0;
@@ -384,11 +389,7 @@ function PlayVod_updateCurrentTime(currentTime) {
     PlayVod_currentTime = currentTime;
 
     if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
-    if (Play_BufferDialogVisible() && !Play_jumping) Play_HideBufferDialog();
-
-    //Play_JustStartPlaying prevent the buffer dialog from blink when enable by Play_PlayerCheck
-    if (!PlayVod_JustStartPlaying && Play_isplaying() && Play_BufferDialogVisible()) Play_HideBufferDialog();
-    else PlayVod_JustStartPlaying = false;
+    if (PlayVod_bufferingcomplete) Play_HideBufferDialog();
 
     PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerCheckOffset = 0;
