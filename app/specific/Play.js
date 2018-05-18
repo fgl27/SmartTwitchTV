@@ -115,7 +115,6 @@ function Play_Start() {
     Play_loadingInfoDataTimeout = 10000;
     Play_updateStreamInfoStart();
     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-    Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
     Play_qualitiesFound = 0;
     Play_tokenResponse = 0;
     Play_playlistResponse = 0;
@@ -291,7 +290,7 @@ function Play_loadDataError() {
             Play_loadDataRequest();
         } else {
             Play_HideBufferDialog();
-            Play_PannelEnterStart(1);
+            Play_PannelEndStart(1);
         }
     }
 }
@@ -315,7 +314,7 @@ function Play_restore() {
         if (Play_isOn) Play_qualityChanged();
     } else {
         Play_HideBufferDialog();
-        Play_PannelEnterStart(1);
+        Play_PannelEndStart(1);
     }
 }
 
@@ -396,11 +395,14 @@ function Play_qualityChanged() {
 }
 
 var Play_listener = {
+    onbufferingstart: function() {
+        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+    },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
-        Play_PannelEnterStart(1);
+        Play_PannelEndStart(1);
     }
 };
 
@@ -430,6 +432,8 @@ function Play_onPlayer() {
         Play_HideWarningDialog();
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+        window.clearInterval(Play_streamCheck);
+        Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
     });
 }
 
@@ -437,13 +441,13 @@ function Play_onPlayer() {
 // So we use PlayerCheck to avaluate if we are staled fro too long or not and drop the quality
 function Play_isIdleOrPlaying() {
     var state = Play_avplay.getState();
-    return state === 'IDLE' || state === 'PLAYING';
+    return !Play_isEndDialogShown() && (state === 'IDLE' || state === 'PLAYING');
 }
 
 function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
-        Play_showBufferDialog();
+        if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -10;
         if (Play_PlayerCheckCount > (30 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             Play_PlayerCheckCount = 0;
@@ -452,7 +456,10 @@ function Play_PlayerCheck() {
                 Play_qualityDisplay();
                 Play_qualityChanged();
                 Play_PlayerCheckQualityChanged = true; // -5s on next check
-            } else Play_PannelEnterStart(1); //staled for too long close the player
+            } else {
+                Play_avplay.stop();
+                Play_PannelEndStart(1); //staled for too long close the player
+            }
         }
     }
     Play_PlayerTime = Play_currentTime;
@@ -819,9 +826,12 @@ function Play_hideChatBackgroundDialog() {
     Main_HideElement('scene_channel_dialog_chat');
 }
 
-function Play_KeyPause() {
+function Play_KeyPause(PlayVodClip) {
     if (Play_isplaying()) {
-        window.clearInterval(Play_streamCheck);
+        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
+        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
+        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+
         Play_avplay.pause();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
         Play_showPauseDialog();
@@ -830,7 +840,10 @@ function Play_KeyPause() {
         Play_avplay.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
         if (Play_isPanelShown()) Play_hidePanel();
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+
+        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, 500);
+        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 500);
+        else if (PlayVodClip === 3) PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, 1500);
     }
 }
 
@@ -871,6 +884,7 @@ function Play_IconsFocus() {
 function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = Play_STATE_PLAYING;
     PlayVod_state = Play_STATE_PLAYING;
+    PlayClip_state = PlayClip_STATE_PLAYING;
     Play_hideChat();
     Play_hidePanel();
     PlayClip_hidePanel();
@@ -938,9 +952,11 @@ function Play_EndText(PlayVodClip) {
             '0...';
         Play_CleanHideExit();
         Play_hideChat();
+
         if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
         else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
         else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+
     } else {
         Play_EndTextID = window.setTimeout(function() {
             Play_EndText(PlayVodClip);
@@ -960,7 +976,12 @@ function Play_EndEnterPressed(PlayVodClip) {
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();
-        } else if (PlayVodClip === 3) PlayClip_Restart();
+        } else if (PlayVodClip === 3) {
+            PlayClip_offsettime = 0;
+            PlayClip_PlayerCheckQualityChanged = false;
+            PlayClip_qualityChanged();
+            Play_clearPause();
+        }
     } else if (Play_Endcouner === 1) PlayClip_OpenVod();
     else if (Play_Endcouner === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcouner === 3) Play_OpenGame(PlayVodClip);
@@ -1047,22 +1068,23 @@ function Play_PannelEnterPressed(PlayVodClip) {
         if (PlayVodClip === 1) {
             Play_PlayerCheckQualityChanged = false;
             Play_qualityChanged();
-            Play_clearPause();
-        }
-        if (PlayVodClip === 2) {
+        } else if (PlayVodClip === 2) {
             PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
-            Play_clearPause();
-        } else if (PlayVodClip === 3) PlayClip_speed();
+        } else if (PlayVodClip === 3) {
+            PlayClip_offsettime = Play_avplay.getCurrentTime();
+            PlayClip_PlayerCheckQualityChanged = false;
+            PlayClip_qualityChanged();
+        }
+        Play_clearPause();
     } else if (Play_Panelcouner === 1) {
         Play_FallowUnfallow();
 
         if (PlayVodClip === 1) {
             Play_clearHidePanel();
             Play_setHidePanel();
-        }
-        if (PlayVodClip === 2) {
+        } else if (PlayVodClip === 2) {
             PlayVod_clearHidePanel();
             PlayVod_setHidePanel();
         } else if (PlayVodClip === 3) {
@@ -1074,7 +1096,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
     else if (Play_Panelcouner === 4) Play_OpenSearch(PlayVodClip);
 }
 
-function Play_PannelEnterStart(PlayVodClip) {
+function Play_PannelEndStart(PlayVodClip) {
     Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = 3;
     Main_ready(function() {
@@ -1247,7 +1269,7 @@ function Play_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (!Play_isEndDialogShown()) Play_KeyPause();
+                if (!Play_isEndDialogShown()) Play_KeyPause(1);
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
