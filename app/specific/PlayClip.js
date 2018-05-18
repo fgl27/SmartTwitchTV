@@ -456,9 +456,9 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
-                    Play_Endcouner--;
-                    if (Play_Endcouner < 0) Play_Endcouner = 3;
-                    if (Play_Endcouner === 1) Play_Endcouner = 0;
+                    Play_Endcounter--;
+                    if (Play_Endcounter < 0) Play_Endcounter = 3;
+                    if (Play_Endcounter === 1) Play_Endcounter = 0;
                     Play_EndIconsFocus(3);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayClip_jumpCount > PlayClip_jumpCountMin) PlayClip_jumpCount--;
@@ -474,9 +474,9 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
-                    Play_Endcouner++;
-                    if (Play_Endcouner > 3) Play_Endcouner = 0;
-                    if (Play_Endcouner === 1) Play_Endcouner = 2;
+                    Play_Endcounter++;
+                    if (Play_Endcounter > 3) Play_Endcounter = 0;
+                    if (Play_Endcounter === 1) Play_Endcounter = 2;
                     Play_EndIconsFocus(3);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayClip_jumpCount < PlayClip_jumpCountMax) PlayClip_jumpCount++;

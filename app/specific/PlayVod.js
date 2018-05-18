@@ -633,9 +633,9 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
-                    Play_Endcouner--;
-                    if (Play_Endcouner < 0) Play_Endcouner = 3;
-                    if (Play_Endcouner === 1) Play_Endcouner = 0;
+                    Play_Endcounter--;
+                    if (Play_Endcounter < 0) Play_Endcounter = 3;
+                    if (Play_Endcounter === 1) Play_Endcounter = 0;
                     Play_EndIconsFocus(2);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayVod_jumpCount > PlayVod_jumpCountMin) PlayVod_jumpCount--;
@@ -651,9 +651,9 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
-                    Play_Endcouner++;
-                    if (Play_Endcouner > 3) Play_Endcouner = 0;
-                    if (Play_Endcouner === 1) Play_Endcouner = 2;
+                    Play_Endcounter++;
+                    if (Play_Endcounter > 3) Play_Endcounter = 0;
+                    if (Play_Endcounter === 1) Play_Endcounter = 2;
                     Play_EndIconsFocus(2);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayVod_jumpCount < PlayVod_jumpCountMax) PlayVod_jumpCount++;
