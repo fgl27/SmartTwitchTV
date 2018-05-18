@@ -31,7 +31,7 @@ function SChannels_init() {
     Search_isSearching = true;
     if (SChannels_lastData !== Search_data) SChannels_Status = false;
     Main_cleanTopLabel();
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search_data + "'");
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SChannels_handleKeyDown, false);
     Main_YRst(SChannels_cursorY);
     if (SChannels_Status) {

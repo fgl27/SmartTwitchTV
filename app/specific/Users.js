@@ -118,7 +118,7 @@ function Users_loadDataSuccessFinish() {
 }
 
 function Users_resetGameCell() {
-    for (var x = 0; x < AddUser_UsernameArray.length; x++) document.getElementById(Users_ids[3] + x + '_' + 2).innerHTML = (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES);
+    for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
 }
 
 function Users_checkTitleStart() {
@@ -132,7 +132,7 @@ function Users_checkTitleRun(position) {
 }
 
 function Users_SetKeyTitleStart(bool, position) {
-    document.getElementById(Users_ids[3] + position + '_' + 6).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    Main_textContent(Users_ids[3] + position + '_' + 6, bool ? STR_USER_CODE_OK : STR_USER_CODE);
     if (!bool) {
         var user = AddCode_UserCodeExist(AddUser_UsernameArray[position]);
         if (user > -1) AddCode_removeUser(user);
@@ -181,7 +181,7 @@ function Users_checkKey(responseText) {
 }
 
 function Users_SetKeyTitle(bool) {
-    document.getElementById(Users_ids[3] + Users_cursorY + '_' + Users_cursorX).innerHTML = bool ? STR_USER_CODE_OK : STR_USER_CODE;
+    Main_textContent(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, bool ? STR_USER_CODE_OK : STR_USER_CODE);
     if (!bool) {
         var user = AddCode_UserCodeExist(AddUser_UsernameArray[Users_cursorY]);
         if (user > -1) AddCode_removeUser(user);
@@ -198,7 +198,7 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    document.getElementById("main_dialog_remove").innerHTML = STR_REMOVE_USER + STR_BR + Main_UserName + '?';
+    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + Main_UserName + '?');
     Main_ShowElement('main_remove_dialog');
 }
 

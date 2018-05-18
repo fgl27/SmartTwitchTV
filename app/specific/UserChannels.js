@@ -24,7 +24,7 @@ function UserChannels_init() {
     Main_Go = Main_UserChannels;
     SChannels_isLastSChannels = false;
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL);
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
     Main_YRst(UserChannels_cursorY);
     if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
@@ -38,7 +38,7 @@ function UserChannels_init() {
 function UserChannels_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    Main_textContent('top_bar_user', STR_USER);
 }
 
 function UserChannels_StartLoad() {

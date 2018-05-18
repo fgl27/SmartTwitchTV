@@ -49,7 +49,7 @@ function Gvod_init() {
 function Gvod_exit() {
     document.body.removeEventListener("keydown", Gvod_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
+    Main_innerHTML('top_bar_game', STR_GAMES);
 
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
@@ -499,16 +499,16 @@ function Gvod_openStream() {
 
 function Gvod_SetPeriod() {
     if (Gvod_periodNumber === 1) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY + ': ' + Main_gameSelected));
         Gvod_period = 'day';
     } else if (Gvod_periodNumber === 2) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK + ': ' + Main_gameSelected));
         Gvod_period = 'week';
     } else if (Gvod_periodNumber === 3) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH + ': ' + Main_gameSelected));
         Gvod_period = 'month';
     } else if (Gvod_periodNumber === 4) {
-        document.getElementById('top_bar_game').innerHTML = STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL + ': ' + Main_gameSelected);
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL + ': ' + Main_gameSelected));
         Gvod_period = 'all';
     }
     localStorage.setItem('Gvod_periodNumber', Gvod_periodNumber);

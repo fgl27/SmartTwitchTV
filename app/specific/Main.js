@@ -195,23 +195,25 @@ function Main_initWindows() {
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
-    document.getElementById('top_bar_live').innerHTML = STR_LIVE;
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
-    document.getElementById('top_bar_featured').innerHTML = STR_FEATURED;
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
-    document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
-    document.getElementById('chanel_button').innerHTML = STR_CHANNELS;
-    document.getElementById('game_button').innerHTML = STR_GAMES;
-    document.getElementById('live_button').innerHTML = STR_LIVE;
-    document.getElementById('exit_app_cancel').innerHTML = STR_CANCEL;
-    document.getElementById('exit_app_close').innerHTML = STR_CLOSE;
-    document.getElementById('remove_cancel').innerHTML = STR_CANCEL;
-    document.getElementById('remove_yes').innerHTML = STR_YES;
-    document.getElementById('exit_app_minimize').innerHTML = STR_MINIMIZE;
-    document.getElementById("main_dialog_exit_text").innerHTML = STR_EXIT_MESSAGE;
-    document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0;
-    document.getElementById("dialog_controls_text").innerHTML = STR_CONTROLS_MAIN_0;
+
+    Main_textContent('top_bar_live', STR_LIVE);
+    Main_textContent('top_bar_user', STR_USER);
+    Main_textContent('top_bar_featured', STR_FEATURED);
+    Main_textContent('top_bar_game', STR_GAMES);
+    Main_textContent('top_bar_vod', STR_VIDEOS);
+    Main_textContent('top_bar_clip', STR_CLIPS);
+    Main_textContent('chanel_button', STR_CHANNELS);
+    Main_textContent('game_button', STR_GAMES);
+    Main_textContent('live_button', STR_LIVE);
+    Main_textContent('exit_app_cancel', STR_CANCEL);
+    Main_textContent('exit_app_close', STR_CLOSE);
+    Main_textContent('remove_cancel', STR_CANCEL);
+    Main_textContent('remove_yes', STR_YES);
+    Main_textContent('exit_app_minimize', STR_MINIMIZE);
+    Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
+
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
+    Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
     Main_ScrollbarElement = document.getElementById("scrollbar");
     Main_SearchInput = document.getElementById("search_input");
     Main_AddUserInput = document.getElementById("user_input");
@@ -255,8 +257,8 @@ function Main_initWindows() {
 }
 
 function Main_IconLoad(lable, icon, string) {
-    document.getElementById(lable).innerHTML = '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
-        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>';
+    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
+        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
 }
 
 function Main_HideElement(element) {
@@ -285,6 +287,14 @@ function Main_ChangeBorder(div, value) {
 
 function Main_ChangebackgroundColor(div, value) {
     document.getElementById(div).style.backgroundColor = value;
+}
+
+function Main_innerHTML(div, value) {
+    document.getElementById(div).innerHTML = value;
+}
+
+function Main_textContent(div, value) {
+    document.getElementById(div).textContent = value;
 }
 
 function Main_showLoadDialog() {
@@ -327,7 +337,7 @@ function Main_CounterDialogRst() {
 
 function Main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) {
-        document.getElementById('dialog_counter_text').innerHTML = (y * coloumns) + (x + 1) + '/' + (total);
+        Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
         Main_Scrollbar(y, coloumns, total);
     } else Main_CounterDialogRst();
 }
@@ -359,7 +369,7 @@ function Main_SetItemsLimitReplace(blankCellCount) {
 
 function Main_showWarningDialog(text) {
     if (!Main_NetworkStateOK && text === STR_REFRESH_PROBLEM) Main_NetworkRefresh = true;
-    document.getElementById('dialog_warning_text').innerHTML = !Main_NetworkStateOK ? STR_NET_DOWN : text;
+    Main_textContent('dialog_warning_text', !Main_NetworkStateOK ? STR_NET_DOWN : text);
     Main_ShowElement('dialog_warning');
 }
 
@@ -519,12 +529,12 @@ function Main_RestoreTopLabel() {
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    document.getElementById('top_bar_live').innerHTML = STR_LIVE;
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
-    document.getElementById('top_bar_featured').innerHTML = STR_FEATURED;
-    document.getElementById('top_bar_game').innerHTML = STR_GAMES;
-    document.getElementById('top_bar_vod').innerHTML = STR_VIDEOS;
-    document.getElementById('top_bar_clip').innerHTML = STR_CLIPS;
+    Main_textContent('top_bar_live', STR_LIVE);
+    Main_textContent('top_bar_user', STR_USER);
+    Main_textContent('top_bar_featured', STR_FEATURED);
+    Main_textContent('top_bar_game', STR_GAMES);
+    Main_textContent('top_bar_vod', STR_VIDEOS);
+    Main_textContent('top_bar_clip', STR_CLIPS);
 }
 
 function Main_cleanTopLabel() {
@@ -603,8 +613,8 @@ function Main_checkVersion() {
             STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
         Appversion = Appversion.split(".");
         value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
-        document.getElementById("dialog_about_text").innerHTML = STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0;
-        document.getElementById("dialog_update_text").innerHTML = STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0;
+        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0);
+        Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
         return value < Main_version;
     } else return false;
 }

@@ -33,7 +33,7 @@ function UserGames_init() {
     Main_YRst(UserGames_cursorY);
     if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
     if (UserGames_Status) {
-        document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         Main_ScrollHelper(UserGames_ids[0], UserGames_cursorY, UserGames_cursorX, Main_usergames,
             Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_CounterDialog(UserGames_cursorX, UserGames_cursorY, Main_ColoumnsCountGame, UserGames_itemsCount);
@@ -43,14 +43,14 @@ function UserGames_init() {
 function UserGames_exit() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    Main_textContent('top_bar_user', STR_USER);
     document.body.removeEventListener("keydown", UserGames_handleKeyDown);
 }
 
 function UserGames_StartLoad() {
     Main_HideWarningDialog();
     Main_ScrollHelperBlank('blank_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
     Main_showLoadDialog();
     UserGames_OldUserName = Main_UserName;
     UserGames_Status = false;

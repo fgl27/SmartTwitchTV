@@ -27,7 +27,7 @@ var UserHost_loadingMore = false;
 function UserHost_init() {
     Main_Go = Main_UserHost;
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    document.getElementById('top_bar_user').innerHTML = STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS);
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS));
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
     Main_YRst(UserHost_cursorY);
     if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
@@ -41,7 +41,7 @@ function UserHost_init() {
 function UserHost_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserHost_handleKeyDown);
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    Main_textContent('top_bar_user', STR_USER);
 }
 
 function UserHost_StartLoad() {

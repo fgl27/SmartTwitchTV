@@ -82,16 +82,16 @@ function Clip_loadDataPrepare() {
 
 function Clip_SetPeriod() {
     if (Clip_periodNumber === 1) {
-        document.getElementById('top_bar_clip').innerHTML = STR_CLIPS + Main_UnderCenter(STR_CLIP_DAY);
+        Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_DAY));
         Clip_period = 'day';
     } else if (Clip_periodNumber === 2) {
-        document.getElementById('top_bar_clip').innerHTML = STR_CLIPS + Main_UnderCenter(STR_CLIP_WEEK);
+        Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_WEEK));
         Clip_period = 'week';
     } else if (Clip_periodNumber === 3) {
-        document.getElementById('top_bar_clip').innerHTML = STR_CLIPS + Main_UnderCenter(STR_CLIP_MONTH);
+        Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_MONTH));
         Clip_period = 'month';
     } else if (Clip_periodNumber === 4) {
-        document.getElementById('top_bar_clip').innerHTML = STR_CLIPS + Main_UnderCenter(STR_CLIP_ALL);
+        Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_ALL));
         Clip_period = 'all';
     }
     localStorage.setItem('Clip_periodNumber', Clip_periodNumber);

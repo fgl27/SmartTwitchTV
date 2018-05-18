@@ -72,42 +72,40 @@ var Play_bufferingcomplete = false;
 function Play_PreStart() {
     Play_avplay = (window.tizen && window.webapis.avplay) || {};
     Play_ClearPlayer();
-    document.getElementById("scene2_search_text").innerHTML = STR_SPACE + STR_SEARCH;
-    document.getElementById("scene2_channel_text").innerHTML = STR_SPACE + STR_CHANNEL_CONT;
-    document.getElementById("scene2_game_text").innerHTML = STR_SPACE + STR_GAME_CONT;
+    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
+    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
+    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
 
-    document.getElementById("dialog_end_replay_text").innerHTML = STR_REPLAY;
-    document.getElementById("dialog_end_vod_text").innerHTML = STR_CLIP_TO_VOD;
-    document.getElementById("dialog_end_channel_text").innerHTML = STR_CHANNEL_CONT;
-    document.getElementById("dialog_end_game_text").innerHTML = STR_GAME_CONT;
+    Main_textContent("dialog_end_replay_text", STR_REPLAY);
+    Main_textContent("dialog_end_vod_text", STR_CLIP_TO_VOD);
+    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
+    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
 
     Play_ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    document.getElementById("play_dialog_exit_text").innerHTML = STR_EXIT_AGAIN;
-    document.getElementById("dialog_buffer_play_text").innerHTML = STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i><div id="dialog_buffer_play_percentage" style="display:flex; font-weight: bold; font-size: 38%; transform: translate(0,-220%);">0</div></div>';
-    document.getElementById("chat_container").innerHTML = '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
+    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
+    Main_innerHTML("dialog_buffer_play_text", STR_BUFFERING +
+        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i><div id="dialog_buffer_play_percentage" style="display:flex; font-weight: bold; font-size: 38%; transform: translate(0,-220%);">0</div></div>');
+    Main_innerHTML("chat_container", '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
         '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
-        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>';
-    document.getElementById("dialog_controls_play_text").innerHTML = STR_CONTROLS_PLAY_0;
-    document.getElementById("stream_controls").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>';
+        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
+    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
+    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 }
 
 function Play_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
-    document.getElementById("stream_live_icon").innerHTML =
-        '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>';
+    Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
-    document.getElementById("stream_info_name").innerHTML = Play_selectedChannelDisplayname;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(0);
-    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_timeMs(0) + STR_AGO;
-    document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+    Main_textContent("stream_info_name", Play_selectedChannelDisplayname);
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
+    Main_textContent("dialog_buffer_play_percentage", 0);
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
 
@@ -170,11 +168,11 @@ function Play_updateStreamInfoStart() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     var response = JSON.parse(xmlHttp.responseText);
-                    document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
+                    Main_textContent("stream_info_title", response.stream.channel.status);
                     Play_gameSelected = response.stream.game;
                     Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
-                    document.getElementById("stream_info_game").innerHTML = STR_PLAYING + Play_gameSelected + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang;
+                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                     Main_selectedChannelLogo = response.stream.channel.logo;
                     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
                     Play_created = response.stream.created_at;
@@ -217,9 +215,9 @@ function Play_updateStreamInfo() {
             if (xmlHttp.status === 200) {
                 try {
                     var response = JSON.parse(xmlHttp.responseText);
-                    document.getElementById("stream_info_title").innerHTML = response.stream.channel.status;
-                    document.getElementById("stream_info_game").innerHTML = STR_PLAYING + response.stream.game + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang;
+                    Main_textContent("stream_info_title", response.stream.channel.status);
+                    Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                     if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                 } catch (err) {}
             }
@@ -404,16 +402,16 @@ var Play_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
-        document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+        Main_textContent("dialog_buffer_play_percentage", 0);
         Play_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset
-        if (percent <= 98) document.getElementById("dialog_buffer_play_percentage").textContent = percent + 2;
+        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
         else {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
-            document.getElementById("dialog_buffer_play_percentage").textContent = 0;
+            Main_textContent("dialog_buffer_play_percentage", 0);
             Play_RestoreFromResume = false;
         }
     },
@@ -499,7 +497,7 @@ function Play_updateCurrentTime(currentTime) {
     if (Play_bufferingcomplete) Play_HideBufferDialog();
 
     Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14s buffer size from twitch
-    if (Play_isPanelShown()) document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_oldcurrentTime);
+    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
 }
 
 function Play_clock(currentTime) {
@@ -509,7 +507,7 @@ function Play_clock(currentTime) {
     if (Main_IsDayFirst) dayMonth = date.getDate() + '/' + monthNames[date.getMonth()];
     else dayMonth = monthNames[date.getMonth()] + '/' + date.getDate();
 
-    document.getElementById("stream_clock").innerHTML = dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+    Main_textContent("stream_clock", dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes()));
 }
 
 function Play_lessthanten(time) {
@@ -591,7 +589,7 @@ function Play_ClearPlay() {
 }
 
 function Play_hideFallow() {
-    document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_NOKEY;
+    Main_innerHTML("fallow_text", STR_SPACE + STR_NOKEY);
     AddCode_IsFallowing = false;
 }
 
@@ -612,12 +610,11 @@ function Play_BufferDialogVisible() {
 }
 
 function Play_showWarningDialog(text) {
-    document.getElementById("dialog_warning_play_text").innerHTML = text;
+    Main_textContent("dialog_warning_play_text", text);
     Main_ShowElement('dialog_warning_play');
 }
 
 function Play_HideWarningDialog() {
-    document.getElementById("dialog_warning_play_text").innerHTML = '';
     Main_HideElement('dialog_warning_play');
 }
 
@@ -690,8 +687,8 @@ function Play_showPanel() {
     Play_IconsFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay();
-    document.getElementById("stream_live_time").innerHTML = STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO;
-    document.getElementById("stream_watching_time").innerHTML = STR_WATCHING + Play_timeMs(Play_oldcurrentTime);
+    Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
@@ -760,8 +757,8 @@ function Play_qualityDisplay() {
 
     Play_quality = Play_qualities[Play_qualityIndex].id;
 
-    if (Play_quality.indexOf('source') !== -1) document.getElementById("quality_name").innerHTML = Play_quality.replace("source", STR_SOURCE);
-    else document.getElementById("quality_name").innerHTML = Play_quality;
+    if (Play_quality.indexOf('source') !== -1) Main_textContent("quality_name", Play_quality.replace("source", STR_SOURCE));
+    else dMain_textContent("quality_name", Play_quality);
 }
 
 function Play_getQualitiesCount() {
@@ -829,7 +826,7 @@ function Play_ChatPosition() {
 
 function Play_showChatBackgroundDialog(DialogText) {
     window.clearTimeout(Play_ChatBackgroundID);
-    document.getElementById("scene_channel_dialog_chat_text").innerHTML = DialogText;
+    Main_textContent("scene_channel_dialog_chat_text", DialogText);
     Main_ShowElement('scene_channel_dialog_chat');
     Play_ChatBackgroundID = window.setTimeout(Play_hideChatBackgroundDialog, 1000);
 }
@@ -956,12 +953,12 @@ function Play_EndText(PlayVodClip) {
     if (PlayVodClip === 1) Play_DialogEndText = Play_selectedChannelDisplayname + ' ' + STR_LIVE;
     else if (PlayVodClip === 2) Play_DialogEndText = Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_selectedChannelDisplayname + STR_CLIP;
-    document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
-        Play_EndTextCounter + '...';
+    Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+        Play_EndTextCounter + '...');
     Play_EndTextCounter--;
     if (Play_EndTextCounter === -1) {
-        document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
-            '0...';
+        Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+            '0...');
         Play_CleanHideExit();
         Play_hideChat();
 
@@ -978,7 +975,7 @@ function Play_EndText(PlayVodClip) {
 
 function Play_EndTextClear() {
     window.clearTimeout(Play_EndTextID);
-    document.getElementById("dialog_end_stream_text").innerHTML = Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT;
+    Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT);
 }
 
 function Play_EndEnterPressed(PlayVodClip) {
@@ -1119,11 +1116,11 @@ function Play_PannelEndStart(PlayVodClip) {
 
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
-        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0 0 3px, #FFFFFF 0 0 3px, #FFFFFF 0 0 2px;"></i>';
-        document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOWING;
+        Main_innerHTML("fallow_heart", '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0 0 3px, #FFFFFF 0 0 3px, #FFFFFF 0 0 2px;"></i>');
+        Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOWING);
     } else {
-        document.getElementById("fallow_heart").innerHTML = '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0 0 3px, #000000 0 0 3px, #000000 0 0 2px;"></i>';
-        document.getElementById("fallow_text").innerHTML = STR_SPACE + STR_FALLOW;
+        Main_innerHTML("fallow_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0 0 3px, #000000 0 0 3px, #000000 0 0 2px;"></i>');
+        Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOW);
     }
 }
 

@@ -25,7 +25,7 @@ function SGames_init() {
     Search_isSearching = true;
     Main_cleanTopLabel();
     if (SGames_lastData !== Search_data) SGames_Status = false;
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Search_data + "'");
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SGames_handleKeyDown, false);
     Main_YRst(SGames_cursorY);
     if (SGames_Status) {

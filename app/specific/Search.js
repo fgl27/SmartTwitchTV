@@ -17,7 +17,7 @@ function Search_init() {
     document.getElementById('top_bar_game').style.display = 'none';
     document.getElementById('top_bar_vod').style.display = 'none';
     document.getElementById('top_bar_clip').style.display = 'none';
-    document.getElementById('top_bar_user').innerHTML = STR_SEARCH;
+    Main_textContent('top_bar_user', STR_SEARCH);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Search_cursorY = 0;
@@ -40,7 +40,7 @@ function Search_exit() {
     document.getElementById('top_bar_game').style.display = 'inline-block';
     document.getElementById('top_bar_vod').style.display = 'inline-block';
     document.getElementById('top_bar_clip').style.display = 'inline-block';
-    document.getElementById('top_bar_user').innerHTML = STR_USER;
+    Main_textContent('top_bar_user', STR_USER);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_SearchInput.value = '';
