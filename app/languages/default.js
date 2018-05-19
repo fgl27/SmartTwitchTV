@@ -57,7 +57,6 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_11 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
