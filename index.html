@@ -344,6 +344,9 @@
         }
 
         div.playsideinfo {
+            float: right;
+            padding-right: 0.5%;
+            padding-top: 1.5%;
             color: #FFFFFF;
             font-size: 170%;
             font-weight: bold;
@@ -352,6 +355,11 @@
 
 
         div.playmaininfo {
+            vertical-align: top;
+            padding-left: 1%;
+            padding-top: 1.5%;
+            display: inline-block;
+            width: 69%;
             font-size: 200%;
             color: #FFFFFF;
             word-wrap: break-word;
@@ -367,7 +375,7 @@
         div.playbottontext {
             vertical-align: middle;
             display: inline-block;
-            font-size: 190%;
+            font-size: 180%;
             font-weight: bold;
             margin-bottom: 6px;
         }
@@ -694,7 +702,7 @@
         <div id="scene_channel_panel" class="screen_size" style="position: fixed; z-index: 2; opacity: 0; 
  transition: 0.4s;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.04));">
-                <div class="playsideinfo" style="float: right; padding-right: 0.5%; padding-top: 1.5%;">
+                <div class="playsideinfo">
                     <div id="stream_live_icon"></div>
                     <div id="stream_live_time"></div>
                     <div id="stream_watching_time"></div>
@@ -702,7 +710,7 @@
                     <div id="stream_controls"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="stream_info">
-                <div class="playmaininfo" style="vertical-align: top; padding-left: 1%; padding-top: 1.5%; display: inline-block; width: 71%;">
+                <div class="playmaininfo">
                     <div id="stream_info_name" style="font-size: 130%; font-weight: bold;"></div>
                     <div id="stream_info_title"></div>
                     <div id="stream_info_game"></div>
@@ -745,7 +753,7 @@
                             <div id="quality_arrow_down" class="down"></div>
                         </div>&nbsp;&nbsp;
                     </div>
-                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%; width: 80%;"></div>
+                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 175%; width: 80%;"></div>
                 </div>
                 <div id="scene2_open_vod" class="playbotton" style="z-order:4; width: 16%; margin-right: 0;">
                     <div id="open_vod_icon" style="vertical-align: middle; display: inline-block">
