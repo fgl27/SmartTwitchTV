@@ -169,13 +169,15 @@ function Clip_loadDataSuccess(responseText) {
             if (Clip_CellExists(video.slug)) coloumn_id--;
             else {
                 Clip_nameMatrix.push(video.slug);
+                if (video.vod === null) console.log(video.broadcaster.name + ' ' + row_id + '_' + coloumn_id);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video.slug + ',' +
-                    video.duration + ',' + video.game + ',' + video.broadcaster.name +
+                    video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
                     video.broadcaster.logo.replace("150x150", "300x300") +
-                    ',' + video.broadcaster.id, [video.thumbnails.medium, video.broadcaster.display_name,
-                        STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    ',' + video.broadcaster.id + ',' +
+                    (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                        video.broadcaster.display_name,
+                        STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_PLAYING + video.game,
                         Main_addCommas(video.views) + STR_VIEWS,
                         '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
@@ -296,12 +298,13 @@ function Clip_loadDataSuccessReplace(responseText) {
         } else {
             Clip_nameMatrix.push(video.slug);
             Vod_replaceVideo(Clip_blankCellVector[i],
-                video.slug + ',' +
-                video.duration + ',' + video.game + ',' + video.broadcaster.name +
+                video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                 ',' + video.broadcaster.display_name + ',' +
                 video.broadcaster.logo.replace("150x150", "300x300") +
-                ',' + video.broadcaster.id, [video.thumbnails.medium, video.broadcaster.display_name,
-                    STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                ',' + video.broadcaster.id + ',' +
+                (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                    video.broadcaster.display_name,
+                    STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_PLAYING + video.game,
                     Main_addCommas(video.views) + STR_VIEWS,
                     '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
@@ -445,6 +448,8 @@ function Clip_handleKeyDown(event) {
             Main_selectedChannelDisplayname = Sclip_playUrl[4];
             Main_selectedChannelLogo = Sclip_playUrl[5];
             Main_selectedChannel_id = Sclip_playUrl[6];
+            Svod_vodId = Sclip_playUrl[7];
+            Svod_vodOffset = parseInt(Sclip_playUrl[8]);
             Sclip_playUrl = Sclip_playUrl[0];
 
             Sclip_title = '';

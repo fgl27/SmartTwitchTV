@@ -174,9 +174,9 @@ function Sclip_loadDataSuccess(responseText) {
             else {
                 Sclip_nameMatrix.push(video.slug);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video.slug + ',' +
-                    video.duration + ',' + video.game, [video.thumbnails.medium,
-                        video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    video.slug + ',' + video.duration + ',' + video.game + ',' +
+                    (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                        video.title, STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                         STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         '[' + video.language.toUpperCase() + ']',
                         STR_DURATION + Play_timeS(video.duration)
@@ -296,12 +296,14 @@ function Sclip_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Sclip_nameMatrix.push(video.slug);
-            Vod_replaceVideo(Sclip_blankCellVector[i], video.slug, [video.thumbnails.medium,
-                video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                '[' + video.language.toUpperCase() + ']',
-                STR_DURATION + Play_timeS(video.duration)
-            ], Sclip_ids);
+            Vod_replaceVideo(Sclip_blankCellVector[i],
+                video.slug + ',' + video.duration + ',' + video.game + ',' +
+                (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                    video.title, STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
+                    STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                    '[' + video.language.toUpperCase() + ']',
+                    STR_DURATION + Play_timeS(video.duration)
+                ], Sclip_ids);
 
             Sclip_blankCellCount--;
 
@@ -441,6 +443,8 @@ function Sclip_handleKeyDown(event) {
             Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute(Main_DataAttribute).split(',');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
             Main_gameSelected = Sclip_playUrl[2];
+            Svod_vodId = Sclip_playUrl[3];
+            Svod_vodOffset = parseInt(Sclip_playUrl[4]);
             Sclip_playUrl = Sclip_playUrl[0];
 
             Sclip_title = document.getElementById(Sclip_ids[3] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;

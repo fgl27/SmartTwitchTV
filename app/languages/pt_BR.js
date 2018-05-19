@@ -154,4 +154,8 @@ function pt_BRLang() {
     STR_STREAM_END = "saindo em ";
     STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
     STR_FEATURED = 'Destaques';
+    STR_CREATED_AT = "Criado em ";
+    STR_NO_VOD = "Este clipe não tem uma ";
+    STR_OPEN_BROADCAST = "Abrir a Transmissão";
+    STR_NO_BROADCAST = "Sem Transmissão";
 }

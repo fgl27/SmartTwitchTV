@@ -108,3 +108,6 @@
 .icon-calendar:before {
   content: "\67";
 }
+.icon-play:before {
+  content: "\72";
+}

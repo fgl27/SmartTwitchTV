@@ -367,7 +367,7 @@
         div.playbottontext {
             vertical-align: middle;
             display: inline-block;
-            font-size: 205%;
+            font-size: 190%;
             font-weight: bold;
             margin-bottom: 6px;
         }
@@ -393,7 +393,7 @@
             border-radius: 12px;
             vertical-align: middle;
             text-align: center;
-            margin-right: 1%;
+            margin-right: 0.5%;
             border: 3.5px solid rgba(0, 0, 0, 0);
         }
 
@@ -709,21 +709,23 @@
                 </div>
             </div>
             <div style="z-order:-100; position: absolute; bottom: 0; width: 100%; height: 53px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040)); text-align: center;">
-                <div id="scene2_search" class="playbotton" style="z-order:6; width: 12%;">
+                <div id="scene2_search" class="playbotton" style="z-order:6; width: 11%;">
                     <div id="ic_search" style="vertical-align: middle; display: inline-block">
                         <i class="icon-search strokicon"></i>
                     </div>
                     <div id="scene2_search_text" class="strokedextramini playbottontext"></div>
                 </div>
-                <div id="scene2_channel" class="playbotton" style="z-order:5; width: 19%;">
+                <div id="scene2_channel" class="playbotton" style="z-order:5; width: 18%;">
                     <div id="channel_icon" style="vertical-align: middle; display: inline-block">
                         <i class="icon-filmstrip strokicon"></i>
                     </div>
                     <div id="scene2_channel_text" class="strokedextramini playbottontext"></div>
                 </div>
-                <div id="scene2_game" class="playbotton" style="z-order:5; width: 18%;">
-                    <div id="game_icon" style="vertical-align: middle; display: inline-block">
-                        <i class="icon-gamepad strokicon" style="font-size: 238%;"></i>
+                <div id="scene2_game" class="playbotton" style="z-order:5; width: 17%;">
+                    <div id="game_icon" style="vertical-align: middle; display: inline-block; overflow: hidden; max-height: 43px;">
+                        <div style="display:flex; font-size: 120%; transform: translate(0,-10%);">
+                            <i class="icon-gamepad strokicon"></i>
+                        </div>
                     </div>
                     <div id="scene2_game_text" class="strokedextramini playbottontext"></div>
                 </div>
@@ -733,7 +735,7 @@
                     </div>
                     <div id="fallow_text" class="strokedextramini playbottontext"></div>
                 </div>
-                <div id="scene2_quality" class="playbotton" style="z-order:2; width: 28%; margin-right: 0;">
+                <div id="scene2_quality" class="playbotton" style="z-order:2; width: 28%;">
                     <div id="quality_video" style="vertical-align: middle; display: inline-block">
                         <i class="icon-videocamera strokicon"></i>
                     </div>
@@ -744,6 +746,14 @@
                         </div>&nbsp;&nbsp;
                     </div>
                     <div id="quality_name" class="strokedextramini playmulti" style="font-size: 185%; width: 80%;"></div>
+                </div>
+                <div id="scene2_open_vod" class="playbotton" style="z-order:4; width: 16%; margin-right: 0;">
+                    <div id="open_vod_icon" style="vertical-align: middle; display: inline-block">
+                        <div style="display:flex; font-size: 87%;">
+                            <i class="icon-play strokicon"></i>
+                        </div>
+                    </div>
+                    <div id="open_vod_text" class="strokedextramini playbottontext"></div>
                 </div>
             </div>
         </div>
@@ -756,7 +766,7 @@
                     <div id="dialog_end_replay_text" class="strokedbig"></div>
                 </div>
                 <div id="dialog_end_vod" class="dialog_end_icons">
-                    <i class="icon-videocamera strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-play strokicon" style="font-size: 250%;"></i>
                     <div id="dialog_end_vod_text" class="strokedbig"></div>
                 </div>
                 <div id="dialog_end_channel" class="dialog_end_icons">
@@ -777,7 +787,7 @@
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
                 <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 350%;"></div>
             </div>
-            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 24%;">
+            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 17%;">
                 <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 350%;"></div>
             </div>
             <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 28%;">

@@ -28,6 +28,7 @@ var PlayClip_PlayerCheckOffset = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_bufferingcomplete = false;
+var PlayClip_HasVOD = false;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -41,7 +42,8 @@ function PlayClip_Start() {
     Main_textContent("stream_live_icon", Sclip_createdAt);
     Main_textContent("stream_live_time", Sclip_Duration);
     Main_empty('dialog_buffer_play_percentage');
-
+    PlayClip_HasVOD = Svod_vodId !== 'null';
+    PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
 
@@ -267,6 +269,9 @@ function PlayClip_PreshutdownStream() {
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip_Resume);
     PlayClip_hidePanel();
+    document.getElementById('scene2_open_vod').style.display = 'none';
+    document.getElementById("scene2_quality").style.width = '28%';
+    document.getElementById("quality_name").style.width = '80%';
 
     window.clearInterval(PlayClip_streamCheck);
     PlayClip_isOn = false;
@@ -406,7 +411,7 @@ function PlayClip_jumpStart() {
             PlayClip_jumpCountMin = PlayClip_jumpCount;
             jumpTotime = 0;
         }
-        jumpTotime = Play_timeMs(jumpTotime);
+        jumpTotime = Play_timeS(jumpTotime);
     } else {
         if (PlayClip_jumpCount === 1) PlayClip_TimeToJump = 5;
         else if (PlayClip_jumpCount === 2) PlayClip_TimeToJump = 10;
@@ -435,7 +440,7 @@ function PlayClip_jumpStart() {
             }, 1500);
             return;
         } else {
-            jumpTotime = Play_timeMs(jumpTotime);
+            jumpTotime = Play_timeS(jumpTotime);
         }
     }
 
@@ -443,8 +448,26 @@ function PlayClip_jumpStart() {
     PlayClip_JumpID = window.setTimeout(PlayClip_jump, 1500);
 }
 
+function PlayClip_SetOpenVod() {
+    document.getElementById("scene2_quality").style.width = '19%';
+    document.getElementById("quality_name").style.width = '72%';
+    Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
+    document.getElementById('scene2_open_vod').style.display = 'inline-block';
+}
+
 function PlayClip_OpenVod() {
-    console.log("PlayClip_OpenVod");
+    if (PlayClip_HasVOD) {
+        PlayClip_PreshutdownStream();
+        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+        PlayVod_Start();
+    } else {
+        Play_IsWarning = true;
+        Play_showWarningDialog(STR_NO_VOD + STR_PAST_BROA);
+        window.setTimeout(function() {
+            Play_IsWarning = false;
+            Play_HideWarningDialog();
+        }, 2000);
+    }
 }
 
 function PlayClip_handleKeyDown(e) {
@@ -466,7 +489,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_LEFT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner++;
-                    if (Play_Panelcouner > 4) Play_Panelcouner = 0;
+                    if (Play_Panelcouner > 4) Play_Panelcouner = -1;
                     Play_IconsFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
@@ -474,7 +497,6 @@ function PlayClip_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_Endcounter--;
                     if (Play_Endcounter < 0) Play_Endcounter = 3;
-                    if (Play_Endcounter === 1) Play_Endcounter = 0;
                     Play_EndIconsFocus(3);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayClip_jumpCount > PlayClip_jumpCountMin) PlayClip_jumpCount--;
@@ -484,7 +506,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_RIGHT:
                 if (Play_isPanelShown()) {
                     Play_Panelcouner--;
-                    if (Play_Panelcouner < 0) Play_Panelcouner = 4;
+                    if (Play_Panelcouner < -1) Play_Panelcouner = 4;
                     Play_IconsFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
@@ -492,7 +514,6 @@ function PlayClip_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    if (Play_Endcounter === 1) Play_Endcounter = 2;
                     Play_EndIconsFocus(3);
                 } else if (!Play_BufferDialogVisible()) {
                     if (PlayClip_jumpCount < PlayClip_jumpCountMax) PlayClip_jumpCount++;
@@ -561,7 +582,7 @@ function PlayClip_handleKeyDown(e) {
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
                 break;
             case KEY_BLUE:
-                //if (!Play_isEndDialogShown()) PlayClip_Restart();
+                PlayClip_OpenVod();
                 break;
             default:
                 break;

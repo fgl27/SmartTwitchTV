@@ -887,6 +887,9 @@ function Play_IconsFocus() {
     Main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
     Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
 
+    Main_ChangeBorder("scene2_open_vod", "3.5px solid rgba(0, 0, 0, 0)");
+    Main_ChangebackgroundColor("scene2_open_vod", "rgba(0, 0, 0, 0)");
+
     if (!Play_Panelcouner) {
         Main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
         Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
@@ -902,7 +905,11 @@ function Play_IconsFocus() {
     } else if (Play_Panelcouner === 4) {
         Main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
         Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
+    } else if (Play_Panelcouner === -1) {
+        Main_ChangeBorder("scene2_open_vod", "3.5px solid #FFFFFF");
+        Main_ChangebackgroundColor("scene2_open_vod", "rgba(0, 0, 0, 0.7)");
     }
+
 }
 
 function Play_PrepareshowEndDialog(PlayVodClip) {
@@ -1009,7 +1016,7 @@ function Play_EndEnterPressed(PlayVodClip) {
     } else if (Play_Endcounter === 1) PlayClip_OpenVod();
     else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
-    Play_HideEndDialog();
+    if (Play_Endcounter !== 1) Play_HideEndDialog();
 }
 
 function Play_EndSet(PlayVodClip) {
@@ -1018,7 +1025,11 @@ function Play_EndSet(PlayVodClip) {
     if (PlayVodClip === 1) {
         document.getElementById('dialog_end_replay').style.display = 'none';
         document.getElementById('dialog_end_vod').style.display = 'none';
-    } else if (PlayVodClip > 1) document.getElementById('dialog_end_vod').style.display = 'none';
+    } else if (PlayVodClip === 2) document.getElementById('dialog_end_vod').style.display = 'none';
+    else if (PlayVodClip === 3) {
+        if (PlayClip_HasVOD) Main_textContent("dialog_end_vod_text", STR_CLIP_TO_VOD);
+        else Main_textContent("dialog_end_vod_text", STR_NO_VOD + STR_PAST_BROA);
+    }
 }
 
 function Play_OpenChannel(PlayVodClip) {
@@ -1102,7 +1113,8 @@ function Play_PannelEnterPressed(PlayVodClip) {
             PlayClip_qualityChanged();
         }
         Play_clearPause();
-    } else if (Play_Panelcouner === 1) {
+    } else if (Play_Panelcouner === -1) PlayClip_OpenVod();
+    else if (Play_Panelcouner === 1) {
         Play_FallowUnfallow();
 
         if (PlayVodClip === 1) {

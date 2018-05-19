@@ -49,25 +49,29 @@ var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
+var PlayVod_Duration = 0;
 //Variable initialization end
 
 function PlayVod_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    if (!Vod_isVod) Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-    else {
-        PlayVod_loadingInfoDataTry = 0;
-        PlayVod_loadingInfoDataTryMax = 15;
-        PlayVod_loadingInfoDataTimeout = 10000;
-        PlayVod_updateStreamInfo();
+    PlayVod_Duration = 0;
+    if (Svod_vodOffset) { // this is a vod comming from a clip
+        PlayVod_PrepareLoad();
+        PlayVod_updateVodInfo();
+    } else {
+        if (!Vod_isVod) Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+        else {
+            PlayVod_PrepareLoad();
+            PlayVod_updateStreamInfo();
+        }
+        Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+        Main_textContent("stream_info_title", Svod_title);
+        Main_innerHTML("stream_info_game", Svod_views + ', [' + (Svod_language).toUpperCase() + ']');
+        Main_textContent("stream_live_icon", Svod_createdAt);
+        Main_textContent("stream_live_time", Svod_Duration);
     }
-    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
-    Main_textContent("stream_info_title", Svod_title);
-    Main_innerHTML("stream_info_game", Svod_views + ', [' + (Svod_language).toUpperCase() + ']');
-    Main_textContent("stream_live_icon", Svod_createdAt);
-    Main_textContent("stream_live_time", Svod_Duration);
-
     Main_empty('dialog_buffer_play_percentage');
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
@@ -95,6 +99,12 @@ function PlayVod_Start() {
     PlayVod_isOn = true;
     PlayVod_loadData();
     Play_EndSet(2);
+}
+
+function PlayVod_PrepareLoad() {
+    PlayVod_loadingInfoDataTry = 0;
+    PlayVod_loadingInfoDataTryMax = 15;
+    PlayVod_loadingInfoDataTimeout = 10000;
 }
 
 function PlayVod_updateStreamInfo() {
@@ -140,12 +150,49 @@ function PlayVod_updateStreamInfoError() {
     } else Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
 }
 
-function PlayVod_updateStreamInfoEndError() {
+function PlayVod_updateVodInfo() {
+    try {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + Svod_vodId, true);
+        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    PlayVod_updateVodInfoPannel(xmlHttp.responseText);
+                    return;
+                } else {
+                    PlayVod_updateVodInfoError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        PlayVod_updateVodInfoError();
+    }
+}
+
+function PlayVod_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
     if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
         PlayVod_loadingInfoDataTimeout += 2000;
-        PlayVod_updateStreamInfoend();
+        PlayVod_updateVodInfo();
     }
+}
+
+function PlayVod_updateVodInfoPannel(response) {
+    response = JSON.parse(response);
+    PlayVod_Duration = parseInt(response.length);
+    Main_textContent("stream_info_title", response.title);
+    Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
+        ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.language).toUpperCase() + ']');
+    Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+    Main_textContent("stream_live_time", STR_DURATION + Play_timeS(PlayVod_Duration));
 }
 
 function PlayVod_Resume() {
@@ -361,7 +408,10 @@ function PlayVod_onPlayer() {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
 
-        if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
+        if (Svod_vodOffset > PlayVod_Duration) Svod_vodOffset = 0;
+
+        if (Svod_vodOffset) Play_avplay.seekTo(Svod_vodOffset * 1000);
+        else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
             Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
             Play_clearPause();
         }
@@ -437,6 +487,7 @@ function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     PlayVod_offsettime = 0;
+    Svod_vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckOffset = 0;
