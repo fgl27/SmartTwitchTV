@@ -1104,11 +1104,11 @@ function Play_PannelEnterPressed(PlayVodClip) {
             Play_PlayerCheckQualityChanged = false;
             Play_qualityChanged();
         } else if (PlayVodClip === 2) {
-            PlayVod_offsettime = Play_avplay.getCurrentTime();
+            if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
         } else if (PlayVodClip === 3) {
-            PlayClip_offsettime = Play_avplay.getCurrentTime();
+            if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
         }
