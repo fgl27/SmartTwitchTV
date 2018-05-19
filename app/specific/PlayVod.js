@@ -316,6 +316,7 @@ function PlayVod_qualityChanged() {
         }
     }
 
+    Play_BufferPercentage = 0;
     PlayVod_qualityPlaying = PlayVod_quality;
     if (PlayVod_isOn) PlayVod_onPlayer();
 }
@@ -332,14 +333,17 @@ var PlayVod_listener = {
         PlayVod_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) {
-            Main_textContent("dialog_buffer_play_percentage", percent + 2);
+        //percent has a -2 offset and goes up to 98
+        if (percent < 98) {
+            Play_BufferPercentage = percent;
+            Main_textContent("dialog_buffer_play_percentage", percent + 3);
             if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         } else {
+            Play_BufferPercentage = 0;
             Play_HideBufferDialog();
-            PlayVod_bufferingcomplete = true;
+            Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
-            PlayVod_RestoreFromResume = false;
+            Play_RestoreFromResume = false;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -387,6 +391,7 @@ function PlayVod_PlayerCheck() {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -3;
+        if (Play_BufferPercentage > 91) PlayVod_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
         if (PlayVod_PlayerCheckCount > (10 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayVod_PlayerCheckCount = 0;
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {

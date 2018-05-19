@@ -122,13 +122,17 @@ var PlayClip_listener = {
         Main_empty('dialog_buffer_play_percentage');
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) {
-            Main_textContent("dialog_buffer_play_percentage", percent + 2);
+        //percent has a -2 offset and goes up to 98
+        if (percent < 98) {
+            Play_BufferPercentage = percent;
+            Main_textContent("dialog_buffer_play_percentage", percent + 3);
             if (!Play_BufferDialogVisible()) Play_showBufferDialog();
         } else {
+            Play_BufferPercentage = 0;
             Play_HideBufferDialog();
-            PlayClip_bufferingcomplete = true;
+            Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
+            Play_RestoreFromResume = false;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -159,6 +163,7 @@ function PlayClip_QualityGenerate(response) {
         }
     }
 
+    Play_BufferPercentage = 0;
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
 }
@@ -231,6 +236,7 @@ function PlayClip_PlayerCheck() {
         PlayClip_PlayerCheckCount++;
         PlayClip_PlayerCheckOffset = 0;
         if (PlayClip_PlayerCheckQualityChanged) PlayClip_PlayerCheckOffset = -3;
+        if (Play_BufferPercentage > 91) PlayClip_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
         if (PlayClip_PlayerCheckCount > (10 + PlayClip_PlayerCheckOffset)) { //staled for 15 sec drop one quality
             PlayClip_PlayerCheckCount = 0;
             if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
