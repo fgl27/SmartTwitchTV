@@ -378,6 +378,9 @@ var PlayVod_listener = {
         PlayVod_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
         PlayVod_RestoreFromResume = false;
+        // reset the values after using
+        Svod_vodOffset = 0;
+        PlayVod_offsettime = 0;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -391,6 +394,9 @@ var PlayVod_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
             Play_RestoreFromResume = false;
+            // reset the values after using
+            Svod_vodOffset = 0;
+            PlayVod_offsettime = 0;
         }
     },
     oncurrentplaytime: function(currentTime) {

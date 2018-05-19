@@ -122,6 +122,8 @@ var PlayClip_listener = {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
+        // reset the values after using
+        PlayClip_offsettime = 0;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -135,6 +137,8 @@ var PlayClip_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
             Play_RestoreFromResume = false;
+            // reset the values after using
+            PlayClip_offsettime = 0;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -244,6 +248,7 @@ function PlayClip_PlayerCheck() {
             if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change first time only reload
                 PlayClip_qualityDisplay();
+                if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
                 PlayClip_qualityChanged();
                 PlayClip_PlayerCheckQualityChanged = true; // -5s on next check
             } else {
