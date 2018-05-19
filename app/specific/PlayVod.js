@@ -49,14 +49,12 @@ var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
-var PlayVod_Duration = 0;
 //Variable initialization end
 
 function PlayVod_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    PlayVod_Duration = 0;
     if (Svod_vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
@@ -187,12 +185,12 @@ function PlayVod_updateVodInfoError() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
-    PlayVod_Duration = parseInt(response.length);
+    Svod_DurationSeconds = parseInt(response.length);
     Main_textContent("stream_info_title", response.title);
     Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
         ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
-    Main_textContent("stream_live_time", STR_DURATION + Play_timeS(PlayVod_Duration));
+    Main_textContent("stream_live_time", STR_DURATION + Play_timeS(Svod_DurationSeconds));
 }
 
 function PlayVod_Resume() {
@@ -414,7 +412,7 @@ function PlayVod_onPlayer() {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
 
-        if (Svod_vodOffset > PlayVod_Duration) Svod_vodOffset = 0;
+        if (Svod_vodOffset > Svod_DurationSeconds) Svod_vodOffset = 0;
 
         if (Svod_vodOffset) Play_avplay.seekTo(Svod_vodOffset * 1000);
         else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
@@ -498,6 +496,7 @@ function PlayVod_ClearVod() {
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckOffset = 0;
+    Svod_DurationSeconds = 0;
     PlayVod_RestoreFromResume = false;
     PlayVod_PlayerCheckQualityChanged = false;
 }
