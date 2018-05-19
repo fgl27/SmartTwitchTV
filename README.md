@@ -36,7 +36,6 @@ So I work alone writing a new application from scratch focusing on performance a
 Project Dependencies
 ==============
 * [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
-* [Video.js - HTML5 Video Player](https://github.com/videojs/video.js)
 * [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
 * [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
