@@ -40,7 +40,7 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_game", Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language);
     Main_textContent("stream_live_icon", Sclip_createdAt);
     Main_textContent("stream_live_time", Sclip_Duration);
-    Main_textContent("dialog_buffer_play_percentage", 0);
+    Main_empty('dialog_buffer_play_percentage');
 
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
@@ -119,14 +119,16 @@ var PlayClip_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
-        Main_textContent("dialog_buffer_play_percentage", 0);
+        Main_empty('dialog_buffer_play_percentage');
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
-        else {
+        if (percent <= 98) {
+            Main_textContent("dialog_buffer_play_percentage", percent + 2);
+            if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        } else {
             Play_HideBufferDialog();
             PlayClip_bufferingcomplete = true;
-            Main_textContent("dialog_buffer_play_percentage", 0);
+            Main_empty('dialog_buffer_play_percentage');
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -267,8 +269,8 @@ function PlayClip_PreshutdownStream() {
 function PlayClip_updateCurrentTime(currentTime) {
     PlayClip_currentTime = currentTime;
 
-    if (Play_WarningDialogVisible() && !PlayClip_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
-    if (PlayClip_bufferingcomplete) Play_HideBufferDialog();
+    if (!PlayClip_IsJumping && !Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
+    if (PlayClip_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
     if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(currentTime));
 }
