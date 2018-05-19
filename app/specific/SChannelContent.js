@@ -419,16 +419,20 @@ function SChannelContent_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            SChannelContent_removeFocus();
-            SChannelContent_cursorX--;
-            if (SChannelContent_cursorX < 0) SChannelContent_cursorX = (!SChannelContent_skipImg ? 2 : 1);
-            SChannelContent_addFocus();
+            if (!SChannelContent_cursorY) {
+                SChannelContent_removeFocus();
+                SChannelContent_cursorX--;
+                if (SChannelContent_cursorX < 0) SChannelContent_cursorX = (!SChannelContent_skipImg ? 2 : 1);
+                SChannelContent_addFocus();
+            }
             break;
         case KEY_RIGHT:
-            SChannelContent_removeFocus();
-            SChannelContent_cursorX++;
-            if (SChannelContent_cursorX > (!SChannelContent_skipImg ? 2 : 1)) SChannelContent_cursorX = 0;
-            SChannelContent_addFocus();
+            if (!SChannelContent_cursorY) {
+                SChannelContent_removeFocus();
+                SChannelContent_cursorX++;
+                if (SChannelContent_cursorX > (!SChannelContent_skipImg ? 2 : 1)) SChannelContent_cursorX = 0;
+                SChannelContent_addFocus();
+            }
             break;
         case KEY_UP:
         case KEY_DOWN:
