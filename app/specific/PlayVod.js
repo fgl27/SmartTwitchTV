@@ -68,7 +68,7 @@ function PlayVod_Start() {
     Main_textContent("stream_live_icon", Svod_createdAt);
     Main_textContent("stream_live_time", Svod_Duration);
 
-    Main_textContent("dialog_buffer_play_percentage", 0);
+    Main_empty('dialog_buffer_play_percentage');
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
@@ -328,15 +328,17 @@ var PlayVod_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayVod_bufferingcomplete = true;
-        Main_textContent("dialog_buffer_play_percentage", 0);
+        Main_empty('dialog_buffer_play_percentage');
         PlayVod_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
-        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
-        else {
+        if (percent <= 98) {
+            Main_textContent("dialog_buffer_play_percentage", percent + 2);
+            if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        } else {
             Play_HideBufferDialog();
             PlayVod_bufferingcomplete = true;
-            Main_textContent("dialog_buffer_play_percentage", 0);
+            Main_empty('dialog_buffer_play_percentage');
             PlayVod_RestoreFromResume = false;
         }
     },
@@ -405,8 +407,8 @@ function PlayVod_PlayerCheck() {
 function PlayVod_updateCurrentTime(currentTime) {
     PlayVod_currentTime = currentTime;
 
-    if (Play_WarningDialogVisible() && !PlayVod_IsJumping && !Play_IsWarning) Play_HideWarningDialog();
-    if (PlayVod_bufferingcomplete) Play_HideBufferDialog();
+    if (!PlayVod_IsJumping && !Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
+    if (PlayVod_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
     if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayVod_currentTime));
 }

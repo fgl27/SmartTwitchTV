@@ -104,7 +104,7 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
     Main_textContent("stream_info_name", Play_selectedChannelDisplayname);
-    Main_textContent("dialog_buffer_play_percentage", 0);
+    Main_empty('dialog_buffer_play_percentage');
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
 
@@ -405,16 +405,18 @@ var Play_listener = {
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
-        Main_textContent("dialog_buffer_play_percentage", 0);
+        Main_empty('dialog_buffer_play_percentage');
         Play_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset
-        if (percent <= 98) Main_textContent("dialog_buffer_play_percentage", percent + 2);
-        else {
+        if (percent <= 98) {
+            Main_textContent("dialog_buffer_play_percentage", percent + 2);
+            if (!Play_BufferDialogVisible()) Play_showBufferDialog();
+        } else {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
-            Main_textContent("dialog_buffer_play_percentage", 0);
+            Main_empty('dialog_buffer_play_percentage');
             Play_RestoreFromResume = false;
         }
     },
@@ -497,8 +499,8 @@ function Play_offPlayer() {
 function Play_updateCurrentTime(currentTime) {
     Play_currentTime = currentTime;
 
-    if (Play_WarningDialogVisible() && !Play_IsWarning) Play_HideWarningDialog();
-    if (Play_bufferingcomplete) Play_HideBufferDialog();
+    if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
+    if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
     Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14s buffer size from twitch
     if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
