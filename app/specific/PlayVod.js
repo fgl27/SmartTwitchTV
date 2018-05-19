@@ -401,7 +401,7 @@ var PlayVod_listener = {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
-        Play_PannelEnterStart(2);
+        Play_PannelEndStart(2);
     }
 };
 
