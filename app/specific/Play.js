@@ -79,7 +79,7 @@ function Play_PreStart() {
     Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
 
     Main_textContent("dialog_end_replay_text", STR_REPLAY);
-    Main_textContent("dialog_end_vod_text", STR_CLIP_TO_VOD);
+    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
     Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
     Main_textContent("dialog_end_game_text", STR_GAME_CONT);
 
@@ -1027,8 +1027,7 @@ function Play_EndSet(PlayVodClip) {
         document.getElementById('dialog_end_vod').style.display = 'none';
     } else if (PlayVodClip === 2) document.getElementById('dialog_end_vod').style.display = 'none';
     else if (PlayVodClip === 3) {
-        if (PlayClip_HasVOD) Main_textContent("dialog_end_vod_text", STR_CLIP_TO_VOD);
-        else Main_textContent("dialog_end_vod_text", STR_NO_VOD + STR_PAST_BROA);
+        Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
     }
 }
 

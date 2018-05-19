@@ -467,7 +467,7 @@ function PlayClip_OpenVod() {
         PlayVod_Start();
     } else {
         Play_IsWarning = true;
-        Play_showWarningDialog(STR_NO_VOD + STR_PAST_BROA);
+        Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
         window.setTimeout(function() {
             Play_IsWarning = false;
             Play_HideWarningDialog();

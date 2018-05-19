@@ -150,12 +150,11 @@ function pt_BRLang() {
     STR_VIDEOS = "Vídeos";
     STR_VIDEO = " Vídeo";
     STR_KEY_UP_DOWN = ' (CH Cima/Baixo)';
-    STR_CLIP_TO_VOD = "Abrir a transmissão no ponto deste clipe";
     STR_STREAM_END = "saindo em ";
     STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
     STR_FEATURED = 'Destaques';
     STR_CREATED_AT = "Criado em ";
-    STR_NO_VOD = "Este clipe não tem uma ";
     STR_OPEN_BROADCAST = "Abrir a Transmissão";
     STR_NO_BROADCAST = "Sem Transmissão";
+    STR_NO_BROADCAST_WARNING = "Não ha uma transmissão anterior para este clip";
 }
