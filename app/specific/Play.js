@@ -460,6 +460,7 @@ function Play_onPlayer() {
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
+        Play_PlayerCheckCount = 0;
         Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
     });
 }
@@ -478,7 +479,6 @@ function Play_PlayerCheck() {
         if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -3;
         if (Play_BufferPercentage > 91) Play_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
         if (Play_PlayerCheckCount > (10 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
-            Play_PlayerCheckCount = 0;
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change first time only reload
                 Play_qualityDisplay();

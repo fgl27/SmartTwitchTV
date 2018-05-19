@@ -221,6 +221,7 @@ function PlayClip_onPlayer() {
         Play_HideWarningDialog();
         PlayClip_hidePanel();
         window.clearInterval(PlayClip_streamCheck);
+        PlayClip_PlayerCheckCount = 0;
         PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, 1500);
     });
 }
@@ -240,7 +241,6 @@ function PlayClip_PlayerCheck() {
         if (PlayClip_PlayerCheckQualityChanged) PlayClip_PlayerCheckOffset = -3;
         if (Play_BufferPercentage > 91) PlayClip_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
         if (PlayClip_PlayerCheckCount > (10 + PlayClip_PlayerCheckOffset)) { //staled for 15 sec drop one quality
-            PlayClip_PlayerCheckCount = 0;
             if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change first time only reload
                 PlayClip_qualityDisplay();

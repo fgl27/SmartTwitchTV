@@ -432,7 +432,9 @@ function PlayVod_onPlayer() {
         Play_HideWarningDialog();
         PlayVod_hidePanel();
         window.clearInterval(PlayVod_streamCheck);
+        PlayVod_PlayerCheckCount = 0;
         PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
+
     });
 }
 
@@ -443,7 +445,6 @@ function PlayVod_PlayerCheck() {
         if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -3;
         if (Play_BufferPercentage > 91) PlayVod_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
         if (PlayVod_PlayerCheckCount > (10 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
-            PlayVod_PlayerCheckCount = 0;
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change first time only reload
                 PlayVod_qualityDisplay();
