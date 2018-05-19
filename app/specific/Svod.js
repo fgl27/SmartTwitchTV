@@ -31,6 +31,7 @@ var Svod_views = '';
 var Svod_createdAt = '';
 var Svod_Duration = '';
 var Svod_loadingMore = false;
+var Svod_vodOffset = 0;
 //Variable initialization end
 
 function Svod_init() {

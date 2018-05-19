@@ -1,0 +1,123 @@
+{
+	"title": "The Walls of Yoder - @Strippin ",
+	"description": null,
+	"description_html": null,
+	"broadcast_id": 28639837360,
+	"broadcast_type": "archive",
+	"status": "recorded",
+	"tag_list": "",
+	"views": 2379,
+	"url": "https://www.twitch.tv/videos/259679786",
+	"language": "en",
+	"created_at": "2018-05-10T02:56:07Z",
+	"viewable": "public",
+	"viewable_at": null,
+	"published_at": "2018-05-10T02:56:07Z",
+	"_id": "v259679786",
+	"recorded_at": "2018-05-10T02:56:07Z",
+	"game": "Conan Exiles",
+	"communities": [],
+	"length": 18180,
+	"preview": {
+		"small": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-80x45.jpg",
+		"medium": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-320x180.jpg",
+		"large": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-640x360.jpg",
+		"template": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-{width}x{height}.jpg"
+	},
+	"animated_preview_url": "https://vod-storyboards.twitch.tv/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/storyboards/259679786-strip-0.jpg",
+	"thumbnails": {
+		"small": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-80x45.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb1-80x45.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb2-80x45.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb3-80x45.jpg"
+		}],
+		"medium": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-320x180.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb1-320x180.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb2-320x180.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb3-320x180.jpg"
+		}],
+		"large": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-640x360.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb1-640x360.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb2-640x360.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb3-640x360.jpg"
+		}],
+		"template": [{
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb0-{width}x{height}.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb1-{width}x{height}.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb2-{width}x{height}.jpg"
+		}, {
+			"type": "generated",
+			"url": "https://static-cdn.jtvnw.net/s3_vods/d5ae1ecab69ed69ac041_strippin_28639837360_858659999/thumb/thumb3-{width}x{height}.jpg"
+		}]
+	},
+	"fps": {
+		"160p30": 29.998351575730243,
+		"360p30": 29.998351575730243,
+		"480p30": 29.998351575730243,
+		"720p30": 29.998351575730243,
+		"720p60": 59.99670315146049,
+		"chunked": 59.99670315146049
+	},
+	"resolutions": {
+		"160p30": "284x160",
+		"360p30": "640x360",
+		"480p30": "852x480",
+		"720p30": "1280x720",
+		"720p60": "1280x720",
+		"chunked": "1280x720"
+	},
+	"restriction": "",
+	"channel": {
+		"mature": false,
+		"status": "WoW Darkest Dungeon Challenge - @Strippin ",
+		"broadcaster_language": "en",
+		"display_name": "Strippin",
+		"game": "World of Warcraft",
+		"language": "en",
+		"_id": 23179441,
+		"name": "strippin",
+		"created_at": "2011-06-29T00:00:53.879034Z",
+		"updated_at": "2018-05-19T08:58:52.953309Z",
+		"partner": true,
+		"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/strippin-profile_image-8d7a8f889f7dc4e1-300x300.png",
+		"video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/eb67dd0f56ccede6-channel_offline_image-1920x1080.jpeg",
+		"profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/75b7d258-a5a1-4afb-984e-00e94de93185-profile_banner-480.png",
+		"profile_banner_background_color": "#000000",
+		"url": "https://www.twitch.tv/strippin",
+		"views": 11801914,
+		"followers": 244490,
+		"broadcaster_type": "partner",
+		"description": "My name is Sam and I am a 27 year old Brit with a passion for gaming. I play a wide variety of games daily, both solo and with friends. We've got a great vibe in the chat and plenty of laughs to be had so hop in, kick back and enjoy yourself!",
+		"private_video": false,
+		"privacy_options_enabled": false
+	}
+}
