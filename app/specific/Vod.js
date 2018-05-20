@@ -205,7 +205,7 @@ function Vod_createCellVideo(vod_id, id, valuesArray, idArray) {
 }
 
 function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
-    splitedId = id.split(idArray[9])[1];
+    var splitedId = id.split(idArray[9])[1];
     id = document.getElementById(id);
     id.setAttribute(Main_DataAttribute, vod_id);
     id.innerHTML = Vod_VideoHtml(splitedId, valuesArray, idArray);

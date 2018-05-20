@@ -141,7 +141,7 @@ function UserGames_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountGame;
     if (response_items % Main_ColoumnsCountGame > 0) response_rows++;
 
-    var coloumn_id, row_id, row, cell, follows,
+    var coloumn_id, row_id, row, follows,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {

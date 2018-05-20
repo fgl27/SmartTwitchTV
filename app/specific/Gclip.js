@@ -452,7 +452,7 @@ function Gclip_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Sclip_playUrl = document.getElementById(Gclip_ids[8] + Gclip_cursorY + '_' + Gclip_cursorX).getAttribute(Main_DataAttribute).split(',');
-            SGclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
+            Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
             Main_gameSelected = Sclip_playUrl[2];
             Main_selectedChannel = Sclip_playUrl[3];
             Main_selectedChannelDisplayname = Sclip_playUrl[4];

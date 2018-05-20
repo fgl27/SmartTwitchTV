@@ -3,7 +3,6 @@ var Featured_Status = false;
 var Featured_ids = ['f_thumbdiv', 'f_img', 'f_infodiv', 'f_displayname', 'f_streamtitle', 'f_streamgame', 'f_viwers', 'f_quality', 'f_cell', 'fempty_'];
 var Featured_cursorY = 0;
 var Featured_cursorX = 0;
-var Featured_ExitCursor = 0;
 var Featured_dataEnded = false;
 var Featured_itemsCount = 0;
 var Featured_nameMatrix = [];
@@ -18,7 +17,6 @@ var Featured_LastClickFinish = true;
 var Featured_keyClickDelayTime = 25;
 var Featured_ReplacedataEnded = false;
 var Featured_MaxOffset = 0;
-var Featured_checkVersion = false;
 var Featured_itemsCountCheck = false;
 var Featured_imgCounter = 0;
 var Featured_emptyContent = false;
@@ -189,7 +187,7 @@ function Featured_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Featured_Status) {
             Main_HideLoadDialog();
-            if (Featured_emptyContent) Main_showWarningDialog(STR_NO + STR_Featured_CHANNELS);
+            if (Featured_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Featured_Status = true;
                 Main_LazyImgStart(Featured_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);

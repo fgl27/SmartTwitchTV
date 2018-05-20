@@ -510,7 +510,7 @@ function Play_updateCurrentTime(currentTime) {
     if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
 }
 
-function Play_clock(currentTime) {
+function Play_clock() {
     var date = new Date(),
         dayMonth;
 
@@ -879,7 +879,7 @@ function Play_IconsRemoveFocus() {
     Main_RemoveClass('scene2_pannel_' + Play_Panelcouner, 'playbotton_focus');
 }
 
-function Play_PrepareshowEndDialog(PlayVodClip) {
+function Play_PrepareshowEndDialog() {
     Play_state = Play_STATE_PLAYING;
     PlayVod_state = Play_STATE_PLAYING;
     PlayClip_state = PlayClip_STATE_PLAYING;
@@ -894,7 +894,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_EndIconsAddFocus();
 }
 
-function Play_showEndDialog(PlayVodClip) {
+function Play_showEndDialog() {
     Main_ShowElement('dialog_end_stream');
 }
 
@@ -1089,7 +1089,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
-    Play_PrepareshowEndDialog(PlayVodClip);
+    Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
         Play_EndText(PlayVodClip);
