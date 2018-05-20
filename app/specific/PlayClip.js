@@ -54,8 +54,7 @@ function PlayClip_Start() {
     PlayClip_qualityIndexPosition = 2;
     Play_EndSet(3);
     Play_IsWarning = false;
-    Play_Panelcouner = 0;
-    Play_IconsFocus();
+    Play_IconsResetFocus();
 
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
@@ -274,8 +273,8 @@ function PlayClip_PreshutdownStream() {
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip_Resume);
     PlayClip_hidePanel();
-    document.getElementById('scene2_open_vod').style.display = 'none';
-    document.getElementById("scene2_quality").style.width = '28%';
+    document.getElementById('scene2_pannel_0').style.display = 'none';
+    document.getElementById("scene2_pannel_1").style.width = '28%';
     document.getElementById("quality_name").style.width = '80%';
 
     window.clearInterval(PlayClip_streamCheck);
@@ -299,8 +298,7 @@ function PlayClip_hidePanel() {
 
 function PlayClip_showPanel() {
     Play_clock();
-    Play_Panelcouner = 0;
-    Play_IconsFocus();
+    Play_IconsResetFocus();
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayClip_currentTime));
@@ -454,10 +452,10 @@ function PlayClip_jumpStart() {
 }
 
 function PlayClip_SetOpenVod() {
-    document.getElementById("scene2_quality").style.width = '19%';
+    document.getElementById("scene2_pannel_1").style.width = '19%';
     document.getElementById("quality_name").style.width = '72%';
     Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
-    document.getElementById('scene2_open_vod').style.display = 'inline-block';
+    document.getElementById('scene2_pannel_0').style.display = 'inline-block';
 }
 
 function PlayClip_OpenVod() {
@@ -493,9 +491,10 @@ function PlayClip_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_LEFT:
                 if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner++;
-                    if (Play_Panelcouner > 4) Play_Panelcouner = -1;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner > 5) Play_Panelcouner = 0;
+                    Play_IconsAddFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -510,9 +509,10 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_RIGHT:
                 if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner--;
-                    if (Play_Panelcouner < -1) Play_Panelcouner = 4;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner < 0) Play_Panelcouner = 5;
+                    Play_IconsAddFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -529,7 +529,7 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isEndDialogShown()) Play_EndTextClear();
                 else if (!Play_isPanelShown()) PlayClip_showPanel();
                 else {
-                    if (PlayClip_qualityIndex > 0 && (!Play_Panelcouner)) {
+                    if (PlayClip_qualityIndex > 0 && Play_Panelcouner === 1) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
                     }
@@ -542,7 +542,7 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isEndDialogShown()) Play_EndTextClear();
                 else if (!Play_isPanelShown()) PlayClip_showPanel();
                 else {
-                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && (!Play_Panelcouner)) {
+                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcouner === 1) {
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
                     }
