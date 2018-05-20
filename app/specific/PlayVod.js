@@ -406,7 +406,7 @@ var PlayVod_listener = {
 
 function PlayVod_onPlayer() {
     Play_showBufferDialog();
-    console.log('PlayVod_onPlayer:', '\n' + '\n' + PlayVod_playingUrl + '\n');
+    if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n' + PlayVod_playingUrl + '\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
@@ -421,6 +421,9 @@ function PlayVod_onPlayer() {
 
         Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(PlayVod_listener);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
+        if (Main_Is4k) Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
     } catch (e) {
         console.log(e);
     }

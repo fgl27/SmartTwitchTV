@@ -433,17 +433,21 @@ var Play_listener = {
 
 function Play_onPlayer() {
     Play_showBufferDialog();
-    console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
+    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
         Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(Play_listener);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
+        if (Main_Is4k) Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
     } catch (e) {
         console.log(e);
     }
 
     Play_JustStartPlaying = true;
+    //Use prepareAsync as prepare() only can freeze up the app
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         Play_Playing = true;
