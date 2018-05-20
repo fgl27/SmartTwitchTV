@@ -185,7 +185,6 @@ function Play_updateStreamInfoStart() {
                     if (Main_UserName !== '') {
                         AddCode_PlayRequest = true;
                         AddCode_CheckFallow();
-                        Play_showFallow();
                     } else Play_hideFallow();
                 } else { // internet error
                     Play_updateStreamInfoStartError();
@@ -606,10 +605,6 @@ function Play_ClearPlay() {
 function Play_hideFallow() {
     Main_innerHTML("fallow_text", STR_SPACE + STR_NOKEY);
     AddCode_IsFallowing = false;
-}
-
-function Play_showFallow() {
-    Main_ShowElement('scene2_heart');
 }
 
 function Play_showBufferDialog() {
