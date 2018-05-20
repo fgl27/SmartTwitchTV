@@ -276,7 +276,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadDataRequest();
         } else {
             Play_HideBufferDialog();
-            Play_PannelEnterStart(2);
+            Play_PannelEndStart(2);
         }
     }
 }
@@ -300,7 +300,7 @@ function PlayVod_restore() {
         if (PlayVod_isOn) PlayVod_qualityChanged();
     } else {
         Play_HideBufferDialog();
-        Play_PannelEnterStart(2);
+        Play_PannelEndStart(2);
     }
 }
 

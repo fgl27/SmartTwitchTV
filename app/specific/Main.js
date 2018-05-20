@@ -49,7 +49,6 @@ var Main_ScrollbarIsHide = true;
 var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
 var Main_td = '';
-var Main_nextScrollPositon = '';
 var Main_IsDayFirst = false;
 var Main_ScrollbarElement;
 var Main_SearchInput;
@@ -120,7 +119,6 @@ var IMG_USER_PLUS = GIT_IO + "user_plus.png";
 var IMG_USER_UP = GIT_IO + "user_up.png";
 var IMG_USER_CODE = GIT_IO + "user_code.png";
 var IMG_LOD_LOGO = GIT_IO + "ch_logo.png";
-var TEMP_MP4 = GIT_IO + "temp.mp4";
 var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
 var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_users.png";
@@ -645,16 +643,6 @@ function Main_ResumeSmarthub() {
 function Main_empty(el) {
     el = document.getElementById(el);
     while (el.firstChild) el.removeChild(el.firstChild);
-}
-
-function Main_CellExists(name, vector, counter) {
-    for (var i = 0; i < vector.length; i++) {
-        if (name === vector[i]) {
-            counter.val++;
-            return true;
-        }
-    }
-    return false;
 }
 
 function Main_LoadImages(imgVector, idVector, img_type) {

@@ -280,7 +280,7 @@ function SChannels_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             SChannels_nameMatrix.push(channels.name);
-            SChannels_replaceCellEmpty(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
+            Main_replaceChannel(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
             SChannels_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
