@@ -896,7 +896,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_HideBufferDialog();
     Play_CleanHideExit();
     Play_HideControlsDialog();
-    Play_EndIconsFocus(PlayVodClip);
+    Play_EndIconsAddFocus();
 }
 
 function Play_showEndDialog(PlayVodClip) {
@@ -906,41 +906,25 @@ function Play_showEndDialog(PlayVodClip) {
 function Play_HideEndDialog() {
     Main_HideElement('dialog_end_stream');
     Play_EndTextClear();
-    Play_Endcounter = 0;
+    Play_EndIconsResetFocus();
 }
 
 function Play_isEndDialogShown() {
     return Main_isElementShowing('dialog_end_stream');
 }
 
-function Play_EndIconsFocus(PlayVodClip) {
-    Main_ChangeBorder("dialog_end_replay", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("dialog_end_replay", "rgba(0, 0, 0, 0)");
+function Play_EndIconsResetFocus() {
+    Play_EndIconsRemoveFocus();
+    Play_Endcounter = 0;
+    Play_EndIconsAddFocus();
+}
 
-    Main_ChangeBorder("dialog_end_vod", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("dialog_end_vod", "rgba(0, 0, 0, 0)");
+function Play_EndIconsAddFocus() {
+    Main_AddClass('dialog_end_' + Play_Endcounter, 'dialog_end_icons_focus');
+}
 
-    Main_ChangeBorder("dialog_end_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("dialog_end_channel", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("dialog_end_game", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("dialog_end_game", "rgba(0, 0, 0, 0)");
-
-    if (PlayVodClip === 1 && Play_Endcounter < 2) Play_Endcounter += 2;
-
-    if (!Play_Endcounter) {
-        Main_ChangeBorder("dialog_end_replay", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("dialog_end_replay", "rgba(150,150,150, 0.7)");
-    } else if (Play_Endcounter === 1) {
-        Main_ChangeBorder("dialog_end_vod", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("dialog_end_vod", "rgba(150,150,150, 0.7)");
-    } else if (Play_Endcounter === 2) {
-        Main_ChangeBorder("dialog_end_channel", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("dialog_end_channel", "rgba(150,150,150, 0.7)");
-    } else if (Play_Endcounter === 3) {
-        Main_ChangeBorder("dialog_end_game", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("dialog_end_game", "rgba(150,150,150, 0.7)");
-    }
+function Play_EndIconsRemoveFocus() {
+    Main_RemoveClass('dialog_end_' + Play_Endcounter, 'dialog_end_icons_focus');
 }
 
 function Play_EndText(PlayVodClip) {
@@ -992,13 +976,20 @@ function Play_EndEnterPressed(PlayVodClip) {
 }
 
 function Play_EndSet(PlayVodClip) {
-    document.getElementById('dialog_end_replay').style.display = 'inline-block';
-    document.getElementById('dialog_end_vod').style.display = 'inline-block';
     if (PlayVodClip === 1) {
-        document.getElementById('dialog_end_replay').style.display = 'none';
-        document.getElementById('dialog_end_vod').style.display = 'none';
-    } else if (PlayVodClip === 2) document.getElementById('dialog_end_vod').style.display = 'none';
-    else if (PlayVodClip === 3) {
+        Play_EndIconsRemoveFocus();
+        Play_Endcounter = 2;
+        Play_EndIconsAddFocus();
+        document.getElementById('dialog_end_0').style.display = 'none';
+        document.getElementById('dialog_end_1').style.display = 'none';
+    } else if (PlayVodClip === 2) {
+        Play_EndIconsResetFocus();
+        document.getElementById('dialog_end_0').style.display = 'inline-block';
+        document.getElementById('dialog_end_1').style.display = 'none';
+    } else if (PlayVodClip === 3) {
+        Play_EndIconsResetFocus();
+        document.getElementById('dialog_end_0').style.display = 'inline-block';
+        document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
     }
 }
@@ -1202,9 +1193,11 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
                     if (Play_Endcounter < 0) Play_Endcounter = 3;
-                    Play_EndIconsFocus(1);
+                    if (Play_Endcounter < 2) Play_Endcounter += 2;
+                    Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
                 }
@@ -1223,9 +1216,11 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    Play_EndIconsFocus(1);
+                    if (Play_Endcounter < 2) Play_Endcounter += 2;
+                    Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
                 }

@@ -281,14 +281,6 @@ function Main_RemoveClass(element, mclass) {
     document.getElementById(element).classList.remove(mclass);
 }
 
-function Main_ChangeBorder(div, value) {
-    document.getElementById(div).style.border = value;
-}
-
-function Main_ChangebackgroundColor(div, value) {
-    document.getElementById(div).style.backgroundColor = value;
-}
-
 function Main_innerHTML(div, value) {
     document.getElementById(div).innerHTML = value;
 }
