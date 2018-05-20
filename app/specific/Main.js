@@ -647,10 +647,6 @@ function Main_empty(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
 }
 
-function Main_blankCellCount() {
-    this.val = 0;
-}
-
 function Main_CellExists(name, vector, counter) {
     for (var i = 0; i < vector.length; i++) {
         if (name === vector[i]) {

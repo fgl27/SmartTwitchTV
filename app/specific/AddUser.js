@@ -185,20 +185,8 @@ function AddUser_loadDataError() {
     }
 }
 
-function AddUser_OldRestoreUsers() {
-    AddUser_UsernameArray = [];
-    var size = parseInt(localStorage.getItem('UsernameArraySize')) || 0;
-    if (size > 0)
-        for (var x = 0; x < size; x++) AddUser_UsernameArray[x] = localStorage.getItem('UsernameArray' + x);
-
-    AddUser_SaveUserArray();
-}
-
 function AddUser_RestoreUsers() {
     AddUser_UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
-
-    //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
-    if (!AddUser_UsernameArray.length) AddUser_OldRestoreUsers();
 
     if (AddUser_UsernameArray.length) AddCode_RestoreUsers();
 

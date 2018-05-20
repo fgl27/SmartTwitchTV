@@ -143,21 +143,8 @@ function AddCode_KeyboardEvent(event) {
     }
 }
 
-function AddCode_OldRestoreUsers() {
-    AddCode_UsercodeArray = [];
-    var size = parseInt(localStorage.getItem('UsercodeArraySize')) || 0;
-    if (size > 0)
-        for (var x = 0; x < size; x++)
-            AddCode_UsercodeArray[x] = localStorage.getItem('UsercodeArray' + x);
-
-    AddCode_SaveKeyArray();
-}
-
 function AddCode_RestoreUsers() {
     AddCode_UsercodeArray = JSON.parse(localStorage.getItem("userkeys")) || [];
-
-    //TODO remove this after some time, the app is in use and OldRestoreUsers is needed
-    if (!AddCode_UsercodeArray.length) AddCode_OldRestoreUsers();
 
     AddCode_SetDefaultOAuth(0);
 }
