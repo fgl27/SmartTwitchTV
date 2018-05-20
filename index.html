@@ -521,6 +521,12 @@
             padding-left: 1%;
             width: 20%;
             border-radius: 15px;
+            border: 3.5px solid rgba(0, 0, 0, 0);
+        }
+
+        div.dialog_end_icons_focus {
+            border-color: #FFFFFF;
+            background-color: rgba(150, 150, 150, 0.7);
         }
 
         /*cssend this is here so release_maker can work don't remove*/
@@ -780,19 +786,23 @@
             <div id="dialog_end_stream" class="dialogs hide" style="z-index:4; font-size: 250%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
                 <div id="dialog_end_stream_text" class="strokedbig" style="margin-top: 25%; font-size: 165%; padding-bottom: 2%;">
                 </div>
-                <div id="dialog_end_replay" class="dialog_end_icons">
+                <!-- replay-->
+                <div id="dialog_end_0" class="dialog_end_icons dialog_end_icons_focus">
                     <i class="icon-refresh strokicon" style="font-size: 250%;"></i>
                     <div id="dialog_end_replay_text" class="strokedbig"></div>
                 </div>
-                <div id="dialog_end_vod" class="dialog_end_icons">
+                <!-- open vod-->
+                <div id="dialog_end_1" class="dialog_end_icons">
                     <i class="icon-play strokicon" style="font-size: 250%;"></i>
                     <div id="dialog_end_vod_text" class="strokedbig"></div>
                 </div>
-                <div id="dialog_end_channel" class="dialog_end_icons">
+                <!-- channel content-->
+                <div id="dialog_end_2" class="dialog_end_icons">
                     <i class="icon-filmstrip strokicon" style="font-size: 250%;"></i>
                     <div id="dialog_end_channel_text" class="strokedbig"></div>
                 </div>
-                <div id="dialog_end_game" class="dialog_end_icons">
+                <!-- game content-->
+                <div id="dialog_end_3" class="dialog_end_icons">
                     <i class="icon-gamepad strokicon" style="font-size: 250%;"></i>
                     <div id="dialog_end_game_text" class="strokedbig"></div>
                 </div>
