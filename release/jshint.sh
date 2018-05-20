@@ -31,19 +31,28 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			if [ ! "$x" == "video.min.js" ]; then
-				echo -e "jshint checking $x";
-				jshint "$x";
-			fi;
+			cat "$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
 	done
+
+	jsh_check="$(jshint "$mainfolder"/release/master.js)";
+	if [ ! -z "$jsh_check" ]; then
+		echo -e "JSHint erros or warnings foud:\\n"
+		echo -e "$jsh_check"
+	else
+		echo -e "JSHint Test finished no errors or warnings found\\n"
+	fi;
 }
 
 if which 'jshint' >/dev/null ; then
 	if [ "$1" == 1 ]; then
 		npm install jshint -g
 	fi;
+	echo -e "JSHint Test started...\\n";
+
+
+	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals tizen, webapis, escape, STR_BODY */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 else
 	echo -e "\\ncan't run jshint because it is not installed";
