@@ -59,7 +59,6 @@ function PlayClip_Start() {
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
         AddCode_CheckFallow();
-        Play_showFallow();
     } else Play_hideFallow();
 
     document.addEventListener('visibilitychange', PlayClip_Resume, false);
