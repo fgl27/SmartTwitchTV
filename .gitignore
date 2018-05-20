@@ -32,3 +32,4 @@ release/.tproject
 release/.project
 release/master.js
 release/locales/
+release/temp_maker/
