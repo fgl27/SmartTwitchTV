@@ -508,8 +508,7 @@ function PlayVod_hidePanel() {
 }
 
 function PlayVod_showPanel() {
-    Play_Panelcouner = 0;
-    Play_IconsFocus();
+    Play_IconsResetFocus();
     PlayVod_qualityIndexReset();
     Play_clock();
     Play_CleanHideExit();
@@ -701,9 +700,10 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_LEFT:
                 if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner++;
-                    if (Play_Panelcouner > 4) Play_Panelcouner = 0;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner > 5) Play_Panelcouner = 1;
+                    Play_IconsAddFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -719,9 +719,10 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_RIGHT:
                 if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner--;
-                    if (Play_Panelcouner < 0) Play_Panelcouner = 4;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner < 1) Play_Panelcouner = 5;
+                    Play_IconsAddFocus();
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -737,7 +738,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_UP:
                 if (Play_isPanelShown()) {
-                    if (PlayVod_qualityIndex > 0 && (!Play_Panelcouner)) {
+                    if (PlayVod_qualityIndex > 0 && Play_Panelcouner === 1) {
                         PlayVod_qualityIndex--;
                         PlayVod_qualityDisplay();
                     }
@@ -750,7 +751,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_DOWN:
                 if (Play_isPanelShown()) {
-                    if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && (!Play_Panelcouner)) {
+                    if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && Play_Panelcouner === 1) {
                         PlayVod_qualityIndex++;
                         PlayVod_qualityDisplay();
                     }

@@ -52,7 +52,7 @@ var Play_PlayerCheckQualityChanged = false;
 var Play_Playing = false;
 var Play_selectedChannel = '';
 var Play_selectedChannelDisplayname = '';
-var Play_Panelcouner = 0;
+var Play_Panelcouner = 1;
 var Play_IsWarning = false;
 var Play_gameSelected = '';
 var Play_avplay;
@@ -698,8 +698,7 @@ function Play_hidePanel() {
 }
 
 function Play_showPanel() {
-    Play_Panelcouner = 0;
-    Play_IconsFocus();
+    Play_IconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
@@ -871,45 +870,18 @@ function Play_KeyPause(PlayVodClip) {
     }
 }
 
-function Play_IconsFocus() {
-    Main_ChangeBorder("scene2_quality", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0)");
+function Play_IconsResetFocus() {
+    Play_IconsRemoveFocus();
+    Play_Panelcouner = 1;
+    Play_IconsAddFocus();
+}
 
-    Main_ChangeBorder("scene2_heart", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0)");
+function Play_IconsAddFocus() {
+    Main_AddClass('scene2_pannel_' + Play_Panelcouner, 'playbotton_focus');
+}
 
-    Main_ChangeBorder("scene2_channel", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_game", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_search", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0)");
-
-    Main_ChangeBorder("scene2_open_vod", "3.5px solid rgba(0, 0, 0, 0)");
-    Main_ChangebackgroundColor("scene2_open_vod", "rgba(0, 0, 0, 0)");
-
-    if (!Play_Panelcouner) {
-        Main_ChangeBorder("scene2_quality", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_quality", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 1) {
-        Main_ChangeBorder("scene2_heart", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_heart", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 2) {
-        Main_ChangeBorder("scene2_game", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_game", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 3) {
-        Main_ChangeBorder("scene2_channel", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_channel", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === 4) {
-        Main_ChangeBorder("scene2_search", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_search", "rgba(0, 0, 0, 0.7)");
-    } else if (Play_Panelcouner === -1) {
-        Main_ChangeBorder("scene2_open_vod", "3.5px solid #FFFFFF");
-        Main_ChangebackgroundColor("scene2_open_vod", "rgba(0, 0, 0, 0.7)");
-    }
-
+function Play_IconsRemoveFocus() {
+    Main_RemoveClass('scene2_pannel_' + Play_Panelcouner, 'playbotton_focus');
 }
 
 function Play_PrepareshowEndDialog(PlayVodClip) {
@@ -1096,9 +1068,9 @@ function Play_FallowUnfallow() {
     }
 }
 
-// PlayVodClip | play = 1 | vod = 2 | clip = 1
 function Play_PannelEnterPressed(PlayVodClip) {
-    if (!Play_Panelcouner) {
+    if (!Play_Panelcouner) PlayClip_OpenVod();
+    else if (Play_Panelcouner === 1) {
         if (PlayVodClip === 1) {
             Play_PlayerCheckQualityChanged = false;
             Play_qualityChanged();
@@ -1112,8 +1084,7 @@ function Play_PannelEnterPressed(PlayVodClip) {
             PlayClip_qualityChanged();
         }
         Play_clearPause();
-    } else if (Play_Panelcouner === -1) PlayClip_OpenVod();
-    else if (Play_Panelcouner === 1) {
+    } else if (Play_Panelcouner === 2) {
         Play_FallowUnfallow();
 
         if (PlayVodClip === 1) {
@@ -1126,9 +1097,9 @@ function Play_PannelEnterPressed(PlayVodClip) {
             PlayClip_clearHidePanel();
             PlayClip_setHidePanel();
         }
-    } else if (Play_Panelcouner === 2) Play_OpenGame(PlayVodClip);
-    else if (Play_Panelcouner === 3) Play_OpenChannel(PlayVodClip);
-    else if (Play_Panelcouner === 4) Play_OpenSearch(PlayVodClip);
+    } else if (Play_Panelcouner === 3) Play_OpenGame(PlayVodClip);
+    else if (Play_Panelcouner === 4) Play_OpenChannel(PlayVodClip);
+    else if (Play_Panelcouner === 5) Play_OpenSearch(PlayVodClip);
 }
 
 function Play_PannelEndStart(PlayVodClip) {
@@ -1223,9 +1194,10 @@ function Play_handleKeyDown(e) {
                     if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner++;
-                    if (Play_Panelcouner > 4) Play_Panelcouner = 0;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner > 5) Play_Panelcouner = 1;
+                    Play_IconsAddFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -1243,9 +1215,10 @@ function Play_handleKeyDown(e) {
                     if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
+                    Play_IconsRemoveFocus();
                     Play_Panelcouner--;
-                    if (Play_Panelcouner < 0) Play_Panelcouner = 4;
-                    Play_IconsFocus();
+                    if (Play_Panelcouner < 1) Play_Panelcouner = 5;
+                    Play_IconsAddFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
@@ -1259,7 +1232,7 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_UP:
                 if (Play_isPanelShown()) {
-                    if (Play_qualityIndex > 0 && (!Play_Panelcouner)) {
+                    if (Play_qualityIndex > 0 && Play_Panelcouner === 1) {
                         Play_qualityIndex--;
                         Play_qualityDisplay();
                     }
@@ -1277,7 +1250,7 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_DOWN:
                 if (Play_isPanelShown()) {
-                    if (Play_qualityIndex < Play_getQualitiesCount() - 1 && (!Play_Panelcouner)) {
+                    if (Play_qualityIndex < Play_getQualitiesCount() - 1 && Play_Panelcouner === 1) {
                         Play_qualityIndex++;
                         Play_qualityDisplay();
                     }
