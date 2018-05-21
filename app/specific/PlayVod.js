@@ -448,15 +448,14 @@ function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
-        if (PlayVod_PlayerCheckQualityChanged && !PlayVod_RestoreFromResume) PlayVod_PlayerCheckOffset = -3;
-        if (Play_BufferPercentage > 91) PlayVod_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
-        if (PlayVod_PlayerCheckCount > (10 + PlayVod_PlayerCheckOffset)) { //staled for 15 sec drop one quality
+        if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more trey if buffer is almost finishing
+        if (PlayVod_PlayerCheckCount > (5 + PlayVod_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
-                if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change first time only reload
+                if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
                 PlayVod_qualityDisplay();
                 if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
                 PlayVod_qualityChanged();
-                PlayVod_PlayerCheckQualityChanged = true; // -5s on next check
+                PlayVod_PlayerCheckQualityChanged = true;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(2); //staled for too long close the player

@@ -479,14 +479,13 @@ function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
         Play_PlayerCheckOffset = 0;
-        if (Play_PlayerCheckQualityChanged && !Play_RestoreFromResume) Play_PlayerCheckOffset = -3;
-        if (Play_BufferPercentage > 91) Play_PlayerCheckOffset = 2; // give 2 more treys if buffer is almost finishing
-        if (Play_PlayerCheckCount > (10 + Play_PlayerCheckOffset)) { //staled for 15 sec drop one quality
+        if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing
+        if (Play_PlayerCheckCount > (5 + Play_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
-                if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change first time only reload
+                if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
                 Play_qualityChanged();
-                Play_PlayerCheckQualityChanged = true; // -5s on next check
+                Play_PlayerCheckQualityChanged = true;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(1); //staled for too long close the player
