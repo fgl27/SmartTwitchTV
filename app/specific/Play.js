@@ -476,7 +476,7 @@ function Play_PlayerCheck() {
         Play_PlayerCheckCount++;
         Play_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing
-        if (Play_PlayerCheckCount > (5 + Play_PlayerCheckOffset)) { //staled for 6 sec drop one quality
+        if (Play_PlayerCheckCount > (3 + Play_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
