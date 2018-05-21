@@ -149,7 +149,7 @@ function UserHost_loadDataSuccess(responseText) {
             if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
                 row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
-                    hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                         hosts.target.title, hosts.target.meta_game,
                         STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
