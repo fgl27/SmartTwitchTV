@@ -33,7 +33,6 @@ var PlayVod_qualityCount = 0;
 var PlayVod_PlayerTime = 0;
 var PlayVod_streamCheck = null;
 var PlayVod_PlayerCheckCount = 0;
-var PlayVod_RestoreFromResume = false;
 var PlayVod_PlayerCheckOffset = 0;
 var PlayVod_PlayerCheckQualityChanged = false;
 var PlayVod_Playing = false;
@@ -210,7 +209,6 @@ function PlayVod_Resume() {
                 PlayVod_Playing = false;
                 PlayVod_onPlayer();
                 PlayVod_PlayerCheckOffset = 80;
-                PlayVod_RestoreFromResume = true;
                 PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
             }
@@ -374,7 +372,6 @@ var PlayVod_listener = {
         Play_HideBufferDialog();
         PlayVod_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
-        PlayVod_RestoreFromResume = false;
         // reset the values after using
         Svod_vodOffset = 0;
         PlayVod_offsettime = 0;
@@ -390,7 +387,6 @@ var PlayVod_listener = {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
-            Play_RestoreFromResume = false;
             // reset the values after using
             Svod_vodOffset = 0;
             PlayVod_offsettime = 0;
@@ -498,7 +494,6 @@ function PlayVod_ClearVod() {
     window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckOffset = 0;
     Svod_DurationSeconds = 0;
-    PlayVod_RestoreFromResume = false;
     PlayVod_PlayerCheckQualityChanged = false;
 }
 

@@ -134,7 +134,6 @@ var PlayClip_listener = {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
-            Play_RestoreFromResume = false;
             // reset the values after using
             PlayClip_offsettime = 0;
         }

@@ -46,7 +46,6 @@ var Play_qualitiesFound = false;
 var Play_PlayerTime = 0;
 var Play_streamCheck = null;
 var Play_PlayerCheckCount = 0;
-var Play_RestoreFromResume = false;
 var Play_PlayerCheckOffset = 0;
 var Play_PlayerCheckQualityChanged = false;
 var Play_Playing = false;
@@ -147,7 +146,6 @@ function Play_Resume() {
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
                 if (Play_isOn) {
-                    Play_RestoreFromResume = true;
                     Play_PlayerCheckOffset = 80;
                     Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
@@ -407,7 +405,6 @@ var Play_listener = {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
-        Play_RestoreFromResume = false;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -420,7 +417,6 @@ var Play_listener = {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
-            Play_RestoreFromResume = false;
         }
     },
     oncurrentplaytime: function(currentTime) {
@@ -601,7 +597,6 @@ function Play_ClearPlay() {
     window.clearInterval(Play_streamInfoTimer);
     window.clearInterval(Play_streamCheck);
     Play_PlayerCheckOffset = 0;
-    Play_RestoreFromResume = false;
     Play_PlayerCheckQualityChanged = false;
 }
 
