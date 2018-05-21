@@ -445,7 +445,7 @@ function PlayVod_PlayerCheck() {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more trey if buffer is almost finishing
-        if (PlayVod_PlayerCheckCount > (5 + PlayVod_PlayerCheckOffset)) { //staled for 6 sec drop one quality
+        if (PlayVod_PlayerCheckCount > (3 + PlayVod_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
                 PlayVod_qualityDisplay();

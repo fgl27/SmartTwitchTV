@@ -247,7 +247,7 @@ function PlayClip_PlayerCheck() {
         PlayClip_PlayerCheckCount++;
         PlayClip_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) PlayClip_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing
-        if (PlayClip_PlayerCheckCount > (5 + PlayClip_PlayerCheckOffset)) { //staled for 6 sec drop one quality
+        if (PlayClip_PlayerCheckCount > (3 + PlayClip_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change the first time only retry
                 PlayClip_qualityDisplay();
