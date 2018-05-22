@@ -299,7 +299,7 @@ function Gclip_loadDataSuccessReplace(responseText) {
 
     Gclip_cursor = response._cursor;
 
-    if (response_items < Gclip_blankCellCount) Gclip_ReplacedataEnded = true;
+    Gclip_ReplacedataEnded = !response_items;
 
     for (var i = 0; i < Gclip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
