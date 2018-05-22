@@ -295,7 +295,7 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     Clip_cursor = response._cursor;
 
-    if (response_items < Clip_blankCellCount) Clip_ReplacedataEnded = true;
+    Clip_ReplacedataEnded = !response_items;
 
     for (var i = 0; i < Clip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];

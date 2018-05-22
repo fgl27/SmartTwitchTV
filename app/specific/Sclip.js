@@ -292,7 +292,7 @@ function Sclip_loadDataSuccessReplace(responseText) {
 
     Sclip_cursor = response._cursor;
 
-    if (response_items < Sclip_blankCellCount) Sclip_ReplacedataEnded = true;
+    Sclip_ReplacedataEnded = !response_items;
 
     for (var i = 0; i < Sclip_blankCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
