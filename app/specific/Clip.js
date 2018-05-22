@@ -145,11 +145,18 @@ function Clip_loadDataError() {
 function Clip_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
+    var offset_itemsCount = Clip_itemsCount;
+
     Clip_cursor = response._cursor;
 
-    if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
+    // keep requesting clips until !response_items
+    // as response_items can be lower then Main_ItemsLimitVideo and the content has not yet ended
+    if (!response_items) Clip_dataEnded = true;
+    else {
+        Clip_blankCellCount += Main_ItemsLimitVideo - response_items;
+        Clip_itemsCount += Main_ItemsLimitVideo - response_items;
+    }
 
-    var offset_itemsCount = Clip_itemsCount;
     Clip_itemsCount += response_items;
 
     Clip_emptyContent = !Clip_itemsCount;

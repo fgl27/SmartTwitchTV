@@ -149,11 +149,16 @@ function Sclip_loadDataError() {
 function Sclip_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
+    var offset_itemsCount = Sclip_itemsCount;
+
     Sclip_cursor = response._cursor;
 
-    if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
+    if (!response_items) Sclip_dataEnded = true;
+    else {
+        Sclip_blankCellCount += Main_ItemsLimitVideo - response_items;
+        Sclip_itemsCount += Main_ItemsLimitVideo - response_items;
+    }
 
-    var offset_itemsCount = Sclip_itemsCount;
     Sclip_itemsCount += response_items;
 
     Sclip_emptyContent = !Sclip_itemsCount;

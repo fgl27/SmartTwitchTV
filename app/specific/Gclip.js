@@ -153,11 +153,15 @@ function Gclip_loadDataError() {
 function Gclip_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
+    var offset_itemsCount = Gclip_itemsCount;
     Gclip_cursor = response._cursor;
 
-    if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
+    if (!response_items) Gclip_dataEnded = true;
+    else {
+        Gclip_blankCellCount += Main_ItemsLimitVideo - response_items;
+        Gclip_itemsCount += Main_ItemsLimitVideo - response_items;
+    }
 
-    var offset_itemsCount = Gclip_itemsCount;
     Gclip_itemsCount += response_items;
 
     Gclip_emptyContent = !Gclip_itemsCount;
