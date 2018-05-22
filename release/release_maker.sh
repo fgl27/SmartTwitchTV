@@ -32,12 +32,18 @@ js_folders=("app/languages/" "app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
 
+txtbld=$(tput bold) # Bold
+bldred=${txtbld}$(tput setaf 1) # red
+bldgrn=${txtbld}$(tput setaf 2) # green
+bldblu=${txtbld}$(tput setaf 4) # blue
+bldcya=${txtbld}$(tput setaf 6) # cyan
+
 # Exit if sed is not available
 if ! which 'sed' >/dev/null  ; then
-	echo -e "\\ncan't run sed it's not installed";
-	echo -e "Install using command:";
-	echo -e "sudo apt-get install sed\\n";
-	echo -e "Release maker aborted"
+	echo -e "\\n${bldred}can't run sed it's not installed";
+	echo -e "${bldred}Install using command:";
+	echo -e "${bldred}sudo apt-get install sed\\n";
+	echo -e "${bldred}Release maker aborted"
 	exit;
 fi;
 
@@ -50,9 +56,9 @@ if which 'jshint' >/dev/null  ; then
 	fi;
 	canjshint=1;
 else
-	echo -e "\\ncan't run jshint, as it's not installed";
-	echo -e "To install jshint read the release maker notes on the top\\n";
-	echo -e "Release maker aborted\\n"
+	echo -e "\\n${bldred}can't run jshint, as it's not installed";
+	echo -e "${bldred}To install jshint read the release maker notes on the top\\n";
+	echo -e "${bldred}Release maker aborted\\n"
 	exit;
 fi;
 
@@ -74,19 +80,19 @@ if which 'uglifyjs' >/dev/null  ; then
 	fi;
 	canuglifyjs=1;
 else
-	echo -e "\\ncan't run uglifyjs, as it's not installed";
-	echo -e "To install uglifyjs read the release maker notes on the top\\n";
-	echo -e "Release maker aborted\\n"
+	echo -e "\\n${bldred}can't run uglifyjs, as it's not installed";
+	echo -e "${bldred}To install uglifyjs read the release maker notes on the top\\n";
+	echo -e "${bldred}Release maker aborted\\n"
 	exit;
 fi;
 
 # Exit if uglifyjs is not available
 cancleancss=1;
 if ! which 'cleancss' >/dev/null  ; then
-	echo -e "\\ncan't run cleancss it's not installed";
-	echo -e "Install using command:";
-	echo -e "sudo apt-get install cleancss\\n";
-	echo -e "Release wil work but it can be more compressed using cleancss"
+	echo -e "\\n${bldred}can't run cleancss it's not installed";
+	echo -e "${bldred}Install using command:";
+	echo -e "${bldred}sudo apt-get install cleancss\\n";
+	echo -e "${bldred}Release wil work but it can be more compressed using cleancss"
 	cancleancss=0;
 fi;
 
@@ -99,7 +105,7 @@ cd "$mainfolder" || exit
 sed_comp() {
 	array=( "$@" );
 	for i in "${array[@]}"; do
-		echo -e "	sed compressing $i";
+		echo -e "${bldblu}	sed compressing $i";
 		sed -i -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' "$i";
 		sed -i "/\\/\\*.*\\*\\//d;/\\/\\*/,/\\*\\// d" "$i";
 		sed -i '/^\(\s*\)\/\//d' "$i";
@@ -125,7 +131,7 @@ js_comp_ugf() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "	Including compresed version of $x to master.js";
+			echo -e "${bldblu}	Including compresed version of $x to master.js";
 			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x";
 			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
 		done
@@ -145,12 +151,12 @@ js_jshint() {
 
 	jsh_check="$(jshint "$mainfolder"/release/master.js)";
 	if [ ! -z "$jsh_check" ]; then
-		echo -e "	JSHint erros or warnings found:\\n"
-		echo -e "	$jsh_check"
-		echo -e "\\n	Fix the problems and try the release maker again\\n"
+		echo -e "${bldred}	JSHint erros or warnings found:\\n"
+		echo -e "${bldred}	$jsh_check"
+		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
 		exit;
 	else
-		echo -e "	JSHint Test finished no errors or warnings found"
+		echo -e "${bldblu}	JSHint Test finished no errors or warnings found"
 	fi;
 }
 
@@ -166,10 +172,12 @@ js_beautify() {
 	done
 }
 
-echo -e "\\nStarting Release maker\\n";
+echo -e "\\n${bldred}####################################\\n#				   #";
+echo -e "#				   #\\n#	${bldcya}Starting Release maker${bldred}	   #\\n#				   #";
+echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
-	echo -e "JSHint Test started...\\n";
+	echo -e "${bldgrn}JSHint Test started...\\n";
 	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals tizen, webapis, escape, STR_BODY */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 fi;
@@ -194,7 +202,7 @@ cp -rf widget.info release/widget.info
 cp -rf .project release/.project
 cp -rf .tproject release/.tproject
 
-echo -e "\\nCompressing Start\\n";
+echo -e "\\n${bldgrn}Compressing Start\\n";
 
 # run the cleans/compress tools
 sed_comp "${html_file[@]}";
@@ -235,11 +243,11 @@ cd release/ || exit
 
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
-	echo -e "	uglifyjs master.js";
+	echo -e "${bldblu}	uglifyjs  master.js";
 	uglifyjs master.js -c -m toplevel -o master.js;
 fi;
 
-echo -e "\\nCompression done\\n";
+echo -e "\\n${bldgrn}Compression done\\n";
 
 # copy master.js temp files to githubio/js/
 cp -rf master.js githubio/js/master.js;
@@ -248,26 +256,31 @@ rm -rf "$temp_maker_folder"
 sed -i 's/Main_isReleased = true/Main_isReleased = false/g' app/specific/Main.js;
 
 if [ "$canbeautify" == 1 ]; then
-	echo -e "JS Beautifier code formarter started...\\n";
+	echo -e "${bldgrn}JS Beautifier code formarter started...\\n";
 	beautify_check="$(js_beautify "${js_folders[@]}" | grep -v unchanged)";
 	if [ ! -z "$beautify_check" ]; then
-		echo -e "	JS Beautifier - finished below files are beautified:\\n"
-		echo -e "	$beautify_check"
+		echo -e "${bldblu}	JS Beautifier - finished below files are beautified:\\n"
+		echo -e "${bldblu}	$beautify_check"
 	else
-		echo -e "	JS Beautifier - finished none file modify\\n"
+		echo -e "${bldblu}	JS Beautifier - finished none file modify\\n"
 	fi;
 else
-	echo -e "\\ncan't run js-beautify, as it's not installed";
-	echo -e "To install js-beautify read the release maker notes on the top\\n";
-	echo -e "Repo files not beautifyed\\n"
+	echo -e "\\n	${bldred}can't run js-beautify, as it's not installed";
+	echo -e "	${bldred}To install js-beautify read the release maker notes on the top\\n";
+	echo -e "	${bldred}Repo files not beautifyed\\n"
 fi;
 
 # Warn if a change was detected to master.js or master.css file
 git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
-	echo -e "\\nIs necessary to update githubio as below files are modify:\\n"
-	echo -e "$git_check"
+	echo -e "${bldgrn}Is necessary to update githubio as below files are modify:\\n"
+	echo -e "${bldred}	$git_check"
 fi;
 
-echo -e "\\nRelease done, zip generated at $mainfolder/release/release.zip\\n";
+
+echo -e "\\n${bldred}##################################################################################################\\n#												 #";
+echo -e "#												 #\\n#	${bldcya}Release done, zip generated at $mainfolder/release/release.zip${bldred}		 #\\n#												 #";
+echo -e "#												 #\\n${bldred}##################################################################################################\\n";
+
+
 exit;
