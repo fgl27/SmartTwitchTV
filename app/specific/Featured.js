@@ -190,7 +190,7 @@ function Featured_loadDataSuccessFinish() {
             if (Featured_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Featured_Status = true;
-                Main_LazyImgStart(Featured_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(Featured_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
                 Featured_addFocus();
             }
             Featured_loadingData = false;
@@ -297,7 +297,7 @@ function Featured_loadDataSuccessReplace(responseText) {
 function Featured_addFocus() {
     Main_addFocusVideo(Featured_cursorY, Featured_cursorX, Featured_ids, Main_Featured, Main_ColoumnsCountVideo, Featured_itemsCount);
 
-    if (Featured_cursorY > 3) Main_LazyImg(Featured_ids[1], Featured_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (Featured_cursorY > 2) Main_LazyImg(Featured_ids[1], Featured_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Featured_cursorY + Main_ItemsReloadLimitVideo) > (Featured_itemsCount / Main_ColoumnsCountVideo)) &&
         !Featured_dataEnded && !Featured_loadingMore) {

@@ -20,7 +20,6 @@ var SChannels_Status = false;
 var SChannels_lastData = '';
 var SChannels_itemsCountCheck = false;
 var SChannels_isLastSChannels = false;
-var SChannels_loadingMore = false;
 
 var SChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_'];
 //Variable initialization end
@@ -57,7 +56,6 @@ function SChannels_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_search_channel');
-    SChannels_loadingMore = false;
     SChannels_blankCellCount = 0;
     SChannels_itemsCountOffset = 0;
     SChannels_ReplacedataEnded = false;
@@ -122,7 +120,6 @@ function SChannels_loadDataError() {
         SChannels_loadDataRequest();
     } else {
         SChannels_loadingData = false;
-        SChannels_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -196,12 +193,10 @@ function SChannels_loadDataSuccessFinish() {
             else {
                 SChannels_Status = true;
                 SChannels_addFocus();
-                Main_LazyImgStart(SChannels_ids[1], 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
+                Main_LazyImgStart(SChannels_ids[1], 7, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
-            SChannels_loadingData = false;
         } else {
             if (SChannels_blankCellCount > 0 && !SChannels_dataEnded) {
-                SChannels_loadingMore = true;
                 SChannels_loadDataPrepare();
                 SChannels_loadDataReplace();
                 return;
@@ -209,10 +204,8 @@ function SChannels_loadDataSuccessFinish() {
                 SChannels_blankCellCount = 0;
                 SChannels_blankCellVector = [];
             }
-
-            SChannels_loadingData = false;
-            SChannels_loadingMore = false;
         }
+        SChannels_loadingData = false;
     });
 }
 
@@ -302,11 +295,10 @@ function SChannels_loadDataSuccessReplace(responseText) {
 function SChannels_addFocus() {
     Main_addFocusChannel(SChannels_cursorY, SChannels_cursorX, SChannels_ids, Main_SChannels, Main_ColoumnsCountChannel, SChannels_itemsCount);
 
-    if (SChannels_cursorY > 3) Main_LazyImg(SChannels_ids[1], SChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
+    if (SChannels_cursorY > 2) Main_LazyImg(SChannels_ids[1], SChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 3);
 
     if (((SChannels_cursorY + Main_ItemsReloadLimitChannel) > (SChannels_itemsCount / Main_ColoumnsCountChannel)) &&
-        !SChannels_dataEnded && !SChannels_loadingMore) {
-        SChannels_loadingMore = true;
+        !SChannels_dataEnded && !SChannels_loadingData) {
         SChannels_loadDataPrepare();
         SChannels_loadDataRequest();
     }
@@ -321,7 +313,7 @@ function SChannels_keyClickDelay() {
 }
 
 function SChannels_handleKeyDown(event) {
-    if (SChannels_loadingData && !SChannels_loadingMore) {
+    if (SChannels_loadingData) {
         event.preventDefault();
         return;
     } else if (!SChannels_LastClickFinish) {
@@ -399,13 +391,13 @@ function SChannels_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!SChannels_loadingMore) SChannels_StartLoad();
+            if (!SChannels_loadingData) SChannels_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!SChannels_loadingMore) {
+            if (!SChannels_loadingData) {
                 Main_selectedChannel = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute(Main_DataAttribute);
                 Main_selectedChannel_id = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-id');
                 Main_selectedChannelDisplayname = document.getElementById(SChannels_ids[3] + SChannels_cursorY + '_' + SChannels_cursorX).textContent;

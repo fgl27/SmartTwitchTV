@@ -196,7 +196,7 @@ function Live_loadDataSuccessFinish() {
             if (Live_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Live_Status = true;
-                Main_LazyImgStart(Live_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(Live_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
                 Live_addFocus();
             }
             Live_loadingData = false;
@@ -317,7 +317,7 @@ function Live_loadDataSuccessReplace(responseText) {
 function Live_addFocus() {
     Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_Live, Main_ColoumnsCountVideo, Live_itemsCount);
 
-    if (Live_cursorY > 3) Main_LazyImg(Live_ids[1], Live_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (Live_cursorY > 2) Main_LazyImg(Live_ids[1], Live_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Live_cursorY + Main_ItemsReloadLimitVideo) > (Live_itemsCount / Main_ColoumnsCountVideo)) &&
         !Live_dataEnded && !Live_loadingMore) {

@@ -196,7 +196,7 @@ function UserHost_loadDataSuccessFinish() {
             else {
                 UserHost_status = true;
                 UserHost_addFocus();
-                Main_LazyImgStart(UserHost_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(UserHost_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
             UserHost_loadingData = false;
         } else {
@@ -308,7 +308,7 @@ function UserHost_addFocus() {
 
     Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_UserHost, Main_ColoumnsCountVideo, UserHost_itemsCount);
 
-    if (UserHost_cursorY > 3) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (UserHost_cursorY > 2) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserHost_dataEnded && !UserHost_loadingMore) {
