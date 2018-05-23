@@ -22,7 +22,6 @@ var Live_checkVersion = false;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
 var Live_emptyContent = false;
-var Live_loadingMore = false;
 //Variable initialization end
 
 function Live_init() {
@@ -48,7 +47,6 @@ function Live_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_live');
-    Live_loadingMore = false;
     Live_blankCellCount = 0;
     Live_blankCellVector = [];
     Live_itemsCountOffset = 0;
@@ -112,13 +110,13 @@ function Live_loadDataError() {
         Live_loadingDataTimeout += (Live_loadingDataTry < 5) ? 250 : 3500;
         Live_loadDataRequest();
     } else {
-        if (!Live_loadingMore) {
+        if (!Live_itemsCount) {
             Live_loadingData = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             Main_ShowElement('topbar');
         } else {
-            Live_loadingMore = false;
+            Live_loadingData = false;
             Live_dataEnded = true;
             Live_ReplacedataEnded = true;
             Live_loadDataSuccessFinish();
@@ -199,7 +197,6 @@ function Live_loadDataSuccessFinish() {
                 Main_LazyImgStart(Live_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
                 Live_addFocus();
             }
-            Live_loadingData = false;
             if (!Live_checkVersion) {
                 Live_checkVersion = true;
                 if (Main_checkVersion()) Main_showUpdateDialog();
@@ -212,7 +209,6 @@ function Live_loadDataSuccessFinish() {
             }
         } else {
             if (Live_blankCellCount > 0 && !Live_dataEnded) {
-                Live_loadingMore = true;
                 Live_loadDataPrepare();
                 Live_loadDataReplace();
                 return;
@@ -220,10 +216,8 @@ function Live_loadDataSuccessFinish() {
                 Live_blankCellCount = 0;
                 Live_blankCellVector = [];
             }
-
-            Live_loadingData = false;
-            Live_loadingMore = false;
         }
+        Live_loadingData = false;
     });
 }
 
@@ -320,8 +314,7 @@ function Live_addFocus() {
     if (Live_cursorY > 2) Main_LazyImg(Live_ids[1], Live_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Live_cursorY + Main_ItemsReloadLimitVideo) > (Live_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Live_dataEnded && !Live_loadingMore) {
-        Live_loadingMore = true;
+        !Live_dataEnded && !Live_loadingData) {
         Live_loadDataPrepare();
         Live_loadDataRequest();
     }
@@ -345,7 +338,7 @@ function Live_keyClickDelay() {
 }
 
 function Live_handleKeyDown(event) {
-    if ((Live_loadingData && !Live_loadingMore) || !Live_LastClickFinish) {
+    if (Live_loadingData || !Live_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -432,23 +425,19 @@ function Live_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Live_loadingMore) Live_StartLoad();
+            Live_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!Live_loadingMore) {
-                Main_Before = Main_Live;
-                Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
-                Live_exit();
-                Main_SwitchScreen();
-            }
+            Main_Before = Main_Live;
+            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+            Live_exit();
+            Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            if (!Live_loadingMore) {
-                Main_Before = Main_Live;
-                Main_Go = Main_Clip;
-                Live_exit();
-                Main_SwitchScreen();
-            }
+            Main_Before = Main_Live;
+            Main_Go = Main_Clip;
+            Live_exit();
+            Main_SwitchScreen();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

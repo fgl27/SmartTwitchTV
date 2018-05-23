@@ -22,7 +22,6 @@ var Clip_cursor = null;
 var Clip_periodNumber = 2;
 var Clip_period = 'week';
 var Clip_itemsCountCheck = false;
-var Clip_loadingMore = false;
 //Variable initialization end
 
 function Clip_init() {
@@ -58,7 +57,6 @@ function Clip_StartLoad() {
     Clip_cursor = null;
     Clip_status = false;
     Main_empty('stream_table_clip');
-    Clip_loadingMore = false;
     Clip_blankCellCount = 0;
     Clip_ReplacedataEnded = false;
     Clip_MaxOffset = 0;
@@ -136,7 +134,6 @@ function Clip_loadDataError() {
         Clip_loadDataRequest();
     } else {
         Clip_loadingData = false;
-        Clip_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -226,10 +223,8 @@ function Clip_loadDataSuccessFinish() {
                 Clip_addFocus();
                 Main_LazyImgStart(Clip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Clip_loadingData = false;
         } else {
             if (Clip_blankCellCount > 0 && !Clip_dataEnded) {
-                Clip_loadingMore = true;
                 Clip_loadDataPrepare();
                 Clip_loadDataReplace();
                 return;
@@ -237,10 +232,8 @@ function Clip_loadDataSuccessFinish() {
                 Clip_blankCellCount = 0;
                 Clip_blankCellVector = [];
             }
-
-            Clip_loadingData = false;
-            Clip_loadingMore = false;
         }
+        Clip_loadingData = false;
     });
 }
 
@@ -338,8 +331,7 @@ function Clip_addFocus() {
     if (Clip_cursorY > 2) Main_LazyImg(Clip_ids[1], Clip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Clip_cursorY + Main_ItemsReloadLimitVideo) > (Clip_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Clip_dataEnded && !Clip_loadingMore) {
-        Clip_loadingMore = true;
+        !Clip_dataEnded && !Clip_loadingData) {
         Clip_loadDataPrepare();
         Clip_loadDataRequest();
     }
@@ -354,10 +346,7 @@ function Clip_keyClickDelay() {
 }
 
 function Clip_handleKeyDown(event) {
-    if (Clip_loadingData && !Clip_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Clip_LastClickFinish) {
+    if (Clip_loadingData || !Clip_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -475,12 +464,10 @@ function Clip_handleKeyDown(event) {
             Main_GoLive();
             break;
         case KEY_YELLOW:
-            if (!Clip_loadingMore) {
-                Clip_periodNumber++;
-                if (Clip_periodNumber > 4) Clip_periodNumber = 1;
-                Clip_SetPeriod();
-                Clip_StartLoad();
-            }
+            Clip_periodNumber++;
+            if (Clip_periodNumber > 4) Clip_periodNumber = 1;
+            Clip_SetPeriod();
+            Clip_StartLoad();
             break;
         case KEY_BLUE:
             if (!Search_isSearching) Main_BeforeSearch = Main_Clip;

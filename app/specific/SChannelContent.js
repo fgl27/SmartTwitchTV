@@ -397,10 +397,7 @@ function SChannelContent_keyEnter() {
 }
 
 function SChannelContent_handleKeyDown(event) {
-    if (SChannelContent_loadingData) {
-        event.preventDefault();
-        return;
-    } else if (!SChannelContent_LastClickFinish) {
+    if (SChannelContent_loadingData || !SChannelContent_LastClickFinish) {
         event.preventDefault();
         return;
     } else {

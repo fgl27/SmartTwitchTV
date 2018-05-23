@@ -19,7 +19,6 @@ var Games_MaxOffset = 0;
 var Main_ItemsLimitGameOffset = 1;
 var Games_itemsCountCheck = false;
 var Games_emptyContent = false;
-var Games_loadingMore = false;
 
 var Game_ids = ['g_thumbdiv', 'g_img', 'g_infodiv', 'g_displayname', 'g_viwers', 'g_cell', 'gempty_'];
 //Variable initialization end
@@ -47,7 +46,6 @@ function Games_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_games');
-    Games_loadingMore = false;
     Games_blankCellCount = 0;
     Games_blankCellVector = [];
     Games_itemsCountOffset = 0;
@@ -112,16 +110,15 @@ function Games_loadDataError() {
         Games_loadingDataTimeout += (Games_loadingDataTry < 5) ? 250 : 3500;
         Games_loadDataRequest();
     } else {
-        if (!Games_loadingMore) {
-            Games_loadingData = false;
+        if (!Games_itemsCount) {
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
-            Games_loadingMore = false;
             Games_dataEnded = true;
             Games_ReplacedataEnded = true;
             Games_loadDataSuccessFinish();
         }
+        Games_loadingData = false;
     }
 }
 
@@ -200,10 +197,8 @@ function Games_loadDataSuccessFinish() {
                 Games_addFocus();
                 Main_LazyImgStart(Game_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
-            Games_loadingData = false;
         } else {
             if (Games_blankCellCount > 0 && !Games_dataEnded) {
-                Games_loadingMore = true;
                 Games_loadDataPrepare();
                 Games_loadDataReplace();
                 return;
@@ -211,10 +206,8 @@ function Games_loadDataSuccessFinish() {
                 Games_blankCellCount = 0;
                 Games_blankCellVector = [];
             }
-
-            Games_loadingData = false;
-            Games_loadingMore = false;
         }
+        Games_loadingData = false;
     });
 }
 
@@ -310,8 +303,7 @@ function Games_addFocus() {
     if (Games_cursorY > 2) Main_LazyImg(Game_ids[1], Games_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((Games_cursorY + Main_ItemsReloadLimitGame) > (Games_itemsCount / Main_ColoumnsCountGame)) &&
-        !Games_dataEnded && !Games_loadingMore) {
-        Games_loadingMore = true;
+        !Games_dataEnded && !Games_loadingData) {
         Games_loadDataPrepare();
         Games_loadDataRequest();
     }
@@ -326,7 +318,7 @@ function Games_keyClickDelay() {
 }
 
 function Games_handleKeyDown(event) {
-    if ((Games_loadingData && !Games_loadingMore) || !Games_LastClickFinish) {
+    if (Games_loadingData || !Games_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -400,7 +392,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Games_loadingMore) Games_StartLoad();
+            Games_StartLoad();
             break;
         case KEY_CHANNELUP:
             Main_Before = Main_games;
@@ -418,16 +410,14 @@ function Games_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!Games_loadingMore) {
-                Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute(Main_DataAttribute);
-                document.body.removeEventListener("keydown", Games_handleKeyDown);
-                Main_BeforeAgame = Main_Go;
-                Main_Go = Main_aGame;
-                Main_BeforeAgameisSet = true;
-                AGame_UserGames = false;
-                Games_exit();
-                Main_SwitchScreen();
-            }
+            Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute(Main_DataAttribute);
+            document.body.removeEventListener("keydown", Games_handleKeyDown);
+            Main_BeforeAgame = Main_Go;
+            Main_Go = Main_aGame;
+            Main_BeforeAgameisSet = true;
+            AGame_UserGames = false;
+            Games_exit();
+            Main_SwitchScreen();
             break;
         case KEY_RED:
             Main_showAboutDialog();

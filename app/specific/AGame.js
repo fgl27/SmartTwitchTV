@@ -22,7 +22,6 @@ var AGame_status = false;
 var AGame_itemsCountCheck = false;
 var AGame_fallowing = false;
 var AGame_UserGames = false;
-var AGame_loadingMore = false;
 //Variable initialization end
 
 function AGame_init() {
@@ -57,7 +56,6 @@ function AGame_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_a_game');
-    AGame_loadingMore = false;
     AGame_blankCellCount = 0;
     AGame_itemsCountOffset = 0;
     AGame_ReplacedataEnded = false;
@@ -122,7 +120,6 @@ function AGame_loadDataError() {
         AGame_loadDataRequest();
     } else {
         AGame_loadingData = false;
-        AGame_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -225,18 +222,14 @@ function AGame_loadDataSuccessFinish() {
                 AGame_addFocus();
                 Main_LazyImgStart(AGame_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            AGame_loadingData = false;
         } else {
             if (AGame_blankCellCount > 0 && !AGame_dataEnded) {
-                AGame_loadingMore = true;
                 AGame_loadDataPrepare();
                 AGame_loadDataReplace();
                 return;
             } else AGame_blankCellCount = 0;
-
-            AGame_loadingData = false;
-            AGame_loadingMore = false;
         }
+        AGame_loadingData = false;
     });
 }
 
@@ -381,8 +374,7 @@ function AGame_addFocus() {
     if (AGame_cursorY > 2) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
-        !AGame_dataEnded && !AGame_loadingMore) {
-        AGame_loadingMore = true;
+        !AGame_dataEnded && !AGame_loadingData) {
         AGame_loadDataPrepare();
         AGame_loadDataRequest();
     }
@@ -405,7 +397,7 @@ function AGame_keyClickDelay() {
 }
 
 function AGame_handleKeyDown(event) {
-    if ((AGame_loadingData && !AGame_loadingMore) || !AGame_LastClickFinish) {
+    if (AGame_loadingData || !AGame_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -419,7 +411,7 @@ function AGame_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (!AGame_loadingMore) {
+            else {
                 Main_OldgameSelected = Main_gameSelected;
                 if (!SGames_return) Main_Go = Main_BeforeAgame;
                 else Main_Go = Main_sgames;
@@ -517,7 +509,7 @@ function AGame_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!AGame_loadingMore) AGame_StartLoad();
+            AGame_StartLoad();
             break;
         case KEY_CHANNELUP:
             if (!Search_isSearching) {

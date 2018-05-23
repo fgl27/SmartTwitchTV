@@ -180,10 +180,7 @@ function SGames_keyClickDelay() {
 }
 
 function SGames_handleKeyDown(event) {
-    if (SGames_loadingData) {
-        event.preventDefault();
-        return;
-    } else if (!SGames_LastClickFinish) {
+    if (SGames_loadingData || !SGames_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
