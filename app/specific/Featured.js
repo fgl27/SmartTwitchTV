@@ -20,7 +20,6 @@ var Featured_MaxOffset = 0;
 var Featured_itemsCountCheck = false;
 var Featured_imgCounter = 0;
 var Featured_emptyContent = false;
-var Featured_loadingMore = false;
 //Variable initialization end
 
 function Featured_init() {
@@ -45,7 +44,6 @@ function Featured_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_featured');
-    Featured_loadingMore = false;
     Featured_blankCellCount = 0;
     Featured_blankCellVector = [];
     Featured_itemsCountOffset = 0;
@@ -108,16 +106,15 @@ function Featured_loadDataError() {
         Featured_loadingDataTimeout += (Featured_loadingDataTry < 5) ? 250 : 3500;
         Featured_loadDataRequest();
     } else {
-        if (!Featured_loadingMore) {
-            Featured_loadingData = false;
+        if (!Featured_itemsCount) {
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
-            Featured_loadingMore = false;
             Featured_dataEnded = true;
             Featured_ReplacedataEnded = true;
             Featured_loadDataSuccessFinish();
         }
+        Featured_loadingData = false;
     }
 }
 
@@ -193,10 +190,8 @@ function Featured_loadDataSuccessFinish() {
                 Main_LazyImgStart(Featured_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
                 Featured_addFocus();
             }
-            Featured_loadingData = false;
         } else {
             if (Featured_blankCellCount > 0 && !Featured_dataEnded) {
-                Featured_loadingMore = true;
                 Featured_loadDataPrepare();
                 Featured_loadDataReplace();
                 return;
@@ -204,10 +199,8 @@ function Featured_loadDataSuccessFinish() {
                 Featured_blankCellCount = 0;
                 Featured_blankCellVector = [];
             }
-
-            Featured_loadingData = false;
-            Featured_loadingMore = false;
         }
+        Featured_loadingData = false;
     });
 }
 
@@ -300,8 +293,7 @@ function Featured_addFocus() {
     if (Featured_cursorY > 2) Main_LazyImg(Featured_ids[1], Featured_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Featured_cursorY + Main_ItemsReloadLimitVideo) > (Featured_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Featured_dataEnded && !Featured_loadingMore) {
-        Featured_loadingMore = true;
+        !Featured_dataEnded && !Featured_loadingData) {
         Featured_loadDataPrepare();
         Featured_loadDataRequest();
     }
@@ -316,7 +308,7 @@ function Featured_keyClickDelay() {
 }
 
 function Featured_handleKeyDown(event) {
-    if ((Featured_loadingData && !Featured_loadingMore) || !Featured_LastClickFinish) {
+    if (Featured_loadingData || !Featured_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -390,23 +382,19 @@ function Featured_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Featured_loadingMore) Featured_StartLoad();
+            Featured_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!Featured_loadingMore) {
-                Main_Before = Main_Users;
-                Main_Go = Main_games;
-                Featured_exit();
-                Main_SwitchScreen();
-            }
+            Main_Before = Main_Users;
+            Main_Go = Main_games;
+            Featured_exit();
+            Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            if (!Featured_loadingMore) {
-                Main_Before = Main_Featured;
-                Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
-                Featured_exit();
-                Main_SwitchScreen();
-            }
+            Main_Before = Main_Featured;
+            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+            Featured_exit();
+            Main_SwitchScreen();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

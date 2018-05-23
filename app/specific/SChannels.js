@@ -313,10 +313,7 @@ function SChannels_keyClickDelay() {
 }
 
 function SChannels_handleKeyDown(event) {
-    if (SChannels_loadingData) {
-        event.preventDefault();
-        return;
-    } else if (!SChannels_LastClickFinish) {
+    if (SChannels_loadingData || !SChannels_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -391,25 +388,23 @@ function SChannels_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!SChannels_loadingData) SChannels_StartLoad();
+            SChannels_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!SChannels_loadingData) {
-                Main_selectedChannel = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute(Main_DataAttribute);
-                Main_selectedChannel_id = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-id');
-                Main_selectedChannelDisplayname = document.getElementById(SChannels_ids[3] + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
-                Main_selectedChannelLogo = document.getElementById(SChannels_ids[1] + SChannels_cursorY + '_' + SChannels_cursorX).src;
-                document.body.removeEventListener("keydown", SChannels_handleKeyDown);
-                Main_BeforeChannel = Main_SChannels;
-                Main_Go = Main_SChannelContent;
-                Main_BeforeChannelisSet = true;
-                AddCode_IsFallowing = false;
-                SChannelContent_UserChannels = false;
-                Main_SwitchScreen();
-            }
+            Main_selectedChannel = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute(Main_DataAttribute);
+            Main_selectedChannel_id = document.getElementById(SChannels_ids[4] + SChannels_cursorY + '_' + SChannels_cursorX).getAttribute('data-id');
+            Main_selectedChannelDisplayname = document.getElementById(SChannels_ids[3] + SChannels_cursorY + '_' + SChannels_cursorX).textContent;
+            Main_selectedChannelLogo = document.getElementById(SChannels_ids[1] + SChannels_cursorY + '_' + SChannels_cursorX).src;
+            document.body.removeEventListener("keydown", SChannels_handleKeyDown);
+            Main_BeforeChannel = Main_SChannels;
+            Main_Go = Main_SChannelContent;
+            Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = false;
+            SChannelContent_UserChannels = false;
+            Main_SwitchScreen();
             break;
         case KEY_RED:
             Main_showAboutDialog();

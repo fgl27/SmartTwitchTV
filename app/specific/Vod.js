@@ -24,7 +24,6 @@ var Vod_isVod = false;
 var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'svempty_', 'v_game'];
 var Vod_status = false;
 var Vod_highlight = false;
-var Vod_loadingMore = false;
 //Variable initialization end
 
 function Vod_init() {
@@ -60,7 +59,6 @@ function Vod_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_vod');
-    Vod_loadingMore = false;
     Vod_blankCellCount = 0;
     Vod_itemsCountOffset = 0;
     Vod_ReplacedataEnded = false;
@@ -127,7 +125,6 @@ function Vod_loadDataError() {
         Vod_loadDataRequest();
     } else {
         Vod_loadingData = false;
-        Vod_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -246,10 +243,8 @@ function Vod_loadDataSuccessFinish() {
                 Vod_addFocus();
                 Main_LazyImgStart(Vod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Vod_loadingData = false;
         } else {
             if (Vod_blankCellCount > 0 && !Vod_dataEnded) {
-                Vod_loadingMore = true;
                 Vod_loadDataPrepare();
                 Vod_loadDataReplace();
                 return;
@@ -257,10 +252,8 @@ function Vod_loadDataSuccessFinish() {
                 Vod_blankCellCount = 0;
                 Vod_blankCellVector = [];
             }
-
-            Vod_loadingData = false;
-            Vod_loadingMore = false;
         }
+        Vod_loadingData = false;
     });
 }
 
@@ -362,8 +355,7 @@ function Vod_addFocus() {
     if (Vod_cursorY > 2) Main_LazyImg(Vod_ids[1], Vod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Vod_dataEnded && !Vod_loadingMore) {
-        Vod_loadingMore = true;
+        !Vod_dataEnded && !Vod_loadingData) {
         Vod_loadDataPrepare();
         Vod_loadDataRequest();
     }
@@ -378,10 +370,7 @@ function Vod_keyClickDelay() {
 }
 
 function Vod_handleKeyDown(event) {
-    if (Vod_loadingData && !Vod_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Vod_LastClickFinish) {
+    if (Vod_loadingData || !Vod_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -467,11 +456,9 @@ function Vod_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Vod_loadingMore) {
-                Vod_highlight = !Vod_highlight;
-                localStorage.setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
-                Vod_StartLoad();
-            }
+            Vod_highlight = !Vod_highlight;
+            localStorage.setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
+            Vod_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
@@ -500,11 +487,9 @@ function Vod_handleKeyDown(event) {
             Main_GoLive();
             break;
         case KEY_YELLOW:
-            if (!Vod_loadingMore) {
-                Vod_periodNumber++;
-                if (Vod_periodNumber > 4) Vod_periodNumber = 1;
-                Vod_StartLoad();
-            }
+            Vod_periodNumber++;
+            if (Vod_periodNumber > 4) Vod_periodNumber = 1;
+            Vod_StartLoad();
             break;
         case KEY_BLUE:
             if (!Search_isSearching) Main_BeforeSearch = Main_Vod;

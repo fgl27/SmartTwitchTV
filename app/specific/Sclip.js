@@ -31,7 +31,6 @@ var Sclip_playUrl = '';
 var Sclip_createdAt = '';
 var Sclip_language = '';
 var Sclip_itemsCountCheck = false;
-var Sclip_loadingMore = false;
 //Variable initialization end
 
 function Sclip_init() {
@@ -63,7 +62,6 @@ function Sclip_StartLoad() {
     Sclip_cursor = null;
     Sclip_status = false;
     Main_empty('stream_table_search_clip');
-    Sclip_loadingMore = false;
     Sclip_blankCellCount = 0;
     Sclip_ReplacedataEnded = false;
     Sclip_MaxOffset = 0;
@@ -140,7 +138,6 @@ function Sclip_loadDataError() {
         Sclip_loadDataRequest();
     } else {
         Sclip_loadingData = false;
-        Sclip_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -223,10 +220,8 @@ function Sclip_loadDataSuccessFinish() {
                 Sclip_addFocus();
                 Main_LazyImgStart(Sclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Sclip_loadingData = false;
         } else {
             if (Sclip_blankCellCount > 0 && !Sclip_dataEnded) {
-                Sclip_loadingMore = true;
                 Sclip_loadDataPrepare();
                 Sclip_loadDataReplace();
                 return;
@@ -235,9 +230,9 @@ function Sclip_loadDataSuccessFinish() {
                 Sclip_blankCellVector = [];
             }
 
-            Sclip_loadingData = false;
-            Sclip_loadingMore = false;
+
         }
+        Sclip_loadingData = false;
     });
 }
 
@@ -331,8 +326,7 @@ function Sclip_addFocus() {
     if (Sclip_cursorY > 2) Main_LazyImg(Sclip_ids[1], Sclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Sclip_cursorY + Main_ItemsReloadLimitVideo) > (Sclip_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Sclip_dataEnded && !Sclip_loadingMore) {
-        Sclip_loadingMore = true;
+        !Sclip_dataEnded && !Sclip_loadingData) {
         Sclip_loadDataPrepare();
         Sclip_loadDataRequest();
     }
@@ -347,10 +341,7 @@ function Sclip_keyClickDelay() {
 }
 
 function Sclip_handleKeyDown(event) {
-    if (Sclip_loadingData && !Sclip_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Sclip_LastClickFinish) {
+    if (Sclip_loadingData || !Sclip_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -426,20 +417,16 @@ function Sclip_handleKeyDown(event) {
             Sclip_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!Sclip_loadingMore) {
-                Sclip_periodNumber++;
-                if (Sclip_periodNumber > 4) Sclip_periodNumber = 1;
-                Sclip_SetPeriod();
-                Sclip_StartLoad();
-            }
+            Sclip_periodNumber++;
+            if (Sclip_periodNumber > 4) Sclip_periodNumber = 1;
+            Sclip_SetPeriod();
+            Sclip_StartLoad();
             break;
         case KEY_CHANNELDOWN:
-            if (!Sclip_loadingMore) {
-                Sclip_periodNumber--;
-                if (Sclip_periodNumber < 1) Sclip_periodNumber = 4;
-                Sclip_SetPeriod();
-                Sclip_StartLoad();
-            }
+            Sclip_periodNumber--;
+            if (Sclip_periodNumber < 1) Sclip_periodNumber = 4;
+            Sclip_SetPeriod();
+            Sclip_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

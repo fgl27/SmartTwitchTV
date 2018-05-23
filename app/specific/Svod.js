@@ -30,7 +30,6 @@ var Svod_title = '';
 var Svod_views = '';
 var Svod_createdAt = '';
 var Svod_Duration = '';
-var Svod_loadingMore = false;
 var Svod_vodOffset = 0;
 //Variable initialization end
 
@@ -63,7 +62,6 @@ function Svod_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_search_vod');
-    Svod_loadingMore = false;
     Svod_blankCellCount = 0;
     Svod_itemsCountOffset = 0;
     Svod_ReplacedataEnded = false;
@@ -131,7 +129,6 @@ function Svod_loadDataError() {
         Svod_loadDataRequest();
     } else {
         Svod_loadingData = false;
-        Svod_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -211,10 +208,8 @@ function Svod_loadDataSuccessFinish() {
                 Svod_addFocus();
                 Main_LazyImgStart(Svod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Svod_loadingData = false;
         } else {
             if (Svod_blankCellCount > 0 && !Svod_dataEnded) {
-                Svod_loadingMore = true;
                 Svod_loadDataPrepare();
                 Svod_loadDataReplace();
                 return;
@@ -222,10 +217,8 @@ function Svod_loadDataSuccessFinish() {
                 Svod_blankCellCount = 0;
                 Svod_blankCellVector = [];
             }
-
-            Svod_loadingData = false;
-            Svod_loadingMore = false;
         }
+        Svod_loadingData = false;
     });
 }
 
@@ -328,8 +321,7 @@ function Svod_addFocus() {
     if (Svod_cursorY > 2) Main_LazyImg(Svod_ids[1], Svod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Svod_cursorY + Main_ItemsReloadLimitVideo) > (Svod_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Svod_dataEnded && !Svod_loadingMore) {
-        Svod_loadingMore = true;
+        !Svod_dataEnded && !Svod_loadingData) {
         Svod_loadDataPrepare();
         Svod_loadDataRequest();
     }
@@ -344,10 +336,7 @@ function Svod_keyClickDelay() {
 }
 
 function Svod_handleKeyDown(event) {
-    if (Svod_loadingData && !Svod_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Svod_LastClickFinish) {
+    if (Svod_loadingData || !Svod_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -420,15 +409,13 @@ function Svod_handleKeyDown(event) {
             break;
         case KEY_CHANNELUP:
         case KEY_CHANNELDOWN:
-            if (!Svod_loadingMore) {
-                Svod_highlight = !Svod_highlight;
-                localStorage.setItem('Svod_highlight', Svod_highlight ? 'true' : 'false');
-                Svod_StartLoad();
-            }
+            Svod_highlight = !Svod_highlight;
+            localStorage.setItem('Svod_highlight', Svod_highlight ? 'true' : 'false');
+            Svod_StartLoad();
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!Svod_loadingMore) Svod_StartLoad();
+            Svod_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

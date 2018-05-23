@@ -21,7 +21,6 @@ var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh
 var UserHost_status = false;
 var UserHost_OldUserName = '';
 var UserHost_itemsCountCheck = false;
-var UserHost_loadingMore = false;
 //Variable initialization end
 
 function UserHost_init() {
@@ -51,7 +50,6 @@ function UserHost_StartLoad() {
     UserHost_OldUserName = Main_UserName;
     UserHost_status = false;
     Main_empty('stream_table_user_host');
-    UserHost_loadingMore = false;
     UserHost_blankCellCount = 0;
     UserHost_itemsCountOffset = 0;
     UserHost_ReplacedataEnded = false;
@@ -116,7 +114,6 @@ function UserHost_loadDataError() {
         UserHost_loadChannels();
     } else {
         UserHost_loadingData = false;
-        UserHost_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -198,10 +195,8 @@ function UserHost_loadDataSuccessFinish() {
                 UserHost_addFocus();
                 Main_LazyImgStart(UserHost_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            UserHost_loadingData = false;
         } else {
             if (UserHost_blankCellCount > 0 && !UserHost_dataEnded) {
-                UserHost_loadingMore = true;
                 UserHost_loadDataPrepare();
                 UserHost_loadDataReplace();
                 return;
@@ -209,10 +204,8 @@ function UserHost_loadDataSuccessFinish() {
                 UserHost_blankCellCount = 0;
                 UserHost_blankCellVector = [];
             }
-
-            UserHost_loadingData = false;
-            UserHost_loadingMore = false;
         }
+        UserHost_loadingData = false;
     });
 }
 
@@ -311,8 +304,7 @@ function UserHost_addFocus() {
     if (UserHost_cursorY > 2) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
-        !UserHost_dataEnded && !UserHost_loadingMore) {
-        UserHost_loadingMore = true;
+        !UserHost_dataEnded && !UserHost_loadingData) {
         UserHost_loadDataPrepare();
         UserHost_loadChannels();
     }
@@ -327,10 +319,7 @@ function UserHost_keyClickDelay() {
 }
 
 function UserHost_handleKeyDown(event) {
-    if (UserHost_loadingData && !UserHost_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!UserHost_LastClickFinish) {
+    if (UserHost_loadingData || !UserHost_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -403,14 +392,12 @@ function UserHost_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!UserHost_loadingMore) UserHost_StartLoad();
+            UserHost_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!UserHost_loadingMore) {
-                Main_Go = Main_usergames;
-                UserHost_exit();
-                Main_SwitchScreen();
-            }
+            Main_Go = Main_usergames;
+            UserHost_exit();
+            Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
             Main_Go = Main_UserLive;

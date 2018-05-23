@@ -224,10 +224,7 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
-    if (Users_loadingData) {
-        event.preventDefault();
-        return;
-    } else if (!Users_LastClickFinish) {
+    if (Users_loadingData || !Users_LastClickFinish) {
         event.preventDefault();
         return;
     } else {

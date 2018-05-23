@@ -22,7 +22,6 @@ var Gclip_cursor = null;
 var Gclip_periodNumber = 2;
 var Gclip_period = 'week';
 var Gclip_itemsCountCheck = false;
-var Gclip_loadingMore = false;
 var Gclip_OldgameSelected = '';
 //Variable initialization end
 
@@ -61,7 +60,6 @@ function Gclip_StartLoad() {
     Gclip_cursor = null;
     Gclip_status = false;
     Main_empty('stream_table_gclip');
-    Gclip_loadingMore = false;
     Gclip_blankCellCount = 0;
     Gclip_ReplacedataEnded = false;
     Gclip_MaxOffset = 0;
@@ -144,7 +142,6 @@ function Gclip_loadDataError() {
         Gclip_loadDataRequest();
     } else {
         Gclip_loadingData = false;
-        Gclip_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -229,10 +226,8 @@ function Gclip_loadDataSuccessFinish() {
                 Gclip_addFocus();
                 Main_LazyImgStart(Gclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
-            Gclip_loadingData = false;
         } else {
             if (Gclip_blankCellCount > 0 && !Gclip_dataEnded) {
-                Gclip_loadingMore = true;
                 Gclip_loadDataPrepare();
                 Gclip_loadDataReplace();
                 return;
@@ -241,9 +236,8 @@ function Gclip_loadDataSuccessFinish() {
                 Gclip_blankCellVector = [];
             }
 
-            Gclip_loadingData = false;
-            Gclip_loadingMore = false;
         }
+        Gclip_loadingData = false;
     });
 }
 
@@ -341,8 +335,7 @@ function Gclip_addFocus() {
     if (Gclip_cursorY > 2) Main_LazyImg(Gclip_ids[1], Gclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Gclip_cursorY + Main_ItemsReloadLimitVideo) > (Gclip_itemsCount / Main_ColoumnsCountVideo)) &&
-        !Gclip_dataEnded && !Gclip_loadingMore) {
-        Gclip_loadingMore = true;
+        !Gclip_dataEnded && !Gclip_loadingData) {
         Gclip_loadDataPrepare();
         Gclip_loadDataRequest();
     }
@@ -357,10 +350,7 @@ function Gclip_keyClickDelay() {
 }
 
 function Gclip_handleKeyDown(event) {
-    if (Gclip_loadingData && !Gclip_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!Gclip_LastClickFinish) {
+    if (Gclip_loadingData || !Gclip_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -436,20 +426,16 @@ function Gclip_handleKeyDown(event) {
             Gclip_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!Gclip_loadingMore) {
-                Gclip_periodNumber++;
-                if (Gclip_periodNumber > 4) Gclip_periodNumber = 1;
-                Gclip_SetPeriod();
-                Gclip_StartLoad();
-            }
+            Gclip_periodNumber++;
+            if (Gclip_periodNumber > 4) Gclip_periodNumber = 1;
+            Gclip_SetPeriod();
+            Gclip_StartLoad();
             break;
         case KEY_CHANNELDOWN:
-            if (!Gclip_loadingMore) {
-                Gclip_periodNumber--;
-                if (Gclip_periodNumber < 1) Gclip_periodNumber = 4;
-                Gclip_SetPeriod();
-                Gclip_StartLoad();
-            }
+            Gclip_periodNumber--;
+            if (Gclip_periodNumber < 1) Gclip_periodNumber = 4;
+            Gclip_SetPeriod();
+            Gclip_StartLoad();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

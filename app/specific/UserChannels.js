@@ -223,7 +223,7 @@ function UserChannels_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (!UserChannels_loadingData) {
+            else {
                 Main_Go = Main_Users;
                 UserChannels_exit();
                 Main_SwitchScreen();
@@ -282,7 +282,7 @@ function UserChannels_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!UserChannels_loadingData) UserChannels_StartLoad();
+            UserChannels_StartLoad();
             break;
         case KEY_CHANNELUP:
             Main_Go = Main_UserLive;
@@ -298,20 +298,18 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!UserChannels_loadingData) {
-                Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
-                Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
-                Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
-                    '_' + UserChannels_cursorX).textContent;
-                Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
-                document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
-                Main_BeforeChannel = Main_UserChannels;
-                Main_Go = Main_SChannelContent;
-                Main_BeforeChannelisSet = true;
-                AddCode_IsFallowing = true;
-                SChannelContent_UserChannels = true;
-                Main_SwitchScreen();
-            }
+            Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
+            Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
+            Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
+                '_' + UserChannels_cursorX).textContent;
+            Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
+            document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
+            Main_BeforeChannel = Main_UserChannels;
+            Main_Go = Main_SChannelContent;
+            Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = true;
+            SChannelContent_UserChannels = true;
+            Main_SwitchScreen();
             break;
         case KEY_RED:
             Main_showAboutDialog();

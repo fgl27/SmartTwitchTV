@@ -20,7 +20,6 @@ var UserGames_itemsCountCheck = false;
 var UserGames_live = true;
 var UserGames_Status = false;
 var UserGames_OldUserName = '';
-var UserGames_loadingMore = false;
 
 var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'ug_viwers', 'ug_cell', 'ugempty_'];
 //Variable initialization end
@@ -55,7 +54,6 @@ function UserGames_StartLoad() {
     UserGames_OldUserName = Main_UserName;
     UserGames_Status = false;
     Main_empty('stream_table_user_games');
-    UserGames_loadingMore = false;
     UserGames_blankCellCount = 0;
     UserGames_itemsCountOffset = 0;
     UserGames_ReplacedataEnded = false;
@@ -120,7 +118,6 @@ function UserGames_loadDataError() {
         UserGames_loadDataRequest();
     } else {
         UserGames_loadingData = false;
-        UserGames_loadingMore = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
     }
@@ -200,10 +197,8 @@ function UserGames_loadDataSuccessFinish() {
                 UserGames_addFocus();
                 Main_LazyImgStart(UserGames_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
-            UserGames_loadingData = false;
         } else {
             if (UserGames_blankCellCount > 0 && !UserGames_dataEnded) {
-                UserGames_loadingMore = true;
                 UserGames_loadDataPrepare();
                 UserGames_loadDataReplace();
                 return;
@@ -212,9 +207,9 @@ function UserGames_loadDataSuccessFinish() {
                 UserGames_blankCellVector = [];
             }
 
-            UserGames_loadingData = false;
-            UserGames_loadingMore = false;
+
         }
+        UserGames_loadingData = false;
     });
 }
 
@@ -327,8 +322,7 @@ function UserGames_addFocus() {
     if (UserGames_cursorY > 2) Main_LazyImg(UserGames_ids[1], UserGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((UserGames_cursorY + Main_ItemsReloadLimitGame) > (UserGames_itemsCount / Main_ColoumnsCountGame)) &&
-        !UserGames_dataEnded && !UserGames_loadingMore) {
-        UserGames_loadingMore = true;
+        !UserGames_dataEnded && !UserGames_loadingData) {
         UserGames_loadDataPrepare();
         UserGames_loadDataRequest();
     }
@@ -343,10 +337,7 @@ function UserGames_keyClickDelay() {
 }
 
 function UserGames_handleKeyDown(event) {
-    if (UserGames_loadingData && !UserGames_loadingMore) {
-        event.preventDefault();
-        return;
-    } else if (!UserGames_LastClickFinish) {
+    if (UserGames_loadingData && !UserGames_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -419,19 +410,15 @@ function UserGames_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!UserGames_loadingMore) {
-                UserGames_live = !UserGames_live;
-                UserGames_StartLoad();
-                localStorage.setItem('user_Games_live', UserGames_live ? 'true' : 'false');
-                Users_resetGameCell();
-            }
+            UserGames_live = !UserGames_live;
+            UserGames_StartLoad();
+            localStorage.setItem('user_Games_live', UserGames_live ? 'true' : 'false');
+            Users_resetGameCell();
             break;
         case KEY_CHANNELUP:
-            if (!UserGames_loadingMore) {
-                Main_Go = Main_UserChannels;
-                UserGames_exit();
-                Main_SwitchScreen();
-            }
+            Main_Go = Main_UserChannels;
+            UserGames_exit();
+            Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
             Main_Go = Main_UserHost;
