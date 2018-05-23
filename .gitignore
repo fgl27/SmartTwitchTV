@@ -33,3 +33,4 @@ release/.project
 release/master.js
 release/locales/
 release/temp_maker/
+.package/
