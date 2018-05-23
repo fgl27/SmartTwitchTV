@@ -209,7 +209,7 @@ function Svod_loadDataSuccessFinish() {
             else {
                 Svod_status = true;
                 Svod_addFocus();
-                Main_LazyImgStart(Svod_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(Svod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
             Svod_loadingData = false;
         } else {
@@ -325,7 +325,7 @@ function Svod_loadDataSuccessReplace(responseText) {
 function Svod_addFocus() {
     Main_addFocusVideo(Svod_cursorY, Svod_cursorX, Svod_ids, Main_Svod, Main_ColoumnsCountVideo, Svod_itemsCount);
 
-    if (Svod_cursorY > 3) Main_LazyImg(Svod_ids[1], Svod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (Svod_cursorY > 2) Main_LazyImg(Svod_ids[1], Svod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((Svod_cursorY + Main_ItemsReloadLimitVideo) > (Svod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Svod_dataEnded && !Svod_loadingMore) {

@@ -223,7 +223,7 @@ function AGame_loadDataSuccessFinish() {
             } else {
                 AGame_status = true;
                 AGame_addFocus();
-                Main_LazyImgStart(AGame_ids[1], 9, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_LazyImgStart(AGame_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
             AGame_loadingData = false;
         } else {
@@ -378,7 +378,7 @@ function AGame_addFocus() {
 
     Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_aGame, Main_ColoumnsCountVideo, AGame_itemsCount);
 
-    if (AGame_cursorY > 3) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 4);
+    if (AGame_cursorY > 2) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
         !AGame_dataEnded && !AGame_loadingMore) {

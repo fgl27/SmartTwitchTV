@@ -15,7 +15,6 @@ var UserChannels_emptyContent = false;
 var UserChannels_Status = false;
 var UserChannels_OldUserName = '';
 var UserChannels_itemsCountCheck = false;
-var UserChannels_loadingMore = false;
 
 var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname', 'uc_cell', 'ucempty_'];
 //Variable initialization end
@@ -48,7 +47,6 @@ function UserChannels_StartLoad() {
     UserChannels_OldUserName = Main_UserName;
     UserChannels_Status = false;
     Main_empty('stream_table_user_channels');
-    UserChannels_loadingMore = false;
     UserChannels_loadChannelOffsset = 0;
     UserChannels_itemsCount = 0;
     UserChannels_cursorX = 0;
@@ -101,7 +99,6 @@ function UserChannels_loadDataError() {
         UserChannels_loadChannels();
     } else {
         UserChannels_loadingData = false;
-        UserChannels_loadingMore = false;
         UserChannels_Status = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
@@ -183,25 +180,21 @@ function UserChannels_loadDataSuccessFinish() {
             if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
             else {
                 UserChannels_Status = true;
+                Main_LazyImgStart(UserChannels_ids[1], 7, IMG_404_LOGO, Main_ColoumnsCountChannel);
                 UserChannels_addFocus();
-                Main_LazyImgStart(UserChannels_ids[1], 9, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
-            UserChannels_loadingData = false;
-        } else {
-            UserChannels_loadingData = false;
-            UserChannels_loadingMore = false;
         }
+        UserChannels_loadingData = false;
     });
 }
 
 function UserChannels_addFocus() {
     Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_UserChannels, Main_ColoumnsCountChannel, UserChannels_itemsCount);
 
-    if (UserChannels_cursorY > 3) Main_LazyImg(UserChannels_ids[1], UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 4);
+    if (UserChannels_cursorY > 2) Main_LazyImg(UserChannels_ids[1], UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 3);
 
     if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
-        !UserChannels_dataEnded && !UserChannels_loadingMore) {
-        UserChannels_loadingMore = true;
+        !UserChannels_dataEnded && !UserChannels_loadingData) {
         UserChannels_loadDataPrepare();
         UserChannels_loadChannels();
     }
@@ -216,7 +209,7 @@ function UserChannels_keyClickDelay() {
 }
 
 function UserChannels_handleKeyDown(event) {
-    if ((UserChannels_loadingData && !UserChannels_loadingMore) || !UserChannels_LastClickFinish) {
+    if (UserChannels_loadingData || !UserChannels_LastClickFinish) {
         event.preventDefault();
         return;
     } else {
@@ -230,7 +223,7 @@ function UserChannels_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (!UserChannels_loadingMore) {
+            else if (!UserChannels_loadingData) {
                 Main_Go = Main_Users;
                 UserChannels_exit();
                 Main_SwitchScreen();
@@ -289,7 +282,7 @@ function UserChannels_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!UserChannels_loadingMore) UserChannels_StartLoad();
+            if (!UserChannels_loadingData) UserChannels_StartLoad();
             break;
         case KEY_CHANNELUP:
             Main_Go = Main_UserLive;
@@ -305,7 +298,7 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!UserChannels_loadingMore) {
+            if (!UserChannels_loadingData) {
                 Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
                 Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
                 Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
