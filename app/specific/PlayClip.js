@@ -302,6 +302,7 @@ function PlayClip_hidePanel() {
 
 function PlayClip_showPanel() {
     Play_clock();
+    Play_CleanHideExit();
     Play_IconsResetFocus();
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
