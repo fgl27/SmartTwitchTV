@@ -1029,14 +1029,11 @@ function Play_OpenGame(PlayVodClip) {
     Main_Go = Main_aGame;
     AGame_UserGames = false;
 
-    if (PlayVodClip === 1) {
-        Main_gameSelected = Play_gameSelected;
-        Play_hideChat();
-        Main_ready(Play_shutdownStream);
-    } else if (PlayVodClip === 2) {
-        Main_gameSelected = Svod_game;
-        Main_ready(PlayVod_shutdownStream);
-    } else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+    Main_gameSelected = Play_gameSelected;
+    Play_hideChat();
+    if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
+    else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
+    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
 }
 
 function Play_FallowUnfallow() {

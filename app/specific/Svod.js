@@ -17,7 +17,6 @@ var Svod_DurationSeconds = 0;
 var Svod_emptyContent = false;
 var Svod_itemsCountCheck = false;
 var Svod_language = '';
-var Svod_game = '';
 
 var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_', 'sv_game'];
 var Svod_status = false;
@@ -413,7 +412,7 @@ function Svod_handleKeyDown(event) {
             Svod_vodId = document.getElementById(Svod_ids[8] + Svod_cursorY + '_' + Svod_cursorX).getAttribute(Main_DataAttribute).split(',');
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
             Svod_language = Svod_vodId[2];
-            Svod_game = Svod_vodId[3];
+            Play_gameSelected = Svod_vodId[3];
             Svod_vodId = Svod_vodId[0].substr(1);
 
             Svod_title = document.getElementById(Svod_ids[3] + Svod_cursorY + '_' + Svod_cursorX).textContent;
