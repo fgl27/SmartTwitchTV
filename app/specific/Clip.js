@@ -171,7 +171,6 @@ function Clip_loadDataSuccess(responseText) {
             if (Clip_CellExists(video.slug)) coloumn_id--;
             else {
                 Clip_nameMatrix.push(video.slug);
-                if (video.vod === null) console.log(video.broadcaster.name + ' ' + row_id + '_' + coloumn_id);
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
@@ -428,7 +427,7 @@ function Clip_handleKeyDown(event) {
         case KEY_ENTER:
             Sclip_playUrl = document.getElementById(Clip_ids[8] + Clip_cursorY + '_' + Clip_cursorX).getAttribute(Main_DataAttribute).split(',');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
-            Main_gameSelected = Sclip_playUrl[2];
+            Play_gameSelected = Sclip_playUrl[2];
             Main_selectedChannel = Sclip_playUrl[3];
             Main_selectedChannelDisplayname = Sclip_playUrl[4];
             Main_selectedChannelLogo = Sclip_playUrl[5];

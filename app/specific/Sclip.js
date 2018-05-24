@@ -423,7 +423,7 @@ function Sclip_handleKeyDown(event) {
         case KEY_ENTER:
             Sclip_playUrl = document.getElementById(Sclip_ids[8] + Sclip_cursorY + '_' + Sclip_cursorX).getAttribute(Main_DataAttribute).split(',');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
-            Main_gameSelected = Sclip_playUrl[2];
+            Play_gameSelected = Sclip_playUrl[2];
             Svod_vodId = Sclip_playUrl[3];
             Svod_vodOffset = parseInt(Sclip_playUrl[4]);
             Sclip_playUrl = Sclip_playUrl[0];

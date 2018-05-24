@@ -432,7 +432,7 @@ function Gclip_handleKeyDown(event) {
         case KEY_ENTER:
             Sclip_playUrl = document.getElementById(Gclip_ids[8] + Gclip_cursorY + '_' + Gclip_cursorX).getAttribute(Main_DataAttribute).split(',');
             Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
-            Main_gameSelected = Sclip_playUrl[2];
+            Play_gameSelected = Sclip_playUrl[2];
             Main_selectedChannel = Sclip_playUrl[3];
             Main_selectedChannelDisplayname = Sclip_playUrl[4];
             Main_selectedChannelLogo = Sclip_playUrl[5];

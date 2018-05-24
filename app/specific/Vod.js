@@ -456,7 +456,7 @@ function Vod_handleKeyDown(event) {
             Svod_vodId = document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute).split(',');
             Svod_DurationSeconds = parseInt(Svod_vodId[1]);
             Svod_language = Svod_vodId[2];
-            Svod_game = Svod_vodId[3];
+            Play_gameSelected = Svod_vodId[3];
             Main_selectedChannel = Svod_vodId[4];
             Svod_vodId = Svod_vodId[0].substr(1);
 
