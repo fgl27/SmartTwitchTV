@@ -12,8 +12,6 @@ var UserLive_loadingDataTryMax = 10;
 var UserLive_loadingDataTimeout = 3500;
 var UserLive_blankCellCount = 0;
 var UserLive_itemsCountOffset = 0;
-var UserLive_LastClickFinish = true;
-var UserLive_keyClickDelayTime = 25;
 var UserLive_ReplacedataEnded = false;
 var UserLive_MaxOffset = 0;
 var UserLive_loadChannelOffsset = 0;
@@ -381,18 +379,9 @@ function UserLive_removeFocus() {
     Main_removeFocus(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
 }
 
-function UserLive_keyClickDelay() {
-    UserLive_LastClickFinish = true;
-}
-
 function UserLive_handleKeyDown(event) {
-    if (UserLive_loadingData || !UserLive_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        UserLive_LastClickFinish = false;
-        window.setTimeout(UserLive_keyClickDelay, UserLive_keyClickDelayTime);
-    }
+    if (UserLive_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

@@ -1,8 +1,6 @@
 //Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
-var Users_LastClickFinish = true;
-var Users_keyClickDelayTime = 25;
 var Users_ColoumnsCount = 7;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
@@ -148,10 +146,6 @@ function Users_removeFocus() {
     Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
 }
 
-function Users_keyClickDelay() {
-    Users_LastClickFinish = true;
-}
-
 function Users_keyEnter() {
     if (Users_cursorX !== 5) document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_UserName = AddUser_UsernameArray[Users_cursorY];
@@ -224,13 +218,8 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
-    if (Users_loadingData || !Users_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        Users_LastClickFinish = false;
-        window.setTimeout(Users_keyClickDelay, Users_keyClickDelayTime);
-    }
+    if (Users_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

@@ -14,8 +14,6 @@ var Live_loadingDataTimeout = 3500;
 var Live_blankCellCount = 0;
 var Live_blankCellVector = [];
 var Live_itemsCountOffset = 0;
-var Live_LastClickFinish = true;
-var Live_keyClickDelayTime = 25;
 var Live_ReplacedataEnded = false;
 var Live_MaxOffset = 0;
 var Live_checkVersion = false;
@@ -333,18 +331,9 @@ function Live_ExitCursorSet() {
     else Main_AddClass('exit_app_close', 'button_search_focused');
 }
 
-function Live_keyClickDelay() {
-    Live_LastClickFinish = true;
-}
-
 function Live_handleKeyDown(event) {
-    if (Live_loadingData || !Live_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        Live_LastClickFinish = false;
-        window.setTimeout(Live_keyClickDelay, Live_keyClickDelayTime);
-    }
+    if (Live_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

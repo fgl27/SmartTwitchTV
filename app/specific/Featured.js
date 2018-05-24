@@ -13,8 +13,6 @@ var Featured_loadingDataTimeout = 3500;
 var Featured_blankCellCount = 0;
 var Featured_blankCellVector = [];
 var Featured_itemsCountOffset = 0;
-var Featured_LastClickFinish = true;
-var Featured_keyClickDelayTime = 25;
 var Featured_ReplacedataEnded = false;
 var Featured_MaxOffset = 0;
 var Featured_itemsCountCheck = false;
@@ -303,18 +301,9 @@ function Featured_removeFocus() {
     Main_removeFocus(Featured_cursorY + '_' + Featured_cursorX, Featured_ids);
 }
 
-function Featured_keyClickDelay() {
-    Featured_LastClickFinish = true;
-}
-
 function Featured_handleKeyDown(event) {
-    if (Featured_loadingData || !Featured_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        Featured_LastClickFinish = false;
-        window.setTimeout(Featured_keyClickDelay, Featured_keyClickDelayTime);
-    }
+    if (Featured_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

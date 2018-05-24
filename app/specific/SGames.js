@@ -8,8 +8,6 @@ var SGames_loadingDataTry = 0;
 var SGames_loadingDataTryMax = 10;
 var SGames_loadingDataTimeout = 3500;
 var SGames_itemsCountOffset = 0;
-var SGames_LastClickFinish = true;
-var SGames_keyClickDelayTime = 25;
 var SGames_MaxOffset = 0;
 var SGames_emptyContent = false;
 var SGames_itemsCountCheck = false;
@@ -175,18 +173,9 @@ function SGames_removeFocus() {
     Main_removeFocus(SGames_cursorY + '_' + SGames_cursorX, SGames_ids);
 }
 
-function SGames_keyClickDelay() {
-    SGames_LastClickFinish = true;
-}
-
 function SGames_handleKeyDown(event) {
-    if (SGames_loadingData || !SGames_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        SGames_LastClickFinish = false;
-        window.setTimeout(SGames_keyClickDelay, SGames_keyClickDelayTime);
-    }
+    if (SGames_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

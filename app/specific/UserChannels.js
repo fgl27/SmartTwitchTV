@@ -7,8 +7,6 @@ var UserChannels_loadingData = false;
 var UserChannels_loadingDataTry = 0;
 var UserChannels_loadingDataTryMax = 10;
 var UserChannels_loadingDataTimeout = 3500;
-var UserChannels_LastClickFinish = true;
-var UserChannels_keyClickDelayTime = 25;
 var UserChannels_List = [];
 var UserChannels_loadChannelOffsset = 0;
 var UserChannels_emptyContent = false;
@@ -204,18 +202,9 @@ function UserChannels_removeFocus() {
     Main_removeFocus(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
 }
 
-function UserChannels_keyClickDelay() {
-    UserChannels_LastClickFinish = true;
-}
-
 function UserChannels_handleKeyDown(event) {
-    if (UserChannels_loadingData || !UserChannels_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        UserChannels_LastClickFinish = false;
-        window.setTimeout(UserChannels_keyClickDelay, UserChannels_keyClickDelayTime);
-    }
+    if (UserChannels_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

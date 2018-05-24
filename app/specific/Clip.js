@@ -10,8 +10,6 @@ var Clip_loadingDataTry = 0;
 var Clip_loadingDataTryMax = 10;
 var Clip_loadingDataTimeout = 3500;
 var Clip_blankCellCount = 0;
-var Clip_LastClickFinish = true;
-var Clip_keyClickDelayTime = 25;
 var Clip_ReplacedataEnded = false;
 var Clip_MaxOffset = 0;
 var Clip_emptyContent = false;
@@ -341,18 +339,9 @@ function Clip_removeFocus() {
     Main_removeFocus(Clip_cursorY + '_' + Clip_cursorX, Clip_ids);
 }
 
-function Clip_keyClickDelay() {
-    Clip_LastClickFinish = true;
-}
-
 function Clip_handleKeyDown(event) {
-    if (Clip_loadingData || !Clip_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        Clip_LastClickFinish = false;
-        window.setTimeout(Clip_keyClickDelay, Clip_keyClickDelayTime);
-    }
+    if (Clip_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 
