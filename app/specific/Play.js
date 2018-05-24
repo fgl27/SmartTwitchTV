@@ -128,6 +128,7 @@ function Play_Start() {
     Play_Playing = false;
     Play_loadData();
     Play_EndSet(1);
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
 function Play_Resume() {

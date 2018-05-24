@@ -12,8 +12,6 @@ var Games_loadingDataTimeout = 3500;
 var Games_blankCellCount = 0;
 var Games_blankCellVector = [];
 var Games_itemsCountOffset = 0;
-var Games_LastClickFinish = true;
-var Games_keyClickDelayTime = 0;
 var Games_ReplacedataEnded = false;
 var Games_MaxOffset = 0;
 var Main_ItemsLimitGameOffset = 1;
@@ -313,18 +311,9 @@ function Games_removeFocus() {
     Main_removeFocus(Games_cursorY + '_' + Games_cursorX, Game_ids);
 }
 
-function Games_keyClickDelay() {
-    Games_LastClickFinish = true;
-}
-
 function Games_handleKeyDown(event) {
-    if (Games_loadingData || !Games_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        Games_LastClickFinish = false;
-        window.setTimeout(Games_keyClickDelay, Games_keyClickDelayTime);
-    }
+    if (Games_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

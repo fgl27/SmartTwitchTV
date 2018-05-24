@@ -11,8 +11,6 @@ var AGame_loadingDataTryMax = 10;
 var AGame_loadingDataTimeout = 3500;
 var AGame_blankCellCount = 0;
 var AGame_itemsCountOffset = 0;
-var AGame_LastClickFinish = true;
-var AGame_keyClickDelayTime = 25;
 var AGame_ReplacedataEnded = false;
 var AGame_MaxOffset = 0;
 var AGame_emptyContent = false;
@@ -392,18 +390,9 @@ function AGame_removeFocusFallow() {
     Main_RemoveClass(AGame_ids[0] + 'y_' + AGame_cursorX, Main_classThumb);
 }
 
-function AGame_keyClickDelay() {
-    AGame_LastClickFinish = true;
-}
-
 function AGame_handleKeyDown(event) {
-    if (AGame_loadingData || !AGame_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        AGame_LastClickFinish = false;
-        window.setTimeout(AGame_keyClickDelay, AGame_keyClickDelayTime);
-    }
+    if (AGame_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

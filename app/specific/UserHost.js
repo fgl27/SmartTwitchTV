@@ -11,8 +11,6 @@ var UserHost_loadingDataTryMax = 10;
 var UserHost_loadingDataTimeout = 3500;
 var UserHost_blankCellCount = 0;
 var UserHost_itemsCountOffset = 0;
-var UserHost_LastClickFinish = true;
-var UserHost_keyClickDelayTime = 25;
 var UserHost_ReplacedataEnded = false;
 var UserHost_MaxOffset = 0;
 var UserHost_emptyContent = false;
@@ -314,18 +312,9 @@ function UserHost_removeFocus() {
     Main_removeFocus(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
 }
 
-function UserHost_keyClickDelay() {
-    UserHost_LastClickFinish = true;
-}
-
 function UserHost_handleKeyDown(event) {
-    if (UserHost_loadingData || !UserHost_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        UserHost_LastClickFinish = false;
-        window.setTimeout(UserHost_keyClickDelay, UserHost_keyClickDelayTime);
-    }
+    if (UserHost_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     var i;
 

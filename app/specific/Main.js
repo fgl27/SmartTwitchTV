@@ -35,6 +35,10 @@ var Main_BeforeAgame = 1;
 var Main_BeforeChannelisSet = false;
 var Main_BeforeAgameisSet = false;
 
+var Main_LastClickFinish = true;
+var Main_addFocusFinish = true;
+var Main_addFocusFinishTime = 250;
+
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
@@ -239,6 +243,7 @@ function Main_initWindows() {
         Main_Is4k = webapis.productinfo.isUdPanelSupported();
         AddUser_RestoreUsers();
         Live_init();
+        document.body.addEventListener("keyup", Main_handleKeyUp, false);
 
         // pre load All img
         Main_PreLoadAImage(IMG_404_VIDEO);
@@ -450,6 +455,7 @@ function Main_ReStartScreens() {
     Play_isPanelShown();
     Main_SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
+    document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
 function Main_SwitchScreen() {
@@ -832,11 +838,32 @@ function Main_CheckMp4Html5() {
     return result;
 }
 
+//TODO Re-check this (handleKeyUp, keyClickDelay and keyClickDelayStart) as it can be better
+//This functions are here to prevent races during clicks
+//That can cause visual glitches and make the user lost sense on were the focus is
+function Main_handleKeyUp() {
+    Main_addFocusFinish = true;
+}
+
+function Main_keyClickDelay() {
+    Main_LastClickFinish = true;
+}
+
+function Main_keyClickDelayStart() {
+    Main_LastClickFinish = false;
+    window.setTimeout(Main_keyClickDelay);
+}
+
+function Main_CantClick() {
+    return !Main_LastClickFinish || !Main_addFocusFinish;
+}
+
 function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
@@ -847,6 +874,7 @@ function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
@@ -857,12 +885,14 @@ function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
 
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
 function Main_removeFocus(id, idArray) {
+    Main_addFocusFinish = false;
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 

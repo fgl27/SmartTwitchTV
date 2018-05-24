@@ -10,8 +10,6 @@ var SChannelContent_loadingDataTry = 0;
 var SChannelContent_loadingDataTryMax = 10;
 var SChannelContent_loadingDataTimeout = 3500;
 var SChannelContent_itemsCountOffset = 0;
-var SChannelContent_LastClickFinish = true;
-var SChannelContent_keyClickDelayTime = 25;
 var SChannelContent_skipImg = false;
 var SChannelContent_UserChannels = false;
 var SChannelContent_TargetName;
@@ -367,10 +365,6 @@ function SChannelContent_removeFocus() {
     Main_removeFocus(SChannelContent_cursorY + '_' + (!SChannelContent_cursorY ? SChannelContent_cursorX : 0), SChannelContent_ids);
 }
 
-function SChannelContent_keyClickDelay() {
-    SChannelContent_LastClickFinish = true;
-}
-
 function SChannelContent_keyEnter() {
     if (SChannelContent_cursorY) {
         if (AddCode_OauthToken !== '') {
@@ -397,13 +391,8 @@ function SChannelContent_keyEnter() {
 }
 
 function SChannelContent_handleKeyDown(event) {
-    if (SChannelContent_loadingData || !SChannelContent_LastClickFinish) {
-        event.preventDefault();
-        return;
-    } else {
-        SChannelContent_LastClickFinish = false;
-        window.setTimeout(SChannelContent_keyClickDelay, SChannelContent_keyClickDelayTime);
-    }
+    if (SChannelContent_loadingData || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
         case KEY_RETURN:

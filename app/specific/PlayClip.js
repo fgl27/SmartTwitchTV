@@ -70,6 +70,7 @@ function PlayClip_Start() {
     PlayClip_isOn = true;
 
     PlayClip_loadData();
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
 function PlayClip_loadData() {

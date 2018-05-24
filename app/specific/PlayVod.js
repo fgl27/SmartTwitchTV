@@ -95,6 +95,7 @@ function PlayVod_Start() {
     PlayVod_isOn = true;
     PlayVod_loadData();
     Play_EndSet(2);
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
 function PlayVod_PrepareLoad() {
