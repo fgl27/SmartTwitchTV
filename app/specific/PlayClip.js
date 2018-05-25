@@ -9,8 +9,6 @@ var PlayClip_TimeToJump = 0;
 var PlayClip_jumpCountMin = -12;
 var PlayClip_jumpCountMax = 12;
 var PlayClip_isOn = false;
-var PlayClip_qualityIndex = 2;
-var PlayClip_qualityIndexPosition = 2;
 var PlayClip_PanelHideID = null;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 3500;
@@ -51,7 +49,6 @@ function PlayClip_Start() {
     PlayClip_offsettime = 0;
     PlayClip_currentTime = 0;
     PlayClip_qualityIndex = 2;
-    PlayClip_qualityIndexPosition = 2;
     Play_EndSet(3);
     Play_IsWarning = false;
     Play_IconsResetFocus();
