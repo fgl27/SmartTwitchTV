@@ -1,5 +1,5 @@
 //Variable initialization
-var PlayVod_PanelHideID = '';
+var PlayVod_PanelHideID = null;
 var PlayVod_quality = 'source';
 var PlayVod_qualityPlaying = PlayVod_quality;
 
@@ -8,7 +8,7 @@ var PlayVod_STATE_LOADING_PLAYLIST = 1;
 var PlayVod_STATE_PLAYING = 2;
 var PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
 
-var PlayVod_streamInfoTimer = '';
+var PlayVod_streamInfoTimer = null;
 var PlayVod_tokenResponse = 0;
 var PlayVod_playlistResponse = 0;
 var PlayVod_playingTry = 0;

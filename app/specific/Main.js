@@ -56,7 +56,6 @@ var Main_td = '';
 var Main_IsDayFirst = false;
 var Main_ScrollbarElement;
 var Main_SearchInput;
-var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
 

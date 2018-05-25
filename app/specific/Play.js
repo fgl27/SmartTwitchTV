@@ -2,7 +2,7 @@
 var Play_ChatPositions = 1;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 3;
-var Play_PanelHideID = '';
+var Play_PanelHideID = null;
 var Play_quality = "source";
 var Play_qualityPlaying = Play_quality;
 var Play_sizePanelOffset = 0;
@@ -12,7 +12,7 @@ var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = Play_STATE_LOADING_TOKEN;
 
-var Play_streamInfoTimer = '';
+var Play_streamInfoTimer = null;
 var Play_tokenResponse = 0;
 var Play_playlistResponse = 0;
 var Play_playingTry = 0;
@@ -21,10 +21,10 @@ var Play_playingUrl = '';
 var Play_qualities = [];
 var Play_qualityIndex = 0;
 var Play_ChatEnable = false;
-var Play_exitID = '';
+var Play_exitID = null;
 
-var Play_pauseEndID = '';
-var Play_pauseStartID = '';
+var Play_pauseEndID = null;
+var Play_pauseStartID = null;
 
 var Play_sizeOffset = 0;
 var Play_created = '';
