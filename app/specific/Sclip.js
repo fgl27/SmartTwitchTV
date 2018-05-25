@@ -14,6 +14,7 @@ var Sclip_ReplacedataEnded = false;
 var Sclip_MaxOffset = 0;
 var Sclip_DurationSeconds = 0;
 var Sclip_emptyContent = false;
+var Sclip_ReplacedataTry = 0;
 
 var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_', 'sp_lang'];
 var Sclip_status = false;
@@ -63,6 +64,7 @@ function Sclip_StartLoad() {
     Sclip_blankCellCount = 0;
     Sclip_ReplacedataEnded = false;
     Sclip_MaxOffset = 0;
+    Sclip_ReplacedataTry = 0;
     Sclip_nameMatrix = [];
     Sclip_blankCellVector = [];
     Sclip_itemsCountCheck = false;
@@ -149,7 +151,7 @@ function Sclip_loadDataSuccess(responseText) {
     Sclip_cursor = response._cursor;
 
     if (!response_items) Sclip_dataEnded = true;
-    else {
+    else if (response_items < Main_ItemsLimitVideo) {
         Sclip_blankCellCount += Main_ItemsLimitVideo - response_items;
         Sclip_itemsCount += Main_ItemsLimitVideo - response_items;
     }
@@ -224,6 +226,7 @@ function Sclip_loadDataSuccessFinish() {
                 Sclip_loadDataReplace();
                 return;
             } else {
+                Sclip_ReplacedataTry = 0;
                 Sclip_blankCellCount = 0;
                 Sclip_blankCellVector = [];
             }
@@ -241,8 +244,7 @@ function Sclip_loadDataReplace() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' +
             encodeURIComponent(Main_selectedChannel) + '&limit=' +
-            Sclip_blankCellCount + '&period=' + Sclip_period +
-            (Sclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Sclip_cursor)) +
+            Sclip_blankCellCount + '&period=' + Sclip_period + '&cursor=' + encodeURIComponent(Sclip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -310,7 +312,16 @@ function Sclip_loadDataSuccessReplace(responseText) {
         }
     }
 
+    if (Sclip_ReplacedataTry > 3) {
+        Sclip_itemsCount -= Sclip_blankCellCount;
+        Sclip_blankCellCount = 0;
+        Sclip_blankCellVector = [];
+        Sclip_ReplacedataEnded = true;
+        Sclip_dataEnded = true;
+    } else Sclip_ReplacedataTry++;
+
     if (Sclip_ReplacedataEnded) {
+        Sclip_ReplacedataTry = 0;
         Sclip_blankCellCount = 0;
         Sclip_blankCellVector = [];
     } else Sclip_blankCellVector = tempVector;
