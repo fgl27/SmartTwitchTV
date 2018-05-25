@@ -13,6 +13,7 @@ var Gclip_blankCellCount = 0;
 var Gclip_ReplacedataEnded = false;
 var Gclip_MaxOffset = 0;
 var Gclip_emptyContent = false;
+var Gclip_ReplacedataTry = 0;
 
 var Gclip_ids = ['gc_thumbdiv', 'gc_img', 'gc_infodiv', 'gc_title', 'gc_createdon', 'gc_game', 'gc_viwers', 'gc_duration', 'gc_cell', 'gcpempty_', 'gc_lang'];
 var Gclip_status = false;
@@ -61,6 +62,7 @@ function Gclip_StartLoad() {
     Gclip_blankCellCount = 0;
     Gclip_ReplacedataEnded = false;
     Gclip_MaxOffset = 0;
+    Gclip_ReplacedataTry = 0;
     Gclip_nameMatrix = [];
     Gclip_blankCellVector = [];
     Gclip_itemsCountCheck = false;
@@ -152,7 +154,7 @@ function Gclip_loadDataSuccess(responseText) {
     Gclip_cursor = response._cursor;
 
     if (!response_items) Gclip_dataEnded = true;
-    else {
+    else if (response_items < Main_ItemsLimitVideo) {
         Gclip_blankCellCount += Main_ItemsLimitVideo - response_items;
         Gclip_itemsCount += Main_ItemsLimitVideo - response_items;
     }
@@ -230,6 +232,7 @@ function Gclip_loadDataSuccessFinish() {
                 Gclip_loadDataReplace();
                 return;
             } else {
+                Gclip_ReplacedataTry = 0;
                 Gclip_blankCellCount = 0;
                 Gclip_blankCellVector = [];
             }
@@ -246,9 +249,8 @@ function Gclip_loadDataReplace() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
             encodeURIComponent(Main_gameSelected) + '&limit=' + Gclip_blankCellCount +
-            '&period=' + encodeURIComponent(Gclip_period) +
-            (Gclip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Gclip_cursor)) + '&' +
-            Math.round(Math.random() * 1e7), true);
+            '&period=' + encodeURIComponent(Gclip_period) + '&cursor=' + encodeURIComponent(Gclip_cursor) +
+            '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Gclip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -319,7 +321,16 @@ function Gclip_loadDataSuccessReplace(responseText) {
         }
     }
 
+    if (Gclip_ReplacedataTry > 3) {
+        Gclip_itemsCount -= Gclip_blankCellCount;
+        Gclip_blankCellCount = 0;
+        Gclip_blankCellVector = [];
+        Gclip_ReplacedataEnded = true;
+        Gclip_dataEnded = true;
+    } else Gclip_ReplacedataTry++;
+
     if (Gclip_ReplacedataEnded) {
+        Gclip_ReplacedataTry = 0;
         Gclip_blankCellCount = 0;
         Gclip_blankCellVector = [];
     } else Gclip_blankCellVector = tempVector;

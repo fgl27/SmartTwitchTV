@@ -13,6 +13,7 @@ var Clip_blankCellCount = 0;
 var Clip_ReplacedataEnded = false;
 var Clip_MaxOffset = 0;
 var Clip_emptyContent = false;
+var Clip_ReplacedataTry = 0;
 
 var Clip_ids = ['c_thumbdiv', 'c_img', 'c_infodiv', 'c_title', 'c_createdon', 'c_game', 'c_viwers', 'c_duration', 'c_cell', 'cpempty_', 'c_lang'];
 var Clip_status = false;
@@ -62,6 +63,7 @@ function Clip_StartLoad() {
     Clip_blankCellVector = [];
     Clip_itemsCountCheck = false;
     Clip_itemsCount = 0;
+    Clip_ReplacedataTry = 0;
     Clip_cursorX = 0;
     Clip_cursorY = 0;
     Clip_dataEnded = false;
@@ -147,7 +149,7 @@ function Clip_loadDataSuccess(responseText) {
     // keep requesting clips until !response_items
     // as response_items can be lower then Main_ItemsLimitVideo and the content has not yet ended
     if (!response_items) Clip_dataEnded = true;
-    else {
+    else if (response_items < Main_ItemsLimitVideo) {
         Clip_blankCellCount += Main_ItemsLimitVideo - response_items;
         Clip_itemsCount += Main_ItemsLimitVideo - response_items;
     }
@@ -226,6 +228,7 @@ function Clip_loadDataSuccessFinish() {
                 Clip_loadDataReplace();
                 return;
             } else {
+                Clip_ReplacedataTry = 0;
                 Clip_blankCellCount = 0;
                 Clip_blankCellVector = [];
             }
@@ -240,8 +243,7 @@ function Clip_loadDataReplace() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + Clip_blankCellCount +
-            '&period=' + encodeURIComponent(Clip_period) +
-            (Clip_cursor === null ? '' : '&cursor=' + encodeURIComponent(Clip_cursor)) +
+            '&period=' + encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Clip_loadingDataTimeout;
@@ -314,7 +316,16 @@ function Clip_loadDataSuccessReplace(responseText) {
         }
     }
 
+    if (Clip_ReplacedataTry > 3) {
+        Clip_itemsCount -= Clip_blankCellCount;
+        Clip_blankCellCount = 0;
+        Clip_blankCellVector = [];
+        Clip_ReplacedataEnded = true;
+        Clip_dataEnded = true;
+    } else Clip_ReplacedataTry++;
+
     if (Clip_ReplacedataEnded) {
+        Clip_ReplacedataTry = 0;
         Clip_blankCellCount = 0;
         Clip_blankCellVector = [];
     } else Clip_blankCellVector = tempVector;
