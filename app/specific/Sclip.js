@@ -150,7 +150,11 @@ function Sclip_loadDataSuccess(responseText) {
 
     Sclip_cursor = response._cursor;
 
-    if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
+    // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
+    if (response_items === (Main_ItemsLimitVideo - 1)) {
+        Sclip_blankCellCount += 1;
+        Sclip_itemsCount += 1;
+    } else if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
 
     Sclip_itemsCount += response_items;
 
@@ -308,7 +312,7 @@ function Sclip_loadDataSuccessReplace(responseText) {
         }
     }
 
-    if (Sclip_ReplacedataTry > 3) {
+    if (Sclip_ReplacedataTry > 1) {
         Sclip_itemsCount -= Sclip_blankCellCount;
         Sclip_blankCellCount = 0;
         Sclip_blankCellVector = [];
