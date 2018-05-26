@@ -294,7 +294,7 @@ function Clip_loadDataSuccessReplace(responseText) {
         if (Clip_CellExists(video.slug)) {
             Clip_blankCellCount--;
             i--;
-        } else {
+        } else if (document.getElementById(Clip_blankCellVector[i]) !== null) {
             Clip_nameMatrix.push(video.slug);
             Vod_replaceVideo(Clip_blankCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +

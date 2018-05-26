@@ -300,7 +300,7 @@ function Gclip_loadDataSuccessReplace(responseText) {
         if (Gclip_CellExists(video.slug)) {
             Gclip_blankCellCount--;
             i--;
-        } else {
+        } else if (document.getElementById(Gclip_blankCellVector[i]) !== null) {
             Gclip_nameMatrix.push(video.slug);
             Vod_replaceVideo(Gclip_blankCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
