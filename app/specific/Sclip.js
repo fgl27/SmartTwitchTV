@@ -150,11 +150,7 @@ function Sclip_loadDataSuccess(responseText) {
 
     Sclip_cursor = response._cursor;
 
-    if (!response_items) Sclip_dataEnded = true;
-    else if (response_items < Main_ItemsLimitVideo) {
-        Sclip_blankCellCount += Main_ItemsLimitVideo - response_items;
-        Sclip_itemsCount += Main_ItemsLimitVideo - response_items;
-    }
+    if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
 
     Sclip_itemsCount += response_items;
 
