@@ -146,9 +146,11 @@ function Clip_loadDataSuccess(responseText) {
 
     Clip_cursor = response._cursor;
 
-    // keep requesting clips until !response_items
-    // as response_items can be lower then Main_ItemsLimitVideo and the content has not yet ended
-    if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
+    // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
+    if (response_items === (Main_ItemsLimitVideo - 1)) {
+        Clip_blankCellCount += 1;
+        Clip_itemsCount += 1;
+    } else if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
 
     Clip_itemsCount += response_items;
 
@@ -312,7 +314,7 @@ function Clip_loadDataSuccessReplace(responseText) {
         }
     }
 
-    if (Clip_ReplacedataTry > 3) {
+    if (Clip_ReplacedataTry > 1) {
         Clip_itemsCount -= Clip_blankCellCount;
         Clip_blankCellCount = 0;
         Clip_blankCellVector = [];

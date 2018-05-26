@@ -153,7 +153,11 @@ function Gclip_loadDataSuccess(responseText) {
     var offset_itemsCount = Gclip_itemsCount;
     Gclip_cursor = response._cursor;
 
-    if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
+    // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
+    if (response_items === (Main_ItemsLimitVideo - 1)) {
+        Gclip_blankCellCount += 1;
+        Gclip_itemsCount += 1;
+    } else if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
 
     Gclip_itemsCount += response_items;
 
@@ -317,7 +321,7 @@ function Gclip_loadDataSuccessReplace(responseText) {
         }
     }
 
-    if (Gclip_ReplacedataTry > 3) {
+    if (Gclip_ReplacedataTry > 1) {
         Gclip_itemsCount -= Gclip_blankCellCount;
         Gclip_blankCellCount = 0;
         Gclip_blankCellVector = [];
