@@ -294,7 +294,7 @@ function Sclip_loadDataSuccessReplace(responseText) {
         if (Sclip_CellExists(video.slug)) {
             Sclip_blankCellCount--;
             i--;
-        } else {
+        } else if (document.getElementById(Sclip_blankCellVector[i]) !== null) {
             Sclip_nameMatrix.push(video.slug);
             Vod_replaceVideo(Sclip_blankCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' +

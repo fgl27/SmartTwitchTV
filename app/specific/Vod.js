@@ -200,11 +200,11 @@ function Vod_createCellVideo(vod_id, id, valuesArray, idArray) {
 }
 
 function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
+    var ele = document.getElementById(id);
     var splitedId = id.split(idArray[9])[1];
-    id = document.getElementById(id);
-    id.setAttribute(Main_DataAttribute, vod_id);
-    id.innerHTML = Vod_VideoHtml(splitedId, valuesArray, idArray);
-    id.setAttribute('id', idArray[8] + splitedId);
+    ele.setAttribute(Main_DataAttribute, vod_id);
+    ele.innerHTML = Vod_VideoHtml(splitedId, valuesArray, idArray);
+    ele.setAttribute('id', idArray[8] + splitedId);
 }
 
 function Vod_VideoHtml(id, valuesArray, idArray) {

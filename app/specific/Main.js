@@ -734,14 +734,14 @@ function Main_createCellChannel(id, idArray, valuesArray) {
 }
 
 function Main_replaceChannel(id, valuesArray, ids) {
+    var ele = document.getElementById(id);
     var splitedId = id.split(ids[5])[1];
-    id = document.getElementById(id);
 
-    id.setAttribute(Main_DataAttribute, valuesArray[0]);
-    id.setAttribute('data-id', valuesArray[1]);
+    ele.setAttribute(Main_DataAttribute, valuesArray[0]);
+    ele.setAttribute('data-id', valuesArray[1]);
 
-    id.innerHTML = Main_ChannelHtml(splitedId, ids, valuesArray);
-    id.setAttribute('id', ids[4] + splitedId);
+    ele.innerHTML = Main_ChannelHtml(splitedId, ids, valuesArray);
+    ele.setAttribute('id', ids[4] + splitedId);
 }
 
 function Main_ChannelHtml(id, idArray, valuesArray) {
@@ -762,11 +762,11 @@ function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
 }
 
 function Main_replaceVideo(id, channel_name, valuesArray, ids) {
+    var ele = document.getElementById(id);
     var splitedId = id.split(ids[9])[1];
-    id = document.getElementById(id);
-    id.setAttribute(Main_DataAttribute, channel_name);
-    id.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
-    id.setAttribute('id', ids[8] + splitedId);
+    ele.setAttribute(Main_DataAttribute, channel_name);
+    ele.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
+    ele.setAttribute('id', ids[8] + splitedId);
 }
 
 function Main_VideoHtml(id, idArray, valuesArray) {
@@ -792,11 +792,11 @@ function Main_createCellGame(id, idArray, valuesArray) {
 }
 
 function Main_replaceGame(id, valuesArray, ids) {
+    var ele = document.getElementById(id);
     var splitedId = id.split(ids[6])[1];
-    id = document.getElementById(id);
-    id.setAttribute(Main_DataAttribute, valuesArray[0]);
-    id.innerHTML = Main_GameHtml(splitedId, ids, valuesArray);
-    id.setAttribute('id', ids[5] + splitedId);
+    ele.setAttribute(Main_DataAttribute, valuesArray[0]);
+    ele.innerHTML = Main_GameHtml(splitedId, ids, valuesArray);
+    ele.setAttribute('id', ids[5] + splitedId);
 }
 
 function Main_GameHtml(id, idArray, valuesArray) {
