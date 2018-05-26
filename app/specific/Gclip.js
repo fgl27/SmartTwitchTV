@@ -153,11 +153,7 @@ function Gclip_loadDataSuccess(responseText) {
     var offset_itemsCount = Gclip_itemsCount;
     Gclip_cursor = response._cursor;
 
-    if (!response_items) Gclip_dataEnded = true;
-    else if (response_items < Main_ItemsLimitVideo) {
-        Gclip_blankCellCount += Main_ItemsLimitVideo - response_items;
-        Gclip_itemsCount += Main_ItemsLimitVideo - response_items;
-    }
+    if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
 
     Gclip_itemsCount += response_items;
 
