@@ -507,7 +507,10 @@ function Play_updateCurrentTime(currentTime) {
     if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
     Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14s buffer size from twitch
-    if (Play_isPanelShown()) Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
+    if (Play_isPanelShown()) {
+        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
+        Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
+    }
 }
 
 function Play_clock() {
