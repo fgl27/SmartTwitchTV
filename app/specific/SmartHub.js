@@ -26,8 +26,13 @@ function SmartHub_Start() {
     SmartHub_cleanVector();
     SmartHub_loadDataRequestPrepare();
     SmartHub_previewData = 0;
-    if (SmartHub_emptyUser) webapis.preview.setPreviewData(previewDataGeneratorEmpty());
-    else SmartHub_loadDataRequest();
+    if (SmartHub_emptyUser) {
+        try {
+            webapis.preview.setPreviewData(previewDataGeneratorEmpty());
+        } catch (ex) {
+            console.log(ex.message);
+        }
+    } else SmartHub_loadDataRequest();
 }
 
 function SmartHub_cleanVector() {
