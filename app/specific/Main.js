@@ -108,7 +108,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
 var Main_currentVersion = '';
-var Main_minversion = '052318';
+var Main_minversion = '053018';
 var Main_versonTag = '';
 var Main_TizenVersion;
 
