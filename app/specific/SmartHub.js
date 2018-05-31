@@ -113,9 +113,25 @@ function SmartHub_previewDataSuccess(responseText) {
         SmartHub_loadDataRequest();
     } else {
         SmartHub_LastUpdate = new Date().getTime();
-        webapis.preview.setPreviewData(previewDataGenerator());
-        // Cleanup vector from Memory
-        window.setTimeout(SmartHub_cleanVector, 1000);
+        msetPreviewData();
+    }
+}
+
+function msetPreviewData() {
+    //first we erase all data '{}' to make shore when the new data is load it updates the imgs
+    //then set a new data previewDataGenerator(), on sucess we SmartHub_cleanVector
+    try {
+        webapis.preview.setPreviewData('{}', function() {
+            try {
+                webapis.preview.setPreviewData(previewDataGenerator(), function() {
+                    window.setTimeout(SmartHub_cleanVector, 1000);
+                });
+            } catch (ex) {
+                console.log(ex.message);
+            }
+        });
+    } catch (ex) {
+        console.log(ex.message);
     }
 }
 
