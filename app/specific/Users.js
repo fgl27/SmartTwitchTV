@@ -126,10 +126,14 @@ function Users_SetKeyTitleStart(bool, position) {
 
 function Users_addFocus() {
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
-    Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
+    Main_ready(function() {
+        Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
+        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+    });
 }
 
 function Users_removeFocus() {
+    Main_addFocusFinish = false;
     Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
 }
 
