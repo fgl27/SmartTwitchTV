@@ -763,8 +763,8 @@ function PlayVod_handleKeyDown(e) {
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isEndDialogShown()) Play_EndEnterPressed(2);
-                else if (Play_isPanelShown()) Play_PannelEnterPressed(2);
+                if (Play_isEndDialogShown()) Play_EndDialogPressed(2);
+                else if (Play_isPanelShown()) Play_BottomOptionsPressed(2);
                 else PlayVod_showPanel();
                 break;
             case KEY_RETURN:

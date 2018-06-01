@@ -953,7 +953,7 @@ function Play_EndTextClear() {
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT);
 }
 
-function Play_EndEnterPressed(PlayVodClip) {
+function Play_EndDialogPressed(PlayVodClip) {
     if (!Play_Endcounter) {
         if (PlayVodClip === 2) {
             PlayVod_offsettime = 0;
@@ -1053,7 +1053,7 @@ function Play_FallowUnfallow() {
     }
 }
 
-function Play_PannelEnterPressed(PlayVodClip) {
+function Play_BottomOptionsPressed(PlayVodClip) {
     if (!Play_Panelcouner) PlayClip_OpenVod();
     else if (Play_Panelcouner === 1) {
         if (PlayVodClip === 1) {
@@ -1256,8 +1256,8 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isEndDialogShown()) Play_EndEnterPressed(1);
-                else if (Play_isPanelShown()) Play_PannelEnterPressed(1);
+                if (Play_isEndDialogShown()) Play_EndDialogPressed(1);
+                else if (Play_isPanelShown()) Play_BottomOptionsPressed(1);
                 else Play_showPanel();
                 break;
             case KEY_RETURN:
