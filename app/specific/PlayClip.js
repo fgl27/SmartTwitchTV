@@ -278,6 +278,7 @@ function PlayClip_PreshutdownStream() {
     document.getElementById('scene2_pannel_0').style.display = 'none';
     document.getElementById("scene2_pannel_1").style.width = '28%';
     document.getElementById("quality_name").style.width = '80%';
+    Svod_vodOffset = 0;
 
     window.clearInterval(PlayClip_streamCheck);
     PlayClip_isOn = false;
@@ -463,6 +464,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
+        PlayVod_vodOffset = Svod_vodOffset;
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         PlayVod_Start();
