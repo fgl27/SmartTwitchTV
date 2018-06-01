@@ -8,9 +8,6 @@ var Users_RemoveDialogID = null;
 var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell'];
 var Users_status = false;
 var Users_loadingData = true;
-var Users_imgMatrix = [];
-var Users_imgMatrixId = [];
-var Users_imgMatrixCount = 0;
 //Variable initialization end
 
 function Users_init() {
@@ -34,9 +31,6 @@ function Users_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_user');
-    Users_imgMatrix = [];
-    Users_imgMatrixId = [];
-    Users_imgMatrixCount = 0;
     Users_cursorX = 0;
     Users_cursorY = 0;
     Users_loadingData = true;
@@ -60,21 +54,21 @@ function Users_loadData() {
 
         row = document.createElement('tr');
 
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, IMG_BLUR_VIDEO1));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play'));
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, IMG_BLUR_VIDEO2));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users'));
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
-            IMG_BLUR_GAME));
+            'gamepad'));
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, IMG_BLUR_VOD));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip'));
         coloumn_id++;
-        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, IMG_USER_PLUS));
-        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, IMG_USER_UP));
+        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus'));
+        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up'));
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, IMG_USER_MINUS));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times'));
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddCode_UserCodeExist(Main_UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), IMG_USER_CODE));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddCode_UserCodeExist(Main_UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -82,20 +76,15 @@ function Users_loadData() {
     Users_loadDataSuccessFinish();
 }
 
-function Users_createChannelCell(id, user_name, stream_type, preview_thumbnail) {
-    Users_imgMatrix[Users_imgMatrixCount] = preview_thumbnail;
-    Users_imgMatrixId[Users_imgMatrixCount] = Users_ids[1] + id;
-    Users_imgMatrixCount++;
-
-    Main_PreLoadAImage(preview_thumbnail);
-
+function Users_createChannelCell(id, user_name, stream_type, icons) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Users_ids[4] + id);
     Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><img id="' + Users_ids[1] + id + '" class="stream_img"></div>' +
+    Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
+        '" class="stream_user_icon"><i class="icon-' + icons + '"></i></div></div>' +
         '<div id="' + Users_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + Users_ids[3] + id + '" class="stream_info_user">' + stream_type + '</div></div>';
+        '<div id="' + Users_ids[3] + id + '" class="stream_info_user" style="text-align: center;">' + stream_type + '</div></div>';
 
     return Main_td;
 }
@@ -108,8 +97,6 @@ function Users_loadDataSuccessFinish() {
             if (AddCode_UsercodeArray.length > 0) Users_checkTitleStart();
             Users_addFocus();
         }
-
-        Main_LoadImages(Users_imgMatrix, Users_imgMatrixId, IMG_404_VIDEO);
 
         Users_loadingData = false;
     });
