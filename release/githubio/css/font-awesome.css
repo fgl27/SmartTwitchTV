@@ -126,3 +126,9 @@
 .icon-arrow-up:before {
   content: "\76";
 }
+.icon-movie-play:before {
+  content: "\7a";
+}
+.icon-movie:before {
+  content: "\41";
+}
