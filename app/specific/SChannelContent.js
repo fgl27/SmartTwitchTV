@@ -233,9 +233,9 @@ function SChannelContent_loadDataSuccess() {
         } else SChannelContent_skipImg = true;
     } else SChannelContent_skipImg = true;
 
-    row.appendChild(SChannelContent_createChannelCell('0_' + coloumn_id, Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_PAST_BROA, IMG_BLUR_VIDEO1_16));
+    row.appendChild(SChannelContent_createChannelCell('0_' + coloumn_id, Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_PAST_BROA, 'movie-play'));
     coloumn_id++;
-    row.appendChild(SChannelContent_createChannelCell('0_' + coloumn_id, Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_CLIPS, IMG_BLUR_VIDEO2_16));
+    row.appendChild(SChannelContent_createChannelCell('0_' + coloumn_id, Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_CLIPS, 'movie'));
 
     if (coloumn_id < 2) {
         coloumn_id++;
@@ -278,22 +278,16 @@ function SChannelContent_createCell(id, channel_name, preview_thumbnail, stream_
     return Main_td;
 }
 
-function SChannelContent_createChannelCell(id, user_name, stream_type, preview_thumbnail) {
-    SChannelContent_imgMatrix.push(preview_thumbnail);
-    SChannelContent_imgMatrixId.push(SChannelContent_ids[1] + id);
-
+function SChannelContent_createChannelCell(id, user_name, stream_type, icons) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', SChannelContent_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><img id="' + SChannelContent_ids[1] +
-        id + '" class="stream_img"></div>' +
+    Main_td.innerHTML = '<div id="' + SChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
+        SChannelContent_ids[1] + id +
+        '" class="stream_channel_content_icon"><i class="icon-' + icons + '"></i></div></div>' +
         '<div id="' + SChannelContent_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + SChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent_ids[4] + id + '"class="stream_info hide"></div>' +
-        '<div id="' + SChannelContent_ids[5] + id + '"class="stream_info hide"></div>' +
-        '<div id="' + SChannelContent_ids[6] + id + '"class="stream_info hide" ></div>' +
-        '<div id="' + SChannelContent_ids[7] + id + '"class="stream_info hide"></div></div>';
+        '<div id="' + SChannelContent_ids[3] + id + '" class="stream_channel" style="text-align: center">' + stream_type + '</div></div>';
 
     return Main_td;
 }
@@ -311,11 +305,9 @@ function SChannelContent_createFallow(id, user_name, stream_type, preview_thumbn
         SChannelContent_ids[1] + id + '" class="stream_img_fallow"></div>' +
         '<div id="' + SChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + SChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + SChannelContent_ids[4] + id + '"class="stream_channel hide"></div>' +
         '<div id="' + SChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(SChannelContent_selectedChannelViews) +
         STR_VIEWS + '</div>' +
-        '<div id="' + SChannelContent_ids[6] + id + '"class="stream_info" >' + Main_addCommas(SChannelContent_selectedChannelFallower) + STR_FALLOWERS + '</div>' +
-        '<div id="' + SChannelContent_ids[7] + id + '"class="stream_info hide"></div></div>';
+        '<div id="' + SChannelContent_ids[6] + id + '"class="stream_info" >' + Main_addCommas(SChannelContent_selectedChannelFallower) + STR_FALLOWERS + '</div></div>';
 
     return Main_td;
 }
