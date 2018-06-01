@@ -48,13 +48,14 @@ var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
+var PlayVod_vodOffset = 0;
 //Variable initialization end
 
 function PlayVod_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
-    if (Svod_vodOffset) { // this is a vod comming from a clip
+    if (PlayVod_vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
@@ -374,7 +375,7 @@ var PlayVod_listener = {
         PlayVod_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
         // reset the values after using
-        Svod_vodOffset = 0;
+        PlayVod_vodOffset = 0;
         PlayVod_offsettime = 0;
     },
     onbufferingprogress: function(percent) {
@@ -389,7 +390,7 @@ var PlayVod_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
             // reset the values after using
-            Svod_vodOffset = 0;
+            PlayVod_vodOffset = 0;
             PlayVod_offsettime = 0;
         }
     },
@@ -408,9 +409,9 @@ function PlayVod_onPlayer() {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
 
-        if (Svod_vodOffset > Svod_DurationSeconds) Svod_vodOffset = 0;
+        if (PlayVod_vodOffset > Svod_DurationSeconds) PlayVod_vodOffset = 0;
 
-        if (Svod_vodOffset) Play_avplay.seekTo(Svod_vodOffset * 1000);
+        if (PlayVod_vodOffset) Play_avplay.seekTo(PlayVod_vodOffset * 1000);
         else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
             Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
             Play_clearPause();
@@ -490,7 +491,7 @@ function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     PlayVod_offsettime = 0;
-    Svod_vodOffset = 0;
+    PlayVod_vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckOffset = 0;
