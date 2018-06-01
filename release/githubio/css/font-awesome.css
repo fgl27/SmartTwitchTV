@@ -111,3 +111,18 @@
 .icon-play:before {
   content: "\72";
 }
+.icon-user-times:before {
+  content: "\77";
+}
+.icon-user-plus:before {
+  content: "\78";
+}
+.icon-key:before {
+  content: "\74";
+}
+.icon-users:before {
+  content: "\75";
+}
+.icon-arrow-up:before {
+  content: "\76";
+}
