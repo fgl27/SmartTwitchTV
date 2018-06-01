@@ -145,8 +145,8 @@ function AGame_loadDataSuccess(responseText) {
     // Make the game video/clip/fallowing cell
     var thumbfallow, i = 0;
     for (i; i < 3; i++) {
-        if (!i) thumbfallow = STR_VIDEOS;
-        else if (i === 1) thumbfallow = STR_CLIPS;
+        if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 100%"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS;
+        else if (i === 1) thumbfallow = '<i class="icon-movie" style="color: #FFFFFF"></i>' + STR_SPACE + STR_CLIPS;
         else thumbfallow = '';
         Main_td = document.createElement('td');
         Main_td.setAttribute('id', AGame_ids[8] + 'y_' + i);
@@ -243,8 +243,8 @@ function AGame_Checkfallow() {
 }
 
 function AGame_setFallow() {
-    if (AGame_fallowing) Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_FALLOWING);
-    else Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY));
+    if (AGame_fallowing) Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_SPACE + STR_FALLOWING);
+    else Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY));
 }
 
 function AGame_fallow() {
