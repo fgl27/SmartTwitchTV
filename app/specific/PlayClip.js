@@ -559,8 +559,8 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isEndDialogShown()) Play_EndEnterPressed(3);
-                else if (Play_isPanelShown()) Play_PannelEnterPressed(3);
+                if (Play_isEndDialogShown()) Play_EndDialogPressed(3);
+                else if (Play_isPanelShown()) Play_BottomOptionsPressed(3);
                 else PlayClip_showPanel();
                 break;
             case KEY_RETURN:
