@@ -91,9 +91,6 @@ function Play_PreStart() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
     Main_innerHTML("dialog_buffer_play_text", STR_BUFFERING +
         '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i><div id="dialog_buffer_play_percentage" style="display:flex; font-weight: bold; font-size: 38%; transform: translate(0,-220%);">0</div></div>');
-    Main_innerHTML("chat_container", '<iframe id="chat_frame" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>' +
-        '<div id="scene_channel_dialog_chat" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">' +
-        '<div id="scene_channel_dialog_chat_text" class="strokedbig" style="display: inline-block; font-size: 216%; color: white;"></div></div>');
     Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
     Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 }
@@ -818,7 +815,7 @@ function Play_ChatSize(showDialog) {
     }
     document.getElementById("chat_container").style.height = containerHeight + '%';
     //window.parent.document.getElementById("chat_frame").style.height = '100%';
-    document.getElementById("scene_channel_dialog_chat").style.marginTop = dialogTop + '%';
+    document.getElementById("play_chat_dialog").style.marginTop = dialogTop + '%';
     Play_ChatPosition();
     if (showDialog) Play_showChatBackgroundDialog('Size ' + percentage + '%');
 
@@ -861,13 +858,13 @@ function Play_ChatPosition() {
 
 function Play_showChatBackgroundDialog(DialogText) {
     window.clearTimeout(Play_ChatBackgroundID);
-    Main_textContent("scene_channel_dialog_chat_text", DialogText);
-    Main_ShowElement('scene_channel_dialog_chat');
+    Main_textContent("play_chat_dialog_text", DialogText);
+    Main_ShowElement('play_chat_dialog');
     Play_ChatBackgroundID = window.setTimeout(Play_hideChatBackgroundDialog, 1000);
 }
 
 function Play_hideChatBackgroundDialog() {
-    Main_HideElement('scene_channel_dialog_chat');
+    Main_HideElement('play_chat_dialog');
 }
 
 function Play_KeyPause(PlayVodClip) {
