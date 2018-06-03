@@ -178,8 +178,6 @@ function Main_loadTranslations(device) {
     Main_Checktylesheet();
     Main_ready(function() {
         if (Main_isReleased) document.body.innerHTML = STR_BODY;
-        else STR_CONTROLS_MAIN_0 = STR_CONTROLS_MAIN_0 + STR_BR + Main_CheckMp4Html5();
-
         Main_ready(Main_initWindows);
     });
 }
@@ -786,35 +784,6 @@ function Main_GameHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
         valuesArray[2] + '</div></div>';
-}
-
-function Main_CheckMp4Html5() {
-    var result = STR_BR + 'Html5 mp4 video support:' + STR_BR + STR_DOT;
-    if (document.createElement('video').canPlayType) {
-
-        var VideoTest = document.createElement("video");
-        var h264Test = VideoTest.canPlayType('video/mp4; codecs="avc1.42E01E"');
-
-        if (h264Test) {
-            if (h264Test === "probably") result += " Full support for avc1.";
-            else result += " Some support for avc1.(" + h264Test + ")";
-        } else {
-            result += "No video support for avc1.";
-        }
-
-        result += STR_BR + STR_DOT;
-        h264Test = VideoTest.canPlayType('video/mp4; codecs="mp4a.40.2"');
-
-        if (h264Test) {
-            if (h264Test === "probably") result += " Full support for mp4a.";
-            else result += " Some support for mp4a.(" + h264Test + ")";
-        } else {
-            result += " No video support for mp4a.";
-        }
-
-    } else result += "No video support at all, createElement video fail.";
-
-    return result;
 }
 
 //TODO Re-check this (handleKeyUp, keyClickDelay and keyClickDelayStart) as it can be better
