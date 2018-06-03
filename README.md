@@ -84,8 +84,8 @@ Installation guide **Tizen Studio** (tested on Linux ubuntu 18.04 and windows 10
 #
 * Press enter and Click OK/YES and accept all the requests from java installer on the terminal
 * Open **Tizen Package Manager** (on linux it may request you to use apt-get to install missing dependencies)
-* Main page **(Main SDK)** Install **Tizen SDK tools**,  **(on linux it may request you to use apt-get to install missing dependencies)**
-* Second page **(Extension SDK)** Install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on linux it may request you to use apt-get to install missing dependencies)
+* Main tab **(Main SDK)** Install **4.0 TV**(or werever X.X TV version there is) and **Tizen SDK tools**,  **(on linux it may request you to use apt-get to install missing dependencies)**
+* Second tab **(Extension SDK)** Install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on linux it may request you to use apt-get to install missing dependencies)
 * After everything finish installing close the package manager it will ask if you wanna to open the **Tizen Studio** YES click open, if on windows it may request to add firewall permission for tizen give.
 * **Setting up the build environment:**
 * On the **Tizen Studio** start the device manager by clicking on drop down menu that has a option by default "No target" and select "Launch remote device manager" if you don't find the device manager on the studio just open it as a separated app it must be installed just like the studio
