@@ -205,15 +205,15 @@ function PlayClip_onPlayer() {
             Play_clearPause();
         }
 
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(PlayClip_listener);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
         //Twitch clips are encoded with avc1 format with are not supported by the 4k mode
         //https://developer.samsung.com/tv/develop/guides/multimedia/4k-uhd-video
         //Live streams and VOD use h264 with is supported
         //So set it to FALSE
-        if (Main_Is4k) Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
+        if (Main_Is4k && Play_4K_ModeEnable) {
+            Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
+            Play_4K_ModeEnable = false;
+        }
     } catch (e) {
         console.log(e);
     }

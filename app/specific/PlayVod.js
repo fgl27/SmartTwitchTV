@@ -417,11 +417,11 @@ function PlayVod_onPlayer() {
             Play_clearPause();
         }
 
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(PlayVod_listener);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
-        if (Main_Is4k) Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        if (Main_Is4k && !Play_4K_ModeEnable) {
+            Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+            Play_4K_ModeEnable = true;
+        }
     } catch (e) {
         console.log(e);
     }

@@ -68,10 +68,12 @@ var Play_JustStartPlaying = true;
 var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
+var Play_4K_ModeEnable = false;
 //Variable initialization end
 
 function Play_PreStart() {
     Play_avplay = (window.tizen && window.webapis.avplay) || {};
+    Play_SetAvPlayGlobal();
     Play_ClearPlayer();
     Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
     Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
@@ -95,6 +97,28 @@ function Play_PreStart() {
     Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
     Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 }
+
+//this are the global set option that need to be set only once
+//and they need to be set like this to work, faking a video playback
+function Play_SetAvPlayGlobal() {
+    try {
+        Play_avplay.stop();
+        Play_avplay.open(GIT_IO + "temp.mp4");
+        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        Play_avplay.setListener(PlayStart_listener);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
+    } catch (e) {
+        console.log(e + " Play_SetAvPlayGlobal()");
+    }
+    Play_avplay.prepare();
+}
+
+var PlayStart_listener = {
+    onstreamcompleted: function() {
+        Play_avplay.stop();
+    }
+};
 
 function Play_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
@@ -434,11 +458,11 @@ function Play_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(Play_listener);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
-        if (Main_Is4k) Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        if (Main_Is4k && !Play_4K_ModeEnable) {
+            Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+            Play_4K_ModeEnable = true;
+        }
     } catch (e) {
         console.log(e);
     }
