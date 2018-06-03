@@ -27,6 +27,7 @@ function DefaultLang() {
     STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
         STR_CONTROLS_MAIN_1 + STR_BR +
         STR_BR +
+        STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_MAIN_2 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_3 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_4 + STR_BR +
@@ -37,12 +38,12 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_9 + STR_BR +
         STR_CONTROLS_MAIN_10 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_11 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_12 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_12 + STR_BR + '</div>' + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div>';
-    STR_ABOUT_INFO_0 = STR_ABOUT_INFO_1 + STR_BR +
-        STR_ABOUT_INFO_2 + STR_BR +
+    STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
+        STR_ABOUT_INFO_2 + '</div>' +
         STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_ABOUT_EMAIL + STR_BR +
@@ -61,18 +62,19 @@ function DefaultLang() {
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
         STR_DIV_TITLE + STR_GENERAL + '</div>' +
+        STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_14 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_15 +
+        STR_DOT + STR_CONTROLS_PLAY_12 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_13 + '</div>' +
         STR_DIV_TITLE + STR_PLAYER + '</div>' +
+        STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_12 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_13 +
+        STR_DOT + STR_CONTROLS_PLAY_6 +
         STR_DIV_TITLE + STR_CHAT + '</div>' +
+        STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
