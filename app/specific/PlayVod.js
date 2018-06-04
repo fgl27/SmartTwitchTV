@@ -49,6 +49,7 @@ var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
+var PlayVod_RestoringFromResume = false;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -201,19 +202,15 @@ function PlayVod_Resume() {
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
     } else {
+        PlayVod_RestoringFromResume = true;
         PlayVod_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
         Play_clearPause();
         Play_showBufferDialog();
-        window.setTimeout(function() {
-            if (PlayVod_isOn) {
-                PlayVod_Playing = false;
-                PlayVod_onPlayer();
-                PlayVod_PlayerCheckQualityChanged = false;
-                PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
-            }
-        }, 500);
+        PlayVod_Playing = false;
+        PlayVod_onPlayer();
+        PlayVod_PlayerCheckQualityChanged = false;
     }
 }
 
@@ -368,6 +365,7 @@ var PlayVod_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         PlayVod_bufferingcomplete = false;
+        PlayVod_RestoringFromResume = false;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -376,6 +374,7 @@ var PlayVod_listener = {
         // reset the values after using
         PlayVod_vodOffset = 0;
         PlayVod_offsettime = 0;
+        PlayVod_RestoringFromResume = false;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -392,12 +391,17 @@ var PlayVod_listener = {
             PlayVod_vodOffset = 0;
             PlayVod_offsettime = 0;
         }
+        PlayVod_RestoringFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
         Play_PannelEndStart(2);
+    },
+    onerror: function(eventType) {
+        if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
+            Play_PannelEndStart(2);
     }
 };
 
@@ -442,7 +446,7 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
+    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime && !PlayVod_RestoringFromResume) {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
