@@ -69,6 +69,7 @@ var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
+var Play_RestoringFromResume = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -168,12 +169,12 @@ function Play_Resume() {
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
                 if (Play_isOn) {
-                    Play_PlayerCheckOffset = 80;
+                    Play_RestoringFromResume = true;
                     Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 10000;
-                    window.setTimeout(Play_updateStreamInfoStart, 7500); //7s is average time that takes to a stream to reload after a resume, so updateStreamInfoStart only after that
+                    window.setTimeout(Play_updateStreamInfoStart, 3000);
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
                     Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
                 }
@@ -422,10 +423,12 @@ var Play_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         Play_bufferingcomplete = false;
+        Play_RestoringFromResume = false;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
+        Play_RestoringFromResume = false;
         Main_empty('dialog_buffer_play_percentage');
     },
     onbufferingprogress: function(percent) {
@@ -438,6 +441,7 @@ var Play_listener = {
             Play_BufferPercentage = 0;
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
+            Play_RestoringFromResume = false;
             Main_empty('dialog_buffer_play_percentage');
         }
     },
@@ -446,6 +450,10 @@ var Play_listener = {
     },
     onstreamcompleted: function() {
         Play_PannelEndStart(1);
+    },
+    onerror: function(eventType) {
+        if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
+            Play_PannelEndStart(1);
     }
 };
 
@@ -494,10 +502,10 @@ function Play_isIdleOrPlaying() {
 }
 
 function Play_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
+    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime && !Play_RestoringFromResume) {
         Play_PlayerCheckCount++;
         Play_PlayerCheckOffset = 0;
-        if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing
+        if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
         if (Play_PlayerCheckCount > (3 + Play_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry

@@ -210,7 +210,6 @@ function PlayVod_Resume() {
             if (PlayVod_isOn) {
                 PlayVod_Playing = false;
                 PlayVod_onPlayer();
-                PlayVod_PlayerCheckOffset = 80;
                 PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
             }
@@ -446,7 +445,7 @@ function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
-        if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more trey if buffer is almost finishing
+        if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
         if (PlayVod_PlayerCheckCount > (3 + PlayVod_PlayerCheckOffset)) { //staled for 6 sec drop one quality
             if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
