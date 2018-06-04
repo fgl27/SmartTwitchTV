@@ -1117,6 +1117,8 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
+    window.clearTimeout(PlayClip_JumpID);
+    window.clearTimeout(PlayVod_JumpID);
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
