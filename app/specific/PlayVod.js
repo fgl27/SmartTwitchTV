@@ -81,6 +81,7 @@ function PlayVod_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
 
     PlayVod_currentTime = 0;
+    PlayVod_RestoringFromResume = false;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;

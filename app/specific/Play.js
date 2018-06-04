@@ -136,6 +136,7 @@ function Play_Start() {
 
     Play_currentTime = 0;
     Play_IsWarning = false;
+    Play_RestoringFromResume = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 10000;
     Play_updateStreamInfoStart();
