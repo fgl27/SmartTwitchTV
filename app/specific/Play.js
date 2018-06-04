@@ -176,7 +176,6 @@ function Play_Resume() {
                     Play_loadingInfoDataTimeout = 10000;
                     window.setTimeout(Play_updateStreamInfoStart, 3000);
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-                    Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
                 }
             }
         }, 500);
@@ -441,9 +440,9 @@ var Play_listener = {
             Play_BufferPercentage = 0;
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
-            Play_RestoringFromResume = false;
             Main_empty('dialog_buffer_play_percentage');
         }
+        Play_RestoringFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);

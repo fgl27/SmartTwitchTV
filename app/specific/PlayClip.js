@@ -141,6 +141,10 @@ var PlayClip_listener = {
     },
     onstreamcompleted: function() {
         Play_PannelEndStart(3);
+    },
+    onerror: function(eventType) {
+        if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
+            Play_PannelEndStart(3);
     }
 };
 
