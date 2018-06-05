@@ -1,9 +1,9 @@
 smarttv-twitch
 ==============
 
-This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not availably for most TV, that is way this project exist.
+This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not available for most TV, that is way this project exist.
 
-The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if yours Smart Hub menu is different from the one below yours TV is probably not supported as it doesn't run Tizen version supported by the application.
+The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if yours Smart Hub menu is different from the one bellow yours TV is probably not supported as it doesn't run Tizen version supported by the application.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
 Full support for all 2015 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, but as I don't have a 2015 TV model I can't test, if you wanna this app to support yours TV post that you wanna to help on the open issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/bhb27/smarttv-twitch/issues/12)
@@ -29,7 +29,7 @@ About this fork
 I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
-I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, cips, Channel off line content etc), did not fully support the latest smart remote, the looks of the app was a little old-fashioned, etc...
+I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, Cips, Channel off line content etc), did not fully support the latest smart remote, the looks of the app was a little old-fashioned, etc...
 
 So I work alone writing a new application from scratch focusing on performance and needed featuring, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user, but as today there is only one main developer working on the project the process is slow.
 
@@ -60,21 +60,26 @@ The key **INFO** is also map on the app with the same functions as the **GUIDE**
 ![Players](https://bhb27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
 
 
-Installation guide **Tizen Studio** (tested on Linux ubuntu 18.04 and windows 10 64 bits)
+Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10 64 bits)
 ==============
+
+## Account and Downloads
 
 * Create a Samsung account if you don't have one and set it up as a developer account [SAMSUNG DEVELOPERS](http://developer.samsung.com/home.do)
 * Log in with the developer account on the TV, open the application "APPS", hit number button (smart remote) and press the key sequence 12345, a new window will pop, enter your computer LAN IP address and make sure you click "On" to enable the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on. [Click here to read SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 * [Download and install **Tizen Studio**](https://developer.tizen.org/development/tizen-studio/download)
-* I used the **Tizen Studio 2.3 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on linux the file is a executable binary 480Mb size, give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, on windows it is a .exe file around 480MB, **On linux it may ask you to use apt-get to install missing dependencies below are the one asked by **Tizen Studio** 2.3**
+
+## Installation Tizen and Java SDK
+
+* I used the **Tizen Studio 2.3 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On linux it may ask you to use apt-get to install missing dependencies below are the one asked by **Tizen Studio** 2.3**
 #
 
 	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby
 
 #
-* Install Java SDK, I install this app with **Open JDK java 8** on linux terminal commands below, on windows go to [Java SE Development Kit 8 Downloads
+* Install Java SDK, I install this app with **Open JDK java 8** on windows go to [Java SE Development Kit 8 Downloads
 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) download the latest version of jdk when this was tested it was "jdk-8u152-windows-x64.exe" for 64bit windows or "jdk-8u152-windows-i586.exe 32bits
-"
+", on linux terminal commands below
 #
 
 	sudo add-apt-repository ppa:openjdk-r/ppa
@@ -83,25 +88,69 @@ Installation guide **Tizen Studio** (tested on Linux ubuntu 18.04 and windows 10
 
 #
 * Press enter and Click OK/YES and accept all the requests from java installer on the terminal
+
+## Tizen Package Manager(Installing the tools)
+
 * Open **Tizen Package Manager** (on linux it may request you to use apt-get to install missing dependencies)
 * Main tab **(Main SDK)** Install **4.0 TV**(or werever X.X TV version there is) and **Tizen SDK tools**,  **(on linux it may request you to use apt-get to install missing dependencies)**
-* Second tab **(Extension SDK)** Install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on linux it may request you to use apt-get to install missing dependencies)
-* After everything finish installing close the package manager it will ask if you wanna to open the **Tizen Studio** YES click open, if on windows it may request to add firewall permission for tizen give.
-* **Setting up the build environment:**
-* On the **Tizen Studio** start the device manager by clicking on drop down menu that has a option by default "No target" and select "Launch remote device manager" if you don't find the device manager on the studio just open it as a separated app it must be installed just like the studio
-* On device manager click on **Scan** it must find your TV if it is setup ok and on the same network, if it doesnot find try to add it manually by clicking on the  **+** opton and add your TV IP address don't change the **Port**, to get the address go to main menu > network > Network status... wait a moment extra options will be loaded, click on **IP Settings** read yours TV IP Address
-* **Generate a certificate**, back to **Tizen Studio** > Tools > Certificate Manager > + > select/click **Tizen** > create a new author.. next > setup name password etc... next > Use the default Tizen... Finish > **Sucess** click OK
+* Second tab **(Extension SDK)** Install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on Linux it may request you to use apt-get to install missing dependencies)
+* After everything finish installing close the package manager it will ask if you wanna to open the **Tizen Studio** YES click open, if on windows it may request to add firewall permission for Tizen give.
+
+### Bellow imgs showing the installed packages (the one with a delete option are installed)
+![SDK_installation_1](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_1.png)
+![SDK_installation_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_2.png)
+![SDK_installation_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_3.png)
+
+## Setting up the build environment:
+
+* Open **Tizen Studio**, then start the device manager by clicking on drop down menu that has a option by default **"No target"** and select **"Launch remote device manager"** if you don't find the device manager on the studio just open it as a separated app it must be installed just like the studio
+* On device manager click on **Scan** it must find your TV if it is setup ok and on the same network, if it doesn't find try to add it manually by clicking on the  **+** option and add your TV IP address don't change the **Port**, to get the address go to main menu > network > Network status... wait a moment extra options will be loaded, click on **IP Settings** read yours TV IP Address
+
+![device_manager](https://bhb27.github.io/smarttv-twitch/screenshot/install/device_manager.png)
+* After having the TV IP showing in the screen, click in to connect, when connect you see something like the bellow
+![device_manager](https://bhb27.github.io/smarttv-twitch/screenshot/install/device_manager2.png)
+
+## Generate a certificate:
+
+* back to **Tizen Studio** > Tools > Certificate Manager > + > select/click **Tizen** > create a new author.. next > setup name password etc... next > Use the default Tizen... Finish > **Success** click OK
 * Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
-* Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
-* Wait for it to load
+
+![certificate](https://bhb27.github.io/smarttv-twitch/screenshot/install/certificate.png)
+
+## Setup the application:
+
 * **[Download and extract the release_4.0.0_V2.zip file Click here, this is the application recipe file](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.0_V2/release_4.0.0_V2.zip)**
-* Back on **Tizen Studio**, Left click on the folder symbol with **BasicProject-tv-samsung-X.0** on the left corner under project explorer just to select the folder(**BasicProject-tv-samsung-X.0** is the default name give when you created a project on the past step, if you change the name click on that)
+
+![install_app1](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app1.png)
+
+* Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
+
+![install_app2](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app2.png)
+![install_app3](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app3.png)
+![install_app4](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app4.png)
+![install_app5](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app5.png)
+![install_app6](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app6.png)
+
+* Wait for it to load
+* Back on **Tizen Studio**, Left click on the folder symbol with **AnyName-X.0** on the left corner under project explorer just to select the folder(**AnyName-X.0** is the default name give when you created a project on the past step, if you change the name click on that)
 * Top menu > **File** > Import > General > File System ... next > Browser to find the extracted folder from the release_X_X_X.zip ... > click Select All, mark Overwrite existing ... > Finish
 * Wait for it to load
-* The name of the folder **BasicProject-tv-samsung-X.0** changes to **BasicProject-tv-samsung-public-2.4**
-* Click on that folder **BasicProject-tv-samsung-public-2.4** left click, then right click > Run as > **1 Tizen wen Application**, the installation will start
-* If everything goes OK the app must automatic open in a few seconds on the TV and work
-* If it fail during the instantiation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
+* The name of the folder **AnyName-X.0** changes to **AnyName-something-public-2.4**
+
+![install_app7](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app7.png)
+![install_app8_1](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_1.png)
+![install_app8_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_2.png)
+![install_app8_3](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_3.png)
+![install_app9](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app9.png)
+
+## Install the application:
+
+* Click on that folder **AnyName-public-2.4** left click, then right click > Run as > **1 Tizen wen Application**, the installation will start
+* If everything goes OK the app must be opened in a few seconds on the TV, and you can start using
+
+![install_app10](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app10.png)
+
+* If it fail during the installation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
 * This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
 ## In doubt or a featuring request [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
