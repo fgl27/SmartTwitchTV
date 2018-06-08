@@ -1,6 +1,7 @@
 //Variable initialization
 var Main_isReleased = false;
 var Main_cursorY = -1;
+var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
 var Main_Live = 1;
@@ -648,6 +649,7 @@ function Main_LazyImgStart(imgId, total, img_type, coloumns) {
         }
     }
     Main_Ychange(0);
+    Main_YchangeAddFocus(0);
 }
 
 function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
@@ -684,6 +686,13 @@ function Main_Ychange(y) {
 
 function Main_YRst(y) {
     Main_cursorY = y;
+    Main_cursorYAddFocus = y;
+}
+
+function Main_YchangeAddFocus(y) {
+    var mBool = Main_cursorYAddFocus !== y;
+    Main_cursorYAddFocus = y;
+    return mBool;
 }
 
 function Main_PreLoadAImage(link) {
@@ -793,6 +802,11 @@ function Main_handleKeyUp() {
     Main_addFocusFinish = true;
 }
 
+function Main_handleKeyUpStart(y) {
+    if (Main_YchangeAddFocus(y)) window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+    else Main_handleKeyUp();
+}
+
 function Main_keyClickDelay() {
     Main_LastClickFinish = true;
 }
@@ -811,7 +825,7 @@ function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) 
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        Main_handleKeyUpStart(y);
     });
 }
 
@@ -820,7 +834,7 @@ function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        Main_handleKeyUpStart(y);
     });
 }
 
@@ -829,7 +843,7 @@ function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        Main_handleKeyUpStart(y);
     });
 }
 
