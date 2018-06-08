@@ -807,36 +807,30 @@ function Main_CantClick() {
 }
 
 function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
 function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
 function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
-    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-
+    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
     });
-
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
 }
 
 function Main_removeFocus(id, idArray) {
