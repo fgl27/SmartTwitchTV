@@ -157,7 +157,7 @@ function previewDataGenerator() {
 
             LiveTitle = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) + SmartHub_userlive[i].channel.display_name;
 
-            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userlive[i].game + ', ' + SmartHub_userlive[i].channel.status +
+            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userlive[i].game +
                 '","image_ratio":"16by9","image_url":"' + (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userlive[i].channel.name +
                 '\\\",\\\"videoTitleIdx\\\": \\\"' + LiveTitle + '\\\"}","is_playable":true}';
@@ -171,7 +171,7 @@ function previewDataGenerator() {
         data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
             HostTitle = SmartHub_userhost[i].display_name + STR_USER_HOSTING + SmartHub_userhost[i].target.channel.display_name;
-            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userhost[i].target.meta_game + ', ' + SmartHub_userhost[i].target.title +
+            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userhost[i].target.meta_game +
                 '","image_ratio":"16by9","image_url":"' + (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.name +
                 '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name + '\\\"}","is_playable":true}';
