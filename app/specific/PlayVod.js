@@ -562,29 +562,31 @@ function PlayVod_getQualitiesCount() {
 }
 
 function PlayVod_jump() {
-    if (Play_isIdleOrPlaying()) Play_avplay.pause();
+    if (!Play_isEndDialogShown()) {
+        if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
-    if (PlayVod_TimeToJump > 0) {
-        try {
-            Play_avplay.jumpForward(PlayVod_TimeToJump * 1000);
-        } catch (e) {
-            Play_HideWarningDialog();
-            console.log(e);
+        if (PlayVod_TimeToJump > 0) {
+            try {
+                Play_avplay.jumpForward(PlayVod_TimeToJump * 1000);
+            } catch (e) {
+                Play_HideWarningDialog();
+                console.log(e);
+            }
+        } else {
+            try {
+                Play_avplay.jumpBackward(PlayVod_TimeToJump * -1000);
+            } catch (e) {
+                Play_HideWarningDialog();
+                console.log(e);
+            }
         }
-    } else {
-        try {
-            Play_avplay.jumpBackward(PlayVod_TimeToJump * -1000);
-        } catch (e) {
-            Play_HideWarningDialog();
-            console.log(e);
-        }
+
+        if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
-
     PlayVod_jumpCount = 0;
     PlayVod_jumpCountMin = -16;
     PlayVod_jumpCountMax = 16;
     PlayVod_IsJumping = false;
-    if (!Play_isIdleOrPlaying()) Play_avplay.play();
     Play_clearPause();
 }
 
