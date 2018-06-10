@@ -357,29 +357,32 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_jump() {
-    if (Play_isIdleOrPlaying()) Play_avplay.pause();
+    if (!Play_isEndDialogShown()) {
+        if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
-    if (PlayClip_TimeToJump > 0) {
-        try {
-            Play_avplay.jumpForward(PlayClip_TimeToJump * 1000);
-        } catch (e) {
-            Play_HideWarningDialog();
-            console.log(e);
+        if (PlayClip_TimeToJump > 0) {
+            try {
+                Play_avplay.jumpForward(PlayClip_TimeToJump * 1000);
+            } catch (e) {
+                Play_HideWarningDialog();
+                console.log(e);
+            }
+        } else {
+            try {
+                Play_avplay.jumpBackward(PlayClip_TimeToJump * -1000);
+            } catch (e) {
+                Play_HideWarningDialog();
+                console.log(e);
+            }
         }
-    } else {
-        try {
-            Play_avplay.jumpBackward(PlayClip_TimeToJump * -1000);
-        } catch (e) {
-            Play_HideWarningDialog();
-            console.log(e);
-        }
+
+        if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
 
     PlayClip_jumpCount = 0;
     PlayClip_jumpCountMin = -12;
     PlayClip_jumpCountMax = 12;
     PlayClip_IsJumping = false;
-    if (!Play_isIdleOrPlaying()) Play_avplay.play();
 }
 
 function PlayClip_jumpCancel() {
