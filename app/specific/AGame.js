@@ -31,17 +31,16 @@ function AGame_init() {
         ': ' + Main_gameSelected));
     Main_YRst(AGame_cursorY);
     if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
-        Main_ScrollHelper(AGame_ids[0], AGame_cursorY, AGame_cursorX, Main_aGame, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(AGame_ids[0], AGame_cursorY, AGame_cursorX);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
     } else AGame_StartLoad();
 }
 
 function AGame_exit() {
-    if (AGame_status) {
-        if (AGame_cursorY === -1) AGame_cursorY = 0;
+    if (AGame_status && AGame_cursorY === -1) {
+        AGame_cursorY = 0;
         AGame_removeFocusFallow();
-        AGame_addFocus();
+        Main_AddClass(AGame_ids[0] + '0_' + AGame_cursorX, Main_classThumb);
     }
     Main_innerHTML('top_bar_game', STR_GAMES);
     document.body.removeEventListener("keydown", AGame_handleKeyDown);
@@ -367,7 +366,7 @@ function AGame_loadDataSuccessReplace(responseText) {
 
 function AGame_addFocus() {
 
-    Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_aGame, Main_ColoumnsCountVideo, AGame_itemsCount);
+    Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount);
 
     if (AGame_cursorY > 2) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 

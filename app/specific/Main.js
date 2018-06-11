@@ -825,12 +825,12 @@ function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) 
     });
 }
 
-function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+            Main_ScrollHelperVideo(idArray[0], y, x);
             window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
         } else Main_handleKeyUp();
     });
@@ -852,7 +852,24 @@ function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
-//TODO split Main_ScrollHelper in Main_ScrollHelperVideo/game/channel/etc
+function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
+    var id;
+
+    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        else if (cursorY === 1) {
+            id = Thumbnail + '0_' + cursorX;
+            cursorY = 0;
+        }
+    } else id = Thumbnail + cursorY + '_' + cursorX;
+
+    if (cursorY) {
+        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo);
+    } else {
+        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo + Main_ScrollOffSetVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
+    }
+}
+
 function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
     var id = Thumbnail + cursorY + '_' + cursorX;
 
@@ -870,7 +887,6 @@ function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, Off
         id = Thumbnail + (cursorY - 1) + '_' + cursorX;
         cursorY = 0;
     }
-    if (!cursorY && Screen === Main_aGame) OffsetPlus = OffsetPlus - Main_ScrollOffSetMinusAgame;
 
     if (DuploYOffsetCheck) {
         DuploYOffsetCheck = (!cursorY || cursorY === 1);

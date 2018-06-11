@@ -26,6 +26,7 @@ function Users_exit() {
 }
 
 function Users_StartLoad() {
+    Main_YRst(-1);
     Main_HideWarningDialog();
     Users_status = false;
     Main_ScrollHelperBlank('blank_focus');
@@ -125,10 +126,14 @@ function Users_SetKeyTitleStart(bool, position) {
 }
 
 function Users_addFocus() {
-    Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
     Main_ready(function() {
-        Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
-        Main_handleKeyUpStart(Users_cursorY);
+        Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+
+        if (Main_YchangeAddFocus(Users_cursorY)) {
+            Main_ScrollHelper(Users_ids[0], Users_cursorY, Users_cursorX, Main_Users, Main_ScrollOffSetMinusChannels, 160, true);
+            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        } else Main_handleKeyUp();
+
     });
 }
 

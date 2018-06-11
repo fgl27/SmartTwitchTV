@@ -34,8 +34,7 @@ function Clip_init() {
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     Main_YRst(Clip_cursorY);
     if (Clip_status) {
-        Main_ScrollHelper(Clip_ids[0], Clip_cursorY, Clip_cursorX, Main_Clip, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(Clip_ids[0], Clip_cursorY, Clip_cursorX);
         Main_CounterDialog(Clip_cursorX, Clip_cursorY, Main_ColoumnsCountVideo, Clip_itemsCount);
     } else Clip_StartLoad();
 }
@@ -332,7 +331,7 @@ function Clip_loadDataSuccessReplace(responseText) {
 }
 
 function Clip_addFocus() {
-    Main_addFocusVideo(Clip_cursorY, Clip_cursorX, Clip_ids, Main_Clip, Main_ColoumnsCountVideo, Clip_itemsCount);
+    Main_addFocusVideo(Clip_cursorY, Clip_cursorX, Clip_ids, Main_ColoumnsCountVideo, Clip_itemsCount);
 
     if (Clip_cursorY > 2) Main_LazyImg(Clip_ids[1], Clip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
