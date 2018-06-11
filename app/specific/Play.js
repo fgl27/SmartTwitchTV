@@ -276,7 +276,7 @@ function Play_loadDataRequest() {
             theUrl = 'https://api.twitch.tv/api/channels/' + Play_selectedChannel + '/access_token';
         } else {
             theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play_selectedChannel +
-                '.m3u8?player=twitchweb&&type=any&sig=' + Play_tokenResponse.sig + '&token=' +
+                '.m3u8?player=twitchweb&type=any&sig=' + Play_tokenResponse.sig + '&token=' +
                 escape(Play_tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
         xmlHttp.open("GET", theUrl, true);

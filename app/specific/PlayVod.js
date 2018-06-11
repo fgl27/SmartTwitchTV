@@ -230,7 +230,7 @@ function PlayVod_loadDataRequest() {
             theUrl = 'https://api.twitch.tv/api/vods/' + Svod_vodId + '/access_token' + (AddCode_OauthToken !== '' ? '?oauth_token=' + AddCode_OauthToken : '');
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + Svod_vodId +
-                '.m3u8?player=twitchweb&&type=any&nauthsig=' + PlayVod_tokenResponse.sig + '&nauth=' +
+                '.m3u8?player=twitchweb&type=any&nauthsig=' + PlayVod_tokenResponse.sig + '&nauth=' +
                 escape(PlayVod_tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
         xmlHttp.open("GET", theUrl, true);
