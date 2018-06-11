@@ -194,10 +194,9 @@ function AddUser_RestoreUsers() {
 
     if (Main_TizenVersion) {
         window.setTimeout(function() {
-            SmartHub_Start();
             window.addEventListener('appcontrol', SmartHub_EventListener, false);
 
-            Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+            SmartHub_StartInterval();
             document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
         }, 3500);
     }
@@ -214,11 +213,8 @@ function AddUser_SaveNewUser() {
     if (Main_TizenVersion && AddUser_UsernameArray.length === 1) {
         window.clearInterval(Main_SmartHubId);
         document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
-
-        Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
         document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
-
-        SmartHub_Start();
+        SmartHub_StartInterval();
     }
 }
 

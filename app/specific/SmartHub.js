@@ -140,6 +140,11 @@ function msetPreviewData() {
     }
 }
 
+function SmartHub_StartInterval() {
+    SmartHub_Start();
+    Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+}
+
 function previewDataGeneratorEmpty() {
     return '{"sections":[' + previewDataGeneratorEnd(true);
 }
