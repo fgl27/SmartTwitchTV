@@ -903,22 +903,15 @@ function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
     window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0));
 }
 
-function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
+function Main_ScrollHelperGeneral(Thumbnail, cursorY, cursorX, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
     var id = Thumbnail + cursorY + '_' + cursorX;
 
-    if (document.getElementById(id) === null) {
-        if (!cursorY && !cursorX) Main_ScrollHelperBlank('blank_focus');
-        return;
-    } else if (Screen === Main_UserChannels || Screen === Main_SChannels) {
-        if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-            if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-            else cursorY = 0;
+    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        else if (cursorY === 1) {
+            id = Thumbnail + '0_' + cursorX;
+            cursorY = 0;
         }
-    } else if (cursorY > 1 && OffsetPlus !== Main_ScrollOffSetGame && !Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-    } else if (cursorY === 1 && OffsetPlus !== Main_ScrollOffSetGame && !Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        cursorY = 0;
     }
 
     if (DuploYOffsetCheck) {
@@ -929,9 +922,7 @@ function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, Off
         }
     } else DuploYOffsetCheck = (!cursorY);
 
-    if (Main_Go === Screen) {
-        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
-    } else return;
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
 }
 
 function Main_ScrollHelperBlank(id) {
