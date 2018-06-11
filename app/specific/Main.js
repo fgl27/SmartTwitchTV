@@ -866,11 +866,8 @@ function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
         }
     }
 
-    if (cursorY) {
-        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo);
-    } else {
-        window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo + Main_ScrollOffSetVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
-    }
+    if (cursorY) Main_window_scroll(id, 0 - Main_ScrollOffSetMinusVideo);
+    else Main_window_scroll(id, Main_ScrollOffSetVideo - Main_ScrollOffSetMinusVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
 }
 
 function Main_ScrollHelperGames(Thumbnail, cursorY, cursorX) {
@@ -884,7 +881,7 @@ function Main_ScrollHelperGames(Thumbnail, cursorY, cursorX) {
         }
     }
 
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusGame + (!cursorY ? Main_ScrollOffSetGame : 0));
+    Main_window_scroll(id, ((!cursorY ? Main_ScrollOffSetGame : 0) - Main_ScrollOffSetMinusGame));
 }
 
 function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
@@ -903,7 +900,7 @@ function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
         OffsetMinus = OffsetMinus - Main_ScrollOffSetMinusDuploYOffsetCheck;
     }
 
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0));
+    Main_window_scroll(id, ((DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0) - OffsetMinus));
 }
 
 function Main_ScrollHelperGeneral(Thumbnail, cursorY, cursorX, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
@@ -925,11 +922,11 @@ function Main_ScrollHelperGeneral(Thumbnail, cursorY, cursorX, OffsetMinus, Offs
         }
     } else DuploYOffsetCheck = (!cursorY);
 
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? OffsetPlus : 0));
+    Main_window_scroll(id, ((DuploYOffsetCheck ? OffsetPlus : 0) - OffsetMinus));
 }
 
 function Main_ScrollHelperBlank(id) {
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo);
+    Main_window_scroll(id, (0 - Main_ScrollOffSetMinusVideo));
 }
 
 function Main_documentVerticalScrollPosition() {
@@ -938,6 +935,10 @@ function Main_documentVerticalScrollPosition() {
 
 function Main_elementVerticalClientPositionById(id) {
     return document.getElementById(id).getBoundingClientRect().top;
+}
+
+function Main_window_scroll(id, value) {
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) + value);
 }
 
 function Main_Checktylesheet() {
