@@ -38,8 +38,9 @@ function AGame_init() {
 
 function AGame_exit() {
     if (AGame_status && AGame_cursorY === -1) {
-        AGame_cursorY = 0;
         AGame_removeFocusFallow();
+        AGame_cursorY = 0;
+        AGame_cursorX = 0;
         Main_AddClass(AGame_ids[0] + '0_' + AGame_cursorX, Main_classThumb);
     }
     Main_innerHTML('top_bar_game', STR_GAMES);
