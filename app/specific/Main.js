@@ -853,7 +853,7 @@ function Main_removeFocus(id, idArray) {
 }
 
 function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
-    var id;
+    var id = Thumbnail + cursorY + '_' + cursorX;
 
     if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
         if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
@@ -861,7 +861,7 @@ function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
             id = Thumbnail + '0_' + cursorX;
             cursorY = 0;
         }
-    } else id = Thumbnail + cursorY + '_' + cursorX;
+    }
 
     if (cursorY) {
         window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo);
