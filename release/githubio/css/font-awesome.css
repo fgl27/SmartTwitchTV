@@ -105,9 +105,6 @@
 .icon-refresh:before {
   content: "\73";
 }
-.icon-calendar:before {
-  content: "\67";
-}
 .icon-play:before {
   content: "\72";
 }
@@ -131,4 +128,7 @@
 }
 .icon-movie:before {
   content: "\41";
+}
+.icon-calendar:before {
+  content: "\79";
 }
