@@ -29,8 +29,7 @@ function UserHost_init() {
     Main_YRst(UserHost_cursorY);
     if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
     if (UserHost_status) {
-        Main_ScrollHelper(UserHost_ids[0], UserHost_cursorY, UserHost_cursorX, Main_UserHost, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(UserHost_ids[0], UserHost_cursorY, UserHost_cursorX);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
     } else UserHost_StartLoad();
 }
@@ -297,7 +296,7 @@ function UserHost_loadDataSuccessReplace(responseText) {
 
 function UserHost_addFocus() {
 
-    Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_UserHost, Main_ColoumnsCountVideo, UserHost_itemsCount);
+    Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_ColoumnsCountVideo, UserHost_itemsCount);
 
     if (UserHost_cursorY > 2) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 

@@ -40,8 +40,7 @@ function Svod_init() {
     Main_YRst(Svod_cursorY);
     if (Svod_status) {
         Main_textContent('top_bar_game', Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-        Main_ScrollHelper(Svod_ids[0], Svod_cursorY, Svod_cursorX, Main_Svod, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(Svod_ids[0], Svod_cursorY, Svod_cursorX);
         Main_CounterDialog(Svod_cursorX, Svod_cursorY, Main_ColoumnsCountVideo, Svod_itemsCount);
     } else Svod_StartLoad();
 }
@@ -313,7 +312,7 @@ function Svod_loadDataSuccessReplace(responseText) {
 }
 
 function Svod_addFocus() {
-    Main_addFocusVideo(Svod_cursorY, Svod_cursorX, Svod_ids, Main_Svod, Main_ColoumnsCountVideo, Svod_itemsCount);
+    Main_addFocusVideo(Svod_cursorY, Svod_cursorX, Svod_ids, Main_ColoumnsCountVideo, Svod_itemsCount);
 
     if (Svod_cursorY > 2) Main_LazyImg(Svod_ids[1], Svod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 

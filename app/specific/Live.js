@@ -28,7 +28,7 @@ function Live_init() {
     document.body.addEventListener("keydown", Live_handleKeyDown, false);
     Main_YRst(Live_cursorY);
     if (Live_Status) {
-        Main_ScrollHelper(Live_ids[0], Live_cursorY, Live_cursorX, Main_Live, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(Live_ids[0], Live_cursorY, Live_cursorX);
         Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
     } else Live_StartLoad();
 }
@@ -307,7 +307,7 @@ function Live_loadDataSuccessReplace(responseText) {
 }
 
 function Live_addFocus() {
-    Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_Live, Main_ColoumnsCountVideo, Live_itemsCount);
+    Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_ColoumnsCountVideo, Live_itemsCount);
 
     if (Live_cursorY > 2) Main_LazyImg(Live_ids[1], Live_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 

@@ -31,8 +31,7 @@ function UserLive_init() {
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
     if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
     if (UserLive_status) {
-        Main_ScrollHelper(UserLive_ids[0], UserLive_cursorY, UserLive_cursorX, Main_UserLive, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(UserLive_ids[0], UserLive_cursorY, UserLive_cursorX);
         Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
     } else UserLive_StartLoad();
 }
@@ -364,7 +363,7 @@ function UserLive_loadDataSuccessReplace(responseText) {
 }
 
 function UserLive_addFocus() {
-    Main_addFocusVideo(UserLive_cursorY, UserLive_cursorX, UserLive_ids, Main_UserLive, Main_ColoumnsCountVideo, UserLive_itemsCount);
+    Main_addFocusVideo(UserLive_cursorY, UserLive_cursorX, UserLive_ids, Main_ColoumnsCountVideo, UserLive_itemsCount);
 
     if (UserLive_cursorY > 2) Main_LazyImg(UserLive_ids[1], UserLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 

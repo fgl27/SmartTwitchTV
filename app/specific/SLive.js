@@ -30,8 +30,7 @@ function SLive_init() {
     document.body.addEventListener("keydown", SLive_handleKeyDown, false);
     Main_YRst(SLive_cursorY);
     if (SLive_Status) {
-        Main_ScrollHelper(SLive_ids[0], SLive_cursorY, SLive_cursorX, Main_SLive, Main_ScrollOffSetMinusVideo,
-            Main_ScrollOffSetVideo, false);
+        Main_ScrollHelperVideo(SLive_ids[0], SLive_cursorY, SLive_cursorX);
         Main_CounterDialog(SLive_cursorX, SLive_cursorY, Main_ColoumnsCountVideo, SLive_itemsCount);
     } else SLive_StartLoad();
 }
@@ -292,7 +291,7 @@ function SLive_loadDataSuccessReplace(responseText) {
 }
 
 function SLive_addFocus() {
-    Main_addFocusVideo(SLive_cursorY, SLive_cursorX, SLive_ids, Main_SLive, Main_ColoumnsCountVideo, SLive_itemsCount);
+    Main_addFocusVideo(SLive_cursorY, SLive_cursorX, SLive_ids, Main_ColoumnsCountVideo, SLive_itemsCount);
 
     if (SLive_cursorY > 2) Main_LazyImg(SLive_ids[1], SLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
