@@ -213,7 +213,6 @@ function AGame_loadDataSuccessFinish() {
             if (AGame_emptyContent) {
                 Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
                 AGame_cursorY = -1;
-                Main_ScrollHelper(AGame_ids[0], 'y', 0, Main_aGame, 135, 0, false);
                 AGame_addFocusFallow();
             } else {
                 AGame_status = true;
