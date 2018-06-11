@@ -27,8 +27,7 @@ function SGames_init() {
     document.body.addEventListener("keydown", SGames_handleKeyDown, false);
     Main_YRst(SGames_cursorY);
     if (SGames_Status) {
-        Main_ScrollHelper(SGames_ids[0], SGames_cursorY, SGames_cursorX, Main_sgames,
-            Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+        Main_ScrollHelperGames(SGames_ids[0], SGames_cursorY, SGames_cursorX);
         Main_CounterDialog(SGames_cursorX, SGames_cursorY, Main_ColoumnsCountGame, SGames_itemsCount);
     } else SGames_StartLoad();
 }
@@ -163,7 +162,7 @@ function SGames_loadDataSuccessFinish() {
 }
 
 function SGames_addFocus() {
-    Main_addFocusGame(SGames_cursorY, SGames_cursorX, SGames_ids, Main_sgames,
+    Main_addFocusGame(SGames_cursorY, SGames_cursorX, SGames_ids,
         Main_ColoumnsCountGame, Games_itemsCount);
     if (SGames_cursorY > 2) Main_LazyImg(SGames_ids[1], SGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 

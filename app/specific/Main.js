@@ -836,12 +836,12 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     });
 }
 
-function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+            Main_ScrollHelperGames(idArray[0], y, x);
             window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
         } else Main_handleKeyUp();
     });
@@ -868,6 +868,20 @@ function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
     } else {
         window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo + Main_ScrollOffSetVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
     }
+}
+
+function Main_ScrollHelperGames(Thumbnail, cursorY, cursorX) {
+    var id = Thumbnail + cursorY + '_' + cursorX;
+
+    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        else if (cursorY === 1) {
+            id = Thumbnail + '0_' + cursorX;
+            cursorY = 0;
+        }
+    }
+
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusGame + (!cursorY ? Main_ScrollOffSetGame : 0));
 }
 
 function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
