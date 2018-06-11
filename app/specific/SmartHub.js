@@ -123,9 +123,17 @@ function SmartHub_previewDataSuccess(responseText) {
 }
 
 function msetPreviewData() {
+    //first we erase all data '{}' to make shore when the new data is load it updates the imgs
+    //then set a new data previewDataGenerator(), on sucess we SmartHub_cleanVector
     try {
-        webapis.preview.setPreviewData(previewDataGenerator(), function() {
-            window.setTimeout(SmartHub_cleanVector, 1000);
+        webapis.preview.setPreviewData('{}', function() {
+            try {
+                webapis.preview.setPreviewData(previewDataGenerator(), function() {
+                    window.setTimeout(SmartHub_cleanVector, 1000);
+                });
+            } catch (ex) {
+                console.log(ex.message);
+            }
         });
     } catch (ex) {
         console.log(ex.message);
@@ -146,13 +154,11 @@ function previewDataGenerator() {
     if (vectorSize) {
         data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
-            LiveTitle = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) +
-                SmartHub_userlive[i].channel.display_name;
 
-            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING +
-                SmartHub_userlive[i].game + '","image_ratio":"16by9","image_url":"' +
-                (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize) +
-                '&' + Math.round(Math.random() * 1e7) +
+            LiveTitle = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) + SmartHub_userlive[i].channel.display_name;
+
+            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userlive[i].game +
+                '","image_ratio":"16by9","image_url":"' + (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userlive[i].channel.name +
                 '\\\",\\\"videoTitleIdx\\\": \\\"' + LiveTitle + '\\\"}","is_playable":true}';
 
@@ -164,17 +170,11 @@ function previewDataGenerator() {
     if (vectorSize) {
         data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
-            HostTitle = SmartHub_userhost[i].display_name + STR_USER_HOSTING +
-                SmartHub_userhost[i].target.channel.display_name;
-
-            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING +
-                SmartHub_userhost[i].target.meta_game +
-                '","image_ratio":"16by9","image_url":"' +
-                (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
-                '&' + Math.round(Math.random() * 1e7) +
+            HostTitle = SmartHub_userhost[i].display_name + STR_USER_HOSTING + SmartHub_userhost[i].target.channel.display_name;
+            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userhost[i].target.meta_game +
+                '","image_ratio":"16by9","image_url":"' + (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.name +
-                '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name +
-                '\\\"}","is_playable":true}';
+                '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name + '\\\"}","is_playable":true}';
         }
         data += ']},';
     }
@@ -183,12 +183,9 @@ function previewDataGenerator() {
     if (vectorSize) {
         data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
-            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usergames[i].game.name +
-                '","image_ratio":"2by3","image_url":"' +
+            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usergames[i].game.name + '","image_ratio":"2by3","image_url":"' +
                 (SmartHub_usergames[i].game.box.template).replace("{width}x{height}", Main_GameSize) +
-                '&' + Math.round(Math.random() * 1e7) +
-                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i].game.name +
-                '\\\"}","is_playable":false}';
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i].game.name + '\\\"}","is_playable":false}';
         }
         data += ']},';
     }
@@ -201,9 +198,8 @@ function previewDataGeneratorEnd(IsAddUser) {
 
     if (IsAddUser) {
         UserThumb = '{"title":"' + STR_USER_ADD + '","tiles":[' +
-            '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH +
-            '","image_ratio":"16by9","image_url":"' + IMG_SMART_ADD_USER +
-            '","action_data":"{\\\"screenIdx\\\": ' + Main_addUser + '}","is_playable":false}' +
+            '{"title":"' + STR_GO_TO + STR_USER_ADD + '","subtitle":"' + STR_ADD_USER_SH + '","image_ratio":"16by9","image_url":"' +
+            IMG_SMART_ADD_USER + '","action_data":"{\\\"screenIdx\\\": ' + Main_addUser + '}","is_playable":false}' +
             ']},';
     } else {
         UserThumb = '{"title":"' + STR_USER + '","tiles":[' +
