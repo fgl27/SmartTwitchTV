@@ -814,12 +814,12 @@ function Main_CantClick() {
     return !Main_LastClickFinish || !Main_addFocusFinish;
 }
 
-function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
+function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
         if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+            Main_ScrollHelperChannel(idArray[0], y, x);
             window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
         } else Main_handleKeyUp();
     });
@@ -882,6 +882,25 @@ function Main_ScrollHelperGames(Thumbnail, cursorY, cursorX) {
     }
 
     window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusGame + (!cursorY ? Main_ScrollOffSetGame : 0));
+}
+
+function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
+    var id = Thumbnail + cursorY + '_' + cursorX,
+        OffsetMinus = Main_ScrollOffSetMinusChannels,
+        DuploYOffsetCheck;
+
+    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
+        if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
+        else cursorY = 0;
+    }
+
+    DuploYOffsetCheck = (!cursorY || cursorY === 1);
+    if (DuploYOffsetCheck) {
+        id = Thumbnail + '0_' + cursorX;
+        OffsetMinus = OffsetMinus - Main_ScrollOffSetMinusDuploYOffsetCheck;
+    }
+
+    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - OffsetMinus + (DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0));
 }
 
 function Main_ScrollHelper(Thumbnail, cursorY, cursorX, Screen, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
