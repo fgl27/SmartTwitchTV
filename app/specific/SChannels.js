@@ -32,8 +32,7 @@ function SChannels_init() {
     document.body.addEventListener("keydown", SChannels_handleKeyDown, false);
     Main_YRst(SChannels_cursorY);
     if (SChannels_Status) {
-        Main_ScrollHelper(SChannels_ids[0], SChannels_cursorY, SChannels_cursorX, Main_SChannels,
-            Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+        Main_ScrollHelperChannel(SChannels_ids[0], SChannels_cursorY, SChannels_cursorX);
         Main_CounterDialog(SChannels_cursorX, SChannels_cursorY, Main_ColoumnsCountChannel, SChannels_itemsCount);
     } else SChannels_StartLoad();
 }
@@ -291,7 +290,7 @@ function SChannels_loadDataSuccessReplace(responseText) {
 }
 
 function SChannels_addFocus() {
-    Main_addFocusChannel(SChannels_cursorY, SChannels_cursorX, SChannels_ids, Main_SChannels, Main_ColoumnsCountChannel, SChannels_itemsCount);
+    Main_addFocusChannel(SChannels_cursorY, SChannels_cursorX, SChannels_ids, Main_ColoumnsCountChannel, SChannels_itemsCount);
 
     if (SChannels_cursorY > 2) Main_LazyImg(SChannels_ids[1], SChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 3);
 
