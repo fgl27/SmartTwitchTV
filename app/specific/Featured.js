@@ -374,7 +374,7 @@ function Featured_handleKeyDown(event) {
             Featured_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_Users;
+            Main_Before = Main_Featured;
             Main_Go = Main_games;
             Featured_exit();
             Main_SwitchScreen();
