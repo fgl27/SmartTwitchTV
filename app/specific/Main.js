@@ -620,8 +620,14 @@ function Main_ResumeSmarthub() {
     else {
         window.setTimeout(function() {
             if (AddUser_UsernameArray.length > 0) {
-                if ((new Date().getTime() - 590000) > SmartHub_LastUpdate) SmartHub_Start();
-                Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+                var timeDiff = (new Date().getTime() - 590000);
+                if (timeDiff > SmartHub_LastUpdate) SmartHub_Start();
+                else {
+                    window.setTimeout(function() {
+                        SmartHub_Start();
+                        Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+                    }, (SmartHub_LastUpdate - timeDiff));
+                }
             } else {
                 window.clearInterval(Main_SmartHubId);
                 document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
