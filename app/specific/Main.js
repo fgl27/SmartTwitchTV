@@ -648,19 +648,18 @@ function Main_LazyImgStart(imgId, total, img_type, coloumns) {
             if (elem !== null) Main_lazyLoad(elem, img_type);
         }
     }
-    Main_Ychange(0);
-    Main_YchangeAddFocus(0);
+    Main_Ychange(-1);
+    Main_YchangeAddFocus(-1);
 }
 
 function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
-    var change = Main_Ychange(row_id),
-        mbool;
+    var change = Main_Ychange(row_id);
     if (row_id === offset && change === 1) change = 0;
 
     if (change) {
         var x = 0,
+            mbool = change > 0,
             y, elem;
-        mbool = change > 0;
 
         for (x; x < coloumns; x++) {
             y = mbool ? row_id + offset : row_id - offset;
@@ -802,11 +801,6 @@ function Main_handleKeyUp() {
     Main_addFocusFinish = true;
 }
 
-function Main_handleKeyUpStart(y) {
-    if (Main_YchangeAddFocus(y)) window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
-    else Main_handleKeyUp();
-}
-
 function Main_keyClickDelay() {
     Main_LastClickFinish = true;
 }
@@ -823,27 +817,33 @@ function Main_CantClick() {
 function Main_addFocusChannel(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        Main_handleKeyUpStart(y);
+        if (Main_YchangeAddFocus(y)) {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusChannels, Main_ScrollOffSetVideo, true);
+            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        } else Main_handleKeyUp();
     });
 }
 
 function Main_addFocusVideo(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        Main_handleKeyUpStart(y);
+        if (Main_YchangeAddFocus(y)) {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusVideo, Main_ScrollOffSetVideo, false);
+            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        } else Main_handleKeyUp();
     });
 }
 
 function Main_addFocusGame(y, x, idArray, screen, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     Main_ready(function() {
-        Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
         Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        Main_handleKeyUpStart(y);
+        if (Main_YchangeAddFocus(y)) {
+            Main_ScrollHelper(idArray[0], y, x, screen, Main_ScrollOffSetMinusGame, Main_ScrollOffSetGame, false);
+            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
+        } else Main_handleKeyUp();
     });
 }
 
