@@ -71,7 +71,7 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 
 ## Installation Tizen and Java SDK
 
-* I used the **Tizen Studio 2.3 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On linux it may ask you to use apt-get to install missing dependencies below are the one asked by **Tizen Studio** 2.3**
+* I used the **Tizen Studio 2.4 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On Linux it may ask you to use apt-get to install missing dependencies below are the one asked by **Tizen Studio 2.4**
 #
 
 	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby
@@ -91,15 +91,16 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 
 ## Tizen Package Manager(Installing the tools)
 
-* Open **Tizen Package Manager** (on linux it may request you to use apt-get to install missing dependencies)
-* Main tab **(Main SDK)** Install **4.0 TV**(or werever X.X TV version there is) and **Tizen SDK tools**,  **(on linux it may request you to use apt-get to install missing dependencies)**
-* Second tab **(Extension SDK)** Install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on Linux it may request you to use apt-get to install missing dependencies)
+* Open **Tizen Package Manager** to start install the bellow, some may already be installed by default
+* Main tab **(Main SDK)** Install **4.0 TV**(or wherever X.X TV version there is) and **Tizen SDK tools**,  **(on linux it may request you to use apt-get to install missing dependencies)**
+* Second tab **(Extension SDK)** under **TV Extensions-4.0** (or wherever X.X TV version there is) install **Web app. Development**, install **Samsung Certificate Extension** and under **TV Extension Tools** install **Web app. Tools** (on Linux it may request you to use apt-get to install missing dependencies)
 * After everything finish installing close the package manager it will ask if you wanna to open the **Tizen Studio** YES click open, if on windows it may request to add firewall permission for Tizen give.
 
 ### Bellow imgs showing the installed packages (the one with a delete option are installed)
 ![SDK_installation_1](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_1.png)
 ![SDK_installation_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_2.png)
-![SDK_installation_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_3.png)
+![SDK_installation_3](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_3.png)
+![SDK_installation_4](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_4.png)
 
 ## Setting up the build environment:
 
