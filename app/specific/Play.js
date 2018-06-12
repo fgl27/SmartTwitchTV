@@ -543,13 +543,9 @@ function Play_updateCurrentTime(currentTime) {
 }
 
 function Play_clock() {
-    var date = new Date(),
-        dayMonth;
-
-    if (Main_IsDayFirst) dayMonth = date.getDate() + '/' + monthNames[date.getMonth()];
-    else dayMonth = monthNames[date.getMonth()] + '/' + date.getDate();
-
-    Main_textContent("stream_clock", dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes()));
+    var clock = Main_getclock();
+    Main_textContent("stream_clock", clock);
+    Main_textContent('label_clock', clock);
 }
 
 function Play_lessthanten(time) {

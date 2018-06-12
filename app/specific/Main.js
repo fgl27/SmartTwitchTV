@@ -190,6 +190,8 @@ function Main_initWindows() {
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
+    Main_textContent('label_clock', Main_getclock());
+    window.setInterval(Main_updateclock, 60000);
 
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', STR_USER);
@@ -967,4 +969,18 @@ function Main_ready(func) {
         window.setTimeout(func);
 
     } else document.addEventListener("DOMContentLoaded", func);
+}
+
+function Main_getclock() {
+    var date = new Date(),
+        dayMonth;
+
+    if (Main_IsDayFirst) dayMonth = date.getDate() + '/' + monthNames[date.getMonth()];
+    else dayMonth = monthNames[date.getMonth()] + '/' + date.getDate();
+
+    return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+}
+
+function Main_updateclock() {
+    Main_textContent('label_clock', Main_getclock());
 }
