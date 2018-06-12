@@ -62,6 +62,16 @@
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
 
+        div.main_clock {
+            width: auto;
+            text-align: left;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: bold;
+            vertical-align: top;
+            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
+        }
+
         div.icon_center_label {
             max-width: 48%;
             height: 100%;
@@ -516,7 +526,7 @@
             float: right;
             padding-right: 0.5%;
             padding-top: 0.5%;
-            width: 9.5%;
+            width: 15.5%;
         }
 
         .hide {
@@ -581,9 +591,14 @@
     <div id="scene1" class="screen_size">
         <div id="topbar" class="topbar hide">
             <div class="twitchicon">
-                <img style="float: right; width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
-                <div style="text-align: center;">
-                    <div id="label_about" class="icon_top_label" style="text-align: center;"></div>
+                <div style="float: left; width: 44%; padding-top: 2%;">
+                    <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
+                </div>
+                <div style="float: right; width: 55%;">
+                    <img style="width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
+                    <div style="text-align: center;">
+                        <div id="label_about" class="icon_top_label" style="text-align: center;"></div>
+                    </div>
                 </div>
             </div>
             <div id="controls_div" class="controls_div">
@@ -730,10 +745,10 @@
  transition: 0.4s;">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.04));">
                 <div class="playsideinfo">
+                    <div id="stream_clock"></div>
                     <div id="stream_live_icon"></div>
                     <div id="stream_live_time"></div>
                     <div id="stream_watching_time"></div>
-                    <div id="stream_clock"></div>
                     <div id="stream_controls"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="stream_info">
