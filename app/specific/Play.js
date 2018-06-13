@@ -73,6 +73,7 @@ var Play_RestoringFromResume = false;
 var Play_TargetName = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
+var Play_isOpenChannel = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -599,7 +600,8 @@ function Play_PreshutdownStream() {
     Play_ClearPlayer();
     Play_ClearPlay();
     Play_isOn = false;
-    Main_selectedChannel_id = '';
+    if (!Play_isOpenChannel) Main_selectedChannel_id = '';
+    else Play_isOpenChannel = false;
 }
 
 function Play_exitMain() {
@@ -1026,6 +1028,7 @@ function Play_OpenChannel(PlayVodClip) {
 
     Main_ExitCurrent(Main_Go);
     Main_Go = Main_SChannelContent;
+    Play_isOpenChannel = true;
 
     if (PlayVodClip === 1) {
         Main_selectedChannel = Play_selectedChannel;
