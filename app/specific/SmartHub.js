@@ -160,12 +160,15 @@ function previewDataGenerator() {
         data += '{"title":"' + STR_LIVE_CHANNELS + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
 
-            LiveTitle = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) + SmartHub_userlive[i].channel.display_name;
+            LiveTitle = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) +
+                SmartHub_userlive[i].channel.display_name;
 
-            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userlive[i].game +
-                '","image_ratio":"16by9","image_url":"' + (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize) +
+            data += (!i ? '' : ',') + '{"title":"' + LiveTitle + '","subtitle":"' + STR_PLAYING +
+                SmartHub_userlive[i].game + '","image_ratio":"16by9","image_url":"' +
+                (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userlive[i].channel.name +
-                '\\\",\\\"videoTitleIdx\\\": \\\"' + LiveTitle + '\\\"}","is_playable":true}';
+                '\\\",\\\"videoTitleIdx\\\": \\\"' + LiveTitle + '\\\",\\\"_id\\\": \\\"' +
+                SmartHub_userlive[i].channel._id + '\\\"}","is_playable":true}';
 
         }
         data += ']},';
@@ -175,11 +178,15 @@ function previewDataGenerator() {
     if (vectorSize) {
         data += '{"title":"' + STR_LIVE_HOSTS + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
-            HostTitle = SmartHub_userhost[i].display_name + STR_USER_HOSTING + SmartHub_userhost[i].target.channel.display_name;
-            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING + SmartHub_userhost[i].target.meta_game +
-                '","image_ratio":"16by9","image_url":"' + (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
+            HostTitle = SmartHub_userhost[i].display_name + STR_USER_HOSTING +
+                SmartHub_userhost[i].target.channel.display_name;
+
+            data += (!i ? '' : ',') + '{"title":"' + HostTitle + '","subtitle":"' + STR_PLAYING +
+                SmartHub_userhost[i].target.meta_game + '","image_ratio":"16by9","image_url":"' +
+                (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.name +
-                '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name + '\\\"}","is_playable":true}';
+                '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name +
+                '\\\",\\\"_id\\\": \\\"' + SmartHub_userhost[i].target._id + '\\\"}","is_playable":true}';
         }
         data += ']},';
     }
@@ -188,9 +195,11 @@ function previewDataGenerator() {
     if (vectorSize) {
         data += '{"title":"' + STR_LIVE_GAMES + ' ' + SmartHub_followerUsername + '","tiles":[';
         for (i = 0; i < vectorSize; i++) {
-            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usergames[i].game.name + '","image_ratio":"2by3","image_url":"' +
+            data += (!i ? '' : ',') + '{"title":"' + SmartHub_usergames[i].game.name +
+                '","image_ratio":"2by3","image_url":"' +
                 (SmartHub_usergames[i].game.box.template).replace("{width}x{height}", Main_GameSize) +
-                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i].game.name + '\\\"}","is_playable":false}';
+                '","action_data":"{\\\"gameIdx\\\": \\\"' + SmartHub_usergames[i].game.name +
+                '\\\"}","is_playable":false}';
         }
         data += ']},';
     }
@@ -235,7 +244,7 @@ function SmartHub_EventListener() {
     try {
         requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
     } catch (e) {}
-    var appControlData, actionData, VideoIdx, VideoTitleIdx, GameIdx, ScreenIdx, ExitScreen, ExitToMain = false;
+    var appControlData, actionData, VideoIdx, GameIdx, ScreenIdx, ExitScreen, ExitToMain = false;
 
     if (requestedAppControl) {
         SmartHub_SmartHubResume = true;
@@ -245,14 +254,14 @@ function SmartHub_EventListener() {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
                 if (JSON.parse(actionData).videoIdx) {
 
-                    VideoIdx = JSON.parse(actionData).videoIdx;
-                    VideoTitleIdx = JSON.parse(actionData).videoTitleIdx;
+                    actionData = JSON.parse(actionData);
+                    VideoIdx = actionData.videoIdx;
 
                     if (Play_Playing && Play_selectedChannel === VideoIdx) return;
 
                     Play_selectedChannel = VideoIdx;
-                    Play_selectedChannelDisplayname = VideoTitleIdx;
-                    Main_selectedChannel_id = '';
+                    Play_selectedChannelDisplayname = actionData.videoTitleIdx;
+                    Main_selectedChannel_id = actionData._id;
 
                     if (Play_isOn) Play_PreshutdownStream();
                     else if (PlayVod_isOn) PlayVod_PreshutdownStream();
@@ -261,7 +270,10 @@ function SmartHub_EventListener() {
 
                     window.setTimeout(Main_openStream, 10);
                 } else if (JSON.parse(actionData).gameIdx) {
-                    GameIdx = JSON.parse(actionData).gameIdx;
+
+                    actionData = JSON.parse(actionData);
+
+                    GameIdx = actionData.gameIdx;
                     ExitToMain = (GameIdx !== Main_gameSelected);
                     ExitScreen = Main_Go;
                     Main_gameSelected = GameIdx;
@@ -274,7 +286,10 @@ function SmartHub_EventListener() {
                     else if (ExitToMain) Main_SwitchScreen();
 
                 } else if (JSON.parse(actionData).screenIdx) {
-                    ScreenIdx = JSON.parse(actionData).screenIdx;
+
+                    actionData = JSON.parse(actionData);
+
+                    ScreenIdx = actionData.screenIdx;
                     ExitToMain = (ScreenIdx !== Main_Go);
                     ExitScreen = Main_Go;
                     Main_Go = ScreenIdx;
