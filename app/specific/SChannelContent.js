@@ -401,6 +401,7 @@ function SChannelContent_handleKeyDown(event) {
             else {
                 Main_Go = Main_BeforeChannel;
                 SChannelContent_exit();
+                Main_selectedChannel_id = '';
                 Main_SwitchScreen();
             }
             break;
