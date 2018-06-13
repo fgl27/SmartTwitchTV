@@ -156,4 +156,5 @@ function pt_BRLang() {
     STR_NO_BROADCAST = "Sem Transmissão";
     STR_NO_BROADCAST_WARNING = "Não ha uma transmissão anterior para este clip";
     STR_IS_NOW = " esta agora ";
+    STR_OPEN_HOST = "Abrir a hospedagem";
 }

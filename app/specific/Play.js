@@ -70,7 +70,7 @@ var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
 var Play_RestoringFromResume = false;
-var Play_TargetName = '';
+var Play_TargetHost = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
 var Play_isOpenChannel = false;
@@ -130,6 +130,8 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
     Main_textContent("stream_info_name", (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname));
+    Play_isHost = false;
+    Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
@@ -484,7 +486,7 @@ function Play_onPlayer() {
         document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
 
         Play_offsettime = Play_oldcurrentTime;
-        if (!Play_IsWarning) Play_HideWarningDialog();
+        Play_HideWarningDialog();
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
@@ -628,8 +630,6 @@ function Play_ClearPlay() {
     window.clearInterval(Play_streamCheck);
     Play_PlayerCheckOffset = 0;
     Play_PlayerCheckQualityChanged = false;
-    Play_DisplaynameHost = '';
-    Play_isHost = false;
     Play_IsWarning = false;
 }
 
@@ -918,7 +918,7 @@ function Play_PrepareshowEndDialog() {
     Play_hidePanel();
     PlayClip_hidePanel();
     PlayVod_hidePanel();
-    Play_HideWarningDialog();
+    if (!Play_IsWarning) Play_HideWarningDialog();
     Play_HideBufferDialog();
     Play_CleanHideExit();
     Play_HideControlsDialog();
@@ -995,14 +995,29 @@ function Play_EndDialogPressed(PlayVodClip) {
             PlayClip_qualityChanged();
             Play_clearPause();
         }
-    } else if (Play_Endcounter === 1) PlayClip_OpenVod();
-    else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
+    } else if (Play_Endcounter === 1) {
+        if (Play_isHost) {
+            Play_DisplaynameHost = Play_selectedChannelDisplayname + STR_USER_HOSTING;
+            Play_selectedChannel = Play_TargetHost.target_login;
+            Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
+            Play_DisplaynameHost = Play_DisplaynameHost + Play_selectedChannelDisplayname;
+            Play_PreshutdownStream();
+            document.body.addEventListener("keydown", Play_handleKeyDown, false);
+            Play_Start();
+        } else PlayClip_OpenVod();
+    } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
     if (Play_Endcounter !== 1) Play_HideEndDialog();
 }
 
 function Play_EndSet(PlayVodClip) {
-    if (PlayVodClip === 1) {
+    if (!PlayVodClip) {
+        Play_EndIconsRemoveFocus();
+        Play_Endcounter = 1;
+        Play_EndIconsAddFocus();
+        document.getElementById('dialog_end_1').style.display = 'inline-block';
+        Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
+    } else if (PlayVodClip === 1) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 2;
         Play_EndIconsAddFocus();
@@ -1209,30 +1224,20 @@ function Play_loadDataCheckHostError() {
 }
 
 function Play_CheckHost(responseText) {
-    var response = JSON.parse(responseText);
-    Play_TargetName = response.hosts[0].target_login;
-    if (Play_TargetName !== undefined) {
-        Play_ClearPlay();
-        Play_hideChat();
-        Play_hidePanel();
-        Play_CleanHideExit();
-        Play_HideControlsDialog();
-        Play_HideBufferDialog();
-        Play_offPlayer();
-        Play_clearPause();
+    Play_TargetHost = JSON.parse(responseText).hosts[0];
+
+    if (Play_TargetHost.target_login !== undefined) {
         Play_IsWarning = true;
-        Play_showWarningDialog(Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + response.hosts[0].target_display_name);
+        Play_showWarningDialog(Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name);
         window.setTimeout(function() {
             Play_IsWarning = false;
         }, 4000);
-        Play_DisplaynameHost = Play_selectedChannelDisplayname + STR_USER_HOSTING;
-        Play_selectedChannel = Play_TargetName;
-        Play_selectedChannelDisplayname = response.hosts[0].target_display_name;
-        Play_DisplaynameHost = Play_DisplaynameHost + Play_selectedChannelDisplayname;
+
+        Play_EndSet(0);
         Play_isHost = true;
-        document.body.addEventListener("keydown", Play_handleKeyDown, false);
-        Play_Start();
-    } else Play_PannelEndStart(1);
+    } else Play_isHost = false;
+
+    Play_PannelEndStart(1);
 }
 
 function Play_setFallow() {
@@ -1328,8 +1333,8 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < 0) Play_Endcounter = 3;
-                    if (Play_Endcounter < 2) Play_Endcounter += 2;
+                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter = 3;
+                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter += (Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
@@ -1352,7 +1357,7 @@ function Play_handleKeyDown(e) {
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    if (Play_Endcounter < 2) Play_Endcounter += 2;
+                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter += (Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
