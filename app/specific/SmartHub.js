@@ -252,6 +252,7 @@ function SmartHub_EventListener() {
 
                     Play_selectedChannel = VideoIdx;
                     Play_selectedChannelDisplayname = VideoTitleIdx;
+                    Main_selectedChannel_id = '';
 
                     if (Play_isOn) Play_PreshutdownStream();
                     else if (PlayVod_isOn) PlayVod_PreshutdownStream();
