@@ -185,8 +185,9 @@ function previewDataGenerator() {
                 SmartHub_userhost[i].target.meta_game + '","image_ratio":"16by9","image_url":"' +
                 (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize) +
                 '","action_data":"{\\\"videoIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.name +
-                '\\\",\\\"videoTitleIdx\\\": \\\"' + SmartHub_userhost[i].target.channel.display_name +
-                '\\\",\\\"_id\\\": \\\"' + SmartHub_userhost[i].target._id + '\\\"}","is_playable":true}';
+                '\\\",\\\"videoTitleIdx\\\": \\\"' + HostTitle +
+                '\\\",\\\"_id\\\": \\\"' + SmartHub_userhost[i].target._id +
+                '\\\",\\\"isHost\\\": \\\"true\\\"}","is_playable":true}';
         }
         data += ']},';
     }
@@ -260,8 +261,14 @@ function SmartHub_EventListener() {
                     if (Play_Playing && Play_selectedChannel === VideoIdx) return;
 
                     Play_selectedChannel = VideoIdx;
-                    Play_selectedChannelDisplayname = actionData.videoTitleIdx;
+                    Play_selectedChannelDisplayname = actionData.videoTitleIdx + '';
                     Main_selectedChannel_id = actionData._id;
+
+                    if (actionData.isHost) {
+                        Play_isHost = true;
+                        Play_DisplaynameHost = Play_selectedChannelDisplayname;
+                        Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+                    }
 
                     if (Play_isOn) Play_PreshutdownStream();
                     else if (PlayVod_isOn) PlayVod_PreshutdownStream();
