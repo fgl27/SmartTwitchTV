@@ -143,7 +143,7 @@ function UserHost_loadDataSuccess(responseText) {
             if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
             else {
                 row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
-                    hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                         hosts.target.title, hosts.target.meta_game,
                         STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
@@ -271,7 +271,7 @@ function UserHost_loadDataSuccessReplace(responseText) {
         } else {
             UserHost_nameMatrix.push(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name);
             Main_replaceVideo(UserHost_blankCellVector[i],
-                hosts.target.channel.name, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                     hosts.target.title, hosts.target.meta_game,
                     STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) + Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
@@ -396,7 +396,9 @@ function UserHost_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute);
+            Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute).split(',');
+            Main_selectedChannel_id = Play_selectedChannel[1];
+            Play_selectedChannel = Play_selectedChannel[0];
             Play_DisplaynameHost = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent;
             Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
             Play_isHost = true;
