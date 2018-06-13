@@ -18,12 +18,12 @@ var PlayVod_qualities = [];
 var PlayVod_qualityIndex = 0;
 
 var PlayVod_loadingDataTry = 0;
-var PlayVod_loadingDataTryMax = 10;
+var PlayVod_loadingDataTryMax = 5;
 var PlayVod_isOn = false;
 var PlayVod_offsettime = 0;
 
 var PlayVod_loadingInfoDataTry = 0;
-var PlayVod_loadingInfoDataTryMax = 15;
+var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
 var PlayVod_qualityName = [];
@@ -103,7 +103,7 @@ function PlayVod_Start() {
 
 function PlayVod_PrepareLoad() {
     PlayVod_loadingInfoDataTry = 0;
-    PlayVod_loadingInfoDataTryMax = 15;
+    PlayVod_loadingInfoDataTryMax = 5;
     PlayVod_loadingInfoDataTimeout = 10000;
 }
 

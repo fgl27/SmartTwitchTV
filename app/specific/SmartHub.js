@@ -1,6 +1,6 @@
 //Variable initialization
 var SmartHub_loadingDataTry = 0;
-var SmartHub_loadingDataTryMax = 10;
+var SmartHub_loadingDataTryMax = 5;
 var SmartHub_loadingDataTimeout = 3500;
 
 var SmartHub_userlive = [];
@@ -43,7 +43,7 @@ function SmartHub_cleanVector() {
 
 function SmartHub_loadDataRequestPrepare() {
     SmartHub_loadingDataTry = 0;
-    SmartHub_loadingDataTryMax = 10;
+    SmartHub_loadingDataTryMax = 5;
     SmartHub_loadingDataTimeout = 10000;
 }
 

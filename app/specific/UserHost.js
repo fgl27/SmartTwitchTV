@@ -7,7 +7,7 @@ var UserHost_nameMatrix = [];
 var UserHost_blankCellVector = [];
 var UserHost_loadingData = false;
 var UserHost_loadingDataTry = 0;
-var UserHost_loadingDataTryMax = 10;
+var UserHost_loadingDataTryMax = 5;
 var UserHost_loadingDataTimeout = 3500;
 var UserHost_blankCellCount = 0;
 var UserHost_itemsCountOffset = 0;
@@ -397,7 +397,9 @@ function UserHost_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute);
-            Play_selectedChannelDisplayname = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent.split(STR_USER_HOSTING)[1];
+            Play_DisplaynameHost = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent;
+            Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
+            Play_isHost = true;
             document.body.removeEventListener("keydown", UserHost_handleKeyDown);
             Main_openStream();
             break;

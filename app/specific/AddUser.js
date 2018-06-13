@@ -1,6 +1,6 @@
 //Variable initialization
 var AddUser_loadingDataTry = 0;
-var AddUser_loadingDataTryMax = 10;
+var AddUser_loadingDataTryMax = 5;
 var AddUser_loadingDataTimeout = 3500;
 var AddUser_UsernameArray = [];
 var AddUser_Username = null;
