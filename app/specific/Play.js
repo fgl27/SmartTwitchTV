@@ -138,7 +138,6 @@ function Play_Start() {
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
 
     Play_currentTime = 0;
-    Play_IsWarning = false;
     Play_RestoringFromResume = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 10000;
@@ -484,7 +483,7 @@ function Play_onPlayer() {
         document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
 
         Play_offsettime = Play_oldcurrentTime;
-        Play_HideWarningDialog();
+        if (!Play_IsWarning) Play_HideWarningDialog();
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
@@ -629,6 +628,7 @@ function Play_ClearPlay() {
     Play_PlayerCheckQualityChanged = false;
     Play_DisplaynameHost = '';
     Play_isHost = false;
+    Play_IsWarning = false;
 }
 
 function Play_hideFallow() {
@@ -1221,7 +1221,7 @@ function Play_CheckHost(responseText) {
         Play_showWarningDialog(Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + response.hosts[0].target_display_name);
         window.setTimeout(function() {
             Play_IsWarning = false;
-        }, 6000);
+        }, 4000);
         Play_DisplaynameHost = Play_selectedChannelDisplayname + STR_USER_HOSTING;
         Play_selectedChannel = Play_TargetName;
         Play_selectedChannelDisplayname = response.hosts[0].target_display_name;
