@@ -171,3 +171,4 @@ var STR_CREATED_AT = "Created at ";
 var STR_OPEN_BROADCAST = "Open the Broadcast";
 var STR_NO_BROADCAST = "No Broadcast";
 var STR_NO_BROADCAST_WARNING = "There is no Past Broadcast for this clip";
+var STR_IS_NOW = " is now";

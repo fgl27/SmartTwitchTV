@@ -1,6 +1,6 @@
 //Variable initialization
 var AddCode_loadingDataTry = 0;
-var AddCode_loadingDataTryMax = 10;
+var AddCode_loadingDataTryMax = 5;
 var AddCode_loadingDataTimeout = 10000;
 var AddCode_UsercodeArray = [];
 var AddCode_Username = null;

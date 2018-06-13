@@ -7,7 +7,7 @@ var SChannelContent_imgMatrix = '';
 var SChannelContent_imgMatrixId = '';
 var SChannelContent_loadingData = false;
 var SChannelContent_loadingDataTry = 0;
-var SChannelContent_loadingDataTryMax = 10;
+var SChannelContent_loadingDataTryMax = 5;
 var SChannelContent_loadingDataTimeout = 3500;
 var SChannelContent_itemsCountOffset = 0;
 var SChannelContent_skipImg = false;
@@ -371,11 +371,19 @@ function SChannelContent_keyEnter() {
         document.body.removeEventListener("keydown", SChannelContent_handleKeyDown);
         var value = (!SChannelContent_skipImg ? 0 : 1);
         if (SChannelContent_cursorX === (0 - value)) {
+
             Play_selectedChannel = document.getElementById(SChannelContent_ids[8] + SChannelContent_cursorY +
                 '_' + SChannelContent_cursorX).getAttribute(Main_DataAttribute);
+
             Play_selectedChannelDisplayname = document.getElementById(SChannelContent_ids[3] + SChannelContent_cursorY +
                 '_' + SChannelContent_cursorX).textContent;
-            if (Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+
+            if (Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
+                Play_isHost = true;
+                Play_DisplaynameHost = Play_selectedChannelDisplayname;
+                Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+            }
+
             Main_openStream();
         } else if (SChannelContent_cursorX === (1 - value)) Svod_init();
         else if (SChannelContent_cursorX === (2 - value)) Sclip_init();

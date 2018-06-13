@@ -155,4 +155,5 @@ function pt_BRLang() {
     STR_OPEN_BROADCAST = "Abrir a Transmissão";
     STR_NO_BROADCAST = "Sem Transmissão";
     STR_NO_BROADCAST_WARNING = "Não ha uma transmissão anterior para este clip";
+    STR_IS_NOW = " esta agora ";
 }

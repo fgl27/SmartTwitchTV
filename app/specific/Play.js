@@ -30,10 +30,10 @@ var Play_sizeOffset = 0;
 var Play_created = '';
 
 var Play_loadingDataTry = 0;
-var Play_loadingDataTryMax = 10;
+var Play_loadingDataTryMax = 5;
 
 var Play_loadingInfoDataTry = 0;
-var Play_loadingInfoDataTryMax = 15;
+var Play_loadingInfoDataTryMax = 5;
 
 var Play_isOn = false;
 var Play_ChatBackgroundID = null;
@@ -70,6 +70,9 @@ var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
 var Play_RestoringFromResume = false;
+var Play_TargetName = '';
+var Play_DisplaynameHost = '';
+var Play_isHost = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -125,7 +128,7 @@ function Play_Start() {
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
-    Main_textContent("stream_info_name", Play_selectedChannelDisplayname);
+    Main_textContent("stream_info_name", (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname));
     Main_empty('dialog_buffer_play_percentage');
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
@@ -193,20 +196,22 @@ function Play_updateStreamInfoStart() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     var response = JSON.parse(xmlHttp.responseText);
-                    Main_textContent("stream_info_title", response.stream.channel.status);
-                    Play_gameSelected = response.stream.game;
-                    Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
-                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                    Main_selectedChannelLogo = response.stream.channel.logo;
-                    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-                    Play_created = response.stream.created_at;
-                    Play_LoadLogoSucess = true;
-                    Main_selectedChannel_id = response.stream.channel._id;
-                    if (Main_UserName !== '') {
-                        AddCode_PlayRequest = true;
-                        AddCode_CheckFallow();
-                    } else Play_hideFallow();
+                    if (response.stream !== null) {
+                        Main_selectedChannel_id = response.stream.channel._id;
+                        Main_textContent("stream_info_title", response.stream.channel.status);
+                        Play_gameSelected = response.stream.game;
+                        Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
+                        Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+                        Main_selectedChannelLogo = response.stream.channel.logo;
+                        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+                        Play_created = response.stream.created_at;
+                        Play_LoadLogoSucess = true;
+                        if (Main_UserName !== '') {
+                            AddCode_PlayRequest = true;
+                            AddCode_CheckFallow();
+                        } else Play_hideFallow();
+                    }
                 } else { // internet error
                     Play_updateStreamInfoStartError();
                 }
@@ -312,10 +317,7 @@ function Play_loadDataError() {
         if (Play_loadingDataTry < Play_loadingDataTryMax) {
             Play_loadingDataTimeout += (Play_loadingDataTry < 5) ? 250 : 3500;
             Play_loadDataRequest();
-        } else {
-            Play_HideBufferDialog();
-            Play_PannelEndStart(1);
-        }
+        } else Play_CheckHostStart();
     }
 }
 
@@ -336,10 +338,7 @@ function Play_restore() {
     if (Play_qualitiesFound) {
         Play_state = Play_STATE_PLAYING;
         if (Play_isOn) Play_qualityChanged();
-    } else {
-        Play_HideBufferDialog();
-        Play_PannelEndStart(1);
-    }
+    } else Play_CheckHostStart();
 }
 
 function Play_loadDataSuccess(responseText) {
@@ -449,11 +448,11 @@ var Play_listener = {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
-        Play_PannelEndStart(1);
+        Play_CheckHostStart();
     },
     onerror: function(eventType) {
         if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
-            Play_PannelEndStart(1);
+            Play_CheckHostStart();
     }
 };
 
@@ -514,7 +513,7 @@ function Play_PlayerCheck() {
                 Play_PlayerCheckQualityChanged = true;
             } else {
                 Play_avplay.stop();
-                Play_PannelEndStart(1); //staled for too long close the player
+                Play_CheckHostStart(); //staled for too long close the player
             }
         }
     } else Play_PlayerCheckCount = 0;
@@ -601,6 +600,7 @@ function Play_PreshutdownStream() {
     Play_ClearPlayer();
     Play_ClearPlay();
     Play_isOn = false;
+    Main_selectedChannel_id = '';
 }
 
 function Play_exitMain() {
@@ -627,6 +627,8 @@ function Play_ClearPlay() {
     window.clearInterval(Play_streamCheck);
     Play_PlayerCheckOffset = 0;
     Play_PlayerCheckQualityChanged = false;
+    Play_DisplaynameHost = '';
+    Play_isHost = false;
 }
 
 function Play_hideFallow() {
@@ -1119,6 +1121,115 @@ function Play_PannelEndStart(PlayVodClip) {
         Play_EndText(PlayVodClip);
         Play_showEndDialog(PlayVodClip);
     });
+}
+
+function Play_CheckHostStart() {
+    Play_state = -1;
+    Play_loadingDataTry = 0;
+    Play_loadingDataTimeout = 3500;
+    if (Main_selectedChannel_id !== '') Play_loadDataCheckHost();
+    else Play_CheckId();
+}
+
+function Play_CheckId() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Play_selectedChannel, true);
+        xmlHttp.timeout = Play_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    var users = JSON.parse(xmlHttp.responseText).users[0];
+                    if (users !== undefined) {
+                        Main_selectedChannel_id = users._id;
+                        Play_loadingDataTry = 0;
+                        Play_loadingDataTimeout = 3500;
+                        Play_loadDataCheckHost();
+                    } else Play_PannelEndStart(1);
+                    return;
+                } else {
+                    Play_CheckIdError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        Play_CheckIdError();
+    }
+}
+
+function Play_CheckIdError() {
+    Play_loadingDataTry++;
+    if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        Play_loadingDataTimeout += 500;
+        Play_CheckId();
+    } else Play_PannelEndStart(1);
+}
+
+function Play_loadDataCheckHost() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = Play_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Play_CheckHost(xmlHttp.responseText);
+                    return;
+                } else Play_loadDataCheckHostError();
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        Play_loadDataCheckHostError();
+    }
+}
+
+function Play_loadDataCheckHostError() {
+    Play_loadingDataTry++;
+    if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        Play_loadingDataTimeout += 500;
+        Play_loadDataCheckHost();
+    } else Play_PannelEndStart(1);
+}
+
+function Play_CheckHost(responseText) {
+    var response = JSON.parse(responseText);
+    Play_TargetName = response.hosts[0].target_login;
+    if (Play_TargetName !== undefined) {
+        Play_ClearPlay();
+        Play_hideChat();
+        Play_hidePanel();
+        Play_CleanHideExit();
+        Play_HideControlsDialog();
+        Play_HideBufferDialog();
+        Play_offPlayer();
+        Play_clearPause();
+        Play_IsWarning = true;
+        Play_showWarningDialog(Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + response.hosts[0].target_display_name);
+        window.setTimeout(function() {
+            Play_IsWarning = false;
+        }, 6000);
+        Play_DisplaynameHost = Play_selectedChannelDisplayname + STR_USER_HOSTING;
+        Play_selectedChannel = Play_TargetName;
+        Play_selectedChannelDisplayname = response.hosts[0].target_display_name;
+        Play_DisplaynameHost = Play_DisplaynameHost + Play_selectedChannelDisplayname;
+        Play_isHost = true;
+        document.body.addEventListener("keydown", Play_handleKeyDown, false);
+        Play_Start();
+    } else Play_PannelEndStart(1);
 }
 
 function Play_setFallow() {
