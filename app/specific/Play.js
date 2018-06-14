@@ -1014,6 +1014,7 @@ function Play_EndSet(PlayVodClip) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 1;
         Play_EndIconsAddFocus();
+        document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
     } else if (PlayVodClip === 1) {
