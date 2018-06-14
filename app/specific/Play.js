@@ -155,7 +155,6 @@ function Play_Start() {
     document.addEventListener('visibilitychange', Play_Resume, false);
     Play_Playing = false;
     Play_loadData();
-    Play_EndSet(1);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
@@ -1235,7 +1234,10 @@ function Play_CheckHost(responseText) {
 
         Play_EndSet(0);
         Play_isHost = true;
-    } else Play_isHost = false;
+    } else {
+        Play_EndSet(1);
+        Play_isHost = false;
+    }
 
     Play_PannelEndStart(1);
 }
@@ -1334,7 +1336,6 @@ function Play_handleKeyDown(e) {
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
                     if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter = 3;
-                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter += (Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
@@ -1356,8 +1357,7 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter += (Play_isHost ? 1 : 2);
+                    if (Play_Endcounter > 3) Play_Endcounter = (Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();

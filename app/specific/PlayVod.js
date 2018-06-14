@@ -212,6 +212,7 @@ function PlayVod_Resume() {
         PlayVod_Playing = false;
         PlayVod_onPlayer();
         PlayVod_PlayerCheckQualityChanged = false;
+        Play_EndSet(2);
     }
 }
 
