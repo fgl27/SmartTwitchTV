@@ -20,6 +20,7 @@ var AGame_status = false;
 var AGame_itemsCountCheck = false;
 var AGame_fallowing = false;
 var AGame_UserGames = false;
+var AGame_TopRowCreated = false;
 //Variable initialization end
 
 function AGame_init() {
@@ -50,9 +51,10 @@ function AGame_exit() {
 
 function AGame_StartLoad() {
     Main_HideWarningDialog();
+    Main_showLoadDialog();
     AGame_status = false;
     Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
+    AGame_TopRowCreated = false;
     Main_empty('stream_table_a_game');
     AGame_blankCellCount = 0;
     AGame_itemsCountOffset = 0;
@@ -138,25 +140,29 @@ function AGame_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row = document.createElement('tr'),
+    var coloumn_id, row_id, row, i,
         stream,
         cursor = 0;
 
     // Make the game video/clip/fallowing cell
-    var thumbfallow, i = 0;
-    for (i; i < 3; i++) {
-        if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 100%"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS;
-        else if (i === 1) thumbfallow = '<i class="icon-movie" style="color: #FFFFFF"></i>' + STR_SPACE + STR_CLIPS;
-        else thumbfallow = '';
-        Main_td = document.createElement('td');
-        Main_td.setAttribute('id', AGame_ids[8] + 'y_' + i);
-        Main_td.className = 'stream_cell';
-        Main_td.innerHTML = '<div id="' + AGame_ids[0] +
-            'y_' + i + '" class="stream_thumbnail_fallow_game" ><div id="' + AGame_ids[3] +
-            'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-        row.appendChild(Main_td);
+    if (!AGame_TopRowCreated) {
+        AGame_TopRowCreated = true;
+        row = document.createElement('tr');
+        var thumbfallow;
+        for (i = 0; i < 3; i++) {
+            if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 100%"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS;
+            else if (i === 1) thumbfallow = '<i class="icon-movie" style="color: #FFFFFF"></i>' + STR_SPACE + STR_CLIPS;
+            else thumbfallow = '';
+            Main_td = document.createElement('td');
+            Main_td.setAttribute('id', AGame_ids[8] + 'y_' + i);
+            Main_td.className = 'stream_cell';
+            Main_td.innerHTML = '<div id="' + AGame_ids[0] +
+                'y_' + i + '" class="stream_thumbnail_fallow_game" ><div id="' + AGame_ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            row.appendChild(Main_td);
+        }
+        document.getElementById("stream_table_a_game").appendChild(row);
     }
-    document.getElementById("stream_table_a_game").appendChild(row);
 
     for (i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
