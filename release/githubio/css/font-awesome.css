@@ -99,9 +99,6 @@
 .icon-filmstrip:before {
   content: "\6f";
 }
-.icon-speedometer:before {
-  content: "\66";
-}
 .icon-refresh:before {
   content: "\73";
 }
@@ -130,5 +127,5 @@
   content: "\41";
 }
 .icon-calendar:before {
-  content: "\67";
+  content: "\66";
 }
