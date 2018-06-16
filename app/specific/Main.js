@@ -109,7 +109,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 400;
 var Main_stringVersion = '4.0.0';
 var Main_currentVersion = '';
-var Main_minversion = '061218';
+var Main_minversion = '061618';
 var Main_versonTag = '';
 var Main_TizenVersion;
 
@@ -190,7 +190,7 @@ function Main_initWindows() {
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
-    Main_textContent('label_clock', Main_getclock());
+    Main_updateclock();
     window.setInterval(Main_updateclock, 60000);
 
     Main_textContent('top_bar_live', STR_LIVE);
@@ -611,6 +611,7 @@ function Main_GoLive() {
 function Main_ResumeNetwork() {
     if (document.hidden) Main_NetworkStateChangeListenerStop();
     else {
+        Main_updateclock();
         window.setTimeout(function() {
             Main_NetworkStateChangeListenerStart();
         }, 20000);
