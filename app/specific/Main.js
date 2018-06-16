@@ -62,8 +62,8 @@ var Main_AddCodeInput;
 
 //Buffer size in second is not how much time will take to buffer
 //it's how much longer the buffer will be in seconds
-var Main_BufferSizeInSeconds = 3;
-var Main_ResumeBufferSizeInSeconds = 2;
+var Main_BufferSizeInSeconds = 4;
+var Main_ResumeBufferSizeInSeconds = 4;
 var Main_Is4k = false;
 var Main_ScrollOffSetVideo = 275;
 var Main_ScrollOffSetGame = 523;
