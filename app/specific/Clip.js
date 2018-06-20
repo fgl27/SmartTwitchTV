@@ -3,13 +3,12 @@ var Clip_cursorY = 0;
 var Clip_cursorX = 0;
 var Clip_dataEnded = false;
 var Clip_itemsCount = 0;
-var Clip_nameMatrix = [];
+var Clip_idObject = {};
 var Clip_emptyCellVector = [];
 var Clip_loadingData = false;
 var Clip_loadingDataTry = 0;
 var Clip_loadingDataTryMax = 5;
 var Clip_loadingDataTimeout = 3500;
-var Clip_blankCellCount = 0;
 var Clip_ReplacedataEnded = false;
 var Clip_MaxOffset = 0;
 var Clip_emptyContent = false;
@@ -55,10 +54,9 @@ function Clip_StartLoad() {
     Clip_cursor = null;
     Clip_status = false;
     Main_empty('stream_table_clip');
-    Clip_blankCellCount = 0;
     Clip_ReplacedataEnded = false;
     Clip_MaxOffset = 0;
-    Clip_nameMatrix = [];
+    Clip_idObject = {};
     Clip_emptyCellVector = [];
     Clip_itemsCountCheck = false;
     Clip_itemsCount = 0;
@@ -146,10 +144,8 @@ function Clip_loadDataSuccess(responseText) {
     Clip_cursor = response._cursor;
 
     // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
-    if (response_items === (Main_ItemsLimitVideo - 1)) {
-        Clip_blankCellCount += 1;
-        Clip_itemsCount += 1;
-    } else if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
+    if (response_items === (Main_ItemsLimitVideo - 1)) Clip_itemsCount += 1;
+    else if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
 
     Clip_itemsCount += response_items;
 
@@ -158,7 +154,7 @@ function Clip_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, video,
+    var coloumn_id, row_id, row, video, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -167,9 +163,10 @@ function Clip_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Clip_CellExists(video.slug)) coloumn_id--;
+            id = video.tracking_id;
+            if (Clip_idObject[id]) coloumn_id--;
             else {
-                Clip_nameMatrix.push(video.slug);
+                Clip_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
@@ -199,16 +196,6 @@ function Clip_loadDataSuccess(responseText) {
     Clip_loadDataSuccessFinish();
 }
 
-function Clip_CellExists(display_name) {
-    for (var i = 0; i < Clip_nameMatrix.length; i++) {
-        if (display_name === Clip_nameMatrix[i]) {
-            Clip_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
-}
-
 function Clip_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Clip_status) {
@@ -220,13 +207,12 @@ function Clip_loadDataSuccessFinish() {
                 Main_LazyImgStart(Clip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (Clip_blankCellCount > 0 && !Clip_dataEnded) {
+            if (Clip_emptyCellVector.length > 0 && !Clip_dataEnded) {
                 Clip_loadDataPrepare();
                 Clip_loadDataReplace();
                 return;
             } else {
                 Clip_ReplacedataTry = 0;
-                Clip_blankCellCount = 0;
                 Clip_emptyCellVector = [];
             }
         }
@@ -239,7 +225,7 @@ function Clip_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + Clip_blankCellCount +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + Clip_emptyCellVector.length +
             '&period=' + encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
@@ -270,7 +256,6 @@ function Clip_loadDataErrorReplace() {
         Clip_loadDataReplace();
     } else {
         Clip_ReplacedataEnded = true;
-        Clip_blankCellCount = 0;
         Clip_emptyCellVector = [];
         Clip_loadDataSuccessFinish();
     }
@@ -279,7 +264,7 @@ function Clip_loadDataErrorReplace() {
 function Clip_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
-    var video, index, cursor = 0;
+    var video, index, id, cursor = 0;
     var tempVector = Clip_emptyCellVector.slice();
 
     Clip_cursor = response._cursor;
@@ -288,11 +273,10 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Clip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Clip_CellExists(video.slug)) {
-            Clip_blankCellCount--;
-            i--;
-        } else if (document.getElementById(Clip_emptyCellVector[i]) !== null) {
-            Clip_nameMatrix.push(video.slug);
+        id = video.tracking_id;
+        if (Clip_idObject[id]) i--;
+        else if (document.getElementById(Clip_emptyCellVector[i]) !== null) {
+            Clip_idObject[id] = 1;
             Vod_replaceVideo(Clip_emptyCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                 ',' + video.broadcaster.display_name + ',' +
@@ -306,16 +290,13 @@ function Clip_loadDataSuccessReplace(responseText) {
                     '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
                 ], Clip_ids);
 
-            Clip_blankCellCount--;
-
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
         }
     }
 
     if (Clip_ReplacedataTry > 1) {
-        Clip_itemsCount -= Clip_blankCellCount;
-        Clip_blankCellCount = 0;
+        Clip_itemsCount -= tempVector.length;
         Clip_emptyCellVector = [];
         Clip_ReplacedataEnded = true;
         Clip_dataEnded = true;
@@ -323,7 +304,6 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     if (Clip_ReplacedataEnded) {
         Clip_ReplacedataTry = 0;
-        Clip_blankCellCount = 0;
         Clip_emptyCellVector = [];
     } else Clip_emptyCellVector = tempVector;
 
