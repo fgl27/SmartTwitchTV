@@ -3,13 +3,12 @@ var SLive_cursorY = 0;
 var SLive_cursorX = 0;
 var SLive_dataEnded = false;
 var SLive_itemsCount = 0;
-var SLive_nameMatrix = [];
+var SLive_idObject = {};
 var SLive_blankCellVector = [];
 var SLive_loadingData = false;
 var SLive_loadingDataTry = 0;
 var SLive_loadingDataTryMax = 5;
 var SLive_loadingDataTimeout = 3500;
-var SLive_blankCellCount = 0;
 var SLive_itemsCountOffset = 0;
 var SLive_ReplacedataEnded = false;
 var SLive_MaxOffset = 0;
@@ -47,11 +46,10 @@ function SLive_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_search_live');
-    SLive_blankCellCount = 0;
     SLive_itemsCountOffset = 0;
     SLive_ReplacedataEnded = false;
     SLive_MaxOffset = 0;
-    SLive_nameMatrix = [];
+    SLive_idObject = {};
     SLive_blankCellVector = [];
     SLive_itemsCountCheck = false;
     SLive_itemsCount = 0;
@@ -141,14 +139,18 @@ function SLive_loadDataSuccess(responseText) {
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
             id = stream.channel._id;
-            if (SLive_CellExists(id)) coloumn_id--;
-            else row.appendChild(SLive_createCell(row_id, row_id + '_' + coloumn_id,
-                stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game,
-                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-                ]));
+            if (SLive_idObject[id]) coloumn_id--;
+            else {
+                SLive_idObject[id] = 1;
+                row.appendChild(SLive_createCell(row_id, row_id + '_' + coloumn_id,
+                    stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                        Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                        stream.channel.status, stream.game,
+                        STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' +
+                        STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                        Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                    ]));
+            }
         }
 
         for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
@@ -166,20 +168,8 @@ function SLive_loadDataSuccess(responseText) {
 }
 
 function SLive_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
-    SLive_nameMatrix.push(channel_id);
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
     return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, SLive_ids, valuesArray);
-}
-
-function SLive_CellExists(display_name) {
-    for (var i = 0; i < SLive_nameMatrix.length; i++) {
-        if (display_name === SLive_nameMatrix[i]) {
-            SLive_blankCellCount++;
-            return true;
-        }
-    }
-
-    return false;
 }
 
 function SLive_loadDataSuccessFinish() {
@@ -193,14 +183,11 @@ function SLive_loadDataSuccessFinish() {
                 Main_LazyImgStart(SLive_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (SLive_blankCellCount > 0 && !SLive_dataEnded) {
+            if (SLive_blankCellVector.length > 0 && !SLive_dataEnded) {
                 SLive_loadDataPrepare();
                 SLive_loadDataReplace();
                 return;
-            } else {
-                SLive_blankCellCount = 0;
-                SLive_blankCellVector = [];
-            }
+            } else SLive_blankCellVector = [];
         }
         SLive_loadingData = false;
     });
@@ -211,7 +198,7 @@ function SLive_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(SLive_blankCellCount);
+        Main_SetItemsLimitReplace(SLive_blankCellVector.length);
 
         var offset = SLive_itemsCount + SLive_itemsCountOffset;
         if (offset && offset > (SLive_MaxOffset - 1)) {
@@ -247,7 +234,6 @@ function SLive_loadDataErrorReplace() {
         SLive_loadDataReplace();
     } else {
         SLive_ReplacedataEnded = true;
-        SLive_blankCellCount = 0;
         SLive_blankCellVector = [];
         SLive_loadDataSuccessFinish();
     }
@@ -266,18 +252,15 @@ function SLive_loadDataSuccessReplace(responseText) {
     for (var i = 0; i < SLive_blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
-        if (SLive_CellExists(id)) {
-            SLive_blankCellCount--;
-            i--;
-        } else {
-            SLive_nameMatrix.push(id);
+        if (SLive_idObject[id]) i--;
+        else {
+            SLive_idObject[id] = 1;
             Main_replaceVideo(Live_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
             ], SLive_ids);
-            SLive_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
@@ -285,10 +268,8 @@ function SLive_loadDataSuccessReplace(responseText) {
     }
 
     SLive_itemsCountOffset += cursor;
-    if (SLive_ReplacedataEnded) {
-        SLive_blankCellCount = 0;
-        SLive_blankCellVector = [];
-    } else SLive_blankCellVector = tempVector;
+    if (SLive_ReplacedataEnded) SLive_blankCellVector = [];
+    else SLive_blankCellVector = tempVector;
 
     SLive_loadDataSuccessFinish();
 }
