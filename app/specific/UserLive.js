@@ -175,7 +175,7 @@ function UserLive_loadChannelUserLive() {
 function UserLive_loadDataErrorLive() {
     UserLive_loadingDataTry++;
     if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
-        UserLive_loadingDataTimeout += 500
+        UserLive_loadingDataTimeout += 500;
         UserLive_loadChannelUserLive();
     } else {
         UserLive_loadingData = false;
