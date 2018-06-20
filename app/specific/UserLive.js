@@ -105,7 +105,7 @@ function UserLive_loadChannels() {
 function UserLive_loadDataError() {
     UserLive_loadingDataTry++;
     if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
-        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadingDataTimeout += 500;
         UserLive_loadChannels();
     } else {
         UserLive_loadingData = false;
@@ -175,7 +175,7 @@ function UserLive_loadChannelUserLive() {
 function UserLive_loadDataErrorLive() {
     UserLive_loadingDataTry++;
     if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
-        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadingDataTimeout += 500
         UserLive_loadChannelUserLive();
     } else {
         UserLive_loadingData = false;
@@ -313,7 +313,7 @@ function UserLive_loadChannelsReplace() {
 function UserLive_loadDataErrorReplace() {
     UserLive_loadingDataTry++;
     if (UserLive_loadingDataTry < UserLive_loadingDataTryMax) {
-        UserLive_loadingDataTimeout += (UserLive_loadingDataTry < 5) ? 250 : 3500;
+        UserLive_loadingDataTimeout += 500;
         UserLive_loadChannelsReplace();
     } else {
         UserLive_ReplacedataEnded = true;

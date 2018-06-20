@@ -109,7 +109,7 @@ function UserGames_loadDataRequest() {
 function UserGames_loadDataError() {
     UserGames_loadingDataTry++;
     if (UserGames_loadingDataTry < UserGames_loadingDataTryMax) {
-        UserGames_loadingDataTimeout += (UserGames_loadingDataTry < 5) ? 250 : 3500;
+        UserGames_loadingDataTimeout += 500;
         UserGames_loadDataRequest();
     } else {
         UserGames_loadingData = false;
@@ -239,7 +239,7 @@ function UserGames_loadDataReplace() {
 function UserGames_loadDataReplaceError() {
     UserGames_loadingDataTry++;
     if (UserGames_loadingDataTry < UserGames_loadingDataTryMax) {
-        UserGames_loadingDataTimeout += (UserGames_loadingDataTry < 5) ? 250 : 3500;
+        UserGames_loadingDataTimeout += 500;
         UserGames_loadDataReplace();
     } else {
         UserGames_ReplacedataEnded = true;

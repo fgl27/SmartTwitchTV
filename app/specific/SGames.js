@@ -94,7 +94,7 @@ function SGames_loadDataRequest() {
 function SGames_loadDataError() {
     SGames_loadingDataTry++;
     if (SGames_loadingDataTry < SGames_loadingDataTryMax) {
-        SGames_loadingDataTimeout += (SGames_loadingDataTry < 5) ? 250 : 3500;
+        SGames_loadingDataTimeout += 500;
         SGames_loadDataRequest();
     } else {
         SGames_loadingData = false;

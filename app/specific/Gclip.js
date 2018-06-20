@@ -137,7 +137,7 @@ function Gclip_loadDataRequest() {
 function Gclip_loadDataError() {
     Gclip_loadingDataTry++;
     if (Gclip_loadingDataTry < Gclip_loadingDataTryMax) {
-        Gclip_loadingDataTimeout += (Gclip_loadingDataTry < 5) ? 250 : 3500;
+        Gclip_loadingDataTimeout += 500;
         Gclip_loadDataRequest();
     } else {
         Gclip_loadingData = false;
@@ -274,7 +274,7 @@ function Gclip_loadDataReplace() {
 function Gclip_loadDataErrorReplace() {
     Gclip_loadingDataTry++;
     if (Gclip_loadingDataTry < Gclip_loadingDataTryMax) {
-        Gclip_loadingDataTimeout += (Gclip_loadingDataTry < 5) ? 250 : 3500;
+        Gclip_loadingDataTimeout += 500;
         Gclip_loadDataReplace();
     } else {
         Gclip_ReplacedataEnded = true;

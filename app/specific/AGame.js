@@ -116,7 +116,7 @@ function AGame_loadDataRequest() {
 function AGame_loadDataError() {
     AGame_loadingDataTry++;
     if (AGame_loadingDataTry < AGame_loadingDataTryMax) {
-        AGame_loadingDataTimeout += (AGame_loadingDataTry < 5) ? 250 : 3500;
+        AGame_loadingDataTimeout += 500;
         AGame_loadDataRequest();
     } else {
         AGame_loadingData = false;
@@ -318,7 +318,7 @@ function AGame_loadDataReplace() {
 function AGame_loadDataErrorReplace() {
     AGame_loadingDataTry++;
     if (AGame_loadingDataTry < AGame_loadingDataTryMax) {
-        AGame_loadingDataTimeout += (AGame_loadingDataTry < 5) ? 250 : 3500;
+        AGame_loadingDataTimeout += 500;
         AGame_loadDataReplace();
     } else {
         AGame_ReplacedataEnded = true;

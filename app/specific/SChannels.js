@@ -111,7 +111,7 @@ function SChannels_loadDataRequest() {
 function SChannels_loadDataError() {
     SChannels_loadingDataTry++;
     if (SChannels_loadingDataTry < SChannels_loadingDataTryMax) {
-        SChannels_loadingDataTimeout += (SChannels_loadingDataTry < 5) ? 250 : 3500;
+        SChannels_loadingDataTimeout += 500;
         SChannels_loadDataRequest();
     } else {
         SChannels_loadingData = false;
@@ -231,7 +231,7 @@ function SChannels_loadDataReplace() {
 function SChannels_loadDataErrorReplace() {
     SChannels_loadingDataTry++;
     if (SChannels_loadingDataTry < SChannels_loadingDataTryMax) {
-        SChannels_loadingDataTimeout += (SChannels_loadingDataTry < 5) ? 250 : 3500;
+        SChannels_loadingDataTimeout += 500;
         SChannels_loadDataReplace();
     } else {
         SChannels_ReplacedataEnded = true;

@@ -101,7 +101,7 @@ function PlayClip_loadDataRequest() {
 function PlayClip_loadDataError() {
     PlayClip_loadingDataTry++;
     if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
-        PlayClip_loadingDataTimeout += 1000;
+        PlayClip_loadingDataTimeout += 500;
         PlayClip_loadDataRequest();
     } else {
         Play_HideBufferDialog();

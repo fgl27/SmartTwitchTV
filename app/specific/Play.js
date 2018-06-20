@@ -322,7 +322,7 @@ function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
         if (Play_loadingDataTry < Play_loadingDataTryMax) {
-            Play_loadingDataTimeout += (Play_loadingDataTry < 5) ? 250 : 3500;
+            Play_loadingDataTimeout += 500;
             Play_loadDataRequest();
         } else Play_CheckHostStart();
     }

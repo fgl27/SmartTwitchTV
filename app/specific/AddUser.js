@@ -172,7 +172,7 @@ function AddUser_loadDataRequest() {
 function AddUser_loadDataError() {
     AddUser_loadingDataTry++;
     if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
-        AddUser_loadingDataTimeout += (AddUser_loadingDataTry < 5) ? 250 : 3500;
+        AddUser_loadingDataTimeout += 500;
         AddUser_loadDataRequest();
     } else {
         AddUser_Username = null;

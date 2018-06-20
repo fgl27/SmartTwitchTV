@@ -129,7 +129,7 @@ function Clip_loadDataRequest() {
 function Clip_loadDataError() {
     Clip_loadingDataTry++;
     if (Clip_loadingDataTry < Clip_loadingDataTryMax) {
-        Clip_loadingDataTimeout += (Clip_loadingDataTry < 5) ? 250 : 3500;
+        Clip_loadingDataTimeout += 500;
         Clip_loadDataRequest();
     } else {
         Clip_loadingData = false;
@@ -266,7 +266,7 @@ function Clip_loadDataReplace() {
 function Clip_loadDataErrorReplace() {
     Clip_loadingDataTry++;
     if (Clip_loadingDataTry < Clip_loadingDataTryMax) {
-        Clip_loadingDataTimeout += (Clip_loadingDataTry < 5) ? 250 : 3500;
+        Clip_loadingDataTimeout += 500;
         Clip_loadDataReplace();
     } else {
         Clip_ReplacedataEnded = true;

@@ -103,7 +103,7 @@ function Live_loadDataRequest() {
 function Live_loadDataError() {
     Live_loadingDataTry++;
     if (Live_loadingDataTry < Live_loadingDataTryMax) {
-        Live_loadingDataTimeout += (Live_loadingDataTry < 5) ? 250 : 3500;
+        Live_loadingDataTimeout += 500;
         Live_loadDataRequest();
     } else {
         if (!Live_itemsCount) {
@@ -244,7 +244,7 @@ function Live_loadDataReplace() {
 function Live_loadDataErrorReplace() {
     Live_loadingDataTry++;
     if (Live_loadingDataTry < Live_loadingDataTryMax) {
-        Live_loadingDataTimeout += (Live_loadingDataTry < 5) ? 250 : 3500;
+        Live_loadingDataTimeout += 500;
         Live_loadDataReplace();
     } else {
         Live_ReplacedataEnded = true;

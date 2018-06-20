@@ -120,7 +120,7 @@ function Gvod_loadDataRequest() {
 function Gvod_loadDataError() {
     Gvod_loadingDataTry++;
     if (Gvod_loadingDataTry < Gvod_loadingDataTryMax) {
-        Gvod_loadingDataTimeout += (Gvod_loadingDataTry < 5) ? 250 : 3500;
+        Gvod_loadingDataTimeout += 500;
         Gvod_loadDataRequest();
     } else {
         Gvod_loadingData = false;
@@ -244,7 +244,7 @@ function Gvod_loadDataReplace() {
 function Gvod_loadDataErrorReplace() {
     Gvod_loadingDataTry++;
     if (Gvod_loadingDataTry < Gvod_loadingDataTryMax) {
-        Gvod_loadingDataTimeout += (Gvod_loadingDataTry < 5) ? 250 : 3500;
+        Gvod_loadingDataTimeout += 500;
         Gvod_loadDataReplace();
     } else {
         Gvod_ReplacedataEnded = true;

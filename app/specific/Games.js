@@ -104,7 +104,7 @@ function Games_loadDataRequest() {
 function Games_loadDataError() {
     Games_loadingDataTry++;
     if (Games_loadingDataTry < Games_loadingDataTryMax) {
-        Games_loadingDataTimeout += (Games_loadingDataTry < 5) ? 250 : 3500;
+        Games_loadingDataTimeout += 500;
         Games_loadDataRequest();
     } else {
         if (!Games_itemsCount) {
@@ -245,7 +245,7 @@ function Games_loadDataReplace() {
 function Games_loadDataErrorReplace() {
     Games_loadingDataTry++;
     if (Games_loadingDataTry < Games_loadingDataTryMax) {
-        Games_loadingDataTimeout += (Games_loadingDataTry < 5) ? 250 : 3500;
+        Games_loadingDataTimeout += 500;
         Games_loadDataReplace();
     } else {
         Games_ReplacedataEnded = true;
