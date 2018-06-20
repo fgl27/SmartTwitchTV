@@ -26,10 +26,6 @@ var PlayVod_loadingInfoDataTry = 0;
 var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
-var PlayVod_qualityName = [];
-var PlayVod_qualityLinks = [];
-var PlayVod_qualityCount = 0;
-
 var PlayVod_PlayerTime = 0;
 var PlayVod_streamCheck = null;
 var PlayVod_PlayerCheckCount = 0;
@@ -248,11 +244,7 @@ function PlayVod_loadDataRequest() {
                         if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
 
-                } else {
-                    if ((xmlHttp.responseText).indexOf('Bad auth token') !== -1) {
-                        PlayVod_restore();
-                    } else PlayVod_loadDataError();
-                }
+                } else PlayVod_loadDataError();
             }
         };
         xmlHttp.send(null);
@@ -279,29 +271,6 @@ function PlayVod_loadDataError() {
     }
 }
 
-function PlayVod_saveQualities() {
-    PlayVod_qualityName[PlayVod_qualityCount] = Svod_vodId;
-    PlayVod_qualityLinks[PlayVod_qualityCount] = PlayVod_qualities;
-    PlayVod_qualityCount++;
-}
-
-function PlayVod_restore() {
-    for (var i = 0; i < PlayVod_qualityName.length; i++) {
-        if (PlayVod_qualityName[i] === Main_selectedChannel) {
-            PlayVod_qualities = PlayVod_qualityLinks[i];
-            PlayVod_qualitiesFound = true;
-        }
-    }
-
-    if (PlayVod_qualitiesFound) {
-        PlayVod_state = PlayVod_STATE_PLAYING;
-        if (PlayVod_isOn) PlayVod_qualityChanged();
-    } else {
-        Play_HideBufferDialog();
-        Play_PannelEndStart(2);
-    }
-}
-
 function PlayVod_loadDataSuccess(responseText) {
     if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
         PlayVod_tokenResponse = JSON.parse(responseText);
@@ -312,7 +281,6 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
         if (PlayVod_isOn) PlayVod_qualityChanged();
-        PlayVod_saveQualities();
     }
 }
 

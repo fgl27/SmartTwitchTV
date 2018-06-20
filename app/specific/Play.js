@@ -39,9 +39,6 @@ var Play_isOn = false;
 var Play_ChatBackgroundID = null;
 var Play_oldcurrentTime = 0;
 var Play_offsettime = 0;
-var Play_qualityCount = 0;
-var Play_qualityName = [];
-var Play_qualityLinks = [];
 var Play_qualitiesFound = false;
 var Play_PlayerTime = 0;
 var Play_streamCheck = null;
@@ -74,6 +71,7 @@ var Play_TargetHost = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
 var Play_isOpenChannel = false;
+var Play_isLive = true;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -305,11 +303,7 @@ function Play_loadDataRequest() {
                         Play_loadingDataTry = 0;
                         if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
                     } catch (err) {}
-                } else {
-                    if ((xmlHttp.responseText).indexOf('Bad auth token') !== -1) {
-                        Play_restore();
-                    } else Play_loadDataError();
-                }
+                } else Play_loadDataError();
             }
         };
 
@@ -329,26 +323,6 @@ function Play_loadDataError() {
     }
 }
 
-function Play_saveQualities() {
-    Play_qualityName[Play_qualityCount] = Play_selectedChannel;
-    Play_qualityLinks[Play_qualityCount] = Play_qualities;
-    Play_qualityCount++;
-}
-
-function Play_restore() {
-    for (var i = 0; i < Play_qualityName.length; i++) {
-        if (Play_qualityName[i] === Play_selectedChannel) {
-            Play_qualities = Play_qualityLinks[i];
-            Play_qualitiesFound = true;
-        }
-    }
-
-    if (Play_qualitiesFound) {
-        Play_state = Play_STATE_PLAYING;
-        if (Play_isOn) Play_qualityChanged();
-    } else Play_CheckHostStart();
-}
-
 function Play_loadDataSuccess(responseText) {
     if (Play_state === Play_STATE_LOADING_TOKEN) {
         Play_tokenResponse = JSON.parse(responseText);
@@ -360,7 +334,6 @@ function Play_loadDataSuccess(responseText) {
         Play_state = Play_STATE_PLAYING;
         SmartHub_SmartHubResume = false;
         if (Play_isOn) Play_qualityChanged();
-        Play_saveQualities();
     }
 }
 
