@@ -4,12 +4,11 @@ var Games_cursorY = 0;
 var Games_cursorX = 0;
 var Games_dataEnded = false;
 var Games_itemsCount = 0;
-var Games_nameMatrix = [];
+var Games_idObject = {};
 var Games_loadingData = false;
 var Games_loadingDataTry = 0;
 var Games_loadingDataTryMax = 5;
 var Games_loadingDataTimeout = 3500;
-var Games_blankCellCount = 0;
 var Games_emptyCellVector = [];
 var Games_itemsCountOffset = 0;
 var Games_ReplacedataEnded = false;
@@ -43,13 +42,12 @@ function Games_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_games');
-    Games_blankCellCount = 0;
     Games_emptyCellVector = [];
     Games_itemsCountOffset = 0;
     Games_ReplacedataEnded = false;
     Games_itemsCountCheck = false;
     Games_MaxOffset = 0;
-    Games_nameMatrix = [];
+    Games_idObject = {};
     Games_itemsCount = 0;
     Games_cursorX = 0;
     Games_cursorY = 0;
@@ -139,7 +137,7 @@ function Games_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountGame;
     if (response_items % Main_ColoumnsCountGame > 0) response_rows++;
 
-    var coloumn_id, row_id, row, game,
+    var coloumn_id, row_id, row, game, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -148,11 +146,14 @@ function Games_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountGame && cursor < response_items; coloumn_id++, cursor++) {
             game = response.top[cursor];
-            if (Games_CellExists(game.game.name)) {
-                coloumn_id--;
-            } else row.appendChild(Games_createCell(row_id, row_id + '_' + coloumn_id, [game.game.name, game.game.box.template.replace("{width}x{height}", Main_GameSize),
-                Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
-            ]));
+            id = game.game._id;
+            if (Games_idObject[id]) coloumn_id--;
+            else {
+                Games_idObject[id] = 1;
+                row.appendChild(Games_createCell(row_id, row_id + '_' + coloumn_id, [game.game.name, game.game.box.template.replace("{width}x{height}", Main_GameSize),
+                    Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
+                ]));
+            }
         }
         for (coloumn_id; coloumn_id < Main_ColoumnsCountGame; coloumn_id++) {
             if (Games_dataEnded && !Games_itemsCountCheck) {
@@ -169,19 +170,8 @@ function Games_loadDataSuccess(responseText) {
 }
 
 function Games_createCell(row_id, id, valuesArray) {
-    Games_nameMatrix.push(valuesArray[0]);
     if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
     return Main_createCellGame(id, Game_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
-}
-
-function Games_CellExists(display_name) {
-    for (var i = 0; i < Games_nameMatrix.length; i++) {
-        if (display_name === Games_nameMatrix[i]) {
-            Games_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
 }
 
 function Games_loadDataSuccessFinish() {
@@ -195,14 +185,11 @@ function Games_loadDataSuccessFinish() {
                 Main_LazyImgStart(Game_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
         } else {
-            if (Games_blankCellCount > 0 && !Games_dataEnded) {
+            if (Games_emptyCellVector.length > 0 && !Games_dataEnded) {
                 Games_loadDataPrepare();
                 Games_loadDataReplace();
                 return;
-            } else {
-                Games_blankCellCount = 0;
-                Games_emptyCellVector = [];
-            }
+            } else Games_emptyCellVector = [];
         }
         Games_loadingData = false;
     });
@@ -213,7 +200,7 @@ function Games_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(Games_blankCellCount);
+        Main_SetItemsLimitReplace(Games_emptyCellVector.length);
 
         var offset = Games_itemsCount + Games_itemsCountOffset;
         if (offset && offset > (Games_MaxOffset - 1)) {
@@ -249,7 +236,6 @@ function Games_loadDataErrorReplace() {
         Games_loadDataReplace();
     } else {
         Games_ReplacedataEnded = true;
-        Games_blankCellCount = 0;
         Games_emptyCellVector = [];
         Games_loadDataSuccessFinish();
     }
@@ -258,7 +244,7 @@ function Games_loadDataErrorReplace() {
 function Games_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.top.length;
-    var game, index, cursor = 0;
+    var game, index, id, cursor = 0;
     var tempVector = Games_emptyCellVector.slice();
 
     Games_MaxOffset = parseInt(response._total);
@@ -267,16 +253,14 @@ function Games_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Games_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         game = response.top[cursor];
-        if (Games_CellExists(game.game.name)) {
-            Games_blankCellCount--;
-            i--;
-        } else {
-            Games_nameMatrix.push(game.game.name);
+        id = game.game._id;
+        if (Games_idObject[id]) i--;
+        else {
+            Games_idObject[id] = 1;
             Main_replaceGame(Games_emptyCellVector[i], [game.game.name,
                 game.game.box.template.replace("{width}x{height}", Main_GameSize),
                 Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
             ], Game_ids);
-            Games_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
@@ -284,10 +268,8 @@ function Games_loadDataSuccessReplace(responseText) {
     }
 
     Games_itemsCountOffset += cursor;
-    if (Games_ReplacedataEnded) {
-        Games_blankCellCount = 0;
-        Games_emptyCellVector = [];
-    } else Games_emptyCellVector = tempVector;
+    if (Games_ReplacedataEnded) Games_emptyCellVector = [];
+    else Games_emptyCellVector = tempVector;
 
     Games_loadDataSuccessFinish();
 }
