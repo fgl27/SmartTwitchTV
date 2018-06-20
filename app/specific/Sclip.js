@@ -3,13 +3,12 @@ var Sclip_cursorY = 0;
 var Sclip_cursorX = 0;
 var Sclip_dataEnded = false;
 var Sclip_itemsCount = 0;
-var Sclip_nameMatrix = [];
+var Sclip_idObject = {};
 var Sclip_emptyCellVector = [];
 var Sclip_loadingData = false;
 var Sclip_loadingDataTry = 0;
 var Sclip_loadingDataTryMax = 5;
 var Sclip_loadingDataTimeout = 3500;
-var Sclip_blankCellCount = 0;
 var Sclip_ReplacedataEnded = false;
 var Sclip_MaxOffset = 0;
 var Sclip_DurationSeconds = 0;
@@ -60,11 +59,10 @@ function Sclip_StartLoad() {
     Sclip_cursor = null;
     Sclip_status = false;
     Main_empty('stream_table_search_clip');
-    Sclip_blankCellCount = 0;
     Sclip_ReplacedataEnded = false;
     Sclip_MaxOffset = 0;
     Sclip_ReplacedataTry = 0;
-    Sclip_nameMatrix = [];
+    Sclip_idObject = {};
     Sclip_emptyCellVector = [];
     Sclip_itemsCountCheck = false;
     Sclip_itemsCount = 0;
@@ -150,10 +148,8 @@ function Sclip_loadDataSuccess(responseText) {
     Sclip_cursor = response._cursor;
 
     // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
-    if (response_items === (Main_ItemsLimitVideo - 1)) {
-        Sclip_blankCellCount += 1;
-        Sclip_itemsCount += 1;
-    } else if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
+    if (response_items === (Main_ItemsLimitVideo - 1)) Sclip_itemsCount += 1;
+    else if (response_items < Main_ItemsLimitVideo) Sclip_dataEnded = true;
 
     Sclip_itemsCount += response_items;
 
@@ -162,7 +158,7 @@ function Sclip_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, video,
+    var coloumn_id, row_id, row, video, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -171,9 +167,10 @@ function Sclip_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Sclip_CellExists(video.slug)) coloumn_id--;
+            id = video.tracking_id;
+            if (Sclip_idObject[id]) coloumn_id--;
             else {
-                Sclip_nameMatrix.push(video.slug);
+                Sclip_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video.slug + ',' + video.duration + ',' + video.game + ',' +
                     (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
@@ -199,16 +196,6 @@ function Sclip_loadDataSuccess(responseText) {
     Sclip_loadDataSuccessFinish();
 }
 
-function Sclip_CellExists(display_name) {
-    for (var i = 0; i < Sclip_nameMatrix.length; i++) {
-        if (display_name === Sclip_nameMatrix[i]) {
-            Sclip_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
-}
-
 function Sclip_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Sclip_status) {
@@ -220,13 +207,12 @@ function Sclip_loadDataSuccessFinish() {
                 Main_LazyImgStart(Sclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (Sclip_blankCellCount > 0 && !Sclip_dataEnded) {
+            if (Sclip_emptyCellVector.length > 0 && !Sclip_dataEnded) {
                 Sclip_loadDataPrepare();
                 Sclip_loadDataReplace();
                 return;
             } else {
                 Sclip_ReplacedataTry = 0;
-                Sclip_blankCellCount = 0;
                 Sclip_emptyCellVector = [];
             }
 
@@ -243,7 +229,7 @@ function Sclip_loadDataReplace() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' +
             encodeURIComponent(Main_selectedChannel) + '&limit=' +
-            Sclip_blankCellCount + '&period=' + Sclip_period + '&cursor=' + encodeURIComponent(Sclip_cursor) +
+            Sclip_emptyCellVector.length + '&period=' + Sclip_period + '&cursor=' + encodeURIComponent(Sclip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Sclip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -272,7 +258,6 @@ function Sclip_loadDataErrorReplace() {
         Sclip_loadDataReplace();
     } else {
         Sclip_ReplacedataEnded = true;
-        Sclip_blankCellCount = 0;
         Sclip_emptyCellVector = [];
         Sclip_loadDataSuccessFinish();
     }
@@ -281,7 +266,7 @@ function Sclip_loadDataErrorReplace() {
 function Sclip_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
-    var video, index, cursor = 0;
+    var video, index, id, cursor = 0;
     var tempVector = Sclip_emptyCellVector.slice();
 
     Sclip_cursor = response._cursor;
@@ -290,11 +275,10 @@ function Sclip_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Sclip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Sclip_CellExists(video.slug)) {
-            Sclip_blankCellCount--;
-            i--;
-        } else if (document.getElementById(Sclip_emptyCellVector[i]) !== null) {
-            Sclip_nameMatrix.push(video.slug);
+        id = video.tracking_id;
+        if (Sclip_idObject[id]) i--;
+        else if (document.getElementById(Sclip_emptyCellVector[i]) !== null) {
+            Sclip_idObject[id] = 1;
             Vod_replaceVideo(Sclip_emptyCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' +
                 (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
@@ -304,16 +288,13 @@ function Sclip_loadDataSuccessReplace(responseText) {
                     STR_DURATION + Play_timeS(video.duration)
                 ], Sclip_ids);
 
-            Sclip_blankCellCount--;
-
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
         }
     }
 
     if (Sclip_ReplacedataTry > 1) {
-        Sclip_itemsCount -= Sclip_blankCellCount;
-        Sclip_blankCellCount = 0;
+        Sclip_itemsCount -= tempVector.length;
         Sclip_emptyCellVector = [];
         Sclip_ReplacedataEnded = true;
         Sclip_dataEnded = true;
@@ -321,7 +302,6 @@ function Sclip_loadDataSuccessReplace(responseText) {
 
     if (Sclip_ReplacedataEnded) {
         Sclip_ReplacedataTry = 0;
-        Sclip_blankCellCount = 0;
         Sclip_emptyCellVector = [];
     } else Sclip_emptyCellVector = tempVector;
 
