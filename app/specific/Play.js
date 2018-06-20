@@ -143,7 +143,8 @@ function Play_Start() {
     Play_currentTime = 0;
     Play_RestoringFromResume = false;
     Play_loadingInfoDataTry = 0;
-    Play_loadingInfoDataTimeout = 10000;
+    Play_loadingInfoDataTimeout = 3000;
+    Play_isLive = true;
     Play_updateStreamInfoStart();
     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
     Play_qualitiesFound = 0;
@@ -174,12 +175,12 @@ function Play_Resume() {
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
                 if (Play_isOn) {
+                    Play_loadingInfoDataTry = 0;
+                    Play_loadingInfoDataTimeout = 3000;
+                    Play_updateStreamInfoStart();
                     Play_RestoringFromResume = true;
                     Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
-                    Play_loadingInfoDataTry = 0;
-                    Play_loadingInfoDataTimeout = 10000;
-                    window.setTimeout(Play_updateStreamInfoStart, 3000);
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
                 }
             }
@@ -212,6 +213,10 @@ function Play_updateStreamInfoStart() {
                             AddCode_PlayRequest = true;
                             AddCode_CheckFallow();
                         } else Play_hideFallow();
+                    } else {
+                        Play_isLive = false;
+                        Play_offPlayer();
+                        Play_CheckHostStart();
                     }
                 } else { // internet error
                     Play_updateStreamInfoStartError();
@@ -236,27 +241,29 @@ function Play_updateStreamInfoStartError() {
 }
 
 function Play_updateStreamInfo() {
-    var xmlHttp = new XMLHttpRequest();
+    try {
+        var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.ontimeout = function() {};
+        xmlHttp.ontimeout = function() {};
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                try {
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
                     var response = JSON.parse(xmlHttp.responseText);
-                    Main_textContent("stream_info_title", response.stream.channel.status);
-                    Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
-                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                    if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                } catch (err) {}
+                    if (response.stream !== null) {
+                        Main_textContent("stream_info_title", response.stream.channel.status);
+                        Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
+                            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+                        if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
+                    }
+                }
             }
-        }
-    };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.send(null);
+        };
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.send(null);
+    } catch (err) {}
 }
 
 function Play_LoadLogo(ImgObjet, link) {
@@ -313,7 +320,7 @@ function Play_loadDataRequest() {
 }
 
 function Play_loadDataError() {
-    if (Play_isOn) {
+    if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
         if (Play_loadingDataTry < Play_loadingDataTryMax) {
             Play_loadingDataTimeout += (Play_loadingDataTry < 5) ? 250 : 3500;
