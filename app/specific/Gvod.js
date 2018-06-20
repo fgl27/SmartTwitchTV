@@ -3,13 +3,12 @@ var Gvod_cursorY = 0;
 var Gvod_cursorX = 0;
 var Gvod_dataEnded = false;
 var Gvod_itemsCount = 0;
-var Gvod_nameMatrix = [];
+var Gvod_idObject = {};
 var Gvod_emptyCellVector = [];
 var Gvod_loadingData = false;
 var Gvod_loadingDataTry = 0;
 var Gvod_loadingDataTryMax = 5;
 var Gvod_loadingDataTimeout = 3500;
-var Gvod_blankCellCount = 0;
 var Gvod_itemsCountOffset = 0;
 var Gvod_ReplacedataEnded = false;
 var Gvod_MaxOffset = 0;
@@ -59,11 +58,10 @@ function Gvod_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_gvod');
-    Gvod_blankCellCount = 0;
     Gvod_itemsCountOffset = 0;
     Gvod_ReplacedataEnded = false;
     Gvod_MaxOffset = 0;
-    Gvod_nameMatrix = [];
+    Gvod_idObject = {};
     Gvod_emptyCellVector = [];
     Gvod_itemsCountCheck = false;
     Gvod_itemsCount = 0;
@@ -146,7 +144,7 @@ function Gvod_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, video,
+    var coloumn_id, row_id, row, video, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -155,15 +153,13 @@ function Gvod_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
-            //video content can be null sometimes the preview will 404
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) {
-                Gvod_blankCellCount++;
-                coloumn_id--;
-            } else if (Gvod_CellExists(video._id)) coloumn_id--;
+            id = video._id;
+            //video content can be null sometimes the preview will 404_processing
+            if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Gvod_idObject[id]) coloumn_id--;
             else {
-                Gvod_nameMatrix.push(video._id);
+                Gvod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video._id + ',' + video.length + ',' + video.language + ',' +
+                    id + ',' + video.length + ',' + video.language + ',' +
                     video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
@@ -187,16 +183,6 @@ function Gvod_loadDataSuccess(responseText) {
     Gvod_loadDataSuccessFinish();
 }
 
-function Gvod_CellExists(video_id) {
-    for (var i = 0; i < Gvod_nameMatrix.length; i++) {
-        if (video_id === Gvod_nameMatrix[i]) {
-            Gvod_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
-}
-
 function Gvod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Gvod_status) {
@@ -208,14 +194,11 @@ function Gvod_loadDataSuccessFinish() {
                 Main_LazyImgStart(Gvod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (Gvod_blankCellCount > 0 && !Gvod_dataEnded) {
+            if (Gvod_emptyCellVector.length > 0 && !Gvod_dataEnded) {
                 Gvod_loadDataPrepare();
                 Gvod_loadDataReplace();
                 return;
-            } else {
-                Gvod_blankCellCount = 0;
-                Gvod_emptyCellVector = [];
-            }
+            } else Gvod_emptyCellVector = [];
         }
         Gvod_loadingData = false;
     });
@@ -226,7 +209,7 @@ function Gvod_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(Gvod_blankCellCount);
+        Main_SetItemsLimitReplace(Gvod_emptyCellVector.length);
 
         var offset = Gvod_itemsCount + Gvod_itemsCountOffset;
         if (offset && offset > (Gvod_MaxOffset - 1)) {
@@ -265,7 +248,6 @@ function Gvod_loadDataErrorReplace() {
         Gvod_loadDataReplace();
     } else {
         Gvod_ReplacedataEnded = true;
-        Gvod_blankCellCount = 0;
         Gvod_emptyCellVector = [];
         Gvod_loadDataSuccessFinish();
     }
@@ -275,7 +257,7 @@ function Gvod_loadDataErrorReplace() {
 function Gvod_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.videos.length;
-    var video, index, cursor = 0;
+    var video, index, id, cursor = 0;
     var tempVector = Gvod_emptyCellVector.slice();
 
     Gvod_MaxOffset = parseInt(response._total);
@@ -284,12 +266,10 @@ function Gvod_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Gvod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) i--;
-        else if (Gvod_CellExists(video._id)) {
-            Gvod_blankCellCount--;
-            i--;
-        } else {
-            Gvod_nameMatrix.push(video._id);
+        if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Gvod_idObject[id]) i--;
+        else {
+            Gvod_idObject[id] = 1;
+            Gvod_idObject.push(video._id);
             Vod_replaceVideo(Gvod_emptyCellVector[i],
                 video._id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
@@ -298,7 +278,6 @@ function Gvod_loadDataSuccessReplace(responseText) {
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                     STR_DURATION + Play_timeS(video.length)
                 ], Gvod_ids);
-            Gvod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
@@ -306,10 +285,8 @@ function Gvod_loadDataSuccessReplace(responseText) {
     }
 
     Gvod_itemsCountOffset += cursor;
-    if (Gvod_ReplacedataEnded) {
-        Gvod_blankCellCount = 0;
-        Gvod_emptyCellVector = [];
-    } else Gvod_emptyCellVector = tempVector;
+    if (Gvod_ReplacedataEnded) Gvod_emptyCellVector = [];
+    else Gvod_emptyCellVector = tempVector;
 
     Gvod_loadDataSuccessFinish();
 }
