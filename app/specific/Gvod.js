@@ -266,12 +266,12 @@ function Gvod_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Gvod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
+        id = video._id;
         if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Gvod_idObject[id]) i--;
         else {
             Gvod_idObject[id] = 1;
-            Gvod_idObject.push(video._id);
             Vod_replaceVideo(Gvod_emptyCellVector[i],
-                video._id + ',' + video.length + ',' + video.language + ',' +
+                id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
