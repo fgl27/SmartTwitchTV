@@ -3,13 +3,12 @@ var Gclip_cursorY = 0;
 var Gclip_cursorX = 0;
 var Gclip_dataEnded = false;
 var Gclip_itemsCount = 0;
-var Gclip_nameMatrix = [];
+var Gclip_idObject = {};
 var Gclip_emptyCellVector = [];
 var Gclip_loadingData = false;
 var Gclip_loadingDataTry = 0;
 var Gclip_loadingDataTryMax = 5;
 var Gclip_loadingDataTimeout = 3500;
-var Gclip_blankCellCount = 0;
 var Gclip_ReplacedataEnded = false;
 var Gclip_MaxOffset = 0;
 var Gclip_emptyContent = false;
@@ -58,11 +57,10 @@ function Gclip_StartLoad() {
     Gclip_cursor = null;
     Gclip_status = false;
     Main_empty('stream_table_gclip');
-    Gclip_blankCellCount = 0;
     Gclip_ReplacedataEnded = false;
     Gclip_MaxOffset = 0;
     Gclip_ReplacedataTry = 0;
-    Gclip_nameMatrix = [];
+    Gclip_idObject = {};
     Gclip_emptyCellVector = [];
     Gclip_itemsCountCheck = false;
     Gclip_itemsCount = 0;
@@ -153,10 +151,8 @@ function Gclip_loadDataSuccess(responseText) {
     Gclip_cursor = response._cursor;
 
     // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
-    if (response_items === (Main_ItemsLimitVideo - 1)) {
-        Gclip_blankCellCount += 1;
-        Gclip_itemsCount += 1;
-    } else if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
+    if (response_items === (Main_ItemsLimitVideo - 1)) Gclip_itemsCount += 1;
+    else if (response_items < Main_ItemsLimitVideo) Gclip_dataEnded = true;
 
     Gclip_itemsCount += response_items;
 
@@ -165,7 +161,7 @@ function Gclip_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, video,
+    var coloumn_id, row_id, row, video, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -174,9 +170,10 @@ function Gclip_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.clips[cursor];
-            if (Gclip_CellExists(video.slug)) coloumn_id--;
+            id = video.tracking_id;
+            if (Gclip_idObject[id]) coloumn_id--;
             else {
-                Gclip_nameMatrix.push(video.slug);
+                Gclip_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                     ',' + video.broadcaster.display_name + ',' +
@@ -205,16 +202,6 @@ function Gclip_loadDataSuccess(responseText) {
     Gclip_loadDataSuccessFinish();
 }
 
-function Gclip_CellExists(display_name) {
-    for (var i = 0; i < Gclip_nameMatrix.length; i++) {
-        if (display_name === Gclip_nameMatrix[i]) {
-            Gclip_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
-}
-
 function Gclip_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Gclip_status) {
@@ -226,13 +213,12 @@ function Gclip_loadDataSuccessFinish() {
                 Main_LazyImgStart(Gclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (Gclip_blankCellCount > 0 && !Gclip_dataEnded) {
+            if (Gclip_emptyCellVector.length > 0 && !Gclip_dataEnded) {
                 Gclip_loadDataPrepare();
                 Gclip_loadDataReplace();
                 return;
             } else {
                 Gclip_ReplacedataTry = 0;
-                Gclip_blankCellCount = 0;
                 Gclip_emptyCellVector = [];
             }
 
@@ -247,7 +233,7 @@ function Gclip_loadDataReplace() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + Gclip_blankCellCount +
+            encodeURIComponent(Main_gameSelected) + '&limit=' + Gclip_emptyCellVector.length +
             '&period=' + encodeURIComponent(Gclip_period) + '&cursor=' + encodeURIComponent(Gclip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
@@ -278,7 +264,6 @@ function Gclip_loadDataErrorReplace() {
         Gclip_loadDataReplace();
     } else {
         Gclip_ReplacedataEnded = true;
-        Gclip_blankCellCount = 0;
         Gclip_emptyCellVector = [];
         Gclip_loadDataSuccessFinish();
     }
@@ -287,7 +272,7 @@ function Gclip_loadDataErrorReplace() {
 function Gclip_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.clips.length;
-    var video, index, cursor = 0;
+    var video, index, id, cursor = 0;
     var tempVector = Gclip_emptyCellVector.slice();
 
     Gclip_cursor = response._cursor;
@@ -296,11 +281,10 @@ function Gclip_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Gclip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
-        if (Gclip_CellExists(video.slug)) {
-            Gclip_blankCellCount--;
-            i--;
-        } else if (document.getElementById(Gclip_emptyCellVector[i]) !== null) {
-            Gclip_nameMatrix.push(video.slug);
+        id = video.tracking_id;
+        if (Gclip_idObject[id]) i--;
+        else if (document.getElementById(Gclip_emptyCellVector[i]) !== null) {
+            Gclip_idObject[id] = 1;
             Vod_replaceVideo(Gclip_emptyCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
                 ',' + video.broadcaster.display_name + ',' +
@@ -313,16 +297,13 @@ function Gclip_loadDataSuccessReplace(responseText) {
                     '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
                 ], Gclip_ids);
 
-            Gclip_blankCellCount--;
-
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
         }
     }
 
     if (Gclip_ReplacedataTry > 1) {
-        Gclip_itemsCount -= Gclip_blankCellCount;
-        Gclip_blankCellCount = 0;
+        Gclip_itemsCount -= tempVector.length;
         Gclip_emptyCellVector = [];
         Gclip_ReplacedataEnded = true;
         Gclip_dataEnded = true;
@@ -330,7 +311,6 @@ function Gclip_loadDataSuccessReplace(responseText) {
 
     if (Gclip_ReplacedataEnded) {
         Gclip_ReplacedataTry = 0;
-        Gclip_blankCellCount = 0;
         Gclip_emptyCellVector = [];
     } else Gclip_emptyCellVector = tempVector;
 
