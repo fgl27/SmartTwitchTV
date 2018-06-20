@@ -3,13 +3,12 @@ var SChannels_cursorY = 0;
 var SChannels_cursorX = 0;
 var SChannels_dataEnded = false;
 var SChannels_itemsCount = 0;
-var SChannels_nameMatrix = [];
+var SChannels_idObject = {};
 var SChannels_emptyCellVector = [];
 var SChannels_loadingData = false;
 var SChannels_loadingDataTry = 0;
 var SChannels_loadingDataTryMax = 5;
 var SChannels_loadingDataTimeout = 3500;
-var SChannels_blankCellCount = 0;
 var SChannels_itemsCountOffset = 0;
 var SChannels_ReplacedataEnded = false;
 var SChannels_MaxOffset = 0;
@@ -53,11 +52,10 @@ function SChannels_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_search_channel');
-    SChannels_blankCellCount = 0;
     SChannels_itemsCountOffset = 0;
     SChannels_ReplacedataEnded = false;
     SChannels_MaxOffset = 0;
-    SChannels_nameMatrix = [];
+    SChannels_idObject = {};
     SChannels_emptyCellVector = [];
     SChannels_itemsCountCheck = false;
     SChannels_itemsCount = 0;
@@ -137,7 +135,7 @@ function SChannels_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountChannel;
     if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
-    var coloumn_id, row_id, row, channels,
+    var coloumn_id, row_id, row, channels, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -146,8 +144,13 @@ function SChannels_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
             channels = response.channels[cursor];
-            if (SChannels_CellExists(channels._id)) coloumn_id--;
-            else row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, channels._id, channels.logo, channels.display_name]));
+            id = channels._id;
+            if (SChannels_idObject[id]) coloumn_id--;
+            else {
+                SChannels_idObject[id] = 1;
+                row.appendChild(SChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, id, channels.logo, channels.display_name]));
+            }
+
         }
 
         for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
@@ -166,20 +169,8 @@ function SChannels_loadDataSuccess(responseText) {
 
 
 function SChannels_createCell(row_id, id, valuesArray) {
-    SChannels_nameMatrix.push(valuesArray[1]);
     if (row_id < 4) Main_PreLoadAImage(valuesArray[2]); //try to pre cache first 4 rows
     return Main_createCellChannel(id, SChannels_ids, valuesArray);
-}
-
-function SChannels_CellExists(display_name) {
-    for (var i = 0; i < SChannels_nameMatrix.length; i++) {
-        if (display_name === SChannels_nameMatrix[i]) {
-            SChannels_blankCellCount++;
-            return true;
-        }
-    }
-
-    return false;
 }
 
 function SChannels_loadDataSuccessFinish() {
@@ -193,14 +184,11 @@ function SChannels_loadDataSuccessFinish() {
                 Main_LazyImgStart(SChannels_ids[1], 7, IMG_404_LOGO, Main_ColoumnsCountChannel);
             }
         } else {
-            if (SChannels_blankCellCount > 0 && !SChannels_dataEnded) {
+            if (SChannels_emptyCellVector.length > 0 && !SChannels_dataEnded) {
                 SChannels_loadDataPrepare();
                 SChannels_loadDataReplace();
                 return;
-            } else {
-                SChannels_blankCellCount = 0;
-                SChannels_emptyCellVector = [];
-            }
+            } else SChannels_emptyCellVector = [];
         }
         SChannels_loadingData = false;
     });
@@ -211,7 +199,7 @@ function SChannels_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(SChannels_blankCellCount);
+        Main_SetItemsLimitReplace(SChannels_emptyCellVector.length);
 
         var offset = SChannels_itemsCount + SChannels_itemsCountOffset;
         if (offset && offset > (SChannels_MaxOffset - 1)) {
@@ -247,7 +235,6 @@ function SChannels_loadDataErrorReplace() {
         SChannels_loadDataReplace();
     } else {
         SChannels_ReplacedataEnded = true;
-        SChannels_blankCellCount = 0;
         SChannels_emptyCellVector = [];
         SChannels_loadDataSuccessFinish();
     }
@@ -256,7 +243,7 @@ function SChannels_loadDataErrorReplace() {
 function SChannels_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.channels.length;
-    var channels, index, cursor = 0;
+    var channels, index, id, cursor = 0;
     var tempVector = SChannels_emptyCellVector.slice();
 
     SChannels_MaxOffset = parseInt(response._total);
@@ -265,13 +252,11 @@ function SChannels_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < SChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         channels = response.channels[cursor];
-        if (SChannels_CellExists(channels.name)) {
-            SChannels_blankCellCount--;
-            i--;
-        } else {
-            SChannels_nameMatrix.push(channels.name);
-            Main_replaceChannel(SChannels_emptyCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
-            SChannels_blankCellCount--;
+        id = channels._id;
+        if (SChannels_idObject[id]) i--;
+        else {
+            SChannels_idObject[id] = 1;
+            Main_replaceChannel(SChannels_emptyCellVector[i], [channels.name, id, channels.logo, channels.display_name], SChannels_ids);
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
@@ -281,10 +266,8 @@ function SChannels_loadDataSuccessReplace(responseText) {
     }
 
     SChannels_itemsCountOffset += cursor;
-    if (SChannels_ReplacedataEnded) {
-        SChannels_blankCellCount = 0;
-        SChannels_emptyCellVector = [];
-    } else SChannels_emptyCellVector = tempVector;
+    if (SChannels_ReplacedataEnded) SChannels_emptyCellVector = [];
+    else SChannels_emptyCellVector = tempVector;
 
     SChannels_loadDataSuccessFinish();
 }
