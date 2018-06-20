@@ -137,7 +137,7 @@ function Live_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, stream,
+    var coloumn_id, row_id, row, stream, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -146,9 +146,10 @@ function Live_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.streams[cursor];
-            if (Live_CellExists(stream.channel.name)) coloumn_id--;
+            id = stream.channel._id;
+            if (Live_CellExists(id)) coloumn_id--;
             else row.appendChild(Live_createCell(row_id, row_id + '_' + coloumn_id,
-                stream.channel.name + ',' + stream.channel._id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -169,10 +170,10 @@ function Live_loadDataSuccess(responseText) {
     Live_loadDataSuccessFinish();
 }
 
-function Live_createCell(row_id, id, channel_name, valuesArray) {
-    Live_nameMatrix.push(channel_name);
+function Live_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
+    Live_nameMatrix.push(channel_id);
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]);
-    return Main_createCellVideo(channel_name, id, Live_ids, valuesArray);
+    return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, Live_ids, valuesArray);
 }
 
 function Live_CellExists(display_name) {
@@ -269,7 +270,7 @@ function Live_loadDataErrorReplace() {
 function Live_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
-    var stream, index, cursor = 0;
+    var stream, index, id, cursor = 0;
     var tempVector = Live_blankCellVector.slice();
 
     Live_MaxOffset = parseInt(response._total);
@@ -278,12 +279,13 @@ function Live_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Live_blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
-        if (Live_CellExists(stream.channel.name)) {
+        id = stream.channel._id;
+        if (Live_CellExists(id)) {
             Live_blankCellCount--;
             i--;
         } else {
-            Live_nameMatrix.push(stream.channel.name);
-            Main_replaceVideo(Live_blankCellVector[i], stream.channel.name + ',' + stream.channel._id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Live_nameMatrix.push(id);
+            Main_replaceVideo(Live_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,

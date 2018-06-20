@@ -131,7 +131,7 @@ function Featured_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, stream,
+    var coloumn_id, row_id, row, stream, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -140,9 +140,10 @@ function Featured_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             stream = response.featured[cursor].stream;
-            if (Featured_CellExists(stream.channel.name)) coloumn_id--;
+            id = stream.channel._id;
+            if (Featured_CellExists(id)) coloumn_id--;
             else row.appendChild(Featured_createCell(row_id, row_id + '_' + coloumn_id,
-                stream.channel.name + ',' + stream.channel._id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -163,10 +164,10 @@ function Featured_loadDataSuccess(responseText) {
     Featured_loadDataSuccessFinish();
 }
 
-function Featured_createCell(row_id, id, channef_name, valuesArray) {
-    Featured_nameMatrix.push(channef_name);
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(channef_name, id, Featured_ids, valuesArray); //[preview_thumbnail, channef_display_name, stream_title, stream_game, viwers, quality]
+function Featured_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
+    Featured_nameMatrix.push(channel_id);
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]);
+    return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, Featured_ids, valuesArray);
 }
 
 function Featured_CellExists(display_name) {
@@ -252,19 +253,20 @@ function Featured_loadDataErrorReplace() {
 function Featured_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.featured.length;
-    var stream, index, cursor = 0;
+    var stream, index, id, cursor = 0;
     var tempVector = Featured_blankCellVector.slice();
 
     if (response_items < Main_ItemsLimitVideo) Featured_ReplacedataEnded = true;
 
     for (var i = 0; i < Featured_blankCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.featured[cursor].stream;
-        if (Featured_CellExists(stream.channel.name)) {
+        id = stream.channel._id;
+        if (Featured_CellExists(id)) {
             Featured_blankCellCount--;
             i--;
         } else {
-            Featured_nameMatrix.push(stream.channel.name);
-            Main_replaceVideo(Featured_blankCellVector[i], stream.channel.name + ',' + stream.channel._id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Featured_nameMatrix.push(id);
+            Main_replaceVideo(Featured_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
