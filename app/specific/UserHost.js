@@ -3,13 +3,12 @@ var UserHost_cursorY = 0;
 var UserHost_cursorX = 0;
 var UserHost_dataEnded = false;
 var UserHost_itemsCount = 0;
-var UserHost_nameMatrix = [];
+var UserHost_idObject = {};
 var UserHost_emptyCellVector = [];
 var UserHost_loadingData = false;
 var UserHost_loadingDataTry = 0;
 var UserHost_loadingDataTryMax = 5;
 var UserHost_loadingDataTimeout = 3500;
-var UserHost_blankCellCount = 0;
 var UserHost_itemsCountOffset = 0;
 var UserHost_ReplacedataEnded = false;
 var UserHost_MaxOffset = 0;
@@ -47,11 +46,10 @@ function UserHost_StartLoad() {
     UserHost_OldUserName = Main_UserName;
     UserHost_status = false;
     Main_empty('stream_table_user_host');
-    UserHost_blankCellCount = 0;
     UserHost_itemsCountOffset = 0;
     UserHost_ReplacedataEnded = false;
     UserHost_MaxOffset = 0;
-    UserHost_nameMatrix = [];
+    UserHost_idObject = {};
     UserHost_emptyCellVector = [];
     UserHost_itemsCountCheck = false;
     UserHost_itemsCount = 0;
@@ -131,7 +129,7 @@ function UserHost_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, hosts,
+    var coloumn_id, row_id, row, hosts, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -140,8 +138,10 @@ function UserHost_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             hosts = response.hosts[cursor];
-            if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) coloumn_id--;
+            id = hosts.target._id + '' + hosts._id; //combined id host and hosted
+            if (UserHost_idObject[id]) coloumn_id--;
             else {
+                UserHost_idObject[id] = 1;
                 row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
                     hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
@@ -166,20 +166,8 @@ function UserHost_loadDataSuccess(responseText) {
 }
 
 function UserHost_createCell(row_id, id, channel_name, valuesArray) {
-    UserHost_nameMatrix.push(channel_name);
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
     return Main_createCellVideo(channel_name, id, UserHost_ids, valuesArray);
-}
-
-function UserHost_CellExists(display_name) {
-    for (var i = 0; i < UserHost_nameMatrix.length; i++) {
-        if (display_name === UserHost_nameMatrix[i]) {
-            UserHost_blankCellCount++;
-            return true;
-        }
-    }
-
-    return false;
 }
 
 function UserHost_loadDataSuccessFinish() {
@@ -193,14 +181,11 @@ function UserHost_loadDataSuccessFinish() {
                 Main_LazyImgStart(UserHost_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (UserHost_blankCellCount > 0 && !UserHost_dataEnded) {
+            if (UserHost_emptyCellVector.length > 0 && !UserHost_dataEnded) {
                 UserHost_loadDataPrepare();
                 UserHost_loadDataReplace();
                 return;
-            } else {
-                UserHost_blankCellCount = 0;
-                UserHost_emptyCellVector = [];
-            }
+            } else UserHost_emptyCellVector = [];
         }
         UserHost_loadingData = false;
     });
@@ -211,7 +196,7 @@ function UserHost_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(UserHost_blankCellCount);
+        Main_SetItemsLimitReplace(UserHost_emptyCellVector.length);
 
         var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
         if (offset && offset > (UserHost_MaxOffset - 1)) {
@@ -247,7 +232,6 @@ function UserHost_loadDataReplaceError() {
         UserHost_loadDataReplace();
     } else {
         UserHost_ReplacedataEnded = true;
-        UserHost_blankCellCount = 0;
         UserHost_emptyCellVector = [];
         UserHost_loadDataSuccessFinish();
     }
@@ -256,7 +240,7 @@ function UserHost_loadDataReplaceError() {
 function UserHost_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
-    var hosts, index, cursor = 0;
+    var hosts, index, id, cursor = 0;
     var tempVector = UserHost_emptyCellVector.slice();
 
     UserHost_MaxOffset = parseInt(response._total);
@@ -265,18 +249,17 @@ function UserHost_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < UserHost_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         hosts = response.hosts[cursor];
-        if (UserHost_CellExists(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name)) {
-            UserHost_blankCellCount--;
-            i--;
-        } else {
-            UserHost_nameMatrix.push(hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name);
+        id = hosts.target._id + '' + hosts._id;
+        if (UserHost_idObject[id]) i--;
+        else {
+            UserHost_idObject[id] = 1;
             Main_replaceVideo(UserHost_emptyCellVector[i],
                 hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                     hosts.target.title, hosts.target.meta_game,
-                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) + Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
+                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
+                    Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                 ], UserHost_ids);
-            UserHost_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) {
@@ -286,10 +269,8 @@ function UserHost_loadDataSuccessReplace(responseText) {
     }
 
     UserHost_itemsCountOffset += cursor;
-    if (UserHost_ReplacedataEnded) {
-        UserHost_blankCellCount = 0;
-        UserHost_emptyCellVector = [];
-    } else UserHost_emptyCellVector = tempVector;
+    if (UserHost_ReplacedataEnded) UserHost_emptyCellVector = [];
+    else UserHost_emptyCellVector = tempVector;
 
     UserHost_loadDataSuccessFinish();
 }
