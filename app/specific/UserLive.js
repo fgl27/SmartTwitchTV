@@ -5,7 +5,7 @@ var UserLive_dataEnded = false;
 var UserLive_itemsCount = 0;
 var UserLive_nameMatrix = [];
 var UserLive_nameMatrixCount = 0;
-var UserLive_blankCellVector = [];
+var UserLive_emptyCellVector = [];
 var UserLive_loadingData = false;
 var UserLive_loadingDataTry = 0;
 var UserLive_loadingDataTryMax = 5;
@@ -56,7 +56,7 @@ function UserLive_StartLoad() {
     UserLive_MaxOffset = 0;
     UserLive_nameMatrix = [];
     UserLive_nameMatrixCount = 0;
-    UserLive_blankCellVector = [];
+    UserLive_emptyCellVector = [];
     UserLive_itemsCountCheck = false;
     UserLive_itemsCount = 0;
     UserLive_cursorX = 0;
@@ -228,7 +228,7 @@ function UserLive_loadDataSuccess(responseText) {
                 UserLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(UserLive_ids[9] + row_id + '_' + coloumn_id));
-            UserLive_blankCellVector.push(UserLive_ids[9] + row_id + '_' + coloumn_id);
+            UserLive_emptyCellVector.push(UserLive_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_user_live").appendChild(row);
     }
@@ -269,7 +269,7 @@ function UserLive_loadDataSuccessFinish() {
                 return;
             } else {
                 UserLive_blankCellCount = 0;
-                UserLive_blankCellVector = [];
+                UserLive_emptyCellVector = [];
             }
         }
         UserLive_loadingData = false;
@@ -318,7 +318,7 @@ function UserLive_loadDataErrorReplace() {
     } else {
         UserLive_ReplacedataEnded = true;
         UserLive_blankCellCount = 0;
-        UserLive_blankCellVector = [];
+        UserLive_emptyCellVector = [];
         UserLive_loadDataSuccessFinish();
     }
 }
@@ -327,14 +327,14 @@ function UserLive_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, id, cursor = 0;
-    var tempVector = UserLive_blankCellVector.slice();
+    var tempVector = UserLive_emptyCellVector.slice();
 
     UserLive_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) UserLive_ReplacedataEnded = true;
 
 
-    for (var i = 0; i < UserLive_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < UserLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (UserLive_CellExists(id)) {
@@ -342,7 +342,7 @@ function UserLive_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             UserLive_nameMatrix.push(id);
-            Main_replaceVideo(UserLive_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(UserLive_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -360,8 +360,8 @@ function UserLive_loadDataSuccessReplace(responseText) {
     UserLive_itemsCountOffset += cursor;
     if (UserLive_ReplacedataEnded) {
         UserLive_blankCellCount = 0;
-        UserLive_blankCellVector = [];
-    } else UserLive_blankCellVector = tempVector;
+        UserLive_emptyCellVector = [];
+    } else UserLive_emptyCellVector = tempVector;
 
     UserLive_loadDataSuccessFinish();
 }
