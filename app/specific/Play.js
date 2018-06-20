@@ -175,7 +175,8 @@ function Play_Resume() {
                 if (Play_isOn) {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
-                    Play_updateStreamInfoStart();
+                    if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
+                    else Play_updateStreamInfo();
                     Play_RestoringFromResume = true;
                     Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
@@ -204,9 +205,9 @@ function Play_updateStreamInfoStart() {
                         Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         Main_selectedChannelLogo = response.stream.channel.logo;
+                        Play_LoadLogoSucess = true;
                         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
                         Play_created = response.stream.created_at;
-                        Play_LoadLogoSucess = true;
                         if (Main_UserName !== '') {
                             AddCode_PlayRequest = true;
                             AddCode_CheckFallow();
@@ -253,12 +254,16 @@ function Play_updateStreamInfo() {
                         Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
+                    } else {
+                        Play_isLive = false;
+                        Play_offPlayer();
+                        Play_CheckHostStart();
                     }
                 }
             }
         };
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = 10000;
+        xmlHttp.timeout = 3000;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.send(null);
     } catch (err) {}
@@ -266,7 +271,7 @@ function Play_updateStreamInfo() {
 
 function Play_LoadLogo(ImgObjet, link) {
     ImgObjet.onerror = function() {
-        this.src = IMG_404_LOGO; //img fail to load use predefined
+        this.src = IMG_404_LOGO; //img fail to load a predefined logo
         Play_LoadLogoSucess = false;
     };
     ImgObjet.src = link;
