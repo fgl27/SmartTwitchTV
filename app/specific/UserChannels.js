@@ -92,7 +92,7 @@ function UserChannels_loadChannels() {
 function UserChannels_loadDataError() {
     UserChannels_loadingDataTry++;
     if (UserChannels_loadingDataTry < UserChannels_loadingDataTryMax) {
-        UserChannels_loadingDataTimeout += (UserChannels_loadingDataTry < 5) ? 250 : 3500;
+        UserChannels_loadingDataTimeout += 500;
         UserChannels_loadChannels();
     } else {
         UserChannels_loadingData = false;

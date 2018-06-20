@@ -116,7 +116,7 @@ function Vod_loadDataRequest() {
 function Vod_loadDataError() {
     Vod_loadingDataTry++;
     if (Vod_loadingDataTry < Vod_loadingDataTryMax) {
-        Vod_loadingDataTimeout += (Vod_loadingDataTry < 5) ? 250 : 3500;
+        Vod_loadingDataTimeout += 500;
         Vod_loadDataRequest();
     } else {
         Vod_loadingData = false;
@@ -276,7 +276,7 @@ function Vod_loadDataReplace() {
 function Vod_loadDataErrorReplace() {
     Vod_loadingDataTry++;
     if (Vod_loadingDataTry < Vod_loadingDataTryMax) {
-        Vod_loadingDataTimeout += (Vod_loadingDataTry < 5) ? 250 : 3500;
+        Vod_loadingDataTimeout += 500;
         Vod_loadDataReplace();
     } else {
         Vod_ReplacedataEnded = true;

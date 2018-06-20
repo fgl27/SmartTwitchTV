@@ -223,7 +223,7 @@ function AddCode_CheckKey() {
 function AddCode_CheckKeyError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_CheckKey();
     } else {
         AddCode_loadingData = false;
@@ -284,7 +284,7 @@ function AddCode_CheckId() {
 function AddCode_CheckIdError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_CheckId();
     }
 }
@@ -364,7 +364,7 @@ function AddCode_RequestCheckFallow() {
 function AddCode_RequestCheckFallowError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_RequestCheckFallow();
     } else {
         AddCode_loadingData = false;
@@ -413,7 +413,7 @@ function AddCode_FallowRequest() {
 function AddCode_FallowRequestError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_FallowRequest();
     }
 }
@@ -458,7 +458,7 @@ function AddCode_UnFallowRequest() {
 function AddCode_UnFallowRequestError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_UnFallowRequest();
     }
 }
@@ -518,7 +518,7 @@ function AddCode_RequestCheckSub() {
 function AddCode_RequestCheckSubError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_RequestCheckSub();
     } else {
         AddCode_loadingData = false;
@@ -560,7 +560,7 @@ function AddCode_CheckToken() {
 function AddCode_CheckTokenError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += (AddCode_loadingDataTry < 5) ? 250 : 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_CheckToken();
     } else {
         Main_showWarningDialog(STR_KEY_BAD);
@@ -607,7 +607,7 @@ function AddCode_CheckTokenStart(position) {
 function AddCode_CheckTokenStartError(position) {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_CheckTokenStart(position);
     } else Users_SetKeyTitleStart(false, position);
 }
@@ -649,7 +649,7 @@ function AddCode_RequestFallowGame() {
 function AddCode_FallowGameRequestError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_RequestFallowGame();
     }
 }
@@ -690,7 +690,7 @@ function AddCode_RequestUnFallowGame() {
 function AddCode_UnFallowGameRequestError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_RequestUnFallowGame();
     }
 }
@@ -736,7 +736,7 @@ function AddCode_RequestCheckFallowGame() {
 function AddCode_CheckFallowGameError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 3500;
+        AddCode_loadingDataTimeout += 500;
         AddCode_RequestCheckFallowGame();
     } else {
         AGame_fallowing = false;

@@ -262,7 +262,7 @@ function PlayVod_loadDataError() {
 
         PlayVod_loadingDataTry++;
         if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
-            PlayVod_loadingDataTimeout += (PlayVod_loadingDataTry < 5) ? 250 : 3500;
+            PlayVod_loadingDataTimeout += 500;
             PlayVod_loadDataRequest();
         } else {
             Play_HideBufferDialog();

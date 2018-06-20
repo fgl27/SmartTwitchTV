@@ -107,7 +107,7 @@ function UserHost_loadChannels() {
 function UserHost_loadDataError() {
     UserHost_loadingDataTry++;
     if (UserHost_loadingDataTry < UserHost_loadingDataTryMax) {
-        UserHost_loadingDataTimeout += (UserHost_loadingDataTry < 5) ? 250 : 3500;
+        UserHost_loadingDataTimeout += 500;
         UserHost_loadChannels();
     } else {
         UserHost_loadingData = false;
@@ -243,7 +243,7 @@ function UserHost_loadDataReplace() {
 function UserHost_loadDataReplaceError() {
     UserHost_loadingDataTry++;
     if (UserHost_loadingDataTry < UserHost_loadingDataTryMax) {
-        UserHost_loadingDataTimeout += (UserHost_loadingDataTry < 5) ? 250 : 3500;
+        UserHost_loadingDataTimeout += 500;
         UserHost_loadDataReplace();
     } else {
         UserHost_ReplacedataEnded = true;

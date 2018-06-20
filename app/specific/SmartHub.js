@@ -92,7 +92,7 @@ function SmartHub_loadDataRequest() {
 function SmartHub_loadDataError() {
     SmartHub_loadingDataTry++;
     if (SmartHub_loadingDataTry < SmartHub_loadingDataTryMax) {
-        SmartHub_loadingDataTimeout += 1000;
+        SmartHub_loadingDataTimeout += 500;
         SmartHub_loadDataRequest();
     } else SmartHub_cleanVector();
 }

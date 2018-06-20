@@ -105,7 +105,7 @@ function SLive_loadDataRequest() {
 function SLive_loadDataError() {
     SLive_loadingDataTry++;
     if (SLive_loadingDataTry < SLive_loadingDataTryMax) {
-        SLive_loadingDataTimeout += (SLive_loadingDataTry < 5) ? 250 : 3500;
+        SLive_loadingDataTimeout += 500;
         SLive_loadDataRequest();
     } else {
         SLive_loadingData = false;
@@ -230,7 +230,7 @@ function SLive_loadDataReplace() {
 function SLive_loadDataErrorReplace() {
     SLive_loadingDataTry++;
     if (SLive_loadingDataTry < SLive_loadingDataTryMax) {
-        SLive_loadingDataTimeout += (SLive_loadingDataTry < 5) ? 250 : 3500;
+        SLive_loadingDataTimeout += 500;
         SLive_loadDataReplace();
     } else {
         SLive_ReplacedataEnded = true;

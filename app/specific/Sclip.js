@@ -133,7 +133,7 @@ function Sclip_loadDataRequest() {
 function Sclip_loadDataError() {
     Sclip_loadingDataTry++;
     if (Sclip_loadingDataTry < Sclip_loadingDataTryMax) {
-        Sclip_loadingDataTimeout += (Sclip_loadingDataTry < 5) ? 250 : 3500;
+        Sclip_loadingDataTimeout += 500;
         Sclip_loadDataRequest();
     } else {
         Sclip_loadingData = false;
@@ -268,7 +268,7 @@ function Sclip_loadDataReplace() {
 function Sclip_loadDataErrorReplace() {
     Sclip_loadingDataTry++;
     if (Sclip_loadingDataTry < Sclip_loadingDataTryMax) {
-        Sclip_loadingDataTimeout += (Sclip_loadingDataTry < 5) ? 250 : 3500;
+        Sclip_loadingDataTimeout += 500;
         Sclip_loadDataReplace();
     } else {
         Sclip_ReplacedataEnded = true;

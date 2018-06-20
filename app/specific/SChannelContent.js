@@ -105,7 +105,7 @@ function SChannelContent_loadDataRequest() {
 function SChannelContent_loadDataError() {
     SChannelContent_loadingDataTry++;
     if (SChannelContent_loadingDataTry < SChannelContent_loadingDataTryMax) {
-        SChannelContent_loadingDataTimeout += (SChannelContent_loadingDataTry < 5) ? 250 : 3500;
+        SChannelContent_loadingDataTimeout += 500;
         SChannelContent_loadDataRequest();
     } else {
         SChannelContent_responseText = null;
@@ -141,7 +141,7 @@ function SChannelContent_loadDataCheckHost() {
 function SChannelContent_loadDataCheckHostError() {
     SChannelContent_loadingDataTry++;
     if (SChannelContent_loadingDataTry < SChannelContent_loadingDataTryMax) {
-        SChannelContent_loadingDataTimeout += 3500;
+        SChannelContent_loadingDataTimeout += 500;
         SChannelContent_loadDataCheckHost();
     } else {
         SChannelContent_responseText = null;
@@ -197,7 +197,7 @@ function SChannelContent_GetStreamerInfo() {
 function PlayVod_GetStreamerInfoError() {
     SChannelContent_loadingDataTry++;
     if (SChannelContent_loadingDataTry < SChannelContent_loadingDataTryMax) {
-        SChannelContent_loadingDataTimeout += 3500;
+        SChannelContent_loadingDataTimeout += 500;
         SChannelContent_GetStreamerInfo();
     } else {
         SChannelContent_selectedChannelViews = '';

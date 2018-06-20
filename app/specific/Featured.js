@@ -101,7 +101,7 @@ function Featured_loadDataRequest() {
 function Featured_loadDataError() {
     Featured_loadingDataTry++;
     if (Featured_loadingDataTry < Featured_loadingDataTryMax) {
-        Featured_loadingDataTimeout += (Featured_loadingDataTry < 5) ? 250 : 3500;
+        Featured_loadingDataTimeout += 500;
         Featured_loadDataRequest();
     } else {
         if (!Featured_itemsCount) {
@@ -240,7 +240,7 @@ function Featured_loadDataReplace() {
 function Featured_loadDataErrorReplace() {
     Featured_loadingDataTry++;
     if (Featured_loadingDataTry < Featured_loadingDataTryMax) {
-        Featured_loadingDataTimeout += (Featured_loadingDataTry < 5) ? 250 : 3500;
+        Featured_loadingDataTimeout += 500;
         Featured_loadDataReplace();
     } else {
         Featured_ReplacedataEnded = true;

@@ -119,7 +119,7 @@ function Svod_loadDataRequest() {
 function Svod_loadDataError() {
     Svod_loadingDataTry++;
     if (Svod_loadingDataTry < Svod_loadingDataTryMax) {
-        Svod_loadingDataTimeout += (Svod_loadingDataTry < 5) ? 250 : 3500;
+        Svod_loadingDataTimeout += 500;
         Svod_loadDataRequest();
     } else {
         Svod_loadingData = false;
@@ -243,7 +243,7 @@ function Svod_loadDataReplace() {
 function Svod_loadDataErrorReplace() {
     Svod_loadingDataTry++;
     if (Svod_loadingDataTry < Svod_loadingDataTryMax) {
-        Svod_loadingDataTimeout += (Svod_loadingDataTry < 5) ? 250 : 3500;
+        Svod_loadingDataTimeout += 500;
         Svod_loadDataReplace();
     } else {
         Svod_ReplacedataEnded = true;
