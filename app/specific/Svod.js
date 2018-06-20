@@ -3,13 +3,12 @@ var Svod_cursorY = 0;
 var Svod_cursorX = 0;
 var Svod_dataEnded = false;
 var Svod_itemsCount = 0;
-var Svod_nameMatrix = [];
+var Svod_idObject = {};
 var Svod_emptyCellVector = [];
 var Svod_loadingData = false;
 var Svod_loadingDataTry = 0;
 var Svod_loadingDataTryMax = 5;
 var Svod_loadingDataTimeout = 3500;
-var Svod_blankCellCount = 0;
 var Svod_itemsCountOffset = 0;
 var Svod_ReplacedataEnded = false;
 var Svod_MaxOffset = 0;
@@ -58,11 +57,10 @@ function Svod_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_search_vod');
-    Svod_blankCellCount = 0;
     Svod_itemsCountOffset = 0;
     Svod_ReplacedataEnded = false;
     Svod_MaxOffset = 0;
-    Svod_nameMatrix = [];
+    Svod_idObject = {};
     Svod_emptyCellVector = [];
     Svod_itemsCountCheck = false;
     Svod_itemsCount = 0;
@@ -145,7 +143,7 @@ function Svod_loadDataSuccess(responseText) {
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
-    var coloumn_id, row_id, row, video,
+    var coloumn_id, row_id, row, video, id,
         cursor = 0;
 
     for (var i = 0; i < response_rows; i++) {
@@ -154,14 +152,13 @@ function Svod_loadDataSuccess(responseText) {
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) { //video content can be null sometimes the preview will 404
-                Svod_blankCellCount++;
-                coloumn_id--;
-            } else if (Svod_CellExists(video._id)) coloumn_id--;
+            id = video._id;
+            //video content can be null sometimes the preview will 404
+            if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Svod_idObject[id]) coloumn_id--;
             else {
-                Svod_nameMatrix.push(video._id);
+                Svod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+                    id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -184,16 +181,6 @@ function Svod_loadDataSuccess(responseText) {
     Svod_loadDataSuccessFinish();
 }
 
-function Svod_CellExists(video_id) {
-    for (var i = 0; i < Svod_nameMatrix.length; i++) {
-        if (video_id === Svod_nameMatrix[i]) {
-            Svod_blankCellCount++;
-            return true;
-        }
-    }
-    return false;
-}
-
 function Svod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Svod_status) {
@@ -205,14 +192,11 @@ function Svod_loadDataSuccessFinish() {
                 Main_LazyImgStart(Svod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (Svod_blankCellCount > 0 && !Svod_dataEnded) {
+            if (Svod_emptyCellVector.length > 0 && !Svod_dataEnded) {
                 Svod_loadDataPrepare();
                 Svod_loadDataReplace();
                 return;
-            } else {
-                Svod_blankCellCount = 0;
-                Svod_emptyCellVector = [];
-            }
+            } else Svod_emptyCellVector = [];
         }
         Svod_loadingData = false;
     });
@@ -223,7 +207,7 @@ function Svod_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(Svod_blankCellCount);
+        Main_SetItemsLimitReplace(Svod_emptyCellVector.length);
 
         var offset = Svod_itemsCount + Svod_itemsCountOffset;
 
@@ -263,7 +247,6 @@ function Svod_loadDataErrorReplace() {
         Svod_loadDataReplace();
     } else {
         Svod_ReplacedataEnded = true;
-        Svod_blankCellCount = 0;
         Svod_emptyCellVector = [];
         Svod_loadDataSuccessFinish();
     }
@@ -273,7 +256,7 @@ function Svod_loadDataErrorReplace() {
 function Svod_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.videos.length;
-    var video, index, cursor = 0;
+    var video, index, id, cursor = 0;
     var tempVector = Svod_emptyCellVector.slice();
 
     Svod_MaxOffset = parseInt(response._total);
@@ -282,20 +265,16 @@ function Svod_loadDataSuccessReplace(responseText) {
 
     for (var i = 0; i < Svod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) {
-            i--;
-        } else if (Svod_CellExists(video._id)) {
-            Svod_blankCellCount--;
-            i--;
-        } else {
-            Svod_nameMatrix.push(video._id);
-            Vod_replaceVideo(Svod_emptyCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+        id = video._id;
+        if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Svod_idObject[id]) i--;
+        else {
+            Svod_idObject[id] = 1;
+            Vod_replaceVideo(Svod_emptyCellVector[i], id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
                 video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                 STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                 Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                 STR_DURATION + Play_timeS(video.length)
             ], Svod_ids);
-            Svod_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
@@ -303,10 +282,8 @@ function Svod_loadDataSuccessReplace(responseText) {
     }
 
     Svod_itemsCountOffset += cursor;
-    if (Svod_ReplacedataEnded) {
-        Svod_blankCellCount = 0;
-        Svod_emptyCellVector = [];
-    } else Svod_emptyCellVector = tempVector;
+    if (Svod_ReplacedataEnded) Svod_emptyCellVector = [];
+    else Svod_emptyCellVector = tempVector;
 
     Svod_loadDataSuccessFinish();
 }
