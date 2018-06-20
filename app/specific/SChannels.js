@@ -4,7 +4,7 @@ var SChannels_cursorX = 0;
 var SChannels_dataEnded = false;
 var SChannels_itemsCount = 0;
 var SChannels_nameMatrix = [];
-var SChannels_blankCellVector = [];
+var SChannels_emptyCellVector = [];
 var SChannels_loadingData = false;
 var SChannels_loadingDataTry = 0;
 var SChannels_loadingDataTryMax = 5;
@@ -58,7 +58,7 @@ function SChannels_StartLoad() {
     SChannels_ReplacedataEnded = false;
     SChannels_MaxOffset = 0;
     SChannels_nameMatrix = [];
-    SChannels_blankCellVector = [];
+    SChannels_emptyCellVector = [];
     SChannels_itemsCountCheck = false;
     SChannels_itemsCount = 0;
     SChannels_cursorX = 0;
@@ -156,7 +156,7 @@ function SChannels_loadDataSuccess(responseText) {
                 SChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(SChannels_ids[5] + row_id + '_' + coloumn_id));
-            SChannels_blankCellVector.push(SChannels_ids[5] + row_id + '_' + coloumn_id);
+            SChannels_emptyCellVector.push(SChannels_ids[5] + row_id + '_' + coloumn_id);
         }
         document.getElementById('stream_table_search_channel').appendChild(row);
     }
@@ -199,7 +199,7 @@ function SChannels_loadDataSuccessFinish() {
                 return;
             } else {
                 SChannels_blankCellCount = 0;
-                SChannels_blankCellVector = [];
+                SChannels_emptyCellVector = [];
             }
         }
         SChannels_loadingData = false;
@@ -248,7 +248,7 @@ function SChannels_loadDataErrorReplace() {
     } else {
         SChannels_ReplacedataEnded = true;
         SChannels_blankCellCount = 0;
-        SChannels_blankCellVector = [];
+        SChannels_emptyCellVector = [];
         SChannels_loadDataSuccessFinish();
     }
 }
@@ -257,20 +257,20 @@ function SChannels_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.channels.length;
     var channels, index, cursor = 0;
-    var tempVector = SChannels_blankCellVector.slice();
+    var tempVector = SChannels_emptyCellVector.slice();
 
     SChannels_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) SChannels_ReplacedataEnded = true;
 
-    for (var i = 0; i < SChannels_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < SChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         channels = response.channels[cursor];
         if (SChannels_CellExists(channels.name)) {
             SChannels_blankCellCount--;
             i--;
         } else {
             SChannels_nameMatrix.push(channels.name);
-            Main_replaceChannel(SChannels_blankCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
+            Main_replaceChannel(SChannels_emptyCellVector[i], [channels.name, channels._id, channels.logo, channels.display_name], SChannels_ids);
             SChannels_blankCellCount--;
 
             index = tempVector.indexOf(tempVector[i]);
@@ -283,8 +283,8 @@ function SChannels_loadDataSuccessReplace(responseText) {
     SChannels_itemsCountOffset += cursor;
     if (SChannels_ReplacedataEnded) {
         SChannels_blankCellCount = 0;
-        SChannels_blankCellVector = [];
-    } else SChannels_blankCellVector = tempVector;
+        SChannels_emptyCellVector = [];
+    } else SChannels_emptyCellVector = tempVector;
 
     SChannels_loadDataSuccessFinish();
 }

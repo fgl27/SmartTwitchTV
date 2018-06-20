@@ -11,7 +11,7 @@ var Live_loadingData = false;
 var Live_loadingDataTry = 0;
 var Live_loadingDataTryMax = 5;
 var Live_loadingDataTimeout = 3500;
-var Live_blankCellVector = [];
+var Live_emptyCellVector = [];
 var Live_itemsCountOffset = 0;
 var Live_ReplacedataEnded = false;
 var Live_MaxOffset = 0;
@@ -44,7 +44,7 @@ function Live_StartLoad() {
     Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_live');
-    Live_blankCellVector = [];
+    Live_emptyCellVector = [];
     Live_itemsCountOffset = 0;
     Live_ReplacedataEnded = false;
     Live_itemsCountCheck = false;
@@ -164,7 +164,7 @@ function Live_loadDataSuccess(responseText) {
                 Live_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(Live_ids[9] + row_id + '_' + coloumn_id));
-            Live_blankCellVector.push(Live_ids[9] + row_id + '_' + coloumn_id);
+            Live_emptyCellVector.push(Live_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_live").appendChild(row);
     }
@@ -198,11 +198,11 @@ function Live_loadDataSuccessFinish() {
                 document.getElementById('add_user').style.display = 'block';
             }
         } else {
-            if (Live_blankCellVector.length > 0 && !Live_dataEnded) {
+            if (Live_emptyCellVector.length > 0 && !Live_dataEnded) {
                 Live_loadDataPrepare();
                 Live_loadDataReplace();
                 return;
-            } else Live_blankCellVector = [];
+            } else Live_emptyCellVector = [];
         }
         Live_loadingData = false;
     });
@@ -213,7 +213,7 @@ function Live_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(Live_blankCellVector.length);
+        Main_SetItemsLimitReplace(Live_emptyCellVector.length);
 
         var offset = Live_itemsCount + Live_itemsCountOffset;
         if (offset && offset > (Live_MaxOffset - 1)) {
@@ -248,7 +248,7 @@ function Live_loadDataErrorReplace() {
         Live_loadDataReplace();
     } else {
         Live_ReplacedataEnded = true;
-        Live_blankCellVector = [];
+        Live_emptyCellVector = [];
         Live_loadDataSuccessFinish();
     }
 }
@@ -257,19 +257,19 @@ function Live_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, id, cursor = 0;
-    var tempVector = Live_blankCellVector.slice();
+    var tempVector = Live_emptyCellVector.slice();
 
     Live_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) Live_ReplacedataEnded = true;
 
-    for (var i = 0; i < Live_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < Live_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (Live_idObject[id]) i--;
         else {
             Live_idObject[id] = 1;
-            Main_replaceVideo(Live_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(Live_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -284,8 +284,8 @@ function Live_loadDataSuccessReplace(responseText) {
     }
 
     Live_itemsCountOffset += cursor;
-    if (Live_ReplacedataEnded) Live_blankCellVector = [];
-    else Live_blankCellVector = tempVector;
+    if (Live_ReplacedataEnded) Live_emptyCellVector = [];
+    else Live_emptyCellVector = tempVector;
 
     Live_loadDataSuccessFinish();
 }

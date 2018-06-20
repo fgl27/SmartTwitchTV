@@ -4,7 +4,7 @@ var UserGames_cursorX = 0;
 var UserGames_dataEnded = false;
 var UserGames_itemsCount = 0;
 var UserGames_nameMatrix = [];
-var UserGames_blankCellVector = [];
+var UserGames_emptyCellVector = [];
 var UserGames_loadingData = false;
 var UserGames_loadingDataTry = 0;
 var UserGames_loadingDataTryMax = 5;
@@ -56,7 +56,7 @@ function UserGames_StartLoad() {
     UserGames_ReplacedataEnded = false;
     UserGames_MaxOffset = 0;
     UserGames_nameMatrix = [];
-    UserGames_blankCellVector = [];
+    UserGames_emptyCellVector = [];
     UserGames_itemsCountCheck = false;
     UserGames_itemsCount = 0;
     UserGames_cursorX = 0;
@@ -160,7 +160,7 @@ function UserGames_loadDataSuccess(responseText) {
                 UserGames_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(UserGames_ids[6] + row_id + '_' + coloumn_id));
-            UserGames_blankCellVector.push(UserGames_ids[6] + row_id + '_' + coloumn_id);
+            UserGames_emptyCellVector.push(UserGames_ids[6] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_user_games").appendChild(row);
     }
@@ -201,7 +201,7 @@ function UserGames_loadDataSuccessFinish() {
                 return;
             } else {
                 UserGames_blankCellCount = 0;
-                UserGames_blankCellVector = [];
+                UserGames_emptyCellVector = [];
             }
 
 
@@ -252,7 +252,7 @@ function UserGames_loadDataReplaceError() {
     } else {
         UserGames_ReplacedataEnded = true;
         UserGames_blankCellCount = 0;
-        UserGames_blankCellVector = [];
+        UserGames_emptyCellVector = [];
         UserGames_loadDataSuccessFinish();
     }
 }
@@ -261,13 +261,13 @@ function UserGames_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.follows.length;
     var follows, index, cursor = 0;
-    var tempVector = UserGames_blankCellVector.slice();
+    var tempVector = UserGames_emptyCellVector.slice();
 
     UserGames_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitGame) UserGames_ReplacedataEnded = true;
 
-    for (var i = 0; i < UserGames_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < UserGames_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
         if (UserGames_live) {
             if (UserGames_CellExists(follows.game.name)) {
@@ -275,7 +275,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 i--;
             } else {
                 UserGames_nameMatrix.push(follows.game.name);
-                Main_replaceGame(UserGames_blankCellVector[i], [follows.game.name,
+                Main_replaceGame(UserGames_emptyCellVector[i], [follows.game.name,
                     follows.game.box.template.replace("{width}x{height}", Main_GameSize),
                     Main_addCommas(follows.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(follows.viewers) + STR_VIEWER
                 ], UserGames_ids);
@@ -290,7 +290,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 i--;
             } else {
                 UserGames_nameMatrix.push(follows.name);
-                Main_replaceGame(UserGames_blankCellVector[i], [follows.name,
+                Main_replaceGame(UserGames_emptyCellVector[i], [follows.name,
                     follows.box.template.replace("{width}x{height}", Main_GameSize), ''
                 ], UserGames_ids);
                 UserGames_blankCellCount--;
@@ -306,8 +306,8 @@ function UserGames_loadDataSuccessReplace(responseText) {
     UserGames_itemsCountOffset += cursor;
     if (UserGames_ReplacedataEnded) {
         UserGames_blankCellCount = 0;
-        UserGames_blankCellVector = [];
-    } else UserGames_blankCellVector = tempVector;
+        UserGames_emptyCellVector = [];
+    } else UserGames_emptyCellVector = tempVector;
 
     UserGames_loadDataSuccessFinish();
 }

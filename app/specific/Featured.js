@@ -11,7 +11,7 @@ var Featured_loadingDataTry = 0;
 var Featured_loadingDataTryMax = 5;
 var Featured_loadingDataTimeout = 3500;
 var Featured_blankCellCount = 0;
-var Featured_blankCellVector = [];
+var Featured_emptyCellVector = [];
 var Featured_itemsCountOffset = 0;
 var Featured_ReplacedataEnded = false;
 var Featured_MaxOffset = 0;
@@ -43,7 +43,7 @@ function Featured_StartLoad() {
     Main_showLoadDialog();
     Main_empty('stream_table_featured');
     Featured_blankCellCount = 0;
-    Featured_blankCellVector = [];
+    Featured_emptyCellVector = [];
     Featured_itemsCountOffset = 0;
     Featured_ReplacedataEnded = false;
     Featured_itemsCountCheck = false;
@@ -157,7 +157,7 @@ function Featured_loadDataSuccess(responseText) {
                 Featured_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(Featured_ids[9] + row_id + '_' + coloumn_id));
-            Featured_blankCellVector.push(Featured_ids[9] + row_id + '_' + coloumn_id);
+            Featured_emptyCellVector.push(Featured_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_featured").appendChild(row);
     }
@@ -197,7 +197,7 @@ function Featured_loadDataSuccessFinish() {
                 return;
             } else {
                 Featured_blankCellCount = 0;
-                Featured_blankCellVector = [];
+                Featured_emptyCellVector = [];
             }
         }
         Featured_loadingData = false;
@@ -245,7 +245,7 @@ function Featured_loadDataErrorReplace() {
     } else {
         Featured_ReplacedataEnded = true;
         Featured_blankCellCount = 0;
-        Featured_blankCellVector = [];
+        Featured_emptyCellVector = [];
         Featured_loadDataSuccessFinish();
     }
 }
@@ -254,11 +254,11 @@ function Featured_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.featured.length;
     var stream, index, id, cursor = 0;
-    var tempVector = Featured_blankCellVector.slice();
+    var tempVector = Featured_emptyCellVector.slice();
 
     if (response_items < Main_ItemsLimitVideo) Featured_ReplacedataEnded = true;
 
-    for (var i = 0; i < Featured_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < Featured_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.featured[cursor].stream;
         id = stream.channel._id;
         if (Featured_CellExists(id)) {
@@ -266,7 +266,7 @@ function Featured_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Featured_nameMatrix.push(id);
-            Main_replaceVideo(Featured_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(Featured_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -282,8 +282,8 @@ function Featured_loadDataSuccessReplace(responseText) {
     Featured_itemsCountOffset += cursor;
     if (Featured_ReplacedataEnded) {
         Featured_blankCellCount = 0;
-        Featured_blankCellVector = [];
-    } else Featured_blankCellVector = tempVector;
+        Featured_emptyCellVector = [];
+    } else Featured_emptyCellVector = tempVector;
 
     Featured_loadDataSuccessFinish();
 }

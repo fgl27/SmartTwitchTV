@@ -4,7 +4,7 @@ var AGame_cursorX = 0;
 var AGame_dataEnded = false;
 var AGame_itemsCount = 0;
 var AGame_nameMatrix = [];
-var AGame_blankCellVector = [];
+var AGame_emptyCellVector = [];
 var AGame_loadingData = false;
 var AGame_loadingDataTry = 0;
 var AGame_loadingDataTryMax = 5;
@@ -61,7 +61,7 @@ function AGame_StartLoad() {
     AGame_ReplacedataEnded = false;
     AGame_MaxOffset = 0;
     AGame_nameMatrix = [];
-    AGame_blankCellVector = [];
+    AGame_emptyCellVector = [];
     AGame_itemsCountCheck = false;
     AGame_itemsCount = 0;
     AGame_cursorX = 0;
@@ -188,7 +188,7 @@ function AGame_loadDataSuccess(responseText) {
                 AGame_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(AGame_ids[9] + row_id + '_' + coloumn_id));
-            AGame_blankCellVector.push(AGame_ids[9] + row_id + '_' + coloumn_id);
+            AGame_emptyCellVector.push(AGame_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_a_game").appendChild(row);
     }
@@ -323,7 +323,7 @@ function AGame_loadDataErrorReplace() {
     } else {
         AGame_ReplacedataEnded = true;
         AGame_blankCellCount = 0;
-        AGame_blankCellVector = [];
+        AGame_emptyCellVector = [];
         AGame_loadDataSuccessFinish();
     }
 }
@@ -332,14 +332,14 @@ function AGame_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, id, cursor = 0;
-    var tempVector = AGame_blankCellVector.slice();
+    var tempVector = AGame_emptyCellVector.slice();
 
     AGame_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) AGame_ReplacedataEnded = true;
 
 
-    for (var i = 0; i < AGame_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < AGame_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (AGame_CellExists(id)) {
@@ -347,7 +347,7 @@ function AGame_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             AGame_nameMatrix.push(id);
-            Main_replaceVideo(AGame_blankCellVector[i],
+            Main_replaceVideo(AGame_emptyCellVector[i],
                 stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
@@ -366,8 +366,8 @@ function AGame_loadDataSuccessReplace(responseText) {
     AGame_itemsCountOffset += cursor;
     if (AGame_ReplacedataEnded) {
         AGame_blankCellCount = 0;
-        AGame_blankCellVector = [];
-    } else AGame_blankCellVector = tempVector;
+        AGame_emptyCellVector = [];
+    } else AGame_emptyCellVector = tempVector;
 
     AGame_loadDataSuccessFinish();
 }

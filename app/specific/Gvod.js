@@ -4,7 +4,7 @@ var Gvod_cursorX = 0;
 var Gvod_dataEnded = false;
 var Gvod_itemsCount = 0;
 var Gvod_nameMatrix = [];
-var Gvod_blankCellVector = [];
+var Gvod_emptyCellVector = [];
 var Gvod_loadingData = false;
 var Gvod_loadingDataTry = 0;
 var Gvod_loadingDataTryMax = 5;
@@ -64,7 +64,7 @@ function Gvod_StartLoad() {
     Gvod_ReplacedataEnded = false;
     Gvod_MaxOffset = 0;
     Gvod_nameMatrix = [];
-    Gvod_blankCellVector = [];
+    Gvod_emptyCellVector = [];
     Gvod_itemsCountCheck = false;
     Gvod_itemsCount = 0;
     Gvod_cursorX = 0;
@@ -179,7 +179,7 @@ function Gvod_loadDataSuccess(responseText) {
                 Gvod_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(Gvod_ids[9] + row_id + '_' + coloumn_id));
-            Gvod_blankCellVector.push(Gvod_ids[9] + row_id + '_' + coloumn_id);
+            Gvod_emptyCellVector.push(Gvod_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_gvod").appendChild(row);
     }
@@ -214,7 +214,7 @@ function Gvod_loadDataSuccessFinish() {
                 return;
             } else {
                 Gvod_blankCellCount = 0;
-                Gvod_blankCellVector = [];
+                Gvod_emptyCellVector = [];
             }
         }
         Gvod_loadingData = false;
@@ -266,7 +266,7 @@ function Gvod_loadDataErrorReplace() {
     } else {
         Gvod_ReplacedataEnded = true;
         Gvod_blankCellCount = 0;
-        Gvod_blankCellVector = [];
+        Gvod_emptyCellVector = [];
         Gvod_loadDataSuccessFinish();
     }
 }
@@ -276,13 +276,13 @@ function Gvod_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.videos.length;
     var video, index, cursor = 0;
-    var tempVector = Gvod_blankCellVector.slice();
+    var tempVector = Gvod_emptyCellVector.slice();
 
     Gvod_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) Gvod_ReplacedataEnded = true;
 
-    for (var i = 0; i < Gvod_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < Gvod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) i--;
         else if (Gvod_CellExists(video._id)) {
@@ -290,7 +290,7 @@ function Gvod_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Gvod_nameMatrix.push(video._id);
-            Vod_replaceVideo(Gvod_blankCellVector[i],
+            Vod_replaceVideo(Gvod_emptyCellVector[i],
                 video._id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
@@ -308,8 +308,8 @@ function Gvod_loadDataSuccessReplace(responseText) {
     Gvod_itemsCountOffset += cursor;
     if (Gvod_ReplacedataEnded) {
         Gvod_blankCellCount = 0;
-        Gvod_blankCellVector = [];
-    } else Gvod_blankCellVector = tempVector;
+        Gvod_emptyCellVector = [];
+    } else Gvod_emptyCellVector = tempVector;
 
     Gvod_loadDataSuccessFinish();
 }

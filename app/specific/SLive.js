@@ -4,7 +4,7 @@ var SLive_cursorX = 0;
 var SLive_dataEnded = false;
 var SLive_itemsCount = 0;
 var SLive_idObject = {};
-var SLive_blankCellVector = [];
+var SLive_emptyCellVector = [];
 var SLive_loadingData = false;
 var SLive_loadingDataTry = 0;
 var SLive_loadingDataTryMax = 5;
@@ -50,7 +50,7 @@ function SLive_StartLoad() {
     SLive_ReplacedataEnded = false;
     SLive_MaxOffset = 0;
     SLive_idObject = {};
-    SLive_blankCellVector = [];
+    SLive_emptyCellVector = [];
     SLive_itemsCountCheck = false;
     SLive_itemsCount = 0;
     SLive_cursorX = 0;
@@ -159,7 +159,7 @@ function SLive_loadDataSuccess(responseText) {
                 SLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(SLive_ids[9] + row_id + '_' + coloumn_id));
-            SLive_blankCellVector.push(SLive_ids[9] + row_id + '_' + coloumn_id);
+            SLive_emptyCellVector.push(SLive_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_search_live").appendChild(row);
     }
@@ -183,11 +183,11 @@ function SLive_loadDataSuccessFinish() {
                 Main_LazyImgStart(SLive_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
         } else {
-            if (SLive_blankCellVector.length > 0 && !SLive_dataEnded) {
+            if (SLive_emptyCellVector.length > 0 && !SLive_dataEnded) {
                 SLive_loadDataPrepare();
                 SLive_loadDataReplace();
                 return;
-            } else SLive_blankCellVector = [];
+            } else SLive_emptyCellVector = [];
         }
         SLive_loadingData = false;
     });
@@ -198,7 +198,7 @@ function SLive_loadDataReplace() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        Main_SetItemsLimitReplace(SLive_blankCellVector.length);
+        Main_SetItemsLimitReplace(SLive_emptyCellVector.length);
 
         var offset = SLive_itemsCount + SLive_itemsCountOffset;
         if (offset && offset > (SLive_MaxOffset - 1)) {
@@ -234,7 +234,7 @@ function SLive_loadDataErrorReplace() {
         SLive_loadDataReplace();
     } else {
         SLive_ReplacedataEnded = true;
-        SLive_blankCellVector = [];
+        SLive_emptyCellVector = [];
         SLive_loadDataSuccessFinish();
     }
 }
@@ -243,19 +243,19 @@ function SLive_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.streams.length;
     var stream, index, id, cursor = 0;
-    var tempVector = SLive_blankCellVector.slice();
+    var tempVector = SLive_emptyCellVector.slice();
 
     SLive_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) SLive_ReplacedataEnded = true;
 
-    for (var i = 0; i < SLive_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < SLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (SLive_idObject[id]) i--;
         else {
             SLive_idObject[id] = 1;
-            Main_replaceVideo(Live_blankCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(Live_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -268,8 +268,8 @@ function SLive_loadDataSuccessReplace(responseText) {
     }
 
     SLive_itemsCountOffset += cursor;
-    if (SLive_ReplacedataEnded) SLive_blankCellVector = [];
-    else SLive_blankCellVector = tempVector;
+    if (SLive_ReplacedataEnded) SLive_emptyCellVector = [];
+    else SLive_emptyCellVector = tempVector;
 
     SLive_loadDataSuccessFinish();
 }

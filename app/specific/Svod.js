@@ -4,7 +4,7 @@ var Svod_cursorX = 0;
 var Svod_dataEnded = false;
 var Svod_itemsCount = 0;
 var Svod_nameMatrix = [];
-var Svod_blankCellVector = [];
+var Svod_emptyCellVector = [];
 var Svod_loadingData = false;
 var Svod_loadingDataTry = 0;
 var Svod_loadingDataTryMax = 5;
@@ -63,7 +63,7 @@ function Svod_StartLoad() {
     Svod_ReplacedataEnded = false;
     Svod_MaxOffset = 0;
     Svod_nameMatrix = [];
-    Svod_blankCellVector = [];
+    Svod_emptyCellVector = [];
     Svod_itemsCountCheck = false;
     Svod_itemsCount = 0;
     Svod_cursorX = 0;
@@ -176,7 +176,7 @@ function Svod_loadDataSuccess(responseText) {
                 Svod_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
             }
             row.appendChild(Main_createEmptyCell(Svod_ids[9] + row_id + '_' + coloumn_id));
-            Svod_blankCellVector.push(Svod_ids[9] + row_id + '_' + coloumn_id);
+            Svod_emptyCellVector.push(Svod_ids[9] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_search_vod").appendChild(row);
     }
@@ -211,7 +211,7 @@ function Svod_loadDataSuccessFinish() {
                 return;
             } else {
                 Svod_blankCellCount = 0;
-                Svod_blankCellVector = [];
+                Svod_emptyCellVector = [];
             }
         }
         Svod_loadingData = false;
@@ -264,7 +264,7 @@ function Svod_loadDataErrorReplace() {
     } else {
         Svod_ReplacedataEnded = true;
         Svod_blankCellCount = 0;
-        Svod_blankCellVector = [];
+        Svod_emptyCellVector = [];
         Svod_loadDataSuccessFinish();
     }
 }
@@ -274,13 +274,13 @@ function Svod_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText);
     var response_items = response.videos.length;
     var video, index, cursor = 0;
-    var tempVector = Svod_blankCellVector.slice();
+    var tempVector = Svod_emptyCellVector.slice();
 
     Svod_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) Svod_ReplacedataEnded = true;
 
-    for (var i = 0; i < Svod_blankCellVector.length && cursor < response_items; i++, cursor++) {
+    for (var i = 0; i < Svod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         if ((JSON.stringify(video.preview) + '').indexOf('404_processing_320x240.png') !== -1) {
             i--;
@@ -289,7 +289,7 @@ function Svod_loadDataSuccessReplace(responseText) {
             i--;
         } else {
             Svod_nameMatrix.push(video._id);
-            Vod_replaceVideo(Svod_blankCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+            Vod_replaceVideo(Svod_emptyCellVector[i], video._id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
                 video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                 STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                 Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -305,8 +305,8 @@ function Svod_loadDataSuccessReplace(responseText) {
     Svod_itemsCountOffset += cursor;
     if (Svod_ReplacedataEnded) {
         Svod_blankCellCount = 0;
-        Svod_blankCellVector = [];
-    } else Svod_blankCellVector = tempVector;
+        Svod_emptyCellVector = [];
+    } else Svod_emptyCellVector = tempVector;
 
     Svod_loadDataSuccessFinish();
 }
