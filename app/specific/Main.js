@@ -231,6 +231,7 @@ function Main_initWindows() {
 
         Play_PreStart();
         Main_Is4k = webapis.productinfo.isUdPanelSupported();
+        SmartHub_SetNoUserPreviewData();
         AddUser_RestoreUsers();
         Live_init();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
