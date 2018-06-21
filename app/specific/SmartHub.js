@@ -321,10 +321,13 @@ function SmartHub_SetBasePreviewData() {
                 "action_data": "{\"screenIdx\": " + Main_Users + "}",
                 "is_playable": false
             }]
-        }, {}]
+        }]
     };
     SmartHub_BasePreviewData.sections[3] = SmartHub_BasePreviewDataNoUser.sections[0];
     SmartHub_BasePreviewData.sections[5] = SmartHub_BasePreviewDataNoUser.sections[2];
+    SmartHub_BasePreviewData.sections[6] = SmartHub_BasePreviewDataNoUser.sections[3];
+    SmartHub_BasePreviewData.sections[7] = SmartHub_BasePreviewDataNoUser.sections[4];
+    SmartHub_BasePreviewData.sections[8] = SmartHub_BasePreviewDataNoUser.sections[5];
 }
 
 function SmartHub_SetNoUserPreviewData() {
@@ -349,12 +352,39 @@ function SmartHub_SetNoUserPreviewData() {
                 "is_playable": false
             }]
         }, {
+            "title": STR_FEATURED,
+            "tiles": [{
+                "title": STR_GO_TO + STR_FEATURED,
+                "image_ratio": "16by9",
+                "image_url": IMG_SMART_FEATURED,
+                "action_data": "{\"screenIdx\": " + Main_Featured + "}",
+                "is_playable": false
+            }]
+        }, {
             "title": STR_GAMES,
             "tiles": [{
                 "title": STR_GO_TO + STR_GAMES,
                 "image_ratio": "16by9",
                 "image_url": IMG_SMART_GAME,
                 "action_data": "{\"screenIdx\": " + Main_games + "}",
+                "is_playable": false
+            }]
+        }, {
+            "title": STR_VIDEOS,
+            "tiles": [{
+                "title": STR_GO_TO + STR_VIDEOS,
+                "image_ratio": "16by9",
+                "image_url": IMG_SMART_VIDEO,
+                "action_data": "{\"screenIdx\": " + Main_Vod + "}",
+                "is_playable": false
+            }]
+        }, {
+            "title": STR_CLIPS,
+            "tiles": [{
+                "title": STR_GO_TO + STR_CLIPS,
+                "image_ratio": "16by9",
+                "image_url": IMG_SMART_CLIP,
+                "action_data": "{\"screenIdx\": " + Main_Clip + "}",
                 "is_playable": false
             }]
         }]
