@@ -126,7 +126,8 @@ function Play_Start() {
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
-    document.getElementById('stream_info_icon').setAttribute('data-src', IMG_LOD_LOGO);
+    //reset channel logo to prevent another channel logo
+    document.getElementById('stream_info_icon').setAttribute('data-src', IMG_404_LOGO);
     Main_textContent("stream_info_name", (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname));
     Play_isHost = false;
     Play_DisplaynameHost = '';

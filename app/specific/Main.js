@@ -117,10 +117,12 @@ var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
 var IMG_404_LOGO = GIT_IO + "404_logo.png";
 var IMG_404_VIDEO = GIT_IO + "404_video.png";
-var IMG_LOD_LOGO = GIT_IO + "ch_logo.png";
 var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
 var IMG_SMART_GAME = GIT_IO + "smart_games.png";
 var IMG_SMART_USER = GIT_IO + "smart_users.png";
+var IMG_SMART_FEATURED = GIT_IO + "smart_featured.png";
+var IMG_SMART_VIDEO = GIT_IO + "smart_videos.png";
+var IMG_SMART_CLIP = GIT_IO + "smart_cips.png";
 var IMG_SMART_ADD_USER = GIT_IO + "smart_add_user.png";
 
 //function vars
