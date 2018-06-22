@@ -14,10 +14,11 @@ var UserHost_ReplacedataEnded = false;
 var UserHost_MaxOffset = 0;
 var UserHost_emptyContent = false;
 
-var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'uhempty_'];
+var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh_hosttitle', 'uh_hostgame', 'uh_viwers', 'uh_quality', 'uh_cell', 'uhempty_', 'user_host_scroll'];
 var UserHost_status = false;
 var UserHost_OldUserName = '';
 var UserHost_itemsCountCheck = false;
+var UserHost_FirstLoad = false;
 //Variable initialization end
 
 function UserHost_init() {
@@ -28,8 +29,8 @@ function UserHost_init() {
     Main_YRst(UserHost_cursorY);
     if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
     if (UserHost_status) {
-        Main_ScrollHelperVideo(UserHost_ids[0], UserHost_cursorY, UserHost_cursorX);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+        Main_ShowElement(UserHost_ids[10]);
     } else UserHost_StartLoad();
 }
 
@@ -37,12 +38,13 @@ function UserHost_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
+    Main_HideElement(UserHost_ids[10]);
 }
 
 function UserHost_StartLoad() {
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(UserHost_ids[10]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     UserHost_OldUserName = Main_UserName;
     UserHost_status = false;
     Main_empty('stream_table_user_host');
@@ -53,6 +55,7 @@ function UserHost_StartLoad() {
     UserHost_emptyCellVector = [];
     UserHost_itemsCountCheck = false;
     UserHost_itemsCount = 0;
+    UserHost_FirstLoad = true;
     UserHost_cursorX = 0;
     UserHost_cursorY = 0;
     UserHost_dataEnded = false;
@@ -62,6 +65,7 @@ function UserHost_StartLoad() {
 }
 
 function UserHost_loadDataPrepare() {
+    Main_imgVectorRst();
     UserHost_loadingData = true;
     UserHost_loadingDataTry = 0;
     UserHost_loadingDataTimeout = 3500;
@@ -178,9 +182,12 @@ function UserHost_loadDataSuccessFinish() {
             else {
                 UserHost_status = true;
                 UserHost_addFocus();
-                Main_LazyImgStart(UserHost_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_imgVectorLoad(IMG_404_VIDEO);
             }
+            Main_ShowElement(UserHost_ids[10]);
+            UserHost_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserHost_emptyCellVector.length > 0 && !UserHost_dataEnded) {
                 UserHost_loadDataPrepare();
                 UserHost_loadDataReplace();
@@ -276,10 +283,7 @@ function UserHost_loadDataSuccessReplace(responseText) {
 }
 
 function UserHost_addFocus() {
-
     Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_ColoumnsCountVideo, UserHost_itemsCount);
-
-    if (UserHost_cursorY > 2) Main_LazyImg(UserHost_ids[1], UserHost_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserHost_dataEnded && !UserHost_loadingData) {
@@ -293,7 +297,7 @@ function UserHost_removeFocus() {
 }
 
 function UserHost_handleKeyDown(event) {
-    if (UserHost_loadingData || Main_CantClick()) return;
+    if (UserHost_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

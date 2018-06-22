@@ -15,11 +15,12 @@ var UserLive_MaxOffset = 0;
 var UserLive_loadChannelOffsset = 0;
 var UserLive_emptyContent = false;
 
-var UserLive_ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'ulempty_'];
+var UserLive_ids = ['ul_thumbdiv', 'ul_img', 'ul_infodiv', 'ul_displayname', 'ul_streamtitle', 'ul_streamgame', 'ul_viwers', 'ul_quality', 'ul_cell', 'ulempty_', 'user_live_scroll'];
 var UserLive_status = false;
 var UserLive_followerChannels = '';
 var UserLive_OldUserName = '';
 var UserLive_itemsCountCheck = false;
+var UserLive_FirstLoad = false;
 //Variable initialization end
 
 function UserLive_init() {
@@ -29,8 +30,8 @@ function UserLive_init() {
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
     if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
     if (UserLive_status) {
-        Main_ScrollHelperVideo(UserLive_ids[0], UserLive_cursorY, UserLive_cursorX);
         Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
+        Main_ShowElement(UserLive_ids[10]);
     } else UserLive_StartLoad();
 }
 
@@ -38,12 +39,13 @@ function UserLive_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserLive_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
+    Main_HideElement(UserLive_ids[10]);
 }
 
 function UserLive_StartLoad() {
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(UserLive_ids[10]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     UserLive_status = false;
     UserLive_OldUserName = Main_UserName;
     Main_empty('stream_table_user_live');
@@ -54,6 +56,7 @@ function UserLive_StartLoad() {
     UserLive_idObject = {};
     UserLive_emptyCellVector = [];
     UserLive_itemsCountCheck = false;
+    UserLive_FirstLoad = true;
     UserLive_itemsCount = 0;
     UserLive_cursorX = 0;
     UserLive_cursorY = 0;
@@ -65,6 +68,7 @@ function UserLive_StartLoad() {
 }
 
 function UserLive_loadDataPrepare() {
+    Main_imgVectorRst();
     UserLive_loadingData = true;
     UserLive_loadingDataTry = 0;
     UserLive_loadingDataTimeout = 3500;
@@ -246,9 +250,12 @@ function UserLive_loadDataSuccessFinish() {
             else {
                 UserLive_status = true;
                 UserLive_addFocus();
-                Main_LazyImgStart(UserLive_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_imgVectorLoad(IMG_404_VIDEO);
             }
+            Main_ShowElement(UserLive_ids[10]);
+            UserLive_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserLive_emptyCellVector.length > 0 && !UserLive_dataEnded) {
                 UserLive_loadDataPrepare();
                 UserLive_loadChannelsReplace();
@@ -346,8 +353,6 @@ function UserLive_loadDataSuccessReplace(responseText) {
 function UserLive_addFocus() {
     Main_addFocusVideo(UserLive_cursorY, UserLive_cursorX, UserLive_ids, Main_ColoumnsCountVideo, UserLive_itemsCount);
 
-    if (UserLive_cursorY > 2) Main_LazyImg(UserLive_ids[1], UserLive_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((UserLive_cursorY + Main_ItemsReloadLimitVideo) > (UserLive_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserLive_dataEnded && !UserLive_loadingData) {
         UserLive_loadDataPrepare();
@@ -360,7 +365,7 @@ function UserLive_removeFocus() {
 }
 
 function UserLive_handleKeyDown(event) {
-    if (UserLive_loadingData || Main_CantClick()) return;
+    if (UserLive_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
