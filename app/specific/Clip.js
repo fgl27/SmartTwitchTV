@@ -14,12 +14,13 @@ var Clip_MaxOffset = 0;
 var Clip_emptyContent = false;
 var Clip_ReplacedataTry = 0;
 
-var Clip_ids = ['c_thumbdiv', 'c_img', 'c_infodiv', 'c_title', 'c_createdon', 'c_game', 'c_viwers', 'c_duration', 'c_cell', 'cpempty_', 'c_lang'];
+var Clip_ids = ['c_thumbdiv', 'c_img', 'c_infodiv', 'c_title', 'c_createdon', 'c_game', 'c_viwers', 'c_duration', 'c_cell', 'cpempty_', 'clip_scroll', 'c_lang'];
 var Clip_status = false;
 var Clip_cursor = null;
 var Clip_periodNumber = 2;
 var Clip_period = 'week';
 var Clip_itemsCountCheck = false;
+var Clip_FirstLoad = false;
 //Variable initialization end
 
 function Clip_init() {
@@ -33,8 +34,8 @@ function Clip_init() {
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     Main_YRst(Clip_cursorY);
     if (Clip_status) {
-        Main_ScrollHelperVideo(Clip_ids[0], Clip_cursorY, Clip_cursorX);
         Main_CounterDialog(Clip_cursorX, Clip_cursorY, Main_ColoumnsCountVideo, Clip_itemsCount);
+        Main_ShowElement(Clip_ids[10]);
     } else Clip_StartLoad();
 }
 
@@ -45,11 +46,12 @@ function Clip_exit() {
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement(Clip_ids[10]);
 }
 
 function Clip_StartLoad() {
+    Main_HideElement(Clip_ids[10]);
     Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Clip_cursor = null;
     Clip_status = false;
@@ -59,6 +61,7 @@ function Clip_StartLoad() {
     Clip_idObject = {};
     Clip_emptyCellVector = [];
     Clip_itemsCountCheck = false;
+    Clip_FirstLoad = true;
     Clip_itemsCount = 0;
     Clip_ReplacedataTry = 0;
     Clip_cursorX = 0;
@@ -70,6 +73,7 @@ function Clip_StartLoad() {
 }
 
 function Clip_loadDataPrepare() {
+    Main_imgVectorRst();
     Clip_loadingData = true;
     Clip_loadingDataTry = 0;
     Clip_loadingDataTimeout = 3500;
@@ -203,10 +207,13 @@ function Clip_loadDataSuccessFinish() {
             if (Clip_emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
             else {
                 Clip_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Clip_addFocus();
-                Main_LazyImgStart(Clip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(Clip_ids[10]);
+            Clip_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Clip_emptyCellVector.length > 0 && !Clip_dataEnded) {
                 Clip_loadDataPrepare();
                 Clip_loadDataReplace();
@@ -313,8 +320,6 @@ function Clip_loadDataSuccessReplace(responseText) {
 function Clip_addFocus() {
     Main_addFocusVideo(Clip_cursorY, Clip_cursorX, Clip_ids, Main_ColoumnsCountVideo, Clip_itemsCount);
 
-    if (Clip_cursorY > 2) Main_LazyImg(Clip_ids[1], Clip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Clip_cursorY + Main_ItemsReloadLimitVideo) > (Clip_itemsCount / Main_ColoumnsCountVideo)) &&
         !Clip_dataEnded && !Clip_loadingData) {
         Clip_loadDataPrepare();
@@ -327,7 +332,7 @@ function Clip_removeFocus() {
 }
 
 function Clip_handleKeyDown(event) {
-    if (Clip_loadingData || Main_CantClick()) return;
+    if (Clip_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -429,7 +434,7 @@ function Clip_handleKeyDown(event) {
             Sclip_Duration = document.getElementById(Clip_ids[5] + Clip_cursorY + '_' + Clip_cursorX).textContent;
             Sclip_views = document.getElementById(Clip_ids[6] + Clip_cursorY + '_' + Clip_cursorX).textContent;
             Sclip_language = document.getElementById(Clip_ids[7] + Clip_cursorY + '_' + Clip_cursorX).textContent;
-            Sclip_game = document.getElementById(Clip_ids[10] + Clip_cursorY + '_' + Clip_cursorX).innerHTML;
+            Sclip_game = document.getElementById(Clip_ids[11] + Clip_cursorY + '_' + Clip_cursorX).innerHTML;
             Clip_openStream();
             break;
         case KEY_RED:

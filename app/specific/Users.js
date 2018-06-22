@@ -5,17 +5,19 @@ var Users_ColoumnsCount = 7;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
 
-var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell'];
+var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll'];
 var Users_status = false;
 var Users_loadingData = true;
+var Users_FirstLoad = false;
 //Variable initialization end
 
 function Users_init() {
     Main_Go = Main_Users;
+    document.getElementById("screens_holder").style.top = "100px";
     Main_HideWarningDialog();
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
-    if (Users_status) Main_ScrollHelperGeneral(Users_ids[0], Users_cursorY, Users_cursorX, Main_ScrollOffSetMinusChannels, 160, true);
+    if (Users_status) Main_ShowElement(Users_ids[5]);
     else Users_StartLoad();
 }
 
@@ -23,14 +25,17 @@ function Users_exit() {
     AddCode_SetDefaultOAuth(0);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
+    Main_HideElement(Users_ids[5]);
+    document.getElementById("screens_holder").style.top = "0";
 }
 
 function Users_StartLoad() {
-    Main_YRst(-1);
-    Main_HideWarningDialog();
-    Users_status = false;
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(Users_ids[5]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
+    Main_YRst(-1);
+    Users_status = false;
+    Users_FirstLoad = true;
     Main_empty('stream_table_user');
     Users_cursorX = 0;
     Users_cursorY = 0;
@@ -98,7 +103,8 @@ function Users_loadDataSuccessFinish() {
             if (AddCode_UsercodeArray.length > 0) Users_checkTitleStart();
             Users_addFocus();
         }
-
+        Main_ShowElement(Users_ids[5]);
+        Users_FirstLoad = false;
         Users_loadingData = false;
     });
 }
@@ -126,15 +132,17 @@ function Users_SetKeyTitleStart(bool, position) {
 }
 
 function Users_addFocus() {
-    Main_ready(function() {
-        Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    if (Main_YchangeAddFocus(Users_cursorY)) {
 
-        if (Main_YchangeAddFocus(Users_cursorY)) {
-            Main_ScrollHelperGeneral(Users_ids[0], Users_cursorY, Users_cursorX, Main_ScrollOffSetMinusChannels, 160, true);
-            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
-        } else Main_handleKeyUp();
+        if (Users_cursorY > 1) {
 
-    });
+            if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
+                Main_ScrollTable(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1) + 500);
+
+        } else Main_ScrollTable(Users_ids[5], 100);
+
+    } else Main_handleKeyUp();
 }
 
 function Users_removeFocus() {
@@ -143,7 +151,10 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
-    if (Users_cursorX !== 5) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    if (Users_cursorX !== 5) {
+        Main_HideElement(Users_ids[5]);
+        document.body.removeEventListener("keydown", Users_handleKeyDown);
+    }
     Main_UserName = AddUser_UsernameArray[Users_cursorY];
     AddCode_SetDefaultOAuth(Users_cursorY);
 
@@ -214,7 +225,7 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
-    if (Users_loadingData || Main_CantClick()) return;
+    if (Users_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -328,6 +339,7 @@ function Users_handleKeyDown(event) {
                 Users_HideRemoveDialog();
                 if (temp_RemoveCursor) {
                     document.body.removeEventListener("keydown", Users_handleKeyDown);
+                    Users_exit();
                     AddUser_removeUser(Users_cursorY);
                 }
             } else Users_keyEnter();

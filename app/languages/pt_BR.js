@@ -17,9 +17,10 @@ function pt_BRLang() {
     STR_SINCE = "Desde ";
     STR_AGO = " atrás";
     STR_AGAME = "Um jogo";
-    STR_PLACEHOLDER_SEARCH = "entrar com a pesquisa...";
-    STR_PLACEHOLDER_USER = "entrar com usuário...";
-    STR_PLACEHOLDER_PRESS = "Pressione a tecla selecionar para ";
+    STR_PLACEHOLDER_SEARCH = "Digite sua pesquisa...";
+    STR_PLACEHOLDER_OAUTH = "Digite sua chave de autenticação...";
+    STR_PLACEHOLDER_USER = "Digite seu usuário...";
+    STR_PLACEHOLDER_PRESS = "Pressione a tecla enter ou selecionar para, ";
     STR_CHANNELS = "Canais";
     STR_CHANNEL = "Canal";
     STR_GOBACK = "Voltar (retornar)";

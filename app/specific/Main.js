@@ -40,6 +40,8 @@ var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
 var Main_addFocusFinishTime = 250;
 
+var Main_imgVector = [];
+
 var Main_selectedChannel = '';
 var Main_selectedChannelDisplayname = '';
 var Main_selectedChannelLogo = '';
@@ -648,6 +650,21 @@ function Main_LoadImages(imgVector, idVector, img_type) {
     for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i], img_type);
 }
 
+function Main_imgVectorLoad(img_type) {
+    for (var i = 0; i < Main_imgVector.length; i++) Main_loadImg(document.getElementById(Main_imgVector[i].id), Main_imgVector[i].src, img_type);
+}
+
+function Main_imgVectorRst() {
+    Main_imgVector = [];
+}
+
+function Main_imgVectorPush(id, src) {
+    Main_imgVector.push({
+        'id': id,
+        'src': src
+    });
+}
+
 function Main_LazyImgStart(imgId, total, img_type, coloumns) {
     var x, y = 0,
         elem;
@@ -698,9 +715,13 @@ function Main_YRst(y) {
 }
 
 function Main_YchangeAddFocus(y) {
-    var mBool = Main_cursorYAddFocus !== y;
+    var position = 0;
+
+    if (Main_cursorYAddFocus < y) position = -1; //going down
+    else if (Main_cursorYAddFocus > y) position = 1; //going up
+
     Main_cursorYAddFocus = y;
-    return mBool;
+    return position;
 }
 
 function Main_PreLoadAImage(link) {
@@ -765,8 +786,9 @@ function Main_replaceVideo(id, channel_name, valuesArray, ids) {
 }
 
 function Main_VideoHtml(id, idArray, valuesArray) {
+    Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[0] + '"></div>' +
+        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
@@ -803,9 +825,9 @@ function Main_GameHtml(id, idArray, valuesArray) {
         valuesArray[2] + '</div></div>';
 }
 
-//TODO Re-check this (handleKeyUp, keyClickDelay and keyClickDelayStart) as it can be better
-//This functions are here to prevent races during clicks
+//"handleKeyUp, keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
 //That can cause visual glitches and make the user lost sense on were the focus is
+//Or cause the app to keep moving up/down seconds after the key has be released
 function Main_handleKeyUp() {
     Main_addFocusFinish = true;
 }
@@ -835,13 +857,20 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
 }
 
 function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
+    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
+    if (Main_YchangeAddFocus(y)) {
+
+        Main_ScrollTable(idArray[10], (y ? (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358 : 100));
+
+    } else Main_handleKeyUp();
+}
+
+function Main_ScrollTable(id, position) {
+    document.getElementById(id).style.top = position + "px";
+
     Main_ready(function() {
-        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelperVideo(idArray[0], y, x);
-            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
-        } else Main_handleKeyUp();
+        window.setTimeout(Main_handleKeyUp, 10);
     });
 }
 
@@ -909,27 +938,6 @@ function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
     Main_window_scroll(id, ((DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0) - OffsetMinus));
 }
 
-function Main_ScrollHelperGeneral(Thumbnail, cursorY, cursorX, OffsetMinus, OffsetPlus, DuploYOffsetCheck) {
-    var id = Thumbnail + cursorY + '_' + cursorX;
-
-    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        else if (cursorY === 1) {
-            id = Thumbnail + '0_' + cursorX;
-            cursorY = 0;
-        }
-    }
-
-    if (DuploYOffsetCheck) {
-        DuploYOffsetCheck = (!cursorY || cursorY === 1);
-        if (DuploYOffsetCheck) {
-            id = Thumbnail + '0_' + cursorX;
-            OffsetMinus = OffsetMinus - Main_ScrollOffSetMinusDuploYOffsetCheck;
-        }
-    } else DuploYOffsetCheck = (!cursorY);
-
-    Main_window_scroll(id, ((DuploYOffsetCheck ? OffsetPlus : 0) - OffsetMinus));
-}
 
 function Main_ScrollHelperBlank(id) {
     Main_window_scroll(id, (0 - Main_ScrollOffSetMinusVideo));

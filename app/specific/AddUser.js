@@ -15,6 +15,7 @@ function AddUser_init() {
     Main_HideWarningDialog();
     AddUser_input = document.querySelector('#user_input');
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
+    Main_ShowElement('add_user_scroll');
     AddUser_inputFocus();
     AddUser_scrollVerticalToElementById('user_input');
 }
@@ -23,6 +24,7 @@ function AddUser_exit() {
     AddUser_RemoveinputFocus();
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_HideElement('add_user_scroll');
 }
 
 function AddUser_handleKeyDown(event) {
@@ -113,6 +115,7 @@ function AddUser_KeyboardEvent(event) {
                     AddUser_loadingDataTry = 0;
                     AddUser_loadingDataTimeout = 3500;
                     AddUser_loadingData = true;
+                    Main_HideElement('add_user_scroll');
                     Main_showLoadDialog();
                     AddUser_scrollVerticalToElementById('blank_focus');
                     AddUser_loadDataRequest();
@@ -207,6 +210,7 @@ function AddUser_SaveNewUser() {
     AddUser_SaveUserArray();
 
     Users_status = false;
+    AddUser_exit();
     Users_init();
     AddUser_loadingData = false;
 
