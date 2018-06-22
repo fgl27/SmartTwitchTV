@@ -27,9 +27,10 @@ function AddCode_init() {
         Main_HideWarningDialog();
         AddCode_input = document.querySelector('#oauth_input');
         Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
+        Main_ShowElement('oauth_scroll');
         Main_innerHTML("oauth_text", STR_OAUTH_IN + Main_UserName + STR_OAUTH_EXPLAIN);
         AddCode_inputFocus();
-        AddUser_scrollVerticalToElementById('oauth_input');
+        console.log('AddCode_init');
     }
 }
 
@@ -37,6 +38,7 @@ function AddCode_exit() {
     AddCode_RemoveinputFocus();
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_HideElement('oauth_scroll');
 }
 
 function AddCode_handleKeyDown(event) {
@@ -124,8 +126,8 @@ function AddCode_KeyboardEvent(event) {
                 AddCode_OauthToken = Main_AddCodeInput.value;
 
                 AddCode_TimeoutReset10();
+                Main_HideElement('oauth_scroll');
                 Main_showLoadDialog();
-                AddUser_scrollVerticalToElementById('blank_focus');
                 AddCode_CheckKey();
             }
             AddCode_RemoveinputFocus();
@@ -154,6 +156,8 @@ function AddCode_SaveNewUser() {
     AddCode_SaveKeyArray();
 
     Main_HideLoadDialog();
+    AddCode_exit();
+    Main_HideElement('oauth_scroll');
     Users_init();
     AddCode_loadingData = false;
 }
@@ -231,6 +235,7 @@ function AddCode_CheckKeyError() {
         Main_showWarningDialog(STR_OAUTH_FAIL);
         window.setTimeout(function() {
             Main_HideWarningDialog();
+            Main_ShowElement('oauth_scroll');
             AddCode_inputFocus();
         }, 4000);
     }
@@ -247,6 +252,7 @@ function AddCode_CheckKeySuccess(responseText) {
         Main_showWarningDialog(STR_OAUTH_WRONG + Main_UserName + STR_OAUTH_WRONG2 + AddCode_Username);
         window.setTimeout(function() {
             Main_HideWarningDialog();
+            Main_ShowElement('oauth_scroll');
             AddCode_inputFocus();
         }, 3500);
     }
