@@ -28,7 +28,8 @@
         /*Do not add css comments on the same line as code, add it on a new line, TODO fix release maker to be able to do this*/
 
         div.screen_size,
-        div.scroll_size {
+        div.scroll_size,
+        div.screens {
             width: 1920px;
             height: 1080px;
         }
@@ -38,6 +39,17 @@
             z-index: 298;
             width: 1%;
             padding-left: 99%;
+        }
+
+        div.screens {
+            position: fixed;
+            overflow: hidden;
+        }
+
+        div.screen_holder {
+            width: 1920px;
+            position: fixed;
+            top: 100px;
         }
 
         div.scroll {
@@ -268,7 +280,7 @@
 
         div.imput_text_box {
             width: 70%;
-            margin-top: 23%;
+            margin-top: 13%;
             margin-left: 15%;
         }
 
@@ -467,10 +479,9 @@
         }
 
         table.streams_tables {
-            width: 99%;
-            padding-top: 3.8%;
-            padding-left: 5px;
+            width: 98%;
             border: 0;
+            margin-left: 15px;
             table-layout: fixed;
         }
 
@@ -654,84 +665,102 @@
                 <div id="dialog_counter_text" class="counter_class"></div>
             </div>
         </div>
-        <div id="blank_focus" class="screen_size"></div>
-        <div class="screen_size"></div>
-        <div id="oauth" class="imput_text_box" style="display: none;">
-            <div id="oauth_text" class="strokedextramini" style="font-size: 190%; font-weight:bold;"></div>
-            <input id="oauth_input" class="input_class" type="text" placeholder="" />
+
+        <div id="screens_holder" class="screens">
+            <div id="live_scroll" class="screen_holder hide">
+                <table id="stream_table_live" class="streams_tables"></table>
+            </div>
+            <div id="clip_scroll" class="screen_holder hide">
+                <table id="stream_table_clip" class="streams_tables"></table>
+            </div>
+            <div id="add_user_scroll" class="screen_holder hide">
+                <div id="add_user" class="imput_text_box">
+                    <input id="user_input" class="input_class" type="text" placeholder="" />
+                </div>
+            </div>
+            <div id="user_scroll" class="screen_holder hide">
+                <table id="stream_table_user" class="streams_tables"></table>
+            </div>
         </div>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <div id="search" class="imput_text_box" style="display: none;">
-            <input id="search_input" class="input_class" type="text" placeholder="" />
-            <div id="chanel_button" class="button_search"></div>
-            <div id="game_button" class="button_search"></div>
-            <div id="live_button" class="button_search"></div>
+
+        <div id="hold_temp" class="hide">
+            <div id="blank_focus" class="screen_size"></div>
+            <div class="screen_size"></div>
+            <div id="oauth" class="imput_text_box" style="display: none;">
+                <div id="oauth_text" class="strokedextramini" style="font-size: 190%; font-weight:bold;"></div>
+                <input id="oauth_input" class="input_class" type="text" placeholder="" />
+            </div>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <div id="search" class="imput_text_box" style="display: none;">
+                <input id="search_input" class="input_class" type="text" placeholder="" />
+                <div id="chanel_button" class="button_search"></div>
+                <div id="game_button" class="button_search"></div>
+                <div id="live_button" class="button_search"></div>
+            </div>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_user_live" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_user_host" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_featured" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_user_games" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_user_channels" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_games" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_a_game" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_game" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_channel" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_live" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_channel_a" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_vod" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent one table see the other-->
+            <table id="stream_table_search_clip" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent clip be display at the bottom do to end of body-->
+            <table id="stream_table_vod" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent clip be display at the bottom do to end of body-->
+            <table id="stream_table_clip" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent clip be display at the bottom do to end of body-->
+            <table id="stream_table_gclip" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent clip be display at the bottom do to end of body-->
+            <table id="stream_table_gvod" class="streams_tables"></table>
+            <div class="screen_size"></div>
+            <!-- Prevent clip be display at the bottom do to end of body-->
         </div>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <div id="add_user" class="imput_text_box" style="display: none;">
-            <input id="user_input" class="input_class" type="text" placeholder="" />
-        </div>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_live" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_user" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_user_live" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_user_host" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_featured" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_user_games" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_user_channels" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_games" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_a_game" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_game" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_channel" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_live" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_channel_a" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_vod" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent one table see the other-->
-        <table id="stream_table_search_clip" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent clip be display at the bottom do to end of body-->
-        <table id="stream_table_vod" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent clip be display at the bottom do to end of body-->
-        <table id="stream_table_clip" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent clip be display at the bottom do to end of body-->
-        <table id="stream_table_gclip" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent clip be display at the bottom do to end of body-->
-        <table id="stream_table_gvod" class="streams_tables"></table>
-        <div class="screen_size"></div>
-        <!-- Prevent clip be display at the bottom do to end of body-->
     </div>
     <div id="scene2" class="screen_size hide">
         <div id="chat_container" class="chat_container hide">

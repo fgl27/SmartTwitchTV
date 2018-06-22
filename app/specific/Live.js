@@ -1,6 +1,6 @@
 //Variable initialization
 var Live_Status = false;
-var Live_ids = ['l_thumbdiv', 'l_img', 'l_infodiv', 'l_displayname', 'l_streamtitle', 'l_streamgame', 'l_viwers', 'l_quality', 'l_cell', 'lempty_'];
+var Live_ids = ['l_thumbdiv', 'l_img', 'l_infodiv', 'l_displayname', 'l_streamtitle', 'l_streamgame', 'l_viwers', 'l_quality', 'l_cell', 'lempty_', 'live_scroll'];
 var Live_cursorY = 0;
 var Live_cursorX = 0;
 var Live_ExitCursor = 0;
@@ -19,6 +19,7 @@ var Live_checkVersion = false;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
 var Live_emptyContent = false;
+var Live_FirstLoad = false;
 //Variable initialization end
 
 function Live_init() {
@@ -28,7 +29,7 @@ function Live_init() {
     Main_YRst(Live_cursorY);
     if (Live_Status) {
         Main_ScrollHelperVideo(Live_ids[0], Live_cursorY, Live_cursorX);
-        Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
+        Main_ShowElement(Live_ids[10]);
     } else Live_StartLoad();
 }
 
@@ -36,18 +37,20 @@ function Live_exit() {
     document.body.removeEventListener("keydown", Live_handleKeyDown);
     Main_RemoveClass('top_bar_live', 'icon_center_focus');
     Main_HideExitDialog();
+    Main_HideElement(Live_ids[10]);
 }
 
 function Live_StartLoad() {
+    Main_HideElement(Live_ids[10]);
     Main_HideWarningDialog();
     Live_Status = false;
-    Main_ScrollHelperBlank('blank_focus');
     Main_showLoadDialog();
     Main_empty('stream_table_live');
     Live_emptyCellVector = [];
     Live_itemsCountOffset = 0;
     Live_ReplacedataEnded = false;
     Live_itemsCountCheck = false;
+    Live_FirstLoad = true;
     Live_MaxOffset = 0;
     Live_idObject = {};
     Live_itemsCount = 0;
@@ -61,6 +64,7 @@ function Live_StartLoad() {
 }
 
 function Live_loadDataPrepare() {
+    Main_imgVectorRst();
     Live_loadingData = true;
     Live_loadingDataTry = 0;
     Live_loadingDataTimeout = 3500;
@@ -184,20 +188,17 @@ function Live_loadDataSuccessFinish() {
             if (Live_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Live_Status = true;
-                Main_LazyImgStart(Live_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Live_addFocus();
             }
             if (!Live_checkVersion) {
                 Live_checkVersion = true;
                 if (Main_checkVersion()) Main_showUpdateDialog();
-
-                //Hide all input element and show after html has load
-                //to prevent a odd random situation were they show when the app first open
-                document.getElementById('oauth').style.display = 'block';
-                document.getElementById('search').style.display = 'block';
-                document.getElementById('add_user').style.display = 'block';
             }
+            Main_ShowElement(Live_ids[10]);
+            Live_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Live_emptyCellVector.length > 0 && !Live_dataEnded) {
                 Live_loadDataPrepare();
                 Live_loadDataReplace();
@@ -293,8 +294,6 @@ function Live_loadDataSuccessReplace(responseText) {
 function Live_addFocus() {
     Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_ColoumnsCountVideo, Live_itemsCount);
 
-    if (Live_cursorY > 2) Main_LazyImg(Live_ids[1], Live_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Live_cursorY + Main_ItemsReloadLimitVideo) > (Live_itemsCount / Main_ColoumnsCountVideo)) &&
         !Live_dataEnded && !Live_loadingData) {
         Live_loadDataPrepare();
@@ -316,7 +315,7 @@ function Live_ExitCursorSet() {
 }
 
 function Live_handleKeyDown(event) {
-    if (Live_loadingData || Main_CantClick()) return;
+    if (Live_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
