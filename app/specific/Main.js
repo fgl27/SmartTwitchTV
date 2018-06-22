@@ -861,7 +861,8 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
 
-        Main_ScrollTable(idArray[10], (y ? (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358 : 100));
+        if (Main_ThumbNull((y + 1), 0, idArray[0]))
+            Main_ScrollTable(idArray[10], (y ? (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358 : 100));
 
     } else Main_handleKeyUp();
 }
