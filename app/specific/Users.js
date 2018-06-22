@@ -154,6 +154,7 @@ function Users_keyEnter() {
     if (Users_cursorX !== 5) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
+        document.getElementById("screens_holder").style.top = "0";
     }
     Main_UserName = AddUser_UsernameArray[Users_cursorY];
     AddCode_SetDefaultOAuth(Users_cursorY);

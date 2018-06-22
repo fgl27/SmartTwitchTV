@@ -18,9 +18,10 @@ var Vod_period = 'week';
 var Vod_periodNumber = 2;
 var Vod_isVod = false;
 
-var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'svempty_', 'v_game'];
+var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'svempty_', 'vod_scroll', 'v_game'];
 var Vod_status = false;
 var Vod_highlight = false;
+var Vod_FirstLoad = false;
 //Variable initialization end
 
 function Vod_init() {
@@ -33,7 +34,7 @@ function Vod_init() {
 
     Main_YRst(Vod_cursorY);
     if (Vod_status) {
-        Main_ScrollHelperVideo(Vod_ids[0], Vod_cursorY, Vod_cursorX);
+        Main_ShowElement(Vod_ids[10]);
         Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
         Vod_SetPeriod();
     } else Vod_StartLoad();
@@ -46,14 +47,15 @@ function Vod_exit() {
     Main_textContent('top_bar_vod', STR_VIDEOS);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement(Vod_ids[10]);
 }
 
 function Vod_StartLoad() {
+    Main_HideElement(Vod_ids[10]);
+    Main_showLoadDialog();
     Vod_SetPeriod();
     Main_HideWarningDialog();
     Vod_status = false;
-    Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
     Main_empty('stream_table_vod');
     Vod_itemsCountOffset = 0;
     Vod_ReplacedataEnded = false;
@@ -61,6 +63,7 @@ function Vod_StartLoad() {
     Vod_idObject = {};
     Vod_emptyCellVector = [];
     Vod_itemsCountCheck = false;
+    Vod_FirstLoad = true;
     Vod_itemsCount = 0;
     Vod_cursorX = 0;
     Vod_cursorY = 0;
@@ -71,6 +74,7 @@ function Vod_StartLoad() {
 }
 
 function Vod_loadDataPrepare() {
+    Main_imgVectorRst();
     Vod_loadingData = true;
     Vod_loadingDataTry = 0;
     Vod_loadingDataTimeout = 3500;
@@ -213,7 +217,7 @@ function Vod_VideoHtml(id, valuesArray, idArray) {
         '<div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + idArray[10] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[11] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
@@ -225,9 +229,12 @@ function Vod_loadDataSuccessFinish() {
             else {
                 Vod_status = true;
                 Vod_addFocus();
-                Main_LazyImgStart(Vod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_imgVectorLoad(IMG_404_VIDEO);
             }
+            Main_ShowElement(Vod_ids[10]);
+            Vod_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
                 Vod_loadDataPrepare();
                 Vod_loadDataReplace();
@@ -327,8 +334,6 @@ function Vod_loadDataSuccessReplace(responseText) {
 function Vod_addFocus() {
     Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
 
-    if (Vod_cursorY > 2) Main_LazyImg(Vod_ids[1], Vod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Vod_dataEnded && !Vod_loadingData) {
         Vod_loadDataPrepare();
@@ -341,7 +346,7 @@ function Vod_removeFocus() {
 }
 
 function Vod_handleKeyDown(event) {
-    if (Vod_loadingData || Main_CantClick()) return;
+    if (Vod_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -441,7 +446,7 @@ function Vod_handleKeyDown(event) {
             Main_selectedChannelDisplayname = document.getElementById(Vod_ids[3] + Vod_cursorY + '_' + Vod_cursorX).textContent;
             Svod_createdAt = document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).textContent;
             Svod_Duration = document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            Svod_views = document.getElementById(Vod_ids[10] + Vod_cursorY + '_' + Vod_cursorX).innerHTML +
+            Svod_views = document.getElementById(Vod_ids[11] + Vod_cursorY + '_' + Vod_cursorX).innerHTML +
                 ', ' + document.getElementById(Vod_ids[6] + Vod_cursorY + '_' + Vod_cursorX).textContent;
             Vod_openStream();
             break;
