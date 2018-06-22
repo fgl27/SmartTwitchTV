@@ -17,7 +17,6 @@ function AddUser_init() {
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     Main_ShowElement('add_user_scroll');
     AddUser_inputFocus();
-    AddUser_scrollVerticalToElementById('user_input');
 }
 
 function AddUser_exit() {
@@ -35,7 +34,8 @@ function AddUser_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Main_Go = Main_Before;
+                if (AddUser_UsernameArray.length > 0 && Main_Go !== Main_Users) Main_Go = Main_Before;
+                else Main_Go = Main_Live;
                 AddUser_exit();
                 Main_SwitchScreen();
             }
@@ -117,7 +117,6 @@ function AddUser_KeyboardEvent(event) {
                     AddUser_loadingData = true;
                     Main_HideElement('add_user_scroll');
                     Main_showLoadDialog();
-                    AddUser_scrollVerticalToElementById('blank_focus');
                     AddUser_loadDataRequest();
                 } else {
                     Main_HideLoadDialog();
@@ -267,8 +266,4 @@ function AddUser_UserCodeExist(user) {
 
 function AddUser_IsUserSet() {
     return AddUser_UsernameArray.length > 0;
-}
-
-function AddUser_scrollVerticalToElementById(id) {
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo - Main_ScrollOffSetMinusaddUser);
 }
