@@ -1,6 +1,6 @@
 //Variable initialization
 var Featured_Status = false;
-var Featured_ids = ['f_thumbdiv', 'f_img', 'f_infodiv', 'f_displayname', 'f_streamtitle', 'f_streamgame', 'f_viwers', 'f_quality', 'f_cell', 'fempty_'];
+var Featured_ids = ['f_thumbdiv', 'f_img', 'f_infodiv', 'f_displayname', 'f_streamtitle', 'f_streamgame', 'f_viwers', 'f_quality', 'f_cell', 'fempty_', 'featured_scroll'];
 var Featured_cursorY = 0;
 var Featured_cursorX = 0;
 var Featured_dataEnded = false;
@@ -17,6 +17,7 @@ var Featured_MaxOffset = 0;
 var Featured_itemsCountCheck = false;
 var Featured_imgCounter = 0;
 var Featured_emptyContent = false;
+var Featured_FirstLoad = false;
 //Variable initialization end
 
 function Featured_init() {
@@ -25,26 +26,28 @@ function Featured_init() {
     document.body.addEventListener("keydown", Featured_handleKeyDown, false);
     Main_YRst(Featured_cursorY);
     if (Featured_Status) {
-        Main_ScrollHelperVideo(Featured_ids[0], Featured_cursorY, Featured_cursorX);
         Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
+        Main_ShowElement(Featured_ids[10]);
     } else Featured_StartLoad();
 }
 
 function Featured_exit() {
     document.body.removeEventListener("keydown", Featured_handleKeyDown);
     Main_RemoveClass('top_bar_featured', 'icon_center_focus');
+    Main_HideElement(Featured_ids[10]);
 }
 
 function Featured_StartLoad() {
+    Main_HideElement(Featured_ids[10]);
+    Main_showLoadDialog();
     Main_HideWarningDialog();
     Featured_Status = false;
-    Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
     Main_empty('stream_table_featured');
     Featured_emptyCellVector = [];
     Featured_itemsCountOffset = 0;
     Featured_ReplacedataEnded = false;
     Featured_itemsCountCheck = false;
+    Featured_FirstLoad = true;
     Featured_MaxOffset = 0;
     Featured_idObject = {};
     Featured_itemsCount = 0;
@@ -58,6 +61,7 @@ function Featured_StartLoad() {
 }
 
 function Featured_loadDataPrepare() {
+    Main_imgVectorRst();
     Featured_loadingData = true;
     Featured_loadingDataTry = 0;
     Featured_loadingDataTimeout = 3500;
@@ -178,10 +182,13 @@ function Featured_loadDataSuccessFinish() {
             if (Featured_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Featured_Status = true;
-                Main_LazyImgStart(Featured_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Featured_addFocus();
             }
+            Main_ShowElement(Featured_ids[10]);
+            Featured_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Featured_emptyCellVector.length > 0 && !Featured_dataEnded) {
                 Featured_loadDataPrepare();
                 Featured_loadDataReplace();
@@ -274,8 +281,6 @@ function Featured_loadDataSuccessReplace(responseText) {
 function Featured_addFocus() {
     Main_addFocusVideo(Featured_cursorY, Featured_cursorX, Featured_ids, Main_ColoumnsCountVideo, Featured_itemsCount);
 
-    if (Featured_cursorY > 2) Main_LazyImg(Featured_ids[1], Featured_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Featured_cursorY + Main_ItemsReloadLimitVideo) > (Featured_itemsCount / Main_ColoumnsCountVideo)) &&
         !Featured_dataEnded && !Featured_loadingData) {
         Featured_loadDataPrepare();
@@ -288,7 +293,7 @@ function Featured_removeFocus() {
 }
 
 function Featured_handleKeyDown(event) {
-    if (Featured_loadingData || Main_CantClick()) return;
+    if (Featured_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
