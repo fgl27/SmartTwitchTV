@@ -1028,13 +1028,13 @@ function Play_OpenChannel(PlayVodClip) {
     }
 
     Main_ExitCurrent(Main_Go);
-    Main_Go = Main_SChannelContent;
+    Main_Go = Main_ChannelContent;
     Play_isOpenChannel = true;
 
     if (PlayVodClip === 1) {
         Main_selectedChannel = Play_selectedChannel;
         Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
-        SChannelContent_UserChannels = AddCode_IsFallowing;
+        ChannelContent_UserChannels = AddCode_IsFallowing;
         Play_hideChat();
         Main_ready(Play_shutdownStream);
     } else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
@@ -1055,7 +1055,7 @@ function Play_OpenSearch(PlayVodClip) {
 
 function Play_OpenGame(PlayVodClip) {
     if (!Main_BeforeAgameisSet && Main_Go !== Main_AGameVod && Main_Go !== Main_AGameClip) {
-        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
+        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_ChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
         Main_BeforeAgameisSet = true;
     }
 

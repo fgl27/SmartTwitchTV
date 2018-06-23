@@ -333,7 +333,7 @@ function AddCode_CheckFallowId(responseText) {
         AddCode_IsFallowing = false;
         AddCode_loadingData = false;
         if (AddCode_PlayRequest) Play_setFallow();
-        else SChannelContent_setFallow();
+        else ChannelContent_setFallow();
     }
 }
 
@@ -354,14 +354,14 @@ function AddCode_RequestCheckFallow() {
                     AddCode_IsFallowing = true;
                     AddCode_loadingData = false;
                     if (AddCode_PlayRequest) Play_setFallow();
-                    else SChannelContent_setFallow();
+                    else ChannelContent_setFallow();
                     return;
                 } else if (xmlHttp.status === 404) { //no
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         AddCode_IsFallowing = false;
                         AddCode_loadingData = false;
                         if (AddCode_PlayRequest) Play_setFallow();
-                        else SChannelContent_setFallow();
+                        else ChannelContent_setFallow();
                         return;
                     } else AddCode_RequestCheckFallowError();
                 } else { // internet error
@@ -384,7 +384,7 @@ function AddCode_RequestCheckFallowError() {
     } else {
         AddCode_loadingData = false;
         if (AddCode_PlayRequest) Play_setFallow();
-        else SChannelContent_setFallow();
+        else ChannelContent_setFallow();
     }
 }
 
@@ -411,7 +411,7 @@ function AddCode_FallowRequest() {
                     AddCode_loadingData = false;
                     AddCode_IsFallowing = true;
                     if (AddCode_PlayRequest) Play_setFallow();
-                    else SChannelContent_setFallow();
+                    else ChannelContent_setFallow();
                     return;
                 } else {
                     AddCode_FallowRequestError();
@@ -456,7 +456,7 @@ function AddCode_UnFallowRequest() {
                     AddCode_IsFallowing = false;
                     AddCode_loadingData = false;
                     if (AddCode_PlayRequest) Play_setFallow();
-                    else SChannelContent_setFallow();
+                    else ChannelContent_setFallow();
                     return;
                 } else {
                     AddCode_UnFallowRequestError();

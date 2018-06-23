@@ -14,7 +14,7 @@ var Main_usergames = 7;
 var Main_Search = 8;
 var Main_sgames = 9;
 var Main_SLive = 10;
-var Main_SChannelContent = 11;
+var Main_ChannelContent = 11;
 var Main_Svod = 12;
 var Main_Sclip = 13;
 var Main_Users = 14;
@@ -434,7 +434,7 @@ function Main_ReStartScreens() {
 function Main_SwitchScreen() {
     if (Main_NetworkStateOK) Main_HideWarningDialog();
 
-    if (Main_Go !== Main_SChannelContent && Main_Go !== Main_aGame) {
+    if (Main_Go !== Main_ChannelContent && Main_Go !== Main_aGame) {
         Main_BeforeAgameisSet = false;
         Main_BeforeChannelisSet = false;
     }
@@ -447,7 +447,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_Search) Search_init();
     else if (Main_Go === Main_sgames) SGames_init();
     else if (Main_Go === Main_SLive) SLive_init();
-    else if (Main_Go === Main_SChannelContent) SChannelContent_init();
+    else if (Main_Go === Main_ChannelContent) ChannelContent_init();
     else if (Main_Go === Main_Svod) Svod_init();
     else if (Main_Go === Main_Sclip) Sclip_init();
     else if (Main_Go === Main_Users) Users_init();
@@ -472,7 +472,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_Search) Search_exit();
     else if (ExitCurrent === Main_sgames) SGames_exit();
     else if (ExitCurrent === Main_SLive) SLive_exit();
-    else if (ExitCurrent === Main_SChannelContent) SChannelContent_exit();
+    else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_Svod) Svod_exit();
     else if (ExitCurrent === Main_Sclip) Sclip_exit();
     else if (ExitCurrent === Main_Users) Users_exit();
