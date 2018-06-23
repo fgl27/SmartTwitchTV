@@ -98,7 +98,7 @@ function ChannelClip_SetPeriod() {
         Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_ALL);
         ChannelClip_period = 'all';
     }
-    localStorage.setItem('sclip_periodNumber', ChannelClip_periodNumber);
+    localStorage.setItem('ChannelClip_periodNumber', ChannelClip_periodNumber);
 }
 
 function ChannelClip_loadDataRequest() {
@@ -419,8 +419,8 @@ function ChannelClip_handleKeyDown(event) {
             ChannelClip_playUrl = document.getElementById(ChannelClip_ids[8] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).getAttribute(Main_DataAttribute).split(',');
             ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
             Play_gameSelected = ChannelClip_playUrl[2];
-            Svod_vodId = ChannelClip_playUrl[3];
-            Svod_vodOffset = parseInt(ChannelClip_playUrl[4]);
+            ChannelVod_vodId = ChannelClip_playUrl[3];
+            ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[4]);
             ChannelClip_playUrl = ChannelClip_playUrl[0];
 
             ChannelClip_title = document.getElementById(ChannelClip_ids[3] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;

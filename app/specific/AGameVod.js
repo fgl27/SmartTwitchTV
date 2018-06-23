@@ -399,18 +399,18 @@ function AGameVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Svod_vodId = document.getElementById(AGameVod_ids[8] + AGameVod_cursorY + '_' + AGameVod_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Svod_DurationSeconds = parseInt(Svod_vodId[1]);
-            Svod_language = Svod_vodId[2];
-            Play_gameSelected = Svod_vodId[3];
-            Main_selectedChannel = Svod_vodId[4];
-            Svod_vodId = Svod_vodId[0].substr(1);
+            ChannelVod_vodId = document.getElementById(AGameVod_ids[8] + AGameVod_cursorY + '_' + AGameVod_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
+            ChannelVod_language = ChannelVod_vodId[2];
+            Play_gameSelected = ChannelVod_vodId[3];
+            Main_selectedChannel = ChannelVod_vodId[4];
+            ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
-            Svod_title = '';
+            ChannelVod_title = '';
             Main_selectedChannelDisplayname = document.getElementById(AGameVod_ids[3] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            Svod_createdAt = document.getElementById(AGameVod_ids[4] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            Svod_Duration = document.getElementById(AGameVod_ids[5] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            Svod_views = document.getElementById(AGameVod_ids[11] + AGameVod_cursorY + '_' + AGameVod_cursorX).innerHTML +
+            ChannelVod_createdAt = document.getElementById(AGameVod_ids[4] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
+            ChannelVod_Duration = document.getElementById(AGameVod_ids[5] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
+            ChannelVod_views = document.getElementById(AGameVod_ids[11] + AGameVod_cursorY + '_' + AGameVod_cursorX).innerHTML +
                 ', ' + document.getElementById(AGameVod_ids[6] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
             AGameVod_openStream();
             break;

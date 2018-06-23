@@ -431,8 +431,8 @@ function AGameClip_handleKeyDown(event) {
             Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
             Main_selectedChannelLogo = ChannelClip_playUrl[5];
             Main_selectedChannel_id = ChannelClip_playUrl[6];
-            Svod_vodId = ChannelClip_playUrl[7];
-            Svod_vodOffset = parseInt(ChannelClip_playUrl[8]);
+            ChannelVod_vodId = ChannelClip_playUrl[7];
+            ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
             ChannelClip_playUrl = ChannelClip_playUrl[0];
 
             ChannelClip_title = '';

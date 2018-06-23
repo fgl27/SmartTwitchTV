@@ -1022,7 +1022,7 @@ function Play_EndSet(PlayVodClip) {
 }
 
 function Play_OpenChannel(PlayVodClip) {
-    if (!Main_BeforeChannelisSet && Main_Go !== Main_Svod && Main_Go !== Main_ChannelClip) {
+    if (!Main_BeforeChannelisSet && Main_Go !== Main_ChannelVod && Main_Go !== Main_ChannelClip) {
         Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
         Main_BeforeChannelisSet = true;
     }
@@ -1055,7 +1055,7 @@ function Play_OpenSearch(PlayVodClip) {
 
 function Play_OpenGame(PlayVodClip) {
     if (!Main_BeforeAgameisSet && Main_Go !== Main_AGameVod && Main_Go !== Main_AGameClip) {
-        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_ChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_ChannelClip) ? Main_BeforeChannel : Main_Go;
+        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_ChannelContent && Main_Go !== Main_ChannelVod && Main_Go !== Main_ChannelClip) ? Main_BeforeChannel : Main_Go;
         Main_BeforeAgameisSet = true;
     }
 
