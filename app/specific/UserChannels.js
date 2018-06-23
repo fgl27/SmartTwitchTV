@@ -24,9 +24,9 @@ function UserChannels_init() {
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
-    Main_YRst(UserChannels_cursorY);
     if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
     if (UserChannels_Status) {
+        Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
     } else UserChannels_StartLoad();

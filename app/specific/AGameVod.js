@@ -33,8 +33,8 @@ function AGameVod_init() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
-    Main_YRst(AGameVod_cursorY);
     if ((AGameVod_OldgameSelected === Main_gameSelected) && AGameVod_status) {
+        Main_YRst(AGameVod_cursorY);
         Main_ShowElement(AGameVod_ids[10]);
         Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
         AGameVod_SetPeriod();

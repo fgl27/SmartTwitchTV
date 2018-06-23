@@ -36,6 +36,7 @@ function AGameClip_init() {
     Main_YRst(AGameClip_cursorY);
 
     if (AGameClip_OldgameSelected === Main_gameSelected && AGameClip_status) {
+        Main_YRst(Live_cursorY);
         Main_ShowElement(AGameClip_ids[10]);
         Main_CounterDialog(AGameClip_cursorX, AGameClip_cursorY, Main_ColoumnsCountVideo, AGameClip_itemsCount);
     } else AGameClip_StartLoad();

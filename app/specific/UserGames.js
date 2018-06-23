@@ -27,9 +27,9 @@ function UserGames_init() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", UserGames_handleKeyDown, false);
-    Main_YRst(UserGames_cursorY);
     if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
     if (UserGames_Status) {
+        Main_YRst(UserGames_cursorY);
         Main_ShowElement(UserGames_ids[7]);
         Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         Main_CounterDialog(UserGames_cursorX, UserGames_cursorY, Main_ColoumnsCountGame, UserGames_itemsCount);

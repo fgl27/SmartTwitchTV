@@ -28,8 +28,8 @@ function SearchLive_init() {
     if (SearchLive_lastData !== Search_data) SearchLive_Status = false;
     Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SearchLive_handleKeyDown, false);
-    Main_YRst(SearchLive_cursorY);
     if (SearchLive_Status) {
+        Main_YRst(SearchLive_cursorY);
         Main_ShowElement(SearchLive_ids[10]);
         Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
     } else SearchLive_StartLoad();
