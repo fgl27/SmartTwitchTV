@@ -26,8 +26,8 @@ function Live_init() {
     Main_Go = Main_Live;
     Main_AddClass('top_bar_live', 'icon_center_focus');
     document.body.addEventListener("keydown", Live_handleKeyDown, false);
-    Main_YRst(Live_cursorY);
     if (Live_Status) {
+        Main_YRst(Live_cursorY);
         Main_ShowElement(Live_ids[10]);
         Main_CounterDialog(Games_cursorX, Games_cursorY, Main_ColoumnsCountGame, Games_itemsCount);
     } else Live_StartLoad();
@@ -43,6 +43,7 @@ function Live_exit() {
 function Live_StartLoad() {
     Main_HideElement(Live_ids[10]);
     Main_showLoadDialog();
+    Main_HideExitDialog();
     Main_HideWarningDialog();
     Live_Status = false;
     Main_empty('stream_table_live');
