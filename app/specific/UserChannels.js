@@ -20,7 +20,7 @@ var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname',
 
 function UserChannels_init() {
     Main_Go = Main_UserChannels;
-    SChannels_isLastSChannels = false;
+    SearchChannels_isLastSChannels = false;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);

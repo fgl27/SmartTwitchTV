@@ -19,7 +19,7 @@ var Main_Svod = 12;
 var Main_Sclip = 13;
 var Main_Users = 14;
 var Main_UserChannels = 15;
-var Main_SChannels = 16;
+var Main_SearchChannels = 16;
 var Main_addCode = 17;
 var Main_Vod = 18;
 var Main_Clip = 19;
@@ -455,7 +455,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_UserHost) UserHost_init();
     else if (Main_Go === Main_usergames) UserGames_init();
     else if (Main_Go === Main_UserChannels) UserChannels_init();
-    else if (Main_Go === Main_SChannels) SChannels_init();
+    else if (Main_Go === Main_SearchChannels) SearchChannels_init();
     else if (Main_Go === Main_Vod) Vod_init();
     else if (Main_Go === Main_Clip) Clip_init();
     else if (Main_Go === Main_AGameVod) AGameVod_init();
@@ -480,7 +480,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_UserHost) UserHost_exit();
     else if (ExitCurrent === Main_usergames) UserGames_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
-    else if (ExitCurrent === Main_SChannels) SChannels_exit();
+    else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
     else if (ExitCurrent === Main_Clip) Clip_exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
