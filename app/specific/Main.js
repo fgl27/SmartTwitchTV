@@ -38,7 +38,6 @@ var Main_BeforeAgameisSet = false;
 
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
-var Main_addFocusFinishTime = 250;
 
 var Main_imgVector = [];
 
@@ -756,8 +755,9 @@ function Main_replaceChannel(id, valuesArray, ids) {
 }
 
 function Main_ChannelHtml(id, idArray, valuesArray) {
+    Main_imgVectorPush(idArray[1] + id, valuesArray[2]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><img id="' + idArray[1] +
-        id + '" class="stream_img" data-src="' + valuesArray[2] + '"></div>' +
+        id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div>';
 }
@@ -842,14 +842,19 @@ function Main_CantClick() {
 }
 
 function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
+    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-    Main_ready(function() {
-        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelperChannel(idArray[0], y, x);
-            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
-        } else Main_handleKeyUp();
-    });
+    if (Main_YchangeAddFocus(y)) {
+
+        if (y > 1) {
+
+            if (Main_ThumbNull((y + 1), 0, idArray[0]))
+                Main_ScrollTable(idArray[6],
+                    (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + 450);
+
+        } else Main_ScrollTable(idArray[6], 100);
+
+    } else Main_handleKeyUp();
 }
 
 function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
@@ -864,14 +869,6 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     } else Main_handleKeyUp();
 }
 
-function Main_ScrollTable(id, position) {
-    document.getElementById(id).style.top = position + "px";
-
-    Main_ready(function() {
-        window.setTimeout(Main_handleKeyUp, 10);
-    });
-}
-
 function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
@@ -882,6 +879,14 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
                 (y ? (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555 : 33));
 
     } else Main_handleKeyUp();
+}
+
+function Main_ScrollTable(id, position) {
+    document.getElementById(id).style.top = position + "px";
+
+    Main_ready(function() {
+        window.setTimeout(Main_handleKeyUp, 10);
+    });
 }
 
 function Main_removeFocus(id, idArray) {

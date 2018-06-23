@@ -13,8 +13,9 @@ var UserChannels_emptyContent = false;
 var UserChannels_Status = false;
 var UserChannels_OldUserName = '';
 var UserChannels_itemsCountCheck = false;
+var UserChannels_FirstLoad = false;
 
-var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname', 'uc_cell', 'ucempty_'];
+var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname', 'uc_cell', 'ucempty_', 'user_channels_scroll'];
 //Variable initialization end
 
 function UserChannels_init() {
@@ -26,7 +27,7 @@ function UserChannels_init() {
     Main_YRst(UserChannels_cursorY);
     if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
     if (UserChannels_Status) {
-        Main_ScrollHelperChannel(UserChannels_ids[0], UserChannels_cursorY, UserChannels_cursorX);
+        Main_ShowElement(UserChannels_ids[6]);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
     } else UserChannels_StartLoad();
 }
@@ -35,12 +36,13 @@ function UserChannels_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
+    Main_HideElement(UserChannels_ids[6]);
 }
 
 function UserChannels_StartLoad() {
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(UserChannels_ids[6]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     UserChannels_OldUserName = Main_UserName;
     UserChannels_Status = false;
     Main_empty('stream_table_user_channels');
@@ -50,6 +52,7 @@ function UserChannels_StartLoad() {
     UserChannels_cursorY = 0;
     UserChannels_dataEnded = false;
     UserChannels_itemsCountCheck = false;
+    UserChannels_FirstLoad = true;
     Main_CounterDialogRst();
     UserChannels_List = [];
     UserChannels_loadDataPrepare();
@@ -57,6 +60,7 @@ function UserChannels_StartLoad() {
 }
 
 function UserChannels_loadDataPrepare() {
+    Main_imgVectorRst();
     UserChannels_loadingData = true;
     UserChannels_loadingDataTry = 0;
     UserChannels_loadingDataTimeout = 3500;
@@ -177,18 +181,18 @@ function UserChannels_loadDataSuccessFinish() {
             if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
             else {
                 UserChannels_Status = true;
-                Main_LazyImgStart(UserChannels_ids[1], 7, IMG_404_LOGO, Main_ColoumnsCountChannel);
+                Main_imgVectorLoad(IMG_404_LOGO);
                 UserChannels_addFocus();
             }
-        }
+            Main_ShowElement(UserChannels_ids[6]);
+            UserChannels_FirstLoad = false;
+        } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
     });
 }
 
 function UserChannels_addFocus() {
     Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_ColoumnsCountChannel, UserChannels_itemsCount);
-
-    if (UserChannels_cursorY > 2) Main_LazyImg(UserChannels_ids[1], UserChannels_cursorY, IMG_404_LOGO, Main_ColoumnsCountChannel, 3);
 
     if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
         !UserChannels_dataEnded && !UserChannels_loadingData) {
@@ -202,7 +206,7 @@ function UserChannels_removeFocus() {
 }
 
 function UserChannels_handleKeyDown(event) {
-    if (UserChannels_loadingData || Main_CantClick()) return;
+    if (UserChannels_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
