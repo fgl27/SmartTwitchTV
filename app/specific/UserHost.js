@@ -29,8 +29,8 @@ function UserHost_init() {
     Main_YRst(UserHost_cursorY);
     if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
     if (UserHost_status) {
-        Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
         Main_ShowElement(UserHost_ids[10]);
+        Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
     } else UserHost_StartLoad();
 }
 

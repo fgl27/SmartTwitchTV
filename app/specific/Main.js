@@ -443,7 +443,6 @@ function Main_ReStartScreens() {
 }
 
 function Main_SwitchScreen() {
-    Main_ScrollHelperBlank('blank_focus');
     if (Main_NetworkStateOK) Main_HideWarningDialog();
 
     if (Main_Go !== Main_SChannelContent && Main_Go !== Main_aGame) {

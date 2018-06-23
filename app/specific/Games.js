@@ -28,7 +28,6 @@ function Games_init() {
     Main_YRst(Games_cursorY);
     if (Games_Status) {
         Main_ShowElement(Games_ids[7]);
-        Main_ScrollHelperGames(Games_ids[0], Games_cursorY, Games_cursorX);
         Main_CounterDialog(Games_cursorX, Games_cursorY, Main_ColoumnsCountGame, Games_itemsCount);
     } else Games_StartLoad();
 }
