@@ -49,7 +49,7 @@ function Search_exit() {
 
 function Search_loadData() {
     Search_exit();
-    if (!Search_cursorX) SChannels_init();
+    if (!Search_cursorX) SearchChannels_init();
     else if (Search_cursorX === 1) SGames_init();
     else if (Search_cursorX === 2) SLive_init();
 }
