@@ -605,7 +605,7 @@ function Main_ResumeNetwork() {
     else {
         Main_updateclock();
         window.setTimeout(function() {
-            Main_NetworkStateChangeListenerStart();
+            if (!document.hidden) Main_NetworkStateChangeListenerStart();
         }, 20000);
     }
 }
