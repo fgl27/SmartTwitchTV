@@ -66,12 +66,7 @@ var Main_AddCodeInput;
 var Main_BufferSizeInSeconds = 4;
 var Main_ResumeBufferSizeInSeconds = 4;
 var Main_Is4k = false;
-var Main_ScrollOffSetVideo = 275;
 
-//Offset value in relation to height of class screen_size, to change split the below by height and multiply with the new value
-var Main_ScrollOffSetMinusVideo = 362;
-var Main_ScrollOffSetMinusChannels = 454;
-var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
 var Main_ScrollOffSetMinusSearch = 100;
 
 //The values of thumbnail and related for it screen type
@@ -659,19 +654,6 @@ function Main_imgVectorPush(id, src) {
     });
 }
 
-function Main_LazyImgStart(imgId, total, img_type, coloumns) {
-    var x, y = 0,
-        elem;
-    for (y; y < total; y++) {
-        for (x = 0; x < coloumns; x++) {
-            elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) Main_lazyLoad(elem, img_type);
-        }
-    }
-    Main_Ychange(-1);
-    Main_YchangeAddFocus(-1);
-}
-
 function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
     var change = Main_Ychange(row_id);
     if (row_id === offset && change === 1) change = 0;
@@ -894,40 +876,12 @@ function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
-function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
-    var id = Thumbnail + cursorY + '_' + cursorX,
-        OffsetMinus = Main_ScrollOffSetMinusChannels,
-        DuploYOffsetCheck;
-
-    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        if (cursorY > 2) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        else cursorY = 0;
-    }
-
-    DuploYOffsetCheck = (!cursorY || cursorY === 1);
-    if (DuploYOffsetCheck) {
-        id = Thumbnail + '0_' + cursorX;
-        OffsetMinus = OffsetMinus - Main_ScrollOffSetMinusDuploYOffsetCheck;
-    }
-
-    Main_window_scroll(id, ((DuploYOffsetCheck ? Main_ScrollOffSetVideo : 0) - OffsetMinus));
-}
-
-
-function Main_ScrollHelperBlank(id) {
-    Main_window_scroll(id, (0 - Main_ScrollOffSetMinusVideo));
-}
-
 function Main_documentVerticalScrollPosition() {
     return document.body.scrollTop;
 }
 
 function Main_elementVerticalClientPositionById(id) {
     return document.getElementById(id).getBoundingClientRect().top;
-}
-
-function Main_window_scroll(id, value) {
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) + value);
 }
 
 function Main_Checktylesheet() {
