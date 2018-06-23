@@ -26,8 +26,8 @@ function Featured_init() {
     document.body.addEventListener("keydown", Featured_handleKeyDown, false);
     Main_YRst(Featured_cursorY);
     if (Featured_Status) {
-        Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
         Main_ShowElement(Featured_ids[10]);
+        Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
     } else Featured_StartLoad();
 }
 

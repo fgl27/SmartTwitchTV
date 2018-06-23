@@ -34,8 +34,8 @@ function Clip_init() {
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     Main_YRst(Clip_cursorY);
     if (Clip_status) {
-        Main_CounterDialog(Clip_cursorX, Clip_cursorY, Main_ColoumnsCountVideo, Clip_itemsCount);
         Main_ShowElement(Clip_ids[10]);
+        Main_CounterDialog(Clip_cursorX, Clip_cursorY, Main_ColoumnsCountVideo, Clip_itemsCount);
     } else Clip_StartLoad();
 }
 

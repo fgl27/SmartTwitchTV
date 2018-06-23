@@ -30,8 +30,8 @@ function UserLive_init() {
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
     if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
     if (UserLive_status) {
-        Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
         Main_ShowElement(UserLive_ids[10]);
+        Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
     } else UserLive_StartLoad();
 }
 
