@@ -398,7 +398,7 @@ function AGame_handleKeyDown(event) {
             else {
                 Main_OldgameSelected = Main_gameSelected;
                 if (!SearchGames_return) Main_Go = Main_BeforeAgame;
-                else Main_Go = _SearchGames;
+                else Main_Go = Main_SearchGames;
                 AGame_exit();
                 Main_SwitchScreen();
             }

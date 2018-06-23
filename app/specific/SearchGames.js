@@ -19,7 +19,7 @@ var SearchGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgv
 //Variable initialization end
 
 function SearchGames_init() {
-    Main_Go = _SearchGames;
+    Main_Go = Main_SearchGames;
     Search_isSearching = true;
     Main_cleanTopLabel();
     if (SearchGames_lastData !== Search_data) SearchGames_Status = false;

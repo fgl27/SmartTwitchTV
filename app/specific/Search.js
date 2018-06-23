@@ -51,7 +51,7 @@ function Search_loadData() {
     Search_exit();
     if (!Search_cursorX) SearchChannels_init();
     else if (Search_cursorX === 1) SearchGames_init();
-    else if (Search_cursorX === 2) SLive_init();
+    else if (Search_cursorX === 2) SearchLive_init();
 }
 
 function Search_refreshInputFocusTools() {
