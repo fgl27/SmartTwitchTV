@@ -838,10 +838,11 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
 
-        if (y && Main_ThumbNull((y + 1), 0, idArray[0])) {
+        if (!y) Main_ScrollTable(idArray[10], 100);
+        else if (Main_ThumbNull((y + 1), 0, idArray[0])) {
             Main_ScrollTable(idArray[10],
                 (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358);
-        } else Main_ScrollTable(idArray[10], 100);
+        }
 
     } else Main_handleKeyUp();
 }
