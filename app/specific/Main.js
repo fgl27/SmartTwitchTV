@@ -75,7 +75,6 @@ var Main_ScrollOffSetMinusVideo = 362;
 var Main_ScrollOffSetMinusChannels = 454;
 var Main_ScrollOffSetMinusGame = 557;
 var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
-var Main_ScrollOffSetMinusaddUser = 60;
 var Main_ScrollOffSetMinusSearch = 100;
 var Main_ScrollOffSetMinusAgame = 83;
 
@@ -817,8 +816,9 @@ function Main_replaceGame(id, valuesArray, ids) {
 }
 
 function Main_GameHtml(id, idArray, valuesArray) {
+    Main_imgVectorPush(idArray[1] + id, valuesArray[1]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img" data-src="' + valuesArray[1] + '"></div>' +
+        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
@@ -876,14 +876,14 @@ function Main_ScrollTable(id, position) {
 }
 
 function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
+    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-    Main_ready(function() {
-        Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-        if (Main_YchangeAddFocus(y)) {
-            Main_ScrollHelperGames(idArray[0], y, x);
-            window.setTimeout(Main_handleKeyUp, Main_addFocusFinishTime);
-        } else Main_handleKeyUp();
-    });
+    if (Main_YchangeAddFocus(y)) {
+
+        if (Main_ThumbNull((y + 1), 0, idArray[0]))
+            Main_ScrollTable(idArray[7], (y ? (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555 : 33));
+
+    } else Main_handleKeyUp();
 }
 
 function Main_removeFocus(id, idArray) {
