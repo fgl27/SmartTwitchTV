@@ -1054,7 +1054,7 @@ function Play_OpenSearch(PlayVodClip) {
 }
 
 function Play_OpenGame(PlayVodClip) {
-    if (!Main_BeforeAgameisSet && Main_Go !== Main_Gvod && Main_Go !== Main_Gclip) {
+    if (!Main_BeforeAgameisSet && Main_Go !== Main_AGameVod && Main_Go !== Main_Gclip) {
         Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_SChannelContent && Main_Go !== Main_Svod && Main_Go !== Main_Sclip) ? Main_BeforeChannel : Main_Go;
         Main_BeforeAgameisSet = true;
     }
