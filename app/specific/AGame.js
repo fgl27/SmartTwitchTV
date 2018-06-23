@@ -14,12 +14,13 @@ var AGame_ReplacedataEnded = false;
 var AGame_MaxOffset = 0;
 var AGame_emptyContent = false;
 
-var AGame_ids = ['ag_thumbdiv', 'ag_img', 'ag_infodiv', 'ag_displayname', 'ag_streamtitle', 'ag_streamgame', 'ag_viwers', 'ag_quality', 'ag_cell', 'agempty_'];
+var AGame_ids = ['ag_thumbdiv', 'ag_img', 'ag_infodiv', 'ag_displayname', 'ag_streamtitle', 'ag_streamgame', 'ag_viwers', 'ag_quality', 'ag_cell', 'agempty_', 'a_games_scroll'];
 var AGame_status = false;
 var AGame_itemsCountCheck = false;
 var AGame_fallowing = false;
 var AGame_UserGames = false;
 var AGame_TopRowCreated = false;
+var AGame_FirstLoad = false;
 //Variable initialization end
 
 function AGame_init() {
@@ -31,7 +32,7 @@ function AGame_init() {
         ': ' + Main_gameSelected));
     Main_YRst(AGame_cursorY);
     if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
-        Main_ScrollHelperVideo(AGame_ids[0], AGame_cursorY, AGame_cursorX);
+        Main_ShowElement(AGame_ids[10]);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
     } else AGame_StartLoad();
 }
@@ -46,13 +47,14 @@ function AGame_exit() {
     Main_innerHTML('top_bar_game', STR_GAMES);
     document.body.removeEventListener("keydown", AGame_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
+    Main_HideElement(AGame_ids[10]);
 }
 
 function AGame_StartLoad() {
-    Main_HideWarningDialog();
+    Main_HideElement(AGame_ids[10]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     AGame_status = false;
-    Main_ScrollHelperBlank('blank_focus');
     AGame_TopRowCreated = false;
     Main_empty('stream_table_a_game');
     AGame_itemsCountOffset = 0;
@@ -62,6 +64,7 @@ function AGame_StartLoad() {
     AGame_emptyCellVector = [];
     AGame_itemsCountCheck = false;
     AGame_itemsCount = 0;
+    AGame_FirstLoad = true;
     AGame_cursorX = 0;
     AGame_cursorY = 0;
     AGame_dataEnded = false;
@@ -71,6 +74,7 @@ function AGame_StartLoad() {
 }
 
 function AGame_loadDataPrepare() {
+    Main_imgVectorRst();
     AGame_loadingData = true;
     AGame_loadingDataTry = 0;
     AGame_loadingDataTimeout = 3500;
@@ -212,10 +216,13 @@ function AGame_loadDataSuccessFinish() {
                 AGame_addFocusFallow();
             } else {
                 AGame_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 AGame_addFocus();
-                Main_LazyImgStart(AGame_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(AGame_ids[10]);
+            AGame_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (AGame_emptyCellVector.length > 0 && !AGame_dataEnded) {
                 AGame_loadDataPrepare();
                 AGame_loadDataReplace();
@@ -357,10 +364,7 @@ function AGame_loadDataSuccessReplace(responseText) {
 }
 
 function AGame_addFocus() {
-
     Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount);
-
-    if (AGame_cursorY > 2) Main_LazyImg(AGame_ids[1], AGame_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
         !AGame_dataEnded && !AGame_loadingData) {
@@ -382,7 +386,7 @@ function AGame_removeFocusFallow() {
 }
 
 function AGame_handleKeyDown(event) {
-    if (AGame_loadingData || Main_CantClick()) return;
+    if (AGame_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
