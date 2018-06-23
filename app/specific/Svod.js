@@ -320,7 +320,7 @@ function Svod_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Main_Go = Main_SChannelContent;
+                Main_Go = Main_ChannelContent;
                 Svod_exit();
                 Main_SwitchScreen();
             }

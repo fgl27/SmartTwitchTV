@@ -297,10 +297,10 @@ function UserChannels_handleKeyDown(event) {
             Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
             document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
             Main_BeforeChannel = Main_UserChannels;
-            Main_Go = Main_SChannelContent;
+            Main_Go = Main_ChannelContent;
             Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = true;
-            SChannelContent_UserChannels = true;
+            ChannelContent_UserChannels = true;
             Main_HideElement(UserChannels_ids[6]);
             Main_SwitchScreen();
             break;

@@ -376,11 +376,11 @@ function SChannels_handleKeyDown(event) {
             Main_selectedChannelLogo = document.getElementById(SChannels_ids[1] + SChannels_cursorY + '_' + SChannels_cursorX).src;
             document.body.removeEventListener("keydown", SChannels_handleKeyDown);
             Main_BeforeChannel = Main_SChannels;
-            Main_Go = Main_SChannelContent;
+            Main_Go = Main_ChannelContent;
             Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = false;
-            SChannelContent_UserChannels = false;
-            Main_HideElement(SChannelContent_ids[6]);
+            ChannelContent_UserChannels = false;
+            Main_HideElement(ChannelContent_ids[6]);
             Main_SwitchScreen();
             break;
         case KEY_RED:
