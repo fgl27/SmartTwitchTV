@@ -17,7 +17,7 @@ var Svod_emptyContent = false;
 var Svod_itemsCountCheck = false;
 var Svod_language = '';
 
-var Svod_ids = ['sv_thumbdiv', 'sv_img', 'sv_infodiv', 'sv_title', 'sv_streamon', 'sv_duration', 'sv_viwers', 'sv_quality', 'sv_cell', 'svempty_', 'sv_game'];
+var Svod_ids = ['cv_thumbdiv', 'cv_img', 'cv_infodiv', 'cv_title', 'cv_streamon', 'cv_duration', 'cv_viwers', 'cv_quality', 'cv_cell', 'svempty_', 'cvod_scroll', 'cv_game'];
 var Svod_status = false;
 var Svod_highlight = false;
 var Svod_lastselectedChannel = '';
@@ -27,6 +27,7 @@ var Svod_views = '';
 var Svod_createdAt = '';
 var Svod_Duration = '';
 var Svod_vodOffset = 0;
+var Svod_FirstLoad = false;
 //Variable initialization end
 
 function Svod_init() {
@@ -39,7 +40,7 @@ function Svod_init() {
     Main_YRst(Svod_cursorY);
     if (Svod_status) {
         Main_textContent('top_bar_game', Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-        Main_ScrollHelperVideo(Svod_ids[0], Svod_cursorY, Svod_cursorX);
+        Main_ShowElement(Svod_ids[10]);
         Main_CounterDialog(Svod_cursorX, Svod_cursorY, Main_ColoumnsCountVideo, Svod_itemsCount);
     } else Svod_StartLoad();
 }
@@ -47,22 +48,24 @@ function Svod_init() {
 function Svod_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Svod_handleKeyDown);
+    Main_HideElement(Svod_ids[10]);
 }
 
 function Svod_StartLoad() {
     Main_textContent('top_bar_game', Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    Main_HideElement(Svod_ids[10]);
+    Main_showLoadDialog();
     Main_HideWarningDialog();
     Svod_lastselectedChannel = Main_selectedChannel;
     Svod_status = false;
-    Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
-    Main_empty('stream_table_search_vod');
+    Main_empty('stream_table_channel_vod');
     Svod_itemsCountOffset = 0;
     Svod_ReplacedataEnded = false;
     Svod_MaxOffset = 0;
     Svod_idObject = {};
     Svod_emptyCellVector = [];
     Svod_itemsCountCheck = false;
+    Svod_FirstLoad = true;
     Svod_itemsCount = 0;
     Svod_cursorX = 0;
     Svod_cursorY = 0;
@@ -73,6 +76,7 @@ function Svod_StartLoad() {
 }
 
 function Svod_loadDataPrepare() {
+    Main_imgVectorRst();
     Svod_loadingData = true;
     Svod_loadingDataTry = 0;
     Svod_loadingDataTimeout = 3500;
@@ -175,7 +179,7 @@ function Svod_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(Svod_ids[9] + row_id + '_' + coloumn_id));
             Svod_emptyCellVector.push(Svod_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_search_vod").appendChild(row);
+        document.getElementById("stream_table_channel_vod").appendChild(row);
     }
 
     Svod_loadDataSuccessFinish();
@@ -188,10 +192,13 @@ function Svod_loadDataSuccessFinish() {
             if (Svod_emptyContent) Main_showWarningDialog(STR_NO + (Svod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 Svod_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Svod_addFocus();
-                Main_LazyImgStart(Svod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(Svod_ids[10]);
+            Svod_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Svod_emptyCellVector.length > 0 && !Svod_dataEnded) {
                 Svod_loadDataPrepare();
                 Svod_loadDataReplace();
@@ -291,8 +298,6 @@ function Svod_loadDataSuccessReplace(responseText) {
 function Svod_addFocus() {
     Main_addFocusVideo(Svod_cursorY, Svod_cursorX, Svod_ids, Main_ColoumnsCountVideo, Svod_itemsCount);
 
-    if (Svod_cursorY > 2) Main_LazyImg(Svod_ids[1], Svod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Svod_cursorY + Main_ItemsReloadLimitVideo) > (Svod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Svod_dataEnded && !Svod_loadingData) {
         Svod_loadDataPrepare();
@@ -305,7 +310,7 @@ function Svod_removeFocus() {
 }
 
 function Svod_handleKeyDown(event) {
-    if (Svod_loadingData || Main_CantClick()) return;
+    if (Svod_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -394,7 +399,7 @@ function Svod_handleKeyDown(event) {
             Svod_title = document.getElementById(Svod_ids[3] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_createdAt = document.getElementById(Svod_ids[4] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_Duration = document.getElementById(Svod_ids[5] + Svod_cursorY + '_' + Svod_cursorX).textContent;
-            Svod_views = document.getElementById(Svod_ids[10] + Svod_cursorY + '_' + Svod_cursorX).textContent +
+            Svod_views = document.getElementById(Svod_ids[11] + Svod_cursorY + '_' + Svod_cursorX).textContent +
                 ', ' + document.getElementById(Svod_ids[6] + Svod_cursorY + '_' + Svod_cursorX).textContent;
             Svod_openStream();
             break;
