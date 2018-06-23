@@ -16,7 +16,7 @@ var Main_sgames = 9;
 var Main_SLive = 10;
 var Main_ChannelContent = 11;
 var Main_Svod = 12;
-var Main_Sclip = 13;
+var Main_ChannelClip = 13;
 var Main_Users = 14;
 var Main_UserChannels = 15;
 var Main_SearchChannels = 16;
@@ -214,7 +214,7 @@ function Main_initWindows() {
     AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
 
     Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
-    Sclip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
+    ChannelClip_periodNumber = parseInt(localStorage.getItem('sclip_periodNumber')) || 2;
     Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
     AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
     AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
@@ -449,7 +449,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_SLive) SLive_init();
     else if (Main_Go === Main_ChannelContent) ChannelContent_init();
     else if (Main_Go === Main_Svod) Svod_init();
-    else if (Main_Go === Main_Sclip) Sclip_init();
+    else if (Main_Go === Main_ChannelClip) ChannelClip_init();
     else if (Main_Go === Main_Users) Users_init();
     else if (Main_Go === Main_UserLive) UserLive_init();
     else if (Main_Go === Main_UserHost) UserHost_init();
@@ -474,7 +474,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_SLive) SLive_exit();
     else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_Svod) Svod_exit();
-    else if (ExitCurrent === Main_Sclip) Sclip_exit();
+    else if (ExitCurrent === Main_ChannelClip) ChannelClip_exit();
     else if (ExitCurrent === Main_Users) Users_exit();
     else if (ExitCurrent === Main_UserLive) UserLive_exit();
     else if (ExitCurrent === Main_UserHost) UserHost_exit();

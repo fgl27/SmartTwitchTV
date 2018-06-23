@@ -374,6 +374,7 @@ function ChannelContent_keyEnter() {
         }
     } else {
         document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+        Main_HideElement(ChannelContent_ids[10]);
         var value = (!ChannelContent_skipImg ? 0 : 1);
         if (ChannelContent_cursorX === (0 - value)) {
 
@@ -391,7 +392,7 @@ function ChannelContent_keyEnter() {
 
             Main_openStream();
         } else if (ChannelContent_cursorX === (1 - value)) Svod_init();
-        else if (ChannelContent_cursorX === (2 - value)) Sclip_init();
+        else if (ChannelContent_cursorX === (2 - value)) ChannelClip_init();
     }
 }
 

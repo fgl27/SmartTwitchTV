@@ -424,23 +424,23 @@ function AGameClip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Sclip_playUrl = document.getElementById(AGameClip_ids[8] + AGameClip_cursorY + '_' + AGameClip_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Sclip_DurationSeconds = parseInt(Sclip_playUrl[1]);
-            Play_gameSelected = Sclip_playUrl[2];
-            Main_selectedChannel = Sclip_playUrl[3];
-            Main_selectedChannelDisplayname = Sclip_playUrl[4];
-            Main_selectedChannelLogo = Sclip_playUrl[5];
-            Main_selectedChannel_id = Sclip_playUrl[6];
-            Svod_vodId = Sclip_playUrl[7];
-            Svod_vodOffset = parseInt(Sclip_playUrl[8]);
-            Sclip_playUrl = Sclip_playUrl[0];
+            ChannelClip_playUrl = document.getElementById(AGameClip_ids[8] + AGameClip_cursorY + '_' + AGameClip_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
+            Play_gameSelected = ChannelClip_playUrl[2];
+            Main_selectedChannel = ChannelClip_playUrl[3];
+            Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
+            Main_selectedChannelLogo = ChannelClip_playUrl[5];
+            Main_selectedChannel_id = ChannelClip_playUrl[6];
+            Svod_vodId = ChannelClip_playUrl[7];
+            Svod_vodOffset = parseInt(ChannelClip_playUrl[8]);
+            ChannelClip_playUrl = ChannelClip_playUrl[0];
 
-            Sclip_title = '';
-            Sclip_createdAt = document.getElementById(AGameClip_ids[4] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            Sclip_Duration = document.getElementById(AGameClip_ids[5] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            Sclip_views = document.getElementById(AGameClip_ids[6] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            Sclip_language = document.getElementById(AGameClip_ids[7] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            Sclip_game = document.getElementById(AGameClip_ids[11] + AGameClip_cursorY + '_' + AGameClip_cursorX).innerHTML;
+            ChannelClip_title = '';
+            ChannelClip_createdAt = document.getElementById(AGameClip_ids[4] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
+            ChannelClip_Duration = document.getElementById(AGameClip_ids[5] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
+            ChannelClip_views = document.getElementById(AGameClip_ids[6] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
+            ChannelClip_language = document.getElementById(AGameClip_ids[7] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
+            ChannelClip_game = document.getElementById(AGameClip_ids[11] + AGameClip_cursorY + '_' + AGameClip_cursorX).innerHTML;
             AGameClip_openStream();
             break;
         case KEY_RED:
