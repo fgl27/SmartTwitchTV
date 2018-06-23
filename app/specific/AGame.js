@@ -264,7 +264,7 @@ function AGame_fallow() {
 
 function AGame_headerOptions() {
     if (!AGame_cursorX) {
-        Main_Go = Main_Gvod;
+        Main_Go = Main_AGameVod;
         Main_OldgameSelected = Main_gameSelected;
         AGame_exit();
         Main_SwitchScreen();
