@@ -435,18 +435,18 @@ function Vod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Svod_vodId = document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Svod_DurationSeconds = parseInt(Svod_vodId[1]);
-            Svod_language = Svod_vodId[2];
-            Play_gameSelected = Svod_vodId[3];
-            Main_selectedChannel = Svod_vodId[4];
-            Svod_vodId = Svod_vodId[0].substr(1);
+            ChannelVod_vodId = document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
+            ChannelVod_language = ChannelVod_vodId[2];
+            Play_gameSelected = ChannelVod_vodId[3];
+            Main_selectedChannel = ChannelVod_vodId[4];
+            ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
-            Svod_title = '';
+            ChannelVod_title = '';
             Main_selectedChannelDisplayname = document.getElementById(Vod_ids[3] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            Svod_createdAt = document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            Svod_Duration = document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            Svod_views = document.getElementById(Vod_ids[11] + Vod_cursorY + '_' + Vod_cursorX).innerHTML +
+            ChannelVod_createdAt = document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).textContent;
+            ChannelVod_Duration = document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).textContent;
+            ChannelVod_views = document.getElementById(Vod_ids[11] + Vod_cursorY + '_' + Vod_cursorX).innerHTML +
                 ', ' + document.getElementById(Vod_ids[6] + Vod_cursorY + '_' + Vod_cursorX).textContent;
             Vod_openStream();
             break;

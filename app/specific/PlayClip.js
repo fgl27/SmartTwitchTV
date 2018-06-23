@@ -40,7 +40,7 @@ function PlayClip_Start() {
     Main_textContent("stream_live_icon", ChannelClip_createdAt);
     Main_textContent("stream_live_time", ChannelClip_Duration);
     Main_empty('dialog_buffer_play_percentage');
-    PlayClip_HasVOD = Svod_vodId !== 'null';
+    PlayClip_HasVOD = ChannelVod_vodId !== 'null';
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
@@ -282,7 +282,7 @@ function PlayClip_PreshutdownStream() {
     document.getElementById('scene2_pannel_0').style.display = 'none';
     document.getElementById("scene2_pannel_1").style.width = '28%';
     document.getElementById("quality_name").style.width = '80%';
-    Svod_vodOffset = 0;
+    ChannelVod_vodOffset = 0;
 
     window.clearInterval(PlayClip_streamCheck);
     PlayClip_isOn = false;
@@ -471,7 +471,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
-        PlayVod_vodOffset = Svod_vodOffset;
+        PlayVod_vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         PlayVod_Start();

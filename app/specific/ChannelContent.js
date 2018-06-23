@@ -391,7 +391,7 @@ function ChannelContent_keyEnter() {
             }
 
             Main_openStream();
-        } else if (ChannelContent_cursorX === (1 - value)) Svod_init();
+        } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
         else if (ChannelContent_cursorX === (2 - value)) ChannelClip_init();
     }
 }

@@ -62,10 +62,10 @@ function PlayVod_Start() {
             PlayVod_updateStreamInfo();
         }
         Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
-        Main_textContent("stream_info_title", Svod_title);
-        Main_innerHTML("stream_info_game", Svod_views + ', [' + (Svod_language).toUpperCase() + ']');
-        Main_textContent("stream_live_icon", Svod_createdAt);
-        Main_textContent("stream_live_time", Svod_Duration);
+        Main_textContent("stream_info_title", ChannelVod_title);
+        Main_innerHTML("stream_info_game", ChannelVod_views + ', [' + (ChannelVod_language).toUpperCase() + ']');
+        Main_textContent("stream_live_icon", ChannelVod_createdAt);
+        Main_textContent("stream_live_time", ChannelVod_Duration);
     }
     Main_empty('dialog_buffer_play_percentage');
     if (Main_UserName !== '') {
@@ -150,7 +150,7 @@ function PlayVod_updateVodInfo() {
     try {
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + Svod_vodId, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + ChannelVod_vodId, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -183,12 +183,12 @@ function PlayVod_updateVodInfoError() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
-    Svod_DurationSeconds = parseInt(response.length);
+    ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent("stream_info_title", response.title);
     Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
         ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
-    Main_textContent("stream_live_time", STR_DURATION + Play_timeS(Svod_DurationSeconds));
+    Main_textContent("stream_live_time", STR_DURATION + Play_timeS(ChannelVod_DurationSeconds));
 }
 
 function PlayVod_Resume() {
@@ -224,9 +224,9 @@ function PlayVod_loadDataRequest() {
 
         var theUrl;
         if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + Svod_vodId + '/access_token' + (AddCode_OauthToken !== '' ? '?oauth_token=' + AddCode_OauthToken : '');
+            theUrl = 'https://api.twitch.tv/api/vods/' + ChannelVod_vodId + '/access_token' + (AddCode_OauthToken !== '' ? '?oauth_token=' + AddCode_OauthToken : '');
         } else {
-            theUrl = 'http://usher.twitch.tv/vod/' + Svod_vodId +
+            theUrl = 'http://usher.twitch.tv/vod/' + ChannelVod_vodId +
                 '.m3u8?player=twitchweb&type=any&nauthsig=' + PlayVod_tokenResponse.sig + '&nauth=' +
                 escape(PlayVod_tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
         }
@@ -382,7 +382,7 @@ function PlayVod_onPlayer() {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
 
-        if (PlayVod_vodOffset > Svod_DurationSeconds) PlayVod_vodOffset = 0;
+        if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
 
         if (PlayVod_vodOffset) Play_avplay.seekTo(PlayVod_vodOffset * 1000);
         else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
@@ -468,7 +468,7 @@ function PlayVod_ClearVod() {
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckOffset = 0;
-    Svod_DurationSeconds = 0;
+    ChannelVod_DurationSeconds = 0;
     PlayVod_PlayerCheckQualityChanged = false;
 }
 
@@ -629,7 +629,7 @@ function PlayVod_jumpStart() {
         if (PlayVod_TimeToJump > 1800) time = ((PlayVod_TimeToJump / 60) / 60) + STR_HR;
 
         jumpTotime = (Play_avplay.getCurrentTime() / 1000) + PlayVod_TimeToJump;
-        if (jumpTotime > Svod_DurationSeconds) {
+        if (jumpTotime > ChannelVod_DurationSeconds) {
             PlayVod_TimeToJump = 0;
             PlayVod_jumpCountMax = PlayVod_jumpCount;
             Play_showWarningDialog(STR_JUMP_CANCEL + STR_JUMP_TIME_BIG);
