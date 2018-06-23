@@ -301,6 +301,7 @@ function UserChannels_handleKeyDown(event) {
             Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = true;
             SChannelContent_UserChannels = true;
+            Main_HideElement(UserChannels_ids[6]);
             Main_SwitchScreen();
             break;
         case KEY_RED:

@@ -380,6 +380,7 @@ function SChannels_handleKeyDown(event) {
             Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = false;
             SChannelContent_UserChannels = false;
+            Main_HideElement(SChannelContent_ids[6]);
             Main_SwitchScreen();
             break;
         case KEY_RED:

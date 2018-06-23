@@ -67,8 +67,6 @@ var Main_BufferSizeInSeconds = 4;
 var Main_ResumeBufferSizeInSeconds = 4;
 var Main_Is4k = false;
 
-var Main_ScrollOffSetMinusSearch = 100;
-
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
 var Main_ReloadLimitOffsetVideos = 1.5;
@@ -635,10 +633,6 @@ function Main_empty(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
 }
 
-function Main_LoadImages(imgVector, idVector, img_type) {
-    for (var i = 0; i < imgVector.length; i++) Main_loadImg(document.getElementById(idVector[i]), imgVector[i], img_type);
-}
-
 function Main_imgVectorLoad(img_type) {
     for (var i = 0; i < Main_imgVector.length; i++) Main_loadImg(document.getElementById(Main_imgVector[i].id), Main_imgVector[i].src, img_type);
 }
@@ -874,14 +868,6 @@ function Main_ScrollTable(id, position) {
 function Main_removeFocus(id, idArray) {
     Main_addFocusFinish = false;
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
-}
-
-function Main_documentVerticalScrollPosition() {
-    return document.body.scrollTop;
-}
-
-function Main_elementVerticalClientPositionById(id) {
-    return document.getElementById(id).getBoundingClientRect().top;
 }
 
 function Main_Checktylesheet() {
