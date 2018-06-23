@@ -15,7 +15,7 @@ var Sclip_DurationSeconds = 0;
 var Sclip_emptyContent = false;
 var Sclip_ReplacedataTry = 0;
 
-var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_', 'sp_lang'];
+var Sclip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_', 'channel_clip_scroll', 'sp_lang'];
 var Sclip_status = false;
 var Sclip_cursor = null;
 var Sclip_periodNumber = 2;
@@ -29,6 +29,7 @@ var Sclip_playUrl = '';
 var Sclip_createdAt = '';
 var Sclip_language = '';
 var Sclip_itemsCountCheck = false;
+var Sclip_FirstLoad = false;
 //Variable initialization end
 
 function Sclip_init() {
@@ -41,7 +42,7 @@ function Sclip_init() {
     document.body.addEventListener("keydown", Sclip_handleKeyDown, false);
     Main_YRst(Sclip_cursorY);
     if (Sclip_status) {
-        Main_ScrollHelperVideo(Sclip_ids[0], Sclip_cursorY, Sclip_cursorX);
+        Main_ShowElement(Sclip_ids[10]);
         Main_CounterDialog(Sclip_cursorX, Sclip_cursorY, Main_ColoumnsCountVideo, Sclip_itemsCount);
     } else Sclip_StartLoad();
 }
@@ -49,22 +50,24 @@ function Sclip_init() {
 function Sclip_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Sclip_handleKeyDown);
+    Main_HideElement(Sclip_ids[10]);
 }
 
 function Sclip_StartLoad() {
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(Sclip_ids[10]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     Sclip_lastselectedChannel = Main_selectedChannel;
     Sclip_cursor = null;
     Sclip_status = false;
-    Main_empty('stream_table_search_clip');
+    Main_empty('stream_table_channel_clip');
     Sclip_ReplacedataEnded = false;
     Sclip_MaxOffset = 0;
     Sclip_ReplacedataTry = 0;
     Sclip_idObject = {};
     Sclip_emptyCellVector = [];
     Sclip_itemsCountCheck = false;
+    Sclip_FirstLoad = true;
     Sclip_itemsCount = 0;
     Sclip_cursorX = 0;
     Sclip_cursorY = 0;
@@ -75,6 +78,7 @@ function Sclip_StartLoad() {
 }
 
 function Sclip_loadDataPrepare() {
+    Main_imgVectorRst();
     Sclip_loadingData = true;
     Sclip_loadingDataTry = 0;
     Sclip_loadingDataTimeout = 3500;
@@ -190,7 +194,7 @@ function Sclip_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(Sclip_ids[9] + row_id + '_' + coloumn_id));
             Sclip_emptyCellVector.push(Sclip_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_search_clip").appendChild(row);
+        document.getElementById("stream_table_channel_clip").appendChild(row);
     }
 
     Sclip_loadDataSuccessFinish();
@@ -203,10 +207,13 @@ function Sclip_loadDataSuccessFinish() {
             if (Sclip_emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
             else {
                 Sclip_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Sclip_addFocus();
-                Main_LazyImgStart(Sclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(Sclip_ids[10]);
+            Sclip_FirstLoad = false;
         } else {
+                Main_imgVectorLoad(IMG_404_VIDEO);
             if (Sclip_emptyCellVector.length > 0 && !Sclip_dataEnded) {
                 Sclip_loadDataPrepare();
                 Sclip_loadDataReplace();
@@ -311,8 +318,6 @@ function Sclip_loadDataSuccessReplace(responseText) {
 function Sclip_addFocus() {
     Main_addFocusVideo(Sclip_cursorY, Sclip_cursorX, Sclip_ids, Main_ColoumnsCountVideo, Sclip_itemsCount);
 
-    if (Sclip_cursorY > 2) Main_LazyImg(Sclip_ids[1], Sclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Sclip_cursorY + Main_ItemsReloadLimitVideo) > (Sclip_itemsCount / Main_ColoumnsCountVideo)) &&
         !Sclip_dataEnded && !Sclip_loadingData) {
         Sclip_loadDataPrepare();
@@ -325,7 +330,7 @@ function Sclip_removeFocus() {
 }
 
 function Sclip_handleKeyDown(event) {
-    if (Sclip_loadingData || Main_CantClick()) return;
+    if (Sclip_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
