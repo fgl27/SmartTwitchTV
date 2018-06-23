@@ -434,7 +434,7 @@ function Main_ThumbNull(y, x, thumbnail) {
 }
 
 function Main_ReStartScreens() {
-    Play_isPanelShown();
+    Main_updateclock();
     Main_SwitchScreen();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
