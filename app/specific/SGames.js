@@ -15,7 +15,7 @@ var SGames_lastData = '';
 var SGames_return = false;
 var SGames_gameSelectedOld = '';
 
-var SGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_'];
+var SGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_', 'search_games_scroll'];
 //Variable initialization end
 
 function SGames_init() {
@@ -27,7 +27,7 @@ function SGames_init() {
     document.body.addEventListener("keydown", SGames_handleKeyDown, false);
     Main_YRst(SGames_cursorY);
     if (SGames_Status) {
-        Main_ScrollHelperGames(SGames_ids[0], SGames_cursorY, SGames_cursorX);
+        Main_ShowElement(SGames_ids[7]);
         Main_CounterDialog(SGames_cursorX, SGames_cursorY, Main_ColoumnsCountGame, SGames_itemsCount);
     } else SGames_StartLoad();
 }
@@ -37,14 +37,15 @@ function SGames_exit() {
     document.body.removeEventListener("keydown", SGames_handleKeyDown);
     SGames_return = false;
     Main_gameSelected = SGames_gameSelectedOld;
+    Main_HideElement(SGames_ids[7]);
 }
 
 function SGames_StartLoad() {
-    SGames_lastData = Search_data;
-    Main_HideWarningDialog();
-    SGames_Status = false;
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(SGames_ids[7]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
+    SGames_lastData = Search_data;
+    SGames_Status = false;
     Main_empty('stream_table_search_game');
     SGames_itemsCountOffset = 0;
     SGames_itemsCountCheck = false;
@@ -58,6 +59,7 @@ function SGames_StartLoad() {
 }
 
 function SGames_loadDataPrepare() {
+    Main_imgVectorRst();
     SGames_loadingData = true;
     SGames_loadingDataTry = 0;
     SGames_loadingDataTimeout = 3500;
@@ -153,10 +155,11 @@ function SGames_loadDataSuccessFinish() {
             if (SGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SGames_Status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 SGames_addFocus();
             }
         }
-        Main_LazyImgStart(SGames_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
+        Main_ShowElement(SGames_ids[7]);
         SGames_loadingData = false;
     });
 }

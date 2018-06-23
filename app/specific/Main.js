@@ -68,12 +68,10 @@ var Main_BufferSizeInSeconds = 4;
 var Main_ResumeBufferSizeInSeconds = 4;
 var Main_Is4k = false;
 var Main_ScrollOffSetVideo = 275;
-var Main_ScrollOffSetGame = 523;
 
 //Offset value in relation to height of class screen_size, to change split the below by height and multiply with the new value
 var Main_ScrollOffSetMinusVideo = 362;
 var Main_ScrollOffSetMinusChannels = 454;
-var Main_ScrollOffSetMinusGame = 557;
 var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
 var Main_ScrollOffSetMinusSearch = 100;
 var Main_ScrollOffSetMinusAgame = 83;
@@ -905,20 +903,6 @@ function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
 
     if (cursorY) Main_window_scroll(id, 0 - Main_ScrollOffSetMinusVideo);
     else Main_window_scroll(id, Main_ScrollOffSetVideo - Main_ScrollOffSetMinusVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
-}
-
-function Main_ScrollHelperGames(Thumbnail, cursorY, cursorX) {
-    var id = Thumbnail + cursorY + '_' + cursorX;
-
-    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        else if (cursorY === 1) {
-            id = Thumbnail + '0_' + cursorX;
-            cursorY = 0;
-        }
-    }
-
-    Main_window_scroll(id, ((!cursorY ? Main_ScrollOffSetGame : 0) - Main_ScrollOffSetMinusGame));
 }
 
 function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {

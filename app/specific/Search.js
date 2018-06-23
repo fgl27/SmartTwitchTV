@@ -20,12 +20,12 @@ function Search_init() {
     Main_textContent('top_bar_user', STR_SEARCH);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_AddClass('top_bar_user', 'icon_center_focus');
+    Main_ShowElement('search_scroll');
     Search_cursorY = 0;
     Search_cursorX = 0;
     Search_input = document.querySelector('#search_input');
     Search_refreshInputFocusTools();
     Search_inputFocus();
-    Search_scrollVerticalToElementById('search_input');
 }
 
 function Search_exit() {
@@ -44,6 +44,7 @@ function Search_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_SearchInput.value = '';
+    Main_HideElement('search_scroll');
 }
 
 function Search_loadData() {
@@ -153,10 +154,6 @@ function Search_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function Search_scrollVerticalToElementById(id) {
-    window.scroll(0, Main_documentVerticalScrollPosition() + Main_elementVerticalClientPositionById(id) - Main_ScrollOffSetMinusVideo + Main_ScrollOffSetMinusSearch);
 }
 
 function Search_inputFocus() {

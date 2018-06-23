@@ -46,10 +46,15 @@
             overflow: hidden;
         }
 
-        div.screen_holder {
+        div.screen_holder,
+        div.screen_holder_games {
             width: 1920px;
             position: fixed;
             top: 100px;
+        }
+
+        div.screen_holder_games {
+            top: 33px;
         }
 
         div.scroll {
@@ -278,7 +283,7 @@
             font-size: 135%;
         }
 
-        div.imput_text_box {
+        div.input_text_box {
             width: 70%;
             margin-top: 13%;
             margin-left: 15%;
@@ -667,6 +672,7 @@
         </div>
 
         <div id="screens_holder" class="screens">
+            <!-- Video screens-->
             <div id="live_scroll" class="screen_holder hide">
                 <table id="stream_table_live" class="streams_tables"></table>
             </div>
@@ -688,39 +694,48 @@
             <div id="vod_scroll" class="screen_holder hide">
                 <table id="stream_table_vod" class="streams_tables"></table>
             </div>
-            <div id="games_scroll" class="screen_holder hide" style="top: 33px;">
-                <table id="stream_table_games" class="streams_tables"></table>
-            </div>
             <div id="a_games_scroll" class="screen_holder hide">
                 <table id="stream_table_a_game" class="streams_tables"></table>
             </div>
 
+            <!-- Games screens-->
+            <div id="games_scroll" class="screen_holder_games hide">
+                <table id="stream_table_games" class="streams_tables"></table>
+            </div>
+            <div id="user_games_scroll" class="screen_holder_games hide">
+                <table id="stream_table_user_games" class="streams_tables"></table>
+            </div>
+            <div id="search_games_scroll" class="screen_holder_games hide">
+                <table id="stream_table_search_game" class="streams_tables"></table>
+            </div>
+
+            <!-- Input screens-->
             <div id="add_user_scroll" class="screen_holder hide">
-                <div id="add_user" class="imput_text_box">
+                <div id="add_user" class="input_text_box">
                     <input id="user_input" class="input_class" type="text" placeholder="" />
                 </div>
             </div>
             <div id="oauth_scroll" class="screen_holder hide">
-                <div id="oauth" class="imput_text_box" style="margin-top: 1.5%;">
+                <div id="oauth" class="input_text_box" style="margin-top: 1.5%;">
                     <div id="oauth_text" class="strokedextramini" style="font-size: 190%; font-weight:bold;"></div>
                     <input id="oauth_input" class="input_class" type="text" placeholder="" />
+                </div>
+            </div>
+            <div id="search_scroll" class="screen_holder hide">
+                <div id="search" class="input_text_box" style="margin-top: 10%;">
+                    <input id="search_input" class="input_class" type="text" placeholder="" />
+                    <div id="chanel_button" class="button_search"></div>
+                    <div id="game_button" class="button_search"></div>
+                    <div id="live_button" class="button_search"></div>
                 </div>
             </div>
         </div>
 
         <div id="hold_temp" class="hide">
             <div id="blank_focus" class="screen_size"></div>
-            <div id="search" class="imput_text_box">
-                <input id="search_input" class="input_class" type="text" placeholder="" />
-                <div id="chanel_button" class="button_search"></div>
-                <div id="game_button" class="button_search"></div>
-                <div id="live_button" class="button_search"></div>
-            </div>
 
-            <table id="stream_table_user_games" class="streams_tables"></table>
 
             <table id="stream_table_user_channels" class="streams_tables"></table>
-            <table id="stream_table_search_game" class="streams_tables"></table>
             <table id="stream_table_search_channel" class="streams_tables"></table>
             <table id="stream_table_search_live" class="streams_tables"></table>
             <table id="stream_table_search_channel_a" class="streams_tables"></table>
