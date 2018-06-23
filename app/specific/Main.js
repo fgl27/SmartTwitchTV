@@ -861,7 +861,8 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     if (Main_YchangeAddFocus(y)) {
 
         if (Main_ThumbNull((y + 1), 0, idArray[0]))
-            Main_ScrollTable(idArray[10], (y ? (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358 : 100));
+            Main_ScrollTable(idArray[10],
+                (y ? (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358 : 100));
 
     } else Main_handleKeyUp();
 }
@@ -880,7 +881,8 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     if (Main_YchangeAddFocus(y)) {
 
         if (Main_ThumbNull((y + 1), 0, idArray[0]))
-            Main_ScrollTable(idArray[7], (y ? (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555 : 33));
+            Main_ScrollTable(idArray[7],
+                (y ? (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555 : 33));
 
     } else Main_handleKeyUp();
 }
