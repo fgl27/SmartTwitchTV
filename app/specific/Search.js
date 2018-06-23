@@ -178,9 +178,16 @@ function Search_RemoveinputFocus() {
 
 function Search_KeyboardEvent(event) {
     switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                Search_exit();
+                Main_SwitchScreen();
+            }
+            break;
         case KEY_KEYBOARD_DELETE_ALL:
             Main_SearchInput.value = '';
-            event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
@@ -190,11 +197,9 @@ function Search_KeyboardEvent(event) {
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
-            event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
             Main_SearchInput.value += ' ';
-            event.preventDefault();
             break;
         default:
             break;

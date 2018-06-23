@@ -115,6 +115,15 @@ function AddCode_KeyboardEvent(event) {
     if (AddCode_loadingData) return;
 
     switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                Main_Go = Main_Users;
+                AddCode_exit();
+                Main_SwitchScreen();
+            }
+            break;
         case KEY_KEYBOARD_DELETE_ALL:
             Main_AddCodeInput.value = '';
             event.preventDefault();
