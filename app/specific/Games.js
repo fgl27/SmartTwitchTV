@@ -16,8 +16,9 @@ var Games_MaxOffset = 0;
 var Main_ItemsLimitGameOffset = 1;
 var Games_itemsCountCheck = false;
 var Games_emptyContent = false;
+var Games_FirstLoad = false;
 
-var Game_ids = ['g_thumbdiv', 'g_img', 'g_infodiv', 'g_displayname', 'g_viwers', 'g_cell', 'gempty_'];
+var Games_ids = ['g_thumbdiv', 'g_img', 'g_infodiv', 'g_displayname', 'g_viwers', 'g_cell', 'gempty_', 'games_scroll'];
 //Variable initialization end
 
 function Games_init() {
@@ -26,7 +27,8 @@ function Games_init() {
     Main_AddClass('top_bar_game', 'icon_center_focus');
     Main_YRst(Games_cursorY);
     if (Games_Status) {
-        Main_ScrollHelperGames(Game_ids[0], Games_cursorY, Games_cursorX);
+        Main_ShowElement(Games_ids[7]);
+        Main_ScrollHelperGames(Games_ids[0], Games_cursorY, Games_cursorX);
         Main_CounterDialog(Games_cursorX, Games_cursorY, Main_ColoumnsCountGame, Games_itemsCount);
     } else Games_StartLoad();
 }
@@ -34,13 +36,15 @@ function Games_init() {
 function Games_exit() {
     document.body.removeEventListener("keydown", Games_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
+    Main_HideElement(Games_ids[7]);
+
 }
 
 function Games_StartLoad() {
+    Main_HideElement(Games_ids[7]);
+    Main_showLoadDialog();
     Main_HideWarningDialog();
     Games_Status = false;
-    Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
     Main_empty('stream_table_games');
     Games_emptyCellVector = [];
     Games_itemsCountOffset = 0;
@@ -49,6 +53,7 @@ function Games_StartLoad() {
     Games_MaxOffset = 0;
     Games_idObject = {};
     Games_itemsCount = 0;
+    Games_FirstLoad = true;
     Games_cursorX = 0;
     Games_cursorY = 0;
     Games_dataEnded = false;
@@ -58,6 +63,7 @@ function Games_StartLoad() {
 }
 
 function Games_loadDataPrepare() {
+    Main_imgVectorRst();
     Games_loadingData = true;
     Games_loadingDataTry = 0;
     Games_loadingDataTimeout = 3500;
@@ -160,8 +166,8 @@ function Games_loadDataSuccess(responseText) {
                 Games_itemsCountCheck = true;
                 Games_itemsCount = (row_id * Main_ColoumnsCountGame) + coloumn_id;
             }
-            row.appendChild(Main_createEmptyCell(Game_ids[6] + row_id + '_' + coloumn_id));
-            Games_emptyCellVector.push(Game_ids[6] + row_id + '_' + coloumn_id);
+            row.appendChild(Main_createEmptyCell(Games_ids[6] + row_id + '_' + coloumn_id));
+            Games_emptyCellVector.push(Games_ids[6] + row_id + '_' + coloumn_id);
         }
         document.getElementById("stream_table_games").appendChild(row);
     }
@@ -171,7 +177,7 @@ function Games_loadDataSuccess(responseText) {
 
 function Games_createCell(row_id, id, valuesArray) {
     if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
-    return Main_createCellGame(id, Game_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
+    return Main_createCellGame(id, Games_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
 }
 
 function Games_loadDataSuccessFinish() {
@@ -181,10 +187,13 @@ function Games_loadDataSuccessFinish() {
             if (Games_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else {
                 Games_Status = true;
+                Main_imgVectorLoad(IMG_404_GAME);
                 Games_addFocus();
-                Main_LazyImgStart(Game_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
+            Main_ShowElement(Games_ids[7]);
+            Games_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_GAME);
             if (Games_emptyCellVector.length > 0 && !Games_dataEnded) {
                 Games_loadDataPrepare();
                 Games_loadDataReplace();
@@ -260,7 +269,7 @@ function Games_loadDataSuccessReplace(responseText) {
             Main_replaceGame(Games_emptyCellVector[i], [game.game.name,
                 game.game.box.template.replace("{width}x{height}", Main_GameSize),
                 Main_addCommas(game.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(game.viewers) + STR_VIEWER
-            ], Game_ids);
+            ], Games_ids);
 
             index = tempVector.indexOf(tempVector[i]);
             if (index > -1) tempVector.splice(index, 1);
@@ -275,11 +284,8 @@ function Games_loadDataSuccessReplace(responseText) {
 }
 
 function Games_addFocus() {
-
-    Main_addFocusGame(Games_cursorY, Games_cursorX, Game_ids,
+    Main_addFocusGame(Games_cursorY, Games_cursorX, Games_ids,
         Main_ColoumnsCountGame, Games_itemsCount);
-
-    if (Games_cursorY > 2) Main_LazyImg(Game_ids[1], Games_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((Games_cursorY + Main_ItemsReloadLimitGame) > (Games_itemsCount / Main_ColoumnsCountGame)) &&
         !Games_dataEnded && !Games_loadingData) {
@@ -289,11 +295,11 @@ function Games_addFocus() {
 }
 
 function Games_removeFocus() {
-    Main_removeFocus(Games_cursorY + '_' + Games_cursorX, Game_ids);
+    Main_removeFocus(Games_cursorY + '_' + Games_cursorX, Games_ids);
 }
 
 function Games_handleKeyDown(event) {
-    if (Games_loadingData || Main_CantClick()) return;
+    if (Games_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -310,13 +316,13 @@ function Games_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((Games_cursorY), (Games_cursorX - 1), Game_ids[0])) {
+            if (Main_ThumbNull((Games_cursorY), (Games_cursorX - 1), Games_ids[0])) {
                 Games_removeFocus();
                 Games_cursorX--;
                 Games_addFocus();
             } else {
                 for (i = (Main_ColoumnsCountGame - 1); i > -1; i--) {
-                    if (Main_ThumbNull((Games_cursorY - 1), i, Game_ids[0])) {
+                    if (Main_ThumbNull((Games_cursorY - 1), i, Games_ids[0])) {
                         Games_removeFocus();
                         Games_cursorY--;
                         Games_cursorX = i;
@@ -327,11 +333,11 @@ function Games_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((Games_cursorY), (Games_cursorX + 1), Game_ids[0])) {
+            if (Main_ThumbNull((Games_cursorY), (Games_cursorX + 1), Games_ids[0])) {
                 Games_removeFocus();
                 Games_cursorX++;
                 Games_addFocus();
-            } else if (Main_ThumbNull((Games_cursorY + 1), 0, Game_ids[0])) {
+            } else if (Main_ThumbNull((Games_cursorY + 1), 0, Games_ids[0])) {
                 Games_removeFocus();
                 Games_cursorY++;
                 Games_cursorX = 0;
@@ -340,7 +346,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_UP:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((Games_cursorY - 1), (Games_cursorX - i), Game_ids[0])) {
+                if (Main_ThumbNull((Games_cursorY - 1), (Games_cursorX - i), Games_ids[0])) {
                     Games_removeFocus();
                     Games_cursorY--;
                     Games_cursorX = Games_cursorX - i;
@@ -351,7 +357,7 @@ function Games_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((Games_cursorY + 1), (Games_cursorX - i), Game_ids[0])) {
+                if (Main_ThumbNull((Games_cursorY + 1), (Games_cursorX - i), Games_ids[0])) {
                     Games_removeFocus();
                     Games_cursorY++;
                     Games_cursorX = Games_cursorX - i;
@@ -380,7 +386,7 @@ function Games_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_gameSelected = document.getElementById(Game_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute(Main_DataAttribute);
+            Main_gameSelected = document.getElementById(Games_ids[5] + Games_cursorY + '_' + Games_cursorX).getAttribute(Main_DataAttribute);
             document.body.removeEventListener("keydown", Games_handleKeyDown);
             Main_BeforeAgame = Main_Go;
             Main_Go = Main_aGame;
