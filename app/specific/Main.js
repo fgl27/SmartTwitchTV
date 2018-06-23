@@ -12,7 +12,7 @@ var Main_UserLive = 5;
 var Main_UserHost = 6;
 var Main_usergames = 7;
 var Main_Search = 8;
-var Main_sgames = 9;
+var _SearchGames = 9;
 var Main_SLive = 10;
 var Main_ChannelContent = 11;
 var Main_ChannelVod = 12;
@@ -445,7 +445,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_games) Games_init();
     else if (Main_Go === Main_aGame) AGame_init();
     else if (Main_Go === Main_Search) Search_init();
-    else if (Main_Go === Main_sgames) SGames_init();
+    else if (Main_Go === _SearchGames) SearchGames_init();
     else if (Main_Go === Main_SLive) SLive_init();
     else if (Main_Go === Main_ChannelContent) ChannelContent_init();
     else if (Main_Go === Main_ChannelVod) ChannelVod_init();
@@ -470,7 +470,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_games) Games_exit();
     else if (ExitCurrent === Main_aGame) AGame_exit();
     else if (ExitCurrent === Main_Search) Search_exit();
-    else if (ExitCurrent === Main_sgames) SGames_exit();
+    else if (ExitCurrent === _SearchGames) SearchGames_exit();
     else if (ExitCurrent === Main_SLive) SLive_exit();
     else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_ChannelVod) ChannelVod_exit();
