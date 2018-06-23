@@ -213,7 +213,7 @@ function Sclip_loadDataSuccessFinish() {
             Main_ShowElement(Sclip_ids[10]);
             Sclip_FirstLoad = false;
         } else {
-                Main_imgVectorLoad(IMG_404_VIDEO);
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Sclip_emptyCellVector.length > 0 && !Sclip_dataEnded) {
                 Sclip_loadDataPrepare();
                 Sclip_loadDataReplace();
@@ -428,7 +428,7 @@ function Sclip_handleKeyDown(event) {
             Sclip_Duration = document.getElementById(Sclip_ids[5] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_views = document.getElementById(Sclip_ids[6] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_language = document.getElementById(Sclip_ids[7] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
-            Sclip_game = document.getElementById(Sclip_ids[10] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
+            Sclip_game = document.getElementById(Sclip_ids[11] + Sclip_cursorY + '_' + Sclip_cursorX).textContent;
             Sclip_openStream();
             break;
         case KEY_RED:

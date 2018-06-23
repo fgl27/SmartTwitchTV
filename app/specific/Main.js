@@ -74,7 +74,6 @@ var Main_ScrollOffSetMinusVideo = 362;
 var Main_ScrollOffSetMinusChannels = 454;
 var Main_ScrollOffSetMinusDuploYOffsetCheck = 92;
 var Main_ScrollOffSetMinusSearch = 100;
-var Main_ScrollOffSetMinusAgame = 83;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -888,21 +887,6 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
 function Main_removeFocus(id, idArray) {
     Main_addFocusFinish = false;
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
-}
-
-function Main_ScrollHelperVideo(Thumbnail, cursorY, cursorX) {
-    var id = Thumbnail + cursorY + '_' + cursorX;
-
-    if (!Main_ThumbNull((cursorY + 1), 0, Thumbnail)) {
-        if (cursorY > 1) id = Thumbnail + (cursorY - 1) + '_' + cursorX;
-        else if (cursorY === 1) {
-            id = Thumbnail + '0_' + cursorX;
-            cursorY = 0;
-        }
-    }
-
-    if (cursorY) Main_window_scroll(id, 0 - Main_ScrollOffSetMinusVideo);
-    else Main_window_scroll(id, Main_ScrollOffSetVideo - Main_ScrollOffSetMinusVideo - (Main_Go === Main_aGame ? Main_ScrollOffSetMinusAgame : 0));
 }
 
 function Main_ScrollHelperChannel(Thumbnail, cursorY, cursorX) {
