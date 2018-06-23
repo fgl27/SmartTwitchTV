@@ -610,19 +610,13 @@ function Main_ResumeNetwork() {
     }
 }
 
+//Just in case Main_SmartHubId stall
 function Main_ResumeSmarthub() {
-    if (document.hidden) window.clearInterval(Main_SmartHubId);
-    else {
+    if (!document.hidden) {
         window.setTimeout(function() {
             if (AddUser_UsernameArray.length > 0) {
                 var timeDiff = (new Date().getTime() - 590000);
-
-                if (timeDiff > SmartHub_LastUpdate) SmartHub_StartInterval();
-                else window.setTimeout(SmartHub_StartInterval, (SmartHub_LastUpdate - timeDiff));
-
-            } else {
-                window.clearInterval(Main_SmartHubId);
-                document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
+                if (timeDiff > SmartHub_LastUpdate) SmartHub_Start();
             }
         }, 10000);
     }
