@@ -17,8 +17,9 @@ var UserGames_itemsCountCheck = false;
 var UserGames_live = true;
 var UserGames_Status = false;
 var UserGames_OldUserName = '';
+var UserGames_FirstLoad = false;
 
-var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'ug_viwers', 'ug_cell', 'ugempty_'];
+var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'ug_viwers', 'ug_cell', 'ugempty_', 'user_games_scroll'];
 //Variable initialization end
 
 function UserGames_init() {
@@ -29,8 +30,8 @@ function UserGames_init() {
     Main_YRst(UserGames_cursorY);
     if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
     if (UserGames_Status) {
+        Main_ShowElement(UserGames_ids[7]);
         Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
-        Main_ScrollHelperGames(UserGames_ids[0], UserGames_cursorY, UserGames_cursorX);
         Main_CounterDialog(UserGames_cursorX, UserGames_cursorY, Main_ColoumnsCountGame, UserGames_itemsCount);
     } else UserGames_StartLoad();
 }
@@ -40,19 +41,21 @@ function UserGames_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_user', STR_USER);
     document.body.removeEventListener("keydown", UserGames_handleKeyDown);
+    Main_HideElement(UserGames_ids[7]);
 }
 
 function UserGames_StartLoad() {
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+    Main_HideElement(UserGames_ids[7]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
     UserGames_OldUserName = Main_UserName;
     UserGames_Status = false;
     Main_empty('stream_table_user_games');
     UserGames_itemsCountOffset = 0;
     UserGames_ReplacedataEnded = false;
     UserGames_MaxOffset = 0;
+    UserGames_FirstLoad = true;
     UserGames_idObject = {};
     UserGames_emptyCellVector = [];
     UserGames_itemsCountCheck = false;
@@ -66,6 +69,7 @@ function UserGames_StartLoad() {
 }
 
 function UserGames_loadDataPrepare() {
+    Main_imgVectorRst();
     UserGames_loadingData = true;
     UserGames_loadingDataTry = 0;
     UserGames_loadingDataTimeout = 3500;
@@ -187,10 +191,13 @@ function UserGames_loadDataSuccessFinish() {
             if (UserGames_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else {
                 UserGames_Status = true;
+                Main_imgVectorLoad(IMG_404_GAME);
                 UserGames_addFocus();
-                Main_LazyImgStart(UserGames_ids[1], 7, IMG_404_GAME, Main_ColoumnsCountGame);
             }
+            Main_ShowElement(UserGames_ids[7]);
+            UserGames_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_GAME);
             if (UserGames_emptyCellVector.length > 0 && !UserGames_dataEnded) {
                 UserGames_loadDataPrepare();
                 UserGames_loadDataReplace();
@@ -293,10 +300,7 @@ function UserGames_loadDataSuccessReplace(responseText) {
 }
 
 function UserGames_addFocus() {
-
     Main_addFocusGame(UserGames_cursorY, UserGames_cursorX, UserGames_ids, Main_ColoumnsCountGame, UserGames_itemsCount);
-
-    if (UserGames_cursorY > 2) Main_LazyImg(UserGames_ids[1], UserGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
 
     if (((UserGames_cursorY + Main_ItemsReloadLimitGame) > (UserGames_itemsCount / Main_ColoumnsCountGame)) &&
         !UserGames_dataEnded && !UserGames_loadingData) {
@@ -310,7 +314,7 @@ function UserGames_removeFocus() {
 }
 
 function UserGames_handleKeyDown(event) {
-    if (UserGames_loadingData || Main_CantClick()) return;
+    if (UserGames_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
