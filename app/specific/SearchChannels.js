@@ -380,7 +380,7 @@ function SearchChannels_handleKeyDown(event) {
             Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = false;
             ChannelContent_UserChannels = false;
-            Main_HideElement(ChannelContent_ids[6]);
+            Main_HideElement(SearchChannels_ids[6]);
             Main_SwitchScreen();
             break;
         case KEY_RED:
