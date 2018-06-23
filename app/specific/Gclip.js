@@ -14,13 +14,14 @@ var Gclip_MaxOffset = 0;
 var Gclip_emptyContent = false;
 var Gclip_ReplacedataTry = 0;
 
-var Gclip_ids = ['gc_thumbdiv', 'gc_img', 'gc_infodiv', 'gc_title', 'gc_createdon', 'gc_game', 'gc_viwers', 'gc_duration', 'gc_cell', 'gcpempty_', 'gc_lang'];
+var Gclip_ids = ['gc_thumbdiv', 'gc_img', 'gc_infodiv', 'gc_title', 'gc_createdon', 'gc_game', 'gc_viwers', 'gc_duration', 'gc_cell', 'gcpempty_', 'game_clip_scroll', 'gc_lang'];
 var Gclip_status = false;
 var Gclip_cursor = null;
 var Gclip_periodNumber = 2;
 var Gclip_period = 'week';
 var Gclip_itemsCountCheck = false;
 var Gclip_OldgameSelected = '';
+var Gclip_FirstLoad = false;
 //Variable initialization end
 
 function Gclip_init() {
@@ -35,7 +36,7 @@ function Gclip_init() {
     Main_YRst(Gclip_cursorY);
 
     if (Gclip_OldgameSelected === Main_gameSelected && Gclip_status) {
-        Main_ScrollHelperVideo(Gclip_ids[0], Gclip_cursorY, Gclip_cursorX);
+        Main_ShowElement(Gclip_ids[10]);
         Main_CounterDialog(Gclip_cursorX, Gclip_cursorY, Main_ColoumnsCountVideo, Gclip_itemsCount);
     } else Gclip_StartLoad();
 }
@@ -47,13 +48,14 @@ function Gclip_exit() {
 
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_HideElement(Gclip_ids[10]);
 }
 
 function Gclip_StartLoad() {
-    Gclip_OldgameSelected = Main_gameSelected;
-    Main_HideWarningDialog();
-    Main_ScrollHelperBlank('blank_focus');
+    Main_HideElement(Gclip_ids[10]);
     Main_showLoadDialog();
+    Main_HideWarningDialog();
+    Gclip_OldgameSelected = Main_gameSelected;
     Gclip_cursor = null;
     Gclip_status = false;
     Main_empty('stream_table_gclip');
@@ -63,6 +65,7 @@ function Gclip_StartLoad() {
     Gclip_idObject = {};
     Gclip_emptyCellVector = [];
     Gclip_itemsCountCheck = false;
+    Gclip_FirstLoad = true;
     Gclip_itemsCount = 0;
     Gclip_cursorX = 0;
     Gclip_cursorY = 0;
@@ -209,10 +212,13 @@ function Gclip_loadDataSuccessFinish() {
             if (Gclip_emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
             else {
                 Gclip_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Gclip_addFocus();
-                Main_LazyImgStart(Gclip_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(Gclip_ids[10]);
+            Gclip_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Gclip_emptyCellVector.length > 0 && !Gclip_dataEnded) {
                 Gclip_loadDataPrepare();
                 Gclip_loadDataReplace();
@@ -320,8 +326,6 @@ function Gclip_loadDataSuccessReplace(responseText) {
 function Gclip_addFocus() {
     Main_addFocusVideo(Gclip_cursorY, Gclip_cursorX, Gclip_ids, Main_ColoumnsCountVideo, Gclip_itemsCount);
 
-    if (Gclip_cursorY > 2) Main_LazyImg(Gclip_ids[1], Gclip_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Gclip_cursorY + Main_ItemsReloadLimitVideo) > (Gclip_itemsCount / Main_ColoumnsCountVideo)) &&
         !Gclip_dataEnded && !Gclip_loadingData) {
         Gclip_loadDataPrepare();
@@ -334,7 +338,7 @@ function Gclip_removeFocus() {
 }
 
 function Gclip_handleKeyDown(event) {
-    if (Gclip_loadingData || Main_CantClick()) return;
+    if (Gclip_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
@@ -436,7 +440,7 @@ function Gclip_handleKeyDown(event) {
             Sclip_Duration = document.getElementById(Gclip_ids[5] + Gclip_cursorY + '_' + Gclip_cursorX).textContent;
             Sclip_views = document.getElementById(Gclip_ids[6] + Gclip_cursorY + '_' + Gclip_cursorX).textContent;
             Sclip_language = document.getElementById(Gclip_ids[7] + Gclip_cursorY + '_' + Gclip_cursorX).textContent;
-            Sclip_game = document.getElementById(Gclip_ids[10] + Gclip_cursorY + '_' + Gclip_cursorX).innerHTML;
+            Sclip_game = document.getElementById(Gclip_ids[11] + Gclip_cursorY + '_' + Gclip_cursorX).innerHTML;
             Gclip_openStream();
             break;
         case KEY_RED:
