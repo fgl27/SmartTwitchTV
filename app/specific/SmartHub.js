@@ -78,9 +78,9 @@ function SmartHub_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
+                    Main_ready(function() {
                         SmartHub_previewDataSuccess(xmlHttp.responseText);
-                    } catch (err) {}
+                    });
                 } else {
                     SmartHub_loadDataError();
                 }
@@ -120,8 +120,10 @@ function SmartHub_previewDataSuccess(responseText) {
         SmartHub_loadDataRequestPrepare();
         SmartHub_loadDataRequest();
     } else {
-        SmartHub_LastUpdate = new Date().getTime();
-        SmartHub_msetPreviewData();
+        Main_ready(function() {
+            SmartHub_LastUpdate = new Date().getTime();
+            SmartHub_msetPreviewData();
+        });
     }
 }
 
@@ -130,13 +132,15 @@ function SmartHub_msetPreviewData() {
     //then set a new data SmartHub_previewDataGenerator(), on sucess we SmartHub_cleanVector
     try {
         webapis.preview.setPreviewData('{}', function() {
-            try {
-                webapis.preview.setPreviewData(SmartHub_previewDataGenerator(), function() {
-                    window.setTimeout(SmartHub_cleanVector, 1000);
-                });
-            } catch (ex) {
-                console.log(ex.message);
-            }
+            Main_ready(function() {
+                try {
+                    webapis.preview.setPreviewData(SmartHub_previewDataGenerator(), function() {
+                        window.setTimeout(SmartHub_cleanVector, 1000);
+                    });
+                } catch (ex) {
+                    console.log(ex.message);
+                }
+            });
         });
     } catch (ex) {
         console.log(ex.message);
