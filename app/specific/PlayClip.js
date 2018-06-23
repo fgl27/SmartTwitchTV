@@ -35,10 +35,10 @@ function PlayClip_Start() {
     Play_hideChat();
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
-    Main_textContent("stream_info_title", Sclip_title);
-    Main_innerHTML("stream_info_game", Sclip_game + ', ' + Sclip_views + ', ' + Sclip_language);
-    Main_textContent("stream_live_icon", Sclip_createdAt);
-    Main_textContent("stream_live_time", Sclip_Duration);
+    Main_textContent("stream_info_title", ChannelClip_title);
+    Main_innerHTML("stream_info_game", ChannelClip_game + ', ' + ChannelClip_views + ', ' + ChannelClip_language);
+    Main_textContent("stream_live_icon", ChannelClip_createdAt);
+    Main_textContent("stream_live_time", ChannelClip_Duration);
     Main_empty('dialog_buffer_play_percentage');
     PlayClip_HasVOD = Svod_vodId !== 'null';
     PlayClip_SetOpenVod();
@@ -80,7 +80,7 @@ function PlayClip_loadDataRequest() {
     try {
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + Sclip_playUrl + '/status', true);
+        xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
         xmlHttp.timeout = PlayClip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
@@ -443,7 +443,7 @@ function PlayClip_jumpStart() {
         time = PlayClip_TimeToJump + STR_SEC;
 
         jumpTotime = (Play_avplay.getCurrentTime() / 1000) + PlayClip_TimeToJump;
-        if (jumpTotime > Sclip_DurationSeconds) {
+        if (jumpTotime > ChannelClip_DurationSeconds) {
             PlayClip_TimeToJump = 0;
             PlayClip_jumpCountMax = PlayClip_jumpCount;
             Play_showWarningDialog(STR_JUMP_CANCEL + STR_JUMP_TIME_BIG);
