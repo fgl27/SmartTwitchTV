@@ -269,7 +269,7 @@ function AGame_headerOptions() {
         AGame_exit();
         Main_SwitchScreen();
     } else if (AGame_cursorX === 1) {
-        Main_Go = Main_Gclip;
+        Main_Go = Main_AGameClip;
         Main_OldgameSelected = Main_gameSelected;
         AGame_exit();
         Main_SwitchScreen();
