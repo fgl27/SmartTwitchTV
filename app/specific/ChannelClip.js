@@ -40,8 +40,8 @@ function ChannelClip_init() {
     Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
     Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
     document.body.addEventListener("keydown", ChannelClip_handleKeyDown, false);
-    Main_YRst(ChannelClip_cursorY);
     if (ChannelClip_status) {
+        Main_YRst(ChannelClip_cursorY);
         Main_ShowElement(ChannelClip_ids[10]);
         Main_CounterDialog(ChannelClip_cursorX, ChannelClip_cursorY, Main_ColoumnsCountVideo, ChannelClip_itemsCount);
     } else ChannelClip_StartLoad();

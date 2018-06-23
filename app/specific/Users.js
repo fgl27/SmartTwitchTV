@@ -17,8 +17,10 @@ function Users_init() {
     Main_HideWarningDialog();
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
-    if (Users_status) Main_ShowElement(Users_ids[5]);
-    else Users_StartLoad();
+    if (Users_status) {
+        Main_YRst(Users_cursorY);
+        Main_ShowElement(Users_ids[5]);
+    } else Users_StartLoad();
 }
 
 function Users_exit() {
@@ -33,7 +35,6 @@ function Users_StartLoad() {
     Main_HideElement(Users_ids[5]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    Main_YRst(-1);
     Users_status = false;
     Users_FirstLoad = true;
     Main_empty('stream_table_user');

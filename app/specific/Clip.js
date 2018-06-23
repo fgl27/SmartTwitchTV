@@ -32,8 +32,8 @@ function Clip_init() {
     Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + ' (C)');
 
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
-    Main_YRst(Clip_cursorY);
     if (Clip_status) {
+        Main_YRst(Clip_cursorY);
         Main_ShowElement(Clip_ids[10]);
         Main_CounterDialog(Clip_cursorX, Clip_cursorY, Main_ColoumnsCountVideo, Clip_itemsCount);
     } else Clip_StartLoad();

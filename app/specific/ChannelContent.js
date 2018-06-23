@@ -32,6 +32,7 @@ function ChannelContent_init() {
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
     if (ChannelContent_status) {
+        Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
     } else ChannelContent_StartLoad();

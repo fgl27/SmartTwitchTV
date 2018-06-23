@@ -32,8 +32,8 @@ function Vod_init() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + ' (C)');
 
-    Main_YRst(Vod_cursorY);
     if (Vod_status) {
+        Main_YRst(Vod_cursorY);
         Main_ShowElement(Vod_ids[10]);
         Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
         Vod_SetPeriod();

@@ -26,9 +26,9 @@ function UserHost_init() {
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS));
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
-    Main_YRst(UserHost_cursorY);
     if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
     if (UserHost_status) {
+        Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
     } else UserHost_StartLoad();

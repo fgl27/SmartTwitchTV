@@ -25,8 +25,8 @@ function SearchGames_init() {
     if (SearchGames_lastData !== Search_data) SearchGames_Status = false;
     Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SearchGames_handleKeyDown, false);
-    Main_YRst(SearchGames_cursorY);
     if (SearchGames_Status) {
+        Main_YRst(SearchGames_cursorY);
         Main_ShowElement(SearchGames_ids[7]);
         Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
     } else SearchGames_StartLoad();

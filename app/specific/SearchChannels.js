@@ -30,8 +30,8 @@ function SearchChannels_init() {
     Main_cleanTopLabel();
     Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search_data + "'"));
     document.body.addEventListener("keydown", SearchChannels_handleKeyDown, false);
-    Main_YRst(SearchChannels_cursorY);
     if (SearchChannels_Status) {
+        Main_YRst(SearchChannels_cursorY);
         Main_ShowElement(SearchChannels_ids[6]);
         Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
     } else SearchChannels_StartLoad();

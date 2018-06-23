@@ -30,8 +30,8 @@ function AGame_init() {
     Main_AddClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
         ': ' + Main_gameSelected));
-    Main_YRst(AGame_cursorY);
     if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
+        Main_YRst(AGame_cursorY);
         Main_ShowElement(AGame_ids[10]);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
     } else AGame_StartLoad();

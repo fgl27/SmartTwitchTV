@@ -25,8 +25,8 @@ function Games_init() {
     Main_Go = Main_games;
     document.body.addEventListener("keydown", Games_handleKeyDown, false);
     Main_AddClass('top_bar_game', 'icon_center_focus');
-    Main_YRst(Games_cursorY);
     if (Games_Status) {
+        Main_YRst(Games_cursorY);
         Main_ShowElement(Games_ids[7]);
         Main_CounterDialog(Games_cursorX, Games_cursorY, Main_ColoumnsCountGame, Games_itemsCount);
     } else Games_StartLoad();
