@@ -16,8 +16,9 @@ var Gvod_emptyContent = false;
 var Gvod_itemsCountCheck = false;
 var Gvod_period = 'week';
 var Gvod_periodNumber = 2;
+var Gvod_FirstLoad = false;
 
-var Gvod_ids = ['gv_thumbdiv', 'gv_img', 'gv_infodiv', 'gv_title', 'gv_streamon', 'gv_duration', 'gv_viwers', 'gv_quality', 'gv_cell', 'gsvempty_', 'gv_game'];
+var Gvod_ids = ['gv_thumbdiv', 'gv_img', 'gv_infodiv', 'gv_title', 'gv_streamon', 'gv_duration', 'gv_viwers', 'gv_quality', 'gv_cell', 'gsvempty_', 'gvod_scroll', 'gv_game'];
 var Gvod_status = false;
 var Gvod_highlight = false;
 var Gvod_OldgameSelected = '';
@@ -34,7 +35,7 @@ function Gvod_init() {
 
     Main_YRst(Gvod_cursorY);
     if ((Gvod_OldgameSelected === Main_gameSelected) && Gvod_status) {
-        Main_ScrollHelperVideo(Gvod_ids[0], Gvod_cursorY, Gvod_cursorX);
+        Main_ShowElement(Gvod_ids[10]);
         Main_CounterDialog(Gvod_cursorX, Gvod_cursorY, Main_ColoumnsCountVideo, Gvod_itemsCount);
         Gvod_SetPeriod();
     } else Gvod_StartLoad();
@@ -48,15 +49,16 @@ function Gvod_exit() {
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_HideElement(Gvod_ids[10]);
 }
 
 function Gvod_StartLoad() {
-    Gvod_OldgameSelected = Main_gameSelected;
+    Main_HideElement(Gvod_ids[10]);
+    Main_showLoadDialog();
     Gvod_SetPeriod();
+    Gvod_OldgameSelected = Main_gameSelected;
     Main_HideWarningDialog();
     Gvod_status = false;
-    Main_ScrollHelperBlank('blank_focus');
-    Main_showLoadDialog();
     Main_empty('stream_table_gvod');
     Gvod_itemsCountOffset = 0;
     Gvod_ReplacedataEnded = false;
@@ -64,6 +66,7 @@ function Gvod_StartLoad() {
     Gvod_idObject = {};
     Gvod_emptyCellVector = [];
     Gvod_itemsCountCheck = false;
+    Gvod_FirstLoad = true;
     Gvod_itemsCount = 0;
     Gvod_cursorX = 0;
     Gvod_cursorY = 0;
@@ -74,6 +77,7 @@ function Gvod_StartLoad() {
 }
 
 function Gvod_loadDataPrepare() {
+    Main_imgVectorRst();
     Gvod_loadingData = true;
     Gvod_loadingDataTry = 0;
     Gvod_loadingDataTimeout = 3500;
@@ -190,10 +194,13 @@ function Gvod_loadDataSuccessFinish() {
             if (Gvod_emptyContent) Main_showWarningDialog(STR_NO + (Gvod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 Gvod_status = true;
+                Main_imgVectorLoad(IMG_404_VIDEO);
                 Gvod_addFocus();
-                Main_LazyImgStart(Gvod_ids[1], 7, IMG_404_VIDEO, Main_ColoumnsCountVideo);
             }
+            Main_ShowElement(Gvod_ids[10]);
+            Gvod_FirstLoad = false;
         } else {
+            Main_imgVectorLoad(IMG_404_VIDEO);
             if (Gvod_emptyCellVector.length > 0 && !Gvod_dataEnded) {
                 Gvod_loadDataPrepare();
                 Gvod_loadDataReplace();
@@ -294,8 +301,6 @@ function Gvod_loadDataSuccessReplace(responseText) {
 function Gvod_addFocus() {
     Main_addFocusVideo(Gvod_cursorY, Gvod_cursorX, Gvod_ids, Main_ColoumnsCountVideo, Gvod_itemsCount);
 
-    if (Gvod_cursorY > 2) Main_LazyImg(Gvod_ids[1], Gvod_cursorY, IMG_404_VIDEO, Main_ColoumnsCountVideo, 3);
-
     if (((Gvod_cursorY + Main_ItemsReloadLimitVideo) > (Gvod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Gvod_dataEnded && !Gvod_loadingData) {
         Gvod_loadDataPrepare();
@@ -308,7 +313,7 @@ function Gvod_removeFocus() {
 }
 
 function Gvod_handleKeyDown(event) {
-    if (Gvod_loadingData || Main_CantClick()) return;
+    if (Gvod_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
