@@ -101,9 +101,18 @@ function AddUser_KeyboardEvent(event) {
     if (AddUser_loadingData) return;
 
     switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                if (AddUser_UsernameArray.length > 0 && Main_Go !== Main_Users) Main_Go = Main_Before;
+                else Main_Go = Main_Live;
+                AddUser_exit();
+                Main_SwitchScreen();
+            }
+            break;
         case KEY_KEYBOARD_DELETE_ALL:
             Main_AddUserInput.value = '';
-            event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
@@ -131,11 +140,9 @@ function AddUser_KeyboardEvent(event) {
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
-            event.preventDefault();
             break;
         case KEY_KEYBOARD_SPACE:
             Main_AddUserInput.value += ' ';
-            event.preventDefault();
             break;
         default:
             break;
