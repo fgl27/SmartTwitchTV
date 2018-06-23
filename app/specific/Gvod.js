@@ -410,7 +410,7 @@ function Gvod_handleKeyDown(event) {
             Main_selectedChannelDisplayname = document.getElementById(Gvod_ids[3] + Gvod_cursorY + '_' + Gvod_cursorX).textContent;
             Svod_createdAt = document.getElementById(Gvod_ids[4] + Gvod_cursorY + '_' + Gvod_cursorX).textContent;
             Svod_Duration = document.getElementById(Gvod_ids[5] + Gvod_cursorY + '_' + Gvod_cursorX).textContent;
-            Svod_views = document.getElementById(Gvod_ids[10] + Gvod_cursorY + '_' + Gvod_cursorX).innerHTML +
+            Svod_views = document.getElementById(Gvod_ids[11] + Gvod_cursorY + '_' + Gvod_cursorX).innerHTML +
                 ', ' + document.getElementById(Gvod_ids[6] + Gvod_cursorY + '_' + Gvod_cursorX).textContent;
             Gvod_openStream();
             break;

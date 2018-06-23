@@ -195,9 +195,9 @@ function Live_loadDataSuccessFinish() {
                 Live_checkVersion = true;
                 if (Main_checkVersion()) Main_showUpdateDialog();
 
-                //Hide all input element and show after html has load
+                //Hide all input element and show after css has fully load
                 //to prevent a odd random situation were they show when the app first open
-                //because css class have not yet finisehd load but html did
+                //because css class have not yet finished load but html did
                 document.getElementById('oauth').style.display = 'block';
                 document.getElementById('search').style.display = 'block';
                 document.getElementById('add_user').style.display = 'block';
