@@ -36,7 +36,6 @@ function SearchGames_exit() {
     if (!Search_isSearching) Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     SearchGames_return = false;
-    Main_gameSelected = SearchGames_gameSelectedOld;
     Main_HideElement(SearchGames_ids[7]);
 }
 

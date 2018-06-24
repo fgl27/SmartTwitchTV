@@ -395,8 +395,10 @@ function AGame_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_OldgameSelected = Main_gameSelected;
-                if (!SearchGames_return) Main_Go = Main_BeforeAgame;
-                else Main_Go = Main_SearchGames;
+                if (SearchGames_return) {
+                    Main_Go = Main_SearchGames;
+                    Main_gameSelected = SearchGames_gameSelectedOld;
+                } else Main_Go = Main_BeforeAgame;
                 AGame_exit();
                 Main_SwitchScreen();
             }
