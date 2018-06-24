@@ -13,7 +13,6 @@ var ChannelClip_ReplacedataEnded = false;
 var ChannelClip_MaxOffset = 0;
 var ChannelClip_DurationSeconds = 0;
 var ChannelClip_emptyContent = false;
-var ChannelClip_ReplacedataTry = 0;
 
 var ChannelClip_ids = ['sp_thumbdiv', 'sp_img', 'sp_infodiv', 'sp_title', 'sp_createdon', 'sp_game', 'sp_viwers', 'sp_duration', 'sp_cell', 'spempty_', 'channel_clip_scroll', 'sp_lang'];
 var ChannelClip_status = false;
@@ -63,7 +62,6 @@ function ChannelClip_StartLoad() {
     Main_empty('stream_table_channel_clip');
     ChannelClip_ReplacedataEnded = false;
     ChannelClip_MaxOffset = 0;
-    ChannelClip_ReplacedataTry = 0;
     ChannelClip_idObject = {};
     ChannelClip_emptyCellVector = [];
     ChannelClip_itemsCountCheck = false;
@@ -221,12 +219,7 @@ function ChannelClip_loadDataSuccessFinish() {
                 ChannelClip_loadDataPrepare();
                 ChannelClip_loadDataReplace();
                 return;
-            } else {
-                ChannelClip_ReplacedataTry = 0;
-                ChannelClip_emptyCellVector = [];
-            }
-
-
+            } else ChannelClip_emptyCellVector = [];
         }
         ChannelClip_loadingData = false;
     });
@@ -236,11 +229,10 @@ function ChannelClip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = ChannelClip_emptyCellVector.length + (ChannelClip_ReplacedataTry * ChannelClip_ReplacedataTry);
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' +
-            encodeURIComponent(Main_selectedChannel) + '&limit=' +
-            limit + '&period=' + ChannelClip_period + '&cursor=' + encodeURIComponent(ChannelClip_cursor) +
+            encodeURIComponent(Main_selectedChannel) + '&limit=100&period=' + ChannelClip_period +
+            '&cursor=' + encodeURIComponent(ChannelClip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = ChannelClip_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -281,10 +273,7 @@ function ChannelClip_loadDataSuccessReplace(responseText) {
         cursor = 0,
         tempVector = [];
 
-    ChannelClip_cursor = response._cursor;
-    if (ChannelClip_cursor === '') ChannelClip_dataEnded = true;
-
-    ChannelClip_ReplacedataEnded = !response_items;
+    if (response._cursor === '' || !response_items) ChannelClip_dataEnded = true;
 
     for (i; i < ChannelClip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
@@ -307,20 +296,57 @@ function ChannelClip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) ChannelClip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (ChannelClip_ReplacedataTry > 5) {
-        ChannelClip_itemsCount -= ChannelClip_emptyCellVector.length;
-        ChannelClip_emptyCellVector = [];
-        ChannelClip_ReplacedataEnded = true;
+    if (ChannelClip_emptyCellVector.length || ChannelClip_dataEnded) {
         ChannelClip_dataEnded = true;
-    } else ChannelClip_ReplacedataTry++;
-
-    if (ChannelClip_ReplacedataEnded || ChannelClip_dataEnded) {
         ChannelClip_itemsCount -= ChannelClip_emptyCellVector.length;
-        ChannelClip_ReplacedataTry = 0;
         ChannelClip_emptyCellVector = [];
+        ChannelClip_loadDataSuccessFinish();
+    } else {
+        ChannelClip_loadDataPrepare();
+        ChannelClip_SetCursor(cursor);
     }
+}
 
-    ChannelClip_loadDataSuccessFinish();
+function ChannelClip_SetCursor(cursor) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + cursor + '&period=' +
+            encodeURIComponent(ChannelClip_period) + '&cursor=' + encodeURIComponent(ChannelClip_cursor) +
+            '&' + Math.round(Math.random() * 1e7), true);
+
+        xmlHttp.timeout = ChannelClip_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    ChannelClip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    ChannelClip_loadDataSuccessFinish();
+                    return;
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        ChannelClip_SetCursorReplace(cursor);
+    }
+}
+
+function ChannelClip_SetCursorReplace(cursor) {
+    ChannelClip_loadingDataTry++;
+    if (ChannelClip_loadingDataTry < 10) {
+        ChannelClip_loadingDataTimeout += 500;
+        ChannelClip_SetCursor(cursor);
+    } else {
+        ChannelClip_dataEnded = true;
+        ChannelClip_emptyCellVector = [];
+        ChannelClip_loadDataSuccessFinish();
+    }
 }
 
 function ChannelClip_addFocus() {

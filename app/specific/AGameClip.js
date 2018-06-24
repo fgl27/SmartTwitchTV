@@ -12,7 +12,6 @@ var AGameClip_loadingDataTimeout = 3500;
 var AGameClip_ReplacedataEnded = false;
 var AGameClip_MaxOffset = 0;
 var AGameClip_emptyContent = false;
-var AGameClip_ReplacedataTry = 0;
 
 var AGameClip_ids = ['agc_thumbdiv', 'agc_img', 'agc_infodiv', 'agc_title', 'agc_createdon', 'agc_game', 'agc_viwers', 'agc_duration', 'agc_cell', 'gcpempty_', 'a_game_clip_scroll', 'agc_lang'];
 var AGameClip_status = false;
@@ -62,7 +61,6 @@ function AGameClip_StartLoad() {
     Main_empty('stream_table_a_game_clip');
     AGameClip_ReplacedataEnded = false;
     AGameClip_MaxOffset = 0;
-    AGameClip_ReplacedataTry = 0;
     AGameClip_idObject = {};
     AGameClip_emptyCellVector = [];
     AGameClip_itemsCountCheck = false;
@@ -228,10 +226,7 @@ function AGameClip_loadDataSuccessFinish() {
                 AGameClip_loadDataPrepare();
                 AGameClip_loadDataReplace();
                 return;
-            } else {
-                AGameClip_ReplacedataTry = 0;
-                AGameClip_emptyCellVector = [];
-            }
+            } else AGameClip_emptyCellVector = [];
 
         }
         AGameClip_loadingData = false;
@@ -242,11 +237,10 @@ function AGameClip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = AGameClip_emptyCellVector.length + (AGameClip_ReplacedataTry * AGameClip_ReplacedataTry);
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + limit +
-            '&period=' + encodeURIComponent(AGameClip_period) + '&cursor=' + encodeURIComponent(AGameClip_cursor) +
+            encodeURIComponent(Main_gameSelected) + '&limit=100&period=' + encodeURIComponent(AGameClip_period) + '&cursor=' +
+            encodeURIComponent(AGameClip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameClip_loadingDataTimeout;
@@ -288,10 +282,7 @@ function AGameClip_loadDataSuccessReplace(responseText) {
         cursor = 0,
         tempVector = [];
 
-    AGameClip_cursor = response._cursor;
-    if (AGameClip_cursor === '') AGameClip_dataEnded = true;
-
-    AGameClip_ReplacedataEnded = !response_items;
+    if (response._cursor === '' || !response_items) AGameClip_dataEnded = true;
 
     for (i; i < AGameClip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
@@ -304,7 +295,8 @@ function AGameClip_loadDataSuccessReplace(responseText) {
                 ',' + video.broadcaster.display_name + ',' +
                 video.broadcaster.logo.replace("150x150", "300x300") +
                 ',' + video.broadcaster.id + ',' +
-                (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium, video.broadcaster.display_name,
+                (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                    video.broadcaster.display_name,
                     STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_PLAYING + video.game,
                     Main_addCommas(video.views) + STR_VIEWS,
@@ -317,20 +309,57 @@ function AGameClip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) AGameClip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (AGameClip_ReplacedataTry > 5) {
-        AGameClip_itemsCount -= AGameClip_emptyCellVector.length;
-        AGameClip_emptyCellVector = [];
-        AGameClip_ReplacedataEnded = true;
+    if (AGameClip_emptyCellVector.length || AGameClip_dataEnded) {
         AGameClip_dataEnded = true;
-    } else AGameClip_ReplacedataTry++;
-
-    if (AGameClip_ReplacedataEnded || AGameClip_dataEnded) {
         AGameClip_itemsCount -= AGameClip_emptyCellVector.length;
-        AGameClip_ReplacedataTry = 0;
         AGameClip_emptyCellVector = [];
+        AGameClip_loadDataSuccessFinish();
+    } else {
+        AGameClip_loadDataPrepare();
+        AGameClip_SetCursor(cursor);
     }
+}
 
-    AGameClip_loadDataSuccessFinish();
+function AGameClip_SetCursor(cursor) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + cursor + '&period=' +
+            encodeURIComponent(AGameClip_period) + '&cursor=' + encodeURIComponent(AGameClip_cursor) +
+            '&' + Math.round(Math.random() * 1e7), true);
+
+        xmlHttp.timeout = AGameClip_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    AGameClip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    AGameClip_loadDataSuccessFinish();
+                    return;
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        AGameClip_SetCursorReplace(cursor);
+    }
+}
+
+function AGameClip_SetCursorReplace(cursor) {
+    AGameClip_loadingDataTry++;
+    if (AGameClip_loadingDataTry < 10) {
+        AGameClip_loadingDataTimeout += 500;
+        AGameClip_SetCursor(cursor);
+    } else {
+        AGameClip_dataEnded = true;
+        AGameClip_emptyCellVector = [];
+        AGameClip_loadDataSuccessFinish();
+    }
 }
 
 function AGameClip_addFocus() {
