@@ -10,7 +10,6 @@ var UserHost_loadingDataTry = 0;
 var UserHost_loadingDataTryMax = 5;
 var UserHost_loadingDataTimeout = 3500;
 var UserHost_itemsCountOffset = 0;
-var UserHost_ReplacedataEnded = false;
 var UserHost_MaxOffset = 0;
 var UserHost_emptyContent = false;
 
@@ -49,7 +48,6 @@ function UserHost_StartLoad() {
     UserHost_status = false;
     Main_empty('stream_table_user_host');
     UserHost_itemsCountOffset = 0;
-    UserHost_ReplacedataEnded = false;
     UserHost_MaxOffset = 0;
     UserHost_idObject = {};
     UserHost_emptyCellVector = [];
@@ -80,7 +78,6 @@ function UserHost_loadChannels() {
         if (offset && offset > (UserHost_MaxOffset - 1)) {
             offset = UserHost_MaxOffset - Main_ItemsLimitVideo;
             UserHost_dataEnded = true;
-            UserHost_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/followed/hosting?limit=' +
@@ -208,7 +205,7 @@ function UserHost_loadDataReplace() {
         var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
         if (offset && offset > (UserHost_MaxOffset - 1)) {
             offset = UserHost_MaxOffset - Main_ItemsLimitReplace;
-            UserHost_ReplacedataEnded = true;
+            UserHost_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/hosts?game=' + encodeURIComponent(Main_gameSelected) +
@@ -238,23 +235,24 @@ function UserHost_loadDataReplaceError() {
         UserHost_loadingDataTimeout += 500;
         UserHost_loadDataReplace();
     } else {
-        UserHost_ReplacedataEnded = true;
+        UserHost_dataEnded = true;
         UserHost_emptyCellVector = [];
         UserHost_loadDataSuccessFinish();
     }
 }
 
 function UserHost_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    var hosts, index, id, cursor = 0;
-    var tempVector = UserHost_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.streams.length,
+        hosts, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     UserHost_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) UserHost_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) UserHost_dataEnded = true;
 
-    for (var i = 0; i < UserHost_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < UserHost_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         hosts = response.hosts[cursor];
         id = hosts.target._id + '' + hosts._id;
         if (UserHost_idObject[id]) i--;
@@ -268,16 +266,17 @@ function UserHost_loadDataSuccessReplace(responseText) {
                     Main_addCommas(hosts.target.viewers) + STR_VIEWER, ''
                 ], UserHost_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) UserHost_emptyCellVector.splice(tempVector[i], 1);
+
     UserHost_itemsCountOffset += cursor;
-    if (UserHost_ReplacedataEnded) UserHost_emptyCellVector = [];
-    else UserHost_emptyCellVector = tempVector;
+    if (UserHost_dataEnded) {
+        UserHost_itemsCount -= UserHost_emptyCellVector.length;
+        UserHost_emptyCellVector = [];
+    }
 
     UserHost_loadDataSuccessFinish();
 }

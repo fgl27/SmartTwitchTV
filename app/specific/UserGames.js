@@ -10,7 +10,6 @@ var UserGames_loadingDataTry = 0;
 var UserGames_loadingDataTryMax = 5;
 var UserGames_loadingDataTimeout = 3500;
 var UserGames_itemsCountOffset = 0;
-var UserGames_ReplacedataEnded = false;
 var UserGames_MaxOffset = 0;
 var UserGames_emptyContent = false;
 var UserGames_itemsCountCheck = false;
@@ -53,7 +52,6 @@ function UserGames_StartLoad() {
     UserGames_Status = false;
     Main_empty('stream_table_user_games');
     UserGames_itemsCountOffset = 0;
-    UserGames_ReplacedataEnded = false;
     UserGames_MaxOffset = 0;
     UserGames_FirstLoad = true;
     UserGames_idObject = {};
@@ -84,7 +82,6 @@ function UserGames_loadDataRequest() {
         if (offset && offset > (UserGames_MaxOffset - 1)) {
             offset = UserGames_MaxOffset - Main_ItemsLimitGame;
             UserGames_dataEnded = true;
-            UserGames_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/follows/games' + (UserGames_live ? '/live' : '') +
@@ -219,11 +216,11 @@ function UserGames_loadDataReplace() {
         var offset = UserGames_itemsCount + UserGames_itemsCountOffset;
         if (offset && offset > (UserGames_MaxOffset - 1)) {
             offset = UserGames_MaxOffset - Main_ItemsLimitReplace;
-            UserGames_ReplacedataEnded = true;
+            UserGames_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/follows/games' + (UserGames_live ? '/live' : '') +
-            '?limit=' + Main_ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
@@ -249,23 +246,24 @@ function UserGames_loadDataReplaceError() {
         UserGames_loadingDataTimeout += 500;
         UserGames_loadDataReplace();
     } else {
-        UserGames_ReplacedataEnded = true;
+        UserGames_dataEnded = true;
         UserGames_emptyCellVector = [];
         UserGames_loadDataSuccessFinish();
     }
 }
 
 function UserGames_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.follows.length;
-    var follows, index, id, cursor = 0;
-    var tempVector = UserGames_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.follows.length,
+        follows, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     UserGames_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitGame) UserGames_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) UserGames_dataEnded = true;
 
-    for (var i = 0; i < UserGames_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < UserGames_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         follows = response.follows[cursor];
         if (UserGames_live) {
             id = follows.game._id;
@@ -288,13 +286,16 @@ function UserGames_loadDataSuccessReplace(responseText) {
                 ], UserGames_ids);
             }
         }
-        index = tempVector.indexOf(tempVector[i]);
-        if (index > -1) tempVector.splice(index, 1);
+        tempVector.push(i);
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) UserGames_emptyCellVector.splice(tempVector[i], 1);
+
     UserGames_itemsCountOffset += cursor;
-    if (UserGames_ReplacedataEnded) UserGames_emptyCellVector = [];
-    else UserGames_emptyCellVector = tempVector;
+    if (UserGames_dataEnded) {
+        UserGames_itemsCount -= UserGames_emptyCellVector.length;
+        UserGames_emptyCellVector = [];
+    }
 
     UserGames_loadDataSuccessFinish();
 }

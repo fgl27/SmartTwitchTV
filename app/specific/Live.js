@@ -13,7 +13,6 @@ var Live_loadingDataTryMax = 5;
 var Live_loadingDataTimeout = 3500;
 var Live_emptyCellVector = [];
 var Live_itemsCountOffset = 0;
-var Live_ReplacedataEnded = false;
 var Live_MaxOffset = 0;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
@@ -48,7 +47,6 @@ function Live_StartLoad() {
     Main_empty('stream_table_live');
     Live_emptyCellVector = [];
     Live_itemsCountOffset = 0;
-    Live_ReplacedataEnded = false;
     Live_itemsCountCheck = false;
     Live_FirstLoad = true;
     Live_MaxOffset = 0;
@@ -79,7 +77,6 @@ function Live_loadDataRequest() {
         if (offset && offset > (Live_MaxOffset - 1)) {
             offset = Live_MaxOffset - Main_ItemsLimitVideo;
             Live_dataEnded = true;
-            Live_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
@@ -118,7 +115,6 @@ function Live_loadDataError() {
         } else {
             Live_loadingData = false;
             Live_dataEnded = true;
-            Live_ReplacedataEnded = true;
             Live_loadDataSuccessFinish();
         }
     }
@@ -215,7 +211,7 @@ function Live_loadDataReplace() {
         var offset = Live_itemsCount + Live_itemsCountOffset;
         if (offset && offset > (Live_MaxOffset - 1)) {
             offset = Live_MaxOffset - Main_ItemsLimitReplace;
-            Live_ReplacedataEnded = true;
+            Live_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
@@ -244,23 +240,24 @@ function Live_loadDataErrorReplace() {
         Live_loadingDataTimeout += 500;
         Live_loadDataReplace();
     } else {
-        Live_ReplacedataEnded = true;
+        Live_dataEnded = true;
         Live_emptyCellVector = [];
         Live_loadDataSuccessFinish();
     }
 }
 
 function Live_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    var stream, index, id, cursor = 0;
-    var tempVector = Live_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.streams.length,
+        stream, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     Live_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) Live_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) Live_dataEnded = true;
 
-    for (var i = 0; i < Live_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < Live_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (Live_idObject[id]) i--;
@@ -269,20 +266,22 @@ function Live_loadDataSuccessReplace(responseText) {
             Main_replaceVideo(Live_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
+                Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
             ], Live_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) Live_emptyCellVector.splice(tempVector[i], 1);
+
     Live_itemsCountOffset += cursor;
-    if (Live_ReplacedataEnded) Live_emptyCellVector = [];
-    else Live_emptyCellVector = tempVector;
+    if (Live_dataEnded) {
+        Live_itemsCount -= Live_emptyCellVector.length;
+        Live_emptyCellVector = [];
+    }
 
     Live_loadDataSuccessFinish();
 }
