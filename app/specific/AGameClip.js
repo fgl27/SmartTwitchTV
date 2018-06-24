@@ -242,7 +242,7 @@ function AGameClip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = AGameClip_emptyCellVector.length + AGameClip_ReplacedataTry;
+        var limit = AGameClip_emptyCellVector.length + (AGameClip_ReplacedataTry * AGameClip_ReplacedataTry);
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
             encodeURIComponent(Main_gameSelected) + '&limit=' + limit +
@@ -317,7 +317,7 @@ function AGameClip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) AGameClip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (AGameClip_ReplacedataTry > 1) {
+    if (AGameClip_ReplacedataTry > 5) {
         AGameClip_itemsCount -= AGameClip_emptyCellVector.length;
         AGameClip_emptyCellVector = [];
         AGameClip_ReplacedataEnded = true;

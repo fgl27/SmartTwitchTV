@@ -236,7 +236,7 @@ function ChannelClip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = ChannelClip_emptyCellVector.length + ChannelClip_ReplacedataTry;
+        var limit = ChannelClip_emptyCellVector.length + (ChannelClip_ReplacedataTry * ChannelClip_ReplacedataTry);
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?channel=' +
             encodeURIComponent(Main_selectedChannel) + '&limit=' +
@@ -307,7 +307,7 @@ function ChannelClip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) ChannelClip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (ChannelClip_ReplacedataTry > 1) {
+    if (ChannelClip_ReplacedataTry > 5) {
         ChannelClip_itemsCount -= ChannelClip_emptyCellVector.length;
         ChannelClip_emptyCellVector = [];
         ChannelClip_ReplacedataEnded = true;
