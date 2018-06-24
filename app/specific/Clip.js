@@ -147,10 +147,12 @@ function Clip_loadDataSuccess(responseText) {
 
     Clip_cursor = response._cursor;
 
-    // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
-    if (response_items === (Main_ItemsLimitVideo - 1)) Clip_itemsCount += 1;
-    else if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
-
+    if (Clip_cursor === '') Clip_dataEnded = true;
+    else {
+        // as response_items can be lower then Main_ItemsLimitVideo by 1 and still have more to load
+        if (response_items === (Main_ItemsLimitVideo - 1)) Clip_itemsCount += 1;
+        else if (response_items < Main_ItemsLimitVideo) Clip_dataEnded = true;
+    }
     Clip_itemsCount += response_items;
 
     Clip_emptyContent = !Clip_itemsCount;
@@ -231,8 +233,8 @@ function Clip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + Clip_emptyCellVector.length +
+        var limit = Clip_emptyCellVector.length + Clip_ReplacedataTry;
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + limit +
             '&period=' + encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
@@ -269,20 +271,23 @@ function Clip_loadDataErrorReplace() {
 }
 
 function Clip_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.clips.length;
-    var video, index, id, cursor = 0;
-    var tempVector = Clip_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.clips.length,
+        video, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     Clip_cursor = response._cursor;
 
+    if (Clip_cursor === '') Clip_dataEnded = true;
+
     Clip_ReplacedataEnded = !response_items;
 
-    for (var i = 0; i < Clip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < Clip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
         id = video.tracking_id;
         if (Clip_idObject[id]) i--;
-        else if (document.getElementById(Clip_emptyCellVector[i]) !== null) {
+        else {
             Clip_idObject[id] = 1;
             Vod_replaceVideo(Clip_emptyCellVector[i],
                 video.slug + ',' + video.duration + ',' + video.game + ',' + video.broadcaster.name +
@@ -296,23 +301,24 @@ function Clip_loadDataSuccessReplace(responseText) {
                     Main_addCommas(video.views) + STR_VIEWS,
                     '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
                 ], Clip_ids);
-
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) tempVector.splice(index, 1);
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) Clip_emptyCellVector.splice(tempVector[i], 1);
+
     if (Clip_ReplacedataTry > 1) {
-        Clip_itemsCount -= tempVector.length;
+        Clip_itemsCount -= Clip_emptyCellVector.length;
         Clip_emptyCellVector = [];
         Clip_ReplacedataEnded = true;
         Clip_dataEnded = true;
     } else Clip_ReplacedataTry++;
 
-    if (Clip_ReplacedataEnded) {
+    if (Clip_ReplacedataEnded || Clip_dataEnded) {
+        Clip_itemsCount -= Clip_emptyCellVector.length;
         Clip_ReplacedataTry = 0;
         Clip_emptyCellVector = [];
-    } else Clip_emptyCellVector = tempVector;
+    }
 
     Clip_loadDataSuccessFinish();
 }
