@@ -10,7 +10,6 @@ var AGame_loadingDataTry = 0;
 var AGame_loadingDataTryMax = 5;
 var AGame_loadingDataTimeout = 3500;
 var AGame_itemsCountOffset = 0;
-var AGame_ReplacedataEnded = false;
 var AGame_MaxOffset = 0;
 var AGame_emptyContent = false;
 
@@ -58,7 +57,6 @@ function AGame_StartLoad() {
     AGame_TopRowCreated = false;
     Main_empty('stream_table_a_game');
     AGame_itemsCountOffset = 0;
-    AGame_ReplacedataEnded = false;
     AGame_MaxOffset = 0;
     AGame_idObject = {};
     AGame_emptyCellVector = [];
@@ -89,7 +87,6 @@ function AGame_loadDataRequest() {
         if (offset && offset > (AGame_MaxOffset - 1)) {
             offset = AGame_MaxOffset - Main_ItemsLimitVideo;
             AGame_dataEnded = true;
-            AGame_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
@@ -287,7 +284,7 @@ function AGame_loadDataReplace() {
         var offset = AGame_itemsCount + AGame_itemsCountOffset;
         if (offset && offset > (AGame_MaxOffset - 1)) {
             offset = AGame_MaxOffset - Main_ItemsLimitReplace;
-            AGame_ReplacedataEnded = true;
+            AGame_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
@@ -317,24 +314,24 @@ function AGame_loadDataErrorReplace() {
         AGame_loadingDataTimeout += 500;
         AGame_loadDataReplace();
     } else {
-        AGame_ReplacedataEnded = true;
+        AGame_dataEnded = true;
         AGame_emptyCellVector = [];
         AGame_loadDataSuccessFinish();
     }
 }
 
 function AGame_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    var stream, index, id, cursor = 0;
-    var tempVector = AGame_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.streams.length,
+        stream, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     AGame_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) AGame_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) AGame_dataEnded = true;
 
-
-    for (var i = 0; i < AGame_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < AGame_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (AGame_idObject[id]) i--;
@@ -349,16 +346,17 @@ function AGame_loadDataSuccessReplace(responseText) {
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                 ], AGame_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) AGame_emptyCellVector.splice(tempVector[i], 1);
+
     AGame_itemsCountOffset += cursor;
-    if (AGame_ReplacedataEnded) AGame_emptyCellVector = [];
-    else AGame_emptyCellVector = tempVector;
+    if (AGame_dataEnded) {
+        AGame_itemsCount -= AGame_emptyCellVector.length;
+        AGame_emptyCellVector = [];
+    }
 
     AGame_loadDataSuccessFinish();
 }

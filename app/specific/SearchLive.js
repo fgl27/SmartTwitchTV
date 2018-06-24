@@ -10,7 +10,6 @@ var SearchLive_loadingDataTry = 0;
 var SearchLive_loadingDataTryMax = 5;
 var SearchLive_loadingDataTimeout = 3500;
 var SearchLive_itemsCountOffset = 0;
-var SearchLive_ReplacedataEnded = false;
 var SearchLive_MaxOffset = 0;
 var SearchLive_emptyContent = false;
 var SearchLive_Status = false;
@@ -49,7 +48,6 @@ function SearchLive_StartLoad() {
     SearchLive_Status = false;
     Main_empty('stream_table_search_live');
     SearchLive_itemsCountOffset = 0;
-    SearchLive_ReplacedataEnded = false;
     SearchLive_MaxOffset = 0;
     SearchLive_idObject = {};
     SearchLive_emptyCellVector = [];
@@ -80,7 +78,6 @@ function SearchLive_loadDataRequest() {
         if (offset && offset > (SearchLive_MaxOffset - 1)) {
             offset = SearchLive_MaxOffset - Main_ItemsLimitVideo;
             SearchLive_dataEnded = true;
-            SearchLive_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
@@ -210,7 +207,7 @@ function SearchLive_loadDataReplace() {
         var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
         if (offset && offset > (SearchLive_MaxOffset - 1)) {
             offset = SearchLive_MaxOffset - Main_ItemsLimitReplace;
-            SearchLive_ReplacedataEnded = true;
+            SearchLive_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
@@ -240,43 +237,47 @@ function SearchLive_loadDataErrorReplace() {
         SearchLive_loadingDataTimeout += 500;
         SearchLive_loadDataReplace();
     } else {
-        SearchLive_ReplacedataEnded = true;
+        SearchLive_dataEnded = true;
         SearchLive_emptyCellVector = [];
         SearchLive_loadDataSuccessFinish();
     }
 }
 
 function SearchLive_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    var stream, index, id, cursor = 0;
-    var tempVector = SearchLive_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.streams.length,
+        stream, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     SearchLive_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) SearchLive_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) SearchLive_dataEnded = true;
 
-    for (var i = 0; i < SearchLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < SearchLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         stream = response.streams[cursor];
         id = stream.channel._id;
         if (SearchLive_idObject[id]) i--;
         else {
             SearchLive_idObject[id] = 1;
-            Main_replaceVideo(Live_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(SearchLive_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
             ], SearchLive_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) tempVector.splice(index, 1);
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) SearchLive_emptyCellVector.splice(tempVector[i], 1);
+
     SearchLive_itemsCountOffset += cursor;
-    if (SearchLive_ReplacedataEnded) SearchLive_emptyCellVector = [];
-    else SearchLive_emptyCellVector = tempVector;
+    if (SearchLive_dataEnded) {
+        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
+        SearchLive_emptyCellVector = [];
+    }
 
     SearchLive_loadDataSuccessFinish();
 }

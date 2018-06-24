@@ -10,7 +10,6 @@ var SearchChannels_loadingDataTry = 0;
 var SearchChannels_loadingDataTryMax = 5;
 var SearchChannels_loadingDataTimeout = 3500;
 var SearchChannels_itemsCountOffset = 0;
-var SearchChannels_ReplacedataEnded = false;
 var SearchChannels_MaxOffset = 0;
 var SearchChannels_emptyContent = false;
 var SearchChannels_Status = false;
@@ -55,7 +54,6 @@ function SearchChannels_StartLoad() {
     SearchChannels_Status = false;
     Main_empty('stream_table_search_channel');
     SearchChannels_itemsCountOffset = 0;
-    SearchChannels_ReplacedataEnded = false;
     SearchChannels_MaxOffset = 0;
     SearchChannels_idObject = {};
     SearchChannels_emptyCellVector = [];
@@ -86,7 +84,6 @@ function SearchChannels_loadDataRequest() {
         if (offset && offset > (SearchChannels_MaxOffset - 1)) {
             offset = SearchChannels_MaxOffset - Main_ItemsLimitChannel;
             SearchChannels_dataEnded = true;
-            SearchChannels_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
@@ -211,7 +208,7 @@ function SearchChannels_loadDataReplace() {
         var offset = SearchChannels_itemsCount + SearchChannels_itemsCountOffset;
         if (offset && offset > (SearchChannels_MaxOffset - 1)) {
             offset = SearchChannels_MaxOffset - Main_ItemsLimitReplace;
-            SearchChannels_ReplacedataEnded = true;
+            SearchChannels_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
@@ -241,23 +238,24 @@ function SearchChannels_loadDataErrorReplace() {
         SearchChannels_loadingDataTimeout += 500;
         SearchChannels_loadDataReplace();
     } else {
-        SearchChannels_ReplacedataEnded = true;
+        SearchChannels_dataEnded = true;
         SearchChannels_emptyCellVector = [];
         SearchChannels_loadDataSuccessFinish();
     }
 }
 
 function SearchChannels_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.channels.length;
-    var channels, index, id, cursor = 0;
-    var tempVector = SearchChannels_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.channels.length,
+        channels, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     SearchChannels_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) SearchChannels_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) SearchChannels_dataEnded = true;
 
-    for (var i = 0; i < SearchChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < SearchChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         channels = response.channels[cursor];
         id = channels._id;
         if (SearchChannels_idObject[id]) i--;
@@ -265,16 +263,17 @@ function SearchChannels_loadDataSuccessReplace(responseText) {
             SearchChannels_idObject[id] = 1;
             Main_replaceChannel(SearchChannels_emptyCellVector[i], [channels.name, id, channels.logo, channels.display_name], SearchChannels_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) {
-                tempVector.splice(index, 1);
-            }
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) SearchChannels_emptyCellVector.splice(tempVector[i], 1);
+
     SearchChannels_itemsCountOffset += cursor;
-    if (SearchChannels_ReplacedataEnded) SearchChannels_emptyCellVector = [];
-    else SearchChannels_emptyCellVector = tempVector;
+    if (SearchChannels_dataEnded) {
+        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
+        SearchChannels_emptyCellVector = [];
+    }
 
     SearchChannels_loadDataSuccessFinish();
 }

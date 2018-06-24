@@ -10,7 +10,6 @@ var Vod_loadingDataTry = 0;
 var Vod_loadingDataTryMax = 5;
 var Vod_loadingDataTimeout = 3500;
 var Vod_itemsCountOffset = 0;
-var Vod_ReplacedataEnded = false;
 var Vod_MaxOffset = 0;
 var Vod_emptyContent = false;
 var Vod_itemsCountCheck = false;
@@ -58,7 +57,6 @@ function Vod_StartLoad() {
     Vod_status = false;
     Main_empty('stream_table_vod');
     Vod_itemsCountOffset = 0;
-    Vod_ReplacedataEnded = false;
     Vod_MaxOffset = 0;
     Vod_idObject = {};
     Vod_emptyCellVector = [];
@@ -89,7 +87,6 @@ function Vod_loadDataRequest() {
         if (offset && offset > (Vod_MaxOffset - 1)) {
             offset = Vod_MaxOffset - Main_ItemsLimitVideo;
             Vod_dataEnded = true;
-            Vod_ReplacedataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
@@ -255,7 +252,7 @@ function Vod_loadDataReplace() {
         var offset = Vod_itemsCount + Vod_itemsCountOffset;
         if (offset && offset > (Vod_MaxOffset - 1)) {
             offset = Vod_MaxOffset - Main_ItemsLimitReplace;
-            Vod_ReplacedataEnded = true;
+            Vod_dataEnded = true;
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReplace +
@@ -287,7 +284,7 @@ function Vod_loadDataErrorReplace() {
         Vod_loadingDataTimeout += 500;
         Vod_loadDataReplace();
     } else {
-        Vod_ReplacedataEnded = true;
+        Vod_dataEnded = true;
         Vod_emptyCellVector = [];
         Vod_loadDataSuccessFinish();
     }
@@ -295,16 +292,17 @@ function Vod_loadDataErrorReplace() {
 
 
 function Vod_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.videos.length;
-    var video, index, id, cursor = 0;
-    var tempVector = Vod_emptyCellVector.slice();
+    var response = JSON.parse(responseText),
+        response_items = response.videos.length,
+        video, id, i = 0,
+        cursor = 0,
+        tempVector = [];
 
     Vod_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitVideo) Vod_ReplacedataEnded = true;
+    if (response_items < Main_ItemsLimitReplace) Vod_dataEnded = true;
 
-    for (var i = 0; i < Vod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+    for (i; i < Vod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         id = video._id;
         if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Vod_idObject[id]) i--;
@@ -314,19 +312,23 @@ function Vod_loadDataSuccessReplace(responseText) {
                 id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                    video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                    video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) +
+                    STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                     STR_DURATION + Play_timeS(video.length)
                 ], Vod_ids);
 
-            index = tempVector.indexOf(tempVector[i]);
-            if (index > -1) tempVector.splice(index, 1);
+            tempVector.push(i);
         }
     }
 
+    for (i = tempVector.length - 1; i > -1; i--) Vod_emptyCellVector.splice(tempVector[i], 1);
+
     Vod_itemsCountOffset += cursor;
-    if (Vod_ReplacedataEnded) Vod_emptyCellVector = [];
-    else Vod_emptyCellVector = tempVector;
+    if (Vod_dataEnded) {
+        Vod_itemsCount -= Vod_emptyCellVector.length;
+        Vod_emptyCellVector = [];
+    }
 
     Vod_loadDataSuccessFinish();
 }
