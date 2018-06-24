@@ -15,7 +15,6 @@ var Live_emptyCellVector = [];
 var Live_itemsCountOffset = 0;
 var Live_ReplacedataEnded = false;
 var Live_MaxOffset = 0;
-var Live_checkVersion = false;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
 var Live_emptyContent = false;
@@ -191,17 +190,6 @@ function Live_loadDataSuccessFinish() {
                 Live_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Live_addFocus();
-            }
-            if (!Live_checkVersion) {
-                Live_checkVersion = true;
-                if (Main_checkVersion()) Main_showUpdateDialog();
-
-                //Hide all input element and show after css has fully load
-                //to prevent a odd random situation were they show when the app first open
-                //because css class have not yet finished load but html did
-                document.getElementById('oauth').style.display = 'block';
-                document.getElementById('search').style.display = 'block';
-                document.getElementById('add_user').style.display = 'block';
             }
             Main_ShowElement(Live_ids[10]);
             Live_FirstLoad = false;
@@ -444,6 +432,7 @@ function Live_handleKeyDown(event) {
             Main_showAboutDialog();
             break;
         case KEY_GREEN:
+            //Main_showUpdateDialog();
             break;
         case KEY_YELLOW:
             Main_showControlsDialog();

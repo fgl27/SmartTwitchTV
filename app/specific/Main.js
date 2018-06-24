@@ -211,8 +211,24 @@ function Main_initWindows() {
         Main_Is4k = webapis.productinfo.isUdPanelSupported();
         SmartHub_SetNoUserPreviewData();
         AddUser_RestoreUsers();
-        Live_init();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
+        Live_init();
+        if (Main_checkVersion()) {
+            if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
+                Main_showWarningDialog('there is a update');
+                window.setTimeout(Main_HideWarningDialog, 3500);
+            } else {
+                Main_showUpdateDialog();
+                localStorage.setItem('has_showUpdateDialog', 1);
+            }
+        }
+
+        //Hide all input element and show after css has fully load
+        //to prevent a odd random situation were they show when the app first open
+        //because css class have not yet finished load but html did
+        document.getElementById('oauth').style.display = 'block';
+        document.getElementById('search').style.display = 'block';
+        document.getElementById('add_user').style.display = 'block';
 
         // pre load All img
         Main_PreLoadAImage(IMG_404_VIDEO);
