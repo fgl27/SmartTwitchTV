@@ -35,7 +35,6 @@ function pt_BRLang() {
     STR_STREAM_ON = "Transmitido em ";
     STR_DURATION = "Duração ";
     STR_VIEWS = " Visualizações";
-    STR_BUFFERING = "Carregando ";
     STR_VIEWER = " Espectadores";
     STR_EXIT_AGAIN = "Pressione novamente para sair!";
     STR_EXIT_MESSAGE = "Quer sair do Twitch?";

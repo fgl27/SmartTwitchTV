@@ -38,7 +38,6 @@ var STR_CONTENT = " Content";
 var STR_STREAM_ON = "Streamed on ";
 var STR_DURATION = "Duration ";
 var STR_VIEWS = " Views";
-var STR_BUFFERING = "Buffering ";
 var STR_VIEWER = " Viewers";
 var STR_EXIT_AGAIN = "Click again to exit!";
 var STR_EXIT_MESSAGE = "Do you wanna to exit Twitch?";
