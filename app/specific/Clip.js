@@ -233,7 +233,7 @@ function Clip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = Clip_emptyCellVector.length + Clip_ReplacedataTry;
+        var limit = Clip_emptyCellVector.length + (Clip_ReplacedataTry * Clip_ReplacedataTry);
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + limit +
             '&period=' + encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
@@ -307,7 +307,7 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) Clip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (Clip_ReplacedataTry > 1) {
+    if (Clip_ReplacedataTry > 5) {
         Clip_itemsCount -= Clip_emptyCellVector.length;
         Clip_emptyCellVector = [];
         Clip_ReplacedataEnded = true;
