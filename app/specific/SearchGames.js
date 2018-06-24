@@ -167,8 +167,6 @@ function SearchGames_loadDataSuccessFinish() {
 function SearchGames_addFocus() {
     Main_addFocusGame(SearchGames_cursorY, SearchGames_cursorX, SearchGames_ids,
         Main_ColoumnsCountGame, Games_itemsCount);
-    if (SearchGames_cursorY > 2) Main_LazyImg(SearchGames_ids[1], SearchGames_cursorY, IMG_404_GAME, Main_ColoumnsCountGame, 3);
-
 }
 
 function SearchGames_removeFocus() {

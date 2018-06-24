@@ -1,6 +1,5 @@
 //Variable initialization
 var Main_isReleased = false;
-var Main_cursorY = -1;
 var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
@@ -121,19 +120,6 @@ var Main_loadImg = function(ImgObjet, Src, img_type) {
         this.src = img_type; //img fail to load use predefined
     };
     ImgObjet.src = Src;
-};
-
-var Main_lazyLoad = function(ImgObjet, img_type) {
-    ImgObjet.onerror = function() {
-        this.src = img_type; //img fail to load use predefined
-    };
-    ImgObjet.src = ImgObjet.getAttribute('data-src');
-    ImgObjet.removeAttribute('data-src');
-};
-
-var Main_lazyUnLoad = function(ImgRstObjet) {
-    ImgRstObjet.setAttribute('data-src', ImgRstObjet.getAttribute('src'));
-    ImgRstObjet.removeAttribute('src');
 };
 //Variable initialization end
 
@@ -628,7 +614,11 @@ function Main_empty(el) {
 }
 
 function Main_imgVectorLoad(img_type) {
-    for (var i = 0; i < Main_imgVector.length; i++) Main_loadImg(document.getElementById(Main_imgVector[i].id), Main_imgVector[i].src, img_type);
+    var elem;
+    for (var i = 0; i < Main_imgVector.length; i++) {
+        elem = document.getElementById(Main_imgVector[i].id);
+        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src, img_type);
+    }
 }
 
 function Main_imgVectorRst() {
@@ -642,39 +632,7 @@ function Main_imgVectorPush(id, src) {
     });
 }
 
-function Main_LazyImg(imgId, row_id, img_type, coloumns, offset) { //offset is one more then number if (cursorY > number)
-    var change = Main_Ychange(row_id);
-    if (row_id === offset && change === 1) change = 0;
-
-    if (change) {
-        var x = 0,
-            mbool = change > 0,
-            y, elem;
-
-        for (x; x < coloumns; x++) {
-            y = mbool ? row_id + offset : row_id - offset;
-            elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) Main_lazyLoad(elem, img_type);
-
-            y = mbool ? row_id - offset - 1 : row_id + offset + 1;
-            elem = document.getElementById(imgId + y + '_' + x);
-            if (elem !== null) Main_lazyUnLoad(elem);
-        }
-    }
-}
-
-function Main_Ychange(y) {
-    var position = 0;
-
-    if (Main_cursorY < y) position = 1; //going down
-    else if (Main_cursorY > y) position = -1; //going up
-
-    Main_cursorY = y;
-    return position;
-}
-
 function Main_YRst(y) {
-    Main_cursorY = y;
     Main_cursorYAddFocus = y;
 }
 

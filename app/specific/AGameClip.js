@@ -77,6 +77,7 @@ function AGameClip_StartLoad() {
 }
 
 function AGameClip_loadDataPrepare() {
+    Main_imgVectorRst();
     AGameClip_loadingData = true;
     AGameClip_loadingDataTry = 0;
     AGameClip_loadingDataTimeout = 3500;
