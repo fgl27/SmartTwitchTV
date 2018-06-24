@@ -482,6 +482,22 @@
             text-shadow: #545454 0 0 17px, #545454 0 0 14px, #545454 0 0 11px;
         }
 
+        .strokeloadingplay {
+            box-sizing: border-box;
+            border-radius: 50%;
+            width: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-shadow: #A9A9A9 0 0 22px, #A9A9A9 0 0 19px, #A9A9A9 0 0 16px;
+        }
+
+        div.buffertext {
+            display: flex;
+            font-weight: bold;
+            font-size: 36%;
+            transform: translate(0, -235%);
+            text-shadow: #000000 0 0 15px, #000000 0 0 15px, #000000 0 0 10px;
+        }
+
         table.streams_tables {
             width: 98%;
             border: 0;
@@ -879,8 +895,9 @@
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 17%;">
                 <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 350%;"></div>
             </div>
-            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 28%;">
-                <div id="dialog_buffer_play_text" class="strokedbig" style="font-size: 400%;"></div>
+            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 24%; font-size: 727%;">
+                <i class="icon icon-circle-o-notch fa fa-spin strokeloadingplay"></i>
+                <div id="dialog_buffer_play_percentage" class="buffertext"></div>
             </div>
         </div>
         <object id="av-player" type="application/avplayer" style="width:100%; height:100%; position: absolute;"></object>

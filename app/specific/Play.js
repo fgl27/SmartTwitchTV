@@ -92,8 +92,6 @@ function Play_PreStart() {
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
-    Main_innerHTML("dialog_buffer_play_text", STR_BUFFERING +
-        '<div style="height: 45px; vertical-align: middle; display: inline-block; "><i class="fa icon-circle-o-notch fa-spin"></i><div id="dialog_buffer_play_percentage" style="display:flex; font-weight: bold; font-size: 38%; transform: translate(0,-220%);">0</div></div>');
     Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
     Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 }
