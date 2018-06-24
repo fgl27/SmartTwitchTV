@@ -9,10 +9,8 @@ var Clip_loadingData = false;
 var Clip_loadingDataTry = 0;
 var Clip_loadingDataTryMax = 5;
 var Clip_loadingDataTimeout = 3500;
-var Clip_ReplacedataEnded = false;
 var Clip_MaxOffset = 0;
 var Clip_emptyContent = false;
-var Clip_ReplacedataTry = 0;
 
 var Clip_ids = ['c_thumbdiv', 'c_img', 'c_infodiv', 'c_title', 'c_createdon', 'c_game', 'c_viwers', 'c_duration', 'c_cell', 'cpempty_', 'clip_scroll', 'c_lang'];
 var Clip_status = false;
@@ -56,14 +54,12 @@ function Clip_StartLoad() {
     Clip_cursor = null;
     Clip_status = false;
     Main_empty('stream_table_clip');
-    Clip_ReplacedataEnded = false;
     Clip_MaxOffset = 0;
     Clip_idObject = {};
     Clip_emptyCellVector = [];
     Clip_itemsCountCheck = false;
     Clip_FirstLoad = true;
     Clip_itemsCount = 0;
-    Clip_ReplacedataTry = 0;
     Clip_cursorX = 0;
     Clip_cursorY = 0;
     Clip_dataEnded = false;
@@ -220,10 +216,7 @@ function Clip_loadDataSuccessFinish() {
                 Clip_loadDataPrepare();
                 Clip_loadDataReplace();
                 return;
-            } else {
-                Clip_ReplacedataTry = 0;
-                Clip_emptyCellVector = [];
-            }
+            } else Clip_emptyCellVector = [];
         }
         Clip_loadingData = false;
     });
@@ -233,9 +226,9 @@ function Clip_loadDataReplace() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        var limit = Clip_emptyCellVector.length + (Clip_ReplacedataTry * Clip_ReplacedataTry);
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + limit +
-            '&period=' + encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=100&period=' +
+            encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Clip_loadingDataTimeout;
@@ -264,7 +257,7 @@ function Clip_loadDataErrorReplace() {
         Clip_loadingDataTimeout += 500;
         Clip_loadDataReplace();
     } else {
-        Clip_ReplacedataEnded = true;
+        Clip_dataEnded = true;
         Clip_emptyCellVector = [];
         Clip_loadDataSuccessFinish();
     }
@@ -277,11 +270,7 @@ function Clip_loadDataSuccessReplace(responseText) {
         cursor = 0,
         tempVector = [];
 
-    Clip_cursor = response._cursor;
-
-    if (Clip_cursor === '') Clip_dataEnded = true;
-
-    Clip_ReplacedataEnded = !response_items;
+    if (response._cursor === '' || !response_items) Clip_dataEnded = true;
 
     for (i; i < Clip_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.clips[cursor];
@@ -307,20 +296,57 @@ function Clip_loadDataSuccessReplace(responseText) {
 
     for (i = tempVector.length - 1; i > -1; i--) Clip_emptyCellVector.splice(tempVector[i], 1);
 
-    if (Clip_ReplacedataTry > 5) {
-        Clip_itemsCount -= Clip_emptyCellVector.length;
-        Clip_emptyCellVector = [];
-        Clip_ReplacedataEnded = true;
+    if (Clip_emptyCellVector.length || Clip_dataEnded) {
         Clip_dataEnded = true;
-    } else Clip_ReplacedataTry++;
-
-    if (Clip_ReplacedataEnded || Clip_dataEnded) {
         Clip_itemsCount -= Clip_emptyCellVector.length;
-        Clip_ReplacedataTry = 0;
         Clip_emptyCellVector = [];
+        Clip_loadDataSuccessFinish();
+    } else {
+        Clip_loadDataPrepare();
+        Clip_SetCursor(cursor);
     }
+}
 
-    Clip_loadDataSuccessFinish();
+function Clip_SetCursor(cursor) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + cursor + '&period=' +
+            encodeURIComponent(Clip_period) + '&cursor=' + encodeURIComponent(Clip_cursor) +
+            '&' + Math.round(Math.random() * 1e7), true);
+
+        xmlHttp.timeout = Clip_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Clip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    Clip_loadDataSuccessFinish();
+                    return;
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        Clip_SetCursorReplace(cursor);
+    }
+}
+
+function Clip_SetCursorReplace(cursor) {
+    Clip_loadingDataTry++;
+    if (Clip_loadingDataTry < 10) {
+        Clip_loadingDataTimeout += 500;
+        Clip_SetCursor(cursor);
+    } else {
+        Clip_dataEnded = true;
+        Clip_emptyCellVector = [];
+        Clip_loadDataSuccessFinish();
+    }
 }
 
 function Clip_addFocus() {
