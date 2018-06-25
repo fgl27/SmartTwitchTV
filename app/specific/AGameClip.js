@@ -315,7 +315,8 @@ function AGameClip_loadDataSuccessReplace(responseText) {
         AGameClip_emptyCellVector = [];
         AGameClip_loadDataSuccessFinish();
     } else {
-        AGameClip_loadDataPrepare();
+        AGameClip_loadingDataTry = 0;
+        AGameClip_loadingDataTimeout = 3500;
         AGameClip_SetCursor(cursor);
     }
 }

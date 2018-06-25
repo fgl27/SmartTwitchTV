@@ -302,7 +302,8 @@ function Clip_loadDataSuccessReplace(responseText) {
         Clip_emptyCellVector = [];
         Clip_loadDataSuccessFinish();
     } else {
-        Clip_loadDataPrepare();
+        Clip_loadingDataTry = 0;
+        Clip_loadingDataTimeout = 3500;
         Clip_SetCursor(cursor);
     }
 }

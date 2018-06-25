@@ -302,7 +302,8 @@ function ChannelClip_loadDataSuccessReplace(responseText) {
         ChannelClip_emptyCellVector = [];
         ChannelClip_loadDataSuccessFinish();
     } else {
-        ChannelClip_loadDataPrepare();
+        ChannelClip_loadingDataTry = 0;
+        ChannelClip_loadingDataTimeout = 3500;
         ChannelClip_SetCursor(cursor);
     }
 }
