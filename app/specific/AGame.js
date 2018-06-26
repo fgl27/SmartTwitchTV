@@ -315,6 +315,7 @@ function AGame_loadDataErrorReplace() {
         AGame_loadDataReplace();
     } else {
         AGame_dataEnded = true;
+        AGame_itemsCount -= AGame_emptyCellVector.length;
         AGame_emptyCellVector = [];
         AGame_loadDataSuccessFinish();
     }

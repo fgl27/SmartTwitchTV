@@ -251,6 +251,7 @@ function ChannelVod_loadDataErrorReplace() {
         ChannelVod_loadDataReplace();
     } else {
         ChannelVod_dataEnded = true;
+        ChannelVod_itemsCount -= ChannelVod_emptyCellVector.length;
         ChannelVod_emptyCellVector = [];
         ChannelVod_loadDataSuccessFinish();
     }

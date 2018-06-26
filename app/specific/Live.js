@@ -241,6 +241,7 @@ function Live_loadDataErrorReplace() {
         Live_loadDataReplace();
     } else {
         Live_dataEnded = true;
+        Live_itemsCount -= Live_emptyCellVector.length;
         Live_emptyCellVector = [];
         Live_loadDataSuccessFinish();
     }
