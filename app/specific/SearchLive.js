@@ -221,7 +221,7 @@ function SearchLive_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     SearchLive_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else SearchLive_loadDataErrorReplace();
             }
         };
 

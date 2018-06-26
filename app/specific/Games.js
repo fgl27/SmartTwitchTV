@@ -223,7 +223,7 @@ function Games_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     Games_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else Games_loadDataErrorReplace();
             }
         };
 

@@ -123,9 +123,7 @@ function AGameClip_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     AGameClip_loadDataSuccess(xmlHttp.responseText);
                     return;
-                } else {
-                    AGameClip_loadDataError();
-                }
+                } else AGameClip_loadDataError();
             }
         };
 
@@ -343,7 +341,7 @@ function AGameClip_SetCursor(cursor) {
                     if (AGameClip_cursor === '') AGameClip_dataEnded = true;
                     AGameClip_loadDataSuccessFinish();
                     return;
-                }
+                } else AGameClip_SetCursorReplace(cursor);
             }
         };
 

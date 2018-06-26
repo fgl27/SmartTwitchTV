@@ -235,7 +235,7 @@ function AGameVod_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     AGameVod_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else AGameVod_loadDataErrorReplace();
             }
         };
 

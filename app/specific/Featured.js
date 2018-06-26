@@ -219,7 +219,7 @@ function Featured_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     Featured_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else Featured_loadDataErrorReplace();
             }
         };
 

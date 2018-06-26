@@ -288,7 +288,7 @@ function UserLive_loadChannelsReplace() {
                 if (xmlHttp.status === 200) {
                     UserLive_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else UserLive_loadDataErrorReplace();
             }
         };
 
