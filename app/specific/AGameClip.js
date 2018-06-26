@@ -270,6 +270,7 @@ function AGameClip_loadDataErrorReplace() {
         AGameClip_loadDataReplace();
     } else {
         AGameClip_ReplacedataEnded = true;
+        AGameClip_itemsCount -= AGameClip_emptyCellVector.length;
         AGameClip_emptyCellVector = [];
         AGameClip_loadDataSuccessFinish();
     }
@@ -339,6 +340,7 @@ function AGameClip_SetCursor(cursor) {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     AGameClip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    if (AGameClip_cursor === '') AGameClip_dataEnded = true;
                     AGameClip_loadDataSuccessFinish();
                     return;
                 }
@@ -358,6 +360,7 @@ function AGameClip_SetCursorReplace(cursor) {
         AGameClip_SetCursor(cursor);
     } else {
         AGameClip_dataEnded = true;
+        AGameClip_itemsCount -= AGameClip_emptyCellVector.length;
         AGameClip_emptyCellVector = [];
         AGameClip_loadDataSuccessFinish();
     }

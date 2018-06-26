@@ -258,6 +258,7 @@ function Clip_loadDataErrorReplace() {
         Clip_loadDataReplace();
     } else {
         Clip_dataEnded = true;
+        Clip_itemsCount -= Clip_emptyCellVector.length;
         Clip_emptyCellVector = [];
         Clip_loadDataSuccessFinish();
     }
@@ -326,6 +327,7 @@ function Clip_SetCursor(cursor) {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     Clip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    if (Clip_cursor === '') Clip_dataEnded = true;
                     Clip_loadDataSuccessFinish();
                     return;
                 }
@@ -345,6 +347,7 @@ function Clip_SetCursorReplace(cursor) {
         Clip_SetCursor(cursor);
     } else {
         Clip_dataEnded = true;
+        Clip_itemsCount -= Clip_emptyCellVector.length;
         Clip_emptyCellVector = [];
         Clip_loadDataSuccessFinish();
     }
