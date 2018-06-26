@@ -305,6 +305,7 @@ function UserLive_loadDataErrorReplace() {
         UserLive_loadChannelsReplace();
     } else {
         UserLive_dataEnded = true;
+        UserLive_itemsCount -= UserLive_emptyCellVector.length;
         UserLive_emptyCellVector = [];
         UserLive_loadDataSuccessFinish();
     }

@@ -236,6 +236,7 @@ function Featured_loadDataErrorReplace() {
         Featured_loadDataReplace();
     } else {
         Featured_dataEnded = true;
+        Featured_itemsCount -= Featured_emptyCellVector.length;
         Featured_emptyCellVector = [];
         Featured_loadDataSuccessFinish();
     }

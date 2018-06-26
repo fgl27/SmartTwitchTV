@@ -238,6 +238,7 @@ function SearchLive_loadDataErrorReplace() {
         SearchLive_loadDataReplace();
     } else {
         SearchLive_dataEnded = true;
+        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
         SearchLive_emptyCellVector = [];
         SearchLive_loadDataSuccessFinish();
     }

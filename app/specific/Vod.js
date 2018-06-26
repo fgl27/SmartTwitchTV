@@ -285,6 +285,7 @@ function Vod_loadDataErrorReplace() {
         Vod_loadDataReplace();
     } else {
         Vod_dataEnded = true;
+        Vod_itemsCount -= Vod_emptyCellVector.length;
         Vod_emptyCellVector = [];
         Vod_loadDataSuccessFinish();
     }

@@ -247,6 +247,7 @@ function UserGames_loadDataReplaceError() {
         UserGames_loadDataReplace();
     } else {
         UserGames_dataEnded = true;
+        UserGames_itemsCount -= UserGames_emptyCellVector.length;
         UserGames_emptyCellVector = [];
         UserGames_loadDataSuccessFinish();
     }

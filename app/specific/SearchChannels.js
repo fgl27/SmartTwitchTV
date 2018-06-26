@@ -239,6 +239,7 @@ function SearchChannels_loadDataErrorReplace() {
         SearchChannels_loadDataReplace();
     } else {
         SearchChannels_dataEnded = true;
+        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
         SearchChannels_emptyCellVector = [];
         SearchChannels_loadDataSuccessFinish();
     }

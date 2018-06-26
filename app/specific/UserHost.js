@@ -236,6 +236,7 @@ function UserHost_loadDataReplaceError() {
         UserHost_loadDataReplace();
     } else {
         UserHost_dataEnded = true;
+        UserHost_itemsCount -= UserHost_emptyCellVector.length;
         UserHost_emptyCellVector = [];
         UserHost_loadDataSuccessFinish();
     }

@@ -240,6 +240,7 @@ function Games_loadDataErrorReplace() {
         Games_loadDataReplace();
     } else {
         Games_dataEnded = true;
+        Games_itemsCount -= Games_emptyCellVector.length;
         Games_emptyCellVector = [];
         Games_loadDataSuccessFinish();
     }
