@@ -261,6 +261,7 @@ function ChannelClip_loadDataErrorReplace() {
         ChannelClip_loadDataReplace();
     } else {
         ChannelClip_ReplacedataEnded = true;
+        ChannelClip_itemsCount -= ChannelClip_emptyCellVector.length;
         ChannelClip_emptyCellVector = [];
         ChannelClip_loadDataSuccessFinish();
     }
@@ -326,6 +327,7 @@ function ChannelClip_SetCursor(cursor) {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     ChannelClip_cursor = JSON.parse(xmlHttp.responseText)._cursor;
+                    if (ChannelClip_cursor === '') ChannelClip_dataEnded = true;
                     ChannelClip_loadDataSuccessFinish();
                     return;
                 }
@@ -345,6 +347,7 @@ function ChannelClip_SetCursorReplace(cursor) {
         ChannelClip_SetCursor(cursor);
     } else {
         ChannelClip_dataEnded = true;
+        ChannelClip_itemsCount -= ChannelClip_emptyCellVector.length;
         ChannelClip_emptyCellVector = [];
         ChannelClip_loadDataSuccessFinish();
     }
