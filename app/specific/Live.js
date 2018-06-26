@@ -224,7 +224,7 @@ function Live_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     Live_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else Live_loadDataErrorReplace();
             }
         };
 

@@ -112,9 +112,7 @@ function Clip_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     Clip_loadDataSuccess(xmlHttp.responseText);
                     return;
-                } else {
-                    Clip_loadDataError();
-                }
+                } else Clip_loadDataError();
             }
         };
 
@@ -330,7 +328,7 @@ function Clip_SetCursor(cursor) {
                     if (Clip_cursor === '') Clip_dataEnded = true;
                     Clip_loadDataSuccessFinish();
                     return;
-                }
+                } else Clip_SetCursorReplace(cursor);
             }
         };
 

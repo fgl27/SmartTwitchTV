@@ -234,7 +234,7 @@ function ChannelVod_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     ChannelVod_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else ChannelVod_loadDataErrorReplace();
             }
         };
 

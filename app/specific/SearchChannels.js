@@ -222,7 +222,7 @@ function SearchChannels_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     SearchChannels_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else SearchChannels_loadDataErrorReplace();
             }
         };
 

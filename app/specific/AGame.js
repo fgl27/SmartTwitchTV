@@ -298,7 +298,7 @@ function AGame_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     AGame_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else AGame_loadDataErrorReplace();
             }
         };
 

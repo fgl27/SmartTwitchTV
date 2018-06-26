@@ -118,9 +118,7 @@ function ChannelClip_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     ChannelClip_loadDataSuccess(xmlHttp.responseText);
                     return;
-                } else {
-                    ChannelClip_loadDataError();
-                }
+                } else ChannelClip_loadDataError();
             }
         };
 
@@ -330,7 +328,7 @@ function ChannelClip_SetCursor(cursor) {
                     if (ChannelClip_cursor === '') ChannelClip_dataEnded = true;
                     ChannelClip_loadDataSuccessFinish();
                     return;
-                }
+                } else ChannelClip_SetCursorReplace(cursor);
             }
         };
 

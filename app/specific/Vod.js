@@ -268,7 +268,7 @@ function Vod_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     Vod_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else Vod_loadDataErrorReplace();
             }
         };
 
