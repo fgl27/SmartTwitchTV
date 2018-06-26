@@ -244,7 +244,7 @@ function ChannelClip_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     ChannelClip_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else ChannelClip_loadDataErrorReplace();
             }
         };
 

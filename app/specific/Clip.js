@@ -241,7 +241,7 @@ function Clip_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     Clip_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else Clip_loadDataErrorReplace();
             }
         };
 

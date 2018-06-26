@@ -253,7 +253,7 @@ function AGameClip_loadDataReplace() {
                 if (xmlHttp.status === 200) {
                     AGameClip_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                }
+                } else AGameClip_loadDataErrorReplace();
             }
         };
 
