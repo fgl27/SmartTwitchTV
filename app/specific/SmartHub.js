@@ -279,6 +279,7 @@ function SmartHub_EventListener() {
                     Main_Go = Main_aGame;
 
                     Search_isSearching = false;
+                    SearchGames_return = false;
                     Main_ExitCurrent(ExitScreen);
                     if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
                     else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
