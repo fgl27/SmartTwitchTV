@@ -278,6 +278,7 @@ function SmartHub_EventListener() {
                     Main_gameSelected = GameIdx;
                     Main_Go = Main_aGame;
 
+                    if (Search_isSearching) Main_RestoreTopLabel();
                     Search_isSearching = false;
                     SearchGames_return = false;
                     Main_ExitCurrent(ExitScreen);
