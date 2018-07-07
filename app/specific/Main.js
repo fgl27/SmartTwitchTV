@@ -598,6 +598,8 @@ function Main_checkVersion() {
 function Main_GoLive() {
     AddCode_SetDefaultOAuth(0);
     Main_Go = Main_Live;
+    if (Search_isSearching) Main_RestoreTopLabel();
+    Search_isSearching = false;
     Main_SwitchScreen();
 }
 
