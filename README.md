@@ -84,7 +84,7 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 
 	sudo add-apt-repository ppa:openjdk-r/ppa
 	sudo apt-get update
-	sudo apt-get openjdk-8-jdk
+	sudo apt-get install openjdk-8-jdk
 
 #
 * Press enter and Click OK/YES and accept all the requests from java installer on the terminal
