@@ -66,7 +66,7 @@ var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
-var Play_RestoringFromResume = false;
+var Play_Cancheckplayer = true;
 var Play_TargetHost = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
@@ -138,7 +138,6 @@ function Play_Start() {
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
 
     Play_currentTime = 0;
-    Play_RestoringFromResume = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
@@ -174,7 +173,7 @@ function Play_Resume() {
                 if (Play_isOn) {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
-                    Play_RestoringFromResume = true;
+                    Play_Cancheckplayer = false;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
                     Play_PlayerCheckQualityChanged = false;
@@ -253,7 +252,7 @@ function Play_updateStreamInfo() {
                         Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    } else if (Play_RestoringFromResume) {
+                    } else if (!Play_Cancheckplayer) {
                         Play_isLive = false;
                         Play_offPlayer();
                         Play_CheckHostStart();
@@ -407,12 +406,12 @@ var Play_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         Play_bufferingcomplete = false;
-        Play_RestoringFromResume = false;
+        Play_Cancheckplayer = true;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
-        Play_RestoringFromResume = false;
+        Play_Cancheckplayer = true;
         Main_empty('dialog_buffer_play_percentage');
     },
     onbufferingprogress: function(percent) {
@@ -427,7 +426,7 @@ var Play_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
         }
-        Play_RestoringFromResume = false;
+        Play_Cancheckplayer = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
@@ -446,6 +445,7 @@ function Play_onPlayer() {
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
     try {
         Play_avplay.stop();
+        Play_Cancheckplayer = false;
         Play_avplay.open(Play_playingUrl);
         Play_avplay.setListener(Play_listener);
         if (Main_Is4k && !Play_4K_ModeEnable) {
@@ -486,7 +486,7 @@ function Play_isIdleOrPlaying() {
 }
 
 function Play_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime && !Play_RestoringFromResume) {
+    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime && Play_Cancheckplayer) {
         Play_PlayerCheckCount++;
         Play_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
