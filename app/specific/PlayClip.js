@@ -27,6 +27,7 @@ var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_bufferingcomplete = false;
 var PlayClip_HasVOD = false;
+var PlayClip_Cancheckplayer = true;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -113,10 +114,12 @@ var PlayClip_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         PlayClip_bufferingcomplete = false;
+        PlayClip_Cancheckplayer = true;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
+        PlayClip_Cancheckplayer = true;
         Main_empty('dialog_buffer_play_percentage');
         // reset the values after using
         PlayClip_offsettime = 0;
@@ -135,6 +138,7 @@ var PlayClip_listener = {
             // reset the values after using
             PlayClip_offsettime = 0;
         }
+        PlayClip_Cancheckplayer = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
@@ -202,6 +206,7 @@ function PlayClip_onPlayer() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n' + PlayClip_playingUrl + '\n');
     try {
         Play_avplay.stop();
+        PlayClip_Cancheckplayer = false;
         Play_avplay.open(PlayClip_playingUrl);
 
         if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
@@ -245,7 +250,7 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
+    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime && PlayClip_Cancheckplayer) {
         PlayClip_PlayerCheckCount++;
         PlayClip_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) PlayClip_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing

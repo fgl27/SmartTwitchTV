@@ -45,7 +45,7 @@ var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
-var PlayVod_RestoringFromResume = false;
+var PlayVod_Cancheckplayer = true;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -77,7 +77,6 @@ function PlayVod_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
 
     PlayVod_currentTime = 0;
-    PlayVod_RestoringFromResume = false;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
@@ -199,7 +198,6 @@ function PlayVod_Resume() {
         window.clearInterval(PlayVod_streamCheck);
         Play_clearPause();
     } else {
-        PlayVod_RestoringFromResume = true;
         PlayVod_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
@@ -335,7 +333,7 @@ var PlayVod_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         PlayVod_bufferingcomplete = false;
-        PlayVod_RestoringFromResume = false;
+        PlayVod_Cancheckplayer = true;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -344,7 +342,7 @@ var PlayVod_listener = {
         // reset the values after using
         PlayVod_vodOffset = 0;
         PlayVod_offsettime = 0;
-        PlayVod_RestoringFromResume = false;
+        PlayVod_Cancheckplayer = true;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -361,7 +359,7 @@ var PlayVod_listener = {
             PlayVod_vodOffset = 0;
             PlayVod_offsettime = 0;
         }
-        PlayVod_RestoringFromResume = false;
+        PlayVod_Cancheckplayer = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
@@ -380,6 +378,7 @@ function PlayVod_onPlayer() {
     if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n' + PlayVod_playingUrl + '\n');
     try {
         Play_avplay.stop();
+        PlayVod_Cancheckplayer = false;
         Play_avplay.open(PlayVod_playingUrl);
 
         if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
@@ -416,7 +415,7 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime && !PlayVod_RestoringFromResume) {
+    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime && PlayVod_Cancheckplayer) {
         PlayVod_PlayerCheckCount++;
         PlayVod_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
