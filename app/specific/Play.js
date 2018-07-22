@@ -72,6 +72,7 @@ var Play_DisplaynameHost = '';
 var Play_isHost = false;
 var Play_isOpenChannel = false;
 var Play_isLive = true;
+var Play_RestoreFromResume = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -132,6 +133,7 @@ function Play_Start() {
     Main_empty('dialog_buffer_play_percentage');
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
+    Play_RestoreFromResume = false;
 
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
@@ -173,7 +175,7 @@ function Play_Resume() {
                 if (Play_isOn) {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
-                    Play_Cancheckplayer = false;
+                    Play_RestoreFromResume = true;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
                     Play_PlayerCheckQualityChanged = false;
@@ -252,7 +254,7 @@ function Play_updateStreamInfo() {
                         Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    } else if (!Play_Cancheckplayer) {
+                    } else if (Play_RestoreFromResume) {
                         Play_isLive = false;
                         Play_offPlayer();
                         Play_CheckHostStart();
@@ -407,11 +409,13 @@ var Play_listener = {
         Play_showBufferDialog();
         Play_bufferingcomplete = false;
         Play_Cancheckplayer = true;
+        Play_RestoreFromResume = false;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
         Play_Cancheckplayer = true;
+        Play_RestoreFromResume = false;
         Main_empty('dialog_buffer_play_percentage');
     },
     onbufferingprogress: function(percent) {
@@ -427,6 +431,7 @@ var Play_listener = {
             Main_empty('dialog_buffer_play_percentage');
         }
         Play_Cancheckplayer = true;
+        Play_RestoreFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
         if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
