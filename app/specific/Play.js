@@ -174,9 +174,9 @@ function Play_Resume() {
                 if (Play_isOn) {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
+                    Play_RestoringFromResume = true;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
-                    Play_RestoringFromResume = true;
                     Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
@@ -253,7 +253,7 @@ function Play_updateStreamInfo() {
                         Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    } else {
+                    } else if (Play_RestoringFromResume) {
                         Play_isLive = false;
                         Play_offPlayer();
                         Play_CheckHostStart();
