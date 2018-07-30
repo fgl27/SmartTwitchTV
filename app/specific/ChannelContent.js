@@ -407,6 +407,7 @@ function ChannelContent_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_BeforeChannel;
+                Main_BeforeChannel = Main_Live;
                 ChannelContent_exit();
                 Main_selectedChannel_id = '';
                 Main_SwitchScreen();
