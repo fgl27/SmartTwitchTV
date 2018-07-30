@@ -399,7 +399,10 @@ function AGame_handleKeyDown(event) {
                 if (SearchGames_return) {
                     Main_Go = Main_SearchGames;
                     Main_gameSelected = SearchGames_gameSelectedOld;
-                } else Main_Go = Main_BeforeAgame;
+                } else {
+                    Main_Go = Main_BeforeAgame;
+                    Main_BeforeAgame = Main_Live;
+                }
                 AGame_exit();
                 Main_SwitchScreen();
             }
