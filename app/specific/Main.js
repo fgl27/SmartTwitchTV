@@ -495,6 +495,7 @@ function Main_openStream() {
     Main_ShowElement('scene2');
     Play_hidePanel();
     Play_hideChat();
+    Play_HideEndDialog();
     Main_HideElement('scene1');
     Play_Start();
 }

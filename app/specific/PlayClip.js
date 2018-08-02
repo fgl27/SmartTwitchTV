@@ -31,6 +31,7 @@ var PlayClip_Cancheckplayer = true;
 //Variable initialization end
 
 function PlayClip_Start() {
+    Play_HideEndDialog();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();
