@@ -49,6 +49,7 @@ var PlayVod_Cancheckplayer = true;
 //Variable initialization end
 
 function PlayVod_Start() {
+    Play_HideEndDialog();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Play_hideChat();

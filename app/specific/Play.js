@@ -178,6 +178,7 @@ function Play_Resume() {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
                     Play_RestoreFromResume = true;
+                    Play_Cancheckplayer = false;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
                     Play_PlayerCheckQualityChanged = false;
@@ -215,9 +216,11 @@ function Play_updateStreamInfoStart() {
                             AddCode_CheckFallow();
                         } else Play_hideFallow();
                     } else {
-                        Play_isLive = false;
-                        Play_offPlayer();
-                        Play_CheckHostStart();
+                        if (Play_isOn) {
+                            Play_isLive = false;
+                            Play_offPlayer();
+                            Play_CheckHostStart();
+                        }
                     }
                 } else { // internet error
                     Play_updateStreamInfoStartError();
@@ -410,18 +413,19 @@ var Play_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         Play_bufferingcomplete = false;
-        Play_Cancheckplayer = true;
         Play_RestoreFromResume = false;
+        Play_PlayerCheckCount = 0;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         Play_bufferingcomplete = true;
-        Play_Cancheckplayer = true;
         Play_RestoreFromResume = false;
         Main_empty('dialog_buffer_play_percentage');
+        Play_PlayerCheckCount = 0;
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
+        if (percent < 5) Play_PlayerCheckCount = 0;
         if (percent < 98) {
             Play_BufferPercentage = percent;
             Main_textContent("dialog_buffer_play_percentage", percent + 3);
@@ -432,7 +436,6 @@ var Play_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
         }
-        Play_Cancheckplayer = true;
         Play_RestoreFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
@@ -452,7 +455,6 @@ function Play_onPlayer() {
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
     try {
         Play_avplay.stop();
-        Play_Cancheckplayer = false;
         Play_avplay.open(Play_playingUrl);
         Play_avplay.setListener(Play_listener);
         if (Main_Is4k && !Play_4K_ModeEnable) {
@@ -468,6 +470,7 @@ function Play_onPlayer() {
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         Play_Playing = true;
+        Play_Cancheckplayer = true;
     });
 
     Main_ready(function() {
@@ -506,7 +509,7 @@ function Play_PlayerCheck() {
         Play_PlayerCheckCount++;
         Play_PlayerCheckOffset = 0;
         if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
-        if (Play_PlayerCheckCount > (3 + Play_PlayerCheckOffset)) { //staled for 6 sec drop one quality
+        if (Play_PlayerCheckCount > (3 + Play_PlayerCheckOffset)) { //staled for 4.5 sec drop one quality
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
