@@ -73,11 +73,13 @@ var Play_isHost = false;
 var Play_isOpenChannel = false;
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
+var Play_Chatobj;
 //Variable initialization end
 
 function Play_PreStart() {
     Play_avplay = (window.tizen && window.webapis.avplay) || {};
     Play_SetAvPlayGlobal();
+    Play_Chatobj = document.getElementById('chat_frame');
     Play_ClearPlayer();
     Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
     Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
@@ -161,7 +163,7 @@ function Play_Resume() {
     if (document.hidden) {
         Play_ClearPlayer();
         Play_Playing = false;
-        document.getElementById('chat_frame').src = 'about:blank';
+        Play_Chatobj.src = 'about:blank';
         window.clearInterval(Play_streamInfoTimer);
         window.clearInterval(Play_streamCheck);
     } else {
@@ -471,7 +473,7 @@ function Play_onPlayer() {
     Main_ready(function() {
 
         // sync chat and stream
-        document.getElementById('chat_frame').src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
+        Play_loadChat();
 
         Play_offsettime = Play_oldcurrentTime;
         Play_HideWarningDialog();
@@ -481,6 +483,15 @@ function Play_onPlayer() {
         Play_PlayerCheckCount = 0;
         Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
     });
+}
+
+function Play_loadChat() {
+    var chatlink = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
+
+    Play_Chatobj.onerror = function() {
+        this.src = chatlink; //img fail to load use predefined
+    };
+    Play_Chatobj.src = chatlink;
 }
 
 // If idle or playing, the media is be played or process to
@@ -613,7 +624,7 @@ function Play_ClearPlay() {
     document.removeEventListener('visibilitychange', Play_Resume);
     Play_oldcurrentTime = 0;
     Play_offsettime = 0;
-    document.getElementById('chat_frame').src = 'about:blank';
+    Play_Chatobj.src = 'about:blank';
     window.clearInterval(Play_streamInfoTimer);
     window.clearInterval(Play_streamCheck);
     Play_PlayerCheckOffset = 0;
