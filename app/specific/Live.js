@@ -107,13 +107,13 @@ function Live_loadDataError() {
         Live_loadingDataTimeout += 500;
         Live_loadDataRequest();
     } else {
+        Live_loadingData = false;
         if (!Live_itemsCount) {
-            Live_loadingData = false;
+            Live_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             Main_ShowElement('topbar');
         } else {
-            Live_loadingData = false;
             Live_dataEnded = true;
             Live_loadDataSuccessFinish();
         }

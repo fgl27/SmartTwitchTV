@@ -100,9 +100,14 @@ function UserChannels_loadDataError() {
         UserChannels_loadChannels();
     } else {
         UserChannels_loadingData = false;
-        UserChannels_Status = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!UserChannels_itemsCount) {
+            UserChannels_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            UserChannels_dataEnded = true;
+            UserChannels_loadDataSuccessFinish();
+        }
     }
 }
 

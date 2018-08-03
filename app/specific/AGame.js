@@ -119,8 +119,14 @@ function AGame_loadDataError() {
         AGame_loadDataRequest();
     } else {
         AGame_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!AGame_itemsCount) {
+            AGame_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            AGame_dataEnded = true;
+            AGame_loadDataSuccessFinish();
+        }
     }
 }
 

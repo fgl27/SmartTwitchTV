@@ -107,14 +107,15 @@ function Games_loadDataError() {
         Games_loadingDataTimeout += 500;
         Games_loadDataRequest();
     } else {
+        Games_loadingData = false;
         if (!Games_itemsCount) {
+            Games_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
             Games_dataEnded = true;
             Games_loadDataSuccessFinish();
         }
-        Games_loadingData = false;
     }
 }
 

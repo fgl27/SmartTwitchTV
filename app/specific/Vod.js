@@ -121,8 +121,14 @@ function Vod_loadDataError() {
         Vod_loadDataRequest();
     } else {
         Vod_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!Vod_itemsCount) {
+            Vod_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            Vod_dataEnded = true;
+            Vod_loadDataSuccessFinish();
+        }
     }
 }
 

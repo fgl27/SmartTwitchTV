@@ -110,8 +110,14 @@ function SearchLive_loadDataError() {
         SearchLive_loadDataRequest();
     } else {
         SearchLive_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!SearchLive_itemsCount) {
+            SearchLive_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            SearchLive_dataEnded = true;
+            SearchLive_loadDataSuccessFinish();
+        }
     }
 }
 

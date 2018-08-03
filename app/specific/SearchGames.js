@@ -99,8 +99,10 @@ function SearchGames_loadDataError() {
         SearchGames_loadDataRequest();
     } else {
         SearchGames_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!SearchGames_itemsCount) {
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else SearchGames_loadDataSuccessFinish();
     }
 }
 

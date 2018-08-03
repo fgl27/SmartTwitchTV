@@ -124,8 +124,14 @@ function ChannelVod_loadDataError() {
         ChannelVod_loadDataRequest();
     } else {
         ChannelVod_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!ChannelVod_itemsCount) {
+            ChannelVod_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            ChannelVod_dataEnded = true;
+            ChannelVod_loadDataSuccessFinish();
+        }
     }
 }
 

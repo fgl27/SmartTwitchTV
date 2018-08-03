@@ -110,8 +110,14 @@ function UserHost_loadDataError() {
         UserHost_loadChannels();
     } else {
         UserHost_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!UserHost_itemsCount) {
+            UserHost_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            UserHost_dataEnded = true;
+            UserHost_loadDataSuccessFinish();
+        }
     }
 }
 

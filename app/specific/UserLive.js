@@ -108,8 +108,14 @@ function UserLive_loadDataError() {
         UserLive_loadChannels();
     } else {
         UserLive_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!UserLive_itemsCount) {
+            UserLive_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            UserLive_dataEnded = true;
+            UserLive_loadDataSuccessFinish();
+        }
     }
 }
 
