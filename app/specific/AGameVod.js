@@ -125,8 +125,14 @@ function AGameVod_loadDataError() {
         AGameVod_loadDataRequest();
     } else {
         AGameVod_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!AGameVod_itemsCount) {
+            AGameVod_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            AGameVod_dataEnded = true;
+            AGameVod_loadDataSuccessFinish();
+        }
     }
 }
 

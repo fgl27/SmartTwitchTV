@@ -135,8 +135,14 @@ function ChannelClip_loadDataError() {
         ChannelClip_loadDataRequest();
     } else {
         ChannelClip_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!ChannelClip_itemsCount) {
+            ChannelClip_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            ChannelClip_dataEnded = true;
+            ChannelClip_loadDataSuccessFinish();
+        }
     }
 }
 

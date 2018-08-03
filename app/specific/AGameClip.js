@@ -140,8 +140,14 @@ function AGameClip_loadDataError() {
         AGameClip_loadDataRequest();
     } else {
         AGameClip_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!AGameClip_itemsCount) {
+            AGameClip_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            AGameClip_dataEnded = true;
+            AGameClip_loadDataSuccessFinish();
+        }
     }
 }
 

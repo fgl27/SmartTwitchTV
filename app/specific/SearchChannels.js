@@ -116,8 +116,14 @@ function SearchChannels_loadDataError() {
         SearchChannels_loadDataRequest();
     } else {
         SearchChannels_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!SearchChannels_itemsCount) {
+            SearchChannels_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            SearchChannels_dataEnded = true;
+            SearchChannels_loadDataSuccessFinish();
+        }
     }
 }
 

@@ -104,14 +104,15 @@ function Featured_loadDataError() {
         Featured_loadingDataTimeout += 500;
         Featured_loadDataRequest();
     } else {
+        Featured_loadingData = false;
         if (!Featured_itemsCount) {
+            Featured_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
             Featured_dataEnded = true;
             Featured_loadDataSuccessFinish();
         }
-        Featured_loadingData = false;
     }
 }
 

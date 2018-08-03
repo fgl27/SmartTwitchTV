@@ -129,8 +129,14 @@ function Clip_loadDataError() {
         Clip_loadDataRequest();
     } else {
         Clip_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!Clip_itemsCount) {
+            Clip_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            Clip_dataEnded = true;
+            Clip_loadDataSuccessFinish();
+        }
     }
 }
 

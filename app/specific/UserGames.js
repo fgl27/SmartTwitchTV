@@ -114,8 +114,14 @@ function UserGames_loadDataError() {
         UserGames_loadDataRequest();
     } else {
         UserGames_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!UserGames_itemsCount) {
+            UserGames_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            UserGames_dataEnded = true;
+            UserGames_loadDataSuccessFinish();
+        }
     }
 }
 
