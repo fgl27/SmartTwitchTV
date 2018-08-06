@@ -74,6 +74,10 @@ var Play_isOpenChannel = false;
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
 var Play_Chatobj;
+var Play_ChatLoadOK = false;
+var Play_CheckChatCounter = 0;
+var Play_CheckChatId;
+var Play_ChatLoadStarted = false;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -141,6 +145,7 @@ function Play_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
 
+    Play_ChatLoadOK = false;
     Play_currentTime = 0;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
@@ -415,6 +420,8 @@ var Play_listener = {
         Play_bufferingcomplete = false;
         Play_RestoreFromResume = false;
         Play_PlayerCheckCount = 0;
+        // sync chat and stream
+        if (!Play_ChatLoadStarted) Play_loadChat();
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -422,6 +429,7 @@ var Play_listener = {
         Play_RestoreFromResume = false;
         Main_empty('dialog_buffer_play_percentage');
         Play_PlayerCheckCount = 0;
+        if (!Play_ChatLoadStarted) Play_loadChat();
     },
     onbufferingprogress: function(percent) {
         //percent has a -2 offset and goes up to 98
@@ -436,6 +444,7 @@ var Play_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
         }
+        if (!Play_ChatLoadStarted) Play_loadChat();
         Play_RestoreFromResume = false;
     },
     oncurrentplaytime: function(currentTime) {
@@ -461,6 +470,8 @@ function Play_onPlayer() {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
             Play_4K_ModeEnable = true;
         }
+        window.clearTimeout(Play_CheckChatId);
+        Play_ChatLoadStarted = false;
     } catch (e) {
         console.log(e);
     }
@@ -474,10 +485,6 @@ function Play_onPlayer() {
     });
 
     Main_ready(function() {
-
-        // sync chat and stream
-        Play_loadChat();
-
         Play_offsettime = Play_oldcurrentTime;
         Play_HideWarningDialog();
         Play_hidePanel();
@@ -489,12 +496,35 @@ function Play_onPlayer() {
 }
 
 function Play_loadChat() {
-    var chatlink = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
+    Play_ChatLoadStarted = true;
 
-    Play_Chatobj.onerror = function() {
-        this.src = chatlink; //img fail to load use predefined
-    };
-    Play_Chatobj.src = chatlink;
+    //Clear the iframe doc to prevent false true from Play_CheckChat "indexOf('Connected') !== -1"
+    var doc = Play_Chatobj.contentDocument;
+    if (doc !== undefined && doc.body !== null) {
+        doc.open();
+        doc.write("");
+        doc.close();
+    }
+
+    window.clearTimeout(Play_CheckChatId);
+    Play_CheckChatCounter = 0;
+    Play_ChatLoadOK = false;
+    Play_Chatobj.src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
+    Play_CheckChatId = window.setTimeout(Play_CheckChat, 3500);
+}
+
+function Play_CheckChat() {
+    var doc = Play_Chatobj.contentDocument;
+    if (doc !== undefined && doc.body !== null)
+        Play_ChatLoadOK = doc.body.innerHTML.indexOf('Connected') !== -1; //when connected OK a "Connected" is see in the chat
+
+    if (!Play_ChatLoadOK) {
+        if (Play_ChatLoadStarted && Play_CheckChatCounter < 7) {
+            Play_CheckChatCounter++;
+            Play_CheckChatId = window.setTimeout(Play_CheckChat, 1000);
+        } else Play_loadChat();
+
+    }
 }
 
 // If idle or playing, the media is be played or process to
