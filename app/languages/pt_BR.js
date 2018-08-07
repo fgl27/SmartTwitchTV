@@ -6,6 +6,7 @@ function pt_BRLang() {
     STR_ABOUT = "Sobre";
     STR_SEARCH_EMPTY = "Nenhum texto foi inserido.";
     STR_SWITCH = "Trocar de tela";
+    STR_SWITCH_USER = "Trocar a tela de usuario";
     STR_SWITCH_VOD = "Transmissões Anteriores/Destaques";
     STR_SWITCH_CLIP = "Período (24h, 7d, 30d, todos)";
     STR_USER = "Usuário ";
