@@ -23,6 +23,7 @@ var UserGames_ids = ['ug_thumbdiv', 'ug_img', 'ug_infodiv', 'ug_displayname', 'u
 
 function UserGames_init() {
     Main_Go = Main_usergames;
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", UserGames_handleKeyDown, false);
@@ -40,6 +41,7 @@ function UserGames_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_user', STR_USER);
     document.body.removeEventListener("keydown", UserGames_handleKeyDown);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(UserGames_ids[7]);
 }
 

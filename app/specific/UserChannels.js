@@ -21,6 +21,7 @@ var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname',
 function UserChannels_init() {
     Main_Go = Main_UserChannels;
     SearchChannels_isLastSChannels = false;
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
@@ -36,6 +37,7 @@ function UserChannels_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(UserChannels_ids[6]);
 }
 

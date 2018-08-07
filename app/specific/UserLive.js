@@ -24,6 +24,7 @@ var UserLive_FirstLoad = false;
 
 function UserLive_init() {
     Main_Go = Main_UserLive;
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_CHANNELS));
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
@@ -39,6 +40,7 @@ function UserLive_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserLive_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(UserLive_ids[10]);
 }
 
