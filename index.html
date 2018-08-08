@@ -645,6 +645,8 @@
             width: 5%;
             display: inline-block;
             vertical-align: middle;
+            /* When the html code is compressed loaded from js this div and the next have no space in between, adding a margin makes it look ok, but too big when the code is not compresed*/
+            margin: 10px;
         }
 
         div.settings_value {
