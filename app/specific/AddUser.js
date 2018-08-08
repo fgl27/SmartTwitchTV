@@ -57,7 +57,7 @@ function AddUser_handleKeyDown(event) {
             AddUser_inputFocus();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             AddUser_exit();

@@ -403,8 +403,7 @@ function ChannelContent_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_BeforeChannel;
                 Main_BeforeChannel = Main_Live;
@@ -446,7 +445,7 @@ function ChannelContent_handleKeyDown(event) {
             ChannelContent_keyEnter();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             ChannelContent_exit();
@@ -458,8 +457,7 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_BLUE:
             if (!Search_isSearching) Main_BeforeSearch = Main_ChannelContent;
             Main_Go = Main_Search;
-            Main_RestoreTopLabel();
-            document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+            ChannelContent_exit();
             Main_SwitchScreen();
             break;
         default:

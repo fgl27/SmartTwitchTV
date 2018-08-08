@@ -46,6 +46,7 @@ var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
 var PlayVod_Cancheckplayer = true;
+var PlayVod_Buffer = 4; //place holder
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -390,6 +391,8 @@ function PlayVod_onPlayer() {
             Play_clearPause();
         }
 
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
         Play_avplay.setListener(PlayVod_listener);
         if (Main_Is4k && !Play_4K_ModeEnable) {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");

@@ -78,6 +78,7 @@ var Play_ChatLoadOK = false;
 var Play_CheckChatCounter = 0;
 var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
+var Play_Buffer = 4; //place holder
 //Variable initialization end
 
 function Play_PreStart() {
@@ -85,22 +86,11 @@ function Play_PreStart() {
     Play_SetAvPlayGlobal();
     Play_Chatobj = document.getElementById('chat_frame');
     Play_ClearPlayer();
-    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
-    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
-    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
-
-    Main_textContent("dialog_end_replay_text", STR_REPLAY);
-    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
-    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
-    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
 
     Play_ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
-    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
-    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 }
 
 //this are the global set option that need to be set only once
@@ -111,8 +101,6 @@ function Play_SetAvPlayGlobal() {
         Play_avplay.open(GIT_IO + "temp.mp4");
         Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
         Play_avplay.setListener(PlayStart_listener);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_BufferSizeInSeconds);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Main_ResumeBufferSizeInSeconds);
     } catch (e) {
         console.log(e + " Play_SetAvPlayGlobal()");
     }
@@ -124,6 +112,12 @@ var PlayStart_listener = {
         Play_avplay.stop();
     }
 };
+
+function Play_SetBuffers() {
+    Play_Buffer = Settings_Obj_values(1);
+    PlayVod_Buffer = Settings_Obj_values(2);
+    PlayClip_Buffer = Settings_Obj_values(3);
+}
 
 function Play_Start() {
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
@@ -465,6 +459,9 @@ function Play_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+
         Play_avplay.setListener(Play_listener);
         if (Main_Is4k && !Play_4K_ModeEnable) {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
