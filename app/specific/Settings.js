@@ -74,13 +74,16 @@ function Settings_SetStrings() {
     Main_textContent('setting_name_1', STR_SETTINGS_BUFFER_LIVE);
     Main_textContent('setting_name_2', STR_SETTINGS_BUFFER_VOD);
     Main_textContent('setting_name_3', STR_SETTINGS_BUFFER_CLIP);
+
+    for (var i = 0; i < Settings_positions_length; i++) {
+        Main_textContent('settings_value_' + i, Settings_Obj_values(i));
+    }
 }
 
 function Settings_SetDefautls() {
     for (var i = 0; i < Settings_positions_length; i++) {
         Settings_value.positions[i].defaultValue = parseInt(localStorage.getItem('settings_value_deafult_' + i)) || Settings_value.positions[i].defaultValue;
         Settings_value.positions[i].defaultValue -= 1; // workaround to java 0 = false, save the value with a +1
-        Main_textContent('settings_value_' + i, Settings_Obj_values(i));
     }
     Play_SetBuffers();
 }
@@ -144,7 +147,6 @@ function Settings_SetDefault(position) {
 function Settings_CheckLang(lang) {
     if (lang.indexOf('en_') !== -1) Settings_value.positions[0].defaultValue = 0;
     else if (lang.indexOf('pt_') !== -1) Settings_value.positions[0].defaultValue = 1;
-    Main_textContent('settings_value_0', Settings_Obj_values(0));
 }
 
 function Settings_SetLang(lang) {
