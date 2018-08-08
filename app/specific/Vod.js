@@ -362,8 +362,7 @@ function Vod_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 if (Main_Before === Main_Vod) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
@@ -460,7 +459,7 @@ function Vod_handleKeyDown(event) {
             Vod_openStream();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             Vod_exit();

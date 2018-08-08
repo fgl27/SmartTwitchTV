@@ -331,8 +331,7 @@ function UserGames_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_Users;
                 UserGames_exit();
@@ -420,7 +419,7 @@ function UserGames_handleKeyDown(event) {
             Main_SwitchScreen();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             UserGames_exit();

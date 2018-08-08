@@ -392,8 +392,7 @@ function AGameClip_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_aGame;
                 AGameClip_exit();
@@ -491,7 +490,7 @@ function AGameClip_handleKeyDown(event) {
             AGameClip_openStream();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             AGameClip_exit();

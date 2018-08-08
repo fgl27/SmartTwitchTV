@@ -447,12 +447,17 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        div.info_dialogs {
+        div.info_dialogs,
+        div.about_dialogs {
             position: fixed;
             z-index: 100;
             border-radius: 15px;
             border: 4px solid #FFFFFF;
             background-color: rgba(0, 0, 0, 0.90);
+        }
+
+        div.about_dialogs {
+            background-color: rgba(0, 0, 0, 1);
         }
 
         div.dialogs {
@@ -581,12 +586,89 @@
             background-color: rgba(150, 150, 150, 0.7);
         }
 
+        div.right,
+        div.left {
+            border-top: 24px solid transparent;
+            border-bottom: 24px solid transparent;
+            opacity: 0;
+        }
+
+        div.right {
+            border-left: 33px solid white;
+        }
+
+        div.left {
+            border-right: 33px solid white;
+        }
+
+        div.settings_main {
+            font-weight: bold;
+            color: #FFFFFF;
+            width: 90%;
+            margin-left: 5%;
+        }
+
+        div.settings_div,
+        div.settings_title,
+        div.settings_summary,
+        div.settings_section {
+            width: 100%;
+            display: inline-block;
+            font-size: 300%;
+            vertical-align: middle;
+        }
+
+        div.settings_section {
+            font-size: 350%;
+            text-align: center;
+        }
+
+        div.settings_title {
+            width: 100%;
+            text-align: center;
+        }
+
+        div.settings_summary {
+            width: 100%;
+            font-size: 200%;
+            text-align: left;
+        }
+
+        div.settings_name {
+            width: 70%;
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        div.settings_arraw_div {
+            width: 5%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        div.settings_value {
+            width: 14%;
+            display: inline-block;
+            text-align: center;
+            border: 3.5px solid rgba(0, 0, 0, 0);
+            border-radius: 4px;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        div.settings_value_focus {
+            border-color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
         /*cssend this is here so release_maker can work don't remove*/
     </style>
     <script src="$WEBAPIS/webapis/webapis.min.js" defer></script>
-    <script src="app/languages/0_En_Us.js" defer></script>
-    <script src="app/languages/default.js" defer></script>
+    <script src="app/languages/0_Strings.js" defer></script>
+    <script src="app/languages/en_US.js" defer></script>
     <script src="app/languages/pt_BR.js" defer></script>
+    <script src="app/languages/default.js" defer></script>
     <script src="app/general/TVKeyValue.js" defer></script>
     <script src="app/specific/Main.js" defer></script>
     <script src="app/specific/ChannelContent.js" defer></script>
@@ -615,6 +697,7 @@
     <script src="app/specific/UserHost.js" defer></script>
     <script src="app/specific/UserGames.js" defer></script>
     <script src="app/specific/UserChannels.js" defer></script>
+    <script src="app/specific/Settings.js" defer></script>
 </head>
 
 <body>
@@ -622,13 +705,13 @@
     <div id="scene1" class="screen_size">
         <div id="topbar" class="topbar hide">
             <div class="twitchicon">
-                <div style="float: left; width: 44%; padding-top: 2%;">
+                <div style="float: left; width: 40%; padding-top: 2%;">
                     <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
                 </div>
-                <div style="float: right; width: 55%;">
-                    <img style="width: 100%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
+                <div style="float: right; width: 59%;">
+                    <img style="width: 95%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
                     <div style="text-align: center;">
-                        <div id="label_about" class="icon_top_label" style="text-align: center;"></div>
+                        <div id="label_about" class="icon_top_label" style="width: 100%; text-align: center;"></div>
                     </div>
                 </div>
             </div>
@@ -638,7 +721,7 @@
                 <div id="label_refresh" class="icon_top_label"></div>
                 <div id="label_switch" class="icon_top_label"></div>
             </div>
-            <div style="position: fixed; text-align: center; width: 72%; margin-left: 18.5%;">
+            <div id="top_lables" style="position: fixed; text-align: center; width: 72%; margin-left: 18.5%;">
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
                 <div id="top_bar_featured" class="icon_center_label"></div>
@@ -671,7 +754,7 @@
         <div id="dialog_warning" class="strokedbig dialogs hide" style="z-index:101; margin-top: 31%; ">
             <div id="dialog_warning_text" class="strokedbig" style="font-size: 300%; "></div>
         </div>
-        <div id="dialog_about" class="info_dialogs hide" style="width: 90%; margin-top: 5%; margin-left: 5%;">
+        <div id="dialog_about" class="about_dialogs hide" style="width: 90%; margin-top: 5%; margin-left: 5%;">
             <div id="dialog_about_text" class="about_text"></div>
         </div>
         <div id="dialog_update" class="info_dialogs hide" style="width: 70%; margin-top: 6%;margin-left: 15%;">
@@ -712,6 +795,68 @@
             <!-- Etc screens-->
             <div id="user_scroll" class="screen_holder hide">
                 <table id="stream_table_user" class="streams_tables"></table>
+            </div>
+            <div id="settings_scroll" class="screen_holder hide">
+                <div class="settings_main">
+
+                    <!-- General settings-->
+                    <div id="setting_title_general" class="settings_section"></div>
+
+                    <!-- Language selection-->
+                    <div class="settings_div">
+                        <div id="setting_name_0" class="settings_name"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_left_0" class="left"></div>
+                        </div>
+                        <div id="settings_value_0" class="strokedextramini settings_value"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_right_0" class="right"></div>
+                        </div>
+                    </div>
+
+
+                    <!-- Player settings-->
+                    <div id="setting_title_play" class="settings_section"></div>
+
+                    <!-- Buffers:-->
+                    <div id="setting_tile_1" class="settings_title"></div>
+                    <div id="setting_summary_1" class="settings_summary"></div>
+                    <!-- Buffer live-->
+                    <div class="settings_div">
+                        <div id="setting_name_1" class="settings_name"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_left_1" class="left"></div>
+                        </div>
+                        <div id="settings_value_1" class="strokedextramini settings_value"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_right_1" class="right"></div>
+                        </div>
+                    </div>
+
+                    <!-- Buffer vod-->
+                    <div class="settings_div">
+                        <div id="setting_name_2" class="settings_name"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_left_2" class="left"></div>
+                        </div>
+                        <div id="settings_value_2" class="strokedextramini settings_value"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_right_2" class="right"></div>
+                        </div>
+                    </div>
+
+                    <!-- Buffer clip-->
+                    <div class="settings_div">
+                        <div id="setting_name_3" class="settings_name"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_left_3" class="left"></div>
+                        </div>
+                        <div id="settings_value_3" class="strokedextramini settings_value"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_right_3" class="right"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Games screens-->
