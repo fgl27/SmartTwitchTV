@@ -60,10 +60,6 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
 
-//Buffer size in second is not how much time will take to buffer
-//it's how much longer the buffer will be in seconds
-var Main_BufferSizeInSeconds = 4;
-var Main_ResumeBufferSizeInSeconds = 4;
 var Main_Is4k = false;
 
 //The values of thumbnail and related for it screen type
@@ -143,15 +139,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function Main_loadTranslations(device) {
 
+    Settings_SetDefautls();
+    en_USLang();
+
     // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-    var lang = device.language.split(".")[0];
+    var lang = device.language.split(".")[0],
+        Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
+
+    if (Savedlang) lang = Settings_Obj_values(0);
+    else Settings_CheckLang(lang);
+
     if (lang.indexOf('pt_') !== -1) {
         pt_BRLang();
         Main_IsDayFirst = true;
-    } else console.log("language is " + lang);
+    }
+
+    console.log("language is " + lang);
     DefaultLang();
 
     Main_Checktylesheet();
@@ -162,33 +168,11 @@ function Main_loadTranslations(device) {
 }
 
 function Main_initWindows() {
-    //set top bar labels
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
+    Main_SetStrings(true);
+
     Main_updateclock();
     window.setInterval(Main_updateclock, 60000);
 
-    Main_textContent('top_bar_live', STR_LIVE);
-    Main_textContent('top_bar_user', STR_USER);
-    Main_textContent('top_bar_featured', STR_FEATURED);
-    Main_textContent('top_bar_game', STR_GAMES);
-    Main_textContent('top_bar_vod', STR_VIDEOS);
-    Main_textContent('top_bar_clip', STR_CLIPS);
-    Main_textContent('chanel_button', STR_CHANNELS);
-    Main_textContent('game_button', STR_GAMES);
-    Main_textContent('live_button', STR_LIVE);
-    Main_textContent('exit_app_cancel', STR_CANCEL);
-    Main_textContent('exit_app_close', STR_CLOSE);
-    Main_textContent('remove_cancel', STR_CANCEL);
-    Main_textContent('remove_yes', STR_YES);
-    Main_textContent('exit_app_minimize', STR_MINIMIZE);
-    Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
-
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
-    Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
     Main_ScrollbarElement = document.getElementById("scrollbar");
     Main_SearchInput = document.getElementById("search_input");
     Main_AddUserInput = document.getElementById("user_input");
@@ -238,6 +222,48 @@ function Main_initWindows() {
         window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
         document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
     });
+}
+
+function Main_SetStrings(isStarting) {
+    //set top bar labels
+    Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left', isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
+    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_IconLoad('label_about', isStarting ? 'icon-settings' : 'icon-info-circle', isStarting ? STR_SETTINGS_KEY : STR_ABOUT_KEY);
+    Main_textContent('top_bar_live', STR_LIVE);
+    Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
+    Main_textContent('top_bar_featured', STR_FEATURED);
+    Main_textContent('top_bar_game', STR_GAMES);
+    Main_textContent('top_bar_vod', STR_VIDEOS);
+    Main_textContent('top_bar_clip', STR_CLIPS);
+    Main_textContent('chanel_button', STR_CHANNELS);
+    Main_textContent('game_button', STR_GAMES);
+    Main_textContent('live_button', STR_LIVE);
+    Main_textContent('exit_app_cancel', STR_CANCEL);
+    Main_textContent('exit_app_close', STR_CLOSE);
+    Main_textContent('remove_cancel', STR_CANCEL);
+    Main_textContent('remove_yes', STR_YES);
+    Main_textContent('exit_app_minimize', STR_MINIMIZE);
+    Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
+
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
+    Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+
+    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
+    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
+    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
+
+    Main_textContent("dialog_end_replay_text", STR_REPLAY);
+    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
+    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
+    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
+
+    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
+    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
+    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
+    Settings_SetStrings();
+    Main_checkVersion();
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -370,6 +396,16 @@ function Main_HideAboutDialog() {
 
 function Main_isAboutDialogShown() {
     return Main_isElementShowing('dialog_about');
+}
+
+function Main_showSettings() {
+    Main_HideExitDialog();
+    Main_HideControlsDialog();
+    Main_HideUpdateDialog();
+    Main_HideWarningDialog();
+    Main_ExitCurrent(Main_Go);
+    Main_CounterDialogRst();
+    Settings_init();
 }
 
 function Main_showControlsDialog() {

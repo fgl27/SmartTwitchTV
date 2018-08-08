@@ -379,13 +379,10 @@ function Clip_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (Main_Before === Main_Clip) Main_Go = Main_Live;
-                else Main_Go = Main_Before;
-                Clip_exit();
-                Main_SwitchScreen();
-            }
+            if (Main_Before === Main_Clip) Main_Go = Main_Live;
+            else Main_Go = Main_Before;
+            Clip_exit();
+            Main_SwitchScreen();
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Clip_cursorY), (Clip_cursorX - 1), Clip_ids[0])) {
@@ -478,7 +475,7 @@ function Clip_handleKeyDown(event) {
             Clip_openStream();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             Clip_exit();

@@ -1,6 +1,6 @@
 function pt_BRLang() {
-    console.log("loading language pt_BR");
     STR_REFRESH = "Atualizar e voltar pro topo";
+    STR_SETTINGS = "Configurações";
     STR_SEARCH = "Pesquisar";
     STR_CONTROLS = "Controles";
     STR_ABOUT = "Sobre";
@@ -142,9 +142,7 @@ function pt_BRLang() {
     STR_FALLOW_GAMES = "Jogos seguidos";
     STR_USER_GAMES_CHANGE = "Troque entre";
     STR_GUIDE = " (Guia ou Info)";
-    monthNames = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun",
-        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-    ];
+    monthNames = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     STR_STARTED = "Começou ";
     STR_VIDEOS = "Vídeos";
     STR_VIDEO = " Vídeo";
@@ -158,4 +156,13 @@ function pt_BRLang() {
     STR_NO_BROADCAST_WARNING = "Não ha uma transmissão anterior para este clip";
     STR_IS_NOW = " esta agora ";
     STR_OPEN_HOST = "Abrir a hospedagem";
+
+    STR_SETTINGS_PLAYER = "Relacionado ao player";
+    STR_SETTINGS_BUFFER_SIZE = "Tamanho de buffer:";
+    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Um valor baixo fará com que o video comece de play mais rápido, mas pode causar re buffer o que pausa o video para fazer o buffer";
+    STR_SETTINGS_BUFFER_LIVE = "Buffer de transmissão Ao Vivo";
+    STR_SETTINGS_BUFFER_VOD = "Buffer de video transmissão anteriores";
+    STR_SETTINGS_BUFFER_CLIP = "Buffer de clips";
+    STR_SETTINGS_GENERAL = "Gerais";
+    STR_SETTINGS_LANG = "Linguá";
 }

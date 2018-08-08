@@ -8,6 +8,7 @@ var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
+var STR_SETTINGS_KEY = '';
 var STR_CONTROLS_MAIN_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
@@ -21,6 +22,7 @@ var STR_UPDATE_MAIN_0 = '';
 function DefaultLang() {
     STR_CONTROL_KEY = STR_CONTROLS + " (C)";
     STR_SEARCH_KEY = STR_SEARCH + " (D)";
+    STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
     STR_ABOUT_KEY = STR_ABOUT + " (A)";
     STR_SWITCH = STR_SWITCH + STR_KEY_UP_DOWN;
     STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
