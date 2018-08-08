@@ -46,8 +46,7 @@ function AddCode_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_Users;
                 AddCode_exit();
@@ -71,7 +70,7 @@ function AddCode_handleKeyDown(event) {
             AddCode_inputFocus();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             AddCode_exit();
