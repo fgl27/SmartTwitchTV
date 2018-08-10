@@ -43,7 +43,6 @@ var Play_qualitiesFound = false;
 var Play_PlayerTime = 0;
 var Play_streamCheck = null;
 var Play_PlayerCheckCount = 0;
-var Play_PlayerCheckOffset = 0;
 var Play_PlayerCheckQualityChanged = false;
 var Play_Playing = false;
 var Play_selectedChannel = '';
@@ -66,7 +65,6 @@ var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
-var Play_Cancheckplayer = true;
 var Play_TargetHost = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
@@ -78,7 +76,10 @@ var Play_ChatLoadOK = false;
 var Play_CheckChatCounter = 0;
 var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
-var Play_Buffer = 4; //place holder
+var Play_Buffer = 4;
+var Play_PlayerCheckTimer = 4;
+var Play_PlayerCheckInterval = 1000;
+var Play_QualityChangedCounter = 0;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -177,10 +178,8 @@ function Play_Resume() {
                     Play_loadingInfoDataTry = 0;
                     Play_loadingInfoDataTimeout = 3000;
                     Play_RestoreFromResume = true;
-                    Play_Cancheckplayer = false;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
-                    Play_PlayerCheckQualityChanged = false;
                     Play_onPlayer();
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
                 }
@@ -414,6 +413,9 @@ var Play_listener = {
         Play_bufferingcomplete = false;
         Play_RestoreFromResume = false;
         Play_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = Play_Buffer;
+        Play_PlayerCheckQualityChanged = true;
+        Play_QualityChangedCounter = 0;
         // sync chat and stream
         if (!Play_ChatLoadStarted) Play_loadChat();
     },
@@ -423,11 +425,17 @@ var Play_listener = {
         Play_RestoreFromResume = false;
         Main_empty('dialog_buffer_play_percentage');
         Play_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = Play_Buffer;
+        Play_PlayerCheckQualityChanged = true;
+        Play_QualityChangedCounter = 0;
         if (!Play_ChatLoadStarted) Play_loadChat();
     },
     onbufferingprogress: function(percent) {
-        //percent has a -2 offset and goes up to 98
         if (percent < 5) Play_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = Play_Buffer;
+        Play_PlayerCheckQualityChanged = true;
+        Play_QualityChangedCounter = 0;
+        //percent has a -2 offset and goes up to 98
         if (percent < 98) {
             Play_BufferPercentage = percent;
             Main_textContent("dialog_buffer_play_percentage", percent + 3);
@@ -467,6 +475,9 @@ function Play_onPlayer() {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
             Play_4K_ModeEnable = true;
         }
+
+        Play_PlayerCheckTimer = 2;
+        Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
     } catch (e) {
@@ -478,7 +489,6 @@ function Play_onPlayer() {
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         Play_Playing = true;
-        Play_Cancheckplayer = true;
     });
 
     Main_ready(function() {
@@ -488,7 +498,7 @@ function Play_onPlayer() {
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
         Play_PlayerCheckCount = 0;
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
+        Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
     });
 }
 
@@ -532,16 +542,14 @@ function Play_isIdleOrPlaying() {
 }
 
 function Play_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime && Play_Cancheckplayer) {
+    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
-        Play_PlayerCheckOffset = 0;
-        if (Play_BufferPercentage > 90) Play_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
-        if (Play_PlayerCheckCount > (3 + Play_PlayerCheckOffset)) { //staled for 4.5 sec drop one quality
-            if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
+        if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+            if ((Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_QualityChangedCounter < 5)) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
                 Play_qualityChanged();
-                Play_PlayerCheckQualityChanged = true;
+                Play_QualityChangedCounter++;
             } else {
                 Play_avplay.stop();
                 Play_CheckHostStart(); //staled for too long close the player
@@ -657,8 +665,6 @@ function Play_ClearPlay() {
     Play_Chatobj.src = 'about:blank';
     window.clearInterval(Play_streamInfoTimer);
     window.clearInterval(Play_streamCheck);
-    Play_PlayerCheckOffset = 0;
-    Play_PlayerCheckQualityChanged = false;
     Play_IsWarning = false;
 }
 
@@ -919,9 +925,9 @@ function Play_KeyPause(PlayVodClip) {
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
         if (Play_isPanelShown()) Play_hidePanel();
 
-        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, 1500);
-        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
-        else if (PlayVodClip === 3) PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, 1500);
+        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+        else if (PlayVodClip === 3) PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
     }
 }
 
@@ -1132,7 +1138,6 @@ function Play_BottomOptionsPressed(PlayVodClip) {
     if (!Play_Panelcouner) PlayClip_OpenVod();
     else if (Play_Panelcouner === 1) {
         if (PlayVodClip === 1) {
-            Play_PlayerCheckQualityChanged = false;
             Play_qualityChanged();
         } else if (PlayVodClip === 2) {
             if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();

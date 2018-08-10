@@ -21,14 +21,13 @@ var PlayClip_qualityIndex = 0;
 var PlayClip_qualities = [];
 var PlayClip_playingUrl = '';
 var PlayClip_offsettime = 0;
-var PlayClip_PlayerCheckQualityChanged = false;
-var PlayClip_PlayerCheckOffset = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_bufferingcomplete = false;
 var PlayClip_HasVOD = false;
-var PlayClip_Cancheckplayer = true;
-var PlayClip_Buffer = 4; //place holder
+var PlayClip_Buffer = 4;
+var PlayClip_PlayerCheckQualityChanged = false;
+var PlayClip_QualityChangedCounter = 0;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -116,17 +115,29 @@ var PlayClip_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         PlayClip_bufferingcomplete = false;
-        PlayClip_Cancheckplayer = true;
+        PlayClip_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = Play_Buffer;
+        PlayClip_PlayerCheckQualityChanged = true;
+        PlayClip_QualityChangedCounter = 0;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
         PlayClip_bufferingcomplete = true;
-        PlayClip_Cancheckplayer = true;
         Main_empty('dialog_buffer_play_percentage');
         // reset the values after using
         PlayClip_offsettime = 0;
+        PlayClip_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = Play_Buffer;
+        PlayClip_PlayerCheckQualityChanged = true;
+        PlayClip_QualityChangedCounter = 0;
     },
     onbufferingprogress: function(percent) {
+        if (percent < 5) PlayClip_PlayerCheckCount = 0;
+
+        Play_PlayerCheckTimer = Play_Buffer;
+        PlayClip_PlayerCheckQualityChanged = true;
+        PlayClip_QualityChangedCounter = 0;
+
         //percent has a -2 offset and goes up to 98
         if (percent < 98) {
             Play_BufferPercentage = percent;
@@ -140,7 +151,6 @@ var PlayClip_listener = {
             // reset the values after using
             PlayClip_offsettime = 0;
         }
-        PlayClip_Cancheckplayer = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
@@ -208,7 +218,6 @@ function PlayClip_onPlayer() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n' + PlayClip_playingUrl + '\n');
     try {
         Play_avplay.stop();
-        PlayClip_Cancheckplayer = false;
         Play_avplay.open(PlayClip_playingUrl);
 
         if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
@@ -227,6 +236,9 @@ function PlayClip_onPlayer() {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
             Play_4K_ModeEnable = false;
         }
+
+        Play_PlayerCheckTimer = 2;
+        PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
     }
@@ -241,7 +253,7 @@ function PlayClip_onPlayer() {
         PlayClip_hidePanel();
         window.clearInterval(PlayClip_streamCheck);
         PlayClip_PlayerCheckCount = 0;
-        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, 1500);
+        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
     });
 }
 
@@ -254,17 +266,15 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime && PlayClip_Cancheckplayer) {
+    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
         PlayClip_PlayerCheckCount++;
-        PlayClip_PlayerCheckOffset = 0;
-        if (Play_BufferPercentage > 90) PlayClip_PlayerCheckOffset = 1; // give one more treys if buffer is almost finishing
-        if (PlayClip_PlayerCheckCount > (3 + PlayClip_PlayerCheckOffset)) { //staled for 6 sec drop one quality
-            if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
+        if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+            if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) && (PlayClip_QualityChangedCounter < 5)) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change the first time only retry
                 PlayClip_qualityDisplay();
                 if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
                 PlayClip_qualityChanged();
-                PlayClip_PlayerCheckQualityChanged = true;
+                PlayClip_QualityChangedCounter++;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(3); //staled for too long close the player

@@ -29,7 +29,6 @@ var PlayVod_loadingInfoDataTimeout = 10000;
 var PlayVod_PlayerTime = 0;
 var PlayVod_streamCheck = null;
 var PlayVod_PlayerCheckCount = 0;
-var PlayVod_PlayerCheckOffset = 0;
 var PlayVod_PlayerCheckQualityChanged = false;
 var PlayVod_Playing = false;
 var Play_jumping = false;
@@ -45,8 +44,8 @@ var PlayVod_currentTime = 0;
 var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
-var PlayVod_Cancheckplayer = true;
-var PlayVod_Buffer = 4; //place holder
+var PlayVod_Buffer = 4;
+var PlayVod_QualityChangedCounter = 0;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -207,7 +206,6 @@ function PlayVod_Resume() {
         Play_showBufferDialog();
         PlayVod_Playing = false;
         PlayVod_onPlayer();
-        PlayVod_PlayerCheckQualityChanged = false;
         Play_EndSet(2);
     }
 }
@@ -335,7 +333,10 @@ var PlayVod_listener = {
     onbufferingstart: function() {
         Play_showBufferDialog();
         PlayVod_bufferingcomplete = false;
-        PlayVod_Cancheckplayer = true;
+        PlayVod_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = PlayVod_Buffer;
+        PlayVod_PlayerCheckQualityChanged = true;
+        PlayVod_QualityChangedCounter = 0;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -344,9 +345,17 @@ var PlayVod_listener = {
         // reset the values after using
         PlayVod_vodOffset = 0;
         PlayVod_offsettime = 0;
-        PlayVod_Cancheckplayer = true;
+        PlayVod_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = PlayVod_Buffer;
+        PlayVod_PlayerCheckQualityChanged = true;
+        PlayVod_QualityChangedCounter = 0;
     },
     onbufferingprogress: function(percent) {
+        if (percent < 5) PlayVod_PlayerCheckCount = 0;
+
+        Play_PlayerCheckTimer = PlayVod_Buffer;
+        PlayVod_PlayerCheckQualityChanged = true;
+        PlayVod_QualityChangedCounter = 0;
         //percent has a -2 offset and goes up to 98
         if (percent < 98) {
             Play_BufferPercentage = percent;
@@ -361,7 +370,6 @@ var PlayVod_listener = {
             PlayVod_vodOffset = 0;
             PlayVod_offsettime = 0;
         }
-        PlayVod_Cancheckplayer = true;
     },
     oncurrentplaytime: function(currentTime) {
         if (PlayVod_currentTime !== currentTime) PlayVod_updateCurrentTime(currentTime);
@@ -380,7 +388,6 @@ function PlayVod_onPlayer() {
     if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n' + PlayVod_playingUrl + '\n');
     try {
         Play_avplay.stop();
-        PlayVod_Cancheckplayer = false;
         Play_avplay.open(PlayVod_playingUrl);
 
         if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
@@ -398,6 +405,9 @@ function PlayVod_onPlayer() {
             Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
             Play_4K_ModeEnable = true;
         }
+
+        Play_PlayerCheckTimer = 2;
+        PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
     }
@@ -413,23 +423,21 @@ function PlayVod_onPlayer() {
         PlayVod_hidePanel();
         window.clearInterval(PlayVod_streamCheck);
         PlayVod_PlayerCheckCount = 0;
-        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, 1500);
+        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
 
     });
 }
 
 function PlayVod_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime && PlayVod_Cancheckplayer) {
+    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
-        PlayVod_PlayerCheckOffset = 0;
-        if (Play_BufferPercentage > 90) PlayVod_PlayerCheckOffset = 1; // give one more try if buffer is almost finishing
-        if (PlayVod_PlayerCheckCount > (3 + PlayVod_PlayerCheckOffset)) { //staled for 6 sec drop one quality
-            if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
+        if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+            if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_QualityChangedCounter < 5)) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
                 PlayVod_qualityDisplay();
                 if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
                 PlayVod_qualityChanged();
-                PlayVod_PlayerCheckQualityChanged = true;
+                PlayVod_QualityChangedCounter++;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(2); //staled for too long close the player
@@ -470,9 +478,7 @@ function PlayVod_ClearVod() {
     PlayVod_vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
-    PlayVod_PlayerCheckOffset = 0;
     ChannelVod_DurationSeconds = 0;
-    PlayVod_PlayerCheckQualityChanged = false;
 }
 
 function PlayVod_hidePanel() {
@@ -537,6 +543,7 @@ function PlayVod_jump() {
     if (!Play_isEndDialogShown()) {
         if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
+        PlayVod_PlayerCheckQualityChanged = false;
         if (PlayVod_TimeToJump > 0) {
             try {
                 Play_avplay.jumpForward(PlayVod_TimeToJump * 1000);
