@@ -280,7 +280,7 @@ function Play_updateStreamInfoError() {
     if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
         window.setTimeout(function() {
             if (Play_isOn) Play_updateStreamInfo();
-            //give a second for it retry as the TV may be on gaming from resume
+            //give a second for it retry as the TV may be on coming from resume
         }, 1000);
     }
     Play_updateStreamInfoErrorTry++;
@@ -372,12 +372,14 @@ function Play_extractQualities(input) {
         if (!result.length) {
             if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
             result.push({
-                'id': TempId + Band,
+                'id': TempId,
+                'band': Band,
                 'url': streams[i].split("\n")[2]
             });
         } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' (source)') {
             result.push({
-                'id': TempId + Band,
+                'id': TempId,
+                'band': Band,
                 'url': streams[i].split("\n")[2]
             });
         } else tempCount++;
@@ -846,8 +848,8 @@ function Play_qualityDisplay() {
 
     Play_quality = Play_qualities[Play_qualityIndex].id;
 
-    if (Play_quality.indexOf('source') !== -1) Main_textContent("quality_name", Play_quality.replace("source", STR_SOURCE));
-    else Main_textContent("quality_name", Play_quality);
+    if (Play_quality.indexOf('source') !== -1) Main_textContent("quality_name", Play_quality.replace("source", STR_SOURCE) + Play_qualities[Play_qualityIndex].band);
+    else Main_textContent("quality_name", Play_quality + Play_qualities[Play_qualityIndex].band);
 }
 
 function Play_getQualitiesCount() {
