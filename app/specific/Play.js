@@ -282,8 +282,8 @@ function Play_updateStreamInfoError() {
             if (Play_isOn) Play_updateStreamInfo();
             //give a second for it retry as the TV may be on coming from resume
         }, 1000);
-    }
-    Play_updateStreamInfoErrorTry++;
+        Play_updateStreamInfoErrorTry++;
+    } else Play_updateStreamInfoErrorTry = 0;
 }
 
 function Play_LoadLogo(ImgObjet, link) {
