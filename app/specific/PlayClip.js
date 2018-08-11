@@ -269,7 +269,7 @@ function PlayClip_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) && (PlayClip_QualityChangedCounter < 5)) {
+            if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) && (PlayClip_QualityChangedCounter < Play_QualityChangedCounterMax)) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change the first time only retry
                 PlayClip_qualityDisplay();
                 if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();

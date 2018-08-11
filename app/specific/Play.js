@@ -80,6 +80,8 @@ var Play_Buffer = 4;
 var Play_PlayerCheckTimer = 4;
 var Play_PlayerCheckInterval = 1000;
 var Play_QualityChangedCounter = 0;
+var Play_QualityChangedCounterMax = 4;
+var Play_updateStreamInfoErrorTry = 0;
 //Variable initialization end
 
 function Play_PreStart() {
@@ -140,6 +142,7 @@ function Play_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
 
+    Play_updateStreamInfoErrorTry = 0;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;
     Play_loadingInfoDataTry = 0;
@@ -213,12 +216,10 @@ function Play_updateStreamInfoStart() {
                             AddCode_PlayRequest = true;
                             AddCode_CheckFallow();
                         } else Play_hideFallow();
-                    } else {
-                        if (Play_isOn) {
-                            Play_isLive = false;
-                            Play_offPlayer();
-                            Play_CheckHostStart();
-                        }
+                    } else if (Play_isOn) {
+                        Play_isLive = false;
+                        Play_offPlayer();
+                        Play_CheckHostStart();
                     }
                 } else { // internet error
                     Play_updateStreamInfoStartError();
@@ -251,6 +252,7 @@ function Play_updateStreamInfo() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
+                    Play_updateStreamInfoErrorTry = 0;
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.stream !== null) {
                         Main_textContent("stream_info_title", response.stream.channel.status);
@@ -262,14 +264,26 @@ function Play_updateStreamInfo() {
                         Play_offPlayer();
                         Play_CheckHostStart();
                     }
-                }
+                } else Play_updateStreamInfoError();
             }
         };
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = 3000;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.send(null);
-    } catch (err) {}
+    } catch (err) {
+        Play_updateStreamInfoError();
+    }
+}
+
+function Play_updateStreamInfoError() {
+    if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+        window.setTimeout(function() {
+            if (Play_isOn) Play_updateStreamInfo();
+            //give a second for it retry as the TV may be on gaming from resume
+        }, 1000);
+    }
+    Play_updateStreamInfoErrorTry++;
 }
 
 function Play_LoadLogo(ImgObjet, link) {
@@ -545,7 +559,7 @@ function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_QualityChangedCounter < 5)) {
+            if ((Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_QualityChangedCounter < Play_QualityChangedCounterMax)) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
                 Play_qualityChanged();
