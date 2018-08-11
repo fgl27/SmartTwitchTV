@@ -531,8 +531,8 @@ function PlayVod_qualityDisplay() {
     }
 
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-    if (PlayVod_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayVod_quality.replace("source", STR_SOURCE));
-    else Main_textContent("quality_name", PlayVod_quality);
+    if (PlayVod_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayVod_quality.replace("source", STR_SOURCE) + PlayVod_qualities[PlayVod_qualityIndex].band);
+    else Main_textContent("quality_name", PlayVod_quality + PlayVod_qualities[PlayVod_qualityIndex].band);
 }
 
 function PlayVod_getQualitiesCount() {
