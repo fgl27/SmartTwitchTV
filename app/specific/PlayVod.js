@@ -432,7 +432,7 @@ function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_QualityChangedCounter < 5)) {
+            if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_QualityChangedCounter < Play_QualityChangedCounterMax)) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
                 PlayVod_qualityDisplay();
                 if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
