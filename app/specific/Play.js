@@ -1,5 +1,6 @@
 //Variable initialization
 var Play_ChatPositions = 1;
+var Play_ChatPositionOffsetBefore = Play_ChatPositions;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 3;
 var Play_PanelHideID = null;
@@ -857,25 +858,33 @@ function Play_getQualitiesCount() {
 }
 
 function Play_ChatSize(showDialog) {
-    var containerHeight = 48,
+    var containerHeight = 100,
         percentage = 100,
+        dialogTop = 115;
+
+    Play_sizeOffset = -52;
+
+    if (Play_ChatSizeValue === 3) {
+        containerHeight = 48;
+        percentage = 50;
         dialogTop = 50;
-    Play_sizeOffset = 0;
-    if (Play_ChatSizeValue === 2) {
+        Play_sizeOffset = 0;
+    } else if (Play_ChatSizeValue === 2) {
         containerHeight = 32;
-        percentage = 66;
-        dialogTop = 25;
+        percentage = 25;
+        dialogTop = 30;
         Play_sizeOffset = 16;
     } else if (Play_ChatSizeValue === 1) {
         containerHeight = 17;
-        percentage = 33;
-        dialogTop = 12.5;
+        percentage = 12.5;
+        dialogTop = 15;
         Play_sizeOffset = 31;
     }
+
     document.getElementById("chat_container").style.height = containerHeight + '%';
-    //window.parent.document.getElementById("chat_frame").style.height = '100%';
     document.getElementById("play_chat_dialog").style.marginTop = dialogTop + '%';
     Play_ChatPosition();
+
     if (showDialog) Play_showChatBackgroundDialog('Size ' + percentage + '%');
 
     localStorage.setItem('ChatSizeValue', Play_ChatSizeValue);
@@ -893,22 +902,61 @@ function Play_ChatBackgroundChange(showDialog) {
     localStorage.setItem('ChatBackgroundValue', Play_ChatBackground);
 }
 
+//TODO make Play_ChatPositionOffset and Play_ChatPosition simpler and easier to understand
+function Play_ChatPositionOffset(up) {
+    if (up) {
+        Play_ChatPositionOffsetBefore = Play_ChatPositions;
+        if (Play_ChatPositions < 4) Play_ChatPositions = 1;
+        else if (Play_ChatPositions === 4 || Play_ChatPositions === 8) Play_ChatPositions = 2;
+        else Play_ChatPositions = 3;
+    } else {
+        if (Play_ChatPositions === 1) {
+            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
+                Play_ChatPositions = 1;
+            else if (Play_ChatPositionOffsetBefore === 2 || Play_ChatPositionOffsetBefore === 6)
+                Play_ChatPositions = 2;
+            else Play_ChatPositions = 3;
+        } else if (Play_ChatPositions === 2) {
+            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
+                Play_ChatPositions = 8;
+            else Play_ChatPositions = 4;
+        } else if (Play_ChatPositions === 3) {
+            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
+                Play_ChatPositions = 7;
+            else if (Play_ChatPositionOffsetBefore === 2 || Play_ChatPositionOffsetBefore === 6)
+                Play_ChatPositions = 6;
+            else Play_ChatPositions = 5;
+        }
+    }
+}
+
 function Play_ChatPosition() {
     //default
     var left = "75.3%",
         top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%';
 
-    if (!Play_ChatPositions) Play_ChatPositions = 8;
+    if (Play_ChatSizeValue === 4) {
+        top = Play_sizePanelOffset + '%';
 
-    if (Play_ChatPositions < 9) {
-        if (Play_ChatPositions > 1) top = "33%"; // center/lefth
-        if (Play_ChatPositions > 2) top = "0%"; // top/lefth
-        if (Play_ChatPositions > 3) left = "38.3%"; // top/midle
-        if (Play_ChatPositions > 4) left = "0%"; // top/right
-        if (Play_ChatPositions > 5) top = "33%"; // center/right
-        if (Play_ChatPositions > 6) top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%'; // bottom/lefth
-        if (Play_ChatPositions > 7) left = "38.3%"; // bottom/midle
-    } else Play_ChatPositions = 1;
+        if (!Play_ChatPositions) Play_ChatPositions = 3;
+        else if (Play_ChatPositions > 3) Play_ChatPositions = 1;
+
+        if (Play_ChatPositions > 1) left = "38.3%";
+        if (Play_ChatPositions > 2) left = "0%";
+
+    } else {
+        if (!Play_ChatPositions) Play_ChatPositions = 8;
+
+        if (Play_ChatPositions < 9) { //vertical/horizontal
+            if (Play_ChatPositions > 1) top = "33%"; // center/lefth
+            if (Play_ChatPositions > 2) top = "0%"; // top/lefth
+            if (Play_ChatPositions > 3) left = "38.3%"; // top/midle
+            if (Play_ChatPositions > 4) left = "0%"; // top/right
+            if (Play_ChatPositions > 5) top = "33%"; // center/right
+            if (Play_ChatPositions > 6) top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%'; // bottom/lefth
+            if (Play_ChatPositions > 7) left = "38.3%"; // bottom/midle
+        } else Play_ChatPositions = 1;
+    }
 
     document.getElementById("chat_container").style.top = top;
     document.getElementById("chat_container").style.left = left;
@@ -1424,8 +1472,9 @@ function Play_handleKeyDown(e) {
                     Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isChatShown()) {
-                    if (Play_ChatSizeValue < 3) {
+                    if (Play_ChatSizeValue < 4) {
                         Play_ChatSizeValue++;
+                        if (Play_ChatSizeValue === 4) Play_ChatPositionOffset(true);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 100%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
@@ -1444,6 +1493,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isChatShown()) {
                     if (Play_ChatSizeValue > 1) {
                         Play_ChatSizeValue--;
+                        if (Play_ChatSizeValue === 3) Play_ChatPositionOffset(false);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 33%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
