@@ -1,6 +1,6 @@
 //Variable initialization
-var Play_ChatPositions = 1;
-var Play_ChatPositionOffsetBefore = Play_ChatPositions;
+var Play_ChatPositions = 0;
+var Play_ChatPositionConvertBefore = Play_ChatPositions;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 3;
 var Play_PanelHideID = null;
@@ -27,7 +27,6 @@ var Play_exitID = null;
 var Play_pauseEndID = null;
 var Play_pauseStartID = null;
 
-var Play_sizeOffset = 0;
 var Play_created = '';
 
 var Play_loadingDataTry = 0;
@@ -83,15 +82,74 @@ var Play_PlayerCheckInterval = 1000;
 var Play_QualityChangedCounter = 0;
 var Play_QualityChangedCounterMax = 4;
 var Play_updateStreamInfoErrorTry = 0;
+var Play_chat_container;
+
+//counterclockwise movement, Vertical/horizontal Play_ChatPositions
+var Play_ChatPositionVal = [{
+    "top": 52, // Bottom/right 0
+    "left": 75.3
+}, {
+    "top": 33, // Middle/right 1
+    "left": 75.3
+}, {
+    "top": 0, // Top/right 2
+    "left": 75.3
+}, {
+    "top": 0, // Top/center 3
+    "left": 38.3
+}, {
+    "top": 0, // Top/left 4
+    "left": 0
+}, {
+    "top": 33, // Middle/left 5
+    "left": 0
+}, {
+    "top": 52, // Bottom/left 6
+    "left": 0
+}, {
+    "top": 52, // Bottom/center 7
+    "left": 38.3
+}];
+
+//Conversion between chat at 100% and bellow 50%
+var Play_ChatPositionsBefore = [0, 0, 0, 1, 2, 2, 2, 1]; //Chat positions size 50 to 100%
+var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
+    [0, 1, 2, 2, 2, 1, 0, 0],
+    [7, 3, 3, 3, 3, 3, 7, 7],
+    [6, 5, 4, 4, 4, 5, 6, 6]
+];
+
+var Play_ChatSizeVal = [{
+    "containerHeight": 17, // 12.5%
+    "percentage": 12.5,
+    "dialogTop": 15,
+    "sizeOffset": 31,
+}, {
+    "containerHeight": 32, // 25%
+    "percentage": 25,
+    "dialogTop": 30,
+    "sizeOffset": 16,
+}, {
+    "containerHeight": 48, // 50%
+    "percentage": 50,
+    "dialogTop": 50,
+    "sizeOffset": 0,
+}, {
+    "containerHeight": 100, // 100%
+    "percentage": 100,
+    "dialogTop": 115,
+    "sizeOffset": 0,
+}];
 //Variable initialization end
 
 function Play_PreStart() {
     Play_avplay = (window.tizen && window.webapis.avplay) || {};
     Play_SetAvPlayGlobal();
     Play_Chatobj = document.getElementById('chat_frame');
+    Play_chat_container = document.getElementById("chat_container");
     Play_ClearPlayer();
 
-    Play_ChatPositions = parseInt(localStorage.getItem('ChatPositionsValue')) || 1;
+    Play_ChatPositions = (parseInt(localStorage.getItem('ChatPositionsValue')) - 1) || 0;
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
@@ -772,7 +830,7 @@ function Play_hidePanel() {
     document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
     Play_sizePanelOffset = 0;
-    if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
+    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
 
 function Play_showPanel() {
@@ -786,7 +844,7 @@ function Play_showPanel() {
     document.getElementById("scene_channel_panel").style.opacity = "1";
     Play_setHidePanel();
     Play_sizePanelOffset = -5;
-    if (Play_ChatPositions === 1 || Play_ChatPositions === 7 || Play_ChatPositions === 8) Play_ChatPosition();
+    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
 
 function Play_clearHidePanel() {
@@ -858,36 +916,13 @@ function Play_getQualitiesCount() {
 }
 
 function Play_ChatSize(showDialog) {
-    var containerHeight = 100,
-        percentage = 100,
-        dialogTop = 115;
-
-    Play_sizeOffset = -52;
-
-    if (Play_ChatSizeValue === 3) {
-        containerHeight = 48;
-        percentage = 50;
-        dialogTop = 50;
-        Play_sizeOffset = 0;
-    } else if (Play_ChatSizeValue === 2) {
-        containerHeight = 32;
-        percentage = 25;
-        dialogTop = 30;
-        Play_sizeOffset = 16;
-    } else if (Play_ChatSizeValue === 1) {
-        containerHeight = 17;
-        percentage = 12.5;
-        dialogTop = 15;
-        Play_sizeOffset = 31;
-    }
-
-    document.getElementById("chat_container").style.height = containerHeight + '%';
-    document.getElementById("play_chat_dialog").style.marginTop = dialogTop + '%';
+    Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue - 1].containerHeight + '%';
+    document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue - 1].dialogTop + '%';
     Play_ChatPosition();
 
-    if (showDialog) Play_showChatBackgroundDialog('Size ' + percentage + '%');
+    if (showDialog) Play_showChatBackgroundDialog('Size ' + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage + '%');
 
-    localStorage.setItem('ChatSizeValue', Play_ChatSizeValue);
+    localStorage.setItem('ChatSizeValue', (Play_ChatSizeValue));
 }
 
 function Play_ChatBackgroundChange(showDialog) {
@@ -896,71 +931,33 @@ function Play_ChatBackgroundChange(showDialog) {
     if (chat_value < 0.05) chat_value = 0;
     else chat_value = chat_value.toFixed(2);
 
-    document.getElementById("chat_container").style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
+    Play_chat_container.style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
     if (showDialog) Play_showChatBackgroundDialog('Brightness ' + (chat_value * 100).toFixed(0) + '%');
 
     localStorage.setItem('ChatBackgroundValue', Play_ChatBackground);
 }
 
-//TODO make Play_ChatPositionOffset and Play_ChatPosition simpler and easier to understand
-function Play_ChatPositionOffset(up) {
+function Play_ChatPositionConvert(up) {
     if (up) {
-        Play_ChatPositionOffsetBefore = Play_ChatPositions;
-        if (Play_ChatPositions < 4) Play_ChatPositions = 1;
-        else if (Play_ChatPositions === 4 || Play_ChatPositions === 8) Play_ChatPositions = 2;
-        else Play_ChatPositions = 3;
-    } else {
-        if (Play_ChatPositions === 1) {
-            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
-                Play_ChatPositions = 1;
-            else if (Play_ChatPositionOffsetBefore === 2 || Play_ChatPositionOffsetBefore === 6)
-                Play_ChatPositions = 2;
-            else Play_ChatPositions = 3;
-        } else if (Play_ChatPositions === 2) {
-            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
-                Play_ChatPositions = 8;
-            else Play_ChatPositions = 4;
-        } else if (Play_ChatPositions === 3) {
-            if (Play_ChatPositionOffsetBefore === 1 || Play_ChatPositionOffsetBefore === 7 || Play_ChatPositionOffsetBefore === 8)
-                Play_ChatPositions = 7;
-            else if (Play_ChatPositionOffsetBefore === 2 || Play_ChatPositionOffsetBefore === 6)
-                Play_ChatPositions = 6;
-            else Play_ChatPositions = 5;
-        }
-    }
+        Play_ChatPositionConvertBefore = Play_ChatPositions;
+        Play_ChatPositions = Play_ChatPositionsBefore[Play_ChatPositions];
+    } else Play_ChatPositions = Play_ChatPositionsAfter[Play_ChatPositions][Play_ChatPositionConvertBefore];
 }
 
 function Play_ChatPosition() {
-    //default
-    var left = "75.3%",
-        top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%';
+    var bool = (Play_ChatSizeValue === 4);
 
-    if (Play_ChatSizeValue === 4) {
-        top = Play_sizePanelOffset + '%';
+    if (Play_ChatPositions < 0) Play_ChatPositions = (bool ? 2 : 7);
+    else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
-        if (!Play_ChatPositions) Play_ChatPositions = 3;
-        else if (Play_ChatPositions > 3) Play_ChatPositions = 1;
+    Play_chat_container.style.top =
+        ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatSizeVal[Play_ChatSizeValue - 1].sizeOffset)) +
+            Play_sizePanelOffset) + '%';
 
-        if (Play_ChatPositions > 1) left = "38.3%";
-        if (Play_ChatPositions > 2) left = "0%";
+    Play_chat_container.style.left =
+        Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
-    } else {
-        if (!Play_ChatPositions) Play_ChatPositions = 8;
-
-        if (Play_ChatPositions < 9) { //vertical/horizontal
-            if (Play_ChatPositions > 1) top = "33%"; // center/lefth
-            if (Play_ChatPositions > 2) top = "0%"; // top/lefth
-            if (Play_ChatPositions > 3) left = "38.3%"; // top/midle
-            if (Play_ChatPositions > 4) left = "0%"; // top/right
-            if (Play_ChatPositions > 5) top = "33%"; // center/right
-            if (Play_ChatPositions > 6) top = (52 + Play_sizeOffset + Play_sizePanelOffset) + '%'; // bottom/lefth
-            if (Play_ChatPositions > 7) left = "38.3%"; // bottom/midle
-        } else Play_ChatPositions = 1;
-    }
-
-    document.getElementById("chat_container").style.top = top;
-    document.getElementById("chat_container").style.left = left;
-    localStorage.setItem('ChatPositionsValue', Play_ChatPositions);
+    localStorage.setItem('ChatPositionsValue', (Play_ChatPositions + 1));
 }
 
 function Play_showChatBackgroundDialog(DialogText) {
@@ -1474,7 +1471,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isChatShown()) {
                     if (Play_ChatSizeValue < 4) {
                         Play_ChatSizeValue++;
-                        if (Play_ChatSizeValue === 4) Play_ChatPositionOffset(true);
+                        if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 100%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
@@ -1493,7 +1490,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isChatShown()) {
                     if (Play_ChatSizeValue > 1) {
                         Play_ChatSizeValue--;
-                        if (Play_ChatSizeValue === 3) Play_ChatPositionOffset(false);
+                        if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog('Size 33%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
