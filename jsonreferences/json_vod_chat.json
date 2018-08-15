@@ -1,1393 +1,269 @@
-"https://api.twitch.tv/v5/videos/vode_id/comments?client_id=client_id"
-"https://api.twitch.tv/v5/videos/248604700/comments?client_id=ypvnuqrh98wqz1sr0ov3fgfu4jh1yx"
-"https://api.twitch.tv/v5/videos/248604700/comments?client_id=ypvnuqrh98wqz1sr0ov3fgfu4jh1yx&cursor=_next"
 {
 	"comments": [{
-		"_id": "9e6a3234-f399-4d0a-af9d-e926414f8aba",
-		"created_at": "2018-04-09T23:58:34.3Z",
-		"updated_at": "2018-04-09T23:58:34.3Z",
-		"channel_id": "105458682",
+		"_id": "62038fb2-83a1-4109-8f05-01c3a3469f1d",
+		"created_at": "2018-08-13T21:57:09.25Z",
+		"updated_at": "2018-08-13T21:57:09.25Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 0.5,
+		"content_id": "296954486",
+		"content_offset_seconds": 8.55,
 		"commenter": {
-			"display_name": "LegitMemeStar",
-			"_id": "143298905",
-			"name": "legitmemestar",
+			"display_name": "Simply_Hacking",
+			"_id": "236171076",
+			"name": "simply_hacking",
 			"type": "user",
-			"bio": null,
-			"created_at": "2016-12-30T12:02:56.131741Z",
-			"updated_at": "2018-04-03T18:31:32.377752Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg	"
+			"bio": "Come chill!",
+			"created_at": "2018-07-04T19:38:35.521245Z",
+			"updated_at": "2018-08-15T00:27:19.758245Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/978b93fe-d9be-452e-93d5-075b6a663e7f-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "a",
+			"body": "yeet",
 			"fragments": [{
-				"text": "a"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "0HqwumP7IxXK5g",
-		"created_at": "2018-04-10T05:18:24.645115706Z",
-		"updated_at": "2018-04-10T05:18:24.645115706Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 3,
-		"commenter": {
-			"display_name": "soildog",
-			"_id": "79096518",
-			"name": "soildog",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-01-06T19:35:52.355162Z",
-			"updated_at": "2018-04-01T18:32:08.822307Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/650f7b297cb0ad6e-profile_image-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "offline BibleThump",
-			"emoticons": [{
-				"_id": "86",
-				"begin": 8,
-				"end": 17
-			}],
-			"fragments": [{
-				"text": "offline "
-			}, {
-				"text": "BibleThump",
-				"emoticon": {
-					"emoticon_id": "86",
-					"emoticon_set_id": "0"
-				}
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "y9IqgGwrJBWcbA",
-		"created_at": "2018-04-10T19:58:38.87274952Z",
-		"updated_at": "2018-04-10T19:58:38.87274952Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 3,
-		"commenter": {
-			"display_name": "Alexhellwing",
-			"_id": "100132671",
-			"name": "alexhellwing",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-08-21T20:08:53.396485Z",
-			"updated_at": "2018-04-06T21:33:46.158892Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9e654eac-7df7-4481-b9af-5eb68e9e4c7f-profile_image-300x300.png"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "bob?",
-			"fragments": [{
-				"text": "bob?"
-			}],
-			"is_action": false,
-			"user_color": "#FF0000"
-		},
-		"more_replies": false
-	}, {
-		"_id": "oWG40sfYJBW6UQ",
-		"created_at": "2018-04-13T00:55:26.575880407Z",
-		"updated_at": "2018-04-13T00:55:26.575880407Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 3,
-		"commenter": {
-			"display_name": "FxckMyNxme",
-			"_id": "125625600",
-			"name": "fxckmynxme",
-			"type": "user",
-			"bio": "Just want to laugh",
-			"created_at": "2016-06-01T02:51:45.077115Z",
-			"updated_at": "2018-04-13T00:54:32.270389Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fxckmynxme-profile_image-5021212713f1c745-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "herror",
-			"fragments": [{
-				"text": "herror"
-			}],
-			"is_action": false,
-			"user_color": "#0000FF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "gAj3x1kFJBUr7w",
-		"created_at": "2018-04-10T08:20:57.055559324Z",
-		"updated_at": "2018-04-10T08:20:57.055559324Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 4,
-		"commenter": {
-			"display_name": "KuayxGT",
-			"_id": "192145253",
-			"name": "kuayxgt",
-			"type": "user",
-			"bio": "Im an Average Growtopia Player",
-			"created_at": "2018-01-22T00:16:19.896938Z",
-			"updated_at": "2018-01-22T01:03:48.200585Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "NOI",
-			"fragments": [{
-				"text": "NOI"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "ef7ea92f-8035-4bc1-b62a-369e42e8b5a9",
-		"created_at": "2018-04-09T23:58:37.873Z",
-		"updated_at": "2018-04-09T23:58:37.873Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 4.073,
-		"commenter": {
-			"display_name": "Cemcos",
-			"_id": "100999476",
-			"name": "cemcos",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-08-30T11:25:02.391607Z",
-			"updated_at": "2018-04-11T00:01:00.671705Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "Come back bob",
-			"fragments": [{
-				"text": "Come back bob"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "1a0985f7-9889-44f3-874f-8c336f1bdb32",
-		"created_at": "2018-04-09T23:58:37.954Z",
-		"updated_at": "2018-04-09T23:58:37.954Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 4.154,
-		"commenter": {
-			"display_name": "ball_of_fluff",
-			"_id": "209917005",
-			"name": "ball_of_fluff",
-			"type": "user",
-			"bio": "🌈🍁",
-			"created_at": "2018-03-30T17:54:14.349415Z",
-			"updated_at": "2018-04-04T13:17:45.664341Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/04f80582-8aca-4e6e-a5a3-55d46e8572fc-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "wait does it always finish at 1 am?",
-			"fragments": [{
-				"text": "wait does it always finish at 1 am?"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "29d6569d-3b60-49e5-8306-169b1dc23850",
-		"created_at": "2018-04-09T23:58:38.112Z",
-		"updated_at": "2018-04-09T23:58:38.112Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 4.312,
-		"commenter": {
-			"display_name": "Flimsyfishy",
-			"_id": "77320316",
-			"name": "flimsyfishy",
-			"type": "user",
-			"bio": "Yo, 31 year old gamer. Looking to actually put forth an effort on Twitch. Starting with WoW, but will look to expand to different games. Come for games, music, and fun times.",
-			"created_at": "2014-12-16T05:29:51.753141Z",
-			"updated_at": "2018-04-11T19:01:11.900134Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/641ea346-3a90-4113-8d0d-8ecf644b48f1-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "Well, until next time, Happy painting and god bless.",
-			"fragments": [{
-				"text": "Well, until next time, Happy painting and god bless."
-			}],
-			"is_action": false,
-			"user_color": "#00FF7F"
-		},
-		"more_replies": false
-	}, {
-		"_id": "321de522-cbe0-4a25-a22e-2049734eeb87",
-		"created_at": "2018-04-09T23:58:38.597Z",
-		"updated_at": "2018-04-09T23:58:38.597Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 4.797,
-		"commenter": {
-			"display_name": "LegitMemeStar",
-			"_id": "143298905",
-			"name": "legitmemestar",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-12-30T12:02:56.131741Z",
-			"updated_at": "2018-04-03T18:31:32.377752Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "bob",
-			"fragments": [{
-				"text": "bob"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "7c6fe54f-7b04-4484-b9f4-95bffdae2036",
-		"created_at": "2018-04-09T23:58:39.273Z",
-		"updated_at": "2018-04-09T23:58:39.273Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 5.473,
-		"commenter": {
-			"display_name": "LtEagleEye",
-			"_id": "102583711",
-			"name": "lteagleeye",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-09-19T20:52:18.178326Z",
-			"updated_at": "2018-04-08T16:41:19.167031Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/54b4ba788bf2a7b9-profile_image-300x300.jpeg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BOB???",
-			"fragments": [{
-				"text": "BOB???"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#9D2F2F"
-		},
-		"more_replies": false
-	}, {
-		"_id": "ad119968-6ae4-4883-a27e-7f5bacf2ead6",
-		"created_at": "2018-04-09T23:58:40.707Z",
-		"updated_at": "2018-04-09T23:58:40.707Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 6.907,
-		"commenter": {
-			"display_name": "duggetts",
-			"_id": "111595175",
-			"name": "duggetts",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-01-03T23:13:46.244484Z",
-			"updated_at": "2016-12-21T04:33:29.476306Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "gg guys! bob bless",
-			"fragments": [{
-				"text": "gg guys! bob bless"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "719e0106-a496-43b6-9839-24b70877a738",
-		"created_at": "2018-04-09T23:58:41.711Z",
-		"updated_at": "2018-04-09T23:58:41.711Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 7.911,
-		"commenter": {
-			"display_name": "LegitMemeStar",
-			"_id": "143298905",
-			"name": "legitmemestar",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-12-30T12:02:56.131741Z",
-			"updated_at": "2018-04-03T18:31:32.377752Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "pappy",
-			"fragments": [{
-				"text": "pappy"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "f9642f0d-4b0a-4e06-8a2a-0642a7890a7e",
-		"created_at": "2018-04-09T23:58:42.346Z",
-		"updated_at": "2018-04-09T23:58:42.346Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 8.546,
-		"commenter": {
-			"display_name": "thirdSpy",
-			"_id": "137510250",
-			"name": "thirdspy",
-			"type": "user",
-			"bio": "doing spy things",
-			"created_at": "2016-10-20T20:52:01.043665Z",
-			"updated_at": "2018-04-12T00:33:38.828304Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/thirdspy-profile_image-fa81a031e2928770-300x300.png"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BlessRNG",
-			"emoticons": [{
-				"_id": "153556",
-				"begin": 0,
-				"end": 7
-			}],
-			"fragments": [{
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "turbo",
-				"version": "1"
-			}],
-			"user_color": "#6AFFE9"
-		},
-		"replies": [{
-			"_id": "GOUGlX1YJBXxwA",
-			"created_at": "2018-04-11T09:44:30.249504501Z",
-			"updated_at": "2018-04-11T09:44:30.249504501Z",
-			"channel_id": "105458682",
-			"parent_id": "f9642f0d-4b0a-4e06-8a2a-0642a7890a7e",
-			"content_type": "video",
-			"content_id": "248604700",
-			"content_offset_seconds": 8.546,
-			"commenter": {
-				"display_name": "SirLukus",
-				"_id": "155404850",
-				"name": "sirlukus",
-				"type": "user",
-				"bio": "Yeet",
-				"created_at": "2017-05-01T21:26:50.334936Z",
-				"updated_at": "2018-04-08T08:32:54.685009Z",
-				"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/23b5c490-794a-4e73-acea-272fb9e1c456-profile_image-300x300.png"
-			},
-			"source": "comment",
-			"state": "published",
-			"message": {
-				"body": "K",
-				"fragments": [{
-					"text": "K"
-				}],
-				"is_action": false,
-				"user_badges": [{
-					"_id": "premium",
-					"version": "1"
-				}],
-				"user_color": "#4800FF"
-			}
-		}],
-		"more_replies": false
-	}, {
-		"_id": "ZrlQycvYJBXrbQ",
-		"created_at": "2018-04-13T00:55:43.654949638Z",
-		"updated_at": "2018-04-13T00:55:43.654949638Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 11,
-		"commenter": {
-			"display_name": "FxckMyNxme",
-			"_id": "125625600",
-			"name": "fxckmynxme",
-			"type": "user",
-			"bio": "Just want to laugh",
-			"created_at": "2016-06-01T02:51:45.077115Z",
-			"updated_at": "2018-04-13T00:54:32.270389Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fxckmynxme-profile_image-5021212713f1c745-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "gay for nitin where are u?",
-			"fragments": [{
-				"text": "gay for nitin where are u?"
-			}],
-			"is_action": false,
-			"user_color": "#0000FF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "a7420d98-e6da-4210-b878-7ccd3c0fbd11",
-		"created_at": "2018-04-09T23:58:45.224Z",
-		"updated_at": "2018-04-09T23:58:45.224Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 11.424,
-		"commenter": {
-			"display_name": "Ghostf4lcon",
-			"_id": "75579656",
-			"name": "ghostf4lcon",
-			"type": "user",
-			"bio": null,
-			"created_at": "2014-11-20T20:27:14.284885Z",
-			"updated_at": "2018-04-07T15:29:18.714706Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/0cf53036-4de8-4846-985d-e5970d1b86b1-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "Kappa",
-			"emoticons": [{
-				"_id": "25",
-				"begin": 0,
-				"end": 4
-			}],
-			"fragments": [{
-				"text": "Kappa",
-				"emoticon": {
-					"emoticon_id": "25",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#0003C2"
-		},
-		"more_replies": false
-	}, {
-		"_id": "XtVDDSD6IxXDJg",
-		"created_at": "2018-04-10T04:55:14.47533605Z",
-		"updated_at": "2018-04-10T04:55:14.47533605Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 13,
-		"commenter": {
-			"display_name": "whaaaley",
-			"_id": "133227969",
-			"name": "whaaaley",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-08-26T22:47:58.652541Z",
-			"updated_at": "2018-04-09T09:31:37.290874Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9b6aeef5-ce7d-4bca-a58c-3fc0e5165d63-profile_image-300x300.png"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "where's bob",
-			"fragments": [{
-				"text": "where's bob"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#1FCEFF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "b3CLc1wFJBXIfw",
-		"created_at": "2018-04-10T08:21:08.51418825Z",
-		"updated_at": "2018-04-10T08:21:08.51418825Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 15,
-		"commenter": {
-			"display_name": "KuayxGT",
-			"_id": "192145253",
-			"name": "kuayxgt",
-			"type": "user",
-			"bio": "Im an Average Growtopia Player",
-			"created_at": "2018-01-22T00:16:19.896938Z",
-			"updated_at": "2018-01-22T01:03:48.200585Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "rip devil",
-			"fragments": [{
-				"text": "rip devil"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "6cygb-I_JBUN9A",
-		"created_at": "2018-04-11T02:13:35.607268345Z",
-		"updated_at": "2018-04-11T02:13:35.607268345Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 15,
-		"commenter": {
-			"display_name": "Decaythemagi",
-			"_id": "84546950",
-			"name": "decaythemagi",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-03-06T23:35:49.261752Z",
-			"updated_at": "2018-02-06T04:32:34.03707Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "Awwwww Bob!!!",
-			"fragments": [{
-				"text": "Awwwww Bob!!!"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#FF0000"
-		},
-		"more_replies": false
-	}, {
-		"_id": "JykI23LbJBWA5Q",
-		"created_at": "2018-04-13T01:44:20.211739948Z",
-		"updated_at": "2018-04-13T01:44:20.211739948Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 18,
-		"commenter": {
-			"display_name": "HellofHeaven",
-			"_id": "32842859",
-			"name": "hellofheaven",
-			"type": "user",
-			"bio": "Don't believe stones! They lie...",
-			"created_at": "2012-08-08T16:58:40.16381Z",
-			"updated_at": "2018-03-22T21:42:41.033604Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": ":(",
-			"emoticons": [{
-				"_id": "2",
-				"begin": 0,
-				"end": 1
-			}],
-			"fragments": [{
-				"text": ":(",
-				"emoticon": {
-					"emoticon_id": "2",
-					"emoticon_set_id": "0"
-				}
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#8A2BE2"
-		},
-		"more_replies": false
-	}, {
-		"_id": "5b9c10a3-6ec3-4c68-bb9e-644cda9658df",
-		"created_at": "2018-04-09T23:58:52.075Z",
-		"updated_at": "2018-04-09T23:58:52.075Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 18.275,
-		"commenter": {
-			"display_name": "lordsweapon",
-			"_id": "51414687",
-			"name": "lordsweapon",
-			"type": "user",
-			"bio": "Hello my name is Mark ... ScriptureTV was inspired by the holy spirit to promote God's word to as many that will listen in this fallen world. ",
-			"created_at": "2013-11-12T00:07:44.426738Z",
-			"updated_at": "2018-04-12T20:39:16.532206Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "RIOT",
-			"fragments": [{
-				"text": "RIOT"
-			}],
-			"is_action": false,
-			"user_color": "#0000FF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "lbQquM3YJBWnIQ",
-		"created_at": "2018-04-13T00:55:51.971219972Z",
-		"updated_at": "2018-04-13T00:55:51.971219972Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 19,
-		"commenter": {
-			"display_name": "FxckMyNxme",
-			"_id": "125625600",
-			"name": "fxckmynxme",
-			"type": "user",
-			"bio": "Just want to laugh",
-			"created_at": "2016-06-01T02:51:45.077115Z",
-			"updated_at": "2018-04-13T00:54:32.270389Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fxckmynxme-profile_image-5021212713f1c745-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "imy",
-			"fragments": [{
-				"text": "imy"
-			}],
-			"is_action": false,
-			"user_color": "#0000FF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "b61d5eab-8f1d-4fff-a11d-b6622f22276e",
-		"created_at": "2018-04-09T23:58:53.344Z",
-		"updated_at": "2018-04-09T23:58:53.344Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 19.544,
-		"commenter": {
-			"display_name": "ball_of_fluff",
-			"_id": "209917005",
-			"name": "ball_of_fluff",
-			"type": "user",
-			"bio": "🌈🍁",
-			"created_at": "2018-03-30T17:54:14.349415Z",
-			"updated_at": "2018-04-04T13:17:45.664341Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/04f80582-8aca-4e6e-a5a3-55d46e8572fc-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "gb, gnight",
-			"fragments": [{
-				"text": "gb, gnight"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "caJqnmf7IxUTKQ",
-		"created_at": "2018-04-10T05:18:41.356989797Z",
-		"updated_at": "2018-04-10T05:18:41.356989797Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 20,
-		"commenter": {
-			"display_name": "soildog",
-			"_id": "79096518",
-			"name": "soildog",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-01-06T19:35:52.355162Z",
-			"updated_at": "2018-04-01T18:32:08.822307Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/650f7b297cb0ad6e-profile_image-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "I NEED MY BOB-ASMR",
-			"fragments": [{
-				"text": "I NEED MY BOB-ASMR"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "a8cd7fc3-06f3-4a73-8bdd-427a64e85d5f",
-		"created_at": "2018-04-09T23:58:54.448Z",
-		"updated_at": "2018-04-09T23:58:54.448Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 20.648,
-		"commenter": {
-			"display_name": "redtwitch123_ow",
-			"_id": "171134519",
-			"name": "redtwitch123_ow",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-08-23T21:07:28.597436Z",
-			"updated_at": "2018-04-12T23:31:36.141511Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/c3087d9f-2d8d-46a6-85ce-66b14ad6b3fc-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "He’s alive rammyoHYPE rammyoHYPE rammyoHYPE",
-			"emoticons": [{
-				"_id": "471873",
-				"begin": 11,
-				"end": 20
-			}, {
-				"_id": "471873",
-				"begin": 22,
-				"end": 31
-			}, {
-				"_id": "471873",
-				"begin": 33,
-				"end": 42
-			}],
-			"fragments": [{
-				"text": "He’s alive "
-			}, {
-				"text": "rammyoHYPE",
-				"emoticon": {
-					"emoticon_id": "471873",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "rammyoHYPE",
-				"emoticon": {
-					"emoticon_id": "471873",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "rammyoHYPE",
-				"emoticon": {
-					"emoticon_id": "471873",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false,
-			"user_color": "#FF0000"
-		},
-		"more_replies": false
-	}, {
-		"_id": "fI4ivSH6IxVJlw",
-		"created_at": "2018-04-10T04:55:21.71520905Z",
-		"updated_at": "2018-04-10T04:55:21.71520905Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 21,
-		"commenter": {
-			"display_name": "whaaaley",
-			"_id": "133227969",
-			"name": "whaaaley",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-08-26T22:47:58.652541Z",
-			"updated_at": "2018-04-09T09:31:37.290874Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9b6aeef5-ce7d-4bca-a58c-3fc0e5165d63-profile_image-300x300.png"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "i always watch bob",
-			"fragments": [{
-				"text": "i always watch bob"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#1FCEFF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "R7uqpIIFJBWp-Q",
-		"created_at": "2018-04-10T08:23:52.549571942Z",
-		"updated_at": "2018-04-10T08:23:52.549571942Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 21,
-		"commenter": {
-			"display_name": "snufleupyogus",
-			"_id": "73757431",
-			"name": "snufleupyogus",
-			"type": "user",
-			"bio": null,
-			"created_at": "2014-10-25T21:52:34.677234Z",
-			"updated_at": "2018-04-06T02:30:28.3347Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/snufleupyogus-profile_image-8d1f67e5ec6641ac-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "sad",
-			"fragments": [{
-				"text": "sad"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "subscriber",
-				"version": "0"
-			}, {
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#8A2BE2"
-		},
-		"more_replies": false
-	}, {
-		"_id": "5dd35861-86f0-4431-bff1-f9dcef5e38ae",
-		"created_at": "2018-04-09T23:58:55.161Z",
-		"updated_at": "2018-04-09T23:58:55.161Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 21.361,
-		"commenter": {
-			"display_name": "fusemalaysia",
-			"_id": "84885190",
-			"name": "fusemalaysia",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-03-10T18:47:28.270773Z",
-			"updated_at": "2018-04-12T15:03:49.535913Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b0dc8b4-980a-495d-850b-ad09a690ada5-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "cmonBruh is everything o kay?",
-			"emoticons": [{
-				"_id": "84608",
-				"begin": 0,
-				"end": 7
-			}],
-			"fragments": [{
-				"text": "cmonBruh",
-				"emoticon": {
-					"emoticon_id": "84608",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " is everything o kay?"
+				"text": "yeet"
 			}],
 			"is_action": false,
 			"user_color": "#9ACD32"
 		},
 		"more_replies": false
 	}, {
-		"_id": "62bd3120-36a6-4da9-946d-74c644701208",
-		"created_at": "2018-04-09T23:58:55.863Z",
-		"updated_at": "2018-04-09T23:58:55.863Z",
-		"channel_id": "105458682",
+		"_id": "cdd1a4c7-09d3-4932-95c8-ea5c233501a4",
+		"created_at": "2018-08-13T21:57:09.602Z",
+		"updated_at": "2018-08-13T21:57:09.602Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 22.063,
+		"content_id": "296954486",
+		"content_offset_seconds": 8.902,
 		"commenter": {
-			"display_name": "Cemcos",
-			"_id": "100999476",
-			"name": "cemcos",
+			"display_name": "Moobot",
+			"_id": "1564983",
+			"name": "moobot",
+			"type": "user",
+			"bio": "Moobot is a Twitch moderator bot that moderates your chat without the need for your constant interaction and attention.",
+			"created_at": "2008-08-30T06:29:50.086777Z",
+			"updated_at": "2018-08-15T16:53:02.388588Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/moobot-profile_image-31a264a72aad34f7-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "twitch.amazon.com/prime",
+			"fragments": [{
+				"text": "twitch.amazon.com/prime"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "moderator",
+				"version": "1"
+			}, {
+				"_id": "partner",
+				"version": "1"
+			}],
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "ed8908c0-c965-47d5-9b8b-c9d6e7fa1dac",
+		"created_at": "2018-08-13T21:57:12.743Z",
+		"updated_at": "2018-08-13T21:57:12.743Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 12.043,
+		"commenter": {
+			"display_name": "Simply_Hacking",
+			"_id": "236171076",
+			"name": "simply_hacking",
+			"type": "user",
+			"bio": "Come chill!",
+			"created_at": "2018-07-04T19:38:35.521245Z",
+			"updated_at": "2018-08-15T00:27:19.758245Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/978b93fe-d9be-452e-93d5-075b6a663e7f-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "LUL",
+			"emoticons": [{
+				"_id": "425618",
+				"begin": 0,
+				"end": 2
+			}],
+			"fragments": [{
+				"text": "LUL",
+				"emoticon": {
+					"emoticon_id": "425618",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#9ACD32"
+		},
+		"more_replies": false
+	}, {
+		"_id": "f621ca62-749b-4605-8afa-0f3c725effaa",
+		"created_at": "2018-08-13T21:57:13.07Z",
+		"updated_at": "2018-08-13T21:57:13.07Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 12.37,
+		"commenter": {
+			"display_name": "danny42",
+			"_id": "153876260",
+			"name": "danny42",
 			"type": "user",
 			"bio": null,
-			"created_at": "2015-08-30T11:25:02.391607Z",
-			"updated_at": "2018-04-11T00:01:00.671705Z",
+			"created_at": "2017-04-19T05:11:32.902534Z",
+			"updated_at": "2018-08-14T02:34:03.020483Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "TriHard",
+			"emoticons": [{
+				"_id": "120232",
+				"begin": 0,
+				"end": 6
+			}],
+			"fragments": [{
+				"text": "TriHard",
+				"emoticon": {
+					"emoticon_id": "120232",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#00FF7F"
+		},
+		"more_replies": false
+	}, {
+		"_id": "157119f0-e922-425d-bde1-38486fa67dd0",
+		"created_at": "2018-08-13T21:57:18.812Z",
+		"updated_at": "2018-08-13T21:57:18.812Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 18.112,
+		"commenter": {
+			"display_name": "Evyxlolz0",
+			"_id": "63446846",
+			"name": "evyxlolz0",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-05-31T09:08:19.470406Z",
+			"updated_at": "2018-08-06T20:09:57.74872Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "Nightbot",
+			"body": "Pog",
 			"fragments": [{
-				"text": "Nightbot"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "6cPrJs_YJBVSHA",
-		"created_at": "2018-04-13T00:55:58.129716275Z",
-		"updated_at": "2018-04-13T00:55:58.129716275Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 25,
-		"commenter": {
-			"display_name": "FxckMyNxme",
-			"_id": "125625600",
-			"name": "fxckmynxme",
-			"type": "user",
-			"bio": "Just want to laugh",
-			"created_at": "2016-06-01T02:51:45.077115Z",
-			"updated_at": "2018-04-13T00:54:32.270389Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fxckmynxme-profile_image-5021212713f1c745-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "nitin",
-			"fragments": [{
-				"text": "nitin"
+				"text": "Pog"
 			}],
 			"is_action": false,
 			"user_color": "#0000FF"
 		},
 		"more_replies": false
 	}, {
-		"_id": "1ea0f182-b8f1-4973-a656-6c69daa1f63f",
-		"created_at": "2018-04-09T23:58:58.983Z",
-		"updated_at": "2018-04-09T23:58:58.983Z",
-		"channel_id": "105458682",
+		"_id": "64f6d822-2f18-4ea0-8f65-790f54b87854",
+		"created_at": "2018-08-13T21:57:21.028Z",
+		"updated_at": "2018-08-13T21:57:21.028Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 25.183,
+		"content_id": "296954486",
+		"content_offset_seconds": 20.328,
 		"commenter": {
-			"display_name": "katrinalishious",
-			"_id": "138400111",
-			"name": "katrinalishious",
+			"display_name": "Halonight_123",
+			"_id": "68581111",
+			"name": "halonight_123",
 			"type": "user",
-			"bio": null,
-			"created_at": "2016-10-31T13:26:45.118253Z",
-			"updated_at": "2018-04-10T00:03:12.341814Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-300x300.jpg"
+			"bio": "Welcome to my channel, I play dota2 mainly but will play other games. Follow the stream if you enjoyed. ",
+			"created_at": "2014-08-09T18:53:06.201001Z",
+			"updated_at": "2018-08-15T03:26:32.354409Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/65a627c2-da79-461b-9690-bdbe0c5c4981-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": ":(",
-			"emoticons": [{
-				"_id": "2",
-				"begin": 0,
-				"end": 1
-			}],
+			"body": "APE GANG",
 			"fragments": [{
-				"text": ":(",
-				"emoticon": {
-					"emoticon_id": "2",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "e01d0d0c-ef94-4a3b-9d7f-25b2ad88065d",
-		"created_at": "2018-04-09T23:58:59.241Z",
-		"updated_at": "2018-04-09T23:58:59.241Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 25.441,
-		"commenter": {
-			"display_name": "dankmemes3456",
-			"_id": "153166219",
-			"name": "dankmemes3456",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-04-12T17:30:40.563347Z",
-			"updated_at": "2018-04-01T21:54:24.448286Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BlessRNG BlessRNG BlessRNG BlessRNG BlessRNG BlessRNG",
-			"emoticons": [{
-				"_id": "153556",
-				"begin": 0,
-				"end": 7
-			}, {
-				"_id": "153556",
-				"begin": 9,
-				"end": 16
-			}, {
-				"_id": "153556",
-				"begin": 18,
-				"end": 25
-			}, {
-				"_id": "153556",
-				"begin": 27,
-				"end": 34
-			}, {
-				"_id": "153556",
-				"begin": 36,
-				"end": 43
-			}, {
-				"_id": "153556",
-				"begin": 45,
-				"end": 52
-			}],
-			"fragments": [{
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}, {
-				"text": " "
-			}, {
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "94f4b099-3ded-46b6-9972-1ff1eb9ac9a7",
-		"created_at": "2018-04-09T23:58:59.628Z",
-		"updated_at": "2018-04-09T23:58:59.628Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 25.828,
-		"commenter": {
-			"display_name": "mcgregorious",
-			"_id": "40145469",
-			"name": "mcgregorious",
-			"type": "user",
-			"bio": null,
-			"created_at": "2013-02-08T23:08:26.230632Z",
-			"updated_at": "2018-01-08T02:04:57.051665Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BlessRNG",
-			"emoticons": [{
-				"_id": "153556",
-				"begin": 0,
-				"end": 7
-			}],
-			"fragments": [{
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
+				"text": "APE GANG"
 			}],
 			"is_action": false,
 			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "f11c443d-5e87-409f-8876-8ddb0662a81b",
-		"created_at": "2018-04-09T23:59:00.112Z",
-		"updated_at": "2018-04-09T23:59:00.112Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 26.312,
-		"commenter": {
-			"display_name": "ArtairKerr",
-			"_id": "162945512",
-			"name": "artairkerr",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-07-05T21:41:09.993233Z",
-			"updated_at": "2018-04-13T17:36:27.275874Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "0% Anything",
-			"fragments": [{
-				"text": "0% Anything"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
+				"_id": "subscriber",
+				"version": "0"
+			}, {
+				"_id": "turbo",
 				"version": "1"
 			}],
-			"user_color": "#8A2BE2"
-		},
-		"more_replies": false
-	}, {
-		"_id": "45ba98d1-6138-48a9-a4bf-523b5aef2ca7",
-		"created_at": "2018-04-09T23:59:01.421Z",
-		"updated_at": "2018-04-09T23:59:01.421Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 27.621,
-		"commenter": {
-			"display_name": "G4RYxD_LIVE",
-			"_id": "91381773",
-			"name": "g4ryxd_live",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-05-18T17:21:44.932226Z",
-			"updated_at": "2018-04-09T23:56:54.973489Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/g4ryxd_live-profile_image-cf3fa2cdc868fb31-300x300.png"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "where he at",
-			"fragments": [{
-				"text": "where he at"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "Bi-Md18FJBV7Ww",
-		"created_at": "2018-04-10T08:21:21.444340522Z",
-		"updated_at": "2018-04-10T08:21:21.444340522Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 28,
-		"commenter": {
-			"display_name": "KuayxGT",
-			"_id": "192145253",
-			"name": "kuayxgt",
-			"type": "user",
-			"bio": "Im an Average Growtopia Player",
-			"created_at": "2018-01-22T00:16:19.896938Z",
-			"updated_at": "2018-01-22T01:03:48.200585Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "yes",
-			"fragments": [{
-				"text": "yes"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "4YkEYnIrJBXTcg",
-		"created_at": "2018-04-10T19:59:04.173915164Z",
-		"updated_at": "2018-04-10T19:59:04.173915164Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 28,
-		"commenter": {
-			"display_name": "Alexhellwing",
-			"_id": "100132671",
-			"name": "alexhellwing",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-08-21T20:08:53.396485Z",
-			"updated_at": "2018-04-06T21:33:46.158892Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9e654eac-7df7-4481-b9af-5eb68e9e4c7f-profile_image-300x300.png"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "are you here?",
-			"fragments": [{
-				"text": "are you here?"
-			}],
-			"is_action": false,
 			"user_color": "#FF0000"
 		},
 		"more_replies": false
 	}, {
-		"_id": "2cf7d17b-acec-4ce1-9a53-d637db5a3a03",
-		"created_at": "2018-04-09T23:59:02.775Z",
-		"updated_at": "2018-04-09T23:59:02.775Z",
-		"channel_id": "105458682",
+		"_id": "ff3e2b60-1605-4d2e-b720-721b7fcb488f",
+		"created_at": "2018-08-13T21:57:21.417Z",
+		"updated_at": "2018-08-13T21:57:21.417Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 28.975,
+		"content_id": "296954486",
+		"content_offset_seconds": 20.717,
 		"commenter": {
-			"display_name": "CuddleKittyx3",
-			"_id": "72152175",
-			"name": "cuddlekittyx3",
+			"display_name": "Simply_Hacking",
+			"_id": "236171076",
+			"name": "simply_hacking",
 			"type": "user",
-			"bio": "I like games, rock/metal music, creative stuff and cats! =^_^=You'll probably see those back in my streams! Mythic WoW raider.",
-			"created_at": "2014-09-29T09:29:55.342596Z",
-			"updated_at": "2018-04-13T15:34:38.430022Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/cuddlekittyx3-profile_image-7ea772a48a22842a-300x300.png"
+			"bio": "Come chill!",
+			"created_at": "2018-07-04T19:38:35.521245Z",
+			"updated_at": "2018-08-15T00:27:19.758245Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/978b93fe-d9be-452e-93d5-075b6a663e7f-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "BACK",
+			"body": "@Trainwreckstv sup my ape friend",
 			"fragments": [{
-				"text": "BACK"
+				"text": "@Trainwreckstv sup my ape friend"
 			}],
-			"is_action": false
+			"is_action": false,
+			"user_color": "#9ACD32"
 		},
 		"more_replies": false
 	}, {
-		"_id": "93c1beb2-e7d5-451c-a5fb-c532b0aa5928",
-		"created_at": "2018-04-09T23:59:03.43Z",
-		"updated_at": "2018-04-09T23:59:03.43Z",
-		"channel_id": "105458682",
+		"_id": "b4a1f49f-8f47-48f2-9aa8-f6dbf92a02a0",
+		"created_at": "2018-08-13T21:57:21.618Z",
+		"updated_at": "2018-08-13T21:57:21.618Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 29.63,
+		"content_id": "296954486",
+		"content_offset_seconds": 20.918,
 		"commenter": {
-			"display_name": "sneen",
-			"_id": "134110611",
-			"name": "sneen",
+			"display_name": "imthedeepest24",
+			"_id": "135592220",
+			"name": "imthedeepest24",
 			"type": "user",
 			"bio": null,
-			"created_at": "2016-09-06T22:18:23.286967Z",
-			"updated_at": "2018-04-07T01:26:25.429031Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+			"created_at": "2016-09-29T02:13:00.36733Z",
+			"updated_at": "2018-08-10T05:36:10.060361Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "BOB",
+			"body": "Pog",
 			"fragments": [{
-				"text": "BOB"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "8e9b06db-1139-4a81-b65e-dd9a3e0c08f4",
-		"created_at": "2018-04-09T23:59:03.721Z",
-		"updated_at": "2018-04-09T23:59:03.721Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 29.921,
-		"commenter": {
-			"display_name": "JustKateD",
-			"_id": "191555270",
-			"name": "justkated",
-			"type": "user",
-			"bio": null,
-			"created_at": "2018-01-19T03:42:01.297621Z",
-			"updated_at": "2018-04-10T17:01:40.34806Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "HE'S BACK",
-			"fragments": [{
-				"text": "HE'S BACK"
+				"text": "Pog"
 			}],
 			"is_action": false,
 			"user_badges": [{
+				"_id": "subscriber",
+				"version": "6"
+			}, {
 				"_id": "premium",
 				"version": "1"
 			}],
@@ -1395,366 +271,773 @@
 		},
 		"more_replies": false
 	}, {
-		"_id": "oo3LAmr7IxWaJw",
-		"created_at": "2018-04-10T05:18:51.654932119Z",
-		"updated_at": "2018-04-10T05:18:51.654932119Z",
-		"channel_id": "105458682",
+		"_id": "ba7b4380-f366-439c-a136-8d56e424984d",
+		"created_at": "2018-08-13T21:57:21.921Z",
+		"updated_at": "2018-08-13T21:57:21.921Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30,
+		"content_id": "296954486",
+		"content_offset_seconds": 21.221,
 		"commenter": {
-			"display_name": "soildog",
-			"_id": "79096518",
-			"name": "soildog",
+			"display_name": "13guggan37",
+			"_id": "116424564",
+			"name": "13guggan37",
 			"type": "user",
 			"bio": null,
-			"created_at": "2015-01-06T19:35:52.355162Z",
-			"updated_at": "2018-04-01T18:32:08.822307Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/650f7b297cb0ad6e-profile_image-300x300.jpeg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "THANK GOD",
-			"fragments": [{
-				"text": "THANK GOD"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
-		},
-		"more_replies": false
-	}, {
-		"_id": "c0a54b98-7a6e-4adf-abcc-2518239a965f",
-		"created_at": "2018-04-09T23:59:03.864Z",
-		"updated_at": "2018-04-09T23:59:03.864Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30.064,
-		"commenter": {
-			"display_name": "Persalis",
-			"_id": "75794555",
-			"name": "persalis",
-			"type": "user",
-			"bio": null,
-			"created_at": "2014-11-23T16:04:31.605313Z",
-			"updated_at": "2018-03-21T00:32:17.592954Z",
+			"created_at": "2016-02-20T14:08:31.092837Z",
+			"updated_at": "2018-08-14T16:50:49.822704Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "BOB PogChamp",
-			"emoticons": [{
-				"_id": "88",
-				"begin": 4,
-				"end": 11
-			}],
+			"body": "first",
 			"fragments": [{
-				"text": "BOB "
-			}, {
-				"text": "PogChamp",
-				"emoticon": {
-					"emoticon_id": "88",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "987b4328-028a-4dcc-8b5d-ff5695d8c434",
-		"created_at": "2018-04-09T23:59:03.906Z",
-		"updated_at": "2018-04-09T23:59:03.906Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30.106,
-		"commenter": {
-			"display_name": "pachangaxD",
-			"_id": "162152169",
-			"name": "pachangaxd",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-06-30T11:28:40.030468Z",
-			"updated_at": "2018-04-11T19:09:53.571562Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "WutFace",
-			"emoticons": [{
-				"_id": "28087",
-				"begin": 0,
-				"end": 6
-			}],
-			"fragments": [{
-				"text": "WutFace",
-				"emoticon": {
-					"emoticon_id": "28087",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "b46a7ba4-335f-46a6-b421-01372bc630d9",
-		"created_at": "2018-04-09T23:59:03.946Z",
-		"updated_at": "2018-04-09T23:59:03.946Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30.146,
-		"commenter": {
-			"display_name": "ArtairKerr",
-			"_id": "162945512",
-			"name": "artairkerr",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-07-05T21:41:09.993233Z",
-			"updated_at": "2018-04-13T17:36:27.275874Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BOOOOOOOOOOOOOOOOOOOOOBBBBBBBBB",
-			"fragments": [{
-				"text": "BOOOOOOOOOOOOOOOOOOOOOBBBBBBBBB"
+				"text": "first"
 			}],
 			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#8A2BE2"
+			"user_color": "#0000FF"
 		},
 		"more_replies": false
 	}, {
-		"_id": "7b9506b6-b21c-4db3-a5a3-b3280b50dfa6",
-		"created_at": "2018-04-09T23:59:04.377Z",
-		"updated_at": "2018-04-09T23:59:04.377Z",
-		"channel_id": "105458682",
+		"_id": "0fd0fc30-b7f6-4f9e-8870-b91539b7ab7f",
+		"created_at": "2018-08-13T21:57:22.254Z",
+		"updated_at": "2018-08-13T21:57:22.254Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30.576999999999998,
+		"content_id": "296954486",
+		"content_offset_seconds": 21.554,
 		"commenter": {
-			"display_name": "weddwthug",
-			"_id": "32676166",
-			"name": "weddwthug",
+			"display_name": "thespicynoodle27",
+			"_id": "142966303",
+			"name": "thespicynoodle27",
 			"type": "user",
 			"bio": null,
-			"created_at": "2012-08-03T22:32:41.088765Z",
-			"updated_at": "2018-04-09T21:26:40.535837Z",
+			"created_at": "2016-12-27T03:06:01.691568Z",
+			"updated_at": "2018-08-06T14:38:18.861981Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/thespicynoodle27-profile_image-6b06317047f77e50-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "hi",
+			"fragments": [{
+				"text": "hi"
+			}],
+			"is_action": false,
+			"user_color": "#D2691E"
+		},
+		"more_replies": false
+	}, {
+		"_id": "90a677fb-ba99-4791-a708-25e24ad52f4a",
+		"created_at": "2018-08-13T21:57:24.568Z",
+		"updated_at": "2018-08-13T21:57:24.568Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 23.868,
+		"commenter": {
+			"display_name": "Relux",
+			"_id": "81268896",
+			"name": "relux",
+			"type": "user",
+			"bio": "Twitter: @ReluxCS",
+			"created_at": "2015-01-30T02:50:29.213912Z",
+			"updated_at": "2018-08-10T09:27:38.07243Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/relux-profile_image-37792f48e5ba69fd-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Pog",
+			"fragments": [{
+				"text": "Pog"
+			}],
+			"is_action": false,
+			"user_color": "#00FF7F"
+		},
+		"more_replies": false
+	}, {
+		"_id": "41680383-420d-4664-a0bc-58c179619c98",
+		"created_at": "2018-08-13T21:57:24.64Z",
+		"updated_at": "2018-08-13T21:57:24.64Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 23.94,
+		"commenter": {
+			"display_name": "Strawberries1234",
+			"_id": "57251101",
+			"name": "strawberries1234",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-20T05:53:21.402853Z",
+			"updated_at": "2018-08-08T23:07:18.32122Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "return !!!!",
+			"body": "OH MY GOD",
 			"fragments": [{
-				"text": "return !!!!"
+				"text": "OH MY GOD"
 			}],
 			"is_action": false,
 			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#81D8D0"
 		},
 		"more_replies": false
 	}, {
-		"_id": "5adf0535-6da1-48a2-b88b-0c4e6c044936",
-		"created_at": "2018-04-09T23:59:04.628Z",
-		"updated_at": "2018-04-09T23:59:04.628Z",
-		"channel_id": "105458682",
+		"_id": "d1c9edc9-0d40-4736-9201-41b6c5117b1d",
+		"created_at": "2018-08-13T21:57:25.227Z",
+		"updated_at": "2018-08-13T21:57:25.227Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 30.828,
+		"content_id": "296954486",
+		"content_offset_seconds": 24.527,
 		"commenter": {
-			"display_name": "cynntonic",
-			"_id": "209237381",
-			"name": "cynntonic",
+			"display_name": "Teemowneds",
+			"_id": "98928191",
+			"name": "teemowneds",
+			"type": "user",
+			"bio": "Evil Morty ",
+			"created_at": "2015-08-11T16:56:31.019242Z",
+			"updated_at": "2018-08-10T15:05:36.482985Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/teemowneds-profile_image-0472834e69d0bf80-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "SKIP INTRO cmonBruh",
+			"emoticons": [{
+				"_id": "84608",
+				"begin": 11,
+				"end": 18
+			}],
+			"fragments": [{
+				"text": "SKIP INTRO "
+			}, {
+				"text": "cmonBruh",
+				"emoticon": {
+					"emoticon_id": "84608",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#FFFF00"
+		},
+		"more_replies": false
+	}, {
+		"_id": "671f1b9d-fb2b-4f51-bd1d-454489539477",
+		"created_at": "2018-08-13T21:57:25.652Z",
+		"updated_at": "2018-08-13T21:57:25.652Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 24.951999999999998,
+		"commenter": {
+			"display_name": "Strawberries1234",
+			"_id": "57251101",
+			"name": "strawberries1234",
 			"type": "user",
 			"bio": null,
-			"created_at": "2018-03-28T06:26:25.438881Z",
-			"updated_at": "2018-04-03T00:01:33.7188Z",
+			"created_at": "2014-02-20T05:53:21.402853Z",
+			"updated_at": "2018-08-08T23:07:18.32122Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "SO EARLY",
+			"fragments": [{
+				"text": "SO EARLY"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#81D8D0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "e31b21a7-0daf-4789-a4a9-c091731879c5",
+		"created_at": "2018-08-13T21:57:25.909Z",
+		"updated_at": "2018-08-13T21:57:25.909Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 25.209,
+		"commenter": {
+			"display_name": "aboodd",
+			"_id": "120271292",
+			"name": "aboodd",
+			"type": "user",
+			"bio": null,
+			"created_at": "2016-03-29T18:37:11.839849Z",
+			"updated_at": "2018-08-13T18:41:14.676761Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "wtf early stream PogU",
+			"fragments": [{
+				"text": "wtf early stream PogU"
+			}],
+			"is_action": false,
+			"user_color": "#8A2BE2"
+		},
+		"more_replies": false
+	}, {
+		"_id": "197c1978-e064-484b-8db8-a1bfdc882615",
+		"created_at": "2018-08-13T21:57:26.401Z",
+		"updated_at": "2018-08-13T21:57:26.401Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 25.701,
+		"commenter": {
+			"display_name": "WhackASmack1",
+			"_id": "124115730",
+			"name": "whackasmack1",
+			"type": "user",
+			"bio": "Just a dude on here making clips and trolling. lul ",
+			"created_at": "2016-05-13T05:33:16.900018Z",
+			"updated_at": "2018-08-14T19:51:17.248246Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1dc095f246c4064c-profile_image-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "AHHHHH",
+			"fragments": [{
+				"text": "AHHHHH"
+			}],
+			"is_action": false,
+			"user_color": "#00FF7F"
+		},
+		"more_replies": false
+	}, {
+		"_id": "ddf72d7d-51eb-477b-b022-a0d82df7347e",
+		"created_at": "2018-08-13T21:57:26.518Z",
+		"updated_at": "2018-08-13T21:57:26.518Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 25.818,
+		"commenter": {
+			"display_name": "Moobot",
+			"_id": "1564983",
+			"name": "moobot",
+			"type": "user",
+			"bio": "Moobot is a Twitch moderator bot that moderates your chat without the need for your constant interaction and attention.",
+			"created_at": "2008-08-30T06:29:50.086777Z",
+			"updated_at": "2018-08-15T16:53:02.388588Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/moobot-profile_image-31a264a72aad34f7-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Follow Tyler on Twitter @ Twitter.com/TrainwrecksTV",
+			"fragments": [{
+				"text": "Follow Tyler on Twitter @ Twitter.com/TrainwrecksTV"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "moderator",
+				"version": "1"
+			}, {
+				"_id": "partner",
+				"version": "1"
+			}],
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "96448a5b-c6d6-4a3e-bfdd-f97b6644fbde",
+		"created_at": "2018-08-13T21:57:27.737Z",
+		"updated_at": "2018-08-13T21:57:27.737Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 27.037,
+		"commenter": {
+			"display_name": "Neximous",
+			"_id": "142773426",
+			"name": "neximous",
+			"type": "user",
+			"bio": "k.",
+			"created_at": "2016-12-24T20:26:48.156806Z",
+			"updated_at": "2018-08-09T18:12:26.667139Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/7663b495-549b-4358-85fd-449bcc34d7df-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Pog BFA",
+			"fragments": [{
+				"text": "Pog BFA"
+			}],
+			"is_action": false,
+			"user_color": "#9ACD32"
+		},
+		"more_replies": false
+	}, {
+		"_id": "b9f9b460-0172-46e9-862d-7dfa070f5de1",
+		"created_at": "2018-08-13T21:57:28.104Z",
+		"updated_at": "2018-08-13T21:57:28.104Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 27.404,
+		"commenter": {
+			"display_name": "Simply_Hacking",
+			"_id": "236171076",
+			"name": "simply_hacking",
+			"type": "user",
+			"bio": "Come chill!",
+			"created_at": "2018-07-04T19:38:35.521245Z",
+			"updated_at": "2018-08-15T00:27:19.758245Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/978b93fe-d9be-452e-93d5-075b6a663e7f-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": ":)",
+			"emoticons": [{
+				"_id": "1",
+				"begin": 0,
+				"end": 1
+			}],
+			"fragments": [{
+				"text": ":)",
+				"emoticon": {
+					"emoticon_id": "1",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#9ACD32"
+		},
+		"more_replies": false
+	}, {
+		"_id": "889a5791-74b3-4306-bfb9-a40e01371795",
+		"created_at": "2018-08-13T21:57:28.684Z",
+		"updated_at": "2018-08-13T21:57:28.684Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 27.984,
+		"commenter": {
+			"display_name": "siib1",
+			"_id": "92372668",
+			"name": "siib1",
+			"type": "user",
+			"bio": null,
+			"created_at": "2015-05-31T17:18:55.64139Z",
+			"updated_at": "2018-05-13T18:51:41.274799Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "oh? IT\"S BACK",
+			"body": "OOK OOK",
 			"fragments": [{
-				"text": "oh? IT\"S BACK"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "97281fe7-f9bf-4f9e-bd40-853872c2bf74",
-		"created_at": "2018-04-09T23:59:04.987Z",
-		"updated_at": "2018-04-09T23:59:04.987Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 31.187,
-		"commenter": {
-			"display_name": "LtEagleEye",
-			"_id": "102583711",
-			"name": "lteagleeye",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-09-19T20:52:18.178326Z",
-			"updated_at": "2018-04-08T16:41:19.167031Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/54b4ba788bf2a7b9-profile_image-300x300.jpeg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BOB",
-			"fragments": [{
-				"text": "BOB"
+				"text": "OOK OOK"
 			}],
 			"is_action": false,
 			"user_badges": [{
 				"_id": "premium",
 				"version": "1"
 			}],
-			"user_color": "#9D2F2F"
+			"user_color": "#1E90FF"
 		},
 		"more_replies": false
 	}, {
-		"_id": "a15a95e6-3510-4e44-af0c-cf5c82af285b",
-		"created_at": "2018-04-09T23:59:05.714Z",
-		"updated_at": "2018-04-09T23:59:05.714Z",
-		"channel_id": "105458682",
+		"_id": "96b087f2-3d16-4724-9ec8-e0a698254f57",
+		"created_at": "2018-08-13T21:57:28.909Z",
+		"updated_at": "2018-08-13T21:57:28.909Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 31.914,
+		"content_id": "296954486",
+		"content_offset_seconds": 28.209,
 		"commenter": {
-			"display_name": "3poundChickenWing",
-			"_id": "142300323",
-			"name": "3poundchickenwing",
+			"display_name": "freshlybakedciabatta",
+			"_id": "156060091",
+			"name": "freshlybakedciabatta",
 			"type": "user",
 			"bio": null,
-			"created_at": "2016-12-18T22:42:40.950513Z",
-			"updated_at": "2018-03-15T00:02:07.482912Z",
+			"created_at": "2017-05-07T04:49:28.093208Z",
+			"updated_at": "2018-08-13T12:51:26.923509Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/59c1bb15-60ea-477c-a6fe-ee4e9c3c7786-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "gachiBASS",
+			"fragments": [{
+				"text": "gachiBASS"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}, {
+				"_id": "sub-gifter",
+				"version": "1"
+			}],
+			"user_color": "#008000"
+		},
+		"more_replies": false
+	}, {
+		"_id": "b0ca2555-5e06-4db6-ada8-eff8b400a1c7",
+		"created_at": "2018-08-13T21:57:28.988Z",
+		"updated_at": "2018-08-13T21:57:28.988Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 28.288,
+		"commenter": {
+			"display_name": "13guggan37",
+			"_id": "116424564",
+			"name": "13guggan37",
+			"type": "user",
+			"bio": null,
+			"created_at": "2016-02-20T14:08:31.092837Z",
+			"updated_at": "2018-08-14T16:50:49.822704Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "PogChamp",
+			"body": "damnit",
+			"fragments": [{
+				"text": "damnit"
+			}],
+			"is_action": false,
+			"user_color": "#0000FF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "265e5398-d75f-4726-955d-8022a09b8a24",
+		"created_at": "2018-08-13T21:57:30.056Z",
+		"updated_at": "2018-08-13T21:57:30.056Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 29.356,
+		"commenter": {
+			"display_name": "entraxx",
+			"_id": "57459299",
+			"name": "entraxx",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-22T18:10:30.674239Z",
+			"updated_at": "2018-08-13T18:36:17.210349Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "alliance scum DansGame",
 			"emoticons": [{
-				"_id": "88",
-				"begin": 0,
-				"end": 7
+				"_id": "33",
+				"begin": 14,
+				"end": 21
 			}],
 			"fragments": [{
-				"text": "PogChamp",
+				"text": "alliance scum "
+			}, {
+				"text": "DansGame",
 				"emoticon": {
-					"emoticon_id": "88",
+					"emoticon_id": "33",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#2E8B57"
+		},
+		"more_replies": false
+	}, {
+		"_id": "81f78f3c-b3ac-4503-8d17-4536d90bd08e",
+		"created_at": "2018-08-13T21:57:30.706Z",
+		"updated_at": "2018-08-13T21:57:30.706Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 30.006,
+		"commenter": {
+			"display_name": "JamesNiggsonRevival",
+			"_id": "234543112",
+			"name": "jamesniggsonrevival",
+			"type": "user",
+			"bio": null,
+			"created_at": "2018-06-27T20:08:10.303753Z",
+			"updated_at": "2018-08-10T23:06:18.674841Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dd47779-3859-4f02-afc1-c0cfcacc0934-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "avail7",
+			"emoticons": [{
+				"_id": "600388",
+				"begin": 0,
+				"end": 5
+			}],
+			"fragments": [{
+				"text": "avail7",
+				"emoticon": {
+					"emoticon_id": "600388",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "c092ee8c-97f7-4270-873a-8e9fb2a9fc8b",
+		"created_at": "2018-08-13T21:57:30.707Z",
+		"updated_at": "2018-08-13T21:57:30.707Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 30.007,
+		"commenter": {
+			"display_name": "WhackASmack1",
+			"_id": "124115730",
+			"name": "whackasmack1",
+			"type": "user",
+			"bio": "Just a dude on here making clips and trolling. lul ",
+			"created_at": "2016-05-13T05:33:16.900018Z",
+			"updated_at": "2018-08-14T19:51:17.248246Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/1dc095f246c4064c-profile_image-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "TAKE IT",
+			"fragments": [{
+				"text": "TAKE IT"
+			}],
+			"is_action": false,
+			"user_color": "#00FF7F"
+		},
+		"more_replies": false
+	}, {
+		"_id": "efcba05e-3833-46dd-8bab-d73ead4c007b",
+		"created_at": "2018-08-13T21:57:32.23Z",
+		"updated_at": "2018-08-13T21:57:32.23Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 31.53,
+		"commenter": {
+			"display_name": "Strawberries1234",
+			"_id": "57251101",
+			"name": "strawberries1234",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-20T05:53:21.402853Z",
+			"updated_at": "2018-08-08T23:07:18.32122Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog",
+			"fragments": [{
+				"text": "SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog SO EARLY THIS TIME Pog"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#81D8D0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "d6a129cb-61d4-4b0a-b733-6795bb935ffd",
+		"created_at": "2018-08-13T21:57:32.494Z",
+		"updated_at": "2018-08-13T21:57:32.494Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 31.794,
+		"commenter": {
+			"display_name": "ShuriStr",
+			"_id": "27659948",
+			"name": "shuristr",
+			"type": "user",
+			"bio": null,
+			"created_at": "2012-01-22T14:49:28.265391Z",
+			"updated_at": "2018-08-14T19:25:38.212339Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/shuristr-profile_image-6896899743b6e739-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "gachiBASS",
+			"fragments": [{
+				"text": "gachiBASS"
+			}],
+			"is_action": false,
+			"user_color": "#007BFF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "a36cde72-4582-499c-ac2c-81315d41e8b6",
+		"created_at": "2018-08-13T21:57:32.881Z",
+		"updated_at": "2018-08-13T21:57:32.881Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 32.181,
+		"commenter": {
+			"display_name": "theeGHOSTFISHY",
+			"_id": "53346785",
+			"name": "theeghostfishy",
+			"type": "user",
+			"bio": "heloo",
+			"created_at": "2013-12-16T13:31:35.828545Z",
+			"updated_at": "2018-08-09T15:19:36.325053Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/theeghostfishy-profile_image-169b7340ac87cbff-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "squadW squadW squadW squadW",
+			"emoticons": [{
+				"_id": "117611",
+				"begin": 0,
+				"end": 5
+			}, {
+				"_id": "117611",
+				"begin": 7,
+				"end": 12
+			}, {
+				"_id": "117611",
+				"begin": 14,
+				"end": 19
+			}, {
+				"_id": "117611",
+				"begin": 21,
+				"end": 26
+			}],
+			"fragments": [{
+				"text": "squadW",
+				"emoticon": {
+					"emoticon_id": "117611",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadW",
+				"emoticon": {
+					"emoticon_id": "117611",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadW",
+				"emoticon": {
+					"emoticon_id": "117611",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadW",
+				"emoticon": {
+					"emoticon_id": "117611",
 					"emoticon_set_id": ""
 				}
 			}],
 			"is_action": false,
 			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#B38F19"
-		},
-		"more_replies": false
-	}, {
-		"_id": "y-1qYGAFJBUqig",
-		"created_at": "2018-04-10T08:21:25.39708229Z",
-		"updated_at": "2018-04-10T08:21:25.39708229Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 32,
-		"commenter": {
-			"display_name": "KuayxGT",
-			"_id": "192145253",
-			"name": "kuayxgt",
-			"type": "user",
-			"bio": "Im an Average Growtopia Player",
-			"created_at": "2018-01-22T00:16:19.896938Z",
-			"updated_at": "2018-01-22T01:03:48.200585Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "ong",
-			"fragments": [{
-				"text": "ong"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "l6bcbuY_JBU8lA",
-		"created_at": "2018-04-11T02:13:52.823934986Z",
-		"updated_at": "2018-04-11T02:13:52.823934986Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 32,
-		"commenter": {
-			"display_name": "Decaythemagi",
-			"_id": "84546950",
-			"name": "decaythemagi",
-			"type": "user",
-			"bio": null,
-			"created_at": "2015-03-06T23:35:49.261752Z",
-			"updated_at": "2018-02-06T04:32:34.03707Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "WOOOTS!!!",
-			"fragments": [{
-				"text": "WOOOTS!!!"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
+				"_id": "subscriber",
+				"version": "0"
 			}],
 			"user_color": "#FF0000"
 		},
 		"more_replies": false
 	}, {
-		"_id": "0caaeca2-3f73-44c9-8170-d1b48d44d15d",
-		"created_at": "2018-04-09T23:59:06.311Z",
-		"updated_at": "2018-04-09T23:59:06.311Z",
-		"channel_id": "105458682",
+		"_id": "eae3d4e2-58e9-42db-8c56-bfc9236505fd",
+		"created_at": "2018-08-13T21:57:33.11Z",
+		"updated_at": "2018-08-13T21:57:33.11Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 32.511,
+		"content_id": "296954486",
+		"content_offset_seconds": 32.41,
 		"commenter": {
-			"display_name": "ThePlasmaBolt",
-			"_id": "50757914",
-			"name": "theplasmabolt",
+			"display_name": "Halonight_123",
+			"_id": "68581111",
+			"name": "halonight_123",
 			"type": "user",
-			"bio": null,
-			"created_at": "2013-10-27T19:06:30.928772Z",
-			"updated_at": "2018-04-04T23:48:03.91793Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/theplasmabolt-profile_image-7b5528e5d23d3e55-300x300.png"
+			"bio": "Welcome to my channel, I play dota2 mainly but will play other games. Follow the stream if you enjoyed. ",
+			"created_at": "2014-08-09T18:53:06.201001Z",
+			"updated_at": "2018-08-15T03:26:32.354409Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/65a627c2-da79-461b-9690-bdbe0c5c4981-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "back",
+			"body": "haloniH haloniH haloniH haloniH",
+			"emoticons": [{
+				"_id": "1199232",
+				"begin": 0,
+				"end": 6
+			}, {
+				"_id": "1199232",
+				"begin": 8,
+				"end": 14
+			}, {
+				"_id": "1199232",
+				"begin": 16,
+				"end": 22
+			}, {
+				"_id": "1199232",
+				"begin": 24,
+				"end": 30
+			}],
 			"fragments": [{
-				"text": "back"
+				"text": "haloniH",
+				"emoticon": {
+					"emoticon_id": "1199232",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "haloniH",
+				"emoticon": {
+					"emoticon_id": "1199232",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "haloniH",
+				"emoticon": {
+					"emoticon_id": "1199232",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "haloniH",
+				"emoticon": {
+					"emoticon_id": "1199232",
+					"emoticon_set_id": ""
+				}
 			}],
 			"is_action": false,
 			"user_badges": [{
@@ -1764,305 +1047,1351 @@
 				"_id": "turbo",
 				"version": "1"
 			}],
-			"user_color": "#22FCE9"
+			"user_color": "#FF0000"
 		},
 		"more_replies": false
 	}, {
-		"_id": "19f96cc4-f1b2-4013-9b7d-7f9ed5ebae01",
-		"created_at": "2018-04-09T23:59:06.32Z",
-		"updated_at": "2018-04-09T23:59:06.32Z",
-		"channel_id": "105458682",
+		"_id": "e588f443-3f7a-4de1-a33d-00d7358801a2",
+		"created_at": "2018-08-13T21:57:33.179Z",
+		"updated_at": "2018-08-13T21:57:33.179Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 32.52,
+		"content_id": "296954486",
+		"content_offset_seconds": 32.479,
 		"commenter": {
-			"display_name": "Nuky93",
-			"_id": "87185535",
-			"name": "nuky93",
+			"display_name": "imthedeepest24",
+			"_id": "135592220",
+			"name": "imthedeepest24",
 			"type": "user",
 			"bio": null,
-			"created_at": "2015-04-01T19:41:25.977462Z",
-			"updated_at": "2018-04-06T16:34:03.06894Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-300x300.jpg"
+			"created_at": "2016-09-29T02:13:00.36733Z",
+			"updated_at": "2018-08-10T05:36:10.060361Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": ":O",
-			"emoticons": [{
-				"_id": "8",
-				"begin": 0,
-				"end": 1
-			}],
+			"body": "SKIP INTRO",
 			"fragments": [{
-				"text": ":O",
-				"emoticon": {
-					"emoticon_id": "8",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "CmK2ZHbbJBUoXg",
-		"created_at": "2018-04-13T01:44:35.432891704Z",
-		"updated_at": "2018-04-13T01:44:35.432891704Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 33,
-		"commenter": {
-			"display_name": "HellofHeaven",
-			"_id": "32842859",
-			"name": "hellofheaven",
-			"type": "user",
-			"bio": "Don't believe stones! They lie...",
-			"created_at": "2012-08-08T16:58:40.16381Z",
-			"updated_at": "2018-03-22T21:42:41.033604Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "He be back bois",
-			"fragments": [{
-				"text": "He be back bois"
+				"text": "SKIP INTRO"
 			}],
 			"is_action": false,
 			"user_badges": [{
+				"_id": "subscriber",
+				"version": "6"
+			}, {
 				"_id": "premium",
 				"version": "1"
 			}],
-			"user_color": "#8A2BE2"
+			"user_color": "#5F9EA0"
 		},
 		"more_replies": false
 	}, {
-		"_id": "45239400-02fc-4521-8923-abb3fa6aa7e2",
-		"created_at": "2018-04-09T23:59:06.911Z",
-		"updated_at": "2018-04-09T23:59:06.911Z",
-		"channel_id": "105458682",
+		"_id": "b1667ea3-fc9b-4836-a50f-7f0074ab1689",
+		"created_at": "2018-08-13T21:57:33.454Z",
+		"updated_at": "2018-08-13T21:57:33.454Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 33.111,
+		"content_id": "296954486",
+		"content_offset_seconds": 32.754,
 		"commenter": {
-			"display_name": "RareFlea",
-			"_id": "146507385",
-			"name": "rareflea",
+			"display_name": "gdawg16",
+			"_id": "57230382",
+			"name": "gdawg16",
 			"type": "user",
 			"bio": null,
-			"created_at": "2017-01-30T23:12:42.600417Z",
-			"updated_at": "2018-04-07T22:38:20.629331Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/fdc65bcc-514e-42cf-83ef-f8e0a3087ca0-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BlessRNG",
-			"emoticons": [{
-				"_id": "153556",
-				"begin": 0,
-				"end": 7
-			}],
-			"fragments": [{
-				"text": "BlessRNG",
-				"emoticon": {
-					"emoticon_id": "153556",
-					"emoticon_set_id": ""
-				}
-			}],
-			"is_action": false,
-			"user_color": "#8A2BE2"
-		},
-		"more_replies": false
-	}, {
-		"_id": "dUzD2iT6IxU5bw",
-		"created_at": "2018-04-10T04:55:35.11907462Z",
-		"updated_at": "2018-04-10T04:55:35.11907462Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 34,
-		"commenter": {
-			"display_name": "whaaaley",
-			"_id": "133227969",
-			"name": "whaaaley",
-			"type": "user",
-			"bio": null,
-			"created_at": "2016-08-26T22:47:58.652541Z",
-			"updated_at": "2018-04-09T09:31:37.290874Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9b6aeef5-ce7d-4bca-a58c-3fc0e5165d63-profile_image-300x300.png"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "BOB!",
-			"fragments": [{
-				"text": "BOB!"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#1FCEFF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "1d351bec-64ed-4485-9146-5c7507b904ae",
-		"created_at": "2018-04-09T23:59:08.286Z",
-		"updated_at": "2018-04-09T23:59:08.286Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 34.486,
-		"commenter": {
-			"display_name": "anime__dad",
-			"_id": "56799947",
-			"name": "anime__dad",
-			"type": "user",
-			"bio": null,
-			"created_at": "2014-02-15T02:36:33.451379Z",
-			"updated_at": "2018-04-04T01:33:54.60113Z",
-			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/anime__dad-profile_image-895d9b5a3e037bd1-300x300.jpeg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "yessss",
-			"fragments": [{
-				"text": "yessss"
-			}],
-			"is_action": false,
-			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}],
-			"user_color": "#CC0096"
-		},
-		"more_replies": false
-	}, {
-		"_id": "cEMuv8MIJBUvMw",
-		"created_at": "2018-04-10T09:23:30.712212005Z",
-		"updated_at": "2018-04-10T09:23:30.712212005Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 35,
-		"commenter": {
-			"display_name": "Cyxenz",
-			"_id": "42189651",
-			"name": "cyxenz",
-			"type": "user",
-			"bio": null,
-			"created_at": "2013-04-07T08:51:19.034562Z",
-			"updated_at": "2018-04-05T04:47:10.995464Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-300x300.jpg"
-		},
-		"source": "comment",
-		"state": "published",
-		"message": {
-			"body": "GOD BLESS BOB",
-			"fragments": [{
-				"text": "GOD BLESS BOB"
-			}],
-			"is_action": false,
-			"user_color": "#1E90FF"
-		},
-		"more_replies": false
-	}, {
-		"_id": "efd3e063-98fb-4860-8ee2-45d2cbf0d0d4",
-		"created_at": "2018-04-09T23:59:08.811Z",
-		"updated_at": "2018-04-09T23:59:08.811Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 35.011,
-		"commenter": {
-			"display_name": "TheD3rp416",
-			"_id": "52050243",
-			"name": "thed3rp416",
-			"type": "user",
-			"bio": null,
-			"created_at": "2013-11-23T18:46:23.75386Z",
-			"updated_at": "2018-03-18T04:54:24.32231Z",
-			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/bb97f7e6-f11a-4194-9708-52bf5a5125e8-profile_image-300x300.jpg"
-		},
-		"source": "chat",
-		"state": "published",
-		"message": {
-			"body": "BOB",
-			"fragments": [{
-				"text": "BOB"
-			}],
-			"is_action": false
-		},
-		"more_replies": false
-	}, {
-		"_id": "3826248c-88df-4a04-bc2c-24b49b613d8e",
-		"created_at": "2018-04-09T23:59:09.458Z",
-		"updated_at": "2018-04-09T23:59:09.458Z",
-		"channel_id": "105458682",
-		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 35.658,
-		"commenter": {
-			"display_name": "DrOrphanCrippler",
-			"_id": "164469682",
-			"name": "drorphancrippler",
-			"type": "user",
-			"bio": null,
-			"created_at": "2017-07-13T17:53:52.310102Z",
-			"updated_at": "2018-04-12T03:27:56.477173Z",
+			"created_at": "2014-02-20T00:51:07.086392Z",
+			"updated_at": "2018-08-15T01:48:05.932254Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "yay",
+			"body": "AAAAAHHHHHHHHHHHHHHHHHHHHHHHHH gachiGASM",
 			"fragments": [{
-				"text": "yay"
+				"text": "AAAAAHHHHHHHHHHHHHHHHHHHHHHHHH gachiGASM"
 			}],
 			"is_action": false,
 			"user_badges": [{
-				"_id": "premium",
-				"version": "1"
-			}]
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#FF0000"
 		},
 		"more_replies": false
 	}, {
-		"_id": "013af103-31b9-418a-a340-26d77aef7c8a",
-		"created_at": "2018-04-09T23:59:09.665Z",
-		"updated_at": "2018-04-09T23:59:09.665Z",
-		"channel_id": "105458682",
+		"_id": "d4622e15-5f3e-4cbf-9c89-e431d84efa10",
+		"created_at": "2018-08-13T21:57:33.523Z",
+		"updated_at": "2018-08-13T21:57:33.523Z",
+		"channel_id": "71190292",
 		"content_type": "video",
-		"content_id": "248604700",
-		"content_offset_seconds": 35.865,
+		"content_id": "296954486",
+		"content_offset_seconds": 32.823,
 		"commenter": {
-			"display_name": "ArtairKerr",
-			"_id": "162945512",
-			"name": "artairkerr",
+			"display_name": "ninjascape",
+			"_id": "27720038",
+			"name": "ninjascape",
 			"type": "user",
 			"bio": null,
-			"created_at": "2017-07-05T21:41:09.993233Z",
-			"updated_at": "2018-04-13T17:36:27.275874Z",
+			"created_at": "2012-01-25T03:05:09.905992Z",
+			"updated_at": "2018-06-16T13:10:56.985333Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/ninjascape-profile_image-17dabba9365839a7-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "no intro",
+			"fragments": [{
+				"text": "no intro"
+			}],
+			"is_action": false,
+			"user_color": "#5F9EA0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "cf5ca295-9c04-4555-9efd-27169ae5b03e",
+		"created_at": "2018-08-13T21:57:33.821Z",
+		"updated_at": "2018-08-13T21:57:33.821Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 33.121,
+		"commenter": {
+			"display_name": "LastWeekNextDay",
+			"_id": "161080555",
+			"name": "lastweeknextday",
+			"type": "user",
+			"bio": null,
+			"created_at": "2017-06-21T21:13:45.641424Z",
+			"updated_at": "2018-08-13T01:12:07.579859Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/b6fd6101-d365-4911-8d54-02ab4ea67721-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "EARLY STREAM Pog",
+			"fragments": [{
+				"text": "EARLY STREAM Pog"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}, {
+				"_id": "sub-gifter",
+				"version": "1"
+			}],
+			"user_color": "#DAA520"
+		},
+		"more_replies": false
+	}, {
+		"_id": "5889bf21-7607-49da-94c6-d9987d51a49c",
+		"created_at": "2018-08-13T21:57:34.722Z",
+		"updated_at": "2018-08-13T21:57:34.722Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 34.022,
+		"commenter": {
+			"display_name": "kimbzyh",
+			"_id": "29571989",
+			"name": "kimbzyh",
+			"type": "user",
+			"bio": null,
+			"created_at": "2012-04-06T23:15:19.717786Z",
+			"updated_at": "2018-08-15T12:39:07.796503Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/6e8ac189-b64c-4d29-b678-a343aa304021-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "hi apo",
+			"fragments": [{
+				"text": "hi apo"
+			}],
+			"is_action": false,
+			"user_color": "#2E8B57"
+		},
+		"more_replies": false
+	}, {
+		"_id": "289113d5-ad63-4e60-9c25-b85ef4583d2e",
+		"created_at": "2018-08-13T21:57:36.555Z",
+		"updated_at": "2018-08-13T21:57:36.555Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 35.855,
+		"commenter": {
+			"display_name": "Halonight_123",
+			"_id": "68581111",
+			"name": "halonight_123",
+			"type": "user",
+			"bio": "Welcome to my channel, I play dota2 mainly but will play other games. Follow the stream if you enjoyed. ",
+			"created_at": "2014-08-09T18:53:06.201001Z",
+			"updated_at": "2018-08-15T03:26:32.354409Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/65a627c2-da79-461b-9690-bdbe0c5c4981-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "squadHYPERS squadHYPERS squadHYPERS squadHYPERS",
+			"emoticons": [{
+				"_id": "1105254",
+				"begin": 0,
+				"end": 10
+			}, {
+				"_id": "1105254",
+				"begin": 12,
+				"end": 22
+			}, {
+				"_id": "1105254",
+				"begin": 24,
+				"end": 34
+			}, {
+				"_id": "1105254",
+				"begin": 36,
+				"end": 46
+			}],
+			"fragments": [{
+				"text": "squadHYPERS",
+				"emoticon": {
+					"emoticon_id": "1105254",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadHYPERS",
+				"emoticon": {
+					"emoticon_id": "1105254",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadHYPERS",
+				"emoticon": {
+					"emoticon_id": "1105254",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "squadHYPERS",
+				"emoticon": {
+					"emoticon_id": "1105254",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}, {
+				"_id": "turbo",
+				"version": "1"
+			}],
+			"user_color": "#FF0000"
+		},
+		"more_replies": false
+	}, {
+		"_id": "51845361-649f-4973-a1b6-ef04d054bcb1",
+		"created_at": "2018-08-13T21:57:37.373Z",
+		"updated_at": "2018-08-13T21:57:37.373Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 36.673,
+		"commenter": {
+			"display_name": "Daurennn",
+			"_id": "54695603",
+			"name": "daurennn",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-01-09T20:01:21.671556Z",
+			"updated_at": "2018-07-14T23:30:14.345486Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "TriHard",
+			"emoticons": [{
+				"_id": "120232",
+				"begin": 0,
+				"end": 6
+			}],
+			"fragments": [{
+				"text": "TriHard",
+				"emoticon": {
+					"emoticon_id": "120232",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "a5c08c9e-90af-408c-943a-7ec4757047ee",
+		"created_at": "2018-08-13T21:57:38.408Z",
+		"updated_at": "2018-08-13T21:57:38.408Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 37.708,
+		"commenter": {
+			"display_name": "oirgami",
+			"_id": "20229183",
+			"name": "oirgami",
+			"type": "user",
+			"bio": null,
+			"created_at": "2011-02-06T23:13:56.058321Z",
+			"updated_at": "2018-07-04T04:10:28.375627Z",
 			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/49988c7b-57bc-4dee-bd4f-6df4ad215d3a-profile_image-300x300.jpg"
 		},
 		"source": "chat",
 		"state": "published",
 		"message": {
-			"body": "WOO",
+			"body": "early for what",
 			"fragments": [{
-				"text": "WOO"
+				"text": "early for what"
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "b91d1bb4-8d84-475a-aee8-e2ff6cbca289",
+		"created_at": "2018-08-13T21:57:39.451Z",
+		"updated_at": "2018-08-13T21:57:39.451Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 38.751,
+		"commenter": {
+			"display_name": "Strawberries1234",
+			"_id": "57251101",
+			"name": "strawberries1234",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-20T05:53:21.402853Z",
+			"updated_at": "2018-08-08T23:07:18.32122Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "LET'S GO",
+			"fragments": [{
+				"text": "LET'S GO"
 			}],
 			"is_action": false,
 			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#81D8D0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "d2080d29-a48b-48c0-b9ca-655b23df99e2",
+		"created_at": "2018-08-13T21:57:39.905Z",
+		"updated_at": "2018-08-13T21:57:39.905Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 39.205,
+		"commenter": {
+			"display_name": "Ren_Void",
+			"_id": "89645058",
+			"name": "ren_void",
+			"type": "user",
+			"bio": null,
+			"created_at": "2015-04-26T22:56:52.403778Z",
+			"updated_at": "2018-08-06T22:13:49.821543Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/d328b8ff-2091-4648-b90d-7aeb5ec4db17-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "WHY INTRO",
+			"fragments": [{
+				"text": "WHY INTRO"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "turbo",
+				"version": "1"
+			}],
+			"user_color": "#88CC00"
+		},
+		"more_replies": false
+	}, {
+		"_id": "7ee1a9be-c986-4777-a7c2-06f7d060c07e",
+		"created_at": "2018-08-13T21:57:40.729Z",
+		"updated_at": "2018-08-13T21:57:40.729Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 40.029,
+		"commenter": {
+			"display_name": "aylmaotopkek",
+			"_id": "56798900",
+			"name": "aylmaotopkek",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-15T02:11:23.343756Z",
+			"updated_at": "2018-07-14T11:00:18.045908Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/727c224bb17b19c0-profile_image-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "who is this guy Pog",
+			"fragments": [{
+				"text": "who is this guy Pog"
+			}],
+			"is_action": false,
+			"user_color": "#0000FF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "33f5a33d-be8f-4ddb-b270-6da0991d996b",
+		"created_at": "2018-08-13T21:57:41.104Z",
+		"updated_at": "2018-08-13T21:57:41.104Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 40.404,
+		"commenter": {
+			"display_name": "filet_o_fishh",
+			"_id": "238354258",
+			"name": "filet_o_fishh",
+			"type": "user",
+			"bio": null,
+			"created_at": "2018-07-13T13:32:13.902055Z",
+			"updated_at": "2018-08-15T06:11:33.61087Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/9fb43e86-e4aa-4ee4-8d55-ab075ebe54ed-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper ResidentSleeper",
+			"emoticons": [{
+				"_id": "245",
+				"begin": 0,
+				"end": 14
+			}, {
+				"_id": "245",
+				"begin": 16,
+				"end": 30
+			}, {
+				"_id": "245",
+				"begin": 32,
+				"end": 46
+			}, {
+				"_id": "245",
+				"begin": 48,
+				"end": 62
+			}, {
+				"_id": "245",
+				"begin": 64,
+				"end": 78
+			}, {
+				"_id": "245",
+				"begin": 80,
+				"end": 94
+			}, {
+				"_id": "245",
+				"begin": 96,
+				"end": 110
+			}, {
+				"_id": "245",
+				"begin": 112,
+				"end": 126
+			}, {
+				"_id": "245",
+				"begin": 128,
+				"end": 142
+			}, {
+				"_id": "245",
+				"begin": 144,
+				"end": 158
+			}, {
+				"_id": "245",
+				"begin": 160,
+				"end": 174
+			}, {
+				"_id": "245",
+				"begin": 176,
+				"end": 190
+			}, {
+				"_id": "245",
+				"begin": 192,
+				"end": 206
+			}, {
+				"_id": "245",
+				"begin": 208,
+				"end": 222
+			}, {
+				"_id": "245",
+				"begin": 224,
+				"end": 238
+			}, {
+				"_id": "245",
+				"begin": 240,
+				"end": 254
+			}, {
+				"_id": "245",
+				"begin": 256,
+				"end": 270
+			}, {
+				"_id": "245",
+				"begin": 272,
+				"end": 286
+			}, {
+				"_id": "245",
+				"begin": 288,
+				"end": 302
+			}, {
+				"_id": "245",
+				"begin": 304,
+				"end": 318
+			}, {
+				"_id": "245",
+				"begin": 320,
+				"end": 334
+			}],
+			"fragments": [{
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "ResidentSleeper",
+				"emoticon": {
+					"emoticon_id": "245",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "ff3a39e8-c936-4e07-b06c-d7bfe0e5ea41",
+		"created_at": "2018-08-13T21:57:41.933Z",
+		"updated_at": "2018-08-13T21:57:41.933Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 41.233,
+		"commenter": {
+			"display_name": "Relux",
+			"_id": "81268896",
+			"name": "relux",
+			"type": "user",
+			"bio": "Twitter: @ReluxCS",
+			"created_at": "2015-01-30T02:50:29.213912Z",
+			"updated_at": "2018-08-10T09:27:38.07243Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/relux-profile_image-37792f48e5ba69fd-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "EU stream Pog",
+			"fragments": [{
+				"text": "EU stream Pog"
+			}],
+			"is_action": false,
+			"user_color": "#00FF7F"
+		},
+		"more_replies": false
+	}, {
+		"_id": "bb8f8973-dd08-458a-ad61-673a076684ad",
+		"created_at": "2018-08-13T21:57:42.558Z",
+		"updated_at": "2018-08-13T21:57:42.558Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 41.858,
+		"commenter": {
+			"display_name": "AlfaAnanasz",
+			"_id": "218415828",
+			"name": "alfaananasz",
+			"type": "user",
+			"bio": null,
+			"created_at": "2018-05-04T10:49:39.694872Z",
+			"updated_at": "2018-08-14T07:53:15.715874Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "@Trainwreckstv slip.gg website stole $3k from me, thanks for helping them scam me :)",
+			"emoticons": [{
+				"_id": "1",
+				"begin": 82,
+				"end": 83
+			}],
+			"fragments": [{
+				"text": "@Trainwreckstv slip.gg website stole $3k from me, thanks for helping them scam me "
+			}, {
+				"text": ":)",
+				"emoticon": {
+					"emoticon_id": "1",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "61226797-7487-4e80-8db5-1eafae6506b5",
+		"created_at": "2018-08-13T21:57:42.628Z",
+		"updated_at": "2018-08-13T21:57:42.628Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 41.928,
+		"commenter": {
+			"display_name": "SchwiftyTV",
+			"_id": "111242641",
+			"name": "schwiftytv",
+			"type": "user",
+			"bio": null,
+			"created_at": "2016-01-01T16:29:33.01501Z",
+			"updated_at": "2018-08-03T17:02:05.261869Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "FINALLY EARLY SINCE OCTOBER Pog",
+			"fragments": [{
+				"text": "FINALLY EARLY SINCE OCTOBER Pog"
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "6d7b28ad-d730-4dc7-a082-1947967a6978",
+		"created_at": "2018-08-13T21:57:43.881Z",
+		"updated_at": "2018-08-13T21:57:43.881Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 43.181,
+		"commenter": {
+			"display_name": "Ren_Void",
+			"_id": "89645058",
+			"name": "ren_void",
+			"type": "user",
+			"bio": null,
+			"created_at": "2015-04-26T22:56:52.403778Z",
+			"updated_at": "2018-08-06T22:13:49.821543Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/d328b8ff-2091-4648-b90d-7aeb5ec4db17-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "GET INTO THE GAME APE",
+			"fragments": [{
+				"text": "GET INTO THE GAME APE"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "turbo",
+				"version": "1"
+			}],
+			"user_color": "#88CC00"
+		},
+		"more_replies": false
+	}, {
+		"_id": "eaa3c60f-a960-4ecd-a99d-acf4ec44c751",
+		"created_at": "2018-08-13T21:57:44.715Z",
+		"updated_at": "2018-08-13T21:57:44.715Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 44.015,
+		"commenter": {
+			"display_name": "G4usk_",
+			"_id": "84129955",
+			"name": "g4usk_",
+			"type": "user",
+			"bio": null,
+			"created_at": "2015-03-01T18:36:47.80924Z",
+			"updated_at": "2018-07-27T22:54:59.248404Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/5f55981c4d0a9c9c-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "GIVING AWAY BFA ?! Pog",
+			"fragments": [{
+				"text": "GIVING AWAY BFA ?! Pog"
+			}],
+			"is_action": false,
+			"user_color": "#0000FF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "b2379067-0669-4434-b58e-f06d812390b7",
+		"created_at": "2018-08-13T21:57:45.526Z",
+		"updated_at": "2018-08-13T21:57:45.526Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 44.826,
+		"commenter": {
+			"display_name": "Howw3",
+			"_id": "126612103",
+			"name": "howw3",
+			"type": "user",
+			"bio": "LOOOOL 4HEad",
+			"created_at": "2016-06-12T16:45:31.282121Z",
+			"updated_at": "2018-08-14T04:35:26.977491Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/e272e49d-a784-4110-902c-6e22b215d391-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "EARLY STREAM",
+			"fragments": [{
+				"text": "EARLY STREAM"
+			}],
+			"is_action": false,
+			"user_color": "#5F9EA0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "48b6130c-a7c6-4e9e-9f6c-5221fc3edc82",
+		"created_at": "2018-08-13T21:57:45.679Z",
+		"updated_at": "2018-08-13T21:57:45.679Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 44.979,
+		"commenter": {
+			"display_name": "Cometz",
+			"_id": "124776653",
+			"name": "cometz",
+			"type": "user",
+			"bio": "Hola(((:",
+			"created_at": "2016-05-21T15:17:45.570317Z",
+			"updated_at": "2018-08-11T09:15:17.556761Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/73f95ebcc362237c-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Why are you streaming so early",
+			"fragments": [{
+				"text": "Why are you streaming so early"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}, {
+				"_id": "turbo",
+				"version": "1"
+			}],
+			"user_color": "#E6FFFF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "e27fc429-015d-4a77-a9f4-7fad8f92dda8",
+		"created_at": "2018-08-13T21:57:46.162Z",
+		"updated_at": "2018-08-13T21:57:46.162Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 45.462,
+		"commenter": {
+			"display_name": "Infrareds",
+			"_id": "107791144",
+			"name": "infrareds",
+			"type": "user",
+			"bio": null,
+			"created_at": "2015-11-23T03:12:19.395645Z",
+			"updated_at": "2018-08-06T18:46:22.938032Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/451af4bf-4e85-48a8-887c-21d05172a413-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "LIVE TriHard",
+			"emoticons": [{
+				"_id": "120232",
+				"begin": 5,
+				"end": 11
+			}],
+			"fragments": [{
+				"text": "LIVE "
+			}, {
+				"text": "TriHard",
+				"emoticon": {
+					"emoticon_id": "120232",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#FF0000"
+		},
+		"more_replies": false
+	}, {
+		"_id": "57b943a9-8d9f-4a2b-9464-84df77d5c8ab",
+		"created_at": "2018-08-13T21:57:46.692Z",
+		"updated_at": "2018-08-13T21:57:46.692Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 45.992,
+		"commenter": {
+			"display_name": "Daurennn",
+			"_id": "54695603",
+			"name": "daurennn",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-01-09T20:01:21.671556Z",
+			"updated_at": "2018-07-14T23:30:14.345486Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/cd618d3e-f14d-4960-b7cf-094231b04735-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "IM UNBANNED PogChamp",
+			"emoticons": [{
+				"_id": "88",
+				"begin": 12,
+				"end": 19
+			}],
+			"fragments": [{
+				"text": "IM UNBANNED "
+			}, {
+				"text": "PogChamp",
+				"emoticon": {
+					"emoticon_id": "88",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false
+		},
+		"more_replies": false
+	}, {
+		"_id": "26189e31-d86f-489f-8f02-319b31ba5db3",
+		"created_at": "2018-08-13T21:57:46.814Z",
+		"updated_at": "2018-08-13T21:57:46.814Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 46.114,
+		"commenter": {
+			"display_name": "Moobot",
+			"_id": "1564983",
+			"name": "moobot",
+			"type": "user",
+			"bio": "Moobot is a Twitch moderator bot that moderates your chat without the need for your constant interaction and attention.",
+			"created_at": "2008-08-30T06:29:50.086777Z",
+			"updated_at": "2018-08-15T16:53:02.388588Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/moobot-profile_image-31a264a72aad34f7-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Subscribe to https://www.youtube.com/channel/UCbYVxiNJmsbhvlUmy4_JbXA for the latest SQUAD Highlights",
+			"fragments": [{
+				"text": "Subscribe to https://www.youtube.com/channel/UCbYVxiNJmsbhvlUmy4_JbXA for the latest SQUAD Highlights"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "moderator",
+				"version": "1"
+			}, {
+				"_id": "partner",
+				"version": "1"
+			}],
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "5bad44ea-46e0-4ebb-ace1-216dc383356d",
+		"created_at": "2018-08-13T21:57:47.158Z",
+		"updated_at": "2018-08-13T21:57:47.158Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 46.458,
+		"commenter": {
+			"display_name": "JamesNiggsonRevival",
+			"_id": "234543112",
+			"name": "jamesniggsonrevival",
+			"type": "user",
+			"bio": null,
+			"created_at": "2018-06-27T20:08:10.303753Z",
+			"updated_at": "2018-08-10T23:06:18.674841Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dd47779-3859-4f02-afc1-c0cfcacc0934-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "availH availH availH availH availH availH",
+			"emoticons": [{
+				"_id": "842700",
+				"begin": 0,
+				"end": 5
+			}, {
+				"_id": "842700",
+				"begin": 7,
+				"end": 12
+			}, {
+				"_id": "842700",
+				"begin": 14,
+				"end": 19
+			}, {
+				"_id": "842700",
+				"begin": 21,
+				"end": 26
+			}, {
+				"_id": "842700",
+				"begin": 28,
+				"end": 33
+			}, {
+				"_id": "842700",
+				"begin": 35,
+				"end": 40
+			}],
+			"fragments": [{
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}, {
+				"text": " "
+			}, {
+				"text": "availH",
+				"emoticon": {
+					"emoticon_id": "842700",
+					"emoticon_set_id": ""
+				}
+			}],
+			"is_action": false,
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "7167b4b7-73e7-49af-b7f6-7aec5f40da49",
+		"created_at": "2018-08-13T21:57:47.495Z",
+		"updated_at": "2018-08-13T21:57:47.495Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 46.795,
+		"commenter": {
+			"display_name": "R_Kely_P_N_on_U",
+			"_id": "53900589",
+			"name": "r_kely_p_n_on_u",
+			"type": "user",
+			"bio": "My name is R Kely. I live behind the pink shirt in your closet.",
+			"created_at": "2013-12-27T02:39:11.198151Z",
+			"updated_at": "2018-08-12T22:00:10.460585Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/r_kely_p_n_on_u-profile_image-8107750b7813aeb5-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG",
+			"fragments": [{
+				"text": "🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG 🍌 🐒 APE GANG"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "premium",
+				"version": "1"
+			}],
+			"user_color": "#FF69B4"
+		},
+		"more_replies": false
+	}, {
+		"_id": "24e72fc0-a1af-48ff-8ebe-ebd6dc918b1f",
+		"created_at": "2018-08-13T21:57:47.698Z",
+		"updated_at": "2018-08-13T21:57:47.698Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 46.998,
+		"commenter": {
+			"display_name": "SparksCx",
+			"_id": "128386638",
+			"name": "sparkscx",
+			"type": "user",
+			"bio": null,
+			"created_at": "2016-07-02T23:50:06.4159Z",
+			"updated_at": "2018-08-10T16:53:55.87655Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/3ab261f7e4b9fe7d-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO",
+			"fragments": [{
+				"text": "😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO 😡 SKIP INTRO"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}, {
 				"_id": "premium",
 				"version": "1"
 			}],
 			"user_color": "#8A2BE2"
 		},
 		"more_replies": false
+	}, {
+		"_id": "e66727d9-b42e-427e-9e42-18035826a031",
+		"created_at": "2018-08-13T21:57:49.699Z",
+		"updated_at": "2018-08-13T21:57:49.699Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 48.999,
+		"commenter": {
+			"display_name": "Strawberries1234",
+			"_id": "57251101",
+			"name": "strawberries1234",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-02-20T05:53:21.402853Z",
+			"updated_at": "2018-08-08T23:07:18.32122Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/4cbf10f1-bb9f-4f57-90e1-15bf06cfe6f5-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG",
+			"fragments": [{
+				"text": "EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG EARLY STREAM POG"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}],
+			"user_color": "#81D8D0"
+		},
+		"more_replies": false
+	}, {
+		"_id": "f4f97472-f62e-476d-bf38-0867b1c3477a",
+		"created_at": "2018-08-13T21:57:52.955Z",
+		"updated_at": "2018-08-13T21:57:52.955Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 52.255,
+		"commenter": {
+			"display_name": "aboodd",
+			"_id": "120271292",
+			"name": "aboodd",
+			"type": "user",
+			"bio": null,
+			"created_at": "2016-03-29T18:37:11.839849Z",
+			"updated_at": "2018-08-13T18:41:14.676761Z",
+			"logo": "https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "PogU",
+			"fragments": [{
+				"text": "PogU"
+			}],
+			"is_action": false,
+			"user_color": "#8A2BE2"
+		},
+		"more_replies": false
+	}, {
+		"_id": "bdb5a3a3-d704-4295-b5f5-3351cc3d19b3",
+		"created_at": "2018-08-13T21:57:57.787Z",
+		"updated_at": "2018-08-13T21:57:57.787Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 57.087,
+		"commenter": {
+			"display_name": "midwestdani",
+			"_id": "188564465",
+			"name": "midwestdani",
+			"type": "user",
+			"bio": null,
+			"created_at": "2018-01-03T02:42:40.043474Z",
+			"updated_at": "2018-08-03T21:00:49.364261Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/7aa94fbf-976b-41e4-9186-cb090f7e90fd-profile_image-300x300.png"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "Wow your ass is finally doing one",
+			"fragments": [{
+				"text": "Wow your ass is finally doing one"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "subscriber",
+				"version": "0"
+			}]
+		},
+		"more_replies": false
+	}, {
+		"_id": "ae37b15b-b528-4b75-80e3-d07ac3678be2",
+		"created_at": "2018-08-13T21:57:57.83Z",
+		"updated_at": "2018-08-13T21:57:57.83Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 57.13,
+		"commenter": {
+			"display_name": "ShuriStr",
+			"_id": "27659948",
+			"name": "shuristr",
+			"type": "user",
+			"bio": null,
+			"created_at": "2012-01-22T14:49:28.265391Z",
+			"updated_at": "2018-08-14T19:25:38.212339Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/shuristr-profile_image-6896899743b6e739-300x300.jpeg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap",
+			"fragments": [{
+				"text": "gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap gachiBASS Clap"
+			}],
+			"is_action": false,
+			"user_color": "#007BFF"
+		},
+		"more_replies": false
+	}, {
+		"_id": "e3615f4c-30e7-41f8-8f7c-96ff9af6ddc8",
+		"created_at": "2018-08-13T21:57:58.028Z",
+		"updated_at": "2018-08-13T21:57:58.028Z",
+		"channel_id": "71190292",
+		"content_type": "video",
+		"content_id": "296954486",
+		"content_offset_seconds": 57.328,
+		"commenter": {
+			"display_name": "Roosterella",
+			"_id": "66248276",
+			"name": "roosterella",
+			"type": "user",
+			"bio": null,
+			"created_at": "2014-07-13T11:15:24.891571Z",
+			"updated_at": "2018-08-14T23:29:21.947313Z",
+			"logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/29d98110-5196-4b9a-8701-1b8253122b21-profile_image-300x300.jpg"
+		},
+		"source": "chat",
+		"state": "published",
+		"message": {
+			"body": "ANOTHER WOW STREAM PogU",
+			"fragments": [{
+				"text": "ANOTHER WOW STREAM PogU"
+			}],
+			"is_action": false,
+			"user_badges": [{
+				"_id": "turbo",
+				"version": "1"
+			}],
+			"user_color": "#FF00F7"
+		},
+		"more_replies": false
 	}],
-	"_next": "eyJpZCI6IjAxM2FmMTAzLTMxYjktNDE4YS1hMzQwLTI2ZDc3YWVmN2M4YSIsImhrIjoiYnJvYWRjYXN0OjI4MjcyODg3OTg0Iiwic2siOiJBQUFBQ0ZtNGVFQVZJLW4zMTUzYVFBIn0f"
+	"_next": "eyJpZCI6ImUzNjE1ZjRjLTMwZTctNDFmOC04ZjdjLTk2ZmY5YWY2ZGRjOCIsImhrIjoiYnJvYWRjYXN0OjI5OTEwNjA2NzUyIiwic2siOiJBQUFBRFZrRDNBQVZTcEI2VFNpN0FBIn0f"
 }
