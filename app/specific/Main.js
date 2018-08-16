@@ -199,6 +199,7 @@ function Main_initWindows() {
         AddUser_RestoreUsers();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Live_init();
+        Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {

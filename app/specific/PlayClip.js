@@ -13,7 +13,6 @@ var PlayClip_PanelHideID = null;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 3500;
 var PlayClip_loadingDataTryMax = 5;
-var PlayClip_currentTime = 0;
 var PlayClip_JustStartPlaying = true;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
@@ -49,7 +48,7 @@ function PlayClip_Start() {
 
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
-    PlayClip_currentTime = 0;
+    PlayVod_currentTime = 0;
     PlayClip_qualityIndex = 2;
     Play_EndSet(3);
     Play_IsWarning = false;
@@ -153,7 +152,7 @@ var PlayClip_listener = {
         }
     },
     oncurrentplaytime: function(currentTime) {
-        if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
+        if (PlayVod_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
     },
     onstreamcompleted: function() {
         Play_PannelEndStart(3);
@@ -266,7 +265,7 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
+    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayVod_currentTime) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
             if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) && (PlayClip_QualityChangedCounter < Play_QualityChangedCounterMax)) {
@@ -282,7 +281,7 @@ function PlayClip_PlayerCheck() {
         }
     } else PlayClip_PlayerCheckCount = 0;
 
-    PlayClip_PlayerTime = PlayClip_currentTime;
+    PlayClip_PlayerTime = PlayVod_currentTime;
 }
 
 function PlayClip_shutdownStream() {
@@ -308,7 +307,7 @@ function PlayClip_PreshutdownStream() {
 }
 
 function PlayClip_updateCurrentTime(currentTime) {
-    PlayClip_currentTime = currentTime;
+    PlayVod_currentTime = currentTime;
 
     if (!PlayClip_IsJumping && !Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
     if (PlayClip_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
@@ -328,7 +327,7 @@ function PlayClip_showPanel() {
     Play_IconsResetFocus();
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayClip_currentTime));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(PlayVod_currentTime));
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();
 }

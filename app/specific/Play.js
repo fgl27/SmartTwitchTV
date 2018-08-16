@@ -200,7 +200,8 @@ function Play_Start() {
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
-
+    Main_ShowElement('chat_frame');
+    Main_HideElement('chat_box');
     Play_updateStreamInfoErrorTry = 0;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;

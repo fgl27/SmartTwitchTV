@@ -1,4 +1,3 @@
-/* jshint undef: true, unused: true, node: true, browser: true */
 //Variable initialization
 var Chat_LoadGlobal = false;
 var Chat_loadingDataTry = 0;
@@ -273,6 +272,7 @@ function Chat_Pause() {
 function Chat_Clear() {
     // on exit cleanup the div
     Main_empty('chat_box');
+    Chat_Pause();
     Chat_next = null;
     Chat_Messages = [];
     Chat_MessagesNext = [];
@@ -283,7 +283,7 @@ function Main_Addline() {
     var elem, i;
     if (Chat_Position < (Chat_Messages.length - 1)) {
         for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
-            if (Chat_Messages[i].time < PlayVod_currentTime) {
+            if (Chat_Messages[i].time < (PlayVod_currentTime / 1000)) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';
                 elem.innerHTML = Chat_Messages[i].message;
@@ -357,7 +357,6 @@ function Chat_loadChatNextError() {
 
 function Chat_loadChatOffset(offset) {
     console.log("Chat_loadChatOffset");
-    Chat_Pause();
     Chat_Clear();
     Chat_offset = offset;
     Chat_loadingDataTry = 0;
