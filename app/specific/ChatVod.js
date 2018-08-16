@@ -239,14 +239,14 @@ function Chat_loadChatSuccess(responseText) {
 
 function Chat_MessageVector(message, time) {
     Chat_Messages.push({
-        'time': Math.floor(time),
+        'time': time,
         'message': message
     });
 }
 
 function Chat_MessageVectorNext(message, time) {
     Chat_MessagesNext.push({
-        'time': Math.floor(time),
+        'time': time,
         'message': message
     });
 }
