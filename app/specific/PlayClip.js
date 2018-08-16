@@ -42,6 +42,7 @@ function PlayClip_Start() {
     Main_textContent("stream_live_time", ChannelClip_Duration);
     Main_empty('dialog_buffer_play_percentage');
     PlayClip_HasVOD = ChannelVod_vodId !== 'null';
+    Chat_title = ChannelClip_title;
     if (PlayClip_HasVOD) {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
