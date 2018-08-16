@@ -76,6 +76,7 @@
             font-size: 18px;
             font-weight: bold;
             vertical-align: middle;
+            transition: opacity 1s;
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
 
@@ -91,15 +92,16 @@
 
         div.icon_center_label {
             max-width: 48%;
-            height: 100%;
+            height: 105%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            color: #666666;
+            color: #777777;
             display: inline-block;
-            font-size: 55px;
+            font-size: 53px;
             font-weight: bold;
             padding-right: 0.7%;
+            transition: opacity 1s;
             text-shadow: 1px 0 0 #000000,
             1px -1px 0 #000000,
             1px 1px 0 #000000,
@@ -132,7 +134,8 @@
 
         div.icon_center_focus {
             color: #FFFFFF;
-            font-size: 72px;
+            font-size: 69px;
+            transition: opacity 0;
             text-shadow: 1px 0 0 #000000,
             1px -1px 0 #000000,
             1px 1px 0 #000000,
@@ -549,7 +552,11 @@
             position: fixed;
             width: 100%;
             height: 9%;
-            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.20));
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.06));
+        }
+
+        div.topbar_dim {
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.03));
         }
 
         div.controls_div {
@@ -710,7 +717,7 @@
                 <div style="float: left; width: 40%; padding-top: 2%;">
                     <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
                 </div>
-                <div style="float: right; width: 59%;">
+                <div id="about_div" style="float: right; width: 59%; transition: opacity 1s;">
                     <img style="width: 95%;" src="https://bhb27.github.io/smarttv-twitch/release/githubio/images/twitchlogo.png" alt="twitchlogo">
                     <div style="text-align: center;">
                         <div id="label_about" class="icon_top_label" style="width: 100%; text-align: center;"></div>

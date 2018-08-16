@@ -59,6 +59,8 @@ var Main_ScrollbarElement;
 var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
+var Main_SetTopOpacityId;
+var Main_OpacityDivs = ["label_search", "label_controls", "label_refresh", "label_switch", "about_div", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 
 var Main_Is4k = false;
 
@@ -197,6 +199,7 @@ function Main_initWindows() {
         AddUser_RestoreUsers();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Live_init();
+        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
                 Main_showWarningDialog('there is a update');
@@ -469,7 +472,28 @@ function Main_ReStartScreens() {
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
+function Main_SetTopOpacity() {
+    var elem, i = 0;
+    for (i; i < Main_OpacityDivs.length; i++) {
+        if (i < 5) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.5';
+        else {
+            elem = document.getElementById(Main_OpacityDivs[i]);
+            if (elem.className.indexOf('icon_center_focus') === -1) elem.style.opacity = '0.5';
+        }
+    }
+    Main_AddClass('topbar', 'topbar_dim');
+}
+
+function Main_UnSetTopOpacity() {
+    for (var i = 0; i < Main_OpacityDivs.length; i++)
+        document.getElementById(Main_OpacityDivs[i]).style.opacity = '1';
+    Main_RemoveClass('topbar', 'topbar_dim');
+}
+
 function Main_SwitchScreen() {
+    window.clearTimeout(Main_SetTopOpacityId);
+    Main_UnSetTopOpacity();
+
     if (Main_NetworkStateOK) Main_HideWarningDialog();
 
     if (Main_Go !== Main_ChannelContent && Main_Go !== Main_aGame) {
@@ -500,6 +524,8 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_AGameClip) AGameClip_init();
     else if (Main_Go === Main_Featured) Featured_init();
     else Live_init();
+
+    Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
 }
 
 function Main_ExitCurrent(ExitCurrent) {
