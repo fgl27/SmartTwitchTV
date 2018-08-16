@@ -180,6 +180,19 @@ function Chat_loadChatError() {
     else Chat_loadChatId = window.setTimeout(Chat_loadChatRequest, 2500);
 }
 
+function Chat_NoVod() {
+    var div = '&nbsp;';
+    div += '<span class="message">';
+    div += STR_BR + STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT;
+    div += '</span>';
+
+    var elem = document.createElement('div');
+    elem.className = 'chat_line';
+    elem.innerHTML = div;
+
+    Chat_div.appendChild(elem);
+}
+
 function Chat_loadChatSuccess(responseText) {
     responseText = JSON.parse(responseText);
     var div, mmessage, null_next = (Chat_next === null);

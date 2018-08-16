@@ -169,6 +169,7 @@ function en_USLang() {
     STR_OPEN_BROADCAST = "Open the Broadcast";
     STR_NO_BROADCAST = "No Broadcast";
     STR_NO_BROADCAST_WARNING = "There is no Past Broadcast for this clip";
+    STR_NO_CHAT = "And because of that no chat";
     STR_IS_NOW = " is now";
     STR_OPEN_HOST = "Open the Hosting";
     STR_SETTINGS_PLAYER = "Player related";
@@ -179,5 +180,5 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_CLIP = "Clips buffer";
     STR_SETTINGS_GENERAL = "General related";
     STR_SETTINGS_LANG = "Language";
-    STR_LOADING_CHAT = STR_BR + "Chat: Connecting to chat server.." + STR_BR + "Chat: Conected" + STR_BR + "Chat: Joined channel: ";
+    STR_LOADING_CHAT = STR_BR + "Chat: Connecting to chat server.." + STR_BR + "Chat: Connected" + STR_BR + "Chat: Joined channel: ";
 }
