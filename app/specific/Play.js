@@ -83,7 +83,7 @@ var Play_QualityChangedCounter = 0;
 var Play_QualityChangedCounterMax = 4;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
-
+var Play_ChatCheckId;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 var Play_ChatPositionVal = [{
     "top": 52, // Bottom/right 0
@@ -714,6 +714,7 @@ function Play_shutdownStream() {
 function Play_PreshutdownStream() {
     Play_ClearPlayer();
     Play_ClearPlay();
+    window.clearInterval(Play_ChatCheckId);
     Play_isOn = false;
     if (!Play_isOpenChannel) Main_selectedChannel_id = '';
     else Play_isOpenChannel = false;
