@@ -32,7 +32,8 @@ var PlayVod_PlayerCheckCount = 0;
 var PlayVod_PlayerCheckQualityChanged = false;
 var PlayVod_Playing = false;
 var Play_jumping = false;
-var PlayVod_JumpID = null;
+var PlayVod_JumpID;
+var PlayVod_updateStreamInfId;
 var PlayVod_TimeToJump = 0;
 var PlayVod_IsJumping = false;
 var PlayVod_jumpCount = 0;
@@ -52,13 +53,14 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
-    Play_hideChat();
     if (PlayVod_vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (!Vod_isVod) Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-        else {
+        if (!Vod_isVod) {
+            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+            Chat_Init();
+        } else {
             PlayVod_PrepareLoad();
             PlayVod_updateStreamInfo();
         }
@@ -76,6 +78,9 @@ function PlayVod_Start() {
 
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+
+    Main_ShowElement('chat_box');
+    Main_HideElement('chat_frame');
 
     PlayVod_currentTime = 0;
     PlayVod_qualitiesFound = false;
@@ -120,6 +125,7 @@ function PlayVod_updateStreamInfo() {
                     if (users !== undefined) {
                         Main_selectedChannelLogo = users.logo;
                         Main_selectedChannel_id = users._id;
+                        Chat_Init();
                     } else {
                         Main_selectedChannelLogo = IMG_404_LOGO;
                         Main_selectedChannel_id = '';
@@ -143,7 +149,7 @@ function PlayVod_updateStreamInfoError() {
     if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
         PlayVod_loadingInfoDataTimeout += 2000;
         PlayVod_updateStreamInfo();
-    } else Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
+    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamInfo, 2500);
 }
 
 function PlayVod_updateVodInfo() {
@@ -392,8 +398,10 @@ function PlayVod_onPlayer() {
 
         if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
 
-        if (PlayVod_vodOffset) Play_avplay.seekTo(PlayVod_vodOffset * 1000);
-        else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
+        if (PlayVod_vodOffset) {
+            Chat_loadChatOffset(PlayVod_vodOffset);
+            Play_avplay.seekTo(PlayVod_vodOffset * 1000);
+        } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
             Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
             Play_clearPause();
         }
@@ -421,6 +429,7 @@ function PlayVod_onPlayer() {
     Main_ready(function() {
         Play_HideWarningDialog();
         PlayVod_hidePanel();
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(PlayVod_streamCheck);
         PlayVod_PlayerCheckCount = 0;
         PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
@@ -464,6 +473,8 @@ function PlayVod_shutdownStream() {
 }
 
 function PlayVod_PreshutdownStream() {
+    window.clearInterval(PlayVod_updateStreamInfId);
+    Chat_Clear();
     Play_ClearPlayer();
     PlayVod_ClearVod();
     PlayVod_isOn = false;
@@ -560,6 +571,7 @@ function PlayVod_jump() {
             }
         }
 
+        Chat_loadChatOffset((PlayVod_currentTime / 1000) + PlayVod_TimeToJump);
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     PlayVod_jumpCount = 0;
@@ -677,9 +689,27 @@ function PlayVod_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
-                Play_hideChat();
-                Play_ChatEnable = false;
-                localStorage.setItem('ChatEnable', 'false');
+                if (!Play_isChatShown() && !Play_isEndDialogShown()) {
+                    Play_showChat();
+                    Play_ChatEnable = true;
+                    localStorage.setItem('ChatEnable', 'true');
+                } else {
+                    Play_hideChat();
+                    Play_ChatEnable = false;
+                    localStorage.setItem('ChatEnable', 'false');
+                }
+                break;
+            case KEY_CHANNELUP:
+                if (Play_isChatShown()) {
+                    Play_ChatPositions++;
+                    Play_ChatPosition();
+                }
+                break;
+            case KEY_CHANNELDOWN:
+                if (Play_isChatShown()) {
+                    Play_ChatPositions--;
+                    Play_ChatPosition();
+                }
                 break;
             case KEY_LEFT:
                 if (Play_isPanelShown()) {
@@ -729,6 +759,12 @@ function PlayVod_handleKeyDown(e) {
                     }
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
+                } else if (Play_isChatShown()) {
+                    if (Play_ChatSizeValue < 4) {
+                        Play_ChatSizeValue++;
+                        if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                        Play_ChatSize(true);
+                    } else Play_showChatBackgroundDialog('Size 100%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
                     PlayVod_showPanel();
@@ -742,6 +778,12 @@ function PlayVod_handleKeyDown(e) {
                     }
                     PlayVod_clearHidePanel();
                     PlayVod_setHidePanel();
+                } else if (Play_isChatShown()) {
+                    if (Play_ChatSizeValue > 1) {
+                        Play_ChatSizeValue--;
+                        if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
+                        Play_ChatSize(true);
+                    } else Play_showChatBackgroundDialog('Size 33%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
                     PlayVod_showPanel();
