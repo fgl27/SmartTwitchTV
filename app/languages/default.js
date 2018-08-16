@@ -41,7 +41,8 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_9 + STR_BR +
         STR_CONTROLS_MAIN_10 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_11 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_12 + STR_BR + '</div>' + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_12 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_13 + STR_BR + '</div>' + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div>';

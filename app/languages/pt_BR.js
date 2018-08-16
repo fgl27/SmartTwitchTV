@@ -84,7 +84,8 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_9 = "Pesquisar: Botão Azul(D)";
     STR_CONTROLS_MAIN_10 = "Após inserir o conteúdo da busca, pressione retornar ou clique em CONCLUÍDO e use as Setas Direcionais (esquerda/direita) para escolher o tipo de busca. Pressione a tecla selecionar ou PLAY/PAUSE para confirmar.";
     STR_CONTROLS_MAIN_11 = "Controles: Botão Amarelo (C)";
-    STR_CONTROLS_MAIN_12 = "Sobre: Botão Vermelho (A)";
+    STR_CONTROLS_MAIN_12 = "Configurações: Botão Vermelho (A)";
+    STR_CONTROLS_MAIN_13 = "Sobre (a partir da tela de settings): Botão Vermelho (A)";
     STR_ABOUT_INFO_1 = "Este é um aplicativo não oficial do Twitch.TV, desenvolvido por um individuo no seu tempo livre, feito para TVs que não possuem uma versão oficial. Seu uso é gratuito.";
     STR_ABOUT_INFO_2 = "Em 99% das vezes, o aplicativo se atualizará sozinho para adicionar correções e novas funções. O aplicativo avisará ao usuário quando houver necessidade de ser atualizado manualmente (através de uma nova instalação pelo computador no caso ter ter usado o computar pra instalar).";
     STR_ABOUT_INFO_3 = "Sobre o Desenvolvedor:";
@@ -94,10 +95,10 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_1 = "Exibir Informações: Pressione a tecla selecionar caso o Chat esteja sendo exibido ou use as Setas Direcionais.";
     STR_CONTROLS_PLAY_2 = "Fechar um vídeo: Pressione retornar duas vezes seguidas em menos de três segundos";
     STR_CONTROLS_PLAY_3 = "Pausar/Reproduzir: Pressione PLAY ou PAUSE.";
-    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): Setas Direcionais (esquerda/direita).";
+    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (esconda o chat antes)(indisponível para Transmissões Ao Vivo): Setas Direcionais (esquerda/direita).";
     STR_CONTROLS_PLAY_5 = "Alterar qualidade: Abra o Painel de Informações, use as Setas Direcionais (Cima/Baixo) para escolher a qualidade e pressione a tecla selecionar para alterar.";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo: Pressione a tecla selecionar duas vezes. A qualidade do vídeo continuará sendo a mesma, mas após o segundo clique, o vídeo será recarregado.";
-    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat (Somente disponível em transmissões ao vivo): GUIDE ou INFO.";
+    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat: GUIDE ou INFO.";
     STR_CONTROLS_PLAY_8 = "Posição do Chat (Se o chat esta visível): CH Para Cima ou Para Baixo.";
     STR_CONTROLS_PLAY_9 = "Tamanho do Chat (Se o chat esta visível): Setas Direcionais (cima/baixo).";
     STR_CONTROLS_PLAY_10 = "Brilho do Chat (Se o chat esta visível): Setas Direcionais (esquerda/direita).";
