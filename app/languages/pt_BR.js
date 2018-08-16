@@ -167,5 +167,5 @@ function pt_BRLang() {
     STR_SETTINGS_BUFFER_CLIP = "Buffer de clips";
     STR_SETTINGS_GENERAL = "Gerais";
     STR_SETTINGS_LANG = "Linguá";
-    STR_LOADING_CHAT = STR_BR + "Chat: Conectando ao server de chat.." + STR_BR + "Chat: Conectado" + STR_BR + "Chat: Associado ao canal: ";
+    STR_LOADING_CHAT = "Chat: Conectando ao servidor de histórico do chat.." + STR_BR + "Chat: Conectado." + STR_BR + "Chat: Associado ao canal ";
 }

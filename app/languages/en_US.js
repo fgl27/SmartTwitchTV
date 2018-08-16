@@ -180,5 +180,5 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_CLIP = "Clips buffer";
     STR_SETTINGS_GENERAL = "General related";
     STR_SETTINGS_LANG = "Language";
-    STR_LOADING_CHAT = STR_BR + "Chat: Connecting to chat server.." + STR_BR + "Chat: Connected" + STR_BR + "Chat: Joined channel: ";
+    STR_LOADING_CHAT = "Chat: Connecting to chat history server.." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
 }

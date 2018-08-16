@@ -10,6 +10,7 @@ var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_loadChatOffsetId;
 var Chat_offset = 0;
+var Chat_title = '';
 var defaultColors = ["#FF0000", "#0000FF", "#008000", "#B22222", "#FF7F50", "#9ACD32", "#FF4500", "#6BC81E", "#DAA520", "#D2691E", "#5F9EA0", "#1E90FF", "#FF69B4", "#8A2BE2", "#00FF7F"];
 var Chat_div;
 var Chat_Position = 0;
@@ -200,7 +201,7 @@ function Chat_loadChatSuccess(responseText) {
     if (null_next) {
         div = '&nbsp;';
         div += '<span class="message">';
-        div += STR_LOADING_CHAT + Main_selectedChannelDisplayname;
+        div += STR_BR + STR_LOADING_CHAT + Main_selectedChannelDisplayname + ' ' + STR_PAST_BROA + ':' + STR_BR + Chat_title;
         div += '</span>';
         Chat_MessageVector(div, 0);
     }

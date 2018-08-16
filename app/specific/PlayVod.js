@@ -57,6 +57,7 @@ function PlayVod_Start() {
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
+        Chat_title = ChannelVod_title;
         if (!Vod_isVod) {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
             Chat_Init();
