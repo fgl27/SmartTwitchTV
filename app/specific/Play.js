@@ -83,7 +83,7 @@ var Play_QualityChangedCounter = 0;
 var Play_QualityChangedCounterMax = 4;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
-var Play_ChatCheckId;
+var Play_ChatFixPositionId;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 var Play_ChatPositionVal = [{
     "top": 52, // Bottom/right 0
@@ -580,6 +580,7 @@ function Play_onPlayer() {
 
 function Play_loadChat() {
     Play_ChatLoadStarted = true;
+    window.clearInterval(Play_ChatFixPositionId);
 
     //Clear the iframe doc to prevent false true from Play_CheckChat "indexOf('Connected') !== -1"
     var doc = Play_Chatobj.contentDocument;
@@ -606,8 +607,7 @@ function Play_CheckChat() {
             Play_CheckChatCounter++;
             Play_CheckChatId = window.setTimeout(Play_CheckChat, 1000);
         } else Play_loadChat();
-
-    }
+    } else Play_ChatFixPositionId = window.setInterval(Play_ChatFixPosition, 500);
 }
 
 // If idle or playing, the media is be played or process to
@@ -714,7 +714,7 @@ function Play_shutdownStream() {
 function Play_PreshutdownStream() {
     Play_ClearPlayer();
     Play_ClearPlay();
-    window.clearInterval(Play_ChatCheckId);
+    window.clearInterval(Play_ChatFixPositionId);
     Play_isOn = false;
     if (!Play_isOpenChannel) Main_selectedChannel_id = '';
     else Play_isOpenChannel = false;
@@ -857,6 +857,17 @@ function Play_setHidePanel() {
     Play_PanelHideID = window.setTimeout(Play_hidePanel, 5000);
 }
 
+// chat_box is a inner element from the chat_frame iframe, when changing it size it's content may be off screen
+// This also help with a bug when the emote is slow to load and loads after the scrollTop function from the iframe
+// with causes the line to be half off screen, in that case the interval will fix it
+function Play_ChatFixPosition() {
+    var doc = Play_Chatobj.contentDocument;
+    if (doc !== undefined && doc.body !== null) {
+        doc = doc.getElementById('chat_box');
+        if (doc) doc.scrollTop = doc.scrollHeight;
+    }
+}
+
 function Play_showChat() {
     Play_ChatPosition();
     Main_ShowElement('chat_container');
@@ -921,6 +932,7 @@ function Play_ChatSize(showDialog) {
     Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue - 1].containerHeight + '%';
     document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue - 1].dialogTop + '%';
     Play_ChatPosition();
+    Play_ChatFixPosition();
 
     if (showDialog) Play_showChatBackgroundDialog('Size ' + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage + '%');
 
@@ -1521,6 +1533,7 @@ function Play_handleKeyDown(e) {
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
                 break;
             case KEY_BLUE:
+                Play_ChatFixPosition();
                 break;
             default:
                 break;

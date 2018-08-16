@@ -777,6 +777,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_ChatSizeValue++;
                         if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                         Play_ChatSize(true);
+                        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
                     } else Play_showChatBackgroundDialog('Size 100%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
@@ -796,6 +797,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_ChatSizeValue--;
                         if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
                         Play_ChatSize(true);
+                        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
                     } else Play_showChatBackgroundDialog('Size 33%');
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
