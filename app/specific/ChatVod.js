@@ -201,7 +201,7 @@ function Chat_loadChatSuccess(responseText) {
     if (null_next) {
         div = '&nbsp;';
         div += '<span class="message">';
-        div += STR_BR + STR_LOADING_CHAT + Main_selectedChannelDisplayname + ' ' + STR_PAST_BROA + ':' + STR_BR + Chat_title;
+        div += STR_BR + STR_LOADING_CHAT + Main_selectedChannelDisplayname + ' ' + Chat_title;
         div += '</span>';
         Chat_MessageVector(div, 0);
     }
