@@ -15,25 +15,18 @@ var Chat_div;
 var Chat_Position = 0;
 //Variable initialization end
 
-//This js is a adaptation of https://www.nightdev.com/kapchat/ functions
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOMContentLoaded");
-    Chat_loadBadgesGlobal();
-});
-
 function Chat_Preinit() {
-    console.log("DOMContentLoaded");
     Chat_div = document.getElementById('chat_box');
     Chat_loadBadgesGlobal();
 }
 
 function Chat_Init() {
-    console.log("DOMContentLoaded");
     if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
     Chat_Clear();
     Main_ready(Chat_loadBadgesChannel);
 }
 
+//This file use some function or adptations of function from https://www.nightdev.com/kapchat/
 function transformBadges(sets) {
     return Object.keys(sets).map(function(b) {
         var badge = sets[b];
@@ -56,14 +49,12 @@ function tagCSS(type, version, url, addToHead) {
 }
 
 function Chat_loadBadgesGlobal() {
-    console.log("Chat_loadBadgesGlobal");
     Chat_loadingDataTry = 0;
     Chat_LoadGlobal = false;
     Chat_loadBadgesGlobalRequest();
 }
 
 function Chat_loadBadgesGlobalRequest() {
-    console.log("Chat_loadBadgesGlobalRequest");
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -90,15 +81,12 @@ function Chat_loadBadgesGlobalRequest() {
 }
 
 function Chat_loadBadgesGlobalError() {
-    console.log("Chat_loadBadgesGlobalError");
     Chat_loadingDataTry++;
     if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest();
     else Chat_LoadGlobal = false;
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
-    console.log("Chat_loadBadgesGlobalSuccess");
-
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
             tagCSS(badge.type, version.type, version.image_url_4x, true);
@@ -108,13 +96,11 @@ function Chat_loadBadgesGlobalSuccess(responseText) {
 }
 
 function Chat_loadBadgesChannel() {
-    console.log("Chat_loadBadgesChannel");
     Chat_loadingDataTry = 0;
     Chat_loadBadgesChannelRequest();
 }
 
 function Chat_loadBadgesChannelRequest() {
-    console.log("Chat_loadBadgesChannelRequest");
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -141,31 +127,27 @@ function Chat_loadBadgesChannelRequest() {
 }
 
 function Chat_loadBadgesChannelError() {
-    console.log("Chat_loadBadgesChannelError");
     Chat_loadingDataTry++;
     if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesChannelRequest();
     else window.setTimeout(Chat_loadBadgesChannelRequest, 2500);
 }
 
 function Chat_loadBadgesChannelSuccess(responseText) {
-    console.log("Chat_loadBadgesChannelSuccess");
-
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
             tagCSS(badge.type, version.type, version.image_url_4x, false);
         });
     });
-    Chat_loadChat();
+    if (Chat_offset > 0) Chat_loadChatOffset();
+    else Chat_loadChat();
 }
 
 function Chat_loadChat() {
-    console.log("Chat_loadChat");
     Chat_loadingDataTry = 0;
     Chat_loadChatRequest();
 }
 
 function Chat_loadChatRequest() {
-    console.log("Chat_loadChatRequest");
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -193,22 +175,23 @@ function Chat_loadChatRequest() {
 }
 
 function Chat_loadChatError() {
-    console.log("Chat_loadChatError");
     Chat_loadingDataTry++;
     if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest();
     else Chat_loadChatId = window.setTimeout(Chat_loadChatRequest, 2500);
 }
 
 function Chat_loadChatSuccess(responseText) {
-    console.log("Chat_loadChatSuccess");
     responseText = JSON.parse(responseText);
-    var div, mmessage, next_bool = (Chat_next === null);
+    var div, mmessage, null_next = (Chat_next === null);
 
-    if (next_bool) {
+    if (null_next) {
         div = '&nbsp;';
+        div += '<span class="message">';
+        div += STR_LOADING_CHAT + Main_selectedChannelDisplayname;
+        div += '</span>';
         Chat_MessageVector(div, 0);
     }
-
+    Chat_offset = 0;
     Chat_next = responseText._next;
 
     responseText.comments.forEach(function(comments) {
@@ -232,10 +215,10 @@ function Chat_loadChatSuccess(responseText) {
             else div += fragments.text;
         });
         div += '</span>';
-        if (next_bool) Chat_MessageVector(div, comments.content_offset_seconds);
+        if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
         else Chat_MessageVectorNext(div, comments.content_offset_seconds);
     });
-    if (next_bool) {
+    if (null_next) {
         Chat_Play();
         Chat_loadChatNext();
     }
@@ -283,6 +266,7 @@ function Main_Addline() {
     var elem, i;
     if (Chat_Position < (Chat_Messages.length - 1)) {
         for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+            //console.log("time " + (PlayVod_currentTime / 1000) + " line time " + Chat_Messages[i].time);
             if (Chat_Messages[i].time < (PlayVod_currentTime / 1000)) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';
@@ -294,7 +278,6 @@ function Main_Addline() {
             }
         }
     } else {
-
         Chat_Pause();
         Chat_Messages = Chat_MessagesNext.slice();
         Chat_Position = 0;
@@ -315,13 +298,11 @@ function Main_Addline() {
 }
 
 function Chat_loadChatNext() {
-    console.log("Chat_loadChatNext");
     Chat_loadingDataTry = 0;
     Chat_loadChatNextRequest();
 }
 
 function Chat_loadChatNextRequest() {
-    console.log("Chat_loadChatNextRequest");
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -349,22 +330,17 @@ function Chat_loadChatNextRequest() {
 }
 
 function Chat_loadChatNextError() {
-    console.log("Chat_loadChatNextError");
     Chat_loadingDataTry++;
     if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest();
     else Chat_loadChatNextId = window.setTimeout(Chat_loadChatNextRequest, 2500);
 }
 
-function Chat_loadChatOffset(offset) {
-    console.log("Chat_loadChatOffset");
-    Chat_Clear();
-    Chat_offset = offset;
+function Chat_loadChatOffset() {
     Chat_loadingDataTry = 0;
     Chat_loadChatOffsetRequest();
 }
 
 function Chat_loadChatOffsetRequest() {
-    console.log("Chat_loadChatOffsetRequest");
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -392,7 +368,6 @@ function Chat_loadChatOffsetRequest() {
 }
 
 function Chat_loadChatOffsetError() {
-    console.log("Chat_loadChatOffsetError");
     Chat_loadingDataTry++;
     if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatOffsetRequest();
     else Chat_loadChatOffsetId = window.setTimeout(Chat_loadChatOffsetRequest, 2500);

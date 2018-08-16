@@ -153,6 +153,8 @@ function Play_PreStart() {
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
+    Play_ChatSize(false);
+    Play_ChatBackgroundChange(false);
 }
 
 //this are the global set option that need to be set only once
@@ -193,8 +195,6 @@ function Play_Start() {
     Play_isHost = false;
     Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
-    Play_ChatSize(false);
-    Play_ChatBackgroundChange(false);
     Play_RestoreFromResume = false;
 
     Play_offsettimeMinus = 0;
@@ -1086,11 +1086,15 @@ function Play_EndDialogPressed(PlayVodClip) {
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();
+            Chat_offset = 0;
+            Chat_Init();
         } else if (PlayVodClip === 3) {
             PlayClip_offsettime = 0;
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
             Play_clearPause();
+            Chat_offset = ChannelVod_vodOffset;
+            Chat_Init();
         }
     } else if (Play_Endcounter === 1) {
         if (Play_isHost) {

@@ -399,7 +399,8 @@ function PlayVod_onPlayer() {
         if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
 
         if (PlayVod_vodOffset) {
-            Chat_loadChatOffset(PlayVod_vodOffset);
+            Chat_offset = PlayVod_vodOffset;
+            Chat_Init();
             Play_avplay.seekTo(PlayVod_vodOffset * 1000);
         } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
             Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
@@ -571,7 +572,8 @@ function PlayVod_jump() {
             }
         }
 
-        Chat_loadChatOffset((PlayVod_currentTime / 1000) + PlayVod_TimeToJump);
+        Chat_offset = (PlayVod_currentTime / 1000) + PlayVod_TimeToJump;
+        Chat_Init();
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     PlayVod_jumpCount = 0;
@@ -712,7 +714,11 @@ function PlayVod_handleKeyDown(e) {
                 }
                 break;
             case KEY_LEFT:
-                if (Play_isPanelShown()) {
+                if (!Play_isPanelShown() && Play_isChatShown()) {
+                    Play_ChatBackground -= 0.05;
+                    if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
+                    Play_ChatBackgroundChange(true);
+                } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
                     Play_Panelcouner++;
                     if (Play_Panelcouner > 5) Play_Panelcouner = 1;
@@ -732,7 +738,11 @@ function PlayVod_handleKeyDown(e) {
                 }
                 break;
             case KEY_RIGHT:
-                if (Play_isPanelShown()) {
+                if (!Play_isPanelShown() && Play_isChatShown()) {
+                    Play_ChatBackground += 0.05;
+                    if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
+                    Play_ChatBackgroundChange(true);
+                } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
                     Play_Panelcouner--;
                     if (Play_Panelcouner < 1) Play_Panelcouner = 5;
