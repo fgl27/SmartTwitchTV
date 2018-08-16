@@ -199,6 +199,7 @@ function PlayVod_updateVodInfoPannel(response) {
 
 function PlayVod_Resume() {
     if (document.hidden) {
+        Chat_Pause();
         Play_avplay.pause();
         PlayVod_offsettime = Play_avplay.getCurrentTime();
         Play_ClearPlayer();
@@ -212,6 +213,7 @@ function PlayVod_Resume() {
         Play_showBufferDialog();
         PlayVod_Playing = false;
         PlayVod_onPlayer();
+        Chat_Play();
         Play_EndSet(2);
     }
 }
