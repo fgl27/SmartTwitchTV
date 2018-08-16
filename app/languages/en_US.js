@@ -92,7 +92,8 @@ function en_USLang() {
     STR_CONTROLS_MAIN_9 = "Start a search: color button blue or D";
     STR_CONTROLS_MAIN_10 = "After setting up the search text press return or click on DONE and use the Directional pad (left/right) to chose the type of search then press Select or Play/Pause, Directional pad (up) goes back to edit the search text";
     STR_CONTROLS_MAIN_11 = "Controls list: color button yellow or C";
-    STR_CONTROLS_MAIN_12 = "About this application: color button red or A";
+    STR_CONTROLS_MAIN_12 = "Settings: color button red or A";
+    STR_CONTROLS_MAIN_13 = "About this application (From the settings screen): color button red or A";
     STR_ABOUT_INFO_1 = "This is a unofficial Twitch.Tv application develop by a individual on his free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it.";
     STR_ABOUT_INFO_2 = "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it.";
     STR_ABOUT_INFO_3 = "Developer information:";
@@ -107,10 +108,10 @@ function en_USLang() {
     STR_CONTROLS_PLAY_1 = "Show information panel: Select key if chat is showing or Directional pad (up/down/left/right) if not";
     STR_CONTROLS_PLAY_2 = "Close the video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: Play or Pause keys";
-    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Directional pad (right/left), multiple clicks add more time before jump";
+    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (Hide the chat first)(not available for live streams): Directional pad (right/left), multiple clicks add more time before jump";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): press select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat (Only available on live streams): Guide or info (Guide is channel press key on smart remote)";
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat: Guide or info (Guide is channel press key on smart remote)";
     STR_CONTROLS_PLAY_8 = "Change Chat position (if chat it\'s showing and info panel is not): Chanel Up or Down";
     STR_CONTROLS_PLAY_9 = "Change Chat size (if chat it\'s showing and info panel is not): Directional pad (up/down)";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness (if chat it\'s showing and info panel is not): Directional pad (left/right)";
