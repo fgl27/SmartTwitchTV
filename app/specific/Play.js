@@ -85,30 +85,39 @@ var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
+//sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
     "top": 52, // Bottom/right 0
-    "left": 75.3
+    "left": 75.3,
+    "sizeOffset": [31, 16, 0, 0]
 }, {
     "top": 33, // Middle/right 1
-    "left": 75.3
+    "left": 75.3,
+    "sizeOffset": [12.5, 0, -6.25, 0]
 }, {
     "top": 0, // Top/right 2
-    "left": 75.3
+    "left": 75.3,
+    "sizeOffset": [0, 0, 0, 0]
 }, {
     "top": 0, // Top/center 3
-    "left": 38.3
+    "left": 38.3,
+    "sizeOffset": [0, 0, 0, 0]
 }, {
     "top": 0, // Top/left 4
-    "left": 0
+    "left": 0,
+    "sizeOffset": [0, 0, 0, 0]
 }, {
     "top": 33, // Middle/left 5
-    "left": 0
+    "left": 0,
+    "sizeOffset": [12.5, 0, -6.25, 0]
 }, {
     "top": 52, // Bottom/left 6
-    "left": 0
+    "left": 0,
+    "sizeOffset": [31, 16, 0, 0]
 }, {
     "top": 52, // Bottom/center 7
-    "left": 38.3
+    "left": 38.3,
+    "sizeOffset": [31, 16, 0, 0]
 }];
 
 //Conversion between chat at 100% and bellow 50%
@@ -122,23 +131,19 @@ var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
 var Play_ChatSizeVal = [{
     "containerHeight": 17, // 12.5%
     "percentage": 12.5,
-    "dialogTop": 15,
-    "sizeOffset": 31,
+    "dialogTop": 15
 }, {
     "containerHeight": 32, // 25%
     "percentage": 25,
-    "dialogTop": 30,
-    "sizeOffset": 16,
+    "dialogTop": 30
 }, {
     "containerHeight": 48, // 50%
     "percentage": 50,
-    "dialogTop": 50,
-    "sizeOffset": 0,
+    "dialogTop": 50
 }, {
     "containerHeight": 100, // 100%
     "percentage": 100,
-    "dialogTop": 115,
-    "sizeOffset": 0,
+    "dialogTop": 115
 }];
 //Variable initialization end
 
@@ -964,9 +969,7 @@ function Play_ChatPosition() {
     if (Play_ChatPositions < 0) Play_ChatPositions = (bool ? 2 : 7);
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
-    Play_chat_container.style.top =
-        ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatSizeVal[Play_ChatSizeValue - 1].sizeOffset)) +
-            Play_sizePanelOffset) + '%';
+    Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_sizePanelOffset) + '%';
 
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
