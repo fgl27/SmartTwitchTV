@@ -399,8 +399,8 @@ function PlayClip_jump() {
             }
         } else {
             try {
-                Chat_offset = ChannelVod_vodOffset;
                 PlayVod_currentTime = PlayClip_currentTime + (PlayClip_TimeToJump * 1000);
+                Chat_offset = PlayVod_currentTime / 1000;
                 Chat_Init();
                 Play_avplay.jumpBackward(PlayClip_TimeToJump * -1000);
             } catch (e) {
