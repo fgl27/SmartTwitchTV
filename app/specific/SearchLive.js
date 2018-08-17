@@ -379,7 +379,7 @@ function SearchLive_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Play_selectedChannel = document.getElementById(SearchLive_ids[8] + SearchLive_cursorY + '_' + SearchLive_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Main_selectedChannel_id = Play_selectedChannel[1];
+            Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_selectedChannelDisplayname = document.getElementById(SearchLive_ids[3] + SearchLive_cursorY + '_' + SearchLive_cursorX).textContent;
             document.body.removeEventListener("keydown", SearchLive_handleKeyDown);

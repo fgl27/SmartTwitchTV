@@ -182,7 +182,8 @@ function ChannelClip_loadDataSuccess(responseText) {
                 ChannelClip_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     video.slug + ',' + video.duration + ',' + video.game + ',' +
-                    (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null), [video.thumbnails.medium,
+                    (video.vod !== null ? video.vod.id + ',' + video.vod.offset : null + ',' + null) +
+                    ',' + video.broadcaster.id, [video.thumbnails.medium,
                         video.title, STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                         STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         '[' + video.language.toUpperCase() + ']',
@@ -462,6 +463,7 @@ function ChannelClip_handleKeyDown(event) {
             Play_gameSelected = ChannelClip_playUrl[2];
             ChannelVod_vodId = ChannelClip_playUrl[3];
             ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[4]);
+            Main_selectedChannel_id = ChannelClip_playUrl[5];
             ChannelClip_playUrl = ChannelClip_playUrl[0];
 
             ChannelClip_title = document.getElementById(ChannelClip_ids[3] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;

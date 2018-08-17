@@ -389,7 +389,7 @@ function UserHost_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Main_selectedChannel_id = Play_selectedChannel[1];
+            Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_DisplaynameHost = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent;
             Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];

@@ -59,7 +59,7 @@ function PlayVod_Start() {
         PlayVod_updateVodInfo();
     } else {
         Chat_title = STR_PAST_BROA + '.';
-        if (!Vod_isVod) {
+        if (!Vod_isVod && Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
             Chat_Init();
         } else {

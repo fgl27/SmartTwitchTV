@@ -420,7 +420,7 @@ function Live_handleKeyDown(event) {
                 } catch (e) {}
             } else {
                 Play_selectedChannel = document.getElementById(Live_ids[8] + Live_cursorY + '_' + Live_cursorX).getAttribute(Main_DataAttribute).split(',');
-                Main_selectedChannel_id = Play_selectedChannel[1];
+                Play_selectedChannel_id = Play_selectedChannel[1];
                 Play_selectedChannel = Play_selectedChannel[0];
                 Play_selectedChannelDisplayname = document.getElementById(Live_ids[3] + Live_cursorY + '_' + Live_cursorX).textContent;
                 document.body.removeEventListener("keydown", Live_handleKeyDown);
