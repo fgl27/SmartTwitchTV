@@ -53,6 +53,7 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
+    PlayVod_currentTime = 0;
     if (PlayVod_vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
@@ -83,7 +84,6 @@ function PlayVod_Start() {
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
 
-    PlayVod_currentTime = 0;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;

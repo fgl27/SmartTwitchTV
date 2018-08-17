@@ -359,6 +359,9 @@ function Chat_loadChatOffsetRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
+        //the server always return too much back in time from what was request so set a offset to the offset
+        Chat_offset += 15;
+
         xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + ChannelVod_vodId +
             '/comments?client_id=' + Main_clientId + '&content_offset_seconds=' + Chat_offset, true);
         xmlHttp.timeout = 10000;
