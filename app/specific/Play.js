@@ -68,7 +68,6 @@ var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_DisplaynameHost = '';
 var Play_isHost = false;
-var Play_isOpenChannel = false;
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
 var Play_Chatobj;
@@ -84,6 +83,8 @@ var Play_QualityChangedCounterMax = 4;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
+var Play_selectedChannelLogo;
+var Play_selectedChannel_id;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
@@ -267,15 +268,15 @@ function Play_updateStreamInfoStart() {
                 if (xmlHttp.status === 200) {
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.stream !== null) {
-                        Main_selectedChannel_id = response.stream.channel._id;
+                        Play_selectedChannel_id = response.stream.channel._id;
                         Main_textContent("stream_info_title", response.stream.channel.status);
                         Play_gameSelected = response.stream.game;
                         Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
                         Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                        Main_selectedChannelLogo = response.stream.channel.logo;
+                        Play_selectedChannelLogo = response.stream.channel.logo;
                         Play_LoadLogoSucess = true;
-                        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+                        Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
                         Play_created = response.stream.created_at;
                         if (Main_UserName !== '') {
                             AddCode_PlayRequest = true;
@@ -721,8 +722,7 @@ function Play_PreshutdownStream() {
     Play_ClearPlay();
     window.clearInterval(Play_ChatFixPositionId);
     Play_isOn = false;
-    if (!Play_isOpenChannel) Main_selectedChannel_id = '';
-    else Play_isOpenChannel = false;
+    Play_selectedChannel_id = '';
 }
 
 function Play_exitMain() {
@@ -1161,9 +1161,10 @@ function Play_OpenChannel(PlayVodClip) {
 
     Main_ExitCurrent(Main_Go);
     Main_Go = Main_ChannelContent;
-    Play_isOpenChannel = true;
 
     if (PlayVodClip === 1) {
+        Main_selectedChannel_id = Play_selectedChannel_id;
+        Main_selectedChannelLogo = Play_selectedChannelLogo;
         Main_selectedChannel = Play_selectedChannel;
         Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
         ChannelContent_UserChannels = AddCode_IsFallowing;
@@ -1262,7 +1263,7 @@ function Play_CheckHostStart() {
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 3500;
-    if (Main_selectedChannel_id !== '') Play_loadDataCheckHost();
+    if (Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }
 
@@ -1282,7 +1283,7 @@ function Play_CheckId() {
                 if (xmlHttp.status === 200) {
                     var users = JSON.parse(xmlHttp.responseText).users[0];
                     if (users !== undefined) {
-                        Main_selectedChannel_id = users._id;
+                        Play_selectedChannel_id = users._id;
                         Play_loadingDataTry = 0;
                         Play_loadingDataTimeout = 3500;
                         Play_loadDataCheckHost();
@@ -1312,7 +1313,7 @@ function Play_loadDataCheckHost() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};

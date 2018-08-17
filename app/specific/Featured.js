@@ -382,7 +382,7 @@ function Featured_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Play_selectedChannel = document.getElementById(Featured_ids[8] + Featured_cursorY + '_' + Featured_cursorX).getAttribute(Main_DataAttribute).split(',');
-            Main_selectedChannel_id = Play_selectedChannel[1];
+            Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_selectedChannelDisplayname = document.getElementById(Featured_ids[3] + Featured_cursorY + '_' + Featured_cursorX).textContent;
             document.body.removeEventListener("keydown", Featured_handleKeyDown);

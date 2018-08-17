@@ -527,7 +527,7 @@ function AGame_handleKeyDown(event) {
         case KEY_ENTER:
             if (AGame_cursorY !== -1) {
                 Play_selectedChannel = document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute(Main_DataAttribute).split(',');
-                Main_selectedChannel_id = Play_selectedChannel[1];
+                Play_selectedChannel_id = Play_selectedChannel[1];
                 Play_selectedChannel = Play_selectedChannel[0];
                 Play_selectedChannelDisplayname = document.getElementById(AGame_ids[3] + AGame_cursorY + '_' + AGame_cursorX).textContent;
                 document.body.removeEventListener("keydown", AGame_handleKeyDown);

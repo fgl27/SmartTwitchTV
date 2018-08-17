@@ -254,7 +254,7 @@ function SmartHub_EventListener() {
 
                     Play_selectedChannel = VideoIdx;
                     Play_selectedChannelDisplayname = actionData.videoTitleIdx + '';
-                    Main_selectedChannel_id = actionData._id;
+                    Play_selectedChannel_id = actionData._id;
 
                     if (actionData.isHost) {
                         Play_isHost = true;
