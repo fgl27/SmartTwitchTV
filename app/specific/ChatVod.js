@@ -230,11 +230,11 @@ function Chat_loadChatSuccess(responseText) {
         });
         div += '</span>';
         if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
-        else Chat_MessageVectorNext(div, comments.content_offset_seconds);
+        else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
     });
     if (null_next) {
         Chat_Play();
-        Chat_loadChatNext();
+        if (Chat_next !== undefined) Chat_loadChatNext(); //if (Chat_next === undefined) chat has ended
     }
 }
 
@@ -293,21 +293,40 @@ function Main_Addline() {
         }
     } else {
         Chat_Pause();
-        Chat_Messages = Chat_MessagesNext.slice();
-        Chat_Position = 0;
-        Chat_Play();
-        Chat_MessagesNext = [];
+        if (Chat_next !== undefined) {
+            Chat_Messages = Chat_MessagesNext.slice();
+            Chat_Position = 0;
+            Chat_Play();
+            Chat_MessagesNext = [];
 
-        Chat_loadChatNext();
+            Chat_loadChatNext();
 
-        //delete old lines out of view
-        var linesToDelete = document.getElementsByClassName("chat_line");
-        if ((linesToDelete.length - 100) > 0) {
-            for (i = 0; i < (linesToDelete.length - 100); i++) {
-                linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
+            //delete old lines out of view
+            var linesToDelete = document.getElementsByClassName("chat_line");
+            if ((linesToDelete.length - 100) > 0) {
+                for (i = 0; i < (linesToDelete.length - 100); i++) {
+                    linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
+                }
             }
+            Chat_div.scrollTop = Chat_div.scrollHeight;
+        } else {
+            var div = '&nbsp;';
+            div += '<span class="message">';
+            div += STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR;
+            div += '</span>';
+
+            elem = document.createElement('div');
+            elem.className = 'chat_line';
+            elem.innerHTML = div;
+
+            Chat_div.appendChild(elem);
+
+            //keep refreshing in case user changes chat size
+            Chat_addlines = window.setInterval(function() {
+                Chat_div.scrollTop = Chat_div.scrollHeight;
+            }, 250);
+            Chat_div.scrollTop = Chat_div.scrollHeight;
         }
-        Chat_div.scrollTop = Chat_div.scrollHeight;
     }
 }
 
