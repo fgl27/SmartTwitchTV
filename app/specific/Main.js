@@ -25,6 +25,7 @@ var Main_Clip = 19;
 var Main_AGameVod = 20;
 var Main_AGameClip = 21;
 var Main_Featured = 22;
+var Main_UserVod = 23;
 
 var Main_Go = 1;
 var Main_Before = 1;
@@ -86,6 +87,8 @@ var Main_ItemsLimitReplace = 6;
 var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
 var Main_clientIdHeader = 'Client-ID';
 var Main_AcceptHeader = 'Accept';
+var Main_Authorization = 'Authorization';
+var Main_OAuth = 'OAuth ';
 var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
 var Main_VideoSize = "528x297"; // default size 640x360
 var Main_GameSize = "340x475"; // default size 272x380
@@ -190,6 +193,8 @@ function Main_initWindows() {
     Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
     AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
     AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
+
+    UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
     PlayVod_RestoreVodIds();
 
     Main_ready(function() {
@@ -528,6 +533,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_AGameVod) AGameVod_init();
     else if (Main_Go === Main_AGameClip) AGameClip_init();
     else if (Main_Go === Main_Featured) Featured_init();
+    else if (Main_Go === Main_UserVod) UserVod_init();
     else Live_init();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
@@ -555,6 +561,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
     else if (ExitCurrent === Main_AGameClip) AGameClip_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();
+    else if (ExitCurrent === Main_UserVod) UserVod_exit();
 }
 
 function Main_openStream() {

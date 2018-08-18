@@ -61,19 +61,36 @@ function Users_loadData() {
 
         row = document.createElement('tr');
 
+        //live
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play'));
+
+        //host
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users'));
+
+        //games
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
             'gamepad'));
+
+        //videos
+        coloumn_id++;
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play'));
+
+        //channels
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip'));
+
+        //add or make one
         coloumn_id++;
         if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus'));
         else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up'));
+
+        //remove user
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times'));
+
+        //add key
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddCode_UserCodeExist(Main_UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
 
@@ -152,6 +169,11 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
+    if (Users_cursorX === 3 && AddCode_OauthToken === '') {
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
+        window.setTimeout(Main_HideWarningDialog, 5000);
+        return;
+    }
     if (Users_cursorX !== 5) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
@@ -163,14 +185,15 @@ function Users_keyEnter() {
     if (!Users_cursorX) UserLive_init();
     else if (Users_cursorX === 1) UserHost_init();
     else if (Users_cursorX === 2) UserGames_init();
-    else if (Users_cursorX === 3) UserChannels_init();
-    else if (Users_cursorX === 4) {
+    else if (Users_cursorX === 3) UserVod_init();
+    else if (Users_cursorX === 4) UserChannels_init();
+    else if (Users_cursorX === 5) {
         if (!Users_cursorY) {
             Main_Before = Main_Users;
             AddUser_init();
         } else AddUser_UserMakeOne(Users_cursorY);
-    } else if (Users_cursorX === 5) Users_showRemoveDialog();
-    else if (Users_cursorX === 6) AddCode_init();
+    } else if (Users_cursorX === 6) Users_showRemoveDialog();
+    else if (Users_cursorX === 7) AddCode_init();
 }
 
 function Users_checkKey(responseText) {

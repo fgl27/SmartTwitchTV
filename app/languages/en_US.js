@@ -187,4 +187,8 @@ function en_USLang() {
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
     STR_CHAT_END = "Chat: The Chat has ended!";
+    STR_TIME = ": Most recent";
+    STR_VIWES = ": Most views";
+    STR_NOKEY_VIDEO_WARN = "Set a authentication key to be able to see fallowed videos";
+    STR_SWITCH_TYPE = "Switch Type (Most recent or views)";
 }
