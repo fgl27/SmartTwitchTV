@@ -14,6 +14,7 @@ var Chat_title = '';
 var defaultColors = ["#FF0000", "#0000FF", "#008000", "#B22222", "#FF7F50", "#9ACD32", "#FF4500", "#6BC81E", "#DAA520", "#D2691E", "#5F9EA0", "#1E90FF", "#FF69B4", "#8A2BE2", "#00FF7F"];
 var Chat_div;
 var Chat_Position = 0;
+var Chat_hasEnded = false;
 //Variable initialization end
 
 function Chat_Preinit() {
@@ -253,21 +254,26 @@ function Chat_MessageVectorNext(message, time) {
 }
 
 function Chat_Play() {
-    Chat_addlines = window.setInterval(function() {
-        Main_Addline();
-        Chat_div.scrollTop = Chat_div.scrollHeight;
-    }, 250);
+    if (!Chat_hasEnded) {
+        Chat_addlines = window.setInterval(function() {
+            Main_Addline();
+            Chat_div.scrollTop = Chat_div.scrollHeight;
+        }, 250);
+    }
 }
 
 function Chat_Pause() {
-    window.clearInterval(Chat_addlines);
-    window.clearInterval(Chat_loadChatId);
-    window.clearInterval(Chat_loadChatNextId);
-    window.clearInterval(Chat_loadChatOffsetId);
+    if (!Chat_hasEnded) {
+        window.clearInterval(Chat_addlines);
+        window.clearInterval(Chat_loadChatId);
+        window.clearInterval(Chat_loadChatNextId);
+        window.clearInterval(Chat_loadChatOffsetId);
+    }
 }
 
 function Chat_Clear() {
     // on exit cleanup the div
+    Chat_hasEnded = false;
     Main_empty('chat_box');
     Chat_Pause();
     Chat_next = null;
@@ -321,6 +327,7 @@ function Main_Addline() {
 
             Chat_div.appendChild(elem);
 
+            Chat_hasEnded = true;
             //keep refreshing in case user changes chat size
             Chat_addlines = window.setInterval(function() {
                 Chat_div.scrollTop = Chat_div.scrollHeight;
