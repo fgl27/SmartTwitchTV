@@ -171,4 +171,5 @@ function pt_BRLang() {
     STR_VOD_HISTORY = "Rodar a partir o início ou de onde você parou de assistir pela última vez?";
     STR_FROM = "A partir:" + STR_BR;
     STR_FROM_START = STR_FROM + "Do começo";
+    STR_CHAT_END = "Chat: O Chat terminou!";
 }

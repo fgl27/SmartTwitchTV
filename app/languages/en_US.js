@@ -184,4 +184,5 @@ function en_USLang() {
     STR_VOD_HISTORY = "Play from the start or from where you stop watching last time?";
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
+    STR_CHAT_END = "Chat: The Chat has ended!";
 }
