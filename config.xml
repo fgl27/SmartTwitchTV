@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/bhb27/smarttv-twitch" version="4.0.0" viewmodes="maximized">
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/bhb27/smarttv-twitch" version="4.0.1" viewmodes="maximized">
    <access origin="*" subdomains="true"></access>
    <tizen:application id="qY6HyNzLIR.TwitchTv" package="qY6HyNzLIR" required_version="2.3"/>
    <content src="index.html"/>
