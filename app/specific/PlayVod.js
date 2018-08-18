@@ -76,7 +76,7 @@ function PlayVod_Start() {
         Main_textContent("stream_live_time", ChannelVod_Duration);
     }
 
-    if (PlayVod_VodIds[ChannelVod_vodId]) {
+    if (PlayVod_VodIds[ChannelVod_vodId] && !PlayVod_vodOffset) {
         Play_HideBufferDialog();
         Play_showVodDialog();
     } else {
