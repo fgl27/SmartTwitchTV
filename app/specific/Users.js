@@ -169,7 +169,7 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
-    if (Users_cursorX !== 5) {
+    if (Users_cursorX !== 6) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
         document.getElementById("screens_holder").style.top = "0";
