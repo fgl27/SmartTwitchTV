@@ -92,6 +92,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_UPDATE_MAIN_2 + '</div>' +
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_UPDATE_MAIN_3 + STR_BR +
+        STR_BR + STR_UPDATE_MAIN_0 + STR_BR +
         STR_BR + STR_CLOSE_THIS + '</div>';
 
     STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +

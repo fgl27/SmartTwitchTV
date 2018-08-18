@@ -202,7 +202,7 @@ function Main_initWindows() {
         Live_init();
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
-        if (Main_checkVersion()) {
+        if (Main_checkVersion() || 1) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
                 Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
                 window.setTimeout(Main_HideWarningDialog, 3500);
