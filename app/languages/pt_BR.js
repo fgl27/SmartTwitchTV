@@ -71,8 +71,8 @@ function pt_BRLang() {
     STR_CHAT = "Relacionados ao Chat:";
     STR_GENERAL = "Gerais:";
     STR_UPDATE = 'Atualização';
-    STR_CURRENT_VERSION = "Versão Atual ";
-    STR_LATEST_VERSION = " Última Versão ";
+    STR_CURRENT_VERSION = "Versão Atual instalada ";
+    STR_LATEST_VERSION = " última versão disponível ";
     STR_CONTROLS_MAIN_1 = "Estes controles não estão relacionados ao player. O player pode mostrar os seus controles.";
     STR_CONTROLS_MAIN_2 = "Reproduzir um Vídeo: Navegue usando as setas direcionais, pressione PLAY/PAUSE para reproduzir.";
     STR_CONTROLS_MAIN_3 = "Atualizar Conteúdo: Pressione GUIDE ou INFO.";
