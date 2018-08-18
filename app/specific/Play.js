@@ -1386,6 +1386,7 @@ function Play_KeyReturn(is_vod) {
             PlayVod_jumpCount = 0;
             PlayVod_jumpCancel();
         } else if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
+            Main_ShowElement('scene_channel_panel_bottom');
             Play_HideVodDialog();
             PlayVod_PreshutdownStream();
             Play_exitMain();
