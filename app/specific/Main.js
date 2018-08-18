@@ -204,7 +204,7 @@ function Main_initWindows() {
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
-                Main_showWarningDialog('there is a update');
+                Main_showWarningDialog(STR_UPDATE_AVAILABLE);
                 window.setTimeout(Main_HideWarningDialog, 3500);
             } else {
                 Main_showUpdateDialog();
