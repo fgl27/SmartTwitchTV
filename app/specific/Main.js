@@ -93,8 +93,8 @@ var Main_GameSize = "340x475"; // default size 272x380
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
-var Main_version = 400;
-var Main_stringVersion = '4.0.0';
+var Main_version = 401;
+var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
 var Main_minversion = '081818';
 var Main_versonTag = '';
