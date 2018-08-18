@@ -169,11 +169,6 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
-    if (Users_cursorX === 3 && AddCode_OauthToken === '') {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        window.setTimeout(Main_HideWarningDialog, 5000);
-        return;
-    }
     if (Users_cursorX !== 5) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
@@ -181,6 +176,12 @@ function Users_keyEnter() {
     }
     Main_UserName = AddUser_UsernameArray[Users_cursorY];
     AddCode_SetDefaultOAuth(Users_cursorY);
+
+    if (Users_cursorX === 3 && AddCode_OauthToken === '') {
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
+        window.setTimeout(Main_HideWarningDialog, 5000);
+        return;
+    }
 
     if (!Users_cursorX) UserLive_init();
     else if (Users_cursorX === 1) UserHost_init();
