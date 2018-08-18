@@ -700,8 +700,13 @@ function PlayVod_SaveVodIds() {
     var time = PlayVod_currentTime / 1000;
 
     if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
+
+        //delete before save to appd this to the and prevent loose it in restorevodids
+        if (PlayVod_VodIds[ChannelVod_vodId]) delete PlayVod_VodIds[ChannelVod_vodId];
+
         PlayVod_VodIds[ChannelVod_vodId] = parseInt(PlayVod_currentTime / 1000);
         localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+
     } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[ChannelVod_vodId]) {
 
         //if ended or almost delete
@@ -934,7 +939,6 @@ function PlayVod_handleKeyDown(e) {
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
                 break;
             case KEY_BLUE:
-                PlayVod_RestoreVodIds();
                 break;
             default:
                 break;
