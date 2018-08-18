@@ -202,6 +202,7 @@ function Play_Start() {
     Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
+    Main_ShowElement('scene_channel_panel_bottom');
 
     Play_QualityChangedCounter = 0;
     Play_offsettimeMinus = 0;

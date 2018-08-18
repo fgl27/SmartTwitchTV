@@ -51,6 +51,7 @@ function PlayClip_Start() {
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_ShowElement('scene_channel_panel_bottom');
 
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');

@@ -97,6 +97,9 @@ function PlayVod_PosStart() {
 
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
+    window.setTimeout(function() {
+       Main_ShowElement('scene_channel_panel_bottom');
+    }, 1000);
 
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -749,10 +752,12 @@ function Play_showVodDialog() {
 }
 
 function Play_HideVodDialog() {
-    Main_ShowElement('scene_channel_panel_bottom');
     PlayVod_hidePanel();
     Main_HideElement('dialog_vod_start');
     Play_VodIconsResetFocus();
+    window.setTimeout(function() {
+       Main_ShowElement('scene_channel_panel_bottom');
+    }, 1000);
 }
 
 function Play_isVodDialogShown() {
@@ -778,11 +783,6 @@ function Play_VodDialogPressed() {
     else PlayVod_vodOffset = 0;
     Play_HideVodDialog();
     PlayVod_PosStart();
-    Main_ready(function() {
-        window.setTimeout(function() {
-            Main_ShowElement('scene_channel_panel_bottom');
-        }, 1000);
-    });
 }
 
 function PlayVod_handleKeyDown(e) {
