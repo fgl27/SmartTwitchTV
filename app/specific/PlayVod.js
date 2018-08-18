@@ -699,7 +699,7 @@ function PlayVod_jumpStart() {
 function PlayVod_SaveVodIds() {
     var time = PlayVod_currentTime / 1000;
 
-    if (time > 300) { //time too small don't save
+    if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
         PlayVod_VodIds[ChannelVod_vodId] = parseInt(PlayVod_currentTime / 1000);
         localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
     } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[ChannelVod_vodId]) {
