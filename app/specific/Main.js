@@ -1,5 +1,5 @@
 //Variable initialization
-var Main_isReleased = true;
+var Main_isReleased = false;
 var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
@@ -202,10 +202,10 @@ function Main_initWindows() {
         Live_init();
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
-        if (Main_checkVersion() || 1) {
+        if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
                 Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
-                window.setTimeout(Main_HideWarningDialog, 3500);
+                window.setTimeout(Main_HideWarningDialog, 5000);
             } else {
                 Main_showUpdateDialog();
                 localStorage.setItem('has_showUpdateDialog', 1);
@@ -658,7 +658,8 @@ function Main_checkVersion() {
         Appversion = Appversion.split(".");
         value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0);
-        Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
+        Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion +
+        ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
         return value < Main_version;
     } else return false;
 }

@@ -79,8 +79,8 @@ function en_USLang() {
     STR_CHAT = "Chat Related:";
     STR_GENERAL = "General Related:";
     STR_UPDATE = 'Update';
-    STR_CURRENT_VERSION = "Current Major version ";
-    STR_LATEST_VERSION = " Latest Major version ";
+    STR_CURRENT_VERSION = "Current installed version ";
+    STR_LATEST_VERSION = " latest available version ";
     STR_CONTROLS_MAIN_1 = "This are the none players related controls, the player can show it's own controls.";
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), Select or Play/Pause keys to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: Guide or info (Guide is channel press key on smart remote)";
