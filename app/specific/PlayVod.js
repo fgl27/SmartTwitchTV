@@ -744,6 +744,8 @@ function Play_showVodDialog() {
 }
 
 function Play_HideVodDialog() {
+    Main_ShowElement('scene_channel_panel_bottom');
+    PlayVod_hidePanel();
     Main_HideElement('dialog_vod_start');
     Play_VodIconsResetFocus();
 }
@@ -767,7 +769,6 @@ function Play_VodIconsRemoveFocus() {
 }
 
 function Play_VodDialogPressed() {
-    document.getElementById("scene_channel_panel").style.opacity = "0";
     if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds[ChannelVod_vodId];
     else PlayVod_vodOffset = 0;
     Play_HideVodDialog();
