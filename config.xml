@@ -27,9 +27,6 @@
    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
    <tizen:profile name="tv-samsung-public"/>
    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="enable"  encryption="disable" install-location="auto" hwkey-event="enable"/>
-   <metadata key="http://tizen.org/metadata/background-category/media"/>
-   <metadata key="http://tizen.org/metadata/background-category/background-network"/>
-   <metadata key="http://tizen.org/metadata/background-category/download"/>
    <tizen:metadata key='samsung.com/tv/metadata/multitasking.support' value='true' />
    <!-- Smart Hub Preview-->
    <tizen:metadata key='http://samsung.com/tv/metadata/devel.api.version' value='2.4'></tizen:metadata>
