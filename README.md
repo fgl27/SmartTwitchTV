@@ -1,12 +1,12 @@
 smarttv-twitch
 ==============
 
-This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not available for most TV, that is way this project exist.
+This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not available for most countries, that is way this project exist.
 
-The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if yours Smart Hub menu is different from the one bellow yours TV is probably not supported as it doesn't run Tizen version supported by the application.
+The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if TV is from 2015 and it's SmartHub menu is different from the one bellow image yours TV may not fully supported Twitch Live or Vod streams playback.
 ![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for all 2015 TV is under work, but there is a know bug from some TV FW running Tizen 2.3 that prevent the app from work, Samsung is revising the problems, but as I don't have a 2015 TV model I can't test, if you wanna this app to support yours TV post that you wanna to help on the open issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/bhb27/smarttv-twitch/issues/12)
+Full support for all 2015 TV is not possible as the TV firmware doesn't supports it and Samsung doesn't seems to care and may have remove the featuring intentionally, a discussion about it can be read in this issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/bhb27/smarttv-twitch/issues/12)
 
 In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
