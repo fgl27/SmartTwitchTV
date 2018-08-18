@@ -120,7 +120,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_13 = "Open Channel or Game content: Open information panel, navigate using use Directional pad (left/right) to \"Channel or Game content\" and press select";
     STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";
     STR_UPDATE_MAIN_2 = "Major changes:";
-    STR_UPDATE_MAIN_3 = "Temp update 1";
+    STR_UPDATE_MAIN_3 = "Improves how the app runs in the background";
     STR_OAUTH_IN = "Adding a authentication key allows the app to fallow and access subscribed only past broadcast (for channel you are Sub to) for the chosen user, enter the authentication key for user ";
     STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
     STR_OAUTH_EXPLAIN2 = "Access the site http://tiny.cc/twitchkey (using a computer or a smart phone)";
