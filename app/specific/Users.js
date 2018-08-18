@@ -142,7 +142,7 @@ function Users_checkTitleRun(position) {
 }
 
 function Users_SetKeyTitleStart(bool, position) {
-    Main_textContent(Users_ids[3] + position + '_' + 6, bool ? STR_USER_CODE_OK : STR_USER_CODE);
+    Main_textContent(Users_ids[3] + position + '_' + 7, bool ? STR_USER_CODE_OK : STR_USER_CODE);
     if (!bool) {
         var user = AddCode_UserCodeExist(AddUser_UsernameArray[position]);
         if (user > -1) AddCode_removeUser(user);
