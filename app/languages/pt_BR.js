@@ -174,4 +174,8 @@ function pt_BRLang() {
     STR_FROM = "A partir:" + STR_BR;
     STR_FROM_START = STR_FROM + "Do começo";
     STR_CHAT_END = "Chat: O Chat terminou!";
+    STR_TIME = ": Mais recente";
+    STR_VIWES = ": Mais visto";
+    STR_NOKEY_VIDEO_WARN = "Adicione uma chave de autenticação para poder ver vídeos seguidos";
+    STR_SWITCH_TYPE = "Troque o tipo (Mais recente ou visto)";
 }

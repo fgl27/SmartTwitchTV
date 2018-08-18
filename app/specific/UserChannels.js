@@ -288,7 +288,8 @@ function UserChannels_handleKeyDown(event) {
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Go = Main_usergames;
+            if (AddCode_OauthToken !== '') Main_Go = Main_UserVod;
+            else Main_Go = Main_usergames;
             UserChannels_exit();
             Main_SwitchScreen();
             break;

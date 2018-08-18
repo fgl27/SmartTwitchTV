@@ -397,7 +397,8 @@ function UserGames_handleKeyDown(event) {
             Users_resetGameCell();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_UserChannels;
+            if (AddCode_OauthToken !== '') Main_Go = Main_UserVod;
+            else Main_Go = Main_UserChannels;
             UserGames_exit();
             Main_SwitchScreen();
             break;
