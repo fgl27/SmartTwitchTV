@@ -98,7 +98,7 @@ function PlayVod_PosStart() {
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
     window.setTimeout(function() {
-       Main_ShowElement('scene_channel_panel_bottom');
+        Main_ShowElement('scene_channel_panel_bottom');
     }, 1000);
 
     PlayVod_qualitiesFound = false;
@@ -756,7 +756,7 @@ function Play_HideVodDialog() {
     Main_HideElement('dialog_vod_start');
     Play_VodIconsResetFocus();
     window.setTimeout(function() {
-       Main_ShowElement('scene_channel_panel_bottom');
+        Main_ShowElement('scene_channel_panel_bottom');
     }, 1000);
 }
 
