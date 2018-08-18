@@ -659,7 +659,7 @@ function Main_checkVersion() {
         value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0);
         Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion +
-        ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
+            ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
         return value < Main_version;
     } else return false;
 }
