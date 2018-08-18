@@ -118,7 +118,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self";
     STR_CONTROLS_PLAY_12 = "Start a search: Open information panel, navigate using use Directional pad (left/right) to \"Search\" and press select";
     STR_CONTROLS_PLAY_13 = "Open Channel or Game content: Open information panel, navigate using use Directional pad (left/right) to \"Channel or Game content\" and press select";
-    STR_UPDATE_AVAILABLE = "There is a update available, check it in the app github releases";
+    STR_UPDATE_AVAILABLE = "There is a update available, check it in the app github releases ";
     STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";
     STR_UPDATE_MAIN_2 = "Major changes:";
     STR_UPDATE_MAIN_3 = "Improves how the app runs in the background";

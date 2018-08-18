@@ -105,7 +105,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_11 = "Forçar atualização do Chat (caso necessário): Pressione a tecla selecionar duas vezes. No primeiro clique, a qualidade continuará a mesma, mas após o segundo, o vídeo e o chat serão recarregados.";
     STR_CONTROLS_PLAY_12 = "Inicie uma pesquisa: abra o painel de informações, navegue usando o botão Direcional (esquerda / direita) para \"Pesquisar\" e pressione a tecla selecionar";
     STR_CONTROLS_PLAY_13 = "Abra o conteúdo do canal ou jogo: abra o painel de informações, navegue usando o botão direcional (esquerda / direita) para \"Conteúdo do canal ou jogo\" e pressione a tecla selecionar";
-    STR_UPDATE_AVAILABLE = "Tem um update disponível, verifique este na pagina github releases do application";
+    STR_UPDATE_AVAILABLE = "Tem um update disponível, verifique este na pagina github releases do aplicativo ";
     STR_UPDATE_MAIN_1 = "Há uma atualização disponível, mas o app não pôde ser atualizado automaticamente ";
     STR_UPDATE_MAIN_2 = "Mudanças:";
     STR_UPDATE_MAIN_3 = "Melhora a forma como o aplicativo é executado em segundo plano";
