@@ -181,4 +181,7 @@ function en_USLang() {
     STR_SETTINGS_GENERAL = "General related";
     STR_SETTINGS_LANG = "Language";
     STR_LOADING_CHAT = "Chat: Connecting to chat history server.." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
+    STR_VOD_HISTORY = "Play from the start or from where you stop watching last time?";
+    STR_FROM = "From:" + STR_BR;
+    STR_FROM_START = STR_FROM + "Start";
 }

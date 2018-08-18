@@ -203,6 +203,7 @@ function Play_Start() {
     Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
 
+    Play_QualityChangedCounter = 0;
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
@@ -558,7 +559,8 @@ function Play_onPlayer() {
             Play_4K_ModeEnable = true;
         }
 
-        Play_PlayerCheckTimer = 2;
+        Play_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 3;
         Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
@@ -1376,13 +1378,17 @@ function Play_KeyReturn(is_vod) {
     else if (Play_isEndDialogShown() && !Play_ExitDialogVisible()) {
         Play_EndTextClear();
         Play_showExitDialog();
-    } else if (Play_isPanelShown()) {
+    } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
         Play_hidePanel();
     } else {
         if (is_vod && Play_WarningDialogVisible() && PlayVod_IsJumping) {
             window.clearTimeout(PlayVod_JumpID);
             PlayVod_jumpCount = 0;
             PlayVod_jumpCancel();
+        } else if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
+            Play_HideVodDialog();
+            PlayVod_PreshutdownStream();
+            Play_exitMain();
         } else if (Play_ExitDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
@@ -1537,7 +1543,6 @@ function Play_handleKeyDown(e) {
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
                 break;
             case KEY_BLUE:
-                Play_ChatFixPosition();
                 break;
             default:
                 break;

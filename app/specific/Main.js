@@ -190,6 +190,7 @@ function Main_initWindows() {
     Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
     AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
     AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
+    PlayVod_RestoreVodIds();
 
     Main_ready(function() {
 
@@ -257,6 +258,9 @@ function Main_SetStrings(isStarting) {
     Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
     Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
     Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
+
+    Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
+    Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
     Main_textContent("dialog_end_replay_text", STR_REPLAY);
     Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);

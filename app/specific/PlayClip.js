@@ -55,6 +55,7 @@ function PlayClip_Start() {
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
 
+    PlayClip_QualityChangedCounter = 0;
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
     PlayClip_currentTime = 0;
@@ -245,7 +246,8 @@ function PlayClip_onPlayer() {
             Play_4K_ModeEnable = false;
         }
 
-        Play_PlayerCheckTimer = 2;
+        PlayClip_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 3;
         PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
@@ -254,6 +256,8 @@ function PlayClip_onPlayer() {
     PlayClip_JustStartPlaying = true;
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
+        ChannelClip_DurationSeconds = Play_avplay.getDuration() / 1000;
+        Main_textContent("stream_live_time", STR_DURATION + Play_timeS(ChannelClip_DurationSeconds));
     });
 
     Main_ready(function() {
@@ -401,7 +405,7 @@ function PlayClip_jump() {
             try {
                 PlayVod_currentTime = PlayClip_currentTime + (PlayClip_TimeToJump * 1000);
                 Chat_offset = PlayVod_currentTime / 1000;
-                Chat_Init();
+                if (Chat_offset && Chat_offset !== undefined) Chat_Init();
                 Play_avplay.jumpBackward(PlayClip_TimeToJump * -1000);
             } catch (e) {
                 Play_HideWarningDialog();
