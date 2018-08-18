@@ -1,5 +1,5 @@
 //Variable initialization
-var Main_isReleased = false;
+var Main_isReleased = true;
 var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
@@ -204,7 +204,7 @@ function Main_initWindows() {
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
-                Main_showWarningDialog(STR_UPDATE_AVAILABLE);
+                Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
                 window.setTimeout(Main_HideWarningDialog, 3500);
             } else {
                 Main_showUpdateDialog();
