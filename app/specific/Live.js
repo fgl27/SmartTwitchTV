@@ -431,7 +431,6 @@ function Live_handleKeyDown(event) {
             Main_showSettings();
             break;
         case KEY_GREEN:
-            //Main_showUpdateDialog();
             break;
         case KEY_YELLOW:
             Main_showControlsDialog();
