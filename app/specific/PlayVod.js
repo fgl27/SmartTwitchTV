@@ -753,7 +753,7 @@ function PlayVod_DialogPressed() {
     if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds[ChannelVod_vodId];
     else PlayVod_vodOffset = 0;
     PlayVod_currentTime = PlayVod_vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds)
+    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds);
     Play_HideVodDialog();
     PlayVod_PosStart();
 }
