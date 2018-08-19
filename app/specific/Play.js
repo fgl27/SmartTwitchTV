@@ -86,6 +86,7 @@ var Play_ChatFixPositionId;
 var Play_selectedChannelLogo;
 var Play_selectedChannel_id;
 var Play_ProgresBarrElm;
+var Play_DefaultjumpTimers = [];
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
@@ -154,6 +155,7 @@ function Play_PreStart() {
     Play_SetAvPlayGlobal();
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
+    Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
     Play_ClearPlayer();
 
     Play_ChatPositions = (parseInt(localStorage.getItem('ChatPositionsValue')) - 1) || 0;
@@ -162,7 +164,6 @@ function Play_PreStart() {
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
-    Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
 }
 
 //this are the global set option that need to be set only once

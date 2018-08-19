@@ -108,7 +108,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_1 = "Show information panel: Select key if chat is showing or Directional pad (up/down/left/right) if not";
     STR_CONTROLS_PLAY_2 = "Close the video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: Play or Pause keys";
-    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (Hide the chat first)(not available for live streams): Directional pad (right/left), multiple clicks add more time before jump";
+    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Open the information panel, Press Directional pad (right/left) to change time when satisfied press enter/select, multiple right/left clicks or holding the key will add/remove more and more time before jump faster";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): press select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering";
     STR_CONTROLS_PLAY_7 = "Show or hide the Chat: Guide or info (Guide is channel press key on smart remote)";
