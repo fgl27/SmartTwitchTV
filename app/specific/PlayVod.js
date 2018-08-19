@@ -527,6 +527,8 @@ function PlayVod_hidePanel() {
     PlayVod_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
     PlayVod_quality = PlayVod_qualityPlaying;
+    Play_sizePanelOffset = 0;
+    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
 
 function PlayVod_showPanel(autoHide) {
@@ -538,6 +540,8 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
         PlayVod_setHidePanel();
+        Play_sizePanelOffset = -13;
+        if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
 }
