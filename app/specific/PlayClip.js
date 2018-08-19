@@ -337,6 +337,8 @@ function PlayClip_hidePanel() {
     PlayClip_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_sizePanelOffset = 0;
+    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
 
 function PlayClip_showPanel() {
@@ -348,6 +350,8 @@ function PlayClip_showPanel() {
     PlayClip_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();
+    Play_sizePanelOffset = -13;
+    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
 
 function PlayClip_qualityIndexReset() {
