@@ -95,7 +95,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_1 = "Exibir Informações: Pressione a tecla selecionar caso o Chat esteja sendo exibido ou use as Setas Direcionais.";
     STR_CONTROLS_PLAY_2 = "Fechar um vídeo: Pressione retornar duas vezes seguidas em menos de três segundos";
     STR_CONTROLS_PLAY_3 = "Pausar/Reproduzir: Pressione PLAY ou PAUSE.";
-    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (esconda o chat antes)(indisponível para Transmissões Ao Vivo): Setas Direcionais (esquerda/direita).";
+    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): abra o Painel de Informações, precione o direcional (esquerda/direita) para alterar o tempo quando satisfeito precione a tecla Enter/Selecionar, vários cliques esquerda/direita ou segurando a tecla irá adicionar/remover mais e mais tempo de forma mais rapida antes de pular";
     STR_CONTROLS_PLAY_5 = "Alterar qualidade: Abra o Painel de Informações, use as Setas Direcionais (Cima/Baixo) para escolher a qualidade e pressione a tecla selecionar para alterar.";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo: Pressione a tecla selecionar duas vezes. A qualidade do vídeo continuará sendo a mesma, mas após o segundo clique, o vídeo será recarregado.";
     STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat: GUIDE ou INFO.";
