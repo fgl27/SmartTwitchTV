@@ -27,6 +27,7 @@ function UserVod_init() {
     Main_Go = Main_UserVod;
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_TYPE + ' (C)');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
@@ -41,6 +42,7 @@ function UserVod_init() {
 
 function UserVod_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
