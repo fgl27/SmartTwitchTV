@@ -671,6 +671,60 @@
             background-color: rgba(255, 255, 255, 0.4);
         }
 
+        .progress_bar_div {
+            width: 90%;
+            height: 4.5%;
+            margin-left: 5%;
+            margin-top: 37%;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .progress_bar_div_focus {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .progress_bar_timer {
+            vertical-align: middle;
+            text-align: center;
+            width: 7%;
+            font-size: 27px;
+            font-weight: bold;
+            color: #FFFFFF;
+            display: inline-block;
+        }
+
+        .progress_bar_holder {
+            vertical-align: middle;
+            width: 85%;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .progress_bar_holder_focus {
+            box-shadow: 0 0 0 4px #FFFFFF;
+        }
+
+        .progress_bar {
+            width: 100%;
+            box-sizing: border-box;
+            border: 4px solid #000000;
+            border-radius: 12px;
+            background-color: #DDDDDD;
+        }
+
+        .inner_progress_bar {
+            width: 10%;
+            height: 15px;
+            box-sizing: border-box;
+            border: 2px solid #000000;
+            border-radius: 12px;
+            background-color: #444444;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
         /* Chat this is a adaptation of https://www.nightdev.com/kapchat/ functions*/
 
         .nick {
@@ -1082,6 +1136,17 @@
                         </div>
                     </div>&nbsp;
                     <div id="open_vod_text" class="strokedextramini playbottontext"></div>
+                </div>
+            </div>
+            <div id="progress_bar_div" class="progress_bar_div">
+                <div style="width: 100%; position: relative; top: 50%; transform: translateY(-50%);">
+                    <div id="progress_bar_current_time" class="progress_bar_timer strokedextramini"></div>
+                    <div id="progress_bar" class="progress_bar_holder">
+                        <div class="progress_bar">
+                            <div id="inner_progress_bar" class="inner_progress_bar"></div>
+                        </div>
+                    </div>
+                    <div id="progress_bar_duration" class="progress_bar_timer strokedextramini"></div>
                 </div>
             </div>
         </div>

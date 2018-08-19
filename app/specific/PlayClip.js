@@ -48,6 +48,7 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
+    Main_ShowElement('progress_bar_div');
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
@@ -546,8 +547,8 @@ function PlayClip_handleKeyDown(e) {
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
-                    Play_Panelcouner++;
-                    if (Play_Panelcouner > 5) Play_Panelcouner = 0;
+                    Play_Panelcounter++;
+                    if (Play_Panelcounter > 5) Play_Panelcounter = 0;
                     Play_IconsAddFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
@@ -569,8 +570,8 @@ function PlayClip_handleKeyDown(e) {
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
-                    Play_Panelcouner--;
-                    if (Play_Panelcouner < 0) Play_Panelcouner = 5;
+                    Play_Panelcounter--;
+                    if (Play_Panelcounter < 0) Play_Panelcounter = 5;
                     Play_IconsAddFocus();
                     PlayClip_clearHidePanel();
                     PlayClip_setHidePanel();
@@ -596,7 +597,7 @@ function PlayClip_handleKeyDown(e) {
                     } else Play_showChatBackgroundDialog('Size 100%');
                 } else if (!Play_isPanelShown()) PlayClip_showPanel();
                 else {
-                    if (PlayClip_qualityIndex > 0 && Play_Panelcouner === 1) {
+                    if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
                     }
@@ -616,7 +617,7 @@ function PlayClip_handleKeyDown(e) {
                     } else Play_showChatBackgroundDialog('Size 33%');
                 } else if (!Play_isPanelShown()) PlayClip_showPanel();
                 else {
-                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcouner === 1) {
+                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
                     }
