@@ -58,7 +58,9 @@ function PlayVod_Start() {
     Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');
     Main_textContent("stream_watching_time", '');
+    Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
+    Main_HideElement('progress_bar_div');
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
 
     if (PlayVod_vodOffset) { // this is a vod comming from a clip
@@ -100,10 +102,9 @@ function PlayVod_PosStart() {
     Main_HideElement('chat_frame');
     window.setTimeout(function() {
         Main_ShowElement('scene_channel_panel_bottom');
+        Main_ShowElement('progress_bar_div');
     }, 1000);
 
-    Main_ShowElement('progress_bar_div');
-    Main_textContent('progress_bar_current_time', Play_timeS(0));
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
@@ -751,6 +752,8 @@ function PlayVod_IconsRemoveFocus() {
 function PlayVod_DialogPressed() {
     if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds[ChannelVod_vodId];
     else PlayVod_vodOffset = 0;
+    PlayVod_currentTime = PlayVod_vodOffset * 1000;
+    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds)
     Play_HideVodDialog();
     PlayVod_PosStart();
 }
