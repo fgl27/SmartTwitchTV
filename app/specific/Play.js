@@ -734,6 +734,7 @@ function Play_PreshutdownStream() {
 }
 
 function Play_exitMain() {
+    PlayVod_ProgresBarrUpdate(0, 0);
     Main_ShowElement('scene1');
     Main_HideElement('scene2');
     Main_ReStartScreens();

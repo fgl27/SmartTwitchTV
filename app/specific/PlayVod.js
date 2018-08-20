@@ -526,6 +526,7 @@ function PlayVod_hidePanel() {
     PlayVod_TimeToJump = 0;
     PlayVod_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
+    PlayVod_ProgresBarrUpdate((PlayVod_currentTime / 1000), ChannelVod_DurationSeconds);
     PlayVod_quality = PlayVod_qualityPlaying;
     Play_sizePanelOffset = 0;
     if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
@@ -609,7 +610,7 @@ function PlayVod_getQualitiesCount() {
 
 function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds) {
     Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
-    Play_ProgresBarrElm.style.width = parseInt((current_time_seconds / duration_seconds) * 100) + '%';
+    Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
 }
 
 function PlayVod_jump() {

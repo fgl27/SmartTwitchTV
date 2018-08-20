@@ -24,7 +24,7 @@ function Play_ProgresBarrUpdate() {
 
     console.log("width " + width);
 
-    if (width >= 100) {
+    if (width >= 120) {
       elem.style.width = width + '%';
       clearInterval(id);
     } else {
