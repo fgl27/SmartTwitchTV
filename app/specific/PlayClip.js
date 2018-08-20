@@ -6,7 +6,6 @@ var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
-var PlayClip_PanelHideID = null;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 3500;
 var PlayClip_loadingDataTryMax = 5;
@@ -338,7 +337,7 @@ function PlayClip_hidePanel() {
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_TimeToJump = 0;
-    PlayClip_clearHidePanel();
+    Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
     PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds);
@@ -393,12 +392,8 @@ function PlayClip_qualityDisplay() {
     else Main_textContent("quality_name", PlayClip_quality);
 }
 
-function PlayClip_clearHidePanel() {
-    window.clearTimeout(PlayClip_PanelHideID);
-}
-
 function PlayClip_setHidePanel() {
-    PlayClip_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000); // time in ms
+    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000); // time in ms
 }
 
 function PlayClip_SetOpenVod() {
@@ -454,7 +449,7 @@ function PlayClip_handleKeyDown(e) {
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(-1, ChannelClip_DurationSeconds);
                     }
-                    PlayClip_clearHidePanel();
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
@@ -478,7 +473,7 @@ function PlayClip_handleKeyDown(e) {
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(1, ChannelClip_DurationSeconds);
                     }
-                    PlayClip_clearHidePanel();
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
@@ -498,7 +493,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
                     }
-                    PlayClip_clearHidePanel();
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isChatShown()) {
                     if (Play_ChatSizeValue < 4) {
@@ -520,7 +515,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayClip_qualityDisplay();
                     }
 
-                    PlayClip_clearHidePanel();
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isChatShown()) {
                     if (Play_ChatSizeValue > 1) {
