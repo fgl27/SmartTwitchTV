@@ -458,7 +458,7 @@ function UserVod_handleKeyDown(event) {
             UserVod_openStream();
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_showSettings();
             break;
         case KEY_GREEN:
             UserVod_exit();

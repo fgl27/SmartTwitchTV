@@ -687,7 +687,7 @@ function PlayVod_SaveVodIds() {
 
     if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
 
-        //delete before save to appd this to the and prevent loose it in restorevodids
+        //delete before save to add this to the end, and prevent loose it in restorevodids
         if (PlayVod_VodIds[ChannelVod_vodId]) delete PlayVod_VodIds[ChannelVod_vodId];
 
         PlayVod_VodIds[ChannelVod_vodId] = parseInt(PlayVod_currentTime / 1000);
