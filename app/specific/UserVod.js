@@ -15,7 +15,6 @@ var UserVod_emptyContent = false;
 var UserVod_itemsCountCheck = false;
 var UserVod_Type = 'time';
 var UserVod_TypeNumber = 2;
-var UserVod_isVod = false;
 
 var UserVod_ids = ['uv_thumbdiv', 'uv_img', 'uv_infodiv', 'uv_title', 'uv_streamon', 'uv_duration', 'uv_viwers', 'uv_quality', 'uv_cell', 'svempty_', 'user_vod_scroll', 'uv_game'];
 var UserVod_status = false;
@@ -490,7 +489,7 @@ function UserVod_openStream() {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    UserVod_isVod = true;
+    Vod_isVod = true;
     Main_HideElement('scene1');
     PlayVod_Start();
 }
