@@ -1247,16 +1247,10 @@ function Play_BottomOptionsPressed(PlayVodClip) {
         AddCode_Channel_id = (PlayVodClip === 1 ? Play_selectedChannel_id : Main_selectedChannel_id);
         Play_FallowUnfallow();
 
-        if (PlayVodClip === 1) {
-            Play_clearHidePanel();
-            Play_setHidePanel();
-        } else if (PlayVodClip === 2) {
-            PlayVod_clearHidePanel();
-            PlayVod_setHidePanel();
-        } else if (PlayVodClip === 3) {
-            PlayClip_clearHidePanel();
-            PlayClip_setHidePanel();
-        }
+        Play_clearHidePanel();
+        if (PlayVodClip === 1) Play_setHidePanel();
+        else if (PlayVodClip === 2) PlayVod_setHidePanel();
+        else if (PlayVodClip === 3) PlayClip_setHidePanel();
     } else if (Play_Panelcounter === 3) Play_OpenGame(PlayVodClip);
     else if (Play_Panelcounter === 4) Play_OpenChannel(PlayVodClip);
     else if (Play_Panelcounter === 5) Play_OpenSearch(PlayVodClip);
