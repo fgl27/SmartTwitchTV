@@ -70,6 +70,11 @@ function PlayVod_Start() {
         if (!Vod_isVod && Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
             Chat_Init();
+            if (Main_UserName !== '') {
+                AddCode_Channel_id = Main_selectedChannel_id;
+                AddCode_PlayRequest = true;
+                AddCode_CheckFallow();
+            } else Play_hideFallow();
         } else {
             PlayVod_PrepareLoad();
             PlayVod_updateStreamInfo();
@@ -90,11 +95,6 @@ function PlayVod_Start() {
 }
 
 function PlayVod_PosStart() {
-    if (Main_UserName !== '') {
-        AddCode_PlayRequest = true;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
-
     PlayVod_QualityChangedCounter = 0;
     Play_offsettimeMinus = 0;
 
@@ -146,6 +146,11 @@ function PlayVod_updateStreamInfo() {
                         Main_selectedChannelLogo = users.logo;
                         Main_selectedChannel_id = users._id;
                         Chat_Init();
+                        if (Main_UserName !== '') {
+                            AddCode_Channel_id = Main_selectedChannel_id;
+                            AddCode_PlayRequest = true;
+                            AddCode_CheckFallow();
+                        } else Play_hideFallow();
                     } else {
                         Main_selectedChannelLogo = IMG_404_LOGO;
                         Main_selectedChannel_id = '';
@@ -312,8 +317,10 @@ function PlayVod_loadDataSuccess(responseText) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (AddCode_OauthToken !== '') AddCode_CheckSub();
-    else {
+    if (AddCode_OauthToken !== '') {
+        AddCode_Channel_id = Main_selectedChannel_id;
+        AddCode_CheckSub();
+    } else {
         Play_HideBufferDialog();
         Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
         window.setTimeout(function() {

@@ -287,6 +287,7 @@ function Play_updateStreamInfoStart() {
                         Play_created = response.stream.created_at;
                         if (Main_UserName !== '') {
                             AddCode_PlayRequest = true;
+                            AddCode_Channel_id = Play_selectedChannel_id;
                             AddCode_CheckFallow();
                         } else Play_hideFallow();
                     } else if (Play_isOn) {
@@ -1242,6 +1243,8 @@ function Play_BottomOptionsPressed(PlayVodClip) {
         }
         Play_clearPause();
     } else if (Play_Panelcounter === 2) {
+
+        AddCode_Channel_id = (PlayVodClip === 1 ? Play_selectedChannel_id : Main_selectedChannel_id);
         Play_FallowUnfallow();
 
         if (PlayVodClip === 1) {

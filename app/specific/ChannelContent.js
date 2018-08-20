@@ -346,6 +346,7 @@ function ChannelContent_loadDataSuccessFinish() {
 function ChannelContent_checkUser() {
     if (ChannelContent_UserChannels) ChannelContent_setFallow();
     else if (Main_UserName !== '') {
+        AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_PlayRequest = false;
         AddCode_CheckFallow();
     } else {
@@ -367,6 +368,7 @@ function ChannelContent_keyEnter() {
     if (ChannelContent_cursorY) {
         if (AddCode_OauthToken !== '') {
             AddCode_PlayRequest = false;
+            AddCode_Channel_id = Main_selectedChannel_id;
             if (AddCode_IsFallowing) AddCode_UnFallow();
             else AddCode_Fallow();
         } else {
