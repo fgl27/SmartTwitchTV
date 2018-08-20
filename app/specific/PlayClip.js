@@ -69,6 +69,7 @@ function PlayClip_Start() {
 
     if (Main_UserName !== '') {
         AddCode_PlayRequest = true;
+        AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
 
