@@ -558,18 +558,15 @@ function PlayVod_IconsBottonResetFocus() {
     Play_IconsRemoveFocus();
     Play_Panelcounter = 1;
     PlayVod_PanelY = 0;
-    Main_AddClass('progress_bar', 'progress_bar_holder_focus');
     Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
 }
 
 function PlayVod_IconsBottonFocus() {
     if (PlayVod_PanelY) {
-        Main_RemoveClass('progress_bar', 'progress_bar_holder_focus');
         Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsAddFocus();
     } else {
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
-        Main_AddClass('progress_bar', 'progress_bar_holder_focus');
         Play_IconsRemoveFocus();
     }
 }
