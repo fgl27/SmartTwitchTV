@@ -334,9 +334,13 @@ function PlayClip_updateCurrentTime(currentTime) {
 }
 
 function PlayClip_hidePanel() {
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
+    PlayVod_TimeToJump = 0;
     PlayClip_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
+    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds);
     Play_sizePanelOffset = 0;
     if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
 }
