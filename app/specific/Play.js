@@ -1112,6 +1112,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();
+            PlayVod_currentTime = 0;
             Chat_offset = 0;
             Chat_Init();
         } else if (PlayVodClip === 3) {
@@ -1119,8 +1120,11 @@ function Play_EndDialogPressed(PlayVodClip) {
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
             Play_clearPause();
-            Chat_offset = ChannelVod_vodOffset;
-            Chat_Init();
+            if (PlayClip_HasVOD) {
+                PlayVod_currentTime = 0;
+                Chat_offset = ChannelVod_vodOffset;
+                Chat_Init();
+            } else Chat_NoVod();
         }
     } else if (Play_Endcounter === 1) {
         if (Play_isHost) {
