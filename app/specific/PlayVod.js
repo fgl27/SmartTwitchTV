@@ -104,6 +104,7 @@ function PlayVod_PosStart() {
         Main_ShowElement('progress_bar_div');
     }, 1000);
 
+    Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
@@ -546,7 +547,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
         PlayVod_setHidePanel();
-        Play_ChatPanelOffset(-13);
+        Play_ChatPosition();
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
 }
