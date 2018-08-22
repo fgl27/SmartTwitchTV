@@ -1029,11 +1029,17 @@ function Play_KeyPause(PlayVodClip) {
         Play_clearPause();
         Play_avplay.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-        if (Play_isPanelShown()) Play_hidePanel();
 
-        if (PlayVodClip === 1) Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-        else if (PlayVodClip === 2) PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-        else if (PlayVodClip === 3) PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+        if (PlayVodClip === 1) {
+            if (Play_isPanelShown()) Play_hidePanel();
+            Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+        } else if (PlayVodClip === 2) {
+            if (Play_isPanelShown()) PlayVod_hidePanel();
+            PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+        } else if (PlayVodClip === 3) {
+            if (Play_isPanelShown()) PlayClip_hidePanel();
+            PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+        }
     }
 }
 
@@ -1405,7 +1411,8 @@ function Play_KeyReturn(is_vod) {
         Play_EndTextClear();
         Play_showExitDialog();
     } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-        Play_hidePanel();
+        if (is_vod) PlayVod_hidePanel();
+        else Play_hidePanel();
     } else {
         if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
             Play_HideVodDialog();
