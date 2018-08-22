@@ -64,6 +64,7 @@ var Main_SetTopOpacityId;
 var Main_OpacityDivs = ["label_search", "label_controls", "label_refresh", "label_switch", "about_div", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 
 var Main_Is4k = false;
+var Main_FirstRun = true;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -196,6 +197,12 @@ function Main_initWindows() {
 
     UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
     PlayVod_RestoreVodIds();
+
+    Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
+    if (Play_WasPlaying) Play_Restore_value = JSON.parse(localStorage.getItem('Play_Restore_value')) || {};
+
+    PlayVod_WasPlaying = parseInt(localStorage.getItem('PlayVod_WasPlaying')) || 0;
+    if (PlayVod_WasPlaying) PlayVod_Restore_value = JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {};
 
     Main_ready(function() {
 

@@ -149,6 +149,13 @@ var Play_ChatSizeVal = [{
     "percentage": 100,
     "dialogTop": 115
 }];
+
+var Play_WasPlaying = 0;
+var Play_Restore_value = {
+    "display_name": '',
+    "name": ''
+};
+
 //Variable initialization end
 
 function Play_PreStart() {
@@ -202,6 +209,12 @@ function Play_Start() {
     //reset channel logo to prevent another channel logo
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_404_LOGO);
     Main_textContent("stream_info_name", (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname));
+
+    Play_Restore_value.display_name = (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname);
+    Play_Restore_value.name = Play_selectedChannel;
+    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+    localStorage.setItem('Play_WasPlaying', 1);
+
     Play_isHost = false;
     Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
@@ -725,6 +738,7 @@ function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
         Play_exitMain();
+        localStorage.setItem('Play_WasPlaying', 0);
     }
 }
 

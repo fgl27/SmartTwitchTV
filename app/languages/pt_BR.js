@@ -178,4 +178,8 @@ function pt_BRLang() {
     STR_VIWES = ": Mais visto";
     STR_NOKEY_VIDEO_WARN = "Adicione uma chave de autenticação para poder ver vídeos seguidos";
     STR_SWITCH_TYPE = "Troque o tipo (Mais recente ou visto)";
+    STR_ENABLE = "Ligado";
+    STR_DISABLE = "Desligado";
+    STR_RESTORE_PLAYBACK = "Restaurar a reprodução";
+    STR_RESTORE_PLAYBACK_SUMARRY = "Ao trocar de aplicativo, o aplicativo pode ser encerrado pelo sistema para liberar memoria. Nesse caso, o aplicativo salva o que estava sendo reproduzido e restaura a reprodução quando reaberto";
 }
