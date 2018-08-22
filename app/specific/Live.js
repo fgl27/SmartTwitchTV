@@ -187,7 +187,20 @@ function Live_loadDataSuccessFinish() {
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Live_addFocus();
             }
-            Main_ShowElement(Live_ids[10]);
+            if (Main_FirstRun && Live_Status &&
+                (!Settings_value.positions[4].defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying)) {
+                if (Play_WasPlaying) {
+                    Play_selectedChannel = Play_Restore_value.name;
+                    Play_selectedChannelDisplayname = Play_Restore_value.display_name;
+                    Main_openStream();
+                } else {
+                    PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
+                    ChannelVod_vodId = PlayVod_Restore_value.vod_id;
+                    Vod_openStream();
+                }
+                document.body.removeEventListener("keydown", Live_handleKeyDown);
+            } else Main_ShowElement(Live_ids[10]);
+            Main_FirstRun = false;
             Live_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);

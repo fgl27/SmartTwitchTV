@@ -191,4 +191,8 @@ function en_USLang() {
     STR_VIWES = ": Most views";
     STR_NOKEY_VIDEO_WARN = "Set a authentication key to be able to see fallowed videos";
     STR_SWITCH_TYPE = "Switch Type (Most recent or views)";
+    STR_ENABLE = "Enable";
+    STR_DISABLE = "Disable";
+    STR_RESTORE_PLAYBACK = "Restore playback";
+    STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app may be closed by the system to free memory. In this case the app saves what it was playing and restores the playback when reopened";
 }

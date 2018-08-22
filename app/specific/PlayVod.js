@@ -48,6 +48,13 @@ var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
 var PlayVod_jumpTimers = [0, 15, 15, 15, 30, 30, 30, 60, 60, 60, 120, 120, 120, 300, 300, 300, 600, 600, 600, 900, 900, 900, 1800, 1800, 1800, 3600];
+
+var PlayVod_WasPlaying = 0;
+var PlayVod_Restore_value = {
+    "vodOffset": 1,
+    "vod_id": 1
+};
+var PlayVod_SaveOffsetId;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -103,6 +110,11 @@ function PlayVod_PosStart() {
         Main_ShowElement('scene_channel_panel_bottom');
         Main_ShowElement('progress_bar_div');
     }, 1000);
+
+    PlayVod_Restore_value.vod_id = ChannelVod_vodId;
+    localStorage.setItem('PlayVod_WasPlaying', 1);
+    PlayVod_SaveOffset();
+    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
 
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
@@ -214,22 +226,49 @@ function PlayVod_updateVodInfoError() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
-    ChannelVod_DurationSeconds = parseInt(response.length);
+
     Main_textContent("stream_info_title", response.title);
     Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
         ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+
+    ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+
+    PlayVod_currentTime = PlayVod_vodOffset * 1000;
+    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds);
+
+    Main_selectedChannelDisplayname = response.channel.display_name;
+    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+
+    Main_selectedChannelLogo = response.channel.logo;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+
+    Main_selectedChannel_id = response.channel._id;
+    Main_selectedChannel = response.channel.name;
+
+    if (Main_UserName !== '') {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Main_selectedChannel_id;
+        AddCode_CheckFallow();
+    } else Play_hideFallow();
+}
+
+function PlayVod_SaveOffset() {
+    PlayVod_Restore_value.vodOffset = parseInt(PlayVod_currentTime / 1000);
+    localStorage.setItem('PlayVod_Restore_value', JSON.stringify(PlayVod_Restore_value));
 }
 
 function PlayVod_Resume() {
     if (document.hidden) {
+        PlayVod_SaveOffset();
         PlayVod_SaveVodIds();
         Chat_Pause();
         Play_avplay.pause();
         PlayVod_offsettime = Play_avplay.getCurrentTime();
         Play_ClearPlayer();
         window.clearInterval(PlayVod_streamCheck);
+        window.clearInterval(PlayVod_SaveOffsetId);
         Play_clearPause();
     } else {
         PlayVod_isOn = true;
@@ -241,6 +280,7 @@ function PlayVod_Resume() {
         PlayVod_onPlayer();
         Chat_Play();
         Play_EndSet(2);
+        PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     }
 }
 
@@ -446,7 +486,7 @@ function PlayVod_onPlayer() {
         }
 
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3;
+        Play_PlayerCheckTimer = 4;
         PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
@@ -504,6 +544,7 @@ function PlayVod_shutdownStream() {
         PlayVod_SaveVodIds();
         PlayVod_PreshutdownStream();
         Play_exitMain();
+        localStorage.setItem('PlayVod_WasPlaying', 0);
     }
 }
 
@@ -524,6 +565,7 @@ function PlayVod_ClearVod() {
     PlayVod_vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
+    window.clearInterval(PlayVod_SaveOffsetId);
     ChannelVod_DurationSeconds = 0;
 }
 

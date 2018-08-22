@@ -17,6 +17,10 @@ var Settings_value = {
         "name": "buffer_clip",
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
+    }, {
+        "name": "restor_playback",
+        "values": ["on", "off"],
+        "defaultValue": 1
     }]
 };
 
@@ -74,6 +78,11 @@ function Settings_SetStrings() {
     Main_textContent('setting_name_1', STR_SETTINGS_BUFFER_LIVE);
     Main_textContent('setting_name_2', STR_SETTINGS_BUFFER_VOD);
     Main_textContent('setting_name_3', STR_SETTINGS_BUFFER_CLIP);
+
+    //Player restore
+    Main_textContent('setting_tile_2', STR_RESTORE_PLAYBACK);
+    Main_textContent('setting_name_4', STR_RESTORE_PLAYBACK_SUMARRY);
+    Settings_value.positions[4].values = [STR_ENABLE, STR_DISABLE];
 
     for (var i = 0; i < Settings_positions_length; i++) {
         Main_textContent('settings_value_' + i, Settings_Obj_values(i));
