@@ -846,8 +846,7 @@ function Play_hidePanel() {
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
-    Play_sizePanelOffset = 0;
-    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
+    Play_ChatPosition();
 }
 
 function Play_showPanel() {
@@ -860,8 +859,7 @@ function Play_showPanel() {
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     Play_setHidePanel();
-    Play_sizePanelOffset = -5;
-    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
+    Play_ChatPanelOffset(-5);
 }
 
 function Play_clearHidePanel() {
@@ -979,12 +977,22 @@ function Play_ChatPosition() {
     if (Play_ChatPositions < 0) Play_ChatPositions = (bool ? 2 : 7);
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
+    //offset in relation to the botton panel controls
+    if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_sizePanelOffset = 0;
+
     Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_sizePanelOffset) + '%';
 
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
     localStorage.setItem('ChatPositionsValue', (Play_ChatPositions + 1));
+}
+
+function Play_ChatPanelOffset(value) {
+    if (!Play_ChatPositions || Play_ChatPositions > 5) {
+        Play_sizePanelOffset = value;
+        Play_ChatPosition();
+    }
 }
 
 function Play_showChatBackgroundDialog(DialogText) {

@@ -534,8 +534,7 @@ function PlayVod_hidePanel() {
     document.getElementById("scene_channel_panel").style.opacity = "0";
     PlayVod_ProgresBarrUpdate((PlayVod_currentTime / 1000), ChannelVod_DurationSeconds);
     PlayVod_quality = PlayVod_qualityPlaying;
-    Play_sizePanelOffset = 0;
-    if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
+    Play_ChatPosition();
 }
 
 function PlayVod_showPanel(autoHide) {
@@ -547,8 +546,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
         PlayVod_setHidePanel();
-        Play_sizePanelOffset = -13;
-        if (!Play_ChatPositions || Play_ChatPositions > 5) Play_ChatPosition();
+        Play_ChatPanelOffset(-13);
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
 }
