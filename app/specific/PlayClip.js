@@ -57,6 +57,7 @@ function PlayClip_Start() {
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
 
+    Play_PlayerPanelOffset = -13;
     PlayClip_QualityChangedCounter = 0;
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
@@ -352,8 +353,8 @@ function PlayClip_showPanel() {
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ChatPosition();
     PlayClip_setHidePanel();
-    Play_ChatPanelOffset(-13);
 }
 
 function PlayClip_qualityIndexReset() {
