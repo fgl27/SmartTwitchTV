@@ -156,6 +156,8 @@ var Play_Restore_value = {
     "name": ''
 };
 
+var Play_ChatFont = 1;
+var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
 //Variable initialization end
 
 function Play_PreStart() {
@@ -198,6 +200,15 @@ function Play_SetBuffers() {
     Play_Buffer = Settings_Obj_values(1);
     PlayVod_Buffer = Settings_Obj_values(2);
     PlayClip_Buffer = Settings_Obj_values(3);
+}
+
+function Play_SetChatFont() {
+    Play_ChatFont = Settings_Obj_default(5);
+
+    for (var i = 0; i < Play_ChatFontObj.length; i++)
+        Main_RemoveClass('chat_inner_container', Play_ChatFontObj[i]);
+
+    Main_AddClass('chat_inner_container', Play_ChatFontObj[Play_ChatFont]);
 }
 
 function Play_Start() {

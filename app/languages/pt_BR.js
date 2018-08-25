@@ -163,7 +163,7 @@ function pt_BRLang() {
 
     STR_SETTINGS_PLAYER = "Relacionado ao player";
     STR_SETTINGS_BUFFER_SIZE = "Tamanho de buffer:";
-    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Um valor baixo fará com que o video comece de play mais rápido, mas pode causar re buffer o que pausa o video para fazer o buffer";
+    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Um valor baixo fará com que o video comece a rodar mais rápido, mas pode causar re-buffer o que pausa o video para fazer o buffer";
     STR_SETTINGS_BUFFER_LIVE = "Buffer de transmissão Ao Vivo";
     STR_SETTINGS_BUFFER_VOD = "Buffer de video transmissão anteriores";
     STR_SETTINGS_BUFFER_CLIP = "Buffer de clips";
@@ -182,4 +182,6 @@ function pt_BRLang() {
     STR_DISABLE = "Desligado";
     STR_RESTORE_PLAYBACK = "Restaurar a reprodução";
     STR_RESTORE_PLAYBACK_SUMARRY = "Ao trocar de aplicativo, o aplicativo pode ser encerrado pelo sistema para liberar memoria. Nesse caso, o aplicativo salva o que estava sendo reproduzido e restaura a reprodução quando reaberto";
+    STR_CHAT_FONT = "Tamanho da fonte do chat";
+    STR_CHAT_FONT_SUMARRY = "Alterar o tamanho da fonte das linhas do chat, aplica-se a texto e emotes";
 }

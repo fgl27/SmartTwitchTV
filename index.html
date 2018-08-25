@@ -611,8 +611,8 @@
         div.settings_main {
             font-weight: bold;
             color: #FFFFFF;
-            width: 90%;
-            margin-left: 5%;
+            width: 92%;
+            margin-left: 4%;
         }
 
         div.settings_div,
@@ -621,12 +621,12 @@
         div.settings_section {
             width: 100%;
             display: inline-block;
-            font-size: 300%;
+            font-size: 280%;
             vertical-align: middle;
         }
 
         div.settings_section {
-            font-size: 350%;
+            font-size: 335%;
             text-align: center;
         }
 
@@ -637,7 +637,7 @@
 
         div.settings_summary {
             width: 100%;
-            font-size: 200%;
+            font-size: 190%;
             text-align: left;
         }
 
@@ -792,6 +792,34 @@
 
         .emoticon {
             margin-bottom: -5px;
+        }
+
+        .chat_size_small {
+            width: 115%;
+            height: 115%;
+            transform: scale(0.869);
+            transform-origin: 0 0;
+        }
+
+        .chat_size_default {
+            width: 100%;
+            height: 100%;
+            transform: scale(1);
+            transform-origin: 0 0;
+        }
+
+        .chat_size_biger {
+            width: 75%;
+            height: 75%;
+            transform: scale(1.3333);
+            transform-origin: 0 0;
+        }
+
+        .chat_size_bigest {
+            width: 60%;
+            height: 60%;
+            transform: scale(1.66667);
+            transform-origin: 0 0;
         }
 
         /*cssend this is here so release_maker can work don't remove*/
@@ -1004,6 +1032,20 @@
                             <div id="settings_arrow_right_4" class="right"></div>
                         </div>
                     </div>
+
+                    <!-- chat font size:-->
+                    <div id="setting_tile_3" class="settings_title"></div>
+                    <!-- Buffer live-->
+                    <div class="settings_div">
+                        <div id="setting_name_5" class="settings_name"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_left_5" class="left"></div>
+                        </div>
+                        <div id="settings_value_5" class="strokedextramini settings_value"></div>
+                        <div class="settings_arraw_div">
+                            <div id="settings_arrow_right_5" class="right"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1076,11 +1118,13 @@
     </div>
     <div id="scene2" class="screen_size hide">
         <div id="chat_container" class="chat_container hide">
-            <iframe id="chat_frame" class="hide" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>
-            <div id="chat_box" class="hide">
-            </div>
-            <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
-                <div id="play_chat_dialog_text" class="strokedbig" style="display: inline-block; font-size: 225%; color: #FFFFFF;">
+            <div id="chat_inner_container" class="chat_size_default">
+                <iframe id="chat_frame" class="hide" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>
+                <div id="chat_box" class="hide">
+                </div>
+                <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
+                    <div id="play_chat_dialog_text" class="strokedbig" style="display: inline-block; font-size: 225%; color: #FFFFFF;">
+                    </div>
                 </div>
             </div>
         </div>

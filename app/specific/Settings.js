@@ -21,6 +21,10 @@ var Settings_value = {
         "name": "restor_playback",
         "values": ["on", "off"],
         "defaultValue": 1
+    }, {
+        "name": "chat_font_size",
+        "values": ["85%", "100%", "130%", "160%"],
+        "defaultValue": 2
     }]
 };
 
@@ -84,6 +88,10 @@ function Settings_SetStrings() {
     Main_textContent('setting_name_4', STR_RESTORE_PLAYBACK_SUMARRY);
     Settings_value.positions[4].values = [STR_ENABLE, STR_DISABLE];
 
+    //Player chat font size
+    Main_textContent('setting_tile_3', STR_CHAT_FONT);
+    Main_textContent('setting_name_5', STR_CHAT_FONT_SUMARRY);
+
     for (var i = 0; i < Settings_positions_length; i++) {
         Main_textContent('settings_value_' + i, Settings_Obj_values(i));
     }
@@ -95,6 +103,7 @@ function Settings_SetDefautls() {
         Settings_value.positions[i].defaultValue -= 1; // workaround to java 0 = false, save the value with a +1
     }
     Play_SetBuffers();
+    Play_SetChatFont();
 }
 
 function Settings_Obj_values(position) {
@@ -151,6 +160,7 @@ function Settings_SetDefault(position) {
     } else if (position === 1) Play_Buffer = Settings_Obj_values(1);
     else if (position === 2) PlayVod_Buffer = Settings_Obj_values(2);
     else if (position === 3) PlayClip_Buffer = Settings_Obj_values(3);
+    else if (position === 5) Play_SetChatFont();
 }
 
 function Settings_CheckLang(lang) {
