@@ -100,7 +100,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
-var Main_minversion = '082218';
+var Main_minversion = '082518';
 var Main_versonTag = '';
 var Main_TizenVersion;
 
