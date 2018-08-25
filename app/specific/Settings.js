@@ -103,7 +103,6 @@ function Settings_SetDefautls() {
         Settings_value.positions[i].defaultValue -= 1; // workaround to java 0 = false, save the value with a +1
     }
     Play_SetBuffers();
-    Play_SetChatFont();
 }
 
 function Settings_Obj_values(position) {

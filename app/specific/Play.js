@@ -174,6 +174,7 @@ function Play_PreStart() {
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
+    Play_SetChatFont();
 }
 
 //this are the global set option that need to be set only once
