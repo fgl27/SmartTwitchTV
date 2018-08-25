@@ -47,7 +47,7 @@ var PlayVod_QualityChangedCounter = 0;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
-var PlayVod_jumpTimers = [0, 15, 15, 15, 30, 30, 30, 60, 60, 60, 120, 120, 120, 300, 300, 300, 600, 600, 600, 900, 900, 900, 1800, 1800, 1800, 3600];
+var PlayVod_jumpTimers = [0, 15, 15, 15, 15, 30, 30, 30, 30, 60, 60, 60, 60, 120, 120, 120, 120, 300, 300, 300, 300, 600, 600, 600, 600, 900, 900, 900, 900, 1800];
 
 var PlayVod_WasPlaying = 0;
 var PlayVod_Restore_value = {

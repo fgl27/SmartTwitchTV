@@ -24,7 +24,7 @@ var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 4;
 var PlayClip_PlayerCheckQualityChanged = false;
 var PlayClip_QualityChangedCounter = 0;
-var PlayClip_jumpTimers = [0, 5, 5, 5, 10, 10, 10, 20, 20, 20, 30, 30, 30];
+var PlayClip_jumpTimers = [0, 5];
 //Variable initialization end
 
 function PlayClip_Start() {
