@@ -1,7 +1,7 @@
 //Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
-var Users_ColoumnsCount = 7;
+var Users_ColoumnsCount = 8;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
 
