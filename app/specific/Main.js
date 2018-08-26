@@ -104,7 +104,7 @@ var Main_minversion = '082518';
 var Main_versonTag = '';
 var Main_TizenVersion;
 
-var GIT_IO = "https://bhb27.github.io/smarttv-twitch/release/githubio/images/";
+var GIT_IO = "https://fgl27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
 var IMG_404_LOGO = GIT_IO + "404_logo.png";
 var IMG_404_VIDEO = GIT_IO + "404_video.png";

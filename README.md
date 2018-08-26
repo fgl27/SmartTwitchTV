@@ -4,20 +4,20 @@ smarttv-twitch
 This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not available for most countries, that is way this project exist.
 
 The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if TV is from 2015 and it's SmartHub menu is different from the one bellow image yours TV may not fully supported Twitch Live or Vod streams playback.
-![Live](https://bhb27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
+![Live](https://fgl27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for all 2015 TV is not possible as the TV firmware doesn't supports it and Samsung doesn't seems to care and may have remove the featuring intentionally, a discussion about it can be read in this issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/bhb27/smarttv-twitch/issues/12)
+Full support for all 2015 TV is not possible as the TV firmware doesn't supports it and Samsung doesn't seems to care and may have remove the featuring intentionally, a discussion about it can be read in this issue [**2015 TV model running Tizen 2.3, can't play bug [Testers needed]**](https://github.com/fgl27/smarttv-twitch/issues/12)
 
-In doubt [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
+In doubt [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
-## [How the application looks](https://github.com/bhb27/smarttv-twitch/tree/master/screenshot)
+## [How the application looks](https://github.com/fgl27/smarttv-twitch/tree/master/screenshot)
 The application never stops receiving updates the bellow images may be outdated
-![Live](https://bhb27.github.io/smarttv-twitch/screenshot/animated.gif)
+![Live](https://fgl27.github.io/smarttv-twitch/screenshot/animated.gif)
 
 Twitch.TV authentication key
 ===============
 
-![Add_key](https://bhb27.github.io/smarttv-twitch/screenshot/Add_key.png)
+![Add_key](https://fgl27.github.io/smarttv-twitch/screenshot/Add_key.png)
 
 After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (of streamers you are subscribed to) as described on the above screen shot. The key is generated on the bellow page (Twitch.TV app for Samsung TV authorization page) through Twitch.TV web site, the bellow page link is the same as showed on the application screen.
 
@@ -43,7 +43,7 @@ Project Dependencies
 
 Controls
 ==============
-![control](https://bhb27.github.io/smarttv-twitch/screenshot/controler.png)
+![control](https://fgl27.github.io/smarttv-twitch/screenshot/controler.png)
 
 The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks is a little different)
 
@@ -54,10 +54,10 @@ The key **INFO** is also map on the app with the same functions as the **GUIDE**
 
 
 ## Main controls
-![Main](https://bhb27.github.io/smarttv-twitch/screenshot/controls_main_simple.png)
+![Main](https://fgl27.github.io/smarttv-twitch/screenshot/controls_main_simple.png)
 ==============
 ## Player controls
-![Players](https://bhb27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
+![Players](https://fgl27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
 
 
 Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10 64 bits)
@@ -97,40 +97,40 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 * After everything finish installing close the package manager it will ask if you wanna to open the **Tizen Studio** YES click open, if on windows it may request to add firewall permission for Tizen give.
 
 ### Bellow imgs showing the installed packages (the one with a delete option are installed)
-![SDK_installation_1](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_1.png)
-![SDK_installation_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_2.png)
-![SDK_installation_3](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_3.png)
-![SDK_installation_4](https://bhb27.github.io/smarttv-twitch/screenshot/install/sdk_4.png)
+![SDK_installation_1](https://fgl27.github.io/smarttv-twitch/screenshot/install/sdk_1.png)
+![SDK_installation_2](https://fgl27.github.io/smarttv-twitch/screenshot/install/sdk_2.png)
+![SDK_installation_3](https://fgl27.github.io/smarttv-twitch/screenshot/install/sdk_3.png)
+![SDK_installation_4](https://fgl27.github.io/smarttv-twitch/screenshot/install/sdk_4.png)
 
 ## Setting up the build environment:
 
 * Open **Tizen Studio**, then start the device manager by clicking on drop down menu that has a option by default **"No target"** and select **"Launch remote device manager"** if you don't find the device manager on the studio just open it as a separated app it must be installed just like the studio
 * On device manager click on **Scan** it must find your TV if it is setup ok and on the same network, if it doesn't find try to add it manually by clicking on the  **+** option and add your TV IP address don't change the **Port**, to get the address go to main menu > network > Network status... wait a moment extra options will be loaded, click on **IP Settings** read yours TV IP Address
 
-![device_manager](https://bhb27.github.io/smarttv-twitch/screenshot/install/device_manager.png)
+![device_manager](https://fgl27.github.io/smarttv-twitch/screenshot/install/device_manager.png)
 * After having the TV IP showing in the screen, click in to connect, when connect you see something like the bellow
-![device_manager](https://bhb27.github.io/smarttv-twitch/screenshot/install/device_manager2.png)
+![device_manager](https://fgl27.github.io/smarttv-twitch/screenshot/install/device_manager2.png)
 
 ## Generate a certificate:
 
 * back to **Tizen Studio** > Tools > Certificate Manager > + > select/click **Tizen** > create a new author.. next > setup name password etc... next > Use the default Tizen... Finish > **Success** click OK
 * Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
 
-![certificate](https://bhb27.github.io/smarttv-twitch/screenshot/install/certificate.png)
+![certificate](https://fgl27.github.io/smarttv-twitch/screenshot/install/certificate.png)
 
 ## Setup the application:
 
-* **[Download and extract the release_4.0.1_V2.zip file Click here, this is the application recipe file](https://github.com/bhb27/smarttv-twitch/releases/download/4.0.1_V2/4.0.1_V2.zip)**
+* **[Download and extract the release_4.0.1_V2.zip file Click here, this is the application recipe file](https://github.com/fgl27/smarttv-twitch/releases/download/4.0.1_V2/4.0.1_V2.zip)**
 
-![install_app1](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app1.png)
+![install_app1](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app1.png)
 
 * Making the app, Top menu > File > New > Tizen Project > click twice in **Template** > click twice in **TV** > click twice in **Web Application** > click twice in **Basic Project** > chose a project name any name ....click finish
 
-![install_app2](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app2.png)
-![install_app3](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app3.png)
-![install_app4](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app4.png)
-![install_app5](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app5.png)
-![install_app6](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app6.png)
+![install_app2](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app2.png)
+![install_app3](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app3.png)
+![install_app4](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app4.png)
+![install_app5](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app5.png)
+![install_app6](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app6.png)
 
 * Wait for it to load
 * Back on **Tizen Studio**, Left click on the folder symbol with **AnyName-X.0** on the left corner under project explorer just to select the folder(**AnyName-X.0** is the default name give when you created a project on the past step, if you change the name click on that)
@@ -138,23 +138,23 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 * Wait for it to load
 * The name of the folder **AnyName-X.0** changes to **AnyName-something-public-2.4**
 
-![install_app7](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app7.png)
-![install_app8_1](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_1.png)
-![install_app8_2](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_2.png)
-![install_app8_3](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app8_3.png)
-![install_app9](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app9.png)
+![install_app7](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app7.png)
+![install_app8_1](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app8_1.png)
+![install_app8_2](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app8_2.png)
+![install_app8_3](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app8_3.png)
+![install_app9](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app9.png)
 
 ## Install the application:
 
 * Click on that folder **AnyName-public-2.4** left click, then right click > Run as > **1 Tizen wen Application**, the installation will start
 * If everything goes OK the app must be opened in a few seconds on the TV, and you can start using
 
-![install_app10](https://bhb27.github.io/smarttv-twitch/screenshot/install/install_app10.png)
+![install_app10](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app10.png)
 
 * If it fail during the installation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
 * This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
-## In doubt or a featuring request [open a issue](https://github.com/bhb27/smarttv-twitch/issues/new)
+## In doubt or a featuring request [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new)
 
 * If is a installation problem share the fail LOG and inform yours TV model, computer OS and detailed description of the problem.
 * If is a featuring request try to detailed it a much as possible if is something you can screen shot share the pic.
