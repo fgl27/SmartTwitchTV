@@ -26,7 +26,7 @@ TODO
 release/app/*
 release/config.xml
 release/widget.info
-release/release*.zip
+release/*.zip
 release/.master.js
 release/.tproject
 release/.project
