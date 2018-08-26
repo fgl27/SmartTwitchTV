@@ -98,7 +98,7 @@ function en_USLang() {
     STR_ABOUT_INFO_2 = "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it.";
     STR_ABOUT_INFO_3 = "Developer information:";
     STR_ABOUT_INFO_4 = "This is an open source applicationlication check it on my github";
-    STR_ABOUT_INFO_5 = "github.com/bhb27/smarttv-twitch";
+    STR_ABOUT_INFO_5 = "github.com/fgl27/smarttv-twitch";
     STR_ABOUT_INFO_6 = "This application is licensed under the GNU General Public License v3.0, and uses following dependencies:";
     STR_ABOUT_INFO_8 = "Font Awesome - The iconic font and CSS toolkit by FortAwesome (https://github.com/FortAwesome/Font-Awesome)";
     STR_ABOUT_INFO_9 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
