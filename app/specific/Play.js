@@ -312,7 +312,7 @@ function Play_updateStreamInfoStart() {
                         Play_LoadLogoSucess = true;
                         Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
                         Play_created = response.stream.created_at;
-                        if (Main_UserName !== '') {
+                        if (AddUser_UserIsSet()) {
                             AddCode_PlayRequest = true;
                             AddCode_Channel_id = Play_selectedChannel_id;
                             AddCode_CheckFallow();
@@ -1254,7 +1254,7 @@ function Play_OpenGame(PlayVodClip) {
 }
 
 function Play_FallowUnfallow() {
-    if (AddCode_OauthToken !== '') {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
         if (AddCode_IsFallowing) AddCode_UnFallow();
         else AddCode_Fallow();
     } else {

@@ -3,6 +3,7 @@ var AddUser_loadingDataTry = 0;
 var AddUser_loadingDataTryMax = 5;
 var AddUser_loadingDataTimeout = 3500;
 var AddUser_UsernameArray = [];
+var AddUser_OldUsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
 var AddUser_keyBoardOn = false;
@@ -118,7 +119,7 @@ function AddUser_KeyboardEvent(event) {
         case KEY_KEYBOARD_CANCEL:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
                 if (Main_isReleased) AddUser_Username = Main_AddUserInput.value;
-                else AddUser_Username = 'testtwitch27';
+                else AddUser_Username = 'fglfgl27';
 
                 if (!AddUser_UserCodeExist(AddUser_Username)) {
                     AddUser_loadingDataTry = 0;
@@ -154,9 +155,11 @@ function AddUser_loadDataRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_Username) + '/follows/channels?limit=1&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username), true);
         xmlHttp.timeout = AddUser_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -164,7 +167,7 @@ function AddUser_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     Main_AddUserInput.value = '';
                     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                    AddUser_SaveNewUser();
+                    AddUser_SaveNewUser(xmlHttp.responseText);
                     return;
                 } else {
                     AddUser_loadDataError();
@@ -195,9 +198,12 @@ function AddUser_loadDataError() {
 }
 
 function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
-
-    if (AddUser_UsernameArray.length) AddCode_RestoreUsers();
+    AddUser_UsernameArray = JSON.parse(localStorage.getItem("AddUser_UsernameArray")) || [];
+    if (AddUser_UsernameArray.length > 0) {
+        //Check and refresh all tokens at start
+        for (var i = 0; i < AddUser_UsernameArray.length; i++)
+            AddCode_CheckTokenStart(i);
+    } else AddUser_OldRestoreUsers();
 
     Main_TizenVersion = parseFloat(tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version")) >= 2.4;
 
@@ -211,10 +217,98 @@ function AddUser_RestoreUsers() {
     }
 }
 
-function AddUser_SaveNewUser() {
-    AddUser_UsernameArray.push(AddUser_Username);
+function AddUser_OldRestoreUsers() {
+    AddUser_OldUsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
+    if (AddUser_OldUsernameArray.length > 0) {
+        for (var i = 0; i < AddUser_OldUsernameArray.length; i++) {
+            AddUser_UsernameArray.push({
+                'name': AddUser_OldUsernameArray[i],
+                'id': 0,
+                'access_token': 0,
+                'refresh_token': 0
+            });
+            AddUser_GetIdRequest(i, 0);
+        }
+    }
+}
+
+function AddUser_UserIsSet() {
+    return AddUser_UsernameArray.length > 0;
+}
+
+function AddUser_GetIdRequest(position, trys) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + AddUser_UsernameArray[position].name, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Main_AddUserInput.value = '';
+                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+                    AddUser_SaveOldUser(xmlHttp.responseText, position);
+                    return;
+                } else {
+                    AddUser_GetIdRequestError(position, trys);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        AddUser_GetIdRequestError(position, trys);
+    }
+}
+
+function AddUser_GetIdRequestError(position, trys) {
+    trys++;
+    if (trys < AddUser_loadingDataTryMax) AddUser_loadDataRequest();
+    else console.log("AddUser_GetIdRequestError");
+}
+
+function AddUser_SaveOldUser(responseText, position) {
+    console.log(responseText);
+    AddUser_Username = JSON.parse(responseText).users[0];
+
+    AddUser_UsernameArray[position].name = AddUser_Username.name;
+    AddUser_UsernameArray[position].id = AddUser_Username._id;
+
+    var mlength = AddUser_UsernameArray.length;
+
+    console.log('name ' + AddUser_UsernameArray[mlength - 1].name);
+    console.log('id ' + AddUser_UsernameArray[mlength - 1].id);
+
     AddUser_SaveUserArray();
 
+    if (Main_TizenVersion && mlength === 1) {
+        window.clearInterval(Main_SmartHubId);
+        document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
+        document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
+        SmartHub_StartInterval();
+    }
+}
+
+function AddUser_SaveNewUser(responseText) {
+    console.log(responseText);
+    AddUser_Username = JSON.parse(responseText).users[0];
+    AddUser_UsernameArray.push({
+        'name': AddUser_Username.name,
+        'id': AddUser_Username._id,
+        'access_token': 0,
+        'refresh_token': 0
+    });
+
+    console.log('name ' + AddUser_UsernameArray[AddUser_UsernameArray.length - 1].name);
+    console.log('id ' + AddUser_UsernameArray[AddUser_UsernameArray.length - 1].id);
+
+    AddUser_SaveUserArray();
     Users_status = false;
     AddUser_exit();
     Users_init();
@@ -230,11 +324,6 @@ function AddUser_SaveNewUser() {
 
 function AddUser_removeUser(Position) {
 
-    var userCode = AddCode_UserCodeExist(AddUser_UsernameArray[Position]);
-
-    // remove the code key
-    if (userCode > -1) AddCode_removeUser(userCode);
-
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
     if (index > -1) AddUser_UsernameArray.splice(index, 1);
@@ -248,14 +337,13 @@ function AddUser_removeUser(Position) {
         AddUser_init();
         SmartHub_Start();
     }
-    AddCode_SetDefaultOAuth(Position);
 
     // reset localStorage usernames
     AddUser_SaveUserArray();
 }
 
 function AddUser_SaveUserArray() {
-    localStorage.setItem("usernames", JSON.stringify(AddUser_UsernameArray));
+    localStorage.setItem("AddUser_UsernameArray", JSON.stringify(AddUser_UsernameArray));
 }
 
 function AddUser_UserMakeOne(Position) {

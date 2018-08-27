@@ -50,7 +50,6 @@ var Main_gameSelected = '';
 var Main_selectedChannel_id = '';
 var Main_OldgameSelected = null;
 var Main_SmartHubId = null;
-var Main_UserName = '';
 var Main_ScrollbarIsHide = true;
 var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
@@ -679,7 +678,7 @@ function Main_checkVersion() {
 }
 
 function Main_GoLive() {
-    AddCode_SetDefaultOAuth(0);
+    Users_Position = 0;
     Main_Go = Main_Live;
     if (Search_isSearching) Main_RestoreTopLabel();
     Search_isSearching = false;

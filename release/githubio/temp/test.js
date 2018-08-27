@@ -1,35 +1,62 @@
+var mobj = {};
 
-
-//temp var
-var duration_seconds = 1250;
-var current_time_seconds = 125;
-var id;
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOMContentLoaded");
+    test("#1", "333");
+    test("#3", "333");
+    test("#2", "333");
+    test("#0", "333");
+    console.log(mobj);
+    console.log(mobj['#224']);
 
+for (var key in mobj)
+        if (mobj.hasOwnProperty(key)) 
+        console.log(key + ' ' + mobj[key]);
 
-  var elem = document.getElementById("inner_progress_bar");
-  var width = parseInt((current_time_seconds / duration_seconds) * 100);
-  elem.style.width = width + '%';
-  id = window.setInterval(Play_ProgresBarrUpdate, 1000);
+testnull(null);
+testnull(testLog);
+
+AddCode_CheckToken()
 });
 
-function Play_ProgresBarrUpdate() {
-    console.log("Play_ProgresBarrUpdate");
-  document.getElementById('progress_bar').classList.add('progress_bar_holder_focus');
-  var elem = document.getElementById("inner_progress_bar");
-   current_time_seconds += 125;
 
-  var width = parseInt((current_time_seconds / duration_seconds) * 100);
+function test(key, value) {
+    mobj[key] = value;
+}
 
-    console.log("width " + width);
+function testnull(func) {
+   if (func) func();
+   else console.log(func);
 
-    if (width >= 120) {
-      elem.style.width = width + '%';
-      clearInterval(id);
-    } else {
-      elem.style.width = width + '%';
+}
+
+function testLog() {
+   console.log('testlog');
+}
+
+function AddCode_CheckToken() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken?oauth_token=buliu8ht6eps2vzw9qqeuqlp920c44', true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                    console.log(xmlHttp.responseText);
+                if (xmlHttp.status === 200) {
+                    console.log(xmlHttp.responseText);
+                    if (!JSON.parse(xmlHttp.responseText).token.valid) AddCode_refreshTokens(position, 0, null);
+                    else console.log('else');
+                    return;
+                } 
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+
     }
-
-
 }

@@ -26,9 +26,9 @@ function UserLive_init() {
     Main_Go = Main_UserLive;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_CHANNELS));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_LIVE_CHANNELS));
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
-    if (UserLive_OldUserName !== Main_UserName) UserLive_status = false;
+    if (UserLive_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserLive_status = false;
     if (UserLive_status) {
         Main_YRst(UserLive_cursorY);
         Main_ShowElement(UserLive_ids[10]);
@@ -49,7 +49,7 @@ function UserLive_StartLoad() {
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserLive_status = false;
-    UserLive_OldUserName = Main_UserName;
+    UserLive_OldUserName = AddUser_UsernameArray[Users_Position].name;
     Main_empty('stream_table_user_live');
     UserLive_loadChannelOffsset = 0;
     UserLive_itemsCountOffset = 0;
@@ -80,7 +80,7 @@ function UserLive_loadChannels() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main_UserName) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
             '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

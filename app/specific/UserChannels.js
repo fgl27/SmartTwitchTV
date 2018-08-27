@@ -23,9 +23,9 @@ function UserChannels_init() {
     SearchChannels_isLastSChannels = false;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_USER_CHANNEL));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
-    if (UserChannels_OldUserName !== Main_UserName) UserChannels_Status = false;
+    if (UserChannels_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserChannels_Status = false;
     if (UserChannels_Status) {
         Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
@@ -45,7 +45,7 @@ function UserChannels_StartLoad() {
     Main_HideElement(UserChannels_ids[6]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    UserChannels_OldUserName = Main_UserName;
+    UserChannels_OldUserName = AddUser_UsernameArray[Users_Position].name;
     UserChannels_Status = false;
     Main_empty('stream_table_user_channels');
     UserChannels_loadChannelOffsset = 0;
@@ -73,7 +73,7 @@ function UserChannels_loadChannels() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(Main_UserName) + '/follows/channels?limit=100&offset=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/channels?limit=100&offset=' +
             UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserChannels_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -288,7 +288,7 @@ function UserChannels_handleKeyDown(event) {
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            if (AddCode_OauthToken !== '') Main_Go = Main_UserVod;
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) Main_Go = Main_UserVod;
             else Main_Go = Main_usergames;
             UserChannels_exit();
             Main_SwitchScreen();

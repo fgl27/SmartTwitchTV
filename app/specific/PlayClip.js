@@ -67,7 +67,7 @@ function PlayClip_Start() {
     Play_IsWarning = false;
     Play_IconsResetFocus();
 
-    if (Main_UserName !== '') {
+    if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckFallow();
