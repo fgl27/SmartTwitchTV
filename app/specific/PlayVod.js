@@ -91,7 +91,7 @@ function PlayVod_Start() {
         Main_textContent("stream_live_icon", ChannelVod_createdAt);
     }
 
-    if (PlayVod_VodIds[ChannelVod_vodId] && !PlayVod_vodOffset) {
+    if (PlayVod_VodIds['#' + ChannelVod_vodId] && !PlayVod_vodOffset) {
         Play_HideBufferDialog();
         Play_showVodDialog();
     } else {
@@ -719,19 +719,20 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 
 function PlayVod_SaveVodIds() {
     var time = PlayVod_currentTime / 1000;
+    var vod_id = '#' + ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
 
     if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
 
         //delete before save to add this to the end, and prevent loose it in restorevodids
-        if (PlayVod_VodIds[ChannelVod_vodId]) delete PlayVod_VodIds[ChannelVod_vodId];
+        if (PlayVod_VodIds[vod_id]) delete PlayVod_VodIds[vod_id];
 
-        PlayVod_VodIds[ChannelVod_vodId] = parseInt(PlayVod_currentTime / 1000);
+        PlayVod_VodIds[vod_id] = parseInt(PlayVod_currentTime / 1000);
         localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
 
-    } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[ChannelVod_vodId]) {
+    } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[vod_id]) {
 
         //if ended or almost delete
-        delete PlayVod_VodIds[ChannelVod_vodId];
+        delete PlayVod_VodIds[vod_id];
         localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
     }
 }
@@ -765,7 +766,7 @@ function PlayVod_CleanVodIds(quantity) {
 function Play_showVodDialog() {
     Main_HideElement('scene_channel_panel_bottom');
     PlayVod_showPanel(false);
-    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds[ChannelVod_vodId] * 1000));
+    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + ChannelVod_vodId] * 1000));
     Main_ShowElement('dialog_vod_start');
 }
 
@@ -797,7 +798,7 @@ function PlayVod_IconsRemoveFocus() {
 }
 
 function PlayVod_DialogPressed() {
-    if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds[ChannelVod_vodId];
+    if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds['#' + ChannelVod_vodId];
     else PlayVod_vodOffset = 0;
     PlayVod_currentTime = PlayVod_vodOffset * 1000;
     PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds);
