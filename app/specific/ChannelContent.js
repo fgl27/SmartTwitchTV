@@ -321,7 +321,7 @@ function ChannelContent_setFallow() {
         Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOWING);
     } else {
         Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
-        if (Main_UserName !== '') Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOW);
+        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOW);
         else Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_CANT_FALLOW);
     }
 }
@@ -345,7 +345,7 @@ function ChannelContent_loadDataSuccessFinish() {
 
 function ChannelContent_checkUser() {
     if (ChannelContent_UserChannels) ChannelContent_setFallow();
-    else if (Main_UserName !== '') {
+    else if (AddUser_UserIsSet()) {
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_PlayRequest = false;
         AddCode_CheckFallow();
@@ -366,7 +366,7 @@ function ChannelContent_removeFocus() {
 
 function ChannelContent_keyEnter() {
     if (ChannelContent_cursorY) {
-        if (AddCode_OauthToken !== '') {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
             AddCode_PlayRequest = false;
             AddCode_Channel_id = Main_selectedChannel_id;
             if (AddCode_IsFallowing) AddCode_UnFallow();

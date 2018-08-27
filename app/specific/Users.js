@@ -1,6 +1,7 @@
 //Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
+var Users_Position = 0;
 var Users_ColoumnsCount = 8;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
@@ -24,7 +25,7 @@ function Users_init() {
 }
 
 function Users_exit() {
-    AddCode_SetDefaultOAuth(0);
+    Users_Position = 0;
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
@@ -49,11 +50,10 @@ function Users_loadData() {
 
     for (var x = 0; x < AddUser_UsernameArray.length; x++) {
         coloumn_id = 0;
-        Main_UserName = AddUser_UsernameArray[x];
 
         Main_td = document.createElement('tr');
         Main_td.className = 'follower_header';
-        Main_td.innerHTML = '<div class="follower_header">' + Main_UserName +
+        Main_td.innerHTML = '<div class="follower_header">' + AddUser_UsernameArray[x].name +
             STR_CONTENT + (!x ? STR_USER_NUMBER_ONE : '') + '</div>';
 
         document.getElementById("stream_table_user").appendChild(tbody);
@@ -92,7 +92,7 @@ function Users_loadData() {
 
         //add key
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddCode_UserCodeExist(Main_UserName) > -1 ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -118,7 +118,6 @@ function Users_loadDataSuccessFinish() {
         if (!Users_status) {
             Main_HideLoadDialog();
             Users_status = true;
-            if (AddCode_UsercodeArray.length > 0) Users_checkTitleStart();
             Users_addFocus();
         }
         Main_ShowElement(Users_ids[5]);
@@ -129,24 +128,6 @@ function Users_loadDataSuccessFinish() {
 
 function Users_resetGameCell() {
     for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
-}
-
-function Users_checkTitleStart() {
-    for (var x = 0; x < AddUser_UsernameArray.length; x++) Users_checkTitleRun(x);
-}
-
-function Users_checkTitleRun(position) {
-    AddCode_loadingDataTry = 0;
-    AddCode_loadingDataTimeout = 10000;
-    AddCode_CheckTokenStart(position);
-}
-
-function Users_SetKeyTitleStart(bool, position) {
-    Main_textContent(Users_ids[3] + position + '_' + 7, bool ? STR_USER_CODE_OK : STR_USER_CODE);
-    if (!bool) {
-        var user = AddCode_UserCodeExist(AddUser_UsernameArray[position]);
-        if (user > -1) AddCode_removeUser(user);
-    }
 }
 
 function Users_addFocus() {
@@ -169,10 +150,9 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
-    Main_UserName = AddUser_UsernameArray[Users_cursorY];
-    AddCode_SetDefaultOAuth(Users_cursorY);
+    Users_Position = Users_cursorY;
 
-    if (Users_cursorX === 3 && AddCode_OauthToken === '') {
+    if (Users_cursorX === 3 && AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token === '') {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
         window.setTimeout(Main_HideWarningDialog, 5000);
         return;
@@ -198,24 +178,6 @@ function Users_keyEnter() {
     else if (Users_cursorX === 7) AddCode_init();
 }
 
-function Users_checkKey(responseText) {
-    var json = JSON.parse(responseText);
-    var scopes = json.token.authorization.scopes;
-    var scopesToTest = '';
-    for (var i = 0; i < scopes.length; i++) {
-        scopesToTest += scopes[i];
-    }
-    return scopesToTest.indexOf('user_follows_edit') !== -1 && scopesToTest.indexOf('user_subscriptions') !== -1 && json.token.user_name + '' === Main_UserName && json.token.valid + '' === 'true';
-}
-
-function Users_SetKeyTitle(bool) {
-    Main_textContent(Users_ids[3] + Users_cursorY + '_' + Users_cursorX, bool ? STR_USER_CODE_OK : STR_USER_CODE);
-    if (!bool) {
-        var user = AddCode_UserCodeExist(AddUser_UsernameArray[Users_cursorY]);
-        if (user > -1) AddCode_removeUser(user);
-    }
-}
-
 function Users_clearRemoveDialog() {
     window.clearTimeout(Users_RemoveDialogID);
 }
@@ -226,7 +188,7 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + Main_UserName + '?');
+    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_Position].name + '?');
     Main_ShowElement('main_remove_dialog');
 }
 

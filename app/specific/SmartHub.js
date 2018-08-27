@@ -25,7 +25,6 @@ function SmartHub_Start() {
         SmartHub_emptyUser = true;
     } else SmartHub_emptyUser = false;
 
-    SmartHub_followerUsername = AddUser_UsernameArray[0];
     SmartHub_cleanVector();
     SmartHub_loadDataRequestPrepare();
     SmartHub_previewData = 0;
@@ -35,7 +34,10 @@ function SmartHub_Start() {
         } catch (ex) {
             console.log(ex.message);
         }
-    } else SmartHub_loadDataRequest();
+    } else {
+        SmartHub_followerUsername = AddUser_UsernameArray[0].name;
+        SmartHub_loadDataRequest();
+    }
 }
 
 function SmartHub_cleanVector() {

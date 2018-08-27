@@ -24,9 +24,9 @@ function UserHost_init() {
     Main_Go = Main_UserHost;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + STR_LIVE_HOSTS));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_LIVE_HOSTS));
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
-    if (UserHost_OldUserName !== Main_UserName) UserHost_status = false;
+    if (UserHost_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserHost_status = false;
     if (UserHost_status) {
         Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
@@ -46,7 +46,7 @@ function UserHost_StartLoad() {
     Main_HideElement(UserHost_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    UserHost_OldUserName = Main_UserName;
+    UserHost_OldUserName = AddUser_UsernameArray[Users_Position].name;
     UserHost_status = false;
     Main_empty('stream_table_user_host');
     UserHost_itemsCountOffset = 0;
@@ -82,7 +82,7 @@ function UserHost_loadChannels() {
             UserHost_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/followed/hosting?limit=' +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/followed/hosting?limit=' +
             Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserHost_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

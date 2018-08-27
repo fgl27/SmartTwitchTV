@@ -27,11 +27,11 @@ function UserGames_init() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", UserGames_handleKeyDown, false);
-    if (UserGames_OldUserName !== Main_UserName) UserGames_Status = false;
+    if (UserGames_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserGames_Status = false;
     if (UserGames_Status) {
         Main_YRst(UserGames_cursorY);
         Main_ShowElement(UserGames_ids[7]);
-        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         Main_CounterDialog(UserGames_cursorX, UserGames_cursorY, Main_ColoumnsCountGame, UserGames_itemsCount);
     } else UserGames_StartLoad();
 }
@@ -46,11 +46,11 @@ function UserGames_exit() {
 }
 
 function UserGames_StartLoad() {
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
     Main_HideElement(UserGames_ids[7]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    UserGames_OldUserName = Main_UserName;
+    UserGames_OldUserName = AddUser_UsernameArray[Users_Position].name;
     UserGames_Status = false;
     Main_empty('stream_table_user_games');
     UserGames_itemsCountOffset = 0;
@@ -86,7 +86,7 @@ function UserGames_loadDataRequest() {
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/follows/games' + (UserGames_live ? '/live' : '') +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games' + (UserGames_live ? '/live' : '') +
             '?limit=' + Main_ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -227,7 +227,7 @@ function UserGames_loadDataReplace() {
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(Main_UserName) + '/follows/games' + (UserGames_live ? '/live' : '') +
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games' + (UserGames_live ? '/live' : '') +
             '?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -397,7 +397,7 @@ function UserGames_handleKeyDown(event) {
             Users_resetGameCell();
             break;
         case KEY_CHANNELUP:
-            if (AddCode_OauthToken !== '') Main_Go = Main_UserVod;
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) Main_Go = Main_UserVod;
             else Main_Go = Main_UserChannels;
             UserGames_exit();
             Main_SwitchScreen();

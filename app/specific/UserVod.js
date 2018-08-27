@@ -28,7 +28,7 @@ function UserVod_init() {
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_TYPE + ' (C)');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(Main_UserName + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
 
     if (UserVod_status) {
@@ -66,8 +66,7 @@ function UserVod_StartLoad() {
     UserVod_cursorY = 0;
     UserVod_dataEnded = false;
     Main_CounterDialogRst();
-    UserVod_loadDataPrepare();
-    UserVod_loadDataRequest();
+    UserVod_loadDataRequestStart();
 }
 
 function UserVod_loadDataPrepare() {
@@ -75,6 +74,11 @@ function UserVod_loadDataPrepare() {
     UserVod_loadingData = true;
     UserVod_loadingDataTry = 0;
     UserVod_loadingDataTimeout = 3500;
+}
+
+function UserVod_loadDataRequestStart() {
+    UserVod_loadDataPrepare();
+    UserVod_loadDataRequest();
 }
 
 function UserVod_loadDataRequest() {
@@ -94,14 +98,18 @@ function UserVod_loadDataRequest() {
 
         xmlHttp.timeout = UserVod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddCode_OauthToken);
+        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
+                console.log('UserVod_loadDataRequest responseText ' + xmlHttp.responseText);
                 if (xmlHttp.status === 200) {
                     UserVod_loadDataSuccess(xmlHttp.responseText);
                     return;
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                    //AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart);
+                    console.log('UserVod_loadDataReplace bad token');
                 } else {
                     UserVod_loadDataError();
                 }
@@ -239,13 +247,17 @@ function UserVod_loadDataSuccessFinish() {
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserVod_emptyCellVector.length > 0 && !UserVod_dataEnded) {
-                UserVod_loadDataPrepare();
-                UserVod_loadDataReplace();
+                UserVod_loadDataReplaceStart();
                 return;
             } else UserVod_emptyCellVector = [];
         }
         UserVod_loadingData = false;
     });
+}
+
+function UserVod_loadDataReplaceStart() {
+    UserVod_loadDataPrepare();
+    UserVod_loadDataReplace();
 }
 
 function UserVod_loadDataReplace() {
@@ -267,14 +279,18 @@ function UserVod_loadDataReplace() {
 
         xmlHttp.timeout = UserVod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddCode_OauthToken);
+        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
+                console.log('UserVod_loadDataReplace responseText ' + xmlHttp.responseText);
                 if (xmlHttp.status === 200) {
                     UserVod_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                    //AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataReplaceStart);
+                    console.log('UserVod_loadDataReplace bad token');
                 } else UserVod_loadDataErrorReplace();
             }
         };
@@ -346,8 +362,7 @@ function UserVod_addFocus() {
 
     if (((UserVod_cursorY + Main_ItemsReloadLimitVideo) > (UserVod_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserVod_dataEnded && !UserVod_loadingData) {
-        UserVod_loadDataPrepare();
-        UserVod_loadDataRequest();
+        UserVod_loadDataRequestStart();
     }
 }
 

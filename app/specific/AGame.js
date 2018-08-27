@@ -240,7 +240,7 @@ function AGame_Checkfallow() {
     if (AGame_UserGames) {
         AGame_fallowing = true;
         AGame_setFallow();
-    } else if (Main_UserName !== '') AddCode_CheckFallowGame();
+    } else if (AddUser_UserIsSet()) AddCode_CheckFallowGame();
     else {
         AGame_fallowing = false;
         AGame_setFallow();
@@ -249,11 +249,11 @@ function AGame_Checkfallow() {
 
 function AGame_setFallow() {
     if (AGame_fallowing) Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>' + STR_SPACE + STR_SPACE + STR_FALLOWING);
-    else Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + STR_SPACE + (Main_UserName !== '' ? STR_FALLOW : STR_NOKEY));
+    else Main_innerHTML(AGame_ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FALLOW : STR_NOKEY));
 }
 
 function AGame_fallow() {
-    if (AddCode_OauthToken !== '') {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
         if (AGame_fallowing) AddCode_UnFallowGame();
         else AddCode_FallowGame();
     } else {

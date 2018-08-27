@@ -76,7 +76,7 @@ function PlayVod_Start() {
         if (!Vod_isVod && Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
             Chat_Init();
-            if (Main_UserName !== '') {
+            if (AddUser_UserIsSet()) {
                 AddCode_Channel_id = Main_selectedChannel_id;
                 AddCode_PlayRequest = true;
                 AddCode_CheckFallow();
@@ -158,7 +158,7 @@ function PlayVod_updateStreamInfo() {
                         Main_selectedChannelLogo = users.logo;
                         Main_selectedChannel_id = users._id;
                         Chat_Init();
-                        if (Main_UserName !== '') {
+                        if (AddUser_UserIsSet()) {
                             AddCode_Channel_id = Main_selectedChannel_id;
                             AddCode_PlayRequest = true;
                             AddCode_CheckFallow();
@@ -247,7 +247,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_selectedChannel_id = response.channel._id;
     Main_selectedChannel = response.channel.name;
 
-    if (Main_UserName !== '') {
+    if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckFallow();
@@ -296,7 +296,9 @@ function PlayVod_loadDataRequest() {
 
         var theUrl;
         if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/vods/' + ChannelVod_vodId + '/access_token' + (AddCode_OauthToken !== '' ? '?oauth_token=' + AddCode_OauthToken : '');
+            theUrl = 'https://api.twitch.tv/api/vods/' + ChannelVod_vodId + '/access_token' +
+                (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
+                    AddUser_UsernameArray[Users_Position].access_token : '');
         } else {
             theUrl = 'http://usher.twitch.tv/vod/' + ChannelVod_vodId +
                 '.m3u8?player=twitchweb&type=any&nauthsig=' + PlayVod_tokenResponse.sig + '&nauth=' +
@@ -357,7 +359,7 @@ function PlayVod_loadDataSuccess(responseText) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (AddCode_OauthToken !== '') {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckSub();
     } else {

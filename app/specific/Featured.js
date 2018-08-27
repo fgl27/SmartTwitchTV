@@ -73,7 +73,9 @@ function Featured_loadDataRequest() {
         var offset = Featured_itemsCount + Featured_itemsCountOffset;
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
-            '&offset=' + offset + (AddCode_OauthToken !== '' ? '&oauth_token=' + AddCode_OauthToken : '') +
+            '&offset=' + offset +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
+                AddUser_UsernameArray[Users_Position].access_token : '') +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Featured_loadingDataTimeout;
@@ -207,7 +209,9 @@ function Featured_loadDataReplace() {
         var offset = Featured_itemsCount + Featured_itemsCountOffset;
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
-            '&offset=' + offset + (AddCode_OauthToken !== '' ? '&oauth_token=' + AddCode_OauthToken : '') +
+            '&offset=' + offset +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
+                AddUser_UsernameArray[Users_Position].access_token : '') +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Featured_loadingDataTimeout;
