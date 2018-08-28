@@ -119,7 +119,7 @@ function pt_BRLang() {
     STR_OAUTH_EXPLAIN5 = "Clique no botão de autorizar no site do Twitch.TV se você esta de acordo com as permissões";
     STR_OAUTH_EXPLAIN6 = "A pagina vai atualizar e mostrar a chave de acesso no centro (só tem letra minuscula), escreva esta no aplicativo";
     STR_USER_CODE = " Adicione uma chave de autenticação";
-    STR_USER_CODE_OK = "Chave adicionada OK (Clique para testar)";
+    STR_USER_CODE_OK = "Chave adicionada OK";
     STR_KEY_BAD = "O teste da chave falhou, sera necessário adicionar uma nova";
     STR_KEY_OK = "O teste da chave retornou OK";
     STR_OAUTH_WRONG = "Você esta tentando adicionar uma chave para o usuário ";
@@ -130,6 +130,7 @@ function pt_BRLang() {
     STR_IS_SUB_NOT_SUB = " E você não é um inscrito deste canal";
     STR_IS_SUB_IS_SUB = " Você é um inscrito deste canal, mas o aplicativo falha ao tentar autenticar, contate o desenvolvedor através do e-mail no sobre";
     STR_OAUTH_FAIL = "Falhou o teste com a chave do informada, verifique e tente novamente";
+    STR_OAUTH_FAIL_USER = "A chave adicionada não pertence ao usuário ";
     STR_NOKEY = "Sem Usuário";
     STR_NOKEY_WARN = "Adicione um usuário e uma chave de autenticação para poder seguir ou deixar de seguir";
     STR_RESET = "Reinicie o";

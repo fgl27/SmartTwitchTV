@@ -119,7 +119,7 @@ function AddUser_KeyboardEvent(event) {
         case KEY_KEYBOARD_CANCEL:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
                 if (Main_isReleased) AddUser_Username = Main_AddUserInput.value;
-                else AddUser_Username = 'fglfgl27';
+                else AddUser_Username = 'testtwitch27';
 
                 if (!AddUser_UserCodeExist(AddUser_Username)) {
                     AddUser_loadingDataTry = 0;
@@ -202,7 +202,7 @@ function AddUser_RestoreUsers() {
     if (AddUser_UsernameArray.length > 0) {
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++)
-            AddCode_CheckTokenStart(i);
+            if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
     } else AddUser_OldRestoreUsers();
 
     Main_TizenVersion = parseFloat(tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version")) >= 2.4;
@@ -269,21 +269,21 @@ function AddUser_GetIdRequest(position, trys) {
 
 function AddUser_GetIdRequestError(position, trys) {
     trys++;
-    if (trys < AddUser_loadingDataTryMax) AddUser_loadDataRequest();
-    else console.log("AddUser_GetIdRequestError");
+    if (trys < 10) AddUser_GetIdRequest(position, trys);
+    else { //It fails too much remove it
+        var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+        if (index > -1) AddUser_UsernameArray.splice(index, 1);
+    }
+
 }
 
 function AddUser_SaveOldUser(responseText, position) {
-    console.log(responseText);
     AddUser_Username = JSON.parse(responseText).users[0];
 
     AddUser_UsernameArray[position].name = AddUser_Username.name;
     AddUser_UsernameArray[position].id = AddUser_Username._id;
 
     var mlength = AddUser_UsernameArray.length;
-
-    console.log('name ' + AddUser_UsernameArray[mlength - 1].name);
-    console.log('id ' + AddUser_UsernameArray[mlength - 1].id);
 
     AddUser_SaveUserArray();
 
@@ -296,7 +296,6 @@ function AddUser_SaveOldUser(responseText, position) {
 }
 
 function AddUser_SaveNewUser(responseText) {
-    console.log(responseText);
     AddUser_Username = JSON.parse(responseText).users[0];
     AddUser_UsernameArray.push({
         'name': AddUser_Username.name,
@@ -304,9 +303,6 @@ function AddUser_SaveNewUser(responseText) {
         'access_token': 0,
         'refresh_token': 0
     });
-
-    console.log('name ' + AddUser_UsernameArray[AddUser_UsernameArray.length - 1].name);
-    console.log('id ' + AddUser_UsernameArray[AddUser_UsernameArray.length - 1].id);
 
     AddUser_SaveUserArray();
     Users_status = false;

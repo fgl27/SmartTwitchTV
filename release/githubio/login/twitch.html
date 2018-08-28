@@ -1,81 +1,66 @@
 <!DOCTYPE html>
-<title>Twitch.TV app for Samsung TV authorization page</title>
-<style>
-    /*Original page from https://twitchstuff.3v.fi/tokengen/*/
 
-    body {
-        background-color: #111111;
-        font-family: sans-serif;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: 100;
-        letter-spacing: normal;
-        position: absolute;
-        padding: 0px;
-        margin: 0px;
-        text-align: center;
-        vertical-align: middle;
-        -webkit-font-smoothing: antialiased;
-    }
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Twitch.TV app for Samsung TV authorization page</title>
+    <link rel='shortcut icon' type='image/x-icon' href="https://fgl27.github.io/smarttv-twitch/release/githubio/images/favicon.ico" />
+    <style>
+        body {
+            background-color: #111111;
+            font-family: sans-serif;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 100;
+            letter-spacing: normal;
+            position: absolute;
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+            vertical-align: middle;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .button {
-        width: auto;
-        height: auto;
-        line-height: 40px;
-        border-radius: 15px;
-        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
-        color: #FFFFFF;
-        font-weight: bold;
-        font-size: 150%;
-        text-align: center;
-        vertical-align: middle;
-        background-color: #454545;
-        border: 4px solid #FFFFFF;
-        display: inline-block;
-        text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
-    }
+        .button {
+            width: auto;
+            height: auto;
+            line-height: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.45);
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 150%;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #454545;
+            border: 4px solid #FFFFFF;
+            display: inline-block;
+            text-shadow: #000000 0px 0px 7.2px, #000000 0px 0px 7.2px, #000000 0px 0px 5px;
+        }
 
-    .hidden {
-        display: none;
-    }
+        .hidden {
+            display: none;
+        }
 
-    input {
-        width: 20em;
-    }
-</style>
-<div id="auth" style="display: inline-block;">
-    <div>
-        <img style="position: flex; float: center; width: 70%; padding-top: 2%;" src="https://fgl27.github.io/smarttv-twitch/screenshot/Add_key.png" alt="twitchkey" />
-    </div>
-    <div style="position: flex; width: 100%; height: 100%;">
-        <p id="pText" style="font-size: 200%; color: #FFFFFF;">Is expected that you are already using the app, have set a user and have clicked on the add Authentication key featuring, and can see the above screen.<br><br>Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code.</p>
-    </div>
-    <div style="position: flex; width: 100%; height: 100%;">
-        <button id="login" class="button">Authorize</button>
-        <div id="about" style="position: flex; width: 100%; height: 100%;">
-            <div style="float: center; padding-top: 4%; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/fgl27/smarttv-twitch">github.com/fgl27/smarttv-twitch</a></div>
+        input {
+            width: 20em;
+        }
+    </style>
+    <script src="twitch.js"></script>
+</head>
+
+<body>
+    <div id="auth" style="display: inline-block;">
+        <div>
+            <img style="position: flex; float: center; width: 70%; padding-top: 2%;" src="https://fgl27.github.io/smarttv-twitch/screenshot/Add_key.png" alt="twitchkey" />
+        </div>
+        <div style="position: flex; width: 100%; height: 100%;">
+            <p id="PageText" style="font-size: 180%; color: #FFFFFF;">Is expected that you are already using the app, have set a user and have clicked on the add Authentication key featuring, and can see the above screen.<br><br>Click on the bellow "Authorize" button to access Twitch.TV, and give Twitch.TV app for Samsung TV authorization and generate a authentication key code</p>
+        </div>
+        <div style="position: flex; width: 100%; height: 100%;">
+            <button id="Authorize" class="button">Authorize</button>
+            <div id="about" style="position: flex; width: 100%; height: 100%; margin-bottom: 5%;">
+                <div style="float: center; padding-top: 4%; width: auto; text-align: center; height: auto; display: inline-block; color: #FFFFFF; font-size: 150%;">Twitch.Tv app from <a href="https://github.com/fgl27/smarttv-twitch">github.com/fgl27/smarttv-twitch</a></div>
+            </div>
         </div>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="twitch.js"></script>
-<script>
-    Twitch.init({
-        clientId: 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx'
-    }, function(error, status) {
-        if (error) {
-            console.error(error);
-        }
-        if (status.authenticated) {
-            document.getElementById('login').classList.add('hidden');
-            var session = JSON.parse(sessionStorage.twitch_oauth_session);
-            document.getElementById("pText").innerHTML = 'Enter the bellow characters on the above screen of the app (There is only lower case letters)<br><div style="font-size: 150%; font-weight: bold; color: #FFFFFF;">' + session.token + '</div>';
-        }
-        $('#login').click(function() {
-            Twitch.login({
-                scope: ['user_follows_edit', 'user_subscriptions'],
-                force_verify: true
-            });
-        });
-    });
-</script>
+</body>

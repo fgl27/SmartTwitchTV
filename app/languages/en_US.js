@@ -131,7 +131,7 @@ function en_USLang() {
     STR_OAUTH_EXPLAIN5 = "Click on Authorize button of Twitch.TV site if you agree with the requested permissions";
     STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, write that key code bellow";
     STR_USER_CODE = " Add Authentication key";
-    STR_USER_CODE_OK = "Key added OK (Click to test key)";
+    STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test fail, it\'s needed to add new one";
     STR_KEY_OK = "Key test return OK";
     STR_OAUTH_WRONG = "You try to add a key for user ";
@@ -142,6 +142,7 @@ function en_USLang() {
     STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
     STR_IS_SUB_IS_SUB = " You are a sub of this channel but the app fail to authenticate contact the developer email in about";
     STR_OAUTH_FAIL = "Fail authentication check with the provider key, please check and try again";
+    STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user ";
     STR_NOKEY = "No user";
     STR_NOKEY_WARN = "Set a user and a authentication key to be able to fallow/unfollow";
     STR_RESET = "Restart the";
