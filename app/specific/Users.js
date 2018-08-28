@@ -92,7 +92,7 @@ function Users_loadData() {
 
         //add key
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -152,9 +152,15 @@ function Users_removeFocus() {
 function Users_keyEnter() {
     Users_Position = Users_cursorY;
 
-    if (Users_cursorX === 3 && AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token === '') {
+    if (Users_cursorX === 3 && !AddUser_UsernameArray[Users_Position].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
         window.setTimeout(Main_HideWarningDialog, 5000);
+        return;
+    }
+
+    if (Users_cursorX === 7 && AddUser_UsernameArray[Users_Position].access_token) {
+        Main_showWarningDialog(STR_USER_CODE_OK);
+        window.setTimeout(Main_HideWarningDialog, 1500);
         return;
     }
 
@@ -175,7 +181,7 @@ function Users_keyEnter() {
             AddUser_init();
         } else AddUser_UserMakeOne(Users_cursorY);
     } else if (Users_cursorX === 6) Users_showRemoveDialog();
-    else if (Users_cursorX === 7) AddCode_init();
+    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Users_Position].access_token) AddCode_init();
 }
 
 function Users_clearRemoveDialog() {

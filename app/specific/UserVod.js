@@ -103,13 +103,11 @@ function UserVod_loadDataRequest() {
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                console.log('UserVod_loadDataRequest responseText ' + xmlHttp.responseText);
                 if (xmlHttp.status === 200) {
                     UserVod_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                    //AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart);
-                    console.log('UserVod_loadDataReplace bad token');
+                    AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
                 } else {
                     UserVod_loadDataError();
                 }
@@ -127,16 +125,18 @@ function UserVod_loadDataError() {
     if (UserVod_loadingDataTry < UserVod_loadingDataTryMax) {
         UserVod_loadingDataTimeout += 500;
         UserVod_loadDataRequest();
+    } else UserVod_loadDatafail();
+}
+
+function UserVod_loadDatafail() {
+    UserVod_loadingData = false;
+    if (!UserVod_itemsCount) {
+        UserVod_FirstLoad = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
     } else {
-        UserVod_loadingData = false;
-        if (!UserVod_itemsCount) {
-            UserVod_FirstLoad = false;
-            Main_HideLoadDialog();
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
-        } else {
-            UserVod_dataEnded = true;
-            UserVod_loadDataSuccessFinish();
-        }
+        UserVod_dataEnded = true;
+        UserVod_loadDataSuccessFinish();
     }
 }
 
