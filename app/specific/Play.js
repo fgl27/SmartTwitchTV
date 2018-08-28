@@ -241,6 +241,7 @@ function Play_Start() {
     Main_HideElement('chat_box');
     Main_HideElement('progress_bar_div');
 
+    Play_EndSet(1);
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
     Play_ChatLoadOK = false;
@@ -1178,24 +1179,24 @@ function Play_EndDialogPressed(PlayVodClip) {
 }
 
 function Play_EndSet(PlayVodClip) {
-    if (!PlayVodClip) {
+    if (!PlayVodClip) { // Play is hosting
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 1;
         Play_EndIconsAddFocus();
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
-    } else if (PlayVodClip === 1) {
+    } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 2;
         Play_EndIconsAddFocus();
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'none';
-    } else if (PlayVodClip === 2) {
+    } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'none';
-    } else if (PlayVodClip === 3) {
+    } else if (PlayVodClip === 3) { // clip
         Play_EndIconsResetFocus();
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
@@ -1352,7 +1353,11 @@ function Play_CheckIdError() {
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
         Play_loadingDataTimeout += 500;
         Play_CheckId();
-    } else Play_PannelEndStart(1);
+    } else {
+        Play_isHost = false;
+        Play_EndSet(1);
+        Play_PannelEndStart(1);
+    }
 }
 
 function Play_loadDataCheckHost() {
@@ -1384,7 +1389,11 @@ function Play_loadDataCheckHostError() {
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
         Play_loadingDataTimeout += 500;
         Play_loadDataCheckHost();
-    } else Play_PannelEndStart(1);
+    } else {
+        Play_isHost = false;
+        Play_EndSet(1);
+        Play_PannelEndStart(1);
+    }
 }
 
 function Play_CheckHost(responseText) {
