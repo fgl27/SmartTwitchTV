@@ -89,11 +89,12 @@ function en_USLang() {
     STR_CONTROLS_MAIN_6 = " Switch screen: Chanel Up (Move to right screen) or Chanel Down (Move to left screen)";
     STR_CONTROLS_MAIN_7 = "Some screen will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
     STR_CONTROLS_MAIN_8 = "Go back to Live from any screen: color button green or B";
-    STR_CONTROLS_MAIN_9 = "Start a search: color button blue or D";
-    STR_CONTROLS_MAIN_10 = "After setting up the search text press return or click on DONE and use the Directional pad (left/right) to chose the type of search then press Select or Play/Pause, Directional pad (up) goes back to edit the search text";
-    STR_CONTROLS_MAIN_11 = "Controls list: color button yellow or C";
-    STR_CONTROLS_MAIN_12 = "Settings: color button red or A";
-    STR_CONTROLS_MAIN_13 = "About this application (From the settings screen): color button red or A";
+    STR_CONTROLS_MAIN_9 = "Reload the app: First go back to Live after press color button green or B";
+    STR_CONTROLS_MAIN_10 = "Start a search: color button blue or D";
+    STR_CONTROLS_MAIN_11 = "After setting up the search text press return or click on DONE and use the Directional pad (left/right) to chose the type of search then press Select or Play/Pause, Directional pad (up) goes back to edit the search text";
+    STR_CONTROLS_MAIN_12 = "Controls list: color button yellow or C";
+    STR_CONTROLS_MAIN_13 = "Settings: color button red or A";
+    STR_CONTROLS_MAIN_14 = "About this application (From the settings screen): color button red or A";
     STR_ABOUT_INFO_1 = "This is a unofficial Twitch.Tv application develop by a individual on his free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it.";
     STR_ABOUT_INFO_2 = "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it.";
     STR_ABOUT_INFO_3 = "Developer information:";
