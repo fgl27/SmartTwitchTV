@@ -158,7 +158,7 @@ function Vod_loadDataSuccess(responseText) {
             video = response.videos[cursor];
             id = video._id;
             //video content can be null sometimes the preview will 404
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Vod_idObject[id]) coloumn_id--;
+            if ((video.preview + '').indexOf('404_processing') !== -1 || Vod_idObject[id]) coloumn_id--;
             else {
                 Vod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
@@ -312,7 +312,7 @@ function Vod_loadDataSuccessReplace(responseText) {
     for (i; i < Vod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         id = video._id;
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || Vod_idObject[id]) i--;
+        if ((video.preview + '').indexOf('404_processing') !== -1 || Vod_idObject[id]) i--;
         else {
             Vod_idObject[id] = 1;
             Vod_replaceVideo(Vod_emptyCellVector[i],

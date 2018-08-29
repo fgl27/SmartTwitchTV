@@ -151,7 +151,8 @@ function ChannelVod_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, video, id,
-        cursor = 0;
+        cursor = 0,
+        thumbnail_404, thumbnail;
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -160,12 +161,21 @@ function ChannelVod_loadDataSuccess(responseText) {
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
             id = video._id;
-            //video content can be null sometimes the preview will 404
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) coloumn_id--;
+            thumbnail = video.preview;
+            thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
+
+            // video content can be null sometimes, in that case the preview will be 404_processing
+            // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
+            if (!row_id && !coloumn_id && thumbnail_404) {
+                thumbnail_404 = false;
+                thumbnail = IMG_404_VIDEO;
+            }
+
+            if (thumbnail_404 || ChannelVod_idObject[id]) coloumn_id--;
             else {
                 ChannelVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
+                    id + ',' + video.length + ',' + video.language + ',' + video.game, [thumbnail.replace("320x240", Main_VideoSize),
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -278,7 +288,7 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
     for (i; i < ChannelVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         id = video._id;
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) i--;
+        if ((video.preview + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) i--;
         else {
             ChannelVod_idObject[id] = 1;
             Vod_replaceVideo(ChannelVod_emptyCellVector[i], id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
