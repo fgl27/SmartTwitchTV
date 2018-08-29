@@ -166,7 +166,7 @@ function UserVod_loadDataSuccess(responseText) {
             video = response.videos[cursor];
             id = video._id;
             //video content can be null sometimes the preview will 404
-            if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) coloumn_id--;
+            if ((video.preview + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) coloumn_id--;
             else {
                 UserVod_idObject[id] = 1;
                 row.appendChild(UserVod_createCell(row_id, row_id + '_' + coloumn_id,
