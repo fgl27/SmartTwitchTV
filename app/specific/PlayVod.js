@@ -110,6 +110,7 @@ function PlayVod_PosStart() {
         Main_ShowElement('scene_channel_panel_bottom');
         Main_ShowElement('progress_bar_div');
     }, 1000);
+    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     PlayVod_Restore_value.vod_id = ChannelVod_vodId;
     localStorage.setItem('PlayVod_WasPlaying', 1);
