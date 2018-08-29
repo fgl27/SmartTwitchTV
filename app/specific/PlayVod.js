@@ -55,6 +55,7 @@ var PlayVod_Restore_value = {
     "vod_id": 1
 };
 var PlayVod_SaveOffsetId;
+var PlayVod_WasSubChekd = false;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -130,6 +131,7 @@ function PlayVod_PosStart() {
     PlayVod_Playing = false;
     Play_jumping = false;
     PlayVod_isOn = true;
+    PlayVod_WasSubChekd = false;
     PlayVod_loadData();
     Play_EndSet(2);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -381,11 +383,20 @@ function PlayVod_NotSub() {
 }
 
 function PlayVod_isSub() {
-    Play_HideBufferDialog();
-    Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
-    window.setTimeout(function() {
-        if (PlayVod_isOn) PlayVod_shutdownStream();
-    }, 4000);
+    if (!PlayVod_WasSubChekd) {
+        // Do one more try before failing, because the access_token may be expired on the first treys
+        // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
+        // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
+        PlayVod_WasSubChekd = true;
+        PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
+        PlayVod_loadData();
+    } else {
+        Play_HideBufferDialog();
+        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
+        window.setTimeout(function() {
+            if (PlayVod_isOn) PlayVod_shutdownStream();
+        }, 4000);
+    }
 }
 
 function PlayVod_qualityChanged() {
