@@ -22,6 +22,7 @@ var Vod_status = false;
 var Vod_highlight = false;
 var Vod_FirstLoad = false;
 var Vod_AnimateThumbId;
+var Vod_newImg = new Image();
 //Variable initialization end
 
 function Vod_init() {
@@ -364,23 +365,21 @@ function Vod_removeFocus() {
 }
 
 function Vod_AnimateThumb(idArray, id) {
-    var frame = 0,
-        div = document.getElementById(idArray[0] + id),
-        image = document.createElement('img');
+    var div = document.getElementById(idArray[0] + id);
 
     // Only load the animation if it can be loaded
     // This prevent starting animating before it has loaded or animated a empty image
-    image.onload = function() {
+    Vod_newImg.onload = function() {
         Main_HideElement(idArray[1] + id);
-
+        var frame = 0;
         Vod_AnimateThumbId = window.setInterval(function() {
-            // 10 = quantity of frames, 344 img height from the div.offsetHeight
+            // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
             // But this img real height is 180 thus the quality is affected, higher resolution aren't available
             div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
         }, 650);
     };
 
-    image.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+    Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
 }
 
 function Vod_handleKeyDown(event) {
