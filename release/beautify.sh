@@ -27,17 +27,16 @@ cd "$mainfolder" || exit
 
 # js-beautify indent all the *.js code
 js_beautify() {
-	js-beautify index.html -o index.html;
+	js-beautify index.html -o index.html &
 	array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			if [ ! "$x" == "video.min.js" ]; then
-				js-beautify "$x" -o "$x";
-			fi;
+			js-beautify "$x" -o "$x" &
 		done
 		cd - &> /dev/null || exit;
 	done
+	wait
 }
 
 if which 'js-beautify' >/dev/null ; then
