@@ -21,6 +21,7 @@ var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_d
 var Vod_status = false;
 var Vod_highlight = false;
 var Vod_FirstLoad = false;
+var Vod_AnimateThumbId;
 //Variable initialization end
 
 function Vod_init() {
@@ -36,10 +37,12 @@ function Vod_init() {
         Main_ShowElement(Vod_ids[10]);
         Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
         Vod_SetPeriod();
+        Vod_addFocus();
     } else Vod_StartLoad();
 }
 
 function Vod_exit() {
+    if (Vod_status) Vod_removeFocus();
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
     Main_RemoveClass('top_bar_vod', 'icon_center_focus');
@@ -50,6 +53,7 @@ function Vod_exit() {
 }
 
 function Vod_StartLoad() {
+    if (Vod_status) Vod_removeFocus();
     Main_HideElement(Vod_ids[10]);
     Main_showLoadDialog();
     Vod_SetPeriod();
@@ -167,7 +171,7 @@ function Vod_loadDataSuccess(responseText) {
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                        STR_DURATION + Play_timeS(video.length)
+                        STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                     ], Vod_ids));
             }
         }
@@ -211,8 +215,10 @@ function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
 
 function Vod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
-    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
+
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
+        (valuesArray[7] ? ' style="background-size: 640px; background-image: url(' + valuesArray[7] + ');"' : '') +
+        '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
@@ -322,7 +328,7 @@ function Vod_loadDataSuccessReplace(responseText) {
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) +
                     STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                    STR_DURATION + Play_timeS(video.length)
+                    STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                 ], Vod_ids);
 
             tempVector.push(i);
@@ -342,7 +348,7 @@ function Vod_loadDataSuccessReplace(responseText) {
 
 function Vod_addFocus() {
     Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
-
+    Vod_AnimateThumb(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Vod_dataEnded && !Vod_loadingData) {
         Vod_loadDataPrepare();
@@ -351,7 +357,29 @@ function Vod_addFocus() {
 }
 
 function Vod_removeFocus() {
+    window.clearInterval(Vod_AnimateThumbId);
+    Main_ShowElement(Vod_ids[1] + Vod_cursorY + '_' + Vod_cursorX);
     Main_removeFocus(Vod_cursorY + '_' + Vod_cursorX, Vod_ids);
+}
+
+function Vod_AnimateThumb(idArray, id) {
+    var frame = 0,
+        div = document.getElementById(idArray[0] + id),
+        image = document.createElement('img');
+
+    // Only load the animation if it can be loaded
+    // This prevent starting animating before it has loaded or animated a empty image
+    image.onload = function() {
+        Main_HideElement(idArray[1] + id);
+
+        Vod_AnimateThumbId = window.setInterval(function() {
+            // 10 = quantity of frames, 360 img height from the default div size of 640x360
+            // But this img real height is 180 thus the quality is affected, higher resolution aren't available
+            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-360)) + "px";
+        }, 650);
+    };
+
+    image.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
 }
 
 function Vod_handleKeyDown(event) {
