@@ -36,10 +36,12 @@ function UserVod_init() {
         Main_ShowElement(UserVod_ids[10]);
         Main_CounterDialog(UserVod_cursorX, UserVod_cursorY, Main_ColoumnsCountVideo, UserVod_itemsCount);
         UserVod_SetPeriod();
+        UserVod_addFocus();
     } else UserVod_StartLoad();
 }
 
 function UserVod_exit() {
+    if (UserVod_status) UserVod_removeFocus();
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
@@ -49,6 +51,7 @@ function UserVod_exit() {
 }
 
 function UserVod_StartLoad() {
+    if (UserVod_status) UserVod_removeFocus();
     Main_HideElement(UserVod_ids[10]);
     Main_showLoadDialog();
     UserVod_SetPeriod();
@@ -175,7 +178,7 @@ function UserVod_loadDataSuccess(responseText) {
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                        STR_DURATION + Play_timeS(video.length)
+                        STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                     ], UserVod_ids));
             }
         }
@@ -219,8 +222,10 @@ function UserVod_replaceVideo(id, UserVod_id, valuesArray, idArray) {
 
 function UserVod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
-    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
+
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
+        (valuesArray[7] ? ' style="background-image: url(' + valuesArray[7] + ');"' : '') +
+        '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
@@ -339,7 +344,7 @@ function UserVod_loadDataSuccessReplace(responseText) {
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) +
                     STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                    STR_DURATION + Play_timeS(video.length)
+                    STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                 ], UserVod_ids);
 
             tempVector.push(i);
@@ -360,6 +365,8 @@ function UserVod_loadDataSuccessReplace(responseText) {
 function UserVod_addFocus() {
     Main_addFocusVideo(UserVod_cursorY, UserVod_cursorX, UserVod_ids, Main_ColoumnsCountVideo, UserVod_itemsCount);
 
+    Vod_AnimateThumb(UserVod_ids, UserVod_cursorY + '_' + UserVod_cursorX);
+
     if (((UserVod_cursorY + Main_ItemsReloadLimitVideo) > (UserVod_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserVod_dataEnded && !UserVod_loadingData) {
         UserVod_loadDataRequestStart();
@@ -367,6 +374,8 @@ function UserVod_addFocus() {
 }
 
 function UserVod_removeFocus() {
+    window.clearInterval(Vod_AnimateThumbId);
+    Main_ShowElement(UserVod_ids[1] + UserVod_cursorY + '_' + UserVod_cursorX);
     Main_removeFocus(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids);
 }
 

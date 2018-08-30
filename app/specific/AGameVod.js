@@ -37,10 +37,12 @@ function AGameVod_init() {
         Main_ShowElement(AGameVod_ids[10]);
         Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
         AGameVod_SetPeriod();
+        AGameVod_addFocus();
     } else AGameVod_StartLoad();
 }
 
 function AGameVod_exit() {
+    if (AGameVod_status) AGameVod_removeFocus();
     document.body.removeEventListener("keydown", AGameVod_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_GAMES);
@@ -52,6 +54,7 @@ function AGameVod_exit() {
 }
 
 function AGameVod_StartLoad() {
+    if (AGameVod_status) AGameVod_removeFocus();
     Main_HideElement(AGameVod_ids[10]);
     Main_showLoadDialog();
     AGameVod_SetPeriod();
@@ -171,7 +174,7 @@ function AGameVod_loadDataSuccess(responseText) {
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                        STR_DURATION + Play_timeS(video.length)
+                        STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                     ], AGameVod_ids));
             }
         }
@@ -287,7 +290,7 @@ function AGameVod_loadDataSuccessReplace(responseText) {
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                    STR_DURATION + Play_timeS(video.length)
+                    STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                 ], AGameVod_ids);
 
             tempVector.push(i);
@@ -308,6 +311,8 @@ function AGameVod_loadDataSuccessReplace(responseText) {
 function AGameVod_addFocus() {
     Main_addFocusVideo(AGameVod_cursorY, AGameVod_cursorX, AGameVod_ids, Main_ColoumnsCountVideo, AGameVod_itemsCount);
 
+    Vod_AnimateThumb(AGameVod_ids, AGameVod_cursorY + '_' + AGameVod_cursorX);
+
     if (((AGameVod_cursorY + Main_ItemsReloadLimitVideo) > (AGameVod_itemsCount / Main_ColoumnsCountVideo)) &&
         !AGameVod_dataEnded && !AGameVod_loadingData) {
         AGameVod_loadDataPrepare();
@@ -316,6 +321,8 @@ function AGameVod_addFocus() {
 }
 
 function AGameVod_removeFocus() {
+    window.clearInterval(Vod_AnimateThumbId);
+    Main_ShowElement(AGameVod_ids[1] + AGameVod_cursorY + '_' + AGameVod_cursorX);
     Main_removeFocus(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids);
 }
 

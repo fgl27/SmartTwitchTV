@@ -183,7 +183,7 @@ function Clip_loadDataSuccess(responseText) {
                         STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_PLAYING + video.game,
                         Main_addCommas(video.views) + STR_VIEWS,
-                        '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
+                        '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration), null
                     ], Clip_ids));
             }
         }
@@ -293,7 +293,7 @@ function Clip_loadDataSuccessReplace(responseText) {
                     STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_PLAYING + video.game,
                     Main_addCommas(video.views) + STR_VIEWS,
-                    '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration)
+                    '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration), null
                 ], Clip_ids);
             tempVector.push(i);
         }
