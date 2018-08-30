@@ -131,9 +131,9 @@ js_comp_ugf() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "${bldblu}	Including compresed version of $x to master.js";
-			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x";
-			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
+			echo -e "${bldblu}	Including compresed version of $x to master.js" &&
+			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x" &&
+			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js &
 		done
 		cd - &> /dev/null || exit;
 	done
@@ -144,7 +144,7 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/master.js;
+			cat "$x" >> "$mainfolder"/release/master.js &
 		done
 		cd - &> /dev/null || exit;
 	done
@@ -161,12 +161,12 @@ js_jshint() {
 }
 
 js_beautify() {
-	js-beautify index.html -o index.html;
+	js-beautify index.html -o index.html &
 	array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			js-beautify "$x" -o "$x";
+			js-beautify "$x" -o "$x" &
 		done
 		cd - &> /dev/null || exit;
 	done

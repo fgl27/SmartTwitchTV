@@ -31,7 +31,7 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/master.js;
+			cat "$x" >> "$mainfolder"/release/master.js &
 		done
 		cd - &> /dev/null || exit;
 	done
