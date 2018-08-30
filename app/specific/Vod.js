@@ -374,7 +374,7 @@ function Vod_AnimateThumb(idArray, id) {
         Main_HideElement(idArray[1] + id);
 
         Vod_AnimateThumbId = window.setInterval(function() {
-            // 10 = quantity of frames, 344 img height from the default div size of the div.offsetHeight
+            // 10 = quantity of frames, 344 img height from the div.offsetHeight
             // But this img real height is 180 thus the quality is affected, higher resolution aren't available
             div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
         }, 650);
