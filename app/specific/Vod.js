@@ -216,8 +216,9 @@ function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
 function Vod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
+    // background-size: 612px from  div.offsetWidth
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
-        (valuesArray[7] ? ' style="background-size: 640px; background-image: url(' + valuesArray[7] + ');"' : '') +
+        (valuesArray[7] ? ' style="background-size: 612px; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
@@ -373,9 +374,9 @@ function Vod_AnimateThumb(idArray, id) {
         Main_HideElement(idArray[1] + id);
 
         Vod_AnimateThumbId = window.setInterval(function() {
-            // 10 = quantity of frames, 360 img height from the default div size of 640x360
+            // 10 = quantity of frames, 344 img height from the default div size of the div.offsetHeight
             // But this img real height is 180 thus the quality is affected, higher resolution aren't available
-            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-360)) + "px";
+            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
         }, 650);
     };
 
