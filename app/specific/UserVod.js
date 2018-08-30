@@ -223,8 +223,9 @@ function UserVod_replaceVideo(id, UserVod_id, valuesArray, idArray) {
 function UserVod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
+    // background-size: 612px from  div.offsetWidth
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
-        (valuesArray[7] ? ' style="background-image: url(' + valuesArray[7] + ');"' : '') +
+        (valuesArray[7] ? ' style="background-size: 612px; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
