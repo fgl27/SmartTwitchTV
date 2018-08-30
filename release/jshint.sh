@@ -17,6 +17,16 @@
 
 #to exec this file or drag this .sh file to terminal to generate a released
 
+#timer counter
+START=$(date +%s.%N);
+#colors
+txtbld=$(tput bold) # Bold
+bldbldred=${txtbld}$(tput setaf 1) # bldred
+bldgrn=${txtbld}$(tput setaf 2) # bldgrn
+bldyel=${txtbld}$(tput setaf 3) # yellow
+bldblu=${txtbld}$(tput setaf 4) # blue
+NC='\033[1m'
+
 # add js folders here
 js_folders=("app/languages/" "app/general/" "app/specific/");
 
@@ -38,10 +48,10 @@ js_jshint() {
 
 	jsh_check="$(jshint "$mainfolder"/release/master.js)";
 	if [ ! -z "$jsh_check" ]; then
-		echo -e "JSHint erros or warnings foud:\\n"
+		echo -e "${bldbldred}JSHint erros or warnings foud:\\n"
 		echo -e "$jsh_check"
 	else
-		echo -e "JSHint Test finished no errors or warnings found\\n"
+		echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
 	fi;
 }
 
@@ -49,14 +59,16 @@ if which 'jshint' >/dev/null ; then
 	if [ "$1" == 1 ]; then
 		npm install jshint -g
 	fi;
-	echo -e "JSHint Test started...\\n";
+	echo -e "${bldgrn}\nJSHint Test started...\\n";
 	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals tizen, webapis, escape, STR_BODY */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 else
-	echo -e "\\ncan't run jshint because it is not installed";
-        echo -e "To install jshint read the jshint.sh notes on the top of the file\\n";
-	echo -e ".js files not checked.\\n";
+	echo -e "\\n${bldred}can't run jshint because it is not installed";
+        echo -e "${bldred}To install jshint read the jshint.sh notes on the top of the file\\n";
+	echo -e "${bldred}.js files not checked.\\n";
 	exit;
 fi;
 
+END=$(date +%s.%N);
+echo -e "${bldgrn}Total elapsed time of the script: ${bldbldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${bldyel}(minutes:seconds).\n${NC}";
 exit;
