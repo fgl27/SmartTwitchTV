@@ -172,7 +172,7 @@ function UserVod_loadDataSuccess(responseText) {
             if ((video.preview + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) coloumn_id--;
             else {
                 UserVod_idObject[id] = 1;
-                row.appendChild(UserVod_createCell(row_id, row_id + '_' + coloumn_id,
+                row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     id + ',' + video.length + ',' + video.language + ',' +
                     video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
@@ -195,47 +195,6 @@ function UserVod_loadDataSuccess(responseText) {
     }
 
     UserVod_loadDataSuccessFinish();
-}
-
-function UserVod_createCell(row_id, id, video_id, valuesArray, idArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return UserVod_createCellVideo(video_id, id, valuesArray, idArray);
-}
-
-function UserVod_createCellVideo(UserVod_id, id, valuesArray, idArray) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, UserVod_id);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = UserVod_VideoHtml(id, valuesArray, idArray);
-
-    return Main_td;
-}
-
-function UserVod_replaceVideo(id, UserVod_id, valuesArray, idArray) {
-    var ele = document.getElementById(id);
-    var splitedId = id.split(idArray[9])[1];
-    ele.setAttribute(Main_DataAttribute, UserVod_id);
-    ele.innerHTML = UserVod_VideoHtml(splitedId, valuesArray, idArray);
-    ele.setAttribute('id', idArray[8] + splitedId);
-}
-
-function UserVod_VideoHtml(id, valuesArray, idArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
-
-    // background-size: 612px from  div.offsetWidth
-    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
-        (valuesArray[7] ? ' style="background-size: 612px; background-image: url(' + valuesArray[7] + ');"' : '') +
-        '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
-        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div>' +
-        '<div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + idArray[11] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
 function UserVod_loadDataSuccessFinish() {
@@ -338,7 +297,7 @@ function UserVod_loadDataSuccessReplace(responseText) {
         if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) i--;
         else {
             UserVod_idObject[id] = 1;
-            UserVod_replaceVideo(UserVod_emptyCellVector[i],
+            Vod_replaceVideo(UserVod_emptyCellVector[i],
                 id + ',' + video.length + ',' + video.language + ',' +
                 video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
