@@ -32,9 +32,13 @@ js_folders=("app/languages/" "app/general/" "app/specific/");
 
 # no changes needed to be done bellow this line
 
+#timer counter
+START=$(date +%s.%N);
+#colors
 txtbld=$(tput bold) # Bold
 bldred=${txtbld}$(tput setaf 1) # red
 bldgrn=${txtbld}$(tput setaf 2) # green
+bldyel=${txtbld}$(tput setaf 3) # yellow
 bldblu=${txtbld}$(tput setaf 4) # blue
 bldcya=${txtbld}$(tput setaf 6) # cyan
 
@@ -282,5 +286,6 @@ echo -e "\\n${bldred}###########################################################
 echo -e "#												 #\\n#	${bldcya}Release done, zip generated at $mainfolder/release/release.zip${bldred}		 #\\n#												 #";
 echo -e "#												 #\\n${bldred}##################################################################################################\\n";
 
-
+END=$(date +%s.%N);
+echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${bldyel}(minutes:seconds).\n";
 exit;
