@@ -30,7 +30,7 @@ function AGameVod_init() {
 
     Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
-    Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+    Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
     if ((AGameVod_OldgameSelected === Main_gameSelected) && AGameVod_status) {
         Main_YRst(AGameVod_cursorY);

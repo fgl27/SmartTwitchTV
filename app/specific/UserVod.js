@@ -27,7 +27,7 @@ function UserVod_init() {
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_TYPE + ' (C)');
+    Main_IconLoad('label_controls', 'icon-history', STR_SWITCH_TYPE + ' (C)');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
 

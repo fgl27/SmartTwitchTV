@@ -27,7 +27,7 @@ function Clip_init() {
     Main_AddClass('top_bar_clip', 'icon_center_focus');
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-calendar', STR_SWITCH_CLIP + ' (C)');
+    Main_IconLoad('label_controls', 'icon-history', STR_SWITCH_CLIP + ' (C)');
 
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     if (Clip_status) {

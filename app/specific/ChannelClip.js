@@ -37,7 +37,7 @@ function ChannelClip_init() {
     Main_cleanTopLabel();
     ChannelClip_SetPeriod();
     Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
-    Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+    Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
     document.body.addEventListener("keydown", ChannelClip_handleKeyDown, false);
     if (ChannelClip_status) {
         Main_YRst(ChannelClip_cursorY);
