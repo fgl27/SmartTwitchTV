@@ -18,7 +18,7 @@ The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
 I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, Cips, basic Channel off line content, Chat and etc) it also didn't fully support the latest version of Samsung smart remote, etc etc...
 
-So I work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and making featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request for that [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new).
+So I work a long time writing this a new application basically from scratch focusing on performance and all available Twitch.TV featuring, with the help of some users reporting bugs and making featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch.TV content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request, for that use the [open a issue option of this repo](https://github.com/fgl27/smarttv-twitch/issues/new).
 
 Project Dependencies
 ==============
@@ -155,7 +155,7 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 
 ![install_app10](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app10.png)
 
-* If it fail during the installation make shore you don't have any other Twitch application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all twitch app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all twitch apps, try to install again.
+* If it fail during the installation make shore you don't have any other Twitch.TV application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all Twitch.TV app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all Twitch.TV apps, try to install again.
 * This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
 ## In doubt or a featuring request [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new)
