@@ -87,7 +87,7 @@ function PlayVod_Start() {
             PlayVod_updateStreamInfo();
         }
         Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
-        Main_textContent("stream_info_title", ChannelVod_title);
+        Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_innerHTML("stream_info_game", ChannelVod_views + ', [' + (ChannelVod_language).toUpperCase() + ']');
         Main_textContent("stream_live_icon", ChannelVod_createdAt);
     }

@@ -813,7 +813,7 @@ function Main_VideoHtml(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '<div id="' + twemoji.parse(idArray[3]) + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + valuesArray[2] + '</div>' +
