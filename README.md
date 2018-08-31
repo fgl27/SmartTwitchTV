@@ -10,6 +10,28 @@ Full support for all 2015 TV is not possible as the TV firmware doesn't supports
 
 In doubt [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new) inform yours TV model, computer OS and problem, if is a installation problem share the fail LOG
 
+About this fork
+===============
+
+I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
+The original fork is https://github.com/nikitakatchik/smarttv-twitch
+
+I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, Cips, basic Channel off line content, Chat and etc) it also didn't fully support the latest version of Samsung smart remote, etc etc...
+
+So I work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and making featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request for that [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new).
+
+Project Dependencies
+==============
+* [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
+* [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
+* [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
+* [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
+* [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
+* [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
+* [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
+* [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
+
+
 ## [How the application looks](https://github.com/fgl27/smarttv-twitch/tree/master/screenshot)
 The application never stops receiving updates the bellow images may be outdated
 ![Live](https://fgl27.github.io/smarttv-twitch/screenshot/animated.gif)
@@ -22,27 +44,6 @@ Twitch.TV authentication key
 After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (of streamers you are subscribed to) as described on the above screen shot. The key is generated on the bellow page (Twitch.TV app for Samsung TV authorization page) through Twitch.TV web site, the bellow page link is the same as showed on the application screen.
 
 ## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkey)
-
-About this fork
-===============
-
-I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
-The original fork is https://github.com/nikitakatchik/smarttv-twitch
-
-I have started this project because the above repo of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, Cips, Channel off line content etc), did not fully support the latest smart remote, the looks of the app was a little old-fashioned, etc...
-
-So I work alone writing a new application from scratch focusing on performance and needed featuring, with the help of some users reporting bugs and featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of options, but is know that the application can be improve new featuring and improves are in works to give a better experience and more options to the user, but as today there is only one main developer working on the project the process is slow.
-
-Project Dependencies
-==============
-* [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
-* [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
-* [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
-* [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
-* [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
-* [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
-* [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
-* [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
 Controls
 ==============
