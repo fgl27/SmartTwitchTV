@@ -420,7 +420,7 @@ function ChannelVod_handleKeyDown(event) {
             Play_gameSelected = ChannelVod_vodId[3];
             ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
-            ChannelVod_title = document.getElementById(ChannelVod_ids[3] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
+            ChannelVod_title = document.getElementById(ChannelVod_ids[3] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).innerHTML;
             ChannelVod_createdAt = document.getElementById(ChannelVod_ids[4] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
             ChannelVod_Duration = document.getElementById(ChannelVod_ids[5] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
             ChannelVod_views = document.getElementById(ChannelVod_ids[11] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent +
