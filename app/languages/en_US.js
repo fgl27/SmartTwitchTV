@@ -101,11 +101,12 @@ function en_USLang() {
     STR_ABOUT_INFO_4 = "This is an open source applicationlication check it on my github";
     STR_ABOUT_INFO_5 = "github.com/fgl27/smarttv-twitch";
     STR_ABOUT_INFO_6 = "This application is licensed under the GNU General Public License v3.0, and uses following dependencies:";
-    STR_ABOUT_INFO_8 = "Font Awesome - The iconic font and CSS toolkit by FortAwesome (https://github.com/FortAwesome/Font-Awesome)";
-    STR_ABOUT_INFO_9 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
-    STR_ABOUT_INFO_10 = "JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc. (https://github.com/beautify-web/js-beautify)";
-    STR_ABOUT_INFO_11 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
-    STR_ABOUT_INFO_12 = "Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API (http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)";
+    STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
+    STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
+    STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
+    STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
+    STR_ABOUT_INFO_11 = "JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc. (https://github.com/beautify-web/js-beautify)";
+    STR_ABOUT_INFO_12 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
     STR_CONTROLS_PLAY_1 = "Show information panel: Select key if chat is showing or Directional pad (up/down/left/right) if not";
     STR_CONTROLS_PLAY_2 = "Close the video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: Play or Pause keys";
