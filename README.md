@@ -35,7 +35,8 @@ So I work alone writing a new application from scratch focusing on performance a
 
 Project Dependencies
 ==============
-* [Font Awesome - The iconic font and CSS toolkit by FortAwesome](https://github.com/FortAwesome/Font-Awesome)
+* [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
+* [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
 * [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
 * [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
