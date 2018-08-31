@@ -126,6 +126,6 @@
 .icon-movie:before {
   content: "\41";
 }
-.icon-calendar:before {
-  content: "\66";
+.icon-history:before {
+  content: "\67";
 }

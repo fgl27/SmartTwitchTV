@@ -29,7 +29,7 @@ function AGameClip_init() {
     Main_AddClass('top_bar_game', 'icon_center_focus');
 
     Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_IconLoad('label_switch', 'icon-calendar', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+    Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
     document.body.addEventListener("keydown", AGameClip_handleKeyDown, false);
     Main_YRst(AGameClip_cursorY);
