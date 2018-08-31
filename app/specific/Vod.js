@@ -36,7 +36,6 @@ function Vod_init() {
     if (Vod_status) {
         Main_YRst(Vod_cursorY);
         Main_ShowElement(Vod_ids[10]);
-        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
         Vod_SetPeriod();
         Vod_addFocus();
     } else Vod_StartLoad();

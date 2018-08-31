@@ -34,7 +34,6 @@ function UserVod_init() {
     if (UserVod_status) {
         Main_YRst(UserVod_cursorY);
         Main_ShowElement(UserVod_ids[10]);
-        Main_CounterDialog(UserVod_cursorX, UserVod_cursorY, Main_ColoumnsCountVideo, UserVod_itemsCount);
         UserVod_SetPeriod();
         UserVod_addFocus();
     } else UserVod_StartLoad();
