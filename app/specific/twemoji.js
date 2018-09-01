@@ -170,6 +170,8 @@ var twemoji = (function(
     }
 
     function parse(str) {
+        //Twitch title may contain < or > with causes html problems
+        str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return replace(str, function(rawText) {
             var iconId = grabTheRightIcon(rawText);
 
