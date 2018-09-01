@@ -218,8 +218,9 @@ function UserLive_loadDataSuccess(responseText) {
             if (UserLive_idObject[id]) coloumn_id--;
             else {
                 UserLive_idObject[id] = 1;
-                row.appendChild(UserLive_createCell(row_id, row_id + '_' + coloumn_id,
-                    stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
+                    [stream.channel.name, id], UserLive_ids,
+                    [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                         stream.channel.status, stream.game,
                         STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' +
@@ -241,11 +242,6 @@ function UserLive_loadDataSuccess(responseText) {
     }
 
     UserLive_loadDataSuccessFinish();
-}
-
-function UserLive_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, UserLive_ids, valuesArray);
 }
 
 function UserLive_loadDataSuccessFinish() {
@@ -337,7 +333,7 @@ function UserLive_loadDataSuccessReplace(responseText) {
         if (UserLive_idObject[id]) i--;
         else {
             UserLive_idObject[id] = 1;
-            Main_replaceVideo(UserLive_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(UserLive_emptyCellVector[i], [stream.channel.name, id], [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                 Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                 stream.channel.status, stream.game,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
@@ -457,7 +453,7 @@ function UserLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute(Main_DataAttribute).split(',');
+            Play_selectedChannel = JSON.parse(document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute(Main_DataAttribute));
             Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_selectedChannelDisplayname = document.getElementById(UserLive_ids[3] + UserLive_cursorY + '_' + UserLive_cursorX).textContent;
