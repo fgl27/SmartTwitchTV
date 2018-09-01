@@ -1,6 +1,33 @@
 @charset "UTF-8";
 
 @font-face {
+  font-family: 'Sans', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'dejavu-sans';
+  src: url('fonts/dejavu-sans.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jomolhari';
+  src: url('fonts/Jomolhari.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CambriaMath';
+  src: url('fonts/CambriaMath.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: "untitled-font-1";
   src:url("fonts/untitled-font-1.eot");
   src:url("fonts/untitled-font-1.eot?#iefix") format("embedded-opentype"),
