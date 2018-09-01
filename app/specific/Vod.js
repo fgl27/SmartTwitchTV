@@ -166,8 +166,8 @@ function Vod_loadDataSuccess(responseText) {
             else {
                 Vod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    id + ',' + video.length + ',' + video.language + ',' +
-                    video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                    [id, video.length, video.language, video.game, video.channel.name],
+                    [video.preview.replace("320x240", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -190,15 +190,15 @@ function Vod_loadDataSuccess(responseText) {
     Vod_loadDataSuccessFinish();
 }
 
-function Vod_createCell(row_id, id, video_id, valuesArray, idArray) {
+function Vod_createCell(row_id, id, vod_data, valuesArray, idArray) {
     if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Vod_createCellVideo(video_id, id, valuesArray, idArray);
+    return Vod_createCellVideo(vod_data, id, valuesArray, idArray);
 }
 
-function Vod_createCellVideo(vod_id, id, valuesArray, idArray) {
+function Vod_createCellVideo(vod_data, id, valuesArray, idArray) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, vod_id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(vod_data));
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Vod_VideoHtml(id, valuesArray, idArray);
 
@@ -323,8 +323,8 @@ function Vod_loadDataSuccessReplace(responseText) {
         else {
             Vod_idObject[id] = 1;
             Vod_replaceVideo(Vod_emptyCellVector[i],
-                id + ',' + video.length + ',' + video.language + ',' +
-                video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                [id, video.length, video.language, video.game, video.channel.name],
+                [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) +
                     STR_VIEWS,
@@ -470,7 +470,7 @@ function Vod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelVod_vodId = JSON.parse(document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute));
             ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
             ChannelVod_language = ChannelVod_vodId[2];
             Play_gameSelected = ChannelVod_vodId[3];

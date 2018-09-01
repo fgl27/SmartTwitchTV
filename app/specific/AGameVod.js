@@ -168,8 +168,8 @@ function AGameVod_loadDataSuccess(responseText) {
             else {
                 AGameVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    id + ',' + video.length + ',' + video.language + ',' +
-                    video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                    [id, video.length, video.language, video.game, video.channel.name],
+                    [video.preview.replace("320x240", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -284,8 +284,8 @@ function AGameVod_loadDataSuccessReplace(responseText) {
         else {
             AGameVod_idObject[id] = 1;
             Vod_replaceVideo(AGameVod_emptyCellVector[i],
-                id + ',' + video.length + ',' + video.language + ',' +
-                video.game + ',' + video.channel.name, [video.preview.replace("320x240", Main_VideoSize),
+                [id, video.length, video.language, video.game, video.channel.name],
+                [video.preview.replace("320x240", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     video.title + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -411,7 +411,7 @@ function AGameVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = document.getElementById(AGameVod_ids[8] + AGameVod_cursorY + '_' + AGameVod_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelVod_vodId = JSON.parse(document.getElementById(AGameVod_ids[8] + AGameVod_cursorY + '_' + AGameVod_cursorX).getAttribute(Main_DataAttribute));
             ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
             ChannelVod_language = ChannelVod_vodId[2];
             Play_gameSelected = ChannelVod_vodId[3];
