@@ -1,3 +1,4 @@
+//This is a moded version of twemoji, I only need this from this file, check original in they github
 var twemoji = (function(
     /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
     /*
@@ -172,8 +173,7 @@ var twemoji = (function(
         return replace(str, function(rawText) {
             var iconId = grabTheRightIcon(rawText);
 
-            if (iconId) return '<img class="emoji" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>';
-            else return rawText;
+            return iconId ? '<img class="emoji" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
         });
     }
 
