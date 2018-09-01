@@ -1,4 +1,3 @@
-/*jslint indent: 2, browser: true, bitwise: true, plusplus: true */
 var twemoji = (function(
     /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
     /*
@@ -33,47 +32,6 @@ var twemoji = (function(
             // default assets/folder size, by default "72x72"
             // available via Twitter CDN: 72
             size: '72x72',
-
-            // default class name, by default 'emoji'
-            className: 'emoji',
-
-            // basic utilities / helpers to convert code points
-            // to JavaScript surrogates and vice versa
-            convert: {
-
-                /**
-                 * Given an HEX codepoint, returns UTF16 surrogate pairs.
-                 *
-                 * @param   string  generic codepoint, i.e. '1F4A9'
-                 * @return  string  codepoint transformed into utf16 surrogates pair,
-                 *          i.e. \uD83D\uDCA9
-                 *
-                 * @example
-                 *  twemoji.convert.fromCodePoint('1f1e8');
-                 *  // "\ud83c\udde8"
-                 *
-                 *  '1f1e8-1f1f3'.split('-').map(twemoji.convert.fromCodePoint).join('')
-                 *  // "\ud83c\udde8\ud83c\uddf3"
-                 */
-                fromCodePoint: fromCodePoint,
-
-                /**
-                 * Given UTF16 surrogate pairs, returns the equivalent HEX codepoint.
-                 *
-                 * @param   string  generic utf16 surrogates pair, i.e. \uD83D\uDCA9
-                 * @param   string  optional separator for double code points, default='-'
-                 * @return  string  utf16 transformed into codepoint, i.e. '1F4A9'
-                 *
-                 * @example
-                 *  twemoji.convert.toCodePoint('\ud83c\udde8\ud83c\uddf3');
-                 *  // "1f1e8-1f1f3"
-                 *
-                 *  twemoji.convert.toCodePoint('\ud83c\udde8\ud83c\uddf3', '~');
-                 *  // "1f1e8~1f1f3"
-                 */
-                toCodePoint: toCodePoint
-            },
-
 
             /////////////////////////
             //       methods       //
@@ -198,30 +156,7 @@ var twemoji = (function(
              *
              *                    and others commonly received via replace.
              */
-            replace: replace,
-
-            /**
-             * Simplify string tests against emoji.
-             *
-             * @param   string  some text that might contain emoji
-             * @return  boolean true if any emoji was found, false otherwise.
-             *
-             * @example
-             *
-             *  if (twemoji.test(someContent)) {
-             *    console.log("emoji All The Things!");
-             *  }
-             */
-            test: test
-        },
-
-        // used to escape HTML special chars in attributes
-        escaper = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            "'": '&#39;',
-            '"': '&quot;'
+            replace: replace
         },
 
         // RegExp based on emoji's official Unicode standards
@@ -233,16 +168,7 @@ var twemoji = (function(
         UFE0Fg = /\uFE0F/g,
 
         // avoid using a string literal like '\u200D' here because minifiers expand it inline
-        U200D = String.fromCharCode(0x200D),
-
-        // used to find HTML special chars in attributes
-        rescaper = /[&<>'"]/g,
-
-        // nodes with type 1 which should **not** be parsed
-        shouldntBeParsed = /^(?:iframe|noframes|noscript|script|select|style|textarea)$/,
-
-        // just a private shortcut
-        fromCharCode = String.fromCharCode;
+        U200D = String.fromCharCode(0x200D);
 
     return twemoji;
 
@@ -262,15 +188,6 @@ var twemoji = (function(
     }
 
     /**
-     * Utility function to escape html attribute text
-     * @param   string  text use in HTML attribute
-     * @return  string  text encoded to use in HTML attribute
-     */
-    function escapeHTML(s) {
-        return s.replace(rescaper, replacer);
-    }
-
-    /**
      * Default callback used to generate emoji src
      *  based on Twitter CDN
      * @param   string    the emoji codepoint string
@@ -279,37 +196,6 @@ var twemoji = (function(
      */
     function defaultImageSrcGenerator(icon, options) {
         return ''.concat(options.base, options.size, '/', icon, options.ext);
-    }
-
-    /**
-     * Given a generic DOM nodeType 1, walk through all children
-     * and store every nodeType 3 (#text) found in the tree.
-     * @param   Element a DOM Element with probably some text in it
-     * @param   Array the list of previously discovered text nodes
-     * @return  Array same list with new discovered nodes, if any
-     */
-    function grabAllTextNodes(node, allText) {
-        var
-            childNodes = node.childNodes,
-            length = childNodes.length,
-            subnode,
-            nodeType;
-        while (length--) {
-            subnode = childNodes[length];
-            nodeType = subnode.nodeType;
-            // parse emoji only in text nodes
-            if (nodeType === 3) {
-                // collect them to process emoji later
-                allText.push(subnode);
-            }
-            // ignore all nodes that are not type 1, that are svg, or that
-            // should not be parsed as script, style, and others
-            else if (nodeType === 1 && !('ownerSVGElement' in subnode) &&
-                !shouldntBeParsed.test(subnode.nodeName.toLowerCase())) {
-                grabAllTextNodes(subnode, allText);
-            }
-        }
-        return allText;
     }
 
     /**
@@ -328,93 +214,6 @@ var twemoji = (function(
     }
 
     /**
-     * DOM version of the same logic / parser:
-     *  emojify all found sub-text nodes placing images node instead.
-     * @param   Element   generic DOM node with some text in some child node
-     * @param   Object    options  containing info about how to parse
-     *
-     *            .callback   Function  the callback to invoke per each found emoji.
-     *            .base       string    the base url, by default twemoji.base
-     *            .ext        string    the image extension, by default twemoji.ext
-     *            .size       string    the assets size, by default twemoji.size
-     *
-     * @return  Element same generic node with emoji in place, if any.
-     */
-    function parseNode(node, options) {
-        var
-            allText = grabAllTextNodes(node, []),
-            length = allText.length,
-            attrib,
-            attrname,
-            modified,
-            fragment,
-            subnode,
-            text,
-            match,
-            i,
-            index,
-            img,
-            rawText,
-            iconId,
-            src;
-        while (length--) {
-            modified = false;
-            fragment = document.createDocumentFragment();
-            subnode = allText[length];
-            text = subnode.nodeValue;
-            i = 0;
-            while ((match = re.exec(text))) {
-                index = match.index;
-                if (index !== i) {
-                    fragment.appendChild(
-                        createText(text.slice(i, index), true)
-                    );
-                }
-                rawText = match[0];
-                iconId = grabTheRightIcon(rawText);
-                i = index + rawText.length;
-                src = options.callback(iconId, options);
-                if (src) {
-                    img = new Image();
-                    img.onerror = options.onerror;
-                    img.setAttribute('draggable', 'false');
-                    attrib = options.attributes(rawText, iconId);
-                    for (attrname in attrib) {
-                        if (
-                            attrib.hasOwnProperty(attrname) &&
-                            // don't allow any handlers to be set + don't allow overrides
-                            attrname.indexOf('on') !== 0 &&
-                            !img.hasAttribute(attrname)
-                        ) {
-                            img.setAttribute(attrname, attrib[attrname]);
-                        }
-                    }
-                    img.className = options.className;
-                    img.alt = rawText;
-                    img.src = src;
-                    modified = true;
-                    fragment.appendChild(img);
-                }
-                if (!img) fragment.appendChild(createText(rawText, false));
-                img = null;
-            }
-            // is there actually anything to replace in here ?
-            if (modified) {
-                // any text left to be added ?
-                if (i < text.length) {
-                    fragment.appendChild(
-                        createText(text.slice(i), true)
-                    );
-                }
-                // replace the text node only, leave intact
-                // anything else surrounding such text
-                subnode.parentNode.replaceChild(fragment, subnode);
-            }
-        }
-        return node;
-    }
-
-    /**
      * String/HTML version of the same logic / parser:
      *  emojify a generic text placing images tags instead of surrogates pair.
      * @param   string    generic string with possibly some emoji in it
@@ -429,123 +228,29 @@ var twemoji = (function(
      */
     function parseString(str, options) {
         return replace(str, function(rawText) {
-            var
-                ret = rawText,
-                iconId = grabTheRightIcon(rawText),
-                src = options.callback(iconId, options),
-                attrib,
-                attrname;
-            if (iconId && src) {
-                // recycle the match string replacing the emoji
-                // with its image counter part
-                ret = '<img '.concat(
-                    'class="', options.className, '" ',
-                    'draggable="false" ',
-                    // needs to preserve user original intent
-                    // when variants should be copied and pasted too
-                    'alt="',
-                    rawText,
-                    '"',
-                    ' src="',
-                    src,
-                    '"'
-                );
-                attrib = options.attributes(rawText, iconId);
-                for (attrname in attrib) {
-                    if (
-                        attrib.hasOwnProperty(attrname) &&
-                        // don't allow any handlers to be set + don't allow overrides
-                        attrname.indexOf('on') !== 0 &&
-                        ret.indexOf(' ' + attrname + '=') === -1
-                    ) {
-                        ret = ret.concat(' ', attrname, '="', escapeHTML(attrib[attrname]), '"');
-                    }
-                }
-                ret = ret.concat('/>');
-            }
-            return ret;
+            var iconId = grabTheRightIcon(rawText),
+                src = options.callback(iconId, options);
+
+            if (iconId && src) return '<img class="emoji" src="' + src + '"/>';
+            else return rawText;
+
         });
     }
 
-    /**
-     * Function used to actually replace HTML special chars
-     * @param   string  HTML special char
-     * @return  string  encoded HTML special char
-     */
-    function replacer(m) {
-        return escaper[m];
-    }
-
-    /**
-     * Default options.attribute callback
-     * @return  null
-     */
-    function returnNull() {
-        return null;
-    }
-
-    /**
-     * Given a generic value, creates its squared counterpart if it's a number.
-     *  As example, number 36 will return '36x36'.
-     * @param   any     a generic value.
-     * @return  any     a string representing asset size, i.e. "36x36"
-     *                  only in case the value was a number.
-     *                  Returns initial value otherwise.
-     */
-    function toSizeSquaredAsset(value) {
-        return typeof value === 'number' ?
-            value + 'x' + value :
-            value;
-    }
-
-
-    /////////////////////////
-    //  exported functions //
-    //     declaration     //
-    /////////////////////////
-
-    function fromCodePoint(codepoint) {
-        var code = typeof codepoint === 'string' ?
-            parseInt(codepoint, 16) : codepoint;
-        if (code < 0x10000) {
-            return fromCharCode(code);
-        }
-        code -= 0x10000;
-        return fromCharCode(
-            0xD800 + (code >> 10),
-            0xDC00 + (code & 0x3FF)
-        );
-    }
-
-    function parse(what, how) {
-        if (!how || typeof how === 'function') {
-            how = {
-                callback: how
-            };
-        }
+    function parse(what) {
         // if first argument is string, inject html <img> tags
         // otherwise use the DOM tree and parse text nodes only
-        return (typeof what === 'string' ? parseString : parseNode)(what, {
-            callback: how.callback || defaultImageSrcGenerator,
-            attributes: typeof how.attributes === 'function' ? how.attributes : returnNull,
-            base: typeof how.base === 'string' ? how.base : twemoji.base,
-            ext: how.ext || twemoji.ext,
-            size: how.folder || toSizeSquaredAsset(how.size || twemoji.size),
-            className: how.className || twemoji.className,
-            onerror: how.onerror || twemoji.onerror
+        return (parseString)(what, {
+            callback: defaultImageSrcGenerator,
+            base: twemoji.base,
+            ext: twemoji.ext,
+            size: twemoji.size,
+            onerror: twemoji.onerror
         });
     }
 
     function replace(text, callback) {
         return String(text).replace(re, callback);
-    }
-
-    function test(text) {
-        // IE6 needs a reset before too
-        re.lastIndex = 0;
-        var result = re.test(text);
-        re.lastIndex = 0;
-        return result;
     }
 
     function toCodePoint(unicodeSurrogates, sep) {
