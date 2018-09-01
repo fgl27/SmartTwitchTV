@@ -149,12 +149,12 @@ function SearchLive_loadDataSuccess(responseText) {
             if (SearchLive_idObject[id]) coloumn_id--;
             else {
                 SearchLive_idObject[id] = 1;
-                row.appendChild(SearchLive_createCell(row_id, row_id + '_' + coloumn_id,
-                    stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
+                    [stream.channel.name, id], SearchLive_ids,
+                    [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                         stream.channel.status, stream.game,
-                        STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' +
-                        STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                        STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                         Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
                     ]));
             }
@@ -172,11 +172,6 @@ function SearchLive_loadDataSuccess(responseText) {
     }
 
     SearchLive_loadDataSuccessFinish();
-}
-
-function SearchLive_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, SearchLive_ids, valuesArray);
 }
 
 function SearchLive_loadDataSuccessFinish() {
@@ -267,12 +262,13 @@ function SearchLive_loadDataSuccessReplace(responseText) {
         if (SearchLive_idObject[id]) i--;
         else {
             SearchLive_idObject[id] = 1;
-            Main_replaceVideo(SearchLive_emptyCellVector[i], stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                stream.channel.status, stream.game,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
-            ], SearchLive_ids);
+            Main_replaceVideo(SearchLive_emptyCellVector[i], [stream.channel.name, id],
+                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game,
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                ], SearchLive_ids);
 
             tempVector.push(i);
         }
@@ -378,7 +374,7 @@ function SearchLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = document.getElementById(SearchLive_ids[8] + SearchLive_cursorY + '_' + SearchLive_cursorX).getAttribute(Main_DataAttribute).split(',');
+            Play_selectedChannel = JSON.parse(document.getElementById(SearchLive_ids[8] + SearchLive_cursorY + '_' + SearchLive_cursorX).getAttribute(Main_DataAttribute));
             Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_selectedChannelDisplayname = document.getElementById(SearchLive_ids[3] + SearchLive_cursorY + '_' + SearchLive_cursorX).textContent;

@@ -178,8 +178,9 @@ function AGame_loadDataSuccess(responseText) {
             if (AGame_idObject[id]) coloumn_id--;
             else {
                 AGame_idObject[id] = 1;
-                row.appendChild(AGame_createCell(row_id, row_id + '_' + coloumn_id,
-                    stream.channel.name, id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
+                    [stream.channel.name, id], AGame_ids,
+                    [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                         stream.channel.status, stream.game,
                         STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
@@ -201,11 +202,6 @@ function AGame_loadDataSuccess(responseText) {
     }
 
     AGame_loadDataSuccessFinish();
-}
-
-function AGame_createCell(row_id, cell_id, channel_name, channel_id, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]);
-    return Main_createCellVideo(channel_name + ',' + channel_id, cell_id, AGame_ids, valuesArray);
 }
 
 function AGame_loadDataSuccessFinish() {
@@ -344,8 +340,8 @@ function AGame_loadDataSuccessReplace(responseText) {
         if (AGame_idObject[id]) i--;
         else {
             AGame_idObject[id] = 1;
-            Main_replaceVideo(AGame_emptyCellVector[i],
-                stream.channel.name + ',' + id, [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(AGame_emptyCellVector[i], [stream.channel.name, id],
+                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
@@ -526,7 +522,7 @@ function AGame_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (AGame_cursorY !== -1) {
-                Play_selectedChannel = document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute(Main_DataAttribute).split(',');
+                Play_selectedChannel = JSON.parse(document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute(Main_DataAttribute));
                 Play_selectedChannel_id = Play_selectedChannel[1];
                 Play_selectedChannel = Play_selectedChannel[0];
                 Play_selectedChannelDisplayname = document.getElementById(AGame_ids[3] + AGame_cursorY + '_' + AGame_cursorX).textContent;

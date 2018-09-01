@@ -151,8 +151,9 @@ function UserHost_loadDataSuccess(responseText) {
             if (UserHost_idObject[id]) coloumn_id--;
             else {
                 UserHost_idObject[id] = 1;
-                row.appendChild(UserHost_createCell(row_id, row_id + '_' + coloumn_id,
-                    hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
+                    [hosts.target.channel.name, hosts.target._id], UserHost_ids,
+                    [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                         hosts.target.title, hosts.target.meta_game,
                         STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
@@ -172,11 +173,6 @@ function UserHost_loadDataSuccess(responseText) {
         document.getElementById("stream_table_user_host").appendChild(row);
     }
     UserHost_loadDataSuccessFinish();
-}
-
-function UserHost_createCell(row_id, id, channel_name, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
-    return Main_createCellVideo(channel_name, id, UserHost_ids, valuesArray);
 }
 
 function UserHost_loadDataSuccessFinish() {
@@ -267,8 +263,8 @@ function UserHost_loadDataSuccessReplace(responseText) {
         if (UserHost_idObject[id]) i--;
         else {
             UserHost_idObject[id] = 1;
-            Main_replaceVideo(UserHost_emptyCellVector[i],
-                hosts.target.channel.name + ',' + hosts.target._id, [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+            Main_replaceVideo(UserHost_emptyCellVector[i], [hosts.target.channel.name, hosts.target._id],
+                [hosts.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     hosts.display_name + STR_USER_HOSTING + hosts.target.channel.display_name,
                     hosts.target.title, hosts.target.meta_game,
                     STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
@@ -388,7 +384,7 @@ function UserHost_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute).split(',');
+            Play_selectedChannel = JSON.parse(document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute));
             Play_selectedChannel_id = Play_selectedChannel[1];
             Play_selectedChannel = Play_selectedChannel[0];
             Play_DisplaynameHost = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent;

@@ -790,20 +790,22 @@ function Main_ChannelHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div>';
 }
 
-function Main_createCellVideo(channel_name, id, idArray, valuesArray) {
+function Main_createCellVideo(row_id, id, data, idArray, valuesArray) {
+    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]);
+
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, channel_name);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = Main_VideoHtml(id, idArray, valuesArray);
 
     return Main_td;
 }
 
-function Main_replaceVideo(id, channel_name, valuesArray, ids) {
+function Main_replaceVideo(id, data, valuesArray, ids) {
     var ele = document.getElementById(id);
     var splitedId = id.split(ids[9])[1];
-    ele.setAttribute(Main_DataAttribute, channel_name);
+    ele.setAttribute(Main_DataAttribute, JSON.stringify(data));
     ele.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
     ele.setAttribute('id', ids[8] + splitedId);
 }
