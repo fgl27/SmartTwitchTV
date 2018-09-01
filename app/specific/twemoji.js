@@ -435,7 +435,7 @@ var twemoji = (function(
                 src = options.callback(iconId, options),
                 attrib,
                 attrname;
-            if (src) {
+            if (iconId && src) {
                 // recycle the match string replacing the emoji
                 // with its image counter part
                 ret = '<img '.concat(
