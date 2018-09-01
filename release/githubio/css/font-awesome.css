@@ -28,19 +28,19 @@
 }
 
 @font-face {
-  font-family: "untitled-font-1";
-  src:url("fonts/untitled-font-1.eot");
-  src:url("fonts/untitled-font-1.eot?#iefix") format("embedded-opentype"),
-    url("fonts/untitled-font-1.woff") format("woff"),
-    url("fonts/untitled-font-1.ttf") format("truetype"),
-    url("fonts/untitled-font-1.svg#untitled-font-1") format("svg");
+  font-family: "icons";
+  src:url("fonts/icons.eot");
+  src:url("fonts/icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/icons.woff") format("woff"),
+    url("fonts/icons.ttf") format("truetype"),
+    url("fonts/icons.svg#icons") format("svg");
   font-weight: normal;
   font-style: normal;
 
 }
 .fa {
   display: inline-block;
-  font: normal normal normal 14px/1 "untitled-font-1";
+  font: normal normal normal 14px/1 "icons";
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -58,7 +58,7 @@
 }
 
 [data-icon]:before {
-  font-family: "untitled-font-1" !important;
+  font-family: "icons" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -71,7 +71,7 @@
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family: "untitled-font-1" !important;
+  font-family: "icons" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
