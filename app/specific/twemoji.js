@@ -10,46 +10,9 @@ var twemoji = (function(
     //            at the bottom of the same file instead.
 
 ) {
-    'use strict';
-
-    /*jshint maxparams:4 */
-
     var
         // the exported module object
         twemoji = {
-
-
-            /////////////////////////
-            //      properties     //
-            /////////////////////////
-
-            // default assets url, by default will be Twitter Inc. CDN
-            base: 'https://twemoji.maxcdn.com/2/',
-
-            // default assets file extensions, by default '.png'
-            ext: '.png',
-
-            // default assets/folder size, by default "72x72"
-            // available via Twitter CDN: 72
-            size: '72x72',
-
-            /////////////////////////
-            //       methods       //
-            /////////////////////////
-
-            /**
-             * User first: used to remove missing images
-             * preserving the original text intent when
-             * a fallback for network problems is desired.
-             * Automatically added to Image nodes via DOM
-             * It could be recycled for string operations via:
-             *  $('img.emoji').on('error', twemoji.onerror)
-             */
-            onerror: function onerror() {
-                if (this.parentNode) {
-                    this.parentNode.replaceChild(createText(this.alt, false), this);
-                }
-            },
 
             /**
              * Main method/logic to generate either <img> tags or HTMLImage nodes.
@@ -179,26 +142,6 @@ var twemoji = (function(
     /////////////////////////
 
     /**
-     * Shortcut to create text nodes
-     * @param   string  text used to create DOM text node
-     * @return  Node  a DOM node with that text
-     */
-    function createText(text, clean) {
-        return document.createTextNode(clean ? text.replace(UFE0Fg, '') : text);
-    }
-
-    /**
-     * Default callback used to generate emoji src
-     *  based on Twitter CDN
-     * @param   string    the emoji codepoint string
-     * @param   string    the default size to use, i.e. "36x36"
-     * @return  string    the image source to use
-     */
-    function defaultImageSrcGenerator(icon, options) {
-        return ''.concat(options.base, options.size, '/', icon, options.ext);
-    }
-
-    /**
      * Used to both remove the possible variant
      *  and to convert utf16 into code points.
      *  If there is a zero-width-joiner (U+200D), leave the variants in.
@@ -206,55 +149,7 @@ var twemoji = (function(
      * @return  string    the code point
      */
     function grabTheRightIcon(rawText) {
-        // if variant is present as \uFE0F
-        return toCodePoint(rawText.indexOf(U200D) < 0 ?
-            rawText.replace(UFE0Fg, '') :
-            rawText
-        );
-    }
-
-    /**
-     * String/HTML version of the same logic / parser:
-     *  emojify a generic text placing images tags instead of surrogates pair.
-     * @param   string    generic string with possibly some emoji in it
-     * @param   Object    options  containing info about how to parse
-     *
-     *            .callback   Function  the callback to invoke per each found emoji.
-     *            .base       string    the base url, by default twemoji.base
-     *            .ext        string    the image extension, by default twemoji.ext
-     *            .size       string    the assets size, by default twemoji.size
-     *
-     * @return  the string with <img tags> replacing all found and parsed emoji
-     */
-    function parseString(str, options) {
-        return replace(str, function(rawText) {
-            var iconId = grabTheRightIcon(rawText),
-                src = options.callback(iconId, options);
-
-            if (iconId && src) return '<img class="emoji" src="' + src + '"/>';
-            else return rawText;
-
-        });
-    }
-
-    function parse(what) {
-        // if first argument is string, inject html <img> tags
-        // otherwise use the DOM tree and parse text nodes only
-        return (parseString)(what, {
-            callback: defaultImageSrcGenerator,
-            base: twemoji.base,
-            ext: twemoji.ext,
-            size: twemoji.size,
-            onerror: twemoji.onerror
-        });
-    }
-
-    function replace(text, callback) {
-        return String(text).replace(re, callback);
-    }
-
-    function toCodePoint(unicodeSurrogates, sep) {
-        var
+        var unicodeSurrogates = rawText.indexOf(U200D) < 0 ? rawText.replace(UFE0Fg, '') : rawText,
             r = [],
             c = 0,
             p = 0,
@@ -270,7 +165,20 @@ var twemoji = (function(
                 r.push(c.toString(16));
             }
         }
-        return r.join(sep || '-');
+        return r.join('-');
+    }
+
+    function parse(str) {
+        return replace(str, function(rawText) {
+            var iconId = grabTheRightIcon(rawText);
+
+            if (iconId) return '<img class="emoji" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>';
+            else return rawText;
+        });
+    }
+
+    function replace(text, callback) {
+        return String(text).replace(re, callback);
     }
 
 }());
