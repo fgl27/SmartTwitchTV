@@ -42,7 +42,7 @@ function PlayClip_Start() {
     Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');
     Main_textContent("stream_watching_time", '');
-    PlayClip_HasVOD = ChannelVod_vodId !== 'null';
+    PlayClip_HasVOD = ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
         PlayVod_currentTime = 0;

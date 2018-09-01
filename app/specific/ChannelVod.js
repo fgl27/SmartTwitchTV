@@ -177,7 +177,8 @@ function ChannelVod_loadDataSuccess(responseText) {
             else {
                 ChannelVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    id + ',' + video.length + ',' + video.language + ',' + video.game, [thumbnail.replace("320x240", Main_VideoSize),
+                    [id, video.length, video.language, video.game, video.channel.name],
+                    [thumbnail.replace("320x240", Main_VideoSize),
                         video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -293,12 +294,14 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
         if ((video.preview + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) i--;
         else {
             ChannelVod_idObject[id] = 1;
-            Vod_replaceVideo(ChannelVod_emptyCellVector[i], id + ',' + video.length + ',' + video.language + ',' + video.game, [video.preview.replace("320x240", Main_VideoSize),
-                video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
-                STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
-                STR_DURATION + Play_timeS(video.length), video.animated_preview_url
-            ], ChannelVod_ids);
+            Vod_replaceVideo(ChannelVod_emptyCellVector[i],
+                [id, video.length, video.language, video.game, video.channel.name],
+                [video.preview.replace("320x240", Main_VideoSize),
+                    video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
+                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                    STR_DURATION + Play_timeS(video.length), video.animated_preview_url
+                ], ChannelVod_ids);
 
             tempVector.push(i);
         }
@@ -413,10 +416,11 @@ function ChannelVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = document.getElementById(ChannelVod_ids[8] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).getAttribute(Main_DataAttribute).split(',');
+            ChannelVod_vodId = JSON.parse(document.getElementById(ChannelVod_ids[8] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).getAttribute(Main_DataAttribute));
             ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
             ChannelVod_language = ChannelVod_vodId[2];
             Play_gameSelected = ChannelVod_vodId[3];
+            Main_selectedChannel = ChannelVod_vodId[4];
             ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
             ChannelVod_title = document.getElementById(ChannelVod_ids[3] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).innerHTML;
