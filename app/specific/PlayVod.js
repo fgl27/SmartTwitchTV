@@ -146,8 +146,7 @@ function PlayVod_PrepareLoad() {
 function PlayVod_updateStreamInfo() {
     try {
         var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_selectedChannel, true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_selectedChannel), true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -555,14 +554,15 @@ function PlayVod_updateCurrentTime(currentTime) {
 
 function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
-        PlayVod_SaveVodIds();
-        PlayVod_PreshutdownStream();
+        PlayVod_PreshutdownStream(true);
         Play_exitMain();
         localStorage.setItem('PlayVod_WasPlaying', 0);
     }
 }
 
-function PlayVod_PreshutdownStream() {
+function PlayVod_PreshutdownStream(saveOffset) {
+    window.clearInterval(PlayVod_SaveOffsetId);
+    if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
     Chat_Clear();
     Play_ClearPlayer();
@@ -579,7 +579,6 @@ function PlayVod_ClearVod() {
     PlayVod_vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
-    window.clearInterval(PlayVod_SaveOffsetId);
     ChannelVod_DurationSeconds = 0;
 }
 

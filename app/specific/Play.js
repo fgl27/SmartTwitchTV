@@ -1440,7 +1440,7 @@ function Play_KeyReturn(is_vod) {
     } else {
         if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
             Play_HideVodDialog();
-            PlayVod_PreshutdownStream();
+            PlayVod_PreshutdownStream(false);
             Play_exitMain();
         } else if (Play_ExitDialogVisible()) {
             Play_CleanHideExit();

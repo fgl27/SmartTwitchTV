@@ -265,11 +265,12 @@ function SmartHub_EventListener() {
                     }
 
                     if (Play_isOn) Play_PreshutdownStream();
-                    else if (PlayVod_isOn) PlayVod_PreshutdownStream();
+                    else if (PlayVod_isOn) PlayVod_PreshutdownStream(true);
                     else if (PlayClip_isOn) PlayClip_PreshutdownStream();
                     else Main_ExitCurrent(Main_Go);
 
                     window.setTimeout(Main_openStream, 10);
+                    break;
                 } else if (JSON.parse(actionData).gameIdx) {
 
                     actionData = JSON.parse(actionData);
@@ -288,7 +289,7 @@ function SmartHub_EventListener() {
                     else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
                     else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
                     else if (SwitchScreen) Main_SwitchScreen();
-
+                    break;
                 } else if (JSON.parse(actionData).screenIdx) {
 
                     actionData = JSON.parse(actionData);
@@ -304,6 +305,7 @@ function SmartHub_EventListener() {
                     else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
                     else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
                     else if (SwitchScreen) Main_SwitchScreen();
+                    break;
                 }
             }
         }
