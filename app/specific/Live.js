@@ -192,6 +192,7 @@ function Live_loadDataSuccessFinish() {
                 if (Play_WasPlaying) {
                     Play_selectedChannel = Play_Restore_value.name;
                     Play_selectedChannelDisplayname = Play_Restore_value.display_name;
+                    Play_selectedChannel_id = Play_Restore_value.id;
                     Main_openStream();
                 } else {
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;

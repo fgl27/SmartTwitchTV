@@ -85,7 +85,7 @@ var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
 var Play_selectedChannelLogo;
-var Play_selectedChannel_id;
+var Play_selectedChannel_id = '';
 var Play_ProgresBarrElm;
 var Play_DefaultjumpTimers = [];
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
@@ -153,7 +153,8 @@ var Play_ChatSizeVal = [{
 var Play_WasPlaying = 0;
 var Play_Restore_value = {
     "display_name": '',
-    "name": ''
+    "name": '',
+    "id": ''
 };
 
 var Play_ChatFont = 1;
@@ -224,6 +225,7 @@ function Play_Start() {
 
     Play_Restore_value.display_name = (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname);
     Play_Restore_value.name = Play_selectedChannel;
+    Play_Restore_value.id = Play_selectedChannel_id;
     localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
     localStorage.setItem('Play_WasPlaying', 1);
 
@@ -1364,7 +1366,8 @@ function Play_loadDataCheckHost() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' +
+            encodeURIComponent(Play_selectedChannel_id), true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
