@@ -205,10 +205,10 @@ function Vod_createCellVideo(vod_data, id, valuesArray, idArray) {
     return Main_td;
 }
 
-function Vod_replaceVideo(id, vod_id, valuesArray, idArray) {
+function Vod_replaceVideo(id, vod_data, valuesArray, idArray) {
     var ele = document.getElementById(id);
     var splitedId = id.split(idArray[9])[1];
-    ele.setAttribute(Main_DataAttribute, vod_id);
+    ele.setAttribute(Main_DataAttribute, JSON.stringify(vod_data));
     ele.innerHTML = Vod_VideoHtml(splitedId, valuesArray, idArray);
     ele.setAttribute('id', idArray[8] + splitedId);
 }
