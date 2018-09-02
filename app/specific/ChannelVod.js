@@ -179,7 +179,7 @@ function ChannelVod_loadDataSuccess(responseText) {
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     [id, video.length, video.language, video.game, video.channel.name],
                     [thumbnail.replace("320x240", Main_VideoSize),
-                        video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                        twemoji.parse(video.title), STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                         STR_DURATION + Play_timeS(video.length), video.animated_preview_url
@@ -297,7 +297,7 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
             Vod_replaceVideo(ChannelVod_emptyCellVector[i],
                 [id, video.length, video.language, video.game, video.channel.name],
                 [video.preview.replace("320x240", Main_VideoSize),
-                    video.title, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
+                    twemoji.parse(video.title), STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
                     STR_DURATION + Play_timeS(video.length), video.animated_preview_url

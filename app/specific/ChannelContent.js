@@ -215,7 +215,7 @@ function ChannelContent_loadDataSuccess() {
 
     Main_td = document.createElement('tr');
     Main_td.className = 'follower_header';
-    Main_td.innerHTML = '<div class="follower_header">' + ChannelContent_description + '</div>';
+    Main_td.innerHTML = '<div class="follower_header">' + twemoji.parse(ChannelContent_description) + '</div>';
 
     document.getElementById("stream_table_channel_content").appendChild(tbody);
     document.getElementById("stream_table_channel_content").appendChild(Main_td);
@@ -227,7 +227,8 @@ function ChannelContent_loadDataSuccess() {
                 STR_USER_HOSTING : '';
             var stream = response.stream;
             row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
-                stream.channel.status, stream.game, Main_is_playlist(JSON.stringify(stream.stream_type)) +
+                twemoji.parse(stream.channel.status), stream.game,
+                Main_is_playlist(JSON.stringify(stream.stream_type)) +
                 hosting + stream.channel.display_name,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
                 Main_addCommas(stream.viewers) + STR_VIEWER,
