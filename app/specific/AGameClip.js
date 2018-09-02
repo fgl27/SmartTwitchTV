@@ -192,7 +192,7 @@ function AGameClip_loadDataSuccess(responseText) {
                     ],
                     [video.thumbnails.medium, video.broadcaster.display_name,
                         STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
-                        video.title + STR_BR + STR_PLAYING + video.game,
+                        twemoji.parse(twemoji.parse(video.title)) + STR_BR + STR_PLAYING + video.game,
                         Main_addCommas(video.views) + STR_VIEWS,
                         '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration), null
                     ], AGameClip_ids));
@@ -305,7 +305,7 @@ function AGameClip_loadDataSuccessReplace(responseText) {
                 [video.thumbnails.medium,
                     video.broadcaster.display_name,
                     STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
-                    video.title + STR_BR + STR_PLAYING + video.game,
+                    twemoji.parse(twemoji.parse(video.title)) + STR_BR + STR_PLAYING + video.game,
                     Main_addCommas(video.views) + STR_VIEWS,
                     '[' + video.language.toUpperCase() + ']', STR_DURATION + Play_timeS(video.duration), null
                 ], AGameClip_ids);

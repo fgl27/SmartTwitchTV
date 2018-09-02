@@ -221,13 +221,13 @@ function Vod_VideoHtml(id, valuesArray, idArray) {
         (valuesArray[7] ? ' style="background-size: 612px; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + twemoji.parse(valuesArray[1]) + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
         '<div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + idArray[11] + id + '"class="stream_info">' + twemoji.parse(valuesArray[3]) + '</div>' +
+        '<div id="' + idArray[11] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 

@@ -187,7 +187,7 @@ function ChannelClip_loadDataSuccess(responseText) {
                         (video.vod !== null ? video.vod.offset : null)
                     ],
                     [video.thumbnails.medium,
-                        video.title, STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
+                        twemoji.parse(video.title), STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                         STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         '[' + video.language.toUpperCase() + ']',
                         STR_DURATION + Play_timeS(video.duration), null
@@ -297,7 +297,7 @@ function ChannelClip_loadDataSuccessReplace(responseText) {
                     (video.vod !== null ? video.vod.offset : null)
                 ],
                 [video.thumbnails.medium,
-                    video.title, STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
+                    twemoji.parse(video.title), STR_CREATED_AT + Main_videoCreatedAt(video.created_at),
                     STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     '[' + video.language.toUpperCase() + ']',
                     STR_DURATION + Play_timeS(video.duration), null
