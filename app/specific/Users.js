@@ -46,10 +46,12 @@ function Users_StartLoad() {
 }
 
 function Users_loadData() {
-    var row, coloumn_id, tbody = document.createElement('tbody');
+    var row, coloumn_id, tbody = document.createElement('tbody'),
+        color;
 
     for (var x = 0; x < AddUser_UsernameArray.length; x++) {
         coloumn_id = 0;
+        color = (x % 2);
 
         Main_td = document.createElement('tr');
         Main_td.className = 'follower_header';
@@ -62,37 +64,37 @@ function Users_loadData() {
         row = document.createElement('tr');
 
         //live
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play', color));
 
         //host
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users', color));
 
         //games
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
-            'gamepad'));
+            'gamepad', color));
 
         //videos
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play', color));
 
         //channels
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip', color));
 
         //add or make one
         coloumn_id++;
-        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus'));
-        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up'));
+        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus', color));
+        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up', color));
 
         //remove user
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times', color));
 
         //add key
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key'));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -100,13 +102,13 @@ function Users_loadData() {
     Users_loadDataSuccessFinish();
 }
 
-function Users_createChannelCell(id, user_name, stream_type, icons) {
+function Users_createChannelCell(id, user_name, stream_type, icons, color) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Users_ids[4] + id);
     Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
-        '" class="stream_user_icon"><i class="icon-' + icons + '"></i></div></div>' +
+        '" class="stream_user_icon" style="color: #' + (color ? 'B5B5B5' : 'FFFFFF') + ';"><i class="icon-' + icons + '"></i></div></div>' +
         '<div id="' + Users_ids[2] + id + '" class="stream_text">' +
         '<div id="' + Users_ids[3] + id + '" class="stream_info_user" style="text-align: center;">' + stream_type + '</div></div>';
 
