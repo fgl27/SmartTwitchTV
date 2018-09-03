@@ -165,9 +165,11 @@ function AddUser_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    Main_AddUserInput.value = '';
-                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                    AddUser_SaveNewUser(xmlHttp.responseText);
+                    if (JSON.parse(xmlHttp.responseText)._total) {
+                        Main_AddUserInput.value = '';
+                        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+                        AddUser_SaveNewUser(xmlHttp.responseText);
+                    } else AddUser_loadDataNoUser();
                     return;
                 } else {
                     AddUser_loadDataError();
@@ -186,15 +188,17 @@ function AddUser_loadDataError() {
     if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
         AddUser_loadingDataTimeout += 500;
         AddUser_loadDataRequest();
-    } else {
-        AddUser_Username = null;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_USER_ERROR);
-        window.setTimeout(function() {
-            AddUser_init();
-        }, 1000);
-        AddUser_loadingData = false;
-    }
+    } else AddUser_loadDataNoUser();
+}
+
+function AddUser_loadDataNoUser() {
+    AddUser_Username = null;
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_USER_ERROR);
+    window.setTimeout(function() {
+        AddUser_init();
+    }, 1000);
+    AddUser_loadingData = false;
 }
 
 function AddUser_RestoreUsers() {
@@ -296,6 +300,7 @@ function AddUser_SaveOldUser(responseText, position) {
 }
 
 function AddUser_SaveNewUser(responseText) {
+    console.log(responseText);
     AddUser_Username = JSON.parse(responseText).users[0];
     AddUser_UsernameArray.push({
         'name': AddUser_Username.name,
