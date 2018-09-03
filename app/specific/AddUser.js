@@ -300,7 +300,6 @@ function AddUser_SaveOldUser(responseText, position) {
 }
 
 function AddUser_SaveNewUser(responseText) {
-    console.log(responseText);
     AddUser_Username = JSON.parse(responseText).users[0];
     AddUser_UsernameArray.push({
         'name': AddUser_Username.name,
