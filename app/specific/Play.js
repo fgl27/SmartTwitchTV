@@ -652,7 +652,11 @@ function Play_CheckChat() {
             Play_CheckChatCounter++;
             Play_CheckChatId = window.setTimeout(Play_CheckChat, 1000);
         } else Play_loadChat();
-    } else Play_ChatFixPositionId = window.setInterval(Play_ChatFixPosition, 500);
+    } else {
+        Play_ChatFixPositionId = window.setInterval(Play_ChatFixPosition, 500);
+        doc = doc.getElementById('chat_box');
+        if (doc) doc.style.fontFamily = "'Helvetica Neue',Helvetica, Arial,sans-serif,Sans,Jomolhari,dejavu-sans, CambriaMath";
+    }
 }
 
 // If idle or playing, the media is be played or process to
