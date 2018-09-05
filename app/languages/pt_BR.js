@@ -186,5 +186,5 @@ function pt_BRLang() {
     STR_RESTORE_PLAYBACK_SUMARRY = "Ao trocar de aplicativo, o aplicativo pode ser encerrado pelo sistema para liberar memoria. Nesse caso, o aplicativo salva o que estava sendo reproduzido e restaura a reprodução quando reaberto";
     STR_CHAT_FONT = "Tamanho da fonte do chat";
     STR_CHAT_FONT_SUMARRY = "Alterar o tamanho da fonte das linhas do chat, aplica-se a texto e emotes";
-    STR_VIDEOS_ANIMATION = "Desativar miniaturas animadas dos vídeos";
+    STR_VIDEOS_ANIMATION = "Miniaturas animadas dos vídeos";
 }
