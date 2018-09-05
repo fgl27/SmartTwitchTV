@@ -199,13 +199,13 @@ var PlayStart_listener = {
 };
 
 function Play_SetBuffers() {
-    Play_Buffer = Settings_Obj_values(1);
-    PlayVod_Buffer = Settings_Obj_values(2);
-    PlayClip_Buffer = Settings_Obj_values(3);
+    Play_Buffer = Settings_Obj_values("buffer_live");
+    PlayVod_Buffer = Settings_Obj_values("buffer_vod");
+    PlayClip_Buffer = Settings_Obj_values("buffer_clip");
 }
 
 function Play_SetChatFont() {
-    Play_ChatFont = Settings_Obj_default(5);
+    Play_ChatFont = Settings_Obj_default("chat_font_size");
 
     for (var i = 0; i < Play_ChatFontObj.length; i++)
         Main_RemoveClass('chat_inner_container', Play_ChatFontObj[i]);

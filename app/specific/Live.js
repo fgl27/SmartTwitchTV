@@ -184,7 +184,7 @@ function Live_loadDataSuccessFinish() {
                 Live_addFocus();
             }
             if (Main_FirstRun && Live_Status &&
-                (!Settings_value.positions[4].defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying)) {
+                (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying)) {
                 if (Play_WasPlaying) {
                     Play_selectedChannel = Play_Restore_value.name;
                     Play_selectedChannelDisplayname = Play_Restore_value.display_name;

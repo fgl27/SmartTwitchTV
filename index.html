@@ -613,8 +613,8 @@
         div.settings_main {
             font-weight: bold;
             color: #FFFFFF;
-            width: 92%;
-            margin-left: 4%;
+            width: 95%;
+            margin-left: 2.5%;
         }
 
         div.settings_div,
@@ -625,6 +625,17 @@
             display: inline-block;
             font-size: 280%;
             vertical-align: middle;
+        }
+
+        div.settings_div {
+            border-radius: 12px;
+            box-sizing: border-box;
+            border: 3.5px solid rgba(0, 0, 0, 0);
+        }
+
+        div.settings_div_focus {
+            border-color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         div.settings_section {
@@ -638,12 +649,14 @@
         }
 
         div.settings_summary {
-            width: 100%;
-            font-size: 190%;
+            width: 93%;
+            margin-left: 3.5%;
+            font-size: 175%;
             text-align: left;
         }
 
         div.settings_name {
+            margin-left: 3.5%;
             width: 70%;
             display: inline-block;
             text-align: left;
@@ -969,93 +982,8 @@
                 <table id="stream_table_user" class="streams_tables"></table>
             </div>
             <div id="settings_scroll" class="screen_holder hide">
-                <div class="settings_main">
-
-                    <!-- General settings-->
-                    <div id="setting_title_general" class="settings_section"></div>
-
-                    <!-- Language selection-->
-                    <div class="settings_div">
-                        <div id="setting_name_0" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_0" class="left"></div>
-                        </div>
-                        <div id="settings_value_0" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_0" class="right"></div>
-                        </div>
-                    </div>
-
-
-                    <!-- Player settings-->
-                    <div id="setting_title_play" class="settings_section"></div>
-
-                    <!-- Buffers:-->
-                    <div id="setting_tile_1" class="settings_title"></div>
-                    <div id="setting_summary_1" class="settings_summary"></div>
-                    <!-- Buffer live-->
-                    <div class="settings_div">
-                        <div id="setting_name_1" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_1" class="left"></div>
-                        </div>
-                        <div id="settings_value_1" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_1" class="right"></div>
-                        </div>
-                    </div>
-
-                    <!-- Buffer vod-->
-                    <div class="settings_div">
-                        <div id="setting_name_2" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_2" class="left"></div>
-                        </div>
-                        <div id="settings_value_2" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_2" class="right"></div>
-                        </div>
-                    </div>
-
-                    <!-- Buffer clip-->
-                    <div class="settings_div">
-                        <div id="setting_name_3" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_3" class="left"></div>
-                        </div>
-                        <div id="settings_value_3" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_3" class="right"></div>
-                        </div>
-                    </div>
-
-                    <!-- restore playback:-->
-                    <div id="setting_tile_2" class="settings_title"></div>
-                    <!-- Buffer live-->
-                    <div class="settings_div">
-                        <div id="setting_name_4" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_4" class="left"></div>
-                        </div>
-                        <div id="settings_value_4" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_4" class="right"></div>
-                        </div>
-                    </div>
-
-                    <!-- chat font size:-->
-                    <div id="setting_tile_3" class="settings_title"></div>
-                    <!-- Buffer live-->
-                    <div class="settings_div">
-                        <div id="setting_name_5" class="settings_name"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_left_5" class="left"></div>
-                        </div>
-                        <div id="settings_value_5" class="strokedextramini settings_value"></div>
-                        <div class="settings_arraw_div">
-                            <div id="settings_arrow_right_5" class="right"></div>
-                        </div>
-                    </div>
+                <div id="settings_main" class="settings_main">
+                    <!-- Settings_SetSettings()-->
                 </div>
             </div>
 
