@@ -154,7 +154,7 @@ function Main_loadTranslations(device) {
     var lang = device.language.split(".")[0],
         Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
 
-    if (Savedlang) lang = Settings_Obj_values(0);
+    if (Savedlang) lang = Settings_Obj_values("general_lang");
     else Settings_CheckLang(lang);
 
     if (lang.indexOf('pt_') !== -1) {
@@ -281,7 +281,8 @@ function Main_SetStrings(isStarting) {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
     Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
     Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
-    Settings_SetStrings();
+    if (isStarting) Settings_SetSettings();
+    else Settings_SetStrings();
     Main_checkVersion();
 }
 

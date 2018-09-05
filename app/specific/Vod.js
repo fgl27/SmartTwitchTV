@@ -22,6 +22,7 @@ var Vod_status = false;
 var Vod_highlight = false;
 var Vod_FirstLoad = false;
 var Vod_AnimateThumbId;
+var Vod_DoAnimateThumb = 1;
 var Vod_newImg = new Image();
 //Variable initialization end
 
@@ -364,6 +365,7 @@ function Vod_removeFocus() {
 }
 
 function Vod_AnimateThumb(idArray, id) {
+    if (!Vod_DoAnimateThumb) return;
     var div = document.getElementById(idArray[0] + id);
 
     // Only load the animation if it can be loaded

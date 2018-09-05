@@ -200,4 +200,5 @@ function en_USLang() {
     STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app may be closed by the system to free memory. In this case the app saves what it was playing and restores the playback when reopened";
     STR_CHAT_FONT = "Chat font size";
     STR_CHAT_FONT_SUMARRY = "Change the chat lines font size, applies to text and emotes";
+    STR_VIDEOS_ANIMATION = "Disable videos animated thumbnails";
 }
