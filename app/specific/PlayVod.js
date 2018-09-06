@@ -74,9 +74,9 @@ function PlayVod_Start() {
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (!Vod_isVod && Main_selectedChannel_id !== '') {
+        if (Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-            Chat_Init();
+            if (!PlayVod_VodIds['#' + ChannelVod_vodId]) Chat_Init();
             if (AddUser_UserIsSet()) {
                 AddCode_Channel_id = Main_selectedChannel_id;
                 AddCode_PlayRequest = true;
@@ -159,7 +159,7 @@ function PlayVod_updateStreamInfo() {
                     if (users !== undefined) {
                         Main_selectedChannelLogo = users.logo;
                         Main_selectedChannel_id = users._id;
-                        Chat_Init();
+                        if (!PlayVod_VodIds['#' + ChannelVod_vodId]) Chat_Init();
                         if (AddUser_UserIsSet()) {
                             AddCode_Channel_id = Main_selectedChannel_id;
                             AddCode_PlayRequest = true;
@@ -568,7 +568,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Play_ClearPlayer();
     PlayVod_ClearVod();
     PlayVod_isOn = false;
-    Vod_isVod = false;
 }
 
 function PlayVod_ClearVod() {
@@ -689,7 +688,7 @@ function PlayVod_jump() {
         }
 
         Chat_offset = (PlayVod_currentTime / 1000) + PlayVod_TimeToJump;
-        if (Chat_offset && Chat_offset !== undefined) Chat_Init();
+        if (Chat_offset) Chat_Init();
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     PlayVod_jumpCount = 0;
@@ -809,12 +808,17 @@ function PlayVod_IconsRemoveFocus() {
 }
 
 function PlayVod_DialogPressed() {
-    if (!PlayVod_VodPositions) PlayVod_vodOffset = PlayVod_VodIds['#' + ChannelVod_vodId];
-    else PlayVod_vodOffset = 0;
-    PlayVod_currentTime = PlayVod_vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds);
     Play_HideVodDialog();
-    PlayVod_PosStart();
+    if (!PlayVod_VodPositions) {
+        PlayVod_vodOffset = PlayVod_VodIds['#' + ChannelVod_vodId];
+        PlayVod_currentTime = PlayVod_vodOffset * 1000;
+        PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds);
+        PlayVod_PosStart();
+    } else {
+        delete PlayVod_VodIds['#' + ChannelVod_vodId];
+        PlayVod_vodOffset = 0;
+        PlayVod_Start();
+    }
 }
 
 function PlayVod_handleKeyDown(e) {

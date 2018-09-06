@@ -140,6 +140,7 @@ function Chat_loadBadgesChannelSuccess(responseText) {
             tagCSS(badge.type, version.type, version.image_url_4x, false);
         });
     });
+
     if (Chat_offset > 0) Chat_loadChatOffset();
     else Chat_loadChat();
 }
