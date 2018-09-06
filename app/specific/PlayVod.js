@@ -2,10 +2,7 @@
 var PlayVod_quality = 'source';
 var PlayVod_qualityPlaying = PlayVod_quality;
 
-var PlayVod_STATE_LOADING_TOKEN = 0;
-var PlayVod_STATE_LOADING_PLAYLIST = 1;
-var PlayVod_STATE_PLAYING = 2;
-var PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
+var PlayVod_state = 0;
 
 var PlayVod_streamInfoTimer = null;
 var PlayVod_tokenResponse = 0;
@@ -69,6 +66,7 @@ function PlayVod_Start() {
     Chat_title = STR_PAST_BROA + '.';
     Main_HideElement('progress_bar_div');
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
+    PlayVod_state = Play_STATE_LOADING_TOKEN;
 
     if (PlayVod_vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
@@ -126,7 +124,6 @@ function PlayVod_PosStart() {
     PlayVod_tokenResponse = 0;
     PlayVod_playlistResponse = 0;
     PlayVod_playingTry = 0;
-    PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', PlayVod_Resume, false);
     PlayVod_Playing = false;
     Play_jumping = false;
@@ -297,7 +294,7 @@ function PlayVod_loadDataRequest() {
         var xmlHttp = new XMLHttpRequest();
 
         var theUrl;
-        if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
+        if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
             theUrl = 'https://api.twitch.tv/api/vods/' + ChannelVod_vodId + '/access_token' +
                 (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
                     AddUser_UsernameArray[Users_Position].access_token : '');
@@ -348,11 +345,11 @@ function PlayVod_loadDataError() {
 }
 
 function PlayVod_loadDataSuccess(responseText) {
-    if (PlayVod_state === PlayVod_STATE_LOADING_TOKEN) {
+    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
         PlayVod_tokenResponse = JSON.parse(responseText);
-        PlayVod_state = PlayVod_STATE_LOADING_PLAYLIST;
+        PlayVod_state = Play_STATE_LOADING_PLAYLIST;
         PlayVod_loadData();
-    } else if (PlayVod_state === PlayVod_STATE_LOADING_PLAYLIST) {
+    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
         PlayVod_playlistResponse = responseText;
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
@@ -387,7 +384,7 @@ function PlayVod_isSub() {
         // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
         // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
         PlayVod_WasSubChekd = true;
-        PlayVod_state = PlayVod_STATE_LOADING_TOKEN;
+        PlayVod_state = Play_STATE_LOADING_TOKEN;
         PlayVod_loadData();
     } else {
         Play_HideBufferDialog();
@@ -822,7 +819,7 @@ function PlayVod_DialogPressed() {
 }
 
 function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== PlayVod_STATE_PLAYING && !Play_isVodDialogShown()) {
+    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {

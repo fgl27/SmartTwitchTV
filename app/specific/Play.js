@@ -12,7 +12,7 @@ var Play_PanelOffset = 0;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
-var Play_state = Play_STATE_LOADING_TOKEN;
+var Play_state = 0;
 
 var Play_streamInfoTimer = null;
 var Play_tokenResponse = 0;
