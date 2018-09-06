@@ -156,3 +156,6 @@
 .icon-history:before {
   content: "\67";
 }
+.icon-star:before {
+  content: "\79";
+}
