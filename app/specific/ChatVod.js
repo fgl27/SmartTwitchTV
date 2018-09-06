@@ -11,7 +11,7 @@ var Chat_loadChatNextId;
 var Chat_loadChatOffsetId;
 var Chat_offset = 0;
 var Chat_title = '';
-var defaultColors = ["#FF0000", "#0000FF", "#008000", "#B22222", "#FF7F50", "#9ACD32", "#FF4500", "#6BC81E", "#DAA520", "#D2691E", "#5F9EA0", "#1E90FF", "#FF69B4", "#8A2BE2", "#00FF7F"];
+var defaultColors = ["#FF0000", "#0000FF", "#E7009D", "#FF9700", "#FF8558", "#A2D932", "#FF4500", "#6BC81E", "#DAA520", "#F2E026", "#4ED2CA", "#1E90FF", "#FF69B4", "#9729FC", "#00FF7F"];
 var Chat_div;
 var Chat_Position = 0;
 var Chat_hasEnded = false;
