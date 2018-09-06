@@ -1,5 +1,4 @@
 function en_USLang() {
-    document.getElementById("side_panel").style.width = "17%";
     STR_REFRESH = "Refresh and back to top";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
