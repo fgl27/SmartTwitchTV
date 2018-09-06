@@ -1,5 +1,4 @@
 function pt_BRLang() {
-    document.getElementById("side_panel").style.width = "21.5%";
     STR_REFRESH = "Atualizar e voltar pro topo";
     STR_SETTINGS = "Configurações";
     STR_SEARCH = "Pesquisar";
