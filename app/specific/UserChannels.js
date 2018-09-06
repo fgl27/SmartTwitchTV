@@ -221,6 +221,7 @@ function UserChannels_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_Go = Main_Users;
                 UserChannels_exit();
@@ -312,7 +313,7 @@ function UserChannels_handleKeyDown(event) {
             Main_SwitchScreen();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(UserChannels_handleKeyDown);
             break;
         case KEY_GREEN:
             UserChannels_exit();

@@ -1,9 +1,11 @@
 function pt_BRLang() {
+    document.getElementById("side_panel").style.width = "21.5%";
     STR_REFRESH = "Atualizar e voltar pro topo";
     STR_SETTINGS = "Configurações";
     STR_SEARCH = "Pesquisar";
     STR_CONTROLS = "Controles";
     STR_ABOUT = "Sobre";
+    STR_HIDE = "Esconder";
     STR_SEARCH_EMPTY = "Nenhum texto foi inserido.";
     STR_SWITCH = "Trocar de tela";
     STR_SWITCH_USER = "Trocar a tela de usuário";
@@ -82,11 +84,11 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_7 = "Algumas telas irão atualizar o conteúdo (como as Transmissões Anteriores, por exemplo), ao invés de mudarem completamente.";
     STR_CONTROLS_MAIN_8 = "Voltar para Ao Vivo: Botão Verde (B)";
     STR_CONTROLS_MAIN_9 = "Recarregue o aplicativo: Primeiro para a tela Ao Vivo apos pressione o botão verde ou (B)";
-    STR_CONTROLS_MAIN_10 = "Pesquisar: Botão Azul(D)";
+    STR_CONTROLS_MAIN_10 = "Pesquisar: Botão Azul(D) ou a partir do painel lateral";
     STR_CONTROLS_MAIN_11 = "Após inserir o conteúdo da busca, pressione retornar ou clique em CONCLUÍDO e use as Setas Direcionais (esquerda/direita) para escolher o tipo de busca. Pressione a tecla selecionar ou PLAY/PAUSE para confirmar.";
-    STR_CONTROLS_MAIN_12 = "Controles: Botão Amarelo (C)";
-    STR_CONTROLS_MAIN_13 = "Configurações: Botão Vermelho (A)";
-    STR_CONTROLS_MAIN_14 = "Sobre (a partir da tela de settings): Botão Vermelho (A)";
+    STR_CONTROLS_MAIN_12 = "Controles: Botão Amarelo (C) ou a partir do painel lateral";
+    STR_CONTROLS_MAIN_13 = "Painel lateral: Botão Vermelho (A)";
+    STR_CONTROLS_MAIN_14 = "Sobre, abra a partir do painel lateral";
     STR_ABOUT_INFO_1 = "Este é um aplicativo não oficial do Twitch.TV, desenvolvido por um individuo no seu tempo livre, feito para TVs que não possuem uma versão oficial. Seu uso é gratuito.";
     STR_ABOUT_INFO_2 = "Em 99% das vezes, o aplicativo se atualizará sozinho para adicionar correções e novas funções. O aplicativo avisará ao usuário quando houver necessidade de ser atualizado manualmente (através de uma nova instalação pelo computador no caso ter ter usado o computar pra instalar).";
     STR_ABOUT_INFO_3 = "Sobre o Desenvolvedor:";
@@ -187,4 +189,5 @@ function pt_BRLang() {
     STR_CHAT_FONT = "Tamanho da fonte do chat";
     STR_CHAT_FONT_SUMARRY = "Alterar o tamanho da fonte das linhas do chat, aplica-se a texto e emotes";
     STR_VIDEOS_ANIMATION = "Miniaturas animadas dos vídeos";
+    STR_SIDE_PANEL = "Painel lateral";
 }

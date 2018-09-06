@@ -27,7 +27,8 @@ function Clip_init() {
     Main_AddClass('top_bar_clip', 'icon_center_focus');
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-history', STR_SWITCH_CLIP + ' (C)');
+    Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_CLIP + ' (C)');
+    Main_ShowElement('label_extra');
 
     document.body.addEventListener("keydown", Clip_handleKeyDown, false);
     if (Clip_status) {
@@ -43,7 +44,7 @@ function Clip_exit() {
     Main_RemoveClass('top_bar_clip', 'icon_center_focus');
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement('label_extra');
     Main_HideElement(Clip_ids[10]);
 }
 
@@ -381,10 +382,13 @@ function Clip_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_Before === Main_Clip) Main_Go = Main_Live;
-            else Main_Go = Main_Before;
-            Clip_exit();
-            Main_SwitchScreen();
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                if (Main_Before === Main_Clip) Main_Go = Main_Live;
+                else Main_Go = Main_Before;
+                Clip_exit();
+                Main_SwitchScreen();
+            }
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Clip_cursorY), (Clip_cursorX - 1), Clip_ids[0])) {
@@ -477,7 +481,7 @@ function Clip_handleKeyDown(event) {
             Clip_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Clip_handleKeyDown);
             break;
         case KEY_GREEN:
             Clip_exit();

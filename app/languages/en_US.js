@@ -1,9 +1,11 @@
 function en_USLang() {
+    document.getElementById("side_panel").style.width = "17%";
     STR_REFRESH = "Refresh and back to top";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
     STR_ABOUT = "About";
+    STR_HIDE = "Hide";
     STR_SEARCH_EMPTY = "The text you entered is empty.";
     STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
     STR_SWITCH = "Switch screen";
@@ -88,13 +90,13 @@ function en_USLang() {
     STR_CONTROLS_MAIN_5 = "Force close the application (in case it freezes or miss behave): Hold return key until it force closes (Works for any application on Samsung TV\'s)";
     STR_CONTROLS_MAIN_6 = " Switch screen: Chanel Up (Move to right screen) or Chanel Down (Move to left screen)";
     STR_CONTROLS_MAIN_7 = "Some screen will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
-    STR_CONTROLS_MAIN_8 = "Go back to Live from any screen: color button green or B";
-    STR_CONTROLS_MAIN_9 = "Reload the app: First go back to Live after press color button green or B";
-    STR_CONTROLS_MAIN_10 = "Start a search: color button blue or D";
+    STR_CONTROLS_MAIN_8 = "Go back to Live from any screen: color button green (B)";
+    STR_CONTROLS_MAIN_9 = "Reload the app: First go back to Live after press color button green (B)";
+    STR_CONTROLS_MAIN_10 = "Start a search: color button blue (D) or open it from the Side panel";
     STR_CONTROLS_MAIN_11 = "After setting up the search text press return or click on DONE and use the Directional pad (left/right) to chose the type of search then press Select or Play/Pause, Directional pad (up) goes back to edit the search text";
-    STR_CONTROLS_MAIN_12 = "Controls list: color button yellow or C";
-    STR_CONTROLS_MAIN_13 = "Settings: color button red or A";
-    STR_CONTROLS_MAIN_14 = "About this application (From the settings screen): color button red or A";
+    STR_CONTROLS_MAIN_12 = "Controls list: color button yellow (C) or open it from the Side panel";
+    STR_CONTROLS_MAIN_13 = "Side panel: color button red (A)";
+    STR_CONTROLS_MAIN_14 = "About this application open it from the Side panel";
     STR_ABOUT_INFO_1 = "This is a unofficial Twitch.Tv application develop by a individual on his free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it.";
     STR_ABOUT_INFO_2 = "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it.";
     STR_ABOUT_INFO_3 = "Developer information:";
@@ -201,4 +203,5 @@ function en_USLang() {
     STR_CHAT_FONT = "Chat font size";
     STR_CHAT_FONT_SUMARRY = "Change the chat lines font size, applies to text and emotes";
     STR_VIDEOS_ANIMATION = "Videos animated thumbnails";
+    STR_SIDE_PANEL = "Side panel";
 }

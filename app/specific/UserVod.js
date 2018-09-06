@@ -27,7 +27,9 @@ function UserVod_init() {
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-history', STR_SWITCH_TYPE + ' (C)');
+    Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_TYPE + ' (C)');
+    Main_ShowElement('label_extra');
+
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
 
@@ -43,7 +45,7 @@ function UserVod_exit() {
     if (UserVod_status) UserVod_removeFocus();
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement('label_extra');
     document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
     Main_HideElement(UserVod_ids[10]);
@@ -347,6 +349,7 @@ function UserVod_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Main_Go = Main_Users;
@@ -441,7 +444,7 @@ function UserVod_handleKeyDown(event) {
             UserVod_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(UserVod_handleKeyDown);
             break;
         case KEY_GREEN:
             UserVod_exit();

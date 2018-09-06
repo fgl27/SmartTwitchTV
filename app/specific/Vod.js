@@ -32,7 +32,8 @@ function Vod_init() {
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-history', STR_SWITCH_CLIP + ' (C)');
+    Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_CLIP + ' (C)');
+    Main_ShowElement('label_extra');
 
     if (Vod_status) {
         Main_YRst(Vod_cursorY);
@@ -49,7 +50,7 @@ function Vod_exit() {
     Main_RemoveClass('top_bar_vod', 'icon_center_focus');
     Main_textContent('top_bar_vod', STR_VIDEOS);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement('label_extra');
     Main_HideElement(Vod_ids[10]);
 }
 
@@ -392,6 +393,7 @@ function Vod_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 if (Main_Before === Main_Vod) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
@@ -488,7 +490,7 @@ function Vod_handleKeyDown(event) {
             Vod_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Vod_handleKeyDown);
             break;
         case KEY_GREEN:
             Vod_exit();

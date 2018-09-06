@@ -230,6 +230,7 @@ function Users_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 if (Main_Before === Main_Users) Main_Go = Main_Live;
@@ -341,7 +342,7 @@ function Users_handleKeyDown(event) {
             } else Users_keyEnter();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Users_handleKeyDown);
             break;
         case KEY_GREEN:
             Users_exit();

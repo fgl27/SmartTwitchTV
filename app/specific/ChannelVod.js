@@ -345,6 +345,7 @@ function ChannelVod_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_Go = Main_ChannelContent;
                 ChannelVod_exit();
@@ -431,7 +432,7 @@ function ChannelVod_handleKeyDown(event) {
             ChannelVod_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(ChannelVod_handleKeyDown);
             break;
         case KEY_GREEN:
             ChannelVod_exit();
