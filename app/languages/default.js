@@ -17,12 +17,14 @@ var STR_UPDATE_MAIN_HEADER = '';
 var STR_OAUTH_EXPLAIN = '';
 var STR_SPACE = '&nbsp;';
 var STR_UPDATE_MAIN_0 = '';
+var TWITCH_ICON = '<div style="vertical-align: middle; display: inline-block;"><i class="icon-twitch" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE;
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
     STR_CONTROL_KEY = STR_CONTROLS + " (C)";
     STR_SEARCH_KEY = STR_SEARCH + " (D)";
     STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
+    STR_SIDE_PANEL_KEY = STR_SIDE_PANEL + " (A)";
     STR_ABOUT_KEY = STR_ABOUT + " (A)";
     STR_SWITCH = STR_SWITCH + STR_KEY_UP_DOWN;
     STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
@@ -38,15 +40,14 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
         STR_CONTROLS_MAIN_7 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_8 + STR_BR +
-        //STR_DOT + STR_CONTROLS_MAIN_9 + STR_BR +
-        STR_CONTROLS_MAIN_10 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_11 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
+        STR_CONTROLS_MAIN_11 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_12 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_13 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
-    STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div>';
+    STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + TWITCH_ICON + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
         STR_ABOUT_INFO_2 + '</div>' +
         STR_BR +

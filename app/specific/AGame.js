@@ -25,7 +25,6 @@ var AGame_FirstLoad = false;
 function AGame_init() {
     Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
-    if (Search_isSearching) Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_AddClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
         ': ' + Main_gameSelected));
@@ -395,6 +394,7 @@ function AGame_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_OldgameSelected = Main_gameSelected;
                 if (SearchGames_return) {
@@ -532,7 +532,7 @@ function AGame_handleKeyDown(event) {
             } else AGame_headerOptions();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(AGame_handleKeyDown);
             break;
         case KEY_GREEN:
             AGame_exit();

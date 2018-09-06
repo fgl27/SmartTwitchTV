@@ -303,6 +303,7 @@ function Featured_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 if (Main_Before === Main_Featured) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
@@ -389,7 +390,7 @@ function Featured_handleKeyDown(event) {
             Main_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Featured_handleKeyDown);
             break;
         case KEY_GREEN:
             Featured_exit();

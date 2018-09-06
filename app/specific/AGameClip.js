@@ -28,7 +28,9 @@ function AGameClip_init() {
     AGameClip_SetPeriod();
     Main_AddClass('top_bar_game', 'icon_center_focus');
 
-    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_extra');
+
     Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
     document.body.addEventListener("keydown", AGameClip_handleKeyDown, false);
@@ -46,7 +48,7 @@ function AGameClip_exit() {
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_GAMES);
 
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement('label_extra');
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(AGameClip_ids[10]);
 }
@@ -395,6 +397,7 @@ function AGameClip_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_Go = Main_aGame;
                 AGameClip_exit();
@@ -492,7 +495,7 @@ function AGameClip_handleKeyDown(event) {
             AGameClip_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(AGameClip_handleKeyDown);
             break;
         case KEY_GREEN:
             AGameClip_exit();

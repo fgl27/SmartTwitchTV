@@ -60,10 +60,13 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
 var Main_SetTopOpacityId;
-var Main_OpacityDivs = ["label_search", "label_controls", "label_refresh", "label_switch", "about_div", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
+var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 
 var Main_Is4k = false;
 var Main_FirstRun = true;
+
+var Main_SidePannelPos = 0;
+var Main_SidePannelCallback;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -236,10 +239,22 @@ function Main_initWindows() {
 function Main_SetStrings(isStarting) {
     //set top bar labels
     Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left', isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
-    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
-    Main_IconLoad('label_about', isStarting ? 'icon-settings' : 'icon-info-circle', isStarting ? STR_SETTINGS_KEY : STR_ABOUT_KEY);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
+
+    Main_textContent('side_panel_search', STR_SEARCH);
+    Main_textContent('side_panel_settings', STR_SETTINGS);
+    Main_textContent('side_panel_about', STR_ABOUT);
+    Main_textContent('side_panel_controls', STR_CONTROLS);
+
+    Main_textContent('side_panel_live', STR_LIVE);
+    Main_textContent('side_panel_user', STR_USER);
+    Main_textContent('side_panel_featured', STR_FEATURED);
+    Main_textContent('side_panel_games', STR_GAMES);
+    Main_textContent('side_panel_videos', STR_VIDEOS);
+    Main_textContent('side_panel_clips', STR_CLIPS);
+    Main_textContent('side_panel_hide', STR_HIDE);
+
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
     Main_textContent('top_bar_featured', STR_FEATURED);
@@ -485,7 +500,7 @@ function Main_ReStartScreens() {
 function Main_SetTopOpacity() {
     var elem, i = 0;
     for (i; i < Main_OpacityDivs.length; i++) {
-        if (i < 5) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.5';
+        if (i < 4) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.5';
         else {
             elem = document.getElementById(Main_OpacityDivs[i]);
             if (elem.className.indexOf('icon_center_focus') === -1) elem.style.opacity = '0.5';
@@ -576,9 +591,8 @@ function Main_openStream() {
 
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_search', 'icon-search', STR_SEARCH_KEY);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', STR_USER);
@@ -589,8 +603,7 @@ function Main_RestoreTopLabel() {
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_empty('label_switch');
+    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');
@@ -961,4 +974,90 @@ function Main_getclock() {
 
 function Main_updateclock() {
     Main_textContent('label_clock', Main_getclock());
+}
+
+function Main_SidePannelAddFocus() {
+    Main_AddClass('side_panel_' + Main_SidePannelPos, 'side_panel_text_focus');
+}
+
+function Main_SidePannelRemoveFocus() {
+    Main_RemoveClass('side_panel_' + Main_SidePannelPos, 'side_panel_text_focus');
+}
+
+function Main_SidePannelKeyEnter() {
+    if (!Main_SidePannelPos) {
+        if (Main_Go !== Main_Search) {
+            Main_BeforeSearch = Main_Go;
+            Main_Go = Main_Search;
+            Main_ExitCurrent(Main_BeforeSearch);
+            Main_SwitchScreen();
+        } else document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+    } else if (Main_SidePannelPos === 1) Main_showSettings();
+    else if (Main_SidePannelPos === 2) {
+        document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+        Main_showAboutDialog();
+    } else if (Main_SidePannelPos === 3) {
+        document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+        Main_showControlsDialog();
+    } else if (Main_SidePannelPos === 4) Main_SidePannelGo(Main_Live);
+    else if (Main_SidePannelPos === 5) Main_SidePannelGo(AddUser_IsUserSet() ? Main_Users : Main_addUser);
+    else if (Main_SidePannelPos === 6) Main_SidePannelGo(Main_Featured);
+    else if (Main_SidePannelPos === 7) Main_SidePannelGo(Main_games);
+    else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_Vod);
+    else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Clip);
+    Main_SidePannelHide();
+}
+
+function Main_SidePannelGo(GoTo) {
+    if (GoTo === Main_Go) document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+    else {
+        Main_Before = Main_Go;
+        Main_Go = GoTo;
+        Main_ExitCurrent(Main_Before);
+        Main_SwitchScreen();
+    }
+}
+
+function Main_SidePannelStart(callback) {
+    Main_SidePannelCallback = callback;
+    document.body.removeEventListener("keydown", Main_SidePannelCallback);
+    document.body.addEventListener("keydown", Main_SidePannelhandleKeyDown, false);
+    Main_RemoveClass('side_panel', 'side_panel_hide');
+}
+
+function Main_SidePannelHide() {
+    document.body.removeEventListener("keydown", Main_SidePannelhandleKeyDown);
+    Main_AddClass('side_panel', 'side_panel_hide');
+    Main_SidePannelRemoveFocus();
+    Main_SidePannelPos = 0;
+    Main_SidePannelAddFocus();
+}
+
+function Main_SidePannelhandleKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+        case KEY_LEFT:
+            document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+            Main_SidePannelHide();
+            break;
+        case KEY_UP:
+            if (Main_SidePannelPos) {
+                Main_SidePannelRemoveFocus();
+                Main_SidePannelPos--;
+                Main_SidePannelAddFocus();
+            }
+            break;
+        case KEY_DOWN:
+            if (Main_SidePannelPos < 9) {
+                Main_SidePannelRemoveFocus();
+                Main_SidePannelPos++;
+                Main_SidePannelAddFocus();
+            }
+            break;
+        case KEY_ENTER:
+            Main_SidePannelKeyEnter();
+            break;
+        default:
+            break;
+    }
 }

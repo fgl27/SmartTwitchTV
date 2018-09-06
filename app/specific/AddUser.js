@@ -58,7 +58,7 @@ function AddUser_handleKeyDown(event) {
             AddUser_inputFocus();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(AddUser_handleKeyDown);
             break;
         case KEY_GREEN:
             AddUser_exit();

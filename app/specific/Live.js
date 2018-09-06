@@ -329,6 +329,7 @@ function Live_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isUpdateDialogShown()) Main_HideUpdateDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isExitDialogShown()) Main_HideExitDialog();
             else Main_showExitDialog();
@@ -438,7 +439,7 @@ function Live_handleKeyDown(event) {
             }
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Live_handleKeyDown);
             break;
         case KEY_GREEN:
             if (!Main_isReleased) window.location.reload(true); // refresh the app from live

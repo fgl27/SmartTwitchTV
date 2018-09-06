@@ -28,7 +28,9 @@ function AGameVod_init() {
     Main_AddClass('top_bar_game', 'icon_center_focus');
     document.body.addEventListener("keydown", AGameVod_handleKeyDown, false);
 
-    Main_IconLoad('label_controls', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_extra');
+
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
@@ -46,7 +48,7 @@ function AGameVod_exit() {
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_GAMES);
 
-    Main_IconLoad('label_controls', 'icon-question-circle', STR_CONTROL_KEY);
+    Main_HideElement('label_extra');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(AGameVod_ids[10]);
@@ -334,6 +336,7 @@ function AGameVod_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_Go = Main_aGame;
                 AGameVod_exit();
@@ -427,7 +430,7 @@ function AGameVod_handleKeyDown(event) {
             AGameVod_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(AGameVod_handleKeyDown);
             break;
         case KEY_GREEN:
             AGameVod_exit();

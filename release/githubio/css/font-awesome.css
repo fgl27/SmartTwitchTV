@@ -159,3 +159,6 @@
 .icon-star:before {
   content: "\79";
 }
+.icon-ellipsis:before {
+  content: "\42";
+}

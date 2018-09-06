@@ -309,6 +309,7 @@ function UserHost_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Main_Go = Main_Users;
                 UserHost_exit();
@@ -394,7 +395,7 @@ function UserHost_handleKeyDown(event) {
             Main_openStream();
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(UserHost_handleKeyDown);
             break;
         case KEY_GREEN:
             UserHost_exit();

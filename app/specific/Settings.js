@@ -37,7 +37,6 @@ var Settings_positions_length = 0;
 function Settings_init() {
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_IconLoad('label_about', 'icon-info-circle', STR_ABOUT_KEY);
     Main_textContent('top_bar_user', STR_SETTINGS);
     document.getElementById("top_lables").style.marginLeft = '14%';
     document.getElementById('label_switch').style.display = 'none';
@@ -55,7 +54,6 @@ function Settings_init() {
 function Settings_exit() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
     Settings_RemoveinputFocus();
-    Main_IconLoad('label_about', 'icon-settings', STR_SETTINGS_KEY);
     Main_textContent('top_bar_user', STR_USER);
     document.getElementById("top_lables").style.marginLeft = '18.5%';
     document.getElementById('label_switch').style.display = 'inline-block';
@@ -338,7 +336,7 @@ function Settings_handleKeyDown(event) {
         case KEY_ENTER:
             break;
         case KEY_RED:
-            Main_showAboutDialog();
+            Main_SidePannelStart(Settings_handleKeyDown);
             break;
         case KEY_GREEN:
             break;

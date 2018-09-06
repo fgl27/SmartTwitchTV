@@ -12,7 +12,6 @@ function Search_init() {
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     Main_textContent('top_bar_user', STR_SEARCH);
     document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('label_search').style.display = 'none';
     document.getElementById('label_switch').style.display = 'none';
     document.getElementById('top_bar_live').style.display = 'none';
     document.getElementById('top_bar_featured').style.display = 'none';
@@ -38,7 +37,6 @@ function Search_exit() {
     Main_textContent('top_bar_user', STR_USER);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    document.getElementById('label_search').style.display = 'block';
     document.getElementById('label_switch').style.display = 'block';
     document.getElementById('top_bar_live').style.display = 'inline-block';
     document.getElementById('top_bar_featured').style.display = 'inline-block';
@@ -74,6 +72,7 @@ function Search_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 Search_exit();
                 Main_SwitchScreen();
@@ -141,7 +140,7 @@ function Search_handleKeyDown(event) {
             }
             break;
         case KEY_RED:
-            Main_showSettings();
+            Main_SidePannelStart(Search_handleKeyDown);
             break;
         case KEY_GREEN:
             Search_exit();
