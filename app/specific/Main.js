@@ -147,32 +147,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function Main_loadTranslations(device) {
 
-    Settings_SetDefautls();
-    en_USLang();
-
-    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-    var lang = device.language.split(".")[0],
-        Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
-
-    if (Savedlang) lang = Settings_Obj_values("general_lang");
-    else Settings_CheckLang(lang);
-
-    if (lang.indexOf('pt_') !== -1) {
-        pt_BRLang();
-        Main_IsDayFirst = true;
-    }
-
-    console.log("language is " + lang);
-    DefaultLang();
-
     Main_Checktylesheet();
+
     Main_ready(function() {
         if (Main_isReleased) document.body.innerHTML = STR_BODY;
-        Main_ready(Main_initWindows);
+
+        Main_ready(function() {
+            Settings_SetDefautls();
+            en_USLang();
+
+            // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+            // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+            // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+            var lang = device.language.split(".")[0],
+                Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
+
+            if (Savedlang) lang = Settings_Obj_values("general_lang");
+            else Settings_CheckLang(lang);
+
+            if (lang.indexOf('pt_') !== -1) {
+                pt_BRLang();
+                Main_IsDayFirst = true;
+            }
+
+            console.log("language is " + lang);
+            DefaultLang();
+
+            Main_initWindows();
+        });
     });
+
 }
 
 function Main_initWindows() {
