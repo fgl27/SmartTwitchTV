@@ -44,6 +44,7 @@ var PlayVod_QualityChangedCounter = 0;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
+var PlayVod_HasVodInfo = true;
 var PlayVod_jumpTimers = [0, 15, 15, 15, 15, 30, 30, 30, 30, 60, 60, 60, 60, 120, 120, 120, 120, 300, 300, 300, 300, 600, 600, 600, 600, 900, 900, 900, 900, 1800];
 
 var PlayVod_WasPlaying = 0;
@@ -72,7 +73,7 @@ function PlayVod_Start() {
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (Main_selectedChannel_id !== '') {
+        if (PlayVod_HasVodInfo && Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
             if (!PlayVod_VodIds['#' + ChannelVod_vodId]) Chat_Init();
             if (AddUser_UserIsSet()) {
@@ -561,6 +562,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
+    PlayVod_HasVodInfo = true;
     Chat_Clear();
     Play_ClearPlayer();
     PlayVod_ClearVod();

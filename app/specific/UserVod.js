@@ -476,6 +476,7 @@ function UserVod_openStream() {
     Play_HideWarningDialog();
     Play_CleanHideExit();
     Main_HideElement('scene1');
+    PlayVod_HasVodInfo = false;
     PlayVod_Start();
 }
 

@@ -459,6 +459,7 @@ function AGameVod_openStream() {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
+    PlayVod_HasVodInfo = false;
     Main_HideElement('scene1');
     PlayVod_Start();
 }
