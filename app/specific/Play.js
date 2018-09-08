@@ -189,7 +189,7 @@ function Play_SetAvPlayGlobal() {
     } catch (e) {
         console.log(e + " Play_SetAvPlayGlobal()");
     }
-    Play_avplay.prepare();
+    Play_avplay.prepareAsync();
 }
 
 var PlayStart_listener = {
