@@ -166,10 +166,7 @@ function Main_loadTranslations(device) {
             if (Savedlang) lang = Settings_Obj_values("general_lang");
             else Settings_CheckLang(lang);
 
-            if (lang.indexOf('pt_') !== -1) {
-                pt_BRLang();
-                Main_IsDayFirst = true;
-            }
+            if (lang.indexOf('pt_') !== -1) pt_BRLang();
 
             console.log("language is " + lang);
             DefaultLang();
@@ -181,29 +178,9 @@ function Main_loadTranslations(device) {
 }
 
 function Main_initWindows() {
-    Main_SetStrings(true);
-
-    Main_updateclock();
-    window.setInterval(Main_updateclock, 60000);
+    Main_SetStringsMain(true);
 
     Main_ScrollbarElement = document.getElementById("scrollbar");
-    Main_SearchInput = document.getElementById("search_input");
-    Main_AddUserInput = document.getElementById("user_input");
-    Main_AddCodeInput = document.getElementById("oauth_input");
-
-    UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
-    Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
-    ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
-    AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
-
-    Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
-    ChannelClip_periodNumber = parseInt(localStorage.getItem('ChannelClip_periodNumber')) || 2;
-    Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
-    AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
-    AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
-
-    UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
-    PlayVod_RestoreVodIds();
 
     Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
     if (Play_WasPlaying) Play_Restore_value = JSON.parse(localStorage.getItem('Play_Restore_value')) || {};
@@ -214,13 +191,14 @@ function Main_initWindows() {
     Main_ready(function() {
 
         Play_PreStart();
-        Main_Is4k = webapis.productinfo.isUdPanelSupported();
-        SmartHub_SetNoUserPreviewData();
         AddUser_RestoreUsers();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
-        Chat_Preinit();
         Live_init();
+
+        Main_Is4k = webapis.productinfo.isUdPanelSupported();
+        Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
+
         if (Main_checkVersion()) {
             if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
                 Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
@@ -231,21 +209,75 @@ function Main_initWindows() {
             }
         }
 
-        // pre load All img
-        Main_PreLoadAImage(IMG_404_VIDEO);
-        Main_PreLoadAImage(IMG_404_GAME);
-        Main_PreLoadAImage(IMG_404_LOGO);
+        Main_ready(function() {
+            Main_SetStringsSecondary();
+            UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+            Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
+            ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
+            AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
 
-        window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
-        document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
+            Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
+            ChannelClip_periodNumber = parseInt(localStorage.getItem('ChannelClip_periodNumber')) || 2;
+            Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
+            AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
+            AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
+
+            UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
+            PlayVod_RestoreVodIds();
+
+            Main_SearchInput = document.getElementById("search_input");
+            Main_AddUserInput = document.getElementById("user_input");
+            Main_AddCodeInput = document.getElementById("oauth_input");
+
+            // pre load All img
+            Main_PreLoadAImage(IMG_404_VIDEO);
+            Main_PreLoadAImage(IMG_404_GAME);
+            Main_PreLoadAImage(IMG_404_LOGO);
+
+            window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
+            document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
+            window.setInterval(Main_updateclock, 60000);
+        });
     });
 }
 
-function Main_SetStrings(isStarting) {
+function Main_SetStringsMain(isStarting) {
+    Main_updateclock();
+
     //set top bar labels
-    Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left', isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
+    Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left',
+        isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
+
+    Main_textContent('top_bar_live', STR_LIVE);
+    Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
+    Main_textContent('top_bar_featured', STR_FEATURED);
+    Main_textContent('top_bar_game', STR_GAMES);
+    Main_textContent('top_bar_vod', STR_VIDEOS);
+    Main_textContent('top_bar_clip', STR_CLIPS);
+
+    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
+    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
+    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
+
+    Main_textContent("dialog_end_replay_text", STR_REPLAY);
+    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
+    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
+    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
+
+    if (isStarting) Settings_SetSettings();
+    else {
+        Settings_SetStrings();
+        Main_checkVersion();
+    }
+}
+
+function Main_SetStringsSecondary() {
+    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
+    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
+    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 
     Main_textContent('side_panel_search', STR_SEARCH);
     Main_textContent('side_panel_settings', STR_SETTINGS);
@@ -260,12 +292,6 @@ function Main_SetStrings(isStarting) {
     Main_textContent('side_panel_clips', STR_CLIPS);
     Main_textContent('side_panel_hide', STR_HIDE);
 
-    Main_textContent('top_bar_live', STR_LIVE);
-    Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
-    Main_textContent('top_bar_featured', STR_FEATURED);
-    Main_textContent('top_bar_game', STR_GAMES);
-    Main_textContent('top_bar_vod', STR_VIDEOS);
-    Main_textContent('top_bar_clip', STR_CLIPS);
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
     Main_textContent('live_button', STR_LIVE);
@@ -276,27 +302,11 @@ function Main_SetStrings(isStarting) {
     Main_textContent('exit_app_minimize', STR_MINIMIZE);
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
-
-    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
-    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
-    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
 
     Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
-    Main_textContent("dialog_end_replay_text", STR_REPLAY);
-    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
-    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
-    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
-
-    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
-    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
-    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
-    if (isStarting) Settings_SetSettings();
-    else Settings_SetStrings();
-    Main_checkVersion();
 }
 
 function Main_IconLoad(lable, icon, string) {

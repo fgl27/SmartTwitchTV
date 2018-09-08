@@ -213,6 +213,7 @@ function AddUser_RestoreUsers() {
 
     if (Main_TizenVersion) {
         window.setTimeout(function() {
+            SmartHub_SetNoUserPreviewData();
             window.addEventListener('appcontrol', SmartHub_EventListener, false);
 
             SmartHub_StartInterval();

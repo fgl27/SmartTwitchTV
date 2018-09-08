@@ -284,7 +284,8 @@ function Settings_SetLang(lang) {
     if (lang.indexOf('en_') !== -1) en_USLang();
     else if (lang.indexOf('pt_') !== -1) pt_BRLang();
     DefaultLang();
-    Main_SetStrings(false);
+    Main_SetStringsMain(false);
+    Main_SetStringsSecondary();
 }
 
 function Settings_handleKeyDown(event) {

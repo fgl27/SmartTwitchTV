@@ -1,4 +1,5 @@
 function pt_BRLang() {
+    Main_IsDayFirst = true;
     document.getElementById("side_panel").style.width = "21.5%";
     STR_REFRESH = "Atualizar e voltar pro topo";
     STR_SETTINGS = "Configurações";
