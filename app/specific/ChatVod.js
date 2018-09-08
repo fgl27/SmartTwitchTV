@@ -10,7 +10,8 @@ var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
 var Chat_title = '';
-var defaultColors = ["0, 204, 99", "30, 235, 200", "36, 173, 255", "64, 164, 255", "66, 200, 125", "100, 158, 160", "160, 160, 160", "255, 112, 0", "214, 171, 0", "209, 103, 226", "236, 178, 34", "239, 74, 255", "255, 42, 255", "255, 86, 86", "255, 105, 180"];
+var defaultColors = ["ff0000", "ff4000", "ff8000", "ffbf00", "ffff00", "bfff00", "80ff00", "40ff00", "00ff00", "00ff40", "00ff80", "00ffbf", "00ffff", "00bfff", "0080ff", "0040ff", "4000ff", "8000ff", "bf00ff", "ff00ff", "ff00bf", "ff0080", "ff0040", "ff0000"];
+var defaultColorsLength = defaultColors.length;
 var Chat_div;
 var Chat_Position = 0;
 var Chat_hasEnded = false;
@@ -227,7 +228,7 @@ function Chat_loadChatSuccess(responseText, id) {
         }
 
         //Add nick
-        div += '<span class="nick" style="color: rgb(' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % 15] + ');">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+        div += '<span class="nick" style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
 
         //Add mesage
         div += '<span class="message">';
