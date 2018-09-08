@@ -554,7 +554,6 @@ function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
         PlayVod_PreshutdownStream(true);
         Play_exitMain();
-        localStorage.setItem('PlayVod_WasPlaying', 0);
     }
 }
 
@@ -562,6 +561,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
+    localStorage.setItem('PlayVod_WasPlaying', 0);
     PlayVod_HasVodInfo = true;
     Chat_Clear();
     Play_ClearPlayer();
