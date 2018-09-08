@@ -20,10 +20,12 @@ var ChannelContent_selectedChannelFallower = '';
 var ChannelContent_description = '';
 var ChannelContent_thumbnail = '';
 var ChannelContent_thumbnail_fallow = '';
+var ChannelContent_ChannelValue = {};
 //Variable initialization end
 
 function ChannelContent_init() {
     Main_Go = Main_ChannelContent;
+    if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
     Main_selectedChannelDisplayname = Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
@@ -400,6 +402,27 @@ function ChannelContent_keyEnter() {
     }
 }
 
+function ChannelContent_SetChannelValue() {
+    ChannelContent_ChannelValue = {
+        "Main_selectedChannel_id": Main_selectedChannel_id,
+        "Main_selectedChannelLogo": Main_selectedChannelLogo,
+        "Main_selectedChannel": Main_selectedChannel,
+        "Main_selectedChannelDisplayname": Main_selectedChannelDisplayname,
+        "ChannelContent_UserChannels": ChannelContent_UserChannels,
+        "Main_BeforeChannel": Main_BeforeChannel
+    };
+}
+
+function ChannelContent_RestoreChannelValue() {
+    Main_selectedChannel_id = ChannelContent_ChannelValue.Main_selectedChannel_id;
+    Main_selectedChannelLogo = ChannelContent_ChannelValue.Main_selectedChannelLogo;
+    Main_selectedChannel = ChannelContent_ChannelValue.Main_selectedChannel;
+    Main_selectedChannelDisplayname = ChannelContent_ChannelValue.Main_selectedChannelDisplayname;
+    ChannelContent_UserChannels = ChannelContent_ChannelValue.ChannelContent_UserChannels;
+    Main_BeforeChannel = ChannelContent_ChannelValue.Main_BeforeChannel;
+    ChannelContent_ChannelValue = {};
+}
+
 function ChannelContent_handleKeyDown(event) {
     if (ChannelContent_loadingData || Main_CantClick()) return;
     else Main_keyClickDelayStart();
@@ -459,7 +482,10 @@ function ChannelContent_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_ChannelContent;
+            if (!Search_isSearching) {
+                ChannelContent_SetChannelValue();
+                Main_BeforeSearch = Main_ChannelContent;
+            }
             Main_Go = Main_Search;
             ChannelContent_exit();
             Main_SwitchScreen();

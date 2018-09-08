@@ -1002,6 +1002,9 @@ function Main_SidePannelRemoveFocus() {
 function Main_SidePannelKeyEnter() {
     if (!Main_SidePannelPos) {
         if (Main_Go !== Main_Search) {
+            if (!Search_isSearching &&
+                (Main_Go === Main_ChannelContent || Main_Go === Main_ChannelClip || Main_Go === Main_ChannelVod))
+                ChannelContent_SetChannelValue();
             Main_BeforeSearch = Main_Go;
             Main_Go = Main_Search;
             Main_ExitCurrent(Main_BeforeSearch);
