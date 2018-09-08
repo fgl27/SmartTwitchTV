@@ -31,6 +31,7 @@ var ChannelVod_FirstLoad = false;
 
 function ChannelVod_init() {
     Main_Go = Main_ChannelVod;
+    if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (Main_selectedChannel !== ChannelVod_lastselectedChannel) ChannelVod_status = false;
     Main_cleanTopLabel();
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_KEY_UP_DOWN);
@@ -442,7 +443,10 @@ function ChannelVod_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_ChannelVod;
+            if (!Search_isSearching) {
+                ChannelContent_SetChannelValue();
+                Main_BeforeSearch = Main_ChannelVod;
+            }
             Main_Go = Main_Search;
             ChannelVod_exit();
             Main_SwitchScreen();

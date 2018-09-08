@@ -312,6 +312,7 @@ function SearchChannels_handleKeyDown(event) {
             else {
                 if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
                 else Main_Go = Main_BeforeSearch;
+                if (ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
                 SearchChannels_exit();
                 Search_isSearching = false;
                 SearchChannels_Postexit();

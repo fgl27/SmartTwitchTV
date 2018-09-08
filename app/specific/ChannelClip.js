@@ -33,6 +33,7 @@ var ChannelClip_FirstLoad = false;
 
 function ChannelClip_init() {
     Main_Go = Main_ChannelClip;
+    if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (Main_selectedChannel !== ChannelClip_lastselectedChannel) ChannelClip_status = false;
     Main_cleanTopLabel();
     ChannelClip_SetPeriod();
@@ -496,7 +497,10 @@ function ChannelClip_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_ChannelClip;
+            if (!Search_isSearching) {
+                ChannelContent_SetChannelValue();
+                Main_BeforeSearch = Main_ChannelClip;
+            }
             Main_Go = Main_Search;
             ChannelClip_exit();
             Main_SwitchScreen();
