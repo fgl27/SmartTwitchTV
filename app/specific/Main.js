@@ -141,9 +141,11 @@ tizen.tvinputdevice.registerKey("Guide");
 tizen.tvinputdevice.registerKey("Info");
 
 // this function will be called only once the first time the app startup
-document.addEventListener("DOMContentLoaded", function() {
+Main_Start();
+
+function Main_Start() {
     tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
-});
+}
 
 function Main_loadTranslations(device) {
 
@@ -952,7 +954,7 @@ function Main_removeFocus(id, idArray) {
 function Main_Checktylesheet() {
     var stylesheet = document.styleSheets;
     for (var i = 0; i < stylesheet.length; i++)
-        if (stylesheet[i].href !== null && stylesheet[i].href.indexOf('video-js') === -1)
+        if (stylesheet[i].href !== null)
             if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
 
     // video-js is a old stylesheet present on old releases no need to try to reload it as is empty
