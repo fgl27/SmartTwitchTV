@@ -144,7 +144,13 @@ tizen.tvinputdevice.registerKey("Info");
 Main_Start();
 
 function Main_Start() {
-    tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function() {
+            tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
+        });
+    } else { // `DOMContentLoaded` already fired
+        tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
+    }
 }
 
 function Main_loadTranslations(device) {
