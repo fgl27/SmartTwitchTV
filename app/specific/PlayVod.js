@@ -639,7 +639,10 @@ function PlayVod_qualityIndexReset() {
 }
 
 function PlayVod_qualityDisplay() {
-    if (!PlayVod_qualityIndex) {
+    if (PlayVod_getQualitiesCount() === 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "0";
+        document.getElementById("quality_arrow_down").style.opacity = "0";
+    } else if (!PlayVod_qualityIndex) {
         document.getElementById("quality_arrow_up").style.opacity = "0.2";
         document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (PlayVod_qualityIndex === PlayVod_getQualitiesCount() - 1) {

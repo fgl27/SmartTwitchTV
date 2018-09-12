@@ -374,7 +374,10 @@ function PlayClip_getQualitiesCount() {
 }
 
 function PlayClip_qualityDisplay() {
-    if (!PlayClip_qualityIndex) {
+    if (PlayClip_getQualitiesCount() === 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "0";
+        document.getElementById("quality_arrow_down").style.opacity = "0";
+    } else if (!PlayClip_qualityIndex) {
         document.getElementById("quality_arrow_up").style.opacity = "0.2";
         document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (PlayClip_qualityIndex === PlayClip_getQualitiesCount() - 1) {
