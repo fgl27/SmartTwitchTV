@@ -26,5 +26,3 @@ If applicable not demanding, add screenshots/picture to help explain your proble
 
 **Additional context**
 Add any other context about the problem here.
-
-@fgl27 (don't remove this so the developer receives a notification)
