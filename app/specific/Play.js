@@ -955,7 +955,10 @@ function Play_qualityIndexReset() {
 }
 
 function Play_qualityDisplay() {
-    if (!Play_qualityIndex) {
+    if (Play_getQualitiesCount() === 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "0";
+        document.getElementById("quality_arrow_down").style.opacity = "0";
+    } else if (!Play_qualityIndex) {
         document.getElementById("quality_arrow_up").style.opacity = "0.2";
         document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (Play_qualityIndex === Play_getQualitiesCount() - 1) {
