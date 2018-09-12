@@ -9,5 +9,3 @@ A clear and concise description of what you need.
 
 **Additional context**
 Add any other context or screenshots about this here.
-
-@fgl27 (don't remove this so the developer receives a notification)
