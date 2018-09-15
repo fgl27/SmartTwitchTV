@@ -116,6 +116,7 @@ function PlayVod_PosStart() {
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
 
+    SmartHub_SmartHubResume = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
