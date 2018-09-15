@@ -36,7 +36,6 @@ var PlayVod_jumpCount = 0;
 var PlayVod_loadingDataTimeout = 3500;
 var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
-var PlayVod_JustStartPlaying = true;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
 var PlayVod_Buffer = 4;
@@ -503,7 +502,6 @@ function PlayVod_onPlayer() {
         console.log(e);
     }
 
-    PlayVod_JustStartPlaying = true;
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         PlayVod_Playing = true;
@@ -600,9 +598,9 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
         PlayVod_setHidePanel();
-        Play_ChatPosition();
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ChatPosition();
 }
 
 function PlayVod_IconsBottonResetFocus() {
