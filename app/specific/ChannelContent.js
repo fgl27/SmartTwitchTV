@@ -183,6 +183,7 @@ function ChannelContent_GetStreamerInfo() {
                     ChannelContent_selectedChannelViews = channel.views;
                     ChannelContent_selectedChannelFallower = channel.followers;
                     ChannelContent_description = channel.description;
+                    Main_selectedChannelLogo = channel.logo;
                     ChannelContent_loadDataSuccess();
                     return;
                 } else {
@@ -206,6 +207,7 @@ function PlayVod_GetStreamerInfoError() {
         ChannelContent_selectedChannelViews = '';
         ChannelContent_selectedChannelFallower = '';
         ChannelContent_description = '';
+        Main_selectedChannelLogo = IMG_404_LOGO;
         ChannelContent_loadDataSuccess();
     }
 }

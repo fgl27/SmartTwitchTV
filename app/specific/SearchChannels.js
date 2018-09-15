@@ -380,7 +380,6 @@ function SearchChannels_handleKeyDown(event) {
             Main_selectedChannel = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute(Main_DataAttribute);
             Main_selectedChannel_id = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute('data-id');
             Main_selectedChannelDisplayname = document.getElementById(SearchChannels_ids[3] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).textContent;
-            Main_selectedChannelLogo = document.getElementById(SearchChannels_ids[1] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).src;
             document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
             Main_BeforeChannel = Main_SearchChannels;
             Main_Go = Main_ChannelContent;
