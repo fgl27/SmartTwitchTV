@@ -1224,7 +1224,6 @@ function Play_OpenChannel(PlayVodClip) {
 
     if (PlayVodClip === 1) {
         Main_selectedChannel_id = Play_selectedChannel_id;
-        Main_selectedChannelLogo = Play_selectedChannelLogo;
         Main_selectedChannel = Play_selectedChannel;
         Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
         ChannelContent_UserChannels = AddCode_IsFallowing;
