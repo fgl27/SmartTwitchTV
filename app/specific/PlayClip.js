@@ -309,6 +309,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
+    PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
@@ -320,7 +321,6 @@ function PlayClip_PreshutdownStream() {
     ChannelVod_vodOffset = 0;
 
     window.clearInterval(PlayClip_streamCheck);
-    PlayClip_isOn = false;
 }
 
 function PlayClip_updateCurrentTime(currentTime) {
@@ -551,7 +551,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
                 if (Play_isplaying()) Chat_Pause();
-                else Chat_Play();
+                else Chat_Play(Chat_Id);
                 if (!Play_isEndDialogShown()) Play_KeyPause(3);
                 break;
             case KEY_INFO:

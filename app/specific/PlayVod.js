@@ -268,18 +268,22 @@ function PlayVod_Resume() {
         Play_ClearPlayer();
         window.clearInterval(PlayVod_streamCheck);
         window.clearInterval(PlayVod_SaveOffsetId);
-        Play_clearPause();
     } else {
         PlayVod_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
-        Play_clearPause();
         Play_showBufferDialog();
-        PlayVod_Playing = false;
-        PlayVod_onPlayer();
-        Chat_Play();
-        Play_EndSet(2);
-        PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+        window.setTimeout(function() {
+            if (!SmartHub_SmartHubResume) {
+                if (PlayVod_isOn) {
+                    PlayVod_Playing = false;
+                    PlayVod_onPlayer();
+                    Chat_Play(Chat_Id);
+                    Play_EndSet(2);
+                    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+                }
+            }
+        }, 500);
     }
 }
 
@@ -556,6 +560,7 @@ function PlayVod_shutdownStream() {
 }
 
 function PlayVod_PreshutdownStream(saveOffset) {
+    PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
     if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
@@ -564,7 +569,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Chat_Clear();
     Play_ClearPlayer();
     PlayVod_ClearVod();
-    PlayVod_isOn = false;
 }
 
 function PlayVod_ClearVod() {
@@ -978,7 +982,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
                 if (Play_isplaying()) Chat_Pause();
-                else Chat_Play();
+                else Chat_Play(Chat_Id);
                 if (!Play_isEndDialogShown()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:

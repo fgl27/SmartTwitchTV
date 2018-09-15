@@ -276,7 +276,6 @@ function Play_Resume() {
         Play_isOn = true;
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
-        Play_clearPause();
         Play_showBufferDialog();
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
@@ -762,10 +761,10 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
+    Play_isOn = false;
     Play_ClearPlayer();
     Play_ClearPlay();
     window.clearInterval(Play_ChatFixPositionId);
-    Play_isOn = false;
     Play_selectedChannel_id = '';
 }
 
