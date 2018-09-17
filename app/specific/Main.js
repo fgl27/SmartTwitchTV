@@ -552,6 +552,7 @@ function Main_SwitchScreen() {
     Main_CounterDialogRst();
     if (Main_Go === Main_Live) Live_init();
     else if (Main_Go === Main_addUser) AddUser_init();
+    else if (Main_Go === Main_addCode) AddCode_init();
     else if (Main_Go === Main_games) Games_init();
     else if (Main_Go === Main_aGame) AGame_init();
     else if (Main_Go === Main_Search) Search_init();
@@ -580,6 +581,7 @@ function Main_SwitchScreen() {
 function Main_ExitCurrent(ExitCurrent) {
     if (ExitCurrent === Main_Live) Live_exit();
     else if (ExitCurrent === Main_addUser) AddUser_exit();
+    else if (ExitCurrent === Main_addCode) AddCode_exit();
     else if (ExitCurrent === Main_games) Games_exit();
     else if (ExitCurrent === Main_aGame) AGame_exit();
     else if (ExitCurrent === Main_Search) Search_exit();

@@ -130,11 +130,11 @@ function en_USLang() {
     STR_UPDATE_MAIN_3 = "Improves how the app runs in the background";
     STR_OAUTH_IN = "Adding a authentication key allows the app to fallow and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) for the chosen user, enter the authentication key for user ";
     STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
-    STR_OAUTH_EXPLAIN2 = "Access the site http://tiny.cc/twitchkeycode (using a computer or a smart phone)";
+    STR_OAUTH_EXPLAIN2 = "Access the site link_link (using a computer or a smart phone)";
     STR_OAUTH_EXPLAIN3 = "Click on the \"Authorize\" button it will take you to main Twitch.TV authentication site";
     STR_OAUTH_EXPLAIN4 = "Login to Twitch.TV using the user name you are trying to add a key for";
     STR_OAUTH_EXPLAIN5 = "Click on Authorize button of Twitch.TV site if you agree with the requested permissions";
-    STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, write that key code bellow";
+    STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, the key only has lower case letters and nubers.";
     STR_USER_CODE = " Add Authentication key";
     STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test fail, it\'s needed to add new one";
