@@ -16,7 +16,7 @@ var UserVod_itemsCountCheck = false;
 var UserVod_Type = 'time';
 var UserVod_TypeNumber = 2;
 
-var UserVod_ids = ['uv_thumbdiv', 'uv_img', 'uv_infodiv', 'uv_title', 'uv_streamon', 'uv_duration', 'uv_viwers', 'uv_quality', 'uv_cell', 'svempty_', 'user_vod_scroll', 'uv_game'];
+var UserVod_ids = ['uv_thumbdiv', 'uv_img', 'uv_infodiv', 'uv_title', 'uv_streamon', 'uv_duration', 'uv_viwers', 'uv_quality', 'uv_cell', 'uvempty_', 'user_vod_scroll', 'uv_game'];
 var UserVod_status = false;
 var UserVod_highlight = false;
 var UserVod_FirstLoad = false;

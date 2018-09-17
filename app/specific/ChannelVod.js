@@ -16,7 +16,7 @@ var ChannelVod_emptyContent = false;
 var ChannelVod_itemsCountCheck = false;
 var ChannelVod_language = '';
 
-var ChannelVod_ids = ['cv_thumbdiv', 'cv_img', 'cv_infodiv', 'cv_title', 'cv_streamon', 'cv_duration', 'cv_viwers', 'cv_quality', 'cv_cell', 'svempty_', 'channel_vod_scroll', 'cv_game'];
+var ChannelVod_ids = ['cv_thumbdiv', 'cv_img', 'cv_infodiv', 'cv_title', 'cv_streamon', 'cv_duration', 'cv_viwers', 'cv_quality', 'cv_cell', 'cvempty_', 'channel_vod_scroll', 'cv_game'];
 var ChannelVod_status = false;
 var ChannelVod_highlight = false;
 var ChannelVod_lastselectedChannel = '';
