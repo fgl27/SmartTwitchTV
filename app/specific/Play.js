@@ -1015,8 +1015,8 @@ function Play_ChatPosition() {
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
     //offset in relation to the botton panel controls
-    if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
-    else if ((!Play_ChatPositions || Play_ChatPositions > 5) && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
+    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
+    else if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
 
     Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
 
