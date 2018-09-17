@@ -17,7 +17,7 @@ var AGameVod_period = 'week';
 var AGameVod_periodNumber = 2;
 var AGameVod_FirstLoad = false;
 
-var AGameVod_ids = ['agv_thumbdiv', 'agv_img', 'agv_infodiv', 'agv_title', 'agv_streamon', 'agv_duration', 'agv_viwers', 'agv_quality', 'agv_cell', 'gsvempty_', 'a_games_vod_scroll', 'agv_game'];
+var AGameVod_ids = ['agv_thumbdiv', 'agv_img', 'agv_infodiv', 'agv_title', 'agv_streamon', 'agv_duration', 'agv_viwers', 'agv_quality', 'agv_cell', 'gvempty_', 'a_games_vod_scroll', 'agv_game'];
 var AGameVod_status = false;
 var AGameVod_highlight = false;
 var AGameVod_OldgameSelected = '';

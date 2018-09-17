@@ -16,7 +16,7 @@ var Vod_itemsCountCheck = false;
 var Vod_period = 'week';
 var Vod_periodNumber = 2;
 
-var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'svempty_', 'vod_scroll', 'v_game'];
+var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'vempty_', 'vod_scroll', 'v_game'];
 var Vod_status = false;
 var Vod_highlight = false;
 var Vod_FirstLoad = false;
