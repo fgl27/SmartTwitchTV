@@ -115,9 +115,9 @@ function pt_BRLang() {
     STR_UPDATE_MAIN_2 = "Mudanças:";
     STR_UPDATE_MAIN_3 = "Melhora a forma como o aplicativo é executado em segundo plano";
 
-    STR_OAUTH_IN = "Adicionando uma chave de autenticação para um usuário, permite ao aplicativo seguir e assistir a transmissões anteriores reservadas somente para inscritos (Em canais que você é inscrito), entre com a chave de autenticação do usuário ";
+    STR_OAUTH_IN = "Adicionando uma chave de autenticação para um usuário, permite ao aplicativo seguir e assistir a transmissões anteriores reservadas somente para inscritos (Em canais que você é inscrito e bloqueião o conteudo para não inscritos), entre com a chave de autenticação do usuário ";
     STR_OAUTH_EXPLAIN1 = " abaixo seguidos os passos:";
-    STR_OAUTH_EXPLAIN2 = "Acesse o site http://tiny.cc/twitchkey (usando um computador ou smart phone)";
+    STR_OAUTH_EXPLAIN2 = "Acesse o site http://tiny.cc/twitchkeycode (usando um computador ou smart phone)";
     STR_OAUTH_EXPLAIN3 = "Clique no botão \"Authorize\" assim vai abrir o site de autenticação do Twitch.TV";
     STR_OAUTH_EXPLAIN4 = "Faço login no Twitch.TV usando o usuário que você esta tentando adicionar a chave";
     STR_OAUTH_EXPLAIN5 = "Clique no botão de autorizar no site do Twitch.TV se você esta de acordo com as permissões";
