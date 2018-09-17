@@ -41,9 +41,9 @@ Twitch.TV authentication key
 
 ![Add_key](https://fgl27.github.io/smarttv-twitch/screenshot/Add_key.png)
 
-After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (of streamers you are subscribed to) as described on the above screen shot. The key is generated on the bellow page (Twitch.TV app for Samsung TV authorization page) through Twitch.TV web site, the bellow page link is the same as showed on the application screen.
+After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) as described on the above screen shot. The key is generated on the bellow page (Twitch.TV app for Samsung TV authorization page) the page generates the key through the official Twitch.TV web site, the bellow page link is the same as showed on the application screen.
 
-## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkey)
+## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkeycode)
 
 Controls
 ==============

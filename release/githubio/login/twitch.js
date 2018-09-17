@@ -1,13 +1,13 @@
 /* jshint undef: true, unused: true, node: true, browser: true */
 // Keep this file named as (zero)*** so it loads first in release_maker
 
-var baseUrl = 'https://api.twitch.tv/kraken/oauth2';
+var baseUrl = 'https://id.twitch.tv/oauth2';
 
 //vars to get the code
 var baseUrlCode = baseUrl + '/authorize?';
 var type_code = 'code';
 var client_id = 'ypvnuqrh98wqz1sr0ov3fgfu4jh1yx';
-var redirect_uri = 'https://bhb27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
+var redirect_uri = 'https://fgl27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
 var scope = 'user_follows_edit+user_subscriptions';
 var force_verify = 'true';
 var client_secret = "zhd1wr8lxyz9snzo48rfb70r7vtod6";
