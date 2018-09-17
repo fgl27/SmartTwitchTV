@@ -217,9 +217,8 @@ function Vod_replaceVideo(id, vod_data, valuesArray, idArray) {
 function Vod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
-    // background-size: 612px from  div.offsetWidth
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
-        (valuesArray[7] ? ' style="background-size: 612px; background-image: url(' + valuesArray[7] + ');"' : '') +
+        (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
@@ -372,6 +371,8 @@ function Vod_AnimateThumb(idArray, id) {
     // This prevent starting animating before it has loaded or animated a empty image
     Vod_newImg.onload = function() {
         Main_HideElement(idArray[1] + id);
+        // background-size: 612px from  div.offsetWidth
+        div.style.backgroundSize = "612px";
         var frame = 0;
         Vod_AnimateThumbId = window.setInterval(function() {
             // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
