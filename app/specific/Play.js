@@ -134,19 +134,19 @@ var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
 
 var Play_ChatSizeVal = [{
     "containerHeight": 17, // 12.5%
-    "percentage": 12.5,
+    "percentage": '12.5%',
     "dialogTop": 15
 }, {
     "containerHeight": 32, // 25%
-    "percentage": 25,
+    "percentage": '25%',
     "dialogTop": 30
 }, {
     "containerHeight": 48, // 50%
-    "percentage": 50,
+    "percentage": '50%',
     "dialogTop": 50
 }, {
     "containerHeight": 100, // 100%
-    "percentage": 100,
+    "percentage": '100%',
     "dialogTop": 115
 }];
 
@@ -984,7 +984,7 @@ function Play_ChatSize(showDialog) {
     Play_ChatPosition();
     Play_ChatFixPosition();
 
-    if (showDialog) Play_showChatBackgroundDialog('Size ' + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage + '%');
+    if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage);
 
     localStorage.setItem('ChatSizeValue', (Play_ChatSizeValue));
 }
@@ -996,7 +996,7 @@ function Play_ChatBackgroundChange(showDialog) {
     else chat_value = chat_value.toFixed(2);
 
     Play_chat_container.style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
-    if (showDialog) Play_showChatBackgroundDialog('Brightness ' + (chat_value * 100).toFixed(0) + '%');
+    if (showDialog) Play_showChatBackgroundDialog(STR_BRIGHTNESS + (chat_value * 100).toFixed(0) + '%');
 
     localStorage.setItem('ChatBackgroundValue', Play_ChatBackground);
 }
@@ -1559,7 +1559,7 @@ function Play_handleKeyDown(e) {
                         Play_ChatSizeValue++;
                         if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                         Play_ChatSize(true);
-                    } else Play_showChatBackgroundDialog('Size 100%');
+                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeVal.length - 1].percentage);
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
                     Play_showPanel();
@@ -1578,7 +1578,7 @@ function Play_handleKeyDown(e) {
                         Play_ChatSizeValue--;
                         if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
                         Play_ChatSize(true);
-                    } else Play_showChatBackgroundDialog('Size 33%');
+                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[0].percentage);
                 } else if (Play_isEndDialogShown()) Play_EndTextClear();
                 else {
                     Play_showPanel();

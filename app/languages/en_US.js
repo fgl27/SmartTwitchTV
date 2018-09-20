@@ -205,4 +205,6 @@ function en_USLang() {
     STR_CHAT_FONT_SUMARRY = "Change the chat lines font size, applies to text and emotes";
     STR_VIDEOS_ANIMATION = "Videos animated thumbnails";
     STR_SIDE_PANEL = "Side panel";
+    STR_SIZE = "Size ";
+    STR_BRIGHTNESS = "Brightness ";
 }

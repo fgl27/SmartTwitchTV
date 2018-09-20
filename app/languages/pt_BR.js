@@ -191,4 +191,6 @@ function pt_BRLang() {
     STR_CHAT_FONT_SUMARRY = "Alterar o tamanho da fonte das linhas do chat, aplica-se a texto e emotes";
     STR_VIDEOS_ANIMATION = "Miniaturas animadas dos vídeos";
     STR_SIDE_PANEL = "Painel lateral";
+    STR_SIZE = "Tamanho ";
+    STR_BRIGHTNESS = "Brilho ";
 }
