@@ -44,6 +44,7 @@ function Games_StartLoad() {
     Main_HideWarningDialog();
     Games_Status = false;
     Main_empty('stream_table_games');
+    Main_ItemsLimitGameOffset = 1;
     Games_emptyCellVector = [];
     Games_itemsCountOffset = 0;
     Games_itemsCountCheck = false;
@@ -77,7 +78,7 @@ function Games_loadDataRequest() {
             Games_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main_ItemsLimitGame + (!offset ? Main_ItemsLimitGameOffset : 0)) +
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset) +
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Games_loadingDataTimeout;
@@ -124,12 +125,26 @@ function Games_loadDataSuccess(responseText) {
     var response_items = response.top.length;
     Games_MaxOffset = parseInt(response._total);
 
+    //TODO improve this
+    //The correct fix here is to save the result of Games_loadDataRequest to a object
+    //Only add to that object new games to prevent duplicated and from that load the page
+    //this way we request more then what we need and keep request at will to keep what we have bigger then what we will need next
+    //But that will take some time to write and I don't have any
     if (response_items > Main_ItemsLimitGame) {
-        Main_ItemsLimitGameOffset = 0;
+        Main_ItemsLimitGameOffset--;
         Games_loadDataPrepare();
         Games_loadDataRequest();
         return;
-    } else if (response_items < Main_ItemsLimitGame) Games_dataEnded = true;
+    } else if (response_items < Main_ItemsLimitGame) {
+        if (((Main_ItemsLimitGame - response_items) < 11) && (Main_ItemsLimitGameOffset + Main_ItemsLimitGame) < 100 && (Games_MaxOffset - 1) > (response_items + Games_itemsCount)) {
+            Main_ItemsLimitGameOffset++;
+            Games_loadDataPrepare();
+            Games_loadDataRequest();
+            return;
+        } else Games_dataEnded = true;
+    }
+
+    Main_ItemsLimitGameOffset = 0;
 
     var offset_itemsCount = Games_itemsCount;
     Games_itemsCount += response_items;
