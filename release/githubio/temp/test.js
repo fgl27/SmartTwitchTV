@@ -1,17 +1,49 @@
+/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */
+var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var Main_clientIdHeader = 'Client-ID';
+var Main_ItemsLimitGame = 45;
+var counter = 0;
+var offset = 0;
 
-var defaultColors = ["#ff0000", "#ff4000", "#ff8000", "#ffbf00", "#ffff00", "#bfff00", "#80ff00", "#40ff00", "#00ff00", "#00ff40", "#00ff80", "#00ffbf", "#00ffff", "#00bfff", "#0080ff", "#0040ff", "#4000ff", "#8000ff", "#bf00ff", "#ff00ff", "#ff00bf", "#ff0080", "#ff0040", "#ff0000"];
-var defaultColorsLength = defaultColors.length;
-
-function Dolog(letter) {
-    console.log(letter);
-    console.log((letter).charCodeAt(0) % defaultColorsLength);
-    console.log(defaultColors[(letter).charCodeAt(0) % defaultColorsLength]);
-}
+test();
 
 function test() {
-    for (var i = 0; i < 26; i++) {
-        Dolog((i+10).toString(36));
+    Games_loadDataRequest(0);
+}
+
+function Games_loadDataRequest() {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitGame + '&offset=' + offset, true);
+
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Games_loadDataSuccess(xmlHttp.responseText);
+                    return;
+                } else {
+                    console.log("else error Games_loadDataRequest");
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        console.log("catch error Games_loadDataRequest");
     }
 }
 
-test();
+function Games_loadDataSuccess(responseText) {
+    //console.log(responseText);
+    var response = JSON.parse(responseText);
+    var response_items = response.top.length;
+    console.log(response_items);
+    offset += response_items;
+    counter++;
+    if (counter < 10)Games_loadDataRequest(response_items);
+}
