@@ -171,7 +171,7 @@ function AGameVod_loadDataSuccess(responseText) {
             else {
                 AGameVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    [id, video.length, video.language, video.game, video.channel.name],
+                    [id, video.length, video.language, video.game, video.channel.name, video.increment_view_count_url],
                     [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
@@ -288,7 +288,7 @@ function AGameVod_loadDataSuccessReplace(responseText) {
         else {
             AGameVod_idObject[id] = 1;
             Vod_replaceVideo(AGameVod_emptyCellVector[i],
-                [id, video.length, video.language, video.game, video.channel.name],
+                [id, video.length, video.language, video.game, video.channel.name, video.increment_view_count_url],
                 [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
@@ -421,6 +421,7 @@ function AGameVod_handleKeyDown(event) {
             ChannelVod_language = ChannelVod_vodId[2];
             Play_gameSelected = ChannelVod_vodId[3];
             Main_selectedChannel = ChannelVod_vodId[4];
+            Play_IncrementView = ChannelVod_vodId[5];
             ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
             ChannelVod_title = '';

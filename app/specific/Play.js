@@ -86,6 +86,7 @@ var Play_chat_container;
 var Play_ChatFixPositionId;
 var Play_selectedChannelLogo;
 var Play_selectedChannel_id = '';
+var Play_IncrementView = '';
 var Play_ProgresBarrElm;
 var Play_DefaultjumpTimers = [];
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
@@ -793,6 +794,7 @@ function Play_ClearPlayer() {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_HideEndDialog();
+    Play_IncrementView = '';
 }
 
 function Play_ClearPlay() {

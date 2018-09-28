@@ -82,7 +82,7 @@ function PlayVod_Start() {
             } else Play_hideFallow();
         } else {
             PlayVod_PrepareLoad();
-            PlayVod_updateStreamInfo();
+            PlayVod_updateStreamerInfo();
         }
         Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelVod_title);
@@ -115,6 +115,7 @@ function PlayVod_PosStart() {
     localStorage.setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    Main_PreLoadAImage(Play_IncrementView);
 
     SmartHub_SmartHubResume = false;
     Play_PlayerPanelOffset = -13;
@@ -141,7 +142,7 @@ function PlayVod_PrepareLoad() {
     PlayVod_loadingInfoDataTimeout = 10000;
 }
 
-function PlayVod_updateStreamInfo() {
+function PlayVod_updateStreamerInfo() {
     try {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_selectedChannel), true);
@@ -170,23 +171,23 @@ function PlayVod_updateStreamInfo() {
                     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
                     return;
                 } else {
-                    PlayVod_updateStreamInfoError();
+                    PlayVod_updateStreamerInfoError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        PlayVod_updateStreamInfoError();
+        PlayVod_updateStreamerInfoError();
     }
 }
 
-function PlayVod_updateStreamInfoError() {
+function PlayVod_updateStreamerInfoError() {
     PlayVod_loadingInfoDataTry++;
     if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
         PlayVod_loadingInfoDataTimeout += 2000;
-        PlayVod_updateStreamInfo();
-    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamInfo, 2500);
+        PlayVod_updateStreamerInfo();
+    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamerInfo, 2500);
 }
 
 function PlayVod_updateVodInfo() {
@@ -252,6 +253,7 @@ function PlayVod_updateVodInfoPannel(response) {
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
+    Main_PreLoadAImage(response.increment_view_count_url);
 }
 
 function PlayVod_SaveOffset() {
