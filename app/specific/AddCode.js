@@ -11,7 +11,7 @@ var AddCode_PlayRequest = false;
 var AddCode_input = '';
 var AddCode_Channel_id = '';
 
-var AddCode_redirect_uri = 'https://bhb27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
+var AddCode_redirect_uri = 'https://fgl27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
 var AddCode_client_secret = "zhd1wr8lxyz9snzo48rfb70r7vtod6";
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 //Variable initialization end
