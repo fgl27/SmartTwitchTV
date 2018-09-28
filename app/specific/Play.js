@@ -426,11 +426,10 @@ function Play_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        Play_loadingDataTry = 0;
-                        if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-                    } catch (err) {}
-                } else Play_loadDataError();
+                    Play_loadingDataTry = 0;
+                    if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
+                } else if (xmlHttp.status === 403) Play_ForbiddenLive(); //forbidden access
+                else Play_loadDataError();
             }
         };
 
@@ -449,6 +448,15 @@ function Play_loadDataError() {
         } else Play_CheckHostStart();
     }
 }
+
+function Play_ForbiddenLive() {
+    Play_HideBufferDialog();
+    Play_showWarningDialog(STR_FORBIDDEN);
+    window.setTimeout(function() {
+        if (Play_isOn) Play_CheckHostStart();
+    }, 4000);
+}
+
 
 function Play_loadDataSuccess(responseText) {
     if (Play_state === Play_STATE_LOADING_TOKEN) {
