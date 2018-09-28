@@ -317,11 +317,8 @@ function PlayVod_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    try {
-                        PlayVod_loadingDataTry = 0;
-                        if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
-                    } catch (err) {}
-
+                    PlayVod_loadingDataTry = 0;
+                    if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
                 } else PlayVod_loadDataError();
             }
         };

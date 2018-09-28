@@ -193,4 +193,5 @@ function pt_BRLang() {
     STR_SIDE_PANEL = "Painel lateral";
     STR_SIZE = "Tamanho ";
     STR_BRIGHTNESS = "Brilho ";
+    STR_FORBIDDEN = "Conteúdo proibido, esta Live deve ser apenas para assinantes Prime ou bloqueada para apenas aplicativos oficiais do Twitch";
 }

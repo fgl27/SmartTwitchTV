@@ -207,4 +207,5 @@ function en_USLang() {
     STR_SIDE_PANEL = "Side panel";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
+    STR_FORBIDDEN = "Forbidden content, this Live must be for Prime only subscribers or lock to Twitch official app only";
 }
