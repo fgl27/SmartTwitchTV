@@ -58,7 +58,7 @@ function SmartHub_loadDataRequest() {
         var theUrl;
 
         if (!SmartHub_previewData) {
-            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(SmartHub_followerUsername) +
+            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
                 '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
         } else if (SmartHub_previewData === 1) {
             theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub_followerChannels) + '&limit=18&' +
@@ -73,6 +73,7 @@ function SmartHub_loadDataRequest() {
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = SmartHub_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
         xmlHttp.ontimeout = function() {};
@@ -109,7 +110,7 @@ function SmartHub_previewDataSuccess(responseText) {
         SmartHub_followerChannels = '';
 
         for (var x = 0; x < response.follows.length; x++) {
-            SmartHub_followerChannels += response.follows[x].channel.name + ',';
+            SmartHub_followerChannels += response.follows[x].channel._id + ',';
         }
 
         SmartHub_followerChannels = SmartHub_followerChannels.slice(0, -1);
@@ -256,7 +257,6 @@ function SmartHub_EventListener() {
 
                     Play_selectedChannel = VideoIdx;
                     Play_selectedChannelDisplayname = actionData.videoTitleIdx + '';
-                    Play_selectedChannel_id = actionData._id;
 
                     if (actionData.isHost) {
                         Play_isHost = true;
@@ -269,6 +269,7 @@ function SmartHub_EventListener() {
                     else if (PlayClip_isOn) PlayClip_PreshutdownStream();
                     else Main_ExitCurrent(Main_Go);
 
+                    Play_selectedChannel_id = actionData._id;
                     window.setTimeout(Main_openStream, 10);
                     break;
                 } else if (JSON.parse(actionData).gameIdx) {

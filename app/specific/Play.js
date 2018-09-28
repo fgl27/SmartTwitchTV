@@ -788,6 +788,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
+    Play_hidePanel();
     Play_offPlayer();
     Play_clearPause();
     Play_HideWarningDialog();
