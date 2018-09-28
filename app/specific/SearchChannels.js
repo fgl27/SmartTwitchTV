@@ -89,6 +89,7 @@ function SearchChannels_loadDataRequest() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
             '&limit=' + Main_ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SearchChannels_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -220,6 +221,7 @@ function SearchChannels_loadDataReplace() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
             '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SearchChannels_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 

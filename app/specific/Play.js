@@ -329,8 +329,9 @@ function Play_updateStreamInfoStart() {
                 }
             }
         };
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Play_loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.send(null);
     } catch (e) {
@@ -370,8 +371,9 @@ function Play_updateStreamInfo() {
                 } else Play_updateStreamInfoError();
             }
         };
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = 3000;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.send(null);
     } catch (err) {
@@ -1381,7 +1383,7 @@ function Play_loadDataCheckHost() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' +
+        xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
             encodeURIComponent(Play_selectedChannel_id), true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

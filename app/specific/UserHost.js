@@ -82,9 +82,10 @@ function UserHost_loadChannels() {
             UserHost_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/followed/hosting?limit=' +
-            Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+            '/followed/hosting?limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserHost_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -212,9 +213,10 @@ function UserHost_loadDataReplace() {
             UserHost_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/hosts?game=' + encodeURIComponent(Main_gameSelected) +
-            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+            '/followed/hosting?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserHost_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 

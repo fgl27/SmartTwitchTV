@@ -71,8 +71,8 @@ function SearchGames_loadDataRequest() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Search_data) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SearchGames_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

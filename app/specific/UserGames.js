@@ -86,9 +86,11 @@ function UserGames_loadDataRequest() {
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games' + (UserGames_live ? '/live' : '') +
-            '?limit=' + Main_ItemsLimitGame + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+            '/follows/games' + (UserGames_live ? '/live' : '') + '?limit=' + Main_ItemsLimitGame +
+            '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -227,9 +229,11 @@ function UserGames_loadDataReplace() {
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games' + (UserGames_live ? '/live' : '') +
-            '?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+            '/follows/games' + (UserGames_live ? '/live' : '') + '?limit=' + Main_ItemsLimitReplace +
+            '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 

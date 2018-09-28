@@ -83,6 +83,7 @@ function SearchLive_loadDataRequest() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
             '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SearchLive_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -214,7 +215,8 @@ function SearchLive_loadDataReplace() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
             '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = SearchLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

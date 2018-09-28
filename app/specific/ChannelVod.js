@@ -95,11 +95,12 @@ function ChannelVod_loadDataRequest() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
-            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitVideo +
+            encodeURIComponent(Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitVideo +
             '&broadcast_type=' + (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = ChannelVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -164,7 +165,7 @@ function ChannelVod_loadDataSuccess(responseText) {
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
             video = response.videos[cursor];
             id = video._id;
-            thumbnail = video.preview;
+            thumbnail = video.preview.template;
             thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
 
             // video content can be null sometimes, in that case the preview will be 404_processing
@@ -179,7 +180,7 @@ function ChannelVod_loadDataSuccess(responseText) {
                 ChannelVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     [id, video.length, video.language, video.game, video.channel.name],
-                    [thumbnail.replace("320x240", Main_VideoSize),
+                    [thumbnail.replace("{width}x{height}", Main_VideoSize),
                         twemoji.parse(video.title), STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -241,11 +242,12 @@ function ChannelVod_loadDataReplace() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
-            encodeURIComponent(Main_selectedChannel) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
+            encodeURIComponent(Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
             (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = ChannelVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -292,12 +294,12 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
     for (i; i < ChannelVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         id = video._id;
-        if ((video.preview + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) i--;
+        if ((video.preview.template + '').indexOf('404_processing') !== -1 || ChannelVod_idObject[id]) i--;
         else {
             ChannelVod_idObject[id] = 1;
             Vod_replaceVideo(ChannelVod_emptyCellVector[i],
                 [id, video.length, video.language, video.game, video.channel.name],
-                [video.preview.replace("320x240", Main_VideoSize),
+                [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                     twemoji.parse(video.title), STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
