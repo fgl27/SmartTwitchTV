@@ -110,8 +110,8 @@ function ChannelClip_loadDataRequest() {
             encodeURIComponent(ChannelClip_period) +
             (ChannelClip_cursor === null ? '' : '&cursor=' + encodeURIComponent(ChannelClip_cursor)) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = ChannelClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -244,8 +244,8 @@ function ChannelClip_loadDataReplace() {
             '&cursor=' + encodeURIComponent(ChannelClip_cursor) +
             '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = ChannelClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -332,8 +332,8 @@ function ChannelClip_SetCursor(cursor) {
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = ChannelClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {

@@ -102,6 +102,7 @@ function AGameVod_loadDataRequest() {
             '&period=' + AGameVod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -142,7 +143,7 @@ function AGameVod_loadDataError() {
 
 function AGameVod_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText);
-    var response_items = response.videos.length;
+    var response_items = response.vods.length;
     AGameVod_MaxOffset = parseInt(response._total);
 
     if (response_items < Main_ItemsLimitVideo) AGameVod_dataEnded = true;
@@ -163,15 +164,15 @@ function AGameVod_loadDataSuccess(responseText) {
         row = document.createElement('tr');
 
         for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
-            video = response.videos[cursor];
+            video = response.vods[cursor];
             id = video._id;
             //video content can be null sometimes the preview will 404_processing
-            if ((video.preview + '').indexOf('404_processing') !== -1 || AGameVod_idObject[id]) coloumn_id--;
+            if ((video.preview.template + '').indexOf('404_processing') !== -1 || AGameVod_idObject[id]) coloumn_id--;
             else {
                 AGameVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     [id, video.length, video.language, video.game, video.channel.name],
-                    [video.preview.replace("320x240", Main_VideoSize),
+                    [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -237,6 +238,7 @@ function AGameVod_loadDataReplace() {
             '&period=' + AGameVod_period + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -270,7 +272,7 @@ function AGameVod_loadDataErrorReplace() {
 
 function AGameVod_loadDataSuccessReplace(responseText) {
     var response = JSON.parse(responseText),
-        response_items = response.videos.length,
+        response_items = response.vods.length,
         video, id, i = 0,
         cursor = 0,
         tempVector = [];
@@ -280,14 +282,14 @@ function AGameVod_loadDataSuccessReplace(responseText) {
     if (response_items < Main_ItemsLimitReplace) AGameVod_dataEnded = true;
 
     for (i; i < AGameVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
-        video = response.videos[cursor];
+        video = response.vods[cursor];
         id = video._id;
-        if ((video.preview + '').indexOf('404_processing') !== -1 || AGameVod_idObject[id]) i--;
+        if ((video.preview.template + '').indexOf('404_processing') !== -1 || AGameVod_idObject[id]) i--;
         else {
             AGameVod_idObject[id] = 1;
             Vod_replaceVideo(AGameVod_emptyCellVector[i],
                 [id, video.length, video.language, video.game, video.channel.name],
-                [video.preview.replace("320x240", Main_VideoSize),
+                [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                     Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),

@@ -10,7 +10,7 @@ var ChannelContent_loadingDataTimeout = 3500;
 var ChannelContent_itemsCountOffset = 0;
 var ChannelContent_skipImg = false;
 var ChannelContent_UserChannels = false;
-var ChannelContent_TargetName;
+var ChannelContent_TargetId;
 var ChannelContent_ids = ['cc_thumbdiv', 'cc_img', 'cc_infodiv', 'cc_name', 'cc_createdon', 'cc_game', 'cc_viwers', 'cc_duration', 'cc_cell', 'sccempty_', 'channel_content_scroll'];
 var ChannelContent_status = false;
 var ChannelContent_lastselectedChannel = '';
@@ -60,7 +60,7 @@ function ChannelContent_StartLoad() {
     ChannelContent_cursorX = 0;
     ChannelContent_cursorY = 0;
     ChannelContent_dataEnded = false;
-    ChannelContent_TargetName = undefined;
+    ChannelContent_TargetId = undefined;
     ChannelContent_loadDataPrepare();
     ChannelContent_loadDataRequest();
 }
@@ -76,8 +76,9 @@ function ChannelContent_loadDataRequest() {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetName !== undefined ? ChannelContent_TargetName : Main_selectedChannel) + '?' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_selectedChannel_id) + '?' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = ChannelContent_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
@@ -121,7 +122,7 @@ function ChannelContent_loadDataCheckHost() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'http://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = ChannelContent_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
@@ -155,8 +156,8 @@ function ChannelContent_loadDataCheckHostError() {
 
 function ChannelContent_CheckHost(responseText) {
     var response = JSON.parse(responseText);
-    ChannelContent_TargetName = response.hosts[0].target_login;
-    if (ChannelContent_TargetName !== undefined) {
+    ChannelContent_TargetId = response.hosts[0].target_id;
+    if (ChannelContent_TargetId !== undefined) {
         ChannelContent_loadDataPrepare();
         ChannelContent_loadDataRequest();
     } else {
@@ -172,8 +173,8 @@ function ChannelContent_GetStreamerInfo() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + Main_selectedChannel_id, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -227,7 +228,7 @@ function ChannelContent_loadDataSuccess() {
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);
         if (response.stream !== null) {
-            var hosting = ChannelContent_TargetName !== undefined ? Main_selectedChannelDisplayname +
+            var hosting = ChannelContent_TargetId !== undefined ? Main_selectedChannelDisplayname +
                 STR_USER_HOSTING : '';
             var stream = response.stream;
             row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
@@ -275,7 +276,7 @@ function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_t
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         '<i class="icon-circle" style="color: ' +
-        (ChannelContent_TargetName !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
+        (ChannelContent_TargetId !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
         channel_display_name + '</div>' +
         '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         quality + '</div>' +

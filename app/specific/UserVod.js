@@ -101,6 +101,7 @@ function UserVod_loadDataRequest() {
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = UserVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
         xmlHttp.ontimeout = function() {};
@@ -170,12 +171,12 @@ function UserVod_loadDataSuccess(responseText) {
             video = response.videos[cursor];
             id = video._id;
             //video content can be null sometimes the preview will 404
-            if ((video.preview + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) coloumn_id--;
+            if ((video.preview.template + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) coloumn_id--;
             else {
                 UserVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
                     [id, video.length, video.language, video.game, video.channel.name],
-                    [video.preview.replace("320x240", Main_VideoSize),
+                    [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
                         Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
@@ -244,6 +245,7 @@ function UserVod_loadDataReplace() {
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = UserVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
         xmlHttp.ontimeout = function() {};
@@ -295,12 +297,12 @@ function UserVod_loadDataSuccessReplace(responseText) {
     for (i; i < UserVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
         id = video._id;
-        if ((JSON.stringify(video.preview) + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) i--;
+        if ((video.preview.template + '').indexOf('404_processing') !== -1 || UserVod_idObject[id]) i--;
         else {
             UserVod_idObject[id] = 1;
             Vod_replaceVideo(UserVod_emptyCellVector[i],
                 [id, video.length, video.language, video.game, video.channel.name],
-                [video.preview.replace("320x240", Main_VideoSize),
+                [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) +
                     STR_VIEWS,
