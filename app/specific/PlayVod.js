@@ -39,7 +39,6 @@ var PlayVod_currentTime = 0;
 var PlayVod_bufferingcomplete = false;
 var PlayVod_vodOffset = 0;
 var PlayVod_Buffer = 4;
-var PlayVod_QualityChangedCounter = 0;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
@@ -100,7 +99,6 @@ function PlayVod_Start() {
 }
 
 function PlayVod_PosStart() {
-    PlayVod_QualityChangedCounter = 0;
     Play_offsettimeMinus = 0;
 
     Main_ShowElement('chat_box');
@@ -426,7 +424,6 @@ var PlayVod_listener = {
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = PlayVod_Buffer;
         PlayVod_PlayerCheckQualityChanged = true;
-        PlayVod_QualityChangedCounter = 0;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -438,14 +435,12 @@ var PlayVod_listener = {
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = PlayVod_Buffer;
         PlayVod_PlayerCheckQualityChanged = true;
-        PlayVod_QualityChangedCounter = 0;
     },
     onbufferingprogress: function(percent) {
         if (percent < 5) PlayVod_PlayerCheckCount = 0;
 
         Play_PlayerCheckTimer = PlayVod_Buffer;
         PlayVod_PlayerCheckQualityChanged = true;
-        PlayVod_QualityChangedCounter = 0;
         //percent has a -2 offset and goes up to 98
         if (percent < 98) {
             Play_BufferPercentage = percent;
@@ -500,7 +495,7 @@ function PlayVod_onPlayer() {
         }
 
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4;
+        Play_PlayerCheckTimer = 2;
         PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
@@ -527,17 +522,16 @@ function PlayVod_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_QualityChangedCounter < Play_QualityChangedCounterMax)) {
+            if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
                 if (PlayVod_PlayerCheckQualityChanged) PlayVod_qualityIndex++; //Don't change the first time only retry
                 PlayVod_qualityDisplay();
                 if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
                 PlayVod_qualityChanged();
-                PlayVod_QualityChangedCounter++;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(2); //staled for too long close the player
             }
-        }
+        } // else we try for too long let the listener onerror catch it
     } else PlayVod_PlayerCheckCount = 0;
     PlayVod_PlayerTime = PlayVod_currentTime;
 }

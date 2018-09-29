@@ -79,8 +79,6 @@ var Play_ChatLoadStarted = false;
 var Play_Buffer = 4;
 var Play_PlayerCheckTimer = 4;
 var Play_PlayerCheckInterval = 1000;
-var Play_QualityChangedCounter = 0;
-var Play_QualityChangedCounterMax = 4;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
@@ -236,7 +234,6 @@ function Play_Start() {
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
 
-    Play_QualityChangedCounter = 0;
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
@@ -322,7 +319,6 @@ function Play_updateStreamInfoStart() {
                         } else Play_hideFallow();
                     } else if (Play_isOn) {
                         Play_isLive = false;
-                        Play_offPlayer();
                         Play_CheckHostStart();
                     }
                 } else { // internet error
@@ -364,9 +360,8 @@ function Play_updateStreamInfo() {
                         Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    } else if (Play_RestoreFromResume) {
+                    } else if (Play_RestoreFromResume && Play_isOn) {
                         Play_isLive = false;
-                        Play_offPlayer();
                         Play_CheckHostStart();
                     }
                 } else Play_updateStreamInfoError();
@@ -547,7 +542,6 @@ var Play_listener = {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = Play_Buffer;
         Play_PlayerCheckQualityChanged = true;
-        Play_QualityChangedCounter = 0;
         // sync chat and stream
         if (!Play_ChatLoadStarted) Play_loadChat();
     },
@@ -559,14 +553,12 @@ var Play_listener = {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = Play_Buffer;
         Play_PlayerCheckQualityChanged = true;
-        Play_QualityChangedCounter = 0;
         if (!Play_ChatLoadStarted) Play_loadChat();
     },
     onbufferingprogress: function(percent) {
         if (percent < 5) Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = Play_Buffer;
         Play_PlayerCheckQualityChanged = true;
-        Play_QualityChangedCounter = 0;
         //percent has a -2 offset and goes up to 98
         if (percent < 98) {
             Play_BufferPercentage = percent;
@@ -609,7 +601,7 @@ function Play_onPlayer() {
         }
 
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3;
+        Play_PlayerCheckTimer = 2;
         Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
@@ -651,7 +643,7 @@ function Play_loadChat() {
     Play_CheckChatCounter = 0;
     Play_ChatLoadOK = false;
     Play_Chatobj.src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
-    Play_CheckChatId = window.setTimeout(Play_CheckChat, 3500);
+    Play_CheckChatId = window.setTimeout(Play_CheckChat, 5000);
 }
 
 function Play_CheckChat() {
@@ -682,16 +674,12 @@ function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_QualityChangedCounter < Play_QualityChangedCounterMax)) {
+            if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
                 if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
                 Play_qualityDisplay();
                 Play_qualityChanged();
-                Play_QualityChangedCounter++;
-            } else {
-                Play_avplay.stop();
-                Play_CheckHostStart(); //staled for too long close the player
-            }
-        }
+            } else Play_CheckHostStart(); //staled for too long close the player
+        } // else we try for too long let the listener onerror catch it
     } else Play_PlayerCheckCount = 0;
     Play_PlayerTime = Play_currentTime;
 }
@@ -1329,9 +1317,15 @@ function Play_PannelEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart() {
+    Play_isOn = false;
+    Play_offPlayer();
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 3500;
+    window.clearTimeout(Play_CheckChatId);
+    Play_Chatobj.src = 'about:blank';
+    window.clearInterval(Play_streamInfoTimer);
+    window.clearInterval(Play_streamCheck);
     if (Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }

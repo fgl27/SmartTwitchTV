@@ -23,7 +23,6 @@ var PlayClip_bufferingcomplete = false;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 4;
 var PlayClip_PlayerCheckQualityChanged = false;
-var PlayClip_QualityChangedCounter = 0;
 var PlayClip_jumpTimers = [0, 5];
 //Variable initialization end
 
@@ -58,7 +57,6 @@ function PlayClip_Start() {
     Main_HideElement('chat_frame');
 
     Play_PlayerPanelOffset = -13;
-    PlayClip_QualityChangedCounter = 0;
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
     PlayClip_currentTime = 0;
@@ -129,7 +127,6 @@ var PlayClip_listener = {
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = Play_Buffer;
         PlayClip_PlayerCheckQualityChanged = true;
-        PlayClip_QualityChangedCounter = 0;
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -140,14 +137,12 @@ var PlayClip_listener = {
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = Play_Buffer;
         PlayClip_PlayerCheckQualityChanged = true;
-        PlayClip_QualityChangedCounter = 0;
     },
     onbufferingprogress: function(percent) {
         if (percent < 5) PlayClip_PlayerCheckCount = 0;
 
         Play_PlayerCheckTimer = Play_Buffer;
         PlayClip_PlayerCheckQualityChanged = true;
-        PlayClip_QualityChangedCounter = 0;
 
         //percent has a -2 offset and goes up to 98
         if (percent < 98) {
@@ -249,7 +244,7 @@ function PlayClip_onPlayer() {
         }
 
         PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3;
+        Play_PlayerCheckTimer = 2;
         PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log(e);
@@ -284,17 +279,16 @@ function PlayClip_PlayerCheck() {
     if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) && (PlayClip_QualityChangedCounter < Play_QualityChangedCounterMax)) {
+            if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
                 if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change the first time only retry
                 PlayClip_qualityDisplay();
                 if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
                 PlayClip_qualityChanged();
-                PlayClip_QualityChangedCounter++;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(3); //staled for too long close the player
             }
-        }
+        } // else we try for too long let the listener onerror catch it
     } else PlayClip_PlayerCheckCount = 0;
 
     PlayClip_PlayerTime = PlayClip_currentTime;
