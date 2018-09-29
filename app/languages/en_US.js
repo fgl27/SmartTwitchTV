@@ -164,7 +164,8 @@ function en_USLang() {
     STR_FALLOW_GAMES = "Followed Games";
     STR_USER_GAMES_CHANGE = "Change between";
     STR_GUIDE = " (Guide or Info)";
-    monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     STR_STARTED = "Started ";
     STR_KEY_UP_DOWN = " (CH Up/Down)";
     STR_VIDEOS = "Videos";
