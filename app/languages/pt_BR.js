@@ -150,7 +150,8 @@ function pt_BRLang() {
     STR_FALLOW_GAMES = "Jogos seguidos";
     STR_USER_GAMES_CHANGE = "Troque entre";
     STR_GUIDE = " (Guia ou Info)";
-    monthNames = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    STR_MONTHS = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    STR_DAYS = ["Dom", "Seg", "Terç", "Qua", "Qui", "Sex", "Sáb"];
     STR_STARTED = "Começou ";
     STR_VIDEOS = "Vídeos";
     STR_VIDEO = " Vídeo";
