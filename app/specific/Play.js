@@ -1317,7 +1317,6 @@ function Play_PannelEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart() {
-    Play_isOn = false;
     Play_offPlayer();
     Play_state = -1;
     Play_loadingDataTry = 0;
