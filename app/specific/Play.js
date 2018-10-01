@@ -411,9 +411,9 @@ function Play_loadDataRequest() {
                 (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
                     AddUser_UsernameArray[Users_Position].access_token : '');
         } else {
-            theUrl = 'http://usher.twitch.tv/api/channel/hls/' + Play_selectedChannel +
-                '.m3u8?player=twitchweb&type=any&sig=' + Play_tokenResponse.sig + '&token=' +
-                escape(Play_tokenResponse.token) + '&allow_source=true&allow_audi_only=true&' + Math.round(Math.random() * 1e7);
+            theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Play_selectedChannel +
+                '.m3u8?&token=' + escape(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+                '&allow_source=true&allow_audi_only=true';
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play_loadingDataTimeout;
