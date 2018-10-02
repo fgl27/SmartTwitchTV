@@ -166,12 +166,12 @@ function Play_PreStart() {
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
-    Play_ClearPlayer();
 
     Play_ChatPositions = (parseInt(localStorage.getItem('ChatPositionsValue')) - 1) || 0;
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
+    Play_ClearPlayer();
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
