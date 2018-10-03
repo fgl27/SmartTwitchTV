@@ -605,10 +605,9 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_IconsBottonResetFocus() {
-    Play_IconsRemoveFocus();
     Play_Panelcounter = 1;
     PlayVod_PanelY = 0;
-    Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
+    PlayVod_IconsBottonFocus();
 }
 
 function PlayVod_IconsBottonFocus() {
