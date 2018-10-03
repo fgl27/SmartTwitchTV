@@ -43,6 +43,7 @@ var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
 var PlayVod_HasVodInfo = true;
+var PlayVod_ProgressBaroffset = 0;
 var PlayVod_jumpTimers = [0, 15, 15, 15, 15, 30, 30, 30, 30, 60, 60, 60, 60, 120, 120, 120, 120, 300, 300, 300, 300, 600, 600, 600, 600, 900, 900, 900, 900, 1800];
 
 var PlayVod_WasPlaying = 0;
@@ -619,7 +620,7 @@ function PlayVod_IconsBottonFocus() {
 }
 
 function PlayVod_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayVod_hidePanel, 5000); // time in ms
+    Play_PanelHideID = window.setTimeout(PlayVod_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
 }
 
 function PlayVod_qualityIndexReset() {
@@ -865,6 +866,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    Play_clearHidePanel();
                     if (PlayVod_PanelY) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter++;
@@ -872,8 +874,8 @@ function PlayVod_handleKeyDown(e) {
                         Play_IconsAddFocus();
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
                     }
-                    Play_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isVodDialogShown()) {
                     PlayVod_IconsRemoveFocus();
@@ -895,6 +897,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    Play_clearHidePanel();
                     if (PlayVod_PanelY) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter--;
@@ -902,8 +905,8 @@ function PlayVod_handleKeyDown(e) {
                         Play_IconsAddFocus();
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
                     }
-                    Play_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isVodDialogShown()) {
                     PlayVod_IconsRemoveFocus();
