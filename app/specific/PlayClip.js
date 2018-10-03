@@ -36,6 +36,7 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_game", ChannelClip_game + ', ' + ChannelClip_views + ', ' + ChannelClip_language);
     Main_textContent("stream_live_icon", ChannelClip_createdAt);
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_empty('dialog_buffer_play_percentage');

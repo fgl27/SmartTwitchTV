@@ -777,9 +777,9 @@
 
         .progress_bar_div {
             width: 90%;
-            height: 4.5%;
+            height: 6.5%;
             margin-left: 5%;
-            margin-top: 39%;
+            margin-top: 38.5%;
             text-align: center;
             border-radius: 15px;
             border: 3.5px solid rgba(0, 0, 0, 0);
@@ -790,6 +790,7 @@
             border-color: #FFFFFF;
         }
 
+        .progress_bar_jump,
         .progress_bar_timer {
             vertical-align: middle;
             text-align: center;
@@ -798,6 +799,11 @@
             font-weight: bold;
             color: #FFFFFF;
             display: inline-block;
+        }
+
+        .progress_bar_jump {
+            padding-top: 0.4%;
+            width: 90%;
         }
 
         .progress_bar_holder {
@@ -1295,6 +1301,7 @@
                     </div>
                     <div id="progress_bar_duration" class="progress_bar_timer strokedextramini"></div>
                 </div>
+                <div id="progress_bar_steps" class="progress_bar_jump strokedextramini"></div>
             </div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">

@@ -113,7 +113,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_1 = "Show information panel: Select key if chat is showing or Directional pad (up/down/left/right) if not";
     STR_CONTROLS_PLAY_2 = "Close the video: press return (click it twice under 3 seconds, click tree times if information panel or controls is open)";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: Play or Pause keys";
-    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Open the information panel, Press Directional pad (right/left) to change time when satisfied press enter/select, multiple right/left clicks or holding the key will add/remove more and more time before jump faster";
+    STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Open the information panel, Press Directional pad (right/left) to change time when satisfied press enter/select, for videos after multiple clicks of right/left or holding the key will make the it jump step bigger and bigger (15 seconds up to 30 minutes) stop clicking or releasing the key will restore the step size back to the lower value after a second, for clips the jump step is every 5 seconds";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): press select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering";
     STR_CONTROLS_PLAY_7 = "Show or hide the Chat: Guide or info (Guide is channel press key on smart remote)";
@@ -209,4 +209,7 @@ function en_USLang() {
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
     STR_FORBIDDEN = "Forbidden content, this Live must be for Prime only subscribers or lock to Twitch official app only";
+    STR_JUMPING_STEP = "Jump step ";
+    STR_SECONDS = " seconds";
+    STR_MINUTES = " minutes";
 }
