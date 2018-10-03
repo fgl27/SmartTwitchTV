@@ -901,6 +901,7 @@ function Play_showPanel() {
 
 function Play_clearHidePanel() {
     window.clearTimeout(Play_PanelHideID);
+    PlayVod_ProgressBaroffset = 0;
 }
 
 function Play_setHidePanel() {

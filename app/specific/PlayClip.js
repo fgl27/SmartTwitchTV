@@ -389,7 +389,7 @@ function PlayClip_qualityDisplay() {
 }
 
 function PlayClip_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000); // time in ms
+    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
 }
 
 function PlayClip_SetOpenVod() {
@@ -437,6 +437,7 @@ function PlayClip_handleKeyDown(e) {
                     if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
                     if (PlayVod_PanelY) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter++;
@@ -444,8 +445,8 @@ function PlayClip_handleKeyDown(e) {
                         Play_IconsAddFocus();
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(-1, ChannelClip_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
                     }
-                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
@@ -461,6 +462,7 @@ function PlayClip_handleKeyDown(e) {
                     if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
                     Play_ChatBackgroundChange(true);
                 } else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
                     if (PlayVod_PanelY) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter--;
@@ -468,8 +470,8 @@ function PlayClip_handleKeyDown(e) {
                         Play_IconsAddFocus();
                     } else if (!Play_BufferDialogVisible()) {
                         PlayVod_jumpStart(1, ChannelClip_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
                     }
-                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogShown()) {
                     Play_EndTextClear();
