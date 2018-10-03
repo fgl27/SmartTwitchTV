@@ -99,7 +99,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_1 = "Exibir Informações: Pressione a tecla selecionar caso o Chat esteja sendo exibido ou use as Setas Direcionais.";
     STR_CONTROLS_PLAY_2 = "Fechar um vídeo: Pressione retornar duas vezes seguidas em menos de três segundos";
     STR_CONTROLS_PLAY_3 = "Pausar/Reproduzir: Pressione PLAY ou PAUSE.";
-    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): abra o Painel de Informações, pressione o direcional (esquerda/direita) para alterar o tempo quando satisfeito pressione a tecla Enter/Selecionar, vários cliques esquerda/direita ou segurando a tecla irá adicionar/remover mais e mais tempo de forma mais rápida antes de pular";
+    STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): abra o Painel de Informações, pressione o direcional (esquerda/direita) para alterar o tempo quando satisfeito pressione a tecla Enter/Selecionar, para vídeos múltiplos cliques para esquerda/direita ou segurando a tecla vai fazer com que o passo de pulo aumente (15 segundos até 30 minutos) parando de clicar ou soltando a tecla irá restaurar o tamanho do passo apos um segundo de volta para o valor mais baixo, para clipes o valor de pulo é de 5 em 5 segundos";
     STR_CONTROLS_PLAY_5 = "Alterar qualidade: Abra o Painel de Informações, use as Setas Direcionais (Cima/Baixo) para escolher a qualidade e pressione a tecla selecionar para alterar.";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo: Pressione a tecla selecionar duas vezes. A qualidade do vídeo continuará sendo a mesma, mas após o segundo clique, o vídeo será recarregado.";
     STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat: GUIDE ou INFO.";
@@ -195,4 +195,7 @@ function pt_BRLang() {
     STR_SIZE = "Tamanho ";
     STR_BRIGHTNESS = "Brilho ";
     STR_FORBIDDEN = "Conteúdo proibido, esta Live deve ser apenas para assinantes Prime ou bloqueada para apenas aplicativos oficiais do Twitch";
+    STR_JUMPING_STEP = "Passo de pulo ";
+    STR_SECONDS = " segundos";
+    STR_MINUTES = " Minutos";
 }

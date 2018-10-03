@@ -44,7 +44,8 @@ var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
 var PlayVod_HasVodInfo = true;
 var PlayVod_ProgressBaroffset = 0;
-var PlayVod_jumpTimers = [0, 15, 15, 15, 15, 30, 30, 30, 30, 60, 60, 60, 60, 120, 120, 120, 120, 300, 300, 300, 300, 600, 600, 600, 600, 900, 900, 900, 900, 1800];
+var PlayVod_StepsCount = 0;
+var PlayVod_jumpTimers = [0, 15, 30, 60, 120, 180, 240, 300, 600, 900, 1200, 1500, 1800];
 
 var PlayVod_WasPlaying = 0;
 var PlayVod_Restore_value = {
@@ -65,7 +66,9 @@ function PlayVod_Start() {
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
     Main_HideElement('progress_bar_div');
+    PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
 
     if (PlayVod_vodOffset) { // this is a vod comming from a clip
@@ -613,9 +616,11 @@ function PlayVod_IconsBottonFocus() {
     if (PlayVod_PanelY) {
         Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsAddFocus();
+        document.getElementById('progress_bar_steps').style.display = 'none';
     } else {
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsRemoveFocus();
+        document.getElementById('progress_bar_steps').style.display = 'inline-block';
     }
 }
 
@@ -698,6 +703,18 @@ function PlayVod_jump() {
 
 function PlayVod_SizeClear() {
     PlayVod_jumpCount = 0;
+    PlayVod_StepsCount = 0;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+}
+
+function PlayVod_jumpSteps(duration_seconds) {
+    if (Math.abs(duration_seconds) > 60)
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + (duration_seconds / 60) + STR_MINUTES);
+    else if (duration_seconds)
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + duration_seconds + STR_SECONDS);
+    else
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + Play_DefaultjumpTimers[1] + STR_SECONDS);
+
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
@@ -706,7 +723,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     window.clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;
 
-    if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1)) PlayVod_jumpCount++;
+    if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1) && (PlayVod_StepsCount++ % 6) === 0) PlayVod_jumpCount++;
 
     PlayVod_TimeToJump += Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier;
     jumpTotime = currentTime + PlayVod_TimeToJump;
@@ -715,15 +732,18 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
         PlayVod_TimeToJump = duration_seconds - currentTime - Play_DefaultjumpTimers[1];
         jumpTotime = currentTime + PlayVod_TimeToJump;
         PlayVod_jumpCount = 0;
+        PlayVod_StepsCount = 0;
     } else if (jumpTotime < 0) {
         PlayVod_TimeToJump = 0 - currentTime;
         PlayVod_jumpCount = 0;
+        PlayVod_StepsCount = 0;
         jumpTotime = 0;
     }
 
     PlayVod_ProgresBarrUpdate(jumpTotime, duration_seconds);
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
-    PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 500);
+    PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
 }
 
 function PlayVod_SaveVodIds() {
