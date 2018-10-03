@@ -397,7 +397,8 @@ function ChannelContent_keyEnter() {
                 Play_isHost = true;
                 Play_DisplaynameHost = Play_selectedChannelDisplayname;
                 Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
-            }
+                Play_selectedChannel_id = ChannelContent_TargetId;
+            } else Play_selectedChannel_id = Main_selectedChannel_id;
 
             Main_openStream();
         } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
