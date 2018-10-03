@@ -618,7 +618,6 @@ function Play_onPlayer() {
 
     Main_ready(function() {
         Play_offsettime = Play_oldcurrentTime;
-        Play_HideWarningDialog();
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);

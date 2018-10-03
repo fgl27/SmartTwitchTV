@@ -513,7 +513,6 @@ function PlayVod_onPlayer() {
     });
 
     Main_ready(function() {
-        Play_HideWarningDialog();
         PlayVod_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         PlayVod_PlayerCheckCount = 0;

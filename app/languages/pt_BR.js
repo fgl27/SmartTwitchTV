@@ -186,6 +186,7 @@ function pt_BRLang() {
     STR_SWITCH_TYPE = "Troque o tipo (Mais recente ou visto)";
     STR_ENABLE = "Ligado";
     STR_DISABLE = "Desligado";
+    STR_RESTORE_PLAYBACK_WARN = "O aplicativo foi fechado durante a reprodução, restaurando a reprodução";
     STR_RESTORE_PLAYBACK = "Restaurar a reprodução";
     STR_RESTORE_PLAYBACK_SUMARRY = "Ao trocar de aplicativo, o aplicativo pode ser encerrado pelo sistema para liberar memoria. Nesse caso, o aplicativo salva o que estava sendo reproduzido e restaura a reprodução quando reaberto";
     STR_CHAT_FONT = "Tamanho da fonte do chat";

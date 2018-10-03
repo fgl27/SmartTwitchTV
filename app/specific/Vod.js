@@ -522,7 +522,6 @@ function Vod_openStream() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_clearPause();
-    Play_HideWarningDialog();
     Play_CleanHideExit();
     Main_HideElement('scene1');
     PlayVod_HasVodInfo = false;

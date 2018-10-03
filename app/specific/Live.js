@@ -186,6 +186,7 @@ function Live_loadDataSuccessFinish() {
             }
             if (Main_FirstRun && Live_Status &&
                 (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying)) {
+                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                 if (Play_WasPlaying) {
                     Play_selectedChannel = Play_Restore_value.name;
                     Play_selectedChannelDisplayname = Play_Restore_value.display_name;
