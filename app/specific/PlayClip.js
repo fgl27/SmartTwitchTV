@@ -325,8 +325,8 @@ function PlayClip_updateCurrentTime(currentTime) {
     if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
     if (PlayClip_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
-    if (!PlayVod_IsJumping && Play_isPanelShown() && !Play_BufferDialogVisible())
-        PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds);
+    if (Play_isPanelShown() && !Play_BufferDialogVisible())
+        PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_hidePanel() {
@@ -336,13 +336,13 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds);
+    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds, true);
     Play_ChatPosition();
 }
 
 function PlayClip_showPanel() {
     Play_clock();
-    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds);
+    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), ChannelClip_DurationSeconds, true);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
