@@ -958,7 +958,7 @@ function PlayVod_handleKeyDown(e) {
                         if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                         Play_ChatSize(true);
                         if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
-                    } else Play_showChatBackgroundDialog('Size 100%');
+                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeVal.length - 1].percentage);
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
@@ -979,7 +979,7 @@ function PlayVod_handleKeyDown(e) {
                         if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
                         Play_ChatSize(true);
                         if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
-                    } else Play_showChatBackgroundDialog('Size 33%');
+                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[0].percentage);
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
