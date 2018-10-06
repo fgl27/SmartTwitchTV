@@ -606,7 +606,6 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_IconsBottonResetFocus() {
-    Play_Panelcounter = 1;
     PlayVod_PanelY = 0;
     PlayVod_IconsBottonFocus();
 }
