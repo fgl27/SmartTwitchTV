@@ -476,7 +476,7 @@ function Vod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_VideoOpenVod(Vod_cursorY + '_' + Vod_cursorX, Vod_ids, Vod_handleKeyDown);
+            Main_OpenVod(Vod_cursorY + '_' + Vod_cursorX, Vod_ids, Vod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Vod_handleKeyDown);

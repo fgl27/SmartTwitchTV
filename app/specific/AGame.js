@@ -524,7 +524,7 @@ function AGame_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (AGame_cursorY !== -1) {
-                Main_VideoOpenStream(AGame_cursorY + '_' + AGame_cursorX, AGame_ids, AGame_handleKeyDown);
+                Main_OpenLiveStream(AGame_cursorY + '_' + AGame_cursorX, AGame_ids, AGame_handleKeyDown);
             } else AGame_headerOptions();
             break;
         case KEY_RED:

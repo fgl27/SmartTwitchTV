@@ -602,16 +602,6 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
 }
 
-function Main_openStream() {
-    document.body.addEventListener("keydown", Play_handleKeyDown, false);
-    Main_ShowElement('scene2');
-    Play_hidePanel();
-    Play_hideChat();
-    Play_HideEndDialog();
-    Main_HideElement('scene1');
-    Play_Start();
-}
-
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
@@ -944,6 +934,65 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     } else Main_handleKeyUp();
 }
 
+
+function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
+    Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Play_selectedChannel_id = Play_selectedChannel[1];
+    Play_selectedChannel = Play_selectedChannel[0];
+    if (Main_Go === Main_UserHost) {
+        Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
+        Play_isHost = true;
+    } else Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    if (Main_Go === Main_aGame) Main_OldgameSelected = Main_gameSelected;
+    Main_openStream();
+}
+
+function Main_openStream() {
+    document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Main_ShowElement('scene2');
+    Play_hidePanel();
+    Play_hideChat();
+    Play_HideEndDialog();
+    Main_HideElement('scene1');
+    Play_Start();
+}
+
+function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
+    ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
+    ChannelVod_language = ChannelVod_vodId[2];
+    Play_gameSelected = ChannelVod_vodId[3];
+    Main_selectedChannel = ChannelVod_vodId[4];
+    Play_IncrementView = ChannelVod_vodId[5];
+    ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
+
+    if (Main_Go === Main_ChannelVod) {
+        ChannelVod_title = document.getElementById(idsArray[3] + id).textContent;
+    } else {
+        ChannelVod_title = '';
+        Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    }
+
+    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
+    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
+    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
+        ', ' + document.getElementById(idsArray[6] + id).textContent;
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
+
+    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+    Main_ShowElement('scene2');
+    PlayVod_hidePanel();
+    Play_hideChat();
+    Play_clearPause();
+    Play_CleanHideExit();
+    Main_HideElement('scene1');
+    PlayVod_HasVodInfo = false;
+    PlayVod_Start();
+}
+
 function Main_ScrollTable(id, position) {
     document.getElementById(id).style.top = position + "px";
 
@@ -1057,54 +1106,6 @@ function Main_SidePannelHide() {
     Main_SidePannelRemoveFocus();
     Main_SidePannelPos = 0;
     Main_SidePannelAddFocus();
-}
-
-function Main_VideoOpenStream(id, idsArray, handleKeyDownFunction) {
-    Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-    Play_selectedChannel_id = Play_selectedChannel[1];
-    Play_selectedChannel = Play_selectedChannel[0];
-    if (Main_Go === Main_UserHost) {
-        Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
-        Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-        Play_isHost = true;
-    } else Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
-    Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
-    if (Main_Go === Main_aGame) Main_OldgameSelected = Main_gameSelected;
-    Main_openStream();
-}
-
-function Main_VideoOpenVod(id, idsArray, handleKeyDownFunction) {
-    ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-    ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
-    ChannelVod_language = ChannelVod_vodId[2];
-    Play_gameSelected = ChannelVod_vodId[3];
-    Main_selectedChannel = ChannelVod_vodId[4];
-    Play_IncrementView = ChannelVod_vodId[5];
-    ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
-
-    if (Main_Go === Main_ChannelVod) {
-        ChannelVod_title = document.getElementById(idsArray[3] + id).textContent;
-    } else {
-        ChannelVod_title = '';
-        Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
-    }
-
-    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
-    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
-        ', ' + document.getElementById(idsArray[6] + id).textContent;
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
-
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-    Main_ShowElement('scene2');
-    PlayVod_hidePanel();
-    Play_hideChat();
-    Play_clearPause();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-    PlayVod_HasVodInfo = false;
-    PlayVod_Start();
 }
 
 function Main_SidePannelhandleKeyDown(event) {

@@ -382,7 +382,7 @@ function Featured_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_VideoOpenStream(Featured_cursorY + '_' + Featured_cursorX, Featured_ids, Featured_handleKeyDown);
+            Main_OpenLiveStream(Featured_cursorY + '_' + Featured_cursorX, Featured_ids, Featured_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Featured_handleKeyDown);
