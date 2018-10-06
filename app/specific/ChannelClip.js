@@ -467,24 +467,7 @@ function ChannelClip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelClip_playUrl = JSON.parse(document.getElementById(ChannelClip_ids[8] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).getAttribute(Main_DataAttribute));
-            ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
-            Play_gameSelected = ChannelClip_playUrl[2];
-            Main_selectedChannel = ChannelClip_playUrl[3];
-            Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
-            Main_selectedChannelLogo = ChannelClip_playUrl[5];
-            Main_selectedChannel_id = ChannelClip_playUrl[6];
-            ChannelVod_vodId = ChannelClip_playUrl[7];
-            ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
-            ChannelClip_playUrl = ChannelClip_playUrl[0];
-
-            ChannelClip_title = document.getElementById(ChannelClip_ids[3] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_createdAt = document.getElementById(ChannelClip_ids[4] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_Duration = document.getElementById(ChannelClip_ids[5] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_views = document.getElementById(ChannelClip_ids[6] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_language = document.getElementById(ChannelClip_ids[7] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_game = document.getElementById(ChannelClip_ids[11] + ChannelClip_cursorY + '_' + ChannelClip_cursorX).textContent;
-            ChannelClip_openStream();
+            Main_OpenClip(ChannelClip_cursorY + '_' + ChannelClip_cursorX, ChannelClip_ids, ChannelClip_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(ChannelClip_handleKeyDown);
@@ -508,17 +491,4 @@ function ChannelClip_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function ChannelClip_openStream() {
-    document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    document.body.removeEventListener("keydown", ChannelClip_handleKeyDown);
-    Main_ShowElement('scene2');
-    Play_hideChat();
-    Play_clearPause();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-
-    PlayClip_Start();
 }
