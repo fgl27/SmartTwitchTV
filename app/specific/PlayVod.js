@@ -50,7 +50,8 @@ var PlayVod_jumpTimers = [0, 15, 30, 60, 120, 300, 600, 900, 1200, 1800];
 var PlayVod_WasPlaying = 0;
 var PlayVod_Restore_value = {
     "vodOffset": 1,
-    "vod_id": 1
+    "vod_id": 1,
+    "game": 1
 };
 var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
@@ -114,6 +115,7 @@ function PlayVod_PosStart() {
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     PlayVod_Restore_value.vod_id = ChannelVod_vodId;
+    PlayVod_Restore_value.game = Play_gameSelected;
     localStorage.setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
@@ -260,6 +262,7 @@ function PlayVod_updateVodInfoPannel(response) {
 
 function PlayVod_SaveOffset() {
     PlayVod_Restore_value.vodOffset = parseInt(PlayVod_currentTime / 1000);
+    PlayVod_Restore_value.game = Play_gameSelected;
     localStorage.setItem('PlayVod_Restore_value', JSON.stringify(PlayVod_Restore_value));
 }
 

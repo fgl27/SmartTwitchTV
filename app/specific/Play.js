@@ -153,7 +153,8 @@ var Play_WasPlaying = 0;
 var Play_Restore_value = {
     "display_name": '',
     "name": '',
-    "id": ''
+    "id": '',
+    "game": ''
 };
 
 var Play_ChatFont = 1;
@@ -305,6 +306,7 @@ function Play_updateStreamInfoStart() {
                         Play_selectedChannel_id = response.stream.channel._id;
                         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
                         Play_gameSelected = response.stream.game;
+                        Play_Restore_value.game = Play_gameSelected;
                         Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
                         Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
@@ -357,7 +359,9 @@ function Play_updateStreamInfo() {
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.stream !== null) {
                         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
-                        Main_textContent("stream_info_game", STR_PLAYING + response.stream.game + STR_FOR +
+                        Play_gameSelected = response.stream.game;
+                        Play_Restore_value.game = Play_gameSelected;
+                        Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
                             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                     } else if (Play_RestoreFromResume && Play_isOn) {

@@ -191,10 +191,12 @@ function Live_loadDataSuccessFinish() {
                     Play_selectedChannel = Play_Restore_value.name;
                     Play_selectedChannelDisplayname = Play_Restore_value.display_name;
                     Play_selectedChannel_id = Play_Restore_value.id;
+                    Play_gameSelected = Play_Restore_value.game;
                     Main_openStream();
                 } else {
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
                     ChannelVod_vodId = PlayVod_Restore_value.vod_id;
+                    Play_gameSelected = PlayVod_Restore_value.game;
                     Vod_openStream();
                 }
                 document.body.removeEventListener("keydown", Live_handleKeyDown);
@@ -432,14 +434,7 @@ function Live_handleKeyDown(event) {
                     if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
                 } catch (e) {}
-            } else {
-                Play_selectedChannel = JSON.parse(document.getElementById(Live_ids[8] + Live_cursorY + '_' + Live_cursorX).getAttribute(Main_DataAttribute));
-                Play_selectedChannel_id = Play_selectedChannel[1];
-                Play_selectedChannel = Play_selectedChannel[0];
-                Play_selectedChannelDisplayname = document.getElementById(Live_ids[3] + Live_cursorY + '_' + Live_cursorX).textContent;
-                document.body.removeEventListener("keydown", Live_handleKeyDown);
-                Main_openStream();
-            }
+            } else Main_VideoOpenStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Live_handleKeyDown);

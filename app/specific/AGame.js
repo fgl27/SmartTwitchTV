@@ -524,13 +524,7 @@ function AGame_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (AGame_cursorY !== -1) {
-                Play_selectedChannel = JSON.parse(document.getElementById(AGame_ids[8] + AGame_cursorY + '_' + AGame_cursorX).getAttribute(Main_DataAttribute));
-                Play_selectedChannel_id = Play_selectedChannel[1];
-                Play_selectedChannel = Play_selectedChannel[0];
-                Play_selectedChannelDisplayname = document.getElementById(AGame_ids[3] + AGame_cursorY + '_' + AGame_cursorX).textContent;
-                document.body.removeEventListener("keydown", AGame_handleKeyDown);
-                Main_OldgameSelected = Main_gameSelected;
-                Main_openStream();
+                Main_VideoOpenStream(AGame_cursorY + '_' + AGame_cursorX, AGame_ids, AGame_handleKeyDown);
             } else AGame_headerOptions();
             break;
         case KEY_RED:

@@ -1059,6 +1059,21 @@ function Main_SidePannelHide() {
     Main_SidePannelAddFocus();
 }
 
+function Main_VideoOpenStream(id, idsArray, handleKeyDownFunction) {
+    Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Play_selectedChannel_id = Play_selectedChannel[1];
+    Play_selectedChannel = Play_selectedChannel[0];
+    if (Main_Go === Main_UserHost) {
+        Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
+        Play_isHost = true;
+    } else Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    if (Main_Go === Main_aGame) Main_OldgameSelected = Main_gameSelected;
+    Main_openStream();
+}
+
 function Main_SidePannelhandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:

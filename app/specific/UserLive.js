@@ -457,12 +457,7 @@ function UserLive_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = JSON.parse(document.getElementById(UserLive_ids[8] + UserLive_cursorY + '_' + UserLive_cursorX).getAttribute(Main_DataAttribute));
-            Play_selectedChannel_id = Play_selectedChannel[1];
-            Play_selectedChannel = Play_selectedChannel[0];
-            Play_selectedChannelDisplayname = document.getElementById(UserLive_ids[3] + UserLive_cursorY + '_' + UserLive_cursorX).textContent;
-            document.body.removeEventListener("keydown", UserLive_handleKeyDown);
-            Main_openStream();
+            Main_VideoOpenStream(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids, UserLive_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(UserLive_handleKeyDown);

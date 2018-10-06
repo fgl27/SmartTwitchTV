@@ -387,14 +387,7 @@ function UserHost_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Play_selectedChannel = JSON.parse(document.getElementById(UserHost_ids[8] + UserHost_cursorY + '_' + UserHost_cursorX).getAttribute(Main_DataAttribute));
-            Play_selectedChannel_id = Play_selectedChannel[1];
-            Play_selectedChannel = Play_selectedChannel[0];
-            Play_DisplaynameHost = document.getElementById(UserHost_ids[3] + UserHost_cursorY + '_' + UserHost_cursorX).textContent;
-            Play_selectedChannelDisplayname = Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-            Play_isHost = true;
-            document.body.removeEventListener("keydown", UserHost_handleKeyDown);
-            Main_openStream();
+            Main_VideoOpenStream(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids, UserHost_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(UserHost_handleKeyDown);
