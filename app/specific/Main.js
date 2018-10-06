@@ -1074,6 +1074,39 @@ function Main_VideoOpenStream(id, idsArray, handleKeyDownFunction) {
     Main_openStream();
 }
 
+function Main_VideoOpenVod(id, idsArray, handleKeyDownFunction) {
+    ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
+    ChannelVod_language = ChannelVod_vodId[2];
+    Play_gameSelected = ChannelVod_vodId[3];
+    Main_selectedChannel = ChannelVod_vodId[4];
+    Play_IncrementView = ChannelVod_vodId[5];
+    ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
+
+    if (Main_Go === Main_ChannelVod) {
+        ChannelVod_title = document.getElementById(idsArray[3] + id).textContent;
+    } else {
+        ChannelVod_title = '';
+        Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    }
+
+    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
+    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
+    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
+        ', ' + document.getElementById(idsArray[6] + id).textContent;
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
+
+    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+    Main_ShowElement('scene2');
+    PlayVod_hidePanel();
+    Play_hideChat();
+    Play_clearPause();
+    Play_CleanHideExit();
+    Main_HideElement('scene1');
+    PlayVod_HasVodInfo = false;
+    PlayVod_Start();
+}
+
 function Main_SidePannelhandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:

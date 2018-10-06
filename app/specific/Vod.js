@@ -476,21 +476,7 @@ function Vod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = JSON.parse(document.getElementById(Vod_ids[8] + Vod_cursorY + '_' + Vod_cursorX).getAttribute(Main_DataAttribute));
-            ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
-            ChannelVod_language = ChannelVod_vodId[2];
-            Play_gameSelected = ChannelVod_vodId[3];
-            Main_selectedChannel = ChannelVod_vodId[4];
-            Play_IncrementView = ChannelVod_vodId[5];
-            ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
-
-            ChannelVod_title = '';
-            Main_selectedChannelDisplayname = document.getElementById(Vod_ids[3] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            ChannelVod_createdAt = document.getElementById(Vod_ids[4] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            ChannelVod_Duration = document.getElementById(Vod_ids[5] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            ChannelVod_views = document.getElementById(Vod_ids[11] + Vod_cursorY + '_' + Vod_cursorX).innerHTML +
-                ', ' + document.getElementById(Vod_ids[6] + Vod_cursorY + '_' + Vod_cursorX).textContent;
-            Vod_openStream();
+            Main_VideoOpenVod(Vod_cursorY + '_' + Vod_cursorX, Vod_ids, Vod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Vod_handleKeyDown);
@@ -513,19 +499,6 @@ function Vod_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function Vod_openStream() {
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-    document.body.removeEventListener("keydown", Vod_handleKeyDown);
-    Main_ShowElement('scene2');
-    PlayVod_hidePanel();
-    Play_hideChat();
-    Play_clearPause();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-    PlayVod_HasVodInfo = false;
-    PlayVod_Start();
 }
 
 function Vod_SetPeriod() {

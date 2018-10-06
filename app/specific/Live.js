@@ -197,7 +197,13 @@ function Live_loadDataSuccessFinish() {
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
                     ChannelVod_vodId = PlayVod_Restore_value.vod_id;
                     Play_gameSelected = PlayVod_Restore_value.game;
-                    Vod_openStream();
+                    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+                    Main_ShowElement('scene2');
+                    PlayVod_hidePanel();
+                    Play_CleanHideExit();
+                    Main_HideElement('scene1');
+                    PlayVod_HasVodInfo = false;
+                    PlayVod_Start();
                 }
                 document.body.removeEventListener("keydown", Live_handleKeyDown);
             } else Main_ShowElement(Live_ids[10]);
