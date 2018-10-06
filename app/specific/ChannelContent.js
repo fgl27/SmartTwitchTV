@@ -400,6 +400,8 @@ function ChannelContent_keyEnter() {
                 Play_selectedChannel_id = ChannelContent_TargetId;
             } else Play_selectedChannel_id = Main_selectedChannel_id;
 
+            Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
+
             Main_openStream();
         } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
         else if (ChannelContent_cursorX === (2 - value)) ChannelClip_init();
