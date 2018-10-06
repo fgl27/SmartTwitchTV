@@ -420,20 +420,7 @@ function ChannelVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = JSON.parse(document.getElementById(ChannelVod_ids[8] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).getAttribute(Main_DataAttribute));
-            ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
-            ChannelVod_language = ChannelVod_vodId[2];
-            Play_gameSelected = ChannelVod_vodId[3];
-            Main_selectedChannel = ChannelVod_vodId[4];
-            Play_IncrementView = ChannelVod_vodId[5];
-            ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
-
-            ChannelVod_title = document.getElementById(ChannelVod_ids[3] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).innerHTML;
-            ChannelVod_createdAt = document.getElementById(ChannelVod_ids[4] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
-            ChannelVod_Duration = document.getElementById(ChannelVod_ids[5] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
-            ChannelVod_views = document.getElementById(ChannelVod_ids[11] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent +
-                ', ' + document.getElementById(ChannelVod_ids[6] + ChannelVod_cursorY + '_' + ChannelVod_cursorX).textContent;
-            ChannelVod_openStream();
+            Main_VideoOpenVod(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids, ChannelVod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(ChannelVod_handleKeyDown);
@@ -457,17 +444,4 @@ function ChannelVod_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function ChannelVod_openStream() {
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-    document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
-    Main_ShowElement('scene2');
-    PlayVod_hidePanel();
-    Play_hideChat();
-    Play_clearPause();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-    PlayVod_Start();
 }

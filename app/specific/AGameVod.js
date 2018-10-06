@@ -416,21 +416,7 @@ function AGameVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelVod_vodId = JSON.parse(document.getElementById(AGameVod_ids[8] + AGameVod_cursorY + '_' + AGameVod_cursorX).getAttribute(Main_DataAttribute));
-            ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
-            ChannelVod_language = ChannelVod_vodId[2];
-            Play_gameSelected = ChannelVod_vodId[3];
-            Main_selectedChannel = ChannelVod_vodId[4];
-            Play_IncrementView = ChannelVod_vodId[5];
-            ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
-
-            ChannelVod_title = '';
-            Main_selectedChannelDisplayname = document.getElementById(AGameVod_ids[3] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            ChannelVod_createdAt = document.getElementById(AGameVod_ids[4] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            ChannelVod_Duration = document.getElementById(AGameVod_ids[5] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            ChannelVod_views = document.getElementById(AGameVod_ids[11] + AGameVod_cursorY + '_' + AGameVod_cursorX).innerHTML +
-                ', ' + document.getElementById(AGameVod_ids[6] + AGameVod_cursorY + '_' + AGameVod_cursorX).textContent;
-            AGameVod_openStream();
+            Main_VideoOpenVod(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids, AGameVod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(AGameVod_handleKeyDown);
@@ -451,20 +437,6 @@ function AGameVod_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function AGameVod_openStream() {
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-    document.body.removeEventListener("keydown", AGameVod_handleKeyDown);
-    Main_ShowElement('scene2');
-    PlayVod_hidePanel();
-    Play_hideChat();
-    Play_clearPause();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
-    PlayVod_HasVodInfo = false;
-    Main_HideElement('scene1');
-    PlayVod_Start();
 }
 
 function AGameVod_SetPeriod() {
