@@ -313,7 +313,7 @@ function PlayVod_loadDataRequest() {
         } else {
             theUrl = 'http://usher.ttvnw.net/vod/' + ChannelVod_vodId +
                 '.m3u8?&nauth=' + escape(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-                '&allow_source=true&allow_audi_only=true';
+                '&allow_source=true&allow_audi_only=true&allow_spectre=false';
         }
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod_loadingDataTimeout;
