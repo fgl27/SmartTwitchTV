@@ -440,7 +440,7 @@ function Live_handleKeyDown(event) {
                     if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
                 } catch (e) {}
-            } else Main_VideoOpenStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
+            } else Main_OpenLiveStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Live_handleKeyDown);
