@@ -475,24 +475,7 @@ function AGameClip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelClip_playUrl = JSON.parse(document.getElementById(AGameClip_ids[8] + AGameClip_cursorY + '_' + AGameClip_cursorX).getAttribute(Main_DataAttribute));
-            ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
-            Play_gameSelected = ChannelClip_playUrl[2];
-            Main_selectedChannel = ChannelClip_playUrl[3];
-            Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
-            Main_selectedChannelLogo = ChannelClip_playUrl[5];
-            Main_selectedChannel_id = ChannelClip_playUrl[6];
-            ChannelVod_vodId = ChannelClip_playUrl[7];
-            ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
-            ChannelClip_playUrl = ChannelClip_playUrl[0];
-
-            ChannelClip_title = '';
-            ChannelClip_createdAt = document.getElementById(AGameClip_ids[4] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            ChannelClip_Duration = document.getElementById(AGameClip_ids[5] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            ChannelClip_views = document.getElementById(AGameClip_ids[6] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            ChannelClip_language = document.getElementById(AGameClip_ids[7] + AGameClip_cursorY + '_' + AGameClip_cursorX).textContent;
-            ChannelClip_game = document.getElementById(AGameClip_ids[11] + AGameClip_cursorY + '_' + AGameClip_cursorX).innerHTML;
-            AGameClip_openStream();
+            Main_OpenClip(AGameClip_cursorY + '_' + AGameClip_cursorX, AGameClip_ids, AGameClip_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(AGameClip_handleKeyDown);
@@ -513,17 +496,4 @@ function AGameClip_handleKeyDown(event) {
         default:
             break;
     }
-}
-
-function AGameClip_openStream() {
-    document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    document.body.removeEventListener("keydown", AGameClip_handleKeyDown);
-    Main_ShowElement('scene2');
-    Play_hideChat();
-    Play_clearPause();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-
-    PlayClip_Start();
 }

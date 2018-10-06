@@ -960,6 +960,37 @@ function Main_openStream() {
     Play_Start();
 }
 
+function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
+    ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
+    Play_gameSelected = ChannelClip_playUrl[2];
+    Main_selectedChannel = ChannelClip_playUrl[3];
+    Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
+    Main_selectedChannelLogo = ChannelClip_playUrl[5];
+    Main_selectedChannel_id = ChannelClip_playUrl[6];
+    ChannelVod_vodId = ChannelClip_playUrl[7];
+    ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
+    ChannelClip_playUrl = ChannelClip_playUrl[0];
+
+    ChannelClip_title = (Main_Go === Main_ChannelClip ? document.getElementById(idsArray[3] + id).textContent : '');
+    ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
+    ChannelClip_Duration = document.getElementById(idsArray[5] + id).textContent;
+    ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
+    ChannelClip_language = document.getElementById(idsArray[7] + id).textContent;
+    ChannelClip_game = document.getElementById(idsArray[11] + id).innerHTML;
+
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
+    Main_ShowElement('scene2');
+    Play_hideChat();
+    Play_clearPause();
+    Play_HideWarningDialog();
+    Play_CleanHideExit();
+    Main_HideElement('scene1');
+
+    PlayClip_Start();
+}
+
 function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     ChannelVod_DurationSeconds = parseInt(ChannelVod_vodId[1]);
