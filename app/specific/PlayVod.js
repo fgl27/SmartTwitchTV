@@ -831,9 +831,9 @@ function PlayVod_IconsRemoveFocus() {
     Main_RemoveClass('dialog_vod_' + PlayVod_VodPositions, 'dialog_end_icons_focus');
 }
 
-function PlayVod_DialogPressed() {
+function PlayVod_DialogPressed(fromStart) {
     Play_HideVodDialog();
-    if (!PlayVod_VodPositions) {
+    if (!fromStart) {
         PlayVod_vodOffset = PlayVod_VodIds['#' + ChannelVod_vodId];
         PlayVod_currentTime = PlayVod_vodOffset * 1000;
         PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds, true);
@@ -990,7 +990,7 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
-                if (Play_isVodDialogShown()) PlayVod_DialogPressed();
+                if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
                 else if (Play_isEndDialogShown()) Play_EndDialogPressed(2);
                 else if (Play_isPanelShown()) {
                     if (!PlayVod_PanelY && PlayVod_TimeToJump) PlayVod_jump();
