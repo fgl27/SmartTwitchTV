@@ -79,7 +79,8 @@ function UserGames_loadDataPrepare() {
 function UserGames_loadDataRequest() {
     try {
 
-        var xmlHttp = new XMLHttpRequest();
+        var xmlHttp = new XMLHttpRequest(),
+            url = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games';
 
         var offset = UserGames_itemsCount + UserGames_itemsCountOffset;
         if (!UserGames_live && offset && offset > (UserGames_MaxOffset - 1)) {
@@ -87,9 +88,11 @@ function UserGames_loadDataRequest() {
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
-            '/follows/games' + (UserGames_live ? '/live?limit=' + ((Main_ItemsLimitGame * 2) + Main_ItemsLimitGameOffset) : '?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset)) +
-            '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        if (UserGames_live) url += '/live?limit=750';
+        else url += '?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset) + '&offset=' + offset;
+        url += '&' + Math.round(Math.random() * 1e7);
+
+        xmlHttp.open("GET", url, true);
 
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -99,6 +102,7 @@ function UserGames_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
+                    console.log(xmlHttp.responseText);
                     UserGames_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
@@ -136,10 +140,9 @@ function UserGames_loadDataSuccess(responseText) {
     var response_items = response.follows.length;
     UserGames_MaxOffset = parseInt(response._total);
 
-    //TODO revise this
-    //Workaround to load all live channel, twitch send this on alphabetical order theoretically do not have a limit
+    //Workaround to load all live channel in the order, twitch send live user games in alphabetical order, last know limit is 750
     var limit = Main_ItemsLimitGame;
-    if (UserGames_live) limit = Main_ItemsLimitGame * 2;
+    if (UserGames_live) limit = 750;
 
     //TODO improve this
     //The correct fix here is to save the result of Games_loadDataRequest to a object
@@ -245,19 +248,23 @@ function UserGames_loadDataSuccessFinish() {
 function UserGames_loadDataReplace() {
     try {
 
-        var xmlHttp = new XMLHttpRequest();
+        var xmlHttp = new XMLHttpRequest(),
+            url = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games';
 
         Main_SetItemsLimitReplace(UserGames_emptyCellVector.length);
 
         var offset = UserGames_itemsCount + UserGames_itemsCountOffset;
-        if (offset && offset > (UserGames_MaxOffset - 1)) {
+        if (!UserGames_live && offset && offset > (UserGames_MaxOffset - 1)) {
             offset = UserGames_MaxOffset - Main_ItemsLimitReplace;
             UserGames_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
-            '/follows/games' + (UserGames_live ? '/live' : '') + '?limit=' + Main_ItemsLimitReplace +
-            '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        if (UserGames_live) url += '/live?limit=750';
+        else url += '?limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
+        url += '&' + Math.round(Math.random() * 1e7);
+
+        xmlHttp.open("GET", url, true);
+
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
