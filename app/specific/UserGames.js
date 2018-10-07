@@ -88,7 +88,7 @@ function UserGames_loadDataRequest() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
-            '/follows/games' + (UserGames_live ? '/live?limit=' + ((Main_ItemsLimitGame * 2) + Main_ItemsLimitGameOffset) : +'?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset)) +
+            '/follows/games' + (UserGames_live ? '/live?limit=' + ((Main_ItemsLimitGame * 2) + Main_ItemsLimitGameOffset) : '?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset)) +
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = UserGames_loadingDataTimeout;
