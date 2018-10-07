@@ -53,6 +53,7 @@ function UserGames_StartLoad() {
     UserGames_OldUserName = AddUser_UsernameArray[Users_Position].name;
     UserGames_Status = false;
     Main_empty('stream_table_user_games');
+    Main_ItemsLimitGameOffset = 1;
     UserGames_itemsCountOffset = 0;
     UserGames_MaxOffset = 0;
     UserGames_FirstLoad = true;
@@ -87,7 +88,7 @@ function UserGames_loadDataRequest() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
-            '/follows/games' + (UserGames_live ? '/live' : '') + '?limit=' + Main_ItemsLimitGame +
+            '/follows/games' + (UserGames_live ? '/live' : '') + '?limit=' + (Main_ItemsLimitGame + Main_ItemsLimitGameOffset) +
             '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserGames_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -134,7 +135,26 @@ function UserGames_loadDataSuccess(responseText) {
     var response_items = response.follows.length;
     UserGames_MaxOffset = parseInt(response._total);
 
-    if (response_items < Main_ItemsLimitGame) UserGames_dataEnded = true;
+    //TODO improve this
+    //The correct fix here is to save the result of Games_loadDataRequest to a object
+    //Only add to that object new games to prevent duplicated and from that load the page
+    //this way we request more then what we need and keep request at will to keep what we have bigger then what we will need next
+    //But that will take some time to write and I don't have any
+    if (response_items > Main_ItemsLimitGame) {
+        Main_ItemsLimitGameOffset--;
+        UserGames_loadDataPrepare();
+        UserGames_loadDataRequest();
+        return;
+    } else if (response_items < Main_ItemsLimitGame) {
+        if (((Main_ItemsLimitGame - response_items) < 11) && (Main_ItemsLimitGameOffset + Main_ItemsLimitGame) < 100 && (UserGames_MaxOffset - 1) > (response_items + UserGames_itemsCount)) {
+            Main_ItemsLimitGameOffset++;
+            UserGames_loadDataPrepare();
+            UserGames_loadDataRequest();
+            return;
+        } else UserGames_dataEnded = true;
+    }
+
+    Main_ItemsLimitGameOffset = 0;
 
     var offset_itemsCount = UserGames_itemsCount;
     UserGames_itemsCount += response_items;

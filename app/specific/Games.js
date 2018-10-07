@@ -12,7 +12,6 @@ var Games_loadingDataTimeout = 3500;
 var Games_emptyCellVector = [];
 var Games_itemsCountOffset = 0;
 var Games_MaxOffset = 0;
-var Main_ItemsLimitGameOffset = 1;
 var Games_itemsCountCheck = false;
 var Games_emptyContent = false;
 var Games_FirstLoad = false;
