@@ -79,6 +79,7 @@ var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_Coloumn
 var Main_ItemsLimitGame = 45;
 var Main_ColoumnsCountGame = 5;
 var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
+var Main_ItemsLimitGameOffset = 1; //for odd behavier from twitch server
 
 var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
