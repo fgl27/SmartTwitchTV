@@ -332,7 +332,7 @@ function PlayClip_updateCurrentTime(currentTime) {
 function PlayClip_hidePanel() {
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
-    PlayVod_TimeToJump = 0;
+    PlayVod_addToJump = 0;
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
@@ -528,7 +528,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isEndDialogShown()) Play_EndDialogPressed(3);
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY && PlayVod_TimeToJump) PlayVod_jump();
+                    if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
                     else Play_BottomOptionsPressed(3);
                 } else PlayClip_showPanel();
                 break;
