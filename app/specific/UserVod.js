@@ -252,14 +252,12 @@ function UserVod_loadDataReplace() {
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                console.log('UserVod_loadDataReplace responseText ' + xmlHttp.responseText);
                 if (xmlHttp.status === 200) {
                     UserVod_loadDataSuccessReplace(xmlHttp.responseText);
                     return;
-                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                    //AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataReplaceStart);
-                    console.log('UserVod_loadDataReplace bad token');
-                } else UserVod_loadDataErrorReplace();
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) //token expired
+                    AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+                else UserVod_loadDataErrorReplace();
             }
         };
 
