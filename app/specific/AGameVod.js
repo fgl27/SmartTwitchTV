@@ -207,14 +207,14 @@ function AGameVod_loadDataSuccessFinish() {
             }
             Main_ShowElement(AGameVod_ids[10]);
             AGameVod_FirstLoad = false;
-        } else {
-            Main_imgVectorLoad(IMG_404_VIDEO);
-            if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {
-                AGameVod_loadDataPrepare();
-                AGameVod_loadDataReplace();
-                return;
-            } else AGameVod_emptyCellVector = [];
-        }
+        } else Main_imgVectorLoad(IMG_404_VIDEO);
+
+        if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {
+            AGameVod_loadDataPrepare();
+            AGameVod_loadDataReplace();
+            return;
+        } else AGameVod_emptyCellVector = [];
+
         AGameVod_loadingData = false;
     });
 }
@@ -278,8 +278,6 @@ function AGameVod_loadDataSuccessReplace(responseText) {
         tempVector = [];
 
     AGameVod_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitReplace) AGameVod_dataEnded = true;
 
     for (i; i < AGameVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.vods[cursor];

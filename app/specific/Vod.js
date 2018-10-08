@@ -244,14 +244,14 @@ function Vod_loadDataSuccessFinish() {
             }
             Main_ShowElement(Vod_ids[10]);
             Vod_FirstLoad = false;
-        } else {
-            Main_imgVectorLoad(IMG_404_VIDEO);
-            if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
-                Vod_loadDataPrepare();
-                Vod_loadDataReplace();
-                return;
-            } else Vod_emptyCellVector = [];
-        }
+        } else Main_imgVectorLoad(IMG_404_VIDEO);
+
+        if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
+            Vod_loadDataPrepare();
+            Vod_loadDataReplace();
+            return;
+        } else Vod_emptyCellVector = [];
+
         Vod_loadingData = false;
     });
 }
@@ -315,8 +315,6 @@ function Vod_loadDataSuccessReplace(responseText) {
         tempVector = [];
 
     Vod_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitReplace) Vod_dataEnded = true;
 
     for (i; i < Vod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.vods[cursor];

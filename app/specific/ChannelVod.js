@@ -215,14 +215,14 @@ function ChannelVod_loadDataSuccessFinish() {
             }
             Main_ShowElement(ChannelVod_ids[10]);
             ChannelVod_FirstLoad = false;
-        } else {
-            Main_imgVectorLoad(IMG_404_VIDEO);
-            if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
-                ChannelVod_loadDataPrepare();
-                ChannelVod_loadDataReplace();
-                return;
-            } else ChannelVod_emptyCellVector = [];
-        }
+        } else Main_imgVectorLoad(IMG_404_VIDEO);
+
+        if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
+            ChannelVod_loadDataPrepare();
+            ChannelVod_loadDataReplace();
+            return;
+        } else ChannelVod_emptyCellVector = [];
+
         ChannelVod_loadingData = false;
     });
 }
@@ -288,8 +288,6 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
         tempVector = [];
 
     ChannelVod_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitReplace) ChannelVod_dataEnded = true;
 
     for (i; i < ChannelVod_emptyCellVector.length && cursor < response_items; i++, cursor++) {
         video = response.videos[cursor];
