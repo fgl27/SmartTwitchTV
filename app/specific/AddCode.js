@@ -487,7 +487,6 @@ function AddCode_RequestCheckSub() {
                     PlayVod_isSub();
                     return;
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
-                    console.log('channel does not have a subscription program');
                     AddCode_IsSub = false;
                     AddCode_loadingData = false;
                     PlayVod_NotSub();

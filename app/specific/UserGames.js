@@ -102,7 +102,6 @@ function UserGames_loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    console.log(xmlHttp.responseText);
                     UserGames_loadDataSuccess(xmlHttp.responseText);
                     return;
                 } else {
