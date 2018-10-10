@@ -547,8 +547,10 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (Play_isplaying()) Chat_Pause();
-                else Chat_Play(Chat_Id);
+                if (PlayClip_HasVOD) {
+                    if (Play_isplaying()) Chat_Pause();
+                    else Chat_Play(Chat_Id);
+                }
                 if (!Play_isEndDialogShown()) Play_KeyPause(3);
                 break;
             case KEY_INFO:
