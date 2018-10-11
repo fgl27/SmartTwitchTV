@@ -689,7 +689,7 @@ function PlayVod_jump() {
         if (PlayVod_isOn) Chat_offset = PlayVod_TimeToJump;
         else Chat_offset = ChannelVod_vodOffset;
 
-        if (Chat_offset) Chat_Init();
+        Chat_Init();
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
