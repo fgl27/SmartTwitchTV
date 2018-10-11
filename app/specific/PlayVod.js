@@ -120,7 +120,7 @@ function PlayVod_PosStart() {
     localStorage.setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-    Main_PreLoadAImage(Play_IncrementView);
+    Main_CacheImage(Play_IncrementView);
 
     SmartHub_SmartHubResume = false;
     Play_PlayerPanelOffset = -13;
@@ -258,7 +258,7 @@ function PlayVod_updateVodInfoPannel(response) {
         AddCode_Channel_id = Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
-    Main_PreLoadAImage(response.increment_view_count_url);
+    Main_CacheImage(response.increment_view_count_url);
 }
 
 function PlayVod_SaveOffset() {

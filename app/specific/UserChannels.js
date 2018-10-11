@@ -178,7 +178,7 @@ function UserChannels_loadDataSuccess() {
 }
 
 function UserChannels_createCell(row_id, id, valuesArray) {
-    if (row_id < 4) Main_PreLoadAImage(valuesArray[2]); //try to pre cache first 4 rows
+    if (row_id < 4) Main_CacheImage(valuesArray[2]); //try to pre cache first 4 rows
     return Main_createCellChannel(id, UserChannels_ids, valuesArray);
 }
 

@@ -145,7 +145,7 @@ function SearchGames_loadDataSuccess(responseText) {
 }
 
 function SearchGames_createCell(row_id, id, valuesArray) {
-    if (row_id < 2) Main_PreLoadAImage(valuesArray[1]); //try to pre cache first 2 rows
+    if (row_id < 2) Main_CacheImage(valuesArray[1]); //try to pre cache first 2 rows
     return Main_createCellGame(id, SearchGames_ids, valuesArray); //[preview_thumbnail, game_name, viwers]
 }
 
