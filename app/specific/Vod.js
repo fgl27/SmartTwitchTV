@@ -193,7 +193,7 @@ function Vod_loadDataSuccess(responseText) {
 }
 
 function Vod_createCell(row_id, id, vod_data, valuesArray, idArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]); //try to pre cache first 3 rows
+    if (row_id < Main_ColoumnsCountVideo) Main_CacheImage(valuesArray[0]); //try to pre cache first 3 rows
     return Vod_createCellVideo(vod_data, id, valuesArray, idArray);
 }
 

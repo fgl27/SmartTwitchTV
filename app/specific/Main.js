@@ -187,6 +187,7 @@ function Main_loadTranslations(device) {
 }
 
 function Main_initWindows() {
+    InitScreens();
     Main_SetStringsMain(true);
 
     Main_ScrollbarElement = document.getElementById("scrollbar");
@@ -220,18 +221,23 @@ function Main_initWindows() {
 
         Main_ready(function() {
             Main_SetStringsSecondary();
+            InitSecondaryScreens();
+
             UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
             Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
             ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
             AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
 
-            Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
-            ChannelClip_periodNumber = parseInt(localStorage.getItem('ChannelClip_periodNumber')) || 2;
-            Clip_periodNumber = parseInt(localStorage.getItem('Clip_periodNumber')) || 2;
-            AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
-            AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
 
+            Clip.periodPos = parseInt(localStorage.getItem('Clip_periodPos')) || 2;
+
+            ChannelClip_periodNumber = parseInt(localStorage.getItem('ChannelClip_periodNumber')) || 2;
+            AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
+
+            Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
+            AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
             UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
+
             PlayVod_RestoreVodIds();
 
             Main_SearchInput = document.getElementById("search_input");
@@ -239,9 +245,9 @@ function Main_initWindows() {
             Main_AddCodeInput = document.getElementById("oauth_input");
 
             // pre load All img
-            Main_PreLoadAImage(IMG_404_VIDEO);
-            Main_PreLoadAImage(IMG_404_GAME);
-            Main_PreLoadAImage(IMG_404_LOGO);
+            Main_CacheImage(IMG_404_VIDEO);
+            Main_CacheImage(IMG_404_GAME);
+            Main_CacheImage(IMG_404_LOGO);
 
             window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
             document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
@@ -567,8 +573,10 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_Go === Main_SearchChannels) SearchChannels_init();
     else if (Main_Go === Main_Vod) Vod_init();
-    else if (Main_Go === Main_Clip) Clip_init();
-    else if (Main_Go === Main_AGameVod) AGameVod_init();
+    else if (Main_Go === Main_Clip) {
+        inUseObj = Clip;
+        init();
+    } else if (Main_Go === Main_AGameVod) AGameVod_init();
     else if (Main_Go === Main_AGameClip) AGameClip_init();
     else if (Main_Go === Main_Featured) Featured_init();
     else if (Main_Go === Main_UserVod) UserVod_init();
@@ -767,7 +775,7 @@ function Main_YchangeAddFocus(y) {
     return position;
 }
 
-function Main_PreLoadAImage(link) {
+function Main_CacheImage(link) {
     Main_newImg.src = link;
 }
 
@@ -812,7 +820,7 @@ function Main_ChannelHtml(id, idArray, valuesArray) {
 }
 
 function Main_createCellVideo(row_id, id, data, idArray, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_PreLoadAImage(valuesArray[0]);
+    if (row_id < Main_ColoumnsCountVideo) Main_CacheImage(valuesArray[0]);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);
@@ -963,6 +971,7 @@ function Main_openStream() {
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+
     ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
     Play_gameSelected = ChannelClip_playUrl[2];
     Main_selectedChannel = ChannelClip_playUrl[3];
@@ -971,14 +980,17 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Main_selectedChannel_id = ChannelClip_playUrl[6];
     ChannelVod_vodId = ChannelClip_playUrl[7];
     ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
+    ChannelClip_title = ChannelClip_playUrl[9];
+    ChannelClip_language = ChannelClip_playUrl[10];
+    ChannelClip_game = ChannelClip_playUrl[11];
+
+    console.log('ChannelVod_vodId');
+
     ChannelClip_playUrl = ChannelClip_playUrl[0];
 
-    ChannelClip_title = (Main_Go === Main_ChannelClip ? document.getElementById(idsArray[3] + id).textContent : '');
     ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
     ChannelClip_Duration = document.getElementById(idsArray[5] + id).textContent;
     ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
-    ChannelClip_language = document.getElementById(idsArray[7] + id).textContent;
-    ChannelClip_game = document.getElementById(idsArray[11] + id).innerHTML;
 
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);

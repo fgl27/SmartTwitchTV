@@ -45,6 +45,7 @@ function PlayClip_Start() {
     PlayClip_HasVOD = ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
+        console.log('PlayClip_HasVOD ' + PlayClip_HasVOD);
         PlayVod_currentTime = 0;
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
