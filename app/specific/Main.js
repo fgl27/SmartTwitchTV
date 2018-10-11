@@ -230,8 +230,8 @@ function Main_initWindows() {
 
 
             Clip.periodPos = parseInt(localStorage.getItem('Clip_periodPos')) || 2;
+            ChannelClip.periodPos = parseInt(localStorage.getItem('ChannelClip_periodPos')) || 2;
 
-            ChannelClip_periodNumber = parseInt(localStorage.getItem('ChannelClip_periodNumber')) || 2;
             AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
 
             Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
@@ -565,8 +565,10 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_SearchLive) SearchLive_init();
     else if (Main_Go === Main_ChannelContent) ChannelContent_init();
     else if (Main_Go === Main_ChannelVod) ChannelVod_init();
-    else if (Main_Go === Main_ChannelClip) ChannelClip_init();
-    else if (Main_Go === Main_Users) Users_init();
+    else if (Main_Go === Main_ChannelClip) {
+        inUseObj = ChannelClip;
+        init();
+    } else if (Main_Go === Main_Users) Users_init();
     else if (Main_Go === Main_UserLive) UserLive_init();
     else if (Main_Go === Main_UserHost) UserHost_init();
     else if (Main_Go === Main_usergames) UserGames_init();
@@ -596,7 +598,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_SearchLive) SearchLive_exit();
     else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_ChannelVod) ChannelVod_exit();
-    else if (ExitCurrent === Main_ChannelClip) ChannelClip_exit();
+    else if (ExitCurrent === Main_ChannelClip) exit();
     else if (ExitCurrent === Main_Users) Users_exit();
     else if (ExitCurrent === Main_UserLive) UserLive_exit();
     else if (ExitCurrent === Main_UserHost) UserHost_exit();
@@ -604,7 +606,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
-    else if (ExitCurrent === Main_Clip) Clip_exit();
+    else if (ExitCurrent === Main_Clip) exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
     else if (ExitCurrent === Main_AGameClip) AGameClip_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();
@@ -972,7 +974,7 @@ function Main_openStream() {
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
-    ChannelClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
+    PlayClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
     Play_gameSelected = ChannelClip_playUrl[2];
     Main_selectedChannel = ChannelClip_playUrl[3];
     Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
@@ -989,7 +991,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_playUrl = ChannelClip_playUrl[0];
 
     ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelClip_Duration = document.getElementById(idsArray[5] + id).textContent;
     ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
 
     document.body.removeEventListener("keydown", handleKeyDownFunction);
