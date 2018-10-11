@@ -3,6 +3,12 @@ var inUseObj;
 var Main_ItemsLimitVideo = 45;
 var Main_ColoumnsCountVideo = 3;
 var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
+var ChannelClip_game = '';
+var ChannelClip_views = '';
+var ChannelClip_title = '';
+var ChannelClip_playUrl = '';
+var ChannelClip_createdAt = '';
+var ChannelClip_language = '';
 
 var Base_obj = {
     posX: 0,
@@ -20,7 +26,13 @@ var Base_obj = {
     itemsCountCheck: false,
     FirstLoad: false,
     data: null,
-    data_cursor: 0
+    data_cursor: 0,
+    key_blue: function() {
+        if (!Search_isSearching) Main_BeforeSearch = inUseObj.screen;
+        Main_Go = Main_Search;
+        exit();
+        Main_SwitchScreen();
+    }
 };
 
 var Base_Clip_obj = {
@@ -34,6 +46,7 @@ var Base_Clip_obj = {
 };
 
 var Clip;
+var ChannelClip;
 
 //Initiate all Main screens obj and they properties
 function InitScreens() {
@@ -43,6 +56,7 @@ function InitScreens() {
 //Initiate all Secondary screens obj and they properties
 function InitSecondaryScreens() {
     InitClip();
+    InitChannelClip();
 }
 
 function InitClip() {
@@ -95,7 +109,9 @@ function InitClip() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_HideElement('label_extra');
         },
-        key_exit: BasicExit,
+        key_exit: function() {
+            BasicExit(Main_Before);
+        },
         key_channelup: function() {
             Main_Before = this.screen;
             Main_Go = Main_Live;
@@ -126,9 +142,95 @@ function InitClip() {
     Clip = assign(Clip, Base_Clip_obj);
 }
 
+function InitChannelClip() {
+    ChannelClip = assign({
+        ids: ScreenIds('ChannelClip'),
+        table: 'stream_table_channel_clip',
+        screen: Main_ChannelClip,
+        base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(Main_selectedChannel) +
+                '&limit=' + (this.ItemsLimit * 2) + '&period=' +
+                this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
+        },
+        concatenate: function(responseText) {
+            //console.log(responseText);
+            if (this.data) {
+                var tempObj = JSON.parse(responseText);
+                this.cursor = tempObj._cursor;
+                if (this.cursor === '') this.dataEnded = true;
+
+                this.data = this.data.concat(tempObj.clips);
+                inUseObj.loadingData = false;
+
+                console.log('if');
+                console.log(this.data.length);
+                console.log('cursor ' + this.cursor);
+                console.log('dataEnded ' + this.dataEnded);
+            } else {
+                this.data = JSON.parse(responseText);
+                this.cursor = this.data._cursor;
+                if (this.cursor === '') this.dataEnded = true;
+
+                this.data = this.data.clips;
+                console.log('else');
+                console.log(this.data.length);
+                this.loadDataSuccess();
+                inUseObj.loadingData = false;
+            }
+        },
+        loadDataSuccess: loadDataSuccessClip,
+        SetPeriod: ChannelClip_SetPeriod,
+        label_init: function() {
+            if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+            if (Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            Main_cleanTopLabel();
+            this.SetPeriod();
+            Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
+            Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+            this.lastselectedChannel = Main_selectedChannel;
+        },
+        label_exit: Main_RestoreTopLabel,
+        key_exit: function() {
+            BasicExit(Main_ChannelContent);
+        },
+        key_channelup: function() {
+            this.periodPos++;
+            if (this.periodPos > 4) this.periodPos = 1;
+            this.SetPeriod();
+            StartLoad();
+        },
+        key_channeldown: function() {
+            this.periodPos--;
+            if (this.periodPos < 1) this.periodPos = 4;
+            this.SetPeriod();
+            StartLoad();
+        },
+        key_play: function() {
+            Main_OpenClip(this.posY + '_' + this.posX, this.ids, handleKeyDown);
+        },
+        key_yellow: Main_showControlsDialog,
+        key_green: function() {
+            exit();
+            Main_GoLive();
+        },
+        key_blue: function() {
+            if (!Search_isSearching) {
+                ChannelContent_SetChannelValue();
+                Main_BeforeSearch = inUseObj.screen;
+            }
+            Main_Go = Main_Search;
+            exit();
+            Main_SwitchScreen();
+        }
+    }, Base_obj);
+
+    ChannelClip = assign(ChannelClip, Base_Clip_obj);
+}
+
 function ScreenIds(base) {
     console.log(base);
-    return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', 'clip_scroll', base + '_lang'];
+    return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', base + '_scroll', base + '_lang'];
 }
 
 function assign() {
@@ -178,6 +280,7 @@ function StartLoad() {
     inUseObj.idObject = {};
     inUseObj.itemsCountCheck = false;
     inUseObj.FirstLoad = true;
+    inUseObj.emptyContent = false;
     inUseObj.itemsCount = 0;
     inUseObj.posX = 0;
     inUseObj.posY = 0;
@@ -204,6 +307,15 @@ function Clip_SetPeriod() {
     else Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_ALL));
 
     localStorage.setItem('Clip_periodPos', inUseObj.periodPos);
+}
+
+function ChannelClip_SetPeriod() {
+    if (inUseObj.periodPos === 1) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_DAY);
+    else if (inUseObj.periodPos === 2) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_WEEK);
+    else if (inUseObj.periodPos === 3) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_MONTH);
+    else if (inUseObj.periodPos === 4) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_ALL);
+
+    localStorage.setItem('ChannelClip_periodPos', inUseObj.periodPos);
 }
 
 function loadDataRequest() {
@@ -314,7 +426,7 @@ function loadDataSuccessClip() {
         }
 
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
-    } else inUseObj.emptyContent = true;
+    } else if (!inUseObj.status) inUseObj.emptyContent = true;
     loadDataSuccessFinish();
 }
 
@@ -410,11 +522,12 @@ function ChangeFocus(y, x) {
     addFocus();
 }
 
-function BasicExit() {
-    if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+function BasicExit(before) {
+    if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+    else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
     else {
-        if (Main_Before === inUseObj.screen) Main_Go = Main_Live;
-        else Main_Go = Main_Before;
+        if (before === inUseObj.screen) Main_Go = Main_Live;
+        else Main_Go = before;
         exit();
         Main_SwitchScreen();
     }
@@ -490,10 +603,7 @@ function handleKeyDown(event) {
             inUseObj.key_yellow();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = inUseObj.screen;
-            Main_Go = Main_Search;
-            exit();
-            Main_SwitchScreen();
+            inUseObj.key_blue();
             break;
         default:
             break;
