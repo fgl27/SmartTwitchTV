@@ -10,7 +10,7 @@ var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
 var Chat_title = '';
-var defaultColors = ["ff0000", "ff4000", "ff8000", "ffbf00", "ffff00", "bfff00", "80ff00", "40ff00", "00ff00", "00ff40", "00ff80", "00ffbf", "00ffff", "00bfff", "0080ff", "0040ff", "4000ff", "8000ff", "bf00ff", "ff00ff", "ff00bf", "ff0080", "ff0040", "ff0000"];
+var defaultColors = ["ff0000", "ff4000", "ff8000", "ffbf00", "ffff00", "bfff00", "80ff00", "40ff00", "00ff00", "00ff40", "00ff80", "00ffbf", "00ffff", "00bfff", "0080ff", "0040ff", "ff00ff", "ff00bf", "ff0080", "ff0040"];
 var defaultColorsLength = defaultColors.length;
 var Chat_div;
 var Chat_Position = 0;
