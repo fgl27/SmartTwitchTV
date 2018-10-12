@@ -103,7 +103,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
-var Main_minversion = '100718';
+var Main_minversion = '101218';
 var Main_versonTag = '';
 var Main_TizenVersion;
 
@@ -985,8 +985,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_title = ChannelClip_playUrl[9];
     ChannelClip_language = ChannelClip_playUrl[10];
     ChannelClip_game = ChannelClip_playUrl[11];
-
-    console.log('ChannelVod_vodId');
 
     ChannelClip_playUrl = ChannelClip_playUrl[0];
 
