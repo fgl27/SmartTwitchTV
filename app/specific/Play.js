@@ -154,7 +154,10 @@ var Play_Restore_value = {
     "display_name": '',
     "name": '',
     "id": '',
-    "game": ''
+    "game": '',
+    "screen": 1,
+    "user": 0,
+    "Main_BeforeChannel": 1
 };
 
 var Play_ChatFont = 1;
@@ -227,6 +230,10 @@ function Play_Start() {
     Play_Restore_value.name = Play_selectedChannel;
     Play_Restore_value.id = Play_selectedChannel_id;
     Play_Restore_value.game = Play_gameSelected;
+    Play_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
+    Play_Restore_value.Main_BeforeChannel = Main_BeforeChannel;
+    Play_Restore_value.screen = Main_SetScreen();
+
     localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
     localStorage.setItem('Play_WasPlaying', 1);
 
@@ -1614,6 +1621,9 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
+                break;
+            case KEY_GREEN:
+                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 break;
             case KEY_BLUE:
                 break;

@@ -31,7 +31,7 @@ var Main_Go = 1;
 var Main_Before = 1;
 var Main_BeforeSearch = 1;
 var Main_BeforeChannel = 1;
-var Main_BeforeAgame = 1;
+var Main_BeforeAgame = Main_games;
 
 var Main_BeforeChannelisSet = false;
 var Main_BeforeAgameisSet = false;
@@ -1178,4 +1178,9 @@ function Main_SidePannelhandleKeyDown(event) {
         default:
             break;
     }
+}
+
+function Main_SetScreen() {
+    if (Main_Go === Main_addUser || Main_Go === Main_Search || Main_Go === Main_SearchGames || Main_Go === Main_SearchLive || Main_Go === Main_SearchChannels || Main_Go === Main_addCode) return Main_Live;
+    return Main_Go;
 }

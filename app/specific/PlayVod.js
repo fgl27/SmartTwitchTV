@@ -51,8 +51,12 @@ var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 var PlayVod_WasPlaying = 0;
 var PlayVod_Restore_value = {
     "vodOffset": 1,
+    "name": 1,
     "vod_id": 1,
-    "game": 1
+    "game": 1,
+    "screen": 1,
+    "user": 0,
+    "Main_BeforeChannel": 1
 };
 var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
@@ -116,7 +120,12 @@ function PlayVod_PosStart() {
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     PlayVod_Restore_value.vod_id = ChannelVod_vodId;
+    PlayVod_Restore_value.name = Main_selectedChannel;
     PlayVod_Restore_value.game = Play_gameSelected;
+    PlayVod_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
+    PlayVod_Restore_value.screen = Main_SetScreen();
+    PlayVod_Restore_value.Main_BeforeChannel = Main_BeforeChannel;
+
     localStorage.setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
@@ -1007,6 +1016,9 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogShown()) Play_showControlsDialog();
+                break;
+            case KEY_GREEN:
+                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 break;
             case KEY_BLUE:
                 break;

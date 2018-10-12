@@ -189,14 +189,46 @@ function Live_loadDataSuccessFinish() {
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                 if (Play_WasPlaying) {
                     Play_selectedChannel = Play_Restore_value.name;
+                    Main_selectedChannel = Play_selectedChannel;
+
                     Play_selectedChannelDisplayname = Play_Restore_value.display_name;
+                    Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
+
                     Play_selectedChannel_id = Play_Restore_value.id;
+                    Main_selectedChannel_id = Play_selectedChannel_id;
+
                     Play_gameSelected = Play_Restore_value.game;
+                    Main_gameSelected = Play_gameSelected;
+
+                    if (AddUser_UserIsSet()) {
+                        Users_Position = Play_Restore_value.user;
+                        Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
+                    }
+
+                    Main_ExitCurrent(Main_Go);
+                    Main_Go = Play_Restore_value.screen;
                     Main_openStream();
+
+                    Main_SwitchScreen();
+                    Main_ExitCurrent(Main_Go);
                 } else {
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
+                    if (!PlayVod_vodOffset) PlayVod_vodOffset = 1;
                     ChannelVod_vodId = PlayVod_Restore_value.vod_id;
+
+                    Play_selectedChannel = PlayVod_Restore_value.name;
+                    Main_selectedChannel = Play_selectedChannel;
+
                     Play_gameSelected = PlayVod_Restore_value.game;
+                    Main_gameSelected = Play_gameSelected;
+
+                    if (AddUser_UserIsSet()) {
+                        Users_Position = PlayVod_Restore_value.user;
+                        Main_BeforeChannel = PlayVod_Restore_value.Main_BeforeChannel;
+                    }
+                    Main_ExitCurrent(Main_Go);
+                    Main_Go = PlayVod_Restore_value.screen;
+
                     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
                     Main_ShowElement('scene2');
                     PlayVod_hidePanel();
@@ -204,6 +236,9 @@ function Live_loadDataSuccessFinish() {
                     Main_HideElement('scene1');
                     PlayVod_HasVodInfo = false;
                     PlayVod_Start();
+
+                    Main_SwitchScreen();
+                    Main_ExitCurrent(Main_Go);
                 }
                 document.body.removeEventListener("keydown", Live_handleKeyDown);
             } else Main_ShowElement(Live_ids[10]);

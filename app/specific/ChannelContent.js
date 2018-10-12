@@ -188,18 +188,18 @@ function ChannelContent_GetStreamerInfo() {
                     ChannelContent_loadDataSuccess();
                     return;
                 } else {
-                    PlayVod_GetStreamerInfoError();
+                    ChannelContent_GetStreamerInfoError();
                 }
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        PlayVod_GetStreamerInfoError();
+        ChannelContent_GetStreamerInfoError();
     }
 }
 
-function PlayVod_GetStreamerInfoError() {
+function ChannelContent_GetStreamerInfoError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
         ChannelContent_loadingDataTimeout += 500;
