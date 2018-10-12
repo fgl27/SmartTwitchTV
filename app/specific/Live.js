@@ -186,8 +186,8 @@ function Live_loadDataSuccessFinish() {
             }
             if (Main_FirstRun && Live_Status &&
                 (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying || Main_WasOpen)) {
-                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                 if (Play_WasPlaying) {
+                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                     Play_selectedChannel = Play_Restore_value.name;
                     Main_selectedChannel = Play_selectedChannel;
 
@@ -212,6 +212,7 @@ function Live_loadDataSuccessFinish() {
                     Main_SwitchScreen();
                     Main_ExitCurrent(Main_Go);
                 } else if (PlayVod_WasPlaying) {
+                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
                     if (!PlayVod_vodOffset) PlayVod_vodOffset = 1;
                     ChannelVod_vodId = PlayVod_Restore_value.vod_id;
