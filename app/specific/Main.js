@@ -99,6 +99,7 @@ var Main_GameSize = "340x475"; // default size 272x380
 
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
+var Main_WasOpen = false;
 
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
@@ -192,8 +193,9 @@ function Main_initWindows() {
 
     Main_ScrollbarElement = document.getElementById("scrollbar");
 
+    Main_WasOpen = parseInt(localStorage.getItem('Main_WasOpen')) || 0;
     Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
-    if (Play_WasPlaying) Play_Restore_value = Screens_assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
+    if (Play_WasPlaying || Main_WasOpen) Play_Restore_value = Screens_assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
 
     PlayVod_WasPlaying = parseInt(localStorage.getItem('PlayVod_WasPlaying')) || 0;
     if (PlayVod_WasPlaying) PlayVod_Restore_value = Screens_assign(PlayVod_Restore_value, JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {});
@@ -585,6 +587,21 @@ function Main_SwitchScreen() {
     else Live_init();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
+    Main_SetWasopen();
+}
+
+function Main_SetWasopen() {
+    Play_Restore_value.display_name = Main_selectedChannelDisplayname;
+    Play_Restore_value.name = Main_selectedChannel;
+    Play_Restore_value.id = Main_selectedChannel_id;
+    Play_Restore_value.game = Main_gameSelected;
+    Play_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
+    Play_Restore_value.Main_BeforeChannel = Main_BeforeChannel;
+    Play_Restore_value.screen = Main_SetScreen();
+
+    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+    localStorage.setItem('Main_WasOpen', 1);
+
 }
 
 function Main_ExitCurrent(ExitCurrent) {
