@@ -3,7 +3,6 @@ var AddUser_loadingDataTry = 0;
 var AddUser_loadingDataTryMax = 5;
 var AddUser_loadingDataTimeout = 3500;
 var AddUser_UsernameArray = [];
-var AddUser_OldUsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
 var AddUser_keyBoardOn = false;
@@ -207,7 +206,7 @@ function AddUser_RestoreUsers() {
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++)
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
-    } else AddUser_OldRestoreUsers();
+    }
 
     Main_TizenVersion = parseFloat(tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version")) >= 2.4;
 
@@ -219,21 +218,6 @@ function AddUser_RestoreUsers() {
             SmartHub_StartInterval();
             document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
         }, 3500);
-    }
-}
-
-function AddUser_OldRestoreUsers() {
-    AddUser_OldUsernameArray = JSON.parse(localStorage.getItem("usernames")) || [];
-    if (AddUser_OldUsernameArray.length > 0) {
-        for (var i = 0; i < AddUser_OldUsernameArray.length; i++) {
-            AddUser_UsernameArray.push({
-                'name': AddUser_OldUsernameArray[i],
-                'id': 0,
-                'access_token': 0,
-                'refresh_token': 0
-            });
-            AddUser_GetIdRequest(i, 0);
-        }
     }
 }
 
