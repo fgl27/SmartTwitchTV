@@ -135,9 +135,9 @@ js_comp_ugf() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "${bldblu}	Including compresed version of $x to master.js" &&
-			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x" &&
-			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js &
+			echo -e "${bldblu}	Including compresed version of $x to master.js";
+			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x";
+			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
 	done
