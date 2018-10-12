@@ -184,6 +184,7 @@ function Users_keyEnter() {
         } else AddUser_UserMakeOne(Users_cursorY);
     } else if (Users_cursorX === 6) Users_showRemoveDialog();
     else if (Users_cursorX === 7 && !AddUser_UsernameArray[Users_Position].access_token) AddCode_init();
+    Main_SetWasopen();
 }
 
 function Users_clearRemoveDialog() {

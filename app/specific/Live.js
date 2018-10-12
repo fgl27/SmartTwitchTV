@@ -185,7 +185,7 @@ function Live_loadDataSuccessFinish() {
                 Live_addFocus();
             }
             if (Main_FirstRun && Live_Status &&
-                (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying)) {
+                (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying || Main_WasOpen)) {
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                 if (Play_WasPlaying) {
                     Play_selectedChannel = Play_Restore_value.name;
@@ -211,7 +211,7 @@ function Live_loadDataSuccessFinish() {
 
                     Main_SwitchScreen();
                     Main_ExitCurrent(Main_Go);
-                } else {
+                } else if (PlayVod_WasPlaying) {
                     PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
                     if (!PlayVod_vodOffset) PlayVod_vodOffset = 1;
                     ChannelVod_vodId = PlayVod_Restore_value.vod_id;
@@ -239,8 +239,21 @@ function Live_loadDataSuccessFinish() {
 
                     Main_SwitchScreen();
                     Main_ExitCurrent(Main_Go);
-                }
-                document.body.removeEventListener("keydown", Live_handleKeyDown);
+                } else if (Play_Restore_value.screen && Play_Restore_value.screen !== 1) {
+                    Main_selectedChannel = Play_Restore_value.name;
+                    Main_selectedChannelDisplayname = Play_Restore_value.display_name;
+                    Main_selectedChannel_id = Play_Restore_value.id;
+                    Main_gameSelected = Play_Restore_value.game;
+
+                    if (AddUser_UserIsSet()) {
+                        Users_Position = Play_Restore_value.user;
+                        Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
+                    }
+
+                    Main_ExitCurrent(Main_Live);
+                    Main_Go = Play_Restore_value.screen;
+                    Main_SwitchScreen();
+                } else Main_ShowElement(Live_ids[10]);
             } else Main_ShowElement(Live_ids[10]);
             Main_FirstRun = false;
             Live_FirstLoad = false;
