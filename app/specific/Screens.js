@@ -395,9 +395,8 @@ function loadDataSuccessClip() {
             document.getElementById(inUseObj.table).appendChild(row);
         }
 
-        Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
     } else if (!inUseObj.status) inUseObj.emptyContent = true;
-    loadDataSuccessFinish();
+    loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS);
 }
 
 function createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, quality_language, duration, animated_preview, video_id, name, logo, streamer_id, vod_id, vod_offset) {
@@ -444,19 +443,22 @@ function createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, cr
     return Main_td;
 }
 
-function loadDataSuccessFinish() {
+function loadDataSuccessFinish(img_404, empty_str) {
     Main_ready(function() {
         if (!inUseObj.status) {
             Main_HideLoadDialog();
-            if (inUseObj.emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
+            if (inUseObj.emptyContent) Main_showWarningDialog(empty_str);
             else {
                 inUseObj.status = true;
-                Main_imgVectorLoad(IMG_404_VIDEO);
+                Main_imgVectorLoad(img_404);
                 addFocus();
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
-        } else Main_imgVectorLoad(IMG_404_VIDEO);
+        } else {
+            Main_imgVectorLoad(img_404);
+            Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        }
     });
 }
 
