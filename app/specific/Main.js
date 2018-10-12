@@ -596,8 +596,8 @@ function Main_SetWasopen() {
     Play_Restore_value.id = Main_selectedChannel_id;
     Play_Restore_value.game = Main_gameSelected;
     Play_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
-    Play_Restore_value.Main_BeforeChannel = Main_BeforeChannel;
-    Play_Restore_value.screen = Main_SetScreen();
+    Play_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
+    Play_Restore_value.screen = Main_SetScreen(Main_Go);
 
     localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
     localStorage.setItem('Main_WasOpen', 1);
@@ -1197,7 +1197,7 @@ function Main_SidePannelhandleKeyDown(event) {
     }
 }
 
-function Main_SetScreen() {
-    if (Main_Go === Main_addUser || Main_Go === Main_Search || Main_Go === Main_SearchGames || Main_Go === Main_SearchLive || Main_Go === Main_SearchChannels || Main_Go === Main_addCode) return Main_Live;
-    return Main_Go;
+function Main_SetScreen(Current) {
+    if (Current === Main_addUser || Current === Main_Search || Current === Main_SearchGames || Current === Main_SearchLive || Current === Main_SearchChannels || Current === Main_addCode) return Main_Live;
+    return Current;
 }
