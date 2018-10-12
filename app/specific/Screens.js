@@ -120,10 +120,12 @@ function Screens_InitClip() {
             Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         key_yellow: function() {
-            this.periodPos++;
-            if (this.periodPos > 4) this.periodPos = 1;
-            this.SetPeriod();
-            Screens_StartLoad();
+            if (!this.loadingData) {
+                this.periodPos++;
+                if (this.periodPos > 4) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
         },
         key_green: function() {
             Screens_exit();
@@ -179,16 +181,20 @@ function Screens_InitChannelClip() {
             Screens_BasicExit(Main_ChannelContent);
         },
         key_channelup: function() {
-            this.periodPos++;
-            if (this.periodPos > 4) this.periodPos = 1;
-            this.SetPeriod();
-            Screens_StartLoad();
+            if (!this.loadingData) {
+                this.periodPos++;
+                if (this.periodPos > 4) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
         },
         key_channeldown: function() {
-            this.periodPos--;
-            if (this.periodPos < 1) this.periodPos = 4;
-            this.SetPeriod();
-            Screens_StartLoad();
+            if (!this.loadingData) {
+                this.periodPos--;
+                if (this.periodPos < 1) this.periodPos = 4;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
         },
         key_play: function() {
             Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -549,7 +555,7 @@ function Screens_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            Screens_StartLoad();
+            if (!inUseObj.loadingData) Screens_StartLoad();
             break;
         case KEY_CHANNELUP:
             inUseObj.key_channelup();
