@@ -70,26 +70,18 @@ function InitClip() {
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
         concatenate: function(responseText) {
-            //console.log(responseText);
             if (this.data) {
                 var tempObj = JSON.parse(responseText);
                 this.cursor = tempObj._cursor;
                 if (this.cursor === '') this.dataEnded = true;
                 this.data = this.data.concat(tempObj.clips);
                 inUseObj.loadingData = false;
-
-                console.log('if');
-                console.log(this.data.length);
-                console.log('cursor ' + this.cursor);
-                console.log('dataEnded ' + this.dataEnded);
             } else {
                 this.data = JSON.parse(responseText);
                 this.cursor = this.data._cursor;
                 if (this.cursor === '') this.dataEnded = true;
 
                 this.data = this.data.clips;
-                console.log('else');
-                console.log(this.data.length);
                 this.loadDataSuccess();
                 inUseObj.loadingData = false;
             }
@@ -154,7 +146,6 @@ function InitChannelClip() {
                 this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
         concatenate: function(responseText) {
-            //console.log(responseText);
             if (this.data) {
                 var tempObj = JSON.parse(responseText);
                 this.cursor = tempObj._cursor;
@@ -162,19 +153,12 @@ function InitChannelClip() {
 
                 this.data = this.data.concat(tempObj.clips);
                 inUseObj.loadingData = false;
-
-                console.log('if');
-                console.log(this.data.length);
-                console.log('cursor ' + this.cursor);
-                console.log('dataEnded ' + this.dataEnded);
             } else {
                 this.data = JSON.parse(responseText);
                 this.cursor = this.data._cursor;
                 if (this.cursor === '') this.dataEnded = true;
 
                 this.data = this.data.clips;
-                console.log('else');
-                console.log(this.data.length);
                 this.loadDataSuccess();
                 inUseObj.loadingData = false;
             }
@@ -229,7 +213,6 @@ function InitChannelClip() {
 }
 
 function ScreenIds(base) {
-    console.log(base);
     return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', base + '_scroll', base + '_lang'];
 }
 
@@ -334,11 +317,7 @@ function loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
-                else {
-                    console.log('error');
-                    console.log(xmlHttp.responseText);
-                    loadDataError();
-                }
+                else loadDataError();
             }
         };
 
@@ -364,11 +343,8 @@ function loadDataError() {
 }
 
 function loadDataSuccessClip() {
-    console.log('loadDataSuccess');
     var response_items = (inUseObj.data.length - inUseObj.data_cursor);
     var dataEnded = false;
-
-    console.log('response_items ' + response_items);
 
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
     else dataEnded = true;
@@ -378,12 +354,6 @@ function loadDataSuccessClip() {
 
         var row, cell,
             max_row = inUseObj.row_id + response_rows;
-
-        console.log('inUseObj.row_id ' + inUseObj.row_id);
-        console.log('response_rows ' + response_rows);
-        console.log('max_row ' + max_row);
-
-        console.log('inUseObj.data_cursor ' + inUseObj.data_cursor);
 
         for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
             row = document.createElement('tr');
@@ -419,7 +389,7 @@ function loadDataSuccessClip() {
                         (cell.vod !== null ? cell.vod.offset : null)));
 
                     inUseObj.coloumn_id++;
-                } else console.log('duplicated ' + ((inUseObj.row_id * inUseObj.ColoumnsCount) + inUseObj.coloumn_id));
+                }
             }
 
             document.getElementById(inUseObj.table).appendChild(row);
@@ -477,7 +447,6 @@ function createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, cr
 function loadDataSuccessFinish() {
     Main_ready(function() {
         if (!inUseObj.status) {
-            console.log('loadDataSuccessFinish if');
             Main_HideLoadDialog();
             if (inUseObj.emptyContent) Main_showWarningDialog(STR_NO + STR_CLIPS);
             else {
@@ -487,15 +456,11 @@ function loadDataSuccessFinish() {
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
-        } else {
-            console.log('loadDataSuccessFinish else');
-            Main_imgVectorLoad(IMG_404_VIDEO);
-        }
+        } else Main_imgVectorLoad(IMG_404_VIDEO);
     });
 }
 
 function addFocus() {
-    console.log('addFocus');
     Main_addFocusVideo(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
@@ -505,7 +470,6 @@ function addFocus() {
 
     //Load more as the data is geting used
     if ((inUseObj.data_cursor + (inUseObj.ItemsLimit * 2)) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-        console.log('addfocus load more');
         loadDataPrepare();
         loadDataRequest();
     }
