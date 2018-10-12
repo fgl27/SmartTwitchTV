@@ -30,7 +30,7 @@ var Base_obj = {
     key_blue: function() {
         if (!Search_isSearching) Main_BeforeSearch = inUseObj.screen;
         Main_Go = Main_Search;
-        exit();
+        Screens_exit();
         Main_SwitchScreen();
     }
 };
@@ -49,19 +49,19 @@ var Clip;
 var ChannelClip;
 
 //Initiate all Main screens obj and they properties
-function InitScreens() {
+function Screens_InitScreens() {
     console.log('InitScreens place holder');
 }
 
 //Initiate all Secondary screens obj and they properties
-function InitSecondaryScreens() {
-    InitClip();
-    InitChannelClip();
+function Screens_InitSecondaryScreens() {
+    Screens_InitClip();
+    Screens_InitChannelClip();
 }
 
-function InitClip() {
-    Clip = assign({
-        ids: ScreenIds('Clip'),
+function Screens_InitClip() {
+    Clip = Screens_assign({
+        ids: Screens_ScreenIds('Clip'),
         table: 'stream_table_clip',
         screen: Main_Clip,
         base_url: 'https://api.twitch.tv/kraken/clips/top?limit=',
@@ -86,8 +86,8 @@ function InitClip() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: loadDataSuccessClip,
-        SetPeriod: Clip_SetPeriod,
+        loadDataSuccess: Screens_loadDataSuccessClip,
+        SetPeriod: Screens_Clip_SetPeriod,
         label_init: function() {
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
@@ -102,41 +102,41 @@ function InitClip() {
             Main_HideElement('label_extra');
         },
         key_exit: function() {
-            BasicExit(Main_Before);
+            Screens_BasicExit(Main_Before);
         },
         key_channelup: function() {
             Main_Before = this.screen;
             Main_Go = Main_Live;
-            exit();
+            Screens_exit();
             Main_SwitchScreen();
         },
         key_channeldown: function() {
             Main_Before = this.screen;
             Main_Go = Main_Vod;
-            exit();
+            Screens_exit();
             Main_SwitchScreen();
         },
         key_play: function() {
-            Main_OpenClip(this.posY + '_' + this.posX, this.ids, handleKeyDown);
+            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         key_yellow: function() {
             this.periodPos++;
             if (this.periodPos > 4) this.periodPos = 1;
             this.SetPeriod();
-            StartLoad();
+            Screens_StartLoad();
         },
         key_green: function() {
-            exit();
+            Screens_exit();
             Main_GoLive();
         }
     }, Base_obj);
 
-    Clip = assign(Clip, Base_Clip_obj);
+    Clip = Screens_assign(Clip, Base_Clip_obj);
 }
 
-function InitChannelClip() {
-    ChannelClip = assign({
-        ids: ScreenIds('ChannelClip'),
+function Screens_InitChannelClip() {
+    ChannelClip = Screens_assign({
+        ids: Screens_ScreenIds('ChannelClip'),
         table: 'stream_table_channel_clip',
         screen: Main_ChannelClip,
         base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
@@ -163,8 +163,8 @@ function InitChannelClip() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: loadDataSuccessClip,
-        SetPeriod: ChannelClip_SetPeriod,
+        loadDataSuccess: Screens_loadDataSuccessClip,
+        SetPeriod: Screens_ChannelClip_SetPeriod,
         label_init: function() {
             if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
             if (Main_selectedChannel !== this.lastselectedChannel) this.status = false;
@@ -176,26 +176,26 @@ function InitChannelClip() {
         },
         label_exit: Main_RestoreTopLabel,
         key_exit: function() {
-            BasicExit(Main_ChannelContent);
+            Screens_BasicExit(Main_ChannelContent);
         },
         key_channelup: function() {
             this.periodPos++;
             if (this.periodPos > 4) this.periodPos = 1;
             this.SetPeriod();
-            StartLoad();
+            Screens_StartLoad();
         },
         key_channeldown: function() {
             this.periodPos--;
             if (this.periodPos < 1) this.periodPos = 4;
             this.SetPeriod();
-            StartLoad();
+            Screens_StartLoad();
         },
         key_play: function() {
-            Main_OpenClip(this.posY + '_' + this.posX, this.ids, handleKeyDown);
+            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         key_yellow: Main_showControlsDialog,
         key_green: function() {
-            exit();
+            Screens_exit();
             Main_GoLive();
         },
         key_blue: function() {
@@ -204,19 +204,19 @@ function InitChannelClip() {
                 Main_BeforeSearch = inUseObj.screen;
             }
             Main_Go = Main_Search;
-            exit();
+            Screens_exit();
             Main_SwitchScreen();
         }
     }, Base_obj);
 
-    ChannelClip = assign(ChannelClip, Base_Clip_obj);
+    ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
 }
 
-function ScreenIds(base) {
+function Screens_ScreenIds(base) {
     return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', base + '_scroll', base + '_lang'];
 }
 
-function assign() {
+function Screens_assign() {
     var ret = {},
         i = 0,
         j;
@@ -234,25 +234,25 @@ function assign() {
 
 //Variable initialization end
 
-function init() {
+function Screens_init() {
     Main_Go = inUseObj.screen;
     inUseObj.label_init();
 
-    document.body.addEventListener("keydown", handleKeyDown, false);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     if (inUseObj.status) {
         Main_YRst(inUseObj.posY);
         Main_ShowElement(inUseObj.ids[10]);
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
-    } else StartLoad();
+    } else Screens_StartLoad();
 }
 
-function exit() {
+function Screens_exit() {
     inUseObj.label_exit();
-    document.body.removeEventListener("keydown", handleKeyDown);
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement(inUseObj.ids[10]);
 }
 
-function StartLoad() {
+function Screens_StartLoad() {
     Main_HideElement(inUseObj.ids[10]);
     Main_HideWarningDialog();
     Main_showLoadDialog();
@@ -273,17 +273,17 @@ function StartLoad() {
     inUseObj.data_cursor = 0;
     inUseObj.dataEnded = false;
     Main_CounterDialogRst();
-    loadDataPrepare();
-    loadDataRequest();
+    Screens_loadDataPrepare();
+    Screens_loadDataRequest();
 }
 
-function loadDataPrepare() {
+function Screens_loadDataPrepare() {
     inUseObj.loadingData = true;
     inUseObj.loadingDataTry = 0;
     inUseObj.loadingDataTimeout = 3500;
 }
 
-function Clip_SetPeriod() {
+function Screens_Clip_SetPeriod() {
     if (inUseObj.periodPos === 1) Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_DAY));
     else if (inUseObj.periodPos === 2) Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_WEEK));
     else if (inUseObj.periodPos === 3) Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_MONTH));
@@ -292,7 +292,7 @@ function Clip_SetPeriod() {
     localStorage.setItem('Clip_periodPos', inUseObj.periodPos);
 }
 
-function ChannelClip_SetPeriod() {
+function Screens_ChannelClip_SetPeriod() {
     if (inUseObj.periodPos === 1) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_DAY);
     else if (inUseObj.periodPos === 2) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_WEEK);
     else if (inUseObj.periodPos === 3) Main_textContent('top_bar_game', STR_CLIPS + STR_CLIP_MONTH);
@@ -301,7 +301,7 @@ function ChannelClip_SetPeriod() {
     localStorage.setItem('ChannelClip_periodPos', inUseObj.periodPos);
 }
 
-function loadDataRequest() {
+function Screens_loadDataRequest() {
     try {
 
         var xmlHttp = new XMLHttpRequest();
@@ -317,21 +317,21 @@ function loadDataRequest() {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
-                else loadDataError();
+                else Screens_loadDataError();
             }
         };
 
         xmlHttp.send(null);
     } catch (e) {
-        inUseObj.loadDataError();
+        inUseObj.Screens_loadDataError();
     }
 }
 
-function loadDataError() {
+function Screens_loadDataError() {
     inUseObj.loadingDataTry++;
     if (inUseObj.loadingDataTry < inUseObj.loadingDataTryMax) {
         inUseObj.loadingDataTimeout += 500;
-        loadDataRequest();
+        Screens_loadDataRequest();
     } else {
         inUseObj.loadingData = false;
         if (!inUseObj.itemsCount) {
@@ -342,7 +342,7 @@ function loadDataError() {
     }
 }
 
-function loadDataSuccessClip() {
+function Screens_loadDataSuccessClip() {
     var response_items = (inUseObj.data.length - inUseObj.data_cursor);
     var dataEnded = false;
 
@@ -350,6 +350,7 @@ function loadDataSuccessClip() {
     else dataEnded = true;
 
     if (response_items) {
+        var addEmpty = response_items < inUseObj.ColoumnsCount;
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
 
         var row, cell,
@@ -368,7 +369,7 @@ function loadDataSuccessClip() {
                     inUseObj.itemsCount++;
                     inUseObj.idObject[cell.tracking_id] = 1;
 
-                    row.appendChild(createCellClip(inUseObj.row_id,
+                    row.appendChild(Screens_createCellClip(inUseObj.row_id,
                         inUseObj.coloumn_id,
                         inUseObj.ids,
                         cell.thumbnails.medium,
@@ -391,15 +392,18 @@ function loadDataSuccessClip() {
                     inUseObj.coloumn_id++;
                 }
             }
-
+            if (addEmpty) {
+                for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount; inUseObj.coloumn_id++)
+                    row.appendChild(Main_createEmptyCell(inUseObj.ids[9] + inUseObj.row_id + '_' + inUseObj.coloumn_id));
+            }
             document.getElementById(inUseObj.table).appendChild(row);
         }
 
     } else if (!inUseObj.status) inUseObj.emptyContent = true;
-    loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS);
+    Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS);
 }
 
-function createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, quality_language, duration, animated_preview, video_id, name, logo, streamer_id, vod_id, vod_offset) {
+function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, quality_language, duration, animated_preview, video_id, name, logo, streamer_id, vod_id, vod_offset) {
 
     var id = row_id + '_' + coloumn_id;
 
@@ -443,7 +447,7 @@ function createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, cr
     return Main_td;
 }
 
-function loadDataSuccessFinish(img_404, empty_str) {
+function Screens_loadDataSuccessFinish(img_404, empty_str) {
     Main_ready(function() {
         if (!inUseObj.status) {
             Main_HideLoadDialog();
@@ -451,7 +455,7 @@ function loadDataSuccessFinish(img_404, empty_str) {
             else {
                 inUseObj.status = true;
                 Main_imgVectorLoad(img_404);
-                addFocus();
+                Screens_addFocus();
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
@@ -462,7 +466,7 @@ function loadDataSuccessFinish(img_404, empty_str) {
     });
 }
 
-function addFocus() {
+function Screens_addFocus() {
     Main_addFocusVideo(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
@@ -472,34 +476,34 @@ function addFocus() {
 
     //Load more as the data is geting used
     if ((inUseObj.data_cursor + (inUseObj.ItemsLimit * 2)) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-        loadDataPrepare();
-        loadDataRequest();
+        Screens_loadDataPrepare();
+        Screens_loadDataRequest();
     }
 }
 
-function removeFocus() {
+function Screens_removeFocus() {
     Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
 }
 
 function ChangeFocus(y, x) {
-    removeFocus();
+    Screens_removeFocus();
     inUseObj.posY += y;
     inUseObj.posX = x;
-    addFocus();
+    Screens_addFocus();
 }
 
-function BasicExit(before) {
+function Screens_BasicExit(before) {
     if (Main_isControlsDialogShown()) Main_HideControlsDialog();
     else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
     else {
         if (before === inUseObj.screen) Main_Go = Main_Live;
         else Main_Go = before;
-        exit();
+        Screens_exit();
         Main_SwitchScreen();
     }
 }
 
-function handleKeyDown(event) {
+function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
@@ -545,7 +549,7 @@ function handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            StartLoad();
+            Screens_StartLoad();
             break;
         case KEY_CHANNELUP:
             inUseObj.key_channelup();
@@ -560,7 +564,7 @@ function handleKeyDown(event) {
             inUseObj.key_play();
             break;
         case KEY_RED:
-            Main_SidePannelStart(handleKeyDown);
+            Main_SidePannelStart(Screens_handleKeyDown);
             break;
         case KEY_GREEN:
             inUseObj.key_green();

@@ -187,16 +187,16 @@ function Main_loadTranslations(device) {
 }
 
 function Main_initWindows() {
-    InitScreens();
+    Screens_InitScreens();
     Main_SetStringsMain(true);
 
     Main_ScrollbarElement = document.getElementById("scrollbar");
 
     Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
-    if (Play_WasPlaying) Play_Restore_value = assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
+    if (Play_WasPlaying) Play_Restore_value = Screens_assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
 
     PlayVod_WasPlaying = parseInt(localStorage.getItem('PlayVod_WasPlaying')) || 0;
-    if (PlayVod_WasPlaying) PlayVod_Restore_value = assign(PlayVod_Restore_value, JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {});
+    if (PlayVod_WasPlaying) PlayVod_Restore_value = Screens_assign(PlayVod_Restore_value, JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {});
 
     Main_ready(function() {
 
@@ -221,7 +221,7 @@ function Main_initWindows() {
 
         Main_ready(function() {
             Main_SetStringsSecondary();
-            InitSecondaryScreens();
+            Screens_InitSecondaryScreens();
 
             UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
             Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
@@ -567,7 +567,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_ChannelVod) ChannelVod_init();
     else if (Main_Go === Main_ChannelClip) {
         inUseObj = ChannelClip;
-        init();
+        Screens_init();
     } else if (Main_Go === Main_Users) Users_init();
     else if (Main_Go === Main_UserLive) UserLive_init();
     else if (Main_Go === Main_UserHost) UserHost_init();
@@ -577,7 +577,7 @@ function Main_SwitchScreen() {
     else if (Main_Go === Main_Vod) Vod_init();
     else if (Main_Go === Main_Clip) {
         inUseObj = Clip;
-        init();
+        Screens_init();
     } else if (Main_Go === Main_AGameVod) AGameVod_init();
     else if (Main_Go === Main_AGameClip) AGameClip_init();
     else if (Main_Go === Main_Featured) Featured_init();
@@ -598,7 +598,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_SearchLive) SearchLive_exit();
     else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_ChannelVod) ChannelVod_exit();
-    else if (ExitCurrent === Main_ChannelClip) exit();
+    else if (ExitCurrent === Main_ChannelClip) Screens_exit();
     else if (ExitCurrent === Main_Users) Users_exit();
     else if (ExitCurrent === Main_UserLive) UserLive_exit();
     else if (ExitCurrent === Main_UserHost) UserHost_exit();
@@ -606,7 +606,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
-    else if (ExitCurrent === Main_Clip) exit();
+    else if (ExitCurrent === Main_Clip) Screens_exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
     else if (ExitCurrent === Main_AGameClip) AGameClip_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();

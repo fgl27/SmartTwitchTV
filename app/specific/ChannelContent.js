@@ -406,7 +406,7 @@ function ChannelContent_keyEnter() {
         } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
         else if (ChannelContent_cursorX === (2 - value)) {
             inUseObj = ChannelClip;
-            init();
+            Screens_init();
         }
     }
 }
