@@ -475,7 +475,7 @@ function AGameClip_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_OpenClip(AGameClip_cursorY + '_' + AGameClip_cursorX, AGameClip_ids, AGameClip_handleKeyDown);
+            Main_OpenClipOld(AGameClip_cursorY + '_' + AGameClip_cursorX, AGameClip_ids, AGameClip_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(AGameClip_handleKeyDown);
