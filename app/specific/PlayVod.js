@@ -123,8 +123,8 @@ function PlayVod_PosStart() {
     PlayVod_Restore_value.name = Main_selectedChannel;
     PlayVod_Restore_value.game = Play_gameSelected;
     PlayVod_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
-    PlayVod_Restore_value.screen = Main_SetScreen();
-    PlayVod_Restore_value.Main_BeforeChannel = Main_BeforeChannel;
+    PlayVod_Restore_value.screen = Main_SetScreen(Main_Go);
+    PlayVod_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
 
     localStorage.setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
