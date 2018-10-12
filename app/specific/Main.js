@@ -193,10 +193,10 @@ function Main_initWindows() {
     Main_ScrollbarElement = document.getElementById("scrollbar");
 
     Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
-    if (Play_WasPlaying) Play_Restore_value = JSON.parse(localStorage.getItem('Play_Restore_value')) || {};
+    if (Play_WasPlaying) Play_Restore_value = assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
 
     PlayVod_WasPlaying = parseInt(localStorage.getItem('PlayVod_WasPlaying')) || 0;
-    if (PlayVod_WasPlaying) PlayVod_Restore_value = JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {};
+    if (PlayVod_WasPlaying) PlayVod_Restore_value = assign(PlayVod_Restore_value, JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {});
 
     Main_ready(function() {
 
