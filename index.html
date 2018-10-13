@@ -237,6 +237,15 @@
             padding: 1%;
         }
 
+        div.stream_text2 {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1%;
+        }
+
         div.stream_channel,
         div.stream_channel_fallow_game {
             width: 100%;
@@ -597,10 +606,10 @@
         }
 
         table.streams_tables {
-            width: 98%;
             border: 0;
             margin-left: 15px;
             table-layout: fixed;
+            width: 98%;
         }
 
         div.counter_class {
@@ -1121,7 +1130,7 @@
 
             <!-- Clip screens-->
             <div id="Clip_scroll" class="screen_holder hide">
-                <table id="stream_table_clip" class="streams_tables"></table>
+                <div id="stream_table_clip" style="margin-left: 15px; width: 98%;"></div>
             </div>
             <div id="ChannelClip_scroll" class="screen_holder hide">
                 <table id="stream_table_channel_clip" class="streams_tables"></table>
