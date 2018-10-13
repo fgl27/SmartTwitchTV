@@ -367,6 +367,15 @@ function Screens_loadDataSuccessClip() {
     var response_items = (inUseObj.data.length - inUseObj.data_cursor);
     var dataEnded = false;
 
+    //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
+    //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
+
+    //If the intention is to load less then ColoumnsCount for it row consistently (have multiple not full rows), this function needs to be reworked appendDiv will not solve it, and that doesn't make sense for most screens.
+
+    //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
+
+    //var appendDiv = !inUseObj.coloumn_id;
+
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
     else dataEnded = true;
 
@@ -381,6 +390,7 @@ function Screens_loadDataSuccessClip() {
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
                 inUseObj.coloumn_id = 0;
+                //appendDiv = true;
             }
 
             for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
@@ -414,6 +424,7 @@ function Screens_loadDataSuccessClip() {
                     inUseObj.coloumn_id++;
                 }
             }
+            //if (appendDiv)
             document.getElementById(inUseObj.table).appendChild(inUseObj.row);
         }
 
