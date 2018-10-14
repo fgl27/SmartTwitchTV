@@ -3,9 +3,8 @@ var inUseObj;
 var Main_ItemsLimitVideo = 45;
 var Main_ColoumnsCountVideo = 3;
 var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
-var Main_ThumbPading = 6;
-// on a 1920px screen size with ColoumnsCount = 3 and a ThumbPading = 6, Main_ThumbWidth must result in 612
-var Main_ThumbWidth = 612; // ((window.innerWidth - 2% - 8 px) / 3 ) - 12px = 612
+var Main_ThumbPading = 7.5;
+var Main_ThumbWidth = 1881; // window.innerWidth = 1920px - 2%  = 1881)
 var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
@@ -39,7 +38,7 @@ var Base_obj = {
         Main_SwitchScreen();
     },
     set_ThumbSize: function() {
-        // on a 1920px screen size with ColoumnsCount = 3 and a ThumbPading = 6, width must result in 612
+        // on a 1881px screen size - 2%, ColoumnsCount = 3 and ThumbPading = 7.5, Main_ThumbWidth must result in 612px
         this.ThumbCssText = 'width: ' + parseInt((Main_ThumbWidth / this.ColoumnsCount) - (this.ThumbPading * 2)) + 'px; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
 };
@@ -61,8 +60,8 @@ var ChannelClip;
 function Screens_InitScreens() {
     console.log('InitScreens place holder');
     Main_ThumbWidth = window.innerWidth;
-    //98% of window size - 8px, 8 is default padding between thumbnails
-    Main_ThumbWidth = Main_ThumbWidth - 8 - ((Main_ThumbWidth * 2) / 100);
+    //98% of window size with is the size of screens table width
+    Main_ThumbWidth = Main_ThumbWidth - ((Main_ThumbWidth * 2) / 100);
 }
 
 //Initiate all Secondary screens obj and they properties
