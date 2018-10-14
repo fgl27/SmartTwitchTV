@@ -600,6 +600,7 @@ function PlayVod_hidePanel() {
     document.getElementById("scene_channel_panel").style.opacity = "0";
     PlayVod_ProgresBarrUpdate((PlayVod_currentTime / 1000), ChannelVod_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+    document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_quality = PlayVod_qualityPlaying;
     Play_ChatPosition();
 }
@@ -632,8 +633,11 @@ function PlayVod_IconsBottonFocus() {
     } else {
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsRemoveFocus();
-        Main_innerHTML('progress_bar_jump_to', (PlayVod_addToJump > 0 ? STR_JUMP_TIME + STR_JUMP_T0 + Play_timeS((Play_avplay.getCurrentTime() / 1000) + PlayVod_addToJump) : STR_SPACE));
-        document.getElementById('progress_bar_steps').style.display = 'inline-block';
+        if (PlayVod_addToJump) {
+            console.log('PlayVod_IconsBottonFocus');
+            PlayVod_jumpTime();
+            document.getElementById('progress_bar_steps').style.display = 'inline-block';
+        }
     }
 }
 
@@ -702,6 +706,7 @@ function PlayVod_jump() {
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+    document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
@@ -716,13 +721,17 @@ function PlayVod_SizeClear() {
 }
 
 function PlayVod_jumpSteps(duration_seconds) {
+    if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
     if (Math.abs(duration_seconds) > 60)
         Main_textContent('progress_bar_steps', STR_JUMPING_STEP + (duration_seconds / 60) + STR_MINUTES);
     else if (duration_seconds)
         Main_textContent('progress_bar_steps', STR_JUMPING_STEP + duration_seconds + STR_SECONDS);
     else
         Main_textContent('progress_bar_steps', STR_JUMPING_STEP + Play_DefaultjumpTimers[1] + STR_SECONDS);
+}
 
+function PlayVod_jumpTime() {
+    Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
@@ -751,7 +760,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
         PlayVod_TimeToJump = 0;
     }
 
-    Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
+    PlayVod_jumpTime();
     Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
