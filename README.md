@@ -3,22 +3,22 @@ smarttv-twitch
 
 This is an application for Samsung SmartTV's designed to watch Twitch.tv broadcasts, A official Twitch.TV app is not available for most countries, that is way this project exist.
 
-The application is tested and fully support 4k and 1080p Samsung TV released on 2016 and up, if TV is from 2015 and it's SmartHub menu is different from the one bellow image yours TV may not fully supported Twitch Live or Vod streams playback.
+The application fully support all 4k and 1080p Samsung TV released in 2016 and up, if yours TV is a 2015 or older model and it's SmartHub menu is different from the bellow image, yours TV may not fully supported Twitch Live Streams and some Vod streams.
 ![Live](https://fgl27.github.io/smarttv-twitch/screenshot/smarthub.jpeg)
 
-Full support for all 2015 TV is not possible as the TV firmware doesn't supports it and Samsung doesn't seems to care and may have remove the featuring intentionally, a discussion about it was done in a issue that is no longer available, the final answer from Samsung can be read here [Samsung final answer about 2015 TV](https://fgl27.github.io/smarttv-twitch/screenshot/etc/samsung_final.png) it summarize what happened.
+Full support for all 2015 TV is not possible as the TV firmware doesn't supports it, Samsung doesn't seems to care and may have remove the featuring intentionally (as the featuring simply stop working), a discussion about it was done in a issue from a repository that is no longer available, the final answer from Samsung can be read here [Samsung final answer about 2015 TV](https://fgl27.github.io/smarttv-twitch/screenshot/etc/samsung_final.png) it summarize what happened from they side.
 
 In doubt [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new/choose)
 
 About this fork
 ===============
 
-I fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
+I initially fork this from https://github.com/CazuzaCzz/smarttv-twitch/commits/tizen
 The original fork is https://github.com/nikitakatchik/smarttv-twitch
 
-I have started this project because the above Repos of the app did not fully support my TV model, it had many bugs and the app did not had the main Twitch.TV featuring like a more complete users interface (For VOD, Cips, basic Channel off line content, Chat and etc) it also didn't fully support the latest version of Samsung smart remote, etc etc...
+I have started this project because the above Repos of the app did not fully support my TV model, it had many bugs and the app did not had all Twitch.TV featuring like a more complete users interface (For VOD, Cips, basic Channel off line content, Chat and etc related) it also didn't fully support the latest version of Samsung smart remote.
 
-So I start this new repo keep the name and the old history and work a long time writing this a new application basically from scratch focusing on performance and all available Twitch.TV featuring, with the help of some users reporting bugs and making featuring request, I add the many featuring and work all the bugs, today the application is very complete, can be easily used to watch all available Twitch.TV content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request, for that use the [open a issue option of this repo](https://github.com/fgl27/smarttv-twitch/issues/new/choose).
+So I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch.TV featuring, with the help of some users reporting bugs and making featuring request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch.TV content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request, for that use the [open a issue option of this repo](https://github.com/fgl27/smarttv-twitch/issues/new/choose).
 
 Project Dependencies
 ==============
@@ -31,9 +31,8 @@ Project Dependencies
 * [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
 * [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
-
 ## [How the application looks](https://github.com/fgl27/smarttv-twitch/tree/master/screenshot)
-The application never stops receiving updates the bellow images may be outdated
+The application never stops receiving updates the bellow images can be outdated
 ![Live](https://fgl27.github.io/smarttv-twitch/screenshot/animated.gif)
 
 Twitch.TV authentication key
@@ -41,9 +40,9 @@ Twitch.TV authentication key
 
 ![Add_key](https://fgl27.github.io/smarttv-twitch/screenshot/Add_key.png)
 
-After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) as described on the above screen shot. The key is generated on the bellow page (Twitch.TV app for Samsung TV authorization page) the page generates the key through the official Twitch.TV web site, the bellow page link is the same as showed on the application screen.
+After setting up a user on the application you can add a Twitch.TV authentication key, to be able to fallow/unfallow and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) as described on the above screen shot. The key is generated on the bellow page, the page receives a key after you use it to request one with the official Twitch.TV web site, the bellow page link is the same as showed on the application screen.
 
-## [Twitch.TV app for Samsung TV authorization page](http://tiny.cc/twitchkeycode)
+## [Twitch.TV app for Samsung TV authorization request page](http://tiny.cc/twitchkeycode)
 
 Controls
 ==============
@@ -51,10 +50,10 @@ Controls
 
 The Application is tested with the above remotes (Any Samsung remote that has those same key/function must control the app even if the remote looks is a little different)
 
-The key **INFO** is also map on the app with the same functions as the **GUIDE** key, as some remotes may not have the **GUIDE** one.
+The key **INFO** is also map in the app with the same functions as the **GUIDE** key, as some remotes may not have one of those.
 
 ## Bellow are the on screens controls
-### To access the controls from any screen press key C or on smart remote press the 4 color buttons (color) after Directional pad down for yellow C
+### To access the controls from any screen press key A or on smart remote press the 4 color buttons (color) after Directional pad up for red A key and chose controls, if you are playing a stream use the C yellow key to directly open the controls
 
 
 ## Main controls
@@ -64,18 +63,18 @@ The key **INFO** is also map on the app with the same functions as the **GUIDE**
 ![Players](https://fgl27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
 
 
-Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10 64 bits)
+Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and windows 10 64 bits)
 ==============
 
 ## Account and Downloads
 
-* Create a Samsung account if you don't have one and set it up as a developer account [SAMSUNG DEVELOPERS](http://developer.samsung.com/home.do)
-* Log in with the developer account on the TV, open the application "APPS", hit number button (smart remote) and press the key sequence 12345, a new window will pop, enter your computer LAN IP address and make sure you click "On" to enable the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on. [Click here to read SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
+* Create a Samsung account if you don't have one, and set it up as a developer account [SAMSUNG DEVELOPERS](http://developer.samsung.com/home.do)
+* Log in with the developer account on the TV, open the application "APPS", press the key sequence 12345 in the remote, a new window will pop, enter your computer LAN IP address (The computer you plane to use to install this app) and make sure you click "On" to enable the developer mode, after pressing OK, reboot the TV by unplugging from power and plug back on. [Click here to read SAMSUNG Guide Connecting the TV and SDK](http://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 * [Download and install **Tizen Studio**](https://developer.tizen.org/development/tizen-studio/download)
 
 ## Installation Tizen and Java SDK
 
-* I used the **Tizen Studio 2.4 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On Linux it may ask you to use apt-get to install missing dependencies below are the one asked by **Tizen Studio 2.4**
+* I used the **Tizen Studio 2.4 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On Linux it may ask you to use apt-get to install missing dependencies below are the one asked by Tizen Studio 2.4 last time I installed it**
 #
 
 	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby
@@ -158,4 +157,4 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 18.04 and windows 10
 * If it fail during the installation make shore you don't have any other Twitch.TV application installed on the TV, to uninstall the app manually, just open the **"apps"** application find all Twitch.TV app you have install in **"my app"** tab hold down the enter/select key on the top of the app and choose delete, after you have delete all Twitch.TV apps, try to install again.
 * This app can update it self on 99% of the update cases, so this installation process will only be needed to be redone on a major update were the change are not possible to be done by the app it self, the app will warn the user the day there is a need to update manually and then will be necessary to redo the installation process.
 
-## In doubt or a featuring request [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new/choose)
+## In doubt [open a issue](https://github.com/fgl27/smarttv-twitch/issues/new/choose)
