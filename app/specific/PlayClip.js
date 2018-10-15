@@ -33,7 +33,7 @@ function PlayClip_Start() {
     Play_showBufferDialog();
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
-    Main_textContent("stream_info_title", ChannelClip_title);
+    Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game + ', ' + ChannelClip_views + ', ' + ChannelClip_language);
     Main_textContent("stream_live_icon", ChannelClip_createdAt);
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
