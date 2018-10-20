@@ -291,6 +291,7 @@ function PlayVod_Resume() {
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
         Play_showBufferDialog();
+        Play_clearPause();
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
                 if (PlayVod_isOn) {
@@ -1019,8 +1020,9 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (Play_isplaying()) Chat_Pause();
-                else Chat_Play(Chat_Id);
+                if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                else Chat_Pause();
+
                 if (!Play_isEndDialogShown()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:
