@@ -284,6 +284,7 @@ function Play_Resume() {
         Main_ShowElement('scene2');
         Main_HideElement('scene1');
         Play_showBufferDialog();
+        Play_clearPause();
         window.setTimeout(function() {
             if (!SmartHub_SmartHubResume) {
                 if (Play_isOn) {
@@ -697,8 +698,8 @@ function Play_PlayerCheck() {
     Play_PlayerTime = Play_currentTime;
 }
 
-function Play_isplaying() {
-    return Play_avplay.getState() === 'PLAYING';
+function Play_isNotplaying() {
+    return Play_avplay.getState() !== 'PLAYING';
 }
 
 function Play_offPlayer() {
@@ -874,7 +875,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
-    if (Play_isplaying()) Play_clearPause();
+    if (!Play_isNotplaying()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
@@ -1055,15 +1056,7 @@ function Play_hideChatBackgroundDialog() {
 }
 
 function Play_KeyPause(PlayVodClip) {
-    if (Play_isplaying()) {
-        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
-        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
-        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
-
-        Play_avplay.pause();
-        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
-        Play_showPauseDialog();
-    } else {
+    if (Play_isNotplaying()) {
         Play_clearPause();
         Play_avplay.play();
         webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
@@ -1078,6 +1071,14 @@ function Play_KeyPause(PlayVodClip) {
             if (Play_isPanelShown()) PlayClip_hidePanel();
             PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
+    } else {
+        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
+        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
+        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+
+        Play_avplay.pause();
+        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
+        Play_showPauseDialog();
     }
 }
 
