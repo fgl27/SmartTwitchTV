@@ -28,8 +28,35 @@ var Settings_value = {
     "videos_animation": { //videos_animation
         "values": ["off", "on"],
         "defaultValue": 2
+    },
+    "clock_offset": { //clock_offset
+        "values": Settings_GenerateClock(),
+        "defaultValue": 49
     }
 };
+
+function Settings_GenerateClock() {
+    var clock = [],
+        time = 43200,
+        i = 0;
+    Play_offsettimeMinus = 0;
+
+    for (i; i < 48; i++) {
+        clock.push("-" + Play_timeS(time));
+        time -= 900;
+    }
+
+    clock.push(Play_timeS(0));
+    time = 900;
+
+    for (i = 0; i < 48; i++) {
+        clock.push(Play_timeS(time));
+        time += 900;
+    }
+
+    return clock;
+}
+
 var Settings_value_keys = [];
 var Settings_positions_length = 0;
 //Variable initialization end
@@ -74,6 +101,15 @@ function Settings_SetSettings() {
 
     // General settings title
     div += '<div id="setting_title_general" class="settings_section">' + STR_SETTINGS_GENERAL + '</div>';
+
+    // Clock offset
+    key = "clock_offset";
+    Settings_value_keys.push(key);
+
+    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_CLOCK_OFFSET + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
 
     // Language selection
     key = "general_lang";
@@ -206,6 +242,7 @@ function Settings_SetDefautls() {
         Settings_value[key].defaultValue -= 1;
     }
     Play_SetBuffers();
+    Settings_SetClock();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
 }
 
@@ -273,6 +310,15 @@ function Settings_SetDefault(position) {
     else if (position === "buffer_vod") PlayVod_Buffer = Settings_Obj_values("buffer_vod");
     else if (position === "buffer_clip") PlayClip_Buffer = Settings_Obj_values("buffer_clip");
     else if (position === "chat_font_size") Play_SetChatFont();
+    else if (position === "clock_offset") {
+        Settings_SetClock();
+        Main_updateclock();
+    }
+}
+
+function Settings_SetClock() {
+    var time = Settings_Obj_default("clock_offset");
+    Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
 function Settings_CheckLang(lang) {

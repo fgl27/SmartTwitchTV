@@ -213,4 +213,5 @@ function en_USLang() {
     STR_JUMPING_STEP = "Jump step ";
     STR_SECONDS = " seconds";
     STR_MINUTES = " minutes";
+    STR_CLOCK_OFFSET = "Clock offset";
 }
