@@ -688,6 +688,7 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 }
 
 function PlayVod_jump() {
+    Play_clearPause();
     if (!Play_isEndDialogShown()) {
         if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
@@ -712,7 +713,6 @@ function PlayVod_jump() {
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
     PlayVod_TimeToJump = 0;
-    Play_clearPause();
 }
 
 function PlayVod_SizeClear() {
