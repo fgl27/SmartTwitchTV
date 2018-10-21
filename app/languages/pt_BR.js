@@ -199,4 +199,5 @@ function pt_BRLang() {
     STR_JUMPING_STEP = "Passo de pulo ";
     STR_SECONDS = " segundos";
     STR_MINUTES = " Minutos";
+    STR_CLOCK_OFFSET = "Compensação do relógio";
 }

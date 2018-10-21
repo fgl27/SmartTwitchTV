@@ -107,6 +107,7 @@ var Main_currentVersion = '';
 var Main_minversion = '101218';
 var Main_versonTag = '';
 var Main_TizenVersion;
+var Main_ClockOffset = 0;
 
 var GIT_IO = "https://fgl27.github.io/smarttv-twitch/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
@@ -1125,8 +1126,10 @@ function Main_ready(func) {
 }
 
 function Main_getclock() {
-    var date = new Date(),
+    var date = new Date().getTime() + Main_ClockOffset,
         dayMonth;
+
+    date = new Date(date);
 
     if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + '/' + STR_MONTHS[date.getMonth()];
     else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + '/' + date.getDate();
