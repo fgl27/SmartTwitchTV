@@ -35,8 +35,8 @@ var Settings_value = {
         "defaultValue": 49
     },
     "content_lang": { //content_lang
-        "values": ["All", "English [EN]", "English [EN-US]", "Dansk [DA]", "Deutsch [DE]", "English - UK [EN-GB]", "Español [ES]", "Español - España [ES-ES]", "Español - Latinoamérica [ES-MX]", "Français [FR]", "Italiano [IT]", "Magyar [HU]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]", "Português [PT]", "Português -Portugal [PT-PT]", "Português - Brasil [PT-BR]", "Slovenčina [SK]", "Suomi [FI]", "Svenska [SV]", "Tiếng Việt [VI]", "Türkçe [TR]", "Čeština [CS]", "Ελληνικά [EL]", "Български [BG]", "Русский [RU]", "ภาษาไทย [TH]", "中文 [ZH-ALL]", "中文 简体 [ZH-CN]", "中文 繁體 [ZH-TW]", "日本語 [JA]", "한국어 [KO]", "Română [RO]"],
-        "set_values": ["", "en,en-gb", "en", "da", "de", "en-gb", "es,es-mx", "es", "es-mx", "fr", "it", "hu", "nl", "no", "pl", "pt,pt-br", "pt", "pt-br", "sk", "fi", "sv", "vi", "tr", "cs", "el", "bg", "ru", "th", "zh-cn,zh-tw", "zh-cn", "zh-tw", "ja", "ko", "ro"],
+        "values": ["All", "Dansk [DA]", "Deutsch [DE]", "English [EN][EN-GB]", "English -USA [EN]", "English - UK [EN-GB]", "Español [ES][ES-MX]", "Español - España [ES]", "Español - Latinoamérica [ES-MX]", "Français [FR]", "Italiano [IT]", "Magyar [HU]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]", "Português [PT][PT-BR]", "Português -Portugal [PT]", "Português - Brasil [PT-BR]", "Slovenčina [SK]", "Suomi [FI]", "Svenska [SV]", "Tiếng Việt [VI]", "Türkçe [TR]", "Čeština [CS]", "Ελληνικά [EL]", "Български [BG]", "Русский [RU]", "ภาษาไทย [TH]", "中文 [ZH-ALL]", "中文 简体 [ZH-CN]", "中文 繁體 [ZH-TW]", "日本語 [JA]", "한국어 [KO]", "Română [RO]"],
+        "set_values": ["", "da", "de", "en,en-gb", "en", "en-gb", "es,es-mx", "es", "es-mx", "fr", "it", "hu", "nl", "no", "pl", "pt,pt-br", "pt", "pt-br", "sk", "fi", "sv", "vi", "tr", "cs", "el", "bg", "ru", "th", "zh-cn,zh-tw", "zh-cn", "zh-tw", "ja", "ko", "ro"],
         "defaultValue": 1
     }
 };
