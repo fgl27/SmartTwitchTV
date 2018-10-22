@@ -200,4 +200,7 @@ function pt_BRLang() {
     STR_SECONDS = " segundos";
     STR_MINUTES = " Minutos";
     STR_CLOCK_OFFSET = "Compensação do relógio";
+    STR_APP_LANG = "Linguá do aplicativo";
+    STR_CONTENT_LANG = "Linguá do conteúdo";
+    STR_LANG_ALL = "Todas";
 }

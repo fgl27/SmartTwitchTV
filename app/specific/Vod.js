@@ -96,7 +96,9 @@ function Vod_loadDataRequest() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
             '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&period=' + Vod_period +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -271,7 +273,9 @@ function Vod_loadDataReplace() {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReplace +
             '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + Vod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&period=' + Vod_period +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = Vod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);

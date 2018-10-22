@@ -112,7 +112,8 @@ function AGameClip_loadDataRequest() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
             encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
             '&period=' + encodeURIComponent(AGameClip_period) +
-            (AGameClip_cursor === null ? '' : '&cursor=' + encodeURIComponent(AGameClip_cursor)) + '&' +
+            (AGameClip_cursor === null ? '' : '&cursor=' + encodeURIComponent(AGameClip_cursor)) +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + '&' +
             Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameClip_loadingDataTimeout;
@@ -246,8 +247,9 @@ function AGameClip_loadDataReplace() {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=100&period=' + encodeURIComponent(AGameClip_period) + '&cursor=' +
-            encodeURIComponent(AGameClip_cursor) +
+            encodeURIComponent(Main_gameSelected) + '&limit=100&period=' + encodeURIComponent(AGameClip_period) +
+            '&cursor=' + encodeURIComponent(AGameClip_cursor) +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameClip_loadingDataTimeout;
@@ -337,6 +339,7 @@ function AGameClip_SetCursor(cursor) {
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/clips/top?limit=' + cursor + '&period=' +
             encodeURIComponent(AGameClip_period) + '&cursor=' + encodeURIComponent(AGameClip_cursor) +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
             '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameClip_loadingDataTimeout;

@@ -214,4 +214,7 @@ function en_USLang() {
     STR_SECONDS = " seconds";
     STR_MINUTES = " minutes";
     STR_CLOCK_OFFSET = "Clock offset";
+    STR_APP_LANG = "Application language";
+    STR_CONTENT_LANG = "Content language";
+    STR_LANG_ALL = "All";
 }

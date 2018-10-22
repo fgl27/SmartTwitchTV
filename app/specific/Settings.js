@@ -2,7 +2,8 @@
 var Settings_cursorY = 0;
 var Settings_value = {
     "general_lang": { //general_lang
-        "values": ["en_US", "pt_BR"],
+        "values": ["English [EN]", "Português - Brasil [PT-BR]"],
+        "set_values": ["en_US", "pt_BR"],
         "defaultValue": 1
     },
     "restor_playback": { //restor_playback
@@ -32,6 +33,11 @@ var Settings_value = {
     "clock_offset": { //clock_offset
         "values": Settings_GenerateClock(),
         "defaultValue": 49
+    },
+    "content_lang": { //content_lang
+        "values": ["All", "English [EN]", "English [EN-US]", "Dansk [DA]", "Deutsch [DE]", "English - UK [EN-GB]", "Español [ES]", "Español - España [ES-ES]", "Español - Latinoamérica [ES-MX]", "Français [FR]", "Italiano [IT]", "Magyar [HU]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]", "Português [PT]", "Português -Portugal [PT-PT]", "Português - Brasil [PT-BR]", "Slovenčina [SK]", "Suomi [FI]", "Svenska [SV]", "Tiếng Việt [VI]", "Türkçe [TR]", "Čeština [CS]", "Ελληνικά [EL]", "Български [BG]", "Русский [RU]", "ภาษาไทย [TH]", "中文 [ZH-ALL]", "中文 简体 [ZH-CN]", "中文 繁體 [ZH-TW]", "日本語 [JA]", "한국어 [KO]", "Română [RO]"],
+        "set_values": ["", "en,en-gb", "en", "da", "de", "en-gb", "es,es-mx", "es", "es-mx", "fr", "it", "hu", "nl", "no", "pl", "pt,pt-br", "pt", "pt-br", "sk", "fi", "sv", "vi", "tr", "cs", "el", "bg", "ru", "th", "zh-cn,zh-tw", "zh-cn", "zh-tw", "ja", "ko", "ro"],
+        "defaultValue": 1
     }
 };
 
@@ -111,11 +117,20 @@ function Settings_SetSettings() {
         '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
 
-    // Language selection
+    // App Language selection
     key = "general_lang";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_SETTINGS_LANG + '</div>' +
+    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_APP_LANG + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+
+    // Content Language selection
+    key = "content_lang";
+    Settings_value_keys.push(key);
+
+    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_CONTENT_LANG + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
         '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
@@ -197,9 +212,19 @@ function Settings_SetStrings() {
     //General settings
     Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
-    // Language selection
+    // Clock offset
+    key = "clock_offset";
+    Main_textContent(key + '_name', STR_CLOCK_OFFSET);
+
+    // App Language selection
     key = "general_lang";
-    Main_textContent(key + '_name', STR_SETTINGS_LANG);
+    Main_textContent(key + '_name', STR_APP_LANG);
+
+    // Content Language selection
+    key = "content_lang";
+    Main_textContent(key + '_name', STR_CONTENT_LANG);
+    Settings_value[key].values[0] = STR_LANG_ALL;
+    Main_textContent(key, Settings_Obj_values(key));
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
@@ -244,10 +269,15 @@ function Settings_SetDefautls() {
     Play_SetBuffers();
     Settings_SetClock();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    Main_ContentLang = Settings_Obj_set_values("content_lang");
 }
 
 function Settings_Obj_values(key) {
     return Settings_value[key].values[Settings_Obj_default(key)];
+}
+
+function Settings_Obj_set_values(key) {
+    return Settings_value[key].set_values[Settings_Obj_default(key)];
 }
 
 function Settings_Obj_default(key) {
@@ -304,8 +334,9 @@ function Settings_SetDefault(position) {
 
     if (position === "general_lang") {
         localStorage.setItem('user_language', 1);
-        Settings_SetLang(Settings_Obj_values("general_lang"));
-    } else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+        Settings_SetLang(Settings_Obj_set_values("general_lang"));
+    } else if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
+    else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "buffer_live") Play_Buffer = Settings_Obj_values("buffer_live");
     else if (position === "buffer_vod") PlayVod_Buffer = Settings_Obj_values("buffer_vod");
     else if (position === "buffer_clip") PlayClip_Buffer = Settings_Obj_values("buffer_clip");
@@ -314,11 +345,6 @@ function Settings_SetDefault(position) {
         Settings_SetClock();
         Main_updateclock();
     }
-}
-
-function Settings_SetClock() {
-    var time = Settings_Obj_default("clock_offset");
-    Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
 function Settings_CheckLang(lang) {
@@ -332,6 +358,11 @@ function Settings_SetLang(lang) {
     DefaultLang();
     Main_SetStringsMain(false);
     Main_SetStringsSecondary();
+}
+
+function Settings_SetClock() {
+    var time = Settings_Obj_default("clock_offset");
+    Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
 function Settings_handleKeyDown(event) {
