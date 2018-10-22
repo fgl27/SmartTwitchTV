@@ -78,7 +78,8 @@ function Screens_InitClip() {
         base_url: 'https://api.twitch.tv/kraken/clips/top?limit=',
         set_url: function() {
             this.url = this.base_url + (this.ItemsLimit * 2) +
-                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
+                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         concatenate: function(responseText) {
             if (this.data) {

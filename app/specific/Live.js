@@ -79,7 +79,8 @@ function Live_loadDataRequest() {
             Live_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = Live_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -283,7 +284,9 @@ function Live_loadDataReplace() {
             Live_dataEnded = true;
         }
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + '&' + Math.round(Math.random() * 1e7), true);
+
         xmlHttp.timeout = Live_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

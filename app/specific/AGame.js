@@ -89,7 +89,9 @@ function AGame_loadDataRequest() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
-            '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = AGame_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -290,7 +292,9 @@ function AGame_loadDataReplace() {
         }
 
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
-            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+            '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = AGame_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

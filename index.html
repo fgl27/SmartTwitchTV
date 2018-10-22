@@ -48,7 +48,8 @@
         }
 
         div.screen_holder,
-        div.screen_holder_games {
+        div.screen_holder_games,
+        div.screen_holder_settings {
             width: 1920px;
             position: fixed;
             top: 100px;
@@ -56,6 +57,10 @@
 
         div.screen_holder_games {
             top: 33px;
+        }
+
+        div.screen_holder_settings {
+            top: 70px;
         }
 
         div.scroll {
@@ -741,7 +746,7 @@
         }
 
         div.settings_section {
-            font-size: 335%;
+            font-size: 305%;
             text-align: center;
         }
 
@@ -759,15 +764,16 @@
 
         div.settings_name {
             margin-left: 3.5%;
-            width: 70%;
+            width: 61%;
             display: inline-block;
             text-align: left;
+            font-size: 90%;
             vertical-align: middle;
             word-wrap: break-word;
         }
 
         div.settings_arraw_div {
-            width: 5%;
+            width: 2%;
             display: inline-block;
             vertical-align: middle;
             /* When the html code is compressed loaded from js this div and the next have no space in between, adding a margin makes it look ok, but too big when the code is not compresed*/
@@ -775,11 +781,12 @@
         }
 
         div.settings_value {
-            width: 14%;
+            width: 29%;
             display: inline-block;
             text-align: center;
             border: 3.5px solid rgba(0, 0, 0, 0);
             border-radius: 4px;
+            font-size: 80%;
             box-sizing: border-box;
             vertical-align: middle;
         }
@@ -1148,7 +1155,7 @@
             <div id="user_scroll" class="screen_holder hide">
                 <table id="stream_table_user" class="streams_tables"></table>
             </div>
-            <div id="settings_scroll" class="screen_holder hide">
+            <div id="settings_scroll" class="screen_holder_settings hide">
                 <div id="settings_main" class="settings_main">
                     <!-- Settings_SetSettings()-->
                 </div>

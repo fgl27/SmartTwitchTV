@@ -60,6 +60,7 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
 var Main_SetTopOpacityId;
+var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 
 var Main_Is4k = false;
@@ -174,7 +175,7 @@ function Main_loadTranslations(device) {
             var lang = device.language.split(".")[0],
                 Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
 
-            if (Savedlang) lang = Settings_Obj_values("general_lang");
+            if (Savedlang) lang = Settings_Obj_set_values("general_lang");
             else Settings_CheckLang(lang);
 
             if (lang.indexOf('pt_') !== -1) pt_BRLang();

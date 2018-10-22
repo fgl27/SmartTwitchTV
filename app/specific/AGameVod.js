@@ -99,7 +99,9 @@ function AGameVod_loadDataRequest() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
             encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
             '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + AGameVod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&period=' + AGameVod_period +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameVod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -235,7 +237,9 @@ function AGameVod_loadDataReplace() {
         xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
             encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReplace +
             '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + AGameVod_period + '&' + Math.round(Math.random() * 1e7), true);
+            '&period=' + AGameVod_period +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            '&' + Math.round(Math.random() * 1e7), true);
 
         xmlHttp.timeout = AGameVod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
