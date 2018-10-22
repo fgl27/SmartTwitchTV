@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: 'Sans', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'dejavu-sans';
+  src: url('fonts/dejavu-sans.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jomolhari';
+  src: url('fonts/Jomolhari.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CambriaMath';
+  src: url('fonts/CambriaMath.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "icons";
+  src:url("fonts/icons.eot");
+  src:url("fonts/icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/icons.woff") format("woff"),
+    url("fonts/icons.ttf") format("truetype"),
+    url("fonts/icons.svg#icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 "icons";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+[data-icon]:before {
+  font-family: "icons" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon-settings:before {
+  content: "\61";
+}
+.icon-switch:before {
+  content: "\62";
+}
+.icon-circle-o-notch:before {
+  content: "\63";
+}
+.icon-circle:before {
+  content: "\64";
+}
+.icon-question-circle:before {
+  content: "\65";
+}
+.icon-search:before {
+  content: "\68";
+}
+.icon-arrow-circle-left:before {
+  content: "\69";
+}
+.icon-info-circle:before {
+  content: "\6a";
+}
+.icon-heart-o:before {
+  content: "\6b";
+}
+.icon-heart:before {
+  content: "\6c";
+}
+.icon-pause:before {
+  content: "\6d";
+}
+.icon-twitch:before {
+  content: "\6e";
+}
+.icon-videocamera:before {
+  content: "\70";
+}
+.icon-gamepad:before {
+  content: "\71";
+}
+.icon-filmstrip:before {
+  content: "\6f";
+}
+.icon-refresh:before {
+  content: "\73";
+}
+.icon-play:before {
+  content: "\72";
+}
+.icon-user-times:before {
+  content: "\77";
+}
+.icon-user-plus:before {
+  content: "\78";
+}
+.icon-key:before {
+  content: "\74";
+}
+.icon-users:before {
+  content: "\75";
+}
+.icon-arrow-up:before {
+  content: "\76";
+}
+.icon-movie-play:before {
+  content: "\7a";
+}
+.icon-movie:before {
+  content: "\41";
+}
+.icon-history:before {
+  content: "\67";
+}
+.icon-star:before {
+  content: "\79";
+}
+.icon-ellipsis:before {
+  content: "\42";
+}
