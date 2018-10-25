@@ -232,6 +232,7 @@ function Play_Start() {
     Play_Restore_value.game = Play_gameSelected;
     Play_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
     Play_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
+    Play_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
     Play_Restore_value.screen = Main_SetScreen(Main_Go);
 
     localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));

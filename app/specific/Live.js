@@ -187,6 +187,7 @@ function Live_loadDataSuccessFinish() {
             }
             if (Main_FirstRun && Live_Status &&
                 (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying || Main_WasOpen)) {
+                //Todo make this simpler
                 if (Play_WasPlaying) {
                     Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                     Play_selectedChannel = Play_Restore_value.name;
@@ -205,6 +206,7 @@ function Live_loadDataSuccessFinish() {
                         Users_Position = Play_Restore_value.user;
                         Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
                     }
+                    Main_BeforeAgame = Play_Restore_value.Main_BeforeAgame;
 
                     Main_ExitCurrent(Main_Go);
                     Main_Go = Play_Restore_value.screen;
@@ -228,6 +230,8 @@ function Live_loadDataSuccessFinish() {
                         Users_Position = PlayVod_Restore_value.user;
                         Main_BeforeChannel = PlayVod_Restore_value.Main_BeforeChannel;
                     }
+                    Main_BeforeAgame = PlayVod_Restore_value.Main_BeforeAgame;
+
                     Main_ExitCurrent(Main_Go);
                     Main_Go = PlayVod_Restore_value.screen;
 
@@ -251,6 +255,7 @@ function Live_loadDataSuccessFinish() {
                         Users_Position = Play_Restore_value.user;
                         Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
                     }
+                    Main_BeforeAgame = Play_Restore_value.Main_BeforeAgame;
 
                     Main_ExitCurrent(Main_Live);
                     Main_Go = Play_Restore_value.screen;
