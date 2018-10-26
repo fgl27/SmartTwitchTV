@@ -241,7 +241,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
     Main_ready(function() {
         if (!inUseObj.status) {
             Main_HideLoadDialog();
-            if (emptyContent) Main_showWarningDialog(inUseObj.empty_str);
+            if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
             else {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
