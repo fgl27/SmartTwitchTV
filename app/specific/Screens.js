@@ -11,8 +11,10 @@ function Screens_InitScreens() {
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitSecondaryScreens() {
+    //Clips screens
     ScreensObj_InitClip();
     ScreensObj_InitChannelClip();
+    ScreensObj_InitAGameClip();
 }
 
 function Screens_ScreenIds(base) {
@@ -94,6 +96,19 @@ function Screens_Clip_SetPeriod() {
     else Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(STR_CLIP_ALL));
 
     localStorage.setItem('Clip_periodPos', inUseObj.periodPos);
+}
+
+function Screens_AGameClip_SetPeriod() {
+    if (inUseObj.periodPos === 1) Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+        STR_CLIP_DAY + ': ' + Main_gameSelected));
+    else if (inUseObj.periodPos === 2) Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+        STR_CLIP_WEEK + ': ' + Main_gameSelected));
+    else if (inUseObj.periodPos === 3) Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+        STR_CLIP_MONTH + ': ' + Main_gameSelected));
+    else if (inUseObj.periodPos === 4) Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+        STR_CLIP_ALL + ': ' + Main_gameSelected));
+
+    localStorage.setItem('AGameClip_periodPos', inUseObj.periodPos);
 }
 
 function Screens_ChannelClip_SetPeriod() {

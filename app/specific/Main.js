@@ -232,11 +232,9 @@ function Main_initWindows() {
             ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
             AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
 
-
             Clip.periodPos = parseInt(localStorage.getItem('Clip_periodPos')) || 2;
             ChannelClip.periodPos = parseInt(localStorage.getItem('ChannelClip_periodPos')) || 2;
-
-            AGameClip_periodNumber = parseInt(localStorage.getItem('AGameClip_periodNumber')) || 2;
+            AGameClip.periodPos = parseInt(localStorage.getItem('AGameClip_periodPos')) || 2;
 
             Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
             AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
@@ -583,8 +581,10 @@ function Main_SwitchScreen() {
         inUseObj = Clip;
         Screens_init();
     } else if (Main_Go === Main_AGameVod) AGameVod_init();
-    else if (Main_Go === Main_AGameClip) AGameClip_init();
-    else if (Main_Go === Main_Featured) Featured_init();
+    else if (Main_Go === Main_AGameClip) {
+        inUseObj = AGameClip;
+        Screens_init();
+    } else if (Main_Go === Main_Featured) Featured_init();
     else if (Main_Go === Main_UserVod) UserVod_init();
     else Live_init();
 
@@ -628,7 +628,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_Vod) Vod_exit();
     else if (ExitCurrent === Main_Clip) Screens_exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
-    else if (ExitCurrent === Main_AGameClip) AGameClip_exit();
+    else if (ExitCurrent === Main_AGameClip) Screens_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
 }
@@ -989,36 +989,6 @@ function Main_openStream() {
     Play_HideEndDialog();
     Main_HideElement('scene1');
     Play_Start();
-}
-
-function Main_OpenClipOld(id, idsArray, handleKeyDownFunction) {
-    ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-    PlayClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
-    Play_gameSelected = ChannelClip_playUrl[2];
-    Main_selectedChannel = ChannelClip_playUrl[3];
-    Main_selectedChannelDisplayname = ChannelClip_playUrl[4];
-    Main_selectedChannelLogo = ChannelClip_playUrl[5];
-    Main_selectedChannel_id = ChannelClip_playUrl[6];
-    ChannelVod_vodId = ChannelClip_playUrl[7];
-    ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
-    ChannelClip_playUrl = ChannelClip_playUrl[0];
-
-    ChannelClip_title = (Main_Go === Main_ChannelClip ? document.getElementById(idsArray[3] + id).textContent : '');
-    ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
-    ChannelClip_language = document.getElementById(idsArray[7] + id).textContent;
-    ChannelClip_game = document.getElementById(idsArray[11] + id).innerHTML;
-
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
-    document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    Main_ShowElement('scene2');
-    Play_hideChat();
-    Play_clearPause();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
-    Main_HideElement('scene1');
-
-    PlayClip_Start();
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {

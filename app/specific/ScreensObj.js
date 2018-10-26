@@ -13,6 +13,7 @@ var ChannelClip_language = '';
 //Screens
 var Clip;
 var ChannelClip;
+var AGameClip;
 
 var Base_obj = {
     posX: 0,
@@ -215,4 +216,80 @@ function ScreensObj_InitChannelClip() {
 
     ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
     ChannelClip.set_ThumbSize();
+}
+
+function ScreensObj_InitAGameClip() {
+    AGameClip = Screens_assign({
+        ids: Screens_ScreenIds('AGameClip'),
+        table: 'stream_table_a_game_clip',
+        screen: Main_AGameClip,
+        base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(Main_gameSelected) + '&limit=' + (this.ItemsLimit * 2) +
+                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        concatenate: function(responseText) {
+            if (this.data) {
+                var tempObj = JSON.parse(responseText);
+                this.cursor = tempObj._cursor;
+                if (this.cursor === '') this.dataEnded = true;
+                this.data = this.data.concat(tempObj.clips);
+                inUseObj.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+                this.cursor = this.data._cursor;
+                if (this.cursor === '') this.dataEnded = true;
+
+                this.data = this.data.clips;
+                this.loadDataSuccess();
+                inUseObj.loadingData = false;
+            }
+        },
+        loadDataSuccess: Screens_loadDataSuccessClip,
+        SetPeriod: Screens_AGameClip_SetPeriod,
+        label_init: function() {
+            this.SetPeriod();
+            Main_AddClass('top_bar_game', 'icon_center_focus');
+            Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+            Main_ShowElement('label_extra');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_game', 'icon_center_focus');
+            Main_innerHTML('top_bar_game', STR_GAMES);
+            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+            Main_HideElement('label_extra');
+        },
+        key_exit: function() {
+            Screens_BasicExit(Main_aGame);
+        },
+        key_channelup: function() {
+            if (!this.loadingData) {
+                this.periodPos++;
+                if (this.periodPos > 4) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
+        },
+        key_channeldown: function() {
+            if (!this.loadingData) {
+                this.periodPos--;
+                if (this.periodPos < 1) this.periodPos = 4;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
+        },
+        key_play: function() {
+            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        },
+        key_yellow: Main_showControlsDialog,
+        key_green: function() {
+            Screens_exit();
+            Main_GoLive();
+        }
+    }, Base_obj);
+
+    AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
+    AGameClip.set_ThumbSize();
 }
