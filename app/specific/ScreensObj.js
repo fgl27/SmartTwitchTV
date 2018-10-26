@@ -33,6 +33,7 @@ var Base_obj = {
     row: 0,
     data: null,
     data_cursor: 0,
+    loadDataSuccess: Screens_loadDataSuccess,
     ThumbPading: Main_ThumbPading,
     key_blue: function() {
         if (!Search_isSearching) Main_BeforeSearch = inUseObj.screen;
@@ -53,14 +54,66 @@ var Base_Clip_obj = {
     addFocus: Main_addFocusVideo,
     cursor: null,
     periodPos: 2,
-    period: ['day', 'week', 'month', 'all']
+    period: ['day', 'week', 'month', 'all'],
+    img_404: IMG_404_VIDEO,
+    empty_str: function() {
+        return STR_NO + STR_CLIPS;
+    },
+    addCell: function(cell) {
+        if (!inUseObj.idObject[cell.tracking_id]) {
+
+            inUseObj.itemsCount++;
+            inUseObj.idObject[cell.tracking_id] = 1;
+
+            inUseObj.row.appendChild(Screens_createCellClip(inUseObj.row_id,
+                inUseObj.coloumn_id,
+                inUseObj.ids,
+                cell.thumbnails.medium,
+                cell.broadcaster.display_name,
+                [STR_CREATED_AT,
+                    Main_videoCreatedAt(cell.created_at)
+                ],
+                [twemoji.parse(cell.title), STR_PLAYING, cell.game],
+                Main_addCommas(cell.views),
+                '[' + cell.language.toUpperCase() + ']',
+                cell.duration,
+                cell.slug,
+                cell.broadcaster.name,
+                cell.broadcaster.logo.replace("150x150", "300x300"),
+                cell.broadcaster.id,
+                (cell.vod !== null ? cell.vod.id : null),
+                (cell.vod !== null ? cell.vod.offset : null)));
+
+            inUseObj.coloumn_id++;
+        }
+    }
 };
 
 var Base_Game_obj = {
     ItemsLimit: Main_ItemsLimitGame,
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Main_addFocusGame
+    addFocus: Main_addFocusGame,
+    img_404: IMG_404_GAME,
+    empty_str: function() {
+        return STR_NO + STR_LIVE_GAMES;
+    },
+    addCell: function(cell) {
+        if (!inUseObj.idObject[cell.game._id]) {
+
+            inUseObj.itemsCount++;
+            inUseObj.idObject[cell.game._id] = 1;
+
+            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                inUseObj.coloumn_id,
+                inUseObj.ids,
+                cell.game.box.template.replace("{width}x{height}", Main_GameSize),
+                cell.game.name,
+                Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
+
+            inUseObj.coloumn_id++;
+        }
+    }
 };
 
 function ScreensObj_InitClip() {
@@ -91,7 +144,6 @@ function ScreensObj_InitClip() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: Screens_loadDataSuccessClip,
         SetPeriod: function() {
             Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
             localStorage.setItem('Clip_periodPos', this.periodPos);
@@ -174,7 +226,6 @@ function ScreensObj_InitChannelClip() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: Screens_loadDataSuccessClip,
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
             localStorage.setItem('ChannelClip_periodPos', this.periodPos);
@@ -260,7 +311,6 @@ function ScreensObj_InitAGameClip() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: Screens_loadDataSuccessClip,
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
                 Main_Periods[this.periodPos - 1] + ': ' + Main_gameSelected));
@@ -343,7 +393,6 @@ function ScreensObj_InitGame() {
                 inUseObj.loadingData = false;
             }
         },
-        loadDataSuccess: Screens_loadDataSuccessGame,
         label_init: function() {
             Main_AddClass('top_bar_game', 'icon_center_focus');
         },
