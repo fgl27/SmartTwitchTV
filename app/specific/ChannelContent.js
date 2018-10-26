@@ -350,6 +350,7 @@ function ChannelContent_loadDataSuccessFinish() {
         }
         ChannelContent_checkUser();
         ChannelContent_loadingData = false;
+        Main_SetWasopen();
     });
 }
 
@@ -407,13 +408,10 @@ function ChannelContent_keyEnter() {
             Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
 
             Main_openStream();
-        } else if (ChannelContent_cursorX === (1 - value)) { //TODO revise Main_SetWasopen here
-            ChannelVod_init();
-            Main_SetWasopen();
-        } else if (ChannelContent_cursorX === (2 - value)) {
+        } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
+        else if (ChannelContent_cursorX === (2 - value)) {
             inUseObj = ChannelClip;
             Screens_init();
-            Main_SetWasopen();
         }
     }
 }

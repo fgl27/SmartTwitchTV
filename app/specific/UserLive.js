@@ -267,6 +267,7 @@ function UserLive_loadDataSuccessFinish() {
             } else UserLive_emptyCellVector = [];
         }
         UserLive_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

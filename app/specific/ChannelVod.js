@@ -224,6 +224,7 @@ function ChannelVod_loadDataSuccessFinish() {
         } else ChannelVod_emptyCellVector = [];
 
         ChannelVod_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

@@ -255,6 +255,7 @@ function Vod_loadDataSuccessFinish() {
         } else Vod_emptyCellVector = [];
 
         Vod_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

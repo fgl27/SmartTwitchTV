@@ -219,6 +219,7 @@ function UserVod_loadDataSuccessFinish() {
         } else UserVod_emptyCellVector = [];
 
         UserVod_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

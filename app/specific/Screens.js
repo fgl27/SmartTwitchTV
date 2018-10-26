@@ -253,6 +253,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
             Main_imgVectorLoad(inUseObj.img_404);
             Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         }
+        Main_SetWasopen();
     });
 }
 

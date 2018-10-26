@@ -197,6 +197,7 @@ function UserHost_loadDataSuccessFinish() {
             } else UserHost_emptyCellVector = [];
         }
         UserHost_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

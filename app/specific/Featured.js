@@ -192,6 +192,7 @@ function Featured_loadDataSuccessFinish() {
             } else Featured_emptyCellVector = [];
         }
         Featured_loadingData = false;
+        Main_SetWasopen();
     });
 }
 
