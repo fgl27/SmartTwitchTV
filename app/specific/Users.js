@@ -21,6 +21,7 @@ function Users_init() {
     if (Users_status) {
         Main_YRst(Users_cursorY);
         Main_ShowElement(Users_ids[5]);
+        Main_SetWasopen();
     } else Users_StartLoad();
 }
 
@@ -121,11 +122,11 @@ function Users_loadDataSuccessFinish() {
             Main_HideLoadDialog();
             Users_status = true;
             Users_addFocus();
+            Main_SetWasopen();
         }
         Main_ShowElement(Users_ids[5]);
         Users_FirstLoad = false;
         Users_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

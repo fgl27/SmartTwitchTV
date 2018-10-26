@@ -37,6 +37,7 @@ function ChannelContent_init() {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
+        Main_SetWasopen();
     } else ChannelContent_StartLoad();
 }
 
@@ -347,10 +348,10 @@ function ChannelContent_loadDataSuccessFinish() {
             Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
             ChannelContent_addFocus();
             Main_ShowElement(ChannelContent_ids[10]);
+            Main_SetWasopen();
         }
         ChannelContent_checkUser();
         ChannelContent_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

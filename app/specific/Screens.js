@@ -53,6 +53,7 @@ function Screens_init() {
         Main_YRst(inUseObj.posY);
         Main_ShowElement(inUseObj.ids[10]);
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        Main_SetWasopen();
     } else Screens_StartLoad();
 }
 
@@ -245,6 +246,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
                 Screens_addFocus();
+                Main_SetWasopen();
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
@@ -252,7 +254,6 @@ function Screens_loadDataSuccessFinish(emptyContent) {
             Main_imgVectorLoad(inUseObj.img_404);
             Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         }
-        Main_SetWasopen();
     });
 }
 

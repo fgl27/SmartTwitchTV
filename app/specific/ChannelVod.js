@@ -42,6 +42,7 @@ function ChannelVod_init() {
         Main_textContent('top_bar_game', ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
         Main_ShowElement(ChannelVod_ids[10]);
         ChannelVod_addFocus();
+        Main_SetWasopen();
     } else ChannelVod_StartLoad();
 }
 
@@ -212,6 +213,7 @@ function ChannelVod_loadDataSuccessFinish() {
                 ChannelVod_status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 ChannelVod_addFocus();
+                Main_SetWasopen();
             }
             Main_ShowElement(ChannelVod_ids[10]);
             ChannelVod_FirstLoad = false;
@@ -224,7 +226,6 @@ function ChannelVod_loadDataSuccessFinish() {
         } else ChannelVod_emptyCellVector = [];
 
         ChannelVod_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

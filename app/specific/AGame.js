@@ -32,6 +32,7 @@ function AGame_init() {
         Main_YRst(AGame_cursorY);
         Main_ShowElement(AGame_ids[10]);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
+        Main_SetWasopen();
     } else AGame_StartLoad();
 }
 
@@ -220,6 +221,7 @@ function AGame_loadDataSuccessFinish() {
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 AGame_addFocus();
             }
+            Main_SetWasopen();
             Main_ShowElement(AGame_ids[10]);
             AGame_FirstLoad = false;
         } else {
@@ -231,7 +233,6 @@ function AGame_loadDataSuccessFinish() {
             } else AGame_emptyCellVector = [];
         }
         AGame_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

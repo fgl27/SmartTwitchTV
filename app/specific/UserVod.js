@@ -38,6 +38,7 @@ function UserVod_init() {
         Main_ShowElement(UserVod_ids[10]);
         UserVod_SetPeriod();
         UserVod_addFocus();
+        Main_SetWasopen();
     } else UserVod_StartLoad();
 }
 
@@ -208,6 +209,7 @@ function UserVod_loadDataSuccessFinish() {
                 UserVod_status = true;
                 UserVod_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
+                Main_SetWasopen();
             }
             Main_ShowElement(UserVod_ids[10]);
             UserVod_FirstLoad = false;
@@ -219,7 +221,6 @@ function UserVod_loadDataSuccessFinish() {
         } else UserVod_emptyCellVector = [];
 
         UserVod_loadingData = false;
-        Main_SetWasopen();
     });
 }
 
