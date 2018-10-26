@@ -85,7 +85,10 @@ function ScreensObj_InitClip() {
             }
         },
         loadDataSuccess: Screens_loadDataSuccessClip,
-        SetPeriod: Screens_Clip_SetPeriod,
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
+            localStorage.setItem('Clip_periodPos', this.periodPos);
+        },
         label_init: function() {
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
@@ -165,9 +168,13 @@ function ScreensObj_InitChannelClip() {
             }
         },
         loadDataSuccess: Screens_loadDataSuccessClip,
-        SetPeriod: Screens_ChannelClip_SetPeriod,
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
+            localStorage.setItem('ChannelClip_periodPos', this.periodPos);
+        },
         label_init: function() {
-            if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+            if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id)
+                ChannelContent_RestoreChannelValue();
             if (Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             Main_cleanTopLabel();
             this.SetPeriod();
@@ -247,7 +254,11 @@ function ScreensObj_InitAGameClip() {
             }
         },
         loadDataSuccess: Screens_loadDataSuccessClip,
-        SetPeriod: Screens_AGameClip_SetPeriod,
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+                Main_Periods[this.periodPos - 1] + ': ' + Main_gameSelected));
+            localStorage.setItem('AGameClip_periodPos', this.periodPos);
+        },
         label_init: function() {
             this.SetPeriod();
             Main_AddClass('top_bar_game', 'icon_center_focus');
