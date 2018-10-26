@@ -81,7 +81,6 @@ var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_Coloumn
 var Main_ItemsLimitGame = 45;
 var Main_ColoumnsCountGame = 5;
 var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
-var Main_ItemsLimitGameOffset = 1; //for odd behavier from twitch server
 
 var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
@@ -208,6 +207,7 @@ function Main_initWindows() {
         Play_PreStart();
         AddUser_RestoreUsers();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
+        Screens_InitSecondaryScreens();
         Live_init();
 
         Main_Is4k = webapis.productinfo.isUdPanelSupported();
@@ -226,9 +226,8 @@ function Main_initWindows() {
 
         Main_ready(function() {
             Main_SetStringsSecondary();
-            Screens_InitSecondaryScreens();
 
-            UserGames_live = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
+            UserGames.isLive = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
             Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
             ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
             AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
@@ -577,8 +576,10 @@ function Main_SwitchScreen() {
     } else if (Main_Go === Main_Users) Users_init();
     else if (Main_Go === Main_UserLive) UserLive_init();
     else if (Main_Go === Main_UserHost) UserHost_init();
-    else if (Main_Go === Main_usergames) UserGames_init();
-    else if (Main_Go === Main_UserChannels) UserChannels_init();
+    else if (Main_Go === Main_usergames) {
+        inUseObj = UserGames;
+        Screens_init();
+    } else if (Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_Go === Main_SearchChannels) SearchChannels_init();
     else if (Main_Go === Main_Vod) Vod_init();
     else if (Main_Go === Main_Clip) {
@@ -626,7 +627,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_Users) Users_exit();
     else if (ExitCurrent === Main_UserLive) UserLive_exit();
     else if (ExitCurrent === Main_UserHost) UserHost_exit();
-    else if (ExitCurrent === Main_usergames) UserGames_exit();
+    else if (ExitCurrent === Main_usergames) Screens_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
     else if (ExitCurrent === Main_Vod) Vod_exit();
@@ -886,14 +887,6 @@ function Main_createCellGame(id, idArray, valuesArray) {
     Main_td.innerHTML = Main_GameHtml(id, idArray, valuesArray);
 
     return Main_td;
-}
-
-function Main_replaceGame(id, valuesArray, ids) {
-    var ele = document.getElementById(id);
-    var splitedId = id.split(ids[6])[1];
-    ele.setAttribute(Main_DataAttribute, valuesArray[0]);
-    ele.innerHTML = Main_GameHtml(splitedId, ids, valuesArray);
-    ele.setAttribute('id', ids[5] + splitedId);
 }
 
 function Main_GameHtml(id, idArray, valuesArray) {

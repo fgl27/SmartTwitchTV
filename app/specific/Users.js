@@ -72,7 +72,7 @@ function Users_loadData() {
 
         //games
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
             'gamepad', color));
 
         //videos
@@ -129,7 +129,7 @@ function Users_loadDataSuccessFinish() {
 }
 
 function Users_resetGameCell() {
-    for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames_live ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+    for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
 }
 
 function Users_addFocus() {
@@ -174,8 +174,10 @@ function Users_keyEnter() {
 
     if (!Users_cursorX) UserLive_init();
     else if (Users_cursorX === 1) UserHost_init();
-    else if (Users_cursorX === 2) UserGames_init();
-    else if (Users_cursorX === 3) UserVod_init();
+    else if (Users_cursorX === 2) {
+        inUseObj = UserGames;
+        Screens_init();
+    } else if (Users_cursorX === 3) UserVod_init();
     else if (Users_cursorX === 4) UserChannels_init();
     else if (Users_cursorX === 5) {
         if (!Users_cursorY) {

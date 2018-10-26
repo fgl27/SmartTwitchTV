@@ -18,6 +18,7 @@ function Screens_InitSecondaryScreens() {
 
     //Games screens
     ScreensObj_InitGame();
+    ScreensObj_InitUserGames();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -326,7 +327,7 @@ function Screens_handleKeyDown(event) {
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
-            if (!inUseObj.loadingData) Screens_StartLoad();
+            if (!inUseObj.loadingData) inUseObj.key_refresh();
             break;
         case KEY_CHANNELUP:
             inUseObj.key_channelup();
