@@ -13,6 +13,7 @@ var Clip;
 var ChannelClip;
 var AGameClip;
 var Game;
+var UserGames;
 
 var Base_obj = {
     posX: 0,
@@ -54,6 +55,7 @@ var Base_Clip_obj = {
     addFocus: Main_addFocusVideo,
     cursor: null,
     periodPos: 2,
+    key_refresh: Screens_StartLoad,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
@@ -97,22 +99,6 @@ var Base_Game_obj = {
     img_404: IMG_404_GAME,
     empty_str: function() {
         return STR_NO + STR_LIVE_GAMES;
-    },
-    addCell: function(cell) {
-        if (!inUseObj.idObject[cell.game._id]) {
-
-            inUseObj.itemsCount++;
-            inUseObj.idObject[cell.game._id] = 1;
-
-            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                inUseObj.coloumn_id,
-                inUseObj.ids,
-                cell.game.box.template.replace("{width}x{height}", Main_GameSize),
-                cell.game.name,
-                Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
-
-            inUseObj.coloumn_id++;
-        }
     }
 };
 
@@ -399,6 +385,7 @@ function ScreensObj_InitGame() {
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
         },
+        key_refresh: Screens_StartLoad,
         key_exit: function() {
             if (Main_Go === Main_Before || Main_Before === Main_aGame || Main_Before === Main_Search) Screens_BasicExit(Main_Live);
             else Screens_BasicExit(Main_Before);
@@ -429,9 +416,141 @@ function ScreensObj_InitGame() {
         key_green: function() {
             Screens_exit();
             Main_GoLive();
+        },
+        addCell: function(cell) {
+            if (!inUseObj.idObject[cell.game._id]) {
+
+                inUseObj.itemsCount++;
+                inUseObj.idObject[cell.game._id] = 1;
+
+                inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                    inUseObj.coloumn_id,
+                    inUseObj.ids,
+                    cell.game.box.template.replace("{width}x{height}", Main_GameSize),
+                    cell.game.name,
+                    Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
+
+                inUseObj.coloumn_id++;
+            }
         }
     }, Base_obj);
 
     Game = Screens_assign(Game, Base_Game_obj);
     Game.set_ThumbSize();
+}
+
+function ScreensObj_InitUserGames() {
+    UserGames = Screens_assign({
+        ids: Screens_ScreenIds('UserGames'),
+        table: 'stream_table_user_games',
+        screen: Main_usergames,
+        isLive: true,
+        OldUserName: '',
+        base_url: 'https://api.twitch.tv/api/users/',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games';
+
+            if (this.isLive) this.url += '/live?limit=750';
+            else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+        },
+        concatenate: function(responseText) {
+            if (this.data) {
+                var tempObj = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.offset += 100;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.data = this.data.concat(tempObj.follows);
+                inUseObj.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.offset += 100;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.data = this.data.follows;
+                this.loadDataSuccess();
+                inUseObj.loadingData = false;
+            }
+        },
+        label_init: function() {
+            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
+            Main_AddClass('top_bar_user', 'icon_center_focus');
+
+            if (this.OldUserName !== AddUser_UsernameArray[Users_Position].name) this.status = false;
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+        },
+        label_exit: function() {
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Main_RemoveClass('top_bar_user', 'icon_center_focus');
+            Main_textContent('top_bar_user', STR_USER);
+            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+        },
+        key_refresh: function() {
+            this.isLive = !this.isLive;
+
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            this.OldUserName = AddUser_UsernameArray[Users_Position].name;
+
+            Screens_StartLoad();
+
+            localStorage.setItem('user_Games_live', this.isLive ? 'true' : 'false');
+            Users_resetGameCell();
+
+        },
+        key_exit: function() {
+            Screens_BasicExit(Main_Users);
+        },
+        key_channelup: function() {
+            Main_Before = this.screen;
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) Main_Go = Main_UserVod;
+            else Main_Go = Main_UserChannels;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_channeldown: function() {
+            Main_Before = this.screen;
+            Main_Go = Main_UserHost;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_play: function() {
+            Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_BeforeAgame = this.screen;
+            Main_Go = Main_aGame;
+            Main_BeforeAgameisSet = true;
+            AGame_UserGames = false;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_yellow: Main_showControlsDialog,
+        key_green: function() {
+            Screens_exit();
+            Main_GoLive();
+        },
+        addCell: function(cell) {
+            var game = this.isLive ? cell.game : cell;
+            if (!inUseObj.idObject[game._id]) {
+
+                inUseObj.itemsCount++;
+                inUseObj.idObject[game._id] = 1;
+
+                inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                    inUseObj.coloumn_id,
+                    inUseObj.ids,
+                    game.box.template.replace("{width}x{height}", Main_GameSize),
+                    game.name,
+                    this.isLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
+
+                inUseObj.coloumn_id++;
+            }
+        }
+    }, Base_obj);
+
+    UserGames = Screens_assign(UserGames, Base_Game_obj);
+    UserGames.set_ThumbSize();
 }
