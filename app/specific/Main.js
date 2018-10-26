@@ -62,6 +62,7 @@ var Main_AddCodeInput;
 var Main_SetTopOpacityId;
 var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
+var Main_Periods;
 
 var Main_Is4k = false;
 var Main_FirstRun = true;
@@ -283,6 +284,7 @@ function Main_SetStringsMain(isStarting) {
     Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
     Main_textContent("dialog_end_game_text", STR_GAME_CONT);
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
+    Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
     if (isStarting) Settings_SetSettings();
     else {
