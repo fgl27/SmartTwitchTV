@@ -562,8 +562,10 @@ function Main_SwitchScreen() {
     if (Main_Go === Main_Live) Live_init();
     else if (Main_Go === Main_addUser) AddUser_init();
     else if (Main_Go === Main_addCode) AddCode_init();
-    else if (Main_Go === Main_games) Games_init();
-    else if (Main_Go === Main_aGame) AGame_init();
+    else if (Main_Go === Main_games) {
+        inUseObj = Game;
+        Screens_init();
+    } else if (Main_Go === Main_aGame) AGame_init();
     else if (Main_Go === Main_Search) Search_init();
     else if (Main_Go === Main_SearchGames) SearchGames_init();
     else if (Main_Go === Main_SearchLive) SearchLive_init();
@@ -613,7 +615,7 @@ function Main_ExitCurrent(ExitCurrent) {
     if (ExitCurrent === Main_Live) Live_exit();
     else if (ExitCurrent === Main_addUser) AddUser_exit();
     else if (ExitCurrent === Main_addCode) AddCode_exit();
-    else if (ExitCurrent === Main_games) Games_exit();
+    else if (ExitCurrent === Main_games) Screens_exit();
     else if (ExitCurrent === Main_aGame) AGame_exit();
     else if (ExitCurrent === Main_Search) Search_exit();
     else if (ExitCurrent === Main_SearchGames) SearchGames_exit();
@@ -960,9 +962,9 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     if (Main_YchangeAddFocus(y)) {
 
         if (y) {
-            Main_ScrollTable(idArray[7],
+            Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
                 (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555);
-        } else Main_ScrollTable(idArray[7], 33);
+        } else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), 33);
 
     } else Main_handleKeyUp();
 }

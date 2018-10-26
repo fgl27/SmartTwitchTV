@@ -1,7 +1,4 @@
 var Main_ItemsLimitMax = 100;
-var Main_ItemsLimitVideo = 45;
-var Main_ColoumnsCountVideo = 3;
-var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
 var Main_ThumbPading = 7.5;
 var Main_ThumbWidth = 1881; // window.innerWidth = 1920px - 2%  = 1881)
 var ChannelClip_game = '';
@@ -15,6 +12,7 @@ var ChannelClip_language = '';
 var Clip;
 var ChannelClip;
 var AGameClip;
+var Game;
 
 var Base_obj = {
     posX: 0,
@@ -28,6 +26,7 @@ var Base_obj = {
     loadingDataTryMax: 5,
     loadingDataTimeout: 3500,
     MaxOffset: 0,
+    offset: 0,
     emptyContent: false,
     itemsCountCheck: false,
     FirstLoad: false,
@@ -51,10 +50,17 @@ var Base_Clip_obj = {
     ItemsLimit: Main_ItemsLimitVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Main_addFocusVideo,
     cursor: null,
     periodPos: 2,
-    period: ['day', 'week', 'month', 'all'],
-    type: 2 //2 = clip, 0 = live, 1 = vod
+    period: ['day', 'week', 'month', 'all']
+};
+
+var Base_Game_obj = {
+    ItemsLimit: Main_ItemsLimitGame,
+    ItemsReloadLimit: Main_ItemsReloadLimitGame,
+    ColoumnsCount: Main_ColoumnsCountGame,
+    addFocus: Main_addFocusGame
 };
 
 function ScreensObj_InitClip() {
@@ -304,4 +310,79 @@ function ScreensObj_InitAGameClip() {
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
     AGameClip.set_ThumbSize();
+}
+
+function ScreensObj_InitGame() {
+    Game = Screens_assign({
+        ids: Screens_ScreenIds('Game'),
+        table: 'stream_table_games',
+        screen: Main_games,
+        base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.url = this.base_url + '&offset=' + this.offset;
+        },
+        concatenate: function(responseText) {
+            if (this.data) {
+                var tempObj = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.offset += 100;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.data = this.data.concat(tempObj.top);
+                inUseObj.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.offset += 100;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.data = this.data.top;
+                this.loadDataSuccess();
+                inUseObj.loadingData = false;
+            }
+        },
+        loadDataSuccess: Screens_loadDataSuccessGame,
+        label_init: function() {
+            Main_AddClass('top_bar_game', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_game', 'icon_center_focus');
+        },
+        key_exit: function() {
+            if (Main_Go === Main_Before || Main_Before === Main_aGame || Main_Before === Main_Search) Screens_BasicExit(Main_Live);
+            else Screens_BasicExit(Main_Before);
+        },
+        key_channelup: function() {
+            Main_Before = this.screen;
+            Main_Go = Main_Vod;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_channeldown: function() {
+            Main_Before = this.screen;
+            Main_Go = Main_Featured;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_play: function() {
+            Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_BeforeAgame = this.screen;
+            Main_Go = Main_aGame;
+            Main_BeforeAgameisSet = true;
+            AGame_UserGames = false;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        key_yellow: Main_showControlsDialog,
+        key_green: function() {
+            Screens_exit();
+            Main_GoLive();
+        }
+    }, Base_obj);
+
+    Game = Screens_assign(Game, Base_Game_obj);
+    Game.set_ThumbSize();
 }
