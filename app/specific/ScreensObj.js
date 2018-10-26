@@ -1,3 +1,4 @@
+var Main_ItemsLimitMax = 100;
 var Main_ItemsLimitVideo = 45;
 var Main_ColoumnsCountVideo = 3;
 var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
@@ -61,10 +62,10 @@ function ScreensObj_InitClip() {
         ids: Screens_ScreenIds('Clip'),
         table: 'stream_table_clip',
         screen: Main_Clip,
-        base_url: 'https://api.twitch.tv/kraken/clips/top?limit=',
+        base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
-            this.url = this.base_url + (this.ItemsLimit * 2) +
-                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
+            this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
+                (this.cursor ? '&cursor=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         concatenate: function(responseText) {
@@ -146,7 +147,7 @@ function ScreensObj_InitChannelClip() {
         base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_selectedChannel) +
-                '&limit=' + (this.ItemsLimit * 2) + '&period=' +
+                '&limit=' + Main_ItemsLimitMax + '&period=' +
                 this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
         concatenate: function(responseText) {
@@ -232,7 +233,7 @@ function ScreensObj_InitAGameClip() {
         screen: Main_AGameClip,
         base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
         set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_gameSelected) + '&limit=' + (this.ItemsLimit * 2) +
+            this.url = this.base_url + encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },

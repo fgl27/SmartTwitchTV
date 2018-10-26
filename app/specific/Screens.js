@@ -67,9 +67,7 @@ function Screens_StartLoad() {
     Main_empty(inUseObj.table);
     inUseObj.MaxOffset = 0;
     inUseObj.idObject = {};
-    inUseObj.itemsCountCheck = false;
     inUseObj.FirstLoad = true;
-    inUseObj.emptyContent = false;
     inUseObj.itemsCount = 0;
     inUseObj.posX = 0;
     inUseObj.posY = 0;
@@ -195,8 +193,9 @@ function Screens_loadDataSuccessClip() {
             document.getElementById(inUseObj.table).appendChild(inUseObj.row);
         }
 
-    } else if (!inUseObj.status) inUseObj.emptyContent = true;
-    Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS);
+        Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, false);
+    } else if (!inUseObj.status) Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, true);
+
 }
 
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
@@ -240,11 +239,11 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     return Main_td;
 }
 
-function Screens_loadDataSuccessFinish(img_404, empty_str) {
+function Screens_loadDataSuccessFinish(img_404, empty_str, emptyContent) {
     Main_ready(function() {
         if (!inUseObj.status) {
             Main_HideLoadDialog();
-            if (inUseObj.emptyContent) Main_showWarningDialog(empty_str);
+            if (emptyContent) Main_showWarningDialog(empty_str);
             else {
                 inUseObj.status = true;
                 Main_imgVectorLoad(img_404);
@@ -274,12 +273,8 @@ function Screens_addFocus() {
     }
 }
 
-function Screens_removeFocus() {
+function Screens_ChangeFocus(y, x) {
     Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-}
-
-function ChangeFocus(y, x) {
-    Screens_removeFocus();
     inUseObj.posY += y;
     inUseObj.posX = x;
     Screens_addFocus();
@@ -296,49 +291,41 @@ function Screens_BasicExit(before) {
     }
 }
 
+function Screens_KeyUpDown(y) {
+    for (var i = 0; i < inUseObj.ColoumnsCount; i++) {
+        if (Main_ThumbNull((inUseObj.posY + y), (inUseObj.posX - i), inUseObj.ids[0])) {
+            Screens_ChangeFocus(y, inUseObj.posX - i);
+            break;
+        }
+    }
+}
+
+function Screens_KeyLeftRight(y, x) {
+    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
+        Screens_ChangeFocus(0, (inUseObj.posX + y));
+    else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
+        Screens_ChangeFocus(y, x);
+}
+
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
-
-    var i;
 
     switch (event.keyCode) {
         case KEY_RETURN:
             inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX - 1), inUseObj.ids[0]))
-                ChangeFocus(0, (inUseObj.posX - 1));
-            else {
-                for (i = (inUseObj.ColoumnsCount - 1); i > -1; i--) {
-                    if (Main_ThumbNull((inUseObj.posY - 1), i, inUseObj.ids[0])) {
-                        ChangeFocus(-1, i);
-                        break;
-                    }
-                }
-            }
+            Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + 1), inUseObj.ids[0]))
-                ChangeFocus(0, (inUseObj.posX + 1));
-            else if (Main_ThumbNull((inUseObj.posY + 1), 0, inUseObj.ids[0]))
-                ChangeFocus(1, 0);
+            Screens_KeyLeftRight(1, 0);
             break;
         case KEY_UP:
-            for (i = 0; i < inUseObj.ColoumnsCount; i++) {
-                if (Main_ThumbNull((inUseObj.posY - 1), (inUseObj.posX - i), inUseObj.ids[0])) {
-                    ChangeFocus(-1, inUseObj.posX - i);
-                    break;
-                }
-            }
+            Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
-            for (i = 0; i < inUseObj.ColoumnsCount; i++) {
-                if (Main_ThumbNull((inUseObj.posY + 1), (inUseObj.posX - i), inUseObj.ids[0])) {
-                    ChangeFocus(1, inUseObj.posX - i);
-                    break;
-                }
-            }
+            Screens_KeyUpDown(1);
             break;
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
