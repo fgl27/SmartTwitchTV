@@ -31,6 +31,7 @@ function UserHost_init() {
         Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+        Main_SetWasopen();
     } else UserHost_StartLoad();
 }
 
@@ -185,6 +186,7 @@ function UserHost_loadDataSuccessFinish() {
                 UserHost_status = true;
                 UserHost_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
+                Main_SetWasopen();
             }
             Main_ShowElement(UserHost_ids[10]);
             UserHost_FirstLoad = false;
@@ -197,7 +199,6 @@ function UserHost_loadDataSuccessFinish() {
             } else UserHost_emptyCellVector = [];
         }
         UserHost_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

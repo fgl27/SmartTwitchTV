@@ -30,6 +30,7 @@ function UserChannels_init() {
         Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
+        Main_SetWasopen();
     } else UserChannels_StartLoad();
 }
 
@@ -191,12 +192,12 @@ function UserChannels_loadDataSuccessFinish() {
                 UserChannels_Status = true;
                 Main_imgVectorLoad(IMG_404_LOGO);
                 UserChannels_addFocus();
+                Main_SetWasopen();
             }
             Main_ShowElement(UserChannels_ids[6]);
             UserChannels_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

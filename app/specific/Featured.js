@@ -27,6 +27,7 @@ function Featured_init() {
         Main_YRst(Featured_cursorY);
         Main_ShowElement(Featured_ids[10]);
         Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
+        Main_SetWasopen();
     } else Featured_StartLoad();
 }
 
@@ -180,6 +181,7 @@ function Featured_loadDataSuccessFinish() {
                 Featured_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Featured_addFocus();
+                Main_SetWasopen();
             }
             Main_ShowElement(Featured_ids[10]);
             Featured_FirstLoad = false;
@@ -192,7 +194,6 @@ function Featured_loadDataSuccessFinish() {
             } else Featured_emptyCellVector = [];
         }
         Featured_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

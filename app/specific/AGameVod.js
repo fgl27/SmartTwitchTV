@@ -39,6 +39,7 @@ function AGameVod_init() {
         Main_ShowElement(AGameVod_ids[10]);
         AGameVod_SetPeriod();
         AGameVod_addFocus();
+        Main_SetWasopen();
     } else AGameVod_StartLoad();
 }
 
@@ -206,6 +207,7 @@ function AGameVod_loadDataSuccessFinish() {
                 AGameVod_status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 AGameVod_addFocus();
+                Main_SetWasopen();
             }
             Main_ShowElement(AGameVod_ids[10]);
             AGameVod_FirstLoad = false;
@@ -218,7 +220,6 @@ function AGameVod_loadDataSuccessFinish() {
         } else AGameVod_emptyCellVector = [];
 
         AGameVod_loadingData = false;
-        Main_SetWasopen();
     });
 }
 

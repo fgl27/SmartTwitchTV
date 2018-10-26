@@ -39,6 +39,7 @@ function Vod_init() {
         Main_ShowElement(Vod_ids[10]);
         Vod_SetPeriod();
         Vod_addFocus();
+        Main_SetWasopen();
     } else Vod_StartLoad();
 }
 
@@ -243,6 +244,7 @@ function Vod_loadDataSuccessFinish() {
                 Vod_status = true;
                 Vod_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
+                Main_SetWasopen();
             }
             Main_ShowElement(Vod_ids[10]);
             Vod_FirstLoad = false;
@@ -255,7 +257,6 @@ function Vod_loadDataSuccessFinish() {
         } else Vod_emptyCellVector = [];
 
         Vod_loadingData = false;
-        Main_SetWasopen();
     });
 }
 
