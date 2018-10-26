@@ -468,7 +468,8 @@ function ScreensObj_InitUserGames() {
 
                 this.MaxOffset = this.data._total;
                 this.offset += 100;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
+                if (this.isLive) this.dataEnded = true;
+                else if (this.offset > this.MaxOffset) this.dataEnded = true;
 
                 this.data = this.data.follows;
                 this.loadDataSuccess();
@@ -481,6 +482,9 @@ function ScreensObj_InitUserGames() {
             Main_AddClass('top_bar_user', 'icon_center_focus');
 
             if (this.OldUserName !== AddUser_UsernameArray[Users_Position].name) this.status = false;
+
+            this.OldUserName = AddUser_UsernameArray[Users_Position].name;
+
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         },
         label_exit: function() {
@@ -493,7 +497,6 @@ function ScreensObj_InitUserGames() {
             this.isLive = !this.isLive;
 
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
-            this.OldUserName = AddUser_UsernameArray[Users_Position].name;
 
             Screens_StartLoad();
 
