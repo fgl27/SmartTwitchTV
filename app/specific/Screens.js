@@ -133,74 +133,7 @@ function Screens_loadDataError() {
     }
 }
 
-function Screens_loadDataSuccessGame() {
-    var response_items = (inUseObj.data.length - inUseObj.data_cursor);
-    var dataEnded = false;
-
-    if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
-    else dataEnded = true;
-
-    if (response_items) {
-        var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
-
-        var cell,
-            max_row = inUseObj.row_id + response_rows;
-
-        for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
-
-            if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
-                inUseObj.row = document.createElement('div');
-                inUseObj.coloumn_id = 0;
-            }
-
-            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
-
-                cell = inUseObj.data[inUseObj.data_cursor];
-
-                if (!inUseObj.idObject[cell.game._id]) {
-
-                    inUseObj.itemsCount++;
-                    inUseObj.idObject[cell.game._id] = 1;
-
-                    inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                        inUseObj.coloumn_id,
-                        inUseObj.ids,
-                        cell.game.box.template.replace("{width}x{height}", Main_GameSize),
-                        cell.game.name,
-                        Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
-
-                    inUseObj.coloumn_id++;
-                }
-            }
-            document.getElementById(inUseObj.table).appendChild(inUseObj.row);
-        }
-    }
-
-    Screens_loadDataSuccessFinish(IMG_404_GAME, STR_NO + STR_LIVE_GAMES, (!response_items && !inUseObj.status));
-
-}
-
-function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
-    var id = row_id + '_' + coloumn_id;
-
-    Main_imgVectorPush(idArray[1] + id, thumbnail);
-    if (row_id < inUseObj.ColoumnsCount) Main_CacheImage(thumbnail); //try to pre cache first 3 rows
-
-    Main_td = document.createElement('div');
-    Main_td.setAttribute('id', idArray[5] + id);
-    Main_td.style.cssText = inUseObj.ThumbCssText;
-    Main_td.setAttribute(Main_DataAttribute, game_name);
-
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="stream_img"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
-        idArray[3] + id + '" class="stream_channel">' + game_name + '</div><div id="' +
-        idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div></div></div>';
-
-    return Main_td;
-}
-
-function Screens_loadDataSuccessClip() {
+function Screens_loadDataSuccess() {
     var response_items = (inUseObj.data.length - inUseObj.data_cursor);
     var dataEnded = false;
 
@@ -219,8 +152,7 @@ function Screens_loadDataSuccessClip() {
     if (response_items) {
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
 
-        var cell,
-            max_row = inUseObj.row_id + response_rows;
+        var max_row = inUseObj.row_id + response_rows;
 
         for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
 
@@ -230,57 +162,50 @@ function Screens_loadDataSuccessClip() {
                 //appendDiv = true;
             }
 
-            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
+            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
 
-                cell = inUseObj.data[inUseObj.data_cursor];
-
-                if (!inUseObj.idObject[cell.tracking_id]) {
-
-                    inUseObj.itemsCount++;
-                    inUseObj.idObject[cell.tracking_id] = 1;
-
-                    inUseObj.row.appendChild(Screens_createCellClip(inUseObj.row_id,
-                        inUseObj.coloumn_id,
-                        inUseObj.ids,
-                        cell.thumbnails.medium,
-                        cell.broadcaster.display_name,
-                        [STR_CREATED_AT,
-                            Main_videoCreatedAt(cell.created_at)
-                        ],
-                        [twemoji.parse(cell.title), STR_PLAYING, cell.game],
-                        Main_addCommas(cell.views),
-                        '[' + cell.language.toUpperCase() + ']',
-                        cell.duration,
-                        cell.slug,
-                        cell.broadcaster.name,
-                        cell.broadcaster.logo.replace("150x150", "300x300"),
-                        cell.broadcaster.id,
-                        (cell.vod !== null ? cell.vod.id : null),
-                        (cell.vod !== null ? cell.vod.offset : null)));
-
-                    inUseObj.coloumn_id++;
-                }
-            }
             //if (appendDiv)
             document.getElementById(inUseObj.table).appendChild(inUseObj.row);
         }
 
     }
 
-    Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, (!response_items && !inUseObj.status));
+    Screens_loadDataSuccessFinish(!response_items && !inUseObj.status);
 }
 
-function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
+function Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail) {
 
     var id = row_id + '_' + coloumn_id;
-
     Main_imgVectorPush(idArray[1] + id, thumbnail);
     if (row_id < inUseObj.ColoumnsCount) Main_CacheImage(thumbnail); //try to pre cache first 3 rows
 
     Main_td = document.createElement('div');
-    Main_td.setAttribute('id', idArray[8] + id);
     Main_td.style.cssText = inUseObj.ThumbCssText;
 
+    return id;
+}
+
+function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
+
+    var id = Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail);
+
+    Main_td.setAttribute('id', idArray[5] + id);
+    Main_td.setAttribute(Main_DataAttribute, game_name);
+
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
+        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
+        idArray[3] + id + '" class="stream_channel">' + game_name + '</div><div id="' +
+        idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div></div></div>';
+
+    return Main_td;
+}
+
+function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
+
+    var id = Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail);
+
+    Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify([video_id,
         duration,
         title_game[2],
@@ -311,20 +236,20 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     return Main_td;
 }
 
-function Screens_loadDataSuccessFinish(img_404, empty_str, emptyContent) {
+function Screens_loadDataSuccessFinish(emptyContent) {
     Main_ready(function() {
         if (!inUseObj.status) {
             Main_HideLoadDialog();
-            if (emptyContent) Main_showWarningDialog(empty_str);
+            if (emptyContent) Main_showWarningDialog(inUseObj.empty_str);
             else {
                 inUseObj.status = true;
-                Main_imgVectorLoad(img_404);
+                Main_imgVectorLoad(inUseObj.img_404);
                 Screens_addFocus();
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
         } else {
-            Main_imgVectorLoad(img_404);
+            Main_imgVectorLoad(inUseObj.img_404);
             Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         }
     });
