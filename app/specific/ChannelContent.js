@@ -89,9 +89,13 @@ function ChannelContent_loadDataRequest() {
                         ChannelContent_responseText = xmlHttp.responseText;
                         ChannelContent_loadDataPrepare();
                         ChannelContent_GetStreamerInfo();
-                    } else {
+                    } else if (!ChannelContent_TargetId) {
                         ChannelContent_loadDataPrepare();
                         ChannelContent_loadDataCheckHost();
+                    } else {
+                        ChannelContent_responseText = null;
+                        ChannelContent_loadDataPrepare();
+                        ChannelContent_GetStreamerInfo();
                     }
                     return;
                 } else {
