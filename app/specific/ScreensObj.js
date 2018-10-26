@@ -355,6 +355,7 @@ function ScreensObj_InitGame() {
         screen: Main_games,
         base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + '&offset=' + this.offset;
         },
         concatenate: function(responseText) {
@@ -450,6 +451,7 @@ function ScreensObj_InitUserGames() {
         OldUserName: '',
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games';
 
             if (this.isLive) this.url += '/live?limit=750';
@@ -467,6 +469,7 @@ function ScreensObj_InitUserGames() {
 
                 inUseObj.loadingData = false;
             } else {
+
                 this.data = JSON.parse(responseText);
 
                 this.MaxOffset = this.data._total;
