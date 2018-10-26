@@ -594,7 +594,6 @@ function Main_SwitchScreen() {
     else Live_init();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
-    Main_SetWasopen();
 }
 
 function Main_SetWasopen() {

@@ -231,6 +231,7 @@ function AGame_loadDataSuccessFinish() {
             } else AGame_emptyCellVector = [];
         }
         AGame_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

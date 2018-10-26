@@ -196,6 +196,7 @@ function UserChannels_loadDataSuccessFinish() {
             UserChannels_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
+        Main_SetWasopen();
     });
 }
 

@@ -218,6 +218,7 @@ function AGameVod_loadDataSuccessFinish() {
         } else AGameVod_emptyCellVector = [];
 
         AGameVod_loadingData = false;
+        Main_SetWasopen();
     });
 }
 
