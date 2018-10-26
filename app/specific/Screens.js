@@ -136,7 +136,6 @@ function Screens_loadDataError() {
 
 function Screens_loadDataSuccess() {
     var response_items = (inUseObj.data.length - inUseObj.data_cursor);
-    var dataEnded = false;
 
     //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
     //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -148,7 +147,7 @@ function Screens_loadDataSuccess() {
     //var appendDiv = !inUseObj.coloumn_id;
 
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
-    else dataEnded = true;
+    else inUseObj.dataEnded = true;
 
     if (response_items) {
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
@@ -266,7 +265,7 @@ function Screens_addFocus() {
     }
 
     //Load more as the data is getting used
-    if ((inUseObj.data_cursor + (inUseObj.ItemsLimit * 2)) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
+    if ((inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataPrepare();
         Screens_loadDataRequest();
     }
