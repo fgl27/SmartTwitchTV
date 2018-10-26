@@ -15,8 +15,12 @@ function Screens_InitSecondaryScreens() {
     ScreensObj_InitClip();
     ScreensObj_InitChannelClip();
     ScreensObj_InitAGameClip();
+
+    //Games screens
+    ScreensObj_InitGame();
 }
 
+//TODO cleanup not used when finished migrate all
 function Screens_ScreenIds(base) {
     return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', base + '_scroll', base + '_lang'];
 }
@@ -66,6 +70,7 @@ function Screens_StartLoad() {
     inUseObj.row = document.createElement('div');
     Main_empty(inUseObj.table);
     inUseObj.MaxOffset = 0;
+    inUseObj.offset = 0;
     inUseObj.idObject = {};
     inUseObj.FirstLoad = true;
     inUseObj.itemsCount = 0;
@@ -126,6 +131,73 @@ function Screens_loadDataError() {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else inUseObj.dataEnded = true;
     }
+}
+
+function Screens_loadDataSuccessGame() {
+    var response_items = (inUseObj.data.length - inUseObj.data_cursor);
+    var dataEnded = false;
+
+    if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
+    else dataEnded = true;
+
+    if (response_items) {
+        var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
+
+        var cell,
+            max_row = inUseObj.row_id + response_rows;
+
+        for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
+
+            if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
+                inUseObj.row = document.createElement('div');
+                inUseObj.coloumn_id = 0;
+            }
+
+            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
+
+                cell = inUseObj.data[inUseObj.data_cursor];
+
+                if (!inUseObj.idObject[cell.game._id]) {
+
+                    inUseObj.itemsCount++;
+                    inUseObj.idObject[cell.game._id] = 1;
+
+                    inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                        inUseObj.coloumn_id,
+                        inUseObj.ids,
+                        cell.game.box.template.replace("{width}x{height}", Main_GameSize),
+                        cell.game.name,
+                        Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
+
+                    inUseObj.coloumn_id++;
+                }
+            }
+            document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+        }
+    }
+
+    Screens_loadDataSuccessFinish(IMG_404_GAME, STR_NO + STR_LIVE_GAMES, (!response_items && !inUseObj.status));
+
+}
+
+function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
+    var id = row_id + '_' + coloumn_id;
+
+    Main_imgVectorPush(idArray[1] + id, thumbnail);
+    if (row_id < inUseObj.ColoumnsCount) Main_CacheImage(thumbnail); //try to pre cache first 3 rows
+
+    Main_td = document.createElement('div');
+    Main_td.setAttribute('id', idArray[5] + id);
+    Main_td.style.cssText = inUseObj.ThumbCssText;
+    Main_td.setAttribute(Main_DataAttribute, game_name);
+
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
+        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
+        idArray[3] + id + '" class="stream_channel">' + game_name + '</div><div id="' +
+        idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div></div></div>';
+
+    return Main_td;
 }
 
 function Screens_loadDataSuccessClip() {
@@ -193,9 +265,9 @@ function Screens_loadDataSuccessClip() {
             document.getElementById(inUseObj.table).appendChild(inUseObj.row);
         }
 
-        Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, false);
-    } else if (!inUseObj.status) Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, true);
+    }
 
+    Screens_loadDataSuccessFinish(IMG_404_VIDEO, STR_NO + STR_CLIPS, (!response_items && !inUseObj.status));
 }
 
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
@@ -259,7 +331,7 @@ function Screens_loadDataSuccessFinish(img_404, empty_str, emptyContent) {
 }
 
 function Screens_addFocus() {
-    Main_addFocusVideo(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
         Main_imgVectorRst();

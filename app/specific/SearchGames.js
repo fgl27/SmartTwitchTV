@@ -167,7 +167,7 @@ function SearchGames_loadDataSuccessFinish() {
 
 function SearchGames_addFocus() {
     Main_addFocusGame(SearchGames_cursorY, SearchGames_cursorX, SearchGames_ids,
-        Main_ColoumnsCountGame, Games_itemsCount);
+        Main_ColoumnsCountGame, SearchGames_itemsCount);
 }
 
 function SearchGames_removeFocus() {
