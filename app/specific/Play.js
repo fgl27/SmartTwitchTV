@@ -44,7 +44,9 @@ var Play_qualitiesFound = false;
 var Play_PlayerTime = 0;
 var Play_streamCheck = null;
 var Play_PlayerCheckCount = 0;
+var Play_PlayerCheckCounter = 0;
 var Play_PlayerCheckQualityChanged = false;
+var Play_PlayerCheckRun = false;
 var Play_Playing = false;
 var Play_selectedChannel = '';
 var Play_selectedChannelDisplayname = '';
@@ -54,7 +56,7 @@ var Play_gameSelected = '';
 var Play_avplay;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
-var Play_loadingDataTimeout = 3500;
+var Play_loadingDataTimeout = 2000;
 var Play_Lang = '';
 var Play_Endcounter = 0;
 var Play_EndTextCounter = 3;
@@ -254,6 +256,8 @@ function Play_Start() {
     Play_EndSet(1);
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
+    Play_PlayerCheckCounter = 0;
+    Play_PlayerCheckRun = false;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;
     Play_loadingInfoDataTry = 0;
@@ -413,7 +417,7 @@ function Play_LoadLogo(ImgObjet, link) {
 
 function Play_loadData() {
     Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 3500;
+    Play_loadingDataTimeout = 2000;
     Play_loadDataRequest();
 }
 
@@ -457,7 +461,7 @@ function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
         if (Play_loadingDataTry < Play_loadingDataTryMax) {
-            Play_loadingDataTimeout += 500;
+            Play_loadingDataTimeout += 250;
             Play_loadDataRequest();
         } else Play_CheckHostStart();
     }
@@ -546,6 +550,7 @@ function Play_qualityChanged() {
     }
 
     Play_BufferPercentage = 0;
+    Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
     if (Play_isOn) Play_onPlayer();
 }
@@ -637,7 +642,6 @@ function Play_onPlayer() {
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
-        Play_PlayerCheckCount = 0;
         Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
     });
 }
@@ -689,13 +693,30 @@ function Play_PlayerCheck() {
     if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+
             if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
-                if (Play_PlayerCheckQualityChanged) Play_qualityIndex++; //Don't change the first time only retry
+
+                //Don't change the first time only retry
+                if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_qualityIndex++;
+                else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
+
+                if (Play_PlayerCheckCounter > 2) {
+                    Play_qualityIndex++;
+                    Play_PlayerCheckCounter = 0;
+                }
+
                 Play_qualityDisplay();
                 Play_qualityChanged();
+                Play_PlayerCheckRun = true;
+
             } else Play_CheckHostStart(); //staled for too long close the player
-        } // else we try for too long let the listener onerror catch it
-    } else Play_PlayerCheckCount = 0;
+
+        }
+    } else {
+        Play_PlayerCheckCounter = 0;
+        Play_PlayerCheckCount = 0;
+        Play_PlayerCheckRun = false;
+    }
     Play_PlayerTime = Play_currentTime;
 }
 
@@ -798,6 +819,11 @@ function Play_ClearPlayer() {
     Play_HideWarningDialog();
     Play_HideEndDialog();
     Play_IncrementView = '';
+
+    if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) Play_qualityPlaying = Play_qualities[0].id;
+    if (PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) PlayVod_qualityPlaying = PlayVod_qualities[0].id;
+    if (PlayClip_qualityIndex === (PlayClip_getQualitiesCount() - 1)) PlayClip_qualityPlaying = PlayClip_qualities[0].id;
+
 }
 
 function Play_ClearPlay() {
@@ -1336,7 +1362,7 @@ function Play_CheckHostStart() {
     Play_offPlayer();
     Play_state = -1;
     Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 3500;
+    Play_loadingDataTimeout = 2000;
     window.clearTimeout(Play_CheckChatId);
     Play_Chatobj.src = 'about:blank';
     window.clearInterval(Play_streamInfoTimer);
@@ -1363,7 +1389,7 @@ function Play_CheckId() {
                     if (users !== undefined) {
                         Play_selectedChannel_id = users._id;
                         Play_loadingDataTry = 0;
-                        Play_loadingDataTimeout = 3500;
+                        Play_loadingDataTimeout = 2000;
                         Play_loadDataCheckHost();
                     } else Play_PannelEndStart(1);
                     return;
@@ -1382,7 +1408,7 @@ function Play_CheckId() {
 function Play_CheckIdError() {
     Play_loadingDataTry++;
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
-        Play_loadingDataTimeout += 500;
+        Play_loadingDataTimeout += 250;
         Play_CheckId();
     } else {
         Play_isHost = false;
@@ -1419,7 +1445,7 @@ function Play_loadDataCheckHost() {
 function Play_loadDataCheckHostError() {
     Play_loadingDataTry++;
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
-        Play_loadingDataTimeout += 500;
+        Play_loadingDataTimeout += 250;
         Play_loadDataCheckHost();
     } else {
         Play_isHost = false;
