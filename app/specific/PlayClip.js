@@ -7,7 +7,7 @@ var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
 var PlayClip_loadingDataTry = 0;
-var PlayClip_loadingDataTimeout = 3500;
+var PlayClip_loadingDataTimeout = 2000;
 var PlayClip_loadingDataTryMax = 5;
 var PlayClip_JustStartPlaying = true;
 var PlayClip_quality = 'source';
@@ -22,7 +22,10 @@ var PlayClip_STATE_PLAYING = 1;
 var PlayClip_bufferingcomplete = false;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 4;
+var PlayClip_PlayerCheckCounter = 0;
 var PlayClip_PlayerCheckQualityChanged = false;
+var PlayClip_PlayerCheckRun = false;
+
 var PlayClip_jumpTimers = [0, 5];
 var PlayClip_DurationSeconds = 0;
 //Variable initialization end
@@ -60,6 +63,8 @@ function PlayClip_Start() {
     Main_ShowElement('chat_box');
     Main_HideElement('chat_frame');
 
+    PlayClip_PlayerCheckCounter = 0;
+    PlayClip_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
     PlayClip_offsettime = 0;
@@ -87,7 +92,7 @@ function PlayClip_Start() {
 
 function PlayClip_loadData() {
     PlayClip_loadingDataTry = 0;
-    PlayClip_loadingDataTimeout = 3500;
+    PlayClip_loadingDataTimeout = 2000;
     PlayClip_loadDataRequest();
 }
 
@@ -116,7 +121,7 @@ function PlayClip_loadDataRequest() {
 function PlayClip_loadDataError() {
     PlayClip_loadingDataTry++;
     if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
-        PlayClip_loadingDataTimeout += 500;
+        PlayClip_loadingDataTimeout += 250;
         PlayClip_loadDataRequest();
     } else {
         Play_HideBufferDialog();
@@ -195,6 +200,7 @@ function PlayClip_QualityGenerate(response) {
     }
 
     Play_BufferPercentage = 0;
+    Main_empty('dialog_buffer_play_percentage');
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
 }
@@ -266,7 +272,6 @@ function PlayClip_onPlayer() {
         PlayClip_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(PlayClip_streamCheck);
-        PlayClip_PlayerCheckCount = 0;
         PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
     });
 }
@@ -284,16 +289,31 @@ function PlayClip_PlayerCheck() {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
             if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
-                if (PlayClip_PlayerCheckQualityChanged) PlayClip_qualityIndex++; //Don't change the first time only retry
+
+                //Don't change the first time only retry
+                if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_qualityIndex++;
+                else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
+
+                if (PlayClip_PlayerCheckCounter > 2) {
+                    PlayClip_qualityIndex++;
+                    PlayClip_PlayerCheckCounter = 0;
+                }
+
                 PlayClip_qualityDisplay();
                 if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
                 PlayClip_qualityChanged();
+                PlayClip_PlayerCheckRun = true;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(3); //staled for too long close the player
             }
         } // else we try for too long let the listener onerror catch it
-    } else PlayClip_PlayerCheckCount = 0;
+    } else {
+        PlayClip_PlayerCheckCounter = 0;
+        PlayClip_PlayerCheckCount = 0;
+        PlayClip_PlayerCheckRun = false;
+
+    }
 
     PlayClip_PlayerTime = PlayClip_currentTime;
 }
