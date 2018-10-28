@@ -203,4 +203,5 @@ function pt_BRLang() {
     STR_APP_LANG = "Linguá do aplicativo";
     STR_CONTENT_LANG = "Linguá do conteúdo";
     STR_LANG_ALL = "Todas";
+    STR_NO_GAME = "Jogo vazio para este";
 }

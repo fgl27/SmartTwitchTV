@@ -50,7 +50,6 @@ function PlayClip_Start() {
     PlayClip_HasVOD = ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
-        console.log('PlayClip_HasVOD ' + PlayClip_HasVOD);
         PlayVod_currentTime = 0;
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
@@ -257,7 +256,7 @@ function PlayClip_onPlayer() {
         Play_PlayerCheckTimer = 2;
         PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log(e);
+        console.log('PlayClip_onPlayer ' + e);
     }
 
     PlayClip_JustStartPlaying = true;

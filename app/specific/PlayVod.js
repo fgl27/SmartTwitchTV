@@ -523,7 +523,7 @@ function PlayVod_onPlayer() {
         Play_PlayerCheckTimer = 2;
         PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log(e);
+        console.log('PlayVod_onPlayer ' + e);
     }
 
     Play_avplay.prepareAsync(function() {
@@ -658,7 +658,6 @@ function PlayVod_IconsBottonFocus() {
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsRemoveFocus();
         if (PlayVod_addToJump) {
-            console.log('PlayVod_IconsBottonFocus');
             PlayVod_jumpTime();
             document.getElementById('progress_bar_steps').style.display = 'inline-block';
         }
@@ -721,7 +720,7 @@ function PlayVod_jump() {
             Play_avplay.seekTo(PlayVod_TimeToJump * 1000);
         } catch (e) {
             Play_HideWarningDialog();
-            console.log(e);
+            console.log('PlayVod_jump ' + e);
         }
 
         if (PlayVod_isOn) Chat_offset = PlayVod_TimeToJump;

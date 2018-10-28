@@ -217,4 +217,5 @@ function en_USLang() {
     STR_APP_LANG = "Application language";
     STR_CONTENT_LANG = "Content language";
     STR_LANG_ALL = "All";
+    STR_NO_GAME = "Empty game fro this";
 }
