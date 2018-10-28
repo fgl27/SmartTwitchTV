@@ -627,7 +627,7 @@ function Play_onPlayer() {
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
     } catch (e) {
-        console.log(e);
+        console.log('Play_onPlayer ' + e);
     }
 
     Play_JustStartPlaying = true;
@@ -1228,7 +1228,11 @@ function Play_EndDialogPressed(PlayVodClip) {
         } else PlayClip_OpenVod();
     } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
-    if (Play_Endcounter !== 1) Play_HideEndDialog();
+
+    if (Play_Endcounter !== 1) {
+        if (Play_Endcounter === 3 && Play_gameSelected === '') return;
+        Play_HideEndDialog();
+    }
 }
 
 function Play_EndSet(PlayVodClip) {
@@ -1290,6 +1294,16 @@ function Play_OpenSearch(PlayVodClip) {
 }
 
 function Play_OpenGame(PlayVodClip) {
+    if (Play_gameSelected === '') {
+        Play_IsWarning = true;
+        Play_showWarningDialog(STR_NO_GAME);
+        window.setTimeout(function() {
+            Play_IsWarning = false;
+            Play_HideWarningDialog();
+        }, 2000);
+        return;
+    }
+
     if (!Main_BeforeAgameisSet && Main_Go !== Main_AGameVod && Main_Go !== Main_AGameClip) {
         Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_ChannelContent && Main_Go !== Main_ChannelVod && Main_Go !== Main_ChannelClip) ? Main_BeforeChannel : Main_Go;
         Main_BeforeAgameisSet = true;
