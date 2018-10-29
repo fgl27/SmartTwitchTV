@@ -112,57 +112,42 @@ function Settings_SetSettings() {
         key;
 
     // General settings title
-    div += '<div id="setting_title_general" class="settings_section">' + STR_SETTINGS_GENERAL + '</div>';
+    div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
     // Clock offset
     key = "clock_offset";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_CLOCK_OFFSET + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
 
     // App Language selection
     key = "general_lang";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_APP_LANG + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_APP_LANG);
 
     // Content Language selection
     key = "content_lang";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_CONTENT_LANG + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_CONTENT_LANG);
 
     //Player restore playback
     key = "restor_playback";
     Settings_value_keys.push(key);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_RESTORE_PLAYBACK + ':<div id="' + key + '_summary" class="settings_summary" style="font-size: 55%;">' + STR_RESTORE_PLAYBACK_SUMARRY + '</div></div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
 
     // Videos
     key = "videos_animation";
     Settings_value_keys.push(key);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_VIDEOS_ANIMATION + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
 
     // Player settings title
-    div += '<div id="setting_title_play" class="settings_section">' + STR_SETTINGS_PLAYER + '</div>';
+    div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
     // Player buffer title/summary
     div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
@@ -172,43 +157,53 @@ function Settings_SetSettings() {
     key = "buffer_live";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_SETTINGS_BUFFER_LIVE + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
 
     // Player buffer vod
     key = "buffer_vod";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_SETTINGS_BUFFER_VOD + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
 
     // Player buffer clip
     key = "buffer_clip";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_SETTINGS_BUFFER_CLIP + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
 
-    // Player buffer title/summary
-    div += '<div id="chat_font_size_title" class="settings_title">' + STR_CHAT_FONT + '</div>';
-
-    // Player buffer live
+    // Chat size
     key = "chat_font_size";
     Settings_value_keys.push(key);
 
-    div += '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' + STR_CHAT_FONT_SUMARRY + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
+}
+
+function Settings_DivTitle(key, string) {
+    return '<div id="setting_title_' + key + '" class="settings_section">' + string + '</div>';
+}
+
+function Settings_DivOptionNoSummary(key, string) {
+    return '<div id="' + key + '_div" class="settings_div"><div id="' +
+        key + '_name" class="settings_name">' + string + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+}
+
+function Settings_DivOptionWithSummary(key, string_title, string_summary) {
+    return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
+        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div></div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+}
+
+function Settings_DivOptionChangeLang(key, string_title, string_summary) {
+    Main_innerHTML(key + '_name', string_title +
+        '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div>');
 }
 
 // The order in Settings_SetStrings doesnot matter
@@ -248,14 +243,12 @@ function Settings_SetStrings() {
 
     //Player restore
     key = "restor_playback";
-    Main_innerHTML(key + '_name', STR_RESTORE_PLAYBACK +
-        '<div id="' + key + '_summary" class="settings_summary" style="font-size: 55%;">' + STR_RESTORE_PLAYBACK_SUMARRY + '</div>');
+    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
     //Player chat font size
     key = "chat_font_size";
-    Main_textContent('chat_font_size_title', STR_CHAT_FONT);
-    Main_textContent(key + '_name', STR_CHAT_FONT_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
 
     // Videos
     key = "videos_animation";
