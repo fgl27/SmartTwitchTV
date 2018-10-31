@@ -293,15 +293,15 @@ function PlayClip_PlayerCheck() {
                 if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_qualityIndex++;
                 else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
 
-                if (PlayClip_PlayerCheckCounter > 2) {
-                    PlayClip_qualityIndex++;
-                    PlayClip_PlayerCheckCounter = 0;
+                if (!navigator.onLine) Play_EndStart(false, 3);
+                else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
+                else {
+                    PlayClip_qualityDisplay();
+                    if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+                    PlayClip_qualityChanged();
+                    PlayClip_PlayerCheckRun = true;
                 }
 
-                PlayClip_qualityDisplay();
-                if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
-                PlayClip_qualityChanged();
-                PlayClip_PlayerCheckRun = true;
             } else {
                 Play_avplay.stop();
                 Play_PannelEndStart(3); //staled for too long close the player
@@ -315,6 +315,15 @@ function PlayClip_PlayerCheck() {
     }
 
     PlayClip_PlayerTime = PlayClip_currentTime;
+}
+
+function PlayClip_DropOneQuality(ConnectionDrop) {
+    if (!ConnectionDrop) PlayClip_qualityIndex++;
+    PlayClip_PlayerCheckCounter = 0;
+    PlayClip_qualityDisplay();
+    if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+    PlayClip_qualityChanged();
+    PlayClip_PlayerCheckRun = true;
 }
 
 function PlayClip_shutdownStream() {
