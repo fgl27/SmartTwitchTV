@@ -284,28 +284,24 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayClip_PlayerTime === PlayClip_currentTime) {
+    if (PlayClip_PlayerTime === PlayClip_currentTime && Play_isIdleOrPlaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
 
-                //Don't change the first time only retry
-                if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_qualityIndex++;
-                else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
 
-                if (!navigator.onLine) Play_EndStart(false, 3);
-                else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
-                else {
-                    PlayClip_qualityDisplay();
-                    if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
-                    PlayClip_qualityChanged();
-                    PlayClip_PlayerCheckRun = true;
-                }
+            //Don't change the first time only retry
+            if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;
+            else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
 
-            } else {
-                Play_avplay.stop();
-                Play_PannelEndStart(3); //staled for too long close the player
+            if (!navigator.onLine) Play_EndStart(false, 3);
+            else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
+            else {
+                PlayClip_qualityDisplay();
+                if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+                PlayClip_qualityChanged();
+                PlayClip_PlayerCheckRun = true;
             }
+
         } // else we try for too long let the listener onerror catch it
     } else {
         PlayClip_PlayerCheckCounter = 0;
@@ -318,7 +314,15 @@ function PlayClip_PlayerCheck() {
 }
 
 function PlayClip_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) PlayClip_qualityIndex++;
+
+    if (!ConnectionDrop) {
+        if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) PlayClip_qualityIndex++;
+        else {
+            Play_EndStart(false, 3);
+            return;
+        }
+    }
+
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_qualityDisplay();
     if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();

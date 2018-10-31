@@ -691,26 +691,21 @@ function Play_isIdleOrPlaying() {
 }
 
 function Play_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && Play_PlayerTime === Play_currentTime) {
+    if (Play_PlayerTime === Play_currentTime && Play_isIdleOrPlaying()) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
 
-            if (Play_qualityIndex < Play_getQualitiesCount() - 1) {
+            //Don't change the first time only retry
+            if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun && (Play_qualityIndex < Play_getQualitiesCount() - 1)) Play_qualityIndex++;
+            else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
 
-                //Don't change the first time only retry
-                if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_qualityIndex++;
-                else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
-
-                if (!navigator.onLine) Play_EndStart(false, 1);
-                else if (Play_PlayerCheckCounter > 1) Play_CheckConnection(Play_PlayerCheckCounter, 1, Play_DropOneQuality);
-                else {
-                    Play_qualityDisplay();
-                    Play_qualityChanged();
-                    Play_PlayerCheckRun = true;
-                }
-
-            } else if (!navigator.onLine) Play_CheckHostStart(); //staled for too long close the player
-            else Play_EndStart(false, 1);
+            if (!navigator.onLine) Play_EndStart(false, 1);
+            else if (Play_PlayerCheckCounter > 1) Play_CheckConnection(Play_PlayerCheckCounter, 1, Play_DropOneQuality);
+            else {
+                Play_qualityDisplay();
+                Play_qualityChanged();
+                Play_PlayerCheckRun = true;
+            }
 
         }
     } else {
@@ -722,7 +717,15 @@ function Play_PlayerCheck() {
 }
 
 function Play_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) Play_qualityIndex++;
+
+    if (!ConnectionDrop) {
+        if (Play_qualityIndex < Play_getQualitiesCount() - 1) Play_qualityIndex++;
+        else {
+            Play_CheckHostStart();
+            return;
+        }
+    }
+
     Play_PlayerCheckCounter = 0;
     Play_qualityDisplay();
     Play_qualityChanged();

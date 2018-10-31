@@ -542,27 +542,22 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_PlayerCheck() {
-    if (Play_isIdleOrPlaying() && PlayVod_PlayerTime === PlayVod_currentTime) {
+    if (PlayVod_PlayerTime === PlayVod_currentTime && Play_isIdleOrPlaying()) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
 
-            if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) {
 
-                //Don't change the first time only retry
-                if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_qualityIndex++;
-                else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
+            //Don't change the first time only retry
+            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) PlayVod_qualityIndex++;
+            else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
 
-                if (!navigator.onLine) Play_EndStart(false, 2);
-                else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
-                else {
-                    PlayVod_qualityDisplay();
-                    if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
-                    PlayVod_qualityChanged();
-                    PlayVod_PlayerCheckRun = true;
-                }
-
-            } else {
-                Play_PannelEndStart(2); //staled for too long close the player
+            if (!navigator.onLine) Play_EndStart(false, 2);
+            else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
+            else {
+                PlayVod_qualityDisplay();
+                if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
+                PlayVod_qualityChanged();
+                PlayVod_PlayerCheckRun = true;
             }
 
         } // else we try for too long let the listener onerror catch it
@@ -576,7 +571,15 @@ function PlayVod_PlayerCheck() {
 }
 
 function PlayVod_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) PlayVod_qualityIndex++;
+
+    if (!ConnectionDrop) {
+        if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
+        else {
+            Play_EndStart(false, 2);
+            return;
+        }
+    }
+
     PlayVod_PlayerCheckCounter = 0;
     PlayVod_qualityDisplay();
     if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
