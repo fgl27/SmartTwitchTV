@@ -298,7 +298,8 @@ function Play_Resume() {
                     Play_RestoreFromResume = true;
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
-                    Play_onPlayer();
+                    Play_state = Play_STATE_LOADING_TOKEN;
+                    Play_loadData();
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
                 }
             }
