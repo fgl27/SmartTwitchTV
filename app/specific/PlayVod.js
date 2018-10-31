@@ -552,17 +552,16 @@ function PlayVod_PlayerCheck() {
                 if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_qualityIndex++;
                 else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
 
-                if (PlayVod_PlayerCheckCounter > 2) {
-                    PlayVod_qualityIndex++;
-                    PlayVod_PlayerCheckCounter = 0;
+                if (!navigator.onLine) Play_EndStart(false, 2);
+                else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
+                else {
+                    PlayVod_qualityDisplay();
+                    if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
+                    PlayVod_qualityChanged();
+                    PlayVod_PlayerCheckRun = true;
                 }
 
-                PlayVod_qualityDisplay();
-                if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
-                PlayVod_qualityChanged();
-                PlayVod_PlayerCheckRun = true;
             } else {
-                Play_avplay.stop();
                 Play_PannelEndStart(2); //staled for too long close the player
             }
 
@@ -574,6 +573,15 @@ function PlayVod_PlayerCheck() {
     }
 
     PlayVod_PlayerTime = PlayVod_currentTime;
+}
+
+function PlayVod_DropOneQuality(ConnectionDrop) {
+    if (!ConnectionDrop) PlayVod_qualityIndex++;
+    PlayVod_PlayerCheckCounter = 0;
+    PlayVod_qualityDisplay();
+    if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
+    PlayVod_qualityChanged();
+    PlayVod_PlayerCheckRun = true;
 }
 
 function PlayVod_updateCurrentTime(currentTime) {

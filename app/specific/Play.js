@@ -701,16 +701,16 @@ function Play_PlayerCheck() {
                 if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_qualityIndex++;
                 else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
 
-                if (Play_PlayerCheckCounter > 2) {
-                    Play_qualityIndex++;
-                    Play_PlayerCheckCounter = 0;
+                if (!navigator.onLine) Play_EndStart(false, 1);
+                else if (Play_PlayerCheckCounter > 1) Play_CheckConnection(Play_PlayerCheckCounter, 1, Play_DropOneQuality);
+                else {
+                    Play_qualityDisplay();
+                    Play_qualityChanged();
+                    Play_PlayerCheckRun = true;
                 }
 
-                Play_qualityDisplay();
-                Play_qualityChanged();
-                Play_PlayerCheckRun = true;
-
-            } else Play_CheckHostStart(); //staled for too long close the player
+            } else if (!navigator.onLine) Play_CheckHostStart(); //staled for too long close the player
+            else Play_EndStart(false, 1);
 
         }
     } else {
@@ -719,6 +719,42 @@ function Play_PlayerCheck() {
         Play_PlayerCheckRun = false;
     }
     Play_PlayerTime = Play_currentTime;
+}
+
+function Play_DropOneQuality(ConnectionDrop) {
+    if (!ConnectionDrop) Play_qualityIndex++;
+    Play_PlayerCheckCounter = 0;
+    Play_qualityDisplay();
+    Play_qualityChanged();
+    Play_PlayerCheckRun = true;
+}
+
+function Play_EndStart(hosting, PlayVodClip) {
+    Play_isHost = hosting;
+    Play_EndSet(PlayVodClip);
+    Play_PannelEndStart(PlayVodClip);
+}
+
+// Check if connection with twitch server is OK if not for 15s drop one quality
+function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
+    try {
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.timeout = 1000;
+        xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?rand=' + Math.round(Math.random() * 1e7), true);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    if (Play_isNotplaying()) DropOneQuality(counter > 2);
+                } else if (counter > 12) Play_EndStart(false, PlayVodClip);
+            }
+        };
+
+        xmlHttp.send(null);
+    } catch (e) {
+        if (counter > 12) Play_EndStart(false, PlayVodClip);
+    }
 }
 
 function Play_isNotplaying() {
@@ -1365,6 +1401,8 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
+    Play_offPlayer();
+
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
@@ -1425,11 +1463,7 @@ function Play_CheckIdError() {
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
         Play_loadingDataTimeout += 250;
         Play_CheckId();
-    } else {
-        Play_isHost = false;
-        Play_EndSet(1);
-        Play_PannelEndStart(1);
-    }
+    } else Play_EndStart(false, 1);
 }
 
 function Play_loadDataCheckHost() {
@@ -1462,11 +1496,7 @@ function Play_loadDataCheckHostError() {
     if (Play_loadingDataTry < Play_loadingDataTryMax) {
         Play_loadingDataTimeout += 250;
         Play_loadDataCheckHost();
-    } else {
-        Play_isHost = false;
-        Play_EndSet(1);
-        Play_PannelEndStart(1);
-    }
+    } else Play_EndStart(false, 1);
 }
 
 function Play_CheckHost(responseText) {
