@@ -730,6 +730,10 @@ function Play_DropOneQuality(ConnectionDrop) {
 }
 
 function Play_EndStart(hosting, PlayVodClip) {
+    window.clearInterval(Play_streamCheck);
+    window.clearInterval(PlayClip_streamCheck);
+    window.clearInterval(PlayVod_streamCheck);
+
     Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
     Play_PannelEndStart(PlayVodClip);
