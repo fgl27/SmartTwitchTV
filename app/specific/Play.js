@@ -418,7 +418,7 @@ function Play_LoadLogo(ImgObjet, link) {
 
 function Play_loadData() {
     Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 2000;
+    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
     Play_loadDataRequest();
 }
 
@@ -461,9 +461,12 @@ function Play_loadDataRequest() {
 function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 5 : 0))) {
             Play_loadingDataTimeout += 250;
             Play_loadDataRequest();
+        } else if (Play_RestoreFromResume) {
+            Play_RestoreFromResume = false;
+            window.setTimeout(Play_loadData, 1500);
         } else Play_CheckHostStart();
     }
 }
