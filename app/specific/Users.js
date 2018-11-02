@@ -237,7 +237,7 @@ function Users_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (Main_Before === Main_Users) Main_Go = Main_Live;
+                if (Main_Before === Main_Users || Main_Before === Main_UserChannels || Main_Before === Main_UserLive || Main_Before === Main_UserHost || Main_Before === Main_usergames) Main_Go = Main_Live;
                 else Main_Go = Main_Before;
                 Users_exit();
                 Main_SwitchScreen();
