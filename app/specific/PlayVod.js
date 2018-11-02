@@ -722,7 +722,7 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 
 function PlayVod_jump() {
     Play_clearPause();
-    if (!Play_isEndDialogShown()) {
+    if (!Play_isEndDialogVisible()) {
         if (Play_isIdleOrPlaying()) Play_avplay.pause();
 
         PlayVod_PlayerCheckQualityChanged = false;
@@ -913,7 +913,7 @@ function PlayVod_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
-                if (!Play_isChatShown() && !Play_isEndDialogShown() && !Play_isVodDialogShown()) {
+                if (!Play_isChatShown() && !Play_isEndDialogVisible() && !Play_isVodDialogShown()) {
                     Play_showChat();
                     Play_ChatEnable = true;
                     localStorage.setItem('ChatEnable', 'true');
@@ -957,7 +957,7 @@ function PlayVod_handleKeyDown(e) {
                     if (PlayVod_VodPositions) PlayVod_VodPositions--;
                     else PlayVod_VodPositions++;
                     PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
@@ -988,7 +988,7 @@ function PlayVod_handleKeyDown(e) {
                     if (PlayVod_VodPositions) PlayVod_VodPositions--;
                     else PlayVod_VodPositions++;
                     PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
@@ -998,7 +998,7 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_UP:
-                if (Play_isEndDialogShown()) Play_EndTextClear();
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     if (PlayVod_PanelY && Play_Panelcounter !== 1) {
                         PlayVod_PanelY--;
@@ -1019,7 +1019,7 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
-                if (Play_isEndDialogShown()) Play_EndTextClear();
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     if (!PlayVod_PanelY) {
                         PlayVod_PanelY++;
@@ -1041,7 +1041,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_ENTER:
                 if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
-                else if (Play_isEndDialogShown()) Play_EndDialogPressed(2);
+                else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
                 else if (Play_isPanelShown()) {
                     if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
                     else Play_BottomOptionsPressed(2);
@@ -1056,10 +1056,10 @@ function PlayVod_handleKeyDown(e) {
                 if (Play_isNotplaying()) Chat_Play(Chat_Id);
                 else Chat_Pause();
 
-                if (!Play_isEndDialogShown()) Play_KeyPause(2);
+                if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:
-                if (!Play_isEndDialogShown()) Play_showControlsDialog();
+                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_GREEN:
                 if (!Main_isReleased) window.location.reload(true); // refresh the app from live

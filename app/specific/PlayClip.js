@@ -486,7 +486,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayVod_ProgressBaroffset = 2500;
                     }
                     PlayClip_setHidePanel();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
@@ -511,7 +511,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayVod_ProgressBaroffset = 2500;
                     }
                     PlayClip_setHidePanel();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
@@ -520,7 +520,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_UP:
-                if (Play_isEndDialogShown()) Play_EndTextClear();
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
                     if (PlayVod_PanelY && Play_Panelcounter !== 1) {
                         PlayVod_PanelY--;
@@ -541,7 +541,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_DOWN:
-                if (Play_isEndDialogShown()) Play_EndTextClear();
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
                     if (!PlayVod_PanelY) {
                         PlayVod_PanelY++;
@@ -563,7 +563,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_ENTER:
-                if (Play_isEndDialogShown()) Play_EndDialogPressed(3);
+                if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
                 else if (Play_isPanelShown()) {
                     if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
                     else Play_BottomOptionsPressed(3);
@@ -588,11 +588,11 @@ function PlayClip_handleKeyDown(e) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
-                if (!Play_isEndDialogShown()) Play_KeyPause(3);
+                if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                 break;
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
-                if (!Play_isChatShown() && !Play_isEndDialogShown()) {
+                if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                     Play_showChat();
                     Play_ChatEnable = true;
                     localStorage.setItem('ChatEnable', 'true');
@@ -615,7 +615,7 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_YELLOW:
-                if (!Play_isEndDialogShown()) Play_showControlsDialog();
+                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_BLUE:
                 break;
