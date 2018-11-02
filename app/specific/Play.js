@@ -1171,9 +1171,9 @@ function Play_IconsRemoveFocus() {
 }
 
 function Play_PrepareshowEndDialog() {
-    Play_state = Play_STATE_PLAYING;
-    PlayVod_state = Play_STATE_PLAYING;
-    PlayClip_state = PlayClip_STATE_PLAYING;
+    Play_state = -1;
+    PlayVod_state = -1;
+    PlayClip_state = -1;
     Play_hideChat();
     Play_hidePanel();
     PlayClip_hidePanel();
@@ -1219,7 +1219,12 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 3) Play_DialogEndText = Main_selectedChannelDisplayname + STR_CLIP;
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
         Play_EndTextCounter + '...');
-    if (Play_isEndDialogVisible()) Play_EndTextCounter--;
+    if (Play_isEndDialogVisible()) {
+        Play_EndTextCounter--;
+        Play_state = Play_STATE_PLAYING;
+        PlayVod_state = Play_STATE_PLAYING;
+        PlayClip_state = PlayClip_STATE_PLAYING;
+    }
     if (Play_EndTextCounter === -1) {
         Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
             '0...');
