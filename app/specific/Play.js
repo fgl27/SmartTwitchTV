@@ -690,7 +690,7 @@ function Play_CheckChat() {
 // So we use PlayerCheck to avaluate if we are staled fro too long or not and drop the quality
 function Play_isIdleOrPlaying() {
     var state = Play_avplay.getState();
-    return !Play_isEndDialogShown() && (state === 'IDLE' || state === 'PLAYING');
+    return !Play_isEndDialogVisible() && (state === 'IDLE' || state === 'PLAYING');
 }
 
 function Play_PlayerCheck() {
@@ -1195,7 +1195,7 @@ function Play_HideEndDialog() {
     Play_EndIconsResetFocus();
 }
 
-function Play_isEndDialogShown() {
+function Play_isEndDialogVisible() {
     return Main_isElementShowing('dialog_end_stream');
 }
 
@@ -1219,7 +1219,7 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 3) Play_DialogEndText = Main_selectedChannelDisplayname + STR_CLIP;
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
         Play_EndTextCounter + '...');
-    Play_EndTextCounter--;
+    if (Play_isEndDialogVisible()) Play_EndTextCounter--;
     if (Play_EndTextCounter === -1) {
         Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
             '0...');
@@ -1541,7 +1541,7 @@ function Play_setFallow() {
 
 function Play_KeyReturn(is_vod) {
     if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-    else if (Play_isEndDialogShown() && !Play_ExitDialogVisible()) {
+    else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
         Play_EndTextClear();
         Play_showExitDialog();
     } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
@@ -1585,7 +1585,7 @@ function Play_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
-                if (!Play_isChatShown() && !Play_isEndDialogShown()) {
+                if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                     Play_showChat();
                     Play_ChatEnable = true;
                     localStorage.setItem('ChatEnable', 'true');
@@ -1619,7 +1619,7 @@ function Play_handleKeyDown(e) {
                     Play_IconsAddFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
@@ -1641,7 +1641,7 @@ function Play_handleKeyDown(e) {
                     Play_IconsAddFocus();
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (Play_isEndDialogShown()) {
+                } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
@@ -1665,7 +1665,7 @@ function Play_handleKeyDown(e) {
                         if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeVal.length - 1].percentage);
-                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
                 }
@@ -1684,13 +1684,13 @@ function Play_handleKeyDown(e) {
                         if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
                         Play_ChatSize(true);
                     } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[0].percentage);
-                } else if (Play_isEndDialogShown()) Play_EndTextClear();
+                } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
                 }
                 break;
             case KEY_ENTER:
-                if (Play_isEndDialogShown()) Play_EndDialogPressed(1);
+                if (Play_isEndDialogVisible()) Play_EndDialogPressed(1);
                 else if (Play_isPanelShown()) Play_BottomOptionsPressed(1);
                 else Play_showPanel();
                 break;
@@ -1700,10 +1700,10 @@ function Play_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (!Play_isEndDialogShown()) Play_KeyPause(1);
+                if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                 break;
             case KEY_YELLOW:
-                if (!Play_isEndDialogShown()) Play_showControlsDialog();
+                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_GREEN:
                 if (!Main_isReleased) window.location.reload(true); // refresh the app from live
