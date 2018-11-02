@@ -50,6 +50,7 @@ function AGame_exit() {
 }
 
 function AGame_StartLoad() {
+    if (Main_OldgameSelected === null) Main_OldgameSelected = Main_gameSelected;
     Main_HideElement(AGame_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
