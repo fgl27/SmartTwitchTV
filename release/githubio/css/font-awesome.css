@@ -28,6 +28,13 @@
 }
 
 @font-face {
+  font-family: 'CODE2000';
+  src: url('fonts/CODE2000.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: "icons";
   src:url("fonts/icons.eot");
   src:url("fonts/icons.eot?#iefix") format("embedded-opentype"),

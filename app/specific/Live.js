@@ -503,7 +503,10 @@ function Live_handleKeyDown(event) {
             Main_SidePannelStart(Live_handleKeyDown);
             break;
         case KEY_GREEN:
-            if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+            if (!Main_isReleased) {
+                Main_PrintUnicode('Reloading');
+                window.location.reload(true); // refresh the app from live
+            }
             break;
         case KEY_YELLOW:
             Main_showControlsDialog();

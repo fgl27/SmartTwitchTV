@@ -1202,3 +1202,12 @@ function Main_SetScreen(Current) {
     if (Current === Main_addUser || Current === Main_Search || Current === Main_SearchGames || Current === Main_SearchLive || Current === Main_SearchChannels || Current === Main_addCode) return Main_Live;
     return Current;
 }
+
+// use http://www.fileformat.info/info/unicode/char/16EB/index.html
+// Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
+// To see supported fonts and etc info about the unknown char
+function Main_PrintUnicode(string) {
+    console.log(string);
+    for (var i = 0; i < string.length; i++)
+        console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+}
