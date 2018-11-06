@@ -28,6 +28,7 @@ var Base_obj = {
     loadingDataTimeout: 3500,
     MaxOffset: 0,
     offset: 0,
+    status: false,
     emptyContent: false,
     itemsCountCheck: false,
     FirstLoad: false,
@@ -308,6 +309,8 @@ function ScreensObj_InitAGameClip() {
             Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
             Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
             Main_ShowElement('label_extra');
+            if (this.gameSelected !== Main_gameSelected) this.status = false;
+            this.gameSelected = Main_gameSelected;
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
