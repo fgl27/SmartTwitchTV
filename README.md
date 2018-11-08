@@ -123,7 +123,7 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and window
 
 ## Setup the application:
 
-* **[Download and extract the release_4.0.1_V2.zip file Click here, this is the application recipe file](https://github.com/fgl27/smarttv-twitch/releases/download/v4.0.1/4.0.1_V2.zip)**
+* **[Download and extract the release_4.0.1_V2.zip file Click here, this is the application recipe file](https://github.com/fgl27/smarttv-twitch/releases/download/4.0.1_V2/4.0.1_V2.zip)**
 
 ![install_app1](https://fgl27.github.io/smarttv-twitch/screenshot/install/install_app1.png)
 
