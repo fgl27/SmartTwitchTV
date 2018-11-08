@@ -93,7 +93,7 @@ function pt_BRLang() {
     STR_ABOUT_INFO_1 = "Este é um aplicativo não oficial do Twitch.TV, desenvolvido por um individuo no seu tempo livre, feito para TVs que não possuem uma versão oficial. Seu uso é gratuito.";
     STR_ABOUT_INFO_2 = "Em 99% das vezes, o aplicativo se atualizará sozinho para adicionar correções e novas funções. O aplicativo avisará ao usuário quando houver necessidade de ser atualizado manualmente (através de uma nova instalação pelo computador no caso ter ter usado o computar pra instalar).";
     STR_ABOUT_INFO_3 = "Sobre o Desenvolvedor:";
-    STR_ABOUT_INFO_4 = "Este é um aplicativo Open Source. Confira no meu GitHub";
+    STR_ABOUT_INFO_4 = "Este é um aplicativo Open Source. Confira no GitHub";
     STR_ABOUT_INFO_5 = "github.com/fgl27/smarttv-twitch";
     STR_ABOUT_INFO_6 = "Este aplicativo está licenciado sob a Licença Pública GNU v3.0 e usa as seguintes dependências:";
     STR_CONTROLS_PLAY_1 = "Exibir Informações: Pressione a tecla selecionar caso o Chat esteja sendo exibido ou use as Setas Direcionais.";
