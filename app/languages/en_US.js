@@ -100,10 +100,11 @@ function en_USLang() {
     STR_CONTROLS_MAIN_14 = "About this application open it from the Side panel";
     STR_ABOUT_INFO_1 = "This is a unofficial Twitch.Tv application develop by a individual on his free time, for TV\'s that don't have access to a official application, released for free to any one that wanna to use it.";
     STR_ABOUT_INFO_2 = "On 99% on the updates the app can update it self to add fixes and new featuring, the app will warn the user the day there is a need to update manually by reinstalling it via computer in the case you use a computer to install it.";
+    STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test only, if you aren't testing please reinstall the app using the release version from https://github.com/fgl27/smarttv-twitch/releases in doubt check the README.md https://github.com/fgl27/smarttv-twitch";
     STR_ABOUT_INFO_3 = "Developer information:";
-    STR_ABOUT_INFO_4 = "This is an open source applicationlication check it on github";
+    STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
     STR_ABOUT_INFO_5 = "github.com/fgl27/smarttv-twitch";
-    STR_ABOUT_INFO_6 = "This application is licensed under the GNU General Public License v3.0, and uses following dependencies:";
+    STR_ABOUT_INFO_6 = "This application uses following dependencies:";
     STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
     STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
     STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
