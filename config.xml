@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://github.com/fgl27/smarttv-twitch" version="4.0.1" viewmodes="maximized">
    <access origin="*" subdomains="true"></access>
-   <tizen:application id="qY6HyNzLIR.TwitchTv" package="qY6HyNzLIR" required_version="2.3"/>
+   <tizen:application id="flbtxFhd64.TwitchTv" package="flbtxFhd64" required_version="2.3"/>
    <content src="index.html"/>
    <description xml:lang="en-gb">TwitchTV</description>
    <feature name="http://tizen.org/feature/screen.size.normal.all"/>
