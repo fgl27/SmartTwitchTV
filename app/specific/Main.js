@@ -720,7 +720,7 @@ function Main_checkVersion() {
     if (Appversion !== null && TizenVersion !== null && tvModel !== null && fw !== null) {
         Main_currentVersion = Appversion;
 
-        Main_versonTag = 'APP ' + STR_VERSION + Appversion + '.' + Main_minversion + STR_BR + 'Tizen ' + STR_VERSION +
+        Main_versonTag = 'APP ' + STR_VERSION + Appversion + '.' + (Main_isReleased ? Main_minversion : '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">TEST</div>') + STR_BR + 'Tizen ' + STR_VERSION +
             TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + tvModel + STR_SPACE + STR_SPACE + '|' +
             STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
         Appversion = Appversion.split(".");
