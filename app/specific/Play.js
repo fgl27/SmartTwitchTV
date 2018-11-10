@@ -36,6 +36,8 @@ var Play_loadingDataTryMax = 5;
 var Play_loadingInfoDataTry = 0;
 var Play_loadingInfoDataTryMax = 5;
 
+var Play_ResumeAfterOnlineCounter = 0;
+var Play_ResumeAfterOnlineId;
 var Play_isOn = false;
 var Play_ChatBackgroundID = null;
 var Play_oldcurrentTime = 0;
@@ -299,12 +301,22 @@ function Play_Resume() {
                     if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
                     else Play_updateStreamInfo();
                     Play_state = Play_STATE_LOADING_TOKEN;
-                    Play_loadData();
+                    Play_ResumeAfterOnlineCounter = 0;
+                    if (navigator.onLine) Play_loadData();
+                    else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
                     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
                 }
             }
         }, 500);
     }
+}
+
+function Play_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 50) {
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        Play_loadData();
+    }
+    Play_ResumeAfterOnlineCounter++;
 }
 
 function Play_updateStreamInfoStart() {
@@ -464,9 +476,6 @@ function Play_loadDataError() {
         if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 5 : 0))) {
             Play_loadingDataTimeout += 250;
             Play_loadDataRequest();
-        } else if (Play_RestoreFromResume) {
-            Play_RestoreFromResume = false;
-            window.setTimeout(Play_loadData, 1500);
         } else Play_CheckHostStart();
     }
 }
