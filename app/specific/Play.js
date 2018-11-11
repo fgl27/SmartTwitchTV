@@ -459,8 +459,13 @@ function Play_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     Play_loadingDataTry = 0;
                     if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-                } else if (xmlHttp.status === 403) Play_ForbiddenLive(); //forbidden access
-                else Play_loadDataError();
+                } else if (xmlHttp.status === 403) {
+                    if (!Main_isReleased) console.log(xmlHttp.responseText);
+                    Play_ForbiddenLive(); //forbidden access
+                } else {
+                    if (!Main_isReleased) console.log(xmlHttp.responseText);
+                    Play_loadDataError();
+                }
             }
         };
 
