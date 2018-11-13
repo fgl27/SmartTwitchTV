@@ -1238,21 +1238,26 @@ function Play_EndText(PlayVodClip) {
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
         PlayClip_state = PlayClip_STATE_PLAYING;
-    }
-    if (Play_EndTextCounter === -1) {
-        Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
-            '0...');
-        Play_CleanHideExit();
-        Play_hideChat();
 
-        if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
-        else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
-        else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+        if (Play_EndTextCounter === -1) {
+            Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
+                '0...');
+            Play_CleanHideExit();
+            Play_hideChat();
 
+            if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
+            else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
+            else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+
+        } else {
+            Play_EndTextID = window.setTimeout(function() {
+                Play_EndText(PlayVodClip);
+            }, 1000);
+        }
     } else {
         Play_EndTextID = window.setTimeout(function() {
             Play_EndText(PlayVodClip);
-        }, 1000);
+        }, 50);
     }
 }
 
