@@ -1029,7 +1029,7 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_vodId = ChannelVod_vodId[0].substr(1);
 
     if (Main_Go === Main_ChannelVod) {
-        ChannelVod_title = document.getElementById(idsArray[3] + id).textContent;
+        ChannelVod_title = document.getElementById(idsArray[3] + id).innerHTML;
     } else {
         ChannelVod_title = '';
         Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
