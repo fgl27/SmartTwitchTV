@@ -696,7 +696,7 @@ function Play_CheckChat() {
     } else {
         Play_ChatFixPositionId = window.setInterval(Play_ChatFixPosition, 500);
         doc = doc.getElementById('chat_box');
-        if (doc) doc.style.fontFamily = "'Helvetica Neue',Helvetica, Arial,sans-serif,Sans,Jomolhari,dejavu-sans, CambriaMath, CODE2000";
+        if (doc) doc.style.fontFamily = "'Helvetica Neue',Helvetica, Arial,sans-serif,Sans,Jomolhari,dejavu-sans, CambriaMath, CODE2000 , BabelStoneHan";
     }
 }
 
