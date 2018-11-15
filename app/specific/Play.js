@@ -312,7 +312,7 @@ function Play_Resume() {
 }
 
 function Play_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 50) {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 100) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_loadData();
     }
@@ -459,11 +459,14 @@ function Play_loadDataRequest() {
                 if (xmlHttp.status === 200) {
                     Play_loadingDataTry = 0;
                     if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-                } else if (xmlHttp.status === 403) {
-                    if (!Main_isReleased) console.log(xmlHttp.responseText);
-                    Play_ForbiddenLive(); //forbidden access
+                } else if (xmlHttp.status === 403) { //forbidden access
+                    Play_loadDataErrorLog(xmlHttp);
+                    Play_ForbiddenLive();
+                } else if (xmlHttp.status === 404) { //off line
+                    Play_loadDataErrorLog(xmlHttp);
+                    Play_CheckHostStart();
                 } else {
-                    if (!Main_isReleased) console.log(xmlHttp.responseText);
+                    Play_loadDataErrorLog(xmlHttp);
                     Play_loadDataError();
                 }
             }
@@ -475,10 +478,17 @@ function Play_loadDataRequest() {
     }
 }
 
+function Play_loadDataErrorLog(xmlHttp) {
+    if (!Main_isReleased) {
+        console.log(xmlHttp.status);
+        console.log(xmlHttp.responseText);
+    }
+}
+
 function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 5 : 0))) {
+        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 10 : 0))) {
             Play_loadingDataTimeout += 250;
             Play_loadDataRequest();
         } else Play_CheckHostStart();
