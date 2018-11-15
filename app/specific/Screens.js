@@ -95,29 +95,24 @@ function Screens_loadDataPrepare() {
 }
 
 function Screens_loadDataRequest() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    inUseObj.set_url();
+    xmlHttp.open("GET", inUseObj.url, true);
 
-        inUseObj.set_url();
-        xmlHttp.open("GET", inUseObj.url, true);
+    xmlHttp.timeout = inUseObj.loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.timeout = inUseObj.loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
+            else Screens_loadDataError();
+        }
+    };
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
-                else Screens_loadDataError();
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        inUseObj.Screens_loadDataError();
-    }
+    xmlHttp.send(null);
 }
 
 function Screens_loadDataError() {

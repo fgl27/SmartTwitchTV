@@ -87,43 +87,38 @@ function AGameVod_loadDataPrepare() {
 }
 
 function AGameVod_loadDataRequest() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
-
-        var offset = AGameVod_itemsCount + AGameVod_itemsCountOffset;
-        if (offset && offset > (AGameVod_MaxOffset - 1)) {
-            offset = AGameVod_MaxOffset - Main_ItemsLimitVideo;
-            AGameVod_dataEnded = true;
-        }
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
-            '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + AGameVod_period +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-            '&' + Math.round(Math.random() * 1e7), true);
-
-        xmlHttp.timeout = AGameVod_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    AGameVod_loadDataSuccess(xmlHttp.responseText);
-                    return;
-                } else {
-                    AGameVod_loadDataError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        AGameVod_loadDataError();
+    var offset = AGameVod_itemsCount + AGameVod_itemsCountOffset;
+    if (offset && offset > (AGameVod_MaxOffset - 1)) {
+        offset = AGameVod_MaxOffset - Main_ItemsLimitVideo;
+        AGameVod_dataEnded = true;
     }
+
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
+        encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
+        '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
+        '&period=' + AGameVod_period +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+        '&' + Math.round(Math.random() * 1e7), true);
+
+    xmlHttp.timeout = AGameVod_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                AGameVod_loadDataSuccess(xmlHttp.responseText);
+                return;
+            } else {
+                AGameVod_loadDataError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function AGameVod_loadDataError() {
@@ -224,43 +219,38 @@ function AGameVod_loadDataSuccessFinish() {
 }
 
 function AGameVod_loadDataReplace() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    Main_SetItemsLimitReplace(AGameVod_emptyCellVector.length);
 
-        Main_SetItemsLimitReplace(AGameVod_emptyCellVector.length);
-
-        var offset = AGameVod_itemsCount + AGameVod_itemsCountOffset;
-        if (offset && offset > (AGameVod_MaxOffset - 1)) {
-            offset = AGameVod_MaxOffset - Main_ItemsLimitReplace;
-            AGameVod_dataEnded = true;
-        }
-
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
-            encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReplace +
-            '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
-            '&period=' + AGameVod_period +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-            '&' + Math.round(Math.random() * 1e7), true);
-
-        xmlHttp.timeout = AGameVod_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    AGameVod_loadDataSuccessReplace(xmlHttp.responseText);
-                    return;
-                } else AGameVod_loadDataErrorReplace();
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        AGameVod_loadDataErrorReplace();
+    var offset = AGameVod_itemsCount + AGameVod_itemsCountOffset;
+    if (offset && offset > (AGameVod_MaxOffset - 1)) {
+        offset = AGameVod_MaxOffset - Main_ItemsLimitReplace;
+        AGameVod_dataEnded = true;
     }
+
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
+        encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReplace +
+        '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
+        '&period=' + AGameVod_period +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+        '&' + Math.round(Math.random() * 1e7), true);
+
+    xmlHttp.timeout = AGameVod_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                AGameVod_loadDataSuccessReplace(xmlHttp.responseText);
+                return;
+            } else AGameVod_loadDataErrorReplace();
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function AGameVod_loadDataErrorReplace() {
