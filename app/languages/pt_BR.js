@@ -103,13 +103,14 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): Abra o painel de informações, pressione Direcional (esquerda/direita) para mudar o tempo, quando satisfeito pressione enter/select, para vídeos o incremento de salto é crescente mais cliques/segurando fará o valor aumentar (15 segundos até 30 minutos) parar de clicar/solte a tecla irá restaurar o tamanho de volta para 15s, para clipes o passo de salto é a cada 5 segundos";
     STR_CONTROLS_PLAY_5 = "Alterar qualidade: Abra o Painel de Informações, use as Setas Direcionais (Cima/Baixo) para escolher a qualidade e pressione a tecla selecionar para alterar.";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo: Pressione a tecla selecionar duas vezes. A qualidade do vídeo continuará sendo a mesma, mas após o segundo clique, o vídeo será recarregado.";
-    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat: GUIDE ou INFO.";
+    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat (sobre o video): GUIDE ou INFO.";
     STR_CONTROLS_PLAY_8 = "Posição do Chat (Se o chat esta visível): CH Para Cima ou Para Baixo.";
     STR_CONTROLS_PLAY_9 = "Tamanho do Chat (Se o chat esta visível): Setas Direcionais (cima/baixo).";
     STR_CONTROLS_PLAY_10 = "Brilho do Chat (Se o chat esta visível): Setas Direcionais (esquerda/direita).";
     STR_CONTROLS_PLAY_11 = "Forçar atualização do Chat (caso necessário): Pressione a tecla selecionar duas vezes. No primeiro clique, a qualidade continuará a mesma, mas após o segundo, o vídeo e o chat serão recarregados.";
-    STR_CONTROLS_PLAY_12 = "Inicie uma pesquisa: abra o painel de informações, navegue usando o botão Direcional (esquerda / direita) para \"Pesquisar\" e pressione a tecla selecionar";
+    STR_CONTROLS_PLAY_12 = "Inicie uma pesquisa: Botão Azul(D) ou abra o painel de informações, navegue usando o botão Direcional (esquerda / direita) para \"Pesquisar\" e pressione a tecla selecionar";
     STR_CONTROLS_PLAY_13 = "Abra o conteúdo do canal ou jogo: abra o painel de informações, navegue usando o botão direcional (esquerda / direita) para \"Conteúdo do canal ou jogo\" e pressione a tecla selecionar";
+    STR_CONTROLS_PLAY_14 = "Chat e Video lado a lado: Botão vermelho (A)";
     STR_UPDATE_AVAILABLE = "Tem um update disponível, verifique este na pagina github releases do aplicativo ";
     STR_UPDATE_MAIN_0 = "Esteja ciente de que, após a atualização (reinstalação do aplicativo usando a versão mais recente), todos os usuários, chaves ou configuração do aplicativo salvas serão perdidos";
     STR_UPDATE_MAIN_1 = "Há uma atualização disponível, mas o app não pôde ser atualizado automaticamente ";

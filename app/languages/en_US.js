@@ -117,13 +117,14 @@ function en_USLang() {
     STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Open the information panel, Press Directional pad (right/left) to change time when satisfied press enter/select, for videos the jump step is crescent more click/hold will make the value to increase (15 seconds up to 30 minutes) stop clicking/releasing the key will restore the step size back to 15s, for clips the jump step is every 5 seconds";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): press select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat: Guide or info (Guide is channel press key on smart remote)";
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat (over the video): Guide or info (Guide is channel press key on smart remote)";
     STR_CONTROLS_PLAY_8 = "Change Chat position (if chat it\'s showing and info panel is not): Chanel Up or Down";
     STR_CONTROLS_PLAY_9 = "Change Chat size (if chat it\'s showing and info panel is not): Directional pad (up/down)";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness (if chat it\'s showing and info panel is not): Directional pad (left/right)";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Force refresh the video by pressing select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering and the chat will reload it self";
-    STR_CONTROLS_PLAY_12 = "Start a search: Open information panel, navigate using use Directional pad (left/right) to \"Search\" and press select";
+    STR_CONTROLS_PLAY_12 = "Start a search: Color button blue (D) or, open information panel, navigate using use Directional pad (left/right) to \"Search\" and press select";
     STR_CONTROLS_PLAY_13 = "Open Channel or Game content: Open information panel, navigate using use Directional pad (left/right) to \"Channel or Game content\" and press select";
+    STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_UPDATE_AVAILABLE = "There is a update available, check it in the app github releases ";
     STR_UPDATE_MAIN_0 = "Be aware that after the update (reinstall of the app using latest release) all saved users, keys or etc configuration of the app is lost";
     STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";

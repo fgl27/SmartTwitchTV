@@ -8,6 +8,10 @@ var Play_PanelHideID = null;
 var Play_quality = "source";
 var Play_qualityPlaying = Play_quality;
 var Play_PanelOffset = 0;
+var Play_isFullScreen = true;
+var Play_ChatPositionsBF;
+var Play_ChatEnableBF;
+var Play_ChatSizeValueBF;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -170,7 +174,7 @@ var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger
 
 function Play_PreStart() {
     Play_avplay = (window.tizen && window.webapis.avplay) || {};
-    Play_SetAvPlayGlobal();
+
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
@@ -179,6 +183,9 @@ function Play_PreStart() {
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
+    Play_isFullScreen = localStorage.getItem('Play_isFullScreen') === 'false' ? false : true;
+
+    Play_SetAvPlayGlobal();
     Play_ClearPlayer();
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
@@ -191,7 +198,7 @@ function Play_SetAvPlayGlobal() {
     try {
         Play_avplay.stop();
         Play_avplay.open(GIT_IO + "temp.mp4");
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        Play_SetFullScreen(Play_isFullScreen);
         Play_avplay.setListener(PlayStart_listener);
     } catch (e) {
         console.log(e + " Play_SetAvPlayGlobal()");
@@ -204,6 +211,33 @@ var PlayStart_listener = {
         Play_avplay.stop();
     }
 };
+
+function Play_SetFullScreen(isfull) {
+    if (isfull) {
+        if (Play_ChatPositionsBF !== undefined) {
+            Play_ChatPositions = Play_ChatPositionsBF;
+            Play_ChatEnable = Play_ChatEnableBF;
+            Play_ChatSizeValue = Play_ChatSizeValueBF;
+            if (!Play_ChatEnable) Play_hideChat();
+            Play_ChatSize(false);
+        }
+        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+    } else {
+        Play_ChatPositionsBF = Play_ChatPositions;
+        Play_ChatEnableBF = Play_ChatEnable;
+        Play_ChatSizeValueBF = Play_ChatSizeValue;
+        // Chat is 25% of the screen, resize to 75% and center left
+        Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+        Play_ChatPositions = 0;
+        Play_showChat();
+        Play_ChatEnable = true;
+        Play_ChatSizeValue = 4;
+        Play_ChatPositionConvert(true);
+        Play_ChatSize(false);
+        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
+    }
+    localStorage.setItem('Play_isFullScreen', Play_isFullScreen);
+}
 
 function Play_SetBuffers() {
     Play_Buffer = Settings_Obj_values("buffer_live");
@@ -1590,30 +1624,32 @@ function Play_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
-                if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                    Play_showChat();
-                    Play_ChatEnable = true;
-                    localStorage.setItem('ChatEnable', 'true');
-                } else {
-                    Play_hideChat();
-                    Play_ChatEnable = false;
-                    localStorage.setItem('ChatEnable', 'false');
+                if (Play_isFullScreen) {
+                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                        Play_showChat();
+                        Play_ChatEnable = true;
+                        localStorage.setItem('ChatEnable', 'true');
+                    } else {
+                        Play_hideChat();
+                        Play_ChatEnable = false;
+                        localStorage.setItem('ChatEnable', 'false');
+                    }
                 }
                 break;
             case KEY_CHANNELUP:
-                if (Play_isChatShown()) {
+                if (Play_isFullScreen && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                 }
                 break;
             case KEY_CHANNELDOWN:
-                if (Play_isChatShown()) {
+                if (Play_isFullScreen && Play_isChatShown()) {
                     Play_ChatPositions--;
                     Play_ChatPosition();
                 }
                 break;
             case KEY_LEFT:
-                if (!Play_isPanelShown() && Play_isChatShown()) {
+                if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatBackground -= 0.05;
                     if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
                     Play_ChatBackgroundChange(true);
@@ -1635,7 +1671,7 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_RIGHT:
-                if (!Play_isPanelShown() && Play_isChatShown()) {
+                if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatBackground += 0.05;
                     if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
                     Play_ChatBackgroundChange(true);
@@ -1664,7 +1700,7 @@ function Play_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (Play_isChatShown()) {
+                } else if (Play_isFullScreen && Play_isChatShown()) {
                     if (Play_ChatSizeValue < 4) {
                         Play_ChatSizeValue++;
                         if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
@@ -1683,7 +1719,7 @@ function Play_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (Play_isChatShown()) {
+                } else if (Play_isFullScreen && Play_isChatShown()) {
                     if (Play_ChatSizeValue > 1) {
                         Play_ChatSizeValue--;
                         if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
@@ -1713,7 +1749,12 @@ function Play_handleKeyDown(e) {
             case KEY_GREEN:
                 if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 break;
+            case KEY_RED:
+                Play_isFullScreen = !Play_isFullScreen;
+                Play_SetFullScreen(Play_isFullScreen);
+                break;
             case KEY_BLUE:
+                Play_OpenSearch(1);
                 break;
             default:
                 break;
