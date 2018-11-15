@@ -70,31 +70,26 @@ function UserChannels_loadDataPrepare() {
 }
 
 function UserChannels_loadChannels() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].id) + '/follows/channels?limit=100&offset=' +
+        UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.timeout = UserChannels_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].id) + '/follows/channels?limit=100&offset=' +
-            UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserChannels_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserChannels_loadChannelLive(xmlHttp.responseText);
-                    return;
-                } else {
-                    UserChannels_loadDataError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                UserChannels_loadChannelLive(xmlHttp.responseText);
+                return;
+            } else {
+                UserChannels_loadDataError();
             }
-        };
-        xmlHttp.send(null);
-    } catch (e) {
-        UserChannels_loadDataError();
-    }
+        }
+    };
+    xmlHttp.send(null);
 }
 
 function UserChannels_loadDataError() {

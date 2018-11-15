@@ -53,46 +53,42 @@ function SmartHub_loadDataRequestPrepare() {
 }
 
 function SmartHub_loadDataRequest() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
-        var theUrl;
+    var xmlHttp = new XMLHttpRequest();
+    var theUrl;
 
-        if (!SmartHub_previewData) {
-            theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-                '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
-        } else if (SmartHub_previewData === 1) {
-            theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub_followerChannels) + '&limit=18&' +
-                Math.round(Math.random() * 1e7);
-        } else if (SmartHub_previewData === 2) { // user games
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/follows/games/live?limit=6&' +
-                Math.round(Math.random() * 1e7);
-        } else if (SmartHub_previewData === 3) { //user SmartHub host
-            theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/followed/hosting?limit=10&' +
-                Math.round(Math.random() * 1e7);
-        }
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = SmartHub_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Main_ready(function() {
-                        SmartHub_previewDataSuccess(xmlHttp.responseText);
-                    });
-                } else {
-                    SmartHub_loadDataError();
-                }
-            }
-        };
-        xmlHttp.send(null);
-    } catch (error) {
-        SmartHub_loadDataError();
+    if (!SmartHub_previewData) {
+        theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+            '/follows/channels?limit=100&sortby=last_broadcast&' + Math.round(Math.random() * 1e7);
+    } else if (SmartHub_previewData === 1) {
+        theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(SmartHub_followerChannels) + '&limit=18&' +
+            Math.round(Math.random() * 1e7);
+    } else if (SmartHub_previewData === 2) { // user games
+        theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/follows/games/live?limit=6&' +
+            Math.round(Math.random() * 1e7);
+    } else if (SmartHub_previewData === 3) { //user SmartHub host
+        theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(SmartHub_followerUsername) + '/followed/hosting?limit=10&' +
+            Math.round(Math.random() * 1e7);
     }
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = SmartHub_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Main_ready(function() {
+                    SmartHub_previewDataSuccess(xmlHttp.responseText);
+                });
+            } else {
+                SmartHub_loadDataError();
+            }
+        }
+    };
+    xmlHttp.send(null);
 }
 
 function SmartHub_loadDataError() {
@@ -270,7 +266,7 @@ function SmartHub_EventListener() {
                     else Main_ExitCurrent(Main_Go);
 
                     Play_selectedChannel_id = actionData._id;
-                    window.setTimeout(Main_openStream, 10);
+                    Main_openStream();
                     break;
                 } else if (JSON.parse(actionData).gameIdx) {
 
@@ -286,9 +282,9 @@ function SmartHub_EventListener() {
                     Search_isSearching = false;
                     SearchGames_return = false;
                     Main_ExitCurrent(ExitScreen);
-                    if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
-                    else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
-                    else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
+                    if (Play_isOn) Play_shutdownStream();
+                    else if (PlayVod_isOn) PlayVod_shutdownStream();
+                    else if (PlayClip_isOn) PlayClip_shutdownStream();
                     else if (SwitchScreen) Main_SwitchScreen();
                     break;
                 } else if (JSON.parse(actionData).screenIdx) {
@@ -302,9 +298,9 @@ function SmartHub_EventListener() {
 
                     if (SwitchScreen) Main_ExitCurrent(ExitScreen);
 
-                    if (Play_isOn) window.setTimeout(Play_shutdownStream, 10);
-                    else if (PlayVod_isOn) window.setTimeout(PlayVod_shutdownStream, 10);
-                    else if (PlayClip_isOn) window.setTimeout(PlayClip_shutdownStream, 10);
+                    if (Play_isOn) Play_shutdownStream();
+                    else if (PlayVod_isOn) PlayVod_shutdownStream();
+                    else if (PlayClip_isOn) PlayClip_shutdownStream();
                     else if (SwitchScreen) Main_SwitchScreen();
                     break;
                 }

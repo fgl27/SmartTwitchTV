@@ -292,22 +292,20 @@ function Play_Resume() {
         Main_HideElement('scene1');
         Play_showBufferDialog();
         Play_clearPause();
-        window.setTimeout(function() {
-            if (!SmartHub_SmartHubResume) {
-                if (Play_isOn) {
-                    Play_loadingInfoDataTry = 0;
-                    Play_loadingInfoDataTimeout = 3000;
-                    Play_RestoreFromResume = true;
-                    if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-                    else Play_updateStreamInfo();
-                    Play_state = Play_STATE_LOADING_TOKEN;
-                    Play_ResumeAfterOnlineCounter = 0;
-                    if (navigator.onLine) Play_loadData();
-                    else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
-                    Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-                }
+        if (!SmartHub_SmartHubResume) {
+            if (Play_isOn) {
+                Play_loadingInfoDataTry = 0;
+                Play_loadingInfoDataTimeout = 3000;
+                Play_RestoreFromResume = true;
+                if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
+                else Play_updateStreamInfo();
+                Play_state = Play_STATE_LOADING_TOKEN;
+                Play_ResumeAfterOnlineCounter = 0;
+                if (navigator.onLine) Play_loadData();
+                else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+                Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
             }
-        }, 500);
+        }
     }
 }
 
@@ -320,50 +318,46 @@ function Play_ResumeAfterOnline() {
 }
 
 function Play_updateStreamInfoStart() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    var response = JSON.parse(xmlHttp.responseText);
-                    if (response.stream !== null) {
-                        Play_selectedChannel_id = response.stream.channel._id;
-                        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
-                        Play_gameSelected = response.stream.game;
-                        Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
-                        Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
-                            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                        Play_selectedChannelLogo = response.stream.channel.logo;
-                        Play_LoadLogoSucess = true;
-                        Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
-                        Play_created = response.stream.created_at;
-                        if (AddUser_UserIsSet()) {
-                            AddCode_PlayRequest = true;
-                            AddCode_Channel_id = Play_selectedChannel_id;
-                            AddCode_CheckFallow();
-                        } else Play_hideFallow();
-                        Play_Restore_value.game = Play_gameSelected;
-                        localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
-                    } else if (Play_isOn) {
-                        Play_isLive = false;
-                        Play_CheckHostStart();
-                    }
-                } else { // internet error
-                    Play_updateStreamInfoStartError();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                var response = JSON.parse(xmlHttp.responseText);
+                if (response.stream !== null) {
+                    Play_selectedChannel_id = response.stream.channel._id;
+                    Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
+                    Play_gameSelected = response.stream.game;
+                    Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
+                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+                    Play_selectedChannelLogo = response.stream.channel.logo;
+                    Play_LoadLogoSucess = true;
+                    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
+                    Play_created = response.stream.created_at;
+                    if (AddUser_UserIsSet()) {
+                        AddCode_PlayRequest = true;
+                        AddCode_Channel_id = Play_selectedChannel_id;
+                        AddCode_CheckFallow();
+                    } else Play_hideFallow();
+                    Play_Restore_value.game = Play_gameSelected;
+                    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+                } else if (Play_isOn) {
+                    Play_isLive = false;
+                    Play_CheckHostStart();
                 }
+            } else { // internet error
+                Play_updateStreamInfoStartError();
             }
-        };
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = Play_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.send(null);
-    } catch (e) {
-        Play_updateStreamInfoStartError();
-    }
+        }
+    };
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.timeout = Play_loadingInfoDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.send(null);
 }
 
 function Play_updateStreamInfoStartError() {
@@ -375,39 +369,35 @@ function Play_updateStreamInfoStartError() {
 }
 
 function Play_updateStreamInfo() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_updateStreamInfoErrorTry = 0;
-                    var response = JSON.parse(xmlHttp.responseText);
-                    if (response.stream !== null) {
-                        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
-                        Play_gameSelected = response.stream.game;
-                        Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
-                            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                        if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                        Play_Restore_value.game = Play_gameSelected;
-                        localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
-                    } else if (Play_RestoreFromResume && Play_isOn) {
-                        Play_isLive = false;
-                        Play_CheckHostStart();
-                    }
-                } else Play_updateStreamInfoError();
-            }
-        };
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = 3000;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.send(null);
-    } catch (err) {
-        Play_updateStreamInfoError();
-    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_updateStreamInfoErrorTry = 0;
+                var response = JSON.parse(xmlHttp.responseText);
+                if (response.stream !== null) {
+                    Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
+                    Play_gameSelected = response.stream.game;
+                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                        Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+                    if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
+                    Play_Restore_value.game = Play_gameSelected;
+                    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+                } else if (Play_RestoreFromResume && Play_isOn) {
+                    Play_isLive = false;
+                    Play_CheckHostStart();
+                }
+            } else Play_updateStreamInfoError();
+        }
+    };
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.timeout = 3000;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.send(null);
 }
 
 function Play_updateStreamInfoError() {
@@ -415,7 +405,7 @@ function Play_updateStreamInfoError() {
         window.setTimeout(function() {
             if (Play_isOn) Play_updateStreamInfo();
             //give a second for it retry as the TV may be on coming from resume
-        }, 1000);
+        }, 2500);
         Play_updateStreamInfoErrorTry++;
     } else Play_updateStreamInfoErrorTry = 0;
 }
@@ -435,47 +425,43 @@ function Play_loadData() {
 }
 
 function Play_loadDataRequest() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        var theUrl;
-        if (Play_state === Play_STATE_LOADING_TOKEN) {
-            theUrl = 'https://api.twitch.tv/api/channels/' + Play_selectedChannel + '/access_token' +
-                (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
-                    AddUser_UsernameArray[Users_Position].access_token : '');
-        } else {
-            theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Play_selectedChannel +
-                '.m3u8?&token=' + escape(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
-        }
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_loadingDataTry = 0;
-                    if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-                } else if (xmlHttp.status === 403) { //forbidden access
-                    Play_loadDataErrorLog(xmlHttp);
-                    Play_ForbiddenLive();
-                } else if (xmlHttp.status === 404) { //off line
-                    Play_loadDataErrorLog(xmlHttp);
-                    Play_CheckHostStart();
-                } else {
-                    Play_loadDataErrorLog(xmlHttp);
-                    Play_loadDataError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (error) {
-        Play_loadDataError();
+    var theUrl;
+    if (Play_state === Play_STATE_LOADING_TOKEN) {
+        theUrl = 'https://api.twitch.tv/api/channels/' + Play_selectedChannel + '/access_token' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
+                AddUser_UsernameArray[Users_Position].access_token : '');
+    } else {
+        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Play_selectedChannel +
+            '.m3u8?&token=' + escape(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Play_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_loadingDataTry = 0;
+                if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
+            } else if (xmlHttp.status === 403) { //forbidden access
+                Play_loadDataErrorLog(xmlHttp);
+                Play_ForbiddenLive();
+            } else if (xmlHttp.status === 404) { //off line
+                Play_loadDataErrorLog(xmlHttp);
+                Play_CheckHostStart();
+            } else {
+                Play_loadDataErrorLog(xmlHttp);
+                Play_loadDataError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function Play_loadDataErrorLog(xmlHttp) {
@@ -771,24 +757,19 @@ function Play_EndStart(hosting, PlayVodClip) {
 
 // Check if connection with twitch server is OK if not for 15s drop one quality
 function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.timeout = 1000;
+    xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?rand=' + Math.round(Math.random() * 1e7), true);
 
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.timeout = 1000;
-        xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?rand=' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (Play_isNotplaying()) DropOneQuality(counter > 2);
+            } else if (counter > 12) Play_EndStart(false, PlayVodClip);
+        }
+    };
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Play_isNotplaying()) DropOneQuality(counter > 2);
-                } else if (counter > 12) Play_EndStart(false, PlayVodClip);
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        if (counter > 12) Play_EndStart(false, PlayVodClip);
-    }
+    xmlHttp.send(null);
 }
 
 function Play_isNotplaying() {
@@ -1469,37 +1450,32 @@ function Play_CheckHostStart() {
 }
 
 function Play_CheckId() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Play_selectedChannel, true);
+    xmlHttp.timeout = Play_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Play_selectedChannel, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    var users = JSON.parse(xmlHttp.responseText).users[0];
-                    if (users !== undefined) {
-                        Play_selectedChannel_id = users._id;
-                        Play_loadingDataTry = 0;
-                        Play_loadingDataTimeout = 2000;
-                        Play_loadDataCheckHost();
-                    } else Play_PannelEndStart(1);
-                    return;
-                } else {
-                    Play_CheckIdError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                var users = JSON.parse(xmlHttp.responseText).users[0];
+                if (users !== undefined) {
+                    Play_selectedChannel_id = users._id;
+                    Play_loadingDataTry = 0;
+                    Play_loadingDataTimeout = 2000;
+                    Play_loadDataCheckHost();
+                } else Play_PannelEndStart(1);
+                return;
+            } else {
+                Play_CheckIdError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        Play_CheckIdError();
-    }
+    xmlHttp.send(null);
 }
 
 function Play_CheckIdError() {
@@ -1511,28 +1487,23 @@ function Play_CheckIdError() {
 }
 
 function Play_loadDataCheckHost() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
+        encodeURIComponent(Play_selectedChannel_id), true);
+    xmlHttp.timeout = Play_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
 
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
-            encodeURIComponent(Play_selectedChannel_id), true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_CheckHost(xmlHttp.responseText);
+                return;
+            } else Play_loadDataCheckHostError();
+        }
+    };
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_CheckHost(xmlHttp.responseText);
-                    return;
-                } else Play_loadDataCheckHostError();
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        Play_loadDataCheckHostError();
-    }
+    xmlHttp.send(null);
 }
 
 function Play_loadDataCheckHostError() {

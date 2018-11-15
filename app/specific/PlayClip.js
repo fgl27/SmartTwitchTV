@@ -96,25 +96,21 @@ function PlayClip_loadData() {
 }
 
 function PlayClip_loadDataRequest() {
-    try {
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
-        xmlHttp.timeout = PlayClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
+    xmlHttp.timeout = PlayClip_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) PlayClip_QualityGenerate(xmlHttp.responseText);
-                else PlayClip_loadDataError();
-            }
-        };
-        xmlHttp.send(null);
-    } catch (error) {
-        PlayClip_loadDataError();
-    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) PlayClip_QualityGenerate(xmlHttp.responseText);
+            else PlayClip_loadDataError();
+        }
+    };
+    xmlHttp.send(null);
 }
 
 function PlayClip_loadDataError() {

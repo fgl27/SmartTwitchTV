@@ -67,38 +67,33 @@ function Featured_loadDataPrepare() {
 }
 
 function Featured_loadDataRequest() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    var offset = Featured_itemsCount + Featured_itemsCountOffset;
 
-        var offset = Featured_itemsCount + Featured_itemsCountOffset;
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
+        '&offset=' + offset +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[Users_Position].access_token : '') +
+        '&' + Math.round(Math.random() * 1e7), true);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
-            '&offset=' + offset +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[Users_Position].access_token : '') +
-            '&' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.timeout = Featured_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.timeout = Featured_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Featured_loadDataSuccess(xmlHttp.responseText);
-                    return;
-                } else {
-                    Featured_loadDataError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Featured_loadDataSuccess(xmlHttp.responseText);
+                return;
+            } else {
+                Featured_loadDataError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        Featured_loadDataError();
-    }
+    xmlHttp.send(null);
 }
 
 function Featured_loadDataError() {
@@ -198,38 +193,33 @@ function Featured_loadDataSuccessFinish() {
 }
 
 function Featured_loadDataReplace() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    Main_SetItemsLimitReplace(Featured_emptyCellVector.length);
 
-        Main_SetItemsLimitReplace(Featured_emptyCellVector.length);
+    var offset = Featured_itemsCount + Featured_itemsCountOffset;
 
-        var offset = Featured_itemsCount + Featured_itemsCountOffset;
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
+        '&offset=' + offset +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[Users_Position].access_token : '') +
+        '&' + Math.round(Math.random() * 1e7), true);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
-            '&offset=' + offset +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[Users_Position].access_token : '') +
-            '&' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.timeout = Featured_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.timeout = Featured_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Featured_loadDataSuccessReplace(xmlHttp.responseText);
+                return;
+            } else Featured_loadDataErrorReplace();
+        }
+    };
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Featured_loadDataSuccessReplace(xmlHttp.responseText);
-                    return;
-                } else Featured_loadDataErrorReplace();
-            }
-        };
-
-        xmlHttp.send(null);
-    } catch (e) {
-        Featured_loadDataErrorReplace();
-    }
+    xmlHttp.send(null);
 }
 
 function Featured_loadDataErrorReplace() {

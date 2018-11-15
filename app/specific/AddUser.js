@@ -151,36 +151,31 @@ function AddUser_KeyboardEvent(event) {
 }
 
 function AddUser_loadDataRequest() {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username), true);
+    xmlHttp.timeout = AddUser_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username), true);
-        xmlHttp.timeout = AddUser_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (JSON.parse(xmlHttp.responseText)._total) {
-                        Main_AddUserInput.value = '';
-                        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                        AddUser_SaveNewUser(xmlHttp.responseText);
-                    } else AddUser_loadDataNoUser();
-                    return;
-                } else {
-                    AddUser_loadDataError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (JSON.parse(xmlHttp.responseText)._total) {
+                    Main_AddUserInput.value = '';
+                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+                    AddUser_SaveNewUser(xmlHttp.responseText);
+                } else AddUser_loadDataNoUser();
+                return;
+            } else {
+                AddUser_loadDataError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        AddUser_loadDataError();
-    }
+    xmlHttp.send(null);
 }
 
 function AddUser_loadDataError() {
@@ -227,34 +222,29 @@ function AddUser_UserIsSet() {
 }
 
 function AddUser_GetIdRequest(position, trys) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + AddUser_UsernameArray[position].name, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + AddUser_UsernameArray[position].name, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Main_AddUserInput.value = '';
-                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                    AddUser_SaveOldUser(xmlHttp.responseText, position);
-                    return;
-                } else {
-                    AddUser_GetIdRequestError(position, trys);
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Main_AddUserInput.value = '';
+                document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+                AddUser_SaveOldUser(xmlHttp.responseText, position);
+                return;
+            } else {
+                AddUser_GetIdRequestError(position, trys);
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        AddUser_GetIdRequestError(position, trys);
-    }
+    xmlHttp.send(null);
 }
 
 function AddUser_GetIdRequestError(position, trys) {
