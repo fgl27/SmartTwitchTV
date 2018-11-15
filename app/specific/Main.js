@@ -956,7 +956,7 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
         if (y) {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
                 (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555);
-        } else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), 33);
+        } else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), 31);
 
     } else Main_handleKeyUp();
 }
