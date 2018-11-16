@@ -304,7 +304,7 @@ function Settings_RemoveinputFocus() {
 
 function Settings_ChangeSettigs(position) {
     var key = Settings_value_keys[position];
-    localStorage.setItem(key, Settings_Obj_default(key) + 1);
+    Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_Setarrows(position);
     Settings_SetDefault(position);
@@ -332,7 +332,7 @@ function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
     if (position === "general_lang") {
-        localStorage.setItem('user_language', 1);
+        Main_setItem('user_language', 1);
         Settings_SetLang(Settings_Obj_set_values("general_lang"));
     } else if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
     else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");

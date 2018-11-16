@@ -403,7 +403,7 @@ function AGameVod_handleKeyDown(event) {
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
             AGameVod_highlight = !AGameVod_highlight;
-            localStorage.setItem('AGameVod_highlight', AGameVod_highlight ? 'true' : 'false');
+            Main_setItem('AGameVod_highlight', AGameVod_highlight ? 'true' : 'false');
             AGameVod_StartLoad();
             break;
         case KEY_PLAY:
@@ -447,5 +447,5 @@ function AGameVod_SetPeriod() {
         Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL + ': ' + Main_gameSelected));
         AGameVod_period = 'all';
     }
-    localStorage.setItem('AGameVod_periodNumber', AGameVod_periodNumber);
+    Main_setItem('AGameVod_periodNumber', AGameVod_periodNumber);
 }

@@ -463,7 +463,7 @@ function Vod_handleKeyDown(event) {
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
             Vod_highlight = !Vod_highlight;
-            localStorage.setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
+            Main_setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
             Vod_StartLoad();
             break;
         case KEY_PLAY:
@@ -509,5 +509,5 @@ function Vod_SetPeriod() {
         Main_innerHTML('top_bar_vod', STR_VIDEOS + Main_UnderCenter((Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL));
         Vod_period = 'all';
     }
-    localStorage.setItem('vod_periodNumber', Vod_periodNumber);
+    Main_setItem('vod_periodNumber', Vod_periodNumber);
 }

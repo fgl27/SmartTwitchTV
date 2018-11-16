@@ -399,7 +399,7 @@ function ChannelVod_handleKeyDown(event) {
         case KEY_CHANNELUP:
         case KEY_CHANNELDOWN:
             ChannelVod_highlight = !ChannelVod_highlight;
-            localStorage.setItem('ChannelVod_highlight', ChannelVod_highlight ? 'true' : 'false');
+            Main_setItem('ChannelVod_highlight', ChannelVod_highlight ? 'true' : 'false');
             ChannelVod_StartLoad();
             break;
         case KEY_INFO:
