@@ -183,7 +183,7 @@ function Play_PreStart() {
     Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = parseInt(localStorage.getItem('ChatSizeValue')) || 3;
     Play_ChatEnable = localStorage.getItem('ChatEnable') === 'true' ? true : false;
-    Play_isFullScreen = localStorage.getItem('Play_isFullScreen') === 'false' ? false : true;
+    Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
 
     Play_SetAvPlayGlobal();
     Play_ClearPlayer();
