@@ -468,7 +468,7 @@ function Play_loadDataRequest() {
                 AddUser_UsernameArray[Users_Position].access_token : '');
     } else {
         theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Play_selectedChannel +
-            '.m3u8?&token=' + escape(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
     xmlHttp.open("GET", theUrl, true);
