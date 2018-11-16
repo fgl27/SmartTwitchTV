@@ -173,7 +173,7 @@ function Main_loadTranslations(device) {
             // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
             var lang = device.language.split(".")[0],
-                Savedlang = parseInt(localStorage.getItem('user_language')) || 0;
+                Savedlang = Main_getItemInt('user_language', 0);
 
             if (Savedlang) lang = Settings_Obj_set_values("general_lang");
             else Settings_CheckLang(lang);
@@ -195,12 +195,13 @@ function Main_initWindows() {
 
     Main_ScrollbarElement = document.getElementById("scrollbar");
 
-    Main_WasOpen = parseInt(localStorage.getItem('Main_WasOpen')) || 0;
-    Play_WasPlaying = parseInt(localStorage.getItem('Play_WasPlaying')) || 0;
-    if (Play_WasPlaying || Main_WasOpen) Play_Restore_value = Screens_assign(Play_Restore_value, JSON.parse(localStorage.getItem('Play_Restore_value')) || {});
+    Main_WasOpen = Main_getItemInt('Main_WasOpen', 0);
+    Play_WasPlaying = Main_getItemInt('Play_WasPlaying', 0);
+    if (Play_WasPlaying || Main_WasOpen) Play_Restore_value = Screens_assign(Play_Restore_value, Main_getItemJson('Play_Restore_value'));
 
-    PlayVod_WasPlaying = parseInt(localStorage.getItem('PlayVod_WasPlaying')) || 0;
-    if (PlayVod_WasPlaying) PlayVod_Restore_value = Screens_assign(PlayVod_Restore_value, JSON.parse(localStorage.getItem('PlayVod_Restore_value')) || {});
+    PlayVod_WasPlaying = Main_getItemInt('PlayVod_WasPlaying', 0);
+    if (PlayVod_WasPlaying) PlayVod_Restore_value = Screens_assign(PlayVod_Restore_value,
+        Main_getItemJson('PlayVod_Restore_value'));
 
     Main_ready(function() {
 
@@ -215,7 +216,7 @@ function Main_initWindows() {
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
 
         if (Main_checkVersion()) {
-            if (parseInt(localStorage.getItem('has_showUpdateDialog'))) {
+            if (Main_getItemInt('has_showUpdateDialog', 0)) {
                 Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
                 window.setTimeout(Main_HideWarningDialog, 5000);
             } else {
@@ -227,18 +228,13 @@ function Main_initWindows() {
         Main_ready(function() {
             Main_SetStringsSecondary();
 
-            UserGames.isLive = (localStorage.getItem('user_Games_live') || 'true') === 'true' ? true : false;
-            Vod_highlight = (localStorage.getItem('Vod_highlight') || 'false') === 'true' ? true : false;
-            ChannelVod_highlight = (localStorage.getItem('ChannelVod_highlight') || 'false') === 'true' ? true : false;
-            AGameVod_highlight = (localStorage.getItem('AGameVod_highlight') || 'false') === 'true' ? true : false;
+            Vod_highlight = Main_getItemBool('Vod_highlight', false);
+            ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
+            AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
 
-            Clip.periodPos = parseInt(localStorage.getItem('Clip_periodPos')) || 2;
-            ChannelClip.periodPos = parseInt(localStorage.getItem('ChannelClip_periodPos')) || 2;
-            AGameClip.periodPos = parseInt(localStorage.getItem('AGameClip_periodPos')) || 2;
-
-            Vod_periodNumber = parseInt(localStorage.getItem('vod_periodNumber')) || 2;
-            AGameVod_periodNumber = parseInt(localStorage.getItem('AGameVod_periodNumber')) || 2;
-            UserVod_TypeNumber = parseInt(localStorage.getItem('UserVod_TypeNumber')) || 1;
+            Vod_periodNumber = Main_getItemInt('vod_periodNumber', 2);
+            AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
+            UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
 
             PlayVod_RestoreVodIds();
 
@@ -1201,6 +1197,23 @@ function Main_SidePannelhandleKeyDown(event) {
 function Main_SetScreen(Current) {
     if (Current === Main_addUser || Current === Main_Search || Current === Main_SearchGames || Current === Main_SearchLive || Current === Main_SearchChannels || Current === Main_addCode) return Main_Live;
     return Current;
+}
+
+function Main_setItem(item, value) {
+    localStorage.setItem(item, value);
+}
+
+function Main_getItemInt(item, default_value) {
+    return parseInt(localStorage.getItem(item)) || default_value;
+}
+
+function Main_getItemJson(item) {
+    return JSON.parse(localStorage.getItem(item)) || {};
+}
+
+function Main_getItemBool(item, default_value) {
+    var default_string = default_value.toString();
+    return (localStorage.getItem(item) || default_string) === default_string ? default_value : !default_value;
 }
 
 // use http://www.fileformat.info/info/unicode/char/16EB/index.html

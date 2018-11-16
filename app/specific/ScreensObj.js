@@ -55,7 +55,6 @@ var Base_Clip_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
     cursor: null,
-    periodPos: 2,
     key_refresh: Screens_StartLoad,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
@@ -108,6 +107,7 @@ function ScreensObj_InitClip() {
         ids: Screens_ScreenIds('Clip'),
         table: 'stream_table_clip',
         screen: Main_Clip,
+        periodPos: Main_getItemInt('Clip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
@@ -133,7 +133,7 @@ function ScreensObj_InitClip() {
         },
         SetPeriod: function() {
             Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
-            localStorage.setItem('Clip_periodPos', this.periodPos);
+            Main_setItem('Clip_periodPos', this.periodPos);
         },
         label_init: function() {
             this.SetPeriod();
@@ -189,6 +189,7 @@ function ScreensObj_InitChannelClip() {
         ids: Screens_ScreenIds('ChannelClip'),
         table: 'stream_table_channel_clip',
         screen: Main_ChannelClip,
+        periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_selectedChannel) +
@@ -215,7 +216,7 @@ function ScreensObj_InitChannelClip() {
         },
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
-            localStorage.setItem('ChannelClip_periodPos', this.periodPos);
+            Main_setItem('ChannelClip_periodPos', this.periodPos);
         },
         label_init: function() {
             if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id)
@@ -275,6 +276,7 @@ function ScreensObj_InitAGameClip() {
         ids: Screens_ScreenIds('AGameClip'),
         table: 'stream_table_a_game_clip',
         screen: Main_AGameClip,
+        periodPos: Main_getItemInt('AGameClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
@@ -301,7 +303,7 @@ function ScreensObj_InitAGameClip() {
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
                 Main_Periods[this.periodPos - 1] + ': ' + Main_gameSelected));
-            localStorage.setItem('AGameClip_periodPos', this.periodPos);
+            Main_setItem('AGameClip_periodPos', this.periodPos);
         },
         label_init: function() {
             this.SetPeriod();
@@ -450,7 +452,7 @@ function ScreensObj_InitUserGames() {
         ids: Screens_ScreenIds('UserGames'),
         table: 'stream_table_user_games',
         screen: Main_usergames,
-        isLive: true,
+        isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
@@ -510,7 +512,7 @@ function ScreensObj_InitUserGames() {
 
             Screens_StartLoad();
 
-            localStorage.setItem('user_Games_live', this.isLive ? 'true' : 'false');
+            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
             Users_resetGameCell();
 
         },
