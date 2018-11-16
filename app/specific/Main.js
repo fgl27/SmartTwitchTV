@@ -221,7 +221,7 @@ function Main_initWindows() {
                 window.setTimeout(Main_HideWarningDialog, 5000);
             } else {
                 Main_showUpdateDialog();
-                localStorage.setItem('has_showUpdateDialog', 1);
+                Main_setItem('has_showUpdateDialog', 1);
             }
         }
 
@@ -602,9 +602,8 @@ function Main_SetWasopen() {
     Play_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
     Play_Restore_value.screen = Main_SetScreen(Main_Go);
 
-    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
-    localStorage.setItem('Main_WasOpen', 1);
-
+    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+    Main_setItem('Main_WasOpen', 1);
 }
 
 function Main_ExitCurrent(ExitCurrent) {

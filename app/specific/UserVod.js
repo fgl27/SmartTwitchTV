@@ -411,7 +411,7 @@ function UserVod_handleKeyDown(event) {
         case KEY_INFO:
         case KEY_CHANNELGUIDE:
             UserVod_highlight = !UserVod_highlight;
-            localStorage.setItem('UserVod_highlight', UserVod_highlight ? 'true' : 'false');
+            Main_setItem('UserVod_highlight', UserVod_highlight ? 'true' : 'false');
             UserVod_StartLoad();
             break;
         case KEY_PLAY:
@@ -451,5 +451,5 @@ function UserVod_SetPeriod() {
         Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter((UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_VIWES));
         UserVod_Type = 'views';
     }
-    localStorage.setItem('UserVod_TypeNumber', UserVod_TypeNumber);
+    Main_setItem('UserVod_TypeNumber', UserVod_TypeNumber);
 }

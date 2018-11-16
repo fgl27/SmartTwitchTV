@@ -484,7 +484,7 @@ function Live_handleKeyDown(event) {
                 // HideExitDialog set Live_ExitCursor to 0, is better to hide befor exit, use temp var
                 var temp_ExitCursor = Live_ExitCursor;
                 Main_HideExitDialog();
-                localStorage.setItem('Main_WasOpen', 0);
+                Main_setItem('Main_WasOpen', 0);
                 try {
                     if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();

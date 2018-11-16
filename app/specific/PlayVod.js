@@ -130,7 +130,7 @@ function PlayVod_PosStart() {
     PlayVod_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
     PlayVod_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
 
-    localStorage.setItem('PlayVod_WasPlaying', 1);
+    Main_setItem('PlayVod_WasPlaying', 1);
     PlayVod_SaveOffset();
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     Main_CacheImage(Play_IncrementView);
@@ -271,7 +271,7 @@ function PlayVod_updateVodInfoPannel(response) {
 function PlayVod_SaveOffset() {
     PlayVod_Restore_value.vodOffset = parseInt(PlayVod_currentTime / 1000);
     PlayVod_Restore_value.game = Play_gameSelected;
-    localStorage.setItem('PlayVod_Restore_value', JSON.stringify(PlayVod_Restore_value));
+    Main_setItem('PlayVod_Restore_value', JSON.stringify(PlayVod_Restore_value));
 }
 
 function PlayVod_Resume() {
@@ -595,7 +595,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
-    localStorage.setItem('PlayVod_WasPlaying', 0);
+    Main_setItem('PlayVod_WasPlaying', 0);
     PlayVod_HasVodInfo = true;
     Chat_Clear();
     Play_ClearPlayer();
@@ -797,13 +797,14 @@ function PlayVod_SaveVodIds() {
         if (PlayVod_VodIds[vod_id]) delete PlayVod_VodIds[vod_id];
 
         PlayVod_VodIds[vod_id] = parseInt(PlayVod_currentTime / 1000);
-        localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
 
     } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[vod_id]) {
 
         //if ended or almost delete
         delete PlayVod_VodIds[vod_id];
-        localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+
+        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
     }
 }
 
@@ -830,7 +831,7 @@ function PlayVod_CleanVodIds(quantity) {
         else break;
         position++;
     }
-    localStorage.setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+    Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
 }
 
 function Play_showVodDialog() {
@@ -903,12 +904,11 @@ function PlayVod_handleKeyDown(e) {
                     if (!Play_isChatShown() && !Play_isEndDialogVisible() && !Play_isVodDialogShown()) {
                         Play_showChat();
                         Play_ChatEnable = true;
-                        localStorage.setItem('ChatEnable', 'true');
                     } else {
                         Play_hideChat();
                         Play_ChatEnable = false;
-                        localStorage.setItem('ChatEnable', 'false');
                     }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 }
                 break;
             case KEY_CHANNELUP:

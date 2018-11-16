@@ -319,7 +319,7 @@ function AddUser_removeUser(Position) {
 }
 
 function AddUser_SaveUserArray() {
-    localStorage.setItem("AddUser_UsernameArray", JSON.stringify(AddUser_UsernameArray));
+    Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
 }
 
 function AddUser_UserMakeOne(Position) {

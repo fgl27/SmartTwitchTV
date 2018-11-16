@@ -593,12 +593,11 @@ function PlayClip_handleKeyDown(e) {
                     if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                         Play_showChat();
                         Play_ChatEnable = true;
-                        localStorage.setItem('ChatEnable', 'true');
                     } else {
                         Play_hideChat();
                         Play_ChatEnable = false;
-                        localStorage.setItem('ChatEnable', 'false');
                     }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 }
                 break;
             case KEY_CHANNELUP:

@@ -236,7 +236,7 @@ function Play_SetFullScreen(isfull) {
         Play_ChatSize(false);
         if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     }
-    localStorage.setItem('Play_isFullScreen', Play_isFullScreen);
+    Main_setItem('Play_isFullScreen', Play_isFullScreen);
 }
 
 function Play_SetBuffers() {
@@ -273,8 +273,8 @@ function Play_Start() {
     Play_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
     Play_Restore_value.screen = Main_SetScreen(Main_Go);
 
-    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
-    localStorage.setItem('Play_WasPlaying', 1);
+    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+    Main_setItem('Play_WasPlaying', 1);
 
     Play_isHost = false;
     Play_DisplaynameHost = '';
@@ -377,7 +377,7 @@ function Play_updateStreamInfoStart() {
                         AddCode_CheckFallow();
                     } else Play_hideFallow();
                     Play_Restore_value.game = Play_gameSelected;
-                    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+                    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
                 } else if (Play_isOn) {
                     Play_isLive = false;
                     Play_CheckHostStart();
@@ -419,7 +419,7 @@ function Play_updateStreamInfo() {
                         Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                     if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
                     Play_Restore_value.game = Play_gameSelected;
-                    localStorage.setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
+                    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
                 } else if (Play_RestoreFromResume && Play_isOn) {
                     Play_isLive = false;
                     Play_CheckHostStart();
@@ -879,7 +879,7 @@ function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
         Play_exitMain();
-        localStorage.setItem('Play_WasPlaying', 0);
+        Main_setItem('Play_WasPlaying', 0);
     }
 }
 
@@ -1117,7 +1117,7 @@ function Play_ChatSize(showDialog) {
 
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage);
 
-    localStorage.setItem('ChatSizeValue', (Play_ChatSizeValue));
+    Main_setItem('ChatSizeValue', Play_ChatSizeValue);
 }
 
 function Play_ChatBackgroundChange(showDialog) {
@@ -1129,7 +1129,7 @@ function Play_ChatBackgroundChange(showDialog) {
     Play_chat_container.style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
     if (showDialog) Play_showChatBackgroundDialog(STR_BRIGHTNESS + (chat_value * 100).toFixed(0) + '%');
 
-    localStorage.setItem('ChatBackgroundValue', Play_ChatBackground);
+    Main_setItem('ChatBackgroundValue', Play_ChatBackground);
 }
 
 function Play_ChatPositionConvert(up) {
@@ -1154,7 +1154,7 @@ function Play_ChatPosition() {
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
-    localStorage.setItem('ChatPositionsValue', (Play_ChatPositions + 1));
+    Main_setItem('ChatPositionsValue', (Play_ChatPositions + 1));
 }
 
 function Play_showChatBackgroundDialog(DialogText) {
@@ -1628,12 +1628,11 @@ function Play_handleKeyDown(e) {
                     if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                         Play_showChat();
                         Play_ChatEnable = true;
-                        localStorage.setItem('ChatEnable', 'true');
                     } else {
                         Play_hideChat();
                         Play_ChatEnable = false;
-                        localStorage.setItem('ChatEnable', 'false');
                     }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 }
                 break;
             case KEY_CHANNELUP:
