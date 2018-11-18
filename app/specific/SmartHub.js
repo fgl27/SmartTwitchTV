@@ -19,6 +19,11 @@ var SmartHub_BasePreviewDataNoUser;
 //Variable initialization end
 
 function SmartHub_Start() {
+    if (!Main_TizenVersion) {
+        window.clearInterval(Main_SmartHubId);
+        return;
+    }
+
     if (!AddUser_UsernameArray.length) {
         window.clearInterval(Main_SmartHubId);
         document.removeEventListener('visibilitychange', Main_ResumeSmarthub);

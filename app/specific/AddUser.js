@@ -308,10 +308,10 @@ function AddUser_removeUser(Position) {
     if (AddUser_UsernameArray.length > 0) {
         Users_status = false;
         Users_init();
-        if (!Position) SmartHub_Start();
+        if (Main_TizenVersion && !Position) SmartHub_Start();
     } else {
         AddUser_init();
-        SmartHub_Start();
+        if (Main_TizenVersion) SmartHub_Start();
     }
 
     // reset localStorage usernames
@@ -328,7 +328,7 @@ function AddUser_UserMakeOne(Position) {
     AddUser_UsernameArray[Position] = AddUser_Username;
     Users_status = false;
     Users_init();
-    SmartHub_Start();
+    if (Main_TizenVersion) SmartHub_Start();
 }
 
 function AddUser_UserCodeExist(user) {

@@ -746,7 +746,7 @@ function Main_ResumeNetwork() {
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         window.setTimeout(function() {
             if (!document.hidden) {
-                //Update clock twice as first try clock may be outoff date in the case TV was on standby
+                //Update clock twice as first try clock may be out of date in the case TV was on standby
                 Main_updateclock();
                 Main_NetworkStateChangeListenerStart();
             }
