@@ -60,6 +60,7 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_AddCodeInput;
 var Main_SetTopOpacityId;
+var Main_updateclockId;
 var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods;
@@ -249,7 +250,7 @@ function Main_initWindows() {
 
             window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
             document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
-            window.setInterval(Main_updateclock, 60000);
+            Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         });
     });
 }
@@ -737,22 +738,30 @@ function Main_GoLive() {
 
 // right after the TV comes from standby the network can lag, delay the check
 function Main_ResumeNetwork() {
-    if (document.hidden) Main_NetworkStateChangeListenerStop();
-    else {
+    if (document.hidden) {
+        Main_NetworkStateChangeListenerStop();
+        window.clearInterval(Main_updateclockId);
+    } else {
         Main_updateclock();
+        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         window.setTimeout(function() {
-            if (!document.hidden) Main_NetworkStateChangeListenerStart();
+            if (!document.hidden) {
+                //Update clock twice as first try clock may be outoff date in the case TV was on standby
+                Main_updateclock();
+                Main_NetworkStateChangeListenerStart();
+            }
         }, 20000);
     }
 }
 
-//Just in case Main_SmartHubId stall
+//Stop start smarthub update on resume
 function Main_ResumeSmarthub() {
-    if (!document.hidden) {
+    if (document.hidden) window.clearInterval(Main_SmartHubId);
+    else if (Main_TizenVersion) {
         window.setTimeout(function() {
-            if (AddUser_UsernameArray.length > 0) {
-                var timeDiff = (new Date().getTime() - 590000);
-                if (timeDiff > SmartHub_LastUpdate) SmartHub_Start();
+            if (!document.hidden && AddUser_UsernameArray.length > 0) {
+                Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+                if ((new Date().getTime() - 590000) > SmartHub_LastUpdate) SmartHub_Start();
             }
         }, 10000);
     }
