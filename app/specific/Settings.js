@@ -262,7 +262,7 @@ function Settings_SetStrings() {
 
 function Settings_SetDefautls() {
     for (var key in Settings_value) {
-        Settings_value[key].defaultValue = parseInt(localStorage.getItem(key)) || Settings_value[key].defaultValue;
+        Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
         Settings_value[key].defaultValue -= 1;
     }
     Play_SetBuffers();

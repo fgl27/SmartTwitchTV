@@ -809,7 +809,7 @@ function PlayVod_SaveVodIds() {
 }
 
 function PlayVod_RestoreVodIds() {
-    PlayVod_VodIds = JSON.parse(localStorage.getItem('PlayVod_VodIds')) || {};
+    PlayVod_VodIds = Main_getItemJson('PlayVod_VodIds', {});
 
     //Prevent too big obj in storage
     var size = PlayVod_VodIdsSize();

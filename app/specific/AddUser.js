@@ -197,7 +197,7 @@ function AddUser_loadDataNoUser() {
 }
 
 function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = JSON.parse(localStorage.getItem("AddUser_UsernameArray")) || [];
+    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++)

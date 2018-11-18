@@ -197,11 +197,11 @@ function Main_initWindows() {
 
     Main_WasOpen = Main_getItemInt('Main_WasOpen', 0);
     Play_WasPlaying = Main_getItemInt('Play_WasPlaying', 0);
-    if (Play_WasPlaying || Main_WasOpen) Play_Restore_value = Screens_assign(Play_Restore_value, Main_getItemJson('Play_Restore_value'));
+    if (Play_WasPlaying || Main_WasOpen) Play_Restore_value = Screens_assign(Play_Restore_value, Main_getItemJson('Play_Restore_value', {}));
 
     PlayVod_WasPlaying = Main_getItemInt('PlayVod_WasPlaying', 0);
     if (PlayVod_WasPlaying) PlayVod_Restore_value = Screens_assign(PlayVod_Restore_value,
-        Main_getItemJson('PlayVod_Restore_value'));
+        Main_getItemJson('PlayVod_Restore_value', {}));
 
     Main_ready(function() {
 
@@ -1206,8 +1206,8 @@ function Main_getItemInt(item, default_value) {
     return parseInt(localStorage.getItem(item)) || default_value;
 }
 
-function Main_getItemJson(item) {
-    return JSON.parse(localStorage.getItem(item)) || {};
+function Main_getItemJson(item, default_value) {
+    return JSON.parse(localStorage.getItem(item)) || default_value;
 }
 
 function Main_getItemBool(item, default_value) {
