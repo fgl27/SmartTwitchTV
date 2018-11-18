@@ -213,7 +213,7 @@ function AddUser_RestoreUsers() {
 
             SmartHub_StartInterval();
             document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
-        }, 3500);
+        }, 10000);
     }
 }
 

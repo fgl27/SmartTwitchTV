@@ -147,8 +147,8 @@ function SmartHub_msetPreviewData() {
 }
 
 function SmartHub_StartInterval() {
-    SmartHub_Start();
     Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
+    SmartHub_Start();
 }
 
 function SmartHub_previewDataGenerator() {
