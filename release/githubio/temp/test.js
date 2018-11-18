@@ -1,53 +1,55 @@
 /* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */
 
+var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var Main_clientIdHeader = 'Client-ID';
+var Main_AcceptHeader = 'Accept';
+var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+
+// problematic games with ,,,,,,,,
+var game1 = "506237";//"Pokemon: Let's Go, Pikachu!/Eevee!";
+var game2 = "Warhammer 40,000: Mechanicus";
+
+//OK games
+var game3 = "Fortnite";
+var game4 = "Dota 2";
+
 //console.log(Settings_GenerateClock());
 
-function Settings_GenerateClock() {
-    var clock = [], time = 43200;
-    Play_offsettimeMinus = 0;
+function getclips() {
+    var xmlHttp = new XMLHttpRequest();
 
-    for (var i = 0; i < 48; i++) {
-        clock.push("-" + Play_timeS(time));
-        time -= 900;
-    }
 
-    clock.push(Play_timeS(0));
-    time = 900;
+    var url = 'https://api.twitch.tv/kraken/clips/top?game=';
+    url += game1 + '&limit=100&period=all';
 
-    for (var i = 0; i < 48; i++) {
-        clock.push(Play_timeS(time));
-        time += 900;
-    }
+    url = 'https://api.twitch.tv/helix/clips?game_id=';
+    url += game1 + '&limit=100&period=all';
 
-    return clock;
+
+    //url = 'https://api.twitch.tv/kraken/games/top';
+
+url = encodeURI(url);
+//.replace("%2C", ",")
+
+    console.log(url);
+
+    xmlHttp.open("GET", url, true);
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            console.log(xmlHttp.status);
+            console.log(xmlHttp.responseText);
+            //var data = JSON.parse(xmlHttp.responseText).clips;
+            //console.log('quantity ' + data.length);
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
-function Play_timeS(time) {
-    var seconds, minutes, hours;
-    time += Play_offsettimeMinus / 1000;
-
-    seconds = Play_lessthanten(parseInt(time) % 60);
-
-    time = Math.floor(time / 60);
-    minutes = Play_lessthanten(time % 60);
-
-    time = Math.floor(time / 60);
-    hours = Play_lessthanten(time);
-
-    //final time 00:00 or 00:00:00
-    return (!time) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
-}
-
-function Play_lessthanten(time) {
-    return (time < 10) ? "0" + time : time;
-}
-dates();
-function dates() {
-    var d = new Date();
-    var n = new Date().getTime() - 38700000;
-    console.log(d);
-    console.log(new Date(n));
-}
-
-
-
+getclips();

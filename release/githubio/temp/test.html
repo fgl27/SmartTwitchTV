@@ -15,168 +15,18 @@
             font-weight: 100;
             letter-spacing: normal;
             position: absolute;
-            overflow: hidden;
-            /*Prevent Scroling*/
             z-index: 5;
             padding: 0;
             margin: 0;
             -webkit-font-smoothing: antialiased;
         }
 
-        div.screens {
-            position: fixed;
-            overflow: hidden;
-        }
-
-        table.streams_tables {
-            border: 0;
-            margin-left: 15px;
-            table-layout: fixed;
-            width: 98%;
-        }
-
-        div.screen_holder,
-        div.screen_holder_games {
-            width: 1280px;
-            position: fixed;
-        }
-
-        div.stream_thumbnail_video,
-        div.stream_thumbnail_game,
-        div.stream_thumbnail_channel {
-            width: 100%;
-            height: 0;
-            position: relative;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 2px solid #000000;
-            box-sizing: border-box;
-        }
-
-        div.stream_thumbnail_video {
-            /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 56.25%;
-            background-repeat: no-repeat;
-        }
-
-        img.stream_img {
-            width: 100%;
-            position: absolute;
-            max-width: 100%;
-            max-height: 100%;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-
-        .hide {
-            display: none;
-        }
-
-        div.stream_cell {
-            padding: 6px;
-            position: relative;
-            width: 33.33%;
-        }
-
-        div.stream_info,
-        div.stream_info_user,
-        div.stream_info_games {
-            width: 100%;
-            text-align: left;
-            word-wrap: break-word;
-            color: #FFFFFF;
-            font-size: 168%;
-            font-weight: bold;
-            text-shadow: #000000 0 0 4px, #000000 0 0 4px, #000000 0 0 3px;
-        }
-
-        div.stream_info {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            font-size: 135%;
-        }
-
-        div.stream_info_games {
-            font-size: 135%;
-        }
-
-        div.stream_thumbnail_game {
-            padding-bottom: 139.70%;
-        }
-
-        div.stream_thumbnail_channel {
-            padding-bottom: 100%;
-        }
-
-        div.stream_thumbnail_focused {
-            box-shadow: 0 0 0 4px #000000, 0 0 0 10px #FFFFFF;
-        }
-
-        div.stream_text2 {
-            position: absolute;
-            width: 100%;
-
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 1%;
-        }
     </style>
     <script src="test.js" defer>
     </script>
 </head>
 
 <body>
-    <div id="screens_holder" class="screens">
-        <div id="user_channels_scroll" class="screen_holder">
-<div >
-    <div id="Clip_cell0_0" data_attribute="[&quot;DarlingColdbloodedDumplingsFeelsBadMan&quot;,42.39,&quot;Just Chatting&quot;,&quot;sleightlymusical&quot;,&quot;sleightlymusical&quot;,&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3a0b379c-d2c0-4d14-bcf2-72b5…0x300.jpg&quot;,&quot;39195074&quot;,&quot;319661600&quot;,4913,&quot;$100 if less than 20 seconds - instantly solves it&quot;,&quot;[EN]&quot;,&quot;Playing Just Chatting&quot;]" style="width: 33%; display: inline-block; ">
-        <div id="Clip_thumbdiv0_0" class="stream_thumbnail_video ">
-            <div><img id="Clip_img0_0" class="stream_img" src="https://clips-media-assets2.twitch.tv/AT-cm%7C321944474-preview-480x272.jpg"></div>
-            <div id="Clip_infodiv0_0" class="stream_text2">
-                <div id="Clip_title0_0" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">sleightlymusical</div>
-                <div id="Clip_duration0_0" class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">[EN]</div>
-                <div>
-                    <div id="Clip_createdon0_0" class="stream_info" style="width: 59%; display: inline-block;">Created at Oct 7, 2018</div>
-                    <div id="Clip_game0_0" class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">Duration 00:42</div>
-                </div>
-                <div id="Clip_lang0_0" class="stream_info">$100 if less than 20 seconds - instantly solves it<br>Playing Just Chatting</div>
-                <div id="Clip_viwers0_0" class="stream_info">343,326 Views</div>
-            </div>
-        </div>
-    </div>
-    <div id="Clip_cell0_1" data_attribute="[&quot;SpotlessBlueSpaghettiWholeWheat&quot;,26,&quot;Just Chatting&quot;,&quot;sodapoppin&quot;,&quot;sodapoppin&quot;,&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/sodapoppin-profile_image-100…0x300.png&quot;,&quot;26301881&quot;,&quot;321706665&quot;,4174,&quot;Maid comes in LULW&quot;,&quot;[EN]&quot;,&quot;Playing Just Chatting&quot;]" style="width: 33%; display: inline-block; padding: 6px;">
-        <div id="Clip_thumbdiv0_1" class="stream_thumbnail_video">
-            <div><img id="Clip_img0_1" class="stream_img" src="https://clips-media-assets2.twitch.tv/30745319440-offset-4198-preview-480x272.jpg"></div>
-            <div id="Clip_infodiv0_1" class="stream_text2">
-                <div id="Clip_title0_1" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">sodapoppin</div>
-                <div id="Clip_duration0_1" class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">[EN]</div>
-                <div>
-                    <div id="Clip_createdon0_1" class="stream_info" style="width: 59%; display: inline-block;">Created at Oct 12, 2018</div>
-                    <div id="Clip_game0_1" class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">Duration 00:26</div>
-                </div>
-                <div id="Clip_lang0_1" class="stream_info">Maid comes in LULW<br>Playing Just Chatting</div>
-                <div id="Clip_viwers0_1" class="stream_info">295,436 Views</div>
-            </div>
-        </div>
-    </div>
-    <div id="Clip_cell0_2" data_attribute="[&quot;FriendlySpookyPrariedogKappaRoss&quot;,45.66,&quot;League of Legends&quot;,&quot;riotgames&quot;,&quot;Riot Games&quot;,&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/7033f472-a834-43ff-bf5c-c589…,&quot;319399420&quot;,4492,&quot;lol&quot;,&quot;[EN]&quot;,&quot;Playing League of Legends&quot;]" style="width: 33%; display: inline-block; padding: 6px;">
-        <div id="Clip_thumbdiv0_2" class="stream_thumbnail_video">
-            <div><img id="Clip_img0_2" class="stream_img" src="https://clips-media-assets2.twitch.tv/AT-cm%7C321568009-preview-480x272.jpg"></div>
-            <div id="Clip_infodiv0_2" class="stream_text2">
-                <div id="Clip_title0_2" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">Riot Games</div>
-                <div id="Clip_duration0_2" class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">[EN]</div>
-                <div>
-                    <div id="Clip_createdon0_2" class="stream_info" style="width: 59%; display: inline-block;">Created at Oct 7, 2018</div>
-                    <div id="Clip_game0_2" class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">Duration 00:45</div>
-                </div>
-                <div id="Clip_lang0_2" class="stream_info">lol<br>Playing League of Legends</div>
-                <div id="Clip_viwers0_2" class="stream_info">211,722 Views</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    </div>
 </body>
 
 </html>
