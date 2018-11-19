@@ -1320,6 +1320,8 @@ function Play_EndDialogPressed(PlayVodClip) {
             Play_DisplaynameHost = Play_DisplaynameHost + Play_selectedChannelDisplayname;
             Play_PreshutdownStream();
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
+
+            Play_selectedChannel_id = Play_TargetHost.target_id;
             Play_Start();
         } else PlayClip_OpenVod();
     } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
