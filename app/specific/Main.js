@@ -739,9 +739,11 @@ function Main_GoLive() {
 // right after the TV comes from standby the network can lag, delay the check
 function Main_ResumeNetwork() {
     if (document.hidden) {
+        Main_KeepAliveId = window.setInterval(Main_KeepAlive, 50);
         Main_NetworkStateChangeListenerStop();
         window.clearInterval(Main_updateclockId);
     } else {
+        window.clearInterval(Main_KeepAliveId);
         Main_updateclock();
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         window.setTimeout(function() {
@@ -765,6 +767,14 @@ function Main_ResumeSmarthub() {
             }
         }, 10000);
     }
+}
+
+var Main_KeepAliveCounter = 0;
+var Main_KeepAliveId;
+
+function Main_KeepAlive() {
+    if (Main_KeepAliveCounter < (2 << 29)) Main_KeepAliveCounter++;
+    else Main_KeepAliveCounter = 0;
 }
 
 function Main_empty(el) {
