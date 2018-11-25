@@ -309,13 +309,13 @@ function SmartHub_EventListener() {
 function SmartHub_SetBasePreviewData() {
     SmartHub_BasePreviewData = {
         "sections": [{
-                "title": '',//live
+                "title": '', //live
                 "tiles": []
             }, {
-                "title": '',//host
+                "title": '', //host
                 "tiles": []
             }, {
-                "title": '',//games
+                "title": '', //games
                 "tiles": []
             },
             {},
