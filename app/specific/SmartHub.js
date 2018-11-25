@@ -157,7 +157,7 @@ function SmartHub_StartInterval() {
 }
 
 function SmartHub_previewDataGenerator() {
-    var i, vectorSize, Title, tile;
+    var i, vectorSize, Title;
     //Re-initialize SmartHub_BasePreviewData because it may not be yet or some section have be removed
     SmartHub_SetBasePreviewData();
 
@@ -170,18 +170,15 @@ function SmartHub_previewDataGenerator() {
             Title = Main_is_playlist(JSON.stringify(SmartHub_userlive[i].stream_type)) +
                 SmartHub_userlive[i].channel.display_name;
 
-            tile = {
-                "title": Title,
-                "subtitle": STR_PLAYING + SmartHub_userlive[i].game,
-                "image_ratio": "16by9",
-                "image_url": (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize),
-                "action_data": "{\"videoIdx\": \"" + SmartHub_userlive[i].channel.name +
-                    "\",\"videoTitleIdx\": \"" + Title +
-                    "\",\"_id\": \"" + SmartHub_userlive[i].channel._id + "\"}",
-                "is_playable": true
-            };
-
-            SmartHub_BasePreviewData.sections[0].tiles[i] = tile;
+            SmartHub_BasePreviewData.sections[0].tiles[i] = SmartHub_SubTile(Title,
+                STR_PLAYING + SmartHub_userlive[i].game,
+                "16by9",
+                (SmartHub_userlive[i].preview.template).replace("{width}x{height}", Main_VideoSize), {
+                    "videoIdx": SmartHub_userlive[i].channel.name,
+                    "videoTitleIdx": Title,
+                    "_id": SmartHub_userlive[i].channel._id
+                }
+            );
         }
     } else delete SmartHub_BasePreviewData.sections[0];
 
@@ -194,19 +191,16 @@ function SmartHub_previewDataGenerator() {
             Title = SmartHub_userhost[i].display_name + STR_USER_HOSTING +
                 SmartHub_userhost[i].target.channel.display_name;
 
-            tile = {
-                "title": Title,
-                "subtitle": STR_PLAYING + SmartHub_userhost[i].target.meta_game,
-                "image_ratio": "16by9",
-                "image_url": (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize),
-                "action_data": "{\"videoIdx\": \"" + SmartHub_userhost[i].target.channel.name +
-                    "\",\"videoTitleIdx\": \"" + Title +
-                    "\",\"_id\": \"" + SmartHub_userhost[i].target._id +
-                    "\",\"isHost\": \"" + true + "\"}",
-                "is_playable": true
-            };
-
-            SmartHub_BasePreviewData.sections[1].tiles[i] = tile;
+            SmartHub_BasePreviewData.sections[1].tiles[i] = SmartHub_SubTile(Title,
+                STR_PLAYING + SmartHub_userhost[i].target.meta_game,
+                "16by9",
+                (SmartHub_userhost[i].target.preview_urls.template).replace("{width}x{height}", Main_VideoSize), {
+                    "videoIdx": SmartHub_userhost[i].target.channel.name,
+                    "videoTitleIdx": Title,
+                    "_id": SmartHub_userhost[i].target._id,
+                    "isHost": true
+                }
+            );
         }
     } else delete SmartHub_BasePreviewData.sections[1];
 
@@ -216,15 +210,13 @@ function SmartHub_previewDataGenerator() {
         SmartHub_BasePreviewData.sections[2].title = STR_LIVE_GAMES + ' ' + SmartHub_followerUsername;
         for (i = 0; i < vectorSize; i++) {
 
-            tile = {
-                "title": SmartHub_usergames[i].game.name,
-                "image_ratio": "2by3",
-                "image_url": (SmartHub_usergames[i].game.box.template).replace("{width}x{height}", Main_GameSize),
-                "action_data": "{\"gameIdx\": \"" + SmartHub_usergames[i].game.name + "\"}",
-                "is_playable": false
-            };
-
-            SmartHub_BasePreviewData.sections[2].tiles[i] = tile;
+            SmartHub_BasePreviewData.sections[2].tiles[i] = SmartHub_SubTile(SmartHub_usergames[i].game.name,
+                '',
+                "2by3",
+                (SmartHub_usergames[i].game.box.template).replace("{width}x{height}", Main_GameSize), {
+                    "gameIdx": SmartHub_usergames[i].game.name
+                }
+            );
         }
     } else delete SmartHub_BasePreviewData.sections[2];
 
@@ -317,25 +309,22 @@ function SmartHub_EventListener() {
 function SmartHub_SetBasePreviewData() {
     SmartHub_BasePreviewData = {
         "sections": [{
-            "title": "Live",
-            "tiles": []
-        }, {
-            "title": "Host",
-            "tiles": []
-        }, {
-            "title": "Games",
-            "tiles": []
-        }, {}, {
-            "title": STR_USER,
-            "tiles": [{
-                "title": STR_GO_TO + STR_USER,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_USER,
-                "action_data": "{\"screenIdx\": " + Main_Users + "}",
-                "is_playable": false
-            }]
-        }]
+                "title": '',//live
+                "tiles": []
+            }, {
+                "title": '',//host
+                "tiles": []
+            }, {
+                "title": '',//games
+                "tiles": []
+            },
+            {},
+            SmartHub_Tile(STR_USER, STR_GO_TO + STR_USER, "", "16by9", IMG_SMART_USER, {
+                "screenIdx": Main_Users
+            })
+        ]
     };
+
     SmartHub_BasePreviewData.sections[3] = SmartHub_BasePreviewDataNoUser.sections[0];
     SmartHub_BasePreviewData.sections[5] = SmartHub_BasePreviewDataNoUser.sections[2];
     SmartHub_BasePreviewData.sections[6] = SmartHub_BasePreviewDataNoUser.sections[3];
@@ -345,61 +334,43 @@ function SmartHub_SetBasePreviewData() {
 
 function SmartHub_SetNoUserPreviewData() {
     SmartHub_BasePreviewDataNoUser = {
-        "sections": [{
-            "title": STR_LIVE,
-            "tiles": [{
-                "title": STR_GO_TO + STR_LIVE,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_LIVE,
-                "action_data": "{\"screenIdx\": " + Main_Live + "}",
-                "is_playable": false
-            }]
-        }, {
-            "title": STR_USER_ADD,
-            "tiles": [{
-                "title": STR_GO_TO + STR_USER_ADD,
-                "subtitle": STR_ADD_USER_SH,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_ADD_USER,
-                "action_data": "{\"screenIdx\": " + Main_addUser + "}",
-                "is_playable": false
-            }]
-        }, {
-            "title": STR_FEATURED,
-            "tiles": [{
-                "title": STR_GO_TO + STR_FEATURED,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_FEATURED,
-                "action_data": "{\"screenIdx\": " + Main_Featured + "}",
-                "is_playable": false
-            }]
-        }, {
-            "title": STR_GAMES,
-            "tiles": [{
-                "title": STR_GO_TO + STR_GAMES,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_GAME,
-                "action_data": "{\"screenIdx\": " + Main_games + "}",
-                "is_playable": false
-            }]
-        }, {
-            "title": STR_VIDEOS,
-            "tiles": [{
-                "title": STR_GO_TO + STR_VIDEOS,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_VIDEO,
-                "action_data": "{\"screenIdx\": " + Main_Vod + "}",
-                "is_playable": false
-            }]
-        }, {
-            "title": STR_CLIPS,
-            "tiles": [{
-                "title": STR_GO_TO + STR_CLIPS,
-                "image_ratio": "16by9",
-                "image_url": IMG_SMART_CLIP,
-                "action_data": "{\"screenIdx\": " + Main_Clip + "}",
-                "is_playable": false
-            }]
-        }]
+        "sections": [
+            SmartHub_Tile(STR_LIVE, STR_GO_TO + STR_LIVE, "", "4by3", IMG_SMART_LIVE, {
+                "screenIdx": Main_Live
+            }),
+            SmartHub_Tile(STR_USER_ADD, STR_GO_TO + STR_USER_ADD, STR_ADD_USER_SH, "4by3", IMG_SMART_ADD_USER, {
+                "screenIdx": Main_addUser
+            }),
+            SmartHub_Tile(STR_FEATURED, STR_GO_TO + STR_FEATURED, "", "4by3", IMG_SMART_FEATURED, {
+                "screenIdx": Main_Featured
+            }),
+            SmartHub_Tile(STR_GAMES, STR_GO_TO + STR_GAMES, "", "4by3", IMG_SMART_GAME, {
+                "screenIdx": Main_games
+            }),
+            SmartHub_Tile(STR_VIDEOS, STR_GO_TO + STR_VIDEOS, "", "4by3", IMG_SMART_VIDEO, {
+                "screenIdx": Main_Vod
+            }),
+            SmartHub_Tile(STR_CLIPS, STR_GO_TO + STR_CLIPS, "", "4by3", IMG_SMART_CLIP, {
+                "screenIdx": Main_Clip
+            })
+        ]
+    };
+}
+
+function SmartHub_Tile(title, tiles_title, subtitle, image_size, image_url, action) {
+    return {
+        "title": title,
+        "tiles": [SmartHub_SubTile(tiles_title, subtitle, image_size, image_url, action)]
+    };
+}
+
+function SmartHub_SubTile(tiles_title, subtitle, image_size, image_url, action) {
+    return {
+        "title": tiles_title,
+        "subtitle": subtitle,
+        "image_ratio": image_size,
+        "image_url": image_url,
+        "action_data": JSON.stringify(action),
+        "is_playable": false
     };
 }
