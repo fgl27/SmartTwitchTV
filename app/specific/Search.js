@@ -3,7 +3,6 @@ var Search_cursorY = 0;
 var Search_cursorX = 0;
 var Search_data = '';
 var Search_keyBoardOn = false;
-var Search_input = '';
 var Search_isSearching = false;
 //Variable initialization end
 
@@ -23,7 +22,6 @@ function Search_init() {
     Main_ShowElement('search_scroll');
     Search_cursorY = 0;
     Search_cursorX = 0;
-    Search_input = document.querySelector('#search_input');
     Search_refreshInputFocusTools();
     Search_inputFocus();
 }
@@ -159,15 +157,15 @@ function Search_handleKeyDown(event) {
 function Search_inputFocus() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
-    Search_input.addEventListener('input');
-    Search_input.addEventListener('compositionend');
+    Main_SearchInput.addEventListener('input');
+    Main_SearchInput.addEventListener('compositionend');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    Search_input.focus();
+    Main_SearchInput.focus();
     Search_keyBoardOn = true;
 }
 
 function Search_RemoveinputFocus() {
-    Search_input.blur();
+    Main_SearchInput.blur();
     document.body.removeEventListener("keydown", Search_KeyboardEvent);
     document.body.addEventListener("keydown", Search_handleKeyDown, false);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;

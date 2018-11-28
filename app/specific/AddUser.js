@@ -6,14 +6,13 @@ var AddUser_UsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
 var AddUser_keyBoardOn = false;
-var AddUser_input = null;
 //Variable initialization end
 
 function AddUser_init() {
+    console.log('AddUser_init');
     Main_Go = Main_addUser;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
-    AddUser_input = document.querySelector('#user_input');
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     Main_ShowElement('add_user_scroll');
     AddUser_inputFocus();
@@ -78,17 +77,48 @@ function AddUser_handleKeyDown(event) {
 }
 
 function AddUser_inputFocus() {
+    console.log('AddUser_inputFocus');
+    AddUser_addEventListener();
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
-    AddUser_input.addEventListener('input');
-    AddUser_input.addEventListener('compositionend');
+    Main_AddUserInput.addEventListener('input');
+    Main_AddUserInput.addEventListener('compositionend');
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
-    AddUser_input.focus();
+
+    console.log('Main_AddUserInput.focus');
+
+    Main_AddUserInput.focus();
     AddUser_keyBoardOn = true;
 }
 
+
+function AddUser_addEventListener() {
+    console.log('AddUser_addEventListener');
+    Main_AddUserInput.addEventListener('focus', function() {
+        console.log('input element is focused and ready to get user input.');
+    });
+
+    Main_AddUserInput.addEventListener('blur', function() {
+        console.log('input element loses focus.');
+    });
+
+    Main_AddUserInput.addEventListener('change', function() {
+        console.log('input element value is changed. value is : ' + Main_AddUserInput.value);
+    });
+}
+
+function AddUser_removeEventListener() {
+    console.log('AddUser_removeEventListener');
+    if (Main_AddUserInput !== null) {
+        var elClone = Main_AddUserInput.cloneNode(true);
+        Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
+        Main_AddUserInput = document.getElementById("user_input");
+    }
+}
+
 function AddUser_RemoveinputFocus() {
-    AddUser_input.blur();
+    Main_AddUserInput.blur();
+    AddUser_removeEventListener();
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
     document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;

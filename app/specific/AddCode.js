@@ -8,7 +8,6 @@ var AddCode_keyBoardOn = false;
 var AddCode_IsFallowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
-var AddCode_input = '';
 var AddCode_Channel_id = '';
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
@@ -21,7 +20,6 @@ function AddCode_init() {
     Main_Go = Main_addCode;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
-    AddCode_input = document.querySelector('#oauth_input');
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
     Main_ShowElement('oauth_scroll');
     Main_innerHTML("oauth_text", STR_OAUTH_IN + AddUser_UsernameArray[Users_Position].name + STR_OAUTH_EXPLAIN);
@@ -88,15 +86,15 @@ function AddCode_handleKeyDown(event) {
 function AddCode_inputFocus() {
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     document.body.addEventListener("keydown", AddCode_KeyboardEvent, false);
-    AddCode_input.addEventListener('input');
-    AddCode_input.addEventListener('compositionend');
+    Main_AddCodeInput.addEventListener('input');
+    Main_AddCodeInput.addEventListener('compositionend');
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
-    AddCode_input.focus();
+    Main_AddCodeInput.focus();
     AddCode_keyBoardOn = true;
 }
 
 function AddCode_RemoveinputFocus() {
-    AddCode_input.blur();
+    Main_AddCodeInput.blur();
     document.body.removeEventListener("keydown", AddCode_KeyboardEvent);
     document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;

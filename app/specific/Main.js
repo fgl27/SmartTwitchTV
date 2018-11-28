@@ -107,7 +107,7 @@ var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
 var Main_minversion = '111918';
-var Main_versonTag = '';
+var Main_versionTag = '';
 var Main_TizenVersion;
 var Main_ClockOffset = 0;
 
@@ -716,14 +716,17 @@ function Main_checkVersion() {
     if (Appversion !== null && TizenVersion !== null && tvModel !== null && fw !== null) {
         Main_currentVersion = Appversion;
 
-        Main_versonTag = 'APP ' + STR_VERSION + Appversion + '.' + (Main_isReleased ? Main_minversion : '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">TEST</div>') + STR_BR + 'Tizen ' + STR_VERSION +
+        Main_versionTag = 'APP ' + STR_VERSION + Appversion + '.' + (Main_isReleased ? Main_minversion : '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">TEST</div>') + STR_BR + 'Tizen ' + STR_VERSION +
             TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + tvModel + STR_SPACE + STR_SPACE + '|' +
             STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
         Appversion = Appversion.split(".");
         value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versonTag + STR_ABOUT_INFO_0);
+        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_ABOUT_INFO_0);
         Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion +
             ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
+
+        if (!Main_isReleased) console.log('Tizen ' + STR_VERSION + TizenVersion + ' | ' +
+            'TV: ' + tvModel + ' | ' + 'FW: ' + fw);
         return value < Main_version;
     } else return false;
 }
