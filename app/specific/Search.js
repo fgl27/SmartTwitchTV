@@ -27,7 +27,7 @@ function Search_init() {
 }
 
 function Search_exit() {
-    Search_RemoveinputFocus();
+    Search_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_Go = Main_BeforeSearch;
@@ -99,7 +99,7 @@ function Search_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             if (!Search_cursorY) {
-                Search_RemoveinputFocus();
+                Search_RemoveinputFocus(false);
                 Search_cursorY = 1;
                 Search_refreshInputFocusTools();
             } else if (Search_cursorY === 1) {
@@ -164,14 +164,23 @@ function Search_inputFocus() {
     Search_keyBoardOn = true;
 }
 
-function Search_RemoveinputFocus() {
+function Search_RemoveinputFocus(EnaKeydown) {
     Main_SearchInput.blur();
     document.body.removeEventListener("keydown", Search_KeyboardEvent);
-    document.body.addEventListener("keydown", Search_handleKeyDown, false);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
+
+    if (EnaKeydown) document.body.addEventListener("keydown", Search_handleKeyDown, false);
     window.setTimeout(function() {
         Search_keyBoardOn = false;
     }, 500);
+}
+
+function AddCode_removeEventListener() {
+    if (Main_SearchInput !== null) {
+        var elClone = Main_SearchInput.cloneNode(true);
+        Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
+        Main_SearchInput = document.getElementById("search_input");
+    }
 }
 
 function Search_KeyboardEvent(event) {
@@ -189,7 +198,7 @@ function Search_KeyboardEvent(event) {
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_KEYBOARD_CANCEL:
-            Search_RemoveinputFocus();
+            Search_RemoveinputFocus(true);
             Search_cursorY = 1;
             Search_refreshInputFocusTools();
             break;

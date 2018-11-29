@@ -27,7 +27,7 @@ function AddCode_init() {
 }
 
 function AddCode_exit() {
-    AddCode_RemoveinputFocus();
+    AddCode_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('oauth_scroll');
@@ -93,14 +93,24 @@ function AddCode_inputFocus() {
     AddCode_keyBoardOn = true;
 }
 
-function AddCode_RemoveinputFocus() {
+function AddCode_RemoveinputFocus(EnaKeydown) {
     Main_AddCodeInput.blur();
+    AddCode_removeEventListener();
     document.body.removeEventListener("keydown", AddCode_KeyboardEvent);
-    document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
+
+    if (EnaKeydown) document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
     window.setTimeout(function() {
         AddCode_keyBoardOn = false;
     }, 250);
+}
+
+function AddCode_removeEventListener() {
+    if (Main_AddCodeInput !== null) {
+        var elClone = Main_AddCodeInput.cloneNode(true);
+        Main_AddCodeInput.parentNode.replaceChild(elClone, Main_AddCodeInput);
+        Main_AddCodeInput = document.getElementById("oauth_input");
+    }
 }
 
 function AddCode_KeyboardEvent(event) {
@@ -130,7 +140,7 @@ function AddCode_KeyboardEvent(event) {
                 Main_showLoadDialog();
                 AddCode_requestTokens();
             }
-            AddCode_RemoveinputFocus();
+            AddCode_RemoveinputFocus(true);
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_AddCodeInput.value = Main_AddCodeInput.value.slice(0, -1);

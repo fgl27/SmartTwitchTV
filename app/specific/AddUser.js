@@ -19,7 +19,7 @@ function AddUser_init() {
 }
 
 function AddUser_exit() {
-    AddUser_RemoveinputFocus();
+    AddUser_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('add_user_scroll');
@@ -116,12 +116,13 @@ function AddUser_removeEventListener() {
     }
 }
 
-function AddUser_RemoveinputFocus() {
+function AddUser_RemoveinputFocus(EnaKeydown) {
     Main_AddUserInput.blur();
     AddUser_removeEventListener();
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
-    document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
+
+    if (EnaKeydown) document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
     window.setTimeout(function() {
         AddUser_keyBoardOn = false;
     }, 250);
@@ -167,7 +168,7 @@ function AddUser_KeyboardEvent(event) {
                     }, 1500);
                 }
             }
-            AddUser_RemoveinputFocus();
+            AddUser_RemoveinputFocus(true);
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
