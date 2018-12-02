@@ -214,11 +214,12 @@ function AddUser_RestoreUsers() {
     Main_TizenVersion = parseFloat(tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version")) >= 2.4;
 
     if (Main_TizenVersion) {
+        SmartHub_SetNoUserPreviewData();
         window.setTimeout(function() {
-            SmartHub_SetNoUserPreviewData();
             window.addEventListener('appcontrol', SmartHub_EventListener, false);
 
             SmartHub_StartInterval();
+
             document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
         }, 10000);
     }
@@ -226,60 +227,6 @@ function AddUser_RestoreUsers() {
 
 function AddUser_UserIsSet() {
     return AddUser_UsernameArray.length > 0;
-}
-
-function AddUser_GetIdRequest(position, trys) {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + AddUser_UsernameArray[position].name, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Main_AddUserInput.value = '';
-                document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                AddUser_SaveOldUser(xmlHttp.responseText, position);
-                return;
-            } else {
-                AddUser_GetIdRequestError(position, trys);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddUser_GetIdRequestError(position, trys) {
-    trys++;
-    if (trys < 10) AddUser_GetIdRequest(position, trys);
-    else { //It fails too much remove it
-        var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
-        if (index > -1) AddUser_UsernameArray.splice(index, 1);
-    }
-
-}
-
-function AddUser_SaveOldUser(responseText, position) {
-    AddUser_Username = JSON.parse(responseText).users[0];
-
-    AddUser_UsernameArray[position].name = AddUser_Username.name;
-    AddUser_UsernameArray[position].id = AddUser_Username._id;
-
-    var mlength = AddUser_UsernameArray.length;
-
-    AddUser_SaveUserArray();
-
-    if (Main_TizenVersion && mlength === 1) {
-        window.clearInterval(Main_SmartHubId);
-        document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
-        document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
-        SmartHub_StartInterval();
-    }
 }
 
 function AddUser_SaveNewUser(responseText) {
