@@ -9,7 +9,6 @@ var AddUser_keyBoardOn = false;
 //Variable initialization end
 
 function AddUser_init() {
-    console.log('AddUser_init');
     Main_Go = Main_addUser;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
@@ -77,38 +76,15 @@ function AddUser_handleKeyDown(event) {
 }
 
 function AddUser_inputFocus() {
-    console.log('AddUser_inputFocus');
-    AddUser_addEventListener();
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
-    Main_AddUserInput.addEventListener('input');
-    Main_AddUserInput.addEventListener('compositionend');
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
-
-    console.log('Main_AddUserInput.focus');
 
     Main_AddUserInput.focus();
     AddUser_keyBoardOn = true;
 }
 
-
-function AddUser_addEventListener() {
-    console.log('AddUser_addEventListener');
-    Main_AddUserInput.addEventListener('focus', function() {
-        console.log('input element is focused and ready to get user input.');
-    });
-
-    Main_AddUserInput.addEventListener('blur', function() {
-        console.log('input element loses focus.');
-    });
-
-    Main_AddUserInput.addEventListener('change', function() {
-        console.log('input element value is changed. value is : ' + Main_AddUserInput.value);
-    });
-}
-
 function AddUser_removeEventListener() {
-    console.log('AddUser_removeEventListener');
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);

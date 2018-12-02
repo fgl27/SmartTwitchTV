@@ -157,8 +157,6 @@ function Search_handleKeyDown(event) {
 function Search_inputFocus() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
-    Main_SearchInput.addEventListener('input');
-    Main_SearchInput.addEventListener('compositionend');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_SearchInput.focus();
     Search_keyBoardOn = true;
