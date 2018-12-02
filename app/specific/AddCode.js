@@ -86,8 +86,6 @@ function AddCode_handleKeyDown(event) {
 function AddCode_inputFocus() {
     document.body.removeEventListener("keydown", AddCode_handleKeyDown);
     document.body.addEventListener("keydown", AddCode_KeyboardEvent, false);
-    Main_AddCodeInput.addEventListener('input');
-    Main_AddCodeInput.addEventListener('compositionend');
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_OAUTH;
     Main_AddCodeInput.focus();
     AddCode_keyBoardOn = true;
