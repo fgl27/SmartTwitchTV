@@ -670,7 +670,7 @@ function Play_onPlayer() {
         }
 
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 2;
+        Play_PlayerCheckTimer = 5;
         Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
