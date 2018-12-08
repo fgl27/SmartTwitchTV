@@ -315,11 +315,17 @@ function Play_Start() {
 
 function Play_Resume() {
     if (document.hidden) {
-        Play_ClearPlayer();
-        Play_Playing = false;
-        Play_Chatobj.src = 'about:blank';
-        window.clearInterval(Play_streamInfoTimer);
-        window.clearInterval(Play_streamCheck);
+        if (Play_isEndDialogVisible()) {
+            Play_CleanHideExit();
+            Play_hideChat();
+            Main_ready(Play_shutdownStream);
+        } else {
+            Play_ClearPlayer();
+            Play_Playing = false;
+            Play_Chatobj.src = 'about:blank';
+            window.clearInterval(Play_streamInfoTimer);
+            window.clearInterval(Play_streamCheck);
+        }
     } else {
         Play_isOn = true;
         Main_ShowElement('scene2');

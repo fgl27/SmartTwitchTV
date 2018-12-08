@@ -276,14 +276,20 @@ function PlayVod_SaveOffset() {
 
 function PlayVod_Resume() {
     if (document.hidden) {
-        PlayVod_SaveOffset();
-        PlayVod_SaveVodIds();
-        Chat_Pause();
-        Play_avplay.pause();
-        PlayVod_offsettime = Play_avplay.getCurrentTime();
-        Play_ClearPlayer();
-        window.clearInterval(PlayVod_streamCheck);
-        window.clearInterval(PlayVod_SaveOffsetId);
+        if (Play_isEndDialogVisible()) {
+            Play_CleanHideExit();
+            Play_hideChat();
+            Main_ready(PlayVod_shutdownStream);
+        } else {
+            PlayVod_SaveOffset();
+            PlayVod_SaveVodIds();
+            Chat_Pause();
+            Play_avplay.pause();
+            PlayVod_offsettime = Play_avplay.getCurrentTime();
+            Play_ClearPlayer();
+            window.clearInterval(PlayVod_streamCheck);
+            window.clearInterval(PlayVod_SaveOffsetId);
+        }
     } else {
         PlayVod_isOn = true;
         Main_ShowElement('scene2');
