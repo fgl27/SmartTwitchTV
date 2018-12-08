@@ -13,6 +13,7 @@
   font-style: normal;
 }
 
+/*Only Tags and some etc as BabelStoneHan is very big and can break max table size*/
 @font-face {
   font-family: 'BabelStoneHan';
   src: url('fonts/BabelStoneHan.woff') format('woff');
