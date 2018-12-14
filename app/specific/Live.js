@@ -27,7 +27,7 @@ function Live_init() {
     if (Live_Status) {
         Main_YRst(Live_cursorY);
         Main_ShowElement(Live_ids[10]);
-        Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountGame, Live_itemsCount);
+        Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
     } else Live_StartLoad();
 }
 
