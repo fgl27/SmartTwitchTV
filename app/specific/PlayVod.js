@@ -112,7 +112,7 @@ function PlayVod_PosStart() {
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     Main_values.Play_WasPlaying = 2;
-    PlayVod_SaveOffset();
+    Main_SaveValues();
 
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     Main_CacheImage(Play_IncrementView);
@@ -287,6 +287,7 @@ function PlayVod_Resume() {
 function PlayVod_SaveOffset() {
     Main_values.vodOffset = parseInt(PlayVod_currentTime / 1000);
     Main_SaveValues();
+    Main_values.vodOffset = 0;
 }
 
 
@@ -429,7 +430,7 @@ var PlayVod_listener = {
         PlayVod_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
         // reset the values after using
-        Main_values.vodOffset = 0;
+        PlayVod_SaveOffset();
         PlayVod_offsettime = 0;
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = PlayVod_Buffer;

@@ -183,17 +183,15 @@ function Live_loadDataSuccessFinish() {
                 Live_addFocus();
                 Main_values.Main_WasOpen = true;
             }
-            console.log('Main_values.Play_WasPlaying ' + Main_values.Play_WasPlaying);
-            console.log('Main_values.Main_WasOpen ' + Main_values.Main_WasOpen);
             if (Main_FirstRun && Live_Status &&
                 (Settings_value.restor_playback.defaultValue) && (Main_values.Play_WasPlaying || Main_values.Main_WasOpen)) {
-                console.log('trying');
                 if (Main_values.Play_WasPlaying) {
                     Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                    ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
 
                     if (Main_values.Play_WasPlaying === 1) Main_openStream();
                     else Main_openVod();
