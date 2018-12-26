@@ -23,17 +23,17 @@ var UserLive_FirstLoad = false;
 //Variable initialization end
 
 function UserLive_init() {
-    Main_Go = Main_UserLive;
+    Main_values.Main_Go = Main_UserLive;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_LIVE_CHANNELS));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
     document.body.addEventListener("keydown", UserLive_handleKeyDown, false);
-    if (UserLive_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserLive_status = false;
+    if (UserLive_OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLive_status = false;
     if (UserLive_status) {
         Main_YRst(UserLive_cursorY);
         Main_ShowElement(UserLive_ids[10]);
         Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else UserLive_StartLoad();
 }
 
@@ -50,7 +50,7 @@ function UserLive_StartLoad() {
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserLive_status = false;
-    UserLive_OldUserName = AddUser_UsernameArray[Users_Position].name;
+    UserLive_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     Main_empty('stream_table_user_live');
     UserLive_loadChannelOffsset = 0;
     UserLive_itemsCountOffset = 0;
@@ -79,7 +79,7 @@ function UserLive_loadDataPrepare() {
 function UserLive_loadChannels() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].id) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
         '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = UserLive_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -246,7 +246,7 @@ function UserLive_loadDataSuccessFinish() {
                 UserLive_status = true;
                 UserLive_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(UserLive_ids[10]);
             UserLive_FirstLoad = false;
@@ -370,7 +370,7 @@ function UserLive_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_Users;
+                Main_values.Main_Go = Main_Users;
                 UserLive_exit();
                 Main_SwitchScreen();
             }
@@ -431,12 +431,12 @@ function UserLive_handleKeyDown(event) {
             UserLive_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_UserHost;
+            Main_values.Main_Go = Main_UserHost;
             UserLive_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Go = Main_UserChannels;
+            Main_values.Main_Go = Main_UserChannels;
             UserLive_exit();
             Main_SwitchScreen();
             break;
@@ -457,8 +457,8 @@ function UserLive_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_UserLive;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_UserLive;
+            Main_values.Main_Go = Main_Search;
             UserLive_exit();
             Main_SwitchScreen();
             break;

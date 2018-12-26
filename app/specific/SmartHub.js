@@ -233,7 +233,8 @@ function SmartHub_EventListener() {
     try {
         requestedAppControl = tizen.application.getCurrentApplication().getRequestedAppControl();
     } catch (e) {}
-    var appControlData, actionData, VideoIdx, GameIdx, ScreenIdx, ExitScreen, SwitchScreen = false;
+    var appControlData, actionData, VideoIdx, GameIdx, ScreenIdx, BeforeScreen, SwitchScreen = false,
+        ExitScreen = false;
 
     if (requestedAppControl) {
         SmartHub_SmartHubResume = true;
@@ -246,23 +247,23 @@ function SmartHub_EventListener() {
                     actionData = JSON.parse(actionData);
                     VideoIdx = actionData.videoIdx;
 
-                    if (Play_Playing && Play_selectedChannel === VideoIdx) return;
+                    if (Play_Playing && Main_values.Play_selectedChannel === VideoIdx) return;
 
-                    Play_selectedChannel = VideoIdx;
-                    Play_selectedChannelDisplayname = actionData.videoTitleIdx + '';
+                    Main_values.Play_selectedChannel = VideoIdx;
+                    Main_values.Play_selectedChannelDisplayname = actionData.videoTitleIdx + '';
 
                     if (actionData.isHost) {
-                        Play_isHost = true;
-                        Play_DisplaynameHost = Play_selectedChannelDisplayname;
-                        Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+                        Main_values.Play_isHost = true;
+                        Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname;
+                        Main_values.Play_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
                     }
 
                     if (Play_isOn) Play_PreshutdownStream();
                     else if (PlayVod_isOn) PlayVod_PreshutdownStream(true);
                     else if (PlayClip_isOn) PlayClip_PreshutdownStream();
-                    else Main_ExitCurrent(Main_Go);
+                    else Main_ExitCurrent(Main_values.Main_Go);
 
-                    Play_selectedChannel_id = actionData._id;
+                    Main_values.Play_selectedChannel_id = actionData._id;
                     Main_openStream();
                     break;
                 } else if (JSON.parse(actionData).gameIdx) {
@@ -270,15 +271,21 @@ function SmartHub_EventListener() {
                     actionData = JSON.parse(actionData);
 
                     GameIdx = actionData.gameIdx;
-                    SwitchScreen = (GameIdx !== Main_gameSelected);
-                    ExitScreen = Main_Go;
-                    Main_gameSelected = GameIdx;
-                    Main_Go = Main_aGame;
+                    SwitchScreen = (GameIdx !== Main_values.Main_gameSelected);
+                    ExitScreen = (Main_values.Main_Go !== Main_aGame);
+                    BeforeScreen = Main_values.Main_Go;
+                    Main_values.Main_gameSelected = GameIdx;
+                    Main_values.Main_Go = Main_aGame;
 
-                    if (Search_isSearching) Main_RestoreTopLabel();
-                    Search_isSearching = false;
-                    SearchGames_return = false;
-                    Main_ExitCurrent(ExitScreen);
+                    if (Main_values.Search_isSearching) Main_RestoreTopLabel();
+                    Main_values.Search_isSearching = false;
+                    Main_values.Games_return = false;
+
+                    if (ExitScreen) {
+                        Main_values.Main_Before = BeforeScreen;
+                        Main_ExitCurrent(BeforeScreen);
+                    }
+
                     if (Play_isOn) Play_shutdownStream();
                     else if (PlayVod_isOn) PlayVod_shutdownStream();
                     else if (PlayClip_isOn) PlayClip_shutdownStream();
@@ -289,11 +296,14 @@ function SmartHub_EventListener() {
                     actionData = JSON.parse(actionData);
 
                     ScreenIdx = actionData.screenIdx;
-                    SwitchScreen = (ScreenIdx !== Main_Go);
-                    ExitScreen = Main_Go;
-                    Main_Go = ScreenIdx;
+                    SwitchScreen = (ScreenIdx !== Main_values.Main_Go);
+                    ExitScreen = Main_values.Main_Go;
+                    Main_values.Main_Go = ScreenIdx;
 
-                    if (SwitchScreen) Main_ExitCurrent(ExitScreen);
+                    if (SwitchScreen) {
+                        Main_values.Main_Before = ExitScreen;
+                        Main_ExitCurrent(ExitScreen);
+                    }
 
                     if (Play_isOn) Play_shutdownStream();
                     else if (PlayVod_isOn) PlayVod_shutdownStream();

@@ -40,7 +40,6 @@ var PlayVod_loadingDataTimeout = 2000;
 var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_bufferingcomplete = false;
-var PlayVod_vodOffset = 0;
 var PlayVod_Buffer = 4;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
@@ -51,16 +50,6 @@ var PlayVod_StepsCount = 0;
 var PlayVod_TimeToJump = 0;
 var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 
-var PlayVod_WasPlaying = 0;
-var PlayVod_Restore_value = {
-    "vodOffset": 1,
-    "name": 1,
-    "vod_id": 1,
-    "game": 1,
-    "screen": 1,
-    "user": 0,
-    "Main_BeforeChannel": 1
-};
 var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
 //Variable initialization end
@@ -80,15 +69,15 @@ function PlayVod_Start() {
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
 
-    if (PlayVod_vodOffset) { // this is a vod comming from a clip
+    if (Main_values.vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (PlayVod_HasVodInfo && Main_selectedChannel_id !== '') {
-            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-            if (!PlayVod_VodIds['#' + ChannelVod_vodId]) Chat_Init();
+        if (PlayVod_HasVodInfo && Main_values.Main_selectedChannel_id !== '') {
+            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
             if (AddUser_UserIsSet()) {
-                AddCode_Channel_id = Main_selectedChannel_id;
+                AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                 AddCode_PlayRequest = true;
                 AddCode_CheckFallow();
             } else Play_hideFallow();
@@ -96,13 +85,13 @@ function PlayVod_Start() {
             PlayVod_PrepareLoad();
             PlayVod_updateStreamerInfo();
         }
-        Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+        Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_innerHTML("stream_info_game", ChannelVod_views + ', [' + (ChannelVod_language).toUpperCase() + ']');
         Main_textContent("stream_live_icon", ChannelVod_createdAt);
     }
 
-    if (PlayVod_VodIds['#' + ChannelVod_vodId] && !PlayVod_vodOffset) {
+    if (PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] && !Main_values.vodOffset) {
         Play_HideBufferDialog();
         Play_showVodDialog();
     } else {
@@ -122,17 +111,10 @@ function PlayVod_PosStart() {
     }, 1000);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
-    PlayVod_Restore_value.vod_id = ChannelVod_vodId;
-    PlayVod_Restore_value.name = Main_selectedChannel;
-    PlayVod_Restore_value.game = Play_gameSelected;
-    PlayVod_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
-    PlayVod_Restore_value.screen = Main_SetScreen(Main_Go);
-    PlayVod_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
-    PlayVod_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
+    Main_values.Play_WasPlaying = 2;
+    Main_SaveValues();
 
-    Main_setItem('PlayVod_WasPlaying', 1);
-    PlayVod_SaveOffset();
-    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    PlayVod_SaveOffsetId = window.setInterval(Main_SaveValues, 60000);
     Main_CacheImage(Play_IncrementView);
 
     PlayVod_PlayerCheckCounter = 0;
@@ -164,7 +146,7 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfo() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_selectedChannel), true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel), true);
     xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -175,19 +157,19 @@ function PlayVod_updateStreamerInfo() {
             if (xmlHttp.status === 200) {
                 var users = JSON.parse(xmlHttp.responseText).users[0];
                 if (users !== undefined) {
-                    Main_selectedChannelLogo = users.logo;
-                    Main_selectedChannel_id = users._id;
-                    if (!PlayVod_VodIds['#' + ChannelVod_vodId]) Chat_Init();
+                    Main_values.Main_selectedChannelLogo = users.logo;
+                    Main_values.Main_selectedChannel_id = users._id;
+                    if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
                     if (AddUser_UserIsSet()) {
-                        AddCode_Channel_id = Main_selectedChannel_id;
+                        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                         AddCode_PlayRequest = true;
                         AddCode_CheckFallow();
                     } else Play_hideFallow();
                 } else {
-                    Main_selectedChannelLogo = IMG_404_LOGO;
-                    Main_selectedChannel_id = '';
+                    Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
+                    Main_values.Main_selectedChannel_id = '';
                 }
-                Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+                Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
                 return;
             } else {
                 PlayVod_updateStreamerInfoError();
@@ -209,7 +191,7 @@ function PlayVod_updateStreamerInfoError() {
 function PlayVod_updateVodInfo() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + ChannelVod_vodId, true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId, true);
     xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -248,30 +230,24 @@ function PlayVod_updateVodInfoPannel(response) {
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
-    PlayVod_currentTime = PlayVod_vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds, true);
+    PlayVod_currentTime = Main_values.vodOffset * 1000;
+    PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
 
-    Main_selectedChannelDisplayname = response.channel.display_name;
-    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+    Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
+    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
 
-    Main_selectedChannelLogo = response.channel.logo;
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
+    Main_values.Main_selectedChannelLogo = response.channel.logo;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
-    Main_selectedChannel_id = response.channel._id;
-    Main_selectedChannel = response.channel.name;
+    Main_values.Main_selectedChannel_id = response.channel._id;
+    Main_values.Main_selectedChannel = response.channel.name;
 
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_selectedChannel_id;
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
     Main_CacheImage(response.increment_view_count_url);
-}
-
-function PlayVod_SaveOffset() {
-    PlayVod_Restore_value.vodOffset = parseInt(PlayVod_currentTime / 1000);
-    PlayVod_Restore_value.game = Play_gameSelected;
-    Main_setItem('PlayVod_Restore_value', JSON.stringify(PlayVod_Restore_value));
 }
 
 function PlayVod_Resume() {
@@ -281,7 +257,7 @@ function PlayVod_Resume() {
             Play_hideChat();
             Main_ready(PlayVod_shutdownStream);
         } else {
-            PlayVod_SaveOffset();
+            Main_SaveValues();
             PlayVod_SaveVodIds();
             Chat_Pause();
             Play_avplay.pause();
@@ -302,7 +278,7 @@ function PlayVod_Resume() {
                 PlayVod_onPlayer();
                 Chat_Play(Chat_Id);
                 Play_EndSet(2);
-                PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+                PlayVod_SaveOffsetId = window.setInterval(Main_SaveValues, 60000);
             }
         }
     }
@@ -319,11 +295,11 @@ function PlayVod_loadDataRequest() {
 
     var theUrl;
     if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = 'https://api.twitch.tv/api/vods/' + ChannelVod_vodId + '/access_token' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
-                AddUser_UsernameArray[Users_Position].access_token : '');
+        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
+                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/vod/' + ChannelVod_vodId +
+        theUrl = 'http://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
@@ -376,8 +352,8 @@ function PlayVod_loadDataSuccess(responseText) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
-        AddCode_Channel_id = Main_selectedChannel_id;
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckSub();
     } else {
         Play_HideBufferDialog();
@@ -447,7 +423,7 @@ var PlayVod_listener = {
         PlayVod_bufferingcomplete = true;
         Main_empty('dialog_buffer_play_percentage');
         // reset the values after using
-        PlayVod_vodOffset = 0;
+        Main_values.vodOffset = 0;
         PlayVod_offsettime = 0;
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = PlayVod_Buffer;
@@ -469,7 +445,7 @@ var PlayVod_listener = {
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
             // reset the values after using
-            PlayVod_vodOffset = 0;
+            Main_values.vodOffset = 0;
             PlayVod_offsettime = 0;
         }
     },
@@ -492,12 +468,12 @@ function PlayVod_onPlayer() {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
 
-        if (PlayVod_vodOffset > ChannelVod_DurationSeconds) PlayVod_vodOffset = 0;
+        if (Main_values.vodOffset > ChannelVod_DurationSeconds) Main_values.vodOffset = 0;
 
-        if (PlayVod_vodOffset) {
-            Chat_offset = PlayVod_vodOffset;
+        if (Main_values.vodOffset) {
+            Chat_offset = Main_values.vodOffset;
             Chat_Init();
-            Play_avplay.seekTo(PlayVod_vodOffset * 1000);
+            Play_avplay.seekTo(Main_values.vodOffset * 1000);
         } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
             Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
             Play_clearPause();
@@ -601,7 +577,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
-    Main_setItem('PlayVod_WasPlaying', 0);
+    Main_values.Play_WasPlaying = 0;
     PlayVod_HasVodInfo = true;
     Chat_Clear();
     Play_ClearPlayer();
@@ -613,7 +589,7 @@ function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     PlayVod_offsettime = 0;
-    PlayVod_vodOffset = 0;
+    Main_values.vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
     ChannelVod_DurationSeconds = 0;
@@ -795,7 +771,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 
 function PlayVod_SaveVodIds() {
     var time = PlayVod_currentTime / 1000;
-    var vod_id = '#' + ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
+    var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
 
     if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
 
@@ -843,7 +819,7 @@ function PlayVod_CleanVodIds(quantity) {
 function Play_showVodDialog() {
     Main_HideElement('scene_channel_panel_bottom');
     PlayVod_showPanel(false);
-    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + ChannelVod_vodId] * 1000));
+    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] * 1000));
     Main_ShowElement('dialog_vod_start');
 }
 
@@ -877,13 +853,13 @@ function PlayVod_IconsRemoveFocus() {
 function PlayVod_DialogPressed(fromStart) {
     Play_HideVodDialog();
     if (!fromStart) {
-        PlayVod_vodOffset = PlayVod_VodIds['#' + ChannelVod_vodId];
-        PlayVod_currentTime = PlayVod_vodOffset * 1000;
-        PlayVod_ProgresBarrUpdate(PlayVod_vodOffset, ChannelVod_DurationSeconds, true);
+        Main_values.vodOffset = PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
+        PlayVod_currentTime = Main_values.vodOffset * 1000;
+        PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
         PlayVod_PosStart();
     } else {
-        delete PlayVod_VodIds['#' + ChannelVod_vodId];
-        PlayVod_vodOffset = 0;
+        delete PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
+        Main_values.vodOffset = 0;
         PlayVod_Start();
     }
 }

@@ -23,14 +23,14 @@ var UserVod_FirstLoad = false;
 //Variable initialization end
 
 function UserVod_init() {
-    Main_Go = Main_UserVod;
+    Main_values.Main_Go = Main_UserVod;
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_TYPE + ' (C)');
     Main_ShowElement('label_extra');
 
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
 
     if (UserVod_status) {
@@ -38,7 +38,7 @@ function UserVod_init() {
         Main_ShowElement(UserVod_ids[10]);
         UserVod_SetPeriod();
         UserVod_addFocus();
-        Main_SetWasopen();
+        Main_SaveValues();
     } else UserVod_StartLoad();
 }
 
@@ -102,7 +102,7 @@ function UserVod_loadDataRequest() {
     xmlHttp.timeout = UserVod_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
@@ -111,7 +111,7 @@ function UserVod_loadDataRequest() {
                 UserVod_loadDataSuccess(xmlHttp.responseText);
                 return;
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
             } else {
                 UserVod_loadDataError();
             }
@@ -204,7 +204,7 @@ function UserVod_loadDataSuccessFinish() {
                 UserVod_status = true;
                 UserVod_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(UserVod_ids[10]);
             UserVod_FirstLoad = false;
@@ -242,7 +242,7 @@ function UserVod_loadDataReplace() {
     xmlHttp.timeout = UserVod_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Users_Position].access_token);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
@@ -251,7 +251,7 @@ function UserVod_loadDataReplace() {
                 UserVod_loadDataSuccessReplace(xmlHttp.responseText);
                 return;
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) //token expired
-                AddCode_refreshTokens(Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
             else UserVod_loadDataErrorReplace();
         }
     };
@@ -342,7 +342,7 @@ function UserVod_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Main_Go = Main_Users;
+                Main_values.Main_Go = Main_Users;
                 UserVod_exit();
                 Main_SwitchScreen();
             }
@@ -399,12 +399,12 @@ function UserVod_handleKeyDown(event) {
             }
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_UserChannels;
+            Main_values.Main_Go = Main_UserChannels;
             UserVod_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Go = Main_usergames;
+            Main_values.Main_Go = Main_usergames;
             UserVod_exit();
             Main_SwitchScreen();
             break;
@@ -433,8 +433,8 @@ function UserVod_handleKeyDown(event) {
             UserVod_StartLoad();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_UserVod;
-            Main_Go = Main_Search;
+            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_UserVod;
+            Main_values.Main_Go = Main_Search;
             UserVod_exit();
             Main_SwitchScreen();
             break;

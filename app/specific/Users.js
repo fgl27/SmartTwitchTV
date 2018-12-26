@@ -1,7 +1,6 @@
 //Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
-var Users_Position = 0;
 var Users_ColoumnsCount = 8;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
@@ -13,7 +12,7 @@ var Users_FirstLoad = false;
 //Variable initialization end
 
 function Users_init() {
-    Main_Go = Main_Users;
+    Main_values.Main_Go = Main_Users;
     document.getElementById("screens_holder").style.top = "100px";
     Main_HideWarningDialog();
     Main_AddClass('top_bar_user', 'icon_center_focus');
@@ -21,12 +20,12 @@ function Users_init() {
     if (Users_status) {
         Main_YRst(Users_cursorY);
         Main_ShowElement(Users_ids[5]);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else Users_StartLoad();
 }
 
 function Users_exit() {
-    Users_Position = 0;
+    Main_values.Users_Position = 0;
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
@@ -65,37 +64,37 @@ function Users_loadData() {
         row = document.createElement('tr');
 
         //live
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play', color));
 
         //host
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users', color));
 
         //games
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
             'gamepad', color));
 
         //videos
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play', color));
 
         //channels
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip', color));
 
         //add or make one
         coloumn_id++;
-        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus', color));
-        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up', color));
+        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus', color));
+        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up', color));
 
         //remove user
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times', color));
 
         //add key
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
 
         document.getElementById("stream_table_user").appendChild(row);
     }
@@ -122,7 +121,7 @@ function Users_loadDataSuccessFinish() {
             Main_HideLoadDialog();
             Users_status = true;
             Users_addFocus();
-            Main_SetWasopen();
+            Main_SaveValues();
         }
         Main_ShowElement(Users_ids[5]);
         Users_FirstLoad = false;
@@ -154,15 +153,15 @@ function Users_removeFocus() {
 }
 
 function Users_keyEnter() {
-    Users_Position = Users_cursorY;
+    Main_values.Users_Position = Users_cursorY;
 
-    if (Users_cursorX === 3 && !AddUser_UsernameArray[Users_Position].access_token) {
+    if (Users_cursorX === 3 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
         window.setTimeout(Main_HideWarningDialog, 5000);
         return;
     }
 
-    if (Users_cursorX === 7 && AddUser_UsernameArray[Users_Position].access_token) {
+    if (Users_cursorX === 7 && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
         Main_showWarningDialog(STR_USER_CODE_OK);
         window.setTimeout(Main_HideWarningDialog, 1500);
         return;
@@ -183,11 +182,11 @@ function Users_keyEnter() {
     else if (Users_cursorX === 4) UserChannels_init();
     else if (Users_cursorX === 5) {
         if (!Users_cursorY) {
-            Main_Before = Main_Users;
+            Main_values.Main_Before = Main_Users;
             AddUser_init();
         } else AddUser_UserMakeOne(Users_cursorY);
     } else if (Users_cursorX === 6) Users_showRemoveDialog();
-    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Users_Position].access_token) AddCode_init();
+    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) AddCode_init();
 }
 
 function Users_clearRemoveDialog() {
@@ -200,7 +199,7 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_Position].name + '?');
+    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
     Main_ShowElement('main_remove_dialog');
 }
 
@@ -237,8 +236,8 @@ function Users_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (Main_Before === Main_Users || Main_Before === Main_UserChannels || Main_Before === Main_UserLive || Main_Before === Main_UserHost || Main_Before === Main_usergames) Main_Go = Main_Live;
-                else Main_Go = Main_Before;
+                if (Main_values.Main_Before === Main_Users || Main_values.Main_Before === Main_UserChannels || Main_values.Main_Before === Main_UserLive || Main_values.Main_Before === Main_UserHost || Main_values.Main_Before === Main_usergames) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_Before;
                 Users_exit();
                 Main_SwitchScreen();
             }
@@ -319,14 +318,14 @@ function Users_handleKeyDown(event) {
             Users_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_Users;
-            Main_Go = Main_Featured;
+            Main_values.Main_Before = Main_Users;
+            Main_values.Main_Go = Main_Featured;
             Users_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_Users;
-            Main_Go = Main_Live;
+            Main_values.Main_Before = Main_Users;
+            Main_values.Main_Go = Main_Live;
             Users_exit();
             Main_SwitchScreen();
             break;
@@ -356,8 +355,8 @@ function Users_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Users;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_Users;
+            Main_values.Main_Go = Main_Search;
             Users_exit();
             Main_SwitchScreen();
             break;

@@ -109,7 +109,7 @@ function Chat_loadBadgesChannelRequest(id) {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_selectedChannel_id + '/display', true);
+        xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display', true);
         xmlHttp.timeout = 10000;
         xmlHttp.ontimeout = function() {};
 
@@ -160,7 +160,7 @@ function Chat_loadChat(id) {
 function Chat_loadChatRequest(id) {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + ChannelVod_vodId +
+    xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + Main_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : ''), true);
 
     xmlHttp.timeout = 10000;
@@ -199,7 +199,7 @@ function Chat_loadChatSuccess(responseText, id) {
     if (null_next) {
         div = '&nbsp;';
         div += '<span class="message">';
-        div += STR_BR + STR_LOADING_CHAT + Main_selectedChannelDisplayname + ' ' + Chat_title;
+        div += STR_BR + STR_LOADING_CHAT + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title;
         div += '</span>';
         Chat_MessageVector(div, 0);
     }
@@ -347,7 +347,7 @@ function Chat_loadChatNextRequest(id) {
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + ChannelVod_vodId +
+        xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : ''), true);
 
         xmlHttp.timeout = 10000;

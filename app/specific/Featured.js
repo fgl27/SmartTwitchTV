@@ -20,14 +20,14 @@ var Featured_FirstLoad = false;
 //Variable initialization end
 
 function Featured_init() {
-    Main_Go = Main_Featured;
+    Main_values.Main_Go = Main_Featured;
     Main_AddClass('top_bar_featured', 'icon_center_focus');
     document.body.addEventListener("keydown", Featured_handleKeyDown, false);
     if (Featured_Status) {
         Main_YRst(Featured_cursorY);
         Main_ShowElement(Featured_ids[10]);
         Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else Featured_StartLoad();
 }
 
@@ -73,8 +73,8 @@ function Featured_loadDataRequest() {
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
         '&offset=' + offset +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[Users_Position].access_token : '') +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[Main_values.Users_Position].access_token : '') +
         '&' + Math.round(Math.random() * 1e7), true);
 
     xmlHttp.timeout = Featured_loadingDataTimeout;
@@ -176,7 +176,7 @@ function Featured_loadDataSuccessFinish() {
                 Featured_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Featured_addFocus();
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(Featured_ids[10]);
             Featured_FirstLoad = false;
@@ -201,8 +201,8 @@ function Featured_loadDataReplace() {
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
         '&offset=' + offset +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[Users_Position].access_token : '') +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[Main_values.Users_Position].access_token : '') +
         '&' + Math.round(Math.random() * 1e7), true);
 
     xmlHttp.timeout = Featured_loadingDataTimeout;
@@ -297,8 +297,8 @@ function Featured_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_Before === Main_Featured) Main_Go = Main_Live;
-                else Main_Go = Main_Before;
+                if (Main_values.Main_Before === Main_Featured) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_Before;
                 Featured_exit();
                 Main_SwitchScreen();
             }
@@ -359,14 +359,14 @@ function Featured_handleKeyDown(event) {
             Featured_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_Featured;
-            Main_Go = Main_games;
+            Main_values.Main_Before = Main_Featured;
+            Main_values.Main_Go = Main_games;
             Featured_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_Featured;
-            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+            Main_values.Main_Before = Main_Featured;
+            Main_values.Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
             Featured_exit();
             Main_SwitchScreen();
             break;
@@ -387,8 +387,8 @@ function Featured_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Featured;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_Featured;
+            Main_values.Main_Go = Main_Search;
             Featured_exit();
             Main_SwitchScreen();
             break;

@@ -45,7 +45,7 @@ function Screens_assign() {
 //Variable initialization end
 
 function Screens_init() {
-    Main_Go = inUseObj.screen;
+    Main_values.Main_Go = inUseObj.screen;
     inUseObj.label_init();
 
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
@@ -53,7 +53,7 @@ function Screens_init() {
         Main_YRst(inUseObj.posY);
         Main_ShowElement(inUseObj.ids[10]);
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else Screens_StartLoad();
 }
 
@@ -241,7 +241,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
                 Screens_addFocus();
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
@@ -278,8 +278,8 @@ function Screens_BasicExit(before) {
     if (Main_isControlsDialogShown()) Main_HideControlsDialog();
     else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
     else {
-        if (before === inUseObj.screen) Main_Go = Main_Live;
-        else Main_Go = before;
+        if (before === inUseObj.screen) Main_values.Main_Go = Main_Live;
+        else Main_values.Main_Go = before;
         Screens_exit();
         Main_SwitchScreen();
     }

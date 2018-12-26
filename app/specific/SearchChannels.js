@@ -15,24 +15,24 @@ var SearchChannels_emptyContent = false;
 var SearchChannels_Status = false;
 var SearchChannels_lastData = '';
 var SearchChannels_itemsCountCheck = false;
-var SearchChannels_isLastSChannels = false;
 var SearchChannels_FirstLoad = false;
 
 var SearchChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_', 'search_channel_scroll'];
 //Variable initialization end
 
 function SearchChannels_init() {
-    Main_Go = Main_SearchChannels;
-    SearchChannels_isLastSChannels = true;
-    Search_isSearching = true;
-    if (SearchChannels_lastData !== Search_data) SearchChannels_Status = false;
+    Main_values.Main_Go = Main_SearchChannels;
+    Main_values.isLastSChannels = true;
+    Main_values.Search_isSearching = true;
+    if (SearchChannels_lastData !== Main_values.Search_data) SearchChannels_Status = false;
     Main_cleanTopLabel();
-    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Search_data + "'"));
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Main_values.Search_data + "'"));
     document.body.addEventListener("keydown", SearchChannels_handleKeyDown, false);
     if (SearchChannels_Status) {
         Main_YRst(SearchChannels_cursorY);
         Main_ShowElement(SearchChannels_ids[6]);
         Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
+        Main_SaveValues();
     } else SearchChannels_StartLoad();
 }
 
@@ -50,7 +50,7 @@ function SearchChannels_StartLoad() {
     Main_HideElement(SearchChannels_ids[6]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    SearchChannels_lastData = Search_data;
+    SearchChannels_lastData = Main_values.Search_data;
     SearchChannels_Status = false;
     Main_empty('stream_table_search_channel');
     SearchChannels_itemsCountOffset = 0;
@@ -84,7 +84,7 @@ function SearchChannels_loadDataRequest() {
         SearchChannels_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitChannel + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = SearchChannels_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -185,6 +185,7 @@ function SearchChannels_loadDataSuccessFinish() {
                 SearchChannels_Status = true;
                 Main_imgVectorLoad(IMG_404_LOGO);
                 SearchChannels_addFocus();
+                Main_SaveValues();
             }
             Main_ShowElement(SearchChannels_ids[6]);
             SearchChannels_FirstLoad = false;
@@ -211,7 +212,7 @@ function SearchChannels_loadDataReplace() {
         SearchChannels_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Search_data) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = SearchChannels_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -302,11 +303,11 @@ function SearchChannels_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
-                else Main_Go = Main_BeforeSearch;
-                if (ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
+                if (Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
                 SearchChannels_exit();
-                Search_isSearching = false;
+                Main_values.Search_isSearching = false;
                 SearchChannels_Postexit();
             }
             break;
@@ -369,13 +370,13 @@ function SearchChannels_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_selectedChannel = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute(Main_DataAttribute);
-            Main_selectedChannel_id = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute('data-id');
-            Main_selectedChannelDisplayname = document.getElementById(SearchChannels_ids[3] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).textContent;
+            Main_values.Main_selectedChannel = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute(Main_DataAttribute);
+            Main_values.Main_selectedChannel_id = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute('data-id');
+            Main_values.Main_selectedChannelDisplayname = document.getElementById(SearchChannels_ids[3] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).textContent;
             document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
-            Main_BeforeChannel = Main_SearchChannels;
-            Main_Go = Main_ChannelContent;
-            Main_BeforeChannelisSet = true;
+            Main_values.Main_BeforeChannel = Main_SearchChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = false;
             ChannelContent_UserChannels = false;
             Main_HideElement(SearchChannels_ids[6]);
@@ -386,14 +387,14 @@ function SearchChannels_handleKeyDown(event) {
             break;
         case KEY_GREEN:
             SearchChannels_exit();
-            Search_isSearching = false;
+            Main_values.Search_isSearching = false;
             Main_GoLive();
             break;
         case KEY_YELLOW:
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_Go = Main_Search;
+            Main_values.Main_Go = Main_Search;
             SearchChannels_exit();
             SearchChannels_Postexit();
             break;

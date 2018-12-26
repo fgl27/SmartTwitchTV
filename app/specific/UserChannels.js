@@ -19,18 +19,18 @@ var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname',
 //Variable initialization end
 
 function UserChannels_init() {
-    Main_Go = Main_UserChannels;
-    SearchChannels_isLastSChannels = false;
+    Main_values.Main_Go = Main_UserChannels;
+    Main_values.isLastSChannels = false;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_USER_CHANNEL));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
-    if (UserChannels_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserChannels_Status = false;
+    if (UserChannels_OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserChannels_Status = false;
     if (UserChannels_Status) {
         Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else UserChannels_StartLoad();
 }
 
@@ -46,7 +46,7 @@ function UserChannels_StartLoad() {
     Main_HideElement(UserChannels_ids[6]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    UserChannels_OldUserName = AddUser_UsernameArray[Users_Position].name;
+    UserChannels_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     UserChannels_Status = false;
     Main_empty('stream_table_user_channels');
     UserChannels_loadChannelOffsset = 0;
@@ -72,7 +72,7 @@ function UserChannels_loadDataPrepare() {
 function UserChannels_loadChannels() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].id) + '/follows/channels?limit=100&offset=' +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) + '/follows/channels?limit=100&offset=' +
         UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = UserChannels_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -187,7 +187,7 @@ function UserChannels_loadDataSuccessFinish() {
                 UserChannels_Status = true;
                 Main_imgVectorLoad(IMG_404_LOGO);
                 UserChannels_addFocus();
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(UserChannels_ids[6]);
             UserChannels_FirstLoad = false;
@@ -221,7 +221,7 @@ function UserChannels_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_Users;
+                Main_values.Main_Go = Main_Users;
                 UserChannels_exit();
                 Main_SwitchScreen();
             }
@@ -282,13 +282,13 @@ function UserChannels_handleKeyDown(event) {
             UserChannels_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_UserLive;
+            Main_values.Main_Go = Main_UserLive;
             UserChannels_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) Main_Go = Main_UserVod;
-            else Main_Go = Main_usergames;
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) Main_values.Main_Go = Main_UserVod;
+            else Main_values.Main_Go = Main_usergames;
             UserChannels_exit();
             Main_SwitchScreen();
             break;
@@ -296,15 +296,15 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
-            Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
-            Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
+            Main_values.Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
+            Main_values.Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
+            Main_values.Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
                 '_' + UserChannels_cursorX).textContent;
-            Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
+            Main_values.Main_selectedChannelLogo = document.getElementById(UserChannels_ids[1] + UserChannels_cursorY + '_' + UserChannels_cursorX).src;
             document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
-            Main_BeforeChannel = Main_UserChannels;
-            Main_Go = Main_ChannelContent;
-            Main_BeforeChannelisSet = true;
+            Main_values.Main_BeforeChannel = Main_UserChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
             AddCode_IsFallowing = true;
             ChannelContent_UserChannels = true;
             Main_HideElement(UserChannels_ids[6]);
@@ -321,8 +321,8 @@ function UserChannels_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_UserChannels;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_UserChannels;
+            Main_values.Main_Go = Main_Search;
             UserChannels_exit();
             Main_SwitchScreen();
             break;
