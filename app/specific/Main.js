@@ -122,7 +122,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
-var Main_minversion = '121418';
+var Main_minversion = '122618';
 var Main_versionTag = '';
 var Main_TizenVersion;
 var Main_ClockOffset = 0;
