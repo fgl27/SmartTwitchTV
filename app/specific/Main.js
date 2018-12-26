@@ -51,7 +51,7 @@ var Main_values = {
     "Main_WasOpen": false,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
-    "vodOffset": '',
+    "vodOffset": 0,
     "Search_data": '',
     "isLastSChannels": false,
     "gameSelectedOld": '',
@@ -213,7 +213,6 @@ function Main_initWindows() {
     Main_ScrollbarElement = document.getElementById("scrollbar");
     Main_RestoreValues();
     Main_GoBefore = Main_values.Main_Go;
-    console.log(Main_GoBefore);
 
     Main_ready(function() {
 
