@@ -23,16 +23,22 @@ var AGame_FirstLoad = false;
 //Variable initialization end
 
 function AGame_init() {
-    Main_Go = Main_aGame;
+    Main_values.Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
     Main_AddClass('top_bar_game', 'icon_center_focus');
+
+    if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
+        Main_cleanTopLabel();
+        Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
+    }
+
     Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
-        ': ' + Main_gameSelected));
-    if ((Main_OldgameSelected === Main_gameSelected) && AGame_status) {
+        ': ' + Main_values.Main_gameSelected));
+    if ((Main_values.Main_OldgameSelected === Main_values.Main_gameSelected) && AGame_status) {
         Main_YRst(AGame_cursorY);
         Main_ShowElement(AGame_ids[10]);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else AGame_StartLoad();
 }
 
@@ -50,7 +56,7 @@ function AGame_exit() {
 }
 
 function AGame_StartLoad() {
-    if (Main_OldgameSelected === null) Main_OldgameSelected = Main_gameSelected;
+    if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_HideElement(AGame_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
@@ -88,7 +94,7 @@ function AGame_loadDataRequest() {
         AGame_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_values.Main_gameSelected) +
         '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
         '&' + Math.round(Math.random() * 1e7), true);
@@ -216,8 +222,8 @@ function AGame_loadDataSuccessFinish() {
                 AGame_status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 AGame_addFocus();
+                Main_SaveValues();
             }
-            Main_SetWasopen();
             Main_ShowElement(AGame_ids[10]);
             AGame_FirstLoad = false;
         } else {
@@ -249,13 +255,13 @@ function AGame_setFallow() {
 }
 
 function AGame_fallow() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
         if (AGame_fallowing) AddCode_UnFallowGame();
         else AddCode_FallowGame();
     } else {
         Main_showWarningDialog(STR_NOKEY_WARN);
         window.setTimeout(function() {
-            if (AGame_emptyContent && Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            if (AGame_emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
             else Main_HideWarningDialog();
         }, 2000);
     }
@@ -263,13 +269,13 @@ function AGame_fallow() {
 
 function AGame_headerOptions() {
     if (!AGame_cursorX) {
-        Main_Go = Main_AGameVod;
-        Main_OldgameSelected = Main_gameSelected;
+        Main_values.Main_Go = Main_AGameVod;
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_exit();
         Main_SwitchScreen();
     } else if (AGame_cursorX === 1) {
-        Main_Go = Main_AGameClip;
-        Main_OldgameSelected = Main_gameSelected;
+        Main_values.Main_Go = Main_AGameClip;
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_exit();
         Main_SwitchScreen();
     } else AGame_fallow();
@@ -287,7 +293,7 @@ function AGame_loadDataReplace() {
         AGame_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_gameSelected) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_values.Main_gameSelected) +
         '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
         '&' + Math.round(Math.random() * 1e7), true);
@@ -395,13 +401,13 @@ function AGame_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_OldgameSelected = Main_gameSelected;
-                if (SearchGames_return) {
-                    Main_Go = Main_SearchGames;
-                    Main_gameSelected = SearchGames_gameSelectedOld;
+                Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+                if (Main_values.Games_return) {
+                    Main_values.Main_Go = Main_SearchGames;
+                    Main_values.Main_gameSelected = Main_values.gameSelectedOld;
                 } else {
-                    Main_Go = Main_BeforeAgame;
-                    Main_BeforeAgame = Main_Live;
+                    Main_values.Main_Go = Main_values.Main_BeforeAgame;
+                    Main_values.Main_BeforeAgame = Main_Live;
                 }
                 AGame_exit();
                 Main_SwitchScreen();
@@ -500,18 +506,18 @@ function AGame_handleKeyDown(event) {
             AGame_StartLoad();
             break;
         case KEY_CHANNELUP:
-            if (!Search_isSearching) {
-                Main_Before = Main_aGame;
-                Main_Go = Main_Vod;
-                Main_OldgameSelected = Main_gameSelected;
+            if (!Main_values.Search_isSearching) {
+                Main_values.Main_Before = Main_aGame;
+                Main_values.Main_Go = Main_Vod;
+                Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
                 AGame_exit();
                 Main_SwitchScreen();
             }
             break;
         case KEY_CHANNELDOWN:
-            if (!Search_isSearching) {
-                Main_Before = Main_aGame;
-                Main_Go = Main_Featured;
+            if (!Main_values.Search_isSearching) {
+                Main_values.Main_Before = Main_aGame;
+                Main_values.Main_Go = Main_Featured;
                 AGame_exit();
                 Main_SwitchScreen();
             }
@@ -535,9 +541,9 @@ function AGame_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_aGame;
-            Main_Go = Main_Search;
-            Main_OldgameSelected = Main_gameSelected;
+            Main_values.Main_BeforeSearch = Main_aGame;
+            Main_values.Main_Go = Main_Search;
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
             AGame_exit();
             Main_SwitchScreen();
             break;

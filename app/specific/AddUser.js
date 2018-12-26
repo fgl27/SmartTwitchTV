@@ -9,7 +9,7 @@ var AddUser_keyBoardOn = false;
 //Variable initialization end
 
 function AddUser_init() {
-    Main_Go = Main_addUser;
+    Main_values.Main_Go = Main_addUser;
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -32,19 +32,19 @@ function AddUser_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (AddUser_UsernameArray.length > 0 && Main_Go !== Main_Users) Main_Go = Main_Before;
-                else Main_Go = Main_Live;
+                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
+                else Main_values.Main_Go = Main_Live;
                 AddUser_exit();
                 Main_SwitchScreen();
             }
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_Featured;
+            Main_values.Main_Go = Main_Featured;
             AddUser_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Go = Main_Live;
+            Main_values.Main_Go = Main_Live;
             AddUser_exit();
             Main_SwitchScreen();
             break;
@@ -65,8 +65,8 @@ function AddUser_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Go;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_values.Main_Go;
+            Main_values.Main_Go = Main_Search;
             AddUser_exit();
             Main_SwitchScreen();
             break;
@@ -112,8 +112,8 @@ function AddUser_KeyboardEvent(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (AddUser_UsernameArray.length > 0 && Main_Go !== Main_Users) Main_Go = Main_Before;
-                else Main_Go = Main_Live;
+                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
+                else Main_values.Main_Go = Main_Live;
                 AddUser_exit();
                 Main_SwitchScreen();
             }

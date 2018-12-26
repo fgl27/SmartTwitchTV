@@ -54,11 +54,8 @@ var Play_PlayerCheckCounter = 0;
 var Play_PlayerCheckQualityChanged = false;
 var Play_PlayerCheckRun = false;
 var Play_Playing = false;
-var Play_selectedChannel = '';
-var Play_selectedChannelDisplayname = '';
 var Play_Panelcounter = 1;
 var Play_IsWarning = false;
-var Play_gameSelected = '';
 var Play_avplay;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
@@ -75,8 +72,6 @@ var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
-var Play_DisplaynameHost = '';
-var Play_isHost = false;
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
 var Play_Chatobj;
@@ -90,8 +85,6 @@ var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
-var Play_selectedChannelLogo;
-var Play_selectedChannel_id = '';
 var Play_IncrementView = '';
 var Play_ProgresBarrElm;
 var Play_DefaultjumpTimers = [];
@@ -156,17 +149,6 @@ var Play_ChatSizeVal = [{
     "percentage": '100%',
     "dialogTop": 115
 }];
-
-var Play_WasPlaying = 0;
-var Play_Restore_value = {
-    "display_name": '',
-    "name": '',
-    "id": '',
-    "game": '',
-    "screen": 1,
-    "user": 0,
-    "Main_BeforeChannel": 1
-};
 
 var Play_ChatFont = 1;
 var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
@@ -262,22 +244,13 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     //reset channel logo to prevent another channel logo
     document.getElementById('stream_info_icon').setAttribute('data-src', IMG_404_LOGO);
-    Main_textContent("stream_info_name", (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname));
+    Main_textContent("stream_info_name", (Main_values.Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname));
 
-    Play_Restore_value.display_name = (Play_isHost ? Play_DisplaynameHost : Play_selectedChannelDisplayname);
-    Play_Restore_value.name = Play_selectedChannel;
-    Play_Restore_value.id = Play_selectedChannel_id;
-    Play_Restore_value.game = Play_gameSelected;
-    Play_Restore_value.user = AddUser_UserIsSet() ? Users_Position : 0;
-    Play_Restore_value.Main_BeforeChannel = Main_SetScreen(Main_BeforeChannel);
-    Play_Restore_value.Main_BeforeAgame = Main_SetScreen(Main_BeforeAgame);
-    Play_Restore_value.screen = Main_SetScreen(Main_Go);
+    Main_values.Play_WasPlaying = 1;
+    Main_SaveValues();
 
-    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
-    Main_setItem('Play_WasPlaying', 1);
-
-    Play_isHost = false;
-    Play_DisplaynameHost = '';
+    Main_values.Play_isHost = false;
+    Main_values.Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -367,23 +340,21 @@ function Play_updateStreamInfoStart() {
             if (xmlHttp.status === 200) {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.stream !== null) {
-                    Play_selectedChannel_id = response.stream.channel._id;
+                    Main_values.Play_selectedChannel_id = response.stream.channel._id;
                     Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
-                    Play_gameSelected = response.stream.game;
+                    Main_values.Play_gameSelected = response.stream.game;
                     Play_Lang = ', [' + (response.stream.channel.language).toUpperCase() + ']';
-                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                    Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected + STR_FOR +
                         Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
-                    Play_selectedChannelLogo = response.stream.channel.logo;
+                    Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
                     Play_LoadLogoSucess = true;
-                    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_selectedChannelLogo);
+                    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
                     Play_created = response.stream.created_at;
                     if (AddUser_UserIsSet()) {
                         AddCode_PlayRequest = true;
-                        AddCode_Channel_id = Play_selectedChannel_id;
+                        AddCode_Channel_id = Main_values.Play_selectedChannel_id;
                         AddCode_CheckFallow();
                     } else Play_hideFallow();
-                    Play_Restore_value.game = Play_gameSelected;
-                    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
                 } else if (Play_isOn) {
                     Play_isLive = false;
                     Play_CheckHostStart();
@@ -393,7 +364,7 @@ function Play_updateStreamInfoStart() {
             }
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = Play_loadingInfoDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -420,12 +391,10 @@ function Play_updateStreamInfo() {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.stream !== null) {
                     Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
-                    Play_gameSelected = response.stream.game;
-                    Main_textContent("stream_info_game", STR_PLAYING + Play_gameSelected + STR_FOR +
+                    Main_values.Play_gameSelected = response.stream.game;
+                    Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected + STR_FOR +
                         Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
                     if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-                    Play_Restore_value.game = Play_gameSelected;
-                    Main_setItem('Play_Restore_value', JSON.stringify(Play_Restore_value));
                 } else if (Play_RestoreFromResume && Play_isOn) {
                     Play_isLive = false;
                     Play_CheckHostStart();
@@ -433,7 +402,7 @@ function Play_updateStreamInfo() {
             } else Play_updateStreamInfoError();
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = 3000;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -469,11 +438,11 @@ function Play_loadDataRequest() {
 
     var theUrl;
     if (Play_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + Play_selectedChannel + '/access_token' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token ? '?oauth_token=' +
-                AddUser_UsernameArray[Users_Position].access_token : '');
+        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
+                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Play_selectedChannel +
+        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
@@ -715,7 +684,7 @@ function Play_loadChat() {
     window.clearTimeout(Play_CheckChatId);
     Play_CheckChatCounter = 0;
     Play_ChatLoadOK = false;
-    Play_Chatobj.src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
+    Play_Chatobj.src = 'https://www.nightdev.com/hosted/obschat/?theme=bttv_blackchat&channel=' + Main_values.Play_selectedChannel + '&fade=false&bot_activity=true&prevent_clipping=false';
     Play_CheckChatId = window.setTimeout(Play_CheckChat, 5000);
 }
 
@@ -790,7 +759,7 @@ function Play_EndStart(hosting, PlayVodClip) {
     window.clearInterval(PlayClip_streamCheck);
     window.clearInterval(PlayVod_streamCheck);
 
-    Play_isHost = hosting;
+    Main_values.Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
     Play_PannelEndStart(PlayVodClip);
 }
@@ -885,7 +854,7 @@ function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
         Play_exitMain();
-        Main_setItem('Play_WasPlaying', 0);
+        Main_values.Play_WasPlaying = 0;
     }
 }
 
@@ -894,7 +863,7 @@ function Play_PreshutdownStream() {
     Play_ClearPlayer();
     Play_ClearPlay();
     window.clearInterval(Play_ChatFixPositionId);
-    Play_selectedChannel_id = '';
+    Main_values.Play_selectedChannel_id = '';
 }
 
 function Play_exitMain() {
@@ -1259,9 +1228,9 @@ function Play_EndIconsRemoveFocus() {
 }
 
 function Play_EndText(PlayVodClip) {
-    if (PlayVodClip === 1) Play_DialogEndText = Play_selectedChannelDisplayname + ' ' + STR_LIVE;
-    else if (PlayVodClip === 2) Play_DialogEndText = Main_selectedChannelDisplayname + STR_VIDEO;
-    else if (PlayVodClip === 3) Play_DialogEndText = Main_selectedChannelDisplayname + STR_CLIP;
+    if (PlayVodClip === 1) Play_DialogEndText = Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE;
+    else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
+    else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
         Play_EndTextCounter + '...');
     if (Play_isEndDialogVisible()) {
@@ -1319,22 +1288,22 @@ function Play_EndDialogPressed(PlayVodClip) {
             } else Chat_NoVod();
         }
     } else if (Play_Endcounter === 1) {
-        if (Play_isHost) {
-            Play_DisplaynameHost = Play_selectedChannelDisplayname + STR_USER_HOSTING;
-            Play_selectedChannel = Play_TargetHost.target_login;
-            Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
-            Play_DisplaynameHost = Play_DisplaynameHost + Play_selectedChannelDisplayname;
+        if (Main_values.Play_isHost) {
+            Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname + STR_USER_HOSTING;
+            Main_values.Play_selectedChannel = Play_TargetHost.target_login;
+            Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
+            Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
             Play_PreshutdownStream();
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
-            Play_selectedChannel_id = Play_TargetHost.target_id;
+            Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
             Play_Start();
         } else PlayClip_OpenVod();
     } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
 
     if (Play_Endcounter !== 1) {
-        if (Play_Endcounter === 3 && Play_gameSelected === '') return;
+        if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') return;
         Play_HideEndDialog();
     }
 }
@@ -1366,18 +1335,18 @@ function Play_EndSet(PlayVodClip) {
 }
 
 function Play_OpenChannel(PlayVodClip) {
-    if (!Main_BeforeChannelisSet && Main_Go !== Main_ChannelVod && Main_Go !== Main_ChannelClip) {
-        Main_BeforeChannel = (Main_BeforeAgameisSet && Main_Go !== Main_aGame) ? Main_BeforeAgame : Main_Go;
-        Main_BeforeChannelisSet = true;
+    if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
+        Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
+        Main_values.Main_BeforeChannelisSet = true;
     }
 
-    Main_ExitCurrent(Main_Go);
-    Main_Go = Main_ChannelContent;
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_ChannelContent;
 
     if (PlayVodClip === 1) {
-        Main_selectedChannel_id = Play_selectedChannel_id;
-        Main_selectedChannel = Play_selectedChannel;
-        Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
+        Main_values.Main_selectedChannel_id = Main_values.Play_selectedChannel_id;
+        Main_values.Main_selectedChannel = Main_values.Play_selectedChannel;
+        Main_values.Main_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname;
         ChannelContent_UserChannels = AddCode_IsFallowing;
         Play_hideChat();
         Main_ready(Play_shutdownStream);
@@ -1386,9 +1355,9 @@ function Play_OpenChannel(PlayVodClip) {
 }
 
 function Play_OpenSearch(PlayVodClip) {
-    if (!Search_isSearching) Main_BeforeSearch = Main_Go;
-    Main_ExitCurrent(Main_Go);
-    Main_Go = Main_Search;
+    if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_Search;
 
     if (PlayVodClip === 1) {
         Play_hideChat();
@@ -1398,7 +1367,7 @@ function Play_OpenSearch(PlayVodClip) {
 }
 
 function Play_OpenGame(PlayVodClip) {
-    if (Play_gameSelected === '') {
+    if (Main_values.Play_gameSelected === '') {
         Play_IsWarning = true;
         Play_showWarningDialog(STR_NO_GAME);
         window.setTimeout(function() {
@@ -1408,16 +1377,16 @@ function Play_OpenGame(PlayVodClip) {
         return;
     }
 
-    if (!Main_BeforeAgameisSet && Main_Go !== Main_AGameVod && Main_Go !== Main_AGameClip) {
-        Main_BeforeAgame = (Main_BeforeChannelisSet && Main_Go !== Main_ChannelContent && Main_Go !== Main_ChannelVod && Main_Go !== Main_ChannelClip) ? Main_BeforeChannel : Main_Go;
-        Main_BeforeAgameisSet = true;
+    if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+        Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+        Main_values.Main_BeforeAgameisSet = true;
     }
 
-    Main_ExitCurrent(Main_Go);
-    Main_Go = Main_aGame;
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_aGame;
     AGame_UserGames = false;
 
-    Main_gameSelected = Play_gameSelected;
+    Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
     if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
     else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
@@ -1425,7 +1394,7 @@ function Play_OpenGame(PlayVodClip) {
 }
 
 function Play_FallowUnfallow() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
         if (AddCode_IsFallowing) AddCode_UnFallow();
         else AddCode_Fallow();
     } else {
@@ -1455,7 +1424,7 @@ function Play_BottomOptionsPressed(PlayVodClip) {
         Play_clearPause();
     } else if (Play_Panelcounter === 2) {
 
-        AddCode_Channel_id = (PlayVodClip === 1 ? Play_selectedChannel_id : Main_selectedChannel_id);
+        AddCode_Channel_id = (PlayVodClip === 1 ? Main_values.Play_selectedChannel_id : Main_values.Main_selectedChannel_id);
         Play_FallowUnfallow();
 
         Play_clearHidePanel();
@@ -1487,14 +1456,14 @@ function Play_CheckHostStart() {
     Play_Chatobj.src = 'about:blank';
     window.clearInterval(Play_streamInfoTimer);
     window.clearInterval(Play_streamCheck);
-    if (Play_selectedChannel_id !== '') Play_loadDataCheckHost();
+    if (Main_values.Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }
 
 function Play_CheckId() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Play_selectedChannel, true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + Main_values.Play_selectedChannel, true);
     xmlHttp.timeout = Play_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -1505,7 +1474,7 @@ function Play_CheckId() {
             if (xmlHttp.status === 200) {
                 var users = JSON.parse(xmlHttp.responseText).users[0];
                 if (users !== undefined) {
-                    Play_selectedChannel_id = users._id;
+                    Main_values.Play_selectedChannel_id = users._id;
                     Play_loadingDataTry = 0;
                     Play_loadingDataTimeout = 2000;
                     Play_loadDataCheckHost();
@@ -1531,7 +1500,7 @@ function Play_CheckIdError() {
 function Play_loadDataCheckHost() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
-        encodeURIComponent(Play_selectedChannel_id), true);
+        encodeURIComponent(Main_values.Play_selectedChannel_id), true);
     xmlHttp.timeout = Play_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.ontimeout = function() {};
@@ -1561,16 +1530,16 @@ function Play_CheckHost(responseText) {
 
     if (Play_TargetHost.target_login !== undefined) {
         Play_IsWarning = true;
-        Play_showWarningDialog(Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name);
+        Play_showWarningDialog(Main_values.Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name);
         window.setTimeout(function() {
             Play_IsWarning = false;
         }, 4000);
 
         Play_EndSet(0);
-        Play_isHost = true;
+        Main_values.Play_isHost = true;
     } else {
         Play_EndSet(1);
-        Play_isHost = false;
+        Main_values.Play_isHost = false;
     }
 
     Play_PannelEndStart(1);
@@ -1671,7 +1640,7 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < (Play_isHost ? 1 : 2)) Play_Endcounter = 3;
+                    if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();
@@ -1693,7 +1662,7 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = (Play_isHost ? 1 : 2);
+                    if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
                 } else {
                     Play_showPanel();

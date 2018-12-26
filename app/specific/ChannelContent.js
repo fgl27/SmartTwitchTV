@@ -24,12 +24,12 @@ var ChannelContent_ChannelValue = {};
 //Variable initialization end
 
 function ChannelContent_init() {
-    Main_Go = Main_ChannelContent;
-    if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-    if (ChannelContent_lastselectedChannel !== Main_selectedChannel) ChannelContent_status = false;
+    Main_values.Main_Go = Main_ChannelContent;
+    if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+    if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
-    Main_selectedChannelDisplayname = Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
-    Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
+    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
+    Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
     Main_textContent('top_bar_game', STR_CHANNEL_CONT);
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
@@ -37,7 +37,7 @@ function ChannelContent_init() {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
-        Main_SetWasopen();
+        Main_SaveValues();
     } else ChannelContent_StartLoad();
 }
 
@@ -51,7 +51,7 @@ function ChannelContent_StartLoad() {
     Main_HideElement(ChannelContent_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    ChannelContent_lastselectedChannel = Main_selectedChannel;
+    ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
     ChannelContent_status = false;
     ChannelContent_skipImg = false;
     Main_empty('stream_table_channel_content');
@@ -75,7 +75,7 @@ function ChannelContent_loadDataPrepare() {
 function ChannelContent_loadDataRequest() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_selectedChannel_id) + '?' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) + '?' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = ChannelContent_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -120,7 +120,7 @@ function ChannelContent_loadDataError() {
 
 function ChannelContent_loadDataCheckHost() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = ChannelContent_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.ontimeout = function() {};
@@ -165,7 +165,7 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + Main_selectedChannel_id, true);
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' + Main_values.Main_selectedChannel_id, true);
     xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -178,7 +178,7 @@ function ChannelContent_GetStreamerInfo() {
                 ChannelContent_selectedChannelViews = channel.views;
                 ChannelContent_selectedChannelFallower = channel.followers;
                 ChannelContent_description = channel.description;
-                Main_selectedChannelLogo = channel.logo;
+                Main_values.Main_selectedChannelLogo = channel.logo;
                 ChannelContent_loadDataSuccess();
                 return;
             } else {
@@ -199,7 +199,7 @@ function ChannelContent_GetStreamerInfoError() {
         ChannelContent_selectedChannelViews = '';
         ChannelContent_selectedChannelFallower = '';
         ChannelContent_description = '';
-        Main_selectedChannelLogo = IMG_404_LOGO;
+        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
         ChannelContent_loadDataSuccess();
     }
 }
@@ -219,7 +219,7 @@ function ChannelContent_loadDataSuccess() {
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);
         if (response.stream !== null) {
-            var hosting = ChannelContent_TargetId !== undefined ? Main_selectedChannelDisplayname +
+            var hosting = ChannelContent_TargetId !== undefined ? Main_values.Main_selectedChannelDisplayname +
                 STR_USER_HOSTING : '';
             var stream = response.stream;
             row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
@@ -234,10 +234,10 @@ function ChannelContent_loadDataSuccess() {
     } else ChannelContent_skipImg = true;
 
     row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
-        Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_PAST_BROA, 'movie-play'));
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_PAST_BROA, 'movie-play'));
     coloumn_id++;
     row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
-        Main_selectedChannelDisplayname, Main_selectedChannelDisplayname + STR_CLIPS, 'movie'));
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_CLIPS, 'movie'));
 
     if (coloumn_id < 2) {
         coloumn_id++;
@@ -248,7 +248,7 @@ function ChannelContent_loadDataSuccess() {
 
     row = document.createElement('tr');
     row.appendChild(ChannelContent_createFallow('1_0',
-        Main_selectedChannelDisplayname, Main_selectedChannelDisplayname, Main_selectedChannelLogo));
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
     document.getElementById("stream_table_channel_content").appendChild(row);
 
     ChannelContent_loadDataSuccessFinish();
@@ -315,11 +315,11 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
 function ChannelContent_setFallow() {
     if (AddCode_IsFallowing) {
         Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
-        Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOWING);
+        Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOWING);
     } else {
         Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
-        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_FALLOW);
-        else Main_textContent(ChannelContent_ids[3] + "1_0", Main_selectedChannelDisplayname + STR_CANT_FALLOW);
+        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOW);
+        else Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_CANT_FALLOW);
     }
 }
 
@@ -333,8 +333,8 @@ function ChannelContent_loadDataSuccessFinish() {
                     ChannelContent_thumbnail, IMG_404_VIDEO);
             Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
             ChannelContent_addFocus();
+            Main_SaveValues();
             Main_ShowElement(ChannelContent_ids[10]);
-            Main_SetWasopen();
         }
         ChannelContent_checkUser();
         ChannelContent_loadingData = false;
@@ -344,7 +344,7 @@ function ChannelContent_loadDataSuccessFinish() {
 function ChannelContent_checkUser() {
     if (ChannelContent_UserChannels) ChannelContent_setFallow();
     else if (AddUser_UserIsSet()) {
-        AddCode_Channel_id = Main_selectedChannel_id;
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_PlayRequest = false;
         AddCode_CheckFallow();
     } else {
@@ -364,9 +364,9 @@ function ChannelContent_removeFocus() {
 
 function ChannelContent_keyEnter() {
     if (ChannelContent_cursorY) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
             AddCode_PlayRequest = false;
-            AddCode_Channel_id = Main_selectedChannel_id;
+            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             if (AddCode_IsFallowing) AddCode_UnFallow();
             else AddCode_Fallow();
         } else {
@@ -379,20 +379,20 @@ function ChannelContent_keyEnter() {
         var value = (!ChannelContent_skipImg ? 0 : 1);
         if (ChannelContent_cursorX === (0 - value)) {
 
-            Play_selectedChannel = document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
+            Main_values.Play_selectedChannel = document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
                 '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute);
 
-            Play_selectedChannelDisplayname = document.getElementById(ChannelContent_ids[3] + ChannelContent_cursorY +
+            Main_values.Play_selectedChannelDisplayname = document.getElementById(ChannelContent_ids[3] + ChannelContent_cursorY +
                 '_' + ChannelContent_cursorX).textContent;
 
-            if (Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
-                Play_isHost = true;
-                Play_DisplaynameHost = Play_selectedChannelDisplayname;
-                Play_selectedChannelDisplayname = Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
-                Play_selectedChannel_id = ChannelContent_TargetId;
-            } else Play_selectedChannel_id = Main_selectedChannel_id;
+            if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
+                Main_values.Play_isHost = true;
+                Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname;
+                Main_values.Play_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+                Main_values.Play_selectedChannel_id = ChannelContent_TargetId;
+            } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
 
-            Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
+            Main_values.Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
 
             Main_openStream();
         } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
@@ -405,22 +405,22 @@ function ChannelContent_keyEnter() {
 
 function ChannelContent_SetChannelValue() {
     ChannelContent_ChannelValue = {
-        "Main_selectedChannel_id": Main_selectedChannel_id,
-        "Main_selectedChannelLogo": Main_selectedChannelLogo,
-        "Main_selectedChannel": Main_selectedChannel,
-        "Main_selectedChannelDisplayname": Main_selectedChannelDisplayname,
+        "Main_values.Main_selectedChannel_id": Main_values.Main_selectedChannel_id,
+        "Main_values.Main_selectedChannelLogo": Main_values.Main_selectedChannelLogo,
+        "Main_values.Main_selectedChannel": Main_values.Main_selectedChannel,
+        "Main_values.Main_selectedChannelDisplayname": Main_values.Main_selectedChannelDisplayname,
         "ChannelContent_UserChannels": ChannelContent_UserChannels,
-        "Main_BeforeChannel": Main_BeforeChannel
+        "Main_values.Main_BeforeChannel": Main_values.Main_BeforeChannel
     };
 }
 
 function ChannelContent_RestoreChannelValue() {
-    Main_selectedChannel_id = ChannelContent_ChannelValue.Main_selectedChannel_id;
-    Main_selectedChannelLogo = ChannelContent_ChannelValue.Main_selectedChannelLogo;
-    Main_selectedChannel = ChannelContent_ChannelValue.Main_selectedChannel;
-    Main_selectedChannelDisplayname = ChannelContent_ChannelValue.Main_selectedChannelDisplayname;
+    Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel_id;
+    Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannelLogo;
+    Main_values.Main_selectedChannel = Main_values.Main_selectedChannel;
+    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname;
     ChannelContent_UserChannels = ChannelContent_ChannelValue.ChannelContent_UserChannels;
-    Main_BeforeChannel = ChannelContent_ChannelValue.Main_BeforeChannel;
+    Main_values.Main_BeforeChannel = Main_values.Main_BeforeChannel;
     ChannelContent_ChannelValue = {};
 }
 
@@ -433,10 +433,10 @@ function ChannelContent_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_BeforeChannel;
-                Main_BeforeChannel = Main_Live;
+                Main_values.Main_Go = Main_values.Main_BeforeChannel;
+                Main_values.Main_BeforeChannel = Main_Live;
                 ChannelContent_exit();
-                Main_selectedChannel_id = '';
+                Main_values.Main_selectedChannel_id = '';
                 Main_SwitchScreen();
             }
             break;
@@ -483,11 +483,11 @@ function ChannelContent_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) {
+            if (!Main_values.Search_isSearching) {
                 ChannelContent_SetChannelValue();
-                Main_BeforeSearch = Main_ChannelContent;
+                Main_values.Main_BeforeSearch = Main_ChannelContent;
             }
-            Main_Go = Main_Search;
+            Main_values.Main_Go = Main_Search;
             ChannelContent_exit();
             Main_SwitchScreen();
             break;

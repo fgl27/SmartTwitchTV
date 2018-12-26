@@ -1,9 +1,7 @@
 //Variable initialization
 var Search_cursorY = 0;
 var Search_cursorX = 0;
-var Search_data = '';
 var Search_keyBoardOn = false;
-var Search_isSearching = false;
 //Variable initialization end
 
 function Search_init() {
@@ -30,7 +28,7 @@ function Search_exit() {
     Search_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
-    Main_Go = Main_BeforeSearch;
+    Main_values.Main_Go = Main_values.Main_BeforeSearch;
     document.getElementById("top_lables").style.marginLeft = '18.5%';
     Main_textContent('top_bar_user', STR_USER);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
@@ -126,7 +124,7 @@ function Search_handleKeyDown(event) {
             if (!Search_cursorY) Search_inputFocus();
             else {
                 if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
-                    Search_data = Main_SearchInput.value;
+                    Main_values.Search_data = Main_SearchInput.value;
                     Main_SearchInput.value = '';
                     Search_loadData();
                 } else {

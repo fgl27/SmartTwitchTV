@@ -24,7 +24,7 @@ var AGameVod_OldgameSelected = '';
 //Variable initialization end
 
 function AGameVod_init() {
-    Main_Go = Main_AGameVod;
+    Main_values.Main_Go = Main_AGameVod;
     Main_AddClass('top_bar_game', 'icon_center_focus');
     document.body.addEventListener("keydown", AGameVod_handleKeyDown, false);
 
@@ -34,12 +34,12 @@ function AGameVod_init() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
 
-    if ((AGameVod_OldgameSelected === Main_gameSelected) && AGameVod_status) {
+    if ((AGameVod_OldgameSelected === Main_values.Main_gameSelected) && AGameVod_status) {
         Main_YRst(AGameVod_cursorY);
         Main_ShowElement(AGameVod_ids[10]);
         AGameVod_SetPeriod();
         AGameVod_addFocus();
-        Main_SetWasopen();
+        Main_SaveValues();
     } else AGameVod_StartLoad();
 }
 
@@ -60,7 +60,7 @@ function AGameVod_StartLoad() {
     Main_HideElement(AGameVod_ids[10]);
     Main_showLoadDialog();
     AGameVod_SetPeriod();
-    AGameVod_OldgameSelected = Main_gameSelected;
+    AGameVod_OldgameSelected = Main_values.Main_gameSelected;
     Main_HideWarningDialog();
     AGameVod_status = false;
     Main_empty('stream_table_a_game_vod');
@@ -96,7 +96,7 @@ function AGameVod_loadDataRequest() {
     }
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
-        encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
+        encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitVideo +
         '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
         '&period=' + AGameVod_period +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
@@ -202,7 +202,7 @@ function AGameVod_loadDataSuccessFinish() {
                 AGameVod_status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 AGameVod_addFocus();
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(AGameVod_ids[10]);
             AGameVod_FirstLoad = false;
@@ -230,7 +230,7 @@ function AGameVod_loadDataReplace() {
     }
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?game=' +
-        encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitReplace +
+        encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitReplace +
         '&broadcast_type=' + (AGameVod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
         '&period=' + AGameVod_period +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
@@ -334,7 +334,7 @@ function AGameVod_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_aGame;
+                Main_values.Main_Go = Main_aGame;
                 AGameVod_exit();
                 Main_SwitchScreen();
             }
@@ -423,8 +423,8 @@ function AGameVod_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_AGameVod;
-            Main_Go = Main_Search;
+            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_AGameVod;
+            Main_values.Main_Go = Main_Search;
             AGameVod_exit();
             Main_SwitchScreen();
             break;
@@ -435,16 +435,16 @@ function AGameVod_handleKeyDown(event) {
 
 function AGameVod_SetPeriod() {
     if (AGameVod_periodNumber === 1) {
-        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY + ': ' + Main_gameSelected));
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_DAY + ': ' + Main_values.Main_gameSelected));
         AGameVod_period = 'day';
     } else if (AGameVod_periodNumber === 2) {
-        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK + ': ' + Main_gameSelected));
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_WEEK + ': ' + Main_values.Main_gameSelected));
         AGameVod_period = 'week';
     } else if (AGameVod_periodNumber === 3) {
-        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH + ': ' + Main_gameSelected));
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_MONTH + ': ' + Main_values.Main_gameSelected));
         AGameVod_period = 'month';
     } else if (AGameVod_periodNumber === 4) {
-        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL + ': ' + Main_gameSelected));
+        Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter((AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_CLIP_ALL + ': ' + Main_values.Main_gameSelected));
         AGameVod_period = 'all';
     }
     Main_setItem('AGameVod_periodNumber', AGameVod_periodNumber);

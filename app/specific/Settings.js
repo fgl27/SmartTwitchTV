@@ -421,8 +421,8 @@ function Settings_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Go;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_values.Main_Go;
+            Main_values.Main_Go = Main_Search;
             Settings_exit();
             Main_SwitchScreen();
             break;

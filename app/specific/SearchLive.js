@@ -21,16 +21,17 @@ var SearchLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', '
 //Variable initialization end
 
 function SearchLive_init() {
-    Main_Go = Main_SearchLive;
-    Search_isSearching = true;
+    Main_values.Main_Go = Main_SearchLive;
+    Main_values.Search_isSearching = true;
     Main_cleanTopLabel();
-    if (SearchLive_lastData !== Search_data) SearchLive_Status = false;
-    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Search_data + "'"));
+    if (SearchLive_lastData !== Main_values.Search_data) SearchLive_Status = false;
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Main_values.Search_data + "'"));
     document.body.addEventListener("keydown", SearchLive_handleKeyDown, false);
     if (SearchLive_Status) {
         Main_YRst(SearchLive_cursorY);
         Main_ShowElement(SearchLive_ids[10]);
         Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
+        Main_SaveValues();
     } else SearchLive_StartLoad();
 }
 
@@ -44,7 +45,7 @@ function SearchLive_StartLoad() {
     Main_HideElement(SearchLive_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    SearchLive_lastData = Search_data;
+    SearchLive_lastData = Main_values.Search_data;
     SearchLive_Status = false;
     Main_empty('stream_table_search_live');
     SearchLive_itemsCountOffset = 0;
@@ -78,7 +79,7 @@ function SearchLive_loadDataRequest() {
         SearchLive_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = SearchLive_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -179,6 +180,7 @@ function SearchLive_loadDataSuccessFinish() {
                 SearchLive_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 SearchLive_addFocus();
+                Main_SaveValues();
             }
             Main_ShowElement(SearchLive_ids[10]);
             SearchLive_FirstLoad = false;
@@ -205,7 +207,7 @@ function SearchLive_loadDataReplace() {
         SearchLive_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Search_data) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = SearchLive_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -301,10 +303,10 @@ function SearchLive_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_Go === Main_BeforeSearch) Main_Go = Main_Live;
-                else Main_Go = Main_BeforeSearch;
+                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                 SearchLive_exit();
-                Search_isSearching = false;
+                Main_values.Search_isSearching = false;
                 Main_SwitchScreen();
             }
             break;
@@ -374,14 +376,14 @@ function SearchLive_handleKeyDown(event) {
             break;
         case KEY_GREEN:
             SearchLive_exit();
-            Search_isSearching = false;
+            Main_values.Search_isSearching = false;
             Main_GoLive();
             break;
         case KEY_YELLOW:
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_Go = Main_Search;
+            Main_values.Main_Go = Main_Search;
             SearchLive_exit();
             Main_SwitchScreen();
             break;

@@ -21,17 +21,17 @@ var UserHost_FirstLoad = false;
 //Variable initialization end
 
 function UserHost_init() {
-    Main_Go = Main_UserHost;
+    Main_values.Main_Go = Main_UserHost;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + STR_LIVE_HOSTS));
+    Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
-    if (UserHost_OldUserName !== AddUser_UsernameArray[Users_Position].name) UserHost_status = false;
+    if (UserHost_OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserHost_status = false;
     if (UserHost_status) {
         Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
-        Main_SetWasopen();
+        Main_SaveValues();
     } else UserHost_StartLoad();
 }
 
@@ -47,7 +47,7 @@ function UserHost_StartLoad() {
     Main_HideElement(UserHost_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    UserHost_OldUserName = AddUser_UsernameArray[Users_Position].name;
+    UserHost_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     UserHost_status = false;
     Main_empty('stream_table_user_host');
     UserHost_itemsCountOffset = 0;
@@ -81,7 +81,7 @@ function UserHost_loadChannels() {
         UserHost_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
         '/followed/hosting?limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = UserHost_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -181,7 +181,7 @@ function UserHost_loadDataSuccessFinish() {
                 UserHost_status = true;
                 UserHost_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(UserHost_ids[10]);
             UserHost_FirstLoad = false;
@@ -208,7 +208,7 @@ function UserHost_loadDataReplace() {
         UserHost_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) +
+    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
         '/followed/hosting?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = UserHost_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -305,7 +305,7 @@ function UserHost_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_Users;
+                Main_values.Main_Go = Main_Users;
                 UserHost_exit();
                 Main_SwitchScreen();
             }
@@ -366,12 +366,12 @@ function UserHost_handleKeyDown(event) {
             UserHost_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Go = Main_usergames;
+            Main_values.Main_Go = Main_usergames;
             UserHost_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Go = Main_UserLive;
+            Main_values.Main_Go = Main_UserLive;
             UserHost_exit();
             Main_SwitchScreen();
             break;
@@ -392,8 +392,8 @@ function UserHost_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_UserHost;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_UserHost;
+            Main_values.Main_Go = Main_Search;
             UserHost_exit();
             Main_SwitchScreen();
             break;

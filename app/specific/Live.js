@@ -21,13 +21,14 @@ var Live_FirstLoad = false;
 //Variable initialization end
 
 function Live_init() {
-    Main_Go = Main_Live;
+    Main_values.Main_Go = Main_Live;
     Main_AddClass('top_bar_live', 'icon_center_focus');
     document.body.addEventListener("keydown", Live_handleKeyDown, false);
     if (Live_Status) {
         Main_YRst(Live_cursorY);
         Main_ShowElement(Live_ids[10]);
         Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
+        Main_SaveValues();
     } else Live_StartLoad();
 }
 
@@ -180,84 +181,34 @@ function Live_loadDataSuccessFinish() {
                 Live_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Live_addFocus();
+                Main_values.Main_WasOpen = true;
             }
+            console.log('Main_values.Play_WasPlaying ' + Main_values.Play_WasPlaying);
+            console.log('Main_values.Main_WasOpen ' + Main_values.Main_WasOpen);
             if (Main_FirstRun && Live_Status &&
-                (Settings_value.restor_playback.defaultValue) && (Play_WasPlaying || PlayVod_WasPlaying || Main_WasOpen)) {
-                //Todo make this simpler
-                if (Play_WasPlaying) {
+                (Settings_value.restor_playback.defaultValue) && (Main_values.Play_WasPlaying || Main_values.Main_WasOpen)) {
+                console.log('trying');
+                if (Main_values.Play_WasPlaying) {
                     Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
-                    Play_selectedChannel = Play_Restore_value.name;
-                    Main_selectedChannel = Play_selectedChannel;
 
-                    Play_selectedChannelDisplayname = Play_Restore_value.display_name;
-                    Main_selectedChannelDisplayname = Play_selectedChannelDisplayname;
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
 
-                    Play_selectedChannel_id = Play_Restore_value.id;
-                    Main_selectedChannel_id = Play_selectedChannel_id;
-
-                    Play_gameSelected = Play_Restore_value.game;
-                    Main_gameSelected = Play_gameSelected;
-
-                    if (AddUser_UserIsSet()) {
-                        Users_Position = Play_Restore_value.user;
-                        Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
-                    }
-                    Main_BeforeAgame = Play_Restore_value.Main_BeforeAgame;
-
-                    Main_ExitCurrent(Main_Go);
-                    Main_Go = Play_Restore_value.screen;
-                    Main_openStream();
+                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
+                    else Main_openVod();
 
                     Main_SwitchScreen();
-                    Main_ExitCurrent(Main_Go);
-                } else if (PlayVod_WasPlaying) {
-                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
-                    PlayVod_vodOffset = PlayVod_Restore_value.vodOffset;
-                    if (!PlayVod_vodOffset) PlayVod_vodOffset = 1;
-                    ChannelVod_vodId = PlayVod_Restore_value.vod_id;
+                    Main_ExitCurrent(Main_values.Main_Go);
+                } else if (Main_GoBefore !== 1) {
 
-                    Play_selectedChannel = PlayVod_Restore_value.name;
-                    Main_selectedChannel = Play_selectedChannel;
-
-                    Play_gameSelected = PlayVod_Restore_value.game;
-                    Main_gameSelected = Play_gameSelected;
-
-                    if (AddUser_UserIsSet()) {
-                        Users_Position = PlayVod_Restore_value.user;
-                        Main_BeforeChannel = PlayVod_Restore_value.Main_BeforeChannel;
-                    }
-                    Main_BeforeAgame = PlayVod_Restore_value.Main_BeforeAgame;
-
-                    Main_ExitCurrent(Main_Go);
-                    Main_Go = PlayVod_Restore_value.screen;
-
-                    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-                    Main_ShowElement('scene2');
-                    PlayVod_hidePanel();
-                    Play_CleanHideExit();
-                    Main_HideElement('scene1');
-                    PlayVod_HasVodInfo = false;
-                    PlayVod_Start();
-
-                    Main_SwitchScreen();
-                    Main_ExitCurrent(Main_Go);
-                } else if (Play_Restore_value.screen && Play_Restore_value.screen !== 1) {
-                    Main_selectedChannel = Play_Restore_value.name;
-                    Main_selectedChannelDisplayname = Play_Restore_value.display_name;
-                    Main_selectedChannel_id = Play_Restore_value.id;
-                    Main_gameSelected = Play_Restore_value.game;
-
-                    if (AddUser_UserIsSet()) {
-                        Users_Position = Play_Restore_value.user;
-                        Main_BeforeChannel = Play_Restore_value.Main_BeforeChannel;
-                    }
-                    Main_BeforeAgame = Play_Restore_value.Main_BeforeAgame;
-
-                    Main_ExitCurrent(Main_Live);
-                    Main_Go = Play_Restore_value.screen;
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
                     Main_SwitchScreen();
                 } else Main_ShowElement(Live_ids[10]);
-            } else Main_ShowElement(Live_ids[10]);
+            } else {
+                Main_ShowElement(Live_ids[10]);
+                Main_SaveValues();
+            }
             Main_FirstRun = false;
             Live_FirstLoad = false;
         } else {
@@ -465,14 +416,14 @@ function Live_handleKeyDown(event) {
             Live_StartLoad();
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_Live;
-            Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
+            Main_values.Main_Before = Main_Live;
+            Main_values.Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
             Live_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_Live;
-            Main_Go = Main_Clip;
+            Main_values.Main_Before = Main_Live;
+            Main_values.Main_Go = Main_Clip;
             Live_exit();
             Main_SwitchScreen();
             break;
@@ -484,7 +435,6 @@ function Live_handleKeyDown(event) {
                 // HideExitDialog set Live_ExitCursor to 0, is better to hide befor exit, use temp var
                 var temp_ExitCursor = Live_ExitCursor;
                 Main_HideExitDialog();
-                Main_setItem('Main_WasOpen', 0);
                 try {
                     if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
                     else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
@@ -504,8 +454,8 @@ function Live_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            Main_BeforeSearch = Main_Live;
-            Main_Go = Main_Search;
+            Main_values.Main_BeforeSearch = Main_Live;
+            Main_values.Main_Go = Main_Search;
             Live_exit();
             Main_SwitchScreen();
             break;

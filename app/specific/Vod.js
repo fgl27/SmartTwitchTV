@@ -26,7 +26,7 @@ var Vod_newImg = new Image();
 //Variable initialization end
 
 function Vod_init() {
-    Main_Go = Main_Vod;
+    Main_values.Main_Go = Main_Vod;
     Main_AddClass('top_bar_vod', 'icon_center_focus');
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
@@ -39,7 +39,7 @@ function Vod_init() {
         Main_ShowElement(Vod_ids[10]);
         Vod_SetPeriod();
         Vod_addFocus();
-        Main_SetWasopen();
+        Main_SaveValues();
     } else Vod_StartLoad();
 }
 
@@ -239,7 +239,7 @@ function Vod_loadDataSuccessFinish() {
                 Vod_status = true;
                 Vod_addFocus();
                 Main_imgVectorLoad(IMG_404_VIDEO);
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(Vod_ids[10]);
             Vod_FirstLoad = false;
@@ -391,8 +391,8 @@ function Vod_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_Before === Main_Vod) Main_Go = Main_Live;
-                else Main_Go = Main_Before;
+                if (Main_values.Main_Before === Main_Vod) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_Before;
                 Vod_exit();
                 Main_SwitchScreen();
             }
@@ -449,14 +449,14 @@ function Vod_handleKeyDown(event) {
             }
             break;
         case KEY_CHANNELUP:
-            Main_Before = Main_Vod;
-            Main_Go = Main_Clip;
+            Main_values.Main_Before = Main_Vod;
+            Main_values.Main_Go = Main_Clip;
             Vod_exit();
             Main_SwitchScreen();
             break;
         case KEY_CHANNELDOWN:
-            Main_Before = Main_Vod;
-            Main_Go = Main_games;
+            Main_values.Main_Before = Main_Vod;
+            Main_values.Main_Go = Main_games;
             Vod_exit();
             Main_SwitchScreen();
             break;
@@ -485,8 +485,8 @@ function Vod_handleKeyDown(event) {
             Vod_StartLoad();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) Main_BeforeSearch = Main_Vod;
-            Main_Go = Main_Search;
+            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_Vod;
+            Main_values.Main_Go = Main_Search;
             Vod_exit();
             Main_SwitchScreen();
             break;

@@ -34,8 +34,8 @@ function PlayClip_Start() {
     Play_HideEndDialog();
     webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_selectedChannelLogo);
-    Main_textContent("stream_info_name", Main_selectedChannelDisplayname);
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game + ', ' + ChannelClip_views + ', ' + ChannelClip_language);
     Main_textContent("stream_live_icon", ChannelClip_createdAt);
@@ -47,7 +47,7 @@ function PlayClip_Start() {
     Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');
     Main_textContent("stream_watching_time", '');
-    PlayClip_HasVOD = ChannelVod_vodId !== null;
+    PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
         PlayVod_currentTime = 0;
@@ -75,7 +75,7 @@ function PlayClip_Start() {
 
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_selectedChannel_id;
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
 
@@ -435,7 +435,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
-        PlayVod_vodOffset = ChannelVod_vodOffset;
+        Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Play_IconsResetFocus();

@@ -38,8 +38,8 @@ var Base_obj = {
     loadDataSuccess: Screens_loadDataSuccess,
     ThumbPading: Main_ThumbPading,
     key_blue: function() {
-        if (!Search_isSearching) Main_BeforeSearch = inUseObj.screen;
-        Main_Go = Main_Search;
+        if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = inUseObj.screen;
+        Main_values.Main_Go = Main_Search;
         Screens_exit();
         Main_SwitchScreen();
     },
@@ -149,17 +149,17 @@ function ScreensObj_InitClip() {
             Main_HideElement('label_extra');
         },
         key_exit: function() {
-            Screens_BasicExit(Main_Before);
+            Screens_BasicExit(Main_values.Main_Before);
         },
         key_channelup: function() {
-            Main_Before = this.screen;
-            Main_Go = Main_Live;
+            Main_values.Main_Before = this.screen;
+            Main_values.Main_Go = Main_Live;
             Screens_exit();
             Main_SwitchScreen();
         },
         key_channeldown: function() {
-            Main_Before = this.screen;
-            Main_Go = Main_Vod;
+            Main_values.Main_Before = this.screen;
+            Main_values.Main_Go = Main_Vod;
             Screens_exit();
             Main_SwitchScreen();
         },
@@ -192,7 +192,7 @@ function ScreensObj_InitChannelClip() {
         periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
         set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_selectedChannel) +
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel) +
                 '&limit=' + Main_ItemsLimitMax + '&period=' +
                 this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
@@ -219,14 +219,14 @@ function ScreensObj_InitChannelClip() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
         },
         label_init: function() {
-            if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id)
+            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
                 ChannelContent_RestoreChannelValue();
-            if (Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             Main_cleanTopLabel();
             this.SetPeriod();
-            Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
+            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
             Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
-            this.lastselectedChannel = Main_selectedChannel;
+            this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
         key_exit: function() {
@@ -257,11 +257,11 @@ function ScreensObj_InitChannelClip() {
             Main_GoLive();
         },
         key_blue: function() {
-            if (!Search_isSearching) {
+            if (!Main_values.Search_isSearching) {
                 ChannelContent_SetChannelValue();
-                Main_BeforeSearch = inUseObj.screen;
+                Main_values.Main_BeforeSearch = inUseObj.screen;
             }
-            Main_Go = Main_Search;
+            Main_values.Main_Go = Main_Search;
             Screens_exit();
             Main_SwitchScreen();
         }
@@ -279,7 +279,7 @@ function ScreensObj_InitAGameClip() {
         periodPos: Main_getItemInt('AGameClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
         set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
@@ -302,7 +302,7 @@ function ScreensObj_InitAGameClip() {
         },
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
-                Main_Periods[this.periodPos - 1] + ': ' + Main_gameSelected));
+                Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
             Main_setItem('AGameClip_periodPos', this.periodPos);
         },
         label_init: function() {
@@ -311,8 +311,8 @@ function ScreensObj_InitAGameClip() {
             Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
             Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
             Main_ShowElement('label_extra');
-            if (this.gameSelected !== Main_gameSelected) this.status = false;
-            this.gameSelected = Main_gameSelected;
+            if (this.gameSelected !== Main_values.Main_gameSelected) this.status = false;
+            this.gameSelected = Main_values.Main_gameSelected;
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
@@ -395,27 +395,27 @@ function ScreensObj_InitGame() {
         },
         key_refresh: Screens_StartLoad,
         key_exit: function() {
-            if (Main_Go === Main_Before || Main_Before === Main_aGame || Main_Before === Main_Search) Screens_BasicExit(Main_Live);
-            else Screens_BasicExit(Main_Before);
+            if (Main_values.Main_Go === Main_values.Main_Before || Main_values.Main_Before === Main_aGame || Main_values.Main_Before === Main_Search) Screens_BasicExit(Main_Live);
+            else Screens_BasicExit(Main_values.Main_Before);
         },
         key_channelup: function() {
-            Main_Before = this.screen;
-            Main_Go = Main_Vod;
+            Main_values.Main_Before = this.screen;
+            Main_values.Main_Go = Main_Vod;
             Screens_exit();
             Main_SwitchScreen();
         },
         key_channeldown: function() {
-            Main_Before = this.screen;
-            Main_Go = Main_Featured;
+            Main_values.Main_Before = this.screen;
+            Main_values.Main_Go = Main_Featured;
             Screens_exit();
             Main_SwitchScreen();
         },
         key_play: function() {
-            Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+            Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_BeforeAgame = this.screen;
-            Main_Go = Main_aGame;
-            Main_BeforeAgameisSet = true;
+            Main_values.Main_BeforeAgame = this.screen;
+            Main_values.Main_Go = Main_aGame;
+            Main_values.Main_BeforeAgameisSet = true;
             AGame_UserGames = false;
             Screens_exit();
             Main_SwitchScreen();
@@ -457,7 +457,7 @@ function ScreensObj_InitUserGames() {
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Users_Position].name) + '/follows/games';
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) + '/follows/games';
 
             if (this.isLive) this.url += '/live?limit=750';
             else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
@@ -493,11 +493,11 @@ function ScreensObj_InitUserGames() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
             Main_AddClass('top_bar_user', 'icon_center_focus');
 
-            if (this.OldUserName !== AddUser_UsernameArray[Users_Position].name) this.status = false;
+            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
 
-            this.OldUserName = AddUser_UsernameArray[Users_Position].name;
+            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         },
         label_exit: function() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
@@ -508,7 +508,7 @@ function ScreensObj_InitUserGames() {
         key_refresh: function() {
             this.isLive = !this.isLive;
 
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
 
             Screens_StartLoad();
 
@@ -520,24 +520,24 @@ function ScreensObj_InitUserGames() {
             Screens_BasicExit(Main_Users);
         },
         key_channelup: function() {
-            Main_Before = this.screen;
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[Users_Position].access_token) Main_Go = Main_UserVod;
-            else Main_Go = Main_UserChannels;
+            Main_values.Main_Before = this.screen;
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) Main_values.Main_Go = Main_UserVod;
+            else Main_values.Main_Go = Main_UserChannels;
             Screens_exit();
             Main_SwitchScreen();
         },
         key_channeldown: function() {
-            Main_Before = this.screen;
-            Main_Go = Main_UserHost;
+            Main_values.Main_Before = this.screen;
+            Main_values.Main_Go = Main_UserHost;
             Screens_exit();
             Main_SwitchScreen();
         },
         key_play: function() {
-            Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+            Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_BeforeAgame = this.screen;
-            Main_Go = Main_aGame;
-            Main_BeforeAgameisSet = true;
+            Main_values.Main_BeforeAgame = this.screen;
+            Main_values.Main_Go = Main_aGame;
+            Main_values.Main_BeforeAgameisSet = true;
             AGame_UserGames = false;
             Screens_exit();
             Main_SwitchScreen();

@@ -20,7 +20,6 @@ var ChannelVod_ids = ['cv_thumbdiv', 'cv_img', 'cv_infodiv', 'cv_title', 'cv_str
 var ChannelVod_status = false;
 var ChannelVod_highlight = false;
 var ChannelVod_lastselectedChannel = '';
-var ChannelVod_vodId = '';
 var ChannelVod_title = '';
 var ChannelVod_views = '';
 var ChannelVod_createdAt = '';
@@ -30,19 +29,19 @@ var ChannelVod_FirstLoad = false;
 //Variable initialization end
 
 function ChannelVod_init() {
-    Main_Go = Main_ChannelVod;
-    if (!Search_isSearching && ChannelContent_ChannelValue.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-    if (Main_selectedChannel !== ChannelVod_lastselectedChannel) ChannelVod_status = false;
+    Main_values.Main_Go = Main_ChannelVod;
+    if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+    if (Main_values.Main_selectedChannel !== ChannelVod_lastselectedChannel) ChannelVod_status = false;
     Main_cleanTopLabel();
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_KEY_UP_DOWN);
-    Main_textContent('top_bar_user', Main_selectedChannelDisplayname);
+    Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
     document.body.addEventListener("keydown", ChannelVod_handleKeyDown, false);
     if (ChannelVod_status) {
         Main_YRst(ChannelVod_cursorY);
         Main_textContent('top_bar_game', ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
         Main_ShowElement(ChannelVod_ids[10]);
         ChannelVod_addFocus();
-        Main_SetWasopen();
+        Main_SaveValues();
     } else ChannelVod_StartLoad();
 }
 
@@ -59,7 +58,7 @@ function ChannelVod_StartLoad() {
     Main_HideElement(ChannelVod_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    ChannelVod_lastselectedChannel = Main_selectedChannel;
+    ChannelVod_lastselectedChannel = Main_values.Main_selectedChannel;
     ChannelVod_status = false;
     Main_empty('stream_table_channel_vod');
     ChannelVod_itemsCountOffset = 0;
@@ -94,7 +93,7 @@ function ChannelVod_loadDataRequest() {
     }
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
-        encodeURIComponent(Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitVideo +
+        encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitVideo +
         '&broadcast_type=' + (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
         Math.round(Math.random() * 1e7), true);
 
@@ -208,7 +207,7 @@ function ChannelVod_loadDataSuccessFinish() {
                 ChannelVod_status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 ChannelVod_addFocus();
-                Main_SetWasopen();
+                Main_SaveValues();
             }
             Main_ShowElement(ChannelVod_ids[10]);
             ChannelVod_FirstLoad = false;
@@ -237,7 +236,7 @@ function ChannelVod_loadDataReplace() {
     }
 
     xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
-        encodeURIComponent(Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
+        encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
         (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
         Math.round(Math.random() * 1e7), true);
 
@@ -340,7 +339,7 @@ function ChannelVod_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_Go = Main_ChannelContent;
+                Main_values.Main_Go = Main_ChannelContent;
                 ChannelVod_exit();
                 Main_SwitchScreen();
             }
@@ -423,11 +422,11 @@ function ChannelVod_handleKeyDown(event) {
             Main_showControlsDialog();
             break;
         case KEY_BLUE:
-            if (!Search_isSearching) {
+            if (!Main_values.Search_isSearching) {
                 ChannelContent_SetChannelValue();
-                Main_BeforeSearch = Main_ChannelVod;
+                Main_values.Main_BeforeSearch = Main_ChannelVod;
             }
-            Main_Go = Main_Search;
+            Main_values.Main_Go = Main_Search;
             ChannelVod_exit();
             Main_SwitchScreen();
             break;
