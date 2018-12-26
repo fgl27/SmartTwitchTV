@@ -112,9 +112,9 @@ function PlayVod_PosStart() {
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     Main_values.Play_WasPlaying = 2;
-    Main_SaveValues();
+    PlayVod_SaveOffset();
 
-    PlayVod_SaveOffsetId = window.setInterval(Main_SaveValues, 60000);
+    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     Main_CacheImage(Play_IncrementView);
 
     PlayVod_PlayerCheckCounter = 0;
@@ -257,7 +257,7 @@ function PlayVod_Resume() {
             Play_hideChat();
             Main_ready(PlayVod_shutdownStream);
         } else {
-            Main_SaveValues();
+            PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
             Chat_Pause();
             Play_avplay.pause();
@@ -278,11 +278,17 @@ function PlayVod_Resume() {
                 PlayVod_onPlayer();
                 Chat_Play(Chat_Id);
                 Play_EndSet(2);
-                PlayVod_SaveOffsetId = window.setInterval(Main_SaveValues, 60000);
+                PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
             }
         }
     }
 }
+
+function PlayVod_SaveOffset() {
+    Main_values.vodOffset = parseInt(PlayVod_currentTime / 1000);
+    Main_SaveValues();
+}
+
 
 function PlayVod_loadData() {
     PlayVod_loadingDataTry = 0;
