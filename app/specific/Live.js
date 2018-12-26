@@ -193,6 +193,7 @@ function Live_loadDataSuccessFinish() {
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
+                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
 
                     if (Main_values.Play_WasPlaying === 1) Main_openStream();
                     else Main_openVod();
