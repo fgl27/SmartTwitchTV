@@ -1585,6 +1585,9 @@ function Play_KeyReturn(is_vod) {
 function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
+            case KEY_GREEN:
+                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
