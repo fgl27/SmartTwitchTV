@@ -43,6 +43,8 @@ function PlayClip_Start() {
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
 
+    Main_values.Play_isHost = false;
+
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');

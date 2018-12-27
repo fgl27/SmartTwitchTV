@@ -69,6 +69,8 @@ function PlayVod_Start() {
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
 
+    Main_values.Play_isHost = false;
+
     if (Main_values.vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
