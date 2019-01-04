@@ -64,6 +64,7 @@ var Main_addFocusFinish = true;
 
 var Main_imgVector = [];
 
+var Main_tvModel = null;
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
 var Main_SmartHubId = null;
@@ -122,7 +123,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
-var Main_minversion = '122718';
+var Main_minversion = '010419-01';
 var Main_versionTag = '';
 var Main_TizenVersion;
 var Main_ClockOffset = 0;
@@ -222,7 +223,9 @@ function Main_initWindows() {
         Screens_InitSecondaryScreens();
         Live_init();
 
-        Main_Is4k = webapis.productinfo.isUdPanelSupported();
+        //keep 4k streams disable until we have 4k content from twitch
+        //TV models that don't like "setStreamingProperty("SET_MODE_4K", "TRUE");" all 1080p and UNU7090
+        Main_Is4k = false; //webapis.productinfo.isUdPanelSupported();
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
 
@@ -705,7 +708,6 @@ function Main_NetworkStateChangeListenerStop() {
 function Main_checkVersion() {
     var Appversion = null,
         TizenVersion = null,
-        tvModel = null,
         fw = null,
         value = 0;
 
@@ -714,14 +716,14 @@ function Main_checkVersion() {
         // Retrieving Platform Information https://developer.samsung.com/tv/develop/guides/fundamentals/retrieving-platform-information
         TizenVersion = tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version");
         fw = webapis.productinfo.getFirmware();
-        tvModel = webapis.productinfo.getModel();
+        Main_tvModel = webapis.productinfo.getModel();
     } catch (e) {}
 
-    if (Appversion !== null && TizenVersion !== null && tvModel !== null && fw !== null) {
+    if (Appversion !== null && TizenVersion !== null && Main_tvModel !== null && fw !== null) {
         Main_currentVersion = Appversion;
 
         Main_versionTag = 'APP ' + STR_VERSION + Appversion + '.' + (Main_isReleased ? Main_minversion : '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">TEST</div>') + STR_BR + 'Tizen ' + STR_VERSION +
-            TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + tvModel + STR_SPACE + STR_SPACE + '|' +
+            TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + Main_tvModel + STR_SPACE + STR_SPACE + '|' +
             STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
         Appversion = Appversion.split(".");
         value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
@@ -730,7 +732,7 @@ function Main_checkVersion() {
             ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
 
         if (!Main_isReleased) console.log('Tizen ' + STR_VERSION + TizenVersion + ' | ' +
-            'TV: ' + tvModel + ' | ' + 'FW: ' + fw);
+            'TV: ' + Main_tvModel + ' | ' + 'FW: ' + fw);
         return value < Main_version;
     } else return false;
 }

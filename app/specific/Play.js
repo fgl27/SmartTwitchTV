@@ -70,7 +70,7 @@ var Play_JustStartPlaying = true;
 var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
-var Play_4K_ModeEnable = false;
+//var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
@@ -639,10 +639,11 @@ function Play_onPlayer() {
         Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
 
         Play_avplay.setListener(Play_listener);
-        if (Main_Is4k && !Play_4K_ModeEnable) {
-            Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-            Play_4K_ModeEnable = true;
-        }
+
+        //if (Main_Is4k && !Play_4K_ModeEnable) {
+        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        //    Play_4K_ModeEnable = true;
+        //}
 
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4 + Play_Buffer;
