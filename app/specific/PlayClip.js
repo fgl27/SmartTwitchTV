@@ -228,7 +228,7 @@ function PlayClip_qualityChanged() {
 
 function PlayClip_onPlayer() {
     Play_showBufferDialog();
-    if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
+    if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n' + PlayClip_playingUrl + '\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayClip_playingUrl);
