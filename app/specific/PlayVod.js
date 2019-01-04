@@ -472,7 +472,7 @@ var PlayVod_listener = {
 
 function PlayVod_onPlayer() {
     Play_showBufferDialog();
-    if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n' + PlayVod_playingUrl + '\n');
+    if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
