@@ -631,7 +631,7 @@ var Play_listener = {
 
 function Play_onPlayer() {
     Play_showBufferDialog();
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
+    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
