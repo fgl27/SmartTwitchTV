@@ -588,7 +588,6 @@ var Play_listener = {
         Play_PlayerCheckQualityChanged = true;
         // sync chat and stream
         if (!Play_ChatLoadStarted) Play_loadChat();
-        console.log('Play_listener onbufferingstart');
     },
     onbufferingcomplete: function() {
         Play_HideBufferDialog();
@@ -599,7 +598,6 @@ var Play_listener = {
         Play_PlayerCheckTimer = Play_Buffer;
         Play_PlayerCheckQualityChanged = true;
         if (!Play_ChatLoadStarted) Play_loadChat();
-        console.log('Play_listener onbufferingcomplete');
     },
     onbufferingprogress: function(percent) {
         if (percent < 5) Play_PlayerCheckCount = 0;
@@ -615,7 +613,6 @@ var Play_listener = {
             Play_HideBufferDialog();
             Play_bufferingcomplete = true;
             Main_empty('dialog_buffer_play_percentage');
-            console.log('Play_listener onbufferingprogress end');
         }
         if (!Play_ChatLoadStarted) Play_loadChat();
         Play_RestoreFromResume = false;
@@ -634,19 +631,18 @@ var Play_listener = {
 
 function Play_onPlayer() {
     Play_showBufferDialog();
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n' + Play_playingUrl + '\n');
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
         Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
         Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
 
-        console.log('Play_onPlayer setListener');
         Play_avplay.setListener(Play_listener);
-        //if (Main_Is4k && Play_4K_ModeEnable) {
-        Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
-        Play_4K_ModeEnable = false;
-        //}
+        if (Main_Is4k && !Play_4K_ModeEnable) {
+            Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+            Play_4K_ModeEnable = true;
+        }
 
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4 + Play_Buffer;
@@ -659,20 +655,10 @@ function Play_onPlayer() {
 
     Play_JustStartPlaying = true;
     //Use prepareAsync as prepare() only can freeze up the app
-    //Play_avplay.prepareAsync(function() {
-    //    Play_avplay.play();
-    //    Play_Playing = true;
-    //});
-    console.log('Play_onPlayer prepare start');
-    try {
-        Play_avplay.prepare();
-    } catch (e) {
-        console.log('Play_onPlayer prepare' + e);
-    }
-
-    console.log('Play_onPlayer play');
-    Play_avplay.play();
-    Play_Playing = true;
+    Play_avplay.prepareAsync(function() {
+        Play_avplay.play();
+        Play_Playing = true;
+    });
 
     Main_ready(function() {
         Play_offsettime = Play_oldcurrentTime;
@@ -730,7 +716,7 @@ function Play_PlayerCheck() {
     if (Play_PlayerTime === Play_currentTime && Play_isIdleOrPlaying()) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-            console.log('Play_PlayerCheck ' + Play_PlayerCheckCount);
+
             //Don't change the first time only retry
             if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun && (Play_qualityIndex < Play_getQualitiesCount() - 1)) Play_qualityIndex++;
             else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
