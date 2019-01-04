@@ -117,6 +117,12 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and window
 ## Generate a certificate:
 
 * back to **Tizen Studio** > Tools > Certificate Manager > + > select/click **Tizen** > create a new author.. next > setup name password etc... next > Use the default Tizen... Finish > **Success** click OK
+* Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
+
+![certificate](https://fgl27.github.io/smarttv-twitch/screenshot/install/certificate.png)
+
+* If you click in finish and you see the above image just go to next step [Setup the application:](https://github.com/fgl27/smarttv-twitch#setup-the-application) if not read the bellow in order to address the Tizen issue on creating a certificate it started in late 2018 after some Tizen SDK version update
+
 * If when you click on **Finish** the app just tries and just don't do anything, is because it has a issue creating a Author, this is a bug of Tizen. To fix generate a certificate using this recommendation [Creating Certificates Samsung site](https://developer.samsung.com/galaxy-watch/develop/getting-certificates/create), but after you finish don't use that certificate because it may not work to install the app, repete the process of creating a **Tizen** certifacate ... Certificate Manager > + > select/click **Tizen** > here use the author created before by choosing "select existing..."
 
 ![certificate](https://fgl27.github.io/smarttv-twitch/screenshot/install/certificate2.png)
@@ -129,9 +135,6 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and window
 
 ![certificate](https://fgl27.github.io/smarttv-twitch/screenshot/install/certificate4.png)
 
-* Select the certificate it must have a **"V"** on the front of it (that means yo have select it) close the Certificate Manager
-
-![certificate](https://fgl27.github.io/smarttv-twitch/screenshot/install/certificate.png)
 
 ## Setup the application:
 
