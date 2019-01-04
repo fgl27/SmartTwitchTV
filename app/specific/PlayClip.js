@@ -251,7 +251,7 @@ function PlayClip_onPlayer() {
         }
 
         PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 5;
+        Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
         PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log('PlayClip_onPlayer ' + e);

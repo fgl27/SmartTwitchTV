@@ -645,7 +645,7 @@ function Play_onPlayer() {
         }
 
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 5;
+        Play_PlayerCheckTimer = 4 + Play_Buffer;
         Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
