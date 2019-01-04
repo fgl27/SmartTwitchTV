@@ -491,10 +491,11 @@ function PlayVod_onPlayer() {
         Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
         Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
         Play_avplay.setListener(PlayVod_listener);
-        if (Main_Is4k && !Play_4K_ModeEnable) {
-            Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-            Play_4K_ModeEnable = true;
-        }
+
+        //if (Main_Is4k && !Play_4K_ModeEnable) {
+        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+        //    Play_4K_ModeEnable = true;
+        //}
 
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4 + PlayVod_Buffer;

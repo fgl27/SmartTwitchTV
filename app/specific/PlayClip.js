@@ -245,10 +245,10 @@ function PlayClip_onPlayer() {
         //https://developer.samsung.com/tv/develop/guides/multimedia/4k-uhd-video
         //Live streams and VOD use h264 with is supported
         //So set it to FALSE
-        if (Main_Is4k && Play_4K_ModeEnable) {
-            Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
-            Play_4K_ModeEnable = false;
-        }
+        //if (Main_Is4k && Play_4K_ModeEnable) {
+        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
+        //    Play_4K_ModeEnable = false;
+        //}
 
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
