@@ -497,7 +497,7 @@ function PlayVod_onPlayer() {
         }
 
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 6;
+        Play_PlayerCheckTimer = 4 + PlayVod_Buffer;
         PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
         console.log('PlayVod_onPlayer ' + e);
