@@ -1,6 +1,11 @@
 function en_USLang() {
+    // This is a false/true var change if in yours language day comes first eg (27/12/2010) day 27 month 12 year 2010
     Main_IsDayFirst = false;
+
+    // this is the size of side pannel a ajust may be needed here so it can fit all words in the horizontal axis
     document.getElementById("side_panel").style.width = "17%";
+
+    //Bellow are variable to translate
     STR_REFRESH = "Refresh and back to top";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
