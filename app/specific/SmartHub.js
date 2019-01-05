@@ -35,10 +35,7 @@ function SmartHub_Start() {
     SmartHub_previewData = 0;
     if (SmartHub_emptyUser) {
         try {
-            console.log('SmartHub_BasePreviewDataNoUser');
-            var temp = JSON.stringify(SmartHub_BasePreviewDataNoUser);
-            console.log(temp);
-            webapis.preview.setPreviewData(temp);
+            webapis.preview.setPreviewData(SmartHub_BasePreviewDataNoUser);
         } catch (ex) {
             console.log(ex.message);
         }
@@ -141,10 +138,7 @@ function SmartHub_msetPreviewData() {
         webapis.preview.setPreviewData('{}', function() {
             Main_ready(function() {
                 try {
-                    console.log('SmartHub_previewDataGenerator');
-                    var temp = SmartHub_previewDataGenerator();
-                    console.log(temp);
-                    webapis.preview.setPreviewData(temp, function() {
+                    webapis.preview.setPreviewData(SmartHub_previewDataGenerator(), function() {
                         window.setTimeout(SmartHub_cleanVector, 1000);
                     });
                 } catch (ex) {
