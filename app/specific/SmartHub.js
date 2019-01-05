@@ -35,7 +35,7 @@ function SmartHub_Start() {
     SmartHub_previewData = 0;
     if (SmartHub_emptyUser) {
         try {
-            webapis.preview.setPreviewData(SmartHub_BasePreviewDataNoUser);
+            webapis.preview.setPreviewData(JSON.stringify(SmartHub_BasePreviewDataNoUser));
         } catch (ex) {
             console.log(ex.message);
         }
