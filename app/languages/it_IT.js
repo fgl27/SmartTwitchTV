@@ -78,9 +78,9 @@ function it_ITLang() {
     STR_VERSION = "Version: ";
     STR_TWITCH_TV = "Twitch.TV";
     STR_CLOSE_THIS = "Premi indietro per chiudere.";
-    STR_PLAYER = "riguardo il Player:";
+    STR_PLAYER = "Riguardo il Player:";
     STR_CHAT = "Riguardo la Chat:";
-    STR_GENERAL = "General Related:";
+    STR_GENERAL = "Generali:";
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Versione attualmente installata ";
     STR_LATEST_VERSION = " ultima versione disponibile ";
