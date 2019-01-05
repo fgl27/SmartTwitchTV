@@ -197,6 +197,7 @@ function Main_loadTranslations(device) {
             else Settings_CheckLang(lang);
 
             if (lang.indexOf('pt_') !== -1) pt_BRLang();
+            else if (lang.indexOf('it_') !== -1) it_ITLang();
 
             console.log("language is " + lang);
             DefaultLang();
