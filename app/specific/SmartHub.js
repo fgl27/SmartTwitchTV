@@ -14,8 +14,8 @@ var SmartHub_SmartHubResume = false;
 var SmartHub_followerUsername = '';
 var SmartHub_previewData = 0;
 
-var SmartHub_BasePreviewData;
-var SmartHub_BasePreviewDataNoUser;
+var SmartHub_BasePreviewData = {};
+var SmartHub_BasePreviewDataNoUser = {};
 //Variable initialization end
 
 function SmartHub_Start() {
