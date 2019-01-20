@@ -300,6 +300,10 @@ function SmartHub_EventListener() {
                     ExitScreen = Main_values.Main_Go;
                     Main_values.Main_Go = ScreenIdx;
 
+                    if (Main_values.Search_isSearching) Main_RestoreTopLabel();
+                    Main_values.Search_isSearching = false;
+                    Main_values.Games_return = false;
+
                     if (SwitchScreen) {
                         Main_values.Main_Before = ExitScreen;
                         Main_ExitCurrent(ExitScreen);
