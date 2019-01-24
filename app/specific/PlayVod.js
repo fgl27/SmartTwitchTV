@@ -185,8 +185,10 @@ function PlayVod_updateStreamerInfo() {
 function PlayVod_updateStreamerInfoError() {
     PlayVod_loadingInfoDataTry++;
     if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-        PlayVod_loadingInfoDataTimeout += 2000;
-        PlayVod_updateStreamerInfo();
+        PlayVod_loadingInfoDataTimeout += 500;
+        window.setTimeout(function() {
+            if (PlayVod_isOn) PlayVod_updateStreamerInfo();
+        }, 750);
     } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamerInfo, 2500);
 }
 
