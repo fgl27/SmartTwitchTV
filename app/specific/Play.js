@@ -243,7 +243,7 @@ function Play_Start() {
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     //reset channel logo to prevent another channel logo
-    document.getElementById('stream_info_icon').setAttribute('data-src', IMG_404_LOGO);
+    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
     Main_textContent("stream_info_name", (Main_values.Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname));
 
     Main_values.Play_WasPlaying = 1;
