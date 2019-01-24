@@ -257,7 +257,8 @@ function Play_Start() {
 
     Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
-    Main_textContent("stream_live_time", STR_SINCE + Play_timeMs(0) + STR_AGO);
+    Play_created = Play_timeMs(0);
+    Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
     Main_ShowElement('chat_frame');
     Main_HideElement('chat_box');
     Main_HideElement('progress_bar_div');
@@ -272,18 +273,18 @@ function Play_Start() {
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
-    Play_updateStreamInfoStart();
-    Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
     Play_qualitiesFound = 0;
     Play_tokenResponse = 0;
     Play_playlistResponse = 0;
     Play_playingTry = 0;
     Play_state = Play_STATE_LOADING_TOKEN;
     Play_isOn = true;
-    document.addEventListener('visibilitychange', Play_Resume, false);
     Play_Playing = false;
+    document.addEventListener('visibilitychange', Play_Resume, false);
+    Play_updateStreamInfoStart();
     Play_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
+    Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
 }
 
 function Play_Resume() {
@@ -333,6 +334,10 @@ function Play_ResumeAfterOnline() {
 function Play_updateStreamInfoStart() {
     var xmlHttp = new XMLHttpRequest();
 
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id, true);
+    xmlHttp.timeout = Play_loadingInfoDataTimeout;
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
@@ -364,19 +369,17 @@ function Play_updateStreamInfoStart() {
             }
         }
     };
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id + '?' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = Play_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.send(null);
 }
 
 function Play_updateStreamInfoStartError() {
-    Play_loadingInfoDataTry++;
     if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
-        Play_loadingInfoDataTimeout += 2000;
-        Play_updateStreamInfoStart();
+        Play_loadingInfoDataTimeout += 500;
+        window.setTimeout(function() {
+            if (Play_isOn) Play_updateStreamInfoStart();
+        }, 750);
     }
+    Play_loadingInfoDataTry++;
 }
 
 function Play_updateStreamInfo() {
