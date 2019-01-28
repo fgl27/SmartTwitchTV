@@ -242,6 +242,11 @@ function SmartHub_EventListener() {
         for (var i = 0; i < appControlData.length; i++) {
             if (appControlData[i].key === 'PAYLOAD') {
                 actionData = JSON.parse(appControlData[i].value[0]).values;
+
+                if (Main_values.Search_isSearching) Main_RestoreTopLabel();
+                Main_values.Search_isSearching = false;
+                Main_values.Games_return = false;
+
                 if (JSON.parse(actionData).videoIdx) {
 
                     actionData = JSON.parse(actionData);
@@ -277,10 +282,6 @@ function SmartHub_EventListener() {
                     Main_values.Main_gameSelected = GameIdx;
                     Main_values.Main_Go = Main_aGame;
 
-                    if (Main_values.Search_isSearching) Main_RestoreTopLabel();
-                    Main_values.Search_isSearching = false;
-                    Main_values.Games_return = false;
-
                     if (ExitScreen) {
                         Main_values.Main_Before = BeforeScreen;
                         Main_ExitCurrent(BeforeScreen);
@@ -300,9 +301,6 @@ function SmartHub_EventListener() {
                     ExitScreen = Main_values.Main_Go;
                     Main_values.Main_Go = ScreenIdx;
 
-                    if (Main_values.Search_isSearching) Main_RestoreTopLabel();
-                    Main_values.Search_isSearching = false;
-                    Main_values.Games_return = false;
 
                     if (SwitchScreen) {
                         Main_values.Main_Before = ExitScreen;
