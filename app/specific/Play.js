@@ -861,8 +861,8 @@ function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
 function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
-        Play_exitMain();
         Main_values.Play_WasPlaying = 0;
+        Play_exitMain();
     }
 }
 
