@@ -105,29 +105,24 @@ function Chat_loadBadgesChannel(id) {
 }
 
 function Chat_loadBadgesChannelRequest(id) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display', true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display', true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Chat_Id === id) Chat_loadBadgesChannelSuccess(xmlHttp.responseText, id);
-                    return;
-                } else {
-                    if (Chat_Id === id) Chat_loadBadgesChannelError(id);
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (Chat_Id === id) Chat_loadBadgesChannelSuccess(xmlHttp.responseText, id);
+                return;
+            } else {
+                if (Chat_Id === id) Chat_loadBadgesChannelError(id);
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        if (Chat_Id === id) Chat_loadBadgesChannelError(id);
-    }
+    xmlHttp.send(null);
 }
 
 function Chat_loadBadgesChannelError(id) {
@@ -343,31 +338,26 @@ function Chat_loadChatNext(id) {
 }
 
 function Chat_loadChatNextRequest(id) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
+        '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : ''), true);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : ''), true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                    return;
-                } else {
-                    if (Chat_Id === id) Chat_loadChatNextError(id);
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                return;
+            } else {
+                if (Chat_Id === id) Chat_loadChatNextError(id);
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        if (Chat_Id === id) Chat_loadChatNextError(id);
-    }
+    xmlHttp.send(null);
 }
 
 function Chat_loadChatNextError(id) {
