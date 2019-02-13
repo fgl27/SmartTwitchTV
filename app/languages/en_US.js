@@ -207,7 +207,7 @@ function en_USLang() {
     STR_SWITCH_TYPE = "Switch Type (Most recent or views)";
     STR_ENABLE = "Enable";
     STR_DISABLE = "Disable";
-    STR_RESTORE_PLAYBACK_WARN = "The app was closed wiling playing, restoring playback";
+    STR_RESTORE_PLAYBACK_WARN = "The app was closed willing playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
     STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app may be closed by the system to free memory. In this case the app saves what it was playing and restores the playback when reopened";
     STR_CHAT_FONT = "Chat font size";
@@ -225,4 +225,5 @@ function en_USLang() {
     STR_CONTENT_LANG = "Content language";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "Empty game fro this";
+    STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
 }

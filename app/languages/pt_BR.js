@@ -206,4 +206,5 @@ function pt_BRLang() {
     STR_CONTENT_LANG = "Linguá do conteúdo";
     STR_LANG_ALL = "Todas";
     STR_NO_GAME = "Jogo vazio para este";
+    STR_JUMP_BUFFER_WARNING = "Não é possivel pular durante um buffer";
 }
