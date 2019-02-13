@@ -189,7 +189,11 @@ function Play_SetAvPlayGlobal() {
 
 var PlayStart_listener = {
     onstreamcompleted: function() {
-        Play_avplay.stop();
+        try {
+            Play_avplay.stop();
+        } catch (e) {
+            console.log(e + " PlayStart_listener");
+        }
     }
 };
 
@@ -801,7 +805,11 @@ function Play_isNotplaying() {
 }
 
 function Play_offPlayer() {
-    Play_avplay.stop();
+    try {
+        Play_avplay.stop();
+    } catch (e) {
+        console.log('Play_offPlayer ' + e);
+    }
 }
 
 function Play_updateCurrentTime(currentTime) {
