@@ -66,7 +66,6 @@ var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
-var Play_JustStartPlaying = true;
 var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
@@ -639,42 +638,41 @@ var Play_listener = {
 function Play_onPlayer() {
     Play_showBufferDialog();
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+
     try {
         Play_avplay.stop();
         Play_avplay.open(Play_playingUrl);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
-
-        Play_avplay.setListener(Play_listener);
-
-        //if (Main_Is4k && !Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-        //    Play_4K_ModeEnable = true;
-        //}
-
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + Play_Buffer;
-        Play_PlayerCheckQualityChanged = false;
-        window.clearTimeout(Play_CheckChatId);
-        Play_ChatLoadStarted = false;
     } catch (e) {
-        console.log('Play_onPlayer ' + e);
+        console.log('Play_onPlayer open ' + e);
     }
 
-    Play_JustStartPlaying = true;
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+
+    //Old 4k check no longer used because causes problem
+    //leave it here to be recheck on a future 4k streams from twitch
+    //if (Main_Is4k && !Play_4K_ModeEnable) {
+    //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+    //    Play_4K_ModeEnable = true;
+    //}
+
+    Play_avplay.setListener(Play_listener);
+    window.clearTimeout(Play_CheckChatId);
+    Play_ChatLoadStarted = false;
+    Play_offsettime = Play_oldcurrentTime;
+
     //Use prepareAsync as prepare() only can freeze up the app
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         Play_Playing = true;
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
 
-    Main_ready(function() {
-        Play_offsettime = Play_oldcurrentTime;
-        Play_hidePanel();
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(Play_streamCheck);
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-    });
+    Play_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + Play_Buffer;
+    Play_PlayerCheckQualityChanged = false;
+    window.clearInterval(Play_streamCheck);
+    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {
@@ -1420,14 +1418,17 @@ function Play_BottomOptionsPressed(PlayVodClip) {
     else if (Play_Panelcounter === 1) {
         if (PlayVodClip === 1) {
             Play_qualityChanged();
+            Play_hidePanel();
         } else if (PlayVodClip === 2) {
             if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
+            PlayVod_hidePanel();
         } else if (PlayVodClip === 3) {
             if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
+            PlayClip_hidePanel();
         }
         Play_clearPause();
     } else if (Play_Panelcounter === 2) {

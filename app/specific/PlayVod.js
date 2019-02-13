@@ -478,47 +478,42 @@ function PlayVod_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
-
-        if (Main_values.vodOffset > ChannelVod_DurationSeconds) Main_values.vodOffset = 0;
-
-        if (Main_values.vodOffset) {
-            Chat_offset = Main_values.vodOffset;
-            Chat_Init();
-            Play_avplay.seekTo(Main_values.vodOffset * 1000);
-        } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
-            Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
-            Play_clearPause();
-        }
-
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
-        Play_avplay.setListener(PlayVod_listener);
-
-        //if (Main_Is4k && !Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-        //    Play_4K_ModeEnable = true;
-        //}
-
-        PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + PlayVod_Buffer;
-        PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log('PlayVod_onPlayer ' + e);
+        console.log('PlayVod_onPlayer open ' + e);
     }
+
+    if (Main_values.vodOffset > ChannelVod_DurationSeconds) Main_values.vodOffset = 0;
+
+    if (Main_values.vodOffset) {
+        Chat_offset = Main_values.vodOffset;
+        Chat_Init();
+        Play_avplay.seekTo(Main_values.vodOffset * 1000);
+    } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
+        try {
+            Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+        } catch (e) {
+            console.log('PlayVod_onPlayer seekTo ' + e);
+        }
+        Play_clearPause();
+    }
+
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
+    Play_avplay.setListener(PlayVod_listener);
 
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         PlayVod_Playing = true;
         ChannelVod_DurationSeconds = Play_avplay.getDuration() / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
 
-    Main_ready(function() {
-        PlayVod_hidePanel();
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(PlayVod_streamCheck);
-        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-    });
+    PlayVod_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + PlayVod_Buffer;
+    PlayVod_PlayerCheckQualityChanged = false;
+    window.clearInterval(PlayVod_streamCheck);
+    PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayVod_PlayerCheck() {

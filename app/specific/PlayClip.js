@@ -9,7 +9,6 @@ var PlayClip_isOn = false;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 2000;
 var PlayClip_loadingDataTryMax = 5;
-var PlayClip_JustStartPlaying = true;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
@@ -232,45 +231,36 @@ function PlayClip_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayClip_playingUrl);
-
-        if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
-            Play_avplay.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
-            Play_clearPause();
-        }
-
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-        Play_avplay.setListener(PlayClip_listener);
-        //Twitch clips are encoded with avc1 format with are not supported by the 4k mode
-        //https://developer.samsung.com/tv/develop/guides/multimedia/4k-uhd-video
-        //Live streams and VOD use h264 with is supported
-        //So set it to FALSE
-        //if (Main_Is4k && Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
-        //    Play_4K_ModeEnable = false;
-        //}
-
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
-        PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log('PlayClip_onPlayer ' + e);
+        console.log('PlayClip_onPlayer open ' + e);
     }
 
-    PlayClip_JustStartPlaying = true;
+    if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
+        try {
+            Play_avplay.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+        } catch (e) {
+            console.log('PlayClip_onPlayer seekTo ' + e);
+        }
+        Play_clearPause();
+    }
+
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_avplay.setListener(PlayClip_listener);
+
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         PlayClip_DurationSeconds = Play_avplay.getDuration() / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
 
-    Main_ready(function() {
-        Play_HideWarningDialog();
-        PlayClip_hidePanel();
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(PlayClip_streamCheck);
-        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
-    });
+    PlayClip_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
+    PlayClip_PlayerCheckQualityChanged = false;
+
+    window.clearInterval(PlayClip_streamCheck);
+    PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayClip_Resume() {
