@@ -220,4 +220,5 @@ function it_ITLang() {
     STR_CONTENT_LANG = "Lingua Contenuti";
     STR_LANG_ALL = "Tutto";
     STR_NO_GAME = "Nessun Gioco";
+    STR_JUMP_BUFFER_WARNING = "Non è possibile saltare durante un buffering";
 }
