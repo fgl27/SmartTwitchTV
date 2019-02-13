@@ -249,6 +249,7 @@ function Play_Start() {
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
+    PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
     if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
@@ -1106,6 +1107,9 @@ function Play_ChatSize(showDialog) {
 
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage);
 
+    window.setTimeout(function() {
+        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
+    }, 500);
     Main_setItem('ChatSizeValue', Play_ChatSizeValue);
 }
 
@@ -1135,7 +1139,7 @@ function Play_ChatPosition() {
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
     //offset in relation to the botton panel controls
-    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
+    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && PlayClip_HasVOD && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
     else if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
 
     Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
@@ -1143,6 +1147,7 @@ function Play_ChatPosition() {
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
+    if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     Main_setItem('ChatPositionsValue', Play_ChatPositions);
 }
 

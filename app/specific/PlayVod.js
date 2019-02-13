@@ -68,6 +68,7 @@ function PlayVod_Start() {
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
+    PlayClip_HasVOD = true;
 
     Main_values.Play_isHost = false;
 
@@ -712,7 +713,7 @@ function PlayVod_jump() {
         if (PlayVod_isOn) Chat_offset = PlayVod_TimeToJump;
         else Chat_offset = ChannelVod_vodOffset;
 
-        Chat_Init();
+        if (PlayClip_HasVOD) Chat_Init();
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -927,7 +928,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 1;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -958,7 +959,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 1) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -1023,8 +1024,9 @@ function PlayVod_handleKeyDown(e) {
                 if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
                 else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
-                    else Play_BottomOptionsPressed(2);
+                    if (!PlayVod_PanelY) {
+                        if (PlayVod_addToJump && !Play_BufferDialogVisible()) PlayVod_jump();
+                    } else Play_BottomOptionsPressed(2);
                 } else PlayVod_showPanel(true);
                 break;
             case KEY_RETURN:
