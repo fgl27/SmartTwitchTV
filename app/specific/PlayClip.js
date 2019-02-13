@@ -473,7 +473,7 @@ function PlayClip_handleKeyDown(e) {
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 0;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -498,7 +498,7 @@ function PlayClip_handleKeyDown(e) {
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 0) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -557,8 +557,10 @@ function PlayClip_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
-                    else Play_BottomOptionsPressed(3);
+                    if (!PlayVod_PanelY) {
+                        if (PlayVod_addToJump && !Play_BufferDialogVisible()) PlayVod_jump();
+                    } else Play_BottomOptionsPressed(3);
+
                 } else PlayClip_showPanel();
                 break;
             case KEY_RETURN:

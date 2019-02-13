@@ -376,7 +376,8 @@ function Chat_NoVod() {
     Chat_Id = 0;
     var div = '&nbsp;';
     div += '<span class="message">';
-    div += STR_BR + STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT;
+    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
+    div += STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT;
     div += '</span>';
 
     var elem = document.createElement('div');
