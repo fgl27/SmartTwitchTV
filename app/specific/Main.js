@@ -1090,7 +1090,9 @@ function Main_Checktylesheet() {
     var stylesheet = document.styleSheets;
     for (var i = 0; i < stylesheet.length; i++)
         if (stylesheet[i].href !== null)
-            if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
+            try {
+                if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
+            } catch (e) {}
 
     // video-js is a old stylesheet present on old releases no need to try to reload it as is empty
 }
