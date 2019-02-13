@@ -179,11 +179,11 @@ function Play_SetAvPlayGlobal() {
     try {
         Play_avplay.stop();
         Play_avplay.open(GIT_IO + "temp.mp4");
-        Play_SetFullScreen(Play_isFullScreen);
-        Play_avplay.setListener(PlayStart_listener);
     } catch (e) {
         console.log(e + " Play_SetAvPlayGlobal()");
     }
+    Play_SetFullScreen(Play_isFullScreen);
+    Play_avplay.setListener(PlayStart_listener);
     Play_avplay.prepareAsync();
 }
 
@@ -202,13 +202,21 @@ function Play_SetFullScreen(isfull) {
             if (!Play_ChatEnable) Play_hideChat();
             Play_ChatSize(false);
         }
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        try {
+            Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        } catch (e) {
+            console.log(e + " Play_SetFullScreen true");
+        }
     } else {
         Play_ChatPositionsBF = Play_ChatPositions;
         Play_ChatEnableBF = Play_ChatEnable;
         Play_ChatSizeValueBF = Play_ChatSizeValue;
         // Chat is 25% of the screen, resize to 75% and center left
-        Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+        try {
+            Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+        } catch (e) {
+            console.log(e + " Play_SetFullScreen false");
+        }
         Play_ChatPositions = 0;
         Play_showChat();
         Play_ChatEnable = true;
