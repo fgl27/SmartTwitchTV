@@ -109,7 +109,6 @@ function SmartHub_previewDataSuccess(responseText) {
 
     if (!SmartHub_previewData) {
         SmartHub_followerChannels = '';
-
         for (var x = 0; x < response.follows.length; x++) {
             SmartHub_followerChannels += response.follows[x].channel._id + ',';
         }

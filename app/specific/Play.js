@@ -12,6 +12,7 @@ var Play_isFullScreen = true;
 var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
+var Play_isHost;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -262,8 +263,8 @@ function Play_Start() {
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
 
+    Play_isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
-    Main_values.Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -358,7 +359,7 @@ function Play_updateStreamInfoStart() {
             if (xmlHttp.status === 200) {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.stream !== null) {
-                    if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
+                    if (Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
                     else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
                     Main_values.Play_selectedChannel_id = response.stream.channel._id;
