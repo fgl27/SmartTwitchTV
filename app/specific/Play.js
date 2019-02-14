@@ -272,8 +272,8 @@ function Play_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Play_created = Play_timeMs(0);
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
-    Main_ShowElement('chat_frame');
     Main_HideElement('chat_box');
+    Main_ShowElement('chat_frame');
     Main_HideElement('progress_bar_div');
 
     Play_EndSet(1);
@@ -689,6 +689,10 @@ function Play_onPlayer() {
 }
 
 function Play_loadChat() {
+    if (Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
     Play_ChatLoadStarted = true;
     window.clearInterval(Play_ChatFixPositionId);
 
@@ -883,6 +887,7 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream() {
     Play_isOn = false;
+    Chat_Clear();
     Play_ClearPlayer();
     Play_ClearPlay();
     window.clearInterval(Play_ChatFixPositionId);
@@ -1756,7 +1761,17 @@ function Play_handleKeyDown(e) {
                 if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_GREEN:
-                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+                if (Main_values.Play_ChatForceDisable) {
+                    Play_Chatobj.src = 'about:blank';
+                    Chat_Disable();
+                } else {
+                    Main_HideElement('chat_box');
+                    Main_ShowElement('chat_frame');
+                    Play_loadChat();
+                }
+                Main_SaveValues();
                 break;
             case KEY_RED:
                 Play_isFullScreen = !Play_isFullScreen;

@@ -130,6 +130,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_12 = "Start a search: Color button blue (D) or, open information panel, navigate using use Directional pad (left/right) to \"Search\" and press select";
     STR_CONTROLS_PLAY_13 = "Open Channel or Game content: Open information panel, navigate using use Directional pad (left/right) to \"Channel or Game content\" and press select";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
+    STR_CONTROLS_PLAY_15 = "Force disable the chat: Color button green (B), with this the chat will not load content, this is useful on a stream with too many viewers were the chat can lag the app.";
     STR_UPDATE_AVAILABLE = "There is a update available, check it in the app github releases ";
     STR_UPDATE_MAIN_0 = "Be aware that after the update (reinstall of the app using latest release) all saved users, keys or etc configuration of the app is lost";
     STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";
@@ -226,4 +227,5 @@ function en_USLang() {
     STR_LANG_ALL = "All";
     STR_NO_GAME = "Empty game fro this";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
+    STR_CHAT_DISABLE = "Chat is disabled, use key Green or B to enable";
 }

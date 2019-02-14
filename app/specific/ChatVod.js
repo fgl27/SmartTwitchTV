@@ -25,6 +25,10 @@ function Chat_Preinit() {
 }
 
 function Chat_Init() {
+    if (Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
     if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
     Chat_Clear();
 
@@ -373,11 +377,22 @@ function Chat_loadChatNextError(id) {
 }
 
 function Chat_NoVod() {
+    Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
+}
+
+function Chat_Disable() {
+    Main_HideElement('chat_frame');
+    Main_ShowElement('chat_box');
+    Chat_Clear();
+    Chat_SingleLine(STR_CHAT_DISABLE);
+}
+
+function Chat_SingleLine(Line) {
     Chat_Id = 0;
     var div = '&nbsp;';
     div += '<span class="message">';
     div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
-    div += STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT;
+    div += Line;
     div += '</span>';
 
     var elem = document.createElement('div');
