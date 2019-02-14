@@ -77,7 +77,13 @@ Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and window
 * I used the **Tizen Studio 2.4 with IDE installer** (Any version above that must work well), download the 32/64 bit according to yours CPU architecture, on windows it is a .exe file around 480MB just install it like any other .exe file, on Linux the file is a executable binary 480Mb size, to run it first give the file permission to execute, properties >  permission > Execute... mark, then just drag the file to a terminal window and click enter, **On Linux it may ask you to use apt-get to install missing dependencies below are the one asked by Tizen Studio 2.4 last time I installed it**
 #
 
-	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby
+	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby libwebkitgtk-1.0-0 libpng12-0
+
+**If you get a error** "Package libpng12-0 is not available... etc..." do the bellow, if no error skip to **"Install Java SDK"**
+
+	sudo apt-get install libwebkitgtk-1.0-0 rpm2cpio expect python2.7 ruby libwebkitgtk-1.0-0
+	wget "http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb"
+	sudo dpkg -i "libpng12-0_1.2.54-1ubuntu1.1_amd64.deb"
 
 #
 * Install Java SDK, I install this app with **Open JDK java 8** on windows go to [Java SE Development Kit 8 Downloads
