@@ -57,6 +57,7 @@ var Main_values = {
     "gameSelectedOld": '',
     "Games_return": false,
     "Search_isSearching": false,
+    "Play_ChatForceDisable": false,
 };
 
 var Main_LastClickFinish = true;

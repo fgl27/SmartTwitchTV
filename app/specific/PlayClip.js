@@ -622,6 +622,18 @@ function PlayClip_handleKeyDown(e) {
             case KEY_YELLOW:
                 if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
+            case KEY_GREEN:
+                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                if (!PlayClip_HasVOD) return;
+                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+                if (Main_values.Play_ChatForceDisable) Chat_Disable();
+                else if (PlayClip_HasVOD) {
+                    PlayVod_currentTime = 0;
+                    Chat_offset = ChannelVod_vodOffset;
+                    Chat_Init();
+                }
+                Main_SaveValues();
+                break;
             case KEY_RED:
                 Play_isFullScreen = !Play_isFullScreen;
                 Play_SetFullScreen(Play_isFullScreen);
