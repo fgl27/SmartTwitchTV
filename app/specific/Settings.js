@@ -74,6 +74,7 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
+    Main_UnSetTopOpacity();
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     Main_textContent('top_bar_user', STR_SETTINGS);

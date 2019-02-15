@@ -640,6 +640,8 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_AGameClip) Screens_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
+
+    if (Main_isElementShowing('settings_scroll')) Settings_exit();
 }
 
 function Main_RestoreTopLabel() {
