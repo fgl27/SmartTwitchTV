@@ -1025,16 +1025,18 @@ function PlayVod_handleKeyDown(e) {
                 else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
                 else if (Play_isPanelShown()) {
                     if (!PlayVod_PanelY) {
-                        if (PlayVod_addToJump && !Play_BufferDialogVisible()) PlayVod_jump();
-                        else {
-                            Play_clearHidePanel();
-                            PlayVod_setHidePanel();
-                            Play_IsWarning = true;
-                            Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
-                            window.setTimeout(function() {
-                                Play_IsWarning = false;
-                                Play_HideWarningDialog();
-                            }, 1000);
+                        Play_clearHidePanel();
+                        PlayVod_setHidePanel();
+                        if (PlayVod_addToJump) {
+                            if (!Play_BufferDialogVisible()) PlayVod_jump();
+                            else {
+                                Play_IsWarning = true;
+                                Play_showWarningDialog(STR_JUMP_BUFFER_WARNING);
+                                window.setTimeout(function() {
+                                    Play_IsWarning = false;
+                                    Play_HideWarningDialog();
+                                }, 1000);
+                            }
                         }
                     } else Play_BottomOptionsPressed(2);
                 } else PlayVod_showPanel(true);
