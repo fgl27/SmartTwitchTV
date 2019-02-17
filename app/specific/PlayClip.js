@@ -590,7 +590,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (PlayClip_HasVOD) {
+                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
