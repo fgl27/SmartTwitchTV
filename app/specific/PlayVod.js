@@ -1047,9 +1047,10 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                else Chat_Pause();
-
+                if (!Main_values.Play_ChatForceDisable) {
+                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                    else Chat_Pause();
+                }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:
