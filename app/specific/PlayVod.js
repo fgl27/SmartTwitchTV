@@ -311,7 +311,7 @@ function PlayVod_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
