@@ -62,6 +62,8 @@ The key **INFO** is also map in the app with the same functions as the **GUIDE**
 ## Player controls
 ![Players](https://fgl27.github.io/smarttv-twitch/screenshot/controls_play_simple.png)
 
+Installation instructions:
+==============
 
 Installation guide **Tizen Studio** (tested on Linux Ubuntu 16 and up and windows 10 64 bits)
 ==============
