@@ -280,13 +280,23 @@ function PlayVod_Resume() {
         if (!SmartHub_SmartHubResume) {
             if (PlayVod_isOn) {
                 PlayVod_Playing = false;
-                PlayVod_onPlayer();
+                Play_ResumeAfterOnlineCounter = 0;
+                if (navigator.onLine) PlayVod_onPlayer();
+                else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
                 Chat_Play(Chat_Id);
                 Play_EndSet(2);
                 PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
             }
         }
     }
+}
+
+function PlayVod_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        PlayVod_onPlayer();
+    }
+    Play_ResumeAfterOnlineCounter++;
 }
 
 function PlayVod_SaveOffset() {

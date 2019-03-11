@@ -338,7 +338,7 @@ function Play_Resume() {
 }
 
 function Play_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 100) {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_loadData();
     }
