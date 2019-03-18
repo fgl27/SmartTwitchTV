@@ -455,11 +455,11 @@ function Play_loadDataRequest() {
 
     var theUrl;
     if (Play_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
+        theUrl = proxyurl + 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
+        theUrl = proxyurl + 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
@@ -1535,7 +1535,7 @@ function Play_CheckIdError() {
 
 function Play_loadDataCheckHost() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
+    xmlHttp.open("GET", proxyurl + 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
         encodeURIComponent(Main_values.Play_selectedChannel_id), true);
     xmlHttp.timeout = Play_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -1640,6 +1640,7 @@ function Play_handleKeyDown(e) {
         }
     } else {
         switch (e.keyCode) {
+            case KEY_KEYBOARD_SPACE:
             case KEY_INFO:
             case KEY_CHANNELGUIDE:
                 if (Play_isFullScreen) {
