@@ -1,48 +1,6 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family: 'Sans', sans-serif;
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'dejavu-sans';
-  src: url('fonts/dejavu-sans.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/*Only Tags and some etc as BabelStoneHan is very big and can break max table size*/
-@font-face {
-  font-family: 'BabelStoneHan';
-  src: url('fonts/BabelStoneHan.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Jomolhari';
-  src: url('fonts/Jomolhari.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'CambriaMath';
-  src: url('fonts/CambriaMath.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'CODE2000';
-  src: url('fonts/CODE2000.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "icons";
   src:url("fonts/icons.woff") format("woff");
   font-weight: normal;
