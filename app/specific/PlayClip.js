@@ -229,28 +229,28 @@ function PlayClip_onPlayer() {
     Play_showBufferDialog();
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     try {
-        Play_avplay.stop();
-        Play_avplay.open(PlayClip_playingUrl);
+        Play_videojs.stop();
+        Play_videojs.open(PlayClip_playingUrl);
     } catch (e) {
         console.log('PlayClip_onPlayer open ' + e);
     }
 
-    if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
+    if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_videojs.getCurrentTime()) {
         try {
-            Play_avplay.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+            Play_videojs.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
         } catch (e) {
             console.log('PlayClip_onPlayer seekTo ' + e);
         }
         Play_clearPause();
     }
 
-    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-    Play_avplay.setListener(PlayClip_listener);
+    Play_videojs.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_videojs.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_videojs.setListener(PlayClip_listener);
 
-    Play_avplay.prepareAsync(function() {
-        Play_avplay.play();
-        PlayClip_DurationSeconds = Play_avplay.getDuration() / 1000;
+    Play_videojs.prepareAsync(function() {
+        Play_videojs.play();
+        PlayClip_DurationSeconds = Play_videojs.getDuration() / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
@@ -285,7 +285,7 @@ function PlayClip_PlayerCheck() {
             else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
             else {
                 PlayClip_qualityDisplay();
-                if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+                if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
                 PlayClip_qualityChanged();
                 PlayClip_PlayerCheckRun = true;
             }
@@ -313,7 +313,7 @@ function PlayClip_DropOneQuality(ConnectionDrop) {
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_qualityDisplay();
-    if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+    if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
     PlayClip_qualityChanged();
     PlayClip_PlayerCheckRun = true;
 }

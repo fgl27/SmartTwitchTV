@@ -57,7 +57,7 @@ var Play_PlayerCheckRun = false;
 var Play_Playing = false;
 var Play_Panelcounter = 1;
 var Play_IsWarning = false;
-var Play_avplay;
+var Play_videojs;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 2000;
@@ -155,6 +155,7 @@ var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger
 //Variable initialization end
 
 function Play_PreStart() {
+    Play_videojs = videojs('video_live');
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
@@ -172,30 +173,6 @@ function Play_PreStart() {
     Play_SetChatFont();
 }
 
-//this are the global set option that need to be set only once
-//and they need to be set like this to work, faking a video playback
-//function Play_SetAvPlayGlobal() {
-//    try {
-//        Play_avplay.pause();
-//        Play_avplay.open(GIT_IO + "temp.mp4");
-//    } catch (e) {
-//        console.log(e + " Play_SetAvPlayGlobal()");
-//    }
-//    Play_SetFullScreen(Play_isFullScreen);
-//    Play_avplay.setListener(PlayStart_listener);
-//    Play_avplay.prepareAsync();
-//}
-
-//var PlayStart_listener = {
-//    onstreamcompleted: function() {
-//        try {
-//            Play_avplay.pause();
-//        } catch (e) {
-//            console.log(e + " PlayStart_listener");
-//        }
-//    }
-//};
-
 function Play_SetFullScreen(isfull) {
     if (isfull) {
         if (Play_ChatPositionsBF !== undefined) {
@@ -206,7 +183,7 @@ function Play_SetFullScreen(isfull) {
             Play_ChatSize(false);
         }
         try {
-            Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+            Play_videojs.setDisplayRect(0, 0, screen.width, screen.height);
         } catch (e) {
             console.log(e + " Play_SetFullScreen true");
         }
@@ -216,7 +193,7 @@ function Play_SetFullScreen(isfull) {
         Play_ChatSizeValueBF = Play_ChatSizeValue;
         // Chat is 25% of the screen, resize to 75% and center left
         try {
-            Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+            Play_videojs.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
         } catch (e) {
             console.log(e + " Play_SetFullScreen false");
         }
@@ -267,7 +244,7 @@ function Play_Start() {
     Main_ShowElement('scene_channel_panel_bottom');
 
     Play_offsettimeMinus = 0;
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
     Main_HideElement('chat_box');
@@ -594,89 +571,46 @@ function Play_qualityChanged() {
     if (Play_isOn) Play_onPlayer();
 }
 
-var Play_listener = {
-    onbufferingstart: function() {
-        Play_showBufferDialog();
-        Play_bufferingcomplete = false;
-        Play_RestoreFromResume = false;
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = Play_Buffer;
-        Play_PlayerCheckQualityChanged = true;
-        // sync chat and stream
-        if (!Play_ChatLoadStarted) Play_loadChat();
-    },
-    onbufferingcomplete: function() {
-        Play_HideBufferDialog();
-        Play_bufferingcomplete = true;
-        Play_RestoreFromResume = false;
-        Main_empty('dialog_buffer_play_percentage');
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = Play_Buffer;
-        Play_PlayerCheckQualityChanged = true;
-        if (!Play_ChatLoadStarted) Play_loadChat();
-    },
-    onbufferingprogress: function(percent) {
-        if (percent < 5) Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = Play_Buffer;
-        Play_PlayerCheckQualityChanged = true;
-        //percent has a -2 offset and goes up to 98
-        if (percent < 98) {
-            Play_BufferPercentage = percent;
-            Main_textContent("dialog_buffer_play_percentage", percent + 3);
-            if (!Play_BufferDialogVisible()) Play_showBufferDialog();
-        } else {
-            Play_BufferPercentage = 0;
-            Play_HideBufferDialog();
-            Play_bufferingcomplete = true;
-            Main_empty('dialog_buffer_play_percentage');
-        }
-        if (!Play_ChatLoadStarted) Play_loadChat();
-        Play_RestoreFromResume = false;
-    },
-    oncurrentplaytime: function(currentTime) {
-        if (Play_currentTime !== currentTime) Play_updateCurrentTime(currentTime);
-    },
-    onstreamcompleted: function() {
-        Play_CheckHostStart();
-    },
-    onerror: function(eventType) {
-        if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
-            Play_CheckHostStart();
-    }
-};
-
 function Play_onPlayer() {
     Play_showBufferDialog();
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
-    try {
-        Play_avplay.stop();
-        Play_avplay.open(Play_playingUrl);
-    } catch (e) {
-        console.log('Play_onPlayer open ' + e);
-    }
+    Play_videojs.src({
+        type: "application/x-mpegURL",
+        src: Play_playingUrl
+    });
 
-    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
-    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
-
-    //Old 4k check no longer used because causes problem
-    //leave it here to be recheck on a future 4k streams from twitch
-    //if (Main_Is4k && !Play_4K_ModeEnable) {
-    //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-    //    Play_4K_ModeEnable = true;
-    //}
-
-    Play_avplay.setListener(Play_listener);
     window.clearTimeout(Play_CheckChatId);
     Play_ChatLoadStarted = false;
     Play_offsettime = Play_oldcurrentTime;
+    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
-    //Use prepareAsync as prepare() only can freeze up the app
-    Play_avplay.prepareAsync(function() {
-        Play_avplay.play();
+    if (!Play_Playing) {
+        Play_videojs.ready(function() {
+            this.isFullscreen(true);
+            this.requestFullscreen();
+            this.autoplay(true);
+
+            this.on('ended', function() {
+                Play_PannelEndStart(1);
+            });
+
+            this.on('timeupdate', function() {
+                Play_updateCurrentTime(this.currentTime());
+            });
+
+            this.on('error', function() {
+                Play_PannelEndStart(1);
+            });
+
+            this.on('loadedmetadata', function() {
+                // sync chat and stream
+                if (!Play_ChatLoadStarted) Play_loadChat();
+            });
+
+        });
         Play_Playing = true;
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-    });
+    }
 
     Play_PlayerCheckCount = 0;
     Play_PlayerCheckTimer = 4 + Play_Buffer;
@@ -729,15 +663,8 @@ function Play_CheckChat() {
     }
 }
 
-// If idle or playing, the media is be played or process to
-// So we use PlayerCheck to avaluate if we are staled fro too long or not and drop the quality
-function Play_isIdleOrPlaying() {
-    var state = Play_avplay.getState();
-    return !Play_isEndDialogVisible() && (state === 'IDLE' || state === 'PLAYING');
-}
-
 function Play_PlayerCheck() {
-    if (Play_PlayerTime === Play_currentTime && Play_isIdleOrPlaying()) {
+    if (Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
 
@@ -759,7 +686,7 @@ function Play_PlayerCheck() {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckRun = false;
     }
-    Play_PlayerTime = Play_currentTime;
+    Play_PlayerTime = Play_videojs.currentTime();
 }
 
 function Play_DropOneQuality(ConnectionDrop) {
@@ -797,7 +724,7 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                if (Play_isNotplaying()) DropOneQuality(counter > 2);
+                DropOneQuality(counter > 2);
             } else if (counter > 12) Play_EndStart(false, PlayVodClip);
         }
     };
@@ -806,15 +733,16 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
 }
 
 function Play_isNotplaying() {
-    return Play_avplay.getState() !== 'PLAYING';
+    return Play_videojs.paused();
 }
 
 function Play_offPlayer() {
-    try {
-        Play_avplay.pause();
-    } catch (e) {
-        console.log('Play_offPlayer ' + e);
-    }
+    Play_videojs.off('ended', null);
+    Play_videojs.off('timeupdate', null);
+    Play_videojs.off('error', null);
+    Play_videojs.off('loadedmetadata', null);
+    Play_videojs.off('playing', null);
+    Play_videojs.off('canplaythrough', null);
 }
 
 function Play_updateCurrentTime(currentTime) {
@@ -823,9 +751,9 @@ function Play_updateCurrentTime(currentTime) {
     if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
     if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
-    Play_oldcurrentTime = currentTime + Play_offsettime - 14000; // 14s buffer size from twitch
+    Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14s buffer size from twitch
     if (Play_isPanelShown()) {
-        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
+        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
         Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
     }
 }
@@ -903,8 +831,14 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
+    Play_videojs.pause();
     Play_hidePanel();
     Play_offPlayer();
+    Play_videojs.autoplay(false);
+    Play_videojs.src({
+        type: "video/mp4",
+        src: TEMP_MP4
+    });
     Play_clearPause();
     Play_HideWarningDialog();
     Play_HideEndDialog();
@@ -992,7 +926,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
-    if (!Play_isNotplaying()) Play_clearPause();
+    if (!Play_videojs.paused()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
@@ -1022,7 +956,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
@@ -1181,7 +1115,7 @@ function Play_hideChatBackgroundDialog() {
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
-        Play_avplay.play();
+        Play_videojs.play();
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
@@ -1198,7 +1132,7 @@ function Play_KeyPause(PlayVodClip) {
         else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
         else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
 
-        Play_avplay.pause();
+        Play_videojs.pause();
         Play_showPauseDialog();
     }
 }
@@ -1447,12 +1381,12 @@ function Play_BottomOptionsPressed(PlayVodClip) {
             Play_qualityChanged();
             Play_hidePanel();
         } else if (PlayVodClip === 2) {
-            if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
+            if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             PlayVod_hidePanel();
         } else if (PlayVodClip === 3) {
-            if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
+            if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
             PlayClip_hidePanel();
