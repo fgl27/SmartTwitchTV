@@ -695,11 +695,13 @@ function Play_loadChat() {
 
     //Clear the iframe doc to prevent false true from Play_CheckChat "indexOf('Connected') !== -1"
     var doc = Play_Chatobj.contentDocument;
-    if (doc !== undefined && doc.body !== null) {
-        doc.open();
-        doc.write("");
-        doc.close();
-    }
+    try {
+        if (doc !== undefined && doc.body !== null) {
+            doc.open();
+            doc.write("");
+            doc.close();
+        }
+    } catch (e) {}
 
     window.clearTimeout(Play_CheckChatId);
     Play_CheckChatCounter = 0;
@@ -710,8 +712,10 @@ function Play_loadChat() {
 
 function Play_CheckChat() {
     var doc = Play_Chatobj.contentDocument;
-    if (doc !== undefined && doc.body !== null)
-        Play_ChatLoadOK = doc.body.innerHTML.indexOf('Connected') !== -1; //when connected OK a "Connected" is see in the chat
+    try {
+        if (doc !== undefined && doc.body !== null)
+            Play_ChatLoadOK = doc.body.innerHTML.indexOf('Connected') !== -1; //when connected OK a "Connected" is see in the chat
+    } catch (e) {}
 
     if (!Play_ChatLoadOK) {
         if (Play_ChatLoadStarted && Play_CheckChatCounter < 7) {
@@ -1040,10 +1044,12 @@ function Play_setHidePanel() {
 // with causes the line to be half off screen, in that case the interval will fix it
 function Play_ChatFixPosition() {
     var doc = Play_Chatobj.contentDocument;
-    if (doc !== undefined && doc.body !== null) {
-        doc = doc.getElementById('chat_box');
-        if (doc) doc.scrollTop = doc.scrollHeight;
-    }
+    try {
+        if (doc !== undefined && doc.body !== null) {
+            doc = doc.getElementById('chat_box');
+            if (doc) doc.scrollTop = doc.scrollHeight;
+        }
+    } catch (e) {}
 }
 
 function Play_showChat() {
