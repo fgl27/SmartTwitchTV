@@ -57,6 +57,7 @@ var Main_values = {
     "gameSelectedOld": '',
     "Games_return": false,
     "Search_isSearching": false,
+    "Play_ChatForceDisable": false,
 };
 
 var Main_LastClickFinish = true;
@@ -123,7 +124,7 @@ var Main_DataAttribute = 'data_attribute';
 var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
-var Main_minversion = '012419';
+var Main_minversion = '022119';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_TizenVersion;
 var Main_ClockOffset = 0;
@@ -619,6 +620,8 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_AGameClip) Screens_exit();
     else if (ExitCurrent === Main_Featured) Featured_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
+
+    if (Main_isElementShowing('settings_scroll')) Settings_exit();
 }
 
 function Main_RestoreTopLabel() {
@@ -1040,13 +1043,14 @@ function Main_removeFocus(id, idArray) {
 }
 
 function Main_Checktylesheet() {
-    var stylesheet = document.styleSheets;
-    for (var i = 0; i < stylesheet.length; i++)
-        if (stylesheet[i].href !== null) {
-            try {
+    try {
+        var stylesheet = document.styleSheets;
+        for (var i = 0; i < stylesheet.length; i++)
+            if (stylesheet[i].href !== null)
                 if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
-            } catch (e) {}
-        }
+    } catch (e) {
+        console.log('Main_Checktylesheet ' + e);
+    }
 }
 
 function Main_LoadStylesheet(path) {

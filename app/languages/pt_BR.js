@@ -111,6 +111,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_12 = "Inicie uma pesquisa: Botão Azul(D) ou abra o painel de informações, navegue usando o botão Direcional (esquerda / direita) para \"Pesquisar\" e pressione a tecla selecionar";
     STR_CONTROLS_PLAY_13 = "Abra o conteúdo do canal ou jogo: abra o painel de informações, navegue usando o botão direcional (esquerda / direita) para \"Conteúdo do canal ou jogo\" e pressione a tecla selecionar";
     STR_CONTROLS_PLAY_14 = "Chat e Video lado a lado: Botão vermelho (A)";
+    STR_CONTROLS_PLAY_15 = "Desabilitar o chat froçado: Botão de cor verde (B), com este o chat não vai carregar conteúdo, isto é útil em uma stream com muitas viasualizações onde o chat pode causar lag ao aplicativo.";
     STR_UPDATE_AVAILABLE = "Tem um update disponível, verifique este na pagina github releases do aplicativo ";
     STR_UPDATE_MAIN_0 = "Esteja ciente de que, após a atualização (reinstalação do aplicativo usando a versão mais recente), todos os usuários, chaves ou configuração do aplicativo salvas serão perdidos";
     STR_UPDATE_MAIN_1 = "Há uma atualização disponível, mas o app não pôde ser atualizado automaticamente ";
@@ -206,4 +207,6 @@ function pt_BRLang() {
     STR_CONTENT_LANG = "Linguá do conteúdo";
     STR_LANG_ALL = "Todas";
     STR_NO_GAME = "Jogo vazio para este";
+    STR_JUMP_BUFFER_WARNING = "Não é possivel pular durante um buffer";
+    STR_CHAT_DISABLE = "Chat esta desativado, use a tecla Verde ou B para ativar";
 }

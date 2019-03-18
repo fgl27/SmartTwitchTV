@@ -25,8 +25,12 @@ function Chat_Preinit() {
 }
 
 function Chat_Init() {
-    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
     Chat_Clear();
+    if (Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
+    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
 
     Main_ready(function() {
         Chat_Id = (new Date()).getTime();
@@ -105,29 +109,24 @@ function Chat_loadBadgesChannel(id) {
 }
 
 function Chat_loadBadgesChannelRequest(id) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display', true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.open("GET", 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display', true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Chat_Id === id) Chat_loadBadgesChannelSuccess(xmlHttp.responseText, id);
-                    return;
-                } else {
-                    if (Chat_Id === id) Chat_loadBadgesChannelError(id);
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (Chat_Id === id) Chat_loadBadgesChannelSuccess(xmlHttp.responseText, id);
+                return;
+            } else {
+                if (Chat_Id === id) Chat_loadBadgesChannelError(id);
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        if (Chat_Id === id) Chat_loadBadgesChannelError(id);
-    }
+    xmlHttp.send(null);
 }
 
 function Chat_loadBadgesChannelError(id) {
@@ -154,7 +153,7 @@ function Chat_loadBadgesChannelSuccess(responseText, id) {
 
 function Chat_loadChat(id) {
     Chat_loadingDataTry = 0;
-    Chat_loadChatRequest(id);
+    if (Chat_Id === id) Chat_loadChatRequest(id);
 }
 
 function Chat_loadChatRequest(id) {
@@ -251,7 +250,7 @@ function Chat_MessageVectorNext(message, time) {
 }
 
 function Chat_Play(id) {
-    if (!Chat_hasEnded) {
+    if (!Chat_hasEnded && Chat_Id === id) {
         Chat_addlines = window.setInterval(function() {
             Main_Addline(id);
             Chat_div.scrollTop = Chat_div.scrollHeight;
@@ -270,11 +269,11 @@ function Chat_Pause() {
 
 function Chat_Clear() {
     // on exit cleanup the div
+    Chat_Pause();
     Chat_Id = 0;
+    Main_empty('chat_box');
     Chat_hasEnded = false;
     Chat_next = null;
-    Chat_Pause();
-    Main_empty('chat_box');
     Chat_Messages = [];
     Chat_MessagesNext = [];
     Chat_Position = 0;
@@ -339,35 +338,30 @@ function Main_Addline(id) {
 
 function Chat_loadChatNext(id) {
     Chat_loadingDataTry = 0;
-    Chat_loadChatNextRequest(id);
+    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextRequest(id);
 }
 
 function Chat_loadChatNextRequest(id) {
-    try {
+    var xmlHttp = new XMLHttpRequest();
 
-        var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
+        '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : ''), true);
 
-        xmlHttp.open("GET", 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : ''), true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                    return;
-                } else {
-                    if (Chat_Id === id) Chat_loadChatNextError(id);
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                return;
+            } else {
+                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    } catch (e) {
-        if (Chat_Id === id) Chat_loadChatNextError(id);
-    }
+    xmlHttp.send(null);
 }
 
 function Chat_loadChatNextError(id) {
@@ -384,9 +378,21 @@ function Chat_loadChatNextError(id) {
 
 function Chat_NoVod() {
     Chat_Id = 0;
+    Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
+}
+
+function Chat_Disable() {
+    Chat_Clear();
+    Main_HideElement('chat_frame');
+    Main_ShowElement('chat_box');
+    Chat_SingleLine(STR_CHAT_DISABLE);
+}
+
+function Chat_SingleLine(Line) {
     var div = '&nbsp;';
     div += '<span class="message">';
-    div += STR_BR + STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT;
+    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
+    div += Line;
     div += '</span>';
 
     var elem = document.createElement('div');

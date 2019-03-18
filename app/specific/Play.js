@@ -12,6 +12,7 @@ var Play_isFullScreen = true;
 var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
+var Play_isHost;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -66,7 +67,6 @@ var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
-var Play_JustStartPlaying = true;
 var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
@@ -178,17 +178,21 @@ function Play_SetAvPlayGlobal() {
     try {
         Play_avplay.pause();
         Play_avplay.open(GIT_IO + "temp.mp4");
-        Play_SetFullScreen(Play_isFullScreen);
-        Play_avplay.setListener(PlayStart_listener);
     } catch (e) {
         console.log(e + " Play_SetAvPlayGlobal()");
     }
+    Play_SetFullScreen(Play_isFullScreen);
+    Play_avplay.setListener(PlayStart_listener);
     Play_avplay.prepareAsync();
 }
 
 var PlayStart_listener = {
     onstreamcompleted: function() {
-        Play_avplay.pause();
+        try {
+            Play_avplay.pause();
+        } catch (e) {
+            console.log(e + " PlayStart_listener");
+        }
     }
 };
 
@@ -201,13 +205,21 @@ function Play_SetFullScreen(isfull) {
             if (!Play_ChatEnable) Play_hideChat();
             Play_ChatSize(false);
         }
-        Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        try {
+            Play_avplay.setDisplayRect(0, 0, screen.width, screen.height);
+        } catch (e) {
+            console.log(e + " Play_SetFullScreen true");
+        }
     } else {
         Play_ChatPositionsBF = Play_ChatPositions;
         Play_ChatEnableBF = Play_ChatEnable;
         Play_ChatSizeValueBF = Play_ChatSizeValue;
         // Chat is 25% of the screen, resize to 75% and center left
-        Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+        try {
+            Play_avplay.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
+        } catch (e) {
+            console.log(e + " Play_SetFullScreen false");
+        }
         Play_ChatPositions = 0;
         Play_showChat();
         Play_ChatEnable = true;
@@ -239,6 +251,7 @@ function Play_Start() {
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
+    PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
     if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
@@ -247,8 +260,8 @@ function Play_Start() {
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
 
+    Play_isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
-    Main_values.Play_DisplaynameHost = '';
     Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -257,8 +270,8 @@ function Play_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(0));
     Play_created = Play_timeMs(0);
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
-    Main_ShowElement('chat_frame');
     Main_HideElement('chat_box');
+    Main_ShowElement('chat_frame');
     Main_HideElement('progress_bar_div');
 
     Play_EndSet(1);
@@ -322,7 +335,7 @@ function Play_Resume() {
 }
 
 function Play_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 100) {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_loadData();
     }
@@ -343,7 +356,7 @@ function Play_updateStreamInfoStart() {
             if (xmlHttp.status === 200) {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.stream !== null) {
-                    if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
+                    if (Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
                     else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
                     Main_values.Play_selectedChannel_id = response.stream.channel._id;
@@ -432,7 +445,67 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadData() {
-    Play_onPlayer();
+    Play_loadingDataTry = 0;
+    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
+    Play_loadDataRequest();
+}
+
+function Play_loadDataRequest() {
+    var xmlHttp = new XMLHttpRequest();
+
+    var theUrl;
+    if (Play_state === Play_STATE_LOADING_TOKEN) {
+        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
+                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+    } else {
+        theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
+            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
+    }
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Play_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_loadingDataTry = 0;
+                if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
+            } else if (xmlHttp.status === 403) { //forbidden access
+                Play_loadDataErrorLog(xmlHttp);
+                Play_ForbiddenLive();
+            } else if (xmlHttp.status === 404) { //off line
+                Play_loadDataErrorLog(xmlHttp);
+                Play_CheckHostStart();
+            } else {
+                Play_loadDataErrorLog(xmlHttp);
+                Play_loadDataError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function Play_loadDataErrorLog(xmlHttp) {
+    if (!Main_isReleased) {
+        console.log(xmlHttp.status);
+        console.log(xmlHttp.responseText);
+    }
+}
+
+function Play_loadDataError() {
+    if (Play_isOn && Play_isLive) {
+        Play_loadingDataTry++;
+        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 10 : 0))) {
+            Play_loadingDataTimeout += 250;
+            Play_loadDataRequest();
+        } else Play_CheckHostStart();
+    }
+>>>>>>> b0763fe030e601eee11d555a92e63a3d969744d2
 }
 
 function Play_ForbiddenLive() {
@@ -575,30 +648,50 @@ var Play_listener = {
 };
 
 function Play_onPlayer() {
-//    Play_showBufferDialog();
+    Play_showBufferDialog();
+    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
-    Play_avplay = document.getElementById('video_frame');
-    Play_avplay.src = 'https://player.twitch.tv/?channel=' + Main_values.Play_selectedChannel + '&muted=false&autoplay=true';
-Play_HideWarningDialog();
-Play_HideBufferDialog();
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + Play_Buffer;
-        Play_PlayerCheckQualityChanged = false;
-        window.clearTimeout(Play_CheckChatId);
-        Play_ChatLoadStarted = false;
-    Play_JustStartPlaying = true;
-    Play_Playing = true;
+    try {
+        Play_avplay.stop();
+        Play_avplay.open(Play_playingUrl);
+    } catch (e) {
+        console.log('Play_onPlayer open ' + e);
+    }
 
-    Main_ready(function() {
-        Play_offsettime = Play_oldcurrentTime;
-        Play_hidePanel();
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+
+    //Old 4k check no longer used because causes problem
+    //leave it here to be recheck on a future 4k streams from twitch
+    //if (Main_Is4k && !Play_4K_ModeEnable) {
+    //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
+    //    Play_4K_ModeEnable = true;
+    //}
+
+    Play_avplay.setListener(Play_listener);
+    window.clearTimeout(Play_CheckChatId);
+    Play_ChatLoadStarted = false;
+    Play_offsettime = Play_oldcurrentTime;
+
+    //Use prepareAsync as prepare() only can freeze up the app
+    Play_avplay.prepareAsync(function() {
+        Play_avplay.play();
+        Play_Playing = true;
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(Play_streamCheck);
-        //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
     });
+
+    Play_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + Play_Buffer;
+    Play_PlayerCheckQualityChanged = false;
+    window.clearInterval(Play_streamCheck);
+    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {
+    if (Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
     Play_ChatLoadStarted = true;
     window.clearInterval(Play_ChatFixPositionId);
 
@@ -715,7 +808,11 @@ function Play_isNotplaying() {
 }
 
 function Play_offPlayer() {
-    Play_avplay.pause();
+    try {
+        Play_avplay.pause();
+    } catch (e) {
+        console.log('Play_offPlayer ' + e);
+    }
 }
 
 function Play_updateCurrentTime(currentTime) {
@@ -789,6 +886,7 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream() {
     Play_isOn = false;
+    Chat_Clear();
     Play_ClearPlayer();
     Play_ClearPlay();
     window.clearInterval(Play_ChatFixPositionId);
@@ -1021,6 +1119,9 @@ function Play_ChatSize(showDialog) {
 
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue - 1].percentage);
 
+    window.setTimeout(function() {
+        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
+    }, 500);
     Main_setItem('ChatSizeValue', Play_ChatSizeValue);
 }
 
@@ -1050,7 +1151,7 @@ function Play_ChatPosition() {
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
     //offset in relation to the botton panel controls
-    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
+    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && PlayClip_HasVOD && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
     else if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
 
     Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
@@ -1058,6 +1159,7 @@ function Play_ChatPosition() {
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
+    if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     Main_setItem('ChatPositionsValue', Play_ChatPositions);
 }
 
@@ -1339,14 +1441,17 @@ function Play_BottomOptionsPressed(PlayVodClip) {
     else if (Play_Panelcounter === 1) {
         if (PlayVodClip === 1) {
             Play_qualityChanged();
+            Play_hidePanel();
         } else if (PlayVodClip === 2) {
             if (!PlayVod_offsettime) PlayVod_offsettime = Play_avplay.getCurrentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
+            PlayVod_hidePanel();
         } else if (PlayVodClip === 3) {
             if (!PlayClip_offsettime) PlayClip_offsettime = Play_avplay.getCurrentTime();
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
+            PlayClip_hidePanel();
         }
         Play_clearPause();
     } else if (Play_Panelcounter === 2) {
@@ -1655,7 +1760,17 @@ console.log(e.keyCode);
                 if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_GREEN:
-                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+                if (Main_values.Play_ChatForceDisable) {
+                    Play_Chatobj.src = 'about:blank';
+                    Chat_Disable();
+                } else {
+                    Main_HideElement('chat_box');
+                    Main_ShowElement('chat_frame');
+                    Play_loadChat();
+                }
+                Main_SaveValues();
                 break;
             case KEY_RED:
                 Play_isFullScreen = !Play_isFullScreen;

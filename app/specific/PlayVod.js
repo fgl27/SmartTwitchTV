@@ -68,6 +68,7 @@ function PlayVod_Start() {
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
+    PlayClip_HasVOD = true;
 
     Main_values.Play_isHost = false;
 
@@ -279,13 +280,23 @@ function PlayVod_Resume() {
         if (!SmartHub_SmartHubResume) {
             if (PlayVod_isOn) {
                 PlayVod_Playing = false;
-                PlayVod_onPlayer();
+                Play_ResumeAfterOnlineCounter = 0;
+                if (navigator.onLine) PlayVod_onPlayer();
+                else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
                 Chat_Play(Chat_Id);
                 Play_EndSet(2);
                 PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
             }
         }
     }
+}
+
+function PlayVod_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        PlayVod_onPlayer();
+    }
+    Play_ResumeAfterOnlineCounter++;
 }
 
 function PlayVod_SaveOffset() {
@@ -310,7 +321,7 @@ function PlayVod_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
@@ -478,47 +489,42 @@ function PlayVod_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayVod_playingUrl);
-
-        if (Main_values.vodOffset > ChannelVod_DurationSeconds) Main_values.vodOffset = 0;
-
-        if (Main_values.vodOffset) {
-            Chat_offset = Main_values.vodOffset;
-            Chat_Init();
-            Play_avplay.seekTo(Main_values.vodOffset * 1000);
-        } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
-            Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
-            Play_clearPause();
-        }
-
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
-        Play_avplay.setListener(PlayVod_listener);
-
-        //if (Main_Is4k && !Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-        //    Play_4K_ModeEnable = true;
-        //}
-
-        PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + PlayVod_Buffer;
-        PlayVod_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log('PlayVod_onPlayer ' + e);
+        console.log('PlayVod_onPlayer open ' + e);
     }
+
+    if (Main_values.vodOffset > ChannelVod_DurationSeconds) Main_values.vodOffset = 0;
+
+    if (Main_values.vodOffset) {
+        Chat_offset = Main_values.vodOffset;
+        Chat_Init();
+        Play_avplay.seekTo(Main_values.vodOffset * 1000);
+    } else if (PlayVod_offsettime > 0 && PlayVod_offsettime !== Play_avplay.getCurrentTime()) {
+        try {
+            Play_avplay.seekTo(PlayVod_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+        } catch (e) {
+            console.log('PlayVod_onPlayer seekTo ' + e);
+        }
+        Play_clearPause();
+    }
+
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayVod_Buffer);
+    Play_avplay.setListener(PlayVod_listener);
 
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         PlayVod_Playing = true;
         ChannelVod_DurationSeconds = Play_avplay.getDuration() / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
 
-    Main_ready(function() {
-        PlayVod_hidePanel();
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(PlayVod_streamCheck);
-        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-    });
+    PlayVod_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + PlayVod_Buffer;
+    PlayVod_PlayerCheckQualityChanged = false;
+    window.clearInterval(PlayVod_streamCheck);
+    PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayVod_PlayerCheck() {
@@ -717,7 +723,7 @@ function PlayVod_jump() {
         if (PlayVod_isOn) Chat_offset = PlayVod_TimeToJump;
         else Chat_offset = ChannelVod_vodOffset;
 
-        Chat_Init();
+        if (PlayClip_HasVOD) Chat_Init();
         if (!Play_isIdleOrPlaying()) Play_avplay.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -932,7 +938,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 1;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -963,7 +969,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 1) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -1028,8 +1034,21 @@ function PlayVod_handleKeyDown(e) {
                 if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
                 else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
-                    else Play_BottomOptionsPressed(2);
+                    if (!PlayVod_PanelY) {
+                        Play_clearHidePanel();
+                        PlayVod_setHidePanel();
+                        if (PlayVod_addToJump) {
+                            if (!Play_BufferDialogVisible()) PlayVod_jump();
+                            else {
+                                Play_IsWarning = true;
+                                Play_showWarningDialog(STR_JUMP_BUFFER_WARNING);
+                                window.setTimeout(function() {
+                                    Play_IsWarning = false;
+                                    Play_HideWarningDialog();
+                                }, 1000);
+                            }
+                        }
+                    } else Play_BottomOptionsPressed(2);
                 } else PlayVod_showPanel(true);
                 break;
             case KEY_RETURN:
@@ -1038,16 +1057,21 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                else Chat_Pause();
-
+                if (!Main_values.Play_ChatForceDisable) {
+                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                    else Chat_Pause();
+                }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogVisible()) Play_showControlsDialog();
                 break;
             case KEY_GREEN:
-                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+                if (Main_values.Play_ChatForceDisable) Chat_Disable();
+                else Chat_Init();
+                Main_SaveValues();
                 break;
             case KEY_RED:
                 Play_isFullScreen = !Play_isFullScreen;

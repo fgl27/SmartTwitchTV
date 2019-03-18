@@ -216,12 +216,15 @@ function AddUser_RestoreUsers() {
 
     if (Main_TizenVersion) {
         SmartHub_SetNoUserPreviewData();
+        window.addEventListener('appcontrol', SmartHub_EventListener, false);
+
         window.setTimeout(function() {
-            window.addEventListener('appcontrol', SmartHub_EventListener, false);
 
-            SmartHub_StartInterval();
-
-            document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
+            if (AddUser_UsernameArray.length > 0) {
+                window.clearInterval(Main_SmartHubId);
+                SmartHub_StartInterval();
+                document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
+            } else SmartHub_Start();
         }, 10000);
     }
 }

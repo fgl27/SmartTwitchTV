@@ -125,6 +125,7 @@ function it_ITLang() {
     STR_CONTROLS_PLAY_12 = "Avvia una ricerca: pulsante blu (D) o, apri pannello informazioni, naviga usando usa Pad direzionale (sinistra / destra) su \"Cerca \" e premi seleziona";
     STR_CONTROLS_PLAY_13 = "Apri canale o contenuto del gioco: apri il pannello delle informazioni, naviga usando usa il tasto direzionale (sinistra / destra) su \"Canale o contenuto del gioco \" e premi seleziona";
     STR_CONTROLS_PLAY_14 = "Chat e video (affiancati): pulsante rosso (A)";
+    STR_CONTROLS_PLAY_15 = "Forza disabilita la chat: Colore pulsante verde (B), con questo la chat non caricherà il contenuto, questo è utile su un flusso con troppi spettatori in cui la chat può essere ritardata nell'app.";
     STR_UPDATE_AVAILABLE = "C'è un aggiornamento disponibile, controlla nelle versioni di github dell'app ";
     STR_UPDATE_MAIN_0 = "Tieni presente che dopo l'aggiornamento (reinstallare l'app utilizzando l'ultima versione) tutti gli utenti salvati, le chiavi o la configurazione della app vengono persi";
     STR_UPDATE_MAIN_1 = "È disponibile un aggiornamento e l'app non può aggiornare autonomamente questa versione ";
@@ -220,4 +221,6 @@ function it_ITLang() {
     STR_CONTENT_LANG = "Lingua Contenuti";
     STR_LANG_ALL = "Tutto";
     STR_NO_GAME = "Nessun Gioco";
+    STR_JUMP_BUFFER_WARNING = "Non è possibile saltare durante un buffering";
+    STR_CHAT_DISABLE = "La chat è disabilitata, utilizzare il tasto Verde o B per abilitare";
 }
