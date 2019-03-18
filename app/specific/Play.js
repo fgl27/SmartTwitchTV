@@ -155,8 +155,6 @@ var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger
 //Variable initialization end
 
 function Play_PreStart() {
-    Play_avplay = (window.tizen && window.webapis.avplay) || {};
-
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
@@ -167,8 +165,8 @@ function Play_PreStart() {
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
 
-    Play_SetAvPlayGlobal();
-    Play_ClearPlayer();
+    //Play_SetAvPlayGlobal();
+    //Play_ClearPlayer();
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
@@ -178,7 +176,7 @@ function Play_PreStart() {
 //and they need to be set like this to work, faking a video playback
 function Play_SetAvPlayGlobal() {
     try {
-        Play_avplay.stop();
+        Play_avplay.pause();
         Play_avplay.open(GIT_IO + "temp.mp4");
         Play_SetFullScreen(Play_isFullScreen);
         Play_avplay.setListener(PlayStart_listener);
@@ -190,7 +188,7 @@ function Play_SetAvPlayGlobal() {
 
 var PlayStart_listener = {
     onstreamcompleted: function() {
-        Play_avplay.stop();
+        Play_avplay.pause();
     }
 };
 
@@ -237,7 +235,6 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
     Play_showBufferDialog();
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
@@ -435,66 +432,7 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadData() {
-    Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
-    Play_loadDataRequest();
-}
-
-function Play_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
-    var theUrl;
-    if (Play_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
-                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
-    } else {
-        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
-    }
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Play_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_loadingDataTry = 0;
-                if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 403) { //forbidden access
-                Play_loadDataErrorLog(xmlHttp);
-                Play_ForbiddenLive();
-            } else if (xmlHttp.status === 404) { //off line
-                Play_loadDataErrorLog(xmlHttp);
-                Play_CheckHostStart();
-            } else {
-                Play_loadDataErrorLog(xmlHttp);
-                Play_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function Play_loadDataErrorLog(xmlHttp) {
-    if (!Main_isReleased) {
-        console.log(xmlHttp.status);
-        console.log(xmlHttp.responseText);
-    }
-}
-
-function Play_loadDataError() {
-    if (Play_isOn && Play_isLive) {
-        Play_loadingDataTry++;
-        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 10 : 0))) {
-            Play_loadingDataTimeout += 250;
-            Play_loadDataRequest();
-        } else Play_CheckHostStart();
-    }
+    Play_onPlayer();
 }
 
 function Play_ForbiddenLive() {
@@ -637,43 +575,26 @@ var Play_listener = {
 };
 
 function Play_onPlayer() {
-    Play_showBufferDialog();
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    try {
-        Play_avplay.stop();
-        Play_avplay.open(Play_playingUrl);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", Play_Buffer);
+//    Play_showBufferDialog();
 
-        Play_avplay.setListener(Play_listener);
-
-        //if (Main_Is4k && !Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "TRUE");
-        //    Play_4K_ModeEnable = true;
-        //}
-
+    Play_avplay = document.getElementById('video_frame');
+    Play_avplay.src = 'https://player.twitch.tv/?channel=' + Main_values.Play_selectedChannel + '&muted=false&autoplay=true';
+Play_HideWarningDialog();
+Play_HideBufferDialog();
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4 + Play_Buffer;
         Play_PlayerCheckQualityChanged = false;
         window.clearTimeout(Play_CheckChatId);
         Play_ChatLoadStarted = false;
-    } catch (e) {
-        console.log('Play_onPlayer ' + e);
-    }
-
     Play_JustStartPlaying = true;
-    //Use prepareAsync as prepare() only can freeze up the app
-    Play_avplay.prepareAsync(function() {
-        Play_avplay.play();
-        Play_Playing = true;
-    });
+    Play_Playing = true;
 
     Main_ready(function() {
         Play_offsettime = Play_oldcurrentTime;
         Play_hidePanel();
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         window.clearInterval(Play_streamCheck);
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+        //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
     });
 }
 
@@ -794,7 +715,7 @@ function Play_isNotplaying() {
 }
 
 function Play_offPlayer() {
-    Play_avplay.stop();
+    Play_avplay.pause();
 }
 
 function Play_updateCurrentTime(currentTime) {
@@ -1155,7 +1076,6 @@ function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
         Play_avplay.play();
-        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
@@ -1173,7 +1093,6 @@ function Play_KeyPause(PlayVodClip) {
         else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
 
         Play_avplay.pause();
-        webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
         Play_showPauseDialog();
     }
 }
@@ -1591,6 +1510,8 @@ function Play_KeyReturn(is_vod) {
 }
 
 function Play_handleKeyDown(e) {
+console.log('Play_handleKeyDown');
+console.log(e.keyCode);
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_GREEN:
