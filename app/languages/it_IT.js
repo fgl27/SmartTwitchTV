@@ -100,10 +100,10 @@ function it_ITLang() {
     STR_CONTROLS_MAIN_14 = "Riguardo questa applicazione aprila dal pannello laterale";
     STR_ABOUT_INFO_1 = "Questa è un'applicazione non ufficiale di Twitch.Tv sviluppata da un individuo nel suo tempo libero, per i TV che non hanno accesso a un'applicazione ufficiale, rilasciata gratuitamente a chiunque voglia utilizzarla.";
     STR_ABOUT_INFO_2 = "Il 99% delle volte l'app può aggiornarsi da sola per aggiungere correzioni e nuove funzionalità, l'app avviserà l'utente il giorno in cui è necessario aggiornarlo manualmente reinstallandolo tramite computer nel caso si utilizzi un computer per installarlo.";
-    STR_ABOUT_INFO_2_SOURCE = "Questa versione dell'app è solo per test, se non si sta testando si prega di reinstallare l'app utilizzando la versione di rilascio da https://github.com/fgl27/smarttv-twitch/releases in dubbio controllare il README.md https: / /github.com/fgl27/smarttv-twitch";
+    STR_ABOUT_INFO_2_SOURCE = "Questa versione dell'app è solo per test, se non si sta testando si prega di reinstallare l'app utilizzando la versione di rilascio da https://github.com/fgl27/SmartTwitchTV/releases in dubbio controllare il README.md https: / /github.com/fgl27/SmartTwitchTV";
     STR_ABOUT_INFO_3 = "Informazioni sullo sviluppatore:";
     STR_ABOUT_INFO_4 = "Questa è un'applicazione open source rilasciata sotto GNU General Public License v3.0, controlla su github";
-    STR_ABOUT_INFO_5 = "github.com/fgl27/smarttv-twitch";
+    STR_ABOUT_INFO_5 = "github.com/fgl27/SmartTwitchTV";
     STR_ABOUT_INFO_6 = "Questa applicazione utilizza le seguenti dipendenze:";
     STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
     STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
