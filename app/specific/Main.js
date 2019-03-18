@@ -65,7 +65,6 @@ var Main_addFocusFinish = true;
 
 var Main_imgVector = [];
 
-var Main_tvModel = null;
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
 var Main_SmartHubId = null;
@@ -121,9 +120,9 @@ var Main_GameSize = "340x475"; // default size 272x380
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
-var Main_version = 401;
+//var Main_version = 401;
 var Main_stringVersion = '4.0.1';
-var Main_currentVersion = '';
+//var Main_currentVersion = '';
 var Main_minversion = '022119';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_TizenVersion;
@@ -478,12 +477,12 @@ function Main_isControlsDialogShown() {
     return Main_isElementShowing('dialog_controls');
 }
 
-function Main_showUpdateDialog() {
-    Main_HideExitDialog();
-    Main_HideAboutDialog();
-    Main_HideControlsDialog();
-    Main_ShowElement('dialog_update');
-}
+//function Main_showUpdateDialog() {
+//    Main_HideExitDialog();
+//    Main_HideAboutDialog();
+//    Main_HideControlsDialog();
+//    Main_ShowElement('dialog_update');
+//}
 
 function Main_HideUpdateDialog() {
     Main_HideElement('dialog_update');

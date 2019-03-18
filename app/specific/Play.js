@@ -174,27 +174,27 @@ function Play_PreStart() {
 
 //this are the global set option that need to be set only once
 //and they need to be set like this to work, faking a video playback
-function Play_SetAvPlayGlobal() {
-    try {
-        Play_avplay.pause();
-        Play_avplay.open(GIT_IO + "temp.mp4");
-    } catch (e) {
-        console.log(e + " Play_SetAvPlayGlobal()");
-    }
-    Play_SetFullScreen(Play_isFullScreen);
-    Play_avplay.setListener(PlayStart_listener);
-    Play_avplay.prepareAsync();
-}
+//function Play_SetAvPlayGlobal() {
+//    try {
+//        Play_avplay.pause();
+//        Play_avplay.open(GIT_IO + "temp.mp4");
+//    } catch (e) {
+//        console.log(e + " Play_SetAvPlayGlobal()");
+//    }
+//    Play_SetFullScreen(Play_isFullScreen);
+//    Play_avplay.setListener(PlayStart_listener);
+//    Play_avplay.prepareAsync();
+//}
 
-var PlayStart_listener = {
-    onstreamcompleted: function() {
-        try {
-            Play_avplay.pause();
-        } catch (e) {
-            console.log(e + " PlayStart_listener");
-        }
-    }
-};
+//var PlayStart_listener = {
+//    onstreamcompleted: function() {
+//        try {
+//            Play_avplay.pause();
+//        } catch (e) {
+//            console.log(e + " PlayStart_listener");
+//        }
+//    }
+//};
 
 function Play_SetFullScreen(isfull) {
     if (isfull) {
@@ -505,7 +505,6 @@ function Play_loadDataError() {
             Play_loadDataRequest();
         } else Play_CheckHostStart();
     }
->>>>>>> b0763fe030e601eee11d555a92e63a3d969744d2
 }
 
 function Play_ForbiddenLive() {
@@ -515,7 +514,6 @@ function Play_ForbiddenLive() {
         if (Play_isOn) Play_CheckHostStart();
     }, 4000);
 }
-
 
 function Play_loadDataSuccess(responseText) {
     if (Play_state === Play_STATE_LOADING_TOKEN) {
@@ -1615,8 +1613,8 @@ function Play_KeyReturn(is_vod) {
 }
 
 function Play_handleKeyDown(e) {
-console.log('Play_handleKeyDown');
-console.log(e.keyCode);
+    console.log('Play_handleKeyDown');
+    console.log(e.keyCode);
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_GREEN:
