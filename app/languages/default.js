@@ -87,6 +87,7 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_15 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_11 +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 

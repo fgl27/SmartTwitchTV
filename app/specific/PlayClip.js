@@ -9,7 +9,6 @@ var PlayClip_isOn = false;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 2000;
 var PlayClip_loadingDataTryMax = 5;
-var PlayClip_JustStartPlaying = true;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
@@ -232,45 +231,36 @@ function PlayClip_onPlayer() {
     try {
         Play_avplay.stop();
         Play_avplay.open(PlayClip_playingUrl);
-
-        if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
-            Play_avplay.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
-            Play_clearPause();
-        }
-
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-        Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-        Play_avplay.setListener(PlayClip_listener);
-        //Twitch clips are encoded with avc1 format with are not supported by the 4k mode
-        //https://developer.samsung.com/tv/develop/guides/multimedia/4k-uhd-video
-        //Live streams and VOD use h264 with is supported
-        //So set it to FALSE
-        //if (Main_Is4k && Play_4K_ModeEnable) {
-        //    Play_avplay.setStreamingProperty("SET_MODE_4K", "FALSE");
-        //    Play_4K_ModeEnable = false;
-        //}
-
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
-        PlayClip_PlayerCheckQualityChanged = false;
     } catch (e) {
-        console.log('PlayClip_onPlayer ' + e);
+        console.log('PlayClip_onPlayer open ' + e);
     }
 
-    PlayClip_JustStartPlaying = true;
+    if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_avplay.getCurrentTime()) {
+        try {
+            Play_avplay.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
+        } catch (e) {
+            console.log('PlayClip_onPlayer seekTo ' + e);
+        }
+        Play_clearPause();
+    }
+
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_avplay.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
+    Play_avplay.setListener(PlayClip_listener);
+
     Play_avplay.prepareAsync(function() {
         Play_avplay.play();
         PlayClip_DurationSeconds = Play_avplay.getDuration() / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     });
 
-    Main_ready(function() {
-        Play_HideWarningDialog();
-        PlayClip_hidePanel();
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-        window.clearInterval(PlayClip_streamCheck);
-        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
-    });
+    PlayClip_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
+    PlayClip_PlayerCheckQualityChanged = false;
+
+    window.clearInterval(PlayClip_streamCheck);
+    PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayClip_Resume() {
@@ -483,7 +473,7 @@ function PlayClip_handleKeyDown(e) {
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 0;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -508,7 +498,7 @@ function PlayClip_handleKeyDown(e) {
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 0) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else if (!Play_BufferDialogVisible()) {
+                    } else {
                         PlayVod_jumpStart(1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -567,8 +557,22 @@ function PlayClip_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY && PlayVod_addToJump) PlayVod_jump();
-                    else Play_BottomOptionsPressed(3);
+                    if (!PlayVod_PanelY) {
+                        Play_clearHidePanel();
+                        PlayClip_setHidePanel();
+                        if (PlayVod_addToJump) {
+                            if (!Play_BufferDialogVisible()) PlayVod_jump();
+                            else {
+                                Play_IsWarning = true;
+                                Play_showWarningDialog(STR_JUMP_BUFFER_WARNING);
+                                window.setTimeout(function() {
+                                    Play_IsWarning = false;
+                                    Play_HideWarningDialog();
+                                }, 1000);
+                            }
+                        }
+                    } else Play_BottomOptionsPressed(3);
+
                 } else PlayClip_showPanel();
                 break;
             case KEY_RETURN:
@@ -586,7 +590,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (PlayClip_HasVOD) {
+                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
@@ -619,6 +623,18 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_YELLOW:
                 if (!Play_isEndDialogVisible()) Play_showControlsDialog();
+                break;
+            case KEY_GREEN:
+                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
+                if (!PlayClip_HasVOD) return;
+                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+                if (Main_values.Play_ChatForceDisable) Chat_Disable();
+                else if (PlayClip_HasVOD) {
+                    PlayVod_currentTime = 0;
+                    Chat_offset = ChannelVod_vodOffset;
+                    Chat_Init();
+                }
+                Main_SaveValues();
                 break;
             case KEY_RED:
                 Play_isFullScreen = !Play_isFullScreen;
