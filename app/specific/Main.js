@@ -124,7 +124,7 @@ var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 var Main_currentVersion = '';
 var Main_minversion = '012419';
-var Main_versionTag = '';
+var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_TizenVersion;
 var Main_ClockOffset = 0;
 
@@ -149,34 +149,23 @@ var Main_loadImg = function(ImgObjet, Src, img_type) {
 };
 //Variable initialization end
 
-//Registering all used keys
-tizen.tvinputdevice.registerKey("ChannelUp");
-tizen.tvinputdevice.registerKey("ChannelDown");
-tizen.tvinputdevice.registerKey("MediaPlayPause");
-tizen.tvinputdevice.registerKey("MediaPlay");
-tizen.tvinputdevice.registerKey("MediaPause");
-tizen.tvinputdevice.registerKey("ColorF0Red");
-tizen.tvinputdevice.registerKey("ColorF1Green");
-tizen.tvinputdevice.registerKey("ColorF2Yellow");
-tizen.tvinputdevice.registerKey("ColorF3Blue");
-tizen.tvinputdevice.registerKey("Guide");
-tizen.tvinputdevice.registerKey("Info");
-
 // this function will be called only once the first time the app startup
 Main_Start();
 
 function Main_Start() {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
-            tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
+            console.log('Main_Start');
+            Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
         });
     } else { // `DOMContentLoaded` already fired
-        tizen.systeminfo.getPropertyValue('LOCALE', Main_loadTranslations);
+        console.log('Main_Start');
+        Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
     }
 }
 
-function Main_loadTranslations(device) {
-
+function Main_loadTranslations(language) {
+    console.log('Main_loadTranslations');
     Main_Checktylesheet();
 
     Main_ready(function() {
@@ -190,7 +179,7 @@ function Main_loadTranslations(device) {
             // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
             // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-            var lang = device.language.split(".")[0],
+            var lang = language,
                 Savedlang = Main_getItemInt('user_language', 0);
 
             if (Savedlang) lang = Settings_Obj_set_values("general_lang");
@@ -230,15 +219,7 @@ function Main_initWindows() {
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
 
-        if (Main_checkVersion()) {
-            if (Main_getItemInt('has_showUpdateDialog', 0)) {
-                Main_showWarningDialog(STR_UPDATE_AVAILABLE + Main_stringVersion);
-                window.setTimeout(Main_HideWarningDialog, 5000);
-            } else {
-                Main_showUpdateDialog();
-                Main_setItem('has_showUpdateDialog', 1);
-            }
-        }
+        Main_checkVersion();
 
         Main_ready(function() {
             Main_SetStringsSecondary();
@@ -537,7 +518,6 @@ function Main_ThumbNull(y, x, thumbnail) {
 function Main_ReStartScreens() {
     Main_updateclock();
     Main_SwitchScreen();
-    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_ON);
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
@@ -608,11 +588,11 @@ function Main_SwitchScreen() {
 }
 
 function Main_SaveValues() {
-    Main_setItem('Main_values', JSON.stringify(Main_values));
+    //Main_setItem('Main_values', JSON.stringify(Main_values));
 }
 
 function Main_RestoreValues() {
-    Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
+    //Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
 }
 
 function Main_ExitCurrent(ExitCurrent) {
@@ -707,35 +687,7 @@ function Main_NetworkStateChangeListenerStop() {
 }
 
 function Main_checkVersion() {
-    var Appversion = null,
-        TizenVersion = null,
-        fw = null,
-        value = 0;
-
-    try {
-        Appversion = tizen.application.getAppInfo().version;
-        // Retrieving Platform Information https://developer.samsung.com/tv/develop/guides/fundamentals/retrieving-platform-information
-        TizenVersion = tizen.systeminfo.getCapability("http://tizen.org/feature/platform.version");
-        fw = webapis.productinfo.getFirmware();
-        Main_tvModel = webapis.productinfo.getModel();
-    } catch (e) {}
-
-    if (Appversion !== null && TizenVersion !== null && Main_tvModel !== null && fw !== null) {
-        Main_currentVersion = Appversion;
-
-        Main_versionTag = 'APP ' + STR_VERSION + Appversion + '.' + (Main_isReleased ? Main_minversion : '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">TEST</div>') + STR_BR + 'Tizen ' + STR_VERSION +
-            TizenVersion + STR_SPACE + STR_SPACE + '|' + STR_SPACE + STR_SPACE + 'TV: ' + Main_tvModel + STR_SPACE + STR_SPACE + '|' +
-            STR_SPACE + STR_SPACE + 'FW: ' + fw + STR_BR;
-        Appversion = Appversion.split(".");
-        value = parseInt(Appversion[0] + Appversion[1] + Appversion[2]);
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_ABOUT_INFO_0);
-        Main_innerHTML("dialog_update_text", STR_UPDATE_MAIN_HEADER + STR_CURRENT_VERSION + Main_currentVersion +
-            ', ' + STR_LATEST_VERSION + Main_stringVersion + STR_BR + STR_UPDATE_MAIN_0);
-
-        if (!Main_isReleased) console.log('Tizen ' + STR_VERSION + TizenVersion + ' | ' +
-            'TV: ' + Main_tvModel + ' | ' + 'FW: ' + fw);
-        return value < Main_version;
-    } else return false;
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_ABOUT_INFO_0);
 }
 
 function Main_GoLive() {
@@ -939,14 +891,14 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
-
+        var screen_size = screen.height / 100;
         if (y > 1) {
 
             if (Main_ThumbNull((y + 1), 0, idArray[0]))
                 Main_ScrollTable(idArray[6],
-                    (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + 450);
+                    (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + (screen_size * 42));
 
-        } else Main_ScrollTable(idArray[6], 100);
+        } else Main_ScrollTable(idArray[6], screen_size * 8);
 
     } else Main_handleKeyUp();
 }
@@ -955,11 +907,12 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
+        var screen_size = screen.height / 100;
 
-        if (!y) Main_ScrollTable(idArray[10], 100);
+        if (!y) Main_ScrollTable(idArray[10], screen_size * 7);
         else if (Main_ThumbNull((y + 1), 0, idArray[0])) {
             Main_ScrollTable(idArray[10],
-                (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + 358);
+                (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + (screen_size * 33.5));
         }
 
     } else Main_handleKeyUp();
@@ -969,11 +922,11 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
-
+        var screen_size = screen.height / 100;
         if (y) {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + 555);
-        } else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), 31);
+                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + (screen_size * 51));
+        } else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), (screen_size * 2.7));
 
     } else Main_handleKeyUp();
 }
@@ -1089,10 +1042,11 @@ function Main_removeFocus(id, idArray) {
 function Main_Checktylesheet() {
     var stylesheet = document.styleSheets;
     for (var i = 0; i < stylesheet.length; i++)
-        if (stylesheet[i].href !== null)
-            if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
-
-    // video-js is a old stylesheet present on old releases no need to try to reload it as is empty
+        if (stylesheet[i].href !== null) {
+            try {
+                if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
+            } catch (e) {}
+        }
 }
 
 function Main_LoadStylesheet(path) {

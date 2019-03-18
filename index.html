@@ -3,9 +3,10 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=1920" />
+    <meta name="viewport"  />
     <link rel="stylesheet" href="https://fgl27.github.io/smarttv-twitch/release/githubio/css/font-awesome.min.css">
-    <title>Twitch</title>
+    <title>Twitch on TV</title>
+    <link rel='shortcut icon' type='image/x-icon' href="https://fgl27.github.io/smarttv-twitch/release/githubio/images/favicon.ico" />
     <style type="text/css">
         body {
             background-color: #000000;
@@ -14,7 +15,11 @@
             font-variant: normal;
             font-weight: 100;
             letter-spacing: normal;
-            position: absolute;
+            position: fixed;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
             overflow: hidden;
             /*Prevent Scroling*/
             z-index: 5;
@@ -30,8 +35,8 @@
         div.screen_size,
         div.scroll_size,
         div.screens {
-            width: 1920px;
-            height: 1080px;
+            width: 100%;
+            height: 100%;
             font-family: Sans, Jomolhari, dejavu-sans, CambriaMath, CODE2000, BabelStoneHan;
         }
 
@@ -50,36 +55,36 @@
         div.screen_holder,
         div.screen_holder_games,
         div.screen_holder_settings {
-            width: 1920px;
+            width: 100%;
             position: fixed;
-            top: 100px;
+            top: 9.25%;
         }
 
         div.screen_holder_games {
-            top: 33px;
+            top: 3%;
         }
 
         div.screen_holder_settings {
-            top: 70px;
+            top: 6.5%;
         }
 
         div.scroll {
-            width: 10px;
-            height: 50px;
+            width: 0.5%;
+            height: 4.6%;
             border: 2px solid #000000;
             border-radius: 15px;
             background-color: #000000;
             position: absolute;
-            right: 2px;
-            top: 100px;
+            right: 0.2%;
+            top: 9.25%;
         }
 
         div.icon_top_label {
             width: auto;
-            height: 20px;
+            height:1.85%;
             text-align: left;
             color: #FFFFFF;
-            font-size: 18px;
+            font-size: 10px;
             font-weight: bold;
             vertical-align: middle;
             transition: opacity 1s;
@@ -88,13 +93,13 @@
 
         div.icon_center_label {
             max-width: 64%;
-            height: 105%;
+            height: 75%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
             color: #777777;
             display: inline-block;
-            font-size: 49px;
+            font-size: 35px;
             font-weight: bold;
             padding-right: 0.7%;
             transition: opacity 1s;
@@ -130,7 +135,7 @@
 
         div.icon_center_focus {
             color: #FFFFFF;
-            font-size: 65px;
+            font-size: 45px;
             transition: opacity 0;
             text-shadow: 1px 0 0 #000000,
                 1px -1px 0 #000000,
@@ -257,7 +262,7 @@
             text-align: left;
             word-wrap: break-word;
             color: #FFFFFF;
-            font-size: 173%;
+            font-size: 113%;
             font-weight: bold;
             text-shadow: #000000 0 0 3.6px, #000000 0 0 3.6px, #000000 0 0 2.5px;
         }
@@ -266,7 +271,7 @@
             text-align: center;
             height: 98%;
             padding-top: 1.5%;
-            font-size: 168%;
+            font-size: 118%;
         }
 
         div.stream_info,
@@ -276,7 +281,7 @@
             text-align: left;
             word-wrap: break-word;
             color: #FFFFFF;
-            font-size: 168%;
+            font-size: 68%;
             font-weight: bold;
             text-shadow: #000000 0 0 4px, #000000 0 0 4px, #000000 0 0 3px;
         }
@@ -285,11 +290,11 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            font-size: 135%;
+            font-size: 55%;
         }
 
         div.stream_info_games {
-            font-size: 135%;
+            font-size: 55%;
         }
 
         div.input_text_box {
@@ -394,7 +399,7 @@
             padding-right: 0.5%;
             padding-top: 1.5%;
             color: #FFFFFF;
-            font-size: 170%;
+            font-size: 70%;
             font-weight: bold;
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
@@ -406,7 +411,7 @@
             padding-top: 1.5%;
             display: inline-block;
             width: 69%;
-            font-size: 200%;
+            font-size: 100%;
             color: #FFFFFF;
             word-wrap: break-word;
             text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
@@ -462,9 +467,9 @@
             border-radius: 15px;
             border: 4px solid #FFFFFF;
             background-color: #090909;
-            margin-top: 5%;
+            margin-top: 4%;
             margin-left: -1%;
-            height: 90.5%;
+            height: 91%;
             width: 17%;
             transition: 0.65s;
         }
@@ -479,7 +484,7 @@
             display: inline-block;
             margin-top: 1%;
             margin-bottom: 1%;
-            font-size: 43px;
+            font-size: 150%;
             font-weight: bold;
             text-align: left;
             width: 84%;
@@ -551,7 +556,7 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            font-size: 46px;
+            font-size: 150%;
         }
 
         div.info_dialogs,
@@ -959,23 +964,27 @@
 
         /*cssend this is here so release_maker can work don't remove*/
     </style>
-    <script src="$WEBAPIS/webapis/webapis.min.js" defer></script>
     <script src="app/languages/0_Strings.js" defer></script>
     <script src="app/languages/en_US.js" defer></script>
     <script src="app/languages/pt_BR.js" defer></script>
     <script src="app/languages/it_IT.js" defer></script>
     <script src="app/languages/default.js" defer></script>
     <script src="app/general/TVKeyValue.js" defer></script>
-    <script src="app/specific/Main.js" defer></script>
-    <script src="app/specific/ChannelContent.js" defer></script>
-    <script src="app/specific/ChannelVod.js" defer></script>
-    <script src="app/specific/Live.js" defer></script>
     <script src="app/specific/Play.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
-    <script src="app/specific/Featured.js" defer></script>
     <script src="app/specific/AddUser.js" defer></script>
     <script src="app/specific/AddCode.js" defer></script>
+    <script src="app/specific/Live.js" defer></script>
+    <script src="app/specific/ChatVod.js" defer></script>
+    <script src="app/specific/twemoji.js" defer></script>
+    <script src="app/specific/Settings.js" defer></script>
+    <script src="app/specific/Main.js" defer></script>
+    <script src="app/specific/Screens.js" defer></script>
+    <script src="app/specific/ScreensObj.js" defer></script>
+    <script src="app/specific/ChannelContent.js" defer></script>
+    <script src="app/specific/ChannelVod.js" defer></script>
+    <script src="app/specific/Featured.js" defer></script>
     <script src="app/specific/AGame.js" defer></script>
     <script src="app/specific/AGameVod.js" defer></script>
     <script src="app/specific/Search.js" defer></script>
@@ -989,11 +998,7 @@
     <script src="app/specific/UserHost.js" defer></script>
     <script src="app/specific/UserChannels.js" defer></script>
     <script src="app/specific/UserVod.js" defer></script>
-    <script src="app/specific/Settings.js" defer></script>
-    <script src="app/specific/ChatVod.js" defer></script>
-    <script src="app/specific/twemoji.js" defer></script>
-    <script src="app/specific/Screens.js" defer></script>
-    <script src="app/specific/ScreensObj.js" defer></script>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
 </head>
 
 <body>
@@ -1382,7 +1387,7 @@
                 <div id="dialog_buffer_play_percentage" class="buffertext"></div>
             </div>
         </div>
-        <object id="av-player" type="application/avplayer" style="width:100%; height:100%; position: absolute;"></object>
+        <iframe id="video_frame" width="100%" height="100%" frameborder="0" scrolling="no" style=" z-index:1000; position: absolute; overflow: hidden;" src="about:blank"></iframe>
     </div>
     <!-- bodyend this is here so release_maker can work don't remove-->
 </body>
