@@ -155,7 +155,7 @@ var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger
 //Variable initialization end
 
 function Play_PreStart() {
-    Play_videojs = videojs('video_live');
+    //Play_videojs = videojs('video_live');
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
@@ -182,21 +182,11 @@ function Play_SetFullScreen(isfull) {
             if (!Play_ChatEnable) Play_hideChat();
             Play_ChatSize(false);
         }
-        try {
-            Play_videojs.setDisplayRect(0, 0, screen.width, screen.height);
-        } catch (e) {
-            console.log(e + " Play_SetFullScreen true");
-        }
     } else {
         Play_ChatPositionsBF = Play_ChatPositions;
         Play_ChatEnableBF = Play_ChatEnable;
         Play_ChatSizeValueBF = Play_ChatSizeValue;
         // Chat is 25% of the screen, resize to 75% and center left
-        try {
-            Play_videojs.setDisplayRect(0, (screen.height * 0.25) / 2, screen.width * 0.75, screen.height * 0.75);
-        } catch (e) {
-            console.log(e + " Play_SetFullScreen false");
-        }
         Play_ChatPositions = 0;
         Play_showChat();
         Play_ChatEnable = true;
@@ -422,9 +412,19 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadData() {
-    Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
-    Play_loadDataRequest();
+  Play_HideBufferDialog();
+  var options = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    channel: Main_values.Play_selectedChannel,
+    controls: false
+  };
+  var player = new Twitch.Player("player", options);
+  player.getVolume();
+  Play_state = Play_STATE_PLAYING;
+//    Play_loadingDataTry = 0;
+//    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
+//    Play_loadDataRequest();
 }
 
 function Play_loadDataRequest() {
@@ -436,7 +436,7 @@ function Play_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = proxyurl + 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
+        theUrl = proxyurl + 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
