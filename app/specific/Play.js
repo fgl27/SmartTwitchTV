@@ -412,19 +412,19 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadData() {
-  Play_HideBufferDialog();
-  var options = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    channel: Main_values.Play_selectedChannel,
-    controls: false
-  };
-  var player = new Twitch.Player("player", options);
-  player.getVolume();
-  Play_state = Play_STATE_PLAYING;
-//    Play_loadingDataTry = 0;
-//    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
-//    Play_loadDataRequest();
+    Play_HideBufferDialog();
+    var options = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        channel: Main_values.Play_selectedChannel,
+        controls: false
+    };
+    var player = new Twitch.Player("player", options);
+    player.getVolume();
+    Play_state = Play_STATE_PLAYING;
+    //    Play_loadingDataTry = 0;
+    //    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
+    //    Play_loadDataRequest();
 }
 
 function Play_loadDataRequest() {
