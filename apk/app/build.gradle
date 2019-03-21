@@ -1,0 +1,48 @@
+apply from: '../versions.gradle'
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.fgl27.twitchtv"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.maxSdk
+        versionCode versions.publishVersionCode
+        versionName versions.publishVersion
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        preDexLibraries = true
+    }
+    lintOptions {
+        abortOnError false
+        disable 'SetJavaScriptEnabled', //To run webview and load js file
+                'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
+                'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
+                'IconLauncherShape' //IconLauncherShape: Looks better the way it's
+    }
+    productFlavors {
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.android.support:leanback-v17:' + versions.supportLib
+    api 'com.android.support:appcompat-v7:' + versions.supportLib
+}
