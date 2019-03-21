@@ -214,7 +214,7 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    Play_showBufferDialog();
+    //Play_showBufferDialog();
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -266,48 +266,19 @@ function Play_Start() {
 }
 
 function Play_Resume() {
-    if (document.hidden) {
-        if (Play_isEndDialogVisible()) {
-            Play_CleanHideExit();
-            Play_hideChat();
-            Main_ready(Play_shutdownStream);
-        } else {
-            Play_ClearPlayer();
-            Play_Playing = false;
-            Play_Chatobj.src = 'about:blank';
-            window.clearInterval(Play_streamInfoTimer);
-            window.clearInterval(Play_streamCheck);
-        }
-    } else {
-        Play_isOn = true;
-        Main_ShowElement('scene2');
-        Main_HideElement('scene1');
-        Play_showBufferDialog();
-        Play_clearPause();
-        if (!SmartHub_SmartHubResume) {
-            if (Play_isOn) {
-                Play_loadingInfoDataTry = 0;
-                Play_loadingInfoDataTimeout = 3000;
-                Play_RestoreFromResume = true;
-                if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-                else Play_updateStreamInfo();
-                Play_state = Play_STATE_LOADING_TOKEN;
-                Play_ResumeAfterOnlineCounter = 0;
-                if (navigator.onLine) Play_loadData();
-                else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
-                Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-            }
-        }
+    console.log("Play_Resume start");
+    if (!document.hidden) {
+        Play_PannelEndStart(1);
     }
 }
 
-function Play_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
-        window.clearInterval(Play_ResumeAfterOnlineId);
-        Play_loadData();
-    }
-    Play_ResumeAfterOnlineCounter++;
-}
+//function Play_ResumeAfterOnline() {
+//    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+//        window.clearInterval(Play_ResumeAfterOnlineId);
+//        Play_loadData();
+//    }
+//    Play_ResumeAfterOnlineCounter++;
+//}
 
 function Play_updateStreamInfoStart() {
     var xmlHttp = new XMLHttpRequest();
@@ -412,19 +383,9 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadData() {
-    Play_HideBufferDialog();
-    var options = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        channel: Main_values.Play_selectedChannel,
-        controls: false
-    };
-    var player = new Twitch.Player("player", options);
-    player.getVolume();
-    Play_state = Play_STATE_PLAYING;
-    //    Play_loadingDataTry = 0;
-    //    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
-    //    Play_loadDataRequest();
+    Play_loadingDataTry = 0;
+    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
+    Play_loadDataRequest();
 }
 
 function Play_loadDataRequest() {
@@ -568,7 +529,11 @@ function Play_qualityChanged() {
     Play_BufferPercentage = 0;
     Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
-    if (Play_isOn) Play_onPlayer();
+    if (true) { //Play_isOn
+        Play_HideBufferDialog();
+        Android.showToast(Play_playingUrl);
+        Android.startVideo(Play_playingUrl);
+    } else Play_onPlayer();
 }
 
 function Play_onPlayer() {
@@ -834,14 +799,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
-    Play_videojs.pause();
     Play_hidePanel();
-    Play_offPlayer();
-    Play_videojs.autoplay(false);
-    Play_videojs.src({
-        type: "video/mp4",
-        src: TEMP_MP4
-    });
     Play_clearPause();
     Play_HideWarningDialog();
     Play_HideEndDialog();
@@ -1410,7 +1368,8 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
-    Play_offPlayer();
+    console.log("Play_PannelEndStart start");
+    //Play_offPlayer();
 
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
