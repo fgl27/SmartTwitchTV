@@ -182,7 +182,7 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals tizen, webapis, STR_BODY */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals tizen, webapis, STR_BODY, videojs */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 fi;
 

@@ -576,7 +576,6 @@ function Play_onPlayer() {
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     Play_videojs.src({
-        type: "application/x-mpegURL",
         src: Play_playingUrl
     });
 
@@ -593,19 +592,23 @@ function Play_onPlayer() {
 
             this.on('ended', function() {
                 Play_PannelEndStart(1);
+                console.log('Play_videojs ended');
             });
 
             this.on('timeupdate', function() {
                 Play_updateCurrentTime(this.currentTime());
+                console.log('Play_videojs timeupdate');
             });
 
             this.on('error', function() {
                 Play_PannelEndStart(1);
+                console.log('Play_videojs error');
             });
 
             this.on('loadedmetadata', function() {
                 // sync chat and stream
                 if (!Play_ChatLoadStarted) Play_loadChat();
+                console.log('Play_videojs loadedmetadata');
             });
 
         });

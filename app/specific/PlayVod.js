@@ -528,7 +528,7 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_PlayerCheck() {
-    if (PlayVod_PlayerTime === PlayVod_currentTime && Play_isIdleOrPlaying()) {
+    if (PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
 
@@ -709,7 +709,7 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 function PlayVod_jump() {
     Play_clearPause();
     if (!Play_isEndDialogVisible()) {
-        if (Play_isIdleOrPlaying()) Play_videojs.pause();
+        if (!Play_isNotplaying()) Play_videojs.pause();
 
         PlayVod_PlayerCheckQualityChanged = false;
         PlayClip_PlayerCheckQualityChanged = false;
@@ -724,7 +724,7 @@ function PlayVod_jump() {
         else Chat_offset = ChannelVod_vodOffset;
 
         if (PlayClip_HasVOD) Chat_Init();
-        if (!Play_isIdleOrPlaying()) Play_videojs.play();
+        if (Play_isNotplaying()) Play_videojs.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';

@@ -272,7 +272,7 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    if (PlayClip_PlayerTime === PlayClip_currentTime && Play_isIdleOrPlaying()) {
+    if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
 
