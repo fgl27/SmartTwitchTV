@@ -122,7 +122,6 @@ function PlayVod_PosStart() {
 
     PlayVod_PlayerCheckCounter = 0;
     PlayVod_PlayerCheckRun = false;
-    SmartHub_SmartHubResume = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -277,16 +276,14 @@ function PlayVod_Resume() {
         Main_HideElement('scene1');
         Play_showBufferDialog();
         Play_clearPause();
-        if (!SmartHub_SmartHubResume) {
-            if (PlayVod_isOn) {
-                PlayVod_Playing = false;
-                Play_ResumeAfterOnlineCounter = 0;
-                if (navigator.onLine) PlayVod_onPlayer();
-                else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
-                Chat_Play(Chat_Id);
-                Play_EndSet(2);
-                PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-            }
+        if (PlayVod_isOn) {
+            PlayVod_Playing = false;
+            Play_ResumeAfterOnlineCounter = 0;
+            if (navigator.onLine) PlayVod_onPlayer();
+            else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
+            Chat_Play(Chat_Id);
+            Play_EndSet(2);
+            PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
         }
     }
 }

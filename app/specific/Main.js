@@ -67,7 +67,6 @@ var Main_imgVector = [];
 
 var Main_listenerID = null;
 var Main_ExitDialogID = null;
-var Main_SmartHubId = null;
 var Main_ScrollbarIsHide = true;
 var Main_NetworkStateOK = true;
 var Main_NetworkRefresh = false;
@@ -125,20 +124,12 @@ var Main_stringVersion = '4.0.1';
 //var Main_currentVersion = '';
 var Main_minversion = '022119';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
-var Main_TizenVersion;
 var Main_ClockOffset = 0;
 
 var GIT_IO = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
 var IMG_404_LOGO = GIT_IO + "404_logo.png";
 var IMG_404_VIDEO = GIT_IO + "404_video.png";
-var IMG_SMART_LIVE = GIT_IO + "smart_live.png";
-var IMG_SMART_GAME = GIT_IO + "smart_games.png";
-var IMG_SMART_USER = GIT_IO + "smart_users.png";
-var IMG_SMART_FEATURED = GIT_IO + "smart_featured.png";
-var IMG_SMART_VIDEO = GIT_IO + "smart_videos.png";
-var IMG_SMART_CLIP = GIT_IO + "smart_cips.png";
-var IMG_SMART_ADD_USER = GIT_IO + "smart_add_user.png";
 //var TEMP_MP4 = GIT_IO + "temp.mp4";
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -720,19 +711,6 @@ function Main_ResumeNetwork() {
                 Main_NetworkStateChangeListenerStart();
             }
         }, 20000);
-    }
-}
-
-//Stop start smarthub update on resume
-function Main_ResumeSmarthub() {
-    if (document.hidden) window.clearInterval(Main_SmartHubId);
-    else if (Main_TizenVersion) {
-        window.setTimeout(function() {
-            if (!document.hidden && AddUser_UsernameArray.length > 0) {
-                Main_SmartHubId = window.setInterval(SmartHub_Start, 600000);
-                if ((new Date().getTime() - 590000) > SmartHub_LastUpdate) SmartHub_Start();
-            }
-        }, 10000);
     }
 }
 
