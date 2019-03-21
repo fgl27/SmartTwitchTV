@@ -462,7 +462,6 @@ function Play_loadDataSuccess(responseText) {
         Play_playlistResponse = responseText;
         Play_qualities = Play_extractQualities(Play_playlistResponse);
         Play_state = Play_STATE_PLAYING;
-        SmartHub_SmartHubResume = false;
         if (Play_isOn) Play_qualityChanged();
     }
 }

@@ -211,22 +211,6 @@ function AddUser_RestoreUsers() {
         for (var i = 0; i < AddUser_UsernameArray.length; i++)
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
     }
-
-    Main_TizenVersion = false;
-
-    if (Main_TizenVersion) {
-        SmartHub_SetNoUserPreviewData();
-        window.addEventListener('appcontrol', SmartHub_EventListener, false);
-
-        window.setTimeout(function() {
-
-            if (AddUser_UsernameArray.length > 0) {
-                window.clearInterval(Main_SmartHubId);
-                SmartHub_StartInterval();
-                document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
-            } else SmartHub_Start();
-        }, 10000);
-    }
 }
 
 function AddUser_UserIsSet() {
@@ -247,13 +231,6 @@ function AddUser_SaveNewUser(responseText) {
     AddUser_exit();
     Users_init();
     AddUser_loadingData = false;
-
-    if (Main_TizenVersion && AddUser_UsernameArray.length === 1) {
-        window.clearInterval(Main_SmartHubId);
-        document.removeEventListener('visibilitychange', Main_ResumeSmarthub);
-        document.addEventListener('visibilitychange', Main_ResumeSmarthub, false);
-        SmartHub_StartInterval();
-    }
 }
 
 function AddUser_removeUser(Position) {
@@ -266,11 +243,7 @@ function AddUser_removeUser(Position) {
     if (AddUser_UsernameArray.length > 0) {
         Users_status = false;
         Users_init();
-        if (Main_TizenVersion && !Position) SmartHub_Start();
-    } else {
-        AddUser_init();
-        if (Main_TizenVersion) SmartHub_Start();
-    }
+    } else AddUser_init();
 
     // reset localStorage usernames
     AddUser_SaveUserArray();
@@ -286,7 +259,6 @@ function AddUser_UserMakeOne(Position) {
     AddUser_UsernameArray[Position] = AddUser_Username;
     Users_status = false;
     Users_init();
-    if (Main_TizenVersion) SmartHub_Start();
 }
 
 function AddUser_UserCodeExist(user) {

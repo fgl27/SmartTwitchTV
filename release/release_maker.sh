@@ -25,7 +25,7 @@
 
 # add html files here, master.css here is a temp file generate by this .sh it has the css content of index.html
 temp_maker_folder="release/temp_maker/";
-html_file=("$temp_maker_folder""config.xml" "$temp_maker_folder""index.html" "$temp_maker_folder""master.css" "release/index.html");
+html_file=("$temp_maker_folder""index.html" "$temp_maker_folder""master.css" "release/index.html");
 
 # add js folders here
 js_folders=("app/languages/" "app/general/" "app/specific/");
@@ -193,8 +193,6 @@ mkdir -p "$temp_maker_folder"
 
 cp -rf index.html "$temp_maker_folder"master.css
 cp -rf index.html "$temp_maker_folder"index.html
-cp -rf config.xml "$temp_maker_folder"config.xml
-sed -i 's/flbtxFhd64/qY6HyNzLIR/g' "$temp_maker_folder"config.xml
 cp -rf release/index.html index_release.html
 
 sed -i -n '/bodystart/,/bodyend/p' "$temp_maker_folder"index.html
@@ -213,7 +211,6 @@ echo -e "\\n${bldgrn}Compressing Start\\n";
 sed_comp "${html_file[@]}";
 
 # Include STR_BODY to release/master, STR_BODY has the content of index.html body
-cp -rf "$temp_maker_folder"config.xml release/config.xml
 echo "var STR_BODY='""$(cat "$temp_maker_folder"index.html)""';" > release/master.js;
 
 if [ "$canuglifyjs" == 1 ]; then
@@ -227,7 +224,6 @@ zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh beautify
 
 # Clean up release/ folder temp files and stash all over git changes
 rm -rf app/
-rm -rf config.xml release/config.xml
 rm -rf widget.info release/widget.info
 rm -rf .project release/.project
 rm -rf .tproject release/.tproject
