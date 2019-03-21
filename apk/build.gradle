@@ -1,0 +1,67 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: './versions.gradle'
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+    apply from: './versions.gradle'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
+        classpath 'com.github.ben-manes:gradle-versions-plugin:' + versions.benmanes
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+class GreetingTask extends DefaultTask {
+}
+
+task gradleUpdates(type: GreetingTask) {
+    doLast {
+    println ''
+    group = "wrapper"
+        ["nightly": "nightly",
+         "rc"     : "release-candidate",
+         "current": "current"].each {
+            def label = it.value
+            def version = new groovy.json.JsonSlurper().parseText(new URL("https://services.gradle.org/versions/${label}").text)
+            if (version.empty) {
+                throw new GradleException("Cannot update wrapper to '${label}' version as there is currently no version of that label")
+            }
+            println " -${label} version: ${version.version} (downloadUrl: ${version.downloadUrl})"
+        }
+    }
+    finalizedBy(dependencyUpdates)
+}
+
+dependencyUpdates.resolutionStrategy = {
+  componentSelection { rules ->
+    rules.all { ComponentSelection selection ->
+      boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+      }
+      if (rejected) {
+        selection.reject('Release candidate')
+      }
+    }
+  }
+}
+
+subprojects { //check dependecies that may cause error contains -> ./gradlew -q allDeps --configuration releaseUnitTestCompileClasspath | grep ' -> ' -B 3
+    task allDeps(type: DependencyReportTask) {}
+}
