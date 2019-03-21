@@ -201,9 +201,6 @@ sed -i -n '/cssstart/,/cssend/p' "$temp_maker_folder"master.css
 rm -rf release/app/
 mkdir -p 'release/app/images/'
 cp -rf app/images/app_icon.png release/app/images/app_icon.png
-cp -rf widget.info release/widget.info
-cp -rf .project release/.project
-cp -rf .tproject release/.tproject
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 
@@ -224,9 +221,6 @@ zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh beautify
 
 # Clean up release/ folder temp files and stash all over git changes
 rm -rf app/
-rm -rf widget.info release/widget.info
-rm -rf .project release/.project
-rm -rf .tproject release/.tproject
 
 cd - &> /dev/null || exit;
 
@@ -238,7 +232,8 @@ fi;
 # Copy master.css to its place, it's the css content of index.html
 cp -rf "$temp_maker_folder"master.css release/githubio/css/master.css
 
-cp -rf index_release.html release/index.html 
+cp -rf release/index.html release/index.min.html
+cp -rf index_release.html release/index.html
 rm -rf index_release.html
 cd release/ || exit
 
