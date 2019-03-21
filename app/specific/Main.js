@@ -139,7 +139,7 @@ var IMG_SMART_FEATURED = GIT_IO + "smart_featured.png";
 var IMG_SMART_VIDEO = GIT_IO + "smart_videos.png";
 var IMG_SMART_CLIP = GIT_IO + "smart_cips.png";
 var IMG_SMART_ADD_USER = GIT_IO + "smart_add_user.png";
-var TEMP_MP4 = GIT_IO + "temp.mp4";
+//var TEMP_MP4 = GIT_IO + "temp.mp4";
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 //function vars
