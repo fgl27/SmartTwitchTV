@@ -34,6 +34,8 @@ public class PlaybackVideoFragment extends VideoSupportFragment {
         super.onCreate(savedInstanceState);
 
        final String url = getActivity().getIntent().getStringExtra("url");
+       final String title = getActivity().getIntent().getStringExtra("title");
+       final String description = getActivity().getIntent().getStringExtra("description");
 
         VideoSupportFragmentGlueHost glueHost =
                 new VideoSupportFragmentGlueHost(PlaybackVideoFragment.this);
@@ -43,8 +45,8 @@ public class PlaybackVideoFragment extends VideoSupportFragment {
 
         mTransportControlGlue = new PlaybackTransportControlGlue<>(getActivity(), playerAdapter);
         mTransportControlGlue.setHost(glueHost);
-        mTransportControlGlue.setTitle("title");
-        mTransportControlGlue.setSubtitle("description");
+        mTransportControlGlue.setTitle(title);
+        mTransportControlGlue.setSubtitle(description);
         mTransportControlGlue.playWhenPrepared();
         playerAdapter.setDataSource(Uri.parse(url));
     }
