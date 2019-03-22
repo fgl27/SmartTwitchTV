@@ -75,9 +75,11 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void startVideo(String videoAddress) {
+        public void startVideo(String videoAddress, String title, String description) {
             Intent intent = new Intent(mcontext, PlaybackActivity.class);
             intent.putExtra("url", videoAddress);
+            intent.putExtra("title", title);
+            intent.putExtra("description", description);
             mcontext.startActivity(intent);
         }
     }

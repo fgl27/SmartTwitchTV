@@ -268,7 +268,8 @@ function Play_Start() {
 function Play_Resume() {
     console.log("Play_Resume start");
     if (!document.hidden) {
-        Play_PannelEndStart(1);
+        //Play_PannelEndStart(1);
+        Main_ready(Play_shutdownStream);
     }
 }
 
@@ -528,10 +529,12 @@ function Play_qualityChanged() {
     Play_BufferPercentage = 0;
     Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
-    if (true) { //Play_isOn
+    if (Android) { //Play_isOn
         Play_HideBufferDialog();
-        Android.showToast(Play_playingUrl);
-        Android.startVideo(Play_playingUrl);
+        Play_state = Play_STATE_PLAYING;
+        //Android.showToast(Play_playingUrl);
+        Android.startVideo(Play_playingUrl, Main_values.Play_selectedChannelDisplayname +
+        ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
     } else Play_onPlayer();
 }
 
