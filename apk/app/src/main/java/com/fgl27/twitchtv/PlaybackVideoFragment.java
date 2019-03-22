@@ -28,19 +28,37 @@ import android.support.v17.leanback.widget.PlaybackControlsRow;
 public class PlaybackVideoFragment extends VideoSupportFragment {
 
     private PlaybackTransportControlGlue<MediaPlayerAdapter> mTransportControlGlue;
-
+    private String url;
+    private MediaPlayerAdapter playerAdapter;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-       final String url = getActivity().getIntent().getStringExtra("url");
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTransportControlGlue != null) {
+            playerAdapter.release();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        start();
+    }
+
+    public void start() {
+       url = getActivity().getIntent().getStringExtra("url");
        final String title = getActivity().getIntent().getStringExtra("title");
        final String description = getActivity().getIntent().getStringExtra("description");
 
         VideoSupportFragmentGlueHost glueHost =
                 new VideoSupportFragmentGlueHost(PlaybackVideoFragment.this);
 
-        MediaPlayerAdapter playerAdapter = new MediaPlayerAdapter(getActivity());
+        playerAdapter = new MediaPlayerAdapter(getActivity());
         playerAdapter.setRepeatAction(PlaybackControlsRow.RepeatAction.INDEX_NONE);
 
         mTransportControlGlue = new PlaybackTransportControlGlue<>(getActivity(), playerAdapter);
@@ -49,21 +67,5 @@ public class PlaybackVideoFragment extends VideoSupportFragment {
         mTransportControlGlue.setSubtitle(description);
         mTransportControlGlue.playWhenPrepared();
         playerAdapter.setDataSource(Uri.parse(url));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mTransportControlGlue != null) {
-            mTransportControlGlue.pause();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mTransportControlGlue != null) {
-            mTransportControlGlue.play();
-        }
     }
 }

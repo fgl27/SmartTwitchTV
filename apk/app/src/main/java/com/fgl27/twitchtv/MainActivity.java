@@ -23,6 +23,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
 /*
  * Main Activity class that loads {@link MainFragment}.
  */
@@ -54,8 +55,8 @@ public class MainActivity extends Activity {
         mwebview.setWebViewClient(new WebViewClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 Log.d("MyApplication", message + " -- From line " +
-                    lineNumber + " of " +
-                    sourceID);
+                        lineNumber + " of " +
+                        sourceID);
             }
         });
     }

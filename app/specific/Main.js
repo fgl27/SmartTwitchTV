@@ -916,9 +916,9 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Main_values.Play_title = Main_values.Play_selectedChannel[2];
     Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
     Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
-    Main_values.Play_title = Main_values.Play_selectedChannel[2];
     if (Main_values.Main_Go === Main_UserHost) {
         Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];

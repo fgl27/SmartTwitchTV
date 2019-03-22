@@ -148,7 +148,7 @@ function Live_loadDataSuccess(responseText) {
             else {
                 Live_idObject[id] = 1;
                 row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
-                    [stream.channel.name, id], Live_ids,
+                    [stream.channel.name, id, stream.channel.status], Live_ids,
                     [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                         stream.channel.status, stream.game,
