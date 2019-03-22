@@ -534,7 +534,7 @@ function Play_qualityChanged() {
         Play_state = Play_STATE_PLAYING;
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl, Main_values.Play_selectedChannelDisplayname +
-        ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
+            ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
     } else Play_onPlayer();
 }
 
