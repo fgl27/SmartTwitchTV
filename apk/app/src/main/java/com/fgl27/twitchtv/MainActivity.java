@@ -16,6 +16,7 @@ package com.fgl27.twitchtv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
         mcontext = this;
 
         mwebview = (WebView) findViewById(R.id.WebView);
+        mwebview.setBackgroundColor(Color.TRANSPARENT);
         WebSettings websettings = mwebview.getSettings();
         websettings.setJavaScriptEnabled(true);
         websettings.setDomStorageEnabled(true);
@@ -77,10 +79,10 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void startVideo(String videoAddress, String title, String description) {
-            Intent intent = new Intent(mcontext, PlaybackActivity.class);
-            intent.putExtra("url", videoAddress);
-            intent.putExtra("title", title);
-            intent.putExtra("description", description);
+            Intent intent = new Intent(mcontext, PlayerActivity.class);
+            intent.putExtra("URL", videoAddress);
+            //intent.putExtra("title", title);
+            //intent.putExtra("description", description);
             mcontext.startActivity(intent);
         }
     }
