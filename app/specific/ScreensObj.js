@@ -46,9 +46,9 @@ var Base_obj = {
         this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
 };
-//((100 / this.ColoumnsCount) -1)
+
 var Base_Clip_obj = {
-    ThumbSize: 32.85,
+    ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
@@ -91,7 +91,7 @@ var Base_Clip_obj = {
 };
 
 var Base_Game_obj = {
-    ThumbSize: 19.5,
+    ThumbSize: 19.35,
     ItemsLimit: Main_ItemsLimitGame,
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
