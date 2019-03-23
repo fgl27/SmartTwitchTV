@@ -56,7 +56,6 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
     public static String url;
     private AVLoadingIndicatorView loading;
-    //private long resume;
 
     private final int DEFAULT_MIN_BUFFER_MS = 3500;
     private final int DEFAULT_MAX_BUFFER_MS = 60000;
