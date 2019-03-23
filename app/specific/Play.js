@@ -266,7 +266,7 @@ function Play_Start() {
 }
 
 function Play_Resume() {
-console.log("Play_Resume");
+    console.log("Play_Resume");
     if (document.hidden) {
         if (Play_isEndDialogVisible()) {
             Play_CleanHideExit();
@@ -281,18 +281,18 @@ console.log("Play_Resume");
     } else {
         Play_isOn = true;
         Play_clearPause();
-            if (Play_isOn) {
-                Play_loadingInfoDataTry = 0;
-                Play_loadingInfoDataTimeout = 3000;
-                Play_RestoreFromResume = true;
-                if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-                else Play_updateStreamInfo();
-                Play_state = Play_STATE_LOADING_TOKEN;
-                Play_ResumeAfterOnlineCounter = 0;
-                if (navigator.onLine) Play_loadData();
-                else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
-                Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
-            }
+        if (Play_isOn) {
+            Play_loadingInfoDataTry = 0;
+            Play_loadingInfoDataTimeout = 3000;
+            Play_RestoreFromResume = true;
+            if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
+            else Play_updateStreamInfo();
+            Play_state = Play_STATE_LOADING_TOKEN;
+            Play_ResumeAfterOnlineCounter = 0;
+            if (navigator.onLine) Play_loadData();
+            else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+            Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
+        }
     }
 }
 
@@ -729,8 +729,7 @@ function Play_isNotplaying() {
     return Play_videojs.paused();
 }
 
-function Play_offPlayer() {
-}
+function Play_offPlayer() {}
 
 function Play_updateCurrentTime(currentTime) {
     Play_currentTime = currentTime;
