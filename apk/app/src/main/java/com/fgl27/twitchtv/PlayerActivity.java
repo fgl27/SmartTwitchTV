@@ -57,11 +57,11 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     public static String url;
     private AVLoadingIndicatorView loading;
 
-    private final int DEFAULT_MIN_BUFFER_MS = 3500;
-    private final int DEFAULT_MAX_BUFFER_MS = 60000;
+    private final int DEFAULT_MIN_BUFFER_MS = 1000;
+    private final int DEFAULT_MAX_BUFFER_MS = 30000;
     private final int DEFAULT_BUFFER_FOR_PLAYBACK_MS = DEFAULT_MIN_BUFFER_MS;
     private final int DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS = DEFAULT_MIN_BUFFER_MS;
-    private final long DEFAULT_STARTING = 5000;//helps to prevet error/exception BehindLiveWindowException
+    private final long DEFAULT_STARTING = 4500;//helps to prevet error/exception BehindLiveWindowException
 
     public WebView mwebview;
     public Context mcontext;
