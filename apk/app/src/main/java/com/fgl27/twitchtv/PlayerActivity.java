@@ -57,11 +57,11 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     public static String url;
     private AVLoadingIndicatorView loading;
 
-    private final int DEFAULT_MIN_BUFFER_MS = 1000;
-    private final int DEFAULT_MAX_BUFFER_MS = 30000;
+    private final int DEFAULT_MIN_BUFFER_MS = 2000;
+    private final int DEFAULT_MAX_BUFFER_MS = 15000;
     private final int DEFAULT_BUFFER_FOR_PLAYBACK_MS = DEFAULT_MIN_BUFFER_MS;
     private final int DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS = DEFAULT_MIN_BUFFER_MS;
-    private final long DEFAULT_STARTING = 4500;//helps to prevet error/exception BehindLiveWindowException
+    private final long DEFAULT_STARTING = 6000;//helps to prevet error/exception BehindLiveWindowException
 
     public WebView mwebview;
     public Context mcontext;
@@ -70,10 +70,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreateReady before " + onCreateReady);
         if (!onCreateReady) {
             onCreateReady = true;
-        Log.d(TAG, "onCreateReady " + onCreateReady);
             setContentView(R.layout.activity_player);
             this.url = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/temp.mp4";
 
@@ -150,13 +148,11 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         @Override
         public void onReceive(Context context, Intent intent) {
             shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
-            Log.d(TAG, "shouldAutoPlay " + shouldAutoPlay);
             initializePlayer();
         }
     };
 
     private void initializePlayer() {
-        Log.d(TAG, "url " + url);
         if (player != null) {
             player.setPlayWhenReady(shouldAutoPlay);
             releasePlayer();
@@ -164,8 +160,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         if (shouldAutoPlay) {
             showLoading();
 
-            DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            bandwidthMeter.addEventListener(new Handler(), new BandWidthListener(this));
+            //DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            //bandwidthMeter.addEventListener(new Handler(), new BandWidthListener(this));
 
             trackSelector = new DefaultTrackSelector();
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
@@ -179,9 +175,9 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                                     DEFAULT_MAX_BUFFER_MS,
                                     DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                                     DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS)
-                            .createDefaultLoadControl(),
-                    null,
-                    bandwidthMeter);
+                            .createDefaultLoadControl());
+                    //null,
+                    //bandwidthMeter);
 
             simpleExoPlayerView.setPlayer(player);
 
@@ -193,7 +189,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
                 @Override
                 public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                    Log.d(TAG, "on player state changed---" + playWhenReady + "--------" + playbackState + "-----get buffer position-----" + player.getBufferedPosition() + "------get real position-----" + player.getCurrentPosition());
+                    //Log.d(TAG, "on player state changed---" + playWhenReady + "--------" + playbackState + "-----get buffer position-----" + player.getBufferedPosition() + "------get real position-----" + player.getCurrentPosition());
 
                     if (playWhenReady) {
                         switch (playbackState) {
@@ -207,7 +203,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                                 break;
                             case STATE_ENDED:
                                 Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "Video Ended");
+                                //Log.d(TAG, "Video Ended");
                                 hideLoading();
                                 break;
                         }
@@ -218,9 +214,9 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
                 @Override
                 public void onPlayerError(ExoPlaybackException error) {
-                    Log.d(TAG, "error " + error.getMessage());
+                    //Log.d(TAG, "error " + error.getMessage());
                     Toast.makeText(PlayerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    player.prepare(mediaSource, false, true);
+                    initializePlayer();
                 }
             });
         } else {
@@ -258,29 +254,19 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     @Override
     protected void onResume() {
         super.onResume();
-        if (player == null) {
-            initializePlayer();
-        } else {
-            player.seekTo(DEFAULT_STARTING);
-            player.setPlayWhenReady(shouldAutoPlay);
-        }
-
         mregisterReceiver();
-        Log.d(TAG, "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
         munregisterReceiver();
-        Log.d(TAG, "onPause");
         //resume = player.getCurrentPosition();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
         munregisterReceiver();
     }
 
