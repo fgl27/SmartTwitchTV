@@ -43,7 +43,7 @@ var Base_obj = {
         Main_SwitchScreen();
     },
     set_ThumbSize: function() {
-        this.ThumbCssText = 'width: '+ this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
+        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
 };
 //((100 / this.ColoumnsCount) -1)
