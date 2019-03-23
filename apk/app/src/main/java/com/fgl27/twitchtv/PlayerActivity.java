@@ -127,7 +127,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         }
 
         @JavascriptInterface
-        public void startVideo(String videoAddress, String title, String description) {
+        public void startVideo(String videoAddress) {
             PlayerActivity.url = videoAddress;
             SendBroadcast("initializePlayerReceiver", mwebContext, true);
         }
