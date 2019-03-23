@@ -1,6 +1,5 @@
 var Main_ItemsLimitMax = 100;
 var Main_ThumbPading = 3;
-var Main_ThumbWidth = window.innerWidth - (window.innerWidth * 0.02); // window.innerWidth = 1920px - 2%  = 1881)
 var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
@@ -44,11 +43,12 @@ var Base_obj = {
         Main_SwitchScreen();
     },
     set_ThumbSize: function() {
-        this.ThumbCssText = 'width: 32%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
+        this.ThumbCssText = 'width: '+ this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
 };
-
+//((100 / this.ColoumnsCount) -1)
 var Base_Clip_obj = {
+    ThumbSize: 32.85,
     ItemsLimit: Main_ItemsLimitVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
@@ -91,6 +91,7 @@ var Base_Clip_obj = {
 };
 
 var Base_Game_obj = {
+    ThumbSize: 19.5,
     ItemsLimit: Main_ItemsLimitGame,
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,

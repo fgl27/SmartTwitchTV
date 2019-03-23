@@ -4,9 +4,6 @@ var inUseObj;
 //Initiate all Main screens obj and they properties
 function Screens_InitScreens() {
     console.log('InitScreens place holder');
-    Main_ThumbWidth = window.innerWidth;
-    //98% of window size with is the size of screens table width
-    Main_ThumbWidth = Main_ThumbWidth - ((Main_ThumbWidth * 2) / 100);
 }
 
 //Initiate all Secondary screens obj and they properties
