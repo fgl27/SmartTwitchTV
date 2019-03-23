@@ -266,7 +266,6 @@ function Play_Start() {
 }
 
 function Play_Resume() {
-    console.log("Play_Resume");
     if (document.hidden) {
         if (Play_isEndDialogVisible()) {
             Play_CleanHideExit();
@@ -554,61 +553,28 @@ function Play_qualityChanged() {
     Play_qualityPlaying = Play_quality;
     Play_state = Play_STATE_PLAYING;
     if (Android) { //Play_isOn
+        if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
         Play_HideBufferDialog();
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl);
-    } else Play_onPlayer();
+        
+    }
+    Play_onPlayer();
 }
 
 function Play_onPlayer() {
-    Play_showBufferDialog();
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-
-    Play_videojs.src({
-        src: Play_playingUrl
-    });
-
     window.clearTimeout(Play_CheckChatId);
     Play_ChatLoadStarted = false;
-    Play_offsettime = Play_oldcurrentTime;
+    //Play_offsettime = Play_oldcurrentTime;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    Play_Playing = true;
+    Play_loadChat();
 
-    if (!Play_Playing) {
-        Play_videojs.ready(function() {
-            this.isFullscreen(true);
-            this.requestFullscreen();
-            this.autoplay(true);
-
-            this.on('ended', function() {
-                Play_PannelEndStart(1);
-                console.log('Play_videojs ended');
-            });
-
-            this.on('timeupdate', function() {
-                Play_updateCurrentTime(this.currentTime());
-                console.log('Play_videojs timeupdate');
-            });
-
-            this.on('error', function() {
-                Play_PannelEndStart(1);
-                console.log('Play_videojs error');
-            });
-
-            this.on('loadedmetadata', function() {
-                // sync chat and stream
-                if (!Play_ChatLoadStarted) Play_loadChat();
-                console.log('Play_videojs loadedmetadata');
-            });
-
-        });
-        Play_Playing = true;
-    }
-
-    Play_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 4 + Play_Buffer;
-    Play_PlayerCheckQualityChanged = false;
-    window.clearInterval(Play_streamCheck);
-    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+    //Play_PlayerCheckCount = 0;
+    //Play_PlayerCheckTimer = 4 + Play_Buffer;
+    //Play_PlayerCheckQualityChanged = false;
+    //window.clearInterval(Play_streamCheck);
+    //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {
@@ -728,20 +694,18 @@ function Play_isNotplaying() {
     return Play_videojs.paused();
 }
 
-function Play_offPlayer() {}
+//function Play_updateCurrentTime(currentTime) {
+//    Play_currentTime = currentTime;
 
-function Play_updateCurrentTime(currentTime) {
-    Play_currentTime = currentTime;
+//    if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
+//    if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
 
-    if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
-    if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
-
-    Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14s buffer size from twitch
-    if (Play_isPanelShown()) {
-        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
-        Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
-    }
-}
+//    Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14s buffer size from twitch
+//    if (Play_isPanelShown()) {
+//        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
+//        Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
+//    }
+//}
 
 function Play_clock() {
     var clock = Main_getclock();
@@ -1386,9 +1350,6 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
-    console.log("Play_PannelEndStart start");
-    //Play_offPlayer();
-
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
@@ -1398,7 +1359,6 @@ function Play_PannelEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart() {
-    Play_offPlayer();
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 2000;
@@ -1533,8 +1493,6 @@ function Play_KeyReturn(is_vod) {
 }
 
 function Play_handleKeyDown(e) {
-    console.log('Play_handleKeyDown');
-    console.log(e.keyCode);
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_GREEN:
