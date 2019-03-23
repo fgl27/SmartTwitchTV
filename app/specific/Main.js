@@ -394,10 +394,10 @@ function Main_Scrollbar(y, coloumns, total) {
     var screen_size = ((screen.height / 100) * 5);
     //if show the scroll, else reset it's position and hide by setting it's color equal to parent background
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
-    console.log("if");
+        console.log("if");
         // min screen_size max screen.height - (screen_size * 3)
-        var isagame = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod  ||
-         Main_values.Main_Go === Main_AGameClip);
+        var isagame = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
+            Main_values.Main_Go === Main_AGameClip);
         var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (isagame ? 2.3 : 1)));
         Main_ScrollbarElement.style.top = nextPositon + "px";
 
@@ -406,7 +406,7 @@ function Main_Scrollbar(y, coloumns, total) {
             Main_ScrollbarElement.style.backgroundColor = "#777777";
         }
     } else {
-    console.log("else");
+        console.log("else");
         Main_ScrollbarElement.style.backgroundColor = "#000000";
         Main_ScrollbarElement.style.top = screen_size + "px";
         Main_ScrollbarIsHide = true;
