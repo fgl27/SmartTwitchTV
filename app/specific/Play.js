@@ -266,20 +266,43 @@ function Play_Start() {
 }
 
 function Play_Resume() {
-    console.log("Play_Resume start");
-    if (!document.hidden) {
-        //Play_PannelEndStart(1);
-        Main_ready(Play_shutdownStream);
+console.log("Play_Resume");
+    if (document.hidden) {
+        if (Play_isEndDialogVisible()) {
+            Play_CleanHideExit();
+            Play_hideChat();
+            Main_ready(Play_shutdownStream);
+        } else {
+            Play_ClearPlayer();
+            Play_Playing = false;
+            Play_Chatobj.src = 'about:blank';
+            window.clearInterval(Play_streamInfoTimer);
+        }
+    } else {
+        Play_isOn = true;
+        Play_clearPause();
+            if (Play_isOn) {
+                Play_loadingInfoDataTry = 0;
+                Play_loadingInfoDataTimeout = 3000;
+                Play_RestoreFromResume = true;
+                if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
+                else Play_updateStreamInfo();
+                Play_state = Play_STATE_LOADING_TOKEN;
+                Play_ResumeAfterOnlineCounter = 0;
+                if (navigator.onLine) Play_loadData();
+                else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+                Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
+            }
     }
 }
 
-//function Play_ResumeAfterOnline() {
-//    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
-//        window.clearInterval(Play_ResumeAfterOnlineId);
-//        Play_loadData();
-//    }
-//    Play_ResumeAfterOnlineCounter++;
-//}
+function Play_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        Play_loadData();
+    }
+    Play_ResumeAfterOnlineCounter++;
+}
 
 function Play_updateStreamInfoStart() {
     var xmlHttp = new XMLHttpRequest();
@@ -707,12 +730,6 @@ function Play_isNotplaying() {
 }
 
 function Play_offPlayer() {
-    Play_videojs.off('ended', null);
-    Play_videojs.off('timeupdate', null);
-    Play_videojs.off('error', null);
-    Play_videojs.off('loadedmetadata', null);
-    Play_videojs.off('playing', null);
-    Play_videojs.off('canplaythrough', null);
 }
 
 function Play_updateCurrentTime(currentTime) {
@@ -785,6 +802,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
+    Android.stopVideo();
     Play_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();

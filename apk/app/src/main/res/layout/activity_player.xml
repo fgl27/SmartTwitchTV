@@ -16,16 +16,15 @@
         app:use_controller="false"
         />
 
+    <WebView
+        android:id="@+id/WebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/loading"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         app:indicatorName="BallClipRotateMultipleIndicator" />
-
-    <WebView
-        android:id="@+id/WebView"
-        android:layout_width="248dp"
-        android:layout_height="match_parent" />
-
 </FrameLayout>
