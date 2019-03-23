@@ -552,13 +552,13 @@ function Play_qualityChanged() {
     Play_BufferPercentage = 0;
     Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
+    Play_state = Play_STATE_PLAYING;
     if (Android) { //Play_isOn
         Play_HideBufferDialog();
-        Play_state = Play_STATE_PLAYING;
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl, Main_values.Play_selectedChannelDisplayname +
             ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
-    } else Play_onPlayer();
+    }// else Play_onPlayer();
 }
 
 function Play_onPlayer() {

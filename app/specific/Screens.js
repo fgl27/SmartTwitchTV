@@ -216,13 +216,13 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
         title_game[1] + title_game[2]
     ]));
 
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"><div><img id="' +
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="stream_img"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="' +
-        idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' +
+        idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 85%;">' +
         display_name + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + language +
-        '</div><div><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
+        '</div><div  style="line-height: 12px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
         created_at[0] + created_at[1] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
         STR_DURATION + Play_timeS(duration) + '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +

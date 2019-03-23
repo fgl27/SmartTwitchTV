@@ -1,7 +1,7 @@
 // more keys at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
 var KEY_CHANNELUP = 33;
 var KEY_CHANNELDOWN = 34;
-var KEY_CHANNELGUIDE = 36;
+var KEY_CHANNELGUIDE = 82;
 var KEY_PAUSE = 19;
 var KEY_PLAY = 415;
 var KEY_PLAYPAUSE = 10252;

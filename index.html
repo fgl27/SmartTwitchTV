@@ -3,13 +3,13 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" />
+    <meta name="viewport">
     <link rel="stylesheet" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/css/font-awesome.min.css">
     <title>Twitch on TV</title>
     <link rel='shortcut icon' type='image/x-icon' href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
     <style type="text/css">
         body {
-            background-color: rgba(255, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0);
             font-family: sans-serif;
             font-style: normal;
             font-variant: normal;
@@ -183,6 +183,7 @@
 
         div.stream_thumbnail_video,
         div.stream_thumbnail_game,
+        div.stream_thumbnail_clip,
         div.stream_thumbnail_channel {
             width: 100%;
             height: 0;
@@ -191,6 +192,13 @@
         }
 
         div.stream_thumbnail_video {
+            /* height / width * 100% of Main.VideoSize*/
+            padding-bottom: 56.25%;
+            background-repeat: no-repeat;
+        }
+
+        div.stream_thumbnail_clip {
+            width: 99%;
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
             background-repeat: no-repeat;
@@ -291,6 +299,7 @@
             text-overflow: ellipsis;
             overflow: hidden;
             font-size: 75%;
+            line-height: 12px;
         }
 
         div.stream_info_games {
@@ -330,7 +339,7 @@
             box-shadow: 0 0 14px rgba(0, 0, 0, 0.45);
             color: #000000;
             font-weight: bold;
-            font-size: 245%;
+            font-size: 200%;
             text-align: center;
             vertical-align: middle;
             background-color: #AAAAAA;
@@ -379,7 +388,8 @@
             width: 98%;
             text-align: center;
             word-wrap: break-word;
-            font-size: 175%;
+            font-size: 95%;
+            font-weight: bold;
             text-shadow: #000000 0 0 4px, #000000 0 0 4px, #000000 0 0 3px;
         }
 
@@ -387,11 +397,12 @@
             margin-top: 2%;
             margin-bottom: 2%;
             width: 96%;
-            font-size: 350%;
+            font-size: 300%;
         }
 
         div.controls_text {
-            font-size: 172%;
+            font-size: 85%;
+            font-weight: bold;
         }
 
         div.playsideinfo {
@@ -399,7 +410,7 @@
             padding-right: 0.5%;
             padding-top: 1.5%;
             color: #FFFFFF;
-            font-size: 70%;
+            font-size: 85%;
             font-weight: bold;
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
@@ -412,6 +423,7 @@
             display: inline-block;
             width: 69%;
             font-size: 100%;
+            font-weight: bold;
             color: #FFFFFF;
             word-wrap: break-word;
             text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
@@ -420,38 +432,40 @@
         div.playmulti {
             border-radius: 4px;
             display: inline-block;
+            line-height: 35px;
             background-color: rgba(255, 255, 255, 0.6);
         }
 
         div.up,
         div.down {
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
         }
 
         div.up {
-            border-bottom: 12px solid white;
+            border-bottom: 10px solid white;
         }
 
         div.down {
-            border-top: 12px solid white;
+            border-top: 10px solid white;
         }
 
         div.playbottontext {
             vertical-align: middle;
             display: inline-block;
-            font-size: 180%;
+            font-size: 110%;
+            line-height: 35px;
             font-weight: bold;
-            margin-bottom: 6px;
         }
 
         div.playbotton {
             display: inline-block;
             box-sizing: border-box;
-            height: 43px;
+            height: 80%;
             border-radius: 12px;
             vertical-align: middle;
             text-align: center;
+            margin-top: 0.5%;
             margin-right: 0.5%;
             border: 3.5px solid rgba(0, 0, 0, 0);
         }
@@ -583,9 +597,15 @@
         }
 
         .strokicon {
-            font-size: 210%;
+            font-size: 90%;
             color: #FFFFFF;
             text-shadow: #000000 0 0 8.7px, #000000 0 0 8.7px, #000000 0 0 7px;
+        }
+
+        .strokicongame {
+            font-size: 90%;
+            color: #FFFFFF;
+            text-shadow: #000000 0 0 2.7px, #000000 0 0 2.7px, #000000 0 0 2px;
         }
 
         .strokedextramini {
@@ -1094,7 +1114,7 @@
             <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs" style="z-index:98; margin-top: 24%; ">
-            <i class="icon icon-circle-o-notch fa fa-spin strokeloading" style="font-size: 727%;"></i>
+            <i class="icon icon-circle-o-notch fa fa-spin strokeloading" style="font-size: 527%;"></i>
         </div>
         <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
             <div id="main_dialog_remove" class="exit_text"></div>
@@ -1253,7 +1273,7 @@
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="stream_info" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_logo.png">
                 <div class="playmaininfo">
-                    <div id="stream_info_name" style="font-size: 130%; font-weight: bold;"></div>
+                    <div id="stream_info_name" style="font-size: 160%; font-weight: bold;"></div>
                     <div id="stream_info_title"></div>
                     <div id="stream_info_game"></div>
                 </div>
@@ -1261,14 +1281,14 @@
             <div id="scene_channel_panel_bottom" style="z-order:-100; position: absolute; bottom: 0; width: 100%; height: 53px; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040)); text-align: center;">
                 <!-- search-->
                 <div id="scene2_pannel_5" class="playbotton" style="z-order:6; width: 11%;">
-                    <div id="ic_search" style="vertical-align: middle; display: inline-block">
+                    <div id="ic_search" style="font-size: 140%; transform: translate(0, 5%); vertical-align: middle; display: inline-block;">
                         <i class="icon-search strokicon"></i>
                     </div>
                     <div id="scene2_search_text" class="strokedextramini playbottontext"></div>
                 </div>
                 <!-- channel content-->
                 <div id="scene2_pannel_4" class="playbotton" style="z-order:5; width: 18%;">
-                    <div id="channel_icon" style="vertical-align: middle; display: inline-block">
+                    <div id="channel_icon" style="vertical-align: middle; display: inline-block;">
                         <i class="icon-filmstrip strokicon"></i>
                     </div>
                     <div id="scene2_channel_text" class="strokedextramini playbottontext"></div>
@@ -1276,31 +1296,31 @@
                 <!-- game content-->
                 <div id="scene2_pannel_3" class="playbotton" style="z-order:5; width: 17%;">
                     <div id="game_icon" style="vertical-align: middle; display: inline-block; overflow: hidden; max-height: 43px;">
-                        <div style="display:flex; font-size: 120%; transform: translate(0,-10%);">
-                            <i class="icon-gamepad strokicon"></i>
+                        <div style="display:flex; font-size: 185%; transform: translate(0,3%);">
+                            <i class="icon-gamepad strokicongame"></i>
                         </div>
                     </div>
                     <div id="scene2_game_text" class="strokedextramini playbottontext"></div>
                 </div>
                 <!-- fallow-->
                 <div id="scene2_pannel_2" class="playbotton" style="z-order:3; width: 14%;">
-                    <div id="fallow_heart" style="vertical-align: middle; display: inline-block">
+                    <div id="fallow_heart" style="font-size: 75%; transform: translate(0, 10%); vertical-align: middle; display: inline-block;">
                         <i class="icon-heart-o strokicon"></i>
                     </div>
                     <div id="fallow_text" class="strokedextramini playbottontext"></div>
                 </div>
                 <!-- quality-->
-                <div id="scene2_pannel_1" class="playbotton playbotton_focus" style="z-order:2; width: 28%;">
-                    <div id="quality_video" style="vertical-align: middle; display: inline-block">
+                <div id="scene2_pannel_1" class="playbotton playbotton_focus" style="z-order:2; width: 30%;">
+                    <div id="quality_video" style="vertical-align: middle; display: inline-block; font-size: 185%; transform: translate(0, 7%);">
                         <i class="icon-videocamera strokicon"></i>
                     </div>
-                    <div id="quality_arrows" style="height: auto; display: inline-block;">&nbsp;
+                    <div id="quality_arrows" style="display: inline-block; font-size: 50%;transform: translate(0,20%);">&nbsp;
                         <div style="display: inline-block;">
                             <div id="quality_arrow_up" class="up"></div>
                             <div id="quality_arrow_down" class="down"></div>
                         </div>&nbsp;&nbsp;
                     </div>
-                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 175%; width: 80%;"></div>
+                    <div id="quality_name" class="strokedextramini playmulti" style="font-size: 87.5%; font-weight: bold; width: 77%;"></div>
                 </div>
                 <!-- open vod-->
                 <div id="scene2_pannel_0" class="playbotton" style="z-order:4; width: 17%; margin-right: 0; display:none;">
@@ -1367,19 +1387,19 @@
                     <div id="dialog_end_game_text" class="strokedbig"></div>
                 </div>
             </div>
-            <div id="dialog_controls_play" class="info_dialogs hide" style="width: 99.3%; margin-left: 0.35%;">
+            <div id="dialog_controls_play" class="info_dialogs hide" style="width: 98%; margin-left: 0.5%;">
                 <div id="dialog_controls_play_text" class="controls_text"></div>
             </div>
             <div id="play_dialog_simple_pause" class="dialogs hide" style="z-index:5; margin-top: 31%;">
                 <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 850%;"></i>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
-                <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 350%;"></div>
+                <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 250%;"></div>
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 17%;">
-                <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 350%;"></div>
+                <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 250%;"></div>
             </div>
-            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 24%; font-size: 727%;">
+            <div id="dialog_buffer_play" class="dialogs hide" style="z-index:98; margin-top: 24%; font-size: 527%;">
                 <i class="icon icon-circle-o-notch fa fa-spin strokeloadingplay"></i>
                 <div id="dialog_buffer_play_percentage" class="buffertext"></div>
             </div>
