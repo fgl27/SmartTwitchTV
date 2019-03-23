@@ -220,7 +220,7 @@ function Vod_VideoHtml(id, valuesArray, idArray) {
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 155%;">' + valuesArray[1] + '</div>' +
+        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 85%;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
         '<div>' +

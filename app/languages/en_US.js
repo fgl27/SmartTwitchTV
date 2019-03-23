@@ -91,7 +91,7 @@ function en_USLang() {
     STR_LATEST_VERSION = " latest available version ";
     STR_CONTROLS_MAIN_1 = "This are the none players related controls, the player can show it's own controls.";
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), Select or Play/Pause keys to start playing";
-    STR_CONTROLS_MAIN_3 = "Refresh screen content: Guide or info (Guide is channel press key on smart remote)";
+    STR_CONTROLS_MAIN_3 = "Refresh screen content: R";
     STR_CONTROLS_MAIN_4 = "Close the application: from Live screen press return to see the options";
     STR_CONTROLS_MAIN_5 = "Force close the application (in case it freezes or miss behave): Hold return key until it force closes (Works for any application on Samsung TV\'s)";
     STR_CONTROLS_MAIN_6 = " Switch screen: Chanel Up (Move to right screen) or Chanel Down (Move to left screen)";
@@ -122,7 +122,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_4 = "Jump Forward/Backwards (not available for live streams): Open the information panel, Press Directional pad (right/left) to change time when satisfied press enter/select, for videos the jump step is crescent more click/hold will make the value to increase (15 seconds up to 30 minutes) stop clicking/releasing the key will restore the step size back to 15s, for clips the jump step is every 5 seconds";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): press select key twice, it will change the video quality to the same you are current watching, by opening information panel (first click) after second click will start re-buffering";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat (over the video): Guide or info (Guide is channel press key on smart remote)";
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat (over the video): R ";
     STR_CONTROLS_PLAY_8 = "Change Chat position (if chat it\'s showing and info panel is not): Chanel Up or Down";
     STR_CONTROLS_PLAY_9 = "Change Chat size (if chat it\'s showing and info panel is not): Directional pad (up/down)";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness (if chat it\'s showing and info panel is not): Directional pad (left/right)";
@@ -171,11 +171,11 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
     STR_FALLOW_GAMES = "Followed Games";
     STR_USER_GAMES_CHANGE = "Change between";
-    STR_GUIDE = " (Guide or Info)";
+    STR_GUIDE = " (R)";
     STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     STR_STARTED = "Started ";
-    STR_KEY_UP_DOWN = " (CH Up/Down)";
+    STR_KEY_UP_DOWN = " (PG Up/Down)";
     STR_VIDEOS = "Videos";
     STR_VIDEO = " Video";
     STR_REPLAY = "Replay";

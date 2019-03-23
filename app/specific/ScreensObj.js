@@ -1,6 +1,6 @@
 var Main_ItemsLimitMax = 100;
-var Main_ThumbPading = 7.5;
-var Main_ThumbWidth = 1881; // window.innerWidth = 1920px - 2%  = 1881)
+var Main_ThumbPading = 3;
+var Main_ThumbWidth = window.innerWidth - (window.innerWidth * 0.02); // window.innerWidth = 1920px - 2%  = 1881)
 var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
@@ -44,8 +44,7 @@ var Base_obj = {
         Main_SwitchScreen();
     },
     set_ThumbSize: function() {
-        // on a 1881px screen size - 2%, ColoumnsCount = 3 and ThumbPading = 7.5, Main_ThumbWidth must result in 612px
-        this.ThumbCssText = 'width: ' + parseInt((Main_ThumbWidth / this.ColoumnsCount) - (this.ThumbPading * 2)) + 'px; display: inline-block; padding: ' + this.ThumbPading + 'px;';
+        this.ThumbCssText = 'width: 32%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
 };
 
