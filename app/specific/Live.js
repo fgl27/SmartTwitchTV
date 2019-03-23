@@ -330,6 +330,8 @@ function Live_ExitCursorSet() {
 }
 
 function Live_handleKeyDown(event) {
+console.log("Live_handleKeyDown");
+console.log(event.keyCode);
     if (Live_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 

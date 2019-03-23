@@ -18,7 +18,7 @@ var KEY_GREEN = 66;
 var KEY_YELLOW = 67;
 var KEY_BLUE = 68;
 
-var KEY_RETURN = 8;
+var KEY_RETURN = 49;
 
 var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
 var KEY_KEYBOARD_CANCEL = 65385;
