@@ -556,8 +556,7 @@ function Play_qualityChanged() {
     if (Android) { //Play_isOn
         Play_HideBufferDialog();
         //Android.showToast(Play_playingUrl);
-        Android.startVideo(Play_playingUrl, Main_values.Play_selectedChannelDisplayname +
-            ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
+        Android.startVideo(Play_playingUrl);
     } else Play_onPlayer();
 }
 
