@@ -558,7 +558,7 @@ function Play_qualityChanged() {
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl, Main_values.Play_selectedChannelDisplayname +
             ' ' + STR_PLAYING + Main_values.Play_gameSelected, Main_values.Play_title);
-    }// else Play_onPlayer();
+    } else Play_onPlayer();
 }
 
 function Play_onPlayer() {
