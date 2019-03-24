@@ -56,18 +56,12 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
     private DefaultTrackSelector trackSelector;
     private boolean shouldAutoPlay;
-    //private boolean useDEfaultStart;
+
     private int mResumeWindow;
     private long mResumePosition;
 
     public static String url;
     private AVLoadingIndicatorView loading;
-
-    //private final int DEFAULT_MIN_BUFFER_MS = 2000;
-    //private final int DEFAULT_MAX_BUFFER_MS = 15000;
-    //private final int DEFAULT_BUFFER_FOR_PLAYBACK_MS = DEFAULT_MIN_BUFFER_MS;
-    //private final int DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS = DEFAULT_MIN_BUFFER_MS;
-    //private final long DEFAULT_STARTING = 6000;//helps to prevet error/exception BehindLiveWindowException
 
     public WebView mwebview;
     public Context mcontext;
@@ -137,6 +131,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
             player.setPlayWhenReady(false);
 
             releasePlayer();
+            clearResumePosition();
         }
     }
 
@@ -294,9 +289,11 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         websettings.setAllowFileAccessFromFileURLs(true);
         websettings.setAllowUniversalAccessFromFileURLs(true);
 
-        mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
         //mwebview.loadUrl("file:///android_asset/index.html");
         mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+
+        mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
+
         mwebview.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("unused")//called by JS
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
@@ -384,9 +381,6 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
             if (mPosition > 0) {
                 mResumeWindow = 1;
                 mResumePosition = mPosition;
-            } else {
-                mResumeWindow = C.INDEX_UNSET;
-                mResumePosition = 0;
             }
             initializePlayer();
         }
