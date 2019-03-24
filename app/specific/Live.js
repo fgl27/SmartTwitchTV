@@ -198,6 +198,9 @@ function Live_loadDataSuccessFinish() {
 
                     Main_SwitchScreen();
                     Main_ExitCurrent(Main_values.Main_Go);
+                    window.setTimeout(function() {
+                        Play_HideWarningDialog();
+                    }, 2000);
                 } else if (Main_GoBefore !== 1) {
 
                     Main_ExitCurrent(Main_values.Main_Go);

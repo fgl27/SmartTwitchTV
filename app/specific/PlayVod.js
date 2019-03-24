@@ -423,7 +423,7 @@ function PlayVod_onPlayer() {
     //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
-        if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, true);
+        if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
     } catch (e) {}
     if (false) Play_showBufferDialog();
 }
@@ -493,7 +493,7 @@ function PlayVod_shutdownStream() {
 
 function PlayVod_PreshutdownStream(saveOffset) {
     try {
-        Android.stopVideo();
+        Android.stopVideo(2);
     } catch (e) {}
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);

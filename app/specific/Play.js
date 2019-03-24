@@ -553,7 +553,7 @@ function Play_qualityChanged() {
     //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
-        if (Play_isOn) Android.startVideo(Play_playingUrl, true);
+        if (Play_isOn) Android.startVideo(Play_playingUrl, 1);
     } catch (e) {}
     Play_onPlayer();
 }
@@ -765,7 +765,7 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream() {
     try {
-        Android.stopVideo();
+        Android.stopVideo(1);
     } catch (e) {}
     Play_isOn = false;
     Chat_Clear();
