@@ -973,29 +973,31 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     PlayClip_Start();
 }
 
-function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
-    Main_values.ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-    ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);
-    ChannelVod_language = Main_values.ChannelVod_vodId[2];
-    Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[3];
-    Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
-    Play_IncrementView = Main_values.ChannelVod_vodId[5];
-    Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[0].substr(1);
+function Main_OpenVod() { //id, idsArray, handleKeyDownFunction) {
+    Play_exitMain();
+    return;
+    //Main_values.ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    //    ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);
+    //    ChannelVod_language = Main_values.ChannelVod_vodId[2];
+    //    Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[3];
+    //    Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
+    //    Play_IncrementView = Main_values.ChannelVod_vodId[5];
+    //    Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[0].substr(1);
 
-    if (Main_values.Main_Go === Main_ChannelVod) {
-        ChannelVod_title = document.getElementById(idsArray[3] + id).innerHTML;
-    } else {
-        ChannelVod_title = '';
-        Main_values.Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
-    }
+    //    if (Main_values.Main_Go === Main_ChannelVod) {
+    //        ChannelVod_title = document.getElementById(idsArray[3] + id).innerHTML;
+    //    } else {
+    //        ChannelVod_title = '';
+    //        Main_values.Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    //    }
 
-    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
-    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
-        ', ' + document.getElementById(idsArray[6] + id).textContent;
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    //    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
+    //    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
+    //    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
+    //        ', ' + document.getElementById(idsArray[6] + id).textContent;
+    //    document.body.removeEventListener("keydown", handleKeyDownFunction);
 
-    Main_openVod();
+    //    Main_openVod();
 }
 
 function Main_openVod() {

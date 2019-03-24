@@ -66,7 +66,6 @@ var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
-var Play_bufferingcomplete = false;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 //var Play_4K_ModeEnable = false;
@@ -555,7 +554,7 @@ function Play_qualityChanged() {
         Play_HideBufferDialog();
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl);
-        
+
     }
     Play_onPlayer();
 }
@@ -689,7 +688,7 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
 }
 
 function Play_isNotplaying() {
-    return Play_videojs.paused();
+    return 0; //Play_videojs.paused();
 }
 
 //function Play_updateCurrentTime(currentTime) {

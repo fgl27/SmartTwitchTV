@@ -18,7 +18,6 @@ var PlayClip_offsettime = 0;
 var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
-var PlayClip_bufferingcomplete = false;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 4;
 var PlayClip_PlayerCheckCounter = 0;
@@ -54,7 +53,7 @@ function PlayClip_Start() {
         //Chat_Init();
         Chat_NoVod();
     } else Chat_NoVod();
-    Main_HideElement('progress_bar_div');//remove when java function for currentTime is done
+    Main_HideElement('progress_bar_div'); //remove when java function for currentTime is done
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -173,7 +172,7 @@ function PlayClip_qualityChanged() {
     PlayClip_qualityPlaying = PlayClip_quality;
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
-    
+
     if (Android) { //Play_isOn
         PlayClip_isOn = true;
         if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
@@ -209,7 +208,7 @@ function PlayClip_PlayerCheck() {
             else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
             else {
                 PlayClip_qualityDisplay();
-                if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
+                // if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
                 PlayClip_qualityChanged();
                 PlayClip_PlayerCheckRun = true;
             }
@@ -237,7 +236,7 @@ function PlayClip_DropOneQuality(ConnectionDrop) {
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_qualityDisplay();
-    if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
+    //if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.getCurrentTime();
     PlayClip_qualityChanged();
     PlayClip_PlayerCheckRun = true;
 }
@@ -437,7 +436,7 @@ function PlayClip_handleKeyDown(e) {
                     if (PlayClip_qualityIndex > 0) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
-                     }
+                    }
                     Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isFullScreen && Play_isChatShown()) {
@@ -456,7 +455,7 @@ function PlayClip_handleKeyDown(e) {
                     //    PlayVod_PanelY++;
                     //   PlayVod_IconsBottonFocus();
                     //} else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
-                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1){
+                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
                     }
