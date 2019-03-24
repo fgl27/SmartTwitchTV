@@ -554,7 +554,6 @@ function Play_qualityChanged() {
         Play_HideBufferDialog();
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl);
-
     }
     Play_onPlayer();
 }
@@ -601,17 +600,21 @@ function Play_loadChat() {
 
 function Play_CheckChat() {
     var doc = Play_Chatobj.contentDocument;
+    var skipothers = false;
     try {
         if (doc !== undefined && doc.body !== null)
             Play_ChatLoadOK = doc.body.innerHTML.indexOf('Connected') !== -1; //when connected OK a "Connected" is see in the chat
-    } catch (e) {}
+            skipothers = Play_ChatLoadOK;
+    } catch (e) {
+        Play_ChatLoadOK = true;
+    }
 
     if (!Play_ChatLoadOK) {
         if (Play_ChatLoadStarted && Play_CheckChatCounter < 7) {
             Play_CheckChatCounter++;
             Play_CheckChatId = window.setTimeout(Play_CheckChat, 1000);
         } else Play_loadChat();
-    } else {
+    } else if (skipothers) {
         Play_ChatFixPositionId = window.setInterval(Play_ChatFixPosition, 500);
         doc = doc.getElementById('chat_box');
         if (doc) doc.style.fontFamily = "'Helvetica Neue',Helvetica, Arial,sans-serif,Sans,Jomolhari,dejavu-sans, CambriaMath, CODE2000 , BabelStoneHan";
