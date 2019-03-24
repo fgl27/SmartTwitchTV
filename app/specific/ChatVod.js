@@ -254,7 +254,7 @@ function Chat_Play(id) {
         Chat_addlines = window.setInterval(function() {
             Main_Addline(id);
             Chat_div.scrollTop = Chat_div.scrollHeight;
-        }, 250);
+        }, 1000);
     }
 }
 
@@ -283,8 +283,7 @@ function Main_Addline(id) {
     var elem, i;
     if (Chat_Position < (Chat_Messages.length - 1)) {
         for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
-            //console.log("time " + (PlayVod_currentTime / 1000) + " line time " + Chat_Messages[i].time);
-            if (Chat_Messages[i].time < (PlayVod_currentTime / 1000)) {
+            if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';
                 elem.innerHTML = Chat_Messages[i].message;

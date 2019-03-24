@@ -48,10 +48,8 @@ function PlayClip_Start() {
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
-        PlayVod_currentTime = 0;
         Chat_offset = ChannelVod_vodOffset;
-        //Chat_Init();
-        Chat_NoVod();
+        Chat_Init();
     } else Chat_NoVod();
     Main_HideElement('progress_bar_div'); //remove when java function for currentTime is done
     PlayClip_SetOpenVod();
@@ -179,11 +177,12 @@ function PlayClip_qualityChanged() {
         //Android.showToast(Play_playingUrl);
         if (PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, 3);
     } catch (e) {}
-    //PlayClip_onPlayer();
+    PlayClip_onPlayer();
 }
 
-//function PlayClip_onPlayer() {
-//}
+function PlayClip_onPlayer() {
+    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+}
 
 function PlayClip_Resume() {
     if (document.hidden) {
@@ -193,7 +192,7 @@ function PlayClip_Resume() {
 }
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
-function PlayClip_PlayerCheck() {
+function PlayClip_PlayerCheck() { // jshint ignore:line
     if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
@@ -547,10 +546,8 @@ function PlayClip_handleKeyDown(e) {
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
                 if (Main_values.Play_ChatForceDisable) Chat_Disable();
                 else if (PlayClip_HasVOD) {
-                    PlayVod_currentTime = 0;
                     Chat_offset = ChannelVod_vodOffset;
-                    Chat_NoVod();
-                    //Chat_Init();
+                    Chat_Init();
                 }
                 Main_SaveValues();
                 break;

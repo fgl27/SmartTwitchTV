@@ -50,7 +50,7 @@ import static com.google.android.exoplayer2.Player.STATE_READY;
 public class PlayerActivity extends Activity implements ViewControlInterface {
     //private static final String TAG = PlayerActivity.class.getName();
     private PlayerView simpleExoPlayerView;
-    private SimpleExoPlayer player;
+    public static SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
@@ -118,10 +118,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
             MediaSource mediaSource = buildMediaSource(Uri.parse(url));
 
-            boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
-
-            if (haveResumePosition) {
-                player.seekTo(mResumeWindow, mResumePosition);
+            if (mResumeWindow != C.INDEX_UNSET) {
+                player.seekTo(mResumePosition);
             }
 
             //player.seekTo(useDEfaultStart ? DEFAULT_STARTING : 0);
@@ -143,6 +141,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
     private void releasePlayer() {
         if (player != null) {
+            updateResumePosition();
             shouldAutoPlay = player.getPlayWhenReady();
             player.release();
             player = null;
@@ -326,22 +325,51 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
             PlayerActivity.url = videoAddress;
-            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall);
+            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void startVideoOffset(String videoAddress, int whocall, long position) {
+            PlayerActivity.url = videoAddress;
+            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
             PlayerActivity.url = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/temp.mp4";
-            SendBroadcast("initializePlayerReceiver", mwebContext, false, whocall);
+            SendBroadcast("initializePlayerReceiver", mwebContext, false, whocall, 0);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public long gettime() {
+            if (PlayerActivity.player != null) return PlayerActivity.player.getCurrentPosition();
+            return 0;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void play(boolean play) {
+            if (PlayerActivity.player != null) player.setPlayWhenReady(play);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean getPlaybackState() {
+            if (PlayerActivity.player != null) return player.getPlayWhenReady();
+            return false;
         }
     }
 
-    public static void SendBroadcast(String action, Context context, boolean shouldAutoPlay, int whocall) {
+    public static void SendBroadcast(String action, Context context, boolean shouldAutoPlay,
+                                     int whocall, long position) {
         final Intent NewIntent = new Intent();
         NewIntent.setAction(action);
         NewIntent.putExtra("shouldAutoPlay", shouldAutoPlay);
         NewIntent.putExtra("whocall", whocall);
+        NewIntent.putExtra("position", position);
         context.sendBroadcast(NewIntent);
     }
 
@@ -350,6 +378,11 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         public void onReceive(Context context, Intent intent) {
             shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
             mwhocall = intent.getIntExtra("whocall", 1);
+            long mPosition = intent.getLongExtra("position", 0);
+            if (mPosition > 0) {
+                mResumeWindow = 1;
+                mResumePosition = mPosition;
+            }
             initializePlayer();
         }
     };
