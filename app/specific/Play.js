@@ -262,6 +262,26 @@ function Play_Start() {
     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
 }
 
+//function Play_warn() {
+//    Play_showWarningDialog("Play_warn");
+//    window.setTimeout(function() {
+//            Play_HideWarningDialog();
+//    }, 4000);
+//}
+
+function Play_CheckResume() {
+    Play_showWarningDialog("Play_CheckResume");
+    window.setTimeout(function() {
+            Play_HideWarningDialog();
+    }, 4000);
+    if (Play_isOn) Play_Resume();
+    if (PlayVod_isOn) PlayVod_Resume();
+    if (PlayClip_isOn) {
+        PlayClip_shutdownStream();
+        window.clearInterval(PlayClip_streamCheck);
+    }
+}
+
 function Play_Resume() {
     if (document.hidden) {
         if (Play_isEndDialogVisible()) {
