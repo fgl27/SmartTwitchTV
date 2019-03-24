@@ -553,7 +553,7 @@ function Play_qualityChanged() {
     //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
-        Android.startVideo(Play_playingUrl, true);
+        if (Play_isOn) Android.startVideo(Play_playingUrl, true);
     } catch (e) {}
     Play_onPlayer();
 }

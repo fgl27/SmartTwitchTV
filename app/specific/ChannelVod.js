@@ -23,7 +23,7 @@ var ChannelVod_lastselectedChannel = '';
 var ChannelVod_title = '';
 var ChannelVod_views = '';
 var ChannelVod_createdAt = '';
-//var ChannelVod_Duration = '';
+var ChannelVod_Duration = '';
 var ChannelVod_vodOffset = 0;
 var ChannelVod_FirstLoad = false;
 //Variable initialization end

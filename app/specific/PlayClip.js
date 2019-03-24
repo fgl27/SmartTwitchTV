@@ -173,12 +173,11 @@ function PlayClip_qualityChanged() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
 
-    PlayClip_isOn = true;
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
     //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
-        Android.startVideo(PlayClip_playingUrl, false);
+        if (PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, false);
     } catch (e) {}
     //PlayClip_onPlayer();
 }

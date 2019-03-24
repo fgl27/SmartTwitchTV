@@ -364,6 +364,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                             hideLoading();
                             mwebview.loadUrl("javascript:PlayClip_shutdownStream()");
                             mwebview.loadUrl("javascript:Play_shutdownStream()");
+                            mwebview.loadUrl("javascript:PlayVod_shutdownStream()");
                             break;
                     }
                 } else {
