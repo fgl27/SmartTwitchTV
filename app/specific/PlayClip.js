@@ -182,6 +182,12 @@ function PlayClip_qualityChanged() {
 
 function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+
+    PlayClip_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4;
+    PlayClip_PlayerCheckQualityChanged = false;
+    window.clearInterval(PlayClip_PlayerCheck);
+    PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayClip_Resume() {
@@ -192,11 +198,11 @@ function PlayClip_Resume() {
 }
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
-function PlayClip_PlayerCheck() { // jshint ignore:line
+function PlayClip_PlayerCheck() {
+    PlayClip_currentTime = Android.gettime();
     if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-
 
             //Don't change the first time only retry
             if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;

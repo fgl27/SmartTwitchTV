@@ -433,13 +433,19 @@ function PlayVod_onPlayer() {
     } catch (e) {}
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+
+    PlayVod_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4;
+    PlayVod_PlayerCheckQualityChanged = false;
+    window.clearInterval(PlayVod_PlayerCheck);
+    PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function PlayVod_PlayerCheck() { // jshint ignore:line
+    PlayVod_currentTime = Android.gettime();
     if (PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
-        if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
-
+        if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
 
             //Don't change the first time only retry
             if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) PlayVod_qualityIndex++;
