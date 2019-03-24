@@ -549,12 +549,12 @@ function Play_qualityChanged() {
     Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
     Play_state = Play_STATE_PLAYING;
-    if (Android) { //Play_isOn
-        if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-        Play_HideBufferDialog();
+    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+    //Play_HideBufferDialog();
+    try {
         //Android.showToast(Play_playingUrl);
         Android.startVideo(Play_playingUrl);
-    }
+    } catch (e) {}
     Play_onPlayer();
 }
 
@@ -764,7 +764,9 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
-    if (Android) Android.stopVideo();
+    try {
+        Android.stopVideo();
+    } catch (e) {}
     Play_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();

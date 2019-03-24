@@ -173,13 +173,13 @@ function PlayClip_qualityChanged() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
 
-    if (Android) { //Play_isOn
         PlayClip_isOn = true;
         if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-        Play_HideBufferDialog();
+        //Play_HideBufferDialog();
+    try {
         //Android.showToast(Play_playingUrl);
         Android.startVideo(PlayClip_playingUrl);
-    }
+    } catch (e) {}
     //PlayClip_onPlayer();
 }
 
@@ -250,7 +250,9 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
-    if (Android) Android.stopVideo();
+    try {
+        Android.stopVideo();
+    } catch (e) {}
     PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
