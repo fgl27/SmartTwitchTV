@@ -394,7 +394,7 @@ function Main_Scrollbar(y, coloumns, total) {
         // min screen_size max screen.height - (screen_size * 3)
         var isagame = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
             Main_values.Main_Go === Main_AGameClip);
-        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (isagame ? 2.3 : 1)));
+        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (isagame ? 1.8 : 1)));
         Main_ScrollbarElement.style.top = nextPositon + "px";
 
         if (Main_ScrollbarIsHide) {
@@ -580,11 +580,11 @@ function Main_SwitchScreen() {
 }
 
 function Main_SaveValues() {
-    //Main_setItem('Main_values', JSON.stringify(Main_values));
+    Main_setItem('Main_values', JSON.stringify(Main_values));
 }
 
 function Main_RestoreValues() {
-    //Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
+    Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
 }
 
 function Main_ExitCurrent(ExitCurrent) {
