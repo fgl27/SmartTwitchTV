@@ -638,7 +638,7 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_IconsBottonResetFocus() {
-    PlayVod_PanelY = 0;
+    PlayVod_PanelY = 1;
     PlayVod_IconsBottonFocus();
 }
 

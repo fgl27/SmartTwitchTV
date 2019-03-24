@@ -176,8 +176,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                                     DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                                     DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS)
                             .createDefaultLoadControl());
-                    //null,
-                    //bandwidthMeter);
+            //null,
+            //bandwidthMeter);
 
             simpleExoPlayerView.setPlayer(player);
 
@@ -205,6 +205,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                                 Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
                                 //Log.d(TAG, "Video Ended");
                                 hideLoading();
+                                mwebview.loadUrl("javascript:PlayClip_shutdownStream()");
+                                mwebview.loadUrl("javascript:Play_shutdownStream()");
                                 break;
                         }
                     } else {

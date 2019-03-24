@@ -31,8 +31,6 @@ var PlayClip_DurationSeconds = 0;
 
 function PlayClip_Start() {
     Play_HideEndDialog();
-    webapis.appcommon.setScreenSaver(webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF);
-    Play_showBufferDialog();
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -53,9 +51,10 @@ function PlayClip_Start() {
     if (PlayClip_HasVOD) {
         PlayVod_currentTime = 0;
         Chat_offset = ChannelVod_vodOffset;
-        Chat_Init();
+        //Chat_Init();
+        Chat_NoVod();
     } else Chat_NoVod();
-    Main_ShowElement('progress_bar_div');
+    Main_HideElement('progress_bar_div');//remove when java function for currentTime is done
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -99,7 +98,7 @@ function PlayClip_loadData() {
 function PlayClip_loadDataRequest() {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
+    xmlHttp.open("GET", proxyurl + 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
     xmlHttp.timeout = PlayClip_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
@@ -124,56 +123,6 @@ function PlayClip_loadDataError() {
         Play_PannelEndStart(3);
     }
 }
-
-var PlayClip_listener = {
-    onbufferingstart: function() {
-        Play_showBufferDialog();
-        PlayClip_bufferingcomplete = false;
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = Play_Buffer;
-        PlayClip_PlayerCheckQualityChanged = true;
-    },
-    onbufferingcomplete: function() {
-        Play_HideBufferDialog();
-        PlayClip_bufferingcomplete = true;
-        Main_empty('dialog_buffer_play_percentage');
-        // reset the values after using
-        PlayClip_offsettime = 0;
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = Play_Buffer;
-        PlayClip_PlayerCheckQualityChanged = true;
-    },
-    onbufferingprogress: function(percent) {
-        if (percent < 5) PlayClip_PlayerCheckCount = 0;
-
-        Play_PlayerCheckTimer = Play_Buffer;
-        PlayClip_PlayerCheckQualityChanged = true;
-
-        //percent has a -2 offset and goes up to 98
-        if (percent < 98) {
-            Play_BufferPercentage = percent;
-            Main_textContent("dialog_buffer_play_percentage", percent + 3);
-            if (!Play_BufferDialogVisible()) Play_showBufferDialog();
-        } else {
-            Play_BufferPercentage = 0;
-            Play_HideBufferDialog();
-            Play_bufferingcomplete = true;
-            Main_empty('dialog_buffer_play_percentage');
-            // reset the values after using
-            PlayClip_offsettime = 0;
-        }
-    },
-    oncurrentplaytime: function(currentTime) {
-        if (PlayClip_currentTime !== currentTime) PlayClip_updateCurrentTime(currentTime);
-    },
-    onstreamcompleted: function() {
-        Play_PannelEndStart(3);
-    },
-    onerror: function(eventType) {
-        if (eventType === "PLAYER_ERROR_CONNECTION_FAILED" || eventType === "PLAYER_ERROR_INVALID_URI")
-            Play_PannelEndStart(3);
-    }
-};
 
 function PlayClip_QualityGenerate(response) {
     PlayClip_qualities = [];
@@ -222,46 +171,21 @@ function PlayClip_qualityChanged() {
     }
 
     PlayClip_qualityPlaying = PlayClip_quality;
-    if (PlayClip_isOn) PlayClip_onPlayer();
-}
-
-function PlayClip_onPlayer() {
-    Play_showBufferDialog();
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
-    try {
-        Play_videojs.stop();
-        Play_videojs.open(PlayClip_playingUrl);
-    } catch (e) {
-        console.log('PlayClip_onPlayer open ' + e);
+    PlayClip_state = PlayClip_STATE_PLAYING;
+    
+    if (Android) { //Play_isOn
+        PlayClip_isOn = true;
+        if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+        Play_HideBufferDialog();
+        //Android.showToast(Play_playingUrl);
+        Android.startVideo(PlayClip_playingUrl);
     }
-
-    if (PlayClip_offsettime > 0 && PlayClip_offsettime !== Play_videojs.getCurrentTime()) {
-        try {
-            Play_videojs.seekTo(PlayClip_offsettime - 3500); // minor delay on the seekTo to show were it stop or at least before
-        } catch (e) {
-            console.log('PlayClip_onPlayer seekTo ' + e);
-        }
-        Play_clearPause();
-    }
-
-    Play_videojs.setBufferingParam("PLAYER_BUFFER_FOR_PLAY", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-    Play_videojs.setBufferingParam("PLAYER_BUFFER_FOR_RESUME", "PLAYER_BUFFER_SIZE_IN_SECOND", PlayClip_Buffer);
-    Play_videojs.setListener(PlayClip_listener);
-
-    Play_videojs.prepareAsync(function() {
-        Play_videojs.play();
-        PlayClip_DurationSeconds = Play_videojs.getDuration() / 1000;
-        Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-    });
-
-    PlayClip_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 4 + PlayClip_Buffer;
-    PlayClip_PlayerCheckQualityChanged = false;
-
-    window.clearInterval(PlayClip_streamCheck);
-    PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+    //PlayClip_onPlayer();
 }
+
+//function PlayClip_onPlayer() {
+//}
 
 function PlayClip_Resume() {
     if (document.hidden) {
@@ -327,6 +251,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
+    if (Android) Android.stopVideo();
     PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
@@ -334,22 +259,12 @@ function PlayClip_PreshutdownStream() {
     document.removeEventListener('visibilitychange', PlayClip_Resume);
     PlayClip_hidePanel();
     document.getElementById('scene2_pannel_0').style.display = 'none';
-    document.getElementById("scene2_pannel_1").style.width = '28%';
-    document.getElementById("quality_name").style.width = '80%';
+    document.getElementById("scene2_pannel_1").style.width = '30%';
+    document.getElementById("quality_name").style.width = '77%';
+    document.getElementById("quality_name").style.fontSize = '87.5%';
     ChannelVod_vodOffset = 0;
 
     window.clearInterval(PlayClip_streamCheck);
-}
-
-function PlayClip_updateCurrentTime(currentTime) {
-    PlayClip_currentTime = currentTime;
-    if (PlayClip_HasVOD) PlayVod_currentTime = PlayClip_currentTime + (ChannelVod_vodOffset * 1000);
-
-    if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
-    if (PlayClip_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
-
-    if (Play_isPanelShown() && !Play_BufferDialogVisible())
-        PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_hidePanel() {
@@ -419,8 +334,9 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_SetOpenVod() {
-    document.getElementById("scene2_pannel_1").style.width = '19%';
-    document.getElementById("quality_name").style.width = '72%';
+    document.getElementById("scene2_pannel_1").style.width = '18%';
+    document.getElementById("quality_name").style.width = '60%';
+    document.getElementById("quality_name").style.fontSize = '77%';
     Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
     document.getElementById('scene2_pannel_0').style.display = 'inline-block';
 }
@@ -514,13 +430,14 @@ function PlayClip_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY && Play_Panelcounter !== 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
+                    //if (PlayVod_PanelY && Play_Panelcounter !== 1) {
+                    //   PlayVod_PanelY--;
+                    //    PlayVod_IconsBottonFocus();
+                    //} else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
+                    if (PlayClip_qualityIndex > 0) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
-                    }
+                     }
                     Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isFullScreen && Play_isChatShown()) {
@@ -535,14 +452,14 @@ function PlayClip_handleKeyDown(e) {
             case KEY_DOWN:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
+                    //if (!PlayVod_PanelY) {
+                    //    PlayVod_PanelY++;
+                    //   PlayVod_IconsBottonFocus();
+                    //} else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
+                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1){
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
                     }
-
                     Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isFullScreen && Play_isChatShown()) {
@@ -632,7 +549,8 @@ function PlayClip_handleKeyDown(e) {
                 else if (PlayClip_HasVOD) {
                     PlayVod_currentTime = 0;
                     Chat_offset = ChannelVod_vodOffset;
-                    Chat_Init();
+                    Chat_NoVod();
+                    //Chat_Init();
                 }
                 Main_SaveValues();
                 break;

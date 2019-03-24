@@ -57,7 +57,6 @@ var Play_PlayerCheckRun = false;
 var Play_Playing = false;
 var Play_Panelcounter = 1;
 var Play_IsWarning = false;
-var Play_videojs;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 2000;
@@ -155,7 +154,6 @@ var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger
 //Variable initialization end
 
 function Play_PreStart() {
-    //Play_videojs = videojs('video_live');
     Play_Chatobj = document.getElementById('chat_frame');
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
@@ -644,7 +642,7 @@ function Play_PlayerCheck() {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckRun = false;
     }
-    Play_PlayerTime = Play_videojs.currentTime();
+    //Play_PlayerTime = Play_videojs.currentTime();
 }
 
 function Play_DropOneQuality(ConnectionDrop) {
@@ -764,7 +762,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
-    Android.stopVideo();
+    if (Android) Android.stopVideo();
     Play_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
@@ -869,7 +867,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
-    if (!Play_videojs.paused()) Play_clearPause();
+    if (false) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
@@ -1058,7 +1056,7 @@ function Play_hideChatBackgroundDialog() {
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
-        Play_videojs.play();
+        //Play_videojs.play();
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
@@ -1075,7 +1073,7 @@ function Play_KeyPause(PlayVodClip) {
         else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
         else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
 
-        Play_videojs.pause();
+        //Play_videojs.pause();
         Play_showPauseDialog();
     }
 }
@@ -1324,12 +1322,12 @@ function Play_BottomOptionsPressed(PlayVodClip) {
             Play_qualityChanged();
             Play_hidePanel();
         } else if (PlayVodClip === 2) {
-            if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+            //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             PlayVod_hidePanel();
         } else if (PlayVodClip === 3) {
-            if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
+            //if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
             PlayClip_PlayerCheckQualityChanged = false;
             PlayClip_qualityChanged();
             PlayClip_hidePanel();
