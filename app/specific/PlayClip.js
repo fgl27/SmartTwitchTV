@@ -51,7 +51,7 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
-    Main_HideElement('progress_bar_div'); //remove when java function for currentTime is done
+    Main_ShowElement('progress_bar_div');
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -273,15 +273,17 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), PlayClip_DurationSeconds, true);
+    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     Play_ChatPosition();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
 function PlayClip_showPanel() {
+    PlayVod_RefreshProgressBarr();
     Play_clock();
-    PlayVod_ProgresBarrUpdate((PlayClip_currentTime / 1000), PlayClip_DurationSeconds, true);
+    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
@@ -429,11 +431,10 @@ function PlayClip_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    //if (PlayVod_PanelY && Play_Panelcounter !== 1) {
-                    //   PlayVod_PanelY--;
-                    //    PlayVod_IconsBottonFocus();
-                    //} else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
-                    if (PlayClip_qualityIndex > 0) {
+                    if (PlayVod_PanelY && Play_Panelcounter !== 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
                         PlayClip_qualityIndex--;
                         PlayClip_qualityDisplay();
                     }
@@ -451,11 +452,10 @@ function PlayClip_handleKeyDown(e) {
             case KEY_DOWN:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    //if (!PlayVod_PanelY) {
-                    //    PlayVod_PanelY++;
-                    //   PlayVod_IconsBottonFocus();
-                    //} else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
-                    if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
+                    if (!PlayVod_PanelY) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
                     }
@@ -476,17 +476,7 @@ function PlayClip_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         Play_clearHidePanel();
                         PlayClip_setHidePanel();
-                        if (PlayVod_addToJump) {
-                            if (!Play_BufferDialogVisible()) PlayVod_jump();
-                            else {
-                                Play_IsWarning = true;
-                                Play_showWarningDialog(STR_JUMP_BUFFER_WARNING);
-                                window.setTimeout(function() {
-                                    Play_IsWarning = false;
-                                    Play_HideWarningDialog();
-                                }, 1000);
-                            }
-                        }
+                        if (PlayVod_addToJump) PlayVod_jump();
                     } else Play_BottomOptionsPressed(3);
 
                 } else PlayClip_showPanel();
