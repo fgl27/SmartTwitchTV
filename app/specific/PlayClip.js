@@ -335,7 +335,7 @@ function PlayClip_setHidePanel() {
 function PlayClip_SetOpenVod() {
     document.getElementById("scene2_pannel_1").style.width = '18%';
     document.getElementById("quality_name").style.width = '60%';
-    document.getElementById("quality_name").style.fontSize = '77%';
+    document.getElementById("quality_name").style.fontSize = '72%';
     Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
     document.getElementById('scene2_pannel_0').style.display = 'inline-block';
 }
