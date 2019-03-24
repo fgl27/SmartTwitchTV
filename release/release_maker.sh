@@ -136,7 +136,7 @@ js_comp_ugf() {
 		cd "$i" || exit;
 		for x in *.js; do
 			echo -e "${bldblu}	Including compresed version of $x to master.js";
-			uglifyjs "$x" -c -m reserved=['PlayClip_shutdownStream','Play_shutdownStream','PlayVod_shutdownStream'] -o "$mainfolder"/"$temp_maker_folder""$x";
+			uglifyjs "$x" -c -m reserved=['Play_PannelEndStart'] -o "$mainfolder"/"$temp_maker_folder""$x";
 			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
@@ -240,7 +240,7 @@ cd release/ || exit
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
 	echo -e "${bldblu}	uglifyjs  master.js";
-	uglifyjs master.js -c -m reserved=['PlayClip_shutdownStream','Play_shutdownStream','PlayVod_shutdownStream'],toplevel -o master.js;
+	uglifyjs master.js -c -m reserved=['Play_PannelEndStart'],toplevel -o master.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";
