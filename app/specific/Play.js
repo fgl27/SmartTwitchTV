@@ -79,7 +79,7 @@ var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
 var Play_Buffer = 4;
 var Play_PlayerCheckTimer = 4;
-//var Play_PlayerCheckInterval = 1000;
+var Play_PlayerCheckInterval = 1500;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
@@ -579,11 +579,11 @@ function Play_onPlayer() {
     Play_Playing = true;
     Play_loadChat();
 
-    //Play_PlayerCheckCount = 0;
-    //Play_PlayerCheckTimer = 4 + Play_Buffer;
-    //Play_PlayerCheckQualityChanged = false;
-    //window.clearInterval(Play_streamCheck);
-    //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+    Play_PlayerCheckCount = 0;
+    Play_PlayerCheckTimer = 4;
+    Play_PlayerCheckQualityChanged = false;
+    window.clearInterval(Play_streamCheck);
+    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {
@@ -634,10 +634,11 @@ function Play_CheckChat() {
     }
 }
 
-function Play_PlayerCheck() { // jshint ignore:line
+function Play_PlayerCheck() {
+    Play_currentTime = Android.gettime();
     if (Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
         Play_PlayerCheckCount++;
-        if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+        if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
 
             //Don't change the first time only retry
             if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun && (Play_qualityIndex < Play_getQualitiesCount() - 1)) Play_qualityIndex++;
@@ -657,7 +658,7 @@ function Play_PlayerCheck() { // jshint ignore:line
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckRun = false;
     }
-    //Play_PlayerTime = Play_videojs.currentTime();
+    Play_PlayerTime = Play_currentTime;
 }
 
 function Play_DropOneQuality(ConnectionDrop) {
@@ -1077,18 +1078,18 @@ function Play_KeyPause(PlayVodClip) {
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
-            //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+            Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 2) {
             if (Play_isPanelShown()) PlayVod_hidePanel();
-            //PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+            PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 3) {
             if (Play_isPanelShown()) PlayClip_hidePanel();
-            //PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+            PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
     } else {
-        //if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
-        //else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
-        //else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
+        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
+        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
 
         Android.play(false);
         Play_showPauseDialog();
