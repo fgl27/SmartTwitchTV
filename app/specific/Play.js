@@ -604,7 +604,7 @@ function Play_CheckChat() {
     try {
         if (doc !== undefined && doc.body !== null)
             Play_ChatLoadOK = doc.body.innerHTML.indexOf('Connected') !== -1; //when connected OK a "Connected" is see in the chat
-            skipothers = Play_ChatLoadOK;
+        skipothers = Play_ChatLoadOK;
     } catch (e) {
         Play_ChatLoadOK = true;
     }
