@@ -825,9 +825,9 @@ function Play_hideFallow() {
     AddCode_IsFallowing = false;
 }
 
-function Play_showBufferDialog() {
-    Main_ShowElement('dialog_buffer_play');
-}
+//function Play_showBufferDialog() {
+//    Main_ShowElement('dialog_buffer_play');
+//}
 
 function Play_HideBufferDialog() {
     Main_HideElement('dialog_buffer_play');
@@ -1194,7 +1194,6 @@ function Play_EndTextClear() {
 function Play_EndDialogPressed(PlayVodClip) {
     if (!Play_Endcounter) {
         if (PlayVodClip === 2) {
-            PlayVod_offsettime = 0;
             PlayVod_PlayerCheckQualityChanged = false;
             PlayVod_qualityChanged();
             Play_clearPause();
