@@ -72,6 +72,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     public WebView mwebview;
     public Context mcontext;
     public boolean onCreateReady;
+    public boolean alredystarted;
     public int mwhocall = 1;
 
     @Override
@@ -181,7 +182,8 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     //This function is called when TV wakes up
     public void onStart() {
         super.onStart();
-        if (mwebview != null) mwebview.loadUrl("javascript:Play_CheckResume()");
+        if (mwebview != null && alredystarted) mwebview.loadUrl("javascript:Play_CheckResume()");
+        alredystarted = true;
     }
 
     @Override
