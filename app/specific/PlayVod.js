@@ -61,14 +61,13 @@ function PlayVod_Start() {
     Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
-    Main_ShowElement('progress_bar_div');
+    Main_HideElement('progress_bar_div');
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
     PlayClip_HasVOD = true;
     ChannelVod_vodOffset = 0;
-
     Main_values.Play_isHost = false;
 
     if (Main_values.vodOffset) { // this is a vod comming from a clip
@@ -490,12 +489,12 @@ function PlayVod_shutdownStream() {
 }
 
 function PlayVod_PreshutdownStream(saveOffset) {
+    if (saveOffset) PlayVod_SaveVodIds();
     try {
         Android.stopVideo(2);
     } catch (e) {}
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
-    if (saveOffset) PlayVod_SaveVodIds();
     window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
     PlayVod_HasVodInfo = true;
@@ -692,7 +691,8 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds() {
-    var time = PlayVod_currentTime / 1000;
+    var time = parseInt(Android.gettime() / 1000);
+
     var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
 
     if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
@@ -700,7 +700,7 @@ function PlayVod_SaveVodIds() {
         //delete before save to add this to the end, and prevent loose it in restorevodids
         if (PlayVod_VodIds[vod_id]) delete PlayVod_VodIds[vod_id];
 
-        PlayVod_VodIds[vod_id] = parseInt(PlayVod_currentTime / 1000);
+        PlayVod_VodIds[vod_id] = time;
         Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
 
     } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[vod_id]) {
