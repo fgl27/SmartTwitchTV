@@ -53,6 +53,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
     private DefaultTrackSelector trackSelector;
     private boolean shouldAutoPlay;
+    private boolean useDEfaultStart;
 
     public static String url;
     private AVLoadingIndicatorView loading;
@@ -125,22 +126,23 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         }
 
         @JavascriptInterface
-        public void startVideo(String videoAddress) {
+        public void startVideo(String videoAddress, boolean live) {
             PlayerActivity.url = videoAddress;
-            SendBroadcast("initializePlayerReceiver", mwebContext, true);
+            SendBroadcast("initializePlayerReceiver", mwebContext, true, live);
         }
 
         @JavascriptInterface
         public void stopVideo() {
             PlayerActivity.url = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/temp.mp4";
-            SendBroadcast("initializePlayerReceiver", mwebContext, false);
+            SendBroadcast("initializePlayerReceiver", mwebContext, false, false);
         }
     }
 
-    public static void SendBroadcast(String action, Context context, boolean shouldAutoPlay) {
+    public static void SendBroadcast(String action, Context context, boolean shouldAutoPlay, boolean live) {
         final Intent NewIntent = new Intent();
         NewIntent.setAction(action);
         NewIntent.putExtra("shouldAutoPlay", shouldAutoPlay);
+        NewIntent.putExtra("live", live);
         context.sendBroadcast(NewIntent);
     }
 
@@ -148,6 +150,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         @Override
         public void onReceive(Context context, Intent intent) {
             shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
+            useDEfaultStart = intent.getBooleanExtra("live", true);
             initializePlayer();
         }
     };
@@ -182,7 +185,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
             simpleExoPlayerView.setPlayer(player);
 
             MediaSource mediaSource = buildMediaSource(Uri.parse(url));
-            player.seekTo(DEFAULT_STARTING);
+            player.seekTo(useDEfaultStart ? DEFAULT_STARTING : 0);
             player.prepare(mediaSource, false, true);
             player.setPlayWhenReady(true);
             player.addListener(new Player.EventListener() {

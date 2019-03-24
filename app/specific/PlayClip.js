@@ -178,7 +178,7 @@ function PlayClip_qualityChanged() {
     //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
-        Android.startVideo(PlayClip_playingUrl);
+        Android.startVideo(PlayClip_playingUrl, false);
     } catch (e) {}
     //PlayClip_onPlayer();
 }
