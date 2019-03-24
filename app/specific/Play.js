@@ -269,10 +269,10 @@ function Play_Start() {
 //    }, 4000);
 //}
 
-function Play_CheckResume() {
+function Play_CheckResume() { // jshint ignore:line
     Play_showWarningDialog("Play_CheckResume");
     window.setTimeout(function() {
-            Play_HideWarningDialog();
+        Play_HideWarningDialog();
     }, 4000);
     if (Play_isOn) Play_Resume();
     if (PlayVod_isOn) PlayVod_Resume();
