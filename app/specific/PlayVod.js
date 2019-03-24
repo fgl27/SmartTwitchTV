@@ -66,6 +66,7 @@ function PlayVod_Start() {
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     PlayVod_state = Play_STATE_LOADING_TOKEN;
     PlayClip_HasVOD = true;
+    ChannelVod_vodOffset = 0;
 
     Main_values.Play_isHost = false;
 
@@ -75,7 +76,7 @@ function PlayVod_Start() {
     } else {
         if (PlayVod_HasVodInfo && Main_values.Main_selectedChannel_id !== '') {
             Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_NoVod(); //Chat_Init();
+            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
             if (AddUser_UserIsSet()) {
                 AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                 AddCode_PlayRequest = true;
@@ -156,7 +157,7 @@ function PlayVod_updateStreamerInfo() {
                 if (users !== undefined) {
                     Main_values.Main_selectedChannelLogo = users.logo;
                     Main_values.Main_selectedChannel_id = users._id;
-                    if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_NoVod(); //Chat_Init();
+                    if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
                     if (AddUser_UserIsSet()) {
                         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                         AddCode_PlayRequest = true;
@@ -259,8 +260,6 @@ function PlayVod_Resume() {
             PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
             Chat_Pause();
-            //Play_videojs.pause();
-            // PlayVod_offsettime = Play_videojs.getCurrentTime();
             Play_ClearPlayer();
             window.clearInterval(PlayVod_streamCheck);
             window.clearInterval(PlayVod_SaveOffsetId);
@@ -288,7 +287,7 @@ function PlayVod_ResumeAfterOnline() {
 }
 
 function PlayVod_SaveOffset() {
-    Main_values.vodOffset = parseInt(PlayVod_currentTime / 1000);
+    Main_values.vodOffset = parseInt(Android.gettime() / 1000);
     Main_SaveValues();
     Main_values.vodOffset = 0;
 }
@@ -421,14 +420,22 @@ function PlayVod_qualityChanged() {
 function PlayVod_onPlayer() {
     if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
     //Play_HideBufferDialog();
+
     try {
-        //Android.showToast(Play_playingUrl);
-        if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
+        if (Main_values.vodOffset) {
+            Chat_offset = Main_values.vodOffset;
+            Chat_Init();
+            if (PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
+                Main_values.vodOffset ? (Main_values.vodOffset * 1000) : 0);
+        } else if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
+
+
     } catch (e) {}
     if (false) Play_showBufferDialog();
+    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 }
 
-function PlayVod_PlayerCheck() {
+function PlayVod_PlayerCheck() { // jshint ignore:line
     if (PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
@@ -626,7 +633,7 @@ function PlayVod_jump() {
         if (PlayVod_isOn) Chat_offset = PlayVod_TimeToJump;
         else Chat_offset = ChannelVod_vodOffset;
 
-        if (PlayClip_HasVOD) Chat_NoVod(); //Chat_Init();
+        if (PlayClip_HasVOD) Chat_Init();
         //if (Play_isNotplaying()) Play_videojs.play();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -973,7 +980,7 @@ function PlayVod_handleKeyDown(e) {
                 //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
                 if (Main_values.Play_ChatForceDisable) Chat_Disable();
-                else Chat_NoVod(); //Chat_Init();
+                else Chat_Init();
                 Main_SaveValues();
                 break;
             case KEY_RED:

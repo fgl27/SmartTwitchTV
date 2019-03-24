@@ -79,7 +79,7 @@ var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
 var Play_Buffer = 4;
 var Play_PlayerCheckTimer = 4;
-var Play_PlayerCheckInterval = 1000;
+//var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
@@ -262,18 +262,11 @@ function Play_Start() {
     Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
 }
 
-//function Play_warn() {
-//    Play_showWarningDialog("Play_warn");
-//    window.setTimeout(function() {
-//            Play_HideWarningDialog();
-//    }, 4000);
-//}
+function Play_Warn(text) { // jshint ignore:line
+    Play_showWarningDialog(text);
+}
 
 function Play_CheckResume() { // jshint ignore:line
-    Play_showWarningDialog("Play_CheckResume");
-    window.setTimeout(function() {
-        Play_HideWarningDialog();
-    }, 4000);
     if (Play_isOn) Play_Resume();
     if (PlayVod_isOn) PlayVod_Resume();
     if (PlayClip_isOn) {
@@ -641,7 +634,7 @@ function Play_CheckChat() {
     }
 }
 
-function Play_PlayerCheck() {
+function Play_PlayerCheck() { // jshint ignore:line
     if (Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
@@ -711,7 +704,7 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
 }
 
 function Play_isNotplaying() {
-    return 0; //Play_videojs.paused();
+    return !Android.getPlaybackState();
 }
 
 //function Play_updateCurrentTime(currentTime) {
@@ -891,7 +884,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
-    if (false) Play_clearPause();
+    if (!Play_isNotplaying()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
         Play_pauseEndID = window.setTimeout(Play_showPauseDialog, 1500);
@@ -1080,24 +1073,24 @@ function Play_hideChatBackgroundDialog() {
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
-        //Play_videojs.play();
+        Android.play(true);
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
-            Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+            //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 2) {
             if (Play_isPanelShown()) PlayVod_hidePanel();
-            PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+            //PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 3) {
             if (Play_isPanelShown()) PlayClip_hidePanel();
-            PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+            //PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
     } else {
-        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
-        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
-        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+        //if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
+        //else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
+        //else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
 
-        //Play_videojs.pause();
+        Android.play(false);
         Play_showPauseDialog();
     }
 }
