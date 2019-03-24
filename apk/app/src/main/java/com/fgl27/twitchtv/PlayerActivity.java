@@ -141,7 +141,6 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
     private void releasePlayer() {
         if (player != null) {
-            updateResumePosition();
             shouldAutoPlay = player.getPlayWhenReady();
             player.release();
             player = null;
@@ -175,6 +174,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
     public void onStop() {
         super.onStop();
         munregisterReceiver();
+        updateResumePosition();
         releasePlayer();
     }
 
@@ -382,6 +382,9 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
             if (mPosition > 0) {
                 mResumeWindow = 1;
                 mResumePosition = mPosition;
+            } else {
+                mResumeWindow = C.INDEX_UNSET;
+                mResumePosition = 0;
             }
             initializePlayer();
         }
@@ -404,7 +407,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
                             hideLoading();
                             break;
                         case STATE_ENDED:
-                            Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
                             //Log.d(TAG, "Video Ended");
                             hideLoading();
                             mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
