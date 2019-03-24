@@ -120,7 +120,7 @@ function ChannelContent_loadDataError() {
 
 function ChannelContent_loadDataCheckHost() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", proxyurl + 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id) + '&' + Math.round(Math.random() * 1e7), true);
     xmlHttp.timeout = ChannelContent_loadingDataTimeout;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.ontimeout = function() {};
@@ -314,10 +314,10 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
 
 function ChannelContent_setFallow() {
     if (AddCode_IsFallowing) {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 1200%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 600%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
         Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOWING);
     } else {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 1200%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 600%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
         if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOW);
         else Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_CANT_FALLOW);
     }
