@@ -166,7 +166,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         mregisterReceiver();
     }
 
-    //This function is called when overview key ispressed
+    //This function is called when overview key is pressed
     @Override
     public void onPause() {
         super.onPause();
@@ -177,6 +177,12 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         super.onStop();
         munregisterReceiver();
         releasePlayer();
+    }
+
+    //This function is called when TV wakes up
+    public void onStart() {
+        super.onStart();
+        if (mwebview != null) mwebview.loadUrl("javascript:Play_CheckResume()");
     }
 
     @Override
