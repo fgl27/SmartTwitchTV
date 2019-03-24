@@ -16,7 +16,6 @@ var PlayVod_qualityIndex = 0;
 var PlayVod_loadingDataTry = 0;
 var PlayVod_loadingDataTryMax = 5;
 var PlayVod_isOn = false;
-var PlayVod_offsettime = 0;
 
 var PlayVod_loadingInfoDataTry = 0;
 var PlayVod_loadingInfoDataTryMax = 5;
@@ -269,8 +268,11 @@ function PlayVod_Resume() {
         Play_clearPause();
         if (PlayVod_isOn) {
             Play_ResumeAfterOnlineCounter = 0;
+
+            Play_ResumeAfterOnlineCounter = 0;
             if (navigator.onLine) PlayVod_onPlayer();
             else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
+
             Chat_Play(Chat_Id);
             Play_EndSet(2);
             PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
@@ -281,7 +283,8 @@ function PlayVod_Resume() {
 function PlayVod_ResumeAfterOnline() {
     if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
-        PlayVod_onPlayer();
+        PlayVod_state = Play_STATE_LOADING_TOKEN;
+        PlayVod_loadData();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -289,7 +292,6 @@ function PlayVod_ResumeAfterOnline() {
 function PlayVod_SaveOffset() {
     Main_values.vodOffset = parseInt(Android.gettime() / 1000);
     Main_SaveValues();
-    Main_values.vodOffset = 0;
 }
 
 
@@ -428,10 +430,8 @@ function PlayVod_onPlayer() {
             Chat_Init();
             if (PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
         } else if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
-
-
     } catch (e) {}
-    if (false) Play_showBufferDialog();
+
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 }
 
@@ -506,7 +506,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
 function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod_Resume);
-    PlayVod_offsettime = 0;
     Main_values.vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimer);
     window.clearInterval(PlayVod_streamCheck);
