@@ -121,7 +121,7 @@ var Main_DataAttribute = 'data_attribute';
 //var Main_version = 401;
 var Main_stringVersion = '4.0.1';
 //var Main_currentVersion = '';
-var Main_minversion = '032419';
+var Main_minversion = '032519';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 
@@ -159,8 +159,13 @@ function Main_loadTranslations(language) {
     Main_Checktylesheet();
 
     Main_ready(function() {
-        if (Main_isReleased) document.body.innerHTML = STR_BODY;
-
+        var doc = document.body;
+        if (Main_isReleased) doc.innerHTML = STR_BODY;
+        try {
+            Android.gettime();
+        } catch (e) {
+            doc.style.backgroundColor = "rgba(0, 0, 0, 1)";
+        }
         Main_ready(function() {
             Settings_SetDefautls();
             en_USLang();
