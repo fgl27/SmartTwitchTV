@@ -78,7 +78,7 @@ function pt_BRLang() {
     STR_LATEST_VERSION = " última versão disponível ";
     STR_CONTROLS_MAIN_1 = "Estes controles não estão relacionados ao player. O player pode mostrar os seus controles.";
     STR_CONTROLS_MAIN_2 = "Reproduzir um Vídeo: Navegue usando as setas direcionais, pressione PLAY/PAUSE para reproduzir.";
-    STR_CONTROLS_MAIN_3 = "Atualizar Conteúdo: Pressione R.";
+    STR_CONTROLS_MAIN_3 = "Atualizar Conteúdo: Pressione 2.";
     STR_CONTROLS_MAIN_4 = "Fechar: Durante uma transmissão, pressione retornar pra ver as opções";
     STR_CONTROLS_MAIN_5 = "Forçar Encerramento  do aplicativo (caso necessário): Pressione retornar até o aplicativo seja encerrado.";
     STR_CONTROLS_MAIN_6 = "Alternar entre Telas: CH Cima (Tela da Direita) ou CH Baixo (Tela da Esquerda).";
@@ -103,7 +103,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_4 = "Avançar/Retroceder (indisponível para Transmissões Ao Vivo): Abra o painel de informações, pressione Direcional (esquerda/direita) para mudar o tempo, quando satisfeito pressione enter/select, para vídeos o incremento de salto é crescente mais cliques/segurando fará o valor aumentar (15 segundos até 30 minutos) parar de clicar/solte a tecla irá restaurar o tamanho de volta para 15s, para clipes o passo de salto é a cada 5 segundos";
     STR_CONTROLS_PLAY_5 = "Alterar qualidade: Abra o Painel de Informações, use as Setas Direcionais (Cima/Baixo) para escolher a qualidade e pressione a tecla selecionar para alterar.";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo: Pressione a tecla selecionar duas vezes. A qualidade do vídeo continuará sendo a mesma, mas após o segundo clique, o vídeo será recarregado.";
-    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat (sobre o video): R.";
+    STR_CONTROLS_PLAY_7 = "Exibir/Esconder o Chat (sobre o video): 2.";
     STR_CONTROLS_PLAY_8 = "Posição do Chat (Se o chat esta visível): CH Para Cima ou Para Baixo.";
     STR_CONTROLS_PLAY_9 = "Tamanho do Chat (Se o chat esta visível): Setas Direcionais (cima/baixo).";
     STR_CONTROLS_PLAY_10 = "Brilho do Chat (Se o chat esta visível): Setas Direcionais (esquerda/direita).";
@@ -152,7 +152,7 @@ function pt_BRLang() {
     STR_PLACEHOLDER_PRESS_UP = "Pressione a tecla pra cima para ";
     STR_FALLOW_GAMES = "Jogos seguidos";
     STR_USER_GAMES_CHANGE = "Troque entre";
-    STR_GUIDE = " (R)";
+    STR_GUIDE = " (2)";
     STR_MONTHS = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     STR_DAYS = ["Dom", "Seg", "Terç", "Qua", "Qui", "Sex", "Sáb"];
     STR_STARTED = "Começou ";
