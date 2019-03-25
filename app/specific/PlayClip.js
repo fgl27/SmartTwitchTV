@@ -349,7 +349,7 @@ function PlayClip_SetOpenVod() {
 }
 
 function PlayClip_OpenVod() {
-    if (false) {
+    if (PlayClip_HasVOD) {
         Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
