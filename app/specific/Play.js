@@ -678,10 +678,6 @@ function Play_DropOneQuality(ConnectionDrop) {
 }
 
 function Play_EndStart(hosting, PlayVodClip) {
-    window.clearInterval(Play_streamCheck);
-    window.clearInterval(PlayClip_streamCheck);
-    window.clearInterval(PlayVod_streamCheck);
-
     Main_values.Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
     Play_PannelEndStart(PlayVodClip);
@@ -707,19 +703,6 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
 function Play_isNotplaying() {
     return !Android.getPlaybackState();
 }
-
-//function Play_updateCurrentTime(currentTime) {
-//    Play_currentTime = currentTime;
-
-//    if (!Play_IsWarning && Play_WarningDialogVisible()) Play_HideWarningDialog();
-//    if (Play_bufferingcomplete && Play_BufferDialogVisible()) Play_HideBufferDialog();
-
-//    Play_oldcurrentTime = currentTime + Play_offsettime - 14; // 14s buffer size from twitch
-//    if (Play_isPanelShown()) {
-//        Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
-//        Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
-//    }
-//}
 
 function Play_clock() {
     var clock = Main_getclock();
@@ -1365,6 +1348,10 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
+    window.clearInterval(Play_streamCheck);
+    window.clearInterval(PlayClip_streamCheck);
+    window.clearInterval(PlayVod_streamCheck);
+
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
     Main_ready(function() {
