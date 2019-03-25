@@ -66,6 +66,7 @@ var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
+var Play_startttime = 0;
 var Play_offsettimeMinus = 0;
 var Play_BufferPercentage = 0;
 //var Play_4K_ModeEnable = false;
@@ -245,6 +246,7 @@ function Play_Start() {
     Play_PlayerCheckRun = false;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;
+    Play_startttime = Date.now();
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
@@ -574,7 +576,7 @@ function Play_qualityChanged() {
 function Play_onPlayer() {
     window.clearTimeout(Play_CheckChatId);
     Play_ChatLoadStarted = false;
-    //Play_offsettime = Play_oldcurrentTime;
+    Play_offsettime = Play_oldcurrentTime;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_Playing = true;
     Play_loadChat();
@@ -898,7 +900,8 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_oldcurrentTime));
+    Play_oldcurrentTime = (Date.now() - Play_startttime) + Play_offsettime; // 14s buffer size from twitch
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Play_oldcurrentTime));
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
