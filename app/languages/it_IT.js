@@ -86,7 +86,7 @@ function it_ITLang() {
     STR_LATEST_VERSION = " ultima versione disponibile ";
     STR_CONTROLS_MAIN_1 = "Questi sono i controlli relativi a nessun giocatore, il giocatore può mostrare i propri controlli.";
     STR_CONTROLS_MAIN_2 = "Riproduzione di un video: navigare usando i tasti direzionali (su / giù / sinistra / destra), Select o Play / Pause per iniziare a riprodurre";
-    STR_CONTROLS_MAIN_3 = "Aggiorna i contenuti dello schermo: R";
+    STR_CONTROLS_MAIN_3 = "Aggiorna i contenuti dello schermo: 2";
     STR_CONTROLS_MAIN_4 = "Chiudere l'applicazione: dalla schermata Live premere Invio per visualizzare le opzioni";
     STR_CONTROLS_MAIN_5 = "Forza la chiusura delll'applicazione (nel caso si blocchi o non funzioni bene): Tieni premuto il tasto Return fino a quando non si chiude forzatamente (Funziona per qualsiasi applicazione sui TV Samsung)";
     STR_CONTROLS_MAIN_6 = " Cambia schermo: Canale su (Sposta a destra dello schermo) o Canale giù (Sposta a sinistra dello schermo)";
@@ -117,7 +117,7 @@ function it_ITLang() {
     STR_CONTROLS_PLAY_4 = "Salta avanti / indietro (non disponibile per i live streaming): apri il pannello delle informazioni, premi il tasto direzionale (destra / sinistra) per cambiare il tempo quando sei soddisfatto premi enter / select, per i video il passo successivo è crescente più click / tieni premuto renderà il valore per aumentare (15 secondi fino a 30 minuti) smettere di fare clic / rilasciare il tasto ripristina la dimensione del passo indietro a 15 secondi, per i clip il passo di salto è ogni 5 secondi ";
     STR_CONTROLS_PLAY_5 = "Cambia la qualità del video: apri il pannello delle informazioni, naviga usando il pad direzionale (sinistra / destra), quindi usa il pad direzionale (su / giù) per scegliere la nuova qualità dopo aver premuto il tasto Seleziona per confermare la modifica";
     STR_CONTROLS_PLAY_6 = "Forza l'aggiornamento di un video (nel caso si blocchi): premi il tasto di selezione due volte, cambierà la qualità del video alla stessa che stai guardando, aprendo il pannello delle informazioni (primo clic) dopo il secondo clic inizierà il re-buffering";
-    STR_CONTROLS_PLAY_7 = "Mostra o nascondi la chat (sul video): R";
+    STR_CONTROLS_PLAY_7 = "Mostra o nascondi la chat (sul video): 2";
     STR_CONTROLS_PLAY_8 = "Cambia la posizione della chat (se la chat si vede e il pannello delle informazioni no): Canale su o giù";
     STR_CONTROLS_PLAY_9 = "Cambia la dimensione della chat (se la chat si vede e il pannello delle informazioni no): Pad direzionale (su / giù)";
     STR_CONTROLS_PLAY_10 = "Cambia la luminosità dello sfondo della chat (se la chat si vede e il pannello delle informazioni no): pad direzionale (sinistra / destra)";
@@ -166,7 +166,7 @@ function it_ITLang() {
     STR_PLACEHOLDER_PRESS_UP = "Premi Su per ";
     STR_FALLOW_GAMES = "Giochi Seguiti";
     STR_USER_GAMES_CHANGE = "Cambia tra";
-    STR_GUIDE = " (R)";
+    STR_GUIDE = " (2)";
     STR_MONTHS = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
     STR_DAYS = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
     STR_STARTED = "Iniziato ";
