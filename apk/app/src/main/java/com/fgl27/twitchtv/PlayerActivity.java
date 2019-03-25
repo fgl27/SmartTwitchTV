@@ -288,6 +288,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
         websettings.setAllowContentAccess(true);
         websettings.setAllowFileAccessFromFileURLs(true);
         websettings.setAllowUniversalAccessFromFileURLs(true);
+        mwebview.clearCache(true);
 
         //mwebview.loadUrl("file:///android_asset/index.html");
         mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
