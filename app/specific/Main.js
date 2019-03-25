@@ -990,13 +990,16 @@ function Main_removeFocus(id, idArray) {
 }
 
 function Main_Checktylesheet() {
-    try {
-        var stylesheet = document.styleSheets;
-        for (var i = 0; i < stylesheet.length; i++)
-            if (stylesheet[i].href !== null)
+
+    var stylesheet = document.styleSheets;
+    for (var i = 0; i < stylesheet.length; i++) {
+        if (stylesheet[i].href !== null) {
+            try {
                 if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
-    } catch (e) {
-        console.log('Main_Checktylesheet ' + e);
+            } catch (e) {
+                console.log('Main_Checktylesheet ' + e);
+            }
+        }
     }
 }
 
