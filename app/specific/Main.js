@@ -65,7 +65,6 @@ var Main_addFocusFinish = true;
 
 var Main_imgVector = [];
 
-var Main_listenerID = null;
 var Main_ExitDialogID = null;
 var Main_ScrollbarIsHide = true;
 var Main_NetworkStateOK = true;
@@ -126,6 +125,7 @@ var Main_minversion = '032419';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 
+var Main_randomimg = '?' + Math.random();
 var GIT_IO = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
 var IMG_404_LOGO = GIT_IO + "404_logo.png";
@@ -205,7 +205,7 @@ function Main_initWindows() {
 
         //keep 4k streams disable until we have 4k content from twitch
         //TV models that don't like "setStreamingProperty("SET_MODE_4K", "TRUE");" all 1080p and UNU7090
-        Main_Is4k = false; //webapis.productinfo.isUdPanelSupported();
+        Main_Is4k = false;
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
 
@@ -233,7 +233,6 @@ function Main_initWindows() {
             Main_CacheImage(IMG_404_GAME);
             Main_CacheImage(IMG_404_LOGO);
 
-            window.setTimeout(Main_NetworkStateChangeListenerStart, 5000);
             document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         });
@@ -422,10 +421,6 @@ function Main_showWarningDialog(text) {
 
 function Main_HideWarningDialog() {
     Main_HideElement('dialog_warning');
-}
-
-function Main_isWarningDialogShown() {
-    return Main_isElementShowing('dialog_warning');
 }
 
 function Main_showAboutDialog() {
@@ -648,38 +643,6 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
     else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
 }
 
-function Main_NetworkStateChangeListenerStart() {
-    var onChange = function(data) {
-        if (data === 1 || data === 4) { //network connected
-            Main_NetworkStateOK = true;
-            if (Main_isWarningDialogShown()) {
-                Main_showWarningDialog(STR_NET_UP);
-                if (Main_NetworkRefresh) Main_SwitchScreen();
-                Main_NetworkRefresh = false;
-            }
-            if (Play_WarningDialogVisible()) Main_showWarningDialog(STR_NET_UP);
-            window.setTimeout(Main_HideWarningDialog, 1500);
-        } else if (data === 2 || 5) { //network down
-            Main_NetworkStateOK = false;
-            window.setTimeout(function() {
-                if (!Main_NetworkStateOK) {
-                    Main_showWarningDialog('');
-                    Play_showWarningDialog(STR_NET_DOWN);
-                }
-            }, 5000);
-        }
-    };
-    try {
-        Main_listenerID = webapis.network.addNetworkStateChangeListener(onChange);
-    } catch (e) {}
-}
-
-function Main_NetworkStateChangeListenerStop() {
-    try {
-        webapis.network.removeNetworkStateChangeListener(Main_listenerID);
-    } catch (e) {}
-}
-
 function Main_checkVersion() {
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_ABOUT_INFO_0);
 }
@@ -698,7 +661,6 @@ function Main_GoLive() {
 // right after the TV comes from standby the network can lag, delay the check
 function Main_ResumeNetwork() {
     if (document.hidden) {
-        Main_NetworkStateChangeListenerStop();
         window.clearInterval(Main_updateclockId);
     } else {
         Main_updateclock();
@@ -707,7 +669,6 @@ function Main_ResumeNetwork() {
             if (!document.hidden) {
                 //Update clock twice as first try clock may be out of date in the case TV was on standby
                 Main_updateclock();
-                Main_NetworkStateChangeListenerStart();
             }
         }, 20000);
     }
@@ -722,7 +683,7 @@ function Main_imgVectorLoad(img_type) {
     var elem;
     for (var i = 0; i < Main_imgVector.length; i++) {
         elem = document.getElementById(Main_imgVector[i].id);
-        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src + '?' + Math.random(), img_type);
+        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src + Main_randomimg, img_type);
     }
 }
 
@@ -1067,6 +1028,7 @@ function Main_getclock() {
 
 function Main_updateclock() {
     Main_textContent('label_clock', Main_getclock());
+    Main_randomimg = '?' + Math.random();
 }
 
 function Main_SidePannelAddFocus() {
