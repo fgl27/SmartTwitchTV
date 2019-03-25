@@ -722,7 +722,7 @@ function Main_imgVectorLoad(img_type) {
     var elem;
     for (var i = 0; i < Main_imgVector.length; i++) {
         elem = document.getElementById(Main_imgVector[i].id);
-        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src, img_type);
+        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src + '?' + Math.random(), img_type);
     }
 }
 
