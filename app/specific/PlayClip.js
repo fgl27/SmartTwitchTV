@@ -287,9 +287,9 @@ function PlayClip_hidePanel() {
 }
 
 function PlayClip_showPanel() {
-    PlayVod_RefreshProgressBarr();
+    PlayClip_RefreshProgressBarr();
     Play_clock();
-    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
+    PlayVod_RefreshProgressBarrID = window.setInterval(PlayClip_RefreshProgressBarr, 1000);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
@@ -297,6 +297,9 @@ function PlayClip_showPanel() {
     document.getElementById("scene_channel_panel").style.opacity = "1";
     Play_ChatPosition();
     PlayClip_setHidePanel();
+}
+function PlayClip_RefreshProgressBarr() {
+    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_qualityIndexReset() {
