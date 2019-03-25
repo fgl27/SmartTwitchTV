@@ -298,6 +298,7 @@ function PlayClip_showPanel() {
     Play_ChatPosition();
     PlayClip_setHidePanel();
 }
+
 function PlayClip_RefreshProgressBarr() {
     PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
