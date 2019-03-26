@@ -152,7 +152,10 @@ function ScreensObj_InitClip() {
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(Screens_handleKeyDown);
+            else {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                Main_CenterLablesStart(Screens_handleKeyDown);
+            }
         },
         key_channelup: function() {
             Main_values.Main_Before = this.screen;
@@ -326,7 +329,10 @@ function ScreensObj_InitAGameClip() {
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(Screens_handleKeyDown);
+            else {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                Main_CenterLablesStart(Screens_handleKeyDown);
+            }
         },
         key_channelup: function() {
             if (!this.loadingData) {
@@ -403,7 +409,10 @@ function ScreensObj_InitGame() {
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(Screens_handleKeyDown);
+            else {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                Main_CenterLablesStart(Screens_handleKeyDown);
+            }
         },
         key_channelup: function() {
             Main_values.Main_Before = this.screen;

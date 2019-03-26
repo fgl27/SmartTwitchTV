@@ -37,6 +37,7 @@ function AGame_init() {
         Main_YRst(AGame_cursorY);
         Main_ShowElement(AGame_ids[10]);
         Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
+        AGame_addFocus();
         Main_SaveValues();
     } else AGame_StartLoad();
 }
@@ -368,6 +369,11 @@ function AGame_loadDataSuccessReplace(responseText) {
 }
 
 function AGame_addFocus() {
+    if (Main_CenterLablesInUse) return;
+    if (AGame_cursorY < 0) {
+        AGame_addFocusFallow();
+        return;
+    }
     Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -378,7 +384,8 @@ function AGame_addFocus() {
 }
 
 function AGame_removeFocus() {
-    Main_removeFocus(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
+    if (AGame_cursorY > -1) Main_removeFocus(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
+    else AGame_removeFocusFallow();
 }
 
 function AGame_addFocusFallow() {
@@ -399,7 +406,12 @@ function AGame_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(AGame_handleKeyDown);
+            else {
+                Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+                AGame_removeFocus();
+                AGame_removeFocusFallow();
+                Main_CenterLablesStart(AGame_handleKeyDown);
+            }
             break;
         case KEY_LEFT:
             if (AGame_cursorY === -1) {
