@@ -58,7 +58,7 @@ var Main_values = {
     "Games_return": false,
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
-    "Main_CenterLablesVectorPos":0
+    "Main_CenterLablesVectorPos": 0
 };
 
 var Main_LastClickFinish = true;
@@ -1124,16 +1124,30 @@ function Main_SidePannelhandleKeyDown(event) {
     }
 }
 
-var Main_CenterLablesVector = ['top_bar_live','top_bar_user','top_bar_featured','top_bar_game','top_bar_vod','top_bar_clip'];
-var Main_CenterScreenVector = [Main_Live,Main_Users,Main_Featured,Main_games,Main_Vod,Main_Clip];
-var Main_CenterScreenVector = [Main_Live,Main_Users,Main_Featured,Main_games,Main_Vod,Main_Clip];
+var Main_CenterLablesVector = ['top_bar_live', 'top_bar_user', 'top_bar_featured', 'top_bar_game', 'top_bar_vod', 'top_bar_clip'];
+var Main_CenterScreenVector = [Main_Live, Main_Users, Main_Featured, Main_games, Main_Vod, Main_Clip];
 
 function Main_CenterLables(event) {
-    if (Live_FirstLoad || Users_FirstLoad || Featured_FirstLoad || inUseObj.FirstLoad || Vod_FirstLoad || Main_CantClick()) return;
+    if (Live_FirstLoad || Users_FirstLoad || Featured_FirstLoad || AGame_FirstLoad || inUseObj.FirstLoad || Vod_FirstLoad || Main_CantClick()) return;
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            Main_SidePannelStart(Main_CenterLables);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                if (Main_values.Main_Go === Main_aGame) {
+                    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+                    if (Main_values.Games_return) {
+                        Main_values.Main_Go = Main_SearchGames;
+                        Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+                    } else {
+                        Main_values.Main_Go = Main_values.Main_BeforeAgame;
+                        Main_values.Main_BeforeAgame = Main_Live;
+                    }
+                    AGame_exit();
+                    Main_SwitchScreen();
+                } else Main_SidePannelStart(Main_CenterLables);
+            }
             break;
         case KEY_RIGHT:
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
@@ -1143,11 +1157,11 @@ function Main_CenterLables(event) {
             Main_CenterLablesExit();
             break;
         case KEY_LEFT:
-                 Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-                 Main_values.Main_CenterLablesVectorPos--;
-                 if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
-                 Main_CenterLablesChange();
-                 Main_CenterLablesExit();
+            Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
+            Main_values.Main_CenterLablesVectorPos--;
+            if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
+            Main_CenterLablesChange();
+            Main_CenterLablesExit();
             break;
         case KEY_DOWN:
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
@@ -1172,19 +1186,20 @@ function Main_CenterLablesStart(callback) {
 }
 
 function Main_CenterLablesChange() {
-     Main_AddClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
+    Main_AddClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
 }
 
 function Main_CenterLablesExit() {
-     Main_ExitCurrent(Main_values.Main_Go);
-     Main_values.Main_Go = Main_CenterScreenVector[Main_values.Main_CenterLablesVectorPos];
-     Main_SwitchScreen();
-     Main_RemoveKeys();
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_CenterScreenVector[Main_values.Main_CenterLablesVectorPos];
+    Main_SwitchScreen();
+    Main_RemoveKeys();
 }
 
 function Main_RemoveKeys() {
     if (Main_values.Main_Go === Main_Live) document.body.removeEventListener("keydown", Live_handleKeyDown);
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    else if (Main_values.Main_Go === Main_aGame) document.body.removeEventListener("keydown", AGame_handleKeyDown);
     else if (Main_values.Main_Go === Main_Featured) document.body.removeEventListener("keydown", Featured_handleKeyDown);
     else if (Main_values.Main_Go === Main_games) {
         inUseObj = Game;
@@ -1207,6 +1222,7 @@ function Main_ReloadScreen() {
     if (Main_values.Main_Go === Main_Live) Live_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
     else if (Main_values.Main_Go === Main_Featured) Featured_StartLoad();
+    else if (Main_values.Main_Go === Main_aGame) AGame_StartLoad();
     else if (Main_values.Main_Go === Main_games) {
         inUseObj = Game;
         Screens_StartLoad();
