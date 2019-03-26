@@ -1149,6 +1149,8 @@ function Main_CenterLables(event) {
                     Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
                     document.body.removeEventListener("keydown", Main_CenterLables);
                     Main_SwitchScreen();
+                } else if (Main_values.Main_Go === Main_AGameClip) {
+                    Screens_BasicExit(Main_aGame);
                 } else Main_SidePannelStart(Main_CenterLables);
             }
             break;
@@ -1211,6 +1213,9 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_AGameClip) {
+        inUseObj = AGameClip;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
 }
 
@@ -1232,6 +1237,9 @@ function Main_ReloadScreen() {
     } else if (Main_values.Main_Go === Main_Vod) Vod_StartLoad();
     else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_AGameClip) {
+        inUseObj = AGameClip;
         Screens_StartLoad();
     } else Live_StartLoad();
 
