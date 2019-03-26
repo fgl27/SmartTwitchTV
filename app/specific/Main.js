@@ -63,7 +63,7 @@ var Main_values = {
 
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
-
+var Main_CenterLablesInUse = false;
 var Main_imgVector = [];
 
 var Main_ExitDialogID = null;
@@ -1146,10 +1146,10 @@ function Main_CenterLables(event) {
                         Main_values.Main_BeforeAgame = Main_Live;
                     }
                     AGame_exit();
-                    Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-                    document.body.removeEventListener("keydown", Main_CenterLables);
+                    Main_CenterLablesClean();
                     Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_AGameClip) {
+                    Main_CenterLablesClean();
                     Screens_BasicExit(Main_aGame);
                 } else Main_SidePannelStart(Main_CenterLables);
             }
@@ -1171,6 +1171,7 @@ function Main_CenterLables(event) {
         case KEY_DOWN:
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             document.body.removeEventListener("keydown", Main_CenterLables);
+            Main_CenterLablesInUse = false;
             Main_SwitchScreen();
             break;
         case KEY_ENTER:
@@ -1182,12 +1183,19 @@ function Main_CenterLables(event) {
 }
 
 function Main_CenterLablesStart(callback) {
+    Main_CenterLablesInUse = true;
     window.clearTimeout(Main_SetTopOpacityId);
     Main_UnSetTopOpacity();
     document.body.removeEventListener("keydown", callback);
     document.body.removeEventListener("keydown", Main_CenterLables);
     document.body.addEventListener("keydown", Main_CenterLables, false);
     Main_CenterLablesChange();
+}
+
+function Main_CenterLablesClean() {
+    Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
+    document.body.removeEventListener("keydown", Main_CenterLables);
+    Main_CenterLablesInUse = false;
 }
 
 function Main_CenterLablesChange() {

@@ -51,6 +51,7 @@ function Screens_init() {
         Main_YRst(inUseObj.posY);
         Main_ShowElement(inUseObj.ids[10]);
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        Screens_addFocus();
         Main_SaveValues();
     } else Screens_StartLoad();
 }
@@ -251,6 +252,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
 }
 
 function Screens_addFocus() {
+    if (Main_CenterLablesInUse) return;
     inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {

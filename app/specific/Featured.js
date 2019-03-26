@@ -27,6 +27,7 @@ function Featured_init() {
         Main_YRst(Featured_cursorY);
         Main_ShowElement(Featured_ids[10]);
         Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
+        Featured_addFocus();
         Main_SaveValues();
     } else Featured_StartLoad();
 }
@@ -273,6 +274,7 @@ function Featured_loadDataSuccessReplace(responseText) {
 }
 
 function Featured_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Featured_cursorY, Featured_cursorX, Featured_ids, Main_ColoumnsCountVideo, Featured_itemsCount);
 
     if (((Featured_cursorY + Main_ItemsReloadLimitVideo) > (Featured_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -296,7 +298,10 @@ function Featured_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(Featured_handleKeyDown);
+            else {
+                Featured_removeFocus();
+                Main_CenterLablesStart(Featured_handleKeyDown);
+            }
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Featured_cursorY), (Featured_cursorX - 1), Featured_ids[0])) {

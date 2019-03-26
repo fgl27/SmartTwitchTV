@@ -28,6 +28,7 @@ function Live_init() {
         Main_YRst(Live_cursorY);
         Main_ShowElement(Live_ids[10]);
         Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
+        Live_addFocus();
         Main_SaveValues();
     } else Live_StartLoad();
 }
@@ -206,6 +207,7 @@ function Live_loadDataSuccessFinish() {
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
+                    Live_removeFocus();
                     Main_SwitchScreen();
                 } else Main_ShowElement(Live_ids[10]);
             } else {
@@ -311,6 +313,7 @@ function Live_loadDataSuccessReplace(responseText) {
 }
 
 function Live_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_ColoumnsCountVideo, Live_itemsCount);
 
     if (((Live_cursorY + Main_ItemsReloadLimitVideo) > (Live_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -347,7 +350,10 @@ function Live_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isExitDialogShown()) Main_HideExitDialog();
-            else Main_CenterLablesStart(Live_handleKeyDown);
+            else {
+                Live_removeFocus();
+                Main_CenterLablesStart(Live_handleKeyDown);
+            }
             break;
         case KEY_LEFT:
             if (Main_isExitDialogShown()) {

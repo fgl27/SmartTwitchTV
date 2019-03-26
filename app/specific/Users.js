@@ -20,6 +20,7 @@ function Users_init() {
     if (Users_status) {
         Main_YRst(Users_cursorY);
         Main_ShowElement(Users_ids[5]);
+        Users_addFocus();
         Main_SaveValues();
     } else Users_StartLoad();
 }
@@ -134,6 +135,7 @@ function Users_resetGameCell() {
 }
 
 function Users_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
     if (Main_YchangeAddFocus(Users_cursorY)) {
 
@@ -235,7 +237,10 @@ function Users_handleKeyDown(event) {
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else Main_CenterLablesStart(Users_handleKeyDown);
+            else {
+                Users_removeFocus();
+                Main_CenterLablesStart(Users_handleKeyDown);
+            }
             break;
         case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {

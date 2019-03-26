@@ -345,6 +345,7 @@ function Vod_loadDataSuccessReplace(responseText) {
 }
 
 function Vod_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
     Vod_AnimateThumb(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -391,7 +392,10 @@ function Vod_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else Main_CenterLablesStart(Vod_handleKeyDown);
+            else {
+                Vod_removeFocus();
+                Main_CenterLablesStart(Vod_handleKeyDown);
+            }
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX - 1), Vod_ids[0])) {
