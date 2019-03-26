@@ -324,7 +324,9 @@ function ScreensObj_InitAGameClip() {
             Main_HideElement('label_extra');
         },
         key_exit: function() {
-            Screens_BasicExit(Main_aGame);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else Main_CenterLablesStart(Screens_handleKeyDown);
         },
         key_channelup: function() {
             if (!this.loadingData) {
