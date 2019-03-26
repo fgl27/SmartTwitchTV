@@ -23,6 +23,7 @@ var Main_FirstLoad = false;
 //Variable initialization end
 
 function UserLive_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserLive;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
@@ -33,6 +34,7 @@ function UserLive_init() {
         Main_YRst(UserLive_cursorY);
         Main_ShowElement(UserLive_ids[10]);
         Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
+        UserLive_addFocus();
         Main_SaveValues();
     } else UserLive_StartLoad();
 }
@@ -346,6 +348,7 @@ function UserLive_loadDataSuccessReplace(responseText) {
 }
 
 function UserLive_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(UserLive_cursorY, UserLive_cursorX, UserLive_ids, Main_ColoumnsCountVideo, UserLive_itemsCount);
 
     if (((UserLive_cursorY + Main_ItemsReloadLimitVideo) > (UserLive_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -370,9 +373,8 @@ function UserLive_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_Users;
-                UserLive_exit();
-                Main_SwitchScreen();
+                UserLive_removeFocus();
+                Main_CenterLablesStart(UserLive_handleKeyDown);
             }
             break;
         case KEY_LEFT:
