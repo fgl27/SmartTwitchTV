@@ -20,6 +20,7 @@ var Featured_FirstLoad = false;
 //Variable initialization end
 
 function Featured_init() {
+    Main_values.Main_CenterLablesVectorPos = 2;
     Main_values.Main_Go = Main_Featured;
     Main_AddClass('top_bar_featured', 'icon_center_focus');
     document.body.addEventListener("keydown", Featured_handleKeyDown, false);
@@ -296,12 +297,7 @@ function Featured_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (Main_values.Main_Before === Main_Featured) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_Before;
-                Featured_exit();
-                Main_SwitchScreen();
-            }
+            else Main_CenterLablesStart(Featured_handleKeyDown);
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Featured_cursorY), (Featured_cursorX - 1), Featured_ids[0])) {

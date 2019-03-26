@@ -12,6 +12,7 @@ var Users_FirstLoad = false;
 //Variable initialization end
 
 function Users_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_Users;
     document.getElementById("screens_holder").style.top = ((screen.height / 100) * 7) + "px";
     Main_HideWarningDialog();
@@ -235,12 +236,7 @@ function Users_handleKeyDown(event) {
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else {
-                if (Main_values.Main_Before === Main_Users || Main_values.Main_Before === Main_UserChannels || Main_values.Main_Before === Main_UserLive || Main_values.Main_Before === Main_UserHost || Main_values.Main_Before === Main_usergames) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_Before;
-                Users_exit();
-                Main_SwitchScreen();
-            }
+            else Main_CenterLablesStart(Users_handleKeyDown);
             break;
         case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {

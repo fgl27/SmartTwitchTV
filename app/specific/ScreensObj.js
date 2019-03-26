@@ -136,6 +136,7 @@ function ScreensObj_InitClip() {
             Main_setItem('Clip_periodPos', this.periodPos);
         },
         label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 5;
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
@@ -149,7 +150,9 @@ function ScreensObj_InitClip() {
             Main_HideElement('label_extra');
         },
         key_exit: function() {
-            Screens_BasicExit(Main_values.Main_Before);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else Main_CenterLablesStart(Screens_handleKeyDown);
         },
         key_channelup: function() {
             Main_values.Main_Before = this.screen;
@@ -388,6 +391,7 @@ function ScreensObj_InitGame() {
             }
         },
         label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
         },
         label_exit: function() {
@@ -395,8 +399,9 @@ function ScreensObj_InitGame() {
         },
         key_refresh: Screens_StartLoad,
         key_exit: function() {
-            if (Main_values.Main_Go === Main_values.Main_Before || Main_values.Main_Before === Main_aGame || Main_values.Main_Before === Main_Search) Screens_BasicExit(Main_Live);
-            else Screens_BasicExit(Main_values.Main_Before);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else Main_CenterLablesStart(Screens_handleKeyDown);
         },
         key_channelup: function() {
             Main_values.Main_Before = this.screen;
