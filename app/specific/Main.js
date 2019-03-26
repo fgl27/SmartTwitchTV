@@ -1151,6 +1151,11 @@ function Main_CenterLables(event) {
                 } else if (Main_values.Main_Go === Main_AGameClip) {
                     Main_CenterLablesClean();
                     Screens_BasicExit(Main_aGame);
+                } else if (Main_values.Main_Go === Main_AGameVod) {
+                    Main_values.Main_Go = Main_aGame;
+                    AGameVod_exit();
+                    Main_SwitchScreen();
+                    Main_CenterLablesClean();
                 } else Main_SidePannelStart(Main_CenterLables);
             }
             break;
@@ -1224,7 +1229,7 @@ function Main_RemoveKeys() {
     } else if (Main_values.Main_Go === Main_AGameClip) {
         inUseObj = AGameClip;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    }
+    } else if (Main_values.Main_Go === Main_AGameVod) document.body.removeEventListener("keydown", AGameVod_handleKeyDown);
 }
 
 function Main_ReloadScreen() {
@@ -1249,7 +1254,8 @@ function Main_ReloadScreen() {
     } else if (Main_values.Main_Go === Main_AGameClip) {
         inUseObj = AGameClip;
         Screens_StartLoad();
-    } else Live_StartLoad();
+    } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_StartLoad();
+    else Live_StartLoad();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
 }

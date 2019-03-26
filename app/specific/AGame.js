@@ -22,6 +22,7 @@ var AGame_TopRowCreated = false;
 //Variable initialization end
 
 function AGame_init() {
+    Main_values.Main_CenterLablesVectorPos = 3;
     Main_values.Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
     Main_AddClass('top_bar_game', 'icon_center_focus');

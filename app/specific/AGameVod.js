@@ -23,6 +23,7 @@ var AGameVod_OldgameSelected = '';
 //Variable initialization end
 
 function AGameVod_init() {
+    Main_values.Main_CenterLablesVectorPos = 3;
     Main_values.Main_Go = Main_AGameVod;
     Main_AddClass('top_bar_game', 'icon_center_focus');
     document.body.addEventListener("keydown", AGameVod_handleKeyDown, false);
@@ -305,6 +306,7 @@ function AGameVod_loadDataSuccessReplace(responseText) {
 }
 
 function AGameVod_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(AGameVod_cursorY, AGameVod_cursorX, AGameVod_ids, Main_ColoumnsCountVideo, AGameVod_itemsCount);
 
     Vod_AnimateThumb(AGameVod_ids, AGameVod_cursorY + '_' + AGameVod_cursorX);
@@ -333,9 +335,8 @@ function AGameVod_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_aGame;
-                AGameVod_exit();
-                Main_SwitchScreen();
+                AGameVod_removeFocus();
+                Main_CenterLablesStart(AGameVod_handleKeyDown);
             }
             break;
         case KEY_LEFT:
