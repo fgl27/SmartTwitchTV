@@ -312,6 +312,7 @@ function ScreensObj_InitAGameClip() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
         },
         label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 3;
             this.SetPeriod();
             Main_AddClass('top_bar_game', 'icon_center_focus');
             Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
@@ -435,6 +436,7 @@ function ScreensObj_InitGame() {
             AGame_UserGames = false;
             Screens_exit();
             Main_SwitchScreen();
+            Main_removeFocus(this.posY + '_' + this.posX, this.ids);
         },
         key_yellow: Main_showControlsDialog,
         key_green: function() {
