@@ -212,6 +212,7 @@ function Main_initWindows() {
         Main_Is4k = false;
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
+        document.getElementById("side_panel").style.marginLeft = '';
 
         Main_checkVersion();
 
