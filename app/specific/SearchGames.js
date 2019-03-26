@@ -11,7 +11,6 @@ var SearchGames_itemsCountOffset = 0;
 var SearchGames_MaxOffset = 0;
 var SearchGames_emptyContent = false;
 var SearchGames_itemsCountCheck = false;
-var SearchGames_lastData = '';
 
 var SearchGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_', 'search_games_scroll'];
 //Variable initialization end
@@ -20,7 +19,7 @@ function SearchGames_init() {
     Main_values.Main_Go = Main_SearchGames;
     Main_values.Search_isSearching = true;
     Main_cleanTopLabel();
-    if (SearchGames_lastData !== Main_values.Search_data) SearchGames_Status = false;
+    if (Main_FirstLoad !== Main_values.Search_data) SearchGames_Status = false;
     Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
     document.body.addEventListener("keydown", SearchGames_handleKeyDown, false);
     if (SearchGames_Status) {
@@ -42,7 +41,7 @@ function SearchGames_StartLoad() {
     Main_HideElement(SearchGames_ids[7]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    SearchGames_lastData = Main_values.Search_data;
+    Main_FirstLoad = Main_values.Search_data;
     SearchGames_Status = false;
     Main_empty('stream_table_search_game');
     SearchGames_itemsCountOffset = 0;

@@ -15,7 +15,6 @@ var SearchLive_emptyContent = false;
 var SearchLive_Status = false;
 var SearchLive_itemsCountCheck = false;
 var SearchLive_lastData = '';
-var SearchLive_FirstLoad = false;
 
 var SearchLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', 'sl_streamtitle', 'sl_streamgame', 'sl_viwers', 'sl_quality', 'sl_cell', 'slempty_', 'search_live_scroll'];
 //Variable initialization end
@@ -53,7 +52,7 @@ function SearchLive_StartLoad() {
     SearchLive_idObject = {};
     SearchLive_emptyCellVector = [];
     SearchLive_itemsCountCheck = false;
-    SearchLive_FirstLoad = true;
+    Main_FirstLoad = true;
     SearchLive_itemsCount = 0;
     SearchLive_cursorX = 0;
     SearchLive_cursorY = 0;
@@ -108,7 +107,7 @@ function SearchLive_loadDataError() {
     } else {
         SearchLive_loadingData = false;
         if (!SearchLive_itemsCount) {
-            SearchLive_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -183,7 +182,7 @@ function SearchLive_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(SearchLive_ids[10]);
-            SearchLive_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (SearchLive_emptyCellVector.length > 0 && !SearchLive_dataEnded) {
@@ -294,7 +293,7 @@ function SearchLive_removeFocus() {
 }
 
 function SearchLive_handleKeyDown(event) {
-    if (SearchLive_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
     var i;
 

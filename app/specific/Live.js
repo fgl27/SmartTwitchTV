@@ -17,7 +17,6 @@ var Live_MaxOffset = 0;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
 var Live_emptyContent = false;
-var Live_FirstLoad = false;
 //Variable initialization end
 
 function Live_init() {
@@ -50,7 +49,7 @@ function Live_StartLoad() {
     Live_emptyCellVector = [];
     Live_itemsCountOffset = 0;
     Live_itemsCountCheck = false;
-    Live_FirstLoad = true;
+    Main_FirstLoad = true;
     Live_MaxOffset = 0;
     Live_idObject = {};
     Live_itemsCount = 0;
@@ -109,7 +108,7 @@ function Live_loadDataError() {
     } else {
         Live_loadingData = false;
         if (!Live_itemsCount) {
-            Live_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             Main_ShowElement('topbar');
@@ -214,7 +213,7 @@ function Live_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_FirstRun = false;
-            Live_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (Live_emptyCellVector.length > 0 && !Live_dataEnded) {
@@ -337,7 +336,7 @@ function Live_ExitCursorSet() {
 function Live_handleKeyDown(event) {
     //    console.log("Live_handleKeyDown");
     //    console.log(event.keyCode);
-    if (Live_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

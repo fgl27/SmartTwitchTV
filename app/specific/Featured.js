@@ -16,7 +16,6 @@ var Featured_MaxOffset = 0;
 var Featured_itemsCountCheck = false;
 var Featured_imgCounter = 0;
 var Featured_emptyContent = false;
-var Featured_FirstLoad = false;
 //Variable initialization end
 
 function Featured_init() {
@@ -47,7 +46,7 @@ function Featured_StartLoad() {
     Featured_emptyCellVector = [];
     Featured_itemsCountOffset = 0;
     Featured_itemsCountCheck = false;
-    Featured_FirstLoad = true;
+    Main_FirstLoad = true;
     Featured_MaxOffset = 0;
     Featured_idObject = {};
     Featured_itemsCount = 0;
@@ -105,7 +104,7 @@ function Featured_loadDataError() {
     } else {
         Featured_loadingData = false;
         if (!Featured_itemsCount) {
-            Featured_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -180,7 +179,7 @@ function Featured_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(Featured_ids[10]);
-            Featured_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (Featured_emptyCellVector.length > 0 && !Featured_dataEnded) {
@@ -288,7 +287,7 @@ function Featured_removeFocus() {
 }
 
 function Featured_handleKeyDown(event) {
-    if (Featured_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

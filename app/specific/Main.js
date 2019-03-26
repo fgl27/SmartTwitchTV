@@ -1126,9 +1126,10 @@ function Main_SidePannelhandleKeyDown(event) {
 
 var Main_CenterLablesVector = ['top_bar_live', 'top_bar_user', 'top_bar_featured', 'top_bar_game', 'top_bar_vod', 'top_bar_clip'];
 var Main_CenterScreenVector = [Main_Live, Main_Users, Main_Featured, Main_games, Main_Vod, Main_Clip];
+var Main_FirstLoad = false;
 
 function Main_CenterLables(event) {
-    if (Live_FirstLoad || Users_FirstLoad || Featured_FirstLoad || AGame_FirstLoad || inUseObj.FirstLoad || Vod_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || inUseObj.FirstLoad || Main_CantClick()) return;
 
     switch (event.keyCode) {
         case KEY_RETURN:

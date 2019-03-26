@@ -15,7 +15,6 @@ var AGameVod_emptyContent = false;
 var AGameVod_itemsCountCheck = false;
 var AGameVod_period = 'week';
 var AGameVod_periodNumber = 2;
-var AGameVod_FirstLoad = false;
 
 var AGameVod_ids = ['agv_thumbdiv', 'agv_img', 'agv_infodiv', 'agv_title', 'agv_streamon', 'agv_duration', 'agv_viwers', 'agv_quality', 'agv_cell', 'gvempty_', 'a_games_vod_scroll', 'agv_game'];
 var AGameVod_status = false;
@@ -69,7 +68,7 @@ function AGameVod_StartLoad() {
     AGameVod_idObject = {};
     AGameVod_emptyCellVector = [];
     AGameVod_itemsCountCheck = false;
-    AGameVod_FirstLoad = true;
+    Main_FirstLoad = true;
     AGameVod_itemsCount = 0;
     AGameVod_cursorX = 0;
     AGameVod_cursorY = 0;
@@ -129,7 +128,7 @@ function AGameVod_loadDataError() {
     } else {
         AGameVod_loadingData = false;
         if (!AGameVod_itemsCount) {
-            AGameVod_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -205,7 +204,7 @@ function AGameVod_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(AGameVod_ids[10]);
-            AGameVod_FirstLoad = false;
+            Main_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {
@@ -324,7 +323,7 @@ function AGameVod_removeFocus() {
 }
 
 function AGameVod_handleKeyDown(event) {
-    if (AGameVod_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

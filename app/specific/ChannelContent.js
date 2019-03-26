@@ -3,7 +3,6 @@ var ChannelContent_cursorY = 0;
 var ChannelContent_cursorX = 0;
 var ChannelContent_dataEnded = false;
 var ChannelContent_itemsCount = 0;
-var ChannelContent_loadingData = false;
 var ChannelContent_loadingDataTry = 0;
 var ChannelContent_loadingDataTryMax = 5;
 var ChannelContent_loadingDataTimeout = 3500;
@@ -67,7 +66,7 @@ function ChannelContent_StartLoad() {
 }
 
 function ChannelContent_loadDataPrepare() {
-    ChannelContent_loadingData = true;
+    Main_FirstLoad = true;
     ChannelContent_loadingDataTry = 0;
     ChannelContent_loadingDataTimeout = 3500;
 }
@@ -337,7 +336,7 @@ function ChannelContent_loadDataSuccessFinish() {
             Main_ShowElement(ChannelContent_ids[10]);
         }
         ChannelContent_checkUser();
-        ChannelContent_loadingData = false;
+        Main_FirstLoad = false;
     });
 }
 
@@ -425,7 +424,7 @@ function ChannelContent_RestoreChannelValue() {
 }
 
 function ChannelContent_handleKeyDown(event) {
-    if (ChannelContent_loadingData || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
