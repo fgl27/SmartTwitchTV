@@ -17,7 +17,6 @@ var UserHost_ids = ['uh_thumbdiv', 'uh_img', 'uh_infodiv', 'uh_displayname', 'uh
 var UserHost_status = false;
 var UserHost_OldUserName = '';
 var UserHost_itemsCountCheck = false;
-var UserHost_FirstLoad = false;
 //Variable initialization end
 
 function UserHost_init() {
@@ -56,7 +55,7 @@ function UserHost_StartLoad() {
     UserHost_emptyCellVector = [];
     UserHost_itemsCountCheck = false;
     UserHost_itemsCount = 0;
-    UserHost_FirstLoad = true;
+    Main_FirstLoad = true;
     UserHost_cursorX = 0;
     UserHost_cursorY = 0;
     UserHost_dataEnded = false;
@@ -110,7 +109,7 @@ function UserHost_loadDataError() {
     } else {
         UserHost_loadingData = false;
         if (!UserHost_itemsCount) {
-            UserHost_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -184,7 +183,7 @@ function UserHost_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(UserHost_ids[10]);
-            UserHost_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserHost_emptyCellVector.length > 0 && !UserHost_dataEnded) {
@@ -295,7 +294,7 @@ function UserHost_removeFocus() {
 }
 
 function UserHost_handleKeyDown(event) {
-    if (UserHost_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

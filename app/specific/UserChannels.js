@@ -13,7 +13,6 @@ var UserChannels_emptyContent = false;
 var UserChannels_Status = false;
 var UserChannels_OldUserName = '';
 var UserChannels_itemsCountCheck = false;
-var UserChannels_FirstLoad = false;
 
 var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname', 'uc_cell', 'ucempty_', 'user_channels_scroll'];
 //Variable initialization end
@@ -55,7 +54,7 @@ function UserChannels_StartLoad() {
     UserChannels_cursorY = 0;
     UserChannels_dataEnded = false;
     UserChannels_itemsCountCheck = false;
-    UserChannels_FirstLoad = true;
+    Main_FirstLoad = true;
     Main_CounterDialogRst();
     UserChannels_List = [];
     UserChannels_loadDataPrepare();
@@ -100,7 +99,7 @@ function UserChannels_loadDataError() {
     } else {
         UserChannels_loadingData = false;
         if (!UserChannels_itemsCount) {
-            UserChannels_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -190,7 +189,7 @@ function UserChannels_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(UserChannels_ids[6]);
-            UserChannels_FirstLoad = false;
+            Main_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
     });
@@ -211,7 +210,7 @@ function UserChannels_removeFocus() {
 }
 
 function UserChannels_handleKeyDown(event) {
-    if (UserChannels_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

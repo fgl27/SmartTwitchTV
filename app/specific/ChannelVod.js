@@ -25,7 +25,6 @@ var ChannelVod_views = '';
 var ChannelVod_createdAt = '';
 var ChannelVod_Duration = '';
 var ChannelVod_vodOffset = 0;
-var ChannelVod_FirstLoad = false;
 //Variable initialization end
 
 function ChannelVod_init() {
@@ -66,7 +65,7 @@ function ChannelVod_StartLoad() {
     ChannelVod_idObject = {};
     ChannelVod_emptyCellVector = [];
     ChannelVod_itemsCountCheck = false;
-    ChannelVod_FirstLoad = true;
+    Main_FirstLoad = true;
     ChannelVod_itemsCount = 0;
     ChannelVod_cursorX = 0;
     ChannelVod_cursorY = 0;
@@ -124,7 +123,7 @@ function ChannelVod_loadDataError() {
     } else {
         ChannelVod_loadingData = false;
         if (!ChannelVod_itemsCount) {
-            ChannelVod_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -210,7 +209,7 @@ function ChannelVod_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(ChannelVod_ids[10]);
-            ChannelVod_FirstLoad = false;
+            Main_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
@@ -329,7 +328,7 @@ function ChannelVod_removeFocus() {
 }
 
 function ChannelVod_handleKeyDown(event) {
-    if (ChannelVod_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

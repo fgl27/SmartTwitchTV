@@ -19,7 +19,6 @@ var AGame_itemsCountCheck = false;
 var AGame_fallowing = false;
 var AGame_UserGames = false;
 var AGame_TopRowCreated = false;
-var AGame_FirstLoad = false;
 //Variable initialization end
 
 function AGame_init() {
@@ -69,7 +68,7 @@ function AGame_StartLoad() {
     AGame_emptyCellVector = [];
     AGame_itemsCountCheck = false;
     AGame_itemsCount = 0;
-    AGame_FirstLoad = true;
+    Main_FirstLoad = true;
     AGame_cursorX = 0;
     AGame_cursorY = 0;
     AGame_dataEnded = false;
@@ -125,7 +124,7 @@ function AGame_loadDataError() {
     } else {
         AGame_loadingData = false;
         if (!AGame_itemsCount) {
-            AGame_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -225,7 +224,7 @@ function AGame_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(AGame_ids[10]);
-            AGame_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (AGame_emptyCellVector.length > 0 && !AGame_dataEnded) {
@@ -391,7 +390,7 @@ function AGame_removeFocusFallow() {
 }
 
 function AGame_handleKeyDown(event) {
-    if (AGame_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

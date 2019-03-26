@@ -15,7 +15,6 @@ var SearchChannels_emptyContent = false;
 var SearchChannels_Status = false;
 var SearchChannels_lastData = '';
 var SearchChannels_itemsCountCheck = false;
-var SearchChannels_FirstLoad = false;
 
 var SearchChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_', 'search_channel_scroll'];
 //Variable initialization end
@@ -59,7 +58,7 @@ function SearchChannels_StartLoad() {
     SearchChannels_emptyCellVector = [];
     SearchChannels_itemsCountCheck = false;
     SearchChannels_itemsCount = 0;
-    SearchChannels_FirstLoad = true;
+    Main_FirstLoad = true;
     SearchChannels_cursorX = 0;
     SearchChannels_cursorY = 0;
     SearchChannels_dataEnded = false;
@@ -113,7 +112,7 @@ function SearchChannels_loadDataError() {
     } else {
         SearchChannels_loadingData = false;
         if (!SearchChannels_itemsCount) {
-            SearchChannels_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -188,7 +187,7 @@ function SearchChannels_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(SearchChannels_ids[6]);
-            SearchChannels_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_LOGO);
             if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
@@ -293,7 +292,7 @@ function SearchChannels_removeFocus() {
 }
 
 function SearchChannels_handleKeyDown(event) {
-    if (SearchChannels_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

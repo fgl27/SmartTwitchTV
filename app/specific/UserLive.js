@@ -19,7 +19,7 @@ var UserLive_status = false;
 var UserLive_followerChannels = '';
 var UserLive_OldUserName = '';
 var UserLive_itemsCountCheck = false;
-var UserLive_FirstLoad = false;
+var Main_FirstLoad = false;
 //Variable initialization end
 
 function UserLive_init() {
@@ -58,7 +58,7 @@ function UserLive_StartLoad() {
     UserLive_idObject = {};
     UserLive_emptyCellVector = [];
     UserLive_itemsCountCheck = false;
-    UserLive_FirstLoad = true;
+    Main_FirstLoad = true;
     UserLive_itemsCount = 0;
     UserLive_cursorX = 0;
     UserLive_cursorY = 0;
@@ -108,7 +108,7 @@ function UserLive_loadDataError() {
     } else {
         UserLive_loadingData = false;
         if (!UserLive_itemsCount) {
-            UserLive_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -249,7 +249,7 @@ function UserLive_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(UserLive_ids[10]);
-            UserLive_FirstLoad = false;
+            Main_FirstLoad = false;
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserLive_emptyCellVector.length > 0 && !UserLive_dataEnded) {
@@ -360,7 +360,7 @@ function UserLive_removeFocus() {
 }
 
 function UserLive_handleKeyDown(event) {
-    if (UserLive_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

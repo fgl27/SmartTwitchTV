@@ -8,7 +8,6 @@ var Users_RemoveDialogID = null;
 var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll'];
 var Users_status = false;
 var Users_loadingData = true;
-var Users_FirstLoad = false;
 //Variable initialization end
 
 function Users_init() {
@@ -38,7 +37,7 @@ function Users_StartLoad() {
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Users_status = false;
-    Users_FirstLoad = true;
+    Main_FirstLoad = true;
     Main_empty('stream_table_user');
     Users_cursorX = 0;
     Users_cursorY = 0;
@@ -125,7 +124,7 @@ function Users_loadDataSuccessFinish() {
             Main_SaveValues();
         }
         Main_ShowElement(Users_ids[5]);
-        Users_FirstLoad = false;
+        Main_FirstLoad = false;
         Users_loadingData = false;
     });
 }
@@ -226,7 +225,7 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
-    if (Users_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

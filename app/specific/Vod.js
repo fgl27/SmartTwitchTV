@@ -19,7 +19,7 @@ var Vod_periodNumber = 2;
 var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'vempty_', 'vod_scroll', 'v_game'];
 var Vod_status = false;
 var Vod_highlight = false;
-var Vod_FirstLoad = false;
+var Main_FirstLoad = false;
 var Vod_AnimateThumbId;
 var Vod_DoAnimateThumb = 1;
 var Vod_newImg = new Image();
@@ -68,7 +68,7 @@ function Vod_StartLoad() {
     Vod_idObject = {};
     Vod_emptyCellVector = [];
     Vod_itemsCountCheck = false;
-    Vod_FirstLoad = true;
+    Main_FirstLoad = true;
     Vod_itemsCount = 0;
     Vod_cursorX = 0;
     Vod_cursorY = 0;
@@ -127,7 +127,7 @@ function Vod_loadDataError() {
     } else {
         Vod_loadingData = false;
         if (!Vod_itemsCount) {
-            Vod_FirstLoad = false;
+            Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
@@ -243,7 +243,7 @@ function Vod_loadDataSuccessFinish() {
                 Main_SaveValues();
             }
             Main_ShowElement(Vod_ids[10]);
-            Vod_FirstLoad = false;
+            Main_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
@@ -382,7 +382,7 @@ function Vod_AnimateThumb(idArray, id) {
 }
 
 function Vod_handleKeyDown(event) {
-    if (Vod_FirstLoad || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;
