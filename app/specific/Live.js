@@ -21,6 +21,7 @@ var Live_FirstLoad = false;
 //Variable initialization end
 
 function Live_init() {
+    Main_values.Main_CenterLablesVectorPos = 0;
     Main_values.Main_Go = Main_Live;
     Main_AddClass('top_bar_live', 'icon_center_focus');
     document.body.addEventListener("keydown", Live_handleKeyDown, false);
@@ -334,8 +335,8 @@ function Live_ExitCursorSet() {
 }
 
 function Live_handleKeyDown(event) {
-    console.log("Live_handleKeyDown");
-    console.log(event.keyCode);
+//    console.log("Live_handleKeyDown");
+//    console.log(event.keyCode);
     if (Live_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
@@ -347,7 +348,7 @@ function Live_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isExitDialogShown()) Main_HideExitDialog();
-            else Main_showExitDialog();
+            else Main_CenterLablesStart(Live_handleKeyDown);
             break;
         case KEY_LEFT:
             if (Main_isExitDialogShown()) {

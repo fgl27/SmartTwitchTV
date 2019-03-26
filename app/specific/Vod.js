@@ -26,6 +26,7 @@ var Vod_newImg = new Image();
 //Variable initialization end
 
 function Vod_init() {
+    Main_values.Main_CenterLablesVectorPos = 4;
     Main_values.Main_Go = Main_Vod;
     Main_AddClass('top_bar_vod', 'icon_center_focus');
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
@@ -390,12 +391,7 @@ function Vod_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (Main_values.Main_Before === Main_Vod) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_Before;
-                Vod_exit();
-                Main_SwitchScreen();
-            }
+            else Main_CenterLablesStart(Vod_handleKeyDown);
             break;
         case KEY_LEFT:
             if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX - 1), Vod_ids[0])) {

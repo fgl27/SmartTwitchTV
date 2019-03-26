@@ -1,5 +1,6 @@
 //Variable initialization
-var inUseObj;
+var inUseObj = {};
+inUseObj.FirstLoad = false;
 
 //Initiate all Main screens obj and they properties
 function Screens_InitScreens() {
