@@ -400,18 +400,7 @@ function AGame_handleKeyDown(event) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-                if (Main_values.Games_return) {
-                    Main_values.Main_Go = Main_SearchGames;
-                    Main_values.Main_gameSelected = Main_values.gameSelectedOld;
-                } else {
-                    Main_values.Main_Go = Main_values.Main_BeforeAgame;
-                    Main_values.Main_BeforeAgame = Main_Live;
-                }
-                AGame_exit();
-                Main_SwitchScreen();
-            }
+            else Main_CenterLablesStart(AGame_handleKeyDown);
             break;
         case KEY_LEFT:
             if (AGame_cursorY === -1) {
