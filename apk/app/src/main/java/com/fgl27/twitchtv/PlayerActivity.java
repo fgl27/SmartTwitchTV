@@ -194,6 +194,7 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_BACK:
                     mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
+                    mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
                     return true;
             }
 
