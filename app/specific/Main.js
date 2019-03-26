@@ -1145,6 +1145,8 @@ function Main_CenterLables(event) {
                         Main_values.Main_BeforeAgame = Main_Live;
                     }
                     AGame_exit();
+                    Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
+                    document.body.removeEventListener("keydown", Main_CenterLables);
                     Main_SwitchScreen();
                 } else Main_SidePannelStart(Main_CenterLables);
             }
