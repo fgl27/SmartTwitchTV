@@ -1228,9 +1228,13 @@ function Main_CenterLablesChange() {
 function Main_CenterLablesExit() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_CenterScreenVector[Main_values.Main_CenterLablesVectorPos];
-    if (Main_values.Main_Go === Main_Users && !AddUser_IsUserSet()) Main_values.Main_Go = Main_addUser;
-    Main_SwitchScreen();
-    Main_RemoveKeys();
+    if (Main_values.Main_Go === Main_Users && !AddUser_IsUserSet()) {
+        Main_values.Main_Go = Main_addUser;
+        Main_CenterLablesClean();
+    } else {
+        Main_SwitchScreen();
+        Main_RemoveKeys();
+    }
 }
 
 function Main_RemoveKeys() {
