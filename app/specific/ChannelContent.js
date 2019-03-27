@@ -23,6 +23,7 @@ var ChannelContent_ChannelValue = {};
 //Variable initialization end
 
 function ChannelContent_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_ChannelContent;
     if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
@@ -36,6 +37,7 @@ function ChannelContent_init() {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
+        ChannelContent_addFocus();
         Main_SaveValues();
     } else ChannelContent_StartLoad();
 }
@@ -355,6 +357,8 @@ function ChannelContent_checkUser() {
 function ChannelContent_addFocus() {
     Main_AddClass(ChannelContent_ids[0] +
         ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), Main_classThumb);
+    if (Main_CenterLablesInUse) ChannelContent_removeFocus();
+    Main_handleKeyUp();
 }
 
 function ChannelContent_removeFocus() {
@@ -432,11 +436,8 @@ function ChannelContent_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_values.Main_BeforeChannel;
-                Main_values.Main_BeforeChannel = Main_Live;
-                ChannelContent_exit();
-                Main_values.Main_selectedChannel_id = '';
-                Main_SwitchScreen();
+                ChannelContent_removeFocus();
+                Main_CenterLablesStart(ChannelContent_handleKeyDown);
             }
             break;
         case KEY_LEFT:

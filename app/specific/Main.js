@@ -838,10 +838,10 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
         var screen_size = screen.height / 100;
         if (y > 1) {
 
-            if (Main_ThumbNull((y + 1), 0, idArray[0]))
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
                 Main_ScrollTable(idArray[6],
                     (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + (screen_size * 42));
-
+            } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[6], screen_size * 5);
 
     } else Main_handleKeyUp();
@@ -1132,7 +1132,6 @@ var Main_FirstLoad = false;
 
 function Main_CenterLables(event) {
     if (Main_FirstLoad || inUseObj.FirstLoad || Main_CantClick()) return;
-
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -1183,11 +1182,19 @@ function Main_CenterLables(event) {
                     UserChannels_exit();
                     Main_CenterLablesClean();
                     Main_SwitchScreen();
+                } else if (Main_values.Main_Go === Main_ChannelContent) {
+                    Main_values.Main_Go = Main_values.Main_BeforeChannel;
+                    Main_values.Main_BeforeChannel = Main_Live;
+                    ChannelContent_exit();
+                    Main_values.Main_selectedChannel_id = '';
+                    Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else Main_SidePannelStart(Main_CenterLables);
             }
             break;
         case KEY_RIGHT:
-            if (Main_values.Search_isSearching) break;
+            if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
+                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos++;
             if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
@@ -1195,7 +1202,8 @@ function Main_CenterLables(event) {
             Main_CenterLablesExit();
             break;
         case KEY_LEFT:
-            if (Main_values.Search_isSearching) break;
+            if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
+                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos--;
             if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
@@ -1254,6 +1262,7 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else if (Main_values.Main_Go === Main_aGame) document.body.removeEventListener("keydown", AGame_handleKeyDown);
     else if (Main_values.Main_Go === Main_Featured) document.body.removeEventListener("keydown", Featured_handleKeyDown);
+    else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserVod) document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
@@ -1287,6 +1296,7 @@ function Main_ReloadScreen() {
     else if (Main_values.Main_Go === Main_Featured) Featured_StartLoad();
     else if (Main_values.Main_Go === Main_aGame) AGame_StartLoad();
     else if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
+    else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_games) {
         inUseObj = Game;
         Screens_StartLoad();
