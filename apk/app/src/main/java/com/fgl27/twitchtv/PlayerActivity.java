@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.fgl27.twitchtv.listener.ViewControlInterface;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -47,7 +46,7 @@ import static com.google.android.exoplayer2.Player.STATE_BUFFERING;
 import static com.google.android.exoplayer2.Player.STATE_ENDED;
 import static com.google.android.exoplayer2.Player.STATE_READY;
 
-public class PlayerActivity extends Activity implements ViewControlInterface {
+public class PlayerActivity extends Activity {
     //private static final String TAG = PlayerActivity.class.getName();
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -200,10 +199,6 @@ public class PlayerActivity extends Activity implements ViewControlInterface {
 
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void catchBufferPosition() {
     }
 
     public void munregisterReceiver() {
