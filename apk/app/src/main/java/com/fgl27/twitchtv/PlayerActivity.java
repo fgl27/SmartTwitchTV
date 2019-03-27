@@ -66,6 +66,7 @@ public class PlayerActivity extends Activity {
     public Context mcontext;
     public boolean onCreateReady;
     public boolean alredystarted;
+    private boolean loadingcanshow;
     public int mwhocall = 1;
 
     @Override
@@ -95,7 +96,7 @@ public class PlayerActivity extends Activity {
             releasePlayer();
         }
         if (shouldAutoPlay) {
-            showLoading();
+            showLoading(true);
 
             trackSelector = new DefaultTrackSelector();
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
@@ -131,6 +132,7 @@ public class PlayerActivity extends Activity {
 
             releasePlayer();
             clearResumePosition();
+            hideLoading();
         }
     }
 
@@ -145,12 +147,23 @@ public class PlayerActivity extends Activity {
     }
 
     private void hideLoading() {
+        loadingcanshow = false;
         loading.setVisibility(View.GONE);
     }
 
-
-    private void showLoading() {
-        loading.setVisibility(View.VISIBLE);
+    private void showLoading(boolean runnow) {
+        if (runnow) loading.setVisibility(View.VISIBLE);
+        else {
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            if (loadingcanshow) loading.setVisibility(View.VISIBLE);
+                        }
+                    },
+                    500
+            );
+        }
     }
 
     @Override
@@ -204,12 +217,14 @@ public class PlayerActivity extends Activity {
     public void munregisterReceiver() {
         try {
             this.unregisterReceiver(initializePlayerReceiver);
+            this.unregisterReceiver(showBufferReceiver);
         } catch (IllegalArgumentException ignored) {}
     }
 
     public void mregisterReceiver() {
         try {
             this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
+            this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
         } catch (NullPointerException ignored) {}
     }
 
@@ -310,6 +325,15 @@ public class PlayerActivity extends Activity {
             mwebContext = c;
         }
 
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mshowLoading(boolean show) {
+            final Intent NewIntent = new Intent();
+            NewIntent.setAction("showBufferReceiver");
+            NewIntent.putExtra("show", show);
+            mwebContext.sendBroadcast(NewIntent);
+        }
+
         /** Show a toast from the web page */
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
@@ -383,6 +407,14 @@ public class PlayerActivity extends Activity {
         }
     };
 
+    private final BroadcastReceiver showBufferReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getBooleanExtra("show", false)) showLoading(true);
+            else hideLoading();
+        }
+    };
+
     public Player.EventListener PlayerEvent() {
         return new Player.EventListener() {
 
@@ -394,7 +426,8 @@ public class PlayerActivity extends Activity {
                         case STATE_IDLE:
                             break;
                         case STATE_BUFFERING:
-                            showLoading();
+                            loadingcanshow = true;
+                            showLoading(false);
                             break;
                         case STATE_READY:
                             hideLoading();

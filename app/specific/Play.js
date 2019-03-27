@@ -211,7 +211,7 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    //Play_showBufferDialog();
+    Play_showBufferDialog();
     Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -226,7 +226,6 @@ function Play_Start() {
 
     Play_isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
-    Main_empty('dialog_buffer_play_percentage');
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
 
@@ -563,11 +562,9 @@ function Play_qualityChanged() {
     }
 
     Play_BufferPercentage = 0;
-    Main_empty('dialog_buffer_play_percentage');
     Play_qualityPlaying = Play_quality;
     Play_state = Play_STATE_PLAYING;
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    //Play_HideBufferDialog();
     try {
         //Android.showToast(Play_playingUrl);
         if (Play_isOn) Android.startVideo(Play_playingUrl, 1);
@@ -810,17 +807,13 @@ function Play_hideFallow() {
     AddCode_IsFallowing = false;
 }
 
-//function Play_showBufferDialog() {
-//    Main_ShowElement('dialog_buffer_play');
-//}
-
-function Play_HideBufferDialog() {
-    Main_HideElement('dialog_buffer_play');
+function Play_showBufferDialog() {
+    Android.mshowLoading(true);
 }
 
-//function Play_BufferDialogVisible() {
-//    return Main_isElementShowing('dialog_buffer_play');
-//}
+function Play_HideBufferDialog() {
+    Android.mshowLoading(false);
+}
 
 function Play_showWarningDialog(text) {
     Main_textContent("dialog_warning_play_text", text);
