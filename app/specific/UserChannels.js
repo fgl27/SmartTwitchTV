@@ -18,6 +18,7 @@ var UserChannels_ids = ['uc_thumbdiv', 'uc_img', 'uc_infodiv', 'uc_displayname',
 //Variable initialization end
 
 function UserChannels_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserChannels;
     Main_values.isLastSChannels = false;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
@@ -29,6 +30,7 @@ function UserChannels_init() {
         Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
+        UserChannels_addFocus();
         Main_SaveValues();
     } else UserChannels_StartLoad();
 }
@@ -203,6 +205,7 @@ function UserChannels_addFocus() {
         UserChannels_loadDataPrepare();
         UserChannels_loadChannels();
     }
+    if (Main_CenterLablesInUse) UserChannels_removeFocus();
 }
 
 function UserChannels_removeFocus() {
@@ -220,9 +223,8 @@ function UserChannels_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_Users;
-                UserChannels_exit();
-                Main_SwitchScreen();
+                UserChannels_removeFocus();
+                Main_CenterLablesStart(UserChannels_handleKeyDown);
             }
             break;
         case KEY_LEFT:

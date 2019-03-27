@@ -370,7 +370,6 @@ function AGame_loadDataSuccessReplace(responseText) {
 }
 
 function AGame_addFocus() {
-    if (Main_CenterLablesInUse) return;
     if (AGame_cursorY < 0) {
         AGame_addFocusFallow();
         return;
@@ -382,6 +381,7 @@ function AGame_addFocus() {
         AGame_loadDataPrepare();
         AGame_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) AGame_removeFocus();
 }
 
 function AGame_removeFocus() {

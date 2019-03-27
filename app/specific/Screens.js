@@ -252,7 +252,6 @@ function Screens_loadDataSuccessFinish(emptyContent) {
 }
 
 function Screens_addFocus() {
-    if (Main_CenterLablesInUse) return;
     inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
@@ -265,6 +264,7 @@ function Screens_addFocus() {
         Screens_loadDataPrepare();
         Screens_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
 }
 
 function Screens_ChangeFocus(y, x) {

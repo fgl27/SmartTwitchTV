@@ -313,7 +313,6 @@ function Live_loadDataSuccessReplace(responseText) {
 }
 
 function Live_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Live_cursorY, Live_cursorX, Live_ids, Main_ColoumnsCountVideo, Live_itemsCount);
 
     if (((Live_cursorY + Main_ItemsReloadLimitVideo) > (Live_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -321,6 +320,7 @@ function Live_addFocus() {
         Live_loadDataPrepare();
         Live_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) Live_removeFocus();
 }
 
 function Live_removeFocus() {

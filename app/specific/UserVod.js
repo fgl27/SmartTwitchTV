@@ -23,6 +23,7 @@ var Main_FirstLoad = false;
 //Variable initialization end
 
 function UserVod_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserVod;
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
@@ -322,6 +323,7 @@ function UserVod_addFocus() {
         !UserVod_dataEnded && !UserVod_loadingData) {
         UserVod_loadDataRequestStart();
     }
+    if (Main_CenterLablesInUse) UserVod_removeFocus();
 }
 
 function UserVod_removeFocus() {
@@ -342,9 +344,8 @@ function UserVod_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Main_values.Main_Go = Main_Users;
-                UserVod_exit();
-                Main_SwitchScreen();
+                UserVod_removeFocus();
+                Main_CenterLablesStart(UserVod_handleKeyDown);
             }
             break;
         case KEY_LEFT:

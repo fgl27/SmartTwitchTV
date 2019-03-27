@@ -507,6 +507,7 @@ function ScreensObj_InitUserGames() {
             }
         },
         label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
             Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
             Main_AddClass('top_bar_user', 'icon_center_focus');
@@ -535,7 +536,12 @@ function ScreensObj_InitUserGames() {
 
         },
         key_exit: function() {
-            Screens_BasicExit(Main_Users);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                Main_CenterLablesStart(Screens_handleKeyDown);
+            }
         },
         key_channelup: function() {
             Main_values.Main_Before = this.screen;

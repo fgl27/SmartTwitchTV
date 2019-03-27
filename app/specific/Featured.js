@@ -274,7 +274,6 @@ function Featured_loadDataSuccessReplace(responseText) {
 }
 
 function Featured_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Featured_cursorY, Featured_cursorX, Featured_ids, Main_ColoumnsCountVideo, Featured_itemsCount);
 
     if (((Featured_cursorY + Main_ItemsReloadLimitVideo) > (Featured_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -282,6 +281,7 @@ function Featured_addFocus() {
         Featured_loadDataPrepare();
         Featured_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) Featured_removeFocus();
 }
 
 function Featured_removeFocus() {

@@ -20,6 +20,7 @@ var UserHost_itemsCountCheck = false;
 //Variable initialization end
 
 function UserHost_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserHost;
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
     Main_AddClass('top_bar_user', 'icon_center_focus');
@@ -30,6 +31,7 @@ function UserHost_init() {
         Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
         Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+        UserHost_addFocus();
         Main_SaveValues();
     } else UserHost_StartLoad();
 }
@@ -287,6 +289,7 @@ function UserHost_addFocus() {
         UserHost_loadDataPrepare();
         UserHost_loadChannels();
     }
+    if (Main_CenterLablesInUse) UserHost_removeFocus();
 }
 
 function UserHost_removeFocus() {
@@ -304,9 +307,8 @@ function UserHost_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_Users;
-                UserHost_exit();
-                Main_SwitchScreen();
+                UserLive_removeFocus();
+                Main_CenterLablesStart(UserHost_handleKeyDown);
             }
             break;
         case KEY_LEFT:
