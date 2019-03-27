@@ -1069,6 +1069,7 @@ function Main_SidePannelKeyEnter() {
     else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_Vod);
     else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Clip);
     Main_SidePannelHide();
+    Main_CenterLablesClean();
 }
 
 function Main_SidePannelGo(GoTo) {
@@ -1148,12 +1149,15 @@ function Main_CenterLables(event) {
                     }
                     AGame_exit();
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_AGameClip) {
                     Screens_BasicExit(Main_aGame);
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_usergames) {
                     Screens_BasicExit(Main_Users);
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_AGameVod) {
                     Main_values.Main_Go = Main_aGame;
                     AGameVod_exit();
@@ -1161,18 +1165,22 @@ function Main_CenterLables(event) {
                     Main_values.Main_Go = Main_Users;
                     UserLive_exit();
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_UserHost) {
                     Main_values.Main_Go = Main_Users;
                     UserHost_exit();
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_UserVod) {
                     Main_values.Main_Go = Main_Users;
                     UserVod_exit();
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_UserChannels) {
                     Main_values.Main_Go = Main_Users;
                     UserChannels_exit();
                     Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else Main_SidePannelStart(Main_CenterLables);
             }
             break;
@@ -1218,7 +1226,6 @@ function Main_CenterLablesClean() {
     Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
     document.body.removeEventListener("keydown", Main_CenterLables);
     Main_CenterLablesInUse = false;
-    Main_SwitchScreen();
 }
 
 function Main_CenterLablesChange() {
