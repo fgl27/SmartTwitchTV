@@ -193,7 +193,7 @@ function Search_KeyboardEvent(event) {
             Main_SearchInput.value = '';
             break;
         case KEY_KEYBOARD_DONE:
-        case KEY_KEYBOARD_CANCEL:
+        case KEY_DOWN:
             Search_RemoveinputFocus(true);
             Search_cursorY = 1;
             Search_refreshInputFocusTools();
