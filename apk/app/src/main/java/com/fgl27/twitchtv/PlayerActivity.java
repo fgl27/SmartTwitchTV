@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -154,15 +156,13 @@ public class PlayerActivity extends Activity {
     private void showLoading(boolean runnow) {
         if (runnow) loading.setVisibility(View.VISIBLE);
         else {
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            if (loadingcanshow) loading.setVisibility(View.VISIBLE);
-                        }
-                    },
-                    500
-            );
+            //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (loadingcanshow) loading.setVisibility(View.VISIBLE);
+                }
+            }, 500);
         }
     }
 
