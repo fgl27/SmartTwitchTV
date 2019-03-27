@@ -105,8 +105,6 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 }
 
 function AddUser_KeyboardEvent(event) {
-    console.log('AddUser_KeyboardEvent');
-    console.log('event.keyCode ' + event.keyCode);
     if (AddUser_loadingData) return;
 
     switch (event.keyCode) {
