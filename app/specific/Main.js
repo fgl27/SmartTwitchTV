@@ -1161,6 +1161,8 @@ function Main_CenterLables(event) {
                 } else if (Main_values.Main_Go === Main_AGameVod) {
                     Main_values.Main_Go = Main_aGame;
                     AGameVod_exit();
+                    Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_UserLive) {
                     Main_values.Main_Go = Main_Users;
                     UserLive_exit();
@@ -1185,6 +1187,7 @@ function Main_CenterLables(event) {
             }
             break;
         case KEY_RIGHT:
+            if (Main_values.Search_isSearching) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos++;
             if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
@@ -1192,6 +1195,7 @@ function Main_CenterLables(event) {
             Main_CenterLablesExit();
             break;
         case KEY_LEFT:
+            if (Main_values.Search_isSearching) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos--;
             if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
