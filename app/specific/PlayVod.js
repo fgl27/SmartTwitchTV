@@ -53,9 +53,9 @@ var PlayVod_WasSubChekd = false;
 //Variable initialization end
 
 function PlayVod_Start() {
+    Play_showBufferDialog();
     Play_HideEndDialog();
     PlayVod_currentTime = 0;
-    Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');
     Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));

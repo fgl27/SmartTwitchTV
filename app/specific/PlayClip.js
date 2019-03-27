@@ -29,6 +29,7 @@ var PlayClip_DurationSeconds = 0;
 //Variable initialization end
 
 function PlayClip_Start() {
+    Play_showBufferDialog();
     Play_HideEndDialog();
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
@@ -42,7 +43,6 @@ function PlayClip_Start() {
     Main_values.Play_isHost = false;
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
-    Main_empty('dialog_buffer_play_percentage');
     Main_textContent("stream_live_time", '');
     Main_textContent("stream_watching_time", '');
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
@@ -142,7 +142,6 @@ function PlayClip_QualityGenerate(response) {
     }
 
     Play_BufferPercentage = 0;
-    Main_empty('dialog_buffer_play_percentage');
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
 }
@@ -172,9 +171,7 @@ function PlayClip_qualityChanged() {
     PlayClip_state = PlayClip_STATE_PLAYING;
 
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    //Play_HideBufferDialog();
     try {
-        //Android.showToast(Play_playingUrl);
         if (PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, 3);
     } catch (e) {}
     PlayClip_onPlayer();
