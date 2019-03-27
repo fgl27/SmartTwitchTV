@@ -1238,6 +1238,7 @@ function Main_CenterLablesExit() {
     if (Main_values.Main_Go === Main_Users && !AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_addUser;
         Main_CenterLablesClean();
+        Main_SwitchScreen();
     } else {
         Main_SwitchScreen();
         Main_RemoveKeys();
