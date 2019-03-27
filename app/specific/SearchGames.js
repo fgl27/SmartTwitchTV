@@ -3,7 +3,6 @@ var SearchGames_Status = false;
 var SearchGames_cursorY = 0;
 var SearchGames_cursorX = 0;
 var SearchGames_itemsCount = 0;
-var SearchGames_loadingData = false;
 var SearchGames_loadingDataTry = 0;
 var SearchGames_loadingDataTryMax = 5;
 var SearchGames_loadingDataTimeout = 3500;
@@ -11,6 +10,7 @@ var SearchGames_itemsCountOffset = 0;
 var SearchGames_MaxOffset = 0;
 var SearchGames_emptyContent = false;
 var SearchGames_itemsCountCheck = false;
+var SearchGames_lastData = '';
 
 var SearchGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgviwers', 'sgcell', 'sgempty_', 'search_games_scroll'];
 //Variable initialization end
@@ -19,7 +19,7 @@ function SearchGames_init() {
     Main_values.Main_Go = Main_SearchGames;
     Main_values.Search_isSearching = true;
     Main_cleanTopLabel();
-    if (Main_FirstLoad !== Main_values.Search_data) SearchGames_Status = false;
+    if (SearchGames_lastData !== Main_values.Search_data) SearchGames_Status = false;
     Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
     document.body.addEventListener("keydown", SearchGames_handleKeyDown, false);
     if (SearchGames_Status) {
@@ -41,7 +41,7 @@ function SearchGames_StartLoad() {
     Main_HideElement(SearchGames_ids[7]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
-    Main_FirstLoad = Main_values.Search_data;
+    SearchGames_lastData = Main_values.Search_data;
     SearchGames_Status = false;
     Main_empty('stream_table_search_game');
     SearchGames_itemsCountOffset = 0;
@@ -57,7 +57,7 @@ function SearchGames_StartLoad() {
 
 function SearchGames_loadDataPrepare() {
     Main_imgVectorRst();
-    SearchGames_loadingData = true;
+    Main_FirstLoad = true;
     SearchGames_loadingDataTry = 0;
     SearchGames_loadingDataTimeout = 3500;
 }
@@ -91,7 +91,7 @@ function SearchGames_loadDataError() {
         SearchGames_loadingDataTimeout += 500;
         SearchGames_loadDataRequest();
     } else {
-        SearchGames_loadingData = false;
+        Main_FirstLoad = false;
         if (!SearchGames_itemsCount) {
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
@@ -155,7 +155,7 @@ function SearchGames_loadDataSuccessFinish() {
             }
         }
         Main_ShowElement(SearchGames_ids[7]);
-        SearchGames_loadingData = false;
+        Main_FirstLoad = false;
     });
 }
 
@@ -169,7 +169,7 @@ function SearchGames_removeFocus() {
 }
 
 function SearchGames_handleKeyDown(event) {
-    if (SearchGames_loadingData || Main_CantClick()) return;
+    if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     var i;

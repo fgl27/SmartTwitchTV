@@ -19,7 +19,6 @@ var UserLive_status = false;
 var UserLive_followerChannels = '';
 var UserLive_OldUserName = '';
 var UserLive_itemsCountCheck = false;
-var Main_FirstLoad = false;
 //Variable initialization end
 
 function UserLive_init() {
