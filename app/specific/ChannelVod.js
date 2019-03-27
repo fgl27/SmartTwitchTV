@@ -28,6 +28,7 @@ var ChannelVod_vodOffset = 0;
 //Variable initialization end
 
 function ChannelVod_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_ChannelVod;
     if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (Main_values.Main_selectedChannel !== ChannelVod_lastselectedChannel) ChannelVod_status = false;
@@ -338,9 +339,8 @@ function ChannelVod_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_values.Main_Go = Main_ChannelContent;
-                ChannelVod_exit();
-                Main_SwitchScreen();
+                ChannelVod_removeFocus();
+                Main_CenterLablesStart(ChannelVod_handleKeyDown);
             }
             break;
         case KEY_LEFT:
