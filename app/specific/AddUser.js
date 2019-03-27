@@ -26,7 +26,6 @@ function AddUser_exit() {
 
 function AddUser_handleKeyDown(event) {
     if (AddUser_loadingData || AddUser_keyBoardOn) return;
-
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -121,7 +120,6 @@ function AddUser_KeyboardEvent(event) {
         case KEY_KEYBOARD_DELETE_ALL:
             Main_AddUserInput.value = '';
             break;
-        case KEY_ENTER:
         case KEY_KEYBOARD_DONE:
         case KEY_DOWN:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
@@ -144,8 +142,8 @@ function AddUser_KeyboardEvent(event) {
                         AddUser_inputFocus();
                     }, 1500);
                 }
-            }
-            AddUser_RemoveinputFocus(true);
+                AddUser_RemoveinputFocus(true);
+            } else AddUser_inputFocus();
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
