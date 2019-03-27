@@ -98,9 +98,7 @@ function AddCode_RemoveinputFocus(EnaKeydown) {
     Main_AddCodeInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_OAUTH;
 
     if (EnaKeydown) document.body.addEventListener("keydown", AddCode_handleKeyDown, false);
-    window.setTimeout(function() {
-        AddCode_keyBoardOn = false;
-    }, 250);
+    AddCode_keyBoardOn = false;
 }
 
 function AddCode_removeEventListener() {
