@@ -345,7 +345,6 @@ function Vod_loadDataSuccessReplace(responseText) {
 }
 
 function Vod_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
     Vod_AnimateThumb(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -353,6 +352,7 @@ function Vod_addFocus() {
         Vod_loadDataPrepare();
         Vod_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) Vod_removeFocus();
 }
 
 function Vod_removeFocus() {
