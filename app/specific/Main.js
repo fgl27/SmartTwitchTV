@@ -1157,6 +1157,10 @@ function Main_CenterLables(event) {
                     Screens_BasicExit(Main_Users);
                     Main_CenterLablesClean();
                     Main_SwitchScreen();
+                } else if (Main_values.Main_Go === Main_ChannelClip) {
+                    Screens_BasicExit(Main_ChannelContent);
+                    Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else if (Main_values.Main_Go === Main_AGameVod) {
                     Main_values.Main_Go = Main_aGame;
                     AGameVod_exit();
@@ -1275,6 +1279,9 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_games) {
         inUseObj = Game;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_ChannelClip) {
+        inUseObj = ChannelClip;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
     } else if (Main_values.Main_Go === Main_Vod) document.body.removeEventListener("keydown", Vod_handleKeyDown);
     else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
@@ -1316,6 +1323,9 @@ function Main_ReloadScreen() {
         Screens_StartLoad();
     } else if (Main_values.Main_Go === Main_AGameClip) {
         inUseObj = AGameClip;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_ChannelClip) {
+        inUseObj = ChannelClip;
         Screens_StartLoad();
     } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_StartLoad();
     else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();

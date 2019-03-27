@@ -225,6 +225,7 @@ function ScreensObj_InitChannelClip() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
         },
         label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
                 ChannelContent_RestoreChannelValue();
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
@@ -236,7 +237,12 @@ function ScreensObj_InitChannelClip() {
         },
         label_exit: Main_RestoreTopLabel,
         key_exit: function() {
-            Screens_BasicExit(Main_ChannelContent);
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                Main_CenterLablesStart(Screens_handleKeyDown);
+            }
         },
         key_channelup: function() {
             if (!this.loadingData) {
