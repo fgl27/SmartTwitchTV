@@ -129,7 +129,7 @@ function AddCode_KeyboardEvent(event) {
             event.preventDefault();
             break;
         case KEY_KEYBOARD_DONE:
-        case KEY_KEYBOARD_CANCEL:
+        case KEY_DOWN:
             if (Main_AddCodeInput.value !== '' && Main_AddCodeInput.value !== null) {
                 AddCode_Code = Main_AddCodeInput.value;
 

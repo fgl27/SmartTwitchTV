@@ -105,6 +105,8 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 }
 
 function AddUser_KeyboardEvent(event) {
+console.log('AddUser_KeyboardEvent');
+console.log('event.keyCode ' + event.keyCode);
     if (AddUser_loadingData) return;
 
     switch (event.keyCode) {
@@ -123,7 +125,7 @@ function AddUser_KeyboardEvent(event) {
             break;
         case KEY_ENTER:
         case KEY_KEYBOARD_DONE:
-        case KEY_KEYBOARD_CANCEL:
+        case KEY_DOWN:
             if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
 
                 if (!Main_isReleased && !AddUser_UserIsSet()) AddUser_Username = 'testtwitch27';
