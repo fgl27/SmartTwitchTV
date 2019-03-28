@@ -15,6 +15,7 @@ var ChannelVod_DurationSeconds = 0;
 var ChannelVod_emptyContent = false;
 var ChannelVod_itemsCountCheck = false;
 var ChannelVod_language = '';
+var ChannelVod_TopRowCreated = false;
 
 var ChannelVod_ids = ['cv_thumbdiv', 'cv_img', 'cv_infodiv', 'cv_title', 'cv_streamon', 'cv_duration', 'cv_viwers', 'cv_quality', 'cv_cell', 'cvempty_', 'channel_vod_scroll', 'cv_game'];
 var ChannelVod_status = false;
@@ -63,6 +64,7 @@ function ChannelVod_StartLoad() {
     Main_empty('stream_table_channel_vod');
     ChannelVod_itemsCountOffset = 0;
     ChannelVod_MaxOffset = 0;
+    ChannelVod_TopRowCreated = false;
     ChannelVod_idObject = {};
     ChannelVod_emptyCellVector = [];
     ChannelVod_itemsCountCheck = false;
@@ -152,6 +154,21 @@ function ChannelVod_loadDataSuccess(responseText) {
     var coloumn_id, row_id, row, video, id,
         cursor = 0,
         thumbnail_404, thumbnail;
+
+    // Make the game video/clip/fallowing cell
+    if (!ChannelVod_TopRowCreated) {
+        ChannelVod_TopRowCreated = true;
+        row = document.createElement('tr');
+        var thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+        Main_td = document.createElement('td');
+        Main_td.setAttribute('id', ChannelVod_ids[8] + 'y_0');
+        Main_td.className = 'stream_cell';
+        Main_td.innerHTML = '<div id="' + ChannelVod_ids[0] +
+            'y_0" class="stream_thumbnail_channel_vod" ><div id="' + ChannelVod_ids[3] +
+            'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        row.appendChild(Main_td);
+        document.getElementById("stream_table_channel_vod").appendChild(row);
+    }
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -311,6 +328,10 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
 }
 
 function ChannelVod_addFocus() {
+    if (ChannelVod_cursorY < 0) {
+        ChannelVod_addFocusFallow();
+        return;
+    }
     Main_addFocusVideo(ChannelVod_cursorY, ChannelVod_cursorX, ChannelVod_ids, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
 
     Vod_AnimateThumb(ChannelVod_ids, ChannelVod_cursorY + '_' + ChannelVod_cursorX);
@@ -320,12 +341,23 @@ function ChannelVod_addFocus() {
         ChannelVod_loadDataPrepare();
         ChannelVod_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) ChannelVod_removeFocus();
 }
 
 function ChannelVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    Main_ShowElement(ChannelVod_ids[1] + ChannelVod_cursorY + '_' + ChannelVod_cursorX);
-    Main_removeFocus(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids);
+    if (ChannelVod_cursorY > -1) {
+        Main_ShowElement(ChannelVod_ids[1] + ChannelVod_cursorY + '_' + ChannelVod_cursorX);
+        Main_removeFocus(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids);
+    } else ChannelVod_removeFocusFallow();
+}
+
+function ChannelVod_addFocusFallow() {
+    Main_AddClass(ChannelVod_ids[0] + 'y_0', Main_classThumb);
+}
+
+function ChannelVod_removeFocusFallow() {
+    Main_RemoveClass(ChannelVod_ids[0] + 'y_0', Main_classThumb);
 }
 
 function ChannelVod_handleKeyDown(event) {
@@ -373,25 +405,42 @@ function ChannelVod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((ChannelVod_cursorY - 1), (ChannelVod_cursorX - i), ChannelVod_ids[0])) {
-                    ChannelVod_removeFocus();
-                    ChannelVod_cursorY--;
-                    ChannelVod_cursorX = ChannelVod_cursorX - i;
-                    ChannelVod_addFocus();
-                    break;
+            if (ChannelVod_cursorY === -1 && !ChannelVod_emptyContent) {
+                ChannelVod_cursorY = 0;
+                ChannelVod_removeFocusFallow();
+                ChannelVod_addFocus();
+            } else if (!ChannelVod_cursorY) {
+                ChannelVod_removeFocus();
+                ChannelVod_cursorY = -1;
+                ChannelVod_addFocusFallow();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((ChannelVod_cursorY - 1), (ChannelVod_cursorX - i), ChannelVod_ids[0])) {
+                        ChannelVod_removeFocus();
+                        ChannelVod_cursorY--;
+                        ChannelVod_cursorX = ChannelVod_cursorX - i;
+                        ChannelVod_addFocus();
+                        break;
+                    }
                 }
             }
             break;
         case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((ChannelVod_cursorY + 1), (ChannelVod_cursorX - i), ChannelVod_ids[0])) {
-                    ChannelVod_removeFocus();
-                    ChannelVod_cursorY++;
-                    ChannelVod_cursorX = ChannelVod_cursorX - i;
-                    ChannelVod_addFocus();
-                    break;
+            if (ChannelVod_cursorY === -1 && !ChannelVod_emptyContent) {
+                ChannelVod_cursorY = 0;
+                ChannelVod_removeFocusFallow();
+                ChannelVod_addFocus();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((ChannelVod_cursorY + 1), (ChannelVod_cursorX - i), ChannelVod_ids[0])) {
+                        ChannelVod_removeFocus();
+                        ChannelVod_cursorY++;
+                        ChannelVod_cursorX = ChannelVod_cursorX - i;
+                        ChannelVod_addFocus();
+                        break;
+                    }
                 }
+
             }
             break;
         case KEY_CHANNELUP:
@@ -408,7 +457,11 @@ function ChannelVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_OpenVod(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids, ChannelVod_handleKeyDown);
+            if (ChannelVod_cursorY === -1) {
+                ChannelVod_highlight = !ChannelVod_highlight;
+                Main_setItem('ChannelVod_highlight', ChannelVod_highlight ? 'true' : 'false');
+                ChannelVod_StartLoad();
+            } else Main_OpenVod(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids, ChannelVod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(ChannelVod_handleKeyDown);
