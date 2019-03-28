@@ -29,8 +29,7 @@ function AGameVod_init() {
     Main_AddClass('top_bar_game', 'icon_center_focus');
     document.body.addEventListener("keydown", AGameVod_handleKeyDown, false);
 
-    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_ShowElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
 
     if ((AGameVod_OldgameSelected === Main_values.Main_gameSelected) && AGameVod_status) {
         Main_YRst(AGameVod_cursorY);
@@ -48,7 +47,7 @@ function AGameVod_exit() {
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_GAMES);
 
-    Main_HideElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(AGameVod_ids[10]);
 }

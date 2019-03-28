@@ -232,8 +232,7 @@ function ScreensObj_InitChannelClip() {
             Main_cleanTopLabel();
             this.SetPeriod();
             Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_ShowElement('label_switch');
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
@@ -318,16 +317,14 @@ function ScreensObj_InitAGameClip() {
             Main_values.Main_CenterLablesVectorPos = 3;
             this.SetPeriod();
             Main_AddClass('top_bar_game', 'icon_center_focus');
-            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_ShowElement('label_switch');
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             if (this.gameSelected !== Main_values.Main_gameSelected) this.status = false;
             this.gameSelected = Main_values.Main_gameSelected;
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
             Main_innerHTML('top_bar_game', STR_GAMES);
-            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-            Main_HideElement('label_switch');
+            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -507,8 +504,7 @@ function ScreensObj_InitUserGames() {
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 1;
-            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_ShowElement('label_switch');
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             Main_AddClass('top_bar_user', 'icon_center_focus');
 
             if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
@@ -518,11 +514,9 @@ function ScreensObj_InitUserGames() {
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         },
         label_exit: function() {
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
             Main_textContent('top_bar_user', STR_USER);
-            Main_HideElement('label_switch');
-            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
         key_refresh: function() {
             this.isLive = !this.isLive;
