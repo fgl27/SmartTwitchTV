@@ -168,7 +168,7 @@ function UserVod_loadDataSuccess(responseText) {
         var thumbfallow;
         for (i = 0; i < 2; i++) {
             if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
-            else thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_TYPE;
+            else thumbfallow = '<i class="icon-history" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_TYPE;
             Main_td = document.createElement('td');
             Main_td.setAttribute('id', UserVod_ids[8] + 'y_' + i);
             Main_td.className = 'stream_cell';
@@ -416,7 +416,7 @@ function UserVod_handleKeyDown(event) {
             if (UserVod_cursorY === -1) {
                 UserVod_removeFocusFallow();
                 UserVod_cursorX++;
-                if (UserVod_cursorX > 2) {
+                if (UserVod_cursorX > 1) {
                     UserVod_cursorX = 0;
                     if (!UserVod_emptyContent) {
                         UserVod_cursorY = 0;
@@ -433,7 +433,6 @@ function UserVod_handleKeyDown(event) {
                 UserVod_cursorX = 0;
                 UserVod_addFocus();
             }
-            break;
             break;
         case KEY_UP:
             if (UserVod_cursorY === -1 && !UserVod_emptyContent) {
@@ -505,7 +504,6 @@ function UserVod_handleKeyDown(event) {
                     UserVod_StartLoad();
                 }
             } else Main_OpenVod(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids, UserVod_handleKeyDown);
-
             break;
         case KEY_RED:
             Main_SidePannelStart(UserVod_handleKeyDown);
