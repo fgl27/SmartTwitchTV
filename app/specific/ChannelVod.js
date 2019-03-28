@@ -160,7 +160,7 @@ function ChannelVod_loadDataSuccess(responseText) {
     if (!ChannelVod_TopRowCreated) {
         ChannelVod_TopRowCreated = true;
         row = document.createElement('tr');
-        var thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+        var thumbfallow = '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
         Main_td = document.createElement('td');
         Main_td.setAttribute('id', ChannelVod_ids[8] + 'y_0');
         Main_td.className = 'stream_cell';

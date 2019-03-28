@@ -163,8 +163,8 @@ function AGame_loadDataSuccess(responseText) {
         row = document.createElement('tr');
         var thumbfallow;
         for (i = 0; i < 3; i++) {
-            if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 100%"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS;
-            else if (i === 1) thumbfallow = '<i class="icon-movie" style="color: #FFFFFF"></i>' + STR_SPACE + STR_CLIPS;
+            if (!i) thumbfallow = '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS;
+            else if (i === 1) thumbfallow = '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_CLIPS;
             else thumbfallow = '';
             Main_td = document.createElement('td');
             Main_td.setAttribute('id', AGame_ids[8] + 'y_' + i);
