@@ -178,7 +178,6 @@ function AGameVod_loadDataSuccess(responseText) {
         document.getElementById("stream_table_a_game_vod").appendChild(row);
     }
 
-
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
         row = document.createElement('tr');

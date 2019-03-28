@@ -399,7 +399,7 @@ function Main_Scrollbar(y, coloumns, total) {
         // min screen_size max screen.height - (screen_size * 3)
         var needExtraSpace = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
             Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod ||
-            Main_values.Main_Go === Main_UserVod);
+            Main_values.Main_Go === Main_UserVod || Main_values.Main_Go === Main_Vod);
         var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
         Main_ScrollbarElement.style.top = nextPositon + "px";
 
