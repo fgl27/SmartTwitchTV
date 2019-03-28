@@ -254,7 +254,7 @@ function PlayVod_Resume() {
         if (Play_isEndDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
-            Main_ready(PlayVod_shutdownStream);
+            PlayVod_shutdownStream();
         } else {
             PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
@@ -800,7 +800,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
-                    Main_ready(PlayVod_shutdownStream);
+                    PlayVod_shutdownStream();
                 } else {
                     Play_showExitDialog();
                 }

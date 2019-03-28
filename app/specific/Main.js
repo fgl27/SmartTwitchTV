@@ -216,32 +216,30 @@ function Main_initWindows() {
 
         Main_checkVersion();
 
-        Main_ready(function() {
-            Main_SetStringsSecondary();
+        Main_SetStringsSecondary();
 
-            Vod_highlight = Main_getItemBool('Vod_highlight', false);
-            ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
-            AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
-            UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
+        Vod_highlight = Main_getItemBool('Vod_highlight', false);
+        ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
+        AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
+        UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
 
-            Vod_periodNumber = Main_getItemInt('vod_periodNumber', 2);
-            AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
-            UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
+        Vod_periodNumber = Main_getItemInt('vod_periodNumber', 2);
+        AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
+        UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
 
-            PlayVod_RestoreVodIds();
+        PlayVod_RestoreVodIds();
 
-            Main_SearchInput = document.getElementById("search_input");
-            Main_AddUserInput = document.getElementById("user_input");
-            Main_AddCodeInput = document.getElementById("oauth_input");
+        Main_SearchInput = document.getElementById("search_input");
+        Main_AddUserInput = document.getElementById("user_input");
+        Main_AddCodeInput = document.getElementById("oauth_input");
 
-            // pre load All img
-            Main_CacheImage(IMG_404_VIDEO);
-            Main_CacheImage(IMG_404_GAME);
-            Main_CacheImage(IMG_404_LOGO);
+        // pre load All img
+        Main_CacheImage(IMG_404_VIDEO);
+        Main_CacheImage(IMG_404_GAME);
+        Main_CacheImage(IMG_404_LOGO);
 
-            document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
-            Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        });
+        document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
+        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     });
 }
 
@@ -980,9 +978,7 @@ function Main_openVod() {
 function Main_ScrollTable(id, position) {
     document.getElementById(id).style.top = position + "px";
 
-    Main_ready(function() {
-        window.setTimeout(Main_handleKeyUp, 10);
-    });
+    window.setTimeout(Main_handleKeyUp, 10);
 }
 
 function Main_removeFocus(id, idArray) {

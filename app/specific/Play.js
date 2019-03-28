@@ -281,7 +281,7 @@ function Play_Resume() {
         if (Play_isEndDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
-            Main_ready(Play_shutdownStream);
+            Play_shutdownStream();
         } else {
             Play_ClearPlayer();
             Play_Playing = false;
@@ -1154,9 +1154,9 @@ function Play_EndText(PlayVodClip) {
             Play_CleanHideExit();
             Play_hideChat();
 
-            if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
-            else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
-            else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+            if (PlayVodClip === 1) Play_shutdownStream();
+            else if (PlayVodClip === 2) PlayVod_shutdownStream();
+            else if (PlayVodClip === 3) PlayClip_shutdownStream();
 
         } else {
             Play_EndTextID = window.setTimeout(function() {
@@ -1257,9 +1257,9 @@ function Play_OpenChannel(PlayVodClip) {
         Main_values.Main_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname;
         ChannelContent_UserChannels = AddCode_IsFallowing;
         Play_hideChat();
-        Main_ready(Play_shutdownStream);
-    } else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
-    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+        Play_shutdownStream();
+    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
+    else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
 function Play_OpenSearch(PlayVodClip) {
@@ -1269,9 +1269,9 @@ function Play_OpenSearch(PlayVodClip) {
 
     if (PlayVodClip === 1) {
         Play_hideChat();
-        Main_ready(Play_shutdownStream);
-    } else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
-    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+        Play_shutdownStream();
+    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
+    else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
 function Play_OpenGame(PlayVodClip) {
@@ -1296,9 +1296,9 @@ function Play_OpenGame(PlayVodClip) {
 
     Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
-    if (PlayVodClip === 1) Main_ready(Play_shutdownStream);
-    else if (PlayVodClip === 2) Main_ready(PlayVod_shutdownStream);
-    else if (PlayVodClip === 3) Main_ready(PlayClip_shutdownStream);
+    if (PlayVodClip === 1) Play_shutdownStream();
+    else if (PlayVodClip === 2) PlayVod_shutdownStream();
+    else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
 function Play_FallowUnfallow() {
@@ -1354,10 +1354,8 @@ function Play_PannelEndStart(PlayVodClip) {
 
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
-    Main_ready(function() {
-        Play_EndText(PlayVodClip);
-        Play_showEndDialog(PlayVodClip);
-    });
+    Play_EndText(PlayVodClip);
+    Play_showEndDialog(PlayVodClip);
 }
 
 function Play_CheckHostStart() {
@@ -1483,8 +1481,8 @@ function Play_KeyReturn(is_vod) {
         } else if (Play_ExitDialogVisible()) {
             Play_CleanHideExit();
             Play_hideChat();
-            if (is_vod) Main_ready(PlayVod_shutdownStream);
-            else Main_ready(Play_shutdownStream);
+            if (is_vod) PlayVod_shutdownStream();
+            else Play_shutdownStream();
         } else if (Play_WarningDialogVisible()) {
             Play_HideWarningDialog();
             Play_showExitDialog();
@@ -1504,7 +1502,7 @@ function Play_handleKeyDown(e) {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
                     Play_hideChat();
-                    Main_ready(Play_shutdownStream);
+                    Play_shutdownStream();
                 } else {
                     Play_showExitDialog();
                 }
