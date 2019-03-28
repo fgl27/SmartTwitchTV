@@ -1106,6 +1106,7 @@ function Main_SidePannelhandleKeyDown(event) {
         case KEY_LEFT:
             document.body.addEventListener("keydown", Main_SidePannelCallback, false);
             Main_SidePannelHide();
+            Main_CenterLablesChange();
             break;
         case KEY_UP:
             if (Main_SidePannelPos) {
@@ -1244,7 +1245,6 @@ function Main_CenterLables(event) {
 }
 
 function Main_CenterLablesStart(callback) {
-    Main_CenterLablesInUse = true;
     window.clearTimeout(Main_SetTopOpacityId);
     Main_UnSetTopOpacity();
     document.body.removeEventListener("keydown", callback);
@@ -1260,6 +1260,7 @@ function Main_CenterLablesClean() {
 }
 
 function Main_CenterLablesChange() {
+    Main_CenterLablesInUse = true;
     Main_AddClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
 }
 
