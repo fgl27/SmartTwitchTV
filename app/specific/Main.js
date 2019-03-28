@@ -48,6 +48,7 @@ var Main_values = {
     "Play_selectedChannel": '',
     "Play_gameSelected": '',
     "Users_Position": 0,
+    "Users_AddcodePosition": 0,
     "Main_WasOpen": false,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
@@ -65,6 +66,7 @@ var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
 var Main_CenterLablesInUse = false;
 var Main_imgVector = [];
+var Main_newUsercode = 0;
 
 var Main_ExitDialogID = null;
 var Main_ScrollbarIsHide = true;
@@ -105,7 +107,7 @@ var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_Col
 // How many streams will be request on a reload
 var Main_ItemsLimitReplace = 6;
 
-var Main_clientId = "ypvnuqrh98wqz1sr0ov3fgfu4jh1yx";
+var Main_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";
 var Main_clientIdHeader = 'Client-ID';
 var Main_AcceptHeader = 'Accept';
 var Main_Authorization = 'Authorization';
@@ -184,6 +186,8 @@ function Main_loadTranslations(language) {
 
             console.log("language is " + lang);
             DefaultLang();
+
+            if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
 
             Main_initWindows();
         });
@@ -1398,4 +1402,18 @@ function Main_PrintUnicode(string) {
     console.log(string);
     for (var i = 0; i < string.length; i++)
         console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+}
+
+function processCode(pageUrl) {
+    console.log("processCode");
+    var code = '';
+    code = pageUrl.match(/code=(\w+)/);
+    if (code) {
+        code = code[1];
+        console.log('if code ' + code);
+        Main_newUsercode = code;
+    } else {
+        console.log('else code ' + code);
+        Main_newUsercode = 0;
+    }
 }

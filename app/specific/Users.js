@@ -127,6 +127,10 @@ function Users_loadDataSuccessFinish() {
         Main_ShowElement(Users_ids[5]);
         Main_FirstLoad = false;
         Users_loadingData = false;
+        if (Main_newUsercode) {
+            Users_exit();
+            AddCode_CheckNewCode(Main_newUsercode);
+        }
     });
 }
 
@@ -188,7 +192,19 @@ function Users_keyEnter() {
             AddUser_init();
         } else AddUser_UserMakeOne(Users_cursorY);
     } else if (Users_cursorX === 6) Users_showRemoveDialog();
-    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) AddCode_init();
+    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+        Main_values.Users_AddcodePosition = Main_values.Users_Position;
+        Main_SaveValues();
+        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
+        var type_code = 'code';
+        var client_id = Main_clientId;
+        var redirect_uri = AddCode_redirect_uri;
+        var scope = 'user_follows_edit+user_subscriptions';
+        var force_verify = 'true';
+        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) +
+            '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
+        window.location = url;
+    }
 }
 
 function Users_clearRemoveDialog() {
