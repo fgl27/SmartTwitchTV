@@ -236,7 +236,10 @@ function AGame_loadDataSuccessFinish() {
                 AGame_loadDataPrepare();
                 AGame_loadDataReplace();
                 return;
-            } else AGame_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
+                AGame_emptyCellVector = [];
+            }
         }
         AGame_loadingData = false;
     });

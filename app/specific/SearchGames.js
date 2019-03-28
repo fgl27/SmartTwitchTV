@@ -156,6 +156,7 @@ function SearchGames_loadDataSuccessFinish() {
         }
         Main_ShowElement(SearchGames_ids[7]);
         Main_FirstLoad = false;
+        Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
     });
 }
 

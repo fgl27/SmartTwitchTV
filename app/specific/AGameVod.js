@@ -35,6 +35,7 @@ function AGameVod_init() {
     if ((AGameVod_OldgameSelected === Main_values.Main_gameSelected) && AGameVod_status) {
         Main_YRst(AGameVod_cursorY);
         Main_ShowElement(AGameVod_ids[10]);
+        Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
         AGameVod_SetPeriod();
         AGameVod_addFocus();
         Main_SaveValues();
@@ -229,7 +230,10 @@ function AGameVod_loadDataSuccessFinish() {
             AGameVod_loadDataPrepare();
             AGameVod_loadDataReplace();
             return;
-        } else AGameVod_emptyCellVector = [];
+        } else {
+            Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
+            AGameVod_emptyCellVector = [];
+        }
 
         AGameVod_loadingData = false;
     });

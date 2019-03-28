@@ -222,7 +222,10 @@ function Live_loadDataSuccessFinish() {
                 Live_loadDataPrepare();
                 Live_loadDataReplace();
                 return;
-            } else Live_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(Live_cursorX, Live_cursorY, Main_ColoumnsCountVideo, Live_itemsCount);
+                Live_emptyCellVector = [];
+            }
         }
         Live_loadingData = false;
     });

@@ -43,6 +43,7 @@ function Screens_assign() {
 //Variable initialization end
 
 function Screens_init() {
+    Main_addFocusVideoOffset = -1;
     Main_values.Main_Go = inUseObj.screen;
     inUseObj.label_init();
 
@@ -57,6 +58,7 @@ function Screens_init() {
 }
 
 function Screens_exit() {
+    Main_addFocusVideoOffset = 0;
     inUseObj.label_exit();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement(inUseObj.ids[10]);
@@ -314,11 +316,12 @@ function Screens_BasicExit(before) {
 }
 
 function Screens_KeyUpDown(y) {
-    if (inUseObj.HasSwitches && (inUseObj.posY + y) === -1 && !inUseObj.emptyContent) {
+    //TODO improve this
+    if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
         inUseObj.posY = -1;
         Screens_addFocusFallow();
-    } else if (inUseObj.HasSwitches && (inUseObj.posY + y) === 0) {
+    } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1) {
         inUseObj.posY = 0;
         Screens_addFocus();
         Screens_removeFocusFallow();
@@ -333,11 +336,7 @@ function Screens_KeyUpDown(y) {
 }
 
 function Screens_KeyLeftRight(y, x) {
-    if (inUseObj.HasSwitches && (inUseObj.posY + y) === 0) {
-        inUseObj.posY = 0;
-        Screens_addFocus();
-        Screens_removeFocusFallow();
-    } else if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
+    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
         Screens_ChangeFocus(0, (inUseObj.posX + y));
     else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
         Screens_ChangeFocus(y, x);

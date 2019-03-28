@@ -193,7 +193,10 @@ function UserHost_loadDataSuccessFinish() {
                 UserHost_loadDataPrepare();
                 UserHost_loadDataReplace();
                 return;
-            } else UserHost_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+                UserHost_emptyCellVector = [];
+            }
         }
         UserHost_loadingData = false;
     });

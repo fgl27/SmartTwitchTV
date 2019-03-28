@@ -34,6 +34,7 @@ function Vod_init() {
     if (Vod_status) {
         Main_YRst(Vod_cursorY);
         Main_ShowElement(Vod_ids[10]);
+        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
         Vod_SetPeriod();
         Vod_addFocus();
         Main_SaveValues();
@@ -264,7 +265,10 @@ function Vod_loadDataSuccessFinish() {
             Vod_loadDataPrepare();
             Vod_loadDataReplace();
             return;
-        } else Vod_emptyCellVector = [];
+        } else {
+            Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
+            Vod_emptyCellVector = [];
+        }
 
         Vod_loadingData = false;
     });

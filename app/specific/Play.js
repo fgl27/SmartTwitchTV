@@ -1457,10 +1457,10 @@ function Play_CheckHost(responseText) {
 
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
-        Main_innerHTML("fallow_heart", '<i class="icon-heart" style="color: #00b300; font-size: 210%; text-shadow: #FFFFFF 0 0 3px, #FFFFFF 0 0 3px, #FFFFFF 0 0 2px;"></i>');
+        Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300; font-size: 210%;"></i>');
         Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOWING);
     } else {
-        Main_innerHTML("fallow_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 210%; text-shadow: #000000 0 0 3px, #000000 0 0 3px, #000000 0 0 2px;"></i>');
+        Main_innerHTML("fallow_heart", '<i class="icon-heart-o strokicon" style="color: #FFFFFF; font-size: 210%;"></i>');
         Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOW);
     }
 }
