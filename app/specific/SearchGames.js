@@ -16,6 +16,7 @@ var SearchGames_ids = ['sgthumbdiv', 'sgimg', 'sginfodiv', 'sgdisplayname', 'sgv
 //Variable initialization end
 
 function SearchGames_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_SearchGames;
     Main_values.Search_isSearching = true;
     Main_cleanTopLabel();
@@ -26,6 +27,7 @@ function SearchGames_init() {
         Main_YRst(SearchGames_cursorY);
         Main_ShowElement(SearchGames_ids[7]);
         Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
+        SearchGames_addFocus();
         Main_SaveValues();
     } else SearchGames_StartLoad();
 }
@@ -163,6 +165,7 @@ function SearchGames_loadDataSuccessFinish() {
 function SearchGames_addFocus() {
     Main_addFocusGame(SearchGames_cursorY, SearchGames_cursorX, SearchGames_ids,
         Main_ColoumnsCountGame, SearchGames_itemsCount);
+    if (Main_CenterLablesInUse) SearchGames_removeFocus();
 }
 
 function SearchGames_removeFocus() {
@@ -180,11 +183,8 @@ function SearchGames_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                Main_values.Search_isSearching = false;
-                SearchGames_exit();
-                Main_SwitchScreen();
+                SearchGames_removeFocus();
+                Main_CenterLablesStart(SearchGames_handleKeyDown);
             }
             break;
         case KEY_LEFT:

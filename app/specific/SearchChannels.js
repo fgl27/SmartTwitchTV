@@ -20,6 +20,7 @@ var SearchChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname
 //Variable initialization end
 
 function SearchChannels_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_SearchChannels;
     Main_values.isLastSChannels = true;
     Main_values.Search_isSearching = true;
@@ -31,6 +32,7 @@ function SearchChannels_init() {
         Main_YRst(SearchChannels_cursorY);
         Main_ShowElement(SearchChannels_ids[6]);
         Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
+        SearchChannels_addFocus();
         Main_SaveValues();
     } else SearchChannels_StartLoad();
 }
@@ -288,6 +290,7 @@ function SearchChannels_addFocus() {
         SearchChannels_loadDataPrepare();
         SearchChannels_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) SearchChannels_removeFocus();
 }
 
 function SearchChannels_removeFocus() {
@@ -305,12 +308,8 @@ function SearchChannels_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                if (Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                SearchChannels_exit();
-                Main_values.Search_isSearching = false;
-                SearchChannels_Postexit();
+                SearchChannels_removeFocus();
+                Main_CenterLablesStart(SearchChannels_handleKeyDown);
             }
             break;
         case KEY_LEFT:
