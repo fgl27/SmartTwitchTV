@@ -153,7 +153,7 @@ function Screens_loadDataSuccess() {
         if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) {
             inUseObj.TopRowCreated = true;
             inUseObj.row = document.createElement('div');
-            var thumbfallow = '<i class="icon-history" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
+            var thumbfallow = '<i class="icon-history stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
             Main_td = document.createElement('div');
             Main_td.setAttribute('id', inUseObj.ids[8] + 'y_0');
             Main_td.className = 'stream_cell_period';

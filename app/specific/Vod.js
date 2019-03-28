@@ -156,8 +156,8 @@ function Vod_loadDataSuccess(responseText) {
         row = document.createElement('tr');
         var thumbfallow;
         for (i = 0; i < 2; i++) {
-            if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
-            else thumbfallow = '<i class="icon-history" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
+            if (!i) thumbfallow = '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+            else thumbfallow = '<i class="icon-history stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
             Main_td = document.createElement('td');
             Main_td.setAttribute('id', Vod_ids[8] + 'y_' + i);
             Main_td.className = 'stream_cell';
