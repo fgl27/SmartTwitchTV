@@ -10,8 +10,8 @@ var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
 
-var AddCode_redirect_uri = 'https://fgl27.github.io/smarttv-twitch/release/githubio/login/twitch.html';
-var AddCode_client_secret = "zhd1wr8lxyz9snzo48rfb70r7vtod6";
+var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
+var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 //Variable initialization end
 
@@ -225,9 +225,10 @@ function AddCode_requestTokensFail() {
     Main_showWarningDialog(STR_OAUTH_FAIL);
     window.setTimeout(function() {
         Main_HideWarningDialog();
-        Main_ShowElement('oauth_scroll');
-        AddCode_inputFocus();
-        AddCode_loadingData = false;
+        Main_newUsercode = 0;
+        Main_SaveValues();
+        Main_values.Main_Go = Main_Users;
+        window.location = AddCode_redirect_uri;
     }, 4000);
     AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
@@ -256,23 +257,26 @@ function AddCode_CheckOauthToken() {
                 if (token.user_name &&
                     token.user_name.indexOf(AddUser_UsernameArray[Main_values.Users_Position].name) !== -1) {
                     AddUser_SaveUserArray();
-
+                    Main_newUsercode = 0;
                     Main_HideLoadDialog();
                     AddCode_exit();
                     Users_status = false;
-                    Users_init();
                     AddCode_loadingData = false;
                     Main_AddCodeInput.value = '';
+                    Main_SaveValues();
+                    Main_values.Main_Go = Main_Users;
+                    window.location = AddCode_redirect_uri;
                 } else {
                     AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
                     AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
                     AddCode_loadingData = false;
-                    Main_HideLoadDialog();
                     Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_Position].name);
                     window.setTimeout(function() {
                         Main_HideWarningDialog();
-                        Main_ShowElement('oauth_scroll');
-                        AddCode_inputFocus();
+                        Main_newUsercode = 0;
+                        Main_SaveValues();
+                        Main_values.Main_Go = Main_Users;
+                        window.location = AddCode_redirect_uri;
                     }, 4000);
                 }
                 return;
@@ -652,4 +656,12 @@ function AddCode_CheckFallowGameError() {
         AGame_fallowing = false;
         AGame_setFallow();
     }
+}
+
+function AddCode_CheckNewCode(code) {
+    Main_values.Users_Position = Main_values.Users_AddcodePosition;
+    AddCode_Code = code;
+    AddCode_TimeoutReset10();
+    Main_showLoadDialog();
+    AddCode_requestTokens();
 }
