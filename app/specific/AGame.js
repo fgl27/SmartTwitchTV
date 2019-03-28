@@ -26,8 +26,7 @@ function AGame_init() {
     Main_values.Main_Go = Main_aGame;
     document.body.addEventListener("keydown", AGame_handleKeyDown, false);
     Main_AddClass('top_bar_game', 'icon_center_focus');
-    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_ShowElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
 
     if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
         Main_cleanTopLabel();
@@ -52,7 +51,7 @@ function AGame_exit() {
         AGame_cursorX = 0;
         Main_AddClass(AGame_ids[0] + '0_' + AGame_cursorX, Main_classThumb);
     }
-    Main_HideElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_innerHTML('top_bar_game', STR_GAMES);
     document.body.removeEventListener("keydown", AGame_handleKeyDown);
     Main_RemoveClass('top_bar_game', 'icon_center_focus');

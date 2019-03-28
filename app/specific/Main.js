@@ -627,8 +627,7 @@ function Main_RestoreTopLabel() {
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_ShowElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');

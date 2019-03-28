@@ -27,8 +27,7 @@ function UserVod_init() {
     Main_values.Main_Go = Main_UserVod;
 
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_ShowElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
 
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA)));
     document.body.addEventListener("keydown", UserVod_handleKeyDown, false);
@@ -46,7 +45,7 @@ function UserVod_init() {
 function UserVod_exit() {
     if (UserVod_status) UserVod_removeFocus();
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_HideElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
     Main_HideElement(UserVod_ids[10]);

@@ -22,8 +22,7 @@ var UserHost_itemsCountCheck = false;
 function UserHost_init() {
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserHost;
-    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_ShowElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
     document.body.addEventListener("keydown", UserHost_handleKeyDown, false);
@@ -41,7 +40,7 @@ function UserHost_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
-    Main_HideElement('label_switch');
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_HideElement(UserHost_ids[10]);
 }
 
