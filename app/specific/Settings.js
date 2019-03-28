@@ -79,7 +79,6 @@ function Settings_init() {
     Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     Main_textContent('top_bar_user', STR_SETTINGS);
     document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('label_switch').style.display = 'none';
     document.getElementById('top_bar_live').style.display = 'none';
     document.getElementById('top_bar_featured').style.display = 'none';
     document.getElementById('top_bar_game').style.display = 'none';
@@ -96,7 +95,6 @@ function Settings_exit() {
     Settings_RemoveinputFocus();
     Main_textContent('top_bar_user', STR_USER);
     document.getElementById("top_lables").style.marginLeft = '18.5%';
-    document.getElementById('label_switch').style.display = 'inline-block';
     document.getElementById('top_bar_live').style.display = 'inline-block';
     document.getElementById('top_bar_featured').style.display = 'inline-block';
     document.getElementById('top_bar_game').style.display = 'inline-block';
