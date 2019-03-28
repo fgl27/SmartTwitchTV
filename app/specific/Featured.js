@@ -187,7 +187,10 @@ function Featured_loadDataSuccessFinish() {
                 Featured_loadDataPrepare();
                 Featured_loadDataReplace();
                 return;
-            } else Featured_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(Featured_cursorX, Featured_cursorY, Main_ColoumnsCountVideo, Featured_itemsCount);
+                Featured_emptyCellVector = [];
+            }
         }
         Featured_loadingData = false;
     });

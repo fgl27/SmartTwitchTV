@@ -195,6 +195,7 @@ function UserChannels_loadDataSuccessFinish() {
             Main_FirstLoad = false;
         } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
+        Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
     });
 }
 

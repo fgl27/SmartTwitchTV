@@ -380,6 +380,10 @@
             text-shadow: #000000 0 0 4px, #000000 0 0 4px, #000000 0 0 3px;
         }
 
+        div.stream_info_user {
+            font-size: 70%;
+        }
+
         div.stream_info {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -685,13 +689,34 @@
         .strokicon {
             font-size: 90%;
             color: #FFFFFF;
-            text-shadow: #000000 0 0 8.7px, #000000 0 0 8.7px, #000000 0 0 7px;
-        }
-
-        .strokicongame {
-            font-size: 90%;
-            color: #FFFFFF;
-            text-shadow: #000000 0 0 2.7px, #000000 0 0 2.7px, #000000 0 0 2px;
+            text-shadow: 1px 0 0 #000000,
+                1px -1px 0 #000000,
+                1px 1px 0 #000000,
+                0 1px 0 #000000,
+                -1px 0 0 #000000,
+                -1px 1px 0 #000000,
+                -1px -1px 0 #000000,
+                0 -1px 0 #000000,
+                0 2px 0 #777777,
+                0 3px 0 #666666,
+                0 4px 0 #555555,
+                0 6px 0 #000000,
+                2px -1px 0 #000000,
+                2px -2px 0 #000000,
+                2px -3px 0 #000000,
+                -2px -1px 0 #000000,
+                -2px -2px 0 #000000,
+                -2px -3px 0 #000000,
+                2px 2px 0 #000000,
+                2px 3px 0 #000000,
+                2px 4px 0 #000000,
+                2px 5px 0 #000000,
+                2px 6px 0 #000000,
+                -2px 2px 0 #000000,
+                -2px 3px 0 #000000,
+                -2px 4px 0 #000000,
+                -2px 5px 0 #000000,
+                -2px 6px 0 #000000;
         }
 
         .strokedextramini {
@@ -1383,7 +1408,7 @@
                 <div id="scene2_pannel_3" class="playbotton" style="z-order:5; width: 17%;">
                     <div id="game_icon" style="vertical-align: middle; display: inline-block; overflow: hidden; max-height: 43px;">
                         <div style="display:flex; font-size: 185%; transform: translate(0,3%);">
-                            <i class="icon-gamepad strokicongame"></i>
+                            <i class="icon-gamepad strokicon"></i>
                         </div>
                     </div>
                     <div id="scene2_game_text" class="strokedextramini playbottontext"></div>

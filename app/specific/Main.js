@@ -79,7 +79,7 @@ var Main_updateclockId;
 var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods;
-
+var Main_addFocusVideoOffset = 0;
 var Main_Is4k = false;
 var Main_FirstRun = true;
 
@@ -858,7 +858,7 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
         if (!y) Main_ScrollTable(idArray[10], screen_size * 7);
         else if (Main_ThumbNull((y + 1), 0, idArray[0])) {
             Main_ScrollTable(idArray[10],
-                (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + (screen_size * 33.5));
+                (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + (screen_size * (33 + Main_addFocusVideoOffset)));
         }
 
     } else Main_handleKeyUp();
@@ -871,7 +871,7 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
         var screen_size = screen.height / 100;
         if (y) {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + (screen_size * 51.5));
+                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + (screen_size * 51));
         } else {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), (screen_size * 3.0625));
         }
@@ -977,7 +977,6 @@ function Main_openVod() {
 
 function Main_ScrollTable(id, position) {
     document.getElementById(id).style.top = position + "px";
-
     window.setTimeout(Main_handleKeyUp, 10);
 }
 

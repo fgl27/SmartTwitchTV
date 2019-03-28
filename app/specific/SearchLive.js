@@ -189,7 +189,10 @@ function SearchLive_loadDataSuccessFinish() {
                 SearchLive_loadDataPrepare();
                 SearchLive_loadDataReplace();
                 return;
-            } else SearchLive_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
+                SearchLive_emptyCellVector = [];
+            }
         }
         SearchLive_loadingData = false;
     });

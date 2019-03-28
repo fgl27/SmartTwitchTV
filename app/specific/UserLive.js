@@ -258,7 +258,10 @@ function UserLive_loadDataSuccessFinish() {
                 UserLive_loadDataPrepare();
                 UserLive_loadChannelsReplace();
                 return;
-            } else UserLive_emptyCellVector = [];
+            } else {
+                Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
+                UserLive_emptyCellVector = [];
+            }
         }
         UserLive_loadingData = false;
     });
