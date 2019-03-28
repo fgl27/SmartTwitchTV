@@ -16,7 +16,7 @@ function en_USLang() {
     STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
     STR_SWITCH = "Switch screen";
     STR_SWITCH_USER = "Switch user screen";
-    STR_SWITCH_VOD = "Switch Past Broadcast or Highlight";
+    STR_SWITCH_VOD = "Switch: Past Broadcast or Highlight";
     STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all)";
     STR_GO_TO = "Go to ";
     STR_USER = "User ";
@@ -205,7 +205,7 @@ function en_USLang() {
     STR_TIME = ": Most recent";
     STR_VIWES = ": Most views";
     STR_NOKEY_VIDEO_WARN = "Set a authentication key to be able to see fallowed videos";
-    STR_SWITCH_TYPE = "Switch Type (Most recent or views)";
+    STR_SWITCH_TYPE = "Switch: Most recent or views";
     STR_ENABLE = "Enable";
     STR_DISABLE = "Disable";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed willing playing, restoring playback";

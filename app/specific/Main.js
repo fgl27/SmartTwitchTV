@@ -222,6 +222,7 @@ function Main_initWindows() {
             Vod_highlight = Main_getItemBool('Vod_highlight', false);
             ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
             AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
+            UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
 
             Vod_periodNumber = Main_getItemInt('vod_periodNumber', 2);
             AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
@@ -397,7 +398,8 @@ function Main_Scrollbar(y, coloumns, total) {
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
         // min screen_size max screen.height - (screen_size * 3)
         var needExtraSpace = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
-            Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod);
+            Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod ||
+            Main_values.Main_Go === Main_UserVod);
         var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
         Main_ScrollbarElement.style.top = nextPositon + "px";
 
