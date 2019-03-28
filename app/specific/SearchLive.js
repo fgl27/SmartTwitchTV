@@ -20,6 +20,7 @@ var SearchLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', '
 //Variable initialization end
 
 function SearchLive_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_SearchLive;
     Main_values.Search_isSearching = true;
     Main_cleanTopLabel();
@@ -30,6 +31,7 @@ function SearchLive_init() {
         Main_YRst(SearchLive_cursorY);
         Main_ShowElement(SearchLive_ids[10]);
         Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
+        SearchLive_addFocus();
         Main_SaveValues();
     } else SearchLive_StartLoad();
 }
@@ -289,6 +291,7 @@ function SearchLive_addFocus() {
         SearchLive_loadDataPrepare();
         SearchLive_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) SearchLive_removeFocus();
 }
 
 function SearchLive_removeFocus() {
@@ -305,11 +308,8 @@ function SearchLive_handleKeyDown(event) {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                SearchLive_exit();
-                Main_values.Search_isSearching = false;
-                Main_SwitchScreen();
+                SearchLive_removeFocus();
+                Main_CenterLablesStart(SearchLive_handleKeyDown);
             }
             break;
         case KEY_LEFT:
