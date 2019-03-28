@@ -15,6 +15,7 @@ var Vod_emptyContent = false;
 var Vod_itemsCountCheck = false;
 var Vod_period = 'week';
 var Vod_periodNumber = 2;
+var Vod_TopRowCreated = false;
 
 var Vod_ids = ['v_thumbdiv', 'v_img', 'v_infodiv', 'v_title', 'v_streamon', 'v_duration', 'v_viwers', 'v_quality', 'v_cell', 'vempty_', 'vod_scroll', 'v_game'];
 var Vod_status = false;
@@ -63,6 +64,7 @@ function Vod_StartLoad() {
     Vod_status = false;
     Main_empty('stream_table_vod');
     Vod_itemsCountOffset = 0;
+    Vod_TopRowCreated = false;
     Vod_MaxOffset = 0;
     Vod_idObject = {};
     Vod_emptyCellVector = [];
@@ -153,6 +155,25 @@ function Vod_loadDataSuccess(responseText) {
 
     var coloumn_id, row_id, row, video, id,
         cursor = 0;
+
+    // Make the game video/clip/fallowing cell
+    if (!Vod_TopRowCreated) {
+        Vod_TopRowCreated = true;
+        row = document.createElement('tr');
+        var thumbfallow;
+        for (i = 0; i < 2; i++) {
+            if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+            else thumbfallow = '<i class="icon-history" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
+            Main_td = document.createElement('td');
+            Main_td.setAttribute('id', Vod_ids[8] + 'y_' + i);
+            Main_td.className = 'stream_cell';
+            Main_td.innerHTML = '<div id="' + Vod_ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + Vod_ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            row.appendChild(Main_td);
+        }
+        document.getElementById("stream_table_vod").appendChild(row);
+    }
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -344,6 +365,10 @@ function Vod_loadDataSuccessReplace(responseText) {
 }
 
 function Vod_addFocus() {
+    if (Vod_cursorY < 0) {
+        Vod_addFocusFallow();
+        return;
+    }
     Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
     Vod_AnimateThumb(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -356,8 +381,20 @@ function Vod_addFocus() {
 
 function Vod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    Main_ShowElement(Vod_ids[1] + Vod_cursorY + '_' + Vod_cursorX);
-    Main_removeFocus(Vod_cursorY + '_' + Vod_cursorX, Vod_ids);
+    if (Vod_cursorY > -1) {
+        Main_ShowElement(Vod_ids[1] + Vod_cursorY + '_' + Vod_cursorX);
+        Main_removeFocus(Vod_cursorY + '_' + Vod_cursorX, Vod_ids);
+    } else Vod_removeFocusFallow();
+}
+
+function Vod_addFocusFallow() {
+    var i = Vod_cursorX > 1 ? 1 : Vod_cursorX;
+    Main_AddClass(Vod_ids[0] + 'y_' + i, Main_classThumb);
+}
+
+function Vod_removeFocusFallow() {
+    var i = Vod_cursorX > 1 ? 1 : Vod_cursorX;
+    Main_RemoveClass(Vod_ids[0] + 'y_' + i, Main_classThumb);
 }
 
 function Vod_AnimateThumb(idArray, id) {
@@ -397,7 +434,18 @@ function Vod_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX - 1), Vod_ids[0])) {
+            if (Vod_cursorY === -1) {
+                Vod_removeFocusFallow();
+                Vod_cursorX--;
+                if (Vod_cursorX < 0) Vod_cursorX = 1;
+                Vod_addFocusFallow();
+            } else if (!Vod_cursorY && !Vod_cursorX) {
+                Vod_removeFocus();
+                Vod_removeFocusFallow();
+                Vod_cursorY = -1;
+                Vod_cursorX = 1;
+                Vod_addFocusFallow();
+            } else if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX - 1), Vod_ids[0])) {
                 Vod_removeFocus();
                 Vod_cursorX--;
                 Vod_addFocus();
@@ -414,7 +462,17 @@ function Vod_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX + 1), Vod_ids[0])) {
+            if (Vod_cursorY === -1) {
+                Vod_removeFocusFallow();
+                Vod_cursorX++;
+                if (Vod_cursorX > 1) {
+                    Vod_cursorX = 0;
+                    if (!Vod_emptyContent) {
+                        Vod_cursorY = 0;
+                        Vod_addFocus();
+                    } else Vod_addFocusFallow();
+                } else Vod_addFocusFallow();
+            } else if (Main_ThumbNull((Vod_cursorY), (Vod_cursorX + 1), Vod_ids[0])) {
                 Vod_removeFocus();
                 Vod_cursorX++;
                 Vod_addFocus();
@@ -426,25 +484,42 @@ function Vod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((Vod_cursorY - 1), (Vod_cursorX - i), Vod_ids[0])) {
-                    Vod_removeFocus();
-                    Vod_cursorY--;
-                    Vod_cursorX = Vod_cursorX - i;
-                    Vod_addFocus();
-                    break;
+            if (Vod_cursorY === -1 && !Vod_emptyContent) {
+                Vod_cursorY = 0;
+                Vod_removeFocusFallow();
+                Vod_addFocus();
+            } else if (!Vod_cursorY) {
+                Vod_removeFocus();
+                Vod_cursorY = -1;
+                Vod_addFocusFallow();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((Vod_cursorY - 1), (Vod_cursorX - i), Vod_ids[0])) {
+                        Vod_removeFocus();
+                        Vod_cursorY--;
+                        Vod_cursorX = Vod_cursorX - i;
+                        Vod_addFocus();
+                        break;
+                    }
                 }
             }
             break;
         case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((Vod_cursorY + 1), (Vod_cursorX - i), Vod_ids[0])) {
-                    Vod_removeFocus();
-                    Vod_cursorY++;
-                    Vod_cursorX = Vod_cursorX - i;
-                    Vod_addFocus();
-                    break;
+            if (Vod_cursorY === -1 && !Vod_emptyContent) {
+                Vod_cursorY = 0;
+                Vod_removeFocusFallow();
+                Vod_addFocus();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((Vod_cursorY + 1), (Vod_cursorX - i), Vod_ids[0])) {
+                        Vod_removeFocus();
+                        Vod_cursorY++;
+                        Vod_cursorX = Vod_cursorX - i;
+                        Vod_addFocus();
+                        break;
+                    }
                 }
+
             }
             break;
         case KEY_CHANNELUP:
@@ -469,7 +544,17 @@ function Vod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_OpenVod(Vod_cursorY + '_' + Vod_cursorX, Vod_ids, Vod_handleKeyDown);
+            if (Vod_cursorY === -1) {
+                if (Vod_cursorX === 0) {
+                    Vod_highlight = !Vod_highlight;
+                    Main_setItem('Vod_highlight', Vod_highlight ? 'true' : 'false');
+                    Vod_StartLoad();
+                } else {
+                    Vod_periodNumber++;
+                    if (Vod_periodNumber > 4) Vod_periodNumber = 1;
+                    Vod_StartLoad();
+                }
+            } else Main_OpenVod(Vod_cursorY + '_' + Vod_cursorX, Vod_ids, Vod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Vod_handleKeyDown);
