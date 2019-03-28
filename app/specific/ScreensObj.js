@@ -154,14 +154,11 @@ function ScreensObj_InitClip() {
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-            Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_CLIP + ' (C)');
-            Main_ShowElement('label_extra');
         },
         label_exit: function() {
             Main_RestoreTopLabel();
             Main_RemoveClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-            Main_HideElement('label_extra');
         },
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -235,7 +232,8 @@ function ScreensObj_InitChannelClip() {
             Main_cleanTopLabel();
             this.SetPeriod();
             Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-            Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
+            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_ShowElement('label_switch');
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
@@ -320,9 +318,8 @@ function ScreensObj_InitAGameClip() {
             Main_values.Main_CenterLablesVectorPos = 3;
             this.SetPeriod();
             Main_AddClass('top_bar_game', 'icon_center_focus');
-            Main_IconLoad('label_extra', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_IconLoad('label_switch', 'icon-history', STR_SWITCH_CLIP + STR_KEY_UP_DOWN);
-            Main_ShowElement('label_extra');
+            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_ShowElement('label_switch');
             if (this.gameSelected !== Main_values.Main_gameSelected) this.status = false;
             this.gameSelected = Main_values.Main_gameSelected;
         },
@@ -330,7 +327,7 @@ function ScreensObj_InitAGameClip() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
             Main_innerHTML('top_bar_game', STR_GAMES);
             Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-            Main_HideElement('label_extra');
+            Main_HideElement('label_switch');
         },
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -510,8 +507,8 @@ function ScreensObj_InitUserGames() {
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 1;
-            Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + STR_GUIDE);
+            Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_ShowElement('label_switch');
             Main_AddClass('top_bar_user', 'icon_center_focus');
 
             if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
@@ -524,6 +521,7 @@ function ScreensObj_InitUserGames() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
             Main_textContent('top_bar_user', STR_USER);
+            Main_HideElement('label_switch');
             Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
         },
         key_refresh: function() {

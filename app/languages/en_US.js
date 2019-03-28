@@ -6,7 +6,7 @@ function en_USLang() {
     document.getElementById("side_panel").style.width = "17%";
 
     //Bellow are variable to translate
-    STR_REFRESH = "Refresh and back to top";
+    STR_REFRESH = "Refresh:";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
@@ -34,7 +34,7 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
     STR_CHANNELS = "Channels";
     STR_CHANNEL = "Channel";
-    STR_GOBACK = "Back to previously screen (Return)";
+    STR_GOBACK = "Back to previously screen: Back key twice";
     STR_IS_OFFLINE = " has ended";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
     STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
@@ -171,7 +171,7 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
     STR_FALLOW_GAMES = "Followed Games";
     STR_USER_GAMES_CHANGE = "Change between";
-    STR_GUIDE = " (2)";
+    STR_GUIDE = " Back key then Enter";
     STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     STR_STARTED = "Started ";
@@ -214,7 +214,7 @@ function en_USLang() {
     STR_CHAT_FONT = "Chat font size";
     STR_CHAT_FONT_SUMARRY = "Change the chat lines font size, applies to text and emotes";
     STR_VIDEOS_ANIMATION = "Videos animated thumbnails";
-    STR_SIDE_PANEL = "Side panel";
+    STR_SIDE_PANEL = "Side panel: Back key twice";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
     STR_FORBIDDEN = "Forbidden content, this Live must be for Prime only subscribers or lock to Twitch official app only";

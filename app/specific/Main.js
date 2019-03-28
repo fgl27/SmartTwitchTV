@@ -252,7 +252,7 @@ function Main_SetStringsMain(isStarting) {
     Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left',
         isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
 
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
@@ -616,9 +616,10 @@ function Main_ExitCurrent(ExitCurrent) {
 }
 
 function Main_RestoreTopLabel() {
+    console.log('Main_RestoreTopLabel');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL_KEY);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_HideElement('label_switch');
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', STR_USER);
@@ -630,6 +631,7 @@ function Main_RestoreTopLabel() {
 
 function Main_cleanTopLabel() {
     Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_switch');
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');

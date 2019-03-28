@@ -34,7 +34,8 @@ function ChannelVod_init() {
     if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (Main_values.Main_selectedChannel !== ChannelVod_lastselectedChannel) ChannelVod_status = false;
     Main_cleanTopLabel();
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_VOD + STR_KEY_UP_DOWN);
+    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_switch');
     Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
     document.body.addEventListener("keydown", ChannelVod_handleKeyDown, false);
     if (ChannelVod_status) {
