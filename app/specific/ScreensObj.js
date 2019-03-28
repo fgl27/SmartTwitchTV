@@ -50,6 +50,8 @@ var Base_obj = {
 var Base_Clip_obj = {
     ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
+    HasSwitches: true,
+    TopRowCreated: false,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
@@ -59,6 +61,18 @@ var Base_Clip_obj = {
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_CLIPS;
+    },
+    key_play: function() {
+        if (this.posY === -1) this.key_yellow();
+        else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    key_yellow: function() {
+        if (!this.loadingData) {
+            this.periodPos++;
+            if (this.periodPos > 4) this.periodPos = 1;
+            this.SetPeriod();
+            Screens_StartLoad();
+        }
     },
     addCell: function(cell) {
         if (!inUseObj.idObject[cell.tracking_id]) {
@@ -169,17 +183,6 @@ function ScreensObj_InitClip() {
             Screens_exit();
             Main_SwitchScreen();
         },
-        key_play: function() {
-            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        },
-        key_yellow: function() {
-            if (!this.loadingData) {
-                this.periodPos++;
-                if (this.periodPos > 4) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
-        },
         key_green: function() {
             Screens_exit();
             Main_GoLive();
@@ -260,10 +263,6 @@ function ScreensObj_InitChannelClip() {
                 Screens_StartLoad();
             }
         },
-        key_play: function() {
-            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        },
-        key_yellow: Main_showControlsDialog,
         key_green: function() {
             Screens_exit();
             Main_GoLive();
@@ -356,9 +355,6 @@ function ScreensObj_InitAGameClip() {
                 this.SetPeriod();
                 Screens_StartLoad();
             }
-        },
-        key_play: function() {
-            Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         key_yellow: Main_showControlsDialog,
         key_green: function() {
