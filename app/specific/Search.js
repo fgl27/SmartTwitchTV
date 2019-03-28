@@ -6,10 +6,11 @@ var Search_keyBoardOn = false;
 
 function Search_init() {
     Main_HideWarningDialog();
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_HideElement('label_refresh');
+    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_switch');
     Main_textContent('top_bar_user', STR_SEARCH);
     document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('label_switch').style.display = 'none';
     document.getElementById('top_bar_live').style.display = 'none';
     document.getElementById('top_bar_featured').style.display = 'none';
     document.getElementById('top_bar_game').style.display = 'none';
@@ -32,8 +33,8 @@ function Search_exit() {
     document.getElementById("top_lables").style.marginLeft = '18.5%';
     Main_textContent('top_bar_user', STR_USER);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    document.getElementById('label_switch').style.display = 'block';
+    Main_HideElement('label_switch');
+    Main_ShowElement('label_refresh');
     document.getElementById('top_bar_live').style.display = 'inline-block';
     document.getElementById('top_bar_featured').style.display = 'inline-block';
     document.getElementById('top_bar_game').style.display = 'inline-block';

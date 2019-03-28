@@ -318,7 +318,7 @@ function Screens_KeyUpDown(y) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
         inUseObj.posY = -1;
         Screens_addFocusFallow();
-    } else if (inUseObj.HasSwitches && !(inUseObj.posY + y)) {
+    } else if (inUseObj.HasSwitches && (inUseObj.posY + y) === 0) {
         inUseObj.posY = 0;
         Screens_addFocus();
         Screens_removeFocusFallow();
@@ -333,7 +333,7 @@ function Screens_KeyUpDown(y) {
 }
 
 function Screens_KeyLeftRight(y, x) {
-    if (inUseObj.HasSwitches && !(inUseObj.posY + y)) {
+    if (inUseObj.HasSwitches && (inUseObj.posY + y) === 0) {
         inUseObj.posY = 0;
         Screens_addFocus();
         Screens_removeFocusFallow();

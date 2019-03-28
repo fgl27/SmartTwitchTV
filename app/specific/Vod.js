@@ -31,10 +31,6 @@ function Vod_init() {
     Main_AddClass('top_bar_vod', 'icon_center_focus');
     document.body.addEventListener("keydown", Vod_handleKeyDown, false);
 
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_SWITCH_VOD + STR_GUIDE);
-    Main_IconLoad('label_extra', 'icon-history', STR_SWITCH_CLIP + ' (C)');
-    Main_ShowElement('label_extra');
-
     if (Vod_status) {
         Main_YRst(Vod_cursorY);
         Main_ShowElement(Vod_ids[10]);
@@ -50,8 +46,6 @@ function Vod_exit() {
     document.body.removeEventListener("keydown", Vod_handleKeyDown);
     Main_RemoveClass('top_bar_vod', 'icon_center_focus');
     Main_textContent('top_bar_vod', STR_VIDEOS);
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_HideElement('label_extra');
     Main_HideElement(Vod_ids[10]);
 }
 

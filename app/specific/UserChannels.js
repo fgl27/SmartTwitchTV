@@ -21,7 +21,8 @@ function UserChannels_init() {
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_UserChannels;
     Main_values.isLastSChannels = false;
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH_USER);
+    Main_IconLoad('label_switch', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_switch');
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
     document.body.addEventListener("keydown", UserChannels_handleKeyDown, false);
@@ -39,7 +40,7 @@ function UserChannels_exit() {
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_HideElement('label_switch');
     Main_HideElement(UserChannels_ids[6]);
 }
 
