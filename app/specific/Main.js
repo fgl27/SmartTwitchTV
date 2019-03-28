@@ -616,7 +616,6 @@ function Main_ExitCurrent(ExitCurrent) {
 }
 
 function Main_RestoreTopLabel() {
-    console.log('Main_RestoreTopLabel');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_HideElement('label_switch');
@@ -1074,7 +1073,6 @@ function Main_SidePannelKeyEnter() {
     else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_Vod);
     else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Clip);
     Main_SidePannelHide();
-    Main_CenterLablesClean();
 }
 
 function Main_SidePannelGo(GoTo) {
@@ -1139,9 +1137,13 @@ function Main_CenterLables(event) {
     if (Main_FirstLoad || inUseObj.FirstLoad || Main_CantClick()) return;
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
+            if (Main_isControlsDialogShown()) {
+                Main_CenterLablesChange();
+                Main_HideControlsDialog();
+            } else if (Main_isAboutDialogShown()) {
+                Main_CenterLablesChange();
+                Main_HideAboutDialog();
+            } else {
                 if (Main_values.Main_Go === Main_aGame) {
                     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
                     if (Main_values.Games_return) {
@@ -1203,7 +1205,10 @@ function Main_CenterLables(event) {
                     ChannelVod_exit();
                     Main_CenterLablesClean();
                     Main_SwitchScreen();
-                } else Main_SidePannelStart(Main_CenterLables);
+                } else {
+                    Main_CenterLablesClean();
+                    Main_SidePannelStart(Main_CenterLables);
+                }
             }
             break;
         case KEY_RIGHT:
