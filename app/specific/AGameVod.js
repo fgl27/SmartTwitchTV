@@ -15,6 +15,7 @@ var AGameVod_emptyContent = false;
 var AGameVod_itemsCountCheck = false;
 var AGameVod_period = 'week';
 var AGameVod_periodNumber = 2;
+var AGameVod_TopRowCreated = false;
 
 var AGameVod_ids = ['agv_thumbdiv', 'agv_img', 'agv_infodiv', 'agv_title', 'agv_streamon', 'agv_duration', 'agv_viwers', 'agv_quality', 'agv_cell', 'gvempty_', 'a_games_vod_scroll', 'agv_game'];
 var AGameVod_status = false;
@@ -65,6 +66,7 @@ function AGameVod_StartLoad() {
     AGameVod_status = false;
     Main_empty('stream_table_a_game_vod');
     AGameVod_itemsCountOffset = 0;
+    AGameVod_TopRowCreated = false;
     AGameVod_MaxOffset = 0;
     AGameVod_idObject = {};
     AGameVod_emptyCellVector = [];
@@ -156,6 +158,26 @@ function AGameVod_loadDataSuccess(responseText) {
 
     var coloumn_id, row_id, row, video, id,
         cursor = 0;
+
+    // Make the game video/clip/fallowing cell
+    if (!AGameVod_TopRowCreated) {
+        AGameVod_TopRowCreated = true;
+        row = document.createElement('tr');
+        var thumbfallow;
+        for (i = 0; i < 2; i++) {
+            if (!i) thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+            else thumbfallow = '<i class="icon-history" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
+            Main_td = document.createElement('td');
+            Main_td.setAttribute('id', AGameVod_ids[8] + 'y_' + i);
+            Main_td.className = 'stream_cell';
+            Main_td.innerHTML = '<div id="' + AGameVod_ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + AGameVod_ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            row.appendChild(Main_td);
+        }
+        document.getElementById("stream_table_a_game_vod").appendChild(row);
+    }
+
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -306,6 +328,10 @@ function AGameVod_loadDataSuccessReplace(responseText) {
 }
 
 function AGameVod_addFocus() {
+    if (AGameVod_cursorY < 0) {
+        AGameVod_addFocusFallow();
+        return;
+    }
     Main_addFocusVideo(AGameVod_cursorY, AGameVod_cursorX, AGameVod_ids, Main_ColoumnsCountVideo, AGameVod_itemsCount);
 
     Vod_AnimateThumb(AGameVod_ids, AGameVod_cursorY + '_' + AGameVod_cursorX);
@@ -320,8 +346,20 @@ function AGameVod_addFocus() {
 
 function AGameVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    Main_ShowElement(AGameVod_ids[1] + AGameVod_cursorY + '_' + AGameVod_cursorX);
-    Main_removeFocus(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids);
+    if (AGameVod_cursorY > -1) {
+        Main_ShowElement(AGameVod_ids[1] + AGameVod_cursorY + '_' + AGameVod_cursorX);
+        Main_removeFocus(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids);
+    } else AGameVod_removeFocusFallow();
+}
+
+function AGameVod_addFocusFallow() {
+    var i = AGameVod_cursorX > 1 ? 1 : AGameVod_cursorX;
+    Main_AddClass(AGameVod_ids[0] + 'y_' + i, Main_classThumb);
+}
+
+function AGameVod_removeFocusFallow() {
+    var i = AGameVod_cursorX > 1 ? 1 : AGameVod_cursorX;
+    Main_RemoveClass(AGameVod_ids[0] + 'y_' + i, Main_classThumb);
 }
 
 function AGameVod_handleKeyDown(event) {
@@ -340,7 +378,18 @@ function AGameVod_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((AGameVod_cursorY), (AGameVod_cursorX - 1), AGameVod_ids[0])) {
+            if (AGameVod_cursorY === -1) {
+                AGameVod_removeFocusFallow();
+                AGameVod_cursorX--;
+                if (AGameVod_cursorX < 0) AGameVod_cursorX = 1;
+                AGameVod_addFocusFallow();
+            } else if (!AGameVod_cursorY && !AGameVod_cursorX) {
+                AGameVod_removeFocus();
+                AGameVod_removeFocusFallow();
+                AGameVod_cursorY = -1;
+                AGameVod_cursorX = 1;
+                AGameVod_addFocusFallow();
+            } else if (Main_ThumbNull((AGameVod_cursorY), (AGameVod_cursorX - 1), AGameVod_ids[0])) {
                 AGameVod_removeFocus();
                 AGameVod_cursorX--;
                 AGameVod_addFocus();
@@ -357,7 +406,17 @@ function AGameVod_handleKeyDown(event) {
             }
             break;
         case KEY_RIGHT:
-            if (Main_ThumbNull((AGameVod_cursorY), (AGameVod_cursorX + 1), AGameVod_ids[0])) {
+            if (AGameVod_cursorY === -1) {
+                AGameVod_removeFocusFallow();
+                AGameVod_cursorX++;
+                if (AGameVod_cursorX > 1) {
+                    AGameVod_cursorX = 0;
+                    if (!AGameVod_emptyContent) {
+                        AGameVod_cursorY = 0;
+                        AGameVod_addFocus();
+                    } else AGameVod_addFocusFallow();
+                } else AGameVod_addFocusFallow();
+            } else if (Main_ThumbNull((AGameVod_cursorY), (AGameVod_cursorX + 1), AGameVod_ids[0])) {
                 AGameVod_removeFocus();
                 AGameVod_cursorX++;
                 AGameVod_addFocus();
@@ -369,25 +428,42 @@ function AGameVod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((AGameVod_cursorY - 1), (AGameVod_cursorX - i), AGameVod_ids[0])) {
-                    AGameVod_removeFocus();
-                    AGameVod_cursorY--;
-                    AGameVod_cursorX = AGameVod_cursorX - i;
-                    AGameVod_addFocus();
-                    break;
+            if (AGameVod_cursorY === -1 && !AGameVod_emptyContent) {
+                AGameVod_cursorY = 0;
+                AGameVod_removeFocusFallow();
+                AGameVod_addFocus();
+            } else if (!AGameVod_cursorY) {
+                AGameVod_removeFocus();
+                AGameVod_cursorY = -1;
+                AGameVod_addFocusFallow();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((AGameVod_cursorY - 1), (AGameVod_cursorX - i), AGameVod_ids[0])) {
+                        AGameVod_removeFocus();
+                        AGameVod_cursorY--;
+                        AGameVod_cursorX = AGameVod_cursorX - i;
+                        AGameVod_addFocus();
+                        break;
+                    }
                 }
             }
             break;
         case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((AGameVod_cursorY + 1), (AGameVod_cursorX - i), AGameVod_ids[0])) {
-                    AGameVod_removeFocus();
-                    AGameVod_cursorY++;
-                    AGameVod_cursorX = AGameVod_cursorX - i;
-                    AGameVod_addFocus();
-                    break;
+            if (AGameVod_cursorY === -1 && !AGameVod_emptyContent) {
+                AGameVod_cursorY = 0;
+                AGameVod_removeFocusFallow();
+                AGameVod_addFocus();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((AGameVod_cursorY + 1), (AGameVod_cursorX - i), AGameVod_ids[0])) {
+                        AGameVod_removeFocus();
+                        AGameVod_cursorY++;
+                        AGameVod_cursorX = AGameVod_cursorX - i;
+                        AGameVod_addFocus();
+                        break;
+                    }
                 }
+
             }
             break;
         case KEY_CHANNELUP:
@@ -410,7 +486,17 @@ function AGameVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_OpenVod(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids, AGameVod_handleKeyDown);
+            if (AGameVod_cursorY === -1) {
+                if (AGameVod_cursorX === 0) {
+                    AGameVod_highlight = !AGameVod_highlight;
+                    Main_setItem('AGameVod_highlight', AGameVod_highlight ? 'true' : 'false');
+                    AGameVod_StartLoad();
+                } else {
+                    AGameVod_periodNumber++;
+                    if (AGameVod_periodNumber > 4) AGameVod_periodNumber = 1;
+                    AGameVod_StartLoad();
+                }
+            } else Main_OpenVod(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids, AGameVod_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(AGameVod_handleKeyDown);
