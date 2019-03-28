@@ -1200,6 +1200,14 @@ function Main_CenterLables(event) {
                     ChannelVod_exit();
                     Main_CenterLablesClean();
                     Main_SwitchScreen();
+                } else if (Main_values.Main_Go === Main_SearchLive) {
+
+                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
+                SearchLive_exit();
+                Main_values.Search_isSearching = false;
+                    Main_CenterLablesClean();
+                    Main_SwitchScreen();
                 } else {
                     Main_CenterLablesClean();
                     Main_SidePannelStart(Main_CenterLables);
@@ -1208,7 +1216,8 @@ function Main_CenterLables(event) {
             break;
         case KEY_RIGHT:
             if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
-                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip) break;
+                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
+                Main_values.Main_Go === Main_SearchLive) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos++;
             if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
@@ -1217,7 +1226,8 @@ function Main_CenterLables(event) {
             break;
         case KEY_LEFT:
             if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
-                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip) break;
+                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
+                Main_values.Main_Go === Main_SearchLive) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos--;
             if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
@@ -1276,6 +1286,7 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else if (Main_values.Main_Go === Main_aGame) document.body.removeEventListener("keydown", AGame_handleKeyDown);
     else if (Main_values.Main_Go === Main_Featured) document.body.removeEventListener("keydown", Featured_handleKeyDown);
+    else if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelVod) document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
@@ -1316,6 +1327,7 @@ function Main_ReloadScreen() {
     else if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_StartLoad();
+    else if (Main_values.Main_Go === Main_SearchLive) SearchLive_StartLoad();
     else if (Main_values.Main_Go === Main_games) {
         inUseObj = Game;
         Screens_StartLoad();
