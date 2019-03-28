@@ -16,7 +16,7 @@ function en_USLang() {
     STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
     STR_SWITCH = "Switch screen";
     STR_SWITCH_USER = "Switch user screen";
-    STR_SWITCH_VOD = "Switch Past Broadcast and Highlight";
+    STR_SWITCH_VOD = "Switch Past Broadcast or Highlight";
     STR_SWITCH_CLIP = "Switch Period (24h, 7d, 30d, all)";
     STR_GO_TO = "Go to ";
     STR_USER = "User ";

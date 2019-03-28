@@ -396,9 +396,9 @@ function Main_Scrollbar(y, coloumns, total) {
     //if show the scroll, else reset it's position and hide by setting it's color equal to parent background
     if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
         // min screen_size max screen.height - (screen_size * 3)
-        var isagame = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
-            Main_values.Main_Go === Main_AGameClip);
-        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (isagame ? 1.8 : 1)));
+        var needExtraSpace = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
+            Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod);
+        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
         Main_ScrollbarElement.style.top = nextPositon + "px";
 
         if (Main_ScrollbarIsHide) {
