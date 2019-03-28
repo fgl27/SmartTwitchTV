@@ -375,7 +375,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
-                    Main_ready(PlayClip_shutdownStream);
+                    PlayClip_shutdownStream();
                 } else {
                     Play_showExitDialog();
                 }
@@ -494,7 +494,7 @@ function PlayClip_handleKeyDown(e) {
                 else {
                     if (Play_ExitDialogVisible()) {
                         Play_CleanHideExit();
-                        Main_ready(PlayClip_shutdownStream);
+                        PlayClip_shutdownStream();
                     } else {
                         Play_showExitDialog();
                     }
