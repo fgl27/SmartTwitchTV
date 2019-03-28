@@ -15,6 +15,7 @@ var UserVod_emptyContent = false;
 var UserVod_itemsCountCheck = false;
 var UserVod_Type = 'time';
 var UserVod_TypeNumber = 2;
+var UserVod_TopRowCreated = false;
 
 var UserVod_ids = ['uv_thumbdiv', 'uv_img', 'uv_infodiv', 'uv_title', 'uv_streamon', 'uv_duration', 'uv_viwers', 'uv_quality', 'uv_cell', 'uvempty_', 'user_vod_scroll', 'uv_game'];
 var UserVod_status = false;
@@ -61,6 +62,7 @@ function UserVod_StartLoad() {
     UserVod_status = false;
     Main_empty('stream_table_user_vod');
     UserVod_itemsCountOffset = 0;
+    UserVod_TopRowCreated = false;
     UserVod_MaxOffset = 0;
     UserVod_idObject = {};
     UserVod_emptyCellVector = [];
@@ -158,6 +160,21 @@ function UserVod_loadDataSuccess(responseText) {
 
     var coloumn_id, row_id, row, video, id,
         cursor = 0;
+
+    // Make the game video/clip/fallowing cell
+    if (!UserVod_TopRowCreated) {
+        UserVod_TopRowCreated = true;
+        row = document.createElement('tr');
+        var thumbfallow = '<i class="icon-movie-play" style="color: #FFFFFF; font-size: 80%"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_VOD;
+        Main_td = document.createElement('td');
+        Main_td.setAttribute('id', UserVod_ids[8] + 'y_0');
+        Main_td.className = 'stream_cell';
+        Main_td.innerHTML = '<div id="' + UserVod_ids[0] +
+            'y_0" class="stream_thumbnail_channel_vod" ><div id="' + UserVod_ids[3] +
+            'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        row.appendChild(Main_td);
+        document.getElementById("stream_table_user_vod").appendChild(row);
+    }
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -314,6 +331,10 @@ function UserVod_loadDataSuccessReplace(responseText) {
 }
 
 function UserVod_addFocus() {
+    if (UserVod_cursorY < 0) {
+        UserVod_addFocusFallow();
+        return;
+    }
     Main_addFocusVideo(UserVod_cursorY, UserVod_cursorX, UserVod_ids, Main_ColoumnsCountVideo, UserVod_itemsCount);
 
     Vod_AnimateThumb(UserVod_ids, UserVod_cursorY + '_' + UserVod_cursorX);
@@ -327,8 +348,18 @@ function UserVod_addFocus() {
 
 function UserVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    Main_ShowElement(UserVod_ids[1] + UserVod_cursorY + '_' + UserVod_cursorX);
-    Main_removeFocus(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids);
+    if (UserVod_cursorY > -1) {
+        Main_ShowElement(UserVod_ids[1] + UserVod_cursorY + '_' + UserVod_cursorX);
+        Main_removeFocus(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids);
+    } else UserVod_removeFocusFallow();
+}
+
+function UserVod_addFocusFallow() {
+    Main_AddClass(UserVod_ids[0] + 'y_0', Main_classThumb);
+}
+
+function UserVod_removeFocusFallow() {
+    Main_RemoveClass(UserVod_ids[0] + 'y_0', Main_classThumb);
 }
 
 function UserVod_handleKeyDown(event) {
@@ -377,25 +408,42 @@ function UserVod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((UserVod_cursorY - 1), (UserVod_cursorX - i), UserVod_ids[0])) {
-                    UserVod_removeFocus();
-                    UserVod_cursorY--;
-                    UserVod_cursorX = UserVod_cursorX - i;
-                    UserVod_addFocus();
-                    break;
+            if (UserVod_cursorY === -1 && !UserVod_emptyContent) {
+                UserVod_cursorY = 0;
+                UserVod_removeFocusFallow();
+                UserVod_addFocus();
+            } else if (!UserVod_cursorY) {
+                UserVod_removeFocus();
+                UserVod_cursorY = -1;
+                UserVod_addFocusFallow();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((UserVod_cursorY - 1), (UserVod_cursorX - i), UserVod_ids[0])) {
+                        UserVod_removeFocus();
+                        UserVod_cursorY--;
+                        UserVod_cursorX = UserVod_cursorX - i;
+                        UserVod_addFocus();
+                        break;
+                    }
                 }
             }
             break;
         case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((UserVod_cursorY + 1), (UserVod_cursorX - i), UserVod_ids[0])) {
-                    UserVod_removeFocus();
-                    UserVod_cursorY++;
-                    UserVod_cursorX = UserVod_cursorX - i;
-                    UserVod_addFocus();
-                    break;
+            if (UserVod_cursorY === -1 && !UserVod_emptyContent) {
+                UserVod_cursorY = 0;
+                UserVod_removeFocusFallow();
+                UserVod_addFocus();
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((UserVod_cursorY + 1), (UserVod_cursorX - i), UserVod_ids[0])) {
+                        UserVod_removeFocus();
+                        UserVod_cursorY++;
+                        UserVod_cursorX = UserVod_cursorX - i;
+                        UserVod_addFocus();
+                        break;
+                    }
                 }
+
             }
             break;
         case KEY_CHANNELUP:
@@ -418,7 +466,12 @@ function UserVod_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            Main_OpenVod(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids, UserVod_handleKeyDown);
+            if (UserVod_cursorY === -1) {
+                UserVod_highlight = !UserVod_highlight;
+                Main_setItem('UserVod_highlight', UserVod_highlight ? 'true' : 'false');
+                UserVod_StartLoad();
+            } else Main_OpenVod(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids, UserVod_handleKeyDown);
+
             break;
         case KEY_RED:
             Main_SidePannelStart(UserVod_handleKeyDown);
