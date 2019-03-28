@@ -89,35 +89,35 @@ var Play_DefaultjumpTimers = [];
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
-    "top": 52, // Bottom/right 0
-    "left": 75.3,
+    "top": 51.8, // Bottom/right 0
+    "left": 75.1,
     "sizeOffset": [31, 16, 0, 0]
 }, {
     "top": 33, // Middle/right 1
-    "left": 75.3,
+    "left": 75.1,
     "sizeOffset": [12.5, 0, -6.25, 0]
 }, {
-    "top": 0, // Top/right 2
-    "left": 75.3,
+    "top": 0.2, // Top/right 2
+    "left": 75.1,
     "sizeOffset": [0, 0, 0, 0]
 }, {
-    "top": 0, // Top/center 3
+    "top": 0.2, // Top/center 3
     "left": 38.3,
     "sizeOffset": [0, 0, 0, 0]
 }, {
-    "top": 0, // Top/left 4
-    "left": 0,
+    "top": 0.2, // Top/left 4
+    "left": 0.2,
     "sizeOffset": [0, 0, 0, 0]
 }, {
     "top": 33, // Middle/left 5
-    "left": 0,
+    "left": 0.2,
     "sizeOffset": [12.5, 0, -6.25, 0]
 }, {
-    "top": 52, // Bottom/left 6
-    "left": 0,
+    "top": 51.8, // Bottom/left 6
+    "left": 0.2,
     "sizeOffset": [31, 16, 0, 0]
 }, {
-    "top": 52, // Bottom/center 7
+    "top": 51.8, // Bottom/center 7
     "left": 38.3,
     "sizeOffset": [31, 16, 0, 0]
 }];
@@ -143,7 +143,7 @@ var Play_ChatSizeVal = [{
     "percentage": '50%',
     "dialogTop": 50
 }, {
-    "containerHeight": 100, // 100%
+    "containerHeight": 99.6, // 100%
     "percentage": '100%',
     "dialogTop": 115
 }];
@@ -583,7 +583,7 @@ function Play_onPlayer() {
     Play_PlayerCheckTimer = 4;
     Play_PlayerCheckQualityChanged = false;
     window.clearInterval(Play_streamCheck);
-    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+    //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {
@@ -1034,12 +1034,12 @@ function Play_ChatPosition() {
     if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && PlayClip_HasVOD && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
     else if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
 
-    Play_chat_container.style.top = ((bool ? 0 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
+    Play_chat_container.style.top = ((bool ? 0.2 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
 
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
-    if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
+    //if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     Main_setItem('ChatPositionsValue', Play_ChatPositions);
 }
 
@@ -1540,9 +1540,8 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_LEFT:
                 if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
-                    Play_ChatBackground -= 0.05;
-                    if (Play_ChatBackground < 0.05) Play_ChatBackground = 0.05;
-                    Play_ChatBackgroundChange(true);
+                    Play_ChatPositions++;
+                    Play_ChatPosition();
                 } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
                     Play_Panelcounter++;
@@ -1561,10 +1560,15 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_RIGHT:
-                if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
-                    Play_ChatBackground += 0.05;
-                    if (Play_ChatBackground > 1.05) Play_ChatBackground = 1.05;
-                    Play_ChatBackgroundChange(true);
+                if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                        Play_showChat();
+                        Play_ChatEnable = true;
+                    } else {
+                        Play_hideChat();
+                        Play_ChatEnable = false;
+                    }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 } else if (Play_isPanelShown()) {
                     Play_IconsRemoveFocus();
                     Play_Panelcounter--;
@@ -1591,11 +1595,12 @@ function Play_handleKeyDown(e) {
                     Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isFullScreen && Play_isChatShown()) {
-                    if (Play_ChatSizeValue < 4) {
-                        Play_ChatSizeValue++;
-                        if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
-                        Play_ChatSize(true);
-                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeVal.length - 1].percentage);
+                    Play_ChatSizeValue++;
+                    if (Play_ChatSizeValue > 4) {
+                        Play_ChatSizeValue = 1;
+                        Play_ChatPositionConvert(false);
+                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                    Play_ChatSize(true);
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
@@ -1610,11 +1615,9 @@ function Play_handleKeyDown(e) {
                     Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isFullScreen && Play_isChatShown()) {
-                    if (Play_ChatSizeValue > 1) {
-                        Play_ChatSizeValue--;
-                        if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(false);
-                        Play_ChatSize(true);
-                    } else Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[0].percentage);
+                    Play_ChatBackground += 0.05;
+                    if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
+                    Play_ChatBackgroundChange(true);
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
