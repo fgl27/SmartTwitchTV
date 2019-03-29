@@ -580,10 +580,10 @@ function Play_onPlayer() {
     Play_loadChat();
 
     Play_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 4;
+    Play_PlayerCheckTimer = 3;
     Play_PlayerCheckQualityChanged = false;
     window.clearInterval(Play_streamCheck);
-    //Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+    Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
 }
 
 function Play_loadChat() {

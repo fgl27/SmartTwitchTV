@@ -435,7 +435,7 @@ function PlayVod_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
     PlayVod_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 4;
+    Play_PlayerCheckTimer = 3;
     PlayVod_PlayerCheckQualityChanged = false;
     window.clearInterval(PlayVod_PlayerCheck);
     PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
