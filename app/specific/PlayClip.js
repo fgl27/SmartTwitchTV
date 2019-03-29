@@ -181,7 +181,7 @@ function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
     PlayClip_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 4;
+    Play_PlayerCheckTimer = 3;
     PlayClip_PlayerCheckQualityChanged = false;
     window.clearInterval(PlayClip_PlayerCheck);
     PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
