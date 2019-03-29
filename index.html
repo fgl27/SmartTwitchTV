@@ -937,11 +937,29 @@
             background-color: rgba(255, 255, 255, 0.4);
         }
 
+        .progress_pause_holder {
+            bottom: 55px;
+            display: flex;
+            position: absolute;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pause_button {
+            width: 5%;
+            padding-top: 5px;
+            height: 35px;
+            text-align: center;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.7);
+            border-color: #FFFFFF;
+        }
+
         .progress_bar_div {
-            width: 90%;
-            height: 7%;
-            margin-left: 5%;
-            margin-top: 34.5%;
+            width: 82%;
+            margin-left: 2%;
+            height: 40px;
             text-align: center;
             border-radius: 15px;
             border: 2px solid rgba(0, 0, 0, 0);
@@ -963,12 +981,12 @@
         }
 
         .progress_bar_jump {
-            width: 60%;
+            width: 40%;
         }
 
         .progress_bar_holder {
             vertical-align: middle;
-            width: 85%;
+            width: 80%;
             border-radius: 12px;
             display: inline-block;
         }
@@ -1441,20 +1459,25 @@
                     <div id="open_vod_text" class="strokedextramini playbottontext" style="font-size: 77.5%;"></div>
                 </div>
             </div>
-            <div id="progress_bar_div" class="progress_bar_div">
-                <div id="progress_bar_jump_to" class="progress_bar_jump strokedextramini" style="transform: translateY(-25%);"></div>
-                <div>
-                    <div style="width: 100%; position: relative; transform: translateY(-50%);">
-                        <div id="progress_bar_current_time" class="progress_bar_timer strokedextramini"></div>
-                        <div id="progress_bar" class="progress_bar_holder">
-                            <div class="progress_bar">
-                                <div id="inner_progress_bar" class="inner_progress_bar"></div>
-                            </div>
-                        </div>
-                        <div id="progress_bar_duration" class="progress_bar_timer strokedextramini"></div>
-                    </div>
+            <div class="progress_pause_holder">
+                <div id="pause_button" class="pause_button">
+                    <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>
                 </div>
-                <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
+                <div id="progress_bar_div" class="progress_bar_div">
+                    <div id="progress_bar_jump_to" class="progress_bar_jump strokedextramini" style="transform: translateY(-25%);"></div>
+                    <div>
+                        <div style="width: 100%; position: relative; transform: translateY(-50%);">
+                            <div id="progress_bar_current_time" class="progress_bar_timer strokedextramini"></div>
+                            <div id="progress_bar" class="progress_bar_holder">
+                                <div class="progress_bar">
+                                    <div id="inner_progress_bar" class="inner_progress_bar"></div>
+                                </div>
+                            </div>
+                            <div id="progress_bar_duration" class="progress_bar_timer strokedextramini"></div>
+                        </div>
+                    </div>
+                    <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
+                </div>
             </div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
@@ -1500,7 +1523,7 @@
                 <div id="dialog_controls_play_text" class="controls_text"></div>
             </div>
             <div id="play_dialog_simple_pause" class="dialogs hide" style="z-index:5; margin-top: 31%;">
-                <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 850%;"></i>
+                <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 500%;"></i>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
                 <div id="play_dialog_exit_text" class="strokedbig" style="font-size: 250%;"></div>
@@ -1509,7 +1532,6 @@
                 <div id="dialog_warning_play_text" class="strokedbig" style="font-size: 250%;"></div>
             </div>
         </div>
-        <div id="player" style="z-index:-1;"></div>
     </div>
     <!-- bodyend this is here so release_maker can work don't remove-->
 </body>
