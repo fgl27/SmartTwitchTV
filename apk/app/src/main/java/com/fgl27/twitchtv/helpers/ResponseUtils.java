@@ -1,6 +1,4 @@
-/**
- * copied https://github.com/yuliskov/SmartYouTubeTV
- */
+//copied https://github.com/yuliskov/SmartYouTubeTV
 package com.fgl27.twitchtv.helpers;
 
 import java.nio.charset.Charset;
@@ -11,9 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-/**
- * @hide
- */
+
 public class ResponseUtils {
     /**
      * Returns the response charset of a HTTP response based on the {@code Content-Type} of
@@ -25,7 +21,7 @@ public class ResponseUtils {
      * @throws UnsupportedCharsetException if the response specified charset is unsupported.
      */
     public static Charset responseCharset(String contentTypeHeader)
-    throws IllegalCharsetNameException, UnsupportedCharsetException {
+            throws IllegalCharsetNameException, UnsupportedCharsetException {
         Charset responseCharset = StandardCharsets.UTF_8;
         if (contentTypeHeader != null) {
             Map < String, String > contentTypeParams = parseContentTypeParameters(contentTypeHeader);
