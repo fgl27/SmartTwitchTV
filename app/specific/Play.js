@@ -425,43 +425,36 @@ function Play_loadData() {
 }
 
 function Play_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
     var theUrl;
+
     if (Play_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = proxyurl + 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
+        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = proxyurl + 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
+        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
     }
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Play_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
-    xmlHttp.ontimeout = function() {};
+    var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, false, false, null);
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_loadingDataTry = 0;
-                if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 403) { //forbidden access
-                Play_loadDataErrorLog(xmlHttp);
-                Play_ForbiddenLive();
-            } else if (xmlHttp.status === 404) { //off line
-                Play_loadDataErrorLog(xmlHttp);
-                Play_CheckHostStart();
-            } else {
-                Play_loadDataErrorLog(xmlHttp);
-                Play_loadDataError();
-            }
-        }
-    };
+    if (jsonOb) jsonOb = JSON.parse(jsonOb);
+    else {
+        Play_loadDataError();
+        return;
+    }
 
-    xmlHttp.send(null);
+    if (jsonOb.result === 200) {
+        Play_loadingDataTry = 0;
+        if (Play_isOn) Play_loadDataSuccess(jsonOb.value);
+    } else if (jsonOb.result === 403) { //forbidden access
+        Play_ForbiddenLive();
+    } else if (jsonOb.result === 404) { //off line
+        Play_CheckHostStart();
+    } else {
+        Play_loadDataError();
+    }
 }
 
 function Play_loadDataErrorLog(xmlHttp) {

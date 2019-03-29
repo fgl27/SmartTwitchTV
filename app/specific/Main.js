@@ -901,11 +901,11 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
 
 function Main_openStream() {
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Main_HideElement('scene1');
     Main_ShowElement('scene2');
     Play_hidePanel();
     Play_hideChat();
     Play_HideEndDialog();
-    Main_HideElement('scene1');
     Play_Start();
 }
 
@@ -931,12 +931,12 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
+    Main_HideElement('scene1');
     Main_ShowElement('scene2');
     Play_hideChat();
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Main_HideElement('scene1');
 
     PlayClip_Start();
 }
@@ -968,12 +968,12 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
 
 function Main_openVod() {
     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+    Main_HideElement('scene1');
     Main_ShowElement('scene2');
     PlayVod_hidePanel();
     Play_hideChat();
     Play_clearPause();
     Play_CleanHideExit();
-    Main_HideElement('scene1');
     PlayVod_HasVodInfo = false;
     PlayVod_Start();
 }

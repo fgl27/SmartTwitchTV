@@ -1,3 +1,7 @@
+/**
+ * adapt part of the player from https://github.com/yuliskov/SmartYouTubeTV
+ */
+
 package com.fgl27.twitchtv;
 
 import android.app.Activity;
@@ -19,6 +23,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.fgl27.twitchtv.helpers.ResponseUtils;
+import com.fgl27.twitchtv.helpers.Streams;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -43,13 +49,32 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
+
 import static com.google.android.exoplayer2.Player.STATE_IDLE;
 import static com.google.android.exoplayer2.Player.STATE_BUFFERING;
 import static com.google.android.exoplayer2.Player.STATE_ENDED;
 import static com.google.android.exoplayer2.Player.STATE_READY;
 
 public class PlayerActivity extends Activity {
-    //private static final String TAG = PlayerActivity.class.getName();
+    private static final String TAG = PlayerActivity.class.getName();
+
+    private static final String CLIENTIDHEADER = "Client-ID";
+    private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
+
+    private static final String ACCEPTHEADER = "Accept";
+    private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
+
+    private static final String AUTHORIZATION = "Authorization";
+
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
@@ -384,6 +409,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public String mreadUrl(String urlString, int timeout, boolean duploHeader, boolean tripleHeader, String access_token) {
+            return readUrl(urlString, timeout, duploHeader, tripleHeader, access_token);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void play(boolean play) {
             if (PlayerActivity.player != null) player.setPlayWhenReady(play);
         }
@@ -490,5 +521,53 @@ public class PlayerActivity extends Activity {
                 initializePlayer();
             }
         };
+    }
+
+    public String readUrl(String urlString, int timeout, boolean duploHeader, boolean tripleHeader, String access_token) {
+        JSONObject ob = new JSONObject();
+        try {
+            URL url = new URL(urlString);
+            Log.d(TAG, "urlString " + urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
+            if (duploHeader) urlConnection.setRequestProperty(ACCEPTHEADER, TWITHCV5JSON);
+            if (tripleHeader) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
+
+            urlConnection.setConnectTimeout(timeout);
+
+            if (urlConnection.getResponseCode() == 200) {
+                final Charset responseCharset;
+                try {
+                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
+                } catch (UnsupportedCharsetException ucse) {
+                    Log.i(TAG, "Unsupported response charset", ucse);
+                    return null;
+                } catch (IllegalCharsetNameException icne) {
+                    Log.i(TAG, "Illegal response charset", icne);
+                    return null;
+                }
+
+                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
+                ob.put("result",200);
+                ob.put("value",new String(responseBytes, responseCharset));
+                return ob.toString();
+            } if (urlConnection.getResponseCode() == 403) { //forbidden access
+                ob.put("result",403);
+                return ob.toString();
+            } if (urlConnection.getResponseCode() == 404) { //off line
+                ob.put("result",404);
+                return ob.toString();
+            } else {
+                ob.put("result",null);
+                return ob.toString();
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "IOException ", e);
+            return null;
+        } catch (JSONException e) {
+            Log.w(TAG, "JSONException ", e);
+            return null;
+        }
     }
 }
