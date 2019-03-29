@@ -1,6 +1,4 @@
-/**
- * adapt part of the player from https://github.com/yuliskov/SmartYouTubeTV
- */
+//adapt part of the player from https://github.com/yuliskov/SmartYouTubeTV
 
 package com.fgl27.twitchtv;
 
@@ -182,11 +180,8 @@ public class PlayerActivity extends Activity {
         if (runnow) loading.setVisibility(View.VISIBLE);
         else {
             //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (loadingcanshow) loading.setVisibility(View.VISIBLE);
-                }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (loadingcanshow) loading.setVisibility(View.VISIBLE);
             }, 500);
         }
     }
@@ -347,7 +342,7 @@ public class PlayerActivity extends Activity {
         mwebview.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("unused")//called by JS
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                Log.d("MyApplication", message + " -- From line " +
+                Log.d(TAG, message + " -- From line " +
                         lineNumber + " of " +
                         sourceID);
             }
