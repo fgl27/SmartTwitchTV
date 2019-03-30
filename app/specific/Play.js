@@ -67,7 +67,6 @@ var Play_currentTime = 0;
 var Play_startttime = 0;
 var Play_startttimeoffset = 0;
 var Play_offsettimeMinus = 0;
-var Play_BufferPercentage = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
@@ -77,7 +76,6 @@ var Play_ChatLoadOK = false;
 var Play_CheckChatCounter = 0;
 var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
-var Play_Buffer = 4;
 var Play_PlayerCheckTimer = 4;
 var Play_PlayerCheckInterval = 1500;
 var Play_updateStreamInfoErrorTry = 0;
@@ -193,12 +191,6 @@ function Play_SetFullScreen(isfull) {
         if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     }
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
-}
-
-function Play_SetBuffers() {
-    Play_Buffer = Settings_Obj_values("buffer_live");
-    PlayVod_Buffer = Settings_Obj_values("buffer_vod");
-    PlayClip_Buffer = Settings_Obj_values("buffer_clip");
 }
 
 function Play_SetChatFont() {
@@ -589,7 +581,6 @@ function Play_qualityChanged() {
         }
     }
 
-    Play_BufferPercentage = 0;
     Play_qualityPlaying = Play_quality;
     Play_state = Play_STATE_PLAYING;
     if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');

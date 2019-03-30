@@ -37,7 +37,6 @@ var PlayVod_jumpCount = 0;
 var PlayVod_loadingDataTimeout = 2000;
 var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
-var PlayVod_Buffer = 4;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;

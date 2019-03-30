@@ -19,7 +19,6 @@ var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_HasVOD = false;
-var PlayClip_Buffer = 4;
 var PlayClip_PlayerCheckCounter = 0;
 var PlayClip_PlayerCheckQualityChanged = false;
 var PlayClip_PlayerCheckRun = false;
@@ -161,7 +160,6 @@ function PlayClip_QualityGenerate(response) {
         }
     }
 
-    Play_BufferPercentage = 0;
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
 }
@@ -219,7 +217,7 @@ function PlayClip_PlayerCheck() {
     if (Main_Android) PlayClip_currentTime = Android.gettime();
     if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
-        if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
+        if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {
 
             //Don't change the first time only retry
             if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;
