@@ -485,7 +485,6 @@ public class PlayerActivity extends Activity {
     private final BroadcastReceiver closeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(PlayerActivity.this, "close " + intent.getBooleanExtra("close", false), Toast.LENGTH_SHORT).show();
             if (intent.getBooleanExtra("close", false)) closeThis();
             else minimizeThis();
         }
