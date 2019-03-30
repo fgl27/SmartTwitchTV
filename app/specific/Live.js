@@ -72,33 +72,54 @@ function Live_loadDataPrepare() {
 
 function Live_loadDataRequest() {
 
-    var xmlHttp = new XMLHttpRequest();
-
     var offset = Live_itemsCount + Live_itemsCountOffset;
     if (offset && offset > (Live_MaxOffset - 1)) {
         offset = Live_MaxOffset - Main_ItemsLimitVideo;
         Live_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = Live_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
+    var theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Live_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                Live_loadDataError();
-            }
+    if (Main_Android) {
+
+        var jsonOb = Android.mreadUrl(theUrl, Live_loadingDataTimeout, true, false, null);
+
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            Live_loadDataError();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (jsonOb.result === 200) {
+            Live_loadDataSuccess(jsonOb.value);
+        } else {
+            Live_loadDataError();
+        }
+
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Live_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Live_loadDataSuccess(xmlHttp.responseText);
+                    return;
+                } else {
+                    Live_loadDataError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function Live_loadDataError() {
@@ -232,7 +253,6 @@ function Live_loadDataSuccessFinish() {
 }
 
 function Live_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
 
     Main_SetItemsLimitReplace(Live_emptyCellVector.length);
 
@@ -242,24 +262,47 @@ function Live_loadDataReplace() {
         Live_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + '&' + Math.round(Math.random() * 1e7), true);
+    var theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    xmlHttp.timeout = Live_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Live_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else Live_loadDataErrorReplace();
+        var jsonOb = Android.mreadUrl(theUrl, Live_loadingDataTimeout, true, false, null);
+
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            Live_loadDataErrorReplace();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (jsonOb.result === 200) {
+            Live_loadDataSuccessReplace(jsonOb.value);
+        } else {
+            Live_loadDataErrorReplace();
+        }
+
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+
+        xmlHttp.timeout = Live_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Live_loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
+                } else Live_loadDataErrorReplace();
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function Live_loadDataErrorReplace() {

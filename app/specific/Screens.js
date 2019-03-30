@@ -97,24 +97,43 @@ function Screens_loadDataPrepare() {
 }
 
 function Screens_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
     inUseObj.set_url();
-    xmlHttp.open("GET", inUseObj.url, true);
+    if (Main_Android) {
 
-    xmlHttp.timeout = inUseObj.loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
+        var jsonOb = Android.mreadUrl(inUseObj.url, inUseObj.loadingDataTimeout, true, false, null);
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
-            else Screens_loadDataError();
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            Screens_loadDataError();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (jsonOb.result === 200) {
+            inUseObj.concatenate(jsonOb.value);
+        } else {
+            Screens_loadDataError();
+        }
+
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", inUseObj.url, true);
+
+        xmlHttp.timeout = inUseObj.loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
+                else Screens_loadDataError();
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function Screens_loadDataError() {
