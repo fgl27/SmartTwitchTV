@@ -334,6 +334,7 @@ function PlayVod_ResumeAfterOnline() {
 function PlayVod_SaveOffset() {
     Main_values.vodOffset = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
     Main_SaveValues();
+    Main_values.vodOffset = 0;
 }
 
 
@@ -483,13 +484,12 @@ function PlayVod_qualityChanged() {
 
 function PlayVod_onPlayer() {
     if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
-    //TODO add a function to update this in relation to the video
-    //Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     if (Main_values.vodOffset) {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
         if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
+        Main_values.vodOffset = 0;
     } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, Android.gettime());
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
