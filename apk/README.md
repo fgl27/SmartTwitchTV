@@ -1,7 +1,7 @@
 SmartTwitchTV AndroidTV APK
 ==============
 
-This is a WIP apk
+This is the apk to run the web app
 
 ## Download/Clone & Build
 

@@ -1,17 +1,9 @@
 SmartTwitchTV
 ==============
 
-This is an WIP web application designed to watch Twitch.tv broadcasts on SmartTV's , A good official Twitch.TV app is not available for most devices, that is way this project exist.
+This is an web application designed to watch Twitch.tv broadcasts on SmartTV's , A good official Twitch.TV app is not available for most devices, that is way this project exist.
 
 The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
-
-What is be worked on:
-
-* Finishing porting the web UI from TizenOS to any browser
-* Finishing making a android app to run this web UI
-* On that android app make a good player, the android basic player is be used for testing it works, but is too basic
-* This will probably be release on play in late 2019 early 2020
-* If anyone wanna help email (find it on my git profile) or [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
 
 This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history
 
