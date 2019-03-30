@@ -10,18 +10,6 @@ var Settings_value = {
         "values": ["off", "on"],
         "defaultValue": 2
     },
-    "buffer_live": { //buffer_live
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
-    "buffer_vod": { //buffer_vod
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
-    "buffer_clip": { //buffer_clip
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
     "chat_font_size": { //chat_font_size
         "values": ["85%", "100%", "130%", "160%"],
         "defaultValue": 2
@@ -148,28 +136,6 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    // Player buffer title/summary
-    div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
-        '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
-
-    // Player buffer live
-    key = "buffer_live";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
-
-    // Player buffer vod
-    key = "buffer_vod";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
-
-    // Player buffer clip
-    key = "buffer_clip";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
-
     // Chat size
     key = "chat_font_size";
     Settings_value_keys.push(key);
@@ -229,17 +195,6 @@ function Settings_SetStrings() {
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
 
-    // Player buffer title/summary
-    Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
-    Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-    key = "buffer_live";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_LIVE);
-    key = "buffer_vod";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_VOD);
-    key = "buffer_clip";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
-
     //Player restore
     key = "restor_playback";
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
@@ -264,7 +219,6 @@ function Settings_SetDefautls() {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
         Settings_value[key].defaultValue -= 1;
     }
-    Play_SetBuffers();
     Settings_SetClock();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     Main_ContentLang = Settings_Obj_set_values("content_lang");
@@ -335,9 +289,6 @@ function Settings_SetDefault(position) {
         Settings_SetLang(Settings_Obj_set_values("general_lang"));
     } else if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
     else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    else if (position === "buffer_live") Play_Buffer = Settings_Obj_values("buffer_live");
-    else if (position === "buffer_vod") PlayVod_Buffer = Settings_Obj_values("buffer_vod");
-    else if (position === "buffer_clip") PlayClip_Buffer = Settings_Obj_values("buffer_clip");
     else if (position === "chat_font_size") Play_SetChatFont();
     else if (position === "clock_offset") {
         Settings_SetClock();
