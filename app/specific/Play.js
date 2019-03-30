@@ -227,7 +227,7 @@ function Play_Start() {
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
     Main_HideElement('chat_box');
     Main_ShowElement('chat_frame');
-    Main_HideElement('progress_bar_div');
+    Main_HideElement('progress_pause_holder');
 
     Play_EndSet(1);
     Play_PlayerPanelOffset = -5;

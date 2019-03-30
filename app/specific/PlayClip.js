@@ -50,7 +50,7 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
-    Main_ShowElement('progress_bar_div');
+    Main_ShowElement('progress_pause_holder');
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
     Main_ShowElement('scene_channel_panel_bottom');
@@ -457,7 +457,10 @@ function PlayClip_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY && Play_Panelcounter !== 1) {
+                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
                         PlayVod_PanelY--;
                         PlayVod_IconsBottonFocus();
                     } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
@@ -481,6 +484,9 @@ function PlayClip_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         PlayVod_PanelY++;
                         PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
                     } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
                         PlayClip_qualityIndex++;
                         PlayClip_qualityDisplay();
@@ -500,8 +506,13 @@ function PlayClip_handleKeyDown(e) {
                         Play_clearHidePanel();
                         PlayClip_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
+                    } else if (PlayVod_PanelY === 1) {
+                        if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
+                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                            else Chat_Pause();
+                        }
+                        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                     } else Play_BottomOptionsPressed(3);
-
                 } else PlayClip_showPanel();
                 break;
             case KEY_RETURN:

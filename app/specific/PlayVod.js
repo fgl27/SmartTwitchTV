@@ -59,7 +59,7 @@ function PlayVod_Start() {
     Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
-    Main_HideElement('progress_bar_div');
+    Main_HideElement('progress_pause_holder');
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
@@ -105,7 +105,7 @@ function PlayVod_PosStart() {
     Main_HideElement('chat_frame');
     window.setTimeout(function() {
         Main_ShowElement('scene_channel_panel_bottom');
-        Main_ShowElement('progress_bar_div');
+        Main_ShowElement('progress_pause_holder');
     }, 1000);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
@@ -612,23 +612,31 @@ function PlayVod_RefreshProgressBarr() {
 }
 
 function PlayVod_IconsBottonResetFocus() {
-    PlayVod_PanelY = 0;
+    PlayVod_PanelY = Play_isNotplaying() ? 1 : 0;
     PlayVod_IconsBottonFocus();
 }
 
 function PlayVod_IconsBottonFocus() {
-    if (PlayVod_PanelY) {
-        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
-        Play_IconsAddFocus();
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
-    } else {
+    if (!PlayVod_PanelY) { //progress_bar
+        Main_RemoveClass('pause_button', 'progress_bar_div_focus');
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsRemoveFocus();
         if (PlayVod_addToJump) {
             PlayVod_jumpTime();
             document.getElementById('progress_bar_steps').style.display = 'inline-block';
         }
+    } else if (PlayVod_PanelY === 1) { //pause_button
+        Main_AddClass('pause_button', 'progress_bar_div_focus');
+        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+        Play_IconsRemoveFocus();
+        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+        document.getElementById('progress_bar_steps').style.display = 'none';
+    } else if (PlayVod_PanelY === 2) { //botton icons
+        Main_RemoveClass('pause_button', 'progress_bar_div_focus');
+        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+        Play_IconsAddFocus();
+        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+        document.getElementById('progress_bar_steps').style.display = 'none';
     }
 }
 
@@ -964,7 +972,10 @@ function PlayVod_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-                    if (PlayVod_PanelY && Play_Panelcounter !== 1) {
+                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
                         PlayVod_PanelY--;
                         PlayVod_IconsBottonFocus();
                     } else if (PlayVod_qualityIndex > 0 && Play_Panelcounter === 1) {
@@ -988,6 +999,9 @@ function PlayVod_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         PlayVod_PanelY++;
                         PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
                     } else if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
                         PlayVod_qualityIndex++;
                         PlayVod_qualityDisplay();
@@ -1008,6 +1022,12 @@ function PlayVod_handleKeyDown(e) {
                         Play_clearHidePanel();
                         PlayVod_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
+                    } else if (PlayVod_PanelY === 1) {
+                        if (!Main_values.Play_ChatForceDisable) {
+                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                            else Chat_Pause();
+                        }
+                        if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     } else Play_BottomOptionsPressed(2);
                 } else PlayVod_showPanel(true);
                 break;
