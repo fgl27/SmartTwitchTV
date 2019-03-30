@@ -178,16 +178,16 @@ function Main_loadTranslations(language) {
             // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
             // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-            var lang = language,
-                Savedlang = Main_getItemInt('user_language', 0);
+            //var lang = language,
+            //    Savedlang = Main_getItemInt('user_language', 0);
 
-            if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-            else Settings_CheckLang(lang);
+            //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+            //else Settings_CheckLang(lang);
 
-            if (lang.indexOf('pt_') !== -1) pt_BRLang();
-            else if (lang.indexOf('it_') !== -1) it_ITLang();
+            //if (lang.indexOf('pt_') !== -1) pt_BRLang();
+            //else if (lang.indexOf('it_') !== -1) it_ITLang();
 
-            console.log("language is " + lang);
+            console.log("language is " + language);
             DefaultLang();
 
             if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
