@@ -100,7 +100,8 @@ function UserVod_loadDataRequest() {
 
     if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3,
+            Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -288,7 +289,8 @@ function UserVod_loadDataReplace() {
 
     if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3,
+            Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
