@@ -131,3 +131,12 @@
 .icon-ellipsis:before {
   content: "\42";
 }
+.icon-list:before {
+  content: "\66";
+}
+.icon-trash:before {
+  content: "\43";
+}
+.icon-exit:before {
+  content: "\44";
+}
