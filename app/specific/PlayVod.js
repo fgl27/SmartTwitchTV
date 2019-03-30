@@ -142,39 +142,61 @@ function PlayVod_PrepareLoad() {
 }
 
 function PlayVod_updateStreamerInfo() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel), true);
-    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
+    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                var users = JSON.parse(xmlHttp.responseText).users[0];
-                if (users !== undefined) {
-                    Main_values.Main_selectedChannelLogo = users.logo;
-                    Main_values.Main_selectedChannel_id = users._id;
-                    if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
-                    if (AddUser_UserIsSet()) {
-                        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-                        AddCode_PlayRequest = true;
-                        AddCode_CheckFallow();
-                    } else Play_hideFallow();
-                } else {
-                    Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
-                    Main_values.Main_selectedChannel_id = '';
-                }
-                Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-                return;
-            } else {
-                PlayVod_updateStreamerInfoError();
-            }
+        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, true, false, null);
+
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            PlayVod_updateStreamerInfoError();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (jsonOb.result === 200) {
+            PlayVod_updateStreamerInfoValues(JSON.parse(jsonOb.value).users[0]);
+        } else {
+            PlayVod_updateStreamerInfoError();
+        }
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
+                } else {
+                    PlayVod_updateStreamerInfoError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function PlayVod_updateStreamerInfoValues(users) {
+    if (users !== undefined) {
+        Main_values.Main_selectedChannelLogo = users.logo;
+        Main_values.Main_selectedChannel_id = users._id;
+        if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
+        if (AddUser_UserIsSet()) {
+            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+            AddCode_PlayRequest = true;
+            AddCode_CheckFallow();
+        } else Play_hideFallow();
+    } else {
+        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
+        Main_values.Main_selectedChannel_id = '';
+    }
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+
 }
 
 function PlayVod_updateStreamerInfoError() {
@@ -188,26 +210,46 @@ function PlayVod_updateStreamerInfoError() {
 }
 
 function PlayVod_updateVodInfo() {
-    var xmlHttp = new XMLHttpRequest();
+    var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId, true);
-    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                PlayVod_updateVodInfoPannel(xmlHttp.responseText);
-                return;
-            } else {
-                PlayVod_updateVodInfoError();
-            }
+        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, true, false, null);
+
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            PlayVod_updateVodInfoError();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (jsonOb.result === 200) {
+            PlayVod_updateVodInfoPannel(jsonOb.value);
+        } else {
+            PlayVod_updateVodInfoError();
+        }
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    PlayVod_updateVodInfoPannel(xmlHttp.responseText);
+                    return;
+                } else {
+                    PlayVod_updateVodInfoError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function PlayVod_updateVodInfoError() {
@@ -290,7 +332,7 @@ function PlayVod_ResumeAfterOnline() {
 }
 
 function PlayVod_SaveOffset() {
-    Main_values.vodOffset = parseInt(Android.gettime() / 1000);
+    Main_values.vodOffset = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
     Main_SaveValues();
 }
 
@@ -302,33 +344,53 @@ function PlayVod_loadData() {
 }
 
 function PlayVod_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
     var theUrl;
+
     if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = proxyurl + 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token' +
+        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '?oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = proxyurl + 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = PlayVod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
-    xmlHttp.ontimeout = function() {};
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                PlayVod_loadingDataTry = 0;
-                if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
-            } else PlayVod_loadDataError();
+        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, false, false, null);
+
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            PlayVod_loadDataError();
+            return;
         }
-    };
-    xmlHttp.send(null);
+
+        if (jsonOb.result === 200) {
+            PlayVod_loadingDataTry = 0;
+            if (PlayVod_isOn) PlayVod_loadDataSuccess(jsonOb.value);
+        } else {
+            PlayVod_loadDataError();
+        }
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", proxyurl + theUrl, true);
+        xmlHttp.timeout = PlayVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    PlayVod_loadingDataTry = 0;
+                    if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
+                } else PlayVod_loadDataError();
+            }
+        };
+        xmlHttp.send(null);
+    }
 }
 
 function PlayVod_loadDataError() {
@@ -424,25 +486,25 @@ function PlayVod_onPlayer() {
     //TODO add a function to update this in relation to the video
     //Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
-    try {
-        if (Main_values.vodOffset) {
-            Chat_offset = Main_values.vodOffset;
-            Chat_Init();
-            if (PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
-        } else if (PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
-    } catch (e) {}
+    if (Main_values.vodOffset) {
+        Chat_offset = Main_values.vodOffset;
+        Chat_Init();
+        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
+    } else if (Main_Android && PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
-    PlayVod_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 3;
-    PlayVod_PlayerCheckQualityChanged = false;
-    window.clearInterval(PlayVod_PlayerCheck);
-    PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+    if (Main_Android) {
+        PlayVod_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 3;
+        PlayVod_PlayerCheckQualityChanged = false;
+        window.clearInterval(PlayVod_PlayerCheck);
+        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+    }
 }
 
-function PlayVod_PlayerCheck() { // jshint ignore:line
-    PlayVod_currentTime = Android.gettime();
+function PlayVod_PlayerCheck() {
+    if (Main_Android) PlayVod_currentTime = Android.gettime();
     if (PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
@@ -455,7 +517,6 @@ function PlayVod_PlayerCheck() { // jshint ignore:line
             else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
             else {
                 PlayVod_qualityDisplay();
-                //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.getCurrentTime();
                 PlayVod_qualityChanged();
                 PlayVod_PlayerCheckRun = true;
             }
@@ -471,7 +532,6 @@ function PlayVod_PlayerCheck() { // jshint ignore:line
 }
 
 function PlayVod_DropOneQuality(ConnectionDrop) {
-
     if (!ConnectionDrop) {
         if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
         else {
@@ -496,9 +556,9 @@ function PlayVod_shutdownStream() {
 
 function PlayVod_PreshutdownStream(saveOffset) {
     if (saveOffset) PlayVod_SaveVodIds();
-    try {
-        Android.stopVideo(2);
-    } catch (e) {}
+
+    if (Main_Android) Android.stopVideo(2);
+
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
     window.clearInterval(PlayVod_updateStreamInfId);
@@ -524,7 +584,7 @@ function PlayVod_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_quality = PlayVod_qualityPlaying;
@@ -548,7 +608,7 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_RefreshProgressBarr() {
-    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayVod_IconsBottonResetFocus() {
@@ -625,11 +685,11 @@ function PlayVod_jump() {
         PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
-            Android.startVideoOffset(PlayVod_playingUrl, 2, (PlayVod_TimeToJump * 1000));
+            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2, (PlayVod_TimeToJump * 1000));
             Chat_offset = PlayVod_TimeToJump;
         } else {
             Chat_offset = ChannelVod_vodOffset;
-            Android.startVideoOffset(PlayClip_playingUrl, 3, (PlayVod_TimeToJump * 1000));
+            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3, (PlayVod_TimeToJump * 1000));
         }
 
         if (PlayClip_HasVOD) Chat_Init();
@@ -663,7 +723,7 @@ function PlayVod_jumpTime() {
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
-    var currentTime = Android.gettime() / 1000;
+    var currentTime = Main_Android ? (Android.gettime() / 1000) : 0;
 
     window.clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;
@@ -696,7 +756,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds() {
-    var time = parseInt(Android.gettime() / 1000);
+    var time = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
 
     var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
 

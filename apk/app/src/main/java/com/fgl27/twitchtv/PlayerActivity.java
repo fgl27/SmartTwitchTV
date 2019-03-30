@@ -57,11 +57,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 
-import static com.google.android.exoplayer2.Player.STATE_IDLE;
-import static com.google.android.exoplayer2.Player.STATE_BUFFERING;
-import static com.google.android.exoplayer2.Player.STATE_ENDED;
-import static com.google.android.exoplayer2.Player.STATE_READY;
-
 public class PlayerActivity extends Activity {
     private static final String TAG = PlayerActivity.class.getName();
 
@@ -404,6 +399,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public int getAndroid() {
+            return 1;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, boolean duploHeader, boolean tripleHeader, String access_token) {
             return readUrl(urlString, timeout, duploHeader, tripleHeader, access_token);
         }
@@ -462,16 +463,16 @@ public class PlayerActivity extends Activity {
                 //Log.d(TAG, "on player state changed---" + playWhenReady + "--------" + playbackState + "-----get buffer position-----" + player.getBufferedPosition() + "------get real position-----" + player.getCurrentPosition());
                 if (playWhenReady) {
                     switch (playbackState) {
-                        case STATE_IDLE:
+                        case Player.STATE_IDLE:
                             break;
-                        case STATE_BUFFERING:
+                        case Player.STATE_BUFFERING:
                             loadingcanshow = true;
                             showLoading(false);
                             break;
-                        case STATE_READY:
+                        case Player.STATE_READY:
                             hideLoading();
                             break;
-                        case STATE_ENDED:
+                        case Player.STATE_ENDED:
                             //Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
                             //Log.d(TAG, "Video Ended");
                             hideLoading();

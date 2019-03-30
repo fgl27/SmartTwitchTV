@@ -26,7 +26,7 @@ function Chat_Preinit() {
 
 function Chat_Init() {
     Chat_Clear();
-    if (Main_values.Play_ChatForceDisable) {
+    if (!Main_Android || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }

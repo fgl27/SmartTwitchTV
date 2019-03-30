@@ -93,21 +93,40 @@ function PlayClip_loadData() {
 }
 
 function PlayClip_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
+    var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
+    if (Main_Android) {
 
-    xmlHttp.open("GET", proxyurl + 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status', true);
-    xmlHttp.timeout = PlayClip_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, false, false, null);
 
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) PlayClip_QualityGenerate(xmlHttp.responseText);
-            else PlayClip_loadDataError();
+        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        else {
+            PlayClip_loadDataError();
+            return;
         }
-    };
-    xmlHttp.send(null);
+
+        if (jsonOb.result === 200) {
+            PlayClip_QualityGenerate(jsonOb.value);
+        } else {
+            PlayClip_loadDataError();
+        }
+
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", proxyurl + theUrl, true);
+        xmlHttp.timeout = PlayClip_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) PlayClip_QualityGenerate(xmlHttp.responseText);
+                else PlayClip_loadDataError();
+            }
+        };
+        xmlHttp.send(null);
+    }
 }
 
 function PlayClip_loadDataError() {
@@ -170,21 +189,21 @@ function PlayClip_qualityChanged() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
 
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    try {
-        if (PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, 3);
-    } catch (e) {}
+    if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+    if (Main_Android && PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, 3);
     PlayClip_onPlayer();
 }
 
 function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
-    PlayClip_PlayerCheckCount = 0;
-    Play_PlayerCheckTimer = 3;
-    PlayClip_PlayerCheckQualityChanged = false;
-    window.clearInterval(PlayClip_PlayerCheck);
-    PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+    if (Main_Android) {
+        PlayClip_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 3;
+        PlayClip_PlayerCheckQualityChanged = false;
+        window.clearInterval(PlayClip_PlayerCheck);
+        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+    }
 }
 
 function PlayClip_Resume() {
@@ -196,7 +215,7 @@ function PlayClip_Resume() {
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
-    PlayClip_currentTime = Android.gettime();
+    if (Main_Android) PlayClip_currentTime = Android.gettime();
     if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > (Play_PlayerCheckTimer + (Play_BufferPercentage > 90 ? 1 : 0))) {
@@ -251,9 +270,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
-    try {
-        Android.stopVideo(3);
-    } catch (e) {}
+    if (Main_Android) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
@@ -276,7 +293,7 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     Play_ChatPosition();
@@ -297,7 +314,7 @@ function PlayClip_showPanel() {
 }
 
 function PlayClip_RefreshProgressBarr() {
-    PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_qualityIndexReset() {

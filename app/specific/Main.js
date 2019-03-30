@@ -125,7 +125,7 @@ var Main_stringVersion = '4.0.1';
 var Main_minversion = '032519';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_ClockOffset = 0;
-
+var Main_Android = 0;
 var Main_randomimg = '?' + Math.random();
 var GIT_IO = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/";
 var IMG_404_GAME = GIT_IO + "404_game.png";
@@ -162,11 +162,14 @@ function Main_loadTranslations(language) {
     Main_ready(function() {
         var doc = document.body;
         if (Main_isReleased) doc.innerHTML = STR_BODY;
+
         try {
-            Android.gettime();
+            Main_Android = Android.getAndroid();
         } catch (e) {
+            Main_Android = 0;
             doc.style.backgroundColor = "rgba(0, 0, 0, 1)";
         }
+
         Main_ready(function() {
             Settings_SetDefautls();
             en_USLang();
