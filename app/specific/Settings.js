@@ -1,11 +1,6 @@
 //Variable initialization
 var Settings_cursorY = 0;
 var Settings_value = {
-    "general_lang": { //general_lang
-        "values": ["English [EN]", "Italiano [IT]", "Português - Brasil [PT-BR]"],
-        "set_values": ["en_US", "it_IT", "pt_BR"],
-        "defaultValue": 1
-    },
     "restor_playback": { //restor_playback
         "values": ["off", "on"],
         "defaultValue": 2
@@ -111,12 +106,6 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
 
-    // App Language selection
-    key = "general_lang";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_APP_LANG);
-
     // Content Language selection
     key = "content_lang";
     Settings_value_keys.push(key);
@@ -191,10 +180,6 @@ function Settings_SetStrings() {
     // Clock offset
     key = "clock_offset";
     Main_textContent(key + '_name', STR_CLOCK_OFFSET);
-
-    // App Language selection
-    key = "general_lang";
-    Main_textContent(key + '_name', STR_APP_LANG);
 
     // Content Language selection
     key = "content_lang";
@@ -300,10 +285,7 @@ function Settings_Setarrows(position) {
 function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
-    if (position === "general_lang") {
-        Main_setItem('user_language', 1);
-        Settings_SetLang(Settings_Obj_set_values("general_lang"));
-    } else if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
+    if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
     else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
     else if (position === "chat_font_size") Play_SetChatFont();
@@ -313,20 +295,20 @@ function Settings_SetDefault(position) {
     }
 }
 
-function Settings_CheckLang(lang) {
-    if (lang.indexOf('en_') !== -1) Settings_value.general_lang.defaultValue = 0;
-    else if (lang.indexOf('it_') !== -1) Settings_value.general_lang.defaultValue = 1;
-    else if (lang.indexOf('pt_') !== -1) Settings_value.general_lang.defaultValue = 2;
-}
+//function Settings_CheckLang(lang) {
+//    if (lang.indexOf('en_') !== -1) Settings_value.general_lang.defaultValue = 0;
+//    else if (lang.indexOf('it_') !== -1) Settings_value.general_lang.defaultValue = 1;
+//    else if (lang.indexOf('pt_') !== -1) Settings_value.general_lang.defaultValue = 2;
+//}
 
-function Settings_SetLang(lang) {
-    if (lang.indexOf('en_') !== -1) en_USLang();
-    else if (lang.indexOf('it_') !== -1) it_ITLang();
-    else if (lang.indexOf('pt_') !== -1) pt_BRLang();
-    DefaultLang();
-    Main_SetStringsMain(false);
-    Main_SetStringsSecondary();
-}
+//function Settings_SetLang(lang) {
+//    if (lang.indexOf('en_') !== -1) en_USLang();
+    //else if (lang.indexOf('it_') !== -1) it_ITLang();
+    //else if (lang.indexOf('pt_') !== -1) pt_BRLang();
+//    DefaultLang();
+//    Main_SetStringsMain(false);
+//    Main_SetStringsSecondary();
+//}
 
 function Settings_SetClock() {
     var time = Settings_Obj_default("clock_offset");
