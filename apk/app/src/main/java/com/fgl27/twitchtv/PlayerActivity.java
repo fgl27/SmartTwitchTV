@@ -219,6 +219,14 @@ public class PlayerActivity extends Activity {
         munregisterReceiver();
     }
 
+    private void closeThis() {
+        finishAndRemoveTask();
+    }
+
+    private void minimizeThis() {
+        this.moveTaskToBack(true);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -250,6 +258,8 @@ public class PlayerActivity extends Activity {
         try {
             this.unregisterReceiver(initializePlayerReceiver);
             this.unregisterReceiver(showBufferReceiver);
+            this.unregisterReceiver(closeReceiver);
+
         } catch (IllegalArgumentException ignored) {}
     }
 
@@ -257,6 +267,7 @@ public class PlayerActivity extends Activity {
         try {
             this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
             this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
+            this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
         } catch (NullPointerException ignored) {}
     }
 
@@ -368,6 +379,15 @@ public class PlayerActivity extends Activity {
             mwebContext.sendBroadcast(NewIntent);
         }
 
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mclose(boolean close) {
+            final Intent NewIntent = new Intent();
+            NewIntent.setAction("closeReceiver");
+            NewIntent.putExtra("close", close);
+            mwebContext.sendBroadcast(NewIntent);
+        }
+
         /** Show a toast from the web page */
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
@@ -459,6 +479,15 @@ public class PlayerActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra("show", false)) showLoading(true);
             else hideLoading();
+        }
+    };
+
+    private final BroadcastReceiver closeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(PlayerActivity.this, "close " + intent.getBooleanExtra("close", false), Toast.LENGTH_SHORT).show();
+            if (intent.getBooleanExtra("close", false)) closeThis();
+            else minimizeThis();
         }
     };
 
