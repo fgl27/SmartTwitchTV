@@ -87,38 +87,63 @@ function UserVod_loadDataRequestStart() {
 }
 
 function UserVod_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
     var offset = UserVod_itemsCount + UserVod_itemsCountOffset;
     if (offset && offset > (UserVod_MaxOffset - 1)) {
         offset = UserVod_MaxOffset - Main_ItemsLimitVideo;
         UserVod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitVideo +
+    var theUrl = 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitVideo +
         '&broadcast_type=' + (UserVod_highlight ? 'highlight' : 'archive') + '&sort=' + UserVod_Type +
-        '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        '&offset=' + offset;
+    var xmlHttp;
 
-    xmlHttp.timeout = UserVod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
-    xmlHttp.ontimeout = function() {};
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                UserVod_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
-            } else {
-                UserVod_loadDataError();
-            }
+        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            UserVod_loadDataError();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (xmlHttp.status === 200) {
+            UserVod_loadDataSuccess(xmlHttp.responseText);
+            return;
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+        } else {
+            UserVod_loadDataError();
+        }
+
+    } else {
+
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+
+        xmlHttp.timeout = UserVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    UserVod_loadDataSuccess(xmlHttp.responseText);
+                    return;
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                    AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+                } else {
+                    UserVod_loadDataError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function UserVod_loadDataError() {
@@ -247,7 +272,6 @@ function UserVod_loadDataReplaceStart() {
 }
 
 function UserVod_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
 
     Main_SetItemsLimitReplace(UserVod_emptyCellVector.length);
 
@@ -257,28 +281,52 @@ function UserVod_loadDataReplace() {
         UserVod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitReplace +
+    var theUrl = 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitReplace +
         '&broadcast_type=' + (UserVod_highlight ? 'highlight' : 'archive') + '&sort=' + UserVod_Type +
-        '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
+        '&offset=' + offset;
+    var xmlHttp;
 
-    xmlHttp.timeout = UserVod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
-    xmlHttp.ontimeout = function() {};
+    if (Main_Android) {
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                UserVod_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
-            else UserVod_loadDataErrorReplace();
+        xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            UserVod_loadDataErrorReplace();
+            return;
         }
-    };
 
-    xmlHttp.send(null);
+        if (xmlHttp.status === 200) {
+            UserVod_loadDataSuccessReplace(xmlHttp.responseText);
+            return;
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) //token expired
+            AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+        else UserVod_loadDataErrorReplace();
+
+    } else {
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+
+        xmlHttp.timeout = UserVod_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    UserVod_loadDataSuccessReplace(xmlHttp.responseText);
+                    return;
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) //token expired
+                    AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
+                else UserVod_loadDataErrorReplace();
+            }
+        };
+
+        xmlHttp.send(null);
+    }
 }
 
 function UserVod_loadDataErrorReplace() {

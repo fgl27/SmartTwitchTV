@@ -82,7 +82,6 @@ function Vod_loadDataPrepare() {
 }
 
 function Vod_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
 
     var offset = Vod_itemsCount + Vod_itemsCountOffset;
     if (offset && offset > (Vod_MaxOffset - 1)) {
@@ -90,29 +89,12 @@ function Vod_loadDataRequest() {
         Vod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
+    var theUrl = 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitVideo +
         '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
         '&period=' + Vod_period +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-        '&' + Math.round(Math.random() * 1e7), true);
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    xmlHttp.timeout = Vod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Vod_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                Vod_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, Vod_loadingDataTimeout, 2, null, Vod_loadDataSuccess, Vod_loadDataError);
 }
 
 function Vod_loadDataError() {
@@ -275,7 +257,6 @@ function Vod_loadDataSuccessFinish() {
 }
 
 function Vod_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
 
     Main_SetItemsLimitReplace(Vod_emptyCellVector.length);
 
@@ -285,27 +266,12 @@ function Vod_loadDataReplace() {
         Vod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReplace +
+    var theUrl = 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitReplace +
         '&broadcast_type=' + (Vod_highlight ? 'highlight' : 'archive') + '&sort=views&offset=' + offset +
         '&period=' + Vod_period +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-        '&' + Math.round(Math.random() * 1e7), true);
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    xmlHttp.timeout = Vod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Vod_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else Vod_loadDataErrorReplace();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, Vod_loadingDataTimeout, 2, null, Vod_loadDataSuccessReplace, Vod_loadDataErrorReplace);
 }
 
 function Vod_loadDataErrorReplace() {
