@@ -137,7 +137,6 @@ public class PlayerActivity extends Activity {
                 player.seekTo(mResumePosition);
             }
 
-            //player.seekTo(useDEfaultStart ? DEFAULT_STARTING : 0);
             player.prepare(mediaSource, false, true);
             player.setPlayWhenReady(true);
             player.addListener(PlayerEvent());
