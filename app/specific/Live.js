@@ -35,14 +35,12 @@ function Live_init() {
 function Live_exit() {
     document.body.removeEventListener("keydown", Live_handleKeyDown);
     Main_RemoveClass('top_bar_live', 'icon_center_focus');
-    Main_HideExitDialog();
     Main_HideElement(Live_ids[10]);
 }
 
 function Live_StartLoad() {
     Main_HideElement(Live_ids[10]);
     Main_showLoadDialog();
-    Main_HideExitDialog();
     Main_HideWarningDialog();
     Live_Status = false;
     Main_empty('stream_table_live');
@@ -316,7 +314,6 @@ function Live_handleKeyDown(event) {
             if (Main_isUpdateDialogShown()) Main_HideUpdateDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isExitDialogShown()) Main_HideExitDialog();
             else {
                 Live_removeFocus();
                 Main_CenterLablesStart(Live_handleKeyDown);
@@ -409,15 +406,7 @@ function Live_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (Main_isExitDialogShown()) {
-                // HideExitDialog set Live_ExitCursor to 0, is better to hide befor exit, use temp var
-                var temp_ExitCursor = Live_ExitCursor;
-                Main_HideExitDialog();
-                try {
-                    if (temp_ExitCursor === 1) tizen.application.getCurrentApplication().hide();
-                    else if (temp_ExitCursor === 2) tizen.application.getCurrentApplication().exit();
-                } catch (e) {}
-            } else Main_OpenLiveStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
+            Main_OpenLiveStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
             break;
         case KEY_RED:
             Main_SidePannelStart(Live_handleKeyDown);

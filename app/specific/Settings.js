@@ -238,7 +238,6 @@ function Settings_SetDefautls() {
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     Main_ContentLang = Settings_Obj_set_values("content_lang");
     Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
-    console.log('Main_values.Play_ChatForceDisable ' + Main_values.Play_ChatForceDisable);
 }
 
 function Settings_Obj_values(key) {
@@ -312,7 +311,6 @@ function Settings_SetDefault(position) {
         Settings_SetClock();
         Main_updateclock();
     }
-    console.log('Main_values.Play_ChatForceDisable ' + Main_values.Play_ChatForceDisable);
 }
 
 function Settings_CheckLang(lang) {

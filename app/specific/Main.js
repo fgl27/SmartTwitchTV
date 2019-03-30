@@ -439,7 +439,6 @@ function Main_HideWarningDialog() {
 }
 
 function Main_showAboutDialog() {
-    Main_HideExitDialog();
     Main_HideControlsDialog();
     Main_HideUpdateDialog();
     Main_ShowElement('dialog_about');
@@ -454,7 +453,6 @@ function Main_isAboutDialogShown() {
 }
 
 function Main_showSettings() {
-    Main_HideExitDialog();
     Main_HideControlsDialog();
     Main_HideUpdateDialog();
     Main_HideWarningDialog();
@@ -464,7 +462,6 @@ function Main_showSettings() {
 }
 
 function Main_showControlsDialog() {
-    Main_HideExitDialog();
     Main_HideAboutDialog();
     Main_HideUpdateDialog();
     Main_ShowElement('dialog_controls');
@@ -478,13 +475,6 @@ function Main_HideControlsDialog() {
 function Main_isControlsDialogShown() {
     return Main_isElementShowing('dialog_controls');
 }
-
-//function Main_showUpdateDialog() {
-//    Main_HideExitDialog();
-//    Main_HideAboutDialog();
-//    Main_HideControlsDialog();
-//    Main_ShowElement('dialog_update');
-//}
 
 function Main_HideUpdateDialog() {
     Main_HideElement('dialog_update');
