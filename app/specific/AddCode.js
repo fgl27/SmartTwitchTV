@@ -261,9 +261,12 @@ function AddCode_CheckOauthTokenSucess(response) {
         Users_status = false;
         AddCode_loadingData = false;
         Main_AddCodeInput.value = '';
-        Main_SaveValues();
         Main_values.Main_Go = Main_Users;
-        window.location = AddCode_redirect_uri;
+        Main_SaveValues();
+        Main_showWarningDialog(STR_USER_CODE_OK);
+        window.setTimeout(function() {
+            window.location = AddCode_redirect_uri;
+        }, 3000);
     } else {
         AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
