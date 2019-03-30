@@ -44,6 +44,7 @@ var PlayVod_HasVodInfo = true;
 var PlayVod_ProgressBaroffset = 0;
 var PlayVod_StepsCount = 0;
 var PlayVod_TimeToJump = 0;
+var PlayVod_replay = false;
 var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 
 var PlayVod_RefreshProgressBarrID;
@@ -488,10 +489,13 @@ function PlayVod_onPlayer() {
     if (Main_values.vodOffset) {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
-        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
+        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, 
+        PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
         Main_values.vodOffset = 0;
-    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, Android.gettime());
+    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
+    PlayVod_replay ? -1 : Android.gettime());
 
+    PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
     if (Main_Android) {
@@ -549,6 +553,7 @@ function PlayVod_DropOneQuality(ConnectionDrop) {
 
 function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
+        PlayVod_qualities = [];
         PlayVod_PreshutdownStream(true);
         Play_exitMain();
     }
@@ -693,11 +698,13 @@ function PlayVod_jump() {
         PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
-            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2, (PlayVod_TimeToJump * 1000));
+            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2,
+            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
             Chat_offset = PlayVod_TimeToJump;
         } else {
             Chat_offset = ChannelVod_vodOffset;
-            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3, (PlayVod_TimeToJump * 1000));
+            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,
+            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
         }
 
         if (PlayClip_HasVOD) Chat_Init();

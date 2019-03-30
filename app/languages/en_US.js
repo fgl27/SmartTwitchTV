@@ -228,4 +228,5 @@ function en_USLang() {
     STR_NO_GAME = "Empty game fro this";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
     STR_CHAT_DISABLE = "Chat is disabled, use key Green or B to enable";
+    STR_CLIP_FAIL = "This clip/video fail to load can't replay";
 }

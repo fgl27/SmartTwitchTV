@@ -445,9 +445,10 @@ public class PlayerActivity extends Activity {
             shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
             mwhocall = intent.getIntExtra("whocall", 1);
             long mPosition = intent.getLongExtra("position", 0);
-            if (mPosition > 0) {
+            if (mPosition != 0) {
                 mResumeWindow = 1;
                 mResumePosition = mPosition;
+                if (mResumePosition < 0) mResumePosition = 0;
             }
             initializePlayer();
         }
