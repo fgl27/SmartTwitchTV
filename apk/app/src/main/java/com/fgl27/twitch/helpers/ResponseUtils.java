@@ -1,5 +1,5 @@
 //copied https://github.com/yuliskov/SmartYouTubeTV
-package com.fgl27.twitchtv.helpers;
+package com.fgl27.twitch.helpers;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;

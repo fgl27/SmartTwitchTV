@@ -1,6 +1,6 @@
 //adapt part of the player from https://github.com/yuliskov/SmartYouTubeTV
 
-package com.fgl27.twitchtv;
+package com.fgl27.twitch;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -21,8 +21,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.fgl27.twitchtv.helpers.ResponseUtils;
-import com.fgl27.twitchtv.helpers.Streams;
+import com.fgl27.twitch.helpers.ResponseUtils;
+import com.fgl27.twitch.helpers.Streams;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
