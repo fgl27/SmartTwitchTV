@@ -581,10 +581,14 @@ function UserVod_handleKeyDown(event) {
 
 function UserVod_SetPeriod() {
     if (UserVod_TypeNumber === 1) {
-        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter((UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_TIME));
+        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
+        AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
+        (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_TIME));
         UserVod_Type = 'time';
     } else if (UserVod_TypeNumber === 2) {
-        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter((UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_VIWES));
+        Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
+                AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
+        (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_VIWES));
         UserVod_Type = 'views';
     }
     Main_setItem('UserVod_TypeNumber', UserVod_TypeNumber);
