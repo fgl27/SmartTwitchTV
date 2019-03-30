@@ -489,11 +489,11 @@ function PlayVod_onPlayer() {
     if (Main_values.vodOffset) {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
-        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, 
-        PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
+            PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
         Main_values.vodOffset = 0;
     } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
-    PlayVod_replay ? -1 : Android.gettime());
+        PlayVod_replay ? -1 : Android.gettime());
 
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -699,12 +699,12 @@ function PlayVod_jump() {
 
         if (PlayVod_isOn) {
             if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2,
-            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
             Chat_offset = PlayVod_TimeToJump;
         } else {
             Chat_offset = ChannelVod_vodOffset;
             if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,
-            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
         }
 
         if (PlayClip_HasVOD) Chat_Init();
