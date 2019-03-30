@@ -190,7 +190,7 @@ function PlayClip_qualityChanged() {
     PlayClip_state = PlayClip_STATE_PLAYING;
 
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    if (Main_Android && PlayClip_isOn) Android.startVideo(PlayClip_playingUrl, 3);
+    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3, Android.gettime());
     PlayClip_onPlayer();
 }
 
