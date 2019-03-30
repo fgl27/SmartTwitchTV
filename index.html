@@ -557,7 +557,7 @@
             text-align: center;
             margin-top: 0.5%;
             margin-right: 0.5%;
-            border: 3.5px solid rgba(0, 0, 0, 0);
+            border: 2px solid rgba(0, 0, 0, 0);
         }
 
         div.playbotton_focus {
@@ -939,7 +939,6 @@
 
         .progress_pause_holder {
             bottom: 55px;
-            display: flex;
             position: absolute;
             width: 100%;
             justify-content: center;
@@ -947,18 +946,17 @@
 
         .pause_button {
             width: 5%;
+            margin-left: 47.5%;
             padding-top: 5px;
             height: 35px;
             text-align: center;
             border-radius: 15px;
             border: 2px solid rgba(0, 0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.7);
-            border-color: #FFFFFF;
         }
 
         .progress_bar_div {
-            width: 82%;
-            margin-left: 2%;
+            width: 90%;
+            margin-left: 5%;
             height: 40px;
             text-align: center;
             border-radius: 15px;
@@ -1459,10 +1457,7 @@
                     <div id="open_vod_text" class="strokedextramini playbottontext" style="font-size: 77.5%;"></div>
                 </div>
             </div>
-            <div class="progress_pause_holder">
-                <div id="pause_button" class="pause_button">
-                    <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>
-                </div>
+            <div id="progress_pause_holder" class="progress_pause_holder">
                 <div id="progress_bar_div" class="progress_bar_div">
                     <div id="progress_bar_jump_to" class="progress_bar_jump strokedextramini" style="transform: translateY(-25%);"></div>
                     <div>
@@ -1477,6 +1472,9 @@
                         </div>
                     </div>
                     <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
+                </div>
+                <div id="pause_button" class="pause_button">
+                    <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>
                 </div>
             </div>
         </div>
