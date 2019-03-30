@@ -427,7 +427,7 @@ function UserLive_addFocus() {
 }
 
 function UserLive_removeFocus() {
-    Main_removeFocus(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
+    if (UserLive_itemsCount) Main_removeFocus(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids);
 }
 
 function UserLive_handleKeyDown(event) {

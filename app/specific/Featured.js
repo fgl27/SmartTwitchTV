@@ -288,7 +288,7 @@ function Featured_addFocus() {
 }
 
 function Featured_removeFocus() {
-    Main_removeFocus(Featured_cursorY + '_' + Featured_cursorX, Featured_ids);
+    if (Featured_itemsCount) Main_removeFocus(Featured_cursorY + '_' + Featured_cursorX, Featured_ids);
 }
 
 function Featured_handleKeyDown(event) {

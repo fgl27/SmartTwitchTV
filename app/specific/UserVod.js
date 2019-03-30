@@ -403,7 +403,7 @@ function UserVod_addFocus() {
 
 function UserVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    if (UserVod_cursorY > -1) {
+    if (UserVod_cursorY > -1 && UserVod_itemsCount) {
         Main_ShowElement(UserVod_ids[1] + UserVod_cursorY + '_' + UserVod_cursorX);
         Main_removeFocus(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids);
     } else UserVod_removeFocusFallow();

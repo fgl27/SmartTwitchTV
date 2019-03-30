@@ -296,7 +296,7 @@ function UserHost_addFocus() {
 }
 
 function UserHost_removeFocus() {
-    Main_removeFocus(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
+    if (UserHost_itemsCount) Main_removeFocus(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids);
 }
 
 function UserHost_handleKeyDown(event) {

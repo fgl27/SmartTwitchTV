@@ -164,7 +164,7 @@ function ScreensObj_InitClip() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
@@ -240,7 +240,7 @@ function ScreensObj_InitChannelClip() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
@@ -330,7 +330,7 @@ function ScreensObj_InitAGameClip() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
@@ -407,7 +407,7 @@ function ScreensObj_InitGame() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
@@ -533,7 +533,7 @@ function ScreensObj_InitUserGames() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },

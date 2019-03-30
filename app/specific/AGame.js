@@ -356,7 +356,7 @@ function AGame_addFocus() {
 }
 
 function AGame_removeFocus() {
-    if (AGame_cursorY > -1) Main_removeFocus(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
+    if (AGame_cursorY > -1 && AGame_itemsCount) Main_removeFocus(AGame_cursorY + '_' + AGame_cursorX, AGame_ids);
     else AGame_removeFocusFallow();
 }
 

@@ -294,7 +294,7 @@ function SearchChannels_addFocus() {
 }
 
 function SearchChannels_removeFocus() {
-    Main_removeFocus(SearchChannels_cursorY + '_' + SearchChannels_cursorX, SearchChannels_ids);
+    if (SearchChannels_itemsCount) Main_removeFocus(SearchChannels_cursorY + '_' + SearchChannels_cursorX, SearchChannels_ids);
 }
 
 function SearchChannels_handleKeyDown(event) {

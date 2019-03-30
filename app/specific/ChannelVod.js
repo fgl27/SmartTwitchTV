@@ -315,7 +315,7 @@ function ChannelVod_addFocus() {
 
 function ChannelVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    if (ChannelVod_cursorY > -1) {
+    if (ChannelVod_cursorY > -1 && ChannelVod_itemsCount) {
         Main_ShowElement(ChannelVod_ids[1] + ChannelVod_cursorY + '_' + ChannelVod_cursorX);
         Main_removeFocus(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids);
     } else ChannelVod_removeFocusFallow();

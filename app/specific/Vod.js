@@ -345,7 +345,7 @@ function Vod_addFocus() {
 
 function Vod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    if (Vod_cursorY > -1) {
+    if (Vod_cursorY > -1 && Vod_itemsCount) {
         Main_ShowElement(Vod_ids[1] + Vod_cursorY + '_' + Vod_cursorX);
         Main_removeFocus(Vod_cursorY + '_' + Vod_cursorX, Vod_ids);
     } else Vod_removeFocusFallow();

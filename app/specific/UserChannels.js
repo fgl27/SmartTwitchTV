@@ -210,7 +210,7 @@ function UserChannels_addFocus() {
 }
 
 function UserChannels_removeFocus() {
-    Main_removeFocus(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
+    if (UserChannels_itemsCount) Main_removeFocus(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids);
 }
 
 function UserChannels_handleKeyDown(event) {

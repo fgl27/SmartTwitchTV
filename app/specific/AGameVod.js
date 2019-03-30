@@ -308,7 +308,7 @@ function AGameVod_addFocus() {
 
 function AGameVod_removeFocus() {
     window.clearInterval(Vod_AnimateThumbId);
-    if (AGameVod_cursorY > -1) {
+    if (AGameVod_cursorY > -1 && AGameVod_itemsCount) {
         Main_ShowElement(AGameVod_ids[1] + AGameVod_cursorY + '_' + AGameVod_cursorX);
         Main_removeFocus(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids);
     } else AGameVod_removeFocusFallow();
