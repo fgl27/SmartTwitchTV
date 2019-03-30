@@ -16,7 +16,6 @@ var Live_itemsCountOffset = 0;
 var Live_MaxOffset = 0;
 var Live_itemsCountCheck = false;
 var Live_imgCounter = 0;
-var Live_emptyContent = false;
 //Variable initialization end
 
 function Live_init() {
@@ -113,8 +112,6 @@ function Live_loadDataSuccess(responseText) {
     var offset_itemsCount = Live_itemsCount;
     Live_itemsCount += response_items;
 
-    Live_emptyContent = !Live_itemsCount;
-
     var response_rows = response_items / Main_ColoumnsCountVideo;
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
@@ -160,7 +157,7 @@ function Live_loadDataSuccessFinish() {
         if (!Live_Status) {
             Main_HideLoadDialog();
             Main_ShowElement('topbar');
-            if (Live_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+            if (!Live_itemsCount) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Live_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
@@ -296,7 +293,7 @@ function Live_addFocus() {
 }
 
 function Live_removeFocus() {
-    Main_removeFocus(Live_cursorY + '_' + Live_cursorX, Live_ids);
+    if (Live_itemsCount) Main_removeFocus(Live_cursorY + '_' + Live_cursorX, Live_ids);
 }
 
 function Live_ExitCursorSet() {
