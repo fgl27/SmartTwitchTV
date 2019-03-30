@@ -98,25 +98,26 @@ function Screens_loadDataPrepare() {
 
 function Screens_loadDataRequest() {
     inUseObj.set_url();
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(inUseObj.url, inUseObj.loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(inUseObj.url, inUseObj.loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             Screens_loadDataError();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            inUseObj.concatenate(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            inUseObj.concatenate(xmlHttp.responseText);
         } else {
             Screens_loadDataError();
         }
 
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", inUseObj.url, true);
 
