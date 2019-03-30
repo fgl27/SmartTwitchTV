@@ -1,6 +1,6 @@
 //copied https://github.com/yuliskov/SmartYouTubeTV
 
-package com.fgl27.twitchtv.helpers;
+package com.fgl27.twitch.helpers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

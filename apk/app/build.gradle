@@ -6,7 +6,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId "com.fgl27.twitchtv"
+        applicationId "com.fgl27.twitch"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.maxSdk
         versionCode versions.publishVersionCode
