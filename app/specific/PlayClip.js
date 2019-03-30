@@ -507,7 +507,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayClip_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
+                        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
                             if (Play_isNotplaying()) Chat_Play(Chat_Id);
                             else Chat_Pause();
                         }
@@ -568,7 +568,7 @@ function PlayClip_handleKeyDown(e) {
                 //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 if (!PlayClip_HasVOD) return;
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (Main_values.Play_ChatForceDisable) Chat_Disable();
+                if (!Main_values.Play_ChatForceDisable) Chat_Disable();
                 else if (PlayClip_HasVOD) {
                     Chat_offset = ChannelVod_vodOffset;
                     Chat_Init();

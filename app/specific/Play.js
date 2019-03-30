@@ -605,7 +605,7 @@ function Play_onPlayer() {
 }
 
 function Play_loadChat() {
-    if (Main_values.Play_ChatForceDisable) {
+    if (!Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }
@@ -1720,7 +1720,7 @@ function Play_handleKeyDown(e) {
             case KEY_GREEN:
                 //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (Main_values.Play_ChatForceDisable) {
+                if (!Main_values.Play_ChatForceDisable) {
                     Play_Chatobj.src = 'about:blank';
                     Chat_Disable();
                 } else {

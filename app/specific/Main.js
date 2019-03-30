@@ -287,7 +287,6 @@ function Main_SetStringsMain(isStarting) {
 function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
     Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
-    Main_innerHTML("stream_controls", '<div style="vertical-align: middle; display: inline-block"><i class="icon-question-circle" style="color: #FFFFFF; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_CONTROL_KEY + '</div>');
 
     Main_textContent('side_panel_search', STR_SEARCH);
     Main_textContent('side_panel_settings', STR_SETTINGS);

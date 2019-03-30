@@ -14,6 +14,10 @@ var Settings_value = {
         "values": ["85%", "100%", "130%", "160%"],
         "defaultValue": 2
     },
+    "force_disable_chat": { //force disable
+        "values": ["off", "on"],
+        "defaultValue": 2
+    },
     "videos_animation": { //videos_animation
         "values": ["off", "on"],
         "defaultValue": 2
@@ -142,6 +146,12 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
 
+    key = "force_disable_chat";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+
+    div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
+
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
 }
@@ -204,6 +214,11 @@ function Settings_SetStrings() {
     key = "chat_font_size";
     Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
 
+    //Player restore
+    key = "force_disable_chat";
+    Settings_DivOptionChangeLang(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
+    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+
     // Videos
     key = "videos_animation";
     Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
@@ -222,6 +237,8 @@ function Settings_SetDefautls() {
     Settings_SetClock();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     Main_ContentLang = Settings_Obj_set_values("content_lang");
+    Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
+    console.log('Main_values.Play_ChatForceDisable ' + Main_values.Play_ChatForceDisable);
 }
 
 function Settings_Obj_values(key) {
@@ -289,11 +306,13 @@ function Settings_SetDefault(position) {
         Settings_SetLang(Settings_Obj_set_values("general_lang"));
     } else if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
     else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
     else if (position === "chat_font_size") Play_SetChatFont();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
     }
+    console.log('Main_values.Play_ChatForceDisable ' + Main_values.Play_ChatForceDisable);
 }
 
 function Settings_CheckLang(lang) {

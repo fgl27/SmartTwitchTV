@@ -397,9 +397,12 @@ function PlayVod_loadDataRequest() {
 
 function PlayVod_loadDataError() {
     if (PlayVod_isOn) {
-        if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
-            PlayVod_loadDataCheckSub();
-            return;
+        var mjson = JSON.parse(PlayVod_tokenResponse.token);
+        if (mjson) {
+            if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
+                PlayVod_loadDataCheckSub();
+                return;
+            }
         }
 
         PlayVod_loadingDataTry++;
@@ -1030,7 +1033,7 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (!Main_values.Play_ChatForceDisable) {
+                        if (Main_values.Play_ChatForceDisable) {
                             if (Play_isNotplaying()) Chat_Play(Chat_Id);
                             else Chat_Pause();
                         }
@@ -1044,7 +1047,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (!Main_values.Play_ChatForceDisable) {
+                if (Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
@@ -1056,7 +1059,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_GREEN:
                 //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (Main_values.Play_ChatForceDisable) Chat_Disable();
+                if (!Main_values.Play_ChatForceDisable) Chat_Disable();
                 else Chat_Init();
                 Main_SaveValues();
                 break;
