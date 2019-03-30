@@ -490,7 +490,7 @@ function PlayVod_onPlayer() {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
         if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, (Main_values.vodOffset * 1000));
-    } else if (Main_Android && PlayVod_isOn) Android.startVideo(PlayVod_playingUrl, 2);
+    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2, Android.gettime());
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
 
