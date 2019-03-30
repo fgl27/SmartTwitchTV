@@ -292,6 +292,7 @@ function Main_SetStringsSecondary() {
     Main_textContent('side_panel_settings', STR_SETTINGS);
     Main_textContent('side_panel_about', STR_ABOUT);
     Main_textContent('side_panel_controls', STR_CONTROLS);
+    Main_textContent('side_panel_exit', STR_EXIT);
 
     Main_textContent('side_panel_live', STR_LIVE);
     Main_textContent('side_panel_user', STR_USER);
@@ -368,12 +369,15 @@ function Main_setExitDialog() {
     Main_ExitDialogID = window.setTimeout(Main_HideExitDialog, 6000);
 }
 
-function Main_showExitDialog() { // jshint ignore:line
+function Main_showExitDialog() {
     Main_setExitDialog();
     Main_ShowElement('main_dialog_exit');
+    document.body.addEventListener("keydown", Main_ExitDialog, false);
 }
 
 function Main_HideExitDialog() {
+    document.body.removeEventListener("keydown", Main_ExitDialog, false);
+    Main_CenterLablesStart(Main_SidePannelCallback);
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Live_ExitCursor = 0;
@@ -1066,12 +1070,13 @@ function Main_SidePannelKeyEnter() {
     } else if (Main_SidePannelPos === 3) {
         document.body.addEventListener("keydown", Main_SidePannelCallback, false);
         Main_showControlsDialog();
-    } else if (Main_SidePannelPos === 4) Main_SidePannelGo(Main_Live);
-    else if (Main_SidePannelPos === 5) Main_SidePannelGo(AddUser_IsUserSet() ? Main_Users : Main_addUser);
-    else if (Main_SidePannelPos === 6) Main_SidePannelGo(Main_Featured);
-    else if (Main_SidePannelPos === 7) Main_SidePannelGo(Main_games);
-    else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_Vod);
-    else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Clip);
+    } else if (Main_SidePannelPos === 4) Main_showExitDialog(Main_SidePannelCallback);
+    else if (Main_SidePannelPos === 5) Main_SidePannelGo(Main_Live);
+    else if (Main_SidePannelPos === 6) Main_SidePannelGo(AddUser_IsUserSet() ? Main_Users : Main_addUser);
+    else if (Main_SidePannelPos === 7) Main_SidePannelGo(Main_Featured);
+    else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_games);
+    else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Vod);
+    else if (Main_SidePannelPos === 10) Main_SidePannelGo(Main_Clip);
     Main_SidePannelHide();
 }
 
@@ -1116,7 +1121,7 @@ function Main_SidePannelhandleKeyDown(event) {
             }
             break;
         case KEY_DOWN:
-            if (Main_SidePannelPos < 9) {
+            if (Main_SidePannelPos < 10) {
                 Main_SidePannelRemoveFocus();
                 Main_SidePannelPos++;
                 Main_SidePannelAddFocus();
@@ -1124,6 +1129,35 @@ function Main_SidePannelhandleKeyDown(event) {
             break;
         case KEY_ENTER:
             Main_SidePannelKeyEnter();
+            break;
+        default:
+            break;
+    }
+}
+
+function Main_ExitDialog(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            Main_HideExitDialog();
+            break;
+        case KEY_RIGHT:
+            Live_ExitCursor++;
+            if (Live_ExitCursor > 2) Live_ExitCursor = 0;
+            Live_ExitCursorSet();
+            Main_clearExitDialog();
+            Main_setExitDialog();
+            break;
+        case KEY_LEFT:
+            Live_ExitCursor--;
+            if (Live_ExitCursor < 0) Live_ExitCursor = 2;
+            Live_ExitCursorSet();
+            Main_clearExitDialog();
+            Main_setExitDialog();
+            break;
+        case KEY_ENTER:
+            if (!Live_ExitCursor) Main_HideExitDialog();
+            else if (Main_Android && Live_ExitCursor === 1) Android.mclose(false);
+            else if (Main_Android && Live_ExitCursor === 2) Android.mclose(true);
             break;
         default:
             break;
