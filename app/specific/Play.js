@@ -1193,24 +1193,42 @@ function Play_EndTextClear() {
 }
 
 function Play_EndDialogPressed(PlayVodClip) {
+    var canhide = true;
     if (!Play_Endcounter) {
         if (PlayVodClip === 2) {
-            PlayVod_PlayerCheckQualityChanged = false;
-            PlayVod_qualityChanged();
-            Play_clearPause();
-            PlayVod_currentTime = 0;
-            Chat_offset = 0;
-            Chat_Init();
-        } else if (PlayVodClip === 3) {
-            PlayClip_offsettime = 0;
-            PlayClip_PlayerCheckQualityChanged = false;
-            PlayClip_qualityChanged();
-            Play_clearPause();
-            if (PlayClip_HasVOD) {
+            if (!PlayVod_qualities.length) {
+                canhide = false;
+                Play_showWarningDialog(STR_CLIP_FAIL);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
+            } else {
+                PlayVod_replay = true;
+                PlayVod_PlayerCheckQualityChanged = false;
+                PlayVod_qualityChanged();
+                Play_clearPause();
                 PlayVod_currentTime = 0;
-                Chat_offset = ChannelVod_vodOffset;
+                Chat_offset = 0;
                 Chat_Init();
-            } else Chat_NoVod();
+            }
+        } else if (PlayVodClip === 3) {
+            if (!PlayClip_qualities.length) {
+                canhide = false;
+                Play_showWarningDialog(STR_CLIP_FAIL);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
+            } else {
+                PlayClip_replay = true;
+                PlayClip_PlayerCheckQualityChanged = false;
+                PlayClip_qualityChanged();
+                Play_clearPause();
+                if (PlayClip_HasVOD) {
+                    PlayVod_currentTime = 0;
+                    Chat_offset = ChannelVod_vodOffset;
+                    Chat_Init();
+                } else Chat_NoVod();
+            }
         }
     } else if (Play_Endcounter === 1) {
         if (Main_values.Play_isHost) {
@@ -1227,10 +1245,10 @@ function Play_EndDialogPressed(PlayVodClip) {
     } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
 
-    if (Play_Endcounter !== 1) {
-        if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') return;
-        Play_HideEndDialog();
-    }
+    if (Play_Endcounter !== 1)
+        if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') canhide = false;
+
+    if (canhide) Play_HideEndDialog();
 }
 
 function Play_EndSet(PlayVodClip) {
