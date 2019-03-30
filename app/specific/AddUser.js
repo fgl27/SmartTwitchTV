@@ -155,31 +155,17 @@ function AddUser_KeyboardEvent(event) {
 }
 
 function AddUser_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
+    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username);
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username), true);
-    xmlHttp.timeout = AddUser_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    BasehttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
+}
 
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (JSON.parse(xmlHttp.responseText)._total) {
-                    Main_AddUserInput.value = '';
-                    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-                    AddUser_SaveNewUser(xmlHttp.responseText);
-                } else AddUser_loadDataNoUser();
-                return;
-            } else {
-                AddUser_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+function AddUser_loadDataRequestSuccess(response) {
+    if (JSON.parse(response)._total) {
+        Main_AddUserInput.value = '';
+        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+        AddUser_SaveNewUser(response);
+    } else AddUser_loadDataNoUser();
 }
 
 function AddUser_loadDataError() {

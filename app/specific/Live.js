@@ -81,45 +81,7 @@ function Live_loadDataRequest() {
     var theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    if (Main_Android) {
-
-        var jsonOb = Android.mreadUrl(theUrl, Live_loadingDataTimeout, true, false, null);
-
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
-        else {
-            Live_loadDataError();
-            return;
-        }
-
-        if (jsonOb.result === 200) {
-            Live_loadDataSuccess(jsonOb.value);
-        } else {
-            Live_loadDataError();
-        }
-
-
-    } else {
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Live_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Live_loadDataSuccess(xmlHttp.responseText);
-                    return;
-                } else {
-                    Live_loadDataError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, Live_loadingDataTimeout, 2, null, Live_loadDataSuccess, Live_loadDataError);
 }
 
 function Live_loadDataError() {
@@ -265,44 +227,8 @@ function Live_loadDataReplace() {
     var theUrl = 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    if (Main_Android) {
-
-        var jsonOb = Android.mreadUrl(theUrl, Live_loadingDataTimeout, true, false, null);
-
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
-        else {
-            Live_loadDataErrorReplace();
-            return;
-        }
-
-        if (jsonOb.result === 200) {
-            Live_loadDataSuccessReplace(jsonOb.value);
-        } else {
-            Live_loadDataErrorReplace();
-        }
-
-
-    } else {
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-
-        xmlHttp.timeout = Live_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Live_loadDataSuccessReplace(xmlHttp.responseText);
-                    return;
-                } else Live_loadDataErrorReplace();
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, Live_loadingDataTimeout, 2, null, Live_loadDataSuccessReplace, Live_loadDataErrorReplace);
+    //XMLHttpRequest
 }
 
 function Live_loadDataErrorReplace() {

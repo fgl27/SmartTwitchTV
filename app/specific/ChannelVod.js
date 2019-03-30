@@ -87,7 +87,6 @@ function ChannelVod_loadDataPrepare() {
 }
 
 function ChannelVod_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
 
     var offset = ChannelVod_itemsCount + ChannelVod_itemsCountOffset;
     if (offset && offset > (ChannelVod_MaxOffset - 1)) {
@@ -95,28 +94,11 @@ function ChannelVod_loadDataRequest() {
         ChannelVod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
+    var theUrl = 'https://api.twitch.tv/kraken/channels/' +
         encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitVideo +
-        '&broadcast_type=' + (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
-        Math.round(Math.random() * 1e7), true);
+        '&broadcast_type=' + (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset;
 
-    xmlHttp.timeout = ChannelVod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChannelVod_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                ChannelVod_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, ChannelVod_loadingDataTimeout, 2, null, ChannelVod_loadDataSuccess, ChannelVod_loadDataError);
 }
 
 function ChannelVod_loadDataError() {
@@ -245,8 +227,6 @@ function ChannelVod_loadDataSuccessFinish() {
 }
 
 function ChannelVod_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
-
     Main_SetItemsLimitReplace(ChannelVod_emptyCellVector.length);
 
     var offset = ChannelVod_itemsCount + ChannelVod_itemsCountOffset;
@@ -256,26 +236,11 @@ function ChannelVod_loadDataReplace() {
         ChannelVod_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/channels/' +
+    var theUrl = 'https://api.twitch.tv/kraken/channels/' +
         encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitReplace + '&broadcast_type=' +
-        (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset + '&' +
-        Math.round(Math.random() * 1e7), true);
+        (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset;
 
-    xmlHttp.timeout = ChannelVod_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChannelVod_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else ChannelVod_loadDataErrorReplace();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, ChannelVod_loadingDataTimeout, 2, null, ChannelVod_loadDataSuccessReplace, ChannelVod_loadDataErrorReplace);
 }
 
 function ChannelVod_loadDataErrorReplace() {

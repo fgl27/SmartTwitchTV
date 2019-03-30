@@ -333,7 +333,9 @@ public class PlayerActivity extends Activity {
         websettings.setAllowUniversalAccessFromFileURLs(true);
         mwebview.clearCache(true);
 
+        //To load page from assets
         //mwebview.loadUrl("file:///android_asset/index.html");
+        //To load page from githubio
         mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
@@ -409,8 +411,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mreadUrl(String urlString, int timeout, boolean duploHeader, boolean tripleHeader, String access_token) {
-            return readUrl(urlString, timeout, duploHeader, tripleHeader, access_token);
+        public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
+            return readUrl(urlString, timeout, HeaderQuantity, access_token);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -523,16 +525,22 @@ public class PlayerActivity extends Activity {
         };
     }
 
-    public String readUrl(String urlString, int timeout, boolean duploHeader, boolean tripleHeader, String access_token) {
+    //TODO improve this function, try a asynchronous one
+    //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
+    //use default js XMLHttpRequest
+    public String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
         JSONObject ob = new JSONObject();
         try {
             URL url = new URL(urlString);
             Log.d(TAG, "urlString " + urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-            urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
-            if (duploHeader) urlConnection.setRequestProperty(ACCEPTHEADER, TWITHCV5JSON);
-            if (tripleHeader) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
+            //Default header for all actions
+            if (HeaderQuantity > 0) urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
+            //Header TWITHCV5 to load all screens and some stream info
+            if (HeaderQuantity > 1) urlConnection.setRequestProperty(ACCEPTHEADER, TWITHCV5JSON);
+            //Header to access User VOD screen
+            if (HeaderQuantity > 2) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
 
             urlConnection.setConnectTimeout(timeout);
 
@@ -549,17 +557,46 @@ public class PlayerActivity extends Activity {
                 }
 
                 byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-                ob.put("result",200);
-                ob.put("value",new String(responseBytes, responseCharset));
+
+                ob.put("status",200);
+                ob.put("responseText",new String(responseBytes, responseCharset));
                 return ob.toString();
             } if (urlConnection.getResponseCode() == 403) { //forbidden access
-                ob.put("result",403);
+                final Charset responseCharset;
+                try {
+                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
+                } catch (UnsupportedCharsetException ucse) {
+                    Log.i(TAG, "Unsupported response charset", ucse);
+                    return null;
+                } catch (IllegalCharsetNameException icne) {
+                    Log.i(TAG, "Illegal response charset", icne);
+                    return null;
+                }
+
+                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
+
+                ob.put("status",403);
+                ob.put("responseText",new String(responseBytes, responseCharset));
                 return ob.toString();
             } if (urlConnection.getResponseCode() == 404) { //off line
-                ob.put("result",404);
+                final Charset responseCharset;
+                try {
+                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
+                } catch (UnsupportedCharsetException ucse) {
+                    Log.i(TAG, "Unsupported response charset", ucse);
+                    return null;
+                } catch (IllegalCharsetNameException icne) {
+                    Log.i(TAG, "Illegal response charset", icne);
+                    return null;
+                }
+
+                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
+
+                ob.put("status",404);
+                ob.put("responseText",new String(responseBytes, responseCharset));
                 return ob.toString();
             } else {
-                ob.put("result",null);
+                ob.put("status",null);
                 return ob.toString();
             }
         } catch (IOException e) {

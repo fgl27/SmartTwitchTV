@@ -80,19 +80,19 @@ function UserLive_loadDataPrepare() {
 function UserLive_loadChannels() {
     var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
         '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at';
-
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             UserLive_loadDataError();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            UserLive_loadChannelLive(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            UserLive_loadChannelLive(xmlHttp.responseText);
         } else {
             UserLive_loadDataError();
         }
@@ -100,7 +100,7 @@ function UserLive_loadChannels() {
 
     } else {
 
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
@@ -174,26 +174,26 @@ function UserLive_loadChannelUserLive() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
         Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
-
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             UserLive_loadDataErrorLive();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            UserLive_loadDataSuccess(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            UserLive_loadDataSuccess(xmlHttp.responseText);
         } else {
             UserLive_loadDataErrorLive();
         }
 
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;
@@ -321,19 +321,19 @@ function UserLive_loadChannelsReplace() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
         Main_ItemsLimitReplace + '&offset=' + offset + '&stream_type=all';
-
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             UserLive_loadDataErrorReplace();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            UserLive_loadDataSuccessReplace(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            UserLive_loadDataSuccessReplace(xmlHttp.responseText);
         } else {
             UserLive_loadDataErrorReplace();
         }
@@ -341,7 +341,7 @@ function UserLive_loadChannelsReplace() {
 
     } else {
 
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", +Math.round(Math.random() * 1e7), true);
         xmlHttp.timeout = UserLive_loadingDataTimeout;

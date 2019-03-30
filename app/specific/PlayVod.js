@@ -143,24 +143,25 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             PlayVod_updateStreamerInfoError();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            PlayVod_updateStreamerInfoValues(JSON.parse(jsonOb.value).users[0]);
+        if (xmlHttp.status === 200) {
+            PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
         } else {
             PlayVod_updateStreamerInfoError();
         }
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
@@ -211,25 +212,25 @@ function PlayVod_updateStreamerInfoError() {
 
 function PlayVod_updateVodInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
-
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, true, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 2, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             PlayVod_updateVodInfoError();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            PlayVod_updateVodInfoPannel(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            PlayVod_updateVodInfoPannel(xmlHttp.responseText);
         } else {
             PlayVod_updateVodInfoError();
         }
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
@@ -356,26 +357,26 @@ function PlayVod_loadDataRequest() {
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
-
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, false, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             PlayVod_loadDataError();
             return;
         }
 
-        if (jsonOb.result === 200) {
+        if (xmlHttp.status === 200) {
             PlayVod_loadingDataTry = 0;
-            if (PlayVod_isOn) PlayVod_loadDataSuccess(jsonOb.value);
+            if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
         } else {
             PlayVod_loadDataError();
         }
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", proxyurl + theUrl, true);
         xmlHttp.timeout = PlayVod_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);

@@ -1420,3 +1420,52 @@ function processCode(pageUrl) {
         Main_newUsercode = 0;
     }
 }
+
+//Basic XMLHttpRequest thatonly returns error or 200 status
+function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+    var xmlHttp;
+    if (Main_Android) {
+
+        xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            calbackError();
+            return;
+        }
+
+        if (xmlHttp.status === 200) {
+            callbackSucess(xmlHttp.responseText);
+        } else {
+            calbackError();
+        }
+
+
+    } else {
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Timeout;
+
+        if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        //Header TWITHCV5 to load all screens and some stream info
+        if (HeaderQuatity > 1) xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        //Header to access User VOD screen
+        if (HeaderQuatity > 2) xmlHttp.setRequestHeader(Main_Authorization, access_token);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    callbackSucess(xmlHttp.responseText);
+                    return;
+                } else {
+                    calbackError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}

@@ -94,24 +94,25 @@ function PlayClip_loadData() {
 
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
+    var xmlHttp;
     if (Main_Android) {
 
-        var jsonOb = Android.mreadUrl(theUrl, Play_loadingDataTimeout, false, false, null);
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
 
-        if (jsonOb) jsonOb = JSON.parse(jsonOb);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             PlayClip_loadDataError();
             return;
         }
 
-        if (jsonOb.result === 200) {
-            PlayClip_QualityGenerate(jsonOb.value);
+        if (xmlHttp.status === 200) {
+            PlayClip_QualityGenerate(xmlHttp.responseText);
         } else {
             PlayClip_loadDataError();
         }
 
     } else {
-        var xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", proxyurl + theUrl, true);
         xmlHttp.timeout = PlayClip_loadingDataTimeout;
