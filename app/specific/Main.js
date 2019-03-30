@@ -120,9 +120,9 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 //var Main_version = 401;
-var Main_stringVersion = '4.0.1';
+var Main_stringVersion = '1.0';
 //var Main_currentVersion = '';
-var Main_minversion = '032519';
+var Main_minversion = '033019';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 var Main_Android = 0;
