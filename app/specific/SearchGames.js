@@ -169,7 +169,7 @@ function SearchGames_addFocus() {
 }
 
 function SearchGames_removeFocus() {
-    Main_removeFocus(SearchGames_cursorY + '_' + SearchGames_cursorX, SearchGames_ids);
+    if (SearchGames_itemsCount) Main_removeFocus(SearchGames_cursorY + '_' + SearchGames_cursorX, SearchGames_ids);
 }
 
 function SearchGames_handleKeyDown(event) {

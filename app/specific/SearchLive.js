@@ -295,7 +295,7 @@ function SearchLive_addFocus() {
 }
 
 function SearchLive_removeFocus() {
-    Main_removeFocus(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids);
+    if (SearchLive_itemsCount) Main_removeFocus(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids);
 }
 
 function SearchLive_handleKeyDown(event) {
