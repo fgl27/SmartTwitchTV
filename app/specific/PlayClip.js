@@ -188,8 +188,8 @@ function PlayClip_qualityChanged() {
     PlayClip_state = PlayClip_STATE_PLAYING;
 
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3, 
-    PlayClip_replay ? -1 : Android.gettime());
+    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
+        PlayClip_replay ? -1 : Android.gettime());
     PlayClip_replay = false;
     PlayClip_onPlayer();
 }
