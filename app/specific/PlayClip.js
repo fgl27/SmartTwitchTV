@@ -270,6 +270,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
+    window.clearInterval(PlayClip_streamCheck);
     if (Main_Android) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();
@@ -282,8 +283,6 @@ function PlayClip_PreshutdownStream() {
     document.getElementById("quality_name").style.width = '77%';
     document.getElementById("quality_name").style.fontSize = '87.5%';
     ChannelVod_vodOffset = 0;
-
-    window.clearInterval(PlayClip_streamCheck);
 }
 
 function PlayClip_hidePanel() {
