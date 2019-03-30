@@ -378,9 +378,6 @@ function Play_updateStreamInfoStartValues(response) {
             AddCode_Channel_id = Main_values.Play_selectedChannel_id;
             AddCode_CheckFallow();
         } else Play_hideFallow();
-    } else if (Play_isOn) {
-        Play_isLive = false;
-        Play_CheckHostStart();
     }
 }
 
@@ -409,7 +406,7 @@ function Play_updateStreamInfo() {
 
         if (jsonOb.result === 200) {
             Play_updateStreamInfoErrorTry = 0;
-            Play_updateStreamInfoValues(jsonOb.value);
+            Play_updateStreamInfoValues(JSON.parse(jsonOb.value));
         } else {
             Play_updateStreamInfoError();
         }
@@ -443,9 +440,6 @@ function Play_updateStreamInfoValues(response) {
             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
-    } else if (Play_RestoreFromResume && Play_isOn) {
-        Play_isLive = false;
-        Play_CheckHostStart();
     }
 }
 
@@ -547,9 +541,10 @@ function Play_loadDataErrorLog(xmlHttp) {
 function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 10 : 0))) {
+        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 15 : 0))) {
             Play_loadingDataTimeout += 250;
-            Play_loadDataRequest();
+            if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
+            else Play_loadDataRequest();
         } else Play_CheckHostStart();
     }
 }

@@ -185,6 +185,10 @@ public class PlayerActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mregisterReceiver();
+        if (player == null && shouldAutoPlay && mwebview != null && alredystarted) {
+            mwebview.loadUrl("javascript:Play_CheckResume()");
+        }
+        alredystarted = true;
     }
 
     //This function is called when overview key is pressed
@@ -193,7 +197,9 @@ public class PlayerActivity extends Activity {
         super.onPause();
         munregisterReceiver();
     }
+
     //This function is called when home key is pressed
+    @Override
     public void onStop() {
         super.onStop();
         munregisterReceiver();
@@ -202,10 +208,9 @@ public class PlayerActivity extends Activity {
     }
 
     //This function is called when TV wakes up
+    @Override
     public void onStart() {
         super.onStart();
-        if (mwebview != null && alredystarted) mwebview.loadUrl("javascript:Play_CheckResume()");
-        alredystarted = true;
     }
 
     @Override
