@@ -12,10 +12,10 @@ var Users_loadingData = true;
 
 function Users_init() {
     if (!AddUser_IsUserSet()) {
-            Main_values.Main_Go = Main_Live;
-            Users_exit();
-            Main_SwitchScreen();
-            return;
+        Main_values.Main_Go = Main_Live;
+        Users_exit();
+        Main_SwitchScreen();
+        return;
     }
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_Users;
