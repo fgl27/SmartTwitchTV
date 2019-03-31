@@ -71,26 +71,10 @@ function UserChannels_loadDataPrepare() {
 }
 
 function UserChannels_loadChannels() {
-    var xmlHttp = new XMLHttpRequest();
+    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) + '/follows/channels?limit=100&offset=' +
+        UserChannels_loadChannelOffsset + '&sortby=created_at&';
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) + '/follows/channels?limit=100&offset=' +
-        UserChannels_loadChannelOffsset + '&sortby=created_at&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = UserChannels_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                UserChannels_loadChannelLive(xmlHttp.responseText);
-                return;
-            } else {
-                UserChannels_loadDataError();
-            }
-        }
-    };
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, UserChannels_loadingDataTimeout, 2, null, UserChannels_loadChannelLive, UserChannels_loadDataError);
 }
 
 function UserChannels_loadDataError() {
