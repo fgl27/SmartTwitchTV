@@ -11,7 +11,11 @@ var Users_loadingData = true;
 //Variable initialization end
 
 function Users_init() {
-    if (!AddUser_IsUserSet()) {
+    if (Main_newUsercode) {
+        Users_exit();
+        AddCode_CheckNewCode(Main_newUsercode);
+        return;
+    } else if (!AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_Live;
         Users_exit();
         Main_SwitchScreen();
@@ -133,10 +137,6 @@ function Users_loadDataSuccessFinish() {
         Main_ShowElement(Users_ids[5]);
         Main_FirstLoad = false;
         Users_loadingData = false;
-        if (Main_newUsercode) {
-            Users_exit();
-            AddCode_CheckNewCode(Main_newUsercode);
-        }
     });
 }
 
