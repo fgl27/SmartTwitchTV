@@ -1075,7 +1075,7 @@ function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
         if (Main_Android) Android.play(true);
-
+        Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
             Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
@@ -1090,6 +1090,8 @@ function Play_KeyPause(PlayVodClip) {
         if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
         else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
         else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+
+        Main_innerHTML('pause_button', '<i class="strokedbig icon-play-1" style="color: #FFFFFF; font-size: 180%;"></i>');
 
         if (Main_Android) Android.play(false);
         Play_showPauseDialog();

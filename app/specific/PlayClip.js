@@ -50,6 +50,7 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
+    Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
     Main_ShowElement('progress_pause_holder');
     PlayClip_SetOpenVod();
     Play_offsettimeMinus = 0;
