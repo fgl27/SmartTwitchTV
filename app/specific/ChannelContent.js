@@ -395,11 +395,11 @@ function ChannelContent_keyEnter() {
 
             Main_values.Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
 
-            Main_openStream();
-        } else if (ChannelContent_cursorX === (1 - value)) ChannelVod_init();
+            Main_ready(Main_openStream);
+        } else if (ChannelContent_cursorX === (1 - value)) Main_ready(ChannelVod_init);
         else if (ChannelContent_cursorX === (2 - value)) {
             inUseObj = ChannelClip;
-            Screens_init();
+            Main_ready(Screens_init);
         }
     }
 }
