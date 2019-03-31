@@ -85,7 +85,7 @@
 
         div.icon_center_label {
             max-width: 64%;
-            height: 75%;
+            height: 50px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -94,7 +94,6 @@
             font-size: 180%;
             font-weight: bold;
             padding-right: 0.7%;
-            transition: opacity 1s;
             text-shadow: 1px 0 0 #000000,
                 1px -1px 0 #000000,
                 1px 1px 0 #000000,
@@ -128,7 +127,6 @@
         div.icon_center_focus {
             color: #FFFFFF;
             font-size: 190%;
-            transition: opacity 0;
             text-shadow: 1px 0 0 #000000,
                 1px -1px 0 #000000,
                 1px 1px 0 #000000,
@@ -1119,8 +1117,6 @@
     </style>
     <script src="app/languages/0_Strings.js" defer></script>
     <script src="app/languages/en_US.js" defer></script>
-    <script src="app/languages/pt_BR.js" defer></script>
-    <script src="app/languages/it_IT.js" defer></script>
     <script src="app/languages/default.js" defer></script>
     <script src="app/general/TVKeyValue.js" defer></script>
     <script src="app/specific/Play.js" defer></script>
@@ -1165,7 +1161,7 @@
                 <div id="label_switch" class="icon_top_label hide"></div>
                 <div id="label_extra" class="icon_top_label hide"></div>
             </div>
-            <div id="top_lables" style="position: fixed; text-align: center; width: 72%; margin-left: 18.5%;">
+            <div id="top_lables" style="text-align: center; width: 72%; margin-left: 18.5%;">
                 <div id="top_bar_live" class="icon_center_label"></div>
                 <div id="top_bar_user" class="icon_center_label"></div>
                 <div id="top_bar_featured" class="icon_center_label"></div>
