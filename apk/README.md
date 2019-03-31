@@ -1,7 +1,14 @@
-SmartTwitchTV AndroidTV APK
+SmartTV Twitch AndroidTV APK
 ==============
 
-This is the apk to run the web app
+This is the apk to run the web app on android TV
+
+Download
+==============
+
+[Download apk from last release version](https://github.com/fgl27/SmartTwitchTV/releases)
+
+[Google Play](https://play.google.com/store/apps/details?id=com.fgl27.twitch)
 
 ## Download/Clone & Build
 

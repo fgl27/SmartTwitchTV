@@ -7,6 +7,13 @@ The intention of this is to make a web app that runs on all modern browser and c
 
 This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history
 
+Download
+==============
+
+[Download apk from last release version](https://github.com/fgl27/SmartTwitchTV/releases)
+
+[Google Play](https://play.google.com/store/apps/details?id=com.fgl27.twitch)
+
 About this fork
 ===============
 
