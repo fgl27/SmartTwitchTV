@@ -179,7 +179,7 @@ function Users_keyEnter() {
         return;
     }
 
-    if (Users_cursorX !== 6) {
+    if (Users_cursorX !== 6 && Users_cursorX !== 7) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
         document.getElementById("screens_holder").style.top = "0";
@@ -198,19 +198,8 @@ function Users_keyEnter() {
             AddUser_init();
         } else AddUser_UserMakeOne(Users_cursorY);
     } else if (Users_cursorX === 6) Users_showRemoveDialog();
-    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-        Main_values.Users_AddcodePosition = Main_values.Users_Position;
-        Main_SaveValues();
-        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
-        var type_code = 'code';
-        var client_id = Main_clientId;
-        var redirect_uri = AddCode_redirect_uri;
-        var scope = 'user_follows_edit+user_subscriptions';
-        var force_verify = 'true';
-        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) +
-            '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
-        window.location = url;
-    }
+    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
+        Users_showRemoveDialog();
 }
 
 function Users_clearRemoveDialog() {
@@ -218,12 +207,13 @@ function Users_clearRemoveDialog() {
 }
 
 function Users_setRemoveDialog() {
-    Users_RemoveDialogID = window.setTimeout(Users_HideRemoveDialog, 6000);
+    Users_RemoveDialogID = window.setTimeout(Users_HideRemoveDialog, 20000);
 }
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
+    if (Users_cursorX === 6) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
+    else if (Users_cursorX === 7) Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
     Main_ShowElement('main_remove_dialog');
 }
 
@@ -356,13 +346,32 @@ function Users_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (Users_isRemoveDialogShown()) {
-                // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
-                var temp_RemoveCursor = Users_RemoveCursor;
-                Users_HideRemoveDialog();
-                if (temp_RemoveCursor) {
-                    document.body.removeEventListener("keydown", Users_handleKeyDown);
-                    Users_exit();
-                    AddUser_removeUser(Users_cursorY);
+                var temp_RemoveCursor;
+                if ((Users_cursorX === 6)) {
+                    // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
+                    temp_RemoveCursor = Users_RemoveCursor;
+                    Users_HideRemoveDialog();
+                    if (temp_RemoveCursor) {
+                        document.body.removeEventListener("keydown", Users_handleKeyDown);
+                        Users_exit();
+                        AddUser_removeUser(Users_cursorY);
+                    }
+                } else {
+                    temp_RemoveCursor = Users_RemoveCursor;
+                    Users_HideRemoveDialog();
+                    if (temp_RemoveCursor) {
+                        Main_values.Users_AddcodePosition = Main_values.Users_Position;
+                        Main_SaveValues();
+                        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
+                        var type_code = 'code';
+                        var client_id = Main_clientId;
+                        var redirect_uri = AddCode_redirect_uri;
+                        var scope = 'user_follows_edit+user_subscriptions';
+                        var force_verify = 'true';
+                        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) +
+                            '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
+                        window.location = url;
+                    }
                 }
             } else Users_keyEnter();
             break;
