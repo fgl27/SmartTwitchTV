@@ -74,7 +74,6 @@ function UserHost_loadDataPrepare() {
 }
 
 function UserHost_loadChannels() {
-    var xmlHttp = new XMLHttpRequest();
 
     var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
     if (offset && offset > (UserHost_MaxOffset - 1)) {
@@ -82,25 +81,10 @@ function UserHost_loadChannels() {
         UserHost_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
-        '/followed/hosting?limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = UserHost_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
+    var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
+        '/followed/hosting?limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                UserHost_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                UserHost_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, UserHost_loadingDataTimeout, 2, null, UserHost_loadDataSuccess, UserHost_loadDataError);
 }
 
 function UserHost_loadDataError() {
@@ -202,8 +186,6 @@ function UserHost_loadDataSuccessFinish() {
 }
 
 function UserHost_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
-
     Main_SetItemsLimitReplace(UserHost_emptyCellVector.length);
 
     var offset = UserHost_itemsCount + UserHost_itemsCountOffset;
@@ -212,23 +194,10 @@ function UserHost_loadDataReplace() {
         UserHost_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
-        '/followed/hosting?limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = UserHost_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
+    var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
+        '/followed/hosting?limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                UserHost_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else UserHost_loadDataReplaceError();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, UserHost_loadingDataTimeout, 2, null, UserHost_loadDataSuccessReplace, UserHost_loadDataReplaceError);
 }
 
 function UserHost_loadDataReplaceError() {
