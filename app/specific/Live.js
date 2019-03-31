@@ -160,7 +160,6 @@ function Live_loadDataSuccessFinish() {
                 Live_Status = true;
                 Main_imgVectorLoad(IMG_404_VIDEO);
                 Live_addFocus();
-                Main_values.Main_WasOpen = true;
             }
             if (Main_FirstRun && Live_Status &&
                 (Settings_value.restor_playback.defaultValue) && (Main_values.Play_WasPlaying || Main_values.Main_WasOpen)) {
@@ -182,13 +181,14 @@ function Live_loadDataSuccessFinish() {
                         Play_HideWarningDialog();
                     }, 2000);
                 } else if (Main_GoBefore !== 1) {
-
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Live_removeFocus();
                     Main_SwitchScreen();
                 } else Main_ShowElement(Live_ids[10]);
             } else {
+                if (Main_values.Never_run) Main_showControlsDialog();
+                Main_values.Never_run = false;
                 Main_ShowElement(Live_ids[10]);
                 Main_SaveValues();
             }
