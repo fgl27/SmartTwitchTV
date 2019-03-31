@@ -62,7 +62,7 @@ function DefaultLang() {
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + TWITCH_ICON + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
-        (Main_isReleased ? STR_ABOUT_INFO_2 : STR_BR + '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+        (Main_isReleased ? '' : STR_BR + '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
         STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_ABOUT_EMAIL + STR_BR +

@@ -648,7 +648,7 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 }
 
 function Main_checkVersion() {
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_ABOUT_INFO_0);
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
 }
 
 function Main_GoLive() {
