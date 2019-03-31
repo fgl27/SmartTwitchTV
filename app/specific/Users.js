@@ -11,6 +11,12 @@ var Users_loadingData = true;
 //Variable initialization end
 
 function Users_init() {
+    if (!AddUser_IsUserSet()) {
+            Main_values.Main_Go = Main_Live;
+            Users_exit();
+            Main_SwitchScreen();
+            return;
+    }
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_Users;
     document.getElementById("screens_holder").style.top = ((screen.height / 100) * 7) + "px";
