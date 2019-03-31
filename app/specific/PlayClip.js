@@ -370,7 +370,7 @@ function PlayClip_OpenVod() {
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Play_IconsResetFocus();
-        PlayVod_Start();
+        Main_ready(PlayVod_Start);
     } else {
         Play_IsWarning = true;
         Play_showWarningDialog(STR_NO_BROADCAST_WARNING);

@@ -1240,7 +1240,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
             Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
-            Play_Start();
+            Main_ready(Play_Start);
         } else PlayClip_OpenVod();
     } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
     else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);

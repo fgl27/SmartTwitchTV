@@ -532,7 +532,7 @@ function Main_UnSetTopOpacity() {
     Main_RemoveClass('topbar', 'topbar_dim');
 }
 
-function Main_SwitchScreen() {
+function Main_SwitchScreen(removekey) {
     window.clearTimeout(Main_SetTopOpacityId);
     Main_UnSetTopOpacity();
 
@@ -540,42 +540,45 @@ function Main_SwitchScreen() {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_CounterDialogRst();
-    if (Main_values.Main_Go === Main_Live) Live_init();
-    else if (Main_values.Main_Go === Main_addUser) AddUser_init();
-    else if (Main_values.Main_Go === Main_addCode) AddCode_init();
-    else if (Main_values.Main_Go === Main_games) {
-        inUseObj = Game;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_aGame) AGame_init();
-    else if (Main_values.Main_Go === Main_Search) Search_init();
-    else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
-    else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
-    else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
-    else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
-    else if (Main_values.Main_Go === Main_ChannelClip) {
-        inUseObj = ChannelClip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_Users) Users_init();
-    else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
-    else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
-    else if (Main_values.Main_Go === Main_usergames) {
-        inUseObj = UserGames;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
-    else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
-    else if (Main_values.Main_Go === Main_Vod) Vod_init();
-    else if (Main_values.Main_Go === Main_Clip) {
-        inUseObj = Clip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
-    else if (Main_values.Main_Go === Main_AGameClip) {
-        inUseObj = AGameClip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_Featured) Featured_init();
-    else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
-    else Live_init();
+    Main_ready(function() {
+        if (Main_values.Main_Go === Main_Live) Live_init();
+        else if (Main_values.Main_Go === Main_addUser) AddUser_init();
+        else if (Main_values.Main_Go === Main_addCode) AddCode_init();
+        else if (Main_values.Main_Go === Main_games) {
+            inUseObj = Game;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_aGame) AGame_init();
+        else if (Main_values.Main_Go === Main_Search) Search_init();
+        else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
+        else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
+        else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
+        else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
+        else if (Main_values.Main_Go === Main_ChannelClip) {
+            inUseObj = ChannelClip;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_Users) Users_init();
+        else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
+        else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
+        else if (Main_values.Main_Go === Main_usergames) {
+            inUseObj = UserGames;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
+        else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
+        else if (Main_values.Main_Go === Main_Vod) Vod_init();
+        else if (Main_values.Main_Go === Main_Clip) {
+            inUseObj = Clip;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
+        else if (Main_values.Main_Go === Main_AGameClip) {
+            inUseObj = AGameClip;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_Featured) Featured_init();
+        else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
+        else Live_init();
 
-    Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
+        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
+        if (removekey) Main_RemoveKeys();
+    });
 }
 
 function Main_SaveValues() {
@@ -903,7 +906,7 @@ function Main_openStream() {
     Play_hidePanel();
     Play_hideChat();
     Play_HideEndDialog();
-    Play_Start();
+    Main_ready(Play_Start);
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -934,8 +937,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-
-    PlayClip_Start();
+    Main_ready(PlayClip_Start);
 }
 
 function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
@@ -972,7 +974,7 @@ function Main_openVod() {
     Play_clearPause();
     Play_CleanHideExit();
     PlayVod_HasVodInfo = false;
-    PlayVod_Start();
+    Main_ready(PlayVod_Start);
 }
 
 function Main_ScrollTable(id, position) {
@@ -1324,8 +1326,8 @@ function Main_CenterLablesExit() {
         Main_CenterLablesClean();
         Main_SwitchScreen();
     } else {
-        Main_SwitchScreen();
-        Main_RemoveKeys();
+        Main_SwitchScreen(true);
+
     }
 }
 
