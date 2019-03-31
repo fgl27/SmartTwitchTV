@@ -60,6 +60,7 @@ function PlayVod_Start() {
     Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
+    Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
     Main_HideElement('progress_pause_holder');
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
@@ -106,6 +107,7 @@ function PlayVod_PosStart() {
     Main_HideElement('chat_frame');
     window.setTimeout(function() {
         Main_ShowElement('scene_channel_panel_bottom');
+        Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
         Main_ShowElement('progress_pause_holder');
     }, 1000);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
