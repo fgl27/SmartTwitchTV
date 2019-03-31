@@ -66,7 +66,7 @@ function en_USLang() {
     STR_USER_HOSTING = " hosting ";
     STR_USER_SET = " already set";
     STR_USER_MAKE_ONE = "Make First";
-    STR_USER_NUMBER_ONE = " (First user has it\'s content on SmartHub Preview, can Sub out side User screen when providing a key)";
+    STR_USER_NUMBER_ONE = " (First user can fallow streamears outside User screen when providing a key)";
     STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
     STR_CLIP_DAY = " (24h)";
     STR_CLIP_WEEK = " (7d)";
