@@ -59,6 +59,7 @@ var Main_values = {
     "Games_return": false,
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
+    "Never_run": true,
     "Main_CenterLablesVectorPos": 0
 };
 
