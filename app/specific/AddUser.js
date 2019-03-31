@@ -20,12 +20,13 @@ function AddUser_init() {
 function AddUser_exit() {
     AddUser_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('add_user_scroll');
 }
 
 function AddUser_handleKeyDown(event) {
-    if (AddUser_loadingData || AddUser_keyBoardOn) return;
+    if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -102,7 +103,7 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 }
 
 function AddUser_KeyboardEvent(event) {
-    if (AddUser_loadingData) return;
+    if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
 
     switch (event.keyCode) {
         case KEY_RETURN:
@@ -140,7 +141,6 @@ function AddUser_KeyboardEvent(event) {
                         AddUser_inputFocus();
                     }, 1500);
                 }
-                AddUser_RemoveinputFocus(true);
             } else AddUser_inputFocus();
             break;
         case KEY_KEYBOARD_BACKSPACE:
