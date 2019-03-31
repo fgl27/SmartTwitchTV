@@ -185,21 +185,23 @@ function Users_keyEnter() {
         document.getElementById("screens_holder").style.top = "0";
     }
 
-    if (!Users_cursorX) UserLive_init();
-    else if (Users_cursorX === 1) UserHost_init();
-    else if (Users_cursorX === 2) {
-        inUseObj = UserGames;
-        Screens_init();
-    } else if (Users_cursorX === 3) UserVod_init();
-    else if (Users_cursorX === 4) UserChannels_init();
-    else if (Users_cursorX === 5) {
-        if (!Users_cursorY) {
-            Main_values.Main_Before = Main_Users;
-            AddUser_init();
-        } else AddUser_UserMakeOne(Users_cursorY);
-    } else if (Users_cursorX === 6) Users_showRemoveDialog();
-    else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
-        Users_showRemoveDialog();
+    Main_ready(function() {
+        if (!Users_cursorX) UserLive_init();
+        else if (Users_cursorX === 1) UserHost_init();
+        else if (Users_cursorX === 2) {
+            inUseObj = UserGames;
+            Screens_init();
+        } else if (Users_cursorX === 3) UserVod_init();
+        else if (Users_cursorX === 4) UserChannels_init();
+        else if (Users_cursorX === 5) {
+            if (!Users_cursorY) {
+                Main_values.Main_Before = Main_Users;
+                AddUser_init();
+            } else AddUser_UserMakeOne(Users_cursorY);
+        } else if (Users_cursorX === 6) Users_showRemoveDialog();
+        else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
+            Users_showRemoveDialog();
+    });
 }
 
 function Users_clearRemoveDialog() {
