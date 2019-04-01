@@ -39,11 +39,10 @@ function Featured_exit() {
 }
 
 function Featured_StartLoad() {
-    Main_HideElement(Featured_ids[10]);
+    Main_empty('stream_table_featured');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Featured_Status = false;
-    Main_empty('stream_table_featured');
     Featured_emptyCellVector = [];
     Featured_itemsCountOffset = 0;
     Featured_itemsCountCheck = false;
@@ -56,8 +55,10 @@ function Featured_StartLoad() {
     Featured_imgCounter = 0;
     Featured_dataEnded = false;
     Main_CounterDialogRst();
-    Featured_loadDataPrepare();
-    Featured_loadDataRequest();
+    Main_ready(function() {
+        Featured_loadDataPrepare();
+        Featured_loadDataRequest();
+    });
 }
 
 function Featured_loadDataPrepare() {

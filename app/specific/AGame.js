@@ -60,12 +60,11 @@ function AGame_exit() {
 
 function AGame_StartLoad() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    Main_HideElement(AGame_ids[10]);
+    Main_empty('stream_table_a_game');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     AGame_status = false;
     AGame_TopRowCreated = false;
-    Main_empty('stream_table_a_game');
     AGame_itemsCountOffset = 0;
     AGame_MaxOffset = 0;
     AGame_idObject = {};
@@ -77,8 +76,10 @@ function AGame_StartLoad() {
     AGame_cursorY = 0;
     AGame_dataEnded = false;
     Main_CounterDialogRst();
-    AGame_loadDataPrepare();
-    AGame_loadDataRequest();
+    Main_ready(function() {
+        AGame_loadDataPrepare();
+        AGame_loadDataRequest();
+    });
 }
 
 function AGame_loadDataPrepare() {

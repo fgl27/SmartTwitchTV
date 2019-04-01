@@ -45,12 +45,11 @@ function UserHost_exit() {
 }
 
 function UserHost_StartLoad() {
-    Main_HideElement(UserHost_ids[10]);
+    Main_empty('stream_table_user_host');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserHost_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     UserHost_status = false;
-    Main_empty('stream_table_user_host');
     UserHost_itemsCountOffset = 0;
     UserHost_MaxOffset = 0;
     UserHost_idObject = {};
@@ -62,8 +61,10 @@ function UserHost_StartLoad() {
     UserHost_cursorY = 0;
     UserHost_dataEnded = false;
     Main_CounterDialogRst();
-    UserHost_loadDataPrepare();
-    UserHost_loadChannels();
+    Main_ready(function() {
+        UserHost_loadDataPrepare();
+        UserHost_loadChannels();
+    });
 }
 
 function UserHost_loadDataPrepare() {

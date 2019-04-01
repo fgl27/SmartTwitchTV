@@ -40,12 +40,11 @@ function SearchGames_exit() {
 }
 
 function SearchGames_StartLoad() {
-    Main_HideElement(SearchGames_ids[7]);
+    Main_empty('stream_table_search_game');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchGames_lastData = Main_values.Search_data;
     SearchGames_Status = false;
-    Main_empty('stream_table_search_game');
     SearchGames_itemsCountOffset = 0;
     SearchGames_itemsCountCheck = false;
     SearchGames_MaxOffset = 0;
@@ -53,8 +52,10 @@ function SearchGames_StartLoad() {
     SearchGames_cursorX = 0;
     SearchGames_cursorY = 0;
     Main_CounterDialogRst();
-    SearchGames_loadDataPrepare();
-    SearchGames_loadDataRequest();
+    Main_ready(function() {
+        SearchGames_loadDataPrepare();
+        SearchGames_loadDataRequest();
+    });
 }
 
 function SearchGames_loadDataPrepare() {

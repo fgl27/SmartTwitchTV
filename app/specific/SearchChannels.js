@@ -48,12 +48,11 @@ function SearchChannels_Postexit() {
 }
 
 function SearchChannels_StartLoad() {
-    Main_HideElement(SearchChannels_ids[6]);
+    Main_empty('stream_table_search_channel');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchChannels_lastData = Main_values.Search_data;
     SearchChannels_Status = false;
-    Main_empty('stream_table_search_channel');
     SearchChannels_itemsCountOffset = 0;
     SearchChannels_MaxOffset = 0;
     SearchChannels_idObject = {};
@@ -65,8 +64,10 @@ function SearchChannels_StartLoad() {
     SearchChannels_cursorY = 0;
     SearchChannels_dataEnded = false;
     Main_CounterDialogRst();
-    SearchChannels_loadDataPrepare();
-    SearchChannels_loadDataRequest();
+    Main_ready(function() {
+        SearchChannels_loadDataPrepare();
+        SearchChannels_loadDataRequest();
+    });
 }
 
 function SearchChannels_loadDataPrepare() {
