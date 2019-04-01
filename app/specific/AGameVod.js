@@ -55,6 +55,7 @@ function AGameVod_exit() {
 function AGameVod_StartLoad() {
     if (AGameVod_status) AGameVod_removeFocus();
     Main_empty('stream_table_a_game_vod');
+    Main_HideElement(AGameVod_ids[10]);
     Main_showLoadDialog();
     AGameVod_SetPeriod();
     AGameVod_OldgameSelected = Main_values.Main_gameSelected;

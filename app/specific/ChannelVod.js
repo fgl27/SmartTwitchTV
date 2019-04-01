@@ -57,6 +57,7 @@ function ChannelVod_exit() {
 function ChannelVod_StartLoad() {
     if (ChannelVod_status) ChannelVod_removeFocus();
     Main_empty('stream_table_channel_vod');
+    Main_HideElement(ChannelVod_ids[10]);
     Main_textContent('top_bar_game', ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     Main_showLoadDialog();
     Main_HideWarningDialog();

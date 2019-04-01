@@ -40,6 +40,7 @@ function Featured_exit() {
 
 function Featured_StartLoad() {
     Main_empty('stream_table_featured');
+    Main_HideElement(Featured_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Featured_Status = false;

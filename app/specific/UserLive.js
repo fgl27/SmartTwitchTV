@@ -48,6 +48,7 @@ function UserLive_exit() {
 
 function UserLive_StartLoad() {
     Main_empty('stream_table_user_live');
+    Main_HideElement(UserLive_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserLive_status = false;

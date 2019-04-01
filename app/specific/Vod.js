@@ -53,6 +53,7 @@ function Vod_exit() {
 function Vod_StartLoad() {
     if (Vod_status) Vod_removeFocus();
     Main_empty('stream_table_vod');
+    Main_HideElement(Vod_ids[10]);
     Main_showLoadDialog();
     Vod_SetPeriod();
     Main_HideWarningDialog();

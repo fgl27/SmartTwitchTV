@@ -61,6 +61,7 @@ function AGame_exit() {
 function AGame_StartLoad() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_empty('stream_table_a_game');
+    Main_HideElement(AGame_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     AGame_status = false;

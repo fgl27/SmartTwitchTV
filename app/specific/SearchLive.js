@@ -44,6 +44,7 @@ function SearchLive_exit() {
 
 function SearchLive_StartLoad() {
     Main_empty('stream_table_search_live');
+    Main_HideElement(SearchLive_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchLive_lastData = Main_values.Search_data;

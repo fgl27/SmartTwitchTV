@@ -45,6 +45,7 @@ function Users_exit() {
 
 function Users_StartLoad() {
     Main_empty('stream_table_user');
+    Main_HideElement(Users_ids[5]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Users_status = false;

@@ -46,6 +46,7 @@ function UserHost_exit() {
 
 function UserHost_StartLoad() {
     Main_empty('stream_table_user_host');
+    Main_HideElement(UserHost_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserHost_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;

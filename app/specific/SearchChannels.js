@@ -49,6 +49,7 @@ function SearchChannels_Postexit() {
 
 function SearchChannels_StartLoad() {
     Main_empty('stream_table_search_channel');
+    Main_HideElement(SearchChannels_ids[6]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchChannels_lastData = Main_values.Search_data;
