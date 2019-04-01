@@ -39,11 +39,11 @@ function Live_exit() {
 }
 
 function Live_StartLoad() {
+    Main_empty('stream_table_live');
     Main_HideElement(Live_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Live_Status = false;
-    Main_empty('stream_table_live');
     Live_emptyCellVector = [];
     Live_itemsCountOffset = 0;
     Live_itemsCountCheck = false;
@@ -56,8 +56,10 @@ function Live_StartLoad() {
     Live_imgCounter = 0;
     Live_dataEnded = false;
     Main_CounterDialogRst();
-    Live_loadDataPrepare();
-    Live_loadDataRequest();
+    Main_ready(function() {
+        Live_loadDataPrepare();
+        Live_loadDataRequest();
+    });
 }
 
 function Live_loadDataPrepare() {

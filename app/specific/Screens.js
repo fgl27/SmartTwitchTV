@@ -65,13 +65,14 @@ function Screens_exit() {
 }
 
 function Screens_StartLoad() {
+    Main_empty(inUseObj.table);
     Main_HideElement(inUseObj.ids[10]);
     Main_HideWarningDialog();
     Main_showLoadDialog();
+
     inUseObj.cursor = null;
     inUseObj.status = false;
     inUseObj.row = document.createElement('div');
-    Main_empty(inUseObj.table);
     inUseObj.MaxOffset = 0;
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
@@ -86,8 +87,10 @@ function Screens_StartLoad() {
     inUseObj.data_cursor = 0;
     inUseObj.dataEnded = false;
     Main_CounterDialogRst();
-    Screens_loadDataPrepare();
-    Screens_loadDataRequest();
+    Main_ready(function() {
+        Screens_loadDataPrepare();
+        Screens_loadDataRequest();
+    });
 }
 
 function Screens_loadDataPrepare() {

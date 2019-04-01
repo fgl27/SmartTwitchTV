@@ -47,12 +47,12 @@ function UserLive_exit() {
 }
 
 function UserLive_StartLoad() {
+    Main_empty('stream_table_user_live');
     Main_HideElement(UserLive_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserLive_status = false;
     UserLive_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    Main_empty('stream_table_user_live');
     UserLive_loadChannelOffsset = 0;
     UserLive_itemsCountOffset = 0;
     UserLive_MaxOffset = 0;
@@ -66,8 +66,10 @@ function UserLive_StartLoad() {
     UserLive_dataEnded = false;
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
-    UserLive_loadDataPrepare();
-    UserLive_loadChannels();
+    Main_ready(function() {
+        UserLive_loadDataPrepare();
+        UserLive_loadChannels();
+    });
 }
 
 function UserLive_loadDataPrepare() {
