@@ -69,33 +69,13 @@ function Featured_loadDataPrepare() {
 }
 
 function Featured_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
     var offset = Featured_itemsCount + Featured_itemsCountOffset;
-
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
+    var theUrl = 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitVideo +
         '&offset=' + offset +
         (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[Main_values.Users_Position].access_token : '') +
-        '&' + Math.round(Math.random() * 1e7), true);
+            AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
 
-    xmlHttp.timeout = Featured_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Featured_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                Featured_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, Featured_loadingDataTimeout, 2, null, Featured_loadDataSuccess, Featured_loadDataError);
 }
 
 function Featured_loadDataError() {
@@ -198,33 +178,14 @@ function Featured_loadDataSuccessFinish() {
 }
 
 function Featured_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
-
     Main_SetItemsLimitReplace(Featured_emptyCellVector.length);
-
     var offset = Featured_itemsCount + Featured_itemsCountOffset;
-
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
+    var theUrl = 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitReplace +
         '&offset=' + offset +
         (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[Main_values.Users_Position].access_token : '') +
-        '&' + Math.round(Math.random() * 1e7), true);
+            AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
 
-    xmlHttp.timeout = Featured_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Featured_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else Featured_loadDataErrorReplace();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, Featured_loadingDataTimeout, 2, null, Featured_loadDataSuccessReplace, Featured_loadDataErrorReplace);
 }
 
 function Featured_loadDataErrorReplace() {

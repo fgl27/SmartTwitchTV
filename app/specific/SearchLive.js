@@ -73,7 +73,6 @@ function SearchLive_loadDataPrepare() {
 }
 
 function SearchLive_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
 
     var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
     if (offset && offset > (SearchLive_MaxOffset - 1)) {
@@ -81,25 +80,10 @@ function SearchLive_loadDataRequest() {
         SearchLive_dataEnded = true;
     }
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = SearchLive_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
+    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                SearchLive_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                SearchLive_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError);
 }
 
 function SearchLive_loadDataError() {
@@ -202,7 +186,6 @@ function SearchLive_loadDataSuccessFinish() {
 }
 
 function SearchLive_loadDataReplace() {
-    var xmlHttp = new XMLHttpRequest();
 
     Main_SetItemsLimitReplace(SearchLive_emptyCellVector.length);
 
@@ -211,24 +194,10 @@ function SearchLive_loadDataReplace() {
         offset = SearchLive_MaxOffset - Main_ItemsLimitReplace;
         SearchLive_dataEnded = true;
     }
+    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = SearchLive_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                SearchLive_loadDataSuccessReplace(xmlHttp.responseText);
-                return;
-            } else SearchLive_loadDataErrorReplace();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccessReplace, SearchLive_loadDataErrorReplace);
 }
 
 function SearchLive_loadDataErrorReplace() {

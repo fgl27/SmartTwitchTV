@@ -66,26 +66,9 @@ function SearchGames_loadDataPrepare() {
 }
 
 function SearchGames_loadDataRequest() {
-    var xmlHttp = new XMLHttpRequest();
+    var theUrl = 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Main_values.Search_data);
 
-    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/search/games?query=' + encodeURIComponent(Main_values.Search_data) + '&' + Math.round(Math.random() * 1e7), true);
-    xmlHttp.timeout = SearchGames_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                SearchGames_loadDataSuccess(xmlHttp.responseText);
-                return;
-            } else {
-                SearchGames_loadDataError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpGet(theUrl, SearchGames_loadingDataTimeout, 2, null, SearchGames_loadDataSuccess, SearchGames_loadDataError);
 }
 
 function SearchGames_loadDataError() {
