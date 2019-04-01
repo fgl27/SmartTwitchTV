@@ -45,6 +45,7 @@ function UserChannels_exit() {
 
 function UserChannels_StartLoad() {
     Main_empty('stream_table_user_channels');
+    Main_HideElement(UserChannels_ids[6]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserChannels_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;

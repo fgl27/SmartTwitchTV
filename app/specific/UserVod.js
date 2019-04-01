@@ -54,6 +54,7 @@ function UserVod_exit() {
 function UserVod_StartLoad() {
     if (UserVod_status) UserVod_removeFocus();
     Main_empty('stream_table_user_vod');
+    Main_HideElement(UserVod_ids[10]);
     Main_showLoadDialog();
     UserVod_SetPeriod();
     Main_HideWarningDialog();

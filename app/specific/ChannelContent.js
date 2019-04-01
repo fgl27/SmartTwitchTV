@@ -51,6 +51,7 @@ function ChannelContent_exit() {
 
 function ChannelContent_StartLoad() {
     Main_empty('stream_table_channel_content');
+    Main_HideElement(ChannelContent_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;

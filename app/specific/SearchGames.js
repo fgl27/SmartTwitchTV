@@ -41,6 +41,7 @@ function SearchGames_exit() {
 
 function SearchGames_StartLoad() {
     Main_empty('stream_table_search_game');
+    Main_HideElement(SearchGames_ids[7]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchGames_lastData = Main_values.Search_data;
