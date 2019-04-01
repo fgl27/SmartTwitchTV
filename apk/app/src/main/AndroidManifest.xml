@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".PlayerActivity"
-            android:banner="@mipmap/app_icon"
+            android:banner="@drawable/banner"
             android:icon="@mipmap/app_icon"
             android:label="@string/app_name"
             android:logo="@mipmap/app_icon"
