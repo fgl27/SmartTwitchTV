@@ -66,10 +66,8 @@ function Screens_exit() {
 
 function Screens_StartLoad() {
     Main_empty(inUseObj.table);
-    Main_HideElement(inUseObj.ids[10]);
     Main_HideWarningDialog();
     Main_showLoadDialog();
-
     inUseObj.cursor = null;
     inUseObj.status = false;
     inUseObj.row = document.createElement('div');

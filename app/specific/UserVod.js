@@ -53,12 +53,11 @@ function UserVod_exit() {
 
 function UserVod_StartLoad() {
     if (UserVod_status) UserVod_removeFocus();
-    Main_HideElement(UserVod_ids[10]);
+    Main_empty('stream_table_user_vod');
     Main_showLoadDialog();
     UserVod_SetPeriod();
     Main_HideWarningDialog();
     UserVod_status = false;
-    Main_empty('stream_table_user_vod');
     UserVod_itemsCountOffset = 0;
     UserVod_TopRowCreated = false;
     UserVod_MaxOffset = 0;
@@ -70,8 +69,10 @@ function UserVod_StartLoad() {
     UserVod_cursorX = 0;
     UserVod_cursorY = 0;
     UserVod_dataEnded = false;
-    Main_CounterDialogRst();
-    UserVod_loadDataRequestStart();
+    Main_ready(function() {
+        Main_CounterDialogRst();
+        UserVod_loadDataRequestStart();
+    });
 }
 
 function UserVod_loadDataPrepare() {

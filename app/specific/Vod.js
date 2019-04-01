@@ -52,12 +52,11 @@ function Vod_exit() {
 
 function Vod_StartLoad() {
     if (Vod_status) Vod_removeFocus();
-    Main_HideElement(Vod_ids[10]);
+    Main_empty('stream_table_vod');
     Main_showLoadDialog();
     Vod_SetPeriod();
     Main_HideWarningDialog();
     Vod_status = false;
-    Main_empty('stream_table_vod');
     Vod_itemsCountOffset = 0;
     Vod_TopRowCreated = false;
     Vod_MaxOffset = 0;
@@ -70,8 +69,10 @@ function Vod_StartLoad() {
     Vod_cursorY = 0;
     Vod_dataEnded = false;
     Main_CounterDialogRst();
-    Vod_loadDataPrepare();
-    Vod_loadDataRequest();
+    Main_ready(function() {
+        Vod_loadDataPrepare();
+        Vod_loadDataRequest();
+    });
 }
 
 function Vod_loadDataPrepare() {

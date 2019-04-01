@@ -43,12 +43,11 @@ function SearchLive_exit() {
 }
 
 function SearchLive_StartLoad() {
-    Main_HideElement(SearchLive_ids[10]);
+    Main_empty('stream_table_search_live');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     SearchLive_lastData = Main_values.Search_data;
     SearchLive_Status = false;
-    Main_empty('stream_table_search_live');
     SearchLive_itemsCountOffset = 0;
     SearchLive_MaxOffset = 0;
     SearchLive_idObject = {};
@@ -60,8 +59,10 @@ function SearchLive_StartLoad() {
     SearchLive_cursorY = 0;
     SearchLive_dataEnded = false;
     Main_CounterDialogRst();
-    SearchLive_loadDataPrepare();
-    SearchLive_loadDataRequest();
+    Main_ready(function() {
+        SearchLive_loadDataPrepare();
+        SearchLive_loadDataRequest();
+    });
 }
 
 function SearchLive_loadDataPrepare() {

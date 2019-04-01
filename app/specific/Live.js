@@ -40,7 +40,6 @@ function Live_exit() {
 
 function Live_StartLoad() {
     Main_empty('stream_table_live');
-    Main_HideElement(Live_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Live_Status = false;

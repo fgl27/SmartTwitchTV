@@ -56,13 +56,12 @@ function ChannelVod_exit() {
 
 function ChannelVod_StartLoad() {
     if (ChannelVod_status) ChannelVod_removeFocus();
+    Main_empty('stream_table_channel_vod');
     Main_textContent('top_bar_game', ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-    Main_HideElement(ChannelVod_ids[10]);
     Main_showLoadDialog();
     Main_HideWarningDialog();
     ChannelVod_lastselectedChannel = Main_values.Main_selectedChannel;
     ChannelVod_status = false;
-    Main_empty('stream_table_channel_vod');
     ChannelVod_itemsCountOffset = 0;
     ChannelVod_MaxOffset = 0;
     ChannelVod_TopRowCreated = false;
@@ -75,8 +74,10 @@ function ChannelVod_StartLoad() {
     ChannelVod_cursorY = 0;
     ChannelVod_dataEnded = false;
     Main_CounterDialogRst();
-    ChannelVod_loadDataPrepare();
-    ChannelVod_loadDataRequest();
+    Main_ready(function() {
+        ChannelVod_loadDataPrepare();
+        ChannelVod_loadDataRequest();
+    });
 }
 
 function ChannelVod_loadDataPrepare() {

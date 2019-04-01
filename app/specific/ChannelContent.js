@@ -50,13 +50,12 @@ function ChannelContent_exit() {
 }
 
 function ChannelContent_StartLoad() {
-    Main_HideElement(ChannelContent_ids[10]);
+    Main_empty('stream_table_channel_content');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
     ChannelContent_status = false;
     ChannelContent_skipImg = false;
-    Main_empty('stream_table_channel_content');
     ChannelContent_thumbnail = '';
     ChannelContent_itemsCountOffset = 0;
     ChannelContent_itemsCount = 0;
@@ -64,8 +63,10 @@ function ChannelContent_StartLoad() {
     ChannelContent_cursorY = 0;
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
-    ChannelContent_loadDataPrepare();
-    ChannelContent_loadDataRequest();
+    Main_ready(function() {
+        ChannelContent_loadDataPrepare();
+        ChannelContent_loadDataRequest();
+    });
 }
 
 function ChannelContent_loadDataPrepare() {

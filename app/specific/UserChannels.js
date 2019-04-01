@@ -44,12 +44,11 @@ function UserChannels_exit() {
 }
 
 function UserChannels_StartLoad() {
-    Main_HideElement(UserChannels_ids[6]);
+    Main_empty('stream_table_user_channels');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     UserChannels_OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     UserChannels_Status = false;
-    Main_empty('stream_table_user_channels');
     UserChannels_loadChannelOffsset = 0;
     UserChannels_itemsCount = 0;
     UserChannels_cursorX = 0;
@@ -59,8 +58,10 @@ function UserChannels_StartLoad() {
     Main_FirstLoad = true;
     Main_CounterDialogRst();
     UserChannels_List = [];
-    UserChannels_loadDataPrepare();
-    UserChannels_loadChannels();
+    Main_ready(function() {
+        UserChannels_loadDataPrepare();
+        UserChannels_loadChannels();
+    });
 }
 
 function UserChannels_loadDataPrepare() {

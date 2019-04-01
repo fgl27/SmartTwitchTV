@@ -44,16 +44,17 @@ function Users_exit() {
 }
 
 function Users_StartLoad() {
-    Main_HideElement(Users_ids[5]);
+    Main_empty('stream_table_user');
     Main_showLoadDialog();
     Main_HideWarningDialog();
     Users_status = false;
     Main_FirstLoad = true;
-    Main_empty('stream_table_user');
     Users_cursorX = 0;
     Users_cursorY = 0;
     Users_loadingData = true;
-    Users_loadData();
+    Main_ready(function() {
+        Users_loadData();
+    });
 }
 
 function Users_loadData() {

@@ -54,13 +54,12 @@ function AGameVod_exit() {
 
 function AGameVod_StartLoad() {
     if (AGameVod_status) AGameVod_removeFocus();
-    Main_HideElement(AGameVod_ids[10]);
+    Main_empty('stream_table_a_game_vod');
     Main_showLoadDialog();
     AGameVod_SetPeriod();
     AGameVod_OldgameSelected = Main_values.Main_gameSelected;
     Main_HideWarningDialog();
     AGameVod_status = false;
-    Main_empty('stream_table_a_game_vod');
     AGameVod_itemsCountOffset = 0;
     AGameVod_TopRowCreated = false;
     AGameVod_MaxOffset = 0;
@@ -73,8 +72,10 @@ function AGameVod_StartLoad() {
     AGameVod_cursorY = 0;
     AGameVod_dataEnded = false;
     Main_CounterDialogRst();
-    AGameVod_loadDataPrepare();
-    AGameVod_loadDataRequest();
+    Main_ready(function() {
+        AGameVod_loadDataPrepare();
+        AGameVod_loadDataRequest();
+    });
 }
 
 function AGameVod_loadDataPrepare() {
