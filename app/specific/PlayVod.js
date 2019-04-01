@@ -598,7 +598,6 @@ function PlayVod_hidePanel() {
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_quality = PlayVod_qualityPlaying;
-    Play_ChatPosition();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
@@ -614,7 +613,6 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_setHidePanel();
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
-    Play_ChatPosition();
 }
 
 function PlayVod_RefreshProgressBarr() {

@@ -295,7 +295,6 @@ function PlayClip_hidePanel() {
     if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
-    Play_ChatPosition();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
@@ -308,7 +307,6 @@ function PlayClip_showPanel() {
     PlayClip_qualityIndexReset();
     PlayClip_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
-    Play_ChatPosition();
     PlayClip_setHidePanel();
 }
 

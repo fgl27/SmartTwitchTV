@@ -7,7 +7,6 @@ var Play_ChatSizeValue = 3;
 var Play_PanelHideID = null;
 var Play_quality = "source";
 var Play_qualityPlaying = Play_quality;
-var Play_PanelOffset = 0;
 var Play_isFullScreen = true;
 var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
@@ -901,7 +900,6 @@ function Play_hidePanel() {
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
-    Play_ChatPosition();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
@@ -914,7 +912,6 @@ function Play_showPanel() {
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
-    Play_ChatPosition();
     Play_setHidePanel();
 }
 
@@ -1047,11 +1044,7 @@ function Play_ChatPosition() {
     if (Play_ChatPositions < 0) Play_ChatPositions = (bool ? 2 : 7);
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
-    //offset in relation to the botton panel controls
-    if ((!Play_ChatPositions || Play_ChatPositions > 5 || Play_ChatSizeValue === 4) && PlayClip_HasVOD && Play_isPanelShown()) Play_PanelOffset = Play_PlayerPanelOffset;
-    else if ((Play_ChatPositions > 0 && Play_ChatPositions < 6) || !Play_isPanelShown()) Play_PanelOffset = 0;
-
-    Play_chat_container.style.top = ((bool ? 0.2 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + Play_PanelOffset) + '%';
+    Play_chat_container.style.top = (bool ? 0.2 : (Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue - 1])) + '%';
 
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
