@@ -178,8 +178,7 @@ function Live_loadDataSuccessFinish() {
                     if (Main_values.Play_WasPlaying === 1) Main_openStream();
                     else Main_openVod();
 
-                    Main_SwitchScreen();
-                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_SwitchScreen(true);
                     window.setTimeout(function() {
                         Play_HideWarningDialog();
                     }, 2000);

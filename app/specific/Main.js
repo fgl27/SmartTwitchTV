@@ -885,6 +885,7 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
 
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
     Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
@@ -894,7 +895,6 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
         Main_values.Play_isHost = true;
     } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
     Main_values.Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_openStream();
 }
@@ -910,6 +910,7 @@ function Main_openStream() {
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
     ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     PlayClip_DurationSeconds = parseInt(ChannelClip_playUrl[1]);
@@ -929,7 +930,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
     ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
 
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
     Main_ShowElement('scene2');
@@ -941,6 +941,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
+    document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);
     ChannelVod_language = Main_values.ChannelVod_vodId[2];
@@ -960,7 +961,6 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
     ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
         ', ' + document.getElementById(idsArray[6] + id).textContent;
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
 
     Main_openVod();
 }
