@@ -93,40 +93,8 @@ function PlayClip_loadData() {
 
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
-    var xmlHttp;
-    if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            PlayClip_loadDataError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            PlayClip_QualityGenerate(xmlHttp.responseText);
-        } else {
-            PlayClip_loadDataError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", proxyurl + theUrl, true);
-        xmlHttp.timeout = PlayClip_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) PlayClip_QualityGenerate(xmlHttp.responseText);
-                else PlayClip_loadDataError();
-            }
-        };
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError);
 }
 
 function PlayClip_loadDataError() {
@@ -208,16 +176,13 @@ function PlayClip_onPlayer() {
 }
 
 function PlayClip_Resume() {
-    if (document.hidden) {
-        PlayClip_shutdownStream();
-        window.clearInterval(PlayClip_streamCheck);
-    }
+    if (document.hidden) PlayClip_shutdownStream();
 }
 
 // On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
     if (Main_Android) PlayClip_currentTime = Android.gettime();
-    if (PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
+    if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {
 

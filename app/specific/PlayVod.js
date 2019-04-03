@@ -145,43 +145,24 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
-    var xmlHttp;
-    if (Main_Android) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 2, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            PlayVod_updateStreamerInfoError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
-        } else {
-            PlayVod_updateStreamerInfoError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
-                } else {
-                    PlayVod_updateStreamerInfoError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
+            } else {
+                PlayVod_updateStreamerInfoError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    }
+    xmlHttp.send(null);
 }
 
 function PlayVod_updateStreamerInfoValues(users) {
@@ -214,45 +195,26 @@ function PlayVod_updateStreamerInfoError() {
 
 function PlayVod_updateVodInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
-    var xmlHttp;
-    if (Main_Android) {
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 2, null);
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            PlayVod_updateVodInfoError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            PlayVod_updateVodInfoPannel(xmlHttp.responseText);
-        } else {
-            PlayVod_updateVodInfoError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    PlayVod_updateVodInfoPannel(xmlHttp.responseText);
-                    return;
-                } else {
-                    PlayVod_updateVodInfoError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                PlayVod_updateVodInfoPannel(xmlHttp.responseText);
+                return;
+            } else {
+                PlayVod_updateVodInfoError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    }
+    xmlHttp.send(null);
 }
 
 function PlayVod_updateVodInfoError() {
@@ -514,7 +476,7 @@ function PlayVod_onPlayer() {
 
 function PlayVod_PlayerCheck() {
     if (Main_Android) PlayVod_currentTime = Android.gettime();
-    if (PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
+    if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
 
@@ -551,7 +513,6 @@ function PlayVod_DropOneQuality(ConnectionDrop) {
 
     PlayVod_PlayerCheckCounter = 0;
     PlayVod_qualityDisplay();
-    //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.getCurrentTime();
     PlayVod_qualityChanged();
     PlayVod_PlayerCheckRun = true;
 }
