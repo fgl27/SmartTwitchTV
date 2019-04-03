@@ -59,10 +59,10 @@ var Base_Clip_obj = {
     key_play: function() {
         if (this.posY === -1) {
             if (!this.loadingData) {
-            this.periodPos++;
-            if (this.periodPos > 4) this.periodPos = 1;
-            this.SetPeriod();
-            Screens_StartLoad();
+                this.periodPos++;
+                if (this.periodPos > 4) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
             }
         } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
     },
