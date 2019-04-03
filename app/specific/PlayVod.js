@@ -849,31 +849,6 @@ function PlayVod_handleKeyDown(e) {
         }
     } else {
         switch (e.keyCode) {
-            case KEY_INFO:
-            case KEY_CHANNELGUIDE:
-                if (Play_isFullScreen) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible() && !Play_isVodDialogShown()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                }
-                break;
-            case KEY_CHANNELUP:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                }
-                break;
-            case KEY_CHANNELDOWN:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions--;
-                    Play_ChatPosition();
-                }
-                break;
             case KEY_LEFT:
                 if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
@@ -1013,23 +988,6 @@ function PlayVod_handleKeyDown(e) {
                     else Chat_Pause();
                 }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
-                break;
-            case KEY_YELLOW:
-                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
-                break;
-            case KEY_GREEN:
-                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
-                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (!Main_values.Play_ChatForceDisable) Chat_Disable();
-                else Chat_Init();
-                Main_SaveValues();
-                break;
-            case KEY_RED:
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-                break;
-            case KEY_BLUE:
-                Play_OpenSearch(2);
                 break;
             default:
                 break;

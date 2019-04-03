@@ -320,43 +320,11 @@ function Featured_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            Featured_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Before = Main_Featured;
-            Main_values.Main_Go = Main_games;
-            Featured_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Before = Main_Featured;
-            Main_values.Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
-            Featured_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_OpenLiveStream(Featured_cursorY + '_' + Featured_cursorX, Featured_ids, Featured_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Featured_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            Featured_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_Featured;
-            Main_values.Main_Go = Main_Search;
-            Featured_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

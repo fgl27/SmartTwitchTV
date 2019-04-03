@@ -265,21 +265,6 @@ function UserChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            UserChannels_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_UserLive;
-            UserChannels_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) Main_values.Main_Go = Main_UserVod;
-            else Main_values.Main_Go = Main_usergames;
-            UserChannels_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -296,22 +281,6 @@ function UserChannels_handleKeyDown(event) {
             AddCode_IsFallowing = true;
             ChannelContent_UserChannels = true;
             Main_HideElement(UserChannels_ids[6]);
-            Main_SwitchScreen();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(UserChannels_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            UserChannels_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_UserChannels;
-            Main_values.Main_Go = Main_Search;
-            UserChannels_exit();
             Main_SwitchScreen();
             break;
         default:

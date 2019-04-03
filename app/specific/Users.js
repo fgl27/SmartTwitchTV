@@ -329,22 +329,6 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            Users_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Before = Main_Users;
-            Main_values.Main_Go = Main_Featured;
-            Users_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Before = Main_Users;
-            Main_values.Main_Go = Main_Live;
-            Users_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -378,22 +362,6 @@ function Users_handleKeyDown(event) {
                     }
                 }
             } else Users_keyEnter();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Users_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            Users_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_Users;
-            Main_values.Main_Go = Main_Search;
-            Users_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

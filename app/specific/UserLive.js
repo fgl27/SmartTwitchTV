@@ -498,41 +498,11 @@ function UserLive_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            UserLive_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_UserHost;
-            UserLive_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Go = Main_UserChannels;
-            UserLive_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_OpenLiveStream(UserLive_cursorY + '_' + UserLive_cursorX, UserLive_ids, UserLive_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(UserLive_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            UserLive_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_UserLive;
-            Main_values.Main_Go = Main_Search;
-            UserLive_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

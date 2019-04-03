@@ -475,27 +475,6 @@ function AGame_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            AGame_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            if (!Main_values.Search_isSearching) {
-                Main_values.Main_Before = Main_aGame;
-                Main_values.Main_Go = Main_Vod;
-                Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-                AGame_exit();
-                Main_SwitchScreen();
-            }
-            break;
-        case KEY_CHANNELDOWN:
-            if (!Main_values.Search_isSearching) {
-                Main_values.Main_Before = Main_aGame;
-                Main_values.Main_Go = Main_Featured;
-                AGame_exit();
-                Main_SwitchScreen();
-            }
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -503,23 +482,6 @@ function AGame_handleKeyDown(event) {
             if (AGame_cursorY !== -1) {
                 Main_OpenLiveStream(AGame_cursorY + '_' + AGame_cursorX, AGame_ids, AGame_handleKeyDown);
             } else AGame_headerOptions();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(AGame_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            AGame_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_aGame;
-            Main_values.Main_Go = Main_Search;
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-            AGame_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

@@ -414,16 +414,6 @@ function ChannelVod_handleKeyDown(event) {
 
             }
             break;
-        case KEY_CHANNELUP:
-        case KEY_CHANNELDOWN:
-            ChannelVod_highlight = !ChannelVod_highlight;
-            Main_setItem('ChannelVod_highlight', ChannelVod_highlight ? 'true' : 'false');
-            ChannelVod_StartLoad();
-            break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            ChannelVod_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -433,25 +423,6 @@ function ChannelVod_handleKeyDown(event) {
                 Main_setItem('ChannelVod_highlight', ChannelVod_highlight ? 'true' : 'false');
                 ChannelVod_StartLoad();
             } else Main_OpenVod(ChannelVod_cursorY + '_' + ChannelVod_cursorX, ChannelVod_ids, ChannelVod_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(ChannelVod_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            ChannelVod_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            if (!Main_values.Search_isSearching) {
-                ChannelContent_SetChannelValue();
-                Main_values.Main_BeforeSearch = Main_ChannelVod;
-            }
-            Main_values.Main_Go = Main_Search;
-            ChannelVod_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

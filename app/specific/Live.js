@@ -391,45 +391,11 @@ function Live_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            Live_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Before = Main_Live;
-            Main_values.Main_Go = AddUser_IsUserSet() ? Main_Users : Main_addUser;
-            Live_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Before = Main_Live;
-            Main_values.Main_Go = Main_Clip;
-            Live_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_OpenLiveStream(Live_cursorY + '_' + Live_cursorX, Live_ids, Live_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Live_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            if (!Main_isReleased) {
-                Main_PrintUnicode('Reloading');
-                window.location.reload(true); // refresh the app from live
-            }
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_Live;
-            Main_values.Main_Go = Main_Search;
-            Live_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;
