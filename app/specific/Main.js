@@ -252,8 +252,7 @@ function Main_SetStringsMain(isStarting) {
     Main_updateclock();
 
     //set top bar labels
-    Main_IconLoad('label_refresh', isStarting ? 'icon-refresh' : 'icon-arrow-circle-left',
-        isStarting ? (STR_REFRESH + STR_GUIDE) : STR_GOBACK);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
 
