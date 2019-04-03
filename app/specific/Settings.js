@@ -6,8 +6,8 @@ var Settings_value = {
         "defaultValue": 2
     },
     "chat_font_size": { //chat_font_size
-        "values": ["85%", "100%", "130%", "160%"],
-        "defaultValue": 2
+        "values": ["70%", "85%", "100%", "130%", "160%"],
+        "defaultValue": 3
     },
     "force_disable_chat": { //force disable
         "values": ["off", "on"],

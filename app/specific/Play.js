@@ -146,7 +146,7 @@ var Play_ChatSizeVal = [{
 }];
 
 var Play_ChatFont = 1;
-var Play_ChatFontObj = ['chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
+var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
 //Variable initialization end
 
 function Play_PreStart() {
