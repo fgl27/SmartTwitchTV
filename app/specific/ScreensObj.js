@@ -36,12 +36,6 @@ var Base_obj = {
     data_cursor: 0,
     loadDataSuccess: Screens_loadDataSuccess,
     ThumbPading: Main_ThumbPading,
-    key_blue: function() {
-        if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = inUseObj.screen;
-        Main_values.Main_Go = Main_Search;
-        Screens_exit();
-        Main_SwitchScreen();
-    },
     set_ThumbSize: function() {
         this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
     }
@@ -56,23 +50,20 @@ var Base_Clip_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
     cursor: null,
-    key_refresh: Screens_StartLoad,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_CLIPS;
     },
     key_play: function() {
-        if (this.posY === -1) this.key_yellow();
-        else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
-    key_yellow: function() {
-        if (!this.loadingData) {
+        if (this.posY === -1) {
+            if (!this.loadingData) {
             this.periodPos++;
             if (this.periodPos > 4) this.periodPos = 1;
             this.SetPeriod();
             Screens_StartLoad();
-        }
+            }
+        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
     },
     addCell: function(cell) {
         if (!inUseObj.idObject[cell.tracking_id]) {
@@ -168,22 +159,6 @@ function ScreensObj_InitClip() {
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
-        key_channelup: function() {
-            Main_values.Main_Before = this.screen;
-            Main_values.Main_Go = Main_Live;
-            Screens_exit();
-            Main_SwitchScreen();
-        },
-        key_channeldown: function() {
-            Main_values.Main_Before = this.screen;
-            Main_values.Main_Go = Main_Vod;
-            Screens_exit();
-            Main_SwitchScreen();
-        },
-        key_green: function() {
-            Screens_exit();
-            Main_GoLive();
-        }
     }, Base_obj);
 
     Clip = Screens_assign(Clip, Base_Clip_obj);
@@ -244,35 +219,6 @@ function ScreensObj_InitChannelClip() {
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
-        key_channelup: function() {
-            if (!this.loadingData) {
-                this.periodPos++;
-                if (this.periodPos > 4) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
-        },
-        key_channeldown: function() {
-            if (!this.loadingData) {
-                this.periodPos--;
-                if (this.periodPos < 1) this.periodPos = 4;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
-        },
-        key_green: function() {
-            Screens_exit();
-            Main_GoLive();
-        },
-        key_blue: function() {
-            if (!Main_values.Search_isSearching) {
-                ChannelContent_SetChannelValue();
-                Main_values.Main_BeforeSearch = inUseObj.screen;
-            }
-            Main_values.Main_Go = Main_Search;
-            Screens_exit();
-            Main_SwitchScreen();
-        }
     }, Base_obj);
 
     ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
@@ -334,27 +280,6 @@ function ScreensObj_InitAGameClip() {
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
         },
-        key_channelup: function() {
-            if (!this.loadingData) {
-                this.periodPos++;
-                if (this.periodPos > 4) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
-        },
-        key_channeldown: function() {
-            if (!this.loadingData) {
-                this.periodPos--;
-                if (this.periodPos < 1) this.periodPos = 4;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
-        },
-        key_yellow: Main_showControlsDialog,
-        key_green: function() {
-            Screens_exit();
-            Main_GoLive();
-        }
     }, Base_obj);
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
@@ -402,7 +327,6 @@ function ScreensObj_InitGame() {
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
         },
-        key_refresh: Screens_StartLoad,
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -410,18 +334,6 @@ function ScreensObj_InitGame() {
                 if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
-        },
-        key_channelup: function() {
-            Main_values.Main_Before = this.screen;
-            Main_values.Main_Go = Main_Vod;
-            Screens_exit();
-            Main_SwitchScreen();
-        },
-        key_channeldown: function() {
-            Main_values.Main_Before = this.screen;
-            Main_values.Main_Go = Main_Featured;
-            Screens_exit();
-            Main_SwitchScreen();
         },
         key_play: function() {
             Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
@@ -433,11 +345,6 @@ function ScreensObj_InitGame() {
             Screens_exit();
             Main_SwitchScreen();
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-        },
-        key_yellow: Main_showControlsDialog,
-        key_green: function() {
-            Screens_exit();
-            Main_GoLive();
         },
         addCell: function(cell) {
             if (!inUseObj.idObject[cell.game._id]) {
@@ -518,17 +425,6 @@ function ScreensObj_InitUserGames() {
             Main_textContent('top_bar_user', STR_USER);
             Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
-        key_refresh: function() {
-            this.isLive = !this.isLive;
-
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
-
-            Screens_StartLoad();
-
-            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
-            Users_resetGameCell();
-
-        },
         key_exit: function() {
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -536,19 +432,6 @@ function ScreensObj_InitUserGames() {
                 if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
                 Main_CenterLablesStart(Screens_handleKeyDown);
             }
-        },
-        key_channelup: function() {
-            Main_values.Main_Before = this.screen;
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) Main_values.Main_Go = Main_UserVod;
-            else Main_values.Main_Go = Main_UserChannels;
-            Screens_exit();
-            Main_SwitchScreen();
-        },
-        key_channeldown: function() {
-            Main_values.Main_Before = this.screen;
-            Main_values.Main_Go = Main_UserHost;
-            Screens_exit();
-            Main_SwitchScreen();
         },
         key_play: function() {
             Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
@@ -559,11 +442,6 @@ function ScreensObj_InitUserGames() {
             AGame_UserGames = false;
             Screens_exit();
             Main_SwitchScreen();
-        },
-        key_yellow: Main_showControlsDialog,
-        key_green: function() {
-            Screens_exit();
-            Main_GoLive();
         },
         addCell: function(cell) {
             var game = this.isLive ? cell.game : cell;

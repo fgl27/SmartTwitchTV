@@ -46,37 +46,11 @@ function AddCode_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_games;
-            AddCode_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Go = Main_Live;
-            AddCode_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             AddCode_inputFocus();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(AddCode_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            AddCode_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_values.Main_Go;
-            Main_values.Main_Go = Main_Search;
-            AddCode_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

@@ -833,9 +833,6 @@ function PlayVod_DialogPressed(fromStart) {
 function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
         switch (e.keyCode) {
-            case KEY_GREEN:
-                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
-                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();

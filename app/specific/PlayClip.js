@@ -348,9 +348,6 @@ function PlayClip_OpenVod() {
 function PlayClip_handleKeyDown(e) {
     if (PlayClip_state !== PlayClip_STATE_PLAYING) {
         switch (e.keyCode) {
-            case KEY_GREEN:
-                if (!Main_isReleased) window.location.reload(true); // refresh the app from live
-                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
