@@ -160,8 +160,6 @@ function Play_PreStart() {
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
 
-    //Play_SetAvPlayGlobal();
-    //Play_ClearPlayer();
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
@@ -653,7 +651,7 @@ function Play_CheckChat() {
 
 function Play_PlayerCheck() {
     if (Main_Android) Play_currentTime = Android.gettime();
-    if (Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
+    if (Play_isOn && Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
 
@@ -704,7 +702,7 @@ function Play_EndStart(hosting, PlayVodClip) {
 function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.timeout = 1000;
-    xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?rand=' + Math.round(Math.random() * 1e7), true);
+    xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?' + Math.random(), true);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -1402,45 +1400,26 @@ function Play_CheckHostStart() {
 
 function Play_CheckId() {
     var theUrl = 'https://api.twitch.tv/kraken/users?login=' + Main_values.Play_selectedChannel;
-    var xmlHttp;
-    if (Main_Android) {
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 2, null);
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Play_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
 
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            Play_CheckIdError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            Play_CheckIdValue(xmlHttp.responseText.users[0]);
-        } else {
-            Play_CheckIdError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_CheckIdValue(JSON.parse(xmlHttp.responseText).users[0]);
-                    return;
-                } else {
-                    Play_CheckIdError();
-                }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_CheckIdValue(JSON.parse(xmlHttp.responseText).users[0]);
+                return;
+            } else {
+                Play_CheckIdError();
             }
-        };
+        }
+    };
 
-        xmlHttp.send(null);
-    }
+    xmlHttp.send(null);
 }
 
 function Play_CheckIdValue(users) {
