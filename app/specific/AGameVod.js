@@ -430,22 +430,6 @@ function AGameVod_handleKeyDown(event) {
 
             }
             break;
-        case KEY_CHANNELUP:
-            AGameVod_periodNumber++;
-            if (AGameVod_periodNumber > 4) AGameVod_periodNumber = 1;
-            AGameVod_StartLoad();
-            break;
-        case KEY_CHANNELDOWN:
-            AGameVod_periodNumber--;
-            if (AGameVod_periodNumber < 1) AGameVod_periodNumber = 4;
-            AGameVod_StartLoad();
-            break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            AGameVod_highlight = !AGameVod_highlight;
-            Main_setItem('AGameVod_highlight', AGameVod_highlight ? 'true' : 'false');
-            AGameVod_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -461,22 +445,6 @@ function AGameVod_handleKeyDown(event) {
                     AGameVod_StartLoad();
                 }
             } else Main_OpenVod(AGameVod_cursorY + '_' + AGameVod_cursorX, AGameVod_ids, AGameVod_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(AGameVod_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            AGameVod_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_AGameVod;
-            Main_values.Main_Go = Main_Search;
-            AGameVod_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

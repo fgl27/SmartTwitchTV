@@ -38,37 +38,11 @@ function AddUser_handleKeyDown(event) {
                 Main_SwitchScreen();
             }
             break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_Featured;
-            AddUser_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Go = Main_Live;
-            AddUser_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             AddUser_inputFocus();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(AddUser_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            AddUser_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_values.Main_Go;
-            Main_values.Main_Go = Main_Search;
-            AddUser_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

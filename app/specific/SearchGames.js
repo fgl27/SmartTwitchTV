@@ -223,10 +223,6 @@ function SearchGames_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            SearchGames_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -237,22 +233,6 @@ function SearchGames_handleKeyDown(event) {
             document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
             Main_values.Main_Go = Main_aGame;
             Main_values.Games_return = true;
-            Main_SwitchScreen();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(SearchGames_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            Main_values.Search_isSearching = false;
-            SearchGames_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_Go = Main_Search;
-            SearchGames_exit();
             Main_SwitchScreen();
             break;
         default:

@@ -165,7 +165,7 @@ function Play_PreStart() {
     Play_SetChatFont();
 }
 
-function Play_SetFullScreen(isfull) {
+function Play_SetFullScreen(isfull) { // jshint ignore:line
     if (isfull) {
         if (Play_ChatPositionsBF !== undefined) {
             Play_ChatPositions = Play_ChatPositionsBF;
@@ -953,19 +953,6 @@ function Play_isChatShown() {
     return Main_isElementShowing('chat_container');
 }
 
-function Play_showControlsDialog() {
-    Play_CleanHideExit();
-    Main_ShowElement('dialog_controls_play');
-}
-
-function Play_HideControlsDialog() {
-    Main_HideElement('dialog_controls_play');
-}
-
-function Play_isControlsDialogShown() {
-    return Main_isElementShowing('dialog_controls_play');
-}
-
 function Play_qualityIndexReset() {
     Play_qualityIndex = 0;
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
@@ -1114,7 +1101,6 @@ function Play_PrepareshowEndDialog() {
     if (!Play_IsWarning) Play_HideWarningDialog();
     Play_HideBufferDialog();
     Play_CleanHideExit();
-    Play_HideControlsDialog();
     Play_EndIconsAddFocus();
 }
 
@@ -1518,8 +1504,7 @@ function Play_setFallow() {
 }
 
 function Play_KeyReturn(is_vod) {
-    if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-    else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+    if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
         Play_EndTextClear();
         Play_showExitDialog();
     } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
@@ -1564,32 +1549,6 @@ function Play_handleKeyDown(e) {
         }
     } else {
         switch (e.keyCode) {
-            case KEY_KEYBOARD_SPACE:
-            case KEY_INFO:
-            case KEY_CHANNELGUIDE:
-                if (Play_isFullScreen) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                }
-                break;
-            case KEY_CHANNELUP:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                }
-                break;
-            case KEY_CHANNELDOWN:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions--;
-                    Play_ChatPosition();
-                }
-                break;
             case KEY_LEFT:
                 if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
@@ -1687,29 +1646,6 @@ function Play_handleKeyDown(e) {
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
                 if (!Play_isEndDialogVisible()) Play_KeyPause(1);
-                break;
-            case KEY_YELLOW:
-                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
-                break;
-            case KEY_GREEN:
-                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
-                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (!Main_values.Play_ChatForceDisable) {
-                    Play_Chatobj.src = 'about:blank';
-                    Chat_Disable();
-                } else {
-                    Main_HideElement('chat_box');
-                    Main_ShowElement('chat_frame');
-                    Play_loadChat();
-                }
-                Main_SaveValues();
-                break;
-            case KEY_RED:
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-                break;
-            case KEY_BLUE:
-                Play_OpenSearch(1);
                 break;
             default:
                 break;

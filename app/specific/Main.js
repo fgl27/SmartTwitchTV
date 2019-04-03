@@ -287,7 +287,6 @@ function Main_SetStringsMain(isStarting) {
 
 function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
-    Main_innerHTML("dialog_controls_play_text", STR_CONTROLS_PLAY_0);
 
     Main_textContent('side_panel_search', STR_SEARCH);
     Main_textContent('side_panel_settings', STR_SETTINGS);
@@ -1427,7 +1426,7 @@ function Main_getItemBool(item, default_value) {
 // use http://www.fileformat.info/info/unicode/char/16EB/index.html
 // Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
 // To see supported fonts and etc info about the unknown char
-function Main_PrintUnicode(string) {
+function Main_PrintUnicode(string) { // jshint ignore:line
     console.log(string);
     for (var i = 0; i < string.length; i++)
         console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());

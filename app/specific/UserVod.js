@@ -526,22 +526,6 @@ function UserVod_handleKeyDown(event) {
 
             }
             break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_UserChannels;
-            UserVod_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Go = Main_usergames;
-            UserVod_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            UserVod_highlight = !UserVod_highlight;
-            Main_setItem('UserVod_highlight', UserVod_highlight ? 'true' : 'false');
-            UserVod_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -557,24 +541,6 @@ function UserVod_handleKeyDown(event) {
                     UserVod_StartLoad();
                 }
             } else Main_OpenVod(UserVod_cursorY + '_' + UserVod_cursorX, UserVod_ids, UserVod_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(UserVod_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            UserVod_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            if (UserVod_TypeNumber === 1) UserVod_TypeNumber++;
-            else UserVod_TypeNumber--;
-            UserVod_StartLoad();
-            break;
-        case KEY_BLUE:
-            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_UserVod;
-            Main_values.Main_Go = Main_Search;
-            UserVod_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

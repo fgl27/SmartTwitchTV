@@ -108,17 +108,6 @@ function Search_handleKeyDown(event) {
                 Search_inputFocus();
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            break;
-        case KEY_CHANNELUP:
-            Search_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Search_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -136,18 +125,6 @@ function Search_handleKeyDown(event) {
                     }, 1000);
                 }
             }
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Search_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            Search_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
             break;
         default:
             break;

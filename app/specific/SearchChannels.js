@@ -43,10 +43,6 @@ function SearchChannels_exit() {
     Main_HideElement(SearchChannels_ids[6]);
 }
 
-function SearchChannels_Postexit() {
-    Main_SwitchScreen();
-}
-
 function SearchChannels_StartLoad() {
     Main_empty('stream_table_search_channel');
     Main_HideElement(SearchChannels_ids[6]);
@@ -334,10 +330,6 @@ function SearchChannels_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            SearchChannels_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
@@ -353,22 +345,6 @@ function SearchChannels_handleKeyDown(event) {
             ChannelContent_UserChannels = false;
             Main_HideElement(SearchChannels_ids[6]);
             Main_SwitchScreen();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(SearchChannels_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            SearchChannels_exit();
-            Main_values.Search_isSearching = false;
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_Go = Main_Search;
-            SearchChannels_exit();
-            SearchChannels_Postexit();
             break;
         default:
             break;

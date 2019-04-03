@@ -480,8 +480,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_RETURN:
-                if (Play_isControlsDialogShown()) Play_HideControlsDialog();
-                else if (Play_isPanelShown()) PlayClip_hidePanel();
+                if (Play_isPanelShown()) PlayClip_hidePanel();
                 else {
                     if (Play_ExitDialogVisible()) {
                         Play_CleanHideExit();
@@ -499,52 +498,6 @@ function PlayClip_handleKeyDown(e) {
                     else Chat_Pause();
                 }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(3);
-                break;
-            case KEY_INFO:
-            case KEY_CHANNELGUIDE:
-                if (Play_isFullScreen) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                }
-                break;
-            case KEY_CHANNELUP:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                }
-                break;
-            case KEY_CHANNELDOWN:
-                if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatPositions--;
-                    Play_ChatPosition();
-                }
-                break;
-            case KEY_YELLOW:
-                if (!Play_isEndDialogVisible()) Play_showControlsDialog();
-                break;
-            case KEY_GREEN:
-                //if (!Main_isReleased) window.location.reload(true); // refresh the app from live
-                if (!PlayClip_HasVOD) return;
-                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-                if (!Main_values.Play_ChatForceDisable) Chat_Disable();
-                else if (PlayClip_HasVOD) {
-                    Chat_offset = ChannelVod_vodOffset;
-                    Chat_Init();
-                }
-                Main_SaveValues();
-                break;
-            case KEY_RED:
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-                break;
-            case KEY_BLUE:
-                Play_OpenSearch(3);
                 break;
             default:
                 break;

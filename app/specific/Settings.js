@@ -354,29 +354,6 @@ function Settings_handleKeyDown(event) {
                 Settings_inputFocus(Settings_cursorY);
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-        case KEY_CHANNELUP:
-        case KEY_CHANNELDOWN:
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_ENTER:
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Settings_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_values.Main_Go;
-            Main_values.Main_Go = Main_Search;
-            Settings_exit();
-            Main_SwitchScreen();
-            break;
         default:
             break;
     }

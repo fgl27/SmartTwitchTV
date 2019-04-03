@@ -336,41 +336,11 @@ function UserHost_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            UserHost_StartLoad();
-            break;
-        case KEY_CHANNELUP:
-            Main_values.Main_Go = Main_usergames;
-            UserHost_exit();
-            Main_SwitchScreen();
-            break;
-        case KEY_CHANNELDOWN:
-            Main_values.Main_Go = Main_UserLive;
-            UserHost_exit();
-            Main_SwitchScreen();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_OpenLiveStream(UserHost_cursorY + '_' + UserHost_cursorX, UserHost_ids, UserHost_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(UserHost_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            UserHost_exit();
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_BeforeSearch = Main_UserHost;
-            Main_values.Main_Go = Main_Search;
-            UserHost_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;

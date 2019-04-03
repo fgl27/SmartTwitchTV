@@ -334,31 +334,11 @@ function SearchLive_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            SearchLive_StartLoad();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Main_OpenLiveStream(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids, SearchLive_handleKeyDown);
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(SearchLive_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            SearchLive_exit();
-            Main_values.Search_isSearching = false;
-            Main_GoLive();
-            break;
-        case KEY_YELLOW:
-            Main_showControlsDialog();
-            break;
-        case KEY_BLUE:
-            Main_values.Main_Go = Main_Search;
-            SearchLive_exit();
-            Main_SwitchScreen();
             break;
         default:
             break;
