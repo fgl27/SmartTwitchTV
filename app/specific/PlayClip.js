@@ -94,7 +94,7 @@ function PlayClip_loadData() {
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
 
-    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError);
+    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError, true);
 }
 
 function PlayClip_loadDataError() {
