@@ -281,8 +281,8 @@ public class PlayerActivity extends Activity {
                 .setBufferDurationsMs(
                         60000, //DEFAULT_MIN_BUFFER_MS
                         100000, //DEFAULT_MAX_BUFFER_MS
-                        4000, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        8000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        5000, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
+                        5000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .createDefaultLoadControl();
     }
