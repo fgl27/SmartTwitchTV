@@ -141,6 +141,7 @@ function Search_inputFocus() {
 
 function Search_RemoveinputFocus(EnaKeydown) {
     Main_SearchInput.blur();
+    Search_removeEventListener();
     document.body.removeEventListener("keydown", Search_KeyboardEvent);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
 
@@ -148,7 +149,7 @@ function Search_RemoveinputFocus(EnaKeydown) {
     Search_keyBoardOn = false;
 }
 
-function AddCode_removeEventListener() {
+function Search_removeEventListener() {
     if (Main_SearchInput !== null) {
         var elClone = Main_SearchInput.cloneNode(true);
         Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
