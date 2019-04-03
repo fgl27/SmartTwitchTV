@@ -279,10 +279,10 @@ public class PlayerActivity extends Activity {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
-                        DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS * 1.6,
-                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS * 1.6
+                        60000, //DEFAULT_MIN_BUFFER_MS
+                        100000, //DEFAULT_MAX_BUFFER_MS
+                        4000, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
+                        8000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .createDefaultLoadControl();
     }
