@@ -333,7 +333,6 @@ function Screens_BasicExit(before) {
         if (before === inUseObj.screen) Main_values.Main_Go = Main_Live;
         else Main_values.Main_Go = before;
         Screens_exit();
-        Main_SwitchScreen();
     }
 }
 

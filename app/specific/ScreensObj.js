@@ -50,6 +50,7 @@ var Base_Clip_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
     cursor: null,
+    key_refresh: Screens_StartLoad,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
@@ -291,6 +292,7 @@ function ScreensObj_InitGame() {
         ids: Screens_ScreenIds('Game'),
         table: 'stream_table_games',
         screen: Main_games,
+        key_refresh: Screens_StartLoad,
         base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -383,6 +385,17 @@ function ScreensObj_InitUserGames() {
             if (this.isLive) this.url += '/live?limit=750';
             else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
         },
+        key_refresh: function() {
+            this.isLive = !this.isLive;
+
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+
+            Screens_StartLoad();
+
+            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
+            Users_resetGameCell();
+
+        },
         concatenate: function(responseText) {
             if (this.data) {
                 var tempObj = JSON.parse(responseText);
@@ -411,6 +424,7 @@ function ScreensObj_InitUserGames() {
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 1;
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
             Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             Main_AddClass('top_bar_user', 'icon_center_focus');
 
@@ -422,6 +436,7 @@ function ScreensObj_InitUserGames() {
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_textContent('top_bar_user', STR_USER);
             Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
