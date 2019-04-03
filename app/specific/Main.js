@@ -653,17 +653,6 @@ function Main_checkVersion() {
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
 }
 
-function Main_GoLive() {
-    if (!Main_isReleased) window.location.reload(true);
-    else {
-        Main_values.Users_Position = 0;
-        Main_values.Main_Go = Main_Live;
-        if (Main_values.Search_isSearching) Main_RestoreTopLabel();
-        Main_values.Search_isSearching = false;
-        Main_SwitchScreen();
-    }
-}
-
 // right after the TV comes from standby the network can lag, delay the check
 function Main_ResumeNetwork() {
     if (document.hidden) {

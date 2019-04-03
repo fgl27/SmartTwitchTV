@@ -384,33 +384,11 @@ function Screens_handleKeyDown(event) {
         case KEY_DOWN:
             Screens_KeyUpDown(1);
             break;
-        case KEY_INFO:
-        case KEY_CHANNELGUIDE:
-            if (!inUseObj.loadingData) inUseObj.key_refresh();
-            break;
-        case KEY_CHANNELUP:
-            inUseObj.key_channelup();
-            break;
-        case KEY_CHANNELDOWN:
-            inUseObj.key_channeldown();
-            break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
             inUseObj.key_play();
-            break;
-        case KEY_RED:
-            Main_SidePannelStart(Screens_handleKeyDown);
-            break;
-        case KEY_GREEN:
-            inUseObj.key_green();
-            break;
-        case KEY_YELLOW:
-            inUseObj.key_yellow();
-            break;
-        case KEY_BLUE:
-            inUseObj.key_blue();
             break;
         default:
             break;

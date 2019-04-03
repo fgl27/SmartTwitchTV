@@ -142,10 +142,6 @@ function Users_loadDataSuccessFinish() {
     });
 }
 
-function Users_resetGameCell() {
-    for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
-}
-
 function Users_addFocus() {
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
     if (Main_YchangeAddFocus(Users_cursorY)) {
