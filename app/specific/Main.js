@@ -1431,7 +1431,7 @@ function processCode(pageUrl) {
 }
 
 //Basic XMLHttpRequest thatonly returns error or 200 status
-function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
     var xmlHttp;
     if (Main_Android) {
 
@@ -1453,7 +1453,7 @@ function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSuces
     } else {
         xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.open("GET", (useProxy ? proxyurl : '') + theUrl, true);
         xmlHttp.timeout = Timeout;
 
         if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
