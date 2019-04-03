@@ -19,13 +19,12 @@ var Main_ChannelClip = 13;
 var Main_Users = 14;
 var Main_UserChannels = 15;
 var Main_SearchChannels = 16;
-var Main_addCode = 17;
-var Main_Vod = 18;
-var Main_Clip = 19;
-var Main_AGameVod = 20;
-var Main_AGameClip = 21;
-var Main_Featured = 22;
-var Main_UserVod = 23;
+var Main_Vod = 17;
+var Main_Clip = 18;
+var Main_AGameVod = 19;
+var Main_AGameClip = 20;
+var Main_Featured = 21;
+var Main_UserVod = 22;
 
 var Main_GoBefore = '';
 var Main_values = {
@@ -76,7 +75,6 @@ var Main_IsDayFirst = false;
 var Main_ScrollbarElement;
 var Main_SearchInput;
 var Main_AddUserInput;
-var Main_AddCodeInput;
 var Main_SetTopOpacityId;
 var Main_updateclockId;
 var Main_ContentLang = "";
@@ -239,7 +237,6 @@ function Main_initWindows() {
 
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
-        Main_AddCodeInput = document.getElementById("oauth_input");
 
         // pre load All img
         Main_CacheImage(IMG_404_VIDEO);
@@ -542,7 +539,6 @@ function Main_SwitchScreen(removekey) {
     Main_ready(function() {
         if (Main_values.Main_Go === Main_Live) Live_init();
         else if (Main_values.Main_Go === Main_addUser) AddUser_init();
-        else if (Main_values.Main_Go === Main_addCode) AddCode_init();
         else if (Main_values.Main_Go === Main_games) {
             inUseObj = Game;
             Screens_init();
@@ -591,7 +587,6 @@ function Main_RestoreValues() {
 function Main_ExitCurrent(ExitCurrent) {
     if (ExitCurrent === Main_Live) Live_exit();
     else if (ExitCurrent === Main_addUser) AddUser_exit();
-    else if (ExitCurrent === Main_addCode) AddCode_exit();
     else if (ExitCurrent === Main_games) Screens_exit();
     else if (ExitCurrent === Main_aGame) AGame_exit();
     else if (ExitCurrent === Main_Search) Search_exit();
