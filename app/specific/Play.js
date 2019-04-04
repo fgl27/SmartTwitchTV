@@ -12,6 +12,9 @@ var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
 var Play_isHost;
+var Play_FeedOldUserName = '';
+var Play_Feedid;
+var Play_FeedPos = 0;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -1122,8 +1125,6 @@ function Play_isEndDialogVisible() {
 function Play_isFeedShow() {
     return Main_isElementShowing('user_feed');
 }
-var Play_FeedOldUserName = '';
-var Play_Feedid;
 
 function Play_ShowFeed() {
     var hasuser = AddUser_UserIsSet();
@@ -1152,7 +1153,6 @@ function Play_FeedRefreshFocus() {
     window.clearTimeout(Play_Feedid);
     if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 }
-var Play_FeedPos = 0;
 
 function Play_FeedAddFocus() {
     Play_ResetFeedId();
@@ -1672,7 +1672,7 @@ function Play_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (!Play_isFeedShow()) Play_ShowFeed();
+                } else if (!Play_isFeedShow() && AddUser_UserIsSet()) Play_ShowFeed();
                 else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isFeedShow()) Play_FeedRefreshFocus();
                 break;

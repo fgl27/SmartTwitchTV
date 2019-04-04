@@ -527,15 +527,14 @@ function PlayVod_shutdownStream() {
 
 function PlayVod_PreshutdownStream(saveOffset) {
     if (saveOffset) PlayVod_SaveVodIds();
-
     if (Main_Android) Android.stopVideo(2);
-
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
     window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
     PlayVod_HasVodInfo = true;
     Chat_Clear();
+    Play_HideFeed();
     Play_ClearPlayer();
     PlayVod_ClearVod();
 }
@@ -847,7 +846,13 @@ function PlayVod_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                if (Play_isFeedShow()) {
+                    if (Play_FeedPos) {
+                        Play_FeedRemoveFocus();
+                        Play_FeedPos--;
+                        Play_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
@@ -877,7 +882,13 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_RIGHT:
-                if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                if (Play_isFeedShow()) {
+                    if (Play_FeedPos < (UserLiveFeed_itemsCount - 1)) {
+                        Play_FeedRemoveFocus();
+                        Play_FeedPos++;
+                        Play_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                     if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                         Play_showChat();
                         Play_ChatEnable = true;
@@ -927,14 +938,9 @@ function PlayVod_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 4) {
-                        Play_ChatSizeValue = 1;
-                        Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
-                    Play_ChatSize(true);
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                } else if (!Play_isFeedShow()) Play_ShowFeed();
+                else if (Play_isFeedShow()) Play_FeedRefreshFocus();
+                else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
@@ -951,10 +957,17 @@ function PlayVod_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatBackground += 0.05;
-                    if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
-                    Play_ChatBackgroundChange(true);
+                } else if (Play_isFeedShow()) Play_HideFeed();
+                else if (Play_isFullScreen && Play_isChatShown()) {
+                    //Play_ChatBackground += 0.05;
+                    //if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
+                    //Play_ChatBackgroundChange(true);
+                    Play_ChatSizeValue++;
+                    if (Play_ChatSizeValue > 4) {
+                        Play_ChatSizeValue = 1;
+                        Play_ChatPositionConvert(false);
+                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                    Play_ChatSize(true);
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
@@ -972,6 +985,9 @@ function PlayVod_handleKeyDown(e) {
                         }
                         if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     } else Play_BottomOptionsPressed(2);
+                } else if (Play_isFeedShow()) {
+                    Play_PreshutdownStream();
+                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayVod_showPanel(true);
                 break;
             case KEY_RETURN:
