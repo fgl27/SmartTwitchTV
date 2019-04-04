@@ -31,6 +31,7 @@ function DefaultLang() {
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
+        STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
         STR_DIV_MIDLE_LEFT +
