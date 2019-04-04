@@ -81,7 +81,6 @@ var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods;
 var Main_addFocusVideoOffset = 0;
-var Main_Is4k = false;
 var Main_FirstRun = true;
 
 var Main_SidePannelPos = 0;
@@ -213,9 +212,6 @@ function Main_initWindows() {
         Screens_InitSecondaryScreens();
         Live_init();
 
-        //keep 4k streams disable until we have 4k content from twitch
-        //TV models that don't like "setStreamingProperty("SET_MODE_4K", "TRUE");" all 1080p and UNU7090
-        Main_Is4k = false;
         Chat_Preinit();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         document.getElementById("side_panel").style.marginLeft = '';
@@ -255,6 +251,7 @@ function Main_SetStringsMain(isStarting) {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ' Press up');
 
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
@@ -316,8 +313,7 @@ function Main_SetStringsSecondary() {
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block;"><i class="' + icon +
-        '" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div class="strokedextramini" style="vertical-align: middle; display: inline-block;"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedextramini" style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
 }
 
 function Main_HideElement(element) {
