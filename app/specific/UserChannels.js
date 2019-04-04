@@ -36,6 +36,7 @@ function UserChannels_init() {
 }
 
 function UserChannels_exit() {
+    Main_values.Users_Position = 0;
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     Main_textContent('top_bar_user', STR_USER);

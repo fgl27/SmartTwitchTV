@@ -43,6 +43,7 @@ function UserVod_init() {
 }
 
 function UserVod_exit() {
+    Main_values.Users_Position = 0;
     if (UserVod_status) UserVod_removeFocus();
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
