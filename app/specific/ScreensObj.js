@@ -435,6 +435,7 @@ function ScreensObj_InitUserGames() {
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         },
         label_exit: function() {
+            Main_values.Users_Position = 0;
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_textContent('top_bar_user', STR_USER);
