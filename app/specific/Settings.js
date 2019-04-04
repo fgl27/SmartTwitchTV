@@ -9,6 +9,14 @@ var Settings_value = {
         "values": ["60%", "80%", "100%", "120%", "140%"],
         "defaultValue": 3
     },
+    "chat_brightness": { //chat_font_size
+        "values": ["0%", "5%", "10%", "15%", "20%",
+            "25%", "30%", "35%", "40%", "45%",
+            "50%", "55%", "60%", "65%", "70%",
+            "75%", "80%", "85%", "90%", "95%", "100%"
+        ],
+        "defaultValue": 11
+    },
     "force_disable_chat": { //force disable
         "values": ["off", "on"],
         "defaultValue": 2
@@ -135,6 +143,11 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
 
+    key = "chat_brightness";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_CHAT_BRIGHTNESS);
+
     key = "force_disable_chat";
     Settings_value_keys.push(key);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
@@ -209,6 +222,9 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
+    key = "chat_brightness";
+    Main_textContent(key + '_name', STR_CHAT_BRIGHTNESS);
+
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
             Main_textContent(key, Settings_Obj_values(key));
@@ -220,6 +236,7 @@ function Settings_SetDefautls() {
         Settings_value[key].defaultValue -= 1;
     }
     Settings_SetClock();
+    Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     Main_ContentLang = Settings_Obj_set_values("content_lang");
     Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
@@ -287,7 +304,10 @@ function Settings_SetDefault(position) {
 
     if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
     else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
+    else if (position === "chat_brightness") {
+        Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
+        Play_ChatBackgroundChange(false);
+    } else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
     else if (position === "chat_font_size") Play_SetChatFont();
     else if (position === "clock_offset") {
         Settings_SetClock();
