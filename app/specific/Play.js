@@ -158,7 +158,6 @@ function Play_PreStart() {
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
-    Play_ChatBackground = parseFloat(localStorage.getItem('ChatBackgroundValue')) || 0.55;
     Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 3);
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
@@ -1009,15 +1008,8 @@ function Play_ChatSize(showDialog) {
 }
 
 function Play_ChatBackgroundChange(showDialog) {
-    var chat_value = Play_ChatBackground - 0.05; //Do not save a 0 value for ChatBackgroundValue
-
-    if (chat_value < 0.05) chat_value = 0;
-    else chat_value = chat_value.toFixed(2);
-
-    Play_chat_container.style.backgroundColor = "rgba(0, 0, 0, " + chat_value + ")";
-    if (showDialog) Play_showChatBackgroundDialog(STR_BRIGHTNESS + (chat_value * 100).toFixed(0) + '%');
-
-    Main_setItem('ChatBackgroundValue', Play_ChatBackground);
+    Play_chat_container.style.backgroundColor = "rgba(0, 0, 0, " + Play_ChatBackground + ")";
+    if (showDialog) Play_showChatBackgroundDialog(STR_BRIGHTNESS + (Play_ChatBackground * 100).toFixed(0) + '%');
 }
 
 function Play_ChatPositionConvert(up) {

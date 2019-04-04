@@ -222,4 +222,5 @@ function en_USLang() {
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
     STR_CHAT_DISABLE = "Chat is disabled, enable in side pannel settings";
     STR_CLIP_FAIL = "This clip/video fail to load can't replay";
+    STR_CHAT_BRIGHTNESS = "Chat backgroung brightness ";
 }
