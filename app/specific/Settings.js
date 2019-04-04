@@ -100,17 +100,17 @@ function Settings_SetSettings() {
     // General settings title
     div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
-    // Clock offset
-    key = "clock_offset";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
-
     // Content Language selection
     key = "content_lang";
     Settings_value_keys.push(key);
 
     div += Settings_DivOptionNoSummary(key, STR_CONTENT_LANG);
+
+    // Clock offset
+    key = "clock_offset";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
 
     //Player restore playback
     key = "restor_playback";
