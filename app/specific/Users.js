@@ -68,8 +68,8 @@ function Users_loadData() {
 
         Main_td = document.createElement('tr');
         Main_td.className = 'follower_header';
-        Main_td.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') + 
-        AddUser_UsernameArray[x].name + STR_CONTENT +'</div>';
+        Main_td.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') +
+            AddUser_UsernameArray[x].name + STR_CONTENT + '</div>';
 
         document.getElementById("stream_table_user").appendChild(tbody);
         document.getElementById("stream_table_user").appendChild(Main_td);

@@ -67,10 +67,14 @@ function UserLive_StartLoad() {
     UserLive_dataEnded = false;
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
-    Main_ready(function() {
+    Main_ready(UserLive_refresh);
+}
+
+function UserLive_refresh() {
+    if (Main_isElementShowing('dialog_loading')) {
         UserLive_loadDataPrepare();
         UserLive_loadChannels();
-    });
+    } else window.setTimeout(UserLive_refresh, 50);
 }
 
 function UserLive_loadDataPrepare() {
