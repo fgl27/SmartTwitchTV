@@ -136,8 +136,8 @@ function UserLiveFeed_loadChannelUserLive() {
         UserLiveFeed_dataEnded = true;
     }
 
-    var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&limit=' +
-        Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
+    var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&limit=100&offset=' + offset + '&stream_type=all';
+
     var xmlHttp;
     if (Main_Android) {
 
