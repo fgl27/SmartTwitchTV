@@ -347,11 +347,13 @@ function Main_textContent(div, value) {
 
 function Main_showLoadDialog() {
     Main_YRst(-1);
-    Main_ShowElement('dialog_loading');
+    if (Main_Android) Android.mshowLoading(true);
+    else Main_ShowElement('dialog_loading');
 }
 
 function Main_HideLoadDialog() {
-    Main_HideElement('dialog_loading');
+    if (Main_Android) Android.mshowLoading(false);
+    else Main_HideElement('dialog_loading');
 }
 
 function Main_clearExitDialog() {

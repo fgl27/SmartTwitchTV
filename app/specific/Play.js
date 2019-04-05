@@ -826,10 +826,12 @@ function Play_hideFallow() {
 
 function Play_showBufferDialog() {
     if (Main_Android) Android.mshowLoading(true);
+    else Main_ShowElement('dialog_loading_play');
 }
 
 function Play_HideBufferDialog() {
     if (Main_Android) Android.mshowLoading(false);
+    else Main_HideElement('dialog_loading_play');
 }
 
 function Play_showWarningDialog(text) {
