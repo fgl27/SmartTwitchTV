@@ -1148,13 +1148,13 @@ function Play_FeedRefreshFocus() {
 
 function Play_FeedAddFocus() {
     Play_ResetFeedId();
-    Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, Main_classThumb);
+    Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
 
     var position = 0;
 
-    if (Play_FeedPos < 3) position = 3;
+    if (Play_FeedPos < 3) position = 4;
     else if (Play_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).offsetLeft * -1) + (screen.width * 0.4);
+        position = (document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).offsetLeft * -1) + (screen.width * 0.385);
 
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
 }
@@ -1164,7 +1164,7 @@ function Play_ThumbNull(y, thumbnail) {
 }
 
 function Play_FeedRemoveFocus() {
-    Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, Main_classThumb);
+    Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
 }
 
 function Play_EndIconsResetFocus() {
