@@ -208,6 +208,7 @@ function Main_initWindows() {
 
         Play_PreStart();
         AddUser_RestoreUsers();
+        if (AddUser_UserIsSet()) Main_updateUserFeed();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
         Live_init();
@@ -239,7 +240,7 @@ function Main_initWindows() {
         Main_CacheImage(IMG_404_GAME);
         Main_CacheImage(IMG_404_LOGO);
 
-        document.addEventListener('visibilitychange', Main_ResumeNetwork, false);
+        document.addEventListener('visibilitychange', Main_Resume, false);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     });
 }
@@ -644,7 +645,7 @@ function Main_checkVersion() {
 }
 
 // right after the TV comes from standby the network can lag, delay the check
-function Main_ResumeNetwork() {
+function Main_Resume() {
     if (document.hidden) {
         window.clearInterval(Main_updateclockId);
     } else {
@@ -1013,6 +1014,11 @@ function Main_getclock() {
 function Main_updateclock() {
     Main_textContent('label_clock', Main_getclock());
     Main_randomimg = '?' + Math.random();
+}
+
+function Main_updateUserFeed() {
+    Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+    UserLiveFeed_StartLoad();
 }
 
 function Main_SidePannelAddFocus() {
