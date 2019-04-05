@@ -26,11 +26,15 @@ function UserLiveFeed_StartLoad() {
         UserLiveFeed_MaxOffset = 0;
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
-        Main_ready(function() {
-            UserLiveFeed_loadDataPrepare();
-            UserLiveFeed_loadChannels();
-        });
+        Main_ready(UserLiveFeed_refresh);
     }
+}
+
+function UserLiveFeed_refresh() {
+    if (Main_isElementShowing('dialog_loading_feed')) {
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_loadChannels();
+    } else window.setTimeout(UserLiveFeed_refresh, 50);
 }
 
 function UserLiveFeed_loadDataPrepare() {
@@ -93,9 +97,11 @@ function UserLiveFeed_loadDataError() {
     } else {
         UserLiveFeed_loadingData = false;
         if (!UserLiveFeed_itemsCount) {
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_HideElement('dialog_loading_feed');
+            Play_showWarningDialog(STR_REFRESH_PROBLEM);
+            window.setTimeout(function() {
+                Play_HideWarningDialog();
+            }, 2000);
         } else {
             UserLiveFeed_dataEnded = true;
             UserLiveFeed_loadDataSuccessFinish();
@@ -185,8 +191,11 @@ function UserLiveFeed_loadDataErrorLive() {
         UserLiveFeed_loadChannelUserLive();
     } else {
         UserLiveFeed_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        Main_HideElement('dialog_loading_feed');
+        Play_showWarningDialog(STR_REFRESH_PROBLEM);
+        window.setTimeout(function() {
+            Play_HideWarningDialog();
+        }, 2000);
     }
 }
 
@@ -199,7 +208,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
     UserLiveFeed_itemsCount += response_items;
 
-    var stream, id;
+    var stream, id, doc = document.getElementById("user_feed_scroll");
 
     for (var i = 0; i < response_items; i++) {
         stream = response.streams[i];
@@ -207,7 +216,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         if (!UserLiveFeed_idObject[id]) {
             UserLiveFeed_idObject[id] = 1;
 
-            document.getElementById("user_feed_scroll").appendChild(UserLiveFeed_CreatFeed(i,
+            doc.appendChild(UserLiveFeed_CreatFeed(i,
                 [stream.channel.name, id], UserLiveFeed_ids,
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
