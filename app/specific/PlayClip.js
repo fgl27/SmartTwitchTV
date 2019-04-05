@@ -496,6 +496,7 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_RETURN:
                 if (Play_isPanelShown()) PlayClip_hidePanel();
+                else if (Play_isFeedShow()) Play_HideFeed();
                 else {
                     if (Play_ExitDialogVisible()) {
                         Play_CleanHideExit();
