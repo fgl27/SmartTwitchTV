@@ -492,7 +492,7 @@ function PlayClip_handleKeyDown(e) {
                 } else if (Play_isFeedShow()) {
                     Play_PreshutdownStream();
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-                } else Play_showPanel();
+                } else PlayClip_showPanel();
                 break;
             case KEY_RETURN:
                 if (Play_isPanelShown()) PlayClip_hidePanel();
