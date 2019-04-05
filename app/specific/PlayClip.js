@@ -168,7 +168,7 @@ function PlayClip_onPlayer() {
 
     if (Main_Android) {
         PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3;
+        Play_PlayerCheckTimer = 4;
         PlayClip_PlayerCheckQualityChanged = false;
         window.clearInterval(PlayClip_PlayerCheck);
         PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
