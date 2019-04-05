@@ -66,7 +66,7 @@ function en_USLang() {
     STR_USER_HOSTING = " hosting ";
     STR_USER_SET = " already set";
     STR_USER_MAKE_ONE = "Make First";
-    STR_USER_NUMBER_ONE = " First user can fallow and see live channels feed, from outside of the user screen when providing a key<br>";
+    STR_USER_NUMBER_ONE = "First user can fallow (when providing a key) and see live channels feed outside of the user screen<br>";
     STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
     STR_CLIP_DAY = " (24h)";
     STR_CLIP_WEEK = " (7d)";
