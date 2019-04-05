@@ -467,7 +467,7 @@ function PlayVod_onPlayer() {
 
     if (Main_Android) {
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 5;
+        Play_PlayerCheckTimer = 7;
         PlayVod_PlayerCheckQualityChanged = false;
         window.clearInterval(PlayVod_streamCheck);
         PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
