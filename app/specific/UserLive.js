@@ -67,14 +67,10 @@ function UserLive_StartLoad() {
     UserLive_dataEnded = false;
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
-    Main_ready(UserLive_refresh);
-}
-
-function UserLive_refresh() {
-    if (Main_isElementShowing('dialog_loading')) {
+    Main_ready(function() {
         UserLive_loadDataPrepare();
         UserLive_loadChannels();
-    } else window.setTimeout(UserLive_refresh, 50);
+    });
 }
 
 function UserLive_loadDataPrepare() {
@@ -167,7 +163,7 @@ function UserLive_loadChannelLive(responseText) {
     } else { // end
         UserLive_followerChannels = UserLive_followerChannels.slice(0, -1);
         UserLive_loadDataPrepare();
-        UserLive_loadChannelUserLive();
+        Main_ready(UserLive_loadChannelUserLive);
     }
 }
 

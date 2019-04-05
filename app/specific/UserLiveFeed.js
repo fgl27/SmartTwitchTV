@@ -26,15 +26,11 @@ function UserLiveFeed_StartLoad() {
         UserLiveFeed_MaxOffset = 0;
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
-        Main_ready(UserLiveFeed_refresh);
+        Main_ready(function() {
+            UserLiveFeed_loadDataPrepare();
+            UserLiveFeed_loadChannels();
+        });
     }
-}
-
-function UserLiveFeed_refresh() {
-    if (Main_isElementShowing('dialog_loading_feed')) {
-        UserLiveFeed_loadDataPrepare();
-        UserLiveFeed_loadChannels();
-    } else window.setTimeout(UserLiveFeed_refresh, 50);
 }
 
 function UserLiveFeed_loadDataPrepare() {
@@ -128,7 +124,7 @@ function UserLiveFeed_loadChannelLive(responseText) {
     } else { // end
         UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
         UserLiveFeed_loadDataPrepare();
-        UserLiveFeed_loadChannelUserLive();
+        Main_ready(UserLiveFeed_loadChannelUserLive);
     }
 }
 
