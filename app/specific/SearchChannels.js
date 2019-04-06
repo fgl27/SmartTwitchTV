@@ -120,7 +120,8 @@ function SearchChannels_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row, channels, id,
-        cursor = 0;
+        cursor = 0,
+        doc = document.getElementById('stream_table_search_channel');
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
@@ -145,7 +146,7 @@ function SearchChannels_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(SearchChannels_ids[5] + row_id + '_' + coloumn_id));
             SearchChannels_emptyCellVector.push(SearchChannels_ids[5] + row_id + '_' + coloumn_id);
         }
-        document.getElementById('stream_table_search_channel').appendChild(row);
+        doc.appendChild(row);
     }
 
     SearchChannels_loadDataSuccessFinish();

@@ -136,7 +136,8 @@ function ChannelVod_loadDataSuccess(responseText) {
 
     var coloumn_id, row_id, row, video, id,
         cursor = 0,
-        thumbnail_404, thumbnail;
+        thumbnail_404, thumbnail,
+        doc = document.getElementById("stream_table_channel_vod");
 
     // Make the game video/clip/fallowing cell
     if (!ChannelVod_TopRowCreated) {
@@ -150,7 +151,7 @@ function ChannelVod_loadDataSuccess(responseText) {
             'y_0" class="stream_thumbnail_channel_vod" ><div id="' + ChannelVod_ids[3] +
             'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
         row.appendChild(Main_td);
-        document.getElementById("stream_table_channel_vod").appendChild(row);
+        doc.appendChild(row);
     }
 
     for (var i = 0; i < response_rows; i++) {
@@ -192,7 +193,7 @@ function ChannelVod_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(ChannelVod_ids[9] + row_id + '_' + coloumn_id));
             ChannelVod_emptyCellVector.push(ChannelVod_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_channel_vod").appendChild(row);
+        doc.appendChild(row);
     }
 
     ChannelVod_loadDataSuccessFinish();

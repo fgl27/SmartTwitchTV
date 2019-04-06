@@ -60,7 +60,7 @@ function Users_StartLoad() {
 
 function Users_loadData() {
     var row, coloumn_id, tbody = document.createElement('tbody'),
-        color;
+        color, doc = document.getElementById("stream_table_user");
 
     for (var x = 0; x < AddUser_UsernameArray.length; x++) {
         coloumn_id = 0;
@@ -71,8 +71,8 @@ function Users_loadData() {
         Main_td.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') +
             AddUser_UsernameArray[x].name + STR_CONTENT + '</div>';
 
-        document.getElementById("stream_table_user").appendChild(tbody);
-        document.getElementById("stream_table_user").appendChild(Main_td);
+        doc.appendChild(tbody);
+        doc.appendChild(Main_td);
 
         row = document.createElement('tr');
 
@@ -109,7 +109,7 @@ function Users_loadData() {
         coloumn_id++;
         row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
 
-        document.getElementById("stream_table_user").appendChild(row);
+        doc.appendChild(row);
     }
 
     Users_loadDataSuccessFinish();
