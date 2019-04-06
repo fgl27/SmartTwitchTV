@@ -71,10 +71,8 @@ function UserVod_StartLoad() {
     UserVod_cursorX = 0;
     UserVod_cursorY = 0;
     UserVod_dataEnded = false;
-    Main_ready(function() {
-        Main_CounterDialogRst();
-        UserVod_loadDataRequestStart();
-    });
+    Main_CounterDialogRst();
+    UserVod_loadDataRequestStart();
 }
 
 function UserVod_loadDataPrepare() {
@@ -246,7 +244,6 @@ function UserVod_loadDataSuccess(responseText) {
 function UserVod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!UserVod_status) {
-            Main_HideLoadDialog();
             if (UserVod_emptyContent) Main_showWarningDialog(STR_NO + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 UserVod_status = true;
@@ -256,6 +253,7 @@ function UserVod_loadDataSuccessFinish() {
             }
             Main_ShowElement(UserVod_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (UserVod_emptyCellVector.length > 0 && !UserVod_dataEnded) {

@@ -75,10 +75,8 @@ function ChannelVod_StartLoad() {
     ChannelVod_cursorY = 0;
     ChannelVod_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        ChannelVod_loadDataPrepare();
-        ChannelVod_loadDataRequest();
-    });
+    ChannelVod_loadDataPrepare();
+    ChannelVod_loadDataRequest();
 }
 
 function ChannelVod_loadDataPrepare() {
@@ -203,7 +201,6 @@ function ChannelVod_loadDataSuccess(responseText) {
 function ChannelVod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!ChannelVod_status) {
-            Main_HideLoadDialog();
             if (ChannelVod_emptyContent) Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 ChannelVod_status = true;
@@ -213,6 +210,7 @@ function ChannelVod_loadDataSuccessFinish() {
             }
             Main_ShowElement(ChannelVod_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {

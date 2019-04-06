@@ -10,6 +10,7 @@ var UserLiveFeed_itemsCountOffset = 0;
 var UserLiveFeed_MaxOffset = 0;
 var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
+var UserLiveFeed_imgVector = [];
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -26,6 +27,7 @@ function UserLiveFeed_StartLoad() {
         UserLiveFeed_MaxOffset = 0;
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
+        UserLiveFeed_imgVector = [];
         Main_ready(function() {
             UserLiveFeed_loadDataPrepare();
             UserLiveFeed_loadChannels();
@@ -33,8 +35,22 @@ function UserLiveFeed_StartLoad() {
     }
 }
 
+function UserLiveFeed_imgVectorLoad(img_type) {
+    var elem;
+    for (var i = 0; i < UserLiveFeed_imgVector.length; i++) {
+        elem = document.getElementById(UserLiveFeed_imgVector[i].id);
+        if (elem !== null) Main_loadImg(elem, UserLiveFeed_imgVector[i].src + Main_randomimg, img_type);
+    }
+}
+
+function UserLiveFeed_imgVectorPush(id, src) {
+    UserLiveFeed_imgVector.push({
+        'id': id,
+        'src': src
+    });
+}
+
 function UserLiveFeed_loadDataPrepare() {
-    Main_imgVectorRst();
     UserLiveFeed_loadingDataTry = 0;
     UserLiveFeed_loadingDataTimeout = 3500;
 }
@@ -229,7 +245,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
 function UserLiveFeed_loadDataSuccessFinish() {
     Main_ready(function() {
-        Main_imgVectorLoad(IMG_404_VIDEO);
+        UserLiveFeed_imgVectorLoad(IMG_404_VIDEO);
         Play_FeedAddFocus();
         UserLiveFeed_loadingData = false;
         UserLiveFeed_status = true;
@@ -240,7 +256,7 @@ function UserLiveFeed_loadDataSuccessFinish() {
 }
 
 function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
+    UserLiveFeed_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
     Main_td = document.createElement('div');
     Main_td.setAttribute('id', idArray[8] + id);

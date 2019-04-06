@@ -53,10 +53,8 @@ function SearchGames_StartLoad() {
     SearchGames_cursorX = 0;
     SearchGames_cursorY = 0;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        SearchGames_loadDataPrepare();
-        SearchGames_loadDataRequest();
-    });
+    SearchGames_loadDataPrepare();
+    SearchGames_loadDataRequest();
 }
 
 function SearchGames_loadDataPrepare() {
@@ -132,7 +130,6 @@ function SearchGames_createCell(row_id, id, valuesArray) {
 function SearchGames_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!SearchGames_Status) {
-            Main_HideLoadDialog();
             if (SearchGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SearchGames_Status = true;
@@ -140,6 +137,7 @@ function SearchGames_loadDataSuccessFinish() {
                 SearchGames_addFocus();
                 Main_SaveValues();
             }
+            Main_HideLoadDialog();
         }
         Main_ShowElement(SearchGames_ids[7]);
         Main_FirstLoad = false;

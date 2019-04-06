@@ -56,10 +56,8 @@ function Featured_StartLoad() {
     Featured_imgCounter = 0;
     Featured_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Featured_loadDataPrepare();
-        Featured_loadDataRequest();
-    });
+    Featured_loadDataPrepare();
+    Featured_loadDataRequest();
 }
 
 function Featured_loadDataPrepare() {
@@ -153,7 +151,6 @@ function Featured_loadDataSuccess(responseText) {
 function Featured_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Featured_Status) {
-            Main_HideLoadDialog();
             if (Featured_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 Featured_Status = true;
@@ -163,6 +160,7 @@ function Featured_loadDataSuccessFinish() {
             }
             Main_ShowElement(Featured_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (Featured_emptyCellVector.length > 0 && !Featured_dataEnded) {

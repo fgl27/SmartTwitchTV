@@ -64,10 +64,8 @@ function ChannelContent_StartLoad() {
     ChannelContent_cursorY = 0;
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
-    Main_ready(function() {
-        ChannelContent_loadDataPrepare();
-        ChannelContent_loadDataRequest();
-    });
+    ChannelContent_loadDataPrepare();
+    ChannelContent_loadDataRequest();
 }
 
 function ChannelContent_loadDataPrepare() {
@@ -327,7 +325,6 @@ function ChannelContent_setFallow() {
 function ChannelContent_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!ChannelContent_status) {
-            Main_HideLoadDialog();
             ChannelContent_status = true;
             if (ChannelContent_thumbnail !== '')
                 Main_loadImg(document.getElementById(ChannelContent_ids[1] + '0_0'),
@@ -336,6 +333,7 @@ function ChannelContent_loadDataSuccessFinish() {
             ChannelContent_addFocus();
             Main_SaveValues();
             Main_ShowElement(ChannelContent_ids[10]);
+            Main_HideLoadDialog();
         }
         ChannelContent_checkUser();
         Main_FirstLoad = false;

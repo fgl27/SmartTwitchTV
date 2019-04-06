@@ -70,10 +70,8 @@ function Vod_StartLoad() {
     Vod_cursorY = 0;
     Vod_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Vod_loadDataPrepare();
-        Vod_loadDataRequest();
-    });
+    Vod_loadDataPrepare();
+    Vod_loadDataRequest();
 }
 
 function Vod_loadDataPrepare() {
@@ -233,7 +231,6 @@ function Vod_VideoHtml(id, valuesArray, idArray) {
 function Vod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Vod_status) {
-            Main_HideLoadDialog();
             if (Vod_emptyContent) Main_showWarningDialog(STR_NO + (Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 Vod_status = true;
@@ -243,6 +240,7 @@ function Vod_loadDataSuccessFinish() {
             }
             Main_ShowElement(Vod_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {

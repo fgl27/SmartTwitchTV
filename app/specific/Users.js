@@ -131,9 +131,9 @@ function Users_createChannelCell(id, user_name, stream_type, icons, color) {
 function Users_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Users_status) {
-            Main_HideLoadDialog();
             Users_status = true;
             Users_addFocus();
+            Main_HideLoadDialog();
             Main_SaveValues();
         }
         Main_ShowElement(Users_ids[5]);
