@@ -131,6 +131,7 @@ var IMG_404_LOGO = GIT_IO + "404_logo.png";
 var IMG_404_VIDEO = GIT_IO + "404_video.png";
 //var TEMP_MP4 = GIT_IO + "temp.mp4";
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
+var Main_updateUserFeedId;
 
 //function vars
 var Main_loadImg = function(ImgObjet, Src, img_type) {
@@ -208,13 +209,14 @@ function Main_initWindows() {
 
         Play_PreStart();
         AddUser_RestoreUsers();
-        if (AddUser_UserIsSet()) Main_updateUserFeed();
+        if (AddUser_UserIsSet()) {
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+            Main_updateUserFeed();
+        }
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
-        Live_init();
 
         Chat_Preinit();
-        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         document.getElementById("side_panel").style.marginLeft = '';
 
         Main_checkVersion();
@@ -242,6 +244,9 @@ function Main_initWindows() {
 
         document.addEventListener('visibilitychange', Main_Resume, false);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+
+        Live_init();
+        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
     });
 }
 
@@ -646,22 +651,6 @@ function Main_checkVersion() {
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
 }
 
-// right after the TV comes from standby the network can lag, delay the check
-function Main_Resume() {
-    if (document.hidden) {
-        window.clearInterval(Main_updateclockId);
-    } else {
-        Main_updateclock();
-        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        window.setTimeout(function() {
-            if (!document.hidden) {
-                //Update clock twice as first try clock may be out of date in the case TV was on standby
-                Main_updateclock();
-            }
-        }, 20000);
-    }
-}
-
 function Main_empty(el) {
     el = document.getElementById(el);
     while (el.firstChild) el.removeChild(el.firstChild);
@@ -1013,14 +1002,29 @@ function Main_getclock() {
     return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
 }
 
+// right after the TV comes from standby the network can lag, delay the check
+function Main_Resume() {
+    if (!document.hidden) {
+        Main_updateclock();
+        //Update clock twice as first try clock may be out of date in the case TV was on standby
+        window.setTimeout(Main_updateclock, 20000);
+    }
+}
+
 function Main_updateclock() {
-    Main_textContent('label_clock', Main_getclock());
-    Main_randomimg = '?' + Math.random();
+    if (!document.hidden) {
+        Main_textContent('label_clock', Main_getclock());
+        Main_randomimg = '?' + Math.random();
+    }
 }
 
 function Main_updateUserFeed() {
-    Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    UserLiveFeed_StartLoad();
+    if (!document.hidden) {
+        if (AddUser_UserIsSet() && !Play_isFeedShow() && !UserLiveFeed_loadingData) {
+            Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+            UserLiveFeed_StartLoad();
+        }
+    }
 }
 
 function Main_SidePannelAddFocus() {
