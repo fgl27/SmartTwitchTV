@@ -67,10 +67,8 @@ function UserLive_StartLoad() {
     UserLive_dataEnded = false;
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
-    Main_ready(function() {
-        UserLive_loadDataPrepare();
-        UserLive_loadChannels();
-    });
+    UserLive_loadDataPrepare();
+    UserLive_loadChannels();
 }
 
 function UserLive_loadDataPrepare() {
@@ -163,7 +161,7 @@ function UserLive_loadChannelLive(responseText) {
     } else { // end
         UserLive_followerChannels = UserLive_followerChannels.slice(0, -1);
         UserLive_loadDataPrepare();
-        Main_ready(UserLive_loadChannelUserLive);
+        UserLive_loadChannelUserLive();
     }
 }
 
@@ -288,7 +286,6 @@ function UserLive_loadDataSuccess(responseText) {
 function UserLive_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!UserLive_status) {
-            Main_HideLoadDialog();
             if (UserLive_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
                 UserLive_status = true;
@@ -298,6 +295,7 @@ function UserLive_loadDataSuccessFinish() {
             }
             Main_ShowElement(UserLive_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (UserLive_emptyCellVector.length > 0 && !UserLive_dataEnded) {

@@ -73,10 +73,8 @@ function AGameVod_StartLoad() {
     AGameVod_cursorY = 0;
     AGameVod_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        AGameVod_loadDataPrepare();
-        AGameVod_loadDataRequest();
-    });
+    AGameVod_loadDataPrepare();
+    AGameVod_loadDataRequest();
 }
 
 function AGameVod_loadDataPrepare() {
@@ -196,7 +194,6 @@ function AGameVod_loadDataSuccess(responseText) {
 function AGameVod_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!AGameVod_status) {
-            Main_HideLoadDialog();
             if (AGameVod_emptyContent) Main_showWarningDialog(STR_NO + (AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
             else {
                 AGameVod_status = true;
@@ -206,6 +203,7 @@ function AGameVod_loadDataSuccessFinish() {
             }
             Main_ShowElement(AGameVod_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else Main_imgVectorLoad(IMG_404_VIDEO);
 
         if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {

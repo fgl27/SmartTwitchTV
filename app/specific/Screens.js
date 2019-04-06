@@ -86,10 +86,8 @@ function Screens_StartLoad() {
     inUseObj.data_cursor = 0;
     inUseObj.dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Screens_loadDataPrepare();
-        Screens_loadDataRequest();
-    });
+    Screens_loadDataPrepare();
+    Screens_loadDataRequest();
 }
 
 function Screens_loadDataPrepare() {
@@ -273,7 +271,6 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
 function Screens_loadDataSuccessFinish(emptyContent) {
     Main_ready(function() {
         if (!inUseObj.status) {
-            Main_HideLoadDialog();
             inUseObj.emptyContent = emptyContent;
             if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
             else {
@@ -284,6 +281,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
             }
             Main_ShowElement(inUseObj.ids[10]);
             inUseObj.FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(inUseObj.img_404);
             Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);

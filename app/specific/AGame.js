@@ -77,10 +77,8 @@ function AGame_StartLoad() {
     AGame_cursorY = 0;
     AGame_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        AGame_loadDataPrepare();
-        AGame_loadDataRequest();
-    });
+    AGame_loadDataPrepare();
+    AGame_loadDataRequest();
 }
 
 function AGame_loadDataPrepare() {
@@ -199,7 +197,6 @@ function AGame_loadDataSuccess(responseText) {
 function AGame_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!AGame_status) {
-            Main_HideLoadDialog();
             AGame_Checkfallow();
             if (AGame_emptyContent) {
                 Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
@@ -213,6 +210,7 @@ function AGame_loadDataSuccessFinish() {
             }
             Main_ShowElement(AGame_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (AGame_emptyCellVector.length > 0 && !AGame_dataEnded) {

@@ -56,10 +56,8 @@ function Live_StartLoad() {
     Live_imgCounter = 0;
     Live_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Live_loadDataPrepare();
-        Live_loadDataRequest();
-    });
+    Live_loadDataPrepare();
+    Live_loadDataRequest();
 }
 
 function Live_loadDataPrepare() {
@@ -155,7 +153,6 @@ function Live_loadDataSuccess(responseText) {
 function Live_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!Live_Status) {
-            Main_HideLoadDialog();
             Main_ShowElement('topbar');
             if (!Live_itemsCount) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
             else {
@@ -197,6 +194,7 @@ function Live_loadDataSuccessFinish() {
                 Main_ShowElement(Live_ids[10]);
                 Main_SaveValues();
             }
+            Main_HideLoadDialog();
             Main_FirstRun = false;
             Main_FirstLoad = false;
         } else {

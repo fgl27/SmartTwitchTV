@@ -60,10 +60,8 @@ function UserChannels_StartLoad() {
     Main_FirstLoad = true;
     Main_CounterDialogRst();
     UserChannels_List = [];
-    Main_ready(function() {
-        UserChannels_loadDataPrepare();
-        UserChannels_loadChannels();
-    });
+    UserChannels_loadDataPrepare();
+    UserChannels_loadChannels();
 }
 
 function UserChannels_loadDataPrepare() {
@@ -169,7 +167,6 @@ function UserChannels_createCell(row_id, id, valuesArray) {
 function UserChannels_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!UserChannels_Status) {
-            Main_HideLoadDialog();
             if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
             else {
                 UserChannels_Status = true;
@@ -179,6 +176,7 @@ function UserChannels_loadDataSuccessFinish() {
             }
             Main_ShowElement(UserChannels_ids[6]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else Main_imgVectorLoad(IMG_404_LOGO);
         UserChannels_loadingData = false;
         Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);

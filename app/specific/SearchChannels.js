@@ -61,10 +61,8 @@ function SearchChannels_StartLoad() {
     SearchChannels_cursorY = 0;
     SearchChannels_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        SearchChannels_loadDataPrepare();
-        SearchChannels_loadDataRequest();
-    });
+    SearchChannels_loadDataPrepare();
+    SearchChannels_loadDataRequest();
 }
 
 function SearchChannels_loadDataPrepare() {
@@ -162,7 +160,6 @@ function SearchChannels_createCell(row_id, id, valuesArray) {
 function SearchChannels_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!SearchChannels_Status) {
-            Main_HideLoadDialog();
             if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SearchChannels_Status = true;
@@ -172,6 +169,7 @@ function SearchChannels_loadDataSuccessFinish() {
             }
             Main_ShowElement(SearchChannels_ids[6]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(IMG_404_LOGO);
             if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {

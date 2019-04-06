@@ -60,10 +60,8 @@ function SearchLive_StartLoad() {
     SearchLive_cursorY = 0;
     SearchLive_dataEnded = false;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        SearchLive_loadDataPrepare();
-        SearchLive_loadDataRequest();
-    });
+    SearchLive_loadDataPrepare();
+    SearchLive_loadDataRequest();
 }
 
 function SearchLive_loadDataPrepare() {
@@ -161,7 +159,6 @@ function SearchLive_loadDataSuccess(responseText) {
 function SearchLive_loadDataSuccessFinish() {
     Main_ready(function() {
         if (!SearchLive_Status) {
-            Main_HideLoadDialog();
             if (SearchLive_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
             else {
                 SearchLive_Status = true;
@@ -171,6 +168,7 @@ function SearchLive_loadDataSuccessFinish() {
             }
             Main_ShowElement(SearchLive_ids[10]);
             Main_FirstLoad = false;
+            Main_HideLoadDialog();
         } else {
             Main_imgVectorLoad(IMG_404_VIDEO);
             if (SearchLive_emptyCellVector.length > 0 && !SearchLive_dataEnded) {
