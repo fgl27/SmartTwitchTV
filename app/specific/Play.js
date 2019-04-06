@@ -1698,8 +1698,10 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(1);
                 else if (Play_isPanelShown()) Play_BottomOptionsPressed(1);
                 else if (Play_isFeedShow()) {
-                    Play_PreshutdownStream();
-                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                    if (Main_values.Play_selectedChannel !== JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0]) {
+                        Play_PreshutdownStream();
+                        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                    } else Play_HideFeed();
                 } else Play_showPanel();
                 break;
             case KEY_RETURN:
