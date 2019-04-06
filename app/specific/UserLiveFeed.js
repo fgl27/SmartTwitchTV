@@ -11,11 +11,16 @@ var UserLiveFeed_MaxOffset = 0;
 var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
 var UserLiveFeed_imgVector = [];
+var UserLiveFeed_LastPos = null;
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
 function UserLiveFeed_StartLoad() {
     if (AddUser_UserIsSet()) {
+
+        if (UserLiveFeed_status) UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
+        else UserLiveFeed_LastPos = null;
+
         Main_empty('user_feed_scroll');
         Main_HideElement('user_feed_scroll');
         UserLiveFeed_loadingData = true;
@@ -227,7 +232,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         id = stream.channel._id;
         if (!UserLiveFeed_idObject[id]) {
             UserLiveFeed_idObject[id] = 1;
-
+            if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
             doc.appendChild(UserLiveFeed_CreatFeed(i,
                 [stream.channel.name, id], UserLiveFeed_ids,
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
