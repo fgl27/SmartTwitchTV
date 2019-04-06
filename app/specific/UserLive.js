@@ -245,7 +245,8 @@ function UserLive_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, stream, id,
-        cursor = 0;
+        cursor = 0,
+        doc = document.getElementById("stream_table_user_live");
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -277,7 +278,7 @@ function UserLive_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(UserLive_ids[9] + row_id + '_' + coloumn_id));
             UserLive_emptyCellVector.push(UserLive_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_user_live").appendChild(row);
+        doc.appendChild(row);
     }
 
     UserLive_loadDataSuccessFinish();

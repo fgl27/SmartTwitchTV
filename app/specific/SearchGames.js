@@ -99,7 +99,8 @@ function SearchGames_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountGame > 0) response_rows++;
 
     var coloumn_id, row_id, row, game,
-        cursor = 0;
+        cursor = 0,
+        doc = document.getElementById("stream_table_search_game");
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountGame + i;
@@ -116,7 +117,7 @@ function SearchGames_loadDataSuccess(responseText) {
             }
             row.appendChild(Main_createEmptyCell(SearchGames_ids[6] + row_id + '_' + coloumn_id));
         }
-        document.getElementById("stream_table_search_game").appendChild(row);
+        doc.appendChild(row);
     }
 
     SearchGames_loadDataSuccessFinish();

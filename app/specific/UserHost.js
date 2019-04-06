@@ -122,7 +122,8 @@ function UserHost_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, hosts, id,
-        cursor = 0;
+        cursor = 0,
+        doc = document.getElementById("stream_table_user_host");
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
@@ -153,7 +154,7 @@ function UserHost_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(UserHost_ids[9] + row_id + '_' + coloumn_id));
             UserHost_emptyCellVector.push(UserHost_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_user_host").appendChild(row);
+        doc.appendChild(row);
     }
     UserHost_loadDataSuccessFinish();
 }

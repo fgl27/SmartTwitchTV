@@ -172,6 +172,8 @@ function Screens_loadDataSuccess() {
 
         var max_row = inUseObj.row_id + response_rows;
 
+        var doc = document.getElementById(inUseObj.table);
+
         if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) {
             inUseObj.TopRowCreated = true;
             inUseObj.row = document.createElement('div');
@@ -183,7 +185,7 @@ function Screens_loadDataSuccess() {
                 'y_0" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
                 'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
             inUseObj.row.appendChild(Main_td);
-            document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+            doc.appendChild(inUseObj.row);
         }
 
         for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
@@ -197,7 +199,7 @@ function Screens_loadDataSuccess() {
             for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
 
             //if (appendDiv)
-            document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+            doc.appendChild(inUseObj.row);
         }
 
     }

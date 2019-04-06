@@ -136,7 +136,8 @@ function AGame_loadDataSuccess(responseText) {
     if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
 
     var coloumn_id, row_id, row, i, stream, id,
-        cursor = 0;
+        cursor = 0,
+        doc = document.getElementById("stream_table_a_game");
 
     // Make the game video/clip/fallowing cell
     if (!AGame_TopRowCreated) {
@@ -155,7 +156,7 @@ function AGame_loadDataSuccess(responseText) {
                 'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
             row.appendChild(Main_td);
         }
-        document.getElementById("stream_table_a_game").appendChild(row);
+        doc.appendChild(row);
     }
 
     for (i = 0; i < response_rows; i++) {
@@ -188,7 +189,7 @@ function AGame_loadDataSuccess(responseText) {
             row.appendChild(Main_createEmptyCell(AGame_ids[9] + row_id + '_' + coloumn_id));
             AGame_emptyCellVector.push(AGame_ids[9] + row_id + '_' + coloumn_id);
         }
-        document.getElementById("stream_table_a_game").appendChild(row);
+        doc.appendChild(row);
     }
 
     AGame_loadDataSuccessFinish();

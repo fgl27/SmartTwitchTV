@@ -137,7 +137,8 @@ function UserChannels_loadDataSuccess() {
     if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
 
     var coloumn_id, row_id, row,
-        cursor = offset_itemsCount;
+        cursor = offset_itemsCount,
+        doc = document.getElementById('stream_table_user_channels');
 
     for (var i = 0; i < response_rows; i++) {
         row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
@@ -154,7 +155,7 @@ function UserChannels_loadDataSuccess() {
             }
             row.appendChild(Main_createEmptyCell(UserChannels_ids[5] + row_id + '_' + coloumn_id));
         }
-        document.getElementById('stream_table_user_channels').appendChild(row);
+        doc.appendChild(row);
     }
     UserChannels_loadDataSuccessFinish();
 }
