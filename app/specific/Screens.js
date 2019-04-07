@@ -102,7 +102,7 @@ function Screens_loadDataPrepare() {
 function Screens_loadDataRequest() {
     inUseObj.set_url();
     var xmlHttp;
-    if (Main_Android) {
+    if (Main_Android && !inUseObj.data) {
 
         xmlHttp = Android.mreadUrl(inUseObj.url, inUseObj.loadingDataTimeout, 2, null);
 
