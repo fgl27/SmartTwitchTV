@@ -11,6 +11,7 @@ function Screens_InitScreens() {
 function Screens_InitSecondaryScreens() {
     //Live screens
     ScreensObj_InitLive();
+    ScreensObj_InitFeatured();
 
     //Clips screens
     ScreensObj_InitClip();
@@ -309,7 +310,6 @@ function Screens_loadDataSuccessFinish(emptyContent) {
             else {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
-                Screens_addFocus();
             }
             //TODO improve this check
             if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
@@ -339,10 +339,12 @@ function Screens_loadDataSuccessFinish(emptyContent) {
                     if (Main_values.Never_run) Main_showControlsDialog();
                     Main_values.Never_run = false;
                     Main_SaveValues();
+                    Screens_addFocus();
                 }
             } else {
                 Main_ShowElement(inUseObj.ids[10]);
                 Main_SaveValues();
+                Screens_addFocus();
             }
             Main_FirstRun = false;
             inUseObj.FirstLoad = false;
@@ -361,7 +363,6 @@ function Screens_addFocus() {
     }
 
     inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
-
     //Load more as the data is getting used
     if ((inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataPrepare();
