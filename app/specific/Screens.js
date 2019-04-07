@@ -200,6 +200,7 @@ function Screens_loadDataSuccess() {
             }
 
             for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
+                //TODO understand and fix before the code reaches this point way a cell is undefined some times
                 if (inUseObj.data[inUseObj.data_cursor]) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
             }
 
