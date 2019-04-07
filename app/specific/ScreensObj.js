@@ -13,6 +13,7 @@ var AGameClip;
 var Game;
 var UserGames;
 var Live;
+var Featured;
 
 var Base_obj = {
     posX: 0,
@@ -61,52 +62,7 @@ var Base_Live_obj = {
     },
     key_play: function() {
         Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
-    concatenate: function(responseText) {
-        if (this.data) {
-
-            var tempObj = JSON.parse(responseText);
-
-            this.MaxOffset = tempObj._total;
-            this.data = this.data.concat(tempObj.streams);
-
-            this.offset = this.data.length;
-            if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            inUseObj.loadingData = false;
-        } else {
-            this.data = JSON.parse(responseText);
-
-            this.MaxOffset = this.data._total;
-            this.data = this.data.streams;
-
-            this.offset = this.data.length;
-            if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            this.loadDataSuccess();
-            inUseObj.loadingData = false;
-        }
-    },
-    addCell: function(cell) {
-        if (!inUseObj.idObject[cell.channel._id]) {
-
-            inUseObj.itemsCount++;
-            inUseObj.idObject[cell.channel._id] = 1;
-
-            inUseObj.row.appendChild(Screens_createCellLive(
-                inUseObj.row_id,
-                inUseObj.coloumn_id,
-                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
-                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
-                    cell.channel.status, cell.game,
-                    STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
-                ]));
-
-            inUseObj.coloumn_id++;
-        }
-    },
+    }
 };
 
 function ScreensObj_InitLive() {
@@ -127,10 +83,108 @@ function ScreensObj_InitLive() {
         label_exit: function() {
             Main_RemoveClass('top_bar_live', 'icon_center_focus');
         },
+        concatenate: function(responseText) {
+            if (this.data) {
+
+                var tempObj = JSON.parse(responseText);
+
+                this.MaxOffset = tempObj._total;
+                this.data = this.data.concat(tempObj.streams);
+
+                this.offset = this.data.length;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                inUseObj.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.data = this.data.streams;
+
+                this.offset = this.data.length;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.loadDataSuccess();
+                inUseObj.loadingData = false;
+            }
+        },
+        addCell: function(cell) {
+            if (!inUseObj.idObject[cell.channel._id]) {
+
+                inUseObj.itemsCount++;
+                inUseObj.idObject[cell.channel._id] = 1;
+
+                inUseObj.row.appendChild(Screens_createCellLive(
+                    inUseObj.row_id,
+                    inUseObj.coloumn_id,
+                    [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                        Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                        cell.channel.status, cell.game,
+                        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
+                    ]));
+
+                inUseObj.coloumn_id++;
+            }
+        },
     }, Base_obj);
 
     Live = Screens_assign(Live, Base_Live_obj);
     Live.set_ThumbSize();
+}
+
+function ScreensObj_InitFeatured() {
+    Featured = Screens_assign({
+        ids: Screens_ScreenIds('Featured'),
+        table: 'stream_table_featured',
+        screen: Main_Featured,
+        base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.url = this.base_url + '&offset=' + this.offset +
+                (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+                    AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 2;
+            Main_AddClass('top_bar_featured', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_featured', 'icon_center_focus');
+        },
+        concatenate: function(responseText) {
+            this.data = JSON.parse(responseText);
+            this.data = this.data.featured;
+            this.dataEnded = true;
+
+            this.loadDataSuccess();
+            inUseObj.loadingData = false;
+        },
+        addCell: function(cell) {
+            cell = cell.stream;
+            if (!inUseObj.idObject[cell.channel._id]) {
+
+                inUseObj.itemsCount++;
+                inUseObj.idObject[cell.channel._id] = 1;
+
+                inUseObj.row.appendChild(Screens_createCellLive(
+                    inUseObj.row_id,
+                    inUseObj.coloumn_id,
+                    [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                        Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                        cell.channel.status, cell.game,
+                        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
+                    ]));
+
+                inUseObj.coloumn_id++;
+            }
+        },
+    }, Base_obj);
+
+    Featured = Screens_assign(Featured, Base_Live_obj);
+    Featured.set_ThumbSize();
 }
 
 var Base_Clip_obj = {

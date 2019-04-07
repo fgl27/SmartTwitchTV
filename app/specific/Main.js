@@ -577,8 +577,10 @@ function Main_SwitchScreen(removekey) {
         else if (Main_values.Main_Go === Main_AGameClip) {
             inUseObj = AGameClip;
             Screens_init();
-        } else if (Main_values.Main_Go === Main_Featured) Featured_init();
-        else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
+        } else if (Main_values.Main_Go === Main_Featured) {
+            inUseObj = Featured;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
 
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
         if (removekey) Main_RemoveKeys();
@@ -614,7 +616,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_Clip) Screens_exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
     else if (ExitCurrent === Main_AGameClip) Screens_exit();
-    else if (ExitCurrent === Main_Featured) Featured_exit();
+    else if (ExitCurrent === Main_Featured) Screens_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
 
     if (Main_isElementShowing('settings_scroll')) Settings_exit();
@@ -1325,8 +1327,10 @@ function Main_RemoveKeys() {
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     } else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else if (Main_values.Main_Go === Main_aGame) document.body.removeEventListener("keydown", AGame_handleKeyDown);
-    else if (Main_values.Main_Go === Main_Featured) document.body.removeEventListener("keydown", Featured_handleKeyDown);
-    else if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
+    else if (Main_values.Main_Go === Main_Featured) {
+        inUseObj = Featured;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchGames) document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelVod) document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
@@ -1366,8 +1370,10 @@ function Main_ReloadScreen() {
         inUseObj = Live;
         Screens_StartLoad();
     } else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
-    else if (Main_values.Main_Go === Main_Featured) Featured_StartLoad();
-    else if (Main_values.Main_Go === Main_aGame) AGame_StartLoad();
+    else if (Main_values.Main_Go === Main_Featured) {
+        inUseObj = Featured;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_aGame) AGame_StartLoad();
     else if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_StartLoad();
