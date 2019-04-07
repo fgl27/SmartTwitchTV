@@ -358,8 +358,10 @@ function Screens_addFocus() {
         Screens_addFocusFallow();
         return;
     }
+    if (Main_CenterLablesInUse) return;
 
     inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+
     //Load more as the data is getting used
     if ((inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataPrepare();
@@ -370,8 +372,6 @@ function Screens_addFocus() {
         Main_imgVectorRst();
         inUseObj.loadDataSuccess();
     }
-
-    if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
 }
 
 function Screens_ChangeFocus(y, x) {

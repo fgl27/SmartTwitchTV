@@ -253,6 +253,7 @@ function UserHost_loadDataSuccessReplace(responseText) {
 }
 
 function UserHost_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_ColoumnsCountVideo, UserHost_itemsCount);
 
     if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -260,7 +261,6 @@ function UserHost_addFocus() {
         UserHost_loadDataPrepare();
         UserHost_loadChannels();
     }
-    if (Main_CenterLablesInUse) UserHost_removeFocus();
 }
 
 function UserHost_removeFocus() {

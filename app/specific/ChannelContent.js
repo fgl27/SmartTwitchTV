@@ -352,9 +352,9 @@ function ChannelContent_checkUser() {
 }
 
 function ChannelContent_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_AddClass(ChannelContent_ids[0] +
         ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), Main_classThumb);
-    if (Main_CenterLablesInUse) ChannelContent_removeFocus();
     Main_handleKeyUp();
 }
 

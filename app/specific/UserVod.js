@@ -389,6 +389,7 @@ function UserVod_addFocus() {
         UserVod_addFocusFallow();
         return;
     }
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(UserVod_cursorY, UserVod_cursorX, UserVod_ids, Main_ColoumnsCountVideo, UserVod_itemsCount);
 
     Vod_AnimateThumb(UserVod_ids, UserVod_cursorY + '_' + UserVod_cursorX);
@@ -397,7 +398,6 @@ function UserVod_addFocus() {
         !UserVod_dataEnded && !UserVod_loadingData) {
         UserVod_loadDataRequestStart();
     }
-    if (Main_CenterLablesInUse) UserVod_removeFocus();
 }
 
 function UserVod_removeFocus() {

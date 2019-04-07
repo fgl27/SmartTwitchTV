@@ -343,6 +343,7 @@ function AGame_addFocus() {
         AGame_addFocusFallow();
         return;
     }
+    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -350,7 +351,6 @@ function AGame_addFocus() {
         AGame_loadDataPrepare();
         AGame_loadDataRequest();
     }
-    if (Main_CenterLablesInUse) AGame_removeFocus();
 }
 
 function AGame_removeFocus() {
