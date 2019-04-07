@@ -253,15 +253,15 @@ function UserVod_loadDataSuccessFinish() {
         Main_ShowElement(UserVod_ids[10]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
-    } else Main_imgVectorLoad(IMG_404_VIDEO);
+    } else {
+        Main_imgVectorLoad(IMG_404_VIDEO);
+        Main_CounterDialog(UserVod_cursorX, UserVod_cursorY, Main_ColoumnsCountVideo, UserVod_itemsCount);
+    }
 
     if (UserVod_emptyCellVector.length > 0 && !UserVod_dataEnded) {
         UserVod_loadDataReplaceStart();
         return;
-    } else {
-        Main_CounterDialog(UserVod_cursorX, UserVod_cursorY, Main_ColoumnsCountVideo, UserVod_itemsCount);
-        UserVod_emptyCellVector = [];
-    }
+    } else UserVod_emptyCellVector = [];
 
     UserVod_loadingData = false;
 }
