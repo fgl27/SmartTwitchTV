@@ -205,74 +205,6 @@ var Base_Clip_obj = {
     }
 };
 
-var Base_Game_obj = {
-    ThumbSize: 19.35,
-    ItemsLimit: Main_ItemsLimitGame,
-    ItemsReloadLimit: Main_ItemsReloadLimitGame,
-    ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Main_addFocusGame,
-    img_404: IMG_404_GAME,
-    empty_str: function() {
-        return STR_NO + STR_LIVE_GAMES;
-    },
-    concatenate: function(responseText) {
-        if (this.data) {
-            var tempObj = JSON.parse(responseText);
-
-            this.MaxOffset = tempObj._total;
-            this.data = this.data.concat(this.screen === Main_usergames ? tempObj.follows : tempObj.top);
-
-            this.offset = this.data.length;
-            if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            inUseObj.loadingData = false;
-        } else {
-
-            this.data = JSON.parse(responseText);
-
-            this.MaxOffset = this.data._total;
-            this.data = this.screen === Main_usergames ? this.data.follows : this.data.top;
-
-            this.offset = this.data.length;
-            if (this.isLive) this.dataEnded = true;
-            else if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            this.loadDataSuccess();
-            inUseObj.loadingData = false;
-        }
-    },
-    key_play: function() {
-        Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_values.Main_BeforeAgame = this.screen;
-        Main_values.Main_Go = Main_aGame;
-        Main_values.Main_BeforeAgameisSet = true;
-        AGame_UserGames = false;
-        Screens_exit();
-        Main_SwitchScreen();
-        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-    },
-
-    addCell: function(cell) {
-        var hasLive = this.isLive || this.screen === Main_games;
-        var game = hasLive ? cell.game : cell;
-        if (!inUseObj.idObject[game._id]) {
-
-            inUseObj.itemsCount++;
-            inUseObj.idObject[game._id] = 1;
-
-            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                inUseObj.coloumn_id,
-                inUseObj.ids,
-                game.box.template.replace("{width}x{height}", Main_GameSize),
-                game.name,
-                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
-
-            inUseObj.coloumn_id++;
-        }
-    }
-};
-
 function ScreensObj_InitClip() {
     Clip = Screens_assign({
         ids: Screens_ScreenIds('Clip'),
@@ -375,6 +307,74 @@ function ScreensObj_InitAGameClip() {
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
     AGameClip.set_ThumbSize();
 }
+
+var Base_Game_obj = {
+    ThumbSize: 19.35,
+    ItemsLimit: Main_ItemsLimitGame,
+    ItemsReloadLimit: Main_ItemsReloadLimitGame,
+    ColoumnsCount: Main_ColoumnsCountGame,
+    addFocus: Main_addFocusGame,
+    img_404: IMG_404_GAME,
+    empty_str: function() {
+        return STR_NO + STR_LIVE_GAMES;
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+            var tempObj = JSON.parse(responseText);
+
+            this.MaxOffset = tempObj._total;
+            this.data = this.data.concat(this.screen === Main_usergames ? tempObj.follows : tempObj.top);
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            inUseObj.loadingData = false;
+        } else {
+
+            this.data = JSON.parse(responseText);
+
+            this.MaxOffset = this.data._total;
+            this.data = this.screen === Main_usergames ? this.data.follows : this.data.top;
+
+            this.offset = this.data.length;
+            if (this.isLive) this.dataEnded = true;
+            else if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            this.loadDataSuccess();
+            inUseObj.loadingData = false;
+        }
+    },
+    key_play: function() {
+        Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_values.Main_BeforeAgame = this.screen;
+        Main_values.Main_Go = Main_aGame;
+        Main_values.Main_BeforeAgameisSet = true;
+        AGame_UserGames = false;
+        Screens_exit();
+        Main_SwitchScreen();
+        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+    },
+
+    addCell: function(cell) {
+        var hasLive = this.isLive || this.screen === Main_games;
+        var game = hasLive ? cell.game : cell;
+        if (!inUseObj.idObject[game._id]) {
+
+            inUseObj.itemsCount++;
+            inUseObj.idObject[game._id] = 1;
+
+            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                inUseObj.coloumn_id,
+                inUseObj.ids,
+                game.box.template.replace("{width}x{height}", Main_GameSize),
+                game.name,
+                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
+
+            inUseObj.coloumn_id++;
+        }
+    }
+};
 
 function ScreensObj_InitGame() {
     Game = Screens_assign({
