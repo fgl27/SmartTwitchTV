@@ -544,47 +544,51 @@ function Main_SwitchScreen(removekey) {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_ready(function() {
-        Main_CounterDialogRst();
-        if (Main_values.Main_Go === Main_Live) {
-            inUseObj = Live;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_addUser) AddUser_init();
-        else if (Main_values.Main_Go === Main_games) {
-            inUseObj = Game;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_aGame) AGame_init();
-        else if (Main_values.Main_Go === Main_Search) Search_init();
-        else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
-        else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
-        else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
-        else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
-        else if (Main_values.Main_Go === Main_ChannelClip) {
-            inUseObj = ChannelClip;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_Users) Users_init();
-        else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
-        else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
-        else if (Main_values.Main_Go === Main_usergames) {
-            inUseObj = UserGames;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
-        else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
-        else if (Main_values.Main_Go === Main_Vod) Vod_init();
-        else if (Main_values.Main_Go === Main_Clip) {
-            inUseObj = Clip;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
-        else if (Main_values.Main_Go === Main_AGameClip) {
-            inUseObj = AGameClip;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_Featured) {
-            inUseObj = Featured;
-            Screens_init();
-        } else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
-
-        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
-        if (removekey) Main_RemoveKeys();
+        Main_SwitchScreenAction(removekey);
     });
+}
+
+function Main_SwitchScreenAction(removekey) {
+    Main_CounterDialogRst();
+    if (Main_values.Main_Go === Main_Live) {
+        inUseObj = Live;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_addUser) AddUser_init();
+    else if (Main_values.Main_Go === Main_games) {
+        inUseObj = Game;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_aGame) AGame_init();
+    else if (Main_values.Main_Go === Main_Search) Search_init();
+    else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
+    else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
+    else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
+    else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
+    else if (Main_values.Main_Go === Main_ChannelClip) {
+        inUseObj = ChannelClip;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_Users) Users_init();
+    else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
+    else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
+    else if (Main_values.Main_Go === Main_usergames) {
+        inUseObj = UserGames;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
+    else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
+    else if (Main_values.Main_Go === Main_Vod) Vod_init();
+    else if (Main_values.Main_Go === Main_Clip) {
+        inUseObj = Clip;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
+    else if (Main_values.Main_Go === Main_AGameClip) {
+        inUseObj = AGameClip;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_Featured) {
+        inUseObj = Featured;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
+
+    Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
+    if (removekey) Main_RemoveKeys();
 }
 
 function Main_SaveValues() {
@@ -1173,70 +1177,70 @@ function Main_CenterLables(event) {
                     }
                     AGame_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_AGameClip) {
                     Screens_BasicExit(Main_aGame);
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_usergames) {
                     Screens_BasicExit(Main_Users);
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_ChannelClip) {
                     Screens_BasicExit(Main_ChannelContent);
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_AGameVod) {
                     Main_values.Main_Go = Main_aGame;
                     AGameVod_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserLive) {
                     Main_values.Main_Go = Main_Users;
                     UserLive_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserHost) {
                     Main_values.Main_Go = Main_Users;
                     UserHost_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserVod) {
                     Main_values.Main_Go = Main_Users;
                     UserVod_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserChannels) {
                     Main_values.Main_Go = Main_Users;
                     UserChannels_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_ChannelContent) {
                     Main_values.Main_Go = Main_values.Main_BeforeChannel;
                     Main_values.Main_BeforeChannel = Main_Live;
                     ChannelContent_exit();
                     Main_values.Main_selectedChannel_id = '';
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_ChannelVod) {
                     Main_values.Main_Go = Main_ChannelContent;
                     ChannelVod_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_SearchLive) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                     SearchLive_exit();
                     Main_values.Search_isSearching = false;
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_SearchGames) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                     Main_values.Search_isSearching = false;
                     SearchGames_exit();
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_SearchChannels) {
 
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
@@ -1245,7 +1249,7 @@ function Main_CenterLables(event) {
                     SearchChannels_exit();
                     Main_values.Search_isSearching = false;
                     Main_CenterLablesClean();
-                    Main_SwitchScreen();
+                    Main_SwitchScreenAction();
                 } else {
                     Main_CenterLablesClean();
                     Main_SidePannelStart(Main_CenterLables);
@@ -1278,7 +1282,7 @@ function Main_CenterLables(event) {
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             document.body.removeEventListener("keydown", Main_CenterLables);
             Main_CenterLablesInUse = false;
-            Main_SwitchScreen();
+            Main_SwitchScreenAction();
             break;
         case KEY_ENTER:
             Main_ReloadScreen();
