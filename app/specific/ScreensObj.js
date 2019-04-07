@@ -38,7 +38,15 @@ var Base_obj = {
     ThumbPading: Main_ThumbPading,
     set_ThumbSize: function() {
         this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
-    }
+    },
+    key_exit: function() {
+        if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+        else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+        else {
+            if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+            Main_CenterLablesStart(Screens_handleKeyDown);
+        }
+    },
 };
 
 var Base_Clip_obj = {
@@ -65,6 +73,23 @@ var Base_Clip_obj = {
                 Screens_StartLoad();
             }
         } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+            var tempObj = JSON.parse(responseText);
+            this.cursor = tempObj._cursor;
+            if (this.cursor === '') this.dataEnded = true;
+            this.data = this.data.concat(tempObj.clips);
+            inUseObj.loadingData = false;
+        } else {
+            this.data = JSON.parse(responseText);
+            this.cursor = this.data._cursor;
+            if (this.cursor === '') this.dataEnded = true;
+
+            this.data = this.data.clips;
+            this.loadDataSuccess();
+            inUseObj.loadingData = false;
+        }
     },
     addCell: function(cell) {
         if (!inUseObj.idObject[cell.tracking_id]) {
@@ -105,6 +130,61 @@ var Base_Game_obj = {
     img_404: IMG_404_GAME,
     empty_str: function() {
         return STR_NO + STR_LIVE_GAMES;
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+            var tempObj = JSON.parse(responseText);
+
+            this.MaxOffset = this.data._total;
+            this.data = this.data.concat(this.screen === Main_usergames ? tempObj.follows : tempObj.top);
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            inUseObj.loadingData = false;
+        } else {
+
+            this.data = JSON.parse(responseText);
+
+            this.MaxOffset = this.data._total;
+            this.data = this.screen === Main_usergames ? this.data.follows : this.data.top;
+
+            this.offset = this.data.length;
+            if (this.isLive) this.dataEnded = true;
+            else if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            this.loadDataSuccess();
+            inUseObj.loadingData = false;
+        }
+    },
+    key_play: function() {
+        Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_values.Main_BeforeAgame = this.screen;
+        Main_values.Main_Go = Main_aGame;
+        Main_values.Main_BeforeAgameisSet = true;
+        AGame_UserGames = false;
+        Screens_exit();
+        Main_SwitchScreen();
+        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+    },
+
+    addCell: function(cell) {
+        var game = this.isLive || this.screen === Main_games ? cell.game : cell;
+        if (!inUseObj.idObject[game._id]) {
+
+            inUseObj.itemsCount++;
+            inUseObj.idObject[game._id] = 1;
+
+            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
+                inUseObj.coloumn_id,
+                inUseObj.ids,
+                game.box.template.replace("{width}x{height}", Main_GameSize),
+                game.name,
+                this.isLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
+
+            inUseObj.coloumn_id++;
+        }
     }
 };
 
@@ -120,23 +200,6 @@ function ScreensObj_InitClip() {
                 (this.cursor ? '&cursor=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-                this.cursor = tempObj._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-                this.data = this.data.concat(tempObj.clips);
-                inUseObj.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-                this.cursor = this.data._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-
-                this.data = this.data.clips;
-                this.loadDataSuccess();
-                inUseObj.loadingData = false;
-            }
-        },
         SetPeriod: function() {
             Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
             Main_setItem('Clip_periodPos', this.periodPos);
@@ -151,14 +214,6 @@ function ScreensObj_InitClip() {
             Main_RestoreTopLabel();
             Main_RemoveClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-        },
-        key_exit: function() {
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-                Main_CenterLablesStart(Screens_handleKeyDown);
-            }
         },
     }, Base_obj);
 
@@ -178,24 +233,6 @@ function ScreensObj_InitChannelClip() {
                 '&limit=' + Main_ItemsLimitMax + '&period=' +
                 this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-                this.cursor = tempObj._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-
-                this.data = this.data.concat(tempObj.clips);
-                inUseObj.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-                this.cursor = this.data._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-
-                this.data = this.data.clips;
-                this.loadDataSuccess();
-                inUseObj.loadingData = false;
-            }
-        },
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
             Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -212,14 +249,6 @@ function ScreensObj_InitChannelClip() {
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
-        key_exit: function() {
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-                Main_CenterLablesStart(Screens_handleKeyDown);
-            }
-        },
     }, Base_obj);
 
     ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
@@ -237,23 +266,6 @@ function ScreensObj_InitAGameClip() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-                this.cursor = tempObj._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-                this.data = this.data.concat(tempObj.clips);
-                inUseObj.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-                this.cursor = this.data._cursor;
-                if (this.cursor === '') this.dataEnded = true;
-
-                this.data = this.data.clips;
-                this.loadDataSuccess();
-                inUseObj.loadingData = false;
-            }
         },
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
@@ -273,14 +285,6 @@ function ScreensObj_InitAGameClip() {
             Main_innerHTML('top_bar_game', STR_GAMES);
             Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
-        key_exit: function() {
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-                Main_CenterLablesStart(Screens_handleKeyDown);
-            }
-        },
     }, Base_obj);
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
@@ -298,30 +302,6 @@ function ScreensObj_InitGame() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + '&offset=' + this.offset;
         },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.concat(tempObj.top);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                inUseObj.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.top;
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                inUseObj.loadingData = false;
-            }
-        },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
@@ -329,41 +309,6 @@ function ScreensObj_InitGame() {
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
         },
-        key_exit: function() {
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-                Main_CenterLablesStart(Screens_handleKeyDown);
-            }
-        },
-        key_play: function() {
-            Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_values.Main_BeforeAgame = this.screen;
-            Main_values.Main_Go = Main_aGame;
-            Main_values.Main_BeforeAgameisSet = true;
-            AGame_UserGames = false;
-            Screens_exit();
-            Main_SwitchScreen();
-            Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-        },
-        addCell: function(cell) {
-            if (!inUseObj.idObject[cell.game._id]) {
-
-                inUseObj.itemsCount++;
-                inUseObj.idObject[cell.game._id] = 1;
-
-                inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                    inUseObj.coloumn_id,
-                    inUseObj.ids,
-                    cell.game.box.template.replace("{width}x{height}", Main_GameSize),
-                    cell.game.name,
-                    Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER));
-
-                inUseObj.coloumn_id++;
-            }
-        }
     }, Base_obj);
 
     Game = Screens_assign(Game, Base_Game_obj);
@@ -393,34 +338,8 @@ function ScreensObj_InitUserGames() {
             Screens_StartLoad();
 
             Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
-            Users_resetGameCell();
+            if (Users_status) Users_resetGameCell();
 
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.concat(tempObj.follows);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                inUseObj.loadingData = false;
-            } else {
-
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.follows;
-
-                this.offset = this.data.length;
-                if (this.isLive) this.dataEnded = true;
-                else if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                inUseObj.loadingData = false;
-            }
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 1;
@@ -441,41 +360,6 @@ function ScreensObj_InitUserGames() {
             Main_textContent('top_bar_user', STR_USER);
             Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
-        key_exit: function() {
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-                Main_CenterLablesStart(Screens_handleKeyDown);
-            }
-        },
-        key_play: function() {
-            Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_values.Main_BeforeAgame = this.screen;
-            Main_values.Main_Go = Main_aGame;
-            Main_values.Main_BeforeAgameisSet = true;
-            AGame_UserGames = false;
-            Screens_exit();
-            Main_SwitchScreen();
-        },
-        addCell: function(cell) {
-            var game = this.isLive ? cell.game : cell;
-            if (!inUseObj.idObject[game._id]) {
-
-                inUseObj.itemsCount++;
-                inUseObj.idObject[game._id] = 1;
-
-                inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                    inUseObj.coloumn_id,
-                    inUseObj.ids,
-                    game.box.template.replace("{width}x{height}", Main_GameSize),
-                    game.name,
-                    this.isLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
-
-                inUseObj.coloumn_id++;
-            }
-        }
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
