@@ -236,7 +236,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
         idArray[1] + id + '" class="stream_img"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
-        idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' + 
+        idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
         (views !== '' ? '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div>' : '') +
         '</div></div>';
 
