@@ -26,7 +26,6 @@ function SearchGames_init() {
     if (SearchGames_Status) {
         Main_YRst(SearchGames_cursorY);
         Main_ShowElement(SearchGames_ids[7]);
-        Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
         SearchGames_addFocus();
         Main_SaveValues();
     } else SearchGames_StartLoad();

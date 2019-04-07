@@ -29,7 +29,6 @@ function UserChannels_init() {
     if (UserChannels_Status) {
         Main_YRst(UserChannels_cursorY);
         Main_ShowElement(UserChannels_ids[6]);
-        Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
         UserChannels_addFocus();
         Main_SaveValues();
     } else UserChannels_StartLoad();

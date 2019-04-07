@@ -38,7 +38,6 @@ function AGame_init() {
     if ((Main_values.Main_OldgameSelected === Main_values.Main_gameSelected) && AGame_status) {
         Main_YRst(AGame_cursorY);
         Main_ShowElement(AGame_ids[10]);
-        Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
         AGame_addFocus();
         Main_SaveValues();
     } else AGame_StartLoad();

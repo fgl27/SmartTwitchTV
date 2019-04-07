@@ -53,9 +53,8 @@ function Screens_init() {
 
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     if (inUseObj.status) {
-        Main_YRst(inUseObj.posY);
         Main_ShowElement(inUseObj.ids[10]);
-        Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        Main_YRst(inUseObj.posY);
         Screens_addFocus();
         Main_SaveValues();
     } else Screens_StartLoad();

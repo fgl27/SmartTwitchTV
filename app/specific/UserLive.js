@@ -32,7 +32,6 @@ function UserLive_init() {
     if (UserLive_status) {
         Main_YRst(UserLive_cursorY);
         Main_ShowElement(UserLive_ids[10]);
-        Main_CounterDialog(UserLive_cursorX, UserLive_cursorY, Main_ColoumnsCountVideo, UserLive_itemsCount);
         UserLive_addFocus();
         Main_SaveValues();
     } else UserLive_StartLoad();

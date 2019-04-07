@@ -30,7 +30,6 @@ function UserHost_init() {
     if (UserHost_status) {
         Main_YRst(UserHost_cursorY);
         Main_ShowElement(UserHost_ids[10]);
-        Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
         UserHost_addFocus();
         Main_SaveValues();
     } else UserHost_StartLoad();
