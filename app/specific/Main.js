@@ -817,14 +817,13 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
-        var screen_size = screen.height / 100;
-        if (y > 1) {
 
+        if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
                 Main_ScrollTable(idArray[6],
-                    (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + (screen_size * 42));
+                    (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + (screen.height * 0.42));
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[6], screen_size * 5);
+        } else Main_ScrollTable(idArray[6], screen.height * 0.07);
 
     } else Main_handleKeyUp();
 }
@@ -833,13 +832,10 @@ function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
-        var screen_size = screen.height / 100;
 
-        if (!y) Main_ScrollTable(idArray[10], screen_size * 7);
-        else if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-            Main_ScrollTable(idArray[10],
-                (document.getElementById(idArray[8] + y + '_' + x).offsetTop * -1) + (screen_size * (33 + Main_addFocusVideoOffset)));
-        }
+        if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
+        else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
+            document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1);
 
     } else Main_handleKeyUp();
 }
@@ -848,18 +844,14 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
     if (Main_YchangeAddFocus(y)) {
-        var screen_size = screen.height / 100;
-        if (y) {
-            Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + (screen_size * 51));
-        } else {
-            Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]), (screen_size * 3.0625));
-        }
 
+        if (!y) Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
+            (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.03);
+        else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
+            (document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1) + screen.height * 0.03);
 
     } else Main_handleKeyUp();
 }
-
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     document.body.removeEventListener("keydown", handleKeyDownFunction);

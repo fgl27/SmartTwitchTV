@@ -1,5 +1,4 @@
 var Main_ItemsLimitMax = 100;
-var Main_ThumbPading = 3;
 var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
@@ -36,9 +35,8 @@ var Base_obj = {
     data: null,
     data_cursor: 0,
     loadDataSuccess: Screens_loadDataSuccess,
-    ThumbPading: Main_ThumbPading,
     set_ThumbSize: function() {
-        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: ' + this.ThumbPading + 'px;';
+        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 3px;';
     },
     key_exit: function() {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
