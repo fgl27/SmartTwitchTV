@@ -67,7 +67,7 @@ var Main_addFocusFinish = true;
 var Main_CenterLablesInUse = false;
 var Main_imgVector = [];
 var Main_newUsercode = 0;
-
+var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
 var Main_ScrollbarIsHide = true;
 var Main_td = '';
@@ -381,12 +381,17 @@ function Main_HideExitDialog() {
     Main_CenterLablesStart(Main_SidePannelCallback);
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
-    Live_ExitCursor = 0;
-    Live_ExitCursorSet();
+    Main_ExitCursor = 0;
+    Main_ExitCursorSet();
 }
 
-function Main_isExitDialogShown() {
-    return Main_isElementShowing('main_dialog_exit');
+function Main_ExitCursorSet() {
+    Main_RemoveClass('exit_app_cancel', 'button_search_focused');
+    Main_RemoveClass('exit_app_minimize', 'button_search_focused');
+    Main_RemoveClass('exit_app_close', 'button_search_focused');
+    if (!Main_ExitCursor) Main_AddClass('exit_app_cancel', 'button_search_focused');
+    else if (Main_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_search_focused');
+    else Main_AddClass('exit_app_close', 'button_search_focused');
 }
 
 function Main_CounterDialogRst() {
@@ -481,9 +486,9 @@ function Main_HideUpdateDialog() {
     Main_HideElement('dialog_update');
 }
 
-function Main_isUpdateDialogShown() {
-    return Main_isElementShowing('dialog_update');
-}
+//function Main_isUpdateDialogShown() {
+//    return Main_isElementShowing('dialog_update');
+//}
 
 function Main_addCommas(value) {
     return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -575,7 +580,6 @@ function Main_SwitchScreen(removekey) {
             Screens_init();
         } else if (Main_values.Main_Go === Main_Featured) Featured_init();
         else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
-        else Live_init();
 
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
         if (removekey) Main_RemoveKeys();
@@ -1127,23 +1131,23 @@ function Main_ExitDialog(event) {
             Main_HideExitDialog();
             break;
         case KEY_RIGHT:
-            Live_ExitCursor++;
-            if (Live_ExitCursor > 2) Live_ExitCursor = 0;
-            Live_ExitCursorSet();
+            Main_ExitCursor++;
+            if (Main_ExitCursor > 2) Main_ExitCursor = 0;
+            Main_ExitCursorSet();
             Main_clearExitDialog();
             Main_setExitDialog();
             break;
         case KEY_LEFT:
-            Live_ExitCursor--;
-            if (Live_ExitCursor < 0) Live_ExitCursor = 2;
-            Live_ExitCursorSet();
+            Main_ExitCursor--;
+            if (Main_ExitCursor < 0) Main_ExitCursor = 2;
+            Main_ExitCursorSet();
             Main_clearExitDialog();
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (!Live_ExitCursor) Main_HideExitDialog();
-            else if (Main_Android && Live_ExitCursor === 1) Android.mclose(false);
-            else if (Main_Android && Live_ExitCursor === 2) Android.mclose(true);
+            if (!Main_ExitCursor) Main_HideExitDialog();
+            else if (Main_Android && Main_ExitCursor === 1) Android.mclose(false);
+            else if (Main_Android && Main_ExitCursor === 2) Android.mclose(true);
             break;
         default:
             break;
@@ -1399,7 +1403,6 @@ function Main_ReloadScreen() {
     else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
     else if (Main_values.Main_Go === Main_UserHost) UserHost_StartLoad();
     else if (Main_values.Main_Go === Main_UserVod) UserVod_StartLoad();
-    else Live_StartLoad();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
 }
