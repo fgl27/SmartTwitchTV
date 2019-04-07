@@ -30,7 +30,6 @@ function SearchLive_init() {
     if (SearchLive_Status) {
         Main_YRst(SearchLive_cursorY);
         Main_ShowElement(SearchLive_ids[10]);
-        Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
         SearchLive_addFocus();
         Main_SaveValues();
     } else SearchLive_StartLoad();

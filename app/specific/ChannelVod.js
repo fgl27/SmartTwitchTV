@@ -41,7 +41,6 @@ function ChannelVod_init() {
         Main_YRst(ChannelVod_cursorY);
         Main_textContent('top_bar_game', ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
         Main_ShowElement(ChannelVod_ids[10]);
-        Main_CounterDialog(ChannelVod_cursorX, ChannelVod_cursorY, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
         ChannelVod_addFocus();
         Main_SaveValues();
     } else ChannelVod_StartLoad();

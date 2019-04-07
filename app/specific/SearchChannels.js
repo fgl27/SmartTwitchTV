@@ -31,7 +31,6 @@ function SearchChannels_init() {
     if (SearchChannels_Status) {
         Main_YRst(SearchChannels_cursorY);
         Main_ShowElement(SearchChannels_ids[6]);
-        Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
         SearchChannels_addFocus();
         Main_SaveValues();
     } else SearchChannels_StartLoad();
