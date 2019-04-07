@@ -182,6 +182,7 @@ function UserChannels_loadDataSuccessFinish() {
 }
 
 function UserChannels_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_ColoumnsCountChannel, UserChannels_itemsCount);
 
     if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
@@ -189,7 +190,6 @@ function UserChannels_addFocus() {
         UserChannels_loadDataPrepare();
         UserChannels_loadChannels();
     }
-    if (Main_CenterLablesInUse) UserChannels_removeFocus();
 }
 
 function UserChannels_removeFocus() {

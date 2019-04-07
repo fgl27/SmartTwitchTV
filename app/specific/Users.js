@@ -147,6 +147,7 @@ function Users_resetGameCell() {
 }
 
 function Users_addFocus() {
+    if (Main_CenterLablesInUse) return;
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
     if (Main_YchangeAddFocus(Users_cursorY)) {
 
@@ -158,7 +159,6 @@ function Users_addFocus() {
         } else Main_ScrollTable(Users_ids[5], ((screen.height / 100) * 7));
 
     } else Main_handleKeyUp();
-    if (Main_CenterLablesInUse) Users_removeFocus();
 }
 
 function Users_removeFocus() {
