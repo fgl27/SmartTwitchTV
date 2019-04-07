@@ -166,22 +166,20 @@ function UserChannels_createCell(row_id, id, valuesArray) {
 }
 
 function UserChannels_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!UserChannels_Status) {
-            if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
-            else {
-                UserChannels_Status = true;
-                Main_imgVectorLoad(IMG_404_LOGO);
-                UserChannels_addFocus();
-                Main_SaveValues();
-            }
-            Main_ShowElement(UserChannels_ids[6]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-        } else Main_imgVectorLoad(IMG_404_LOGO);
-        UserChannels_loadingData = false;
-        Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
-    });
+    if (!UserChannels_Status) {
+        if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
+        else {
+            UserChannels_Status = true;
+            Main_imgVectorLoad(IMG_404_LOGO);
+            UserChannels_addFocus();
+            Main_SaveValues();
+        }
+        Main_ShowElement(UserChannels_ids[6]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else Main_imgVectorLoad(IMG_404_LOGO);
+    UserChannels_loadingData = false;
+    Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
 }
 
 function UserChannels_addFocus() {

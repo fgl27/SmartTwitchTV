@@ -324,21 +324,19 @@ function ChannelContent_setFallow() {
 }
 
 function ChannelContent_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!ChannelContent_status) {
-            ChannelContent_status = true;
-            if (ChannelContent_thumbnail !== '')
-                Main_loadImg(document.getElementById(ChannelContent_ids[1] + '0_0'),
-                    ChannelContent_thumbnail, IMG_404_VIDEO);
-            Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
-            ChannelContent_addFocus();
-            Main_SaveValues();
-            Main_ShowElement(ChannelContent_ids[10]);
-            Main_HideLoadDialog();
-        }
-        ChannelContent_checkUser();
-        Main_FirstLoad = false;
-    });
+    if (!ChannelContent_status) {
+        ChannelContent_status = true;
+        if (ChannelContent_thumbnail !== '')
+            Main_loadImg(document.getElementById(ChannelContent_ids[1] + '0_0'),
+                ChannelContent_thumbnail, IMG_404_VIDEO);
+        Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
+        ChannelContent_addFocus();
+        Main_SaveValues();
+        Main_ShowElement(ChannelContent_ids[10]);
+        Main_HideLoadDialog();
+    }
+    ChannelContent_checkUser();
+    Main_FirstLoad = false;
 }
 
 function ChannelContent_checkUser() {

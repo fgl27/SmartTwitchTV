@@ -249,15 +249,13 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 }
 
 function UserLiveFeed_loadDataSuccessFinish() {
-    Main_ready(function() {
-        UserLiveFeed_imgVectorLoad(IMG_404_VIDEO);
-        Play_FeedAddFocus();
-        UserLiveFeed_loadingData = false;
-        UserLiveFeed_status = true;
-        Main_HideElement('dialog_loading_feed');
-        Main_ShowElement('user_feed_scroll');
-        Play_ResetFeedId();
-    });
+    UserLiveFeed_imgVectorLoad(IMG_404_VIDEO);
+    Play_FeedAddFocus();
+    UserLiveFeed_loadingData = false;
+    UserLiveFeed_status = true;
+    Main_HideElement('dialog_loading_feed');
+    Main_ShowElement('user_feed_scroll');
+    Play_ResetFeedId();
 }
 
 function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {

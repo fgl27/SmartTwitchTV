@@ -200,31 +200,29 @@ function ChannelVod_loadDataSuccess(responseText) {
 }
 
 function ChannelVod_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!ChannelVod_status) {
-            if (ChannelVod_emptyContent) Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-            else {
-                ChannelVod_status = true;
-                Main_imgVectorLoad(IMG_404_VIDEO);
-                ChannelVod_addFocus();
-                Main_SaveValues();
-            }
-            Main_ShowElement(ChannelVod_ids[10]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-        } else Main_imgVectorLoad(IMG_404_VIDEO);
-
-        if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
-            ChannelVod_loadDataPrepare();
-            ChannelVod_loadDataReplace();
-            return;
-        } else {
-            Main_CounterDialog(ChannelVod_cursorX, ChannelVod_cursorY, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
-            ChannelVod_emptyCellVector = [];
+    if (!ChannelVod_status) {
+        if (ChannelVod_emptyContent) Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+        else {
+            ChannelVod_status = true;
+            Main_imgVectorLoad(IMG_404_VIDEO);
+            ChannelVod_addFocus();
+            Main_SaveValues();
         }
+        Main_ShowElement(ChannelVod_ids[10]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else Main_imgVectorLoad(IMG_404_VIDEO);
 
-        ChannelVod_loadingData = false;
-    });
+    if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
+        ChannelVod_loadDataPrepare();
+        ChannelVod_loadDataReplace();
+        return;
+    } else {
+        Main_CounterDialog(ChannelVod_cursorX, ChannelVod_cursorY, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
+        ChannelVod_emptyCellVector = [];
+    }
+
+    ChannelVod_loadingData = false;
 }
 
 function ChannelVod_loadDataReplace() {

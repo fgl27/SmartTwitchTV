@@ -302,58 +302,56 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
 }
 
 function Screens_loadDataSuccessFinish(emptyContent) {
-    Main_ready(function() {
-        if (!inUseObj.status) {
-            Main_ShowElement('topbar');
-            inUseObj.emptyContent = emptyContent;
-            if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
-            else {
-                inUseObj.status = true;
-                Main_imgVectorLoad(inUseObj.img_404);
-            }
-            //TODO improve this check
-            if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
-                if (Main_values.Play_WasPlaying) {
+    if (!inUseObj.status) {
+        Main_ShowElement('topbar');
+        inUseObj.emptyContent = emptyContent;
+        if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
+        else {
+            inUseObj.status = true;
+            Main_imgVectorLoad(inUseObj.img_404);
+        }
+        //TODO improve this check
+        if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
+            if (Main_values.Play_WasPlaying) {
 
-                    Main_ExitCurrent(Main_values.Main_Go);
-                    Main_values.Main_Go = Main_GoBefore;
-                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                    ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
+                Main_ExitCurrent(Main_values.Main_Go);
+                Main_values.Main_Go = Main_GoBefore;
+                if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
 
-                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
+                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
-                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
-                    else Main_openVod();
+                if (Main_values.Play_WasPlaying === 1) Main_openStream();
+                else Main_openVod();
 
-                    Main_SwitchScreen(true);
-                    window.setTimeout(function() {
-                        Play_HideWarningDialog();
-                    }, 2000);
-                } else if (Main_GoBefore !== 1) {
-                    Main_ExitCurrent(Main_values.Main_Go);
-                    Main_values.Main_Go = Main_GoBefore;
-                    Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-                    Main_SwitchScreen();
-                } else {
-                    Main_ShowElement(inUseObj.ids[10]);
-                    if (Main_values.Never_run) Main_showControlsDialog();
-                    Main_values.Never_run = false;
-                    Main_SaveValues();
-                    Screens_addFocus();
-                }
+                Main_SwitchScreen(true);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
+            } else if (Main_GoBefore !== 1) {
+                Main_ExitCurrent(Main_values.Main_Go);
+                Main_values.Main_Go = Main_GoBefore;
+                Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+                Main_SwitchScreen();
             } else {
                 Main_ShowElement(inUseObj.ids[10]);
+                if (Main_values.Never_run) Main_showControlsDialog();
+                Main_values.Never_run = false;
                 Main_SaveValues();
                 Screens_addFocus();
             }
-            Main_FirstRun = false;
-            inUseObj.FirstLoad = false;
-            Main_HideLoadDialog();
         } else {
-            Main_imgVectorLoad(inUseObj.img_404);
-            Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+            Main_ShowElement(inUseObj.ids[10]);
+            Main_SaveValues();
+            Screens_addFocus();
         }
-    });
+        Main_FirstRun = false;
+        inUseObj.FirstLoad = false;
+        Main_HideLoadDialog();
+    } else {
+        Main_imgVectorLoad(inUseObj.img_404);
+        Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+    }
 }
 
 function Screens_addFocus() {
