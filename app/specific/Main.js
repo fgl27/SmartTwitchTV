@@ -48,7 +48,6 @@ var Main_values = {
     "Play_gameSelected": '',
     "Users_Position": 0,
     "Users_AddcodePosition": 0,
-    "Main_WasOpen": false,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
     "vodOffset": 0,
