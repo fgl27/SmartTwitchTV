@@ -275,7 +275,7 @@ fi;
 
 
 echo -e "\\n${bldred}##################################################################################################\\n#												 #";
-echo -e "#												 #\\n#	${bldcya}Release done, zip generated at $mainfolder/release/release.zip${bldred}		 #\\n#												 #";
+echo -e "#												 #\\n#	${bldcya}Release done, zip generated at $mainfolder/release/release.zip${bldred}	 #\\n#												 #";
 echo -e "#												 #\\n${bldred}##################################################################################################\\n";
 
 END=$(date +%s.%N);
