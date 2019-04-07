@@ -310,11 +310,9 @@ function Screens_loadDataSuccessFinish(emptyContent) {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
                 Screens_addFocus();
-                Main_values.Main_WasOpen = true;
             }
             //TODO improve this check
-            if (Main_FirstRun && inUseObj.status &&
-                (Settings_value.restor_playback.defaultValue) && (Main_values.Play_WasPlaying || Main_values.Main_WasOpen)) {
+            if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
                 if (Main_values.Play_WasPlaying) {
 
                     Main_ExitCurrent(Main_values.Main_Go);
