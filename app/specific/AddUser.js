@@ -215,6 +215,7 @@ function AddUser_UserMakeOne(Position) {
     AddUser_UsernameArray[Position] = AddUser_Username;
     Users_status = false;
     Users_init();
+    AddUser_SaveUserArray();
 }
 
 function AddUser_UserCodeExist(user) {
