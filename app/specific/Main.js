@@ -846,9 +846,9 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     if (Main_YchangeAddFocus(y)) {
 
         if (!y) Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-            (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.03);
+            (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
         else Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-            (document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1) + screen.height * 0.03);
+            (document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1) + screen.height * 0.025);
 
     } else Main_handleKeyUp();
 }
