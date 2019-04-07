@@ -230,31 +230,29 @@ function Vod_VideoHtml(id, valuesArray, idArray) {
 }
 
 function Vod_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!Vod_status) {
-            if (Vod_emptyContent) Main_showWarningDialog(STR_NO + (Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-            else {
-                Vod_status = true;
-                Vod_addFocus();
-                Main_imgVectorLoad(IMG_404_VIDEO);
-                Main_SaveValues();
-            }
-            Main_ShowElement(Vod_ids[10]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-        } else Main_imgVectorLoad(IMG_404_VIDEO);
-
-        if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
-            Vod_loadDataPrepare();
-            Vod_loadDataReplace();
-            return;
-        } else {
-            Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
-            Vod_emptyCellVector = [];
+    if (!Vod_status) {
+        if (Vod_emptyContent) Main_showWarningDialog(STR_NO + (Vod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+        else {
+            Vod_status = true;
+            Vod_addFocus();
+            Main_imgVectorLoad(IMG_404_VIDEO);
+            Main_SaveValues();
         }
+        Main_ShowElement(Vod_ids[10]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else Main_imgVectorLoad(IMG_404_VIDEO);
 
-        Vod_loadingData = false;
-    });
+    if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
+        Vod_loadDataPrepare();
+        Vod_loadDataReplace();
+        return;
+    } else {
+        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
+        Vod_emptyCellVector = [];
+    }
+
+    Vod_loadingData = false;
 }
 
 function Vod_loadDataReplace() {

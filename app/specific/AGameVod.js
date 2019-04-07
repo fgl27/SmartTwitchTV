@@ -193,31 +193,29 @@ function AGameVod_loadDataSuccess(responseText) {
 }
 
 function AGameVod_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!AGameVod_status) {
-            if (AGameVod_emptyContent) Main_showWarningDialog(STR_NO + (AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-            else {
-                AGameVod_status = true;
-                Main_imgVectorLoad(IMG_404_VIDEO);
-                AGameVod_addFocus();
-                Main_SaveValues();
-            }
-            Main_ShowElement(AGameVod_ids[10]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-        } else Main_imgVectorLoad(IMG_404_VIDEO);
-
-        if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {
-            AGameVod_loadDataPrepare();
-            AGameVod_loadDataReplace();
-            return;
-        } else {
-            Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
-            AGameVod_emptyCellVector = [];
+    if (!AGameVod_status) {
+        if (AGameVod_emptyContent) Main_showWarningDialog(STR_NO + (AGameVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+        else {
+            AGameVod_status = true;
+            Main_imgVectorLoad(IMG_404_VIDEO);
+            AGameVod_addFocus();
+            Main_SaveValues();
         }
+        Main_ShowElement(AGameVod_ids[10]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else Main_imgVectorLoad(IMG_404_VIDEO);
 
-        AGameVod_loadingData = false;
-    });
+    if (AGameVod_emptyCellVector.length > 0 && !AGameVod_dataEnded) {
+        AGameVod_loadDataPrepare();
+        AGameVod_loadDataReplace();
+        return;
+    } else {
+        Main_CounterDialog(AGameVod_cursorX, AGameVod_cursorY, Main_ColoumnsCountVideo, AGameVod_itemsCount);
+        AGameVod_emptyCellVector = [];
+    }
+
+    AGameVod_loadingData = false;
 }
 
 function AGameVod_loadDataReplace() {

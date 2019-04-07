@@ -129,21 +129,19 @@ function SearchGames_createCell(row_id, id, valuesArray) {
 }
 
 function SearchGames_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!SearchGames_Status) {
-            if (SearchGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-            else {
-                SearchGames_Status = true;
-                Main_imgVectorLoad(IMG_404_VIDEO);
-                SearchGames_addFocus();
-                Main_SaveValues();
-            }
-            Main_HideLoadDialog();
+    if (!SearchGames_Status) {
+        if (SearchGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else {
+            SearchGames_Status = true;
+            Main_imgVectorLoad(IMG_404_VIDEO);
+            SearchGames_addFocus();
+            Main_SaveValues();
         }
-        Main_ShowElement(SearchGames_ids[7]);
-        Main_FirstLoad = false;
-        Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
-    });
+        Main_HideLoadDialog();
+    }
+    Main_ShowElement(SearchGames_ids[7]);
+    Main_FirstLoad = false;
+    Main_CounterDialog(SearchGames_cursorX, SearchGames_cursorY, Main_ColoumnsCountGame, SearchGames_itemsCount);
 }
 
 function SearchGames_addFocus() {

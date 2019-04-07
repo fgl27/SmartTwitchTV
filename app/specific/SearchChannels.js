@@ -159,31 +159,29 @@ function SearchChannels_createCell(row_id, id, valuesArray) {
 }
 
 function SearchChannels_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!SearchChannels_Status) {
-            if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-            else {
-                SearchChannels_Status = true;
-                Main_imgVectorLoad(IMG_404_LOGO);
-                SearchChannels_addFocus();
-                Main_SaveValues();
-            }
-            Main_ShowElement(SearchChannels_ids[6]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-        } else {
+    if (!SearchChannels_Status) {
+        if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else {
+            SearchChannels_Status = true;
             Main_imgVectorLoad(IMG_404_LOGO);
-            if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
-                SearchChannels_loadDataPrepare();
-                SearchChannels_loadDataReplace();
-                return;
-            } else {
-                Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
-                SearchChannels_emptyCellVector = [];
-            }
+            SearchChannels_addFocus();
+            Main_SaveValues();
         }
-        SearchChannels_loadingData = false;
-    });
+        Main_ShowElement(SearchChannels_ids[6]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else {
+        Main_imgVectorLoad(IMG_404_LOGO);
+        if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
+            SearchChannels_loadDataPrepare();
+            SearchChannels_loadDataReplace();
+            return;
+        } else {
+            Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
+            SearchChannels_emptyCellVector = [];
+        }
+    }
+    SearchChannels_loadingData = false;
 }
 
 function SearchChannels_loadDataReplace() {

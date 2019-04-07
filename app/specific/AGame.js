@@ -196,35 +196,33 @@ function AGame_loadDataSuccess(responseText) {
 }
 
 function AGame_loadDataSuccessFinish() {
-    Main_ready(function() {
-        if (!AGame_status) {
-            AGame_Checkfallow();
-            if (AGame_emptyContent) {
-                Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
-                AGame_cursorY = -1;
-                AGame_addFocusFallow();
-            } else {
-                AGame_status = true;
-                Main_imgVectorLoad(IMG_404_VIDEO);
-                AGame_addFocus();
-                Main_SaveValues();
-            }
-            Main_ShowElement(AGame_ids[10]);
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
+    if (!AGame_status) {
+        AGame_Checkfallow();
+        if (AGame_emptyContent) {
+            Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            AGame_cursorY = -1;
+            AGame_addFocusFallow();
         } else {
+            AGame_status = true;
             Main_imgVectorLoad(IMG_404_VIDEO);
-            if (AGame_emptyCellVector.length > 0 && !AGame_dataEnded) {
-                AGame_loadDataPrepare();
-                AGame_loadDataReplace();
-                return;
-            } else {
-                Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
-                AGame_emptyCellVector = [];
-            }
+            AGame_addFocus();
+            Main_SaveValues();
         }
-        AGame_loadingData = false;
-    });
+        Main_ShowElement(AGame_ids[10]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else {
+        Main_imgVectorLoad(IMG_404_VIDEO);
+        if (AGame_emptyCellVector.length > 0 && !AGame_dataEnded) {
+            AGame_loadDataPrepare();
+            AGame_loadDataReplace();
+            return;
+        } else {
+            Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
+            AGame_emptyCellVector = [];
+        }
+    }
+    AGame_loadingData = false;
 }
 
 function AGame_Checkfallow() {
