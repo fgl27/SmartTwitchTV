@@ -292,7 +292,6 @@ function AGameVod_addFocus() {
         AGameVod_addFocusFallow();
         return;
     }
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(AGameVod_cursorY, AGameVod_cursorX, AGameVod_ids, Main_ColoumnsCountVideo, AGameVod_itemsCount);
 
     Vod_AnimateThumb(AGameVod_ids, AGameVod_cursorY + '_' + AGameVod_cursorX);
@@ -302,6 +301,7 @@ function AGameVod_addFocus() {
         AGameVod_loadDataPrepare();
         AGameVod_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) AGameVod_removeFocus();
 }
 
 function AGameVod_removeFocus() {

@@ -251,7 +251,6 @@ function SearchLive_loadDataSuccessReplace(responseText) {
 }
 
 function SearchLive_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(SearchLive_cursorY, SearchLive_cursorX, SearchLive_ids, Main_ColoumnsCountVideo, SearchLive_itemsCount);
 
     if (((SearchLive_cursorY + Main_ItemsReloadLimitVideo) > (SearchLive_itemsCount / Main_ColoumnsCountVideo)) &&
@@ -259,6 +258,7 @@ function SearchLive_addFocus() {
         SearchLive_loadDataPrepare();
         SearchLive_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) SearchLive_removeFocus();
 }
 
 function SearchLive_removeFocus() {

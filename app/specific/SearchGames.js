@@ -144,9 +144,9 @@ function SearchGames_loadDataSuccessFinish() {
 }
 
 function SearchGames_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusGame(SearchGames_cursorY, SearchGames_cursorX, SearchGames_ids,
         Main_ColoumnsCountGame, SearchGames_itemsCount);
+    if (Main_CenterLablesInUse) SearchGames_removeFocus();
 }
 
 function SearchGames_removeFocus() {
