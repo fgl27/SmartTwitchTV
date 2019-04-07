@@ -246,7 +246,6 @@ function SearchChannels_loadDataSuccessReplace(responseText) {
 }
 
 function SearchChannels_addFocus() {
-    if (Main_CenterLablesInUse) return;
     Main_addFocusChannel(SearchChannels_cursorY, SearchChannels_cursorX, SearchChannels_ids, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
 
     if (((SearchChannels_cursorY + Main_ItemsReloadLimitChannel) > (SearchChannels_itemsCount / Main_ColoumnsCountChannel)) &&
@@ -254,6 +253,7 @@ function SearchChannels_addFocus() {
         SearchChannels_loadDataPrepare();
         SearchChannels_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) SearchChannels_removeFocus();
 }
 
 function SearchChannels_removeFocus() {

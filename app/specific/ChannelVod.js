@@ -299,7 +299,6 @@ function ChannelVod_addFocus() {
         ChannelVod_addFocusFallow();
         return;
     }
-    if (Main_CenterLablesInUse) return;
     Main_addFocusVideo(ChannelVod_cursorY, ChannelVod_cursorX, ChannelVod_ids, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
 
     Vod_AnimateThumb(ChannelVod_ids, ChannelVod_cursorY + '_' + ChannelVod_cursorX);
@@ -309,6 +308,7 @@ function ChannelVod_addFocus() {
         ChannelVod_loadDataPrepare();
         ChannelVod_loadDataRequest();
     }
+    if (Main_CenterLablesInUse) ChannelVod_removeFocus();
 }
 
 function ChannelVod_removeFocus() {
