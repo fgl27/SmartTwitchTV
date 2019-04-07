@@ -245,7 +245,8 @@ function Main_initWindows() {
         document.addEventListener('visibilitychange', Main_Resume, false);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
-        Live_init();
+        inUseObj = Live;
+        Screens_init();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
     });
 }
@@ -540,8 +541,10 @@ function Main_SwitchScreen(removekey) {
 
     Main_CounterDialogRst();
     Main_ready(function() {
-        if (Main_values.Main_Go === Main_Live) Live_init();
-        else if (Main_values.Main_Go === Main_addUser) AddUser_init();
+        if (Main_values.Main_Go === Main_Live) {
+            inUseObj = Live;
+            Screens_init();
+        } else if (Main_values.Main_Go === Main_addUser) AddUser_init();
         else if (Main_values.Main_Go === Main_games) {
             inUseObj = Game;
             Screens_init();
@@ -588,7 +591,7 @@ function Main_RestoreValues() {
 }
 
 function Main_ExitCurrent(ExitCurrent) {
-    if (ExitCurrent === Main_Live) Live_exit();
+    if (ExitCurrent === Main_Live) Screens_exit();
     else if (ExitCurrent === Main_addUser) AddUser_exit();
     else if (ExitCurrent === Main_games) Screens_exit();
     else if (ExitCurrent === Main_aGame) AGame_exit();
@@ -1322,8 +1325,10 @@ function Main_CenterLablesExit() {
 }
 
 function Main_RemoveKeys() {
-    if (Main_values.Main_Go === Main_Live) document.body.removeEventListener("keydown", Live_handleKeyDown);
-    else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    if (Main_values.Main_Go === Main_Live) {
+        inUseObj = Live;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else if (Main_values.Main_Go === Main_aGame) document.body.removeEventListener("keydown", AGame_handleKeyDown);
     else if (Main_values.Main_Go === Main_Featured) document.body.removeEventListener("keydown", Featured_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
@@ -1362,8 +1367,10 @@ function Main_ReloadScreen() {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_CounterDialogRst();
-    if (Main_values.Main_Go === Main_Live) Live_StartLoad();
-    else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
+    if (Main_values.Main_Go === Main_Live) {
+        inUseObj = Live;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
     else if (Main_values.Main_Go === Main_Featured) Featured_StartLoad();
     else if (Main_values.Main_Go === Main_aGame) AGame_StartLoad();
     else if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();

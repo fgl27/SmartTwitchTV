@@ -13,6 +13,7 @@ var ChannelClip;
 var AGameClip;
 var Game;
 var UserGames;
+var Live;
 
 var Base_obj = {
     posX: 0,
@@ -48,6 +49,91 @@ var Base_obj = {
         }
     },
 };
+
+var Base_Live_obj = {
+    ThumbSize: 32.65,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Main_addFocusVideo,
+    key_refresh: Screens_StartLoad,
+    img_404: IMG_404_VIDEO,
+    empty_str: function() {
+        return STR_NO + STR_LIVE_CHANNELS;
+    },
+    key_play: function() {
+        Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+
+            var tempObj = JSON.parse(responseText);
+
+            this.MaxOffset = tempObj._total;
+            this.data = this.data.concat(tempObj.streams);
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            inUseObj.loadingData = false;
+        } else {
+            this.data = JSON.parse(responseText);
+
+            this.MaxOffset = this.data._total;
+            this.data = this.data.streams;
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            this.loadDataSuccess();
+            inUseObj.loadingData = false;
+        }
+    },
+    addCell: function(cell) {
+        if (!inUseObj.idObject[cell.channel._id]) {
+
+            inUseObj.itemsCount++;
+            inUseObj.idObject[cell.channel._id] = 1;
+
+            inUseObj.row.appendChild(Screens_createCellLive(
+                inUseObj.row_id,
+                inUseObj.coloumn_id,
+                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                    cell.channel.status, cell.game,
+                    STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
+                ]));
+
+            inUseObj.coloumn_id++;
+        }
+    },
+};
+
+function ScreensObj_InitLive() {
+    Live = Screens_assign({
+        ids: Screens_ScreenIds('Live'),
+        table: 'stream_table_live',
+        screen: Main_Live,
+        base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + '&offset=' + this.offset +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 0;
+            Main_AddClass('top_bar_live', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_live', 'icon_center_focus');
+        },
+    }, Base_obj);
+
+    Live = Screens_assign(Live, Base_Live_obj);
+    Live.set_ThumbSize();
+}
 
 var Base_Clip_obj = {
     ThumbSize: 32.65,
@@ -135,7 +221,7 @@ var Base_Game_obj = {
         if (this.data) {
             var tempObj = JSON.parse(responseText);
 
-            this.MaxOffset = this.data._total;
+            this.MaxOffset = tempObj._total;
             this.data = this.data.concat(this.screen === Main_usergames ? tempObj.follows : tempObj.top);
 
             this.offset = this.data.length;

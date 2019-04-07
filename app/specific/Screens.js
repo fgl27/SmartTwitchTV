@@ -9,6 +9,9 @@ function Screens_InitScreens() {
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitSecondaryScreens() {
+    //Live screens
+    ScreensObj_InitLive();
+
     //Clips screens
     ScreensObj_InitClip();
     ScreensObj_InitChannelClip();
@@ -148,6 +151,7 @@ function Screens_loadDataError() {
             inUseObj.FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_ShowElement('topbar');
         } else inUseObj.dataEnded = true;
     }
 }
@@ -163,9 +167,8 @@ function Screens_loadDataSuccess() {
     //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
 
     //var appendDiv = !inUseObj.coloumn_id;
-
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
-    else inUseObj.dataEnded = true;
+    else if (!inUseObj.loadingData) inUseObj.dataEnded = true;
 
     if (response_items) {
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
@@ -188,7 +191,7 @@ function Screens_loadDataSuccess() {
             doc.appendChild(inUseObj.row);
         }
 
-        for (inUseObj.row_id; inUseObj.row_id < max_row; inUseObj.row_id++) {
+        for (inUseObj.row_id; inUseObj.row_id < max_row;) {
 
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
@@ -196,12 +199,15 @@ function Screens_loadDataSuccess() {
                 //appendDiv = true;
             }
 
-            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
+            for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
+                if (inUseObj.data[inUseObj.data_cursor]) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
+            }
 
             //if (appendDiv)
             doc.appendChild(inUseObj.row);
+            if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) inUseObj.row_id++;
+            else if (inUseObj.data_cursor >= inUseObj.data.length) break;
         }
-
     }
 
     Screens_loadDataSuccessFinish(!response_items && !inUseObj.status);
@@ -235,6 +241,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
     return Main_td;
 }
 
+//TODO Reduce the number of vars here please
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
 
     var id = Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail);
@@ -270,18 +277,74 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     return Main_td;
 }
 
+function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
+
+    var id = Screens_createCellBase(row_id, coloumn_id, idArray, valuesArray[0]);
+
+    Main_td.setAttribute('id', idArray[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
+        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div id="' +
+        idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
+        valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div>' +
+        '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>';
+
+    return Main_td;
+}
+
 function Screens_loadDataSuccessFinish(emptyContent) {
     Main_ready(function() {
         if (!inUseObj.status) {
+            Main_ShowElement('topbar');
             inUseObj.emptyContent = emptyContent;
             if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
             else {
                 inUseObj.status = true;
                 Main_imgVectorLoad(inUseObj.img_404);
                 Screens_addFocus();
+                Main_values.Main_WasOpen = true;
+            }
+            //TODO improve this check
+            if (Main_FirstRun && inUseObj.status &&
+                (Settings_value.restor_playback.defaultValue) && (Main_values.Play_WasPlaying || Main_values.Main_WasOpen)) {
+                if (Main_values.Play_WasPlaying) {
+
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
+                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                    ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
+
+                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
+
+                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
+                    else Main_openVod();
+
+                    Main_SwitchScreen(true);
+                    window.setTimeout(function() {
+                        Play_HideWarningDialog();
+                    }, 2000);
+                } else if (Main_GoBefore !== 1) {
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
+                    Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+                    Main_SwitchScreen();
+                } else {
+                    Main_ShowElement(inUseObj.ids[10]);
+                    if (Main_values.Never_run) Main_showControlsDialog();
+                    Main_values.Never_run = false;
+                    Main_SaveValues();
+                }
+            } else {
+                Main_ShowElement(inUseObj.ids[10]);
                 Main_SaveValues();
             }
-            Main_ShowElement(inUseObj.ids[10]);
+            Main_FirstRun = false;
             inUseObj.FirstLoad = false;
             Main_HideLoadDialog();
         } else {
@@ -296,18 +359,20 @@ function Screens_addFocus() {
         Screens_addFocusFallow();
         return;
     }
-    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
-    if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
-        Main_imgVectorRst();
-        inUseObj.loadDataSuccess();
-    }
+    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     //Load more as the data is getting used
     if ((inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataPrepare();
         Screens_loadDataRequest();
     }
+
+    if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
+        Main_imgVectorRst();
+        inUseObj.loadDataSuccess();
+    }
+
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
 }
 
@@ -350,7 +415,7 @@ function Screens_KeyUpDown(y) {
         for (var i = 0; i < inUseObj.ColoumnsCount; i++) {
             if (Main_ThumbNull((inUseObj.posY + y), (inUseObj.posX - i), inUseObj.ids[0])) {
                 Screens_ChangeFocus(y, inUseObj.posX - i);
-                break;
+                return;
             }
         }
     }
