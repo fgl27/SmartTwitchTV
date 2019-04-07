@@ -240,16 +240,16 @@ function Vod_loadDataSuccessFinish() {
         Main_ShowElement(Vod_ids[10]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
-    } else Main_imgVectorLoad(IMG_404_VIDEO);
+    } else {
+        Main_imgVectorLoad(IMG_404_VIDEO);
+        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
+    }
 
     if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
         Vod_loadDataPrepare();
         Vod_loadDataReplace();
         return;
-    } else {
-        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
-        Vod_emptyCellVector = [];
-    }
+    } else Vod_emptyCellVector = [];
 
     Vod_loadingData = false;
 }
