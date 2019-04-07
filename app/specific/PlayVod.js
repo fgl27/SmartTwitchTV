@@ -986,7 +986,7 @@ function PlayVod_handleKeyDown(e) {
                         if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     } else Play_BottomOptionsPressed(2);
                 } else if (Play_isFeedShow()) {
-                    Play_PreshutdownStream();
+                    PlayVod_PreshutdownStream();
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayVod_showPanel(true);
                 break;

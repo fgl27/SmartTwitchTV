@@ -490,7 +490,7 @@ function PlayClip_handleKeyDown(e) {
                         if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                     } else Play_BottomOptionsPressed(3);
                 } else if (Play_isFeedShow()) {
-                    Play_PreshutdownStream();
+                    PlayClip_PreshutdownStream();
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayClip_showPanel();
                 break;
