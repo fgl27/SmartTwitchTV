@@ -254,7 +254,8 @@ var Base_Game_obj = {
     },
 
     addCell: function(cell) {
-        var game = this.isLive || this.screen === Main_games ? cell.game : cell;
+        var hasLive = this.isLive || this.screen === Main_games;
+        var game = hasLive ? cell.game : cell;
         if (!inUseObj.idObject[game._id]) {
 
             inUseObj.itemsCount++;
@@ -265,7 +266,7 @@ var Base_Game_obj = {
                 inUseObj.ids,
                 game.box.template.replace("{width}x{height}", Main_GameSize),
                 game.name,
-                this.isLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
+                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
 
             inUseObj.coloumn_id++;
         }
