@@ -1157,6 +1157,9 @@ function Play_FeedAddFocus() {
     if (Play_FeedPos < 3) position = 3;
     else if (Play_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
+    else if (Play_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
+    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 4)).offsetLeft * -1);
 
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
 }
