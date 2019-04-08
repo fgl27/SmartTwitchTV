@@ -150,7 +150,6 @@ function Screens_loadDataError() {
             inUseObj.FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
-            Main_ShowElement('topbar');
         } else inUseObj.dataEnded = true;
     }
 }
@@ -209,8 +208,8 @@ function Screens_loadDataSuccess() {
             else if (inUseObj.data_cursor >= inUseObj.data.length) break;
         }
     }
-
-    Screens_loadDataSuccessFinish(!response_items && !inUseObj.status);
+    inUseObj.emptyContent = !response_items && !inUseObj.status;
+    Screens_loadDataSuccessFinish();
 }
 
 function Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail) {
@@ -299,11 +298,9 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     return Main_td;
 }
 
-function Screens_loadDataSuccessFinish(emptyContent) {
+function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
-        Main_ShowElement('topbar');
-        inUseObj.emptyContent = emptyContent;
-        if (emptyContent) Main_showWarningDialog(inUseObj.empty_str());
+        if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
         else {
             inUseObj.status = true;
             Main_imgVectorLoad(inUseObj.img_404);
@@ -324,7 +321,7 @@ function Screens_loadDataSuccessFinish(emptyContent) {
 
                 Main_SwitchScreen(true);
                 window.setTimeout(function() {
-                    Play_HideWarningDialog();
+                    if (!Play_IsWarning) Play_HideWarningDialog();
                 }, 2000);
             } else if (Main_GoBefore !== 1) {
                 Main_ExitCurrent(Main_values.Main_Go);
@@ -334,12 +331,12 @@ function Screens_loadDataSuccessFinish(emptyContent) {
             } else {
                 if (Main_values.Never_run) Main_showControlsDialog();
                 Main_values.Never_run = false;
-                Main_SaveValues();
                 Screens_addFocus();
+                Main_SaveValues();
             }
         } else {
-            Main_SaveValues();
             Screens_addFocus();
+            Main_SaveValues();
         }
         Main_FirstRun = false;
         inUseObj.FirstLoad = false;

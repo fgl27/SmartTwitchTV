@@ -247,6 +247,7 @@ function Main_initWindows() {
         inUseObj = Live;
         Screens_init();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
+        Main_ShowElement('topbar');
     });
 }
 
