@@ -68,10 +68,9 @@ function Screens_exit() {
 }
 
 function Screens_StartLoad() {
-    Main_empty(inUseObj.table);
-    Main_HideElement(inUseObj.ids[10]);
-    Main_HideWarningDialog();
     Main_showLoadDialog();
+    Main_empty(inUseObj.table);
+    Main_HideWarningDialog();
     inUseObj.cursor = null;
     inUseObj.status = false;
     inUseObj.row = document.createElement('div');
@@ -333,14 +332,12 @@ function Screens_loadDataSuccessFinish(emptyContent) {
                 Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
                 Main_SwitchScreen();
             } else {
-                Main_ShowElement(inUseObj.ids[10]);
                 if (Main_values.Never_run) Main_showControlsDialog();
                 Main_values.Never_run = false;
                 Main_SaveValues();
                 Screens_addFocus();
             }
         } else {
-            Main_ShowElement(inUseObj.ids[10]);
             Main_SaveValues();
             Screens_addFocus();
         }
