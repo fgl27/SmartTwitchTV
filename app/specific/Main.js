@@ -155,10 +155,9 @@ function Main_Start() {
 }
 
 function Main_loadTranslations(language) {
-    //Main_Checktylesheet();
+    Main_Checktylesheet();
 
     Main_ready(function() {
-
         try {
             Main_Android = Android.getAndroid();
         } catch (e) {
@@ -958,18 +957,22 @@ function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
-function Main_Checktylesheet() { // jshint ignore:line
+// stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
+// So in order to check if a css class is loaded one can check it's font-family
+// The simple test here it to remove the <link rel="stylesheet" href="https://werevere"> from index and see if the bellow funtion loads the css for you and vice versa
+function Main_Checktylesheet() {
+    var span = document.createElement('span');
 
-    var stylesheet = document.styleSheets;
-    for (var i = 0; i < stylesheet.length; i++) {
-        if (stylesheet[i].href !== null) {
-            try {
-                if (!stylesheet[i].cssRules.length) Main_LoadStylesheet(stylesheet[i].href);
-            } catch (e) {
-                console.log('Main_Checktylesheet ' + e);
-            }
-        }
-    }
+    span.className = 'fa';
+    span.style.display = 'none';
+    document.body.insertBefore(span, document.body.firstChild);
+
+    if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
+        if (!Main_isReleased) console.log('Main_Checktylesheet reloading');
+        Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
+    } else if (!Main_isReleased) console.log('Main_Checktylesheet loaded OK');
+
+    document.body.removeChild(span);
 }
 
 function Main_LoadStylesheet(path) {
