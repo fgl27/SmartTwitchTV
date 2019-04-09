@@ -30,10 +30,10 @@ Project Dependencies
 * [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
 * [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
 * [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
+* [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier.](https://github.com/kangax/html-minifier)
 * [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
 * [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
-* [Samsung WebApi API - this module defines the functionalities that are provides as the Samsung TV for Tizen Platform Product API](http://developer.samsung.com/tv/develop/api-references/samsung-product-api-references/webapi-api)
 
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
 The application never stops receiving updates the bellow images can be outdated

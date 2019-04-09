@@ -60,7 +60,7 @@ if which 'jshint' >/dev/null ; then
 		npm install jshint -g
 	fi;
 	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals STR_BODY, Android */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 else
 	echo -e "\\n${bldred}can't run jshint because it is not installed";
