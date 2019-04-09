@@ -21,7 +21,7 @@ var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = 0;
 
-var Play_streamInfoTimer = null;
+var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
 var Play_playlistResponse = 0;
 var Play_playingTry = 0;
@@ -49,7 +49,7 @@ var Play_isOn = false;
 var Play_ChatBackgroundID = null;
 var Play_qualitiesFound = false;
 var Play_PlayerTime = 0;
-var Play_streamCheck = null;
+var Play_streamCheckId = null;
 var Play_PlayerCheckCount = 0;
 var Play_PlayerCheckCounter = 0;
 var Play_PlayerCheckQualityChanged = false;
@@ -233,7 +233,7 @@ function Play_Start() {
     Play_updateStreamInfoErrorTry = 0;
     Play_PlayerCheckCounter = 0;
     Play_PlayerCheckCount = 0;
-    window.clearInterval(Play_streamCheck);
+    window.clearInterval(Play_streamCheckId);
     Play_PlayerCheckRun = false;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;
@@ -253,7 +253,7 @@ function Play_Start() {
     Play_updateStreamInfoStart();
     Play_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
-    Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
+    Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
 }
 
 function Play_Warn(text) { // jshint ignore:line
@@ -265,7 +265,7 @@ function Play_CheckResume() { // jshint ignore:line
     if (PlayVod_isOn) PlayVod_Resume();
     if (PlayClip_isOn) {
         PlayClip_shutdownStream();
-        window.clearInterval(PlayClip_streamCheck);
+        window.clearInterval(PlayClip_streamCheckId);
     }
 }
 
@@ -279,7 +279,7 @@ function Play_Resume() {
             Play_ClearPlayer();
             Play_Playing = false;
             Play_Chatobj.src = 'about:blank';
-            window.clearInterval(Play_streamInfoTimer);
+            window.clearInterval(Play_streamInfoTimerId);
             Play_startttimeoffset = Date.now();
         }
     } else {
@@ -296,7 +296,7 @@ function Play_Resume() {
             Play_ResumeAfterOnlineCounter = 0;
             if (navigator.onLine) Play_loadData();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
-            Play_streamInfoTimer = window.setInterval(Play_updateStreamInfo, 60000);
+            Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
         }
     }
 }
@@ -568,7 +568,7 @@ function Play_extractStreamDeclarations(input) {
 }
 
 function Play_qualityChanged() {
-    window.clearInterval(Play_streamCheck);
+    window.clearInterval(Play_streamCheckId);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
@@ -601,8 +601,8 @@ function Play_onPlayer() {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4;
         Play_PlayerCheckQualityChanged = false;
-        window.clearInterval(Play_streamCheck);
-        Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+        window.clearInterval(Play_streamCheckId);
+        Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
     }
 }
 
@@ -817,8 +817,8 @@ function Play_ClearPlay() {
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.removeEventListener('visibilitychange', Play_Resume);
     Play_Chatobj.src = 'about:blank';
-    window.clearInterval(Play_streamInfoTimer);
-    window.clearInterval(Play_streamCheck);
+    window.clearInterval(Play_streamInfoTimerId);
+    window.clearInterval(Play_streamCheckId);
     Play_IsWarning = false;
 }
 
@@ -1057,21 +1057,21 @@ function Play_KeyPause(PlayVodClip) {
         Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
-            window.clearInterval(Play_streamCheck);
-            Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
+            window.clearInterval(Play_streamCheckId);
+            Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 2) {
             if (Play_isPanelShown()) PlayVod_hidePanel();
-            window.clearInterval(PlayVod_streamCheck);
-            PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+            window.clearInterval(PlayVod_streamCheckId);
+            PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 3) {
             if (Play_isPanelShown()) PlayClip_hidePanel();
-            window.clearInterval(PlayClip_streamCheck);
-            PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+            window.clearInterval(PlayClip_streamCheckId);
+            PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
     } else {
-        window.clearInterval(Play_streamCheck);
-        window.clearInterval(PlayVod_streamCheck);
-        window.clearInterval(PlayClip_streamCheck);
+        window.clearInterval(Play_streamCheckId);
+        window.clearInterval(PlayVod_streamCheckId);
+        window.clearInterval(PlayClip_streamCheckId);
 
         Main_innerHTML('pause_button', '<i class="strokedbig icon-play-1" style="color: #FFFFFF; font-size: 180%;"></i>');
 
@@ -1422,9 +1422,9 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 }
 
 function Play_PannelEndStart(PlayVodClip) {
-    window.clearInterval(Play_streamCheck);
-    window.clearInterval(PlayClip_streamCheck);
-    window.clearInterval(PlayVod_streamCheck);
+    window.clearInterval(Play_streamCheckId);
+    window.clearInterval(PlayClip_streamCheckId);
+    window.clearInterval(PlayVod_streamCheckId);
 
     Play_PrepareshowEndDialog();
     Play_EndTextCounter = 3;
@@ -1438,8 +1438,8 @@ function Play_CheckHostStart() {
     Play_loadingDataTimeout = 2000;
     window.clearTimeout(Play_CheckChatId);
     Play_Chatobj.src = 'about:blank';
-    window.clearInterval(Play_streamInfoTimer);
-    window.clearInterval(Play_streamCheck);
+    window.clearInterval(Play_streamInfoTimerId);
+    window.clearInterval(Play_streamCheckId);
     if (Main_values.Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }
