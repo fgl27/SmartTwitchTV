@@ -61,7 +61,7 @@ function PlayClip_Start() {
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_PlayerCheckCount = 0;
-    window.clearInterval(PlayClip_PlayerCheck);
+    window.clearInterval(PlayClip_streamCheck);
     PlayClip_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
@@ -140,7 +140,7 @@ function PlayClip_FrameRate(value) {
 }
 
 function PlayClip_qualityChanged() {
-    window.clearInterval(PlayClip_PlayerCheck);
+    window.clearInterval(PlayClip_streamCheck);
     PlayClip_qualityIndex = 0;
     PlayClip_playingUrl = PlayClip_qualities[0].url;
     if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
@@ -159,7 +159,6 @@ function PlayClip_qualityChanged() {
     if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
 
-    if (!Main_isReleased) console.log('PlayClip_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
     if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
         PlayClip_replay ? -1 : Android.gettime());
     PlayClip_replay = false;
@@ -173,7 +172,7 @@ function PlayClip_onPlayer() {
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4;
         PlayClip_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayClip_PlayerCheck);
+        window.clearInterval(PlayClip_streamCheck);
         PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
     }
 }
