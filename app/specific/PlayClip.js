@@ -60,6 +60,8 @@ function PlayClip_Start() {
     Main_HideElement('chat_frame');
 
     PlayClip_PlayerCheckCounter = 0;
+    PlayClip_PlayerCheckCount = 0;
+    window.clearInterval(PlayClip_PlayerCheck);
     PlayClip_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
@@ -138,6 +140,7 @@ function PlayClip_FrameRate(value) {
 }
 
 function PlayClip_qualityChanged() {
+    window.clearInterval(PlayClip_PlayerCheck);
     PlayClip_qualityIndex = 0;
     PlayClip_playingUrl = PlayClip_qualities[0].url;
     if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
@@ -179,7 +182,6 @@ function PlayClip_Resume() {
     if (document.hidden) PlayClip_shutdownStream();
 }
 
-// On clips avplay call oncurrentplaytime it 500ms so call PlayClip_PlayerCheck it 1500 works well
 function PlayClip_PlayerCheck() {
     if (Main_Android) PlayClip_currentTime = Android.gettime();
     if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {

@@ -119,6 +119,8 @@ function PlayVod_PosStart() {
     Main_CacheImage(Play_IncrementView);
 
     PlayVod_PlayerCheckCounter = 0;
+    PlayVod_PlayerCheckCount = 0;
+    window.clearInterval(PlayVod_streamCheck);
     PlayVod_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
@@ -432,6 +434,7 @@ function PlayVod_isSub() {
 }
 
 function PlayVod_qualityChanged() {
+    window.clearInterval(PlayVod_streamCheck);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
     if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";

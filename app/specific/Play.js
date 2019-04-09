@@ -232,6 +232,8 @@ function Play_Start() {
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
     Play_PlayerCheckCounter = 0;
+    Play_PlayerCheckCount = 0;
+    window.clearInterval(Play_streamCheck);
     Play_PlayerCheckRun = false;
     Play_ChatLoadOK = false;
     Play_currentTime = 0;
@@ -566,6 +568,7 @@ function Play_extractStreamDeclarations(input) {
 }
 
 function Play_qualityChanged() {
+    window.clearInterval(Play_streamCheck);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
@@ -1054,18 +1057,21 @@ function Play_KeyPause(PlayVodClip) {
         Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
+            window.clearInterval(Play_streamCheck);
             Play_streamCheck = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 2) {
             if (Play_isPanelShown()) PlayVod_hidePanel();
+            window.clearInterval(PlayVod_streamCheck);
             PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
         } else if (PlayVodClip === 3) {
             if (Play_isPanelShown()) PlayClip_hidePanel();
+            window.clearInterval(PlayClip_streamCheck);
             PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
     } else {
-        if (PlayVodClip === 1) window.clearInterval(Play_streamCheck);
-        else if (PlayVodClip === 2) window.clearInterval(PlayVod_streamCheck);
-        else if (PlayVodClip === 3) window.clearInterval(PlayClip_streamCheck);
+        window.clearInterval(Play_streamCheck);
+        window.clearInterval(PlayVod_streamCheck);
+        window.clearInterval(PlayClip_streamCheck);
 
         Main_innerHTML('pause_button', '<i class="strokedbig icon-play-1" style="color: #FFFFFF; font-size: 180%;"></i>');
 
