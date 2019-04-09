@@ -109,7 +109,14 @@ function en_USLang() {
     STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
     STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
     STR_ABOUT_INFO_11 = "JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc. (https://github.com/beautify-web/js-beautify)";
-    STR_ABOUT_INFO_12 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
+    STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
+    STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
+
+    STR_ABOUT_INFO_14 = "Web:";
+    STR_ABOUT_INFO_15 = "Android:";
+    STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
+    STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
+
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause simbol (not available to Live streams)";
