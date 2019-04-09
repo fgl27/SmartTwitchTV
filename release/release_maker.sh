@@ -1,7 +1,7 @@
 #!/bin/bash
 #code compressor using uglifyjs, jshint, js-beautify, sed and cleancss, this .sh runs on linux shell base system
 
-#instalation of uglifyjs and jshint has more then one step
+#instalation of uglifyjs jshint, js-beautify and html-minifier has more then one step
 #1# Donwload npm/node and https://nodejs.org/en/
 # extract the download file then do the bellow on the terminal
 
@@ -12,8 +12,8 @@
 # export NODEJS_HOME=/usr/lib/nodejs/node
 # export PATH=$NODEJS_HOME/bin:$PATH
 
-# now install uglifyjs via terminal
-# npm install uglify-js jshint js-beautify -g
+# now install uglifyjs jshint, js-beautify and html-minifier via terminal
+# npm install uglify-js jshint js-beautify html-minifier -g
 
 #installation of sed and cleancss is via more used apt-get
 
@@ -25,7 +25,6 @@
 
 # add html files here, master.css here is a temp file generate by this .sh it has the css content of index.html
 temp_maker_folder="release/temp_maker/";
-html_file=("$temp_maker_folder""index.html" "$temp_maker_folder""master.css" "release/index.html");
 
 # add js folders here
 js_folders=("app/languages/" "app/general/" "app/specific/");
@@ -90,6 +89,21 @@ else
 	exit;
 fi;
 
+# Exit if canhtmlminifier is not available
+canhtmlminifier=0;
+if which 'html-minifier' >/dev/null  ; then
+	# call this .sh and 1 "this.sh 1" to update uglify-js
+	if [ "$1" == 1 ]; then
+		npm install html-minifier -g
+	fi;
+	canhtmlminifier=1;
+else
+	echo -e "\\n${bldred}can't run html-minifier, as it's not installed";
+	echo -e "${bldred}To install html-minifier read the release maker notes on the top\\n";
+	echo -e "${bldred}Release maker aborted\\n"
+	exit;
+fi;
+
 # Exit if uglifyjs is not available
 cancleancss=1;
 if ! which 'cleancss' >/dev/null  ; then
@@ -104,30 +118,6 @@ fi;
 mainfolder="$(dirname ""$(dirname "$0")"")";
 
 cd "$mainfolder" || exit
-
-# sed_comp cleans/compress up html/xml related files
-sed_comp() {
-	array=( "$@" );
-	for i in "${array[@]}"; do
-		echo -e "${bldblu}	sed compressing $i";
-		sed -i -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' "$i";
-		sed -i "/\\/\\*.*\\*\\//d;/\\/\\*/,/\\*\\// d" "$i";
-		sed -i '/^\(\s*\)\/\//d' "$i";
-		sed -i 's/^[ \t]*//g; s/[ \t]*$//g' "$i";
-		sed -i ':a;N;$!ba;s/\n/ /g' "$i";
-		sed -i 's/\s*:/:/g' "$i";
-		sed -i 's/; \+/;/g' "$i";
-		sed -i 's/: \+/:/g' "$i";
-		sed -i 's/> \+/>/g' "$i";
-		sed -i 's/\s*</</g' "$i";
-		sed -i 's/} \+/}/g' "$i";
-		sed -i 's/{ \+/{/g' "$i";
-		sed -i 's/\s*{/{/g' "$i";
-		sed -i 's/\s*}/}/g' "$i";
-#		sed -i 's/" \+/"/g' "$i";
-	done
-	echo -e "";
-}
 
 # uglifyjs cleans/compress js related files
 js_comp_ugf() {
@@ -182,59 +172,42 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals STR_BODY, Android, Play_CheckResume */\n/* exported Play_CheckResume */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals Android, Play_CheckResume */\n/* exported Play_CheckResume */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 fi;
 
 # Prepare the release folder copy files to correct place and make new temp files
-sed -i 's/Main_isReleased = false/Main_isReleased = true/g' app/specific/Main.js;
-
 mkdir -p "$temp_maker_folder"
 
-cp -rf index.html "$temp_maker_folder"master.css
-cp -rf index.html "$temp_maker_folder"index.html
-cp -rf release/index.html index_release.html
+# this var is used for debugging
+sed -i 's/Main_isReleased = false/Main_isReleased = true/g' app/specific/Main.js;
 
-sed -i -n '/bodystart/,/bodyend/p' "$temp_maker_folder"index.html
-sed -i -n '/cssstart/,/cssend/p' "$temp_maker_folder"master.css
-
-rm -rf release/app/
-mkdir -p 'release/app/images/'
-cp -rf app/images/app_icon.png release/app/images/app_icon.png
+# make the release/index.min.html
+cp -rf index.html release/index.min.html
+sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/index.min.html
+old='<!-- httpmin-->'
+new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/master.js" defer></script>'
+sed --in-place "s%$old%$new%g" release/index.min.html
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 
 # run the cleans/compress tools
-sed_comp "${html_file[@]}";
 
-# Include STR_BODY to release/master, STR_BODY has the content of index.html body
-echo "var STR_BODY='""$(cat "$temp_maker_folder"index.html)""';" > release/master.js;
+if [ "$canhtmlminifier" == 1 ]; then
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true release/index.min.html -o release/index.min.html
+fi;
+
+echo "" > release/master.js;
 
 if [ "$canuglifyjs" == 1 ]; then
 	js_comp_ugf "${js_folders[@]}";
 fi;
 
-#Make a zip
-cd release/ || exit
-rm -rf *.zip
-zip -qr9 release ./ -x master.* html_body.js master.js release_maker.sh beautify.sh jshint.sh \*githubio\* \*temp_maker\*
-
-# Clean up release/ folder temp files and stash all over git changes
-rm -rf app/
-
-cd - &> /dev/null || exit;
-
 # Compress using cleancss
 if [ "$cancleancss" == 1 ]; then
-	cleancss "$temp_maker_folder"master.css -o "$temp_maker_folder"master.css
-	cleancss release/githubio/css/font-awesome.css -o release/githubio/css/font-awesome.min.css
+	cleancss release/githubio/css/icons.css -o release/githubio/css/icons.min.css
 fi;
-# Copy master.css to its place, it's the css content of index.html
-cp -rf "$temp_maker_folder"master.css release/githubio/css/master.css
 
-cp -rf release/index.html release/index.min.html
-cp -rf index_release.html release/index.html
-rm -rf index_release.html
 cd release/ || exit
 
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
@@ -266,17 +239,12 @@ else
 	echo -e "	${bldred}Repo files not beautifyed\\n"
 fi;
 
-# Warn if a change was detected to master.js or master.css file
+# Warn if a change was detected to master.js and release/html
 git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
 	echo -e "${bldgrn}Is necessary to update githubio as below files are modify:\\n"
 	echo -e "${bldred}	$git_check"
 fi;
-
-
-echo -e "\\n${bldred}##################################################################################################\\n#												 #";
-echo -e "#												 #\\n#	${bldcya}Release done, zip generated at $mainfolder/release/release.zip${bldred}	 #\\n#												 #";
-echo -e "#												 #\\n${bldred}##################################################################################################\\n";
 
 END=$(date +%s.%N);
 echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${bldyel}(minutes:seconds).\n";

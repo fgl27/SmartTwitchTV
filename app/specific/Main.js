@@ -119,7 +119,7 @@ var Main_DataAttribute = 'data_attribute';
 //var Main_version = 401;
 var Main_stringVersion = '1.0';
 //var Main_currentVersion = '';
-var Main_minversion = '040719';
+var Main_minversion = '040919';
 var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 var Main_Android = 0;
@@ -155,43 +155,39 @@ function Main_Start() {
 }
 
 function Main_loadTranslations(language) {
-    Main_Checktylesheet();
+    //Main_Checktylesheet();
 
     Main_ready(function() {
-        var doc = document.body;
-        if (Main_isReleased) doc.innerHTML = STR_BODY;
 
         try {
             Main_Android = Android.getAndroid();
         } catch (e) {
             Main_Android = 0;
-            doc.style.backgroundColor = "rgba(0, 0, 0, 1)";
+            document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
         }
 
-        Main_ready(function() {
-            Settings_SetDefautls();
-            en_USLang();
+        Settings_SetDefautls();
+        en_USLang();
 
-            // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-            // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-            // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-            //var lang = language,
-            //    Savedlang = Main_getItemInt('user_language', 0);
+        //var lang = language,
+        //    Savedlang = Main_getItemInt('user_language', 0);
 
-            //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-            //else Settings_CheckLang(lang);
+        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+        //else Settings_CheckLang(lang);
 
-            //if (lang.indexOf('pt_') !== -1) pt_BRLang();
-            //else if (lang.indexOf('it_') !== -1) it_ITLang();
+        //if (lang.indexOf('pt_') !== -1) pt_BRLang();
+        //else if (lang.indexOf('it_') !== -1) it_ITLang();
 
-            console.log("language is " + language);
-            DefaultLang();
+        console.log("language is " + language);
+        DefaultLang();
 
-            if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
+        if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
 
-            Main_initWindows();
-        });
+        Main_initWindows();
     });
 
 }
@@ -962,7 +958,7 @@ function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
-function Main_Checktylesheet() {
+function Main_Checktylesheet() { // jshint ignore:line
 
     var stylesheet = document.styleSheets;
     for (var i = 0; i < stylesheet.length; i++) {

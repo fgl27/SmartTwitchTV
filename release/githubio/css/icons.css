@@ -12,7 +12,6 @@
   font: normal normal normal 14px/1 "icons";
   font-size: inherit;
   text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
 }
 .fa-spin {
   animation: fa-spin 2s infinite linear;
