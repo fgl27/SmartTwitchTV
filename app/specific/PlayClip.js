@@ -1,6 +1,6 @@
 //Variable initialization
 var PlayClip_PlayerTime = 0;
-var PlayClip_streamCheck = null;
+var PlayClip_streamCheckId = null;
 var PlayClip_PlayerCheckCount = 0;
 var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
@@ -61,7 +61,7 @@ function PlayClip_Start() {
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_PlayerCheckCount = 0;
-    window.clearInterval(PlayClip_streamCheck);
+    window.clearInterval(PlayClip_streamCheckId);
     PlayClip_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
@@ -140,7 +140,7 @@ function PlayClip_FrameRate(value) {
 }
 
 function PlayClip_qualityChanged() {
-    window.clearInterval(PlayClip_streamCheck);
+    window.clearInterval(PlayClip_streamCheckId);
     PlayClip_qualityIndex = 0;
     PlayClip_playingUrl = PlayClip_qualities[0].url;
     if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
@@ -172,8 +172,8 @@ function PlayClip_onPlayer() {
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 4;
         PlayClip_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayClip_streamCheck);
-        PlayClip_streamCheck = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+        window.clearInterval(PlayClip_streamCheckId);
+        PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
     }
 }
 
@@ -236,7 +236,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
-    window.clearInterval(PlayClip_streamCheck);
+    window.clearInterval(PlayClip_streamCheckId);
     if (Main_Android) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();

@@ -4,7 +4,7 @@ var PlayVod_qualityPlaying = PlayVod_quality;
 
 var PlayVod_state = 0;
 
-var PlayVod_streamInfoTimer = null;
+var PlayVod_streamInfoTimerId = null;
 var PlayVod_tokenResponse = 0;
 var PlayVod_playlistResponse = 0;
 var PlayVod_playingTry = 0;
@@ -22,7 +22,7 @@ var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
 var PlayVod_PlayerTime = 0;
-var PlayVod_streamCheck = null;
+var PlayVod_streamCheckId = null;
 var PlayVod_PlayerCheckCount = 0;
 var PlayVod_PlayerCheckQualityChanged = false;
 var PlayVod_PlayerCheckCounter = 0;
@@ -120,7 +120,7 @@ function PlayVod_PosStart() {
 
     PlayVod_PlayerCheckCounter = 0;
     PlayVod_PlayerCheckCount = 0;
-    window.clearInterval(PlayVod_streamCheck);
+    window.clearInterval(PlayVod_streamCheckId);
     PlayVod_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
@@ -269,7 +269,7 @@ function PlayVod_Resume() {
             PlayVod_SaveVodIds();
             Chat_Pause();
             Play_ClearPlayer();
-            window.clearInterval(PlayVod_streamCheck);
+            window.clearInterval(PlayVod_streamCheckId);
             window.clearInterval(PlayVod_SaveOffsetId);
         }
     } else {
@@ -434,7 +434,7 @@ function PlayVod_isSub() {
 }
 
 function PlayVod_qualityChanged() {
-    window.clearInterval(PlayVod_streamCheck);
+    window.clearInterval(PlayVod_streamCheckId);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
     if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
@@ -472,8 +472,8 @@ function PlayVod_onPlayer() {
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 7;
         PlayVod_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayVod_streamCheck);
-        PlayVod_streamCheck = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+        window.clearInterval(PlayVod_streamCheckId);
+        PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
     }
 }
 
@@ -546,8 +546,8 @@ function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     Main_values.vodOffset = 0;
-    window.clearInterval(PlayVod_streamInfoTimer);
-    window.clearInterval(PlayVod_streamCheck);
+    window.clearInterval(PlayVod_streamInfoTimerId);
+    window.clearInterval(PlayVod_streamCheckId);
     ChannelVod_DurationSeconds = 0;
 }
 
