@@ -73,12 +73,17 @@ function DefaultLang() {
         STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT +
+        STR_ABOUT_INFO_14 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_11 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
+        STR_ABOUT_INFO_15 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
     STR_UPDATE_MAIN_HEADER = STR_DIV_TITLE + STR_UPDATE + '</div>' +
