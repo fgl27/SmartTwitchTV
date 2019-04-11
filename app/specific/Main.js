@@ -1026,7 +1026,7 @@ function Main_updateUserFeed() {
     if (!document.hidden) {
         if (AddUser_UserIsSet() && !Play_isFeedShow() && !UserLiveFeed_loadingData) {
             Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-            UserLiveFeed_StartLoad();
+            window.setTimeout(UserLiveFeed_StartLoad, 5000);
         }
     }
 }
