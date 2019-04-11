@@ -405,8 +405,12 @@ var Base_Game_obj = {
         Main_values.Main_Go = Main_aGame;
         Main_values.Main_BeforeAgameisSet = true;
         AGame_UserGames = false;
-        Screens_exit();
-        Main_SwitchScreen();
+
+        Main_addFocusVideoOffset = 0;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_HideElement(this.ids[10]);
+
+        Main_SwitchScreenAction();
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
     },
 

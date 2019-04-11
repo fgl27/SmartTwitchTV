@@ -258,14 +258,11 @@ function AGame_headerOptions() {
         Main_values.Main_Go = Main_AGameVod;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        AGameVod_SetPeriod();
         Main_SwitchScreenAction();
     } else if (AGame_cursorX === 1) {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        inUseObj = AGameClip;
-        inUseObj.SetPeriod();
         Main_SwitchScreenAction();
     } else AGame_fallow();
 }
