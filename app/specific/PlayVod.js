@@ -378,7 +378,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadDataRequest();
         } else {
             Play_HideBufferDialog();
-            Play_PannelEndStart(2);
+            Play_PlayEndStart(2);
         }
     }
 }
