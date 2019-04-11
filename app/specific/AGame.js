@@ -257,15 +257,28 @@ function AGame_headerOptions() {
     if (!AGame_cursorX) {
         Main_values.Main_Go = Main_AGameVod;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-        AGame_exit();
-        Main_SwitchScreen();
+        AGame_headerOptionsExit();
+        AGameVod_SetPeriod();
+        Main_SwitchScreenAction();
     } else if (AGame_cursorX === 1) {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-        AGame_exit();
-        Main_SwitchScreen();
+        AGame_headerOptionsExit();
+        inUseObj = AGameClip;
+        inUseObj.SetPeriod();
+        Main_SwitchScreenAction();
     } else AGame_fallow();
+}
 
+function AGame_headerOptionsExit() {
+    if (AGame_status && AGame_cursorY === -1) {
+        AGame_removeFocusFallow();
+        AGame_cursorY = 0;
+        AGame_cursorX = 0;
+        Main_AddClass(AGame_ids[0] + '0_' + AGame_cursorX, Main_classThumb);
+    }
+    document.body.removeEventListener("keydown", AGame_handleKeyDown);
+    Main_HideElement(AGame_ids[10]);
 }
 
 function AGame_loadDataReplace() {
