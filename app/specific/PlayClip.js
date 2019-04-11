@@ -106,7 +106,7 @@ function PlayClip_loadDataError() {
         PlayClip_loadDataRequest();
     } else {
         Play_HideBufferDialog();
-        Play_PannelEndStart(3);
+        Play_PlayEndStart(3);
     }
 }
 

@@ -701,7 +701,7 @@ function Play_DropOneQuality(ConnectionDrop) {
 function Play_EndStart(hosting, PlayVodClip) {
     Main_values.Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
-    Play_PannelEndStart(PlayVodClip);
+    Play_PlayEndStart(PlayVodClip);
 }
 
 // Check if connection with twitch server is OK if not for 15s drop one quality
@@ -1422,7 +1422,15 @@ function Play_BottomOptionsPressed(PlayVodClip) {
     else if (Play_Panelcounter === 5) Play_OpenSearch(PlayVodClip);
 }
 
-function Play_PannelEndStart(PlayVodClip) {
+//called by android PlayerActivity
+function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
+    if (PlayVodClip === 1) {
+        window.clearInterval(Play_streamCheckId);
+        Play_CheckHostStart();
+    } else Play_PlayEndStart(PlayVodClip);
+}
+
+function Play_PlayEndStart(PlayVodClip) {
     window.clearInterval(Play_streamCheckId);
     window.clearInterval(PlayClip_streamCheckId);
     window.clearInterval(PlayVod_streamCheckId);
@@ -1476,7 +1484,7 @@ function Play_CheckIdValue(users) {
         Play_loadingDataTry = 0;
         Play_loadingDataTimeout = 2000;
         Play_loadDataCheckHost();
-    } else Play_PannelEndStart(1);
+    } else Play_PlayEndStart(1);
 }
 
 function Play_CheckIdError() {
@@ -1552,7 +1560,7 @@ function Play_CheckHost(responseText) {
         Main_values.Play_isHost = false;
     }
 
-    Play_PannelEndStart(1);
+    Play_PlayEndStart(1);
 }
 
 function Play_setFallow() {
