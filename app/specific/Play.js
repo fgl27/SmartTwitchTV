@@ -286,6 +286,7 @@ function Play_Resume() {
         Play_isOn = true;
         Play_clearPause();
         if (Play_isOn) {
+            Play_showBufferDialog();
             Play_loadingInfoDataTry = 0;
             Play_loadingInfoDataTimeout = 3000;
             Play_RestoreFromResume = true;
@@ -1433,6 +1434,7 @@ function Play_PannelEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart() {
+    Play_showBufferDialog();
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 2000;

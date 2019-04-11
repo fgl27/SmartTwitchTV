@@ -276,6 +276,7 @@ function PlayVod_Resume() {
         PlayVod_isOn = true;
         Play_clearPause();
         if (PlayVod_isOn) {
+            Play_showBufferDialog();
             Play_ResumeAfterOnlineCounter = 0;
 
             Play_ResumeAfterOnlineCounter = 0;
