@@ -536,15 +536,15 @@ function Main_SwitchScreen(removekey) {
     window.clearTimeout(Main_SetTopOpacityId);
     Main_UnSetTopOpacity();
 
-    if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
-    if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
-
     Main_ready(function() {
         Main_SwitchScreenAction(removekey);
     });
 }
 
 function Main_SwitchScreenAction(removekey) {
+    if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
+    if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
+
     Main_CounterDialogRst();
     if (Main_values.Main_Go === Main_Live) {
         inUseObj = Live;
