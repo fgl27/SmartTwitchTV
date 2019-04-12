@@ -1136,7 +1136,7 @@ function Play_ShowFeed() {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     if (hasuser) {
         Main_ShowElement('user_feed');
-        Play_Feedid = window.setTimeout(Play_HideFeed, 5000);
+        if (Play_isFeedShow()) Play_Feedid = window.setTimeout(Play_HideFeed, 5000);
     }
 }
 
