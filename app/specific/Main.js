@@ -505,7 +505,7 @@ function Main_is_playlist(content) {
 }
 
 function Main_ThumbNull(y, x, thumbnail) {
-    return document.getElementById(thumbnail + y + '_' + x, 0) !== null;
+    return document.getElementById(thumbnail + y + '_' + x) !== null;
 }
 
 function Main_ReStartScreens() {
