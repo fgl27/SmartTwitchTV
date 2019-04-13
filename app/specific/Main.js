@@ -1026,8 +1026,10 @@ function Main_updateUserFeed() {
     if (!document.hidden) {
         if (AddUser_UserIsSet()) {
             window.setTimeout(function() {
-                Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-                if (!UserLiveFeed_isFeedShow() && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+                if (!UserLiveFeed_isFeedShow() && !UserLiveFeed_loadingData) {
+                    Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+                    UserLiveFeed_StartLoad();
+                }
             }, 5000);
         }
     }
