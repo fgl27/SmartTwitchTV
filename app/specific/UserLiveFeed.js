@@ -317,7 +317,7 @@ function UserLiveFeed_FeedAddFocus() {
     else return;
 
     if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
-    else UserLiveFeed_FeedFindPos();
+    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedFindPos();
 }
 
 function UserLiveFeed_FeedSetPos() {
