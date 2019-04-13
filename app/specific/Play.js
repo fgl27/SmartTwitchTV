@@ -615,7 +615,7 @@ function Play_onPlayer() {
 
     if (Main_Android) {
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 4;
+        Play_PlayerCheckTimer = 5;
         Play_PlayerCheckQualityChanged = false;
         window.clearInterval(Play_streamCheckId);
         Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
