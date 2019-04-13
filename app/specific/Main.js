@@ -1024,7 +1024,7 @@ function Main_updateclock() {
 
 function Main_updateUserFeed() {
     if (!document.hidden) {
-        if (AddUser_UserIsSet() && !Play_isFeedShow() && !UserLiveFeed_loadingData) {
+        if (AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() && !UserLiveFeed_loadingData) {
             Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
             window.setTimeout(UserLiveFeed_StartLoad, 5000);
         }

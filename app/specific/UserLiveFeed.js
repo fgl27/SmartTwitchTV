@@ -250,12 +250,12 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
 function UserLiveFeed_loadDataSuccessFinish() {
     UserLiveFeed_imgVectorLoad(IMG_404_VIDEO);
-    Play_FeedAddFocus();
+    UserLiveFeed_FeedAddFocus();
     UserLiveFeed_loadingData = false;
     UserLiveFeed_status = true;
     Main_HideElement('dialog_loading_feed');
     Main_ShowElement('user_feed_scroll');
-    Play_ResetFeedId();
+    UserLiveFeed_ResetFeedId();
 }
 
 function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {
@@ -272,4 +272,60 @@ function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {
         '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' + '</div></div>';
 
     return Main_td;
+}
+
+function UserLiveFeed_isFeedShow() {
+    return Main_isElementShowing('user_feed');
+}
+
+function UserLiveFeed_ShowFeed() {
+    var hasuser = AddUser_UserIsSet();
+    if (hasuser) {
+        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
+        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+    } else UserLiveFeed_status = false;
+    if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+    if (hasuser) {
+        Main_ShowElement('user_feed');
+        if (UserLiveFeed_isFeedShow()) Play_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+    }
+}
+
+function UserLiveFeed_Hide() {
+    Main_HideElement('user_feed');
+    window.clearTimeout(Play_Feedid);
+}
+
+function UserLiveFeed_ResetFeedId() {
+    window.clearTimeout(Play_Feedid);
+    Play_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+}
+
+function UserLiveFeed_FeedRefreshFocus() {
+    window.clearTimeout(Play_Feedid);
+    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+}
+
+function UserLiveFeed_FeedAddFocus() {
+    UserLiveFeed_ResetFeedId();
+    Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+
+    var position = 0;
+
+    if (Play_FeedPos < 3) position = 3;
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
+    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
+
+    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+}
+
+function UserLiveFeed_ThumbNull(y, thumbnail) {
+    return document.getElementById(thumbnail + y, 0) !== null;
+}
+
+function UserLiveFeed_FeedRemoveFocus() {
+    Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
 }
