@@ -496,7 +496,7 @@ function Play_loadDataErrorLog(xmlHttp) {
 function Play_loadDataError() {
     if (Play_isOn && Play_isLive) {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 15 : 0))) {
+        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 8 : 0))) {
             Play_loadingDataTimeout += 250;
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
