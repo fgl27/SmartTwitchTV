@@ -12,6 +12,7 @@ var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
 var UserLiveFeed_imgVector = [];
 var UserLiveFeed_LastPos = null;
+var UserLiveFeed_Feedid;
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -23,6 +24,7 @@ function UserLiveFeed_StartLoad() {
 
         Main_empty('user_feed_scroll');
         Main_HideElement('user_feed_scroll');
+        document.getElementById('user_feed_scroll').style.left = "2.5px";
         UserLiveFeed_loadingData = true;
         Main_ShowElement('dialog_loading_feed');
         UserLiveFeed_loadChannelOffsset = 0;
@@ -250,12 +252,14 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
 function UserLiveFeed_loadDataSuccessFinish() {
     UserLiveFeed_imgVectorLoad(IMG_404_VIDEO);
-    UserLiveFeed_FeedAddFocus();
-    UserLiveFeed_loadingData = false;
-    UserLiveFeed_status = true;
-    Main_HideElement('dialog_loading_feed');
-    Main_ShowElement('user_feed_scroll');
-    UserLiveFeed_ResetFeedId();
+    Main_ready(function() {
+        Main_HideElement('dialog_loading_feed');
+        Main_ShowElement('user_feed_scroll');
+        UserLiveFeed_FeedAddFocus();
+        UserLiveFeed_ResetFeedId();
+        UserLiveFeed_loadingData = false;
+        UserLiveFeed_status = true;
+    });
 }
 
 function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {
@@ -287,32 +291,53 @@ function UserLiveFeed_ShowFeed() {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     if (hasuser) {
         Main_ShowElement('user_feed');
-        if (UserLiveFeed_isFeedShow()) Play_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
     }
 }
 
 function UserLiveFeed_Hide() {
     Main_HideElement('user_feed');
-    window.clearTimeout(Play_Feedid);
+    window.clearTimeout(UserLiveFeed_Feedid);
 }
 
 function UserLiveFeed_ResetFeedId() {
-    window.clearTimeout(Play_Feedid);
-    Play_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+    window.clearTimeout(UserLiveFeed_Feedid);
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
 }
 
 function UserLiveFeed_FeedRefreshFocus() {
-    window.clearTimeout(Play_Feedid);
+    window.clearTimeout(UserLiveFeed_Feedid);
     if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 }
 
 function UserLiveFeed_FeedAddFocus() {
     UserLiveFeed_ResetFeedId();
-    Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
+        Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+    else return;
+
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
+    else UserLiveFeed_FeedFindPos();
+}
+
+function UserLiveFeed_FeedSetPos() {
+    var position = 0;
+
+    if (Play_FeedPos < 3) position = 2.5;
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
+
+    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+}
+
+function UserLiveFeed_FeedFindPos() {
+    //show the element outside of the screen and find the position
+    document.getElementById('user_feed').style.bottom = '-1000%';
+    Main_ShowElement('user_feed');
 
     var position = 0;
 
-    if (Play_FeedPos < 3) position = 3;
+    if (Play_FeedPos < 3) position = 2.5;
     else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
     else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
@@ -320,10 +345,12 @@ function UserLiveFeed_FeedAddFocus() {
     else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
 
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+    document.getElementById('user_feed').style.bottom = '0.1%';
+    Main_HideElement('user_feed');
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {
-    return document.getElementById(thumbnail + y, 0) !== null;
+    return document.getElementById(thumbnail + y) !== null;
 }
 
 function UserLiveFeed_FeedRemoveFocus() {

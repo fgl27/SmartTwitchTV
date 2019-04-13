@@ -13,7 +13,6 @@ var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
 var Play_isHost;
 var Play_FeedOldUserName = '';
-var Play_Feedid;
 var Play_FeedPos = 0;
 
 var Play_STATE_LOADING_TOKEN = 0;
