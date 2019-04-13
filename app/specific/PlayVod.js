@@ -364,7 +364,8 @@ function PlayVod_loadDataRequest() {
 
 function PlayVod_loadDataError() {
     if (PlayVod_isOn) {
-        var mjson = JSON.parse(PlayVod_tokenResponse.token);
+        var mjson;
+        if (PlayVod_tokenResponse.token) mjson = JSON.parse(PlayVod_tokenResponse.token);
         if (mjson) {
             if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
                 PlayVod_loadDataCheckSub();
@@ -377,10 +378,23 @@ function PlayVod_loadDataError() {
             PlayVod_loadingDataTimeout += 250;
             PlayVod_loadDataRequest();
         } else {
-            Play_HideBufferDialog();
-            Play_PlayEndStart(2);
+            if (Main_isReleased) {
+                Play_HideBufferDialog();
+                Play_PlayEndStart(2);
+            } else PlayVod_loadDataSuccessFake();
         }
     }
+}
+
+//Browsers crash trying to get the streams link
+function PlayVod_loadDataSuccessFake() {
+    PlayVod_qualities = [{
+        'id': '1080p60(Source)',
+        'band': '(10.00Mbps)',
+        'url': 'http://fake'
+    }];
+    PlayVod_state = Play_STATE_PLAYING;
+    if (PlayVod_isOn) PlayVod_qualityChanged();
 }
 
 function PlayVod_loadDataSuccess(responseText) {
