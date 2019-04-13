@@ -470,10 +470,12 @@ function Play_loadDataRequest() {
                     if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
                 } else if (xmlHttp.status === 403) { //forbidden access
                     Play_loadDataErrorLog(xmlHttp);
-                    Play_ForbiddenLive();
+                    if (Main_isReleased) Play_ForbiddenLive();
+                    else Play_loadDataSuccessFake();
                 } else if (xmlHttp.status === 404) { //off line
                     Play_loadDataErrorLog(xmlHttp);
-                    Play_CheckHostStart();
+                    if (Main_isReleased) Play_CheckHostStart();
+                    else Play_loadDataSuccessFake();
                 } else {
                     Play_loadDataErrorLog(xmlHttp);
                     Play_loadDataError();
@@ -499,7 +501,10 @@ function Play_loadDataError() {
             Play_loadingDataTimeout += 250;
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
-        } else Play_CheckHostStart();
+        } else {
+            if (Main_isReleased) Play_CheckHostStart();
+            else Play_loadDataSuccessFake();
+        }
     }
 }
 
@@ -509,6 +514,17 @@ function Play_ForbiddenLive() {
     window.setTimeout(function() {
         if (Play_isOn) Play_CheckHostStart();
     }, 4000);
+}
+
+//Browsers crash trying to get the streams link
+function Play_loadDataSuccessFake() {
+    Play_qualities = [{
+        'id': '1080p60(Source)',
+        'band': '(10.00Mbps)',
+        'url': 'http://fake'
+    }];
+    Play_state = Play_STATE_PLAYING;
+    if (Play_isOn) Play_qualityChanged();
 }
 
 function Play_loadDataSuccess(responseText) {
