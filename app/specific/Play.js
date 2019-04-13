@@ -939,7 +939,7 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Date.now() - Play_startttimeoffset - Play_startttime));
-    Main_textContent("stream_live_time", STR_SINCE + Play_streamLiveAt(Play_created) + STR_AGO);
+    Main_textContent("stream_live_time", STR_SINCE + (Play_created !== '00:00' ? Play_streamLiveAt(Play_created) : Play_created) + STR_AGO);
 }
 
 function Play_clearHidePanel() {
