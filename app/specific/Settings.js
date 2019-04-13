@@ -150,7 +150,7 @@ function Settings_SetSettings() {
 
     key = "force_disable_chat";
     Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
 
