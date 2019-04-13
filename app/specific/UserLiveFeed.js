@@ -18,6 +18,7 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 
 function UserLiveFeed_StartLoad() {
     if (AddUser_UserIsSet()) {
+        UserLiveFeed_loadingData = true;
 
         if (UserLiveFeed_status) UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
         else UserLiveFeed_LastPos = null;
@@ -25,7 +26,6 @@ function UserLiveFeed_StartLoad() {
         Main_empty('user_feed_scroll');
         Main_HideElement('user_feed_scroll');
         document.getElementById('user_feed_scroll').style.left = "2.5px";
-        UserLiveFeed_loadingData = true;
         Main_ShowElement('dialog_loading_feed');
         UserLiveFeed_loadChannelOffsset = 0;
         UserLiveFeed_itemsCount = 0;
