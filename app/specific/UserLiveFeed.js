@@ -17,6 +17,7 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 
 function UserLiveFeed_StartLoad() {
     if (AddUser_UserIsSet()) {
+        window.clearTimeout(UserLiveFeed_Feedid);
 
         if (UserLiveFeed_status) {
             if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
@@ -219,7 +220,7 @@ function UserLiveFeed_ShowFeed() {
         document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('user_feed');
         UserLiveFeed_FeedAddFocus();
-        UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+        UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 7000);
     }
 }
 
@@ -230,7 +231,7 @@ function UserLiveFeed_Hide() {
 
 function UserLiveFeed_ResetFeedId() {
     window.clearTimeout(UserLiveFeed_Feedid);
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 7000);
 }
 
 function UserLiveFeed_FeedRefreshFocus() {
