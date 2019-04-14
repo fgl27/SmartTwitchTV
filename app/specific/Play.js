@@ -67,7 +67,6 @@ var Play_DialogEndText = '';
 var Play_currentTime = 0;
 var Play_startttime = 0;
 var Play_startttimeoffset = 0;
-var Play_offsettimeMinus = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
@@ -219,7 +218,6 @@ function Play_Start() {
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
 
-    Play_offsettimeMinus = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
@@ -753,7 +751,6 @@ function Play_lessthanten(time) {
 
 function Play_timeS(time) {
     var seconds, minutes, hours;
-    time += Play_offsettimeMinus / 1000;
 
     seconds = Play_lessthanten(parseInt(time) % 60);
 
@@ -769,9 +766,6 @@ function Play_timeS(time) {
 
 function Play_timeMs(time) {
     var seconds, minutes, hours;
-
-    if (time < 0 && !Play_offsettimeMinus) Play_offsettimeMinus = time * -1;
-    time += Play_offsettimeMinus;
 
     seconds = Play_lessthanten(parseInt(time / 1000) % 60);
 

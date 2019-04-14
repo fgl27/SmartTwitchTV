@@ -46,7 +46,6 @@ function Settings_GenerateClock() {
     var clock = [],
         time = 43200,
         i = 0;
-    Play_offsettimeMinus = 0;
 
     for (i; i < 48; i++) {
         clock.push("-" + Play_timeS(time));
