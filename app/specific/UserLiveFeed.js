@@ -17,7 +17,7 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 
 function UserLiveFeed_StartLoad() {
     if (AddUser_UserIsSet()) {
-       UserLiveFeed_clearHideFeed();
+        UserLiveFeed_clearHideFeed();
 
         if (UserLiveFeed_status) {
             if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
