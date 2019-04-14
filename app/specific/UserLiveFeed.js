@@ -209,7 +209,9 @@ function UserLiveFeed_ShowFeed() {
     if (hasuser) {
         if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
         Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    } else UserLiveFeed_status = false;
+    }
+
+    if (!hasuser || UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
 
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
