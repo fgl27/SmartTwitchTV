@@ -217,7 +217,7 @@ function UserLiveFeed_ShowFeed() {
         document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('user_feed');
         UserLiveFeed_FeedAddFocus();
-        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
+        UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
     }
 }
 
