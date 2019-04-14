@@ -211,7 +211,7 @@ function UserLiveFeed_ShowFeed() {
         Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     }
 
-    if (!hasuser || UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
+    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
 
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
