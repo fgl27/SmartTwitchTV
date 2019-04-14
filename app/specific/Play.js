@@ -288,6 +288,7 @@ function Play_Resume() {
             Play_loadingInfoDataTimeout = 3000;
             Play_RestoreFromResume = true;
             Play_startttimeoffset = Date.now() - Play_startttimeoffset;
+            if (Play_startttimeoffset < 0) Play_startttimeoffset = 0;
             if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
             else Play_updateStreamInfo();
             Play_state = Play_STATE_LOADING_TOKEN;
