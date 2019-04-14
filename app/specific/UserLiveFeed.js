@@ -214,7 +214,9 @@ function UserLiveFeed_ShowFeed() {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
     if (hasuser) {
+        document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('user_feed');
+        UserLiveFeed_FeedAddFocus();
         if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5000);
     }
 }
