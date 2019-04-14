@@ -25,6 +25,7 @@ function UserLiveFeed_StartLoad() {
 
         Main_empty('user_feed_scroll');
         document.getElementById('user_feed_scroll').style.left = "2.5px";
+        document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('dialog_loading_feed');
         UserLiveFeed_loadChannelOffsset = 0;
         UserLiveFeed_itemsCount = 0;
