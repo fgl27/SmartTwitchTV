@@ -53,7 +53,6 @@ function PlayClip_Start() {
     Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');
     Main_ShowElement('progress_pause_holder');
     PlayClip_SetOpenVod();
-    Play_offsettimeMinus = 0;
     Main_ShowElement('scene_channel_panel_bottom');
 
     Main_ShowElement('chat_box');
