@@ -17,7 +17,7 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 
 function UserLiveFeed_StartLoad() {
     if (AddUser_UserIsSet()) {
-        window.clearTimeout(UserLiveFeed_Feedid);
+       UserLiveFeed_clearHideFeed();
 
         if (UserLiveFeed_status) {
             if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
@@ -180,7 +180,6 @@ function UserLiveFeed_loadDataSuccessFinish() {
     Main_ready(function() {
         Main_HideElement('dialog_loading_feed');
         UserLiveFeed_FeedAddFocus();
-        UserLiveFeed_ResetFeedId();
     });
 }
 
@@ -220,22 +219,28 @@ function UserLiveFeed_ShowFeed() {
         document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('user_feed');
         UserLiveFeed_FeedAddFocus();
-        UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 7000);
     }
 }
 
 function UserLiveFeed_Hide() {
     Main_HideElement('user_feed');
-    window.clearTimeout(UserLiveFeed_Feedid);
 }
 
 function UserLiveFeed_ResetFeedId() {
+    UserLiveFeed_clearHideFeed();
+    UserLiveFeed_setHideFeed();
+}
+
+function UserLiveFeed_clearHideFeed() {
     window.clearTimeout(UserLiveFeed_Feedid);
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 7000);
+}
+
+function UserLiveFeed_setHideFeed() {
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
 }
 
 function UserLiveFeed_FeedRefreshFocus() {
-    window.clearTimeout(UserLiveFeed_Feedid);
+    UserLiveFeed_clearHideFeed();
     if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         window.setTimeout(function() {
