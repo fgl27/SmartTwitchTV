@@ -247,12 +247,21 @@ function UserLiveFeed_FeedAddFocus() {
     else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedFindPos();
 }
 
-function UserLiveFeed_FeedSetPos() {
+function UserLiveFeed_FeedGetPos() {
     var position = 0;
 
     if (Play_FeedPos < 3) position = 2.5;
     else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
+    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
+
+    return position;
+}
+
+function UserLiveFeed_FeedSetPos() {
+    var position = UserLiveFeed_FeedGetPos();
 
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
 }
@@ -262,14 +271,7 @@ function UserLiveFeed_FeedFindPos() {
     document.getElementById('user_feed').style.bottom = '-1000%';
     Main_ShowElement('user_feed');
 
-    var position = 0;
-
-    if (Play_FeedPos < 3) position = 2.5;
-    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
-    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
-    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
+    var position = UserLiveFeed_FeedSetPos();
 
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
     document.getElementById('user_feed').style.bottom = '0.1%';
