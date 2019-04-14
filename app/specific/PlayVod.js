@@ -483,7 +483,7 @@ function PlayVod_onPlayer() {
 
     if (Main_Android) {
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 8;
+        Play_PlayerCheckTimer = 12;
         PlayVod_PlayerCheckQualityChanged = false;
         window.clearInterval(PlayVod_streamCheckId);
         PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);

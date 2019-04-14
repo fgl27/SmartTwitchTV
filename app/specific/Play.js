@@ -65,8 +65,7 @@ var Play_EndTextCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
-var Play_startttime = 0;
-var Play_startttimeoffset = 0;
+var Play_watching_time = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
@@ -76,8 +75,8 @@ var Play_ChatLoadOK = false;
 var Play_CheckChatCounter = 0;
 var Play_CheckChatId;
 var Play_ChatLoadStarted = false;
-var Play_PlayerCheckTimer = 4;
-var Play_PlayerCheckInterval = 1500;
+var Play_PlayerCheckTimer = 7;
+var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ChatFixPositionId;
@@ -218,8 +217,11 @@ function Play_Start() {
     Play_RestoreFromResume = false;
     Main_ShowElement('scene_channel_panel_bottom');
 
+    Play_currentTime = 0;
+    Play_watching_time = 0;
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
+
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
     Main_HideElement('chat_box');
     Main_ShowElement('chat_frame');
@@ -233,9 +235,6 @@ function Play_Start() {
     window.clearInterval(Play_streamCheckId);
     Play_PlayerCheckRun = false;
     Play_ChatLoadOK = false;
-    Play_currentTime = 0;
-    Play_startttime = Date.now();
-    Play_startttimeoffset = 0;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
@@ -277,7 +276,6 @@ function Play_Resume() {
             Play_Playing = false;
             Play_Chatobj.src = 'about:blank';
             window.clearInterval(Play_streamInfoTimerId);
-            Play_startttimeoffset = Date.now();
         }
     } else {
         Play_isOn = true;
@@ -287,8 +285,6 @@ function Play_Resume() {
             Play_loadingInfoDataTry = 0;
             Play_loadingInfoDataTimeout = 3000;
             Play_RestoreFromResume = true;
-            if (Play_startttimeoffset) Play_startttimeoffset = Date.now() - Play_startttimeoffset;
-            if (Play_startttimeoffset < 0) Play_startttimeoffset = 0;
             if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
             else Play_updateStreamInfo();
             Play_state = Play_STATE_LOADING_TOKEN;
@@ -614,7 +610,7 @@ function Play_onPlayer() {
 
     if (Main_Android) {
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 5;
+        Play_PlayerCheckTimer = 7;
         Play_PlayerCheckQualityChanged = false;
         window.clearInterval(Play_streamCheckId);
         Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
@@ -670,8 +666,9 @@ function Play_CheckChat() {
 }
 
 function Play_PlayerCheck() {
+    var updatetime = !Play_isNotplaying();
     if (Main_Android) Play_currentTime = Android.gettime();
-    if (Play_isOn && Play_PlayerTime === Play_currentTime && !Play_isNotplaying()) {
+    if (Play_isOn && Play_PlayerTime === Play_currentTime && updatetime) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
 
@@ -694,6 +691,7 @@ function Play_PlayerCheck() {
         Play_PlayerCheckRun = false;
     }
     Play_PlayerTime = Play_currentTime;
+    if (updatetime) Play_watching_time++;
 }
 
 function Play_DropOneQuality(ConnectionDrop) {
@@ -933,7 +931,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs(Date.now() - Play_startttimeoffset - Play_startttime));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
     Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : Play_created) + STR_AGO);
 }
 
