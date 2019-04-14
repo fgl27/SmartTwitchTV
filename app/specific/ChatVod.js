@@ -4,7 +4,7 @@ var Chat_loadingDataTry = 0;
 var Chat_Messages = [];
 var Chat_MessagesNext = [];
 var Chat_loadingDataTryMax = 10;
-var Chat_addlines;
+var Chat_addlinesId;
 var Chat_next = null;
 var Chat_loadChatId;
 var Chat_loadChatNextId;
@@ -279,7 +279,7 @@ function Chat_MessageVectorNext(message, time) {
 
 function Chat_Play(id) {
     if (!Chat_hasEnded && Chat_Id === id) {
-        Chat_addlines = window.setInterval(function() {
+        Chat_addlinesId = window.setInterval(function() {
             Main_Addline(id);
             Chat_div.scrollTop = Chat_div.scrollHeight;
         }, 1000);
@@ -289,7 +289,7 @@ function Chat_Play(id) {
 function Chat_Pause() {
     if (!Chat_hasEnded) {
         window.clearInterval(Chat_loadBadgesChannelId);
-        window.clearInterval(Chat_addlines);
+        window.clearInterval(Chat_addlinesId);
         window.clearInterval(Chat_loadChatId);
         window.clearInterval(Chat_loadChatNextId);
     }
@@ -355,8 +355,8 @@ function Main_Addline(id) {
             Chat_div.scrollTop = Chat_div.scrollHeight;
 
             //keep refreshing in case user changes chat size
-            window.clearInterval(Chat_addlines);
-            Chat_addlines = window.setInterval(function() {
+            window.clearInterval(Chat_addlinesId);
+            Chat_addlinesId = window.setInterval(function() {
                 Chat_div.scrollTop = Chat_div.scrollHeight;
             }, 250);
         }

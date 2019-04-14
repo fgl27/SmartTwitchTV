@@ -20,7 +20,7 @@ var ChannelContent_description = '';
 var ChannelContent_thumbnail = '';
 var ChannelContent_thumbnail_fallow = '';
 var ChannelContent_ChannelValue = {};
-var ChannelContent_ChannelValueIsset;
+var ChannelContent_ChannelValueIsset = false;
 //Variable initialization end
 
 function ChannelContent_init() {

@@ -11,7 +11,7 @@ var Play_isFullScreen = true;
 var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
-var Play_isHost;
+var Play_isHost = false;
 var Play_FeedOldUserName = '';
 var Play_FeedPos = 0;
 
