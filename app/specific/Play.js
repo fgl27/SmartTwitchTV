@@ -14,6 +14,7 @@ var Play_ChatSizeValueBF;
 var Play_isHost = false;
 var Play_FeedOldUserName = '';
 var Play_FeedPos = 0;
+var Play_Buffer = 2000;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;

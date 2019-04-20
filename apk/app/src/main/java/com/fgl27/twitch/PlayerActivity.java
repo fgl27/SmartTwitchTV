@@ -68,10 +68,10 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
-    private static int BUFFER_SIZE = 5000;
-    private static int BUFFER_CLIP = 3000;
+    private static int BUFFER_SIZE = 2000;
+    private static int BUFFER_CLIP = BUFFER_SIZE;
     private static int BUFFER_LIVE = BUFFER_SIZE;
-    private static int BUFFER_VOD = 6000;
+    private static int BUFFER_VOD = BUFFER_SIZE;
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
