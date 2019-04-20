@@ -118,9 +118,9 @@ var Main_DataAttribute = 'data_attribute';
 
 //var Main_version = 401;
 var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.9';
+var Main_stringVersion_Min = '.10';
 //var Main_currentVersion = '';
-var Main_minversion = '041419';
+var Main_minversion = '042019';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 var Main_Android = 0;
