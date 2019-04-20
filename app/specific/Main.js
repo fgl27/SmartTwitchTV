@@ -441,7 +441,6 @@ function Main_HideWarningDialog() {
 }
 
 function Main_showAboutDialog() {
-    Android.getversion();
     Main_HideControlsDialog();
     Main_HideUpdateDialog();
     Main_ShowElement('dialog_about');
