@@ -23,15 +23,15 @@ var Settings_value = {
     },
     "buffer_live": { //buffer_live
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 2
+        "defaultValue": 6
     },
     "buffer_vod": { //buffer_vod
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 2
+        "defaultValue": 6
     },
     "buffer_clip": { //buffer_clip
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 2
+        "defaultValue": 3
     },
     "videos_animation": { //videos_animation
         "values": ["off", "on"],

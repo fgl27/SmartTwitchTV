@@ -70,10 +70,7 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
-    private static int BUFFER_SIZE = 2000;
-    private static int BUFFER_CLIP = BUFFER_SIZE;
-    private static int BUFFER_LIVE = BUFFER_SIZE;
-    private static int BUFFER_VOD = BUFFER_SIZE;
+    private static int[] BUFFER_SIZE = {6000,6000,6000,6000};//Default, live, vod, clips
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -124,10 +121,6 @@ public class PlayerActivity extends Activity {
         }
         if (shouldAutoPlay) {
             showLoading(true);
-
-            if (mwhocall == 1) BUFFER_SIZE = BUFFER_LIVE;
-            else if (mwhocall == 2) BUFFER_SIZE = BUFFER_VOD;
-            else BUFFER_SIZE = BUFFER_CLIP;
 
             trackSelector = new DefaultTrackSelector();
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
@@ -287,10 +280,10 @@ public class PlayerActivity extends Activity {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        BUFFER_SIZE, //DEFAULT_MIN_BUFFER_MS
+                        BUFFER_SIZE[mwhocall], //DEFAULT_MIN_BUFFER_MS
                         100000, //DEFAULT_MAX_BUFFER_MS
-                        BUFFER_SIZE, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        BUFFER_SIZE //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        BUFFER_SIZE[mwhocall], //DEFAULT_BUFFER_FOR_PLAYBACK_MS
+                        BUFFER_SIZE[mwhocall] //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .createDefaultLoadControl();
     }
@@ -463,9 +456,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetBuffer(int whocall, int value) {
-            if (whocall == 1) BUFFER_LIVE = value;
-            else if (whocall == 2) BUFFER_VOD = value;
-            else BUFFER_CLIP = value;
+            BUFFER_SIZE[whocall] = value;
         }
 
         @SuppressWarnings("unused")//called by JS
