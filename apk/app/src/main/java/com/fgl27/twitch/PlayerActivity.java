@@ -554,15 +554,12 @@ public class PlayerActivity extends Activity {
         };
     }
 
-    //TODO improve this function, try a asynchronous one
+    //TODO try a asynchronous one
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
     public String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-        JSONObject ob = new JSONObject();
         try {
-            URL url = new URL(urlString);
-            Log.d(TAG, "urlString " + urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
 
             //Default header for all actions
             if (HeaderQuantity > 0) urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
@@ -573,66 +570,37 @@ public class PlayerActivity extends Activity {
 
             urlConnection.setConnectTimeout(timeout);
 
-            if (urlConnection.getResponseCode() == 200) {
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
                 final Charset responseCharset;
                 try {
                     responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
-                } catch (UnsupportedCharsetException ucse) {
-                    Log.i(TAG, "Unsupported response charset", ucse);
+                } catch (UnsupportedCharsetException e) {
+                    Log.i(TAG, "Unsupported response charset", e);
                     return null;
-                } catch (IllegalCharsetNameException icne) {
-                    Log.i(TAG, "Illegal response charset", icne);
+                } catch (IllegalCharsetNameException e) {
+                    Log.i(TAG, "Illegal response charset", e);
                     return null;
                 }
 
                 byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
 
-                ob.put("status",200);
-                ob.put("responseText",new String(responseBytes, responseCharset));
-                return ob.toString();
-            } if (urlConnection.getResponseCode() == 403) { //forbidden access
-                final Charset responseCharset;
+                JSONObject ob = new JSONObject();
+
                 try {
-                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
-                } catch (UnsupportedCharsetException ucse) {
-                    Log.i(TAG, "Unsupported response charset", ucse);
-                    return null;
-                } catch (IllegalCharsetNameException icne) {
-                    Log.i(TAG, "Illegal response charset", icne);
+                    ob.put("status", status);
+                    ob.put("responseText",new String(responseBytes, responseCharset));
+                    return ob.toString();
+                } catch (JSONException e) {
+                    Log.w(TAG, "JSONException ", e);
                     return null;
                 }
-
-                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-
-                ob.put("status",403);
-                ob.put("responseText",new String(responseBytes, responseCharset));
-                return ob.toString();
-            } if (urlConnection.getResponseCode() == 404) { //off line
-                final Charset responseCharset;
-                try {
-                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
-                } catch (UnsupportedCharsetException ucse) {
-                    Log.i(TAG, "Unsupported response charset", ucse);
-                    return null;
-                } catch (IllegalCharsetNameException icne) {
-                    Log.i(TAG, "Illegal response charset", icne);
-                    return null;
-                }
-
-                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-
-                ob.put("status",404);
-                ob.put("responseText",new String(responseBytes, responseCharset));
-                return ob.toString();
             } else {
-                ob.put("status",null);
-                return ob.toString();
+                return null;
             }
         } catch (IOException e) {
             Log.w(TAG, "IOException ", e);
-            return null;
-        } catch (JSONException e) {
-            Log.w(TAG, "JSONException ", e);
             return null;
         }
     }
