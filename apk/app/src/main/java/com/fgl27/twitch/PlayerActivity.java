@@ -68,6 +68,11 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
+    private static int BUFFER_SIZE = 5000;
+    private static int BUFFER_CLIP = 3000;
+    private static int BUFFER_LIVE = BUFFER_SIZE;
+    private static int BUFFER_VOD = 6000;
+
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
@@ -117,6 +122,10 @@ public class PlayerActivity extends Activity {
         }
         if (shouldAutoPlay) {
             showLoading(true);
+
+            if (mwhocall == 1) BUFFER_SIZE = BUFFER_LIVE;
+            else if (mwhocall == 2) BUFFER_SIZE = BUFFER_VOD;
+            else BUFFER_SIZE = BUFFER_CLIP;
 
             trackSelector = new DefaultTrackSelector();
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
@@ -260,7 +269,8 @@ public class PlayerActivity extends Activity {
             this.unregisterReceiver(showBufferReceiver);
             this.unregisterReceiver(closeReceiver);
 
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     public void mregisterReceiver() {
@@ -268,21 +278,23 @@ public class PlayerActivity extends Activity {
             this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
             this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
             this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     /**
      * Increase player's min/max buffer size to 60 secs
+     *
      * @return load control
      */
     private DefaultLoadControl getLoadControl() {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        10000, //DEFAULT_MIN_BUFFER_MS
+                        BUFFER_SIZE, //DEFAULT_MIN_BUFFER_MS
                         100000, //DEFAULT_MAX_BUFFER_MS
-                        6000, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        6000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        BUFFER_SIZE, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
+                        BUFFER_SIZE //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .createDefaultLoadControl();
     }
@@ -365,7 +377,9 @@ public class PlayerActivity extends Activity {
     public class WebAppInterface {
         Context mwebContext;
 
-        /** Instantiate the interface and set the context */
+        /**
+         * Instantiate the interface and set the context
+         */
         WebAppInterface(Context c) {
             mwebContext = c;
         }
@@ -388,7 +402,9 @@ public class PlayerActivity extends Activity {
             mwebContext.sendBroadcast(NewIntent);
         }
 
-        /** Show a toast from the web page */
+        /**
+         * Show a toast from the web page
+         */
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
@@ -446,6 +462,14 @@ public class PlayerActivity extends Activity {
         public boolean getPlaybackState() {
             if (PlayerActivity.player != null) return player.getPlayWhenReady();
             return false;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetBuffer(int whocall, int value) {
+            if (whocall == 1) BUFFER_LIVE = value;
+            else if (whocall == 2) BUFFER_VOD = value;
+            else BUFFER_CLIP = value;
         }
     }
 
@@ -590,7 +614,7 @@ public class PlayerActivity extends Activity {
 
                 try {
                     ob.put("status", status);
-                    ob.put("responseText",new String(responseBytes, responseCharset));
+                    ob.put("responseText", new String(responseBytes, responseCharset));
                     return ob.toString();
                 } catch (JSONException e) {
                     Log.w(TAG, "JSONException ", e);
