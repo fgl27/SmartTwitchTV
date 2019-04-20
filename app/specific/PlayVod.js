@@ -16,6 +16,7 @@ var PlayVod_qualityIndex = 0;
 var PlayVod_loadingDataTry = 0;
 var PlayVod_loadingDataTryMax = 5;
 var PlayVod_isOn = false;
+var PlayVod_Buffer = 2000;
 
 var PlayVod_loadingInfoDataTry = 0;
 var PlayVod_loadingInfoDataTryMax = 5;

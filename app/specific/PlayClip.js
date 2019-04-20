@@ -22,6 +22,7 @@ var PlayClip_HasVOD = false;
 var PlayClip_PlayerCheckCounter = 0;
 var PlayClip_PlayerCheckQualityChanged = false;
 var PlayClip_PlayerCheckRun = false;
+var PlayClip_Buffer = 2000;
 
 var PlayClip_jumpTimers = [0, 5];
 var PlayClip_DurationSeconds = 0;

@@ -99,7 +99,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_11 = "After writing the search text press key Enter on the virtual keyboard then choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side pannel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client develop by a individual on his free time, for TV\'s that don't have access to a good official application, released for free to any one that wanna to use it.";
-    STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test only, if you aren't testing please reinstall the app using the release version from https://github.com/fgl27/SmartTwitchTV/releases in doubt check the README.md https://github.com/fgl27/SmartTwitchTV";
+    STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test only!";
     STR_ABOUT_INFO_3 = "Developer information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
     STR_ABOUT_INFO_5 = "github.com/fgl27/SmartTwitchTV";
