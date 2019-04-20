@@ -140,13 +140,11 @@ public class PlayerActivity extends Activity {
 
             simpleExoPlayerView.setPlayer(player);
 
-            MediaSource mediaSource = buildMediaSource(Uri.parse(url));
-
             if (mResumeWindow != C.INDEX_UNSET) {
                 player.seekTo(mResumePosition);
             }
 
-            player.prepare(mediaSource, false, true);
+            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
             player.setPlayWhenReady(true);
             player.addListener(PlayerEvent());
         } else {
@@ -154,8 +152,7 @@ public class PlayerActivity extends Activity {
             player = ExoPlayerFactory.newSimpleInstance(this);
             simpleExoPlayerView.setPlayer(player);
 
-            MediaSource mediaSource = buildMediaSource(Uri.parse(url));
-            player.prepare(mediaSource, false, true);
+            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
             player.setPlayWhenReady(false);
 
             releasePlayer();
@@ -185,7 +182,7 @@ public class PlayerActivity extends Activity {
             //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (loadingcanshow) loading.setVisibility(View.VISIBLE);
-            }, 500);
+            }, 650);
         }
     }
 
@@ -268,9 +265,7 @@ public class PlayerActivity extends Activity {
             this.unregisterReceiver(initializePlayerReceiver);
             this.unregisterReceiver(showBufferReceiver);
             this.unregisterReceiver(closeReceiver);
-
-        } catch (IllegalArgumentException ignored) {
-        }
+        } catch (IllegalArgumentException ignored) {}
     }
 
     public void mregisterReceiver() {
@@ -278,8 +273,7 @@ public class PlayerActivity extends Activity {
             this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
             this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
             this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
-        } catch (NullPointerException ignored) {
-        }
+        } catch (NullPointerException ignored) {}
     }
 
     /**
@@ -380,8 +374,8 @@ public class PlayerActivity extends Activity {
         /**
          * Instantiate the interface and set the context
          */
-        WebAppInterface(Context c) {
-            mwebContext = c;
+        WebAppInterface(Context context) {
+            mwebContext = context;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -536,6 +530,8 @@ public class PlayerActivity extends Activity {
                             //Log.d(TAG, "Video Ended");
                             hideLoading();
                             mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                            break;
+                        default:
                             break;
                     }
                 } else {
