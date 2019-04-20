@@ -118,9 +118,10 @@ var Main_DataAttribute = 'data_attribute';
 
 //var Main_version = 401;
 var Main_stringVersion = '1.0';
+var Main_stringVersion_Min = '.9';
 //var Main_currentVersion = '';
 var Main_minversion = '041419';
-var Main_versionTag = Main_stringVersion + '-' + Main_minversion;
+var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_ClockOffset = 0;
 var Main_Android = 0;
 var Main_randomimg = '?' + Math.random();
@@ -440,6 +441,7 @@ function Main_HideWarningDialog() {
 }
 
 function Main_showAboutDialog() {
+    Android.getversion();
     Main_HideControlsDialog();
     Main_HideUpdateDialog();
     Main_ShowElement('dialog_about');
@@ -656,6 +658,12 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 }
 
 function Main_checkVersion() {
+    //TODO remove the try after android app update has be releaased for some time
+    if (Main_Android) {
+        try {
+            Main_versionTag = "Android: " + Android.getversion() + ' Web: ' + Main_minversion;
+        } catch (e) {}
+    }
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
 }
 

@@ -57,6 +57,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 
+import com.fgl27.twitch.BuildConfig;
+
 public class PlayerActivity extends Activity {
     private static final String TAG = PlayerActivity.class.getName();
 
@@ -464,6 +466,12 @@ public class PlayerActivity extends Activity {
             if (whocall == 1) BUFFER_LIVE = value;
             else if (whocall == 2) BUFFER_VOD = value;
             else BUFFER_CLIP = value;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getversion() {
+            return BuildConfig.VERSION_NAME + "." +BuildConfig.VERSION_CODE;
         }
     }
 
