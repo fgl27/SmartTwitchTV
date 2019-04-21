@@ -150,6 +150,7 @@ js_jshint() {
 		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
 		exit;
 	else
+		mv -f "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/masterdebug.js
 		echo -e "${bldblu}	JSHint Test finished no errors or warnings found"
 	fi;
 }
