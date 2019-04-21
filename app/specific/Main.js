@@ -148,7 +148,7 @@ Main_Start();
 
 function Main_Start() {
     Main_isDebug = Main_getItemBool('Main_isDebug', false);
-    if (Main_isDebug) Main_Debug();
+    if (Main_isDebug && Main_isReleased) Main_Debug();
     else if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
             Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
@@ -174,6 +174,7 @@ function Main_loadTranslations(language) {
         } catch (e) {
             Main_Android = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
+            Main_isDebug = true;
         }
 
         Settings_SetDefautls();
@@ -988,9 +989,9 @@ function Main_Checktylesheet() {
     document.body.insertBefore(span, document.body.firstChild);
 
     if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-        if (!Main_isReleased) console.log('Main_Checktylesheet reloading');
+        if (Main_isDebug) console.log('Main_Checktylesheet reloading');
         Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-    } else if (!Main_isReleased) console.log('Main_Checktylesheet loaded OK');
+    } else if (Main_isDebug) console.log('Main_Checktylesheet loaded OK');
 
     document.body.removeChild(span);
 }
