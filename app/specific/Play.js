@@ -465,11 +465,11 @@ function Play_loadDataRequest() {
                     if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
                 } else if (xmlHttp.status === 403) { //forbidden access
                     Play_loadDataErrorLog(xmlHttp);
-                    if (Main_isReleased) Play_ForbiddenLive();
+                    if (!Main_isBrowser) Play_ForbiddenLive();
                     else Play_loadDataSuccessFake();
                 } else if (xmlHttp.status === 404) { //off line
                     Play_loadDataErrorLog(xmlHttp);
-                    if (Main_isReleased) Play_CheckHostStart();
+                    if (!Main_isBrowser) Play_CheckHostStart();
                     else Play_loadDataSuccessFake();
                 } else {
                     Play_loadDataErrorLog(xmlHttp);
@@ -497,7 +497,7 @@ function Play_loadDataError() {
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
         } else {
-            if (Main_isReleased) Play_CheckHostStart();
+            if (!Main_isBrowser) Play_CheckHostStart();
             else Play_loadDataSuccessFake();
         }
     }
