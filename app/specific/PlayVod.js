@@ -468,7 +468,7 @@ function PlayVod_qualityChanged() {
 }
 
 function PlayVod_onPlayer() {
-    if (!Main_isReleased) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
+    if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
 
     if (Main_values.vodOffset) {
         Chat_offset = Main_values.vodOffset;

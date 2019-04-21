@@ -483,7 +483,7 @@ function Play_loadDataRequest() {
 }
 
 function Play_loadDataErrorLog(xmlHttp) {
-    if (!Main_isReleased) {
+    if (Main_isDebug) {
         console.log(xmlHttp.status);
         console.log(xmlHttp.responseText);
     }
@@ -597,7 +597,7 @@ function Play_qualityChanged() {
 
     Play_qualityPlaying = Play_quality;
     Play_state = Play_STATE_PLAYING;
-    if (!Main_isReleased) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+    if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
     if (Main_Android && Play_isOn) Android.startVideo(Play_playingUrl, 1);
     Play_onPlayer();
 }
