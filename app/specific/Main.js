@@ -1,5 +1,6 @@
 //Variable initialization
 var Main_isReleased = false;
+var Main_isDebug = false;
 var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
@@ -146,13 +147,22 @@ var Main_loadImg = function(ImgObjet, Src, img_type) {
 Main_Start();
 
 function Main_Start() {
-    if (document.readyState === "loading") {
+    Main_isDebug = Main_getItemBool('Main_isDebug', false);
+    if (Main_isDebug) Main_Debug();
+    else if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
             Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
         });
     } else { // `DOMContentLoaded` already fired
         Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
     }
+}
+
+function Main_Debug() { // jshint ignore:line
+    console.log("Debug mod start");
+    var script = document.createElement('script');
+    script.src = "https://fgl27.github.io/SmartTwitchTV/release/githubio/js/masterdebug.js";
+    document.head.appendChild(script);
 }
 
 function Main_loadTranslations(language) {
