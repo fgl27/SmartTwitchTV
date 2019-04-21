@@ -55,7 +55,6 @@ var Base_Live_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
-    key_refresh: Screens_StartLoad,
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_LIVE_CHANNELS;
@@ -196,7 +195,6 @@ var Base_Clip_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Main_addFocusVideo,
     cursor: null,
-    key_refresh: Screens_StartLoad,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
@@ -439,7 +437,6 @@ function ScreensObj_InitGame() {
         ids: Screens_ScreenIds('Game'),
         table: 'stream_table_games',
         screen: Main_games,
-        key_refresh: Screens_StartLoad,
         base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
