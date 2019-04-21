@@ -1,6 +1,8 @@
 //Variable initialization
 var Main_isReleased = false;
+var Main_isBrowser = false;
 var Main_isDebug = false;
+
 var Main_cursorYAddFocus = -1;
 var Main_newImg = new Image();
 
@@ -175,6 +177,10 @@ function Main_loadTranslations(language) {
             Main_Android = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
             Main_isDebug = true;
+            Main_isBrowser = true;
+            console.log('Main_isReleased: ' + Main_isReleased);
+            console.log('Main_isDebug: ' + Main_isDebug);
+            console.log('Main_isBrowser: ' + Main_isBrowser);
         }
 
         Settings_SetDefautls();

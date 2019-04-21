@@ -377,7 +377,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadingDataTimeout += 250;
             PlayVod_loadDataRequest();
         } else {
-            if (Main_isReleased) {
+            if (!Main_isBrowser) {
                 Play_HideBufferDialog();
                 Play_PlayEndStart(2);
             } else PlayVod_loadDataSuccessFake();
