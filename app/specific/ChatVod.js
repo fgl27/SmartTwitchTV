@@ -347,9 +347,9 @@ function Chat_Clear() {
 }
 
 function Main_Addline(id) {
-    var elem, i;
+    var elem;
     if (Chat_Position < (Chat_Messages.length - 1)) {
-        for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+        for (var i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
             if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';
@@ -369,15 +369,7 @@ function Main_Addline(id) {
             Chat_MessagesNext = [];
 
             if (Chat_Id === id) Chat_loadChatNext(id);
-
-            //delete old lines out of view
-            var linesToDelete = document.getElementsByClassName("chat_line");
-            if ((linesToDelete.length - 100) > 0) {
-                for (i = 0; i < (linesToDelete.length - 100); i++) {
-                    linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
-                }
-            }
-            Chat_div.scrollTop = Chat_div.scrollHeight;
+            Chat_Clean();
         } else { //Chat has eneded
             var div = '&nbsp;';
             div += '<span class="message">';
@@ -486,4 +478,15 @@ function Chat_SingleLine(Line) {
     elem.innerHTML = div;
 
     Chat_div.appendChild(elem);
+}
+
+function Chat_Clean() {
+    //delete old lines out of view
+    var linesToDelete = document.getElementsByClassName("chat_line");
+    if ((linesToDelete.length - 100) > 0) {
+        for (var i = 0; i < (linesToDelete.length - 100); i++) {
+            linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
+        }
+    }
+    ChatLive_ChatFixPosition();
 }
