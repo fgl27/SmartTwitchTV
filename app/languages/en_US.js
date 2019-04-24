@@ -132,11 +132,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Force disable the chat";
     STR_F_DISABLE_CHAT_SUMARRY = "with this the chat will not load content, this is useful on a stream with too many viewers were the chat can lag the app.";
-    STR_UPDATE_AVAILABLE = "There is a update available, check it in the app github releases ";
-    STR_UPDATE_MAIN_0 = "Be aware that after the update (reinstall of the app using latest release) all saved users, keys or etc configuration of the app is lost";
-    STR_UPDATE_MAIN_1 = "A update is available, and the app can't self update this version ";
-    STR_UPDATE_MAIN_2 = "Major changes:";
-    STR_UPDATE_MAIN_3 = "Improves how the app runs in the background";
+    STR_UPDATE_AVAILABLE = "Update available, check google play store";
     STR_OAUTH_IN = 'Adding a key allows the app to fallow and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers). On the authentication page if you already added a key for another user, you need to click up two to tree time and click over "not you?" to authenticate for a different users <br> <br> add key for';
     STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
     STR_OAUTH_EXPLAIN2 = "Access the site link_link (using a computer or a smart phone)";

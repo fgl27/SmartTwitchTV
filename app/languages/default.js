@@ -13,10 +13,8 @@ var STR_CONTROLS_MAIN_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
-var STR_UPDATE_MAIN_HEADER = '';
 var STR_OAUTH_EXPLAIN = '';
 var STR_SPACE = '&nbsp;';
-var STR_UPDATE_MAIN_0 = '';
 var TWITCH_ICON = '<div style="vertical-align: middle; display: inline-block;"><i class="icon-twitch" style="color: #FFFFFF; font-size: 115%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE;
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
@@ -85,15 +83,6 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
-
-    STR_UPDATE_MAIN_HEADER = STR_DIV_TITLE + STR_UPDATE + '</div>' +
-        STR_UPDATE_MAIN_1 + STR_BR;
-    STR_UPDATE_MAIN_0 = STR_BR +
-        STR_DIV_TITLE + STR_UPDATE_MAIN_2 + '</div>' +
-        STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_UPDATE_MAIN_3 + STR_BR +
-        STR_BR + STR_DIV_TITLE + STR_UPDATE_MAIN_0 + '</div>' + STR_BR +
-        STR_BR + STR_CLOSE_THIS + '</div>';
 
     STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
         STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">http://tiny.cc/twitchkeycode</div>') + STR_BR +

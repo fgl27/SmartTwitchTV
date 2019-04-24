@@ -80,7 +80,7 @@ var Main_AddUserInput;
 var Main_SetTopOpacityId;
 var Main_updateclockId;
 var Main_ContentLang = "";
-var Main_OpacityDivs = ["label_side_panel", "label_extra", "label_refresh", "label_switch", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
+var Main_OpacityDivs = ["label_side_panel", "label_update", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
@@ -119,10 +119,8 @@ var Main_GameSize = "340x475"; // default size 272x380
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
-//var Main_version = 401;
 var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.10';
-//var Main_currentVersion = '';
+var Main_stringVersion_Min = '.12';
 var Main_minversion = '042419';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_ClockOffset = 0;
@@ -269,7 +267,8 @@ function Main_SetStringsMain(isStarting) {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
+    Main_innerHTML('label_update', '<div class="strokedextramini" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedextramini" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
+
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ' Press up');
 
@@ -459,7 +458,6 @@ function Main_HideWarningDialog() {
 
 function Main_showAboutDialog() {
     Main_HideControlsDialog();
-    Main_HideUpdateDialog();
     Main_ShowElement('dialog_about');
 }
 
@@ -473,7 +471,6 @@ function Main_isAboutDialogShown() {
 
 function Main_showSettings() {
     Main_HideControlsDialog();
-    Main_HideUpdateDialog();
     Main_HideWarningDialog();
     Main_ExitCurrent(Main_values.Main_Go);
     Main_CounterDialogRst();
@@ -482,7 +479,6 @@ function Main_showSettings() {
 
 function Main_showControlsDialog() {
     Main_HideAboutDialog();
-    Main_HideUpdateDialog();
     Main_ShowElement('dialog_controls');
 }
 
@@ -490,18 +486,9 @@ function Main_HideControlsDialog() {
     Main_HideElement('dialog_controls');
 }
 
-
 function Main_isControlsDialogShown() {
     return Main_isElementShowing('dialog_controls');
 }
-
-function Main_HideUpdateDialog() {
-    Main_HideElement('dialog_update');
-}
-
-//function Main_isUpdateDialogShown() {
-//    return Main_isElementShowing('dialog_update');
-//}
 
 function Main_addCommas(value) {
     return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -643,7 +630,6 @@ function Main_ExitCurrent(ExitCurrent) {
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_HideElement('label_switch');
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', STR_USER);
@@ -677,10 +663,19 @@ function Main_checkVersion() {
     //TODO remove the try after android app update has be releaased for some time
     if (Main_Android) {
         try {
-            Main_versionTag = "Android: " + Android.getversion() + ' Web: ' + Main_minversion;
+            var version = Android.getversion();
+            Main_versionTag = "Android: " + version + ' Web: ' + Main_minversion;
+            if (Main_needUpdate(version)) Main_ShowElement('label_update');
         } catch (e) {}
     }
+
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
+}
+
+function Main_needUpdate(version) {
+    version = version.split(".");
+    return (parseFloat(version[0] + '.' + version[1]) < parseFloat(Main_stringVersion)) ||
+        (parseInt(version[2]) < parseInt(Main_stringVersion_Min.split(".")[1]));
 }
 
 function Main_empty(el) {
