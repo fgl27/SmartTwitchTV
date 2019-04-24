@@ -121,11 +121,11 @@ function en_USLang() {
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause simbol (not available to Live streams)";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
-    STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Select key to confirm the change";
+    STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
     STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right";
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left";
-    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad up";
+    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Change video quality to the same will reset and sync it";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
