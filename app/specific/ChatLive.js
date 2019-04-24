@@ -170,8 +170,8 @@ function ChatLive_loadChatRequest() {
                 break;
             case "JOIN":
                 ChatLive_loaded = true;
-                var div = '&nbsp;<span class="message">' +
-                    STR_BR + STR_LOADING_CHAT + Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
+                var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
+                    Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
                 ChatLive_LineAdd(div);
                 break;
             case "PRIVMSG":
@@ -229,6 +229,7 @@ function ChatLive_loadChatSuccess(message) {
 
     if (tags.hasOwnProperty('emotes')) {
         if (typeof tags.emotes === 'string') {
+
             tags.emotes = tags.emotes.split('/');
 
             tags.emotes.forEach(function(emote) {
