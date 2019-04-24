@@ -1,4 +1,6 @@
-//This is a moded version of twemoji, I only need this from this file, check original in they github
+// https://github.com/twitter/twemoji
+
+// This is a moded version of twemoji, I only need this from this file, check original in they github
 var twemoji = (function(
     /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
     /*

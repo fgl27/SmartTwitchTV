@@ -1,4 +1,8 @@
 /*! https://mths.be/punycode v1.4.1 by @mathias */
+
+// https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
+// https://cdnjs.com/libraries/punycode
+
 (function(root) {
 
     /** Detect free variables */
