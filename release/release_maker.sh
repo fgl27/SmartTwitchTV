@@ -27,7 +27,7 @@
 temp_maker_folder="release/temp_maker/";
 
 # add js folders here
-js_folders=("app/languages/" "app/general/" "app/specific/");
+js_folders=("app/languages/" "app/general/" "app/specific/" "app/thirdparty/");
 
 # no changes needed to be done bellow this line
 
@@ -173,7 +173,7 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals Android, Play_CheckResume */\n/* exported Play_CheckResume */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals Android, ReconnectingWebSocket */\n/* exported Play_CheckResume, punycode */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 fi;
 

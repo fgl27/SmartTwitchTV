@@ -57,7 +57,6 @@ function PlayClip_Start() {
     Main_ShowElement('scene_channel_panel_bottom');
 
     Main_ShowElement('chat_box');
-    Main_HideElement('chat_frame');
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_PlayerCheckCount = 0;

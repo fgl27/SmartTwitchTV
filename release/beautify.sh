@@ -27,7 +27,7 @@ bldgrn=${txtbld}$(tput setaf 2) # green
 bldblu=${txtbld}$(tput setaf 4) # blue
 
 # add js folders here
-js_folders=("app/languages/" "app/general/" "app/specific/");
+js_folders=("app/languages/" "app/general/" "app/specific/" "app/thirdparty/");
 
 # no changes needed to be done bellow this line
 mainfolder="$(dirname ""$(dirname "$0")"")";

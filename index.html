@@ -1155,7 +1155,12 @@
     <script src="app/specific/AddUser.js" defer></script>
     <script src="app/specific/AddCode.js" defer></script>
     <script src="app/specific/ChatVod.js" defer></script>
-    <script src="app/specific/twemoji.js" defer></script>
+    <script src="app/specific/ChatLive.js" defer></script>
+    <script src="app/thirdparty/irc-message.js" defer></script>
+    <script src="app/thirdparty/reconnecting-websocket.min.js" defer></script>
+    <script src="app/thirdparty/twemoji.js" defer></script>
+    <script src="app/thirdparty/punycode.js" defer></script>
+    <script src="app/thirdparty/kapchat.js" defer></script>
     <script src="app/specific/Settings.js" defer></script>
     <script src="app/specific/ChannelContent.js" defer></script>
     <script src="app/specific/ChannelVod.js" defer></script>
@@ -1424,7 +1429,6 @@
         </div>
         <div id="chat_container" class="chat_container hide">
             <div id="chat_inner_container" class="chat_size_default">
-                <iframe id="chat_frame" class="hide" width="100%" height="100%" frameborder="0" scrolling="no" style="position: absolute; overflow: hidden;" src="about:blank"></iframe>
                 <div id="chat_box" class="hide">
                 </div>
                 <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
