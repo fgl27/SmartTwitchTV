@@ -39,29 +39,8 @@ function Chat_Init() {
 
 }
 
-//This file use some function or adptations of function from https://www.nightdev.com/kapchat/
-function transformBadges(sets) {
-    return Object.keys(sets).map(function(b) {
-        var badge = sets[b];
-        badge.type = b;
-        badge.versions = Object.keys(sets[b].versions).map(function(v) {
-            var version = sets[b].versions[v];
-            version.type = v;
-            return version;
-        });
-        return badge;
-    });
-}
-
-function tagCSS(type, version, url, addToHead) {
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
-    if (addToHead) document.head.appendChild(style);
-    else Chat_div.appendChild(style);
-}
-
 function Chat_loadBadgesGlobal() {
+    extraEmotes = {};
     Chat_loadingDataTry = 0;
     Chat_LoadGlobal = false;
     Chat_loadBadgesGlobalRequest();
@@ -69,7 +48,20 @@ function Chat_loadBadgesGlobal() {
 
 function Chat_loadBadgesGlobalRequest() {
     var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-    BasehttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) Chat_loadBadgesGlobalSuccess(xmlHttp.responseText);
+            else Chat_loadBadgesGlobalError();
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function Chat_loadBadgesGlobalError() {
@@ -81,9 +73,56 @@ function Chat_loadBadgesGlobalError() {
 function Chat_loadBadgesGlobalSuccess(responseText) {
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
-            tagCSS(badge.type, version.type, version.image_url_4x, true);
+            tagCSS(badge.type, version.type, version.image_url_4x, null);
         });
     });
+
+    Chat_loadEmotes();
+}
+
+function Chat_loadEmotes() {
+    Chat_loadingDataTry = 0;
+    Chat_loadEmotesRequest();
+}
+
+function Chat_loadEmotesRequest() {
+    var theUrl = 'https://api.betterttv.net/2/emotes';
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) Chat_loadEmotesSuccess(xmlHttp.responseText);
+            else Chat_loadEmotesError();
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function Chat_loadEmotesError() {
+    Chat_loadingDataTry++;
+    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequest();
+    else Chat_LoadGlobal = false;
+}
+
+function Chat_loadEmotesSuccess(data) {
+    data = JSON.parse(data);
+    data.emotes.forEach(function(emote) {
+        extraEmotes[emote.code] = {
+            restrictions: emote.restrictions,
+            code: emote.code,
+            source: 'bttv',
+            id: emote.id,
+            '1x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x'),
+            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x'),
+            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+        };
+    });
+
     Chat_LoadGlobal = true;
 }
 
@@ -142,7 +181,7 @@ function Chat_loadBadgesChannelError(id) {
         else {
             Chat_loadBadgesChannelId = window.setTimeout(function() {
                 Chat_loadBadgesChannelRequest(id);
-            }, 2500);
+            }, 1000);
         }
     }
 }
@@ -150,7 +189,7 @@ function Chat_loadBadgesChannelError(id) {
 function Chat_loadBadgesChannelSuccess(responseText, id) {
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
-            tagCSS(badge.type, version.type, version.image_url_4x, false);
+            tagCSS(badge.type, version.type, version.image_url_4x, Chat_div);
         });
     });
 
@@ -288,10 +327,10 @@ function Chat_Play(id) {
 
 function Chat_Pause() {
     if (!Chat_hasEnded) {
-        window.clearInterval(Chat_loadBadgesChannelId);
+        window.clearTimeout(Chat_loadBadgesChannelId);
+        window.clearTimeout(Chat_loadChatId);
+        window.clearTimeout(Chat_loadChatNextId);
         window.clearInterval(Chat_addlinesId);
-        window.clearInterval(Chat_loadChatId);
-        window.clearInterval(Chat_loadChatNextId);
     }
 }
 
@@ -358,7 +397,7 @@ function Main_Addline(id) {
             window.clearInterval(Chat_addlinesId);
             Chat_addlinesId = window.setInterval(function() {
                 Chat_div.scrollTop = Chat_div.scrollHeight;
-            }, 250);
+            }, 1000);
         }
     }
 }
@@ -431,7 +470,6 @@ function Chat_NoVod() {
 
 function Chat_Disable() {
     Chat_Clear();
-    Main_HideElement('chat_frame');
     Main_ShowElement('chat_box');
     Chat_SingleLine(STR_CHAT_DISABLE);
 }

@@ -219,6 +219,7 @@ function Main_initWindows() {
 
     Main_ready(function() {
 
+        Chat_Preinit();
         Play_PreStart();
         AddUser_RestoreUsers();
         if (AddUser_UserIsSet()) {
@@ -228,7 +229,6 @@ function Main_initWindows() {
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
 
-        Chat_Preinit();
         document.getElementById("side_panel").style.marginLeft = '';
 
         Main_checkVersion();
