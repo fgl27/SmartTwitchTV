@@ -9,7 +9,7 @@ var ChatLive_socket = null;
 var ChatLive_loaded = false;
 var ChatLive_CheckId;
 var ChatLive_FixId;
-
+var ChatLive_LineAddCounter = 0;
 var extraEmotesDone = {};
 var extraEmotes = {};
 //Variable initialization end
@@ -271,6 +271,11 @@ function ChatLive_LineAdd(message) {
 
     Chat_div.appendChild(elem);
     ChatLive_ChatFixPosition();
+    ChatLive_LineAddCounter++;
+    if (ChatLive_LineAddCounter > 100) {
+        ChatLive_LineAddCounter = 0;
+        Chat_Clean();
+    }
 }
 
 function ChatLive_ChatFixPosition() {
