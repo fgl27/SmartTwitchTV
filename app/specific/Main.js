@@ -80,7 +80,7 @@ var Main_AddUserInput;
 var Main_SetTopOpacityId;
 var Main_updateclockId;
 var Main_ContentLang = "";
-var Main_OpacityDivs = ["label_side_panel", "label_update", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
+var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
