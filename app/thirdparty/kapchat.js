@@ -1,4 +1,5 @@
-//The bellow are some function or adptations of function from https://www.nightdev.com/kapchat/
+// The bellow are some function or adptations of function from
+// https://www.nightdev.com/kapchat/
 function extraEmoticonize(sender, message, emote) {
     if (emote.restrictions) {
         if (emote.restrictions.channels && emote.restrictions.channels.length && emote.restrictions.channels.indexOf(Main_values.Play_selectedChannel) === -1) return message;
