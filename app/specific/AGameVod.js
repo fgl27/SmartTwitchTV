@@ -47,7 +47,6 @@ function AGameVod_exit() {
     Main_innerHTML('top_bar_game', STR_GAMES);
 
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_IconLoad('label_switch', 'icon-switch', STR_SWITCH);
     Main_HideElement(AGameVod_ids[10]);
 }
 
