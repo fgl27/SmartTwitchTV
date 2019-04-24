@@ -173,7 +173,7 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals Android, ReconnectingWebSocket */\n/* exported Play_CheckResume, punycode */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint undef: true, unused: true, node: true, browser: true */\n/*globals Android, ReconnectingWebSocket, punycode */\n/* exported Play_CheckResume */' > "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 fi;
 
