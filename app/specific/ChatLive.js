@@ -114,11 +114,7 @@ function ChatLive_loadEmotesChannelError(id) {
     ChatLive_loadingDataTry++;
     if (ChatLive_Id === id) {
         if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelRequest(id);
-        else {
-            ChatLive_loadEmotesChannelId = window.setTimeout(function() {
-                ChatLive_loadEmotesChannelRequest(id);
-            }, 1000);
-        }
+        else if (ChatLive_Id === id) ChatLive_loadChat();
     }
 }
 
@@ -137,7 +133,6 @@ function ChatLive_loadEmotesChannelSuccess(data, id) {
     });
 
     extraEmotesDone[Main_values.Play_selectedChannel_id] = 1;
-
     if (ChatLive_Id === id) ChatLive_loadChat();
 }
 
