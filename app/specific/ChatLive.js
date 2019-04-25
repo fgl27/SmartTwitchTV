@@ -258,7 +258,7 @@ function ChatLive_loadChatSuccess(message) {
     }
 
     message = tokenizedMessage.join(' ');
-    message = twemoji.parse(message, true);
+    message = twemoji.parse(message, true, true);
 
     div += '<span class="message">' + message + '</span>';
 

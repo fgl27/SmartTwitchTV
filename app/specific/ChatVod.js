@@ -248,7 +248,7 @@ function Chat_loadChatSuccess(responseText, id) {
         div += '<span class="message">';
         mmessage.fragments.forEach(function(fragments) {
             if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/1.0" srcset="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/3.0 4x">';
-            else div += twemoji.parse(fragments.text);
+            else div += twemoji.parse(fragments.text, false, true);
         });
 
         div += '</span>';

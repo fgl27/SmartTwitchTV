@@ -171,13 +171,13 @@ var twemoji = (function(
         return r.join('-');
     }
 
-    function parse(str, dontremove) {
+    function parse(str, dontremove, emoticon) {
         //Twitch title may contain < or > with causes html problems
         if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return replace(str, function(rawText) {
             var iconId = grabTheRightIcon(rawText);
 
-            return iconId ? '<img class="emoji" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+            return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
         });
     }
 
