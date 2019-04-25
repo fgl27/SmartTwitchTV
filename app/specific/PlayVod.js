@@ -102,7 +102,6 @@ function PlayVod_Start() {
 }
 
 function PlayVod_PosStart() {
-    Main_ShowElement('chat_box');
     window.setTimeout(function() {
         Main_ShowElement('scene_channel_panel_bottom');
         Main_innerHTML('pause_button', '<i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>');

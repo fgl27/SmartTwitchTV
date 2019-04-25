@@ -218,7 +218,6 @@ function Play_Start() {
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
-    Main_ShowElement('chat_box');
     Main_HideElement('progress_pause_holder');
 
     Play_EndSet(1);
