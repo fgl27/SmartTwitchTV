@@ -21,8 +21,8 @@ A clear and concise description of what you expected to happen.
 If applicable not demanding, add screenshots/picture to help explain your problem.
 
 **Operation system (if is a installation problem):**
- - OS: [e.g. Windows or Linux]
- - Version [e.g. 10 or 18.04]
+ - OS: Android
+ - Version [e.g. 9, 8.1, etc...]
 
 **Additional context**
 Add any other context about the problem here.
