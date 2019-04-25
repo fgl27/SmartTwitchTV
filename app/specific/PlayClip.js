@@ -56,8 +56,6 @@ function PlayClip_Start() {
     PlayClip_SetOpenVod();
     Main_ShowElement('scene_channel_panel_bottom');
 
-    Main_ShowElement('chat_box');
-
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_PlayerCheckCount = 0;
     window.clearInterval(PlayClip_streamCheckId);
