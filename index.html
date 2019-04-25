@@ -1056,7 +1056,8 @@
             font-weight: bold;
         }
 
-        .chat_line .message {
+        .chat_line,
+        .message {
             /*word-break: break-all;*/
             word-wrap: break-word;
         }
@@ -1079,13 +1080,12 @@
             letter-spacing: 1px;
         }
 
+        .emoticon,
         .tag {
             display: inline-block;
-            text-indent: 21px;
             background-position: 0 center;
             background-repeat: no-repeat;
             background-size: contain;
-            display: inline-block;
             vertical-align: bottom;
             height: 18px;
             min-width: 18px;
@@ -1095,18 +1095,21 @@
             margin-bottom: -1px;
             text-indent: -9999px;
             border-radius: 2px;
-            -moz-border-radius: 2px;
-            -webkit-border-radius: 2px;
             overflow: hidden;
         }
 
-        .emoji {
-            width: 9px;
-            height: auto;
+        .emoticon {
+            height: 21px;
+            min-width: 21px;
+            width: expression(document.body.clientWidth < $width ? "21px":"auto");
         }
 
-        .emoticon {
-            margin-bottom: -5px;
+        .emoji {
+            width: 11px;
+            height: auto;
+            margin-right: 2px;
+            margin-left: 2px;
+            margin-bottom: -1px;
         }
 
         .chat_extra_small {
