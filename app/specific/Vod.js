@@ -214,18 +214,20 @@ function Vod_replaceVideo(id, vod_data, valuesArray, idArray) {
 function Vod_VideoHtml(id, valuesArray, idArray) {
     Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
-    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video"' +
+    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
-        '><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 85%;">' + valuesArray[1] + '</div>' +
-        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div>' +
-        '<div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' + valuesArray[2] + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' + valuesArray[6] + '</div>' + '</div>' +
-        '<div id="' + idArray[11] + id + '"class="stream_info">' + valuesArray[3] + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
+        '><div><img id="' +
+        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
+        idArray[3] + id + '" class="stream_info" style="width: 72%; display: inline-block; font-size: 85%;">' +
+        valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
+        '</div></div><div style="line-height: 12px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
+        valuesArray[2] + '</div><div id="' + idArray[5] + id +
+        '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
+        valuesArray[6] + '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
+        valuesArray[3] + '</div><div id="' + idArray[6] + id +
+        '"class="stream_info">' + valuesArray[4] + '</div></div></div>';
 }
 
 function Vod_loadDataSuccessFinish() {
