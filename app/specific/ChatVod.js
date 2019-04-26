@@ -48,20 +48,7 @@ function Chat_loadBadgesGlobal() {
 
 function Chat_loadBadgesGlobalRequest() {
     var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) Chat_loadBadgesGlobalSuccess(xmlHttp.responseText);
-            else Chat_loadBadgesGlobalError();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError, false);
 }
 
 function Chat_loadBadgesGlobalError() {
@@ -87,20 +74,7 @@ function Chat_loadEmotes() {
 
 function Chat_loadEmotesRequest() {
     var theUrl = 'https://api.betterttv.net/2/emotes';
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) Chat_loadEmotesSuccess(xmlHttp.responseText);
-            else Chat_loadEmotesError();
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError, false);
 }
 
 function Chat_loadEmotesError() {

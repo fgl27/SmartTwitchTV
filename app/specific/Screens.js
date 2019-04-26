@@ -100,43 +100,7 @@ function Screens_loadDataPrepare() {
 
 function Screens_loadDataRequest() {
     inUseObj.set_url();
-    var xmlHttp;
-    if (Main_Android && !inUseObj.data) {
-
-        xmlHttp = Android.mreadUrl(inUseObj.url, inUseObj.loadingDataTimeout, 2, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            Screens_loadDataError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            inUseObj.concatenate(xmlHttp.responseText);
-        } else {
-            Screens_loadDataError();
-        }
-
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", inUseObj.url, true);
-
-        xmlHttp.timeout = inUseObj.loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) inUseObj.concatenate(xmlHttp.responseText);
-                else Screens_loadDataError();
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError);
 }
 
 function Screens_loadDataError() {
@@ -152,6 +116,10 @@ function Screens_loadDataError() {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else inUseObj.dataEnded = true;
     }
+}
+
+function Screens_concatenate(responseText) {
+    inUseObj.concatenate(responseText);
 }
 
 function Screens_loadDataSuccess() {

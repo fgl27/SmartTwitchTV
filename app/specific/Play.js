@@ -298,28 +298,11 @@ function Play_ResumeAfterOnline() {
 
 function Play_updateStreamInfoStart() {
     var theUrl = 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id;
-
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Play_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_updateStreamInfoStartValues(JSON.parse(xmlHttp.responseText));
-            } else { // internet error
-                Play_updateStreamInfoStartError();
-            }
-        }
-    };
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
 function Play_updateStreamInfoStartValues(response) {
+    response = JSON.parse(response);
     if (response.stream !== null) {
         if (Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
         else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
@@ -354,27 +337,11 @@ function Play_updateStreamInfoStartError() {
 
 function Play_updateStreamInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id;
-    Play_loadingDataTimeout = 3000;
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_updateStreamInfoErrorTry = 0;
-                Play_updateStreamInfoValues(JSON.parse(xmlHttp.responseText));
-            } else Play_updateStreamInfoError();
-        }
-    };
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Play_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError, false);
 }
 
 function Play_updateStreamInfoValues(response) {
+    response = JSON.parse(response);
     if (response.stream !== null) {
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
         Main_values.Play_gameSelected = response.stream.game;
@@ -1345,31 +1312,13 @@ function Play_CheckHostStart() {
 
 function Play_CheckId() {
     var theUrl = 'https://api.twitch.tv/kraken/users?login=' + Main_values.Play_selectedChannel;
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Play_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_CheckIdValue(JSON.parse(xmlHttp.responseText).users[0]);
-                return;
-            } else {
-                Play_CheckIdError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, Play_loadingDataTimeout, 2, null, Play_CheckIdValue, Play_CheckIdError, false);
 }
 
-function Play_CheckIdValue(users) {
-    if (users !== undefined) {
-        Main_values.Play_selectedChannel_id = users._id;
+function Play_CheckIdValue(musers) {
+    musers = JSON.parse(musers).users[0];
+    if (musers !== undefined) {
+        Main_values.Play_selectedChannel_id = musers._id;
         Play_loadingDataTry = 0;
         Play_loadingDataTimeout = 2000;
         Play_loadDataCheckHost();
@@ -1387,41 +1336,7 @@ function Play_CheckIdError() {
 function Play_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
         encodeURIComponent(Main_values.Play_selectedChannel_id);
-    var xmlHttp;
-    if (Main_Android) {
-
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            Play_loadDataCheckHostError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            Play_CheckHost(xmlHttp.responseText);
-        } else {
-            Play_loadDataCheckHostError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", proxyurl + theUrl, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_CheckHost(xmlHttp.responseText);
-                    return;
-                } else Play_loadDataCheckHostError();
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
 }
 
 function Play_loadDataCheckHostError() {
