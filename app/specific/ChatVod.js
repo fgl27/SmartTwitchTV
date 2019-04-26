@@ -369,7 +369,7 @@ function Chat_loadChatNextError(id) {
 }
 
 function Chat_NoVod() {
-    Chat_Id = 0;
+    Chat_Clear();
     Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
 }
 
