@@ -177,7 +177,7 @@ var twemoji = (function(
         return replace(str, function(rawText) {
             var iconId = grabTheRightIcon(rawText);
 
-            return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+            return iconId ? '<img class="' + (emoticon ? 'emojichat' : 'emoji') + '" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
         });
     }
 

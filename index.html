@@ -1079,6 +1079,7 @@
             letter-spacing: 1px;
         }
 
+        .emojichat,
         .tag {
             display: inline-block;
             background-position: 0 center;
@@ -1106,6 +1107,12 @@
             margin-right: 2px;
             margin-left: 2px;
             margin-bottom: -1px;
+        }
+
+        .emojichat {
+            height: 24px;
+            min-width: 24px;
+            width: expression(document.body.clientWidth < $width ? "24px":"auto");
         }
 
         .chat_extra_small {
