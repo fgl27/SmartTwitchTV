@@ -126,11 +126,10 @@ var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_m
 var Main_ClockOffset = 0;
 var Main_Android = 0;
 var Main_randomimg = '?' + Math.random();
-var GIT_IO = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/";
-var IMG_404_GAME = GIT_IO + "404_game.png";
-var IMG_404_LOGO = GIT_IO + "404_logo.png";
-var IMG_404_VIDEO = GIT_IO + "404_video.png";
-//var TEMP_MP4 = GIT_IO + "temp.mp4";
+var ASSETS = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/";
+var IMG_404_GAME = ASSETS + "404_game.png";
+var IMG_404_LOGO = ASSETS + "404_logo.png";
+var IMG_404_VIDEO = ASSETS + "404_video.png";
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
 
@@ -171,6 +170,12 @@ function Main_loadTranslations(language) {
     Main_ready(function() {
         try {
             Main_Android = Android.getAndroid();
+            if (Main_Android) {
+                ASSETS = "file:///android_asset/";
+                IMG_404_GAME = ASSETS + "404_game.png";
+                IMG_404_LOGO = ASSETS + "404_logo.png";
+                IMG_404_VIDEO = ASSETS + "404_video.png";
+            }
         } catch (e) {
             Main_Android = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";

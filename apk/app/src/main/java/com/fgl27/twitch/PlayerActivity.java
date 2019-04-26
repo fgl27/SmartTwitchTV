@@ -417,7 +417,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            PlayerActivity.url = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/temp.mp4";
+            PlayerActivity.url = "file:///android_asset/temp.mp4";
             SendBroadcast("initializePlayerReceiver", mwebContext, false, whocall, 0);
         }
 
