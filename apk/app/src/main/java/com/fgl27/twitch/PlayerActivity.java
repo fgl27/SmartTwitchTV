@@ -462,7 +462,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getversion() {
-            return BuildConfig.VERSION_NAME + "." +BuildConfig.VERSION_CODE;
+            return BuildConfig.VERSION_NAME;
         }
     }
 
