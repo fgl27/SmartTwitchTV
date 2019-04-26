@@ -10,7 +10,7 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.maxSdk
         versionCode versions.publishVersionCode
-        versionName versions.publishVersion
+        versionName versions.publishVersion + versions.publishVersionCode
     }
     buildTypes {
         release {
