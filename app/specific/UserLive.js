@@ -80,47 +80,7 @@ function UserLive_loadDataPrepare() {
 function UserLive_loadChannels() {
     var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
         '/follows/channels?limit=100&offset=' + UserLive_loadChannelOffsset + '&sortby=created_at';
-    var xmlHttp;
-    if (Main_Android) {
-
-        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            UserLive_loadDataError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            UserLive_loadChannelLive(xmlHttp.responseText);
-        } else {
-            UserLive_loadDataError();
-        }
-
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLive_loadChannelLive(xmlHttp.responseText);
-                    return;
-                } else {
-                    UserLive_loadDataError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, UserLive_loadingDataTimeout, 2, null, UserLive_loadChannelLive, UserLive_loadDataError);
 }
 
 function UserLive_loadDataError() {
@@ -174,46 +134,8 @@ function UserLive_loadChannelUserLive() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
         Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
-    var xmlHttp;
-    if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            UserLive_loadDataErrorLive();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            UserLive_loadDataSuccess(xmlHttp.responseText);
-        } else {
-            UserLive_loadDataErrorLive();
-        }
-
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLive_loadDataSuccess(xmlHttp.responseText);
-                    return;
-                } else {
-                    UserLive_loadDataErrorLive();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, UserLive_loadingDataTimeout, 2, null, UserLive_loadDataSuccess, UserLive_loadDataErrorLive);
 }
 
 function UserLive_loadDataErrorLive() {
@@ -320,45 +242,8 @@ function UserLive_loadChannelsReplace() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
         Main_ItemsLimitReplace + '&offset=' + offset + '&stream_type=all';
-    var xmlHttp;
-    if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, UserLive_loadingDataTimeout, 2, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            UserLive_loadDataErrorReplace();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            UserLive_loadDataSuccessReplace(xmlHttp.responseText);
-        } else {
-            UserLive_loadDataErrorReplace();
-        }
-
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", +Math.round(Math.random() * 1e7), true);
-        xmlHttp.timeout = UserLive_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLive_loadDataSuccessReplace(xmlHttp.responseText);
-                    return;
-                } else UserLive_loadDataErrorReplace();
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, UserLive_loadingDataTimeout, 2, null, UserLive_loadDataSuccessReplace, UserLive_loadDataErrorReplace);
 }
 
 function UserLive_loadDataErrorReplace() {

@@ -144,30 +144,14 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                PlayVod_updateStreamerInfoValues(JSON.parse(xmlHttp.responseText).users[0]);
-            } else {
-                PlayVod_updateStreamerInfoError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateStreamerInfoValues, PlayVod_updateStreamerInfoError, false);
 }
 
-function PlayVod_updateStreamerInfoValues(users) {
-    if (users !== undefined) {
-        Main_values.Main_selectedChannelLogo = users.logo;
-        Main_values.Main_selectedChannel_id = users._id;
+function PlayVod_updateStreamerInfoValues(musers) {
+    musers = JSON.parse(musers).users[0];
+    if (musers !== undefined) {
+        Main_values.Main_selectedChannelLogo = musers.logo;
+        Main_values.Main_selectedChannel_id = musers._id;
         if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
         if (AddUser_UserIsSet()) {
             AddCode_Channel_id = Main_values.Main_selectedChannel_id;
@@ -194,26 +178,7 @@ function PlayVod_updateStreamerInfoError() {
 
 function PlayVod_updateVodInfo() {
     var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = PlayVod_loadingInfoDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                PlayVod_updateVodInfoPannel(xmlHttp.responseText);
-                return;
-            } else {
-                PlayVod_updateVodInfoError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError, false);
 }
 
 function PlayVod_updateVodInfoError() {
@@ -321,42 +286,8 @@ function PlayVod_loadDataRequest() {
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_source=true&allow_audi_only=true&allow_spectre=false';
     }
-    var xmlHttp;
-    if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            PlayVod_loadDataError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            PlayVod_loadingDataTry = 0;
-            if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
-        } else {
-            PlayVod_loadDataError();
-        }
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", proxyurl + theUrl, true);
-        xmlHttp.timeout = PlayVod_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    PlayVod_loadingDataTry = 0;
-                    if (PlayVod_isOn) PlayVod_loadDataSuccess(xmlHttp.responseText);
-                } else PlayVod_loadDataError();
-            }
-        };
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);
 }
 
 function PlayVod_loadDataError() {

@@ -109,43 +109,8 @@ function ChannelContent_loadDataError() {
 
 function ChannelContent_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
-    var xmlHttp;
-    if (Main_Android) {
 
-        xmlHttp = Android.mreadUrl(theUrl, ChannelContent_loadingDataTimeout, 1, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            ChannelContent_loadDataCheckHostError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            ChannelContent_CheckHost(xmlHttp.responseText);
-        } else {
-            ChannelContent_loadDataCheckHostError();
-        }
-
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", proxyurl + theUrl, true);
-        xmlHttp.timeout = ChannelContent_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    ChannelContent_CheckHost(xmlHttp.responseText);
-                    return;
-                } else ChannelContent_loadDataCheckHostError();
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError, true);
 }
 
 function ChannelContent_loadDataCheckHostError() {
