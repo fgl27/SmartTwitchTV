@@ -82,9 +82,6 @@
 .icon-pause:before {
   content: "\6d";
 }
-.icon-twitch:before {
-  content: "\6e";
-}
 .icon-videocamera:before {
   content: "\70";
 }
@@ -138,4 +135,7 @@
 }
 .icon-play-1:before {
   content: "\45";
+}
+.icon-ellipsis-h:before {
+  content: "\66";
 }
