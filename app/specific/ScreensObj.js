@@ -73,7 +73,7 @@ function ScreensObj_InitLive() {
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + '&offset=' + this.offset +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 0;
@@ -121,7 +121,7 @@ function ScreensObj_InitLive() {
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
                         cell.channel.status, cell.game,
                         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
+                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
                 inUseObj.coloumn_id++;
@@ -174,7 +174,7 @@ function ScreensObj_InitFeatured() {
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
                         cell.channel.status, cell.game,
                         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.language)
+                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
                 inUseObj.coloumn_id++;
@@ -229,7 +229,6 @@ var Base_Clip_obj = {
     },
     addCell: function(cell) {
         if (!inUseObj.idObject[cell.tracking_id]) {
-
             inUseObj.itemsCount++;
             inUseObj.idObject[cell.tracking_id] = 1;
 

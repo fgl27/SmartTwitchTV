@@ -166,11 +166,11 @@ function AGameVod_loadDataSuccess(responseText) {
             else {
                 AGameVod_idObject[id] = 1;
                 row.appendChild(Vod_createCell(row_id, row_id + '_' + coloumn_id,
-                    [id, video.length, video.language, video.game, video.channel.name, video.increment_view_count_url],
+                    [id, video.length, video.channel.broadcaster_language, video.game, video.channel.name, video.increment_view_count_url],
                     [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                         video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                         twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                        Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                        Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.channel.broadcaster_language),
                         STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                     ], AGameVod_ids));
             }
@@ -263,11 +263,11 @@ function AGameVod_loadDataSuccessReplace(responseText) {
         else {
             AGameVod_idObject[id] = 1;
             Vod_replaceVideo(AGameVod_emptyCellVector[i],
-                [id, video.length, video.language, video.game, video.channel.name, video.increment_view_count_url],
+                [id, video.length, video.channel.broadcaster_language, video.game, video.channel.name, video.increment_view_count_url],
                 [video.preview.template.replace("{width}x{height}", Main_VideoSize),
                     video.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(video.created_at),
                     twemoji.parse(video.title) + STR_BR + STR_STARTED + STR_PLAYING + video.game, Main_addCommas(video.views) + STR_VIEWS,
-                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.language),
+                    Main_videoqualitylang(video.resolutions.chunked.slice(-4), (parseInt(video.fps.chunked) || 0), video.channel.broadcaster_language),
                     STR_DURATION + Play_timeS(video.length), video.animated_preview_url
                 ], AGameVod_ids);
 

@@ -193,7 +193,7 @@ function ChannelContent_loadDataSuccess() {
                 hosting + stream.channel.display_name,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
                 Main_addCommas(stream.viewers) + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)));
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)));
             coloumn_id++;
         } else ChannelContent_skipImg = true;
     } else ChannelContent_skipImg = true;

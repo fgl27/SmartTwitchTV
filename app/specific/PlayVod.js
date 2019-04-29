@@ -194,7 +194,7 @@ function PlayVod_updateVodInfoPannel(response) {
 
     Main_innerHTML("stream_info_title", twemoji.parse(response.title));
     Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
-        ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.language).toUpperCase() + ']');
+        ', ' + Main_addCommas(response.views) + STR_VIEWS + ', [' + (response.channel.broadcaster_language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
 
     ChannelVod_DurationSeconds = parseInt(response.length);
