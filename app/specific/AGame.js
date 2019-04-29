@@ -96,7 +96,7 @@ function AGame_loadDataRequest() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_values.Main_gameSelected) +
         '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
 
     BasehttpGet(theUrl, AGame_loadingDataTimeout, 2, null, AGame_loadDataSuccess, AGame_loadDataError);
 }
@@ -175,7 +175,7 @@ function AGame_loadDataSuccess(responseText) {
                         stream.channel.status, stream.game,
                         STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
                         Main_addCommas(stream.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                        Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
                     ]));
             }
         }
@@ -289,7 +289,7 @@ function AGame_loadDataReplace() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams?game=' + encodeURIComponent(Main_values.Main_gameSelected) +
         '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
 
     BasehttpGet(theUrl, AGame_loadingDataTimeout, 2, null, AGame_loadDataSuccessReplace, AGame_loadDataErrorReplace);
 }
@@ -330,7 +330,7 @@ function AGame_loadDataSuccessReplace(responseText) {
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
                     Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.language)
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
                 ], AGame_ids);
 
             tempVector.push(i);
