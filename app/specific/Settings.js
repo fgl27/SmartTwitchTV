@@ -230,6 +230,7 @@ function Settings_SetStrings() {
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
     Main_textContent(key, Settings_Obj_values(key));
+    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
