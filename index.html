@@ -751,6 +751,11 @@
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
 
+        .strokedextraminired {
+            color: #FF0000;
+            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px, #FFFFFF 0 0 2px;
+        }
+
         .strokedbig {
             text-shadow: #000000 0 0 15px, #000000 0 0 15px, #000000 0 0 10px;
         }
@@ -951,13 +956,13 @@
             border: 2px solid rgba(0, 0, 0, 0);
             border-radius: 4px;
             font-size: 55%;
+            margin-left: 10px;
+            margin-right: 10px;
             box-sizing: border-box;
             vertical-align: middle;
         }
 
         div.settings_value_focus {
-            margin-left: 10px;
-            margin-right: 10px;
             margin-bottom: 3px;
             border-color: #FFFFFF;
             background-color: rgba(255, 255, 255, 0.4);
@@ -1168,6 +1173,7 @@
     <script src="app/thirdparty/punycode.js" defer></script>
     <script src="app/thirdparty/kapchat.js" defer></script>
     <script src="app/specific/Settings.js" defer></script>
+    <script src="app/specific/SettingsLanguages.js" defer></script>
     <script src="app/specific/ChannelContent.js" defer></script>
     <script src="app/specific/ChannelVod.js" defer></script>
     <script src="app/specific/AGame.js" defer></script>
@@ -1349,6 +1355,9 @@
             <div id="settings_scroll" class="screen_holder_settings hide">
                 <div id="settings_main" class="settings_main">
                     <!-- Settings_SetSettings()-->
+                </div>
+                <div id="settings_lang" class="settings_main hide">
+                    <!-- Settings_SetLang()-->
                 </div>
             </div>
 

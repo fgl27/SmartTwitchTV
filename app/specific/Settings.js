@@ -42,13 +42,8 @@ var Settings_value = {
         "defaultValue": 49
     },
     "content_lang": { //content_lang
-        "values": ["All", "Dansk [DA]", "Deutsch [DE]", "English - USA [EN]",
-            "Español [ES]", "Français [FR]", "Italiano [IT]",
-            "Magyar [HU]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]", "Português [PT]", "Slovenčina [SK]", "Suomi [FI]", "Svenska [SV]", "Tiếng Việt [VI]", "Türkçe [TR]",
-            "Čeština [CS]", "Ελληνικά [EL]", "Български [BG]", "Русский [RU]", "ภาษาไทย [TH]", "中文 [ZH]",
-            "日本語 [JA]", "한국어 [KO]", "Română [RO]"
-        ],
-        "set_values": ["", "da", "de", "en,en-gb", "es,es-mx", "fr", "it", "hu", "nl", "no", "pl", "pt,pt-br", "sk", "fi", "sv", "vi", "tr", "cs", "el", "bg", "ru", "th", "zh-cn,zh-tw", "ja", "ko", "ro"],
+        "values": ["All"],
+        "set_values": [""],
         "defaultValue": 1
     }
 };
@@ -80,8 +75,9 @@ var Settings_positions_length = 0;
 
 function Settings_init() {
     Main_UnSetTopOpacity();
+    Main_HideElement('label_side_panel');
+    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK_START);
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK);
     Main_textContent('top_bar_user', STR_SETTINGS);
     document.getElementById("top_lables").style.marginLeft = '14%';
     document.getElementById('top_bar_live').style.display = 'none';
@@ -93,10 +89,12 @@ function Settings_init() {
     Main_ShowElement('settings_scroll');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
+    Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
 }
 
 function Settings_exit() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_ShowElement('label_side_panel');
     Settings_RemoveinputFocus();
     Main_textContent('top_bar_user', STR_USER);
     document.getElementById("top_lables").style.marginLeft = '18.5%';
@@ -121,8 +119,9 @@ function Settings_SetSettings() {
     // Content Language selection
     key = "content_lang";
     Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
 
-    div += Settings_DivOptionNoSummary(key, STR_CONTENT_LANG);
+    div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
 
     // Clock offset
     key = "clock_offset";
@@ -188,6 +187,7 @@ function Settings_SetSettings() {
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
+    Languages_SetSettings();
 }
 
 function Settings_DivTitle(key, string) {
@@ -229,7 +229,6 @@ function Settings_SetStrings() {
     // Content Language selection
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
-    Settings_value[key].values[0] = STR_LANG_ALL;
     Main_textContent(key, Settings_Obj_values(key));
 
     //Player settings
@@ -271,18 +270,20 @@ function Settings_SetStrings() {
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
             Main_textContent(key, Settings_Obj_values(key));
+
+    Languages_SetLang();
 }
 
 function Settings_SetDefautls() {
     for (var key in Settings_value) {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
         Settings_value[key].defaultValue -= 1;
+        if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
     }
     Settings_SetBuffers(0);
     Settings_SetClock();
     Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    Main_ContentLang = Settings_Obj_set_values("content_lang");
     Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
 }
 
@@ -290,9 +291,9 @@ function Settings_Obj_values(key) {
     return Settings_value[key].values[Settings_Obj_default(key)];
 }
 
-function Settings_Obj_set_values(key) {
-    return Settings_value[key].set_values[Settings_Obj_default(key)];
-}
+//function Settings_Obj_set_values(key) {
+//    return Settings_value[key].set_values[Settings_Obj_default(key)];
+//}
 
 function Settings_Obj_default(key) {
     return Settings_value[key].defaultValue;
@@ -328,6 +329,8 @@ function Settings_ChangeSettigs(position) {
 function Settings_Setarrows(position) {
     var key = Settings_value_keys[position];
 
+    if (!Settings_Obj_length(key)) return;
+
     var currentValue = Settings_Obj_default(key);
     var maxValue = Settings_Obj_length(key);
 
@@ -346,8 +349,7 @@ function Settings_Setarrows(position) {
 function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
-    if (position === "content_lang") Main_ContentLang = Settings_Obj_set_values("content_lang");
-    else if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
@@ -445,6 +447,9 @@ function Settings_handleKeyDown(event) {
                 Settings_cursorY++;
                 Settings_inputFocus(Settings_cursorY);
             }
+            break;
+        case KEY_ENTER:
+            Languages_init();
             break;
         default:
             break;
