@@ -450,7 +450,7 @@ function Settings_handleKeyDown(event) {
             }
             break;
         case KEY_ENTER:
-            Languages_init();
+            if (!Settings_cursorY) Languages_init();
             break;
         default:
             break;
