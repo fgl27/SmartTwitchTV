@@ -34,7 +34,8 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
     STR_CHANNELS = "Channels";
     STR_CHANNEL = "Channel";
-    STR_GOBACK = "Back to previously screen: Back key twice";
+    STR_GOBACK_START = "Back to previously screen: Back key";
+    STR_TWICE = " twice";
     STR_IS_OFFLINE = " has ended";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
     STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
@@ -221,6 +222,7 @@ function en_USLang() {
     STR_CLOCK_OFFSET = "Clock offset";
     STR_APP_LANG = "Application language";
     STR_CONTENT_LANG = "Content language";
+    STR_CONTENT_LANG_SUMARRY = "Press enter to change";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "Empty game fro this";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";

@@ -188,6 +188,7 @@ function Main_loadTranslations(language) {
 
         Settings_SetDefautls();
         en_USLang();
+        Languages_SetDefautls();
 
         // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
         // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
