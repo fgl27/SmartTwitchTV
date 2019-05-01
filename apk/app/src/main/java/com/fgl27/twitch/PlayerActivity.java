@@ -343,6 +343,7 @@ public class PlayerActivity extends Activity {
         websettings.setAllowContentAccess(true);
         websettings.setAllowFileAccessFromFileURLs(true);
         websettings.setAllowUniversalAccessFromFileURLs(true);
+        websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mwebview.clearCache(true);
 
         //To load page from assets
