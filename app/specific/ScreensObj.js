@@ -93,7 +93,7 @@ function ScreensObj_InitLive() {
                 this.offset = this.data.length;
                 if (this.offset > this.MaxOffset) this.dataEnded = true;
 
-                inUseObj.loadingData = false;
+                this.loadingData = false;
             } else {
                 this.data = JSON.parse(responseText);
 
@@ -104,18 +104,18 @@ function ScreensObj_InitLive() {
                 if (this.offset > this.MaxOffset) this.dataEnded = true;
 
                 this.loadDataSuccess();
-                inUseObj.loadingData = false;
+                this.loadingData = false;
             }
         },
         addCell: function(cell) {
-            if (!inUseObj.idObject[cell.channel._id]) {
+            if (!this.idObject[cell.channel._id]) {
 
-                inUseObj.itemsCount++;
-                inUseObj.idObject[cell.channel._id] = 1;
+                this.itemsCount++;
+                this.idObject[cell.channel._id] = 1;
 
-                inUseObj.row.appendChild(Screens_createCellLive(
-                    inUseObj.row_id,
-                    inUseObj.coloumn_id,
+                this.row.appendChild(Screens_createCellLive(
+                    this.row_id,
+                    this.coloumn_id,
                     [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
                     [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
@@ -124,7 +124,7 @@ function ScreensObj_InitLive() {
                         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
-                inUseObj.coloumn_id++;
+                this.coloumn_id++;
             }
         },
     }, Base_obj);
@@ -157,18 +157,18 @@ function ScreensObj_InitFeatured() {
             this.dataEnded = true;
 
             this.loadDataSuccess();
-            inUseObj.loadingData = false;
+            this.loadingData = false;
         },
         addCell: function(cell) {
             cell = cell.stream;
-            if (!inUseObj.idObject[cell.channel._id]) {
+            if (!this.idObject[cell.channel._id]) {
 
-                inUseObj.itemsCount++;
-                inUseObj.idObject[cell.channel._id] = 1;
+                this.itemsCount++;
+                this.idObject[cell.channel._id] = 1;
 
-                inUseObj.row.appendChild(Screens_createCellLive(
-                    inUseObj.row_id,
-                    inUseObj.coloumn_id,
+                this.row.appendChild(Screens_createCellLive(
+                    this.row_id,
+                    this.coloumn_id,
                     [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
                     [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
@@ -177,7 +177,7 @@ function ScreensObj_InitFeatured() {
                         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
-                inUseObj.coloumn_id++;
+                this.coloumn_id++;
             }
         },
     }, Base_obj);
@@ -216,7 +216,7 @@ var Base_Clip_obj = {
             this.cursor = tempObj._cursor;
             if (this.cursor === '') this.dataEnded = true;
             this.data = this.data.concat(tempObj.clips);
-            inUseObj.loadingData = false;
+            this.loadingData = false;
         } else {
             this.data = JSON.parse(responseText);
             this.cursor = this.data._cursor;
@@ -224,17 +224,17 @@ var Base_Clip_obj = {
 
             this.data = this.data.clips;
             this.loadDataSuccess();
-            inUseObj.loadingData = false;
+            this.loadingData = false;
         }
     },
     addCell: function(cell) {
-        if (!inUseObj.idObject[cell.tracking_id]) {
-            inUseObj.itemsCount++;
-            inUseObj.idObject[cell.tracking_id] = 1;
+        if (!this.idObject[cell.tracking_id]) {
+            this.itemsCount++;
+            this.idObject[cell.tracking_id] = 1;
 
-            inUseObj.row.appendChild(Screens_createCellClip(inUseObj.row_id,
-                inUseObj.coloumn_id,
-                inUseObj.ids,
+            this.row.appendChild(Screens_createCellClip(this.row_id,
+                this.coloumn_id,
+                this.ids,
                 cell.thumbnails.medium,
                 cell.broadcaster.display_name,
                 [STR_CREATED_AT,
@@ -251,7 +251,7 @@ var Base_Clip_obj = {
                 (cell.vod !== null ? cell.vod.id : null),
                 (cell.vod !== null ? cell.vod.offset : null)));
 
-            inUseObj.coloumn_id++;
+            this.coloumn_id++;
         }
     }
 };
@@ -315,7 +315,7 @@ function ScreensObj_InitChannelClip() {
             Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
             Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             this.lastselectedChannel = Main_values.Main_selectedChannel;
-            Main_ShowElement(inUseObj.ids[10]);
+            Main_ShowElement(this.ids[10]);
         },
         label_exit: Main_RestoreTopLabel,
     }, Base_obj);
@@ -380,7 +380,7 @@ var Base_Game_obj = {
             this.offset = this.data.length;
             if (this.offset > this.MaxOffset) this.dataEnded = true;
 
-            inUseObj.loadingData = false;
+            this.loadingData = false;
         } else {
 
             this.data = JSON.parse(responseText);
@@ -393,7 +393,7 @@ var Base_Game_obj = {
             else if (this.offset > this.MaxOffset) this.dataEnded = true;
 
             this.loadDataSuccess();
-            inUseObj.loadingData = false;
+            this.loadingData = false;
         }
     },
     key_play: function() {
@@ -415,19 +415,19 @@ var Base_Game_obj = {
     addCell: function(cell) {
         var hasLive = this.isLive || this.screen === Main_games;
         var game = hasLive ? cell.game : cell;
-        if (!inUseObj.idObject[game._id]) {
+        if (!this.idObject[game._id]) {
 
-            inUseObj.itemsCount++;
-            inUseObj.idObject[game._id] = 1;
+            this.itemsCount++;
+            this.idObject[game._id] = 1;
 
-            inUseObj.row.appendChild(Screens_createCellGame(inUseObj.row_id,
-                inUseObj.coloumn_id,
-                inUseObj.ids,
+            this.row.appendChild(Screens_createCellGame(this.row_id,
+                this.coloumn_id,
+                this.ids,
                 game.box.template.replace("{width}x{height}", Main_GameSize),
                 game.name,
                 hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
 
-            inUseObj.coloumn_id++;
+            this.coloumn_id++;
         }
     }
 };
