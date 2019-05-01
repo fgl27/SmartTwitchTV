@@ -119,21 +119,21 @@ function ChatLive_loadEmotesChannelError(id) {
 }
 
 function ChatLive_loadEmotesChannelSuccess(data, id) {
-    data = JSON.parse(data);
+    ChatLive_loadEmotes(JSON.parse(data));
+
+    extraEmotesDone[Main_values.Play_selectedChannel_id] = 1;
+    if (ChatLive_Id === id) ChatLive_loadChat();
+}
+
+function ChatLive_loadEmotes(data) {
     data.emotes.forEach(function(emote) {
         extraEmotes[emote.code] = {
             restrictions: emote.restrictions,
             code: emote.code,
-            source: 'bttv',
             id: emote.id,
-            '1x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x'),
-            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x'),
             '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
         };
     });
-
-    extraEmotesDone[Main_values.Play_selectedChannel_id] = 1;
-    if (ChatLive_Id === id) ChatLive_loadChat();
 }
 
 function ChatLive_loadChat() {
