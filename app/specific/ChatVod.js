@@ -147,6 +147,64 @@ function Chat_loadBadgesChannelSuccess(responseText, id) {
     });
 
     if (Chat_Id === id) Chat_loadChat(id);
+
+    if (!extraEmotesDone[Main_values.Main_selectedChannel_id]) Chat_loadEmotesChannel(id);
+    else if (Chat_Id === id) Chat_loadChat(id);
+}
+
+function Chat_loadEmotesChannel(id) {
+    Chat_loadingDataTry = 0;
+    Chat_loadEmotesChannelRequest(id);
+}
+
+function Chat_loadEmotesChannelRequest(id) {
+    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(Main_values.Main_selectedChannel);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (Chat_Id === id) Chat_loadEmotesChannelSuccess(xmlHttp.responseText, id);
+            } else if (xmlHttp.status === 404) {
+                extraEmotesDone[Main_values.Main_selectedChannel_id] = 1;
+                if (Chat_Id === id) Chat_loadChat();
+            } else {
+                if (Chat_Id === id) Chat_loadEmotesChannelError(id);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function Chat_loadEmotesChannelError(id) {
+    Chat_loadingDataTry++;
+    if (Chat_Id === id) {
+        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesChannelRequest(id);
+        else if (Chat_Id === id) Chat_loadChat();
+    }
+}
+
+function Chat_loadEmotesChannelSuccess(data, id) {
+    data = JSON.parse(data);
+    data.emotes.forEach(function(emote) {
+        extraEmotes[emote.code] = {
+            restrictions: emote.restrictions,
+            code: emote.code,
+            source: 'bttv',
+            id: emote.id,
+            '1x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x'),
+            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x'),
+            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+        };
+    });
+
+    extraEmotesDone[Main_values.Main_selectedChannel_id] = 1;
+    if (Chat_Id === id) Chat_loadChat();
 }
 
 function Chat_loadChat(id) {
@@ -222,7 +280,7 @@ function Chat_loadChatSuccess(responseText, id) {
         div += '<span class="message">';
         mmessage.fragments.forEach(function(fragments) {
             if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/1.0" srcset="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/3.0 4x">';
-            else div += twemoji.parse(fragments.text, false, true);
+            else div += ChatLive_extraMessageTokenize([fragments.text]);
         });
 
         div += '</span>';
