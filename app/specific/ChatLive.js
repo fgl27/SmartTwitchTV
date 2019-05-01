@@ -220,7 +220,6 @@ function ChatLive_loadChatSuccess(message) {
 
     //Add message
     var mmessage = message.params[1];
-    mmessage = mmessage.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     if (/^\x01ACTION.*\x01$/.test(mmessage))
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
