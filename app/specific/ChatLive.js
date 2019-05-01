@@ -247,22 +247,22 @@ function ChatLive_loadChatSuccess(message) {
         }
     }
 
-    var tokenizedMessage = emoticonize(mmessage, emotes);
+    div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
+
+    ChatLive_LineAdd(div);
+}
+//    var tokenizedMessage = [message];
+function ChatLive_extraMessageTokenize(tokenizedMessage) {
 
     for (var i = 0; i < tokenizedMessage.length; i++) {
         if (typeof tokenizedMessage[i] === 'string') {
-            tokenizedMessage[i] = extraMessageTokenize(tags, tokenizedMessage[i]);
+            tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i]);
         } else {
             tokenizedMessage[i] = tokenizedMessage[i][0];
         }
     }
 
-    message = tokenizedMessage.join(' ');
-    message = twemoji.parse(message, true, true);
-
-    div += '<span class="message">' + message + '</span>';
-
-    ChatLive_LineAdd(div);
+    return twemoji.parse(tokenizedMessage.join(' '), true, true);
 }
 
 function ChatLive_LineAdd(message) {

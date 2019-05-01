@@ -1,6 +1,6 @@
 // The bellow are some function or adptations of function from
 // https://www.nightdev.com/kapchat/
-function extraEmoticonize(sender, message, emote) {
+function extraEmoticonize(message, emote) {
     if (emote.restrictions) {
         if (emote.restrictions.channels && emote.restrictions.channels.length && emote.restrictions.channels.indexOf(Main_values.Play_selectedChannel) === -1) return message;
 
@@ -23,22 +23,22 @@ function mescape(message) {
     return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function extraMessageTokenize(sender, message) {
+function extraMessageTokenize(message) {
     var tokenizedString = message.split(' ');
 
     for (var i = 0; i < tokenizedString.length; i++) {
-        var piece = tokenizedString[i];
+        message = tokenizedString[i];
 
-        var test = piece.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
-        var emote = extraEmotes[test] || extraEmotes[piece];
+        var test = message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
+        var emote = extraEmotes[test] || extraEmotes[message];
 
         if (emote) {
-            piece = extraEmoticonize(sender, piece, emote);
+            message = extraEmoticonize(message, emote);
         } else {
-            piece = mescape(piece);
+            message = mescape(message);
         }
 
-        tokenizedString[i] = piece;
+        tokenizedString[i] = message;
     }
 
     return tokenizedString.join(' ');
