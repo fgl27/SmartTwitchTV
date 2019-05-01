@@ -84,7 +84,10 @@ function UserHost_loadChannels() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
         '/followed/hosting?limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
 
-    BasehttpGet(theUrl, UserHost_loadingDataTimeout, 2, null, UserHost_loadDataSuccess, UserHost_loadDataError);
+    if (Main_Android && !UserHost_itemsCount)
+        BaseAndroidhttpGet(theUrl, UserHost_loadingDataTimeout, 2, null, UserHost_loadDataSuccess, UserHost_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, UserHost_loadingDataTimeout, 2, null, UserHost_loadDataSuccess, UserHost_loadDataError, false);
 }
 
 function UserHost_loadDataError() {

@@ -93,7 +93,10 @@ function Vod_loadDataRequest() {
         '&period=' + Vod_period +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    BasehttpGet(theUrl, Vod_loadingDataTimeout, 2, null, Vod_loadDataSuccess, Vod_loadDataError);
+    if (Main_Android && !Vod_itemsCount)
+        BaseAndroidhttpGet(theUrl, Vod_loadingDataTimeout, 2, null, Vod_loadDataSuccess, Vod_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, Vod_loadingDataTimeout, 2, null, Vod_loadDataSuccess, Vod_loadDataError, false);
 }
 
 function Vod_loadDataError() {

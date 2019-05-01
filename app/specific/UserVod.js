@@ -98,7 +98,7 @@ function UserVod_loadDataRequest() {
         '&offset=' + offset;
     var xmlHttp;
 
-    if (Main_Android) {
+    if (Main_Android && !UserVod_itemsCount) {
 
         xmlHttp = Android.mreadUrl(theUrl, UserVod_loadingDataTimeout, 3,
             Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token);
