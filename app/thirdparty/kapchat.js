@@ -11,11 +11,11 @@ function extraEmoticonize(message, emote) {
 }
 
 function extraEmoteTemplate(emote) {
-    return '<img class="emoticon" src="' + emote['1x'] + '" srcset="' + emote['2x'] + ' 2x, ' + emote['3x'] + ' 4x" />';
+    return '<img class="emoticon" src="' + emote['3x'] + '"/>';
 }
 
 function emoteTemplate(id) {
-    return '<img class="emoticon" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/1.0" srcset="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0 4x" />';
+    return '<img class="emoticon" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0"/>';
 }
 
 

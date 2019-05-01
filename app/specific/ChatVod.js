@@ -10,7 +10,7 @@ var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
 var Chat_title = '';
-var defaultColors = ["ff0000", "ff4000", "ff8000", "ffbf00", "ffff00", "bfff00", "80ff00", "40ff00", "00ff00", "00ff40", "00ff80", "00ffbf", "00ffff", "00bfff", "0080ff", "0040ff", "ff00ff", "ff00bf", "ff0080", "ff0040"];
+var defaultColors = ["fe2424", "fc5a24", "ff9020", "fEc723", "ffff1d", "bfff00", "c3ff12", "56fe1d", "1eff1e", "16ff51", "00ff80", "00ffbf", "00ffff", "1dc6ff", "158aff", "3367ff", "ff4dff", "ff4ad2", "ff62b1", "ff4272"];
 var defaultColorsLength = defaultColors.length;
 var Chat_div;
 var Chat_Position = 0;
@@ -84,18 +84,7 @@ function Chat_loadEmotesError() {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    data = JSON.parse(data);
-    data.emotes.forEach(function(emote) {
-        extraEmotes[emote.code] = {
-            restrictions: emote.restrictions,
-            code: emote.code,
-            source: 'bttv',
-            id: emote.id,
-            '1x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x'),
-            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x'),
-            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-        };
-    });
+    ChatLive_loadEmotes(JSON.parse(data));
 
     Chat_LoadGlobal = true;
 }
@@ -190,18 +179,7 @@ function Chat_loadEmotesChannelError(id) {
 }
 
 function Chat_loadEmotesChannelSuccess(data, id) {
-    data = JSON.parse(data);
-    data.emotes.forEach(function(emote) {
-        extraEmotes[emote.code] = {
-            restrictions: emote.restrictions,
-            code: emote.code,
-            source: 'bttv',
-            id: emote.id,
-            '1x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x'),
-            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x'),
-            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-        };
-    });
+    ChatLive_loadEmotes(JSON.parse(data));
 
     extraEmotesDone[Main_values.Main_selectedChannel_id] = 1;
     if (Chat_Id === id) Chat_loadChat();
