@@ -81,7 +81,10 @@ function SearchLive_loadDataRequest() {
     var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
 
-    BasehttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError);
+    if (Main_Android && !SearchLive_itemsCount)
+        BaseAndroidhttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError, false);
 }
 
 function SearchLive_loadDataError() {

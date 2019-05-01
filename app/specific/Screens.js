@@ -104,7 +104,6 @@ function Screens_loadDataRequest() {
         BaseAndroidhttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError);
     else
         BasexmlHttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError, false);
-
 }
 
 function Screens_loadDataError() {

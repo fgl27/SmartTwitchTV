@@ -82,7 +82,10 @@ function SearchChannels_loadDataRequest() {
     var theUrl = 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
         '&limit=' + Main_ItemsLimitChannel + '&offset=' + offset;
 
-    BasehttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError);
+    if (Main_Android && !SearchChannels_itemsCount)
+        BaseAndroidhttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError, false);
 }
 
 function SearchChannels_loadDataError() {

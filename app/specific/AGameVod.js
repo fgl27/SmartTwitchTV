@@ -95,7 +95,10 @@ function AGameVod_loadDataRequest() {
         '&period=' + AGameVod_period +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
 
-    BasehttpGet(theUrl, AGameVod_loadingDataTimeout, 2, null, AGameVod_loadDataSuccess, AGameVod_loadDataError);
+    if (Main_Android && !AGameVod_itemsCount)
+        BaseAndroidhttpGet(theUrl, AGameVod_loadingDataTimeout, 2, null, AGameVod_loadDataSuccess, AGameVod_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, AGameVod_loadingDataTimeout, 2, null, AGameVod_loadDataSuccess, AGameVod_loadDataError, false);
 }
 
 function AGameVod_loadDataError() {

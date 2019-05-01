@@ -98,7 +98,10 @@ function AGame_loadDataRequest() {
         '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
 
-    BasehttpGet(theUrl, AGame_loadingDataTimeout, 2, null, AGame_loadDataSuccess, AGame_loadDataError);
+    if (Main_Android && !AGame_itemsCount)
+        BaseAndroidhttpGet(theUrl, AGame_loadingDataTimeout, 2, null, AGame_loadDataSuccess, AGame_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, AGame_loadingDataTimeout, 2, null, AGame_loadDataSuccess, AGame_loadDataError, false);
 }
 
 function AGame_loadDataError() {

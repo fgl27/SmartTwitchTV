@@ -97,7 +97,10 @@ function ChannelVod_loadDataRequest() {
         encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitVideo +
         '&broadcast_type=' + (ChannelVod_highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + offset;
 
-    BasehttpGet(theUrl, ChannelVod_loadingDataTimeout, 2, null, ChannelVod_loadDataSuccess, ChannelVod_loadDataError);
+    if (Main_Android && !ChannelVod_itemsCount)
+        BaseAndroidhttpGet(theUrl, ChannelVod_loadingDataTimeout, 2, null, ChannelVod_loadDataSuccess, ChannelVod_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, ChannelVod_loadingDataTimeout, 2, null, ChannelVod_loadDataSuccess, ChannelVod_loadDataError, false);
 }
 
 function ChannelVod_loadDataError() {
