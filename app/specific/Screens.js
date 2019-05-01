@@ -100,7 +100,11 @@ function Screens_loadDataPrepare() {
 
 function Screens_loadDataRequest() {
     inUseObj.set_url();
-    BasehttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError);
+    if (Main_Android && !inUseObj.itemsCount)
+        BaseAndroidhttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError);
+    else
+        BasexmlHttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError, false);
+
 }
 
 function Screens_loadDataError() {
