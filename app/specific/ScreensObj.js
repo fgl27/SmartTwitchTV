@@ -315,6 +315,7 @@ function ScreensObj_InitChannelClip() {
             Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
             Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             this.lastselectedChannel = Main_values.Main_selectedChannel;
+            Main_ShowElement(inUseObj.ids[10]);
         },
         label_exit: Main_RestoreTopLabel,
     }, Base_obj);
