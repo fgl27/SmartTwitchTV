@@ -251,7 +251,7 @@ function ChatLive_loadChatSuccess(message) {
 
     ChatLive_LineAdd(div);
 }
-//    var tokenizedMessage = [message];
+
 function ChatLive_extraMessageTokenize(tokenizedMessage) {
 
     for (var i = 0; i < tokenizedMessage.length; i++) {
