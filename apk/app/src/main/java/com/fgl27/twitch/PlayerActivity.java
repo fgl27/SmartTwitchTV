@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -344,7 +345,9 @@ public class PlayerActivity extends Activity {
         websettings.setAllowFileAccessFromFileURLs(true);
         websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         mwebview.clearCache(true);
+        mwebview.clearHistory();
 
         //To load page from assets
         //mwebview.loadUrl("file:///android_asset/index.html");
@@ -464,6 +467,13 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String getversion() {
             return BuildConfig.VERSION_NAME;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void clearCookie() {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
         }
     }
 
