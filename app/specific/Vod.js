@@ -247,7 +247,7 @@ function Vod_loadDataSuccessFinish() {
         Main_HideLoadDialog();
     } else {
         Main_imgVectorLoad(IMG_404_VIDEO);
-        Main_CounterDialog(Vod_cursorX, Vod_cursorY, Main_ColoumnsCountVideo, Vod_itemsCount);
+        Vod_addFocus(true);
     }
 
     if (Vod_emptyCellVector.length > 0 && !Vod_dataEnded) {
@@ -331,12 +331,12 @@ function Vod_loadDataSuccessReplace(responseText) {
     Vod_loadDataSuccessFinish();
 }
 
-function Vod_addFocus() {
+function Vod_addFocus(forceScroll) {
     if (Vod_cursorY < 0) {
         Vod_addFocusFallow();
         return;
     }
-    Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount);
+    Main_addFocusVideo(Vod_cursorY, Vod_cursorX, Vod_ids, Main_ColoumnsCountVideo, Vod_itemsCount, forceScroll);
     Vod_AnimateThumb(Vod_ids, Vod_cursorY + '_' + Vod_cursorX);
     if (((Vod_cursorY + Main_ItemsReloadLimitVideo) > (Vod_itemsCount / Main_ColoumnsCountVideo)) &&
         !Vod_dataEnded && !Vod_loadingData) {

@@ -180,7 +180,7 @@ function UserHost_loadDataSuccessFinish() {
             UserHost_loadDataReplace();
             return;
         } else {
-            Main_CounterDialog(UserHost_cursorX, UserHost_cursorY, Main_ColoumnsCountVideo, UserHost_itemsCount);
+            UserHost_addFocus(true);
             UserHost_emptyCellVector = [];
         }
     }
@@ -255,8 +255,8 @@ function UserHost_loadDataSuccessReplace(responseText) {
     UserHost_loadDataSuccessFinish();
 }
 
-function UserHost_addFocus() {
-    Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_ColoumnsCountVideo, UserHost_itemsCount);
+function UserHost_addFocus(forceScroll) {
+    Main_addFocusVideo(UserHost_cursorY, UserHost_cursorX, UserHost_ids, Main_ColoumnsCountVideo, UserHost_itemsCount, forceScroll);
 
     if (((UserHost_cursorY + Main_ItemsReloadLimitVideo) > (UserHost_itemsCount / Main_ColoumnsCountVideo)) &&
         !UserHost_dataEnded && !UserHost_loadingData) {

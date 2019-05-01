@@ -178,7 +178,7 @@ function SearchLive_loadDataSuccessFinish() {
             SearchLive_loadDataReplace();
             return;
         } else {
-            Main_CounterDialog(SearchLive_cursorX, SearchLive_cursorY, Main_ColoumnsCountVideo, SearchLive_itemsCount);
+            SearchLive_addFocus(true);
             SearchLive_emptyCellVector = [];
         }
     }
@@ -253,8 +253,8 @@ function SearchLive_loadDataSuccessReplace(responseText) {
     SearchLive_loadDataSuccessFinish();
 }
 
-function SearchLive_addFocus() {
-    Main_addFocusVideo(SearchLive_cursorY, SearchLive_cursorX, SearchLive_ids, Main_ColoumnsCountVideo, SearchLive_itemsCount);
+function SearchLive_addFocus(forceScroll) {
+    Main_addFocusVideo(SearchLive_cursorY, SearchLive_cursorX, SearchLive_ids, Main_ColoumnsCountVideo, SearchLive_itemsCount, forceScroll);
 
     if (((SearchLive_cursorY + Main_ItemsReloadLimitVideo) > (SearchLive_itemsCount / Main_ColoumnsCountVideo)) &&
         !SearchLive_dataEnded && !SearchLive_loadingData) {

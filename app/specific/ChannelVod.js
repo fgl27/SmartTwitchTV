@@ -214,7 +214,7 @@ function ChannelVod_loadDataSuccessFinish() {
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_CounterDialog(ChannelVod_cursorX, ChannelVod_cursorY, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
+        ChannelVod_addFocus(true);
         Main_imgVectorLoad(IMG_404_VIDEO);
     }
 
@@ -297,12 +297,12 @@ function ChannelVod_loadDataSuccessReplace(responseText) {
     ChannelVod_loadDataSuccessFinish();
 }
 
-function ChannelVod_addFocus() {
+function ChannelVod_addFocus(forceScroll) {
     if (ChannelVod_cursorY < 0) {
         ChannelVod_addFocusFallow();
         return;
     }
-    Main_addFocusVideo(ChannelVod_cursorY, ChannelVod_cursorX, ChannelVod_ids, Main_ColoumnsCountVideo, ChannelVod_itemsCount);
+    Main_addFocusVideo(ChannelVod_cursorY, ChannelVod_cursorX, ChannelVod_ids, Main_ColoumnsCountVideo, ChannelVod_itemsCount, forceScroll);
 
     Vod_AnimateThumb(ChannelVod_ids, ChannelVod_cursorY + '_' + ChannelVod_cursorX);
 

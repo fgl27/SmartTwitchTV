@@ -220,7 +220,7 @@ function AGame_loadDataSuccessFinish() {
             AGame_loadDataReplace();
             return;
         } else {
-            Main_CounterDialog(AGame_cursorX, AGame_cursorY, Main_ColoumnsCountVideo, AGame_itemsCount);
+            AGame_addFocus(true);
             AGame_emptyCellVector = [];
         }
     }
@@ -351,12 +351,12 @@ function AGame_loadDataSuccessReplace(responseText) {
     AGame_loadDataSuccessFinish();
 }
 
-function AGame_addFocus() {
+function AGame_addFocus(forceScroll) {
     if (AGame_cursorY < 0) {
         AGame_addFocusFallow();
         return;
     }
-    Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount);
+    Main_addFocusVideo(AGame_cursorY, AGame_cursorX, AGame_ids, Main_ColoumnsCountVideo, AGame_itemsCount, forceScroll);
 
     if (((AGame_cursorY + Main_ItemsReloadLimitVideo) > (AGame_itemsCount / Main_ColoumnsCountVideo)) &&
         !AGame_dataEnded && !AGame_loadingData) {

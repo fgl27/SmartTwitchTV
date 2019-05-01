@@ -255,7 +255,7 @@ function UserVod_loadDataSuccessFinish() {
         Main_HideLoadDialog();
     } else {
         Main_imgVectorLoad(IMG_404_VIDEO);
-        Main_CounterDialog(UserVod_cursorX, UserVod_cursorY, Main_ColoumnsCountVideo, UserVod_itemsCount);
+        UserVod_addFocus(true);
     }
 
     if (UserVod_emptyCellVector.length > 0 && !UserVod_dataEnded) {
@@ -384,12 +384,12 @@ function UserVod_loadDataSuccessReplace(responseText) {
     UserVod_loadDataSuccessFinish();
 }
 
-function UserVod_addFocus() {
+function UserVod_addFocus(forceScroll) {
     if (UserVod_cursorY < 0) {
         UserVod_addFocusFallow();
         return;
     }
-    Main_addFocusVideo(UserVod_cursorY, UserVod_cursorX, UserVod_ids, Main_ColoumnsCountVideo, UserVod_itemsCount);
+    Main_addFocusVideo(UserVod_cursorY, UserVod_cursorX, UserVod_ids, Main_ColoumnsCountVideo, UserVod_itemsCount, forceScroll);
 
     Vod_AnimateThumb(UserVod_ids, UserVod_cursorY + '_' + UserVod_cursorX);
 

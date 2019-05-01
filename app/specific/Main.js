@@ -839,10 +839,10 @@ function Main_CantClick() {
     return !Main_LastClickFinish || !Main_addFocusFinish;
 }
 
-function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
+function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount, forceScroll) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-    if (Main_YchangeAddFocus(y)) {
+    if (Main_YchangeAddFocus(y) || forceScroll) {
 
         if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
@@ -854,10 +854,10 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount) {
     } else Main_handleKeyUp();
 }
 
-function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount) {
+function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount, forceScroll) {
     Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
     Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-    if (Main_YchangeAddFocus(y)) {
+    if (Main_YchangeAddFocus(y) || forceScroll) {
 
         if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
         else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
