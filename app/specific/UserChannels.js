@@ -176,13 +176,16 @@ function UserChannels_loadDataSuccessFinish() {
         Main_ShowElement(UserChannels_ids[6]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
-    } else Main_imgVectorLoad(IMG_404_LOGO);
+    } else {
+        UserChannels_addFocus(true);
+        Main_imgVectorLoad(IMG_404_LOGO);
+    }
     UserChannels_loadingData = false;
-    Main_CounterDialog(UserChannels_cursorX, UserChannels_cursorY, Main_ColoumnsCountChannel, UserChannels_itemsCount);
+
 }
 
-function UserChannels_addFocus() {
-    Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_ColoumnsCountChannel, UserChannels_itemsCount);
+function UserChannels_addFocus(forceScroll) {
+    Main_addFocusChannel(UserChannels_cursorY, UserChannels_cursorX, UserChannels_ids, Main_ColoumnsCountChannel, UserChannels_itemsCount, forceScroll);
 
     if (((UserChannels_cursorY + Main_ItemsReloadLimitChannel) > (UserChannels_itemsCount / Main_ColoumnsCountChannel)) &&
         !UserChannels_dataEnded && !UserChannels_loadingData) {

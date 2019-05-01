@@ -179,7 +179,7 @@ function SearchChannels_loadDataSuccessFinish() {
             SearchChannels_loadDataReplace();
             return;
         } else {
-            Main_CounterDialog(SearchChannels_cursorX, SearchChannels_cursorY, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
+            SearchChannels_addFocus(true);
             SearchChannels_emptyCellVector = [];
         }
     }
@@ -248,8 +248,8 @@ function SearchChannels_loadDataSuccessReplace(responseText) {
     SearchChannels_loadDataSuccessFinish();
 }
 
-function SearchChannels_addFocus() {
-    Main_addFocusChannel(SearchChannels_cursorY, SearchChannels_cursorX, SearchChannels_ids, Main_ColoumnsCountChannel, SearchChannels_itemsCount);
+function SearchChannels_addFocus(forceScroll) {
+    Main_addFocusChannel(SearchChannels_cursorY, SearchChannels_cursorX, SearchChannels_ids, Main_ColoumnsCountChannel, SearchChannels_itemsCount, forceScroll);
 
     if (((SearchChannels_cursorY + Main_ItemsReloadLimitChannel) > (SearchChannels_itemsCount / Main_ColoumnsCountChannel)) &&
         !SearchChannels_dataEnded && !SearchChannels_loadingData) {
