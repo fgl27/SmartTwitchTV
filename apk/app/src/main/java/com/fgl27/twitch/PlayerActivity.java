@@ -100,7 +100,7 @@ public class PlayerActivity extends Activity {
         if (!onCreateReady) {
             onCreateReady = true;
             setContentView(R.layout.activity_player);
-            url = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/temp.mp4";
+            url = "file:///android_asset/temp.mp4";
 
             dataSourceFactory =
                     new DefaultDataSourceFactory(
