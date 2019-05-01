@@ -332,7 +332,9 @@ function Screens_addFocus() {
         Screens_loadDataRequest();
     } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
         Main_imgVectorRst();
-        inUseObj.loadDataSuccess();
+        Main_ready(function() {
+            inUseObj.loadDataSuccess();
+        });
     }
 
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
