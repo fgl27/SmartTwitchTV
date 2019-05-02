@@ -869,7 +869,12 @@ function Main_addFocusGame(y, x, idArray, ColoumnsCount, itemsCount) {
     } else Main_handleKeyUp();
 }
 
+function Main_ThumbOpenIsNull(id, thumbnail) {
+    return document.getElementById(thumbnail + id) === null;
+}
+
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
+    if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
@@ -896,6 +901,7 @@ function Main_openStream() {
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
+    if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     ChannelClip_playUrl = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
@@ -928,6 +934,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
+    if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);

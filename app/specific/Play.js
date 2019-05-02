@@ -1521,7 +1521,9 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(1);
                 else if (Play_isPanelShown()) Play_BottomOptionsPressed(1);
                 else if (UserLiveFeed_isFeedShow()) {
-                    if (Main_values.Play_selectedChannel !== JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0]) {
+                    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+                    if (doc === null) UserLiveFeed_ResetFeedId();
+                    else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
                         Play_PreshutdownStream();
                         Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                     } else UserLiveFeed_ResetFeedId();
