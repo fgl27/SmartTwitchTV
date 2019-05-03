@@ -192,6 +192,8 @@ public class PlayerActivity extends Activity {
 
     private void showLoading() {
         if (spinner.getVisibility() != View.VISIBLE) {
+            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
+            // to know how much time takes to load
             spinner.startAnimation(rotation);
             spinner.setVisibility(View.VISIBLE);
         }
