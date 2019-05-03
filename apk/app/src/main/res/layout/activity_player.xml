@@ -22,11 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/loading"
+    <ImageView
+        android:contentDescription="@string/app_name"
+        android:id="@+id/spinner"
         android:focusable="false"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        app:indicatorName="BallClipRotateMultipleIndicator" />
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/spin"
+        android:layout_gravity="center"/>
+      
 </FrameLayout>

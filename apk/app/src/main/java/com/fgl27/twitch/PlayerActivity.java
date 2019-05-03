@@ -11,19 +11,23 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.fgl27.twitch.helpers.ResponseUtils;
 import com.fgl27.twitch.helpers.Streams;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -46,7 +50,6 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,8 +60,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
-
-import com.fgl27.twitch.BuildConfig;
 
 public class PlayerActivity extends Activity {
     private static final String TAG = PlayerActivity.class.getName();
@@ -85,7 +86,9 @@ public class PlayerActivity extends Activity {
     private long mResumePosition;
 
     public static String url;
-    private AVLoadingIndicatorView loading;
+
+    private ImageView spinner;
+    private Animation rotation;
 
     public WebView mwebview;
     public Context mcontext;
@@ -105,8 +108,12 @@ public class PlayerActivity extends Activity {
             dataSourceFactory =
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
-            loading = findViewById(R.id.loading);
+
+            spinner = findViewById(R.id.spinner);
+            rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
+
             hideLoading();
+
             simpleExoPlayerView = findViewById(R.id.player_view);
             shouldAutoPlay = false;
 
@@ -169,16 +176,24 @@ public class PlayerActivity extends Activity {
 
     private void hideLoading() {
         loadingcanshow = false;
-        loading.setVisibility(View.GONE);
+        spinner.setVisibility(View.GONE);
+        spinner.clearAnimation();
     }
 
     private void showLoading(boolean runnow) {
-        if (runnow) loading.setVisibility(View.VISIBLE);
+        if (runnow) showLoading();
         else {
             //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (loadingcanshow) loading.setVisibility(View.VISIBLE);
+                if (loadingcanshow) showLoading();
             }, 650);
+        }
+    }
+
+    private void showLoading() {
+        if (spinner.getVisibility() != View.VISIBLE) {
+            spinner.startAnimation(rotation);
+            spinner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -232,10 +247,9 @@ public class PlayerActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
-                    return true;
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
+                return true;
             }
 
         }
@@ -245,10 +259,9 @@ public class PlayerActivity extends Activity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
-                    return true;
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
+                return true;
             }
 
         }

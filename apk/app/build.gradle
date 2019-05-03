@@ -53,5 +53,4 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:' + versions.exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-dash:' + versions.exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-ui:' + versions.exoplayer
-    implementation 'com.wang.avi:library:' + versions.wang
 }
