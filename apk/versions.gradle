@@ -11,5 +11,4 @@ ext.versions = [
         gradlePlugin         : '3.4.0',
         benmanes             : '0.21.0',
         exoplayer            : '2.9.6',
-        wang                 : '2.1.3',
 ]
