@@ -45,7 +45,7 @@ function en_USLang() {
     STR_PAST_HIGHL = " Highlight";
     STR_CLIPS = " Clips";
     STR_CONTENT = " Content";
-    STR_STREAM_ON = "Streamed on ";
+    STR_STREAM_ON = "Streamed ";
     STR_DURATION = "Duration ";
     STR_VIEWS = " Views";
     STR_VIEWER = " Viewers";
@@ -179,7 +179,7 @@ function en_USLang() {
     STR_STREAM_END = "exiting in ";
     STR_STREAM_END_EXIT = 'press "Return" to exit';
     STR_FEATURED = 'Featured';
-    STR_CREATED_AT = "Created at ";
+    STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
     STR_NO_BROADCAST = "No Broadcast";
     STR_NO_BROADCAST_WARNING = "There is no Past Broadcast for this clip";

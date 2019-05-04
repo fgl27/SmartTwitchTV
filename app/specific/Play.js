@@ -683,18 +683,7 @@ function Play_timeS(time) {
 }
 
 function Play_timeMs(time) {
-    var seconds, minutes, hours;
-
-    seconds = Play_lessthanten(parseInt(time / 1000) % 60);
-
-    time = Math.floor(time / 1000 / 60);
-    minutes = Play_lessthanten(time % 60);
-
-    time = Math.floor(time / 60);
-    hours = Play_lessthanten(time);
-
-    //final time 00:00 or 00:00:00
-    return (!time) ? (minutes + ":" + seconds) : (hours + ":" + minutes + ":" + seconds);
+    return Play_timeS(parseInt(time / 1000));
 }
 
 function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
@@ -850,7 +839,7 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
-    Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : Play_created));
+    Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 }
 
 function Play_clearHidePanel() {
