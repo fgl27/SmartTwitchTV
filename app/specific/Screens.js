@@ -139,26 +139,27 @@ function Screens_loadDataSuccess() {
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
     else if (!inUseObj.loadingData) inUseObj.dataEnded = true;
 
+    var doc = document.getElementById(inUseObj.table);
+
+    if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) {
+        inUseObj.TopRowCreated = true;
+        inUseObj.row = document.createElement('div');
+        var thumbfallow = '<i class="icon-history stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
+        Main_td = document.createElement('div');
+        Main_td.setAttribute('id', inUseObj.ids[8] + 'y_0');
+        Main_td.className = 'stream_cell_period';
+        Main_td.innerHTML = '<div id="' + inUseObj.ids[0] +
+            'y_0" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+            'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        inUseObj.row.appendChild(Main_td);
+        doc.appendChild(inUseObj.row);
+    }
+
     if (response_items) {
+
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
 
         var max_row = inUseObj.row_id + response_rows;
-
-        var doc = document.getElementById(inUseObj.table);
-
-        if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) {
-            inUseObj.TopRowCreated = true;
-            inUseObj.row = document.createElement('div');
-            var thumbfallow = '<i class="icon-history stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
-            Main_td = document.createElement('div');
-            Main_td.setAttribute('id', inUseObj.ids[8] + 'y_0');
-            Main_td.className = 'stream_cell_period';
-            Main_td.innerHTML = '<div id="' + inUseObj.ids[0] +
-                'y_0" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
-                'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-            inUseObj.row.appendChild(Main_td);
-            doc.appendChild(inUseObj.row);
-        }
 
         for (inUseObj.row_id; inUseObj.row_id < max_row;) {
 
@@ -320,6 +321,10 @@ function Screens_loadDataSuccessFinish() {
 }
 
 function Screens_addFocus() {
+    if (inUseObj.emptyContent) {
+        if (inUseObj.HasSwitches) inUseObj.posY = -1;
+        else return;
+    }
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
         return;
@@ -372,7 +377,7 @@ function Screens_KeyUpDown(y) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
         inUseObj.posY = -1;
         Screens_addFocusFallow();
-    } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1) {
+    } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1 && (Main_ThumbNull(0, inUseObj.posX, inUseObj.ids[0]))) {
         inUseObj.posY = 0;
         Screens_addFocus();
         Screens_removeFocusFallow();
