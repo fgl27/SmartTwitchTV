@@ -191,7 +191,7 @@ function ChannelContent_loadDataSuccess() {
                 twemoji.parse(stream.channel.status), stream.game,
                 Main_is_playlist(JSON.stringify(stream.stream_type)) +
                 hosting + stream.channel.display_name,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_AGO + ', ' + STR_FOR +
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR +
                 Main_addCommas(stream.viewers) + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)));
             coloumn_id++;

@@ -120,7 +120,7 @@ function ScreensObj_InitLive() {
                     [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
                         cell.channel.status, cell.game,
-                        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                        STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
                         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
@@ -173,7 +173,7 @@ function ScreensObj_InitFeatured() {
                     [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                         Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
                         cell.channel.status, cell.game,
-                        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_AGO + ', ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                        STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
                         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                     ]));
 
