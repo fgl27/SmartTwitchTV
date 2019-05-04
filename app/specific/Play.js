@@ -195,7 +195,7 @@ function Play_SetChatFont() {
 
 function Play_Start() {
     Play_showBufferDialog();
-    Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
+    Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-circle" style="color: red; font-size: 105%; "></i></div><div style="display: inline-block">' + STR_SPACE + STR_LIVE.toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
@@ -217,7 +217,7 @@ function Play_Start() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
-    Main_textContent("stream_live_time", STR_SINCE + Play_created + STR_AGO);
+    Main_textContent("stream_live_time", STR_SINCE + Play_created);
     Main_HideElement('progress_pause_holder');
 
     Play_EndSet(1);
@@ -310,7 +310,7 @@ function Play_updateStreamInfoStartValues(response) {
         Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status));
         Main_values.Play_gameSelected = response.stream.game;
-        Play_Lang = ', [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
+        Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected + STR_FOR +
             Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
         Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
@@ -850,7 +850,7 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
-    Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : Play_created) + STR_AGO);
+    Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : Play_created));
 }
 
 function Play_clearHidePanel() {

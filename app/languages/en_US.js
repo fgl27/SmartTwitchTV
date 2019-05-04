@@ -26,7 +26,6 @@ function en_USLang() {
     STR_FOR = " for ";
     STR_WATCHING = "Watching time ";
     STR_SINCE = "Since ";
-    STR_AGO = " ago";
     STR_AGAME = "A Game";
     STR_PLACEHOLDER_SEARCH = "Type your search...";
     STR_PLACEHOLDER_OAUTH = "Type your authentication key...";
