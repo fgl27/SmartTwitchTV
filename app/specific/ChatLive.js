@@ -128,7 +128,6 @@ function ChatLive_loadEmotesChannelSuccess(data, id) {
 function ChatLive_loadEmotes(data) {
     data.emotes.forEach(function(emote) {
         extraEmotes[emote.code] = {
-            restrictions: emote.restrictions,
             code: emote.code,
             id: emote.id,
             '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
