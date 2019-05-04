@@ -24,7 +24,7 @@ I have started this project because the above Repos of the app did not fully sup
 
 So I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch.TV featuring, with the help of some users reporting bugs and making featuring request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch.TV content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request, for that use the [open a issue option of this repo](https://github.com/fgl27/SmartTwitchTV/issues/new/choose).
 
-Project Dependencies
+Project Web Dependencies
 ==============
 * [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
 * [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
@@ -34,6 +34,9 @@ Project Dependencies
 * [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
 * [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
+
+[Project Android Dependencies](https://github.com/fgl27/SmartTwitchTV/tree/master/apk#project-dependencies)
+==============
 
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
 The application never stops receiving updates the bellow images can be outdated

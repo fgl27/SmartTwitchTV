@@ -25,4 +25,3 @@ Project Dependencies
 * [Google: Leanback v17](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
 * [Google: ExoPlayer](https://github.com/google/ExoPlayer)
 * [ben-manes: gradle-versions-plugin](https://github.com/ben-manes/gradle-versions-plugin)
-* [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView/)
