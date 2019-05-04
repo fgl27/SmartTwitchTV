@@ -117,6 +117,7 @@ function Screens_loadDataError() {
             inUseObj.FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            inUseObj.key_exit();
         } else inUseObj.dataEnded = true;
     }
 }
@@ -323,7 +324,10 @@ function Screens_loadDataSuccessFinish() {
 function Screens_addFocus() {
     if (inUseObj.emptyContent) {
         if (inUseObj.HasSwitches) inUseObj.posY = -1;
-        else return;
+        else {
+            inUseObj.key_exit();
+            return;
+        }
     }
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
