@@ -21,6 +21,8 @@ var ChannelContent_thumbnail = '';
 var ChannelContent_thumbnail_fallow = '';
 var ChannelContent_ChannelValue = {};
 var ChannelContent_ChannelValueIsset = false;
+var ChannelContent_offline_image = null;
+var ChannelContent_profile_banner = '';
 //Variable initialization end
 
 function ChannelContent_init() {
@@ -52,6 +54,7 @@ function ChannelContent_exit() {
 function ChannelContent_StartLoad() {
     Main_empty('stream_table_channel_content');
     Main_HideElement(ChannelContent_ids[10]);
+    ChannelContent_offline_image = null;
     Main_showLoadDialog();
     Main_HideWarningDialog();
     ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
@@ -146,6 +149,9 @@ function ChannelContent_GetStreamerInfo() {
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
     var channel = JSON.parse(responseText);
+    ChannelContent_offline_image = channel.video_banner;
+    ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
+    ChannelContent_profile_banner = channel.profile_banner;
     ChannelContent_selectedChannelViews = channel.views;
     ChannelContent_selectedChannelFallower = channel.followers;
     ChannelContent_description = channel.description;
@@ -160,6 +166,8 @@ function ChannelContent_GetStreamerInfoError() {
         ChannelContent_loadingDataTimeout += 500;
         ChannelContent_GetStreamerInfo();
     } else {
+        ChannelContent_offline_image = null;
+        ChannelContent_profile_banner = IMG_404_BANNER;
         ChannelContent_selectedChannelViews = '';
         ChannelContent_selectedChannelFallower = '';
         ChannelContent_description = '';
@@ -168,17 +176,16 @@ function ChannelContent_GetStreamerInfoError() {
     }
 }
 
+//TODO improve te looks of this screen
 function ChannelContent_loadDataSuccess() {
     var row = document.createElement('tr'),
-        tbody = document.createElement('tbody'),
         coloumn_id = 0,
         doc = document.getElementById("stream_table_channel_content");
 
     Main_td = document.createElement('tr');
-    Main_td.className = 'follower_header';
-    Main_td.innerHTML = '<div class="follower_header">' + twemoji.parse(ChannelContent_description) + '</div>';
-
-    doc.appendChild(tbody);
+    Main_td.className = 'follower_banner';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
+        ChannelContent_ids[1] + 'x_0" class="stream_img_banner"></div>';
     doc.appendChild(Main_td);
 
     if (ChannelContent_responseText !== null) {
@@ -212,8 +219,19 @@ function ChannelContent_loadDataSuccess() {
     doc.appendChild(row);
 
     row = document.createElement('tr');
+
     row.appendChild(ChannelContent_createFallow('1_0',
         Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
+
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', ChannelContent_ids[8] + 'x_x');
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] +
+        'x_x" class="stream_thumbnail_video" ><div id="' +
+        ChannelContent_ids[4] + 'x_x" class="stream_channel_info">' +
+        twemoji.parse(ChannelContent_description) + '</div></div>';
+    row.appendChild(Main_td);
+
     doc.appendChild(row);
 
     ChannelContent_loadDataSuccessFinish();
@@ -294,6 +312,7 @@ function ChannelContent_loadDataSuccessFinish() {
         if (ChannelContent_thumbnail !== '')
             Main_loadImg(document.getElementById(ChannelContent_ids[1] + '0_0'),
                 ChannelContent_thumbnail, IMG_404_VIDEO);
+        Main_loadImg(document.getElementById(ChannelContent_ids[1] + 'x_0'), ChannelContent_profile_banner, IMG_404_BANNER);
         Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
         ChannelContent_addFocus();
         Main_SaveValues();
