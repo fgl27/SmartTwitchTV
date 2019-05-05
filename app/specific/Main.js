@@ -805,7 +805,7 @@ function Main_GameHtml(id, idArray, valuesArray) {
         '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' +
+        '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 100%; display: inline-block;">' +
         valuesArray[2] + '</div></div>';
 }
 
