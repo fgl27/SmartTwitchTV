@@ -19,6 +19,8 @@ var UserLive_status = false;
 var UserLive_followerChannels = '';
 var UserLive_OldUserName = '';
 var UserLive_itemsCountCheck = false;
+
+var UserLive_token = null;
 //Variable initialization end
 
 function UserLive_init() {
@@ -67,7 +69,14 @@ function UserLive_StartLoad() {
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
     UserLive_loadDataPrepare();
-    UserLive_loadChannels();
+    UserLive_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+    if (UserLive_token) {
+        UserLive_token = Main_OAuth + UserLive_token;
+        UserLive_loadChannelUserLive();
+    } else {
+        UserLive_token = null;
+        UserLive_loadChannels();
+    }
 }
 
 function UserLive_loadDataPrepare() {
@@ -94,6 +103,7 @@ function UserLive_loadDataError() {
             Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_CenterLablesStart(UserLive_handleKeyDown);
         } else {
             UserLive_dataEnded = true;
             UserLive_loadDataSuccessFinish();
@@ -132,10 +142,16 @@ function UserLive_loadChannelUserLive() {
         UserLive_dataEnded = true;
     }
 
-    var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
-        Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
+    var theUrl = 'https://api.twitch.tv/kraken/streams/';
 
-    BasehttpGet(theUrl, UserLive_loadingDataTimeout, 2, null, UserLive_loadDataSuccess, UserLive_loadDataErrorLive);
+    if (UserLive_token) {
+        theUrl += 'followed?';
+    } else {
+        theUrl += '?channel=' + encodeURIComponent(UserLive_followerChannels) + '&';
+    }
+    theUrl += 'limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
+
+    BasehttpGetItem(theUrl, UserLive_loadingDataTimeout, (UserLive_token ? 3 : 2), UserLive_token, UserLive_loadDataSuccess, UserLive_loadDataErrorLive, false, !UserLive_itemsCount);
 }
 
 function UserLive_loadDataErrorLive() {
@@ -145,8 +161,17 @@ function UserLive_loadDataErrorLive() {
         UserLive_loadChannelUserLive();
     } else {
         UserLive_loadingData = false;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+
+        if (!UserLive_itemsCount) {
+            Main_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_CenterLablesStart(UserLive_handleKeyDown);
+        } else {
+            UserLive_dataEnded = true;
+            UserLive_loadDataSuccessFinish();
+        }
+
     }
 }
 
@@ -240,10 +265,17 @@ function UserLive_loadChannelsReplace() {
         UserLive_dataEnded = true;
     }
 
-    var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLive_followerChannels) + '&limit=' +
-        Main_ItemsLimitReplace + '&offset=' + offset + '&stream_type=all';
+    var theUrl = 'https://api.twitch.tv/kraken/streams/';
 
-    BasehttpGet(theUrl, UserLive_loadingDataTimeout, 2, null, UserLive_loadDataSuccessReplace, UserLive_loadDataErrorReplace);
+    if (UserLive_token) {
+        theUrl += 'followed?';
+    } else {
+        theUrl += '?channel=' + encodeURIComponent(UserLive_followerChannels) + '&';
+    }
+    theUrl += 'followed?limit=limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&stream_type=all';
+
+    BasehttpGetItem(theUrl, UserLive_loadingDataTimeout, (UserLive_token ? 3 : 2), UserLive_token, UserLive_loadDataSuccessReplace, UserLive_loadDataErrorReplace, false, !UserLive_itemsCount);
+
 }
 
 function UserLive_loadDataErrorReplace() {
