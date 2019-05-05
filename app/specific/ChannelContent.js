@@ -285,7 +285,7 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
         ChannelContent_ids[1] + id + '" class="stream_img_fallow"></div>' +
-        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
+        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text_channel">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(ChannelContent_selectedChannelViews) +
         STR_VIEWS + '</div>' +
