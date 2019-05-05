@@ -943,18 +943,12 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
     Play_IncrementView = Main_values.ChannelVod_vodId[5];
     Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[0].substr(1);
-
-    if (Main_values.Main_Go === Main_ChannelVod) {
-        ChannelVod_title = document.getElementById(idsArray[3] + id).innerHTML;
-    } else {
-        ChannelVod_title = '';
-        Main_values.Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
-    }
+    Main_values.Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
 
     ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
     ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
     ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
-        ', ' + document.getElementById(idsArray[6] + id).textContent;
+        ' ' + document.getElementById(idsArray[6] + id).textContent;
 
     Main_openVod();
 }
