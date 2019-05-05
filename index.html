@@ -165,6 +165,12 @@
             width: 33.33%;
         }
 
+        div.stream_cell_banner {
+            padding: 4px;
+            position: relative;
+            width: 99%;
+        }
+
         div.stream_cell_period {
             padding: 4px;
             position: relative;
@@ -188,6 +194,7 @@
         }
 
         div.stream_thumbnail_video,
+        div.stream_thumbnail_banner,
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_channel {
@@ -200,6 +207,12 @@
         div.stream_thumbnail_video {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
+            background-repeat: no-repeat;
+        }
+
+        div.stream_thumbnail_banner {
+            /* height / width * 100% of Main.VideoSize*/
+            padding-bottom: 35.82%;
             background-repeat: no-repeat;
         }
 
@@ -331,6 +344,7 @@
         }
 
         div.stream_channel,
+        div.stream_channel_info,
         div.stream_channel_fallow_game {
             width: 100%;
             text-align: left;
@@ -339,6 +353,14 @@
             font-size: 85%;
             font-weight: bold;
             text-shadow: #000000 0 0 3.6px, #000000 0 0 3.6px, #000000 0 0 2.5px;
+        }
+
+        div.stream_channel_info {
+            width: 63vw;
+            margin: 0;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
         }
 
         div.stream_channel_fallow_game {
@@ -478,6 +500,18 @@
             font-size: 120%;
             margin-bottom: 0;
             margin-top: -5.2px;
+        }
+
+        .follower_banner {
+            width: 97vw;
+            height: 26vh;
+        }
+
+        img.stream_img_banner {
+            height: 26vh;
+
+            display: block;
+            margin: auto;
         }
 
         div.about_text_title {

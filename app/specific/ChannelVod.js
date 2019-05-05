@@ -170,7 +170,7 @@ function ChannelVod_loadDataSuccess(responseText) {
             // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
             if (!row_id && !coloumn_id && thumbnail_404) {
                 thumbnail_404 = false;
-                thumbnail = IMG_404_VIDEO;
+                thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO);
             }
 
             if (thumbnail_404 || ChannelVod_idObject[id]) coloumn_id--;
@@ -206,7 +206,7 @@ function ChannelVod_loadDataSuccessFinish() {
         if (ChannelVod_emptyContent) Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
         else {
             ChannelVod_status = true;
-            Main_imgVectorLoad(IMG_404_VIDEO);
+            Main_imgVectorLoad((ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO));
             ChannelVod_addFocus();
             Main_SaveValues();
         }
@@ -215,7 +215,7 @@ function ChannelVod_loadDataSuccessFinish() {
         Main_HideLoadDialog();
     } else {
         ChannelVod_addFocus(true);
-        Main_imgVectorLoad(IMG_404_VIDEO);
+        Main_imgVectorLoad((ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO));
     }
 
     if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {
