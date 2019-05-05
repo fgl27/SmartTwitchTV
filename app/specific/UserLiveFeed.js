@@ -12,6 +12,7 @@ var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
 var UserLiveFeed_imgVector = [];
 var UserLiveFeed_LastPos = null;
+var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -37,9 +38,20 @@ function UserLiveFeed_StartLoad() {
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
         UserLiveFeed_imgVector = [];
+
+        UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+
         Main_ready(function() {
             UserLiveFeed_loadDataPrepare();
-            UserLiveFeed_loadChannels();
+
+            if (UserLiveFeed_token) {
+                UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
+                UserLiveFeed_loadChannelUserLive();
+            } else {
+                UserLiveFeed_token = null;
+                UserLiveFeed_loadChannels();
+            }
+
         });
     }
 }
@@ -69,7 +81,7 @@ function UserLiveFeed_loadChannels() {
     var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at';
 
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
 }
 
 function UserLiveFeed_loadDataError() {
@@ -119,9 +131,17 @@ function UserLiveFeed_loadChannelLive(responseText) {
 }
 
 function UserLiveFeed_loadChannelUserLive() {
-    var theUrl = 'https://api.twitch.tv/kraken/streams/?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&limit=100&offset=0&stream_type=all';
+    var theUrl = 'https://api.twitch.tv/kraken/streams/';
 
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadDataSuccess, UserLiveFeed_loadDataErrorLive);
+    if (UserLiveFeed_token) {
+        theUrl += 'followed?';
+    } else {
+        theUrl += '?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&';
+    }
+    theUrl += 'limit=100&offset=0&stream_type=all';
+
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, (UserLiveFeed_token ? 3 : 2), UserLiveFeed_token, UserLiveFeed_loadDataSuccess, UserLiveFeed_loadDataErrorLive, false);
+
 }
 
 function UserLiveFeed_loadDataErrorLive() {

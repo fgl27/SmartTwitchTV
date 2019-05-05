@@ -1483,6 +1483,11 @@ function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSuces
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
 }
 
+function BasehttpGetItem(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy, Items) {
+    if (Main_Android && Items) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
+}
+
 function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
     var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
