@@ -348,6 +348,7 @@ function ScreensObj_InitAGameClip() {
             Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             if (this.gameSelected !== Main_values.Main_gameSelected) this.status = false;
             this.gameSelected = Main_values.Main_gameSelected;
+            Main_ShowElement(this.ids[10]);
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
