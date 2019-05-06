@@ -65,6 +65,7 @@ function Screens_exit() {
     inUseObj.label_exit();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement(inUseObj.ids[10]);
+    Main_HideWarningDialog();
 }
 
 function Screens_StartLoad() {

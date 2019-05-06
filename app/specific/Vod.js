@@ -152,6 +152,7 @@ function Vod_loadDataSuccess(responseText) {
                 'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
             row.appendChild(Main_td);
         }
+        row.appendChild(document.createElement('tr'));
         doc.appendChild(row);
     }
 

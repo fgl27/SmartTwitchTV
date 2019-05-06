@@ -50,6 +50,7 @@ function ChannelVod_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
     Main_HideElement(ChannelVod_ids[10]);
+    Main_HideWarningDialog();
 }
 
 function ChannelVod_StartLoad() {
@@ -113,6 +114,7 @@ function ChannelVod_loadDataError() {
             Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_CenterLablesStart(ChannelVod_handleKeyDown);
         } else {
             ChannelVod_dataEnded = true;
             ChannelVod_loadDataSuccessFinish();
@@ -152,6 +154,8 @@ function ChannelVod_loadDataSuccess(responseText) {
             'y_0" class="stream_thumbnail_channel_vod" ><div id="' + ChannelVod_ids[3] +
             'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
         row.appendChild(Main_td);
+        row.appendChild(document.createElement('tr'));
+        row.appendChild(document.createElement('tr'));
         doc.appendChild(row);
     }
 
@@ -202,8 +206,10 @@ function ChannelVod_loadDataSuccess(responseText) {
 
 function ChannelVod_loadDataSuccessFinish() {
     if (!ChannelVod_status) {
-        if (ChannelVod_emptyContent) Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-        else {
+        if (ChannelVod_emptyContent) {
+            Main_CenterLablesStart(ChannelVod_handleKeyDown);
+            Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+        } else {
             ChannelVod_status = true;
             Main_imgVectorLoad((ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO));
             ChannelVod_addFocus();
