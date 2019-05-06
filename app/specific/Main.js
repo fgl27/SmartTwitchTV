@@ -362,8 +362,13 @@ function Main_textContent(div, value) {
 function Main_replaceClassEmoji(div) {
     var emojiel = document.getElementById(div).getElementsByClassName("emoji");
     if (emojiel) {
-        for (var i = 0; i < emojiel.length; i++)
+        var i = 0;
+        for (i; i < emojiel.length; i++)
             emojiel[i].classList.add('emoticon');
+
+        emojiel = document.getElementById(div).getElementsByClassName("emoticon");
+        for (i = 0; i < emojiel.length; i++)
+            emojiel[i].classList.remove('emoji');
     }
 }
 
