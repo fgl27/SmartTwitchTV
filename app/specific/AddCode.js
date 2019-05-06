@@ -59,13 +59,7 @@ function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFun
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
     var response = JSON.parse(responseText);
 
-    //Check if has all scopes, in canse they change
-    var hasallscopes = true;
-    if (response.scope.indexOf("user_follows_edit") === -1) hasallscopes = false;
-    if (response.scope.indexOf("user_read") === -1) hasallscopes = false;
-    if (response.scope.indexOf("user_subscriptions") === -1) hasallscopes = false;
-
-    if (hasallscopes) {
+    if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
 
@@ -73,6 +67,15 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
     } else AddCode_requestTokensFailRunning();
 
     if (callbackFunc) callbackFunc();
+}
+
+//Check if has all scopes, in canse they change
+function AddCode_TokensCheckScope(scope) {
+    if (scope.indexOf("user_read") === -1) return false;
+    if (scope.indexOf("user_follows_edit") === -1) return false;
+    if (scope.indexOf("user_subscriptions") === -1) return false;
+
+    return true;
 }
 
 function AddCode_requestTokens() {
@@ -122,6 +125,7 @@ function AddCode_requestTokensFail() {
 
 function AddCode_requestTokensFailRunning() {
     //Token fail remove it and warn
+    Users_status = false;
     Main_HideLoadDialog();
     Main_showWarningDialog(STR_OAUTH_FAIL);
     AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
@@ -452,10 +456,14 @@ function AddCode_CheckToken(position, tryes) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                if (!JSON.parse(xmlHttp.responseText).token.valid) {
+                var token = JSON.parse(xmlHttp.responseText);
+                if (!token.token.valid) {
                     AddCode_TimeoutReset10();
                     AddCode_refreshTokens(position, 0, null, null);
-                } else AddCode_loadingData = false;
+                } else {
+                    if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
+                    AddCode_loadingData = false;
+                }
                 return;
             } else if (xmlHttp.status === 400) {
                 AddCode_TimeoutReset10();
