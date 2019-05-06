@@ -1,5 +1,5 @@
 //Variable initialization
-var Main_isReleased = false;
+var Main_isReleased = true;
 var Main_isBrowser = false;
 var Main_isDebug = false;
 
@@ -357,6 +357,14 @@ function Main_innerHTML(div, value) {
 
 function Main_textContent(div, value) {
     document.getElementById(div).textContent = value;
+}
+
+function Main_replaceClassEmoji(div) {
+    var emojiel = document.getElementById(div).getElementsByClassName("emoji");
+    if (emojiel) {
+        for (var i = 0; i < emojiel.length; i++)
+            emojiel[i].classList.add('emoticon');
+    }
 }
 
 function Main_showLoadDialog() {
