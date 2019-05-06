@@ -58,10 +58,20 @@ function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFun
 
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
     var response = JSON.parse(responseText);
-    AddUser_UsernameArray[position].access_token = response.access_token;
-    AddUser_UsernameArray[position].refresh_token = response.refresh_token;
 
-    AddUser_SaveUserArray();
+    //Check if has all scopes, in canse they change
+    var hasallscopes = true;
+    if (response.scope.indexOf("user_follows_edit") === -1) hasallscopes = false;
+    if (response.scope.indexOf("user_read") === -1) hasallscopes = false;
+    if (response.scope.indexOf("user_subscriptions") === -1) hasallscopes = false;
+
+    if (hasallscopes) {
+        AddUser_UsernameArray[position].access_token = response.access_token;
+        AddUser_UsernameArray[position].refresh_token = response.refresh_token;
+
+        AddUser_SaveUserArray();
+    } else AddCode_requestTokensFailRunning();
+
     if (callbackFunc) callbackFunc();
 }
 
