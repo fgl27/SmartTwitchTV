@@ -42,4 +42,23 @@ Project Web Dependencies
 The application never stops receiving updates the bellow images can be outdated
 ![Live](https://fgl27.github.io/SmartTwitchTV/screenshot/animated.gif)
 
+
+## Authentication
+The user can add a authentication key if you have the twitch password for that user (aka you are it).
+That key will be used to access twitch content for that account, when accessing twitch authentication site it show:
+
+	SmartTV Android TV by fgl27
+	wants to access your account
+	
+	This will allow SmartTV Android TV by fgl27 to:
+	* Manage your followed channels
+	* View your email address
+	* View your paid subscriptions
+
+It of the permission has a reason:
+
+**Manage your followed channels:** fallow or unfallow streamers or games for that user.<br>
+**View your email address:** Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag. Let twitch know you are watching a stream and show some target content as in featuring screen you will see the order in relation to yours twitch fallow content.<br>
+**View your paid subscriptions:** Allows to access subscribed only past broadcast and highlight (vod) that the streamer looks for subscribers only.<br>
+
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
