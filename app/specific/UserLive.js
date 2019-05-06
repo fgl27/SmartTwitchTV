@@ -69,12 +69,17 @@ function UserLive_StartLoad() {
     UserLive_followerChannels = '';
     Main_CounterDialogRst();
     UserLive_loadDataPrepare();
+    UserLive_CheckToken();
+}
+
+function UserLive_CheckToken() {
     UserLive_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
     if (UserLive_token) {
         UserLive_token = Main_OAuth + UserLive_token;
         UserLive_loadChannelUserLive();
     } else {
         UserLive_token = null;
+        UserLive_loadDataPrepare();
         UserLive_loadChannels();
     }
 }
@@ -135,7 +140,6 @@ function UserLive_loadChannelLive(responseText) {
 }
 
 function UserLive_loadChannelUserLive() {
-
     var offset = UserLive_itemsCount + UserLive_itemsCountOffset;
     if (offset && offset > (UserLive_MaxOffset - 1)) {
         offset = UserLive_MaxOffset - Main_ItemsLimitVideo;
@@ -151,11 +155,10 @@ function UserLive_loadChannelUserLive() {
     }
     theUrl += 'limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
 
-    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccess, UserLive_loadDataErrorLive, UserLive_loadChannelUserLive);
+    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccess, UserLive_loadDataErrorLive, UserLive_CheckToken);
 }
 
 function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, calbacktoken) {
-
     var xmlHttp;
 
     if (Main_Android && !UserLive_itemsCount) {
