@@ -170,7 +170,7 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
 
         if (xmlHttp.status === 200) {
             callbackSucess(xmlHttp.responseText);
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+        } else if (UserLive_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
             AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbackError);
         } else {
             calbackError();
