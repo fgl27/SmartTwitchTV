@@ -91,6 +91,8 @@ function PlayVod_Start() {
         Main_innerHTML("stream_info_title", '');
         Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
         Main_textContent("stream_live_icon", ChannelVod_createdAt);
+
+        Main_replaceClassEmoji('stream_info_game');
     }
 
     if (PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] && !Main_values.vodOffset) {
@@ -192,7 +194,7 @@ function PlayVod_updateVodInfoError() {
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
 
-    Main_innerHTML("stream_info_title", twemoji.parse(response.title));
+    Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", STR_STARTED + STR_PLAYING + response.game +
         ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
     Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));

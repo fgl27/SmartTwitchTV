@@ -39,6 +39,7 @@ function PlayClip_Start() {
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+    Main_replaceClassEmoji('stream_info_title');
 
     Main_values.Play_isHost = false;
 
