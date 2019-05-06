@@ -493,6 +493,7 @@ function ScreensObj_InitUserGames() {
             this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            Main_ShowElement(this.ids[10]);
         },
         label_exit: function() {
             Main_values.Users_Position = 0;
