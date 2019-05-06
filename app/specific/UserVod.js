@@ -161,6 +161,13 @@ function UserVod_loadDatafail() {
         Main_FirstLoad = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+            UserVod_exit();
+            Main_values.Main_Go = Main_Users;
+            UserVod_exit();
+            Main_CenterLablesClean();
+            Main_SwitchScreenAction();
+        }
     } else {
         UserVod_dataEnded = true;
         UserVod_loadDataSuccessFinish();
