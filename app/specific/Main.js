@@ -551,6 +551,7 @@ function Main_SwitchScreen(removekey) {
 }
 
 function Main_SwitchScreenAction(removekey) {
+    Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
