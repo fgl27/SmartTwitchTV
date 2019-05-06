@@ -174,7 +174,9 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
         if (xmlHttp.status === 200) {
             callbackSucess(xmlHttp.responseText);
         } else if (UserLive_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-            AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbackError);
+            //Token has change or because is new or because it is invalid because user delete in twitch settings
+            // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+            AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktoken);
         } else {
             calbackError();
         }
@@ -197,7 +199,9 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
                 if (xmlHttp.status === 200) {
                     callbackSucess(xmlHttp.responseText);
                 } else if (UserLive_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbackError);
+                    //Token has change or because is new or because it is invalid because user delete in twitch settings
+                    // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+                    AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktoken);
                 } else {
                     calbackError();
                 }
