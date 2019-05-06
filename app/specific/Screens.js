@@ -52,8 +52,8 @@ function Screens_init() {
     inUseObj.label_init();
 
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_ShowElement(inUseObj.ids[10]);
     if (inUseObj.status) {
-        Main_ShowElement(inUseObj.ids[10]);
         Main_YRst(inUseObj.posY);
         Screens_addFocus();
         Main_SaveValues();
