@@ -39,20 +39,22 @@ function UserLiveFeed_StartLoad() {
         UserLiveFeed_idObject = {};
         UserLiveFeed_imgVector = [];
 
-        UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
-
         Main_ready(function() {
             UserLiveFeed_loadDataPrepare();
-
-            if (UserLiveFeed_token) {
-                UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
-                UserLiveFeed_loadChannelUserLive();
-            } else {
-                UserLiveFeed_token = null;
-                UserLiveFeed_loadChannels();
-            }
-
+            UserLiveFeed_CheckToken();
         });
+    }
+}
+
+function UserLiveFeed_CheckToken() {
+    UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+    if (UserLiveFeed_token) {
+        UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
+        UserLiveFeed_loadChannelUserLive();
+    } else {
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_token = null;
+        UserLiveFeed_loadChannels();
     }
 }
 
@@ -159,7 +161,7 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
             if (xmlHttp.status === 200) {
                 UserLiveFeed_loadDataSuccess(xmlHttp.responseText);
             } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_loadChannelUserLive, UserLiveFeed_loadDataErrorLive);
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_loadChannelUserLive, UserLiveFeed_CheckToken);
             } else {
                 UserLiveFeed_loadDataErrorLive();
             }

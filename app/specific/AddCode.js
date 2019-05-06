@@ -38,8 +38,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
-            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
-            return;
+            } else {
+                if (JSON.parse(xmlHttp.responseText).message.indexOf('Invalid refresh token') !== -1) {
+                    AddCode_requestTokensFailRunning();
+                    if (callbackFuncNOK) callbackFuncNOK();
+                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
+            }
         }
     };
 
@@ -48,7 +52,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
 
 function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
     tryes++;
-    if (tryes < 10) AddCode_refreshTokens(position, tryes, callbackFuncOK);
+    if (tryes < 5) AddCode_refreshTokens(position, tryes, callbackFuncOK, callbackFuncNOK);
     else if (callbackFuncNOK) callbackFuncNOK();
 }
 
@@ -103,6 +107,18 @@ function AddCode_requestTokensFail() {
     }, 4000);
     AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+    AddUser_SaveUserArray();
+}
+
+function AddCode_requestTokensFailRunning() {
+    //Token fail remove it and warn
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_OAUTH_FAIL);
+    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
+    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+    AddUser_SaveUserArray();
+    Main_SaveValues();
+    window.setTimeout(Main_HideWarningDialog, 4000);
 }
 
 function AddCode_requestTokensSucess(responseText) {
@@ -434,7 +450,9 @@ function AddCode_CheckToken(position, tryes) {
             } else if (xmlHttp.status === 400) {
                 AddCode_TimeoutReset10();
                 AddCode_refreshTokens(position, 0, null, null);
-            } else AddCode_CheckTokenError(position, tryes);
+            } else {
+                AddCode_CheckTokenError(position, tryes);
+            }
         }
     };
 

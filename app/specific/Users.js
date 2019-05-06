@@ -354,7 +354,7 @@ function Users_handleKeyDown(event) {
                         var type_code = 'code';
                         var client_id = Main_clientId;
                         var redirect_uri = AddCode_redirect_uri;
-                        var scope = 'user_follows_edit+user_subscriptions';
+                        var scope = 'user_read+user_follows_edit+user_subscriptions';
                         var force_verify = 'true';
                         var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) +
                             '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
