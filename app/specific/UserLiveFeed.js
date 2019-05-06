@@ -140,8 +140,33 @@ function UserLiveFeed_loadChannelUserLive() {
     }
     theUrl += 'limit=100&offset=0&stream_type=all';
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, (UserLiveFeed_token ? 3 : 2), UserLiveFeed_token, UserLiveFeed_loadDataSuccess, UserLiveFeed_loadDataErrorLive, false);
+    UserLiveFeed_loadChannelUserLiveGet(theUrl);
+}
 
+function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                UserLiveFeed_loadDataSuccess(xmlHttp.responseText);
+            } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_loadChannelUserLive, UserLiveFeed_loadDataErrorLive);
+            } else {
+                UserLiveFeed_loadDataErrorLive();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function UserLiveFeed_loadDataErrorLive() {
