@@ -1,5 +1,5 @@
 //Variable initialization
-var Main_isReleased = true;
+var Main_isReleased = false;
 var Main_isBrowser = false;
 var Main_isDebug = false;
 
