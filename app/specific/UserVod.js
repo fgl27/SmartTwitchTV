@@ -161,6 +161,7 @@ function UserVod_loadDatafail() {
         Main_FirstLoad = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        Main_CenterLablesStart(UserHost_handleKeyDown);
         if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) {
             UserVod_exit();
             Main_values.Main_Go = Main_Users;
@@ -251,8 +252,10 @@ function UserVod_loadDataSuccess(responseText) {
 
 function UserVod_loadDataSuccessFinish() {
     if (!UserVod_status) {
-        if (UserVod_emptyContent) Main_showWarningDialog(STR_NO + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
-        else {
+        if (UserVod_emptyContent) {
+            Main_showWarningDialog(STR_NO + (UserVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
+            Main_CenterLablesStart(UserVod_handleKeyDown);
+        } else {
             UserVod_status = true;
             UserVod_addFocus();
             Main_imgVectorLoad(IMG_404_VIDEO);

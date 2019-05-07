@@ -108,6 +108,7 @@ function UserChannels_loadDataError() {
             Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_CenterLablesStart(UserChannels_handleKeyDown);
         } else {
             UserChannels_dataEnded = true;
             UserChannels_loadDataSuccessFinish();
@@ -170,8 +171,10 @@ function UserChannels_createCell(row_id, id, valuesArray) {
 
 function UserChannels_loadDataSuccessFinish() {
     if (!UserChannels_Status) {
-        if (UserChannels_emptyContent) Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
-        else {
+        if (UserChannels_emptyContent) {
+            Main_showWarningDialog(STR_NO + STR_USER_CHANNEL);
+            Main_CenterLablesStart(UserChannels_handleKeyDown);
+        } else {
             UserChannels_Status = true;
             Main_imgVectorLoad(IMG_404_LOGO);
             UserChannels_addFocus();
@@ -344,6 +347,7 @@ function UserChannels_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
+            if (Main_ThumbOpenIsNull(UserChannels_cursorY + '_' + UserChannels_cursorX, UserChannels_ids[0])) return;
             Main_values.Main_selectedChannel = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute(Main_DataAttribute);
             Main_values.Main_selectedChannel_id = document.getElementById(UserChannels_ids[4] + UserChannels_cursorY + '_' + UserChannels_cursorX).getAttribute('data-id');
             Main_values.Main_selectedChannelDisplayname = document.getElementById(UserChannels_ids[3] + UserChannels_cursorY +
