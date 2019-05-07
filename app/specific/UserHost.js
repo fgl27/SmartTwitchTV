@@ -98,6 +98,7 @@ function UserHost_loadDataError() {
             Main_FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_CenterLablesStart(UserHost_handleKeyDown);
         } else {
             UserHost_dataEnded = true;
             UserHost_loadDataSuccessFinish();
@@ -160,8 +161,10 @@ function UserHost_loadDataSuccess(responseText) {
 
 function UserHost_loadDataSuccessFinish() {
     if (!UserHost_status) {
-        if (UserHost_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_HOSTS);
-        else {
+        if (UserHost_emptyContent) {
+            Main_showWarningDialog(STR_NO + STR_LIVE_HOSTS);
+            Main_CenterLablesStart(UserHost_handleKeyDown);
+        } else {
             UserHost_status = true;
             UserHost_addFocus();
             Main_imgVectorLoad(IMG_404_VIDEO);

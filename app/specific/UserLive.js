@@ -290,8 +290,10 @@ function UserLive_loadDataSuccess(responseText) {
 
 function UserLive_loadDataSuccessFinish() {
     if (!UserLive_status) {
-        if (UserLive_emptyContent) Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
-        else {
+        if (UserLive_emptyContent) {
+            Main_CenterLablesStart(UserLive_handleKeyDown);
+            Main_showWarningDialog(STR_NO + STR_LIVE_CHANNELS);
+        } else {
             UserLive_status = true;
             UserLive_addFocus();
             Main_imgVectorLoad(IMG_404_VIDEO);
