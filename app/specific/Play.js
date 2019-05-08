@@ -976,7 +976,7 @@ function Play_KeyPause(PlayVodClip) {
         window.clearInterval(PlayVod_streamCheckId);
         window.clearInterval(PlayClip_streamCheckId);
 
-        Main_innerHTML('pause_button', '<i class="strokedbig icon-play-1" style="color: #FFFFFF; font-size: 180%;"></i>');
+        Main_innerHTML('pause_button', '<i class="pause_button3d icon-play-1"></i>');
 
         if (Main_Android) Android.play(false);
         Play_showPauseDialog();
