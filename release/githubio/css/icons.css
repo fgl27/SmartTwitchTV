@@ -146,9 +146,9 @@
 .icon-arrow-circle-right:before {
   content: "\6e";
 }
-.icon-chevron-right:before {
+.icon-next:before {
   content: "\79";
 }
-.icon-chevron-left:before {
+.icon-back:before {
   content: "\46";
 }
