@@ -128,9 +128,6 @@
 .icon-history:before {
   content: "\67";
 }
-.icon-star:before {
-  content: "\79";
-}
 .icon-ellipsis:before {
   content: "\42";
 }
@@ -145,4 +142,13 @@
 }
 .icon-ellipsis-h:before {
   content: "\66";
+}
+.icon-arrow-circle-right:before {
+  content: "\6e";
+}
+.icon-chevron-right:before {
+  content: "\79";
+}
+.icon-chevron-left:before {
+  content: "\46";
 }
