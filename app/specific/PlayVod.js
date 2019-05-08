@@ -528,7 +528,7 @@ function PlayVod_RefreshProgressBarr() {
 }
 
 function PlayVod_IconsBottonResetFocus() {
-    PlayVod_PanelY = Play_isNotplaying() ? 1 : 0;
+    PlayVod_PanelY = 1;
     PlayVod_IconsBottonFocus();
 }
 
