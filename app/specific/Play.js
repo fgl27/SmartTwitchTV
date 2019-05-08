@@ -800,6 +800,7 @@ function Play_clearPause() {
 }
 
 function Play_showPauseDialog() {
+    Play_HideBufferDialog();
     if (!Play_isNotplaying()) Play_clearPause();
     else if (!Play_isShowPauseDialogOn()) {
         Main_ShowElement('play_dialog_simple_pause');
