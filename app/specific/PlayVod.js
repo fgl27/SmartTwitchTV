@@ -805,12 +805,12 @@ function PlayVod_handleKeyDown(e) {
                     Play_ChatPosition();
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 1;
                         Play_IconsAddFocus();
-                    } else {
+                    } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -830,6 +830,7 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_RIGHT:
+                console.log(PlayVod_PanelY);
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos < (UserLiveFeed_itemsCount - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
@@ -847,12 +848,12 @@ function PlayVod_handleKeyDown(e) {
                     Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 1) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else {
+                    } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }

@@ -373,12 +373,12 @@ function PlayClip_handleKeyDown(e) {
                     Play_ChatPosition();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter++;
                         if (Play_Panelcounter > 5) Play_Panelcounter = 0;
                         Play_IconsAddFocus();
-                    } else {
+                    } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
@@ -409,12 +409,12 @@ function PlayClip_handleKeyDown(e) {
                     Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) {
                         Play_IconsRemoveFocus();
                         Play_Panelcounter--;
                         if (Play_Panelcounter < 0) Play_Panelcounter = 5;
                         Play_IconsAddFocus();
-                    } else {
+                    } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
