@@ -963,8 +963,8 @@
         }
 
         .pause_button {
+            display: inline-block;
             width: 5%;
-            margin-left: 47.5%;
             padding-top: 5px;
             height: 35px;
             text-align: center;
@@ -1508,8 +1508,16 @@
                     </div>
                     <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
                 </div>
-                <div id="pause_button" class="pause_button">
-                    <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>
+                <div style="text-align: center;">
+                    <div id="back_button" class="pause_button hide">
+                        <i class="strokedbig icon-back" style="color: #FFFFFF; font-size: 180%;"></i>
+                    </div>
+                    <div id="pause_button" class="pause_button">
+                        <i class="strokedbig icon-pause" style="color: #FFFFFF; font-size: 180%;"></i>
+                    </div>
+                    <div id="next_button" class="pause_button hide">
+                        <i class="strokedbig icon-next" style="color: #FFFFFF; font-size: 180%;"></i>
+                    </div>
                 </div>
             </div>
         </div>
