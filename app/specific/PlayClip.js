@@ -26,6 +26,11 @@ var PlayClip_Buffer = 2000;
 
 var PlayClip_jumpTimers = [0, 5];
 var PlayClip_DurationSeconds = 0;
+
+var PlayClip_HasNext = false;
+var PlayClip_HasBack = false;
+var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
+var PlayClip_EnterPos = 0;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -80,6 +85,8 @@ function PlayClip_Start() {
     PlayClip_jumpCount = 0;
     PlayClip_TimeToJump = 0;
     PlayClip_isOn = true;
+
+    PlayClip_UpdateNext();
 
     PlayClip_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -226,7 +233,6 @@ function PlayClip_DropOneQuality(ConnectionDrop) {
 
 function PlayClip_shutdownStream() {
     if (PlayClip_isOn) {
-        PlayClip_qualities = [];
         PlayClip_PreshutdownStream();
         Play_CleanHideExit();
         Play_exitMain();
@@ -234,6 +240,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
+    PlayClip_qualities = [];
     window.clearInterval(PlayClip_streamCheckId);
     if (Main_Android) Android.stopVideo(3);
     PlayClip_isOn = false;
@@ -250,7 +257,64 @@ function PlayClip_PreshutdownStream() {
     ChannelVod_vodOffset = 0;
 }
 
+function PlayClip_UpdateNext() {
+    var nextid = PlayClip_getIdNext(1, 0);
+    var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
+    var text;
+
+    PlayClip_HasNext = false;
+    PlayClip_HasBack = false;
+
+    if (nextid) {
+        PlayClip_HasNext = true;
+        text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
+        Main_textContent("next_button_text_name", text[4]);
+        Main_textContent("next_button_text_title", text[9]);
+        PlayClip_HideShowNext(0, 1);
+    } else PlayClip_HideShowNext(0, 0);
+
+    if (backid) {
+        PlayClip_HasBack = true;
+        text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+        Main_textContent("back_button_text_name", text[4]);
+        Main_textContent("back_button_text_title", text[9]);
+        PlayClip_HideShowNext(1, 1);
+    } else PlayClip_HideShowNext(1, 0);
+}
+
+function PlayClip_getIdNext(y, x) {
+    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
+        return inUseObj.posY + '_' + (inUseObj.posX + y);
+    else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
+        return (inUseObj.posY + y) + '_' + x;
+
+    return null;
+}
+
+function PlayClip_HideShowNext(which, val) {
+    document.getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
+}
+
+function PlayClip_Enter() {
+    if (!PlayClip_EnterPos) {
+        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
+            if (Play_isNotplaying()) Chat_Play(Chat_Id);
+            else Chat_Pause();
+        }
+        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+    } else if (PlayClip_EnterPos === 1) { //next
+        Screens_KeyLeftRight(1, 0);
+        PlayClip_PreshutdownStream();
+        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+    } else if (PlayClip_EnterPos === -1) { //back
+        Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+        PlayClip_PreshutdownStream();
+        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+    }
+}
+
 function PlayClip_hidePanel() {
+    //return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
@@ -381,6 +445,12 @@ function PlayClip_handleKeyDown(e) {
                     } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
+                    } else if (PlayVod_PanelY === 1) {
+                        if (PlayClip_EnterPos > -1) {
+                            PlayClip_EnterPos--;
+                            if (PlayClip_HasBack || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                            else PlayClip_EnterPos++;
+                        }
                     }
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
@@ -417,6 +487,12 @@ function PlayClip_handleKeyDown(e) {
                     } else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
+                    } else if (PlayVod_PanelY === 1) {
+                        if (PlayClip_EnterPos < 1) {
+                            PlayClip_EnterPos++;
+                            if (PlayClip_HasNext || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                            else PlayClip_EnterPos--;
+                        }
                     }
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
@@ -463,9 +539,6 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown()) {
-                    //Play_ChatBackground += 0.05;
-                    //if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
-                    //Play_ChatBackgroundChange(true);
                     Play_ChatSizeValue++;
                     if (Play_ChatSizeValue > 4) {
                         Play_ChatSizeValue = 1;
@@ -481,13 +554,8 @@ function PlayClip_handleKeyDown(e) {
                         Play_clearHidePanel();
                         PlayClip_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
-                    } else if (PlayVod_PanelY === 1) {
-                        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
-                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                            else Chat_Pause();
-                        }
-                        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
-                    } else Play_BottomOptionsPressed(3);
+                    } else if (PlayVod_PanelY === 1) PlayClip_Enter();
+                    else Play_BottomOptionsPressed(3);
                 } else if (UserLiveFeed_isFeedShow()) {
                     PlayClip_PreshutdownStream();
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);

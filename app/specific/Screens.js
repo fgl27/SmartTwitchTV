@@ -55,7 +55,7 @@ function Screens_init() {
     Main_ShowElement(inUseObj.ids[10]);
     if (inUseObj.status) {
         Main_YRst(inUseObj.posY);
-        Screens_addFocus();
+        Screens_addFocus(true);
         Main_SaveValues();
     } else Screens_StartLoad();
 }
@@ -322,7 +322,7 @@ function Screens_loadDataSuccessFinish() {
     }
 }
 
-function Screens_addFocus() {
+function Screens_addFocus(forceScroll) {
     if (inUseObj.emptyContent) {
         if (inUseObj.HasSwitches) inUseObj.posY = -1;
         else {
@@ -335,7 +335,7 @@ function Screens_addFocus() {
         return;
     }
 
-    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount, forceScroll);
 
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
