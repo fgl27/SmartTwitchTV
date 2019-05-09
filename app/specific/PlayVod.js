@@ -70,6 +70,8 @@ function PlayVod_Start() {
     PlayClip_HasVOD = true;
     ChannelVod_vodOffset = 0;
     Main_values.Play_isHost = false;
+    PlayClip_HideShowNext(0, 0);
+    PlayClip_HideShowNext(1, 0);
 
     if (Main_values.vodOffset) { // this is a vod comming from a clip
         PlayVod_PrepareLoad();
@@ -529,27 +531,36 @@ function PlayVod_RefreshProgressBarr() {
 
 function PlayVod_IconsBottonResetFocus() {
     PlayVod_PanelY = 1;
+    PlayClip_EnterPos = 0;
     PlayVod_IconsBottonFocus();
 }
 
 function PlayVod_IconsBottonFocus() {
+    Main_RemoveClass('pause_button', 'progress_bar_div_focus');
+    Main_RemoveClass('next_button', 'progress_bar_div_focus');
+    Main_RemoveClass('back_button', 'progress_bar_div_focus');
+    Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+
     if (!PlayVod_PanelY) { //progress_bar
-        Main_RemoveClass('pause_button', 'progress_bar_div_focus');
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsRemoveFocus();
         if (PlayVod_addToJump) {
             PlayVod_jumpTime();
             document.getElementById('progress_bar_steps').style.display = 'inline-block';
         }
-    } else if (PlayVod_PanelY === 1) { //pause_button
-        Main_AddClass('pause_button', 'progress_bar_div_focus');
-        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+    } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+        if (!PlayClip_EnterPos) { //pause
+            Main_AddClass('pause_button', 'progress_bar_div_focus');
+        } else if (PlayClip_EnterPos === 1) { //next
+            Main_AddClass('next_button', 'progress_bar_div_focus');
+        } else if (PlayClip_EnterPos === -1) { //back
+            Main_AddClass('back_button', 'progress_bar_div_focus');
+        }
+
         Play_IconsRemoveFocus();
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
         document.getElementById('progress_bar_steps').style.display = 'none';
     } else if (PlayVod_PanelY === 2) { //botton icons
-        Main_RemoveClass('pause_button', 'progress_bar_div_focus');
-        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
         Play_IconsAddFocus();
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
         document.getElementById('progress_bar_steps').style.display = 'none';

@@ -204,6 +204,9 @@ function Play_Start() {
     if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
     else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
+    PlayClip_HideShowNext(0, 0);
+    PlayClip_HideShowNext(1, 0);
+
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
 
