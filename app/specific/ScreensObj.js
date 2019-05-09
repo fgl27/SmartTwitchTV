@@ -43,7 +43,8 @@ var Base_obj = {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
         else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
         else {
-            if (this.itemsCount) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+            if (this.posY > -1) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+            else Screens_removeFocusFallow();
             Main_CenterLablesStart(Screens_handleKeyDown);
         }
     },
@@ -203,10 +204,18 @@ var Base_Clip_obj = {
     key_play: function() {
         if (this.posY === -1) {
             if (!this.loadingData) {
-                this.periodPos++;
-                if (this.periodPos > 4) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
+                if (!this.posX) {
+                    this.periodPos++;
+                    if (this.periodPos > 4) this.periodPos = 1;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                } else {
+                    PlayClip_All = true;
+                    Screens_removeFocusFallow();
+                    this.posX = 0;
+                    this.posY = 0;
+                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                }
             }
         } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
     },

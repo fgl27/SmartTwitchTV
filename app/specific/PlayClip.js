@@ -31,6 +31,7 @@ var PlayClip_HasNext = false;
 var PlayClip_HasBack = false;
 var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
 var PlayClip_EnterPos = 0;
+var PlayClip_All = false;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -70,6 +71,7 @@ function PlayClip_Start() {
     PlayClip_state = 0;
     PlayClip_currentTime = 0;
     PlayClip_qualityIndex = 2;
+    PlayClip_UpdateNext();
     Play_EndSet(3);
     Play_IsWarning = false;
     Play_IconsResetFocus();
@@ -85,8 +87,6 @@ function PlayClip_Start() {
     PlayClip_jumpCount = 0;
     PlayClip_TimeToJump = 0;
     PlayClip_isOn = true;
-
-    PlayClip_UpdateNext();
 
     PlayClip_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -233,6 +233,7 @@ function PlayClip_DropOneQuality(ConnectionDrop) {
 
 function PlayClip_shutdownStream() {
     if (PlayClip_isOn) {
+        PlayClip_All = false;
         PlayClip_PreshutdownStream();
         Play_CleanHideExit();
         Play_exitMain();
@@ -270,6 +271,10 @@ function PlayClip_UpdateNext() {
         text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
         Main_textContent("next_button_text_name", text[4]);
         Main_textContent("next_button_text_title", text[9]);
+
+        Main_textContent("end_next_button_text_name", text[4]);
+        Main_textContent("end_next_button_text_title", text[9]);
+
         PlayClip_HideShowNext(0, 1);
     } else PlayClip_HideShowNext(0, 0);
 
@@ -303,14 +308,18 @@ function PlayClip_Enter() {
         }
         if (!Play_isEndDialogVisible()) Play_KeyPause(3);
     } else if (PlayClip_EnterPos === 1) { //next
-        Screens_KeyLeftRight(1, 0);
-        PlayClip_PreshutdownStream();
-        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+        PlayClip_PlayNext();
     } else if (PlayClip_EnterPos === -1) { //back
         Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
         PlayClip_PreshutdownStream();
         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
     }
+}
+
+function PlayClip_PlayNext() {
+    Screens_KeyLeftRight(1, 0);
+    PlayClip_PreshutdownStream();
+    Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
 }
 
 function PlayClip_hidePanel() {
@@ -457,7 +466,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < 0) Play_Endcounter = 3;
+                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
                 } else PlayClip_showPanel();
                 break;
@@ -499,7 +508,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = 0;
+                    if (Play_Endcounter > 3) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
                     Play_EndIconsAddFocus();
                 } else PlayClip_showPanel();
                 break;
