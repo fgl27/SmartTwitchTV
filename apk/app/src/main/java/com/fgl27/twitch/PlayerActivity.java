@@ -105,7 +105,6 @@ public class PlayerActivity extends Activity {
             setContentView(R.layout.activity_player);
             url = "file:///android_asset/temp.mp4";
 
-            //BANDWIDTH_METER =  new DefaultBandwidthMeter();
             BANDWIDTH_METER =  new DefaultBandwidthMeter.Builder(this).build();
             dataSourceFactory =
                     new DefaultDataSourceFactory(
