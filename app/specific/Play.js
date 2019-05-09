@@ -1001,7 +1001,7 @@ function Play_IconsRemoveFocus() {
     Main_RemoveClass('scene2_pannel_' + Play_Panelcounter, 'playbotton_focus');
 }
 
-function Play_PrepareshowEndDialog() {
+function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = -1;
     PlayVod_state = -1;
     PlayClip_state = -1;
@@ -1012,6 +1012,10 @@ function Play_PrepareshowEndDialog() {
     if (!Play_IsWarning) Play_HideWarningDialog();
     Play_HideBufferDialog();
     Play_CleanHideExit();
+    if (PlayVodClip === 3 && PlayClip_HasNext && PlayClip_All) {
+        Play_EndIconsRemoveFocus();
+        Play_Endcounter = -1;
+    }
     Play_EndIconsAddFocus();
 }
 
@@ -1047,8 +1051,8 @@ function Play_EndText(PlayVodClip) {
     if (PlayVodClip === 1) Play_DialogEndText = Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE;
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
-    Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
-        Play_EndTextCounter + '...');
+    Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
+        ((PlayClip_HasNext && PlayClip_All) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
     if (Play_isEndDialogVisible()) {
         Play_EndTextCounter--;
         Play_state = Play_STATE_PLAYING;
@@ -1063,7 +1067,10 @@ function Play_EndText(PlayVodClip) {
 
             if (PlayVodClip === 1) Play_shutdownStream();
             else if (PlayVodClip === 2) PlayVod_shutdownStream();
-            else if (PlayVodClip === 3) PlayClip_shutdownStream();
+            else if (PlayVodClip === 3) {
+                if (PlayClip_HasNext && PlayClip_All) PlayClip_PlayNext();
+                else PlayClip_shutdownStream();
+            }
 
         } else {
             Play_EndTextID = window.setTimeout(function() {
@@ -1146,6 +1153,7 @@ function Play_EndSet(PlayVodClip) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 1;
         Play_EndIconsAddFocus();
+        document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
@@ -1153,14 +1161,17 @@ function Play_EndSet(PlayVodClip) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 2;
         Play_EndIconsAddFocus();
+        document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'none';
     } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
+        document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'none';
     } else if (PlayVodClip === 3) { // clip
         Play_EndIconsResetFocus();
+        document.getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
@@ -1274,7 +1285,7 @@ function Play_BottomOptionsPressed(PlayVodClip) {
 
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
-    if (PlayVodClip === 1) {
+    if (PlayVodClip === 1) { //live
         window.clearInterval(Play_streamCheckId);
         Play_CheckHostStart();
     } else Play_PlayEndStart(PlayVodClip);
@@ -1285,10 +1296,10 @@ function Play_PlayEndStart(PlayVodClip) {
     window.clearInterval(PlayClip_streamCheckId);
     window.clearInterval(PlayVod_streamCheckId);
 
-    Play_PrepareshowEndDialog();
+    Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = 3;
     Play_EndText(PlayVodClip);
-    Play_showEndDialog(PlayVodClip);
+    Play_showEndDialog();
 }
 
 function Play_CheckHostStart() {

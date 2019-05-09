@@ -154,6 +154,16 @@ function Screens_loadDataSuccess() {
             'y_0" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
             'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
         inUseObj.row.appendChild(Main_td);
+
+        thumbfallow = '<i class="icon-play-1 stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_PLAY_ALL;
+        Main_td = document.createElement('div');
+        Main_td.setAttribute('id', inUseObj.ids[8] + 'y_1');
+        Main_td.className = 'stream_cell_period';
+        Main_td.innerHTML = '<div id="' + inUseObj.ids[0] +
+            'y_1" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+            'y_1" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        inUseObj.row.appendChild(Main_td);
+
         doc.appendChild(inUseObj.row);
     }
 
@@ -332,6 +342,7 @@ function Screens_addFocus(forceScroll) {
     }
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
+        if (!inUseObj.emptyContent) Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         return;
     }
 
@@ -359,11 +370,15 @@ function Screens_ChangeFocus(y, x) {
 }
 
 function Screens_addFocusFallow() {
-    Main_AddClass(inUseObj.ids[0] + 'y_0', Main_classThumb);
+    if (inUseObj.posX > 1) inUseObj.posX = 0;
+    else if (inUseObj.posX < 0) inUseObj.posX = 1;
+    Main_AddClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
 }
 
 function Screens_removeFocusFallow() {
-    Main_RemoveClass(inUseObj.ids[0] + 'y_0', Main_classThumb);
+    if (inUseObj.posX > 1) inUseObj.posX = 0;
+    else if (inUseObj.posX < 0) inUseObj.posX = 1;
+    Main_RemoveClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
 }
 
 function Screens_BasicExit(before) {
@@ -381,6 +396,7 @@ function Screens_KeyUpDown(y) {
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
         inUseObj.posY = -1;
+        if (inUseObj.posX > 1) inUseObj.posX = 1;
         Screens_addFocusFallow();
     } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1 && (Main_ThumbNull(0, inUseObj.posX, inUseObj.ids[0]))) {
         inUseObj.posY = 0;
@@ -397,7 +413,12 @@ function Screens_KeyUpDown(y) {
 }
 
 function Screens_KeyLeftRight(y, x) {
-    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
+    if (inUseObj.HasSwitches && inUseObj.posY === -1) {
+        inUseObj.posY = -1;
+        Screens_removeFocusFallow();
+        inUseObj.posX++;
+        Screens_addFocusFallow();
+    } else if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
         Screens_ChangeFocus(0, (inUseObj.posX + y));
     else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
         Screens_ChangeFocus(y, x);

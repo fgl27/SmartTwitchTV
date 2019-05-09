@@ -228,4 +228,7 @@ function en_USLang() {
     STR_CHAT_DISABLE = "Chat is disabled, enable in side pannel settings";
     STR_CLIP_FAIL = "This clip/video fail to load can't replay";
     STR_CHAT_BRIGHTNESS = "Chat backgroung brightness ";
+    STR_PLAY_NEXT = "Play Next";
+    STR_PLAY_NEXT_IN = "Playing next in ";
+    STR_PLAY_ALL = "Play All";
 }
