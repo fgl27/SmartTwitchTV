@@ -1091,7 +1091,8 @@ function Play_EndTextClear() {
 
 function Play_EndDialogPressed(PlayVodClip) {
     var canhide = true;
-    if (!Play_Endcounter) {
+    if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
+    else if (!Play_Endcounter) {
         if (PlayVodClip === 2) {
             if (!PlayVod_qualities.length) {
                 canhide = false;
