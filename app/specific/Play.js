@@ -1375,7 +1375,7 @@ function Play_CheckHost(responseText) {
 
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
-        Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300;></i>');
+        Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300;"></i>');
         Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOWING);
     } else {
         Main_innerHTML("fallow_heart", '<i class="icon-heart-o strokicon" style="color: #FFFFFF;"></i>');
