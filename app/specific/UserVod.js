@@ -111,7 +111,6 @@ function UserVod_loadDataRequest() {
 
         if (xmlHttp.status === 200) {
             UserVod_loadDataSuccess(xmlHttp.responseText);
-            return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
             AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
         } else {
@@ -134,7 +133,6 @@ function UserVod_loadDataRequest() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     UserVod_loadDataSuccess(xmlHttp.responseText);
-                    return;
                 } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
                     AddCode_refreshTokens(Main_values.Users_Position, 0, UserVod_loadDataRequestStart, UserVod_loadDatafail);
                 } else {
