@@ -823,6 +823,7 @@ function Play_isPanelShown() {
 }
 
 function Play_hidePanel() {
+    //return;
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
@@ -882,8 +883,8 @@ function Play_qualityIndexReset() {
 
 function Play_qualityDisplay() {
     if (Play_getQualitiesCount() === 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "0";
-        document.getElementById("quality_arrow_down").style.opacity = "0";
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
     } else if (!Play_qualityIndex) {
         document.getElementById("quality_arrow_up").style.opacity = "0.2";
         document.getElementById("quality_arrow_down").style.opacity = "1";
@@ -1374,10 +1375,10 @@ function Play_CheckHost(responseText) {
 
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
-        Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300; font-size: 210%;"></i>');
+        Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300;></i>');
         Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOWING);
     } else {
-        Main_innerHTML("fallow_heart", '<i class="icon-heart-o strokicon" style="color: #FFFFFF; font-size: 210%;"></i>');
+        Main_innerHTML("fallow_heart", '<i class="icon-heart-o strokicon" style="color: #FFFFFF;"></i>');
         Main_innerHTML("fallow_text", STR_SPACE + STR_FALLOW);
     }
 }
