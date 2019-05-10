@@ -431,32 +431,61 @@ function AddCode_CheckTokenStart(position) {
 function AddCode_CheckToken(position, tryes) {
     var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
         AddUser_UsernameArray[position].access_token;
-    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
+    var xmlHttp;
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                var token = JSON.parse(xmlHttp.responseText);
-                if (!token.token.valid) {
+    if (Main_Android) {
+
+        xmlHttp = Android.mreadUrl(theUrl, 3500, 0, null);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            AddCode_CheckTokenError(position, tryes);
+            return;
+        }
+
+        if (xmlHttp.status === 200) {
+            AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+        } else if (xmlHttp.status === 400) { //token expired
+            AddCode_TimeoutReset10();
+            AddCode_refreshTokens(position, 0, null, null);
+        } else {
+            AddCode_CheckTokenError(position, tryes);
+        }
+
+    } else {
+
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+                } else if (xmlHttp.status === 400) { //token expired
                     AddCode_TimeoutReset10();
                     AddCode_refreshTokens(position, 0, null, null);
                 } else {
-                    if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
+                    AddCode_CheckTokenError(position, tryes);
                 }
-            } else if (xmlHttp.status === 400) {
-                AddCode_TimeoutReset10();
-                AddCode_refreshTokens(position, 0, null, null);
-            } else {
-                AddCode_CheckTokenError(position, tryes);
             }
-        }
-    };
+        };
 
-    xmlHttp.send(null);
+        xmlHttp.send(null);
+    }
+}
+
+function AddCode_CheckTokenSuccess(responseText, position) {
+    var token = JSON.parse(responseText);
+    if (!token.token.valid) {
+        AddCode_TimeoutReset10();
+        AddCode_refreshTokens(position, 0, null, null);
+    } else {
+        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
+    }
 }
 
 function AddCode_CheckTokenError(position, tryes) {
