@@ -3,7 +3,6 @@ var AddCode_loadingDataTry = 0;
 var AddCode_loadingDataTryMax = 5;
 var AddCode_loadingDataTimeout = 10000;
 var AddCode_Code = 0;
-var AddCode_loadingData = false;
 var AddCode_IsFallowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
@@ -159,7 +158,6 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_newUsercode = 0;
         Main_HideLoadDialog();
         Users_status = false;
-        AddCode_loadingData = false;
         Main_values.Main_Go = Main_Users;
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
@@ -175,7 +173,6 @@ function AddCode_CheckOauthTokenSucess(response) {
     } else {
         AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
-        AddCode_loadingData = false;
         Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_Position].name);
         window.setTimeout(function() {
             Main_HideWarningDialog();
@@ -229,7 +226,6 @@ function AddCode_RequestCheckFallow() {
 
 function AddCode_RequestCheckFallowOK() {
     AddCode_IsFallowing = true;
-    AddCode_loadingData = false;
     if (AddCode_PlayRequest) Play_setFallow();
     else ChannelContent_setFallow();
 }
@@ -237,7 +233,6 @@ function AddCode_RequestCheckFallowOK() {
 function AddCode_RequestCheckFallowNOK(response) {
     if ((JSON.parse(response).error + '').indexOf('Not Found') !== -1) {
         AddCode_IsFallowing = false;
-        AddCode_loadingData = false;
         if (AddCode_PlayRequest) Play_setFallow();
         else ChannelContent_setFallow();
     } else AddCode_RequestCheckFallowError();
@@ -249,7 +244,6 @@ function AddCode_RequestCheckFallowError() {
         AddCode_loadingDataTimeout += 500;
         AddCode_RequestCheckFallow();
     } else {
-        AddCode_loadingData = false;
         if (AddCode_PlayRequest) Play_setFallow();
         else ChannelContent_setFallow();
     }
@@ -273,7 +267,6 @@ function AddCode_FallowRequest() {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) { //success user now is fallowing the channel
-                AddCode_loadingData = false;
                 AddCode_IsFallowing = true;
                 if (AddCode_PlayRequest) Play_setFallow();
                 else ChannelContent_setFallow();
@@ -316,7 +309,6 @@ function AddCode_UnFallowRequest() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 204) { //success user is now not fallowing the channel
                 AddCode_IsFallowing = false;
-                AddCode_loadingData = false;
                 if (AddCode_PlayRequest) Play_setFallow();
                 else ChannelContent_setFallow();
                 return;
@@ -348,7 +340,6 @@ function AddCode_CheckSub() {
 function AddCode_TimeoutReset10() {
     AddCode_loadingDataTry = 0;
     AddCode_loadingDataTimeout = 10000;
-    AddCode_loadingData = true;
 }
 
 function AddCode_RequestCheckSub() {
@@ -366,16 +357,13 @@ function AddCode_RequestCheckSub() {
 
         if (xmlHttp.status === 200) {
             AddCode_IsSub = true;
-            AddCode_loadingData = false;
             PlayVod_isSub();
         } else if (xmlHttp.status === 422) {
             AddCode_IsSub = false;
-            AddCode_loadingData = false;
             PlayVod_NotSub();
         } else if (xmlHttp.status === 404) {
             if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                 AddCode_IsSub = false;
-                AddCode_loadingData = false;
                 PlayVod_NotSub();
                 return;
             } else AddCode_RequestCheckSubError();
@@ -400,16 +388,13 @@ function AddCode_RequestCheckSub() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //success yes user is a SUB
                     AddCode_IsSub = true;
-                    AddCode_loadingData = false;
                     PlayVod_isSub();
                 } else if (xmlHttp.status === 422) { //channel does not have a subscription program
                     AddCode_IsSub = false;
-                    AddCode_loadingData = false;
                     PlayVod_NotSub();
                 } else if (xmlHttp.status === 404) { //success no user is not a sub
                     if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
                         AddCode_IsSub = false;
-                        AddCode_loadingData = false;
                         PlayVod_NotSub();
                         return;
                     } else AddCode_RequestCheckSubError();
@@ -435,7 +420,6 @@ function AddCode_RequestCheckSubError() {
 
 function AddCode_RequestCheckSubfail() {
     AddCode_IsSub = false;
-    AddCode_loadingData = false;
     PlayVod_NotSub();
 }
 
@@ -462,9 +446,7 @@ function AddCode_CheckToken(position, tryes) {
                     AddCode_refreshTokens(position, 0, null, null);
                 } else {
                     if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
-                    AddCode_loadingData = false;
                 }
-                return;
             } else if (xmlHttp.status === 400) {
                 AddCode_TimeoutReset10();
                 AddCode_refreshTokens(position, 0, null, null);
