@@ -78,25 +78,12 @@ function AddCode_TokensCheckScope(scope) {
 }
 
 function AddCode_requestTokens() {
-    var xmlHttp = new XMLHttpRequest();
-    var url = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
+    console.log('AddCode_requestTokens');
+    var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
         encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
         '&code=' + encodeURIComponent(AddCode_Code) + '&redirect_uri=' + AddCode_redirect_uri;
 
-    xmlHttp.open("POST", url, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                AddCode_requestTokensSucess(xmlHttp.responseText);
-            } else AddCode_requestTokensError();
-            return;
-        }
-    };
-
-    xmlHttp.send(null);
+    BasehttpPost(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_requestTokensSucess, AddCode_requestTokensError, false);
 }
 
 function AddCode_requestTokensError() {
@@ -135,6 +122,7 @@ function AddCode_requestTokensFailRunning() {
 }
 
 function AddCode_requestTokensSucess(responseText) {
+    console.log(responseText);
     var response = JSON.parse(responseText);
     AddUser_UsernameArray[Main_values.Users_Position].access_token = response.access_token;
     AddUser_UsernameArray[Main_values.Users_Position].refresh_token = response.refresh_token;

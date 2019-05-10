@@ -457,7 +457,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return readUrl(urlString, timeout, HeaderQuantity, access_token);
+            return readUrl(urlString, timeout, HeaderQuantity, access_token, false);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
+            return readUrl(urlString, timeout, HeaderQuantity, access_token, post);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -603,7 +609,7 @@ public class PlayerActivity extends Activity {
     //TODO try a asynchronous one
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
-    public String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
+    public String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
 
@@ -615,6 +621,11 @@ public class PlayerActivity extends Activity {
             if (HeaderQuantity > 2) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
 
             urlConnection.setConnectTimeout(timeout);
+
+            if (post) {
+               urlConnection.setRequestMethod("POST");
+               urlConnection.setDoOutput(true);
+            }
 
             int status = urlConnection.getResponseCode();
 

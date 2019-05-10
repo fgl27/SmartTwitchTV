@@ -123,6 +123,7 @@ var Main_stringVersion = '1.0';
 var Main_stringVersion_Min = '.19';
 var Main_minversion = '050919';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
+var Main_AndroidVersion = '';
 var Main_ClockOffset = 0;
 var Main_Android = 0;
 var Main_randomimg = '?' + Math.random();
@@ -166,7 +167,9 @@ function Main_loadTranslations(language) {
     Main_ready(function() {
         try {
             Main_Android = Android.getAndroid();
+            Main_AndroidVersion = Android.getversion();
         } catch (e) {
+            Main_AndroidVersion = '1.0.0';
             Main_Android = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
             Main_isDebug = true;
@@ -673,11 +676,8 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 function Main_checkVersion() {
     //TODO remove the try after android app update has be releaased for some time
     if (Main_Android) {
-        try {
-            var version = Android.getversion();
-            Main_versionTag = "Android: " + version + ' Web: ' + Main_minversion;
-            if (Main_needUpdate(version)) Main_ShowElement('label_update');
-        } catch (e) {}
+        Main_versionTag = "Android: " + Main_AndroidVersion + ' Web: ' + Main_minversion;
+        if (Main_needUpdate(Main_AndroidVersion)) Main_ShowElement('label_update');
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
@@ -1517,6 +1517,56 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", (useProxy ? proxyurl : '') + theUrl, true);
+    xmlHttp.timeout = Timeout;
+
+    if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    //Header TWITHCV5 to load all screens and some stream info
+    if (HeaderQuatity > 1) xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    //Header to access User VOD screen
+    if (HeaderQuatity > 2) xmlHttp.setRequestHeader(Main_Authorization, access_token);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText);
+                return;
+            } else {
+                calbackError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+//Duplicated (BasehttpPost === BasehttpGet minus the post part ) as the android side may not be there and is not needed yet
+function BasehttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
+    if (Main_Android) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
+}
+
+function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token, true);
+
+    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+    else {
+        calbackError();
+        return;
+    }
+
+    if (xmlHttp.status === 200) {
+        callbackSucess(xmlHttp.responseText);
+    } else {
+        calbackError();
+    }
+}
+
+function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("POST", (useProxy ? proxyurl : '') + theUrl, true);
     xmlHttp.timeout = Timeout;
 
     if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
