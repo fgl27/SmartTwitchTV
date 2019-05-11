@@ -469,13 +469,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void play(boolean play) {
-            if (PlayerActivity.player != null) player.setPlayWhenReady(play);
+            if (player != null) player.setPlayWhenReady(play);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            if (PlayerActivity.player != null) return player.getPlayWhenReady();
+            if (player != null) return player.getPlayWhenReady();
             return false;
         }
 
@@ -556,6 +556,7 @@ public class PlayerActivity extends Activity {
                             break;
                         case Player.STATE_READY:
                             hideLoading();
+                            if (player != null) mwebview.loadUrl("javascript:Play_UpdateDuration(" + mwhocall + "," + player.getDuration() + ")");
                             break;
                         case Player.STATE_ENDED:
                             //Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();

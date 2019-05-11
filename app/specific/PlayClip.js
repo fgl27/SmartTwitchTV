@@ -182,6 +182,12 @@ function PlayClip_onPlayer() {
     }
 }
 
+function PlayClip_UpdateDuration(duration) {
+    PlayClip_DurationSeconds = duration / 1000;
+    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+    PlayClip_RefreshProgressBarr();
+}
+
 function PlayClip_Resume() {
     if (document.hidden) PlayClip_shutdownStream();
 }
