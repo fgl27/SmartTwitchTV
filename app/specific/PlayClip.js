@@ -324,9 +324,9 @@ function PlayClip_PlayNextPreviously() {
     doc.style.transition = 'none';
     doc.style.opacity = "0";
     Main_ready(function() {
-         PlayClip_PreshutdownStream();
-         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
-         doc.style.transition = '';
+        PlayClip_PreshutdownStream();
+        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+        doc.style.transition = '';
     });
 }
 
