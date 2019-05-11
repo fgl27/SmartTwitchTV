@@ -1254,35 +1254,42 @@ function Play_FallowUnfallow() {
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
-    if (!Play_Panelcounter) PlayClip_OpenVod();
-    else if (Play_Panelcounter === 1) {
-        if (PlayVodClip === 1) {
-            Play_qualityChanged();
-            Play_hidePanel();
-        } else if (PlayVodClip === 2) {
-            //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
-            PlayVod_PlayerCheckQualityChanged = false;
-            PlayVod_qualityChanged();
-            PlayVod_hidePanel();
-        } else if (PlayVodClip === 3) {
-            //if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
-            PlayClip_PlayerCheckQualityChanged = false;
-            PlayClip_qualityChanged();
-            PlayClip_hidePanel();
-        }
-        Play_clearPause();
-    } else if (Play_Panelcounter === 2) {
+    var doc = document.getElementById("scene_channel_panel");
+    doc.style.transition = 'none';
+    doc.style.opacity = "0";
 
-        AddCode_Channel_id = (PlayVodClip === 1 ? Main_values.Play_selectedChannel_id : Main_values.Main_selectedChannel_id);
-        Play_FallowUnfallow();
+    Main_ready(function() {
+        if (!Play_Panelcounter) PlayClip_OpenVod();
+        else if (Play_Panelcounter === 1) {
+            if (PlayVodClip === 1) {
+                Play_qualityChanged();
+                Play_hidePanel();
+            } else if (PlayVodClip === 2) {
+                //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
+                PlayVod_PlayerCheckQualityChanged = false;
+                PlayVod_qualityChanged();
+                PlayVod_hidePanel();
+            } else if (PlayVodClip === 3) {
+                //if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
+                PlayClip_PlayerCheckQualityChanged = false;
+                PlayClip_qualityChanged();
+                PlayClip_hidePanel();
+            }
+            Play_clearPause();
+        } else if (Play_Panelcounter === 2) {
 
-        Play_clearHidePanel();
-        if (PlayVodClip === 1) Play_setHidePanel();
-        else if (PlayVodClip === 2) PlayVod_setHidePanel();
-        else if (PlayVodClip === 3) PlayClip_setHidePanel();
-    } else if (Play_Panelcounter === 3) Play_OpenGame(PlayVodClip);
-    else if (Play_Panelcounter === 4) Play_OpenChannel(PlayVodClip);
-    else if (Play_Panelcounter === 5) Play_OpenSearch(PlayVodClip);
+            AddCode_Channel_id = (PlayVodClip === 1 ? Main_values.Play_selectedChannel_id : Main_values.Main_selectedChannel_id);
+            Play_FallowUnfallow();
+
+            Play_clearHidePanel();
+            if (PlayVodClip === 1) Play_setHidePanel();
+            else if (PlayVodClip === 2) PlayVod_setHidePanel();
+            else if (PlayVodClip === 3) PlayClip_setHidePanel();
+        } else if (Play_Panelcounter === 3) Play_OpenGame(PlayVodClip);
+        else if (Play_Panelcounter === 4) Play_OpenChannel(PlayVodClip);
+        else if (Play_Panelcounter === 5) Play_OpenSearch(PlayVodClip);
+        doc.style.transition = '';
+    });
 }
 
 //called by android PlayerActivity
