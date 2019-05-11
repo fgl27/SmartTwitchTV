@@ -241,6 +241,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream() {
+    PlayClip_hidePanel();
     PlayClip_qualities = [];
     window.clearInterval(PlayClip_streamCheckId);
     if (Main_Android) Android.stopVideo(3);
@@ -250,7 +251,6 @@ function PlayClip_PreshutdownStream() {
     UserLiveFeed_Hide();
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip_Resume);
-    PlayClip_hidePanel();
     document.getElementById('scene2_pannel_0').style.display = 'none';
     document.getElementById("quality_name").style.width = '25ch';
     ChannelVod_vodOffset = 0;
@@ -305,19 +305,29 @@ function PlayClip_Enter() {
             else Chat_Pause();
         }
         if (!Play_isEndDialogVisible()) Play_KeyPause(3);
-    } else if (PlayClip_EnterPos === 1) { //next
-        PlayClip_PlayNext();
-    } else if (PlayClip_EnterPos === -1) { //back
-        Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-        PlayClip_PreshutdownStream();
-        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
-    }
+    } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
+    else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
 }
 
 function PlayClip_PlayNext() {
     Screens_KeyLeftRight(1, 0);
-    PlayClip_PreshutdownStream();
-    Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+    PlayClip_PlayNextPreviously();
+}
+
+function PlayClip_PlayPreviously() {
+    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+    PlayClip_PlayNextPreviously();
+}
+
+function PlayClip_PlayNextPreviously() {
+    var doc = document.getElementById("scene_channel_panel");
+    doc.style.transition = 'none';
+    doc.style.opacity = "0";
+    Main_ready(function() {
+         PlayClip_PreshutdownStream();
+         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+         doc.style.transition = '';
+    });
 }
 
 function PlayClip_hidePanel() {
