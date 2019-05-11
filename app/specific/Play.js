@@ -1255,8 +1255,11 @@ function Play_FallowUnfallow() {
 
 function Play_BottomOptionsPressed(PlayVodClip) {
     var doc = document.getElementById("scene_channel_panel");
-    doc.style.transition = 'none';
-    doc.style.opacity = "0";
+
+    if (Play_Panelcounter !== 2) {
+        doc.style.transition = 'none';
+        doc.style.opacity = "0";
+    }
 
     Main_ready(function() {
         if (!Play_Panelcounter) PlayClip_OpenVod();
@@ -1265,12 +1268,10 @@ function Play_BottomOptionsPressed(PlayVodClip) {
                 Play_qualityChanged();
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
-                //if (!PlayVod_offsettime) PlayVod_offsettime = Play_videojs.currentTime();
                 PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_qualityChanged();
                 PlayVod_hidePanel();
             } else if (PlayVodClip === 3) {
-                //if (!PlayClip_offsettime) PlayClip_offsettime = Play_videojs.currentTime();
                 PlayClip_PlayerCheckQualityChanged = false;
                 PlayClip_qualityChanged();
                 PlayClip_hidePanel();
