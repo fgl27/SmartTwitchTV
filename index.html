@@ -473,6 +473,7 @@
             font-size: 110%;
         }
 
+
         div.controls_text {
             font-size: 85%;
             font-weight: bold;
@@ -522,6 +523,13 @@
             height: auto;
             text-align: center;
             background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040));
+        }
+
+        div.scene_channel_panel {
+            position: fixed;
+            z-index: 2;
+            opacity: 0;
+            transition: 0.4s;
         }
 
         div.playbotton_icons {
@@ -1337,8 +1345,7 @@
                 </div>
             </div>
         </div>
-        <div id="scene_channel_panel" class="screen_size" style="position: fixed; z-index: 2; opacity: 0; 
- transition: 0.4s;">
+        <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.04));">
                 <div class="playsideinfo">
                     <div id="stream_clock"></div>
