@@ -1373,6 +1373,13 @@ function Play_CheckHost(responseText) {
     Play_PlayEndStart(1);
 }
 
+function Play_UpdateDuration(mwhocall, duration) { // jshint ignore:line
+    if (duration > 0) {
+        if (mwhocall === 2) PlayVod_UpdateDuration(duration);
+        else if (mwhocall === 3) PlayClip_UpdateDuration(duration);
+    }
+}
+
 function Play_setFallow() {
     if (AddCode_IsFallowing) {
         Main_innerHTML("fallow_heart", '<i class="icon-heart strokicon" style="color: #00b300;"></i>');

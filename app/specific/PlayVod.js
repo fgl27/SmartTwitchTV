@@ -424,6 +424,12 @@ function PlayVod_onPlayer() {
     }
 }
 
+function PlayVod_UpdateDuration(duration) {
+    ChannelVod_DurationSeconds = duration / 1000;
+    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+    PlayVod_RefreshProgressBarr();
+}
+
 function PlayVod_PlayerCheck() {
     if (Main_Android) PlayVod_currentTime = Android.gettime();
     if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
