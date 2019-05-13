@@ -44,8 +44,8 @@ var Base_obj = {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
         else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
         else {
-            if (this.posY > -1) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-            else Screens_removeFocusFallow();
+            if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+            else if (this.posY < 0) Screens_removeFocusFallow();
             Main_CenterLablesStart(Screens_handleKeyDown);
         }
     },
