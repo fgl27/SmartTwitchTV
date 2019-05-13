@@ -160,8 +160,10 @@ function Screens_loadDataSuccess() {
 
     if (response_items) {
 
-        inUseObj.row = document.createElement('div');
-        inUseObj.row.id = this.ids[12] + inUseObj.row_id;
+        if (!inUseObj.row_id) {
+            inUseObj.row = document.createElement('div');
+            inUseObj.row.id = this.ids[12] + inUseObj.row_id;
+        }
 
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
 
