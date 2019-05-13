@@ -25,7 +25,20 @@ function Screens_InitSecondaryScreens() {
 
 //TODO cleanup not used when finished migrate all
 function Screens_ScreenIds(base) {
-    return [base + '_thumbdiv', base + '_img', base + '_infodiv', base + '_title', base + '_createdon', base + '_game', base + '_viwers', base + '_duration', base + '_cell', 'cpempty_', base + '_scroll', base + '_lang'];
+    return [base + '_thumbdiv',
+        base + '_img',
+        base + '_infodiv',
+        base + '_title',
+        base + '_createdon',
+        base + '_game',
+        base + '_viwers',
+        base + '_duration',
+        base + '_cell',
+        'cpempty_',
+        base + '_scroll',
+        base + '_lang',
+        base + '_row'
+    ];
 }
 
 function Screens_assign() {
@@ -143,31 +156,12 @@ function Screens_loadDataSuccess() {
 
     var doc = document.getElementById(inUseObj.table);
 
-    if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) {
-        inUseObj.TopRowCreated = true;
-        inUseObj.row = document.createElement('div');
-        var thumbfallow = '<i class="icon-history stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_SWITCH_CLIP;
-        Main_td = document.createElement('div');
-        Main_td.setAttribute('id', inUseObj.ids[8] + 'y_0');
-        Main_td.className = 'stream_cell_period';
-        Main_td.innerHTML = '<div id="' + inUseObj.ids[0] +
-            'y_0" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
-            'y_0" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-        inUseObj.row.appendChild(Main_td);
-
-        thumbfallow = '<i class="icon-play-1 stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_PLAY_ALL;
-        Main_td = document.createElement('div');
-        Main_td.setAttribute('id', inUseObj.ids[8] + 'y_1');
-        Main_td.className = 'stream_cell_period';
-        Main_td.innerHTML = '<div id="' + inUseObj.ids[0] +
-            'y_1" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
-            'y_1" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-        inUseObj.row.appendChild(Main_td);
-
-        doc.appendChild(inUseObj.row);
-    }
+    if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) inUseObj.addSwitches(doc);
 
     if (response_items) {
+
+        inUseObj.row = document.createElement('div');
+        inUseObj.row.id = this.ids[12] + inUseObj.row_id;
 
         var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
 
@@ -177,8 +171,8 @@ function Screens_loadDataSuccess() {
 
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
+                inUseObj.row.id = this.ids[12] + inUseObj.row_id;
                 inUseObj.coloumn_id = 0;
-                //appendDiv = true;
             }
 
             for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
@@ -186,7 +180,7 @@ function Screens_loadDataSuccess() {
                 if (inUseObj.data[inUseObj.data_cursor]) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
             }
 
-            //if (appendDiv)
+
             doc.appendChild(inUseObj.row);
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) inUseObj.row_id++;
             else if (inUseObj.data_cursor >= inUseObj.data.length) break;

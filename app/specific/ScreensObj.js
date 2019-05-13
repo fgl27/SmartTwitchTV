@@ -190,7 +190,6 @@ function ScreensObj_InitFeatured() {
 var Base_Clip_obj = {
     ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
-    HasSwitches: true,
     TopRowCreated: false,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
@@ -200,6 +199,26 @@ var Base_Clip_obj = {
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_CLIPS;
+    },
+    HasSwitches: true,
+    SwitchesIcons: ['history', 'play-1'],
+    addSwitches: function(doc) {
+        this.TopRowCreated = true;
+        this.row = document.createElement('div');
+        var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_CLIP, STR_SPACE + STR_SPACE + STR_PLAY_ALL];
+        var thumbfallow, div, i = 0;
+
+        for (i; i < SwitchesStrings.length; i++) {
+            thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+            div = document.createElement('div');
+            div.setAttribute('id', this.ids[8] + 'y_' + i);
+            div.className = 'stream_cell_period';
+            div.innerHTML = '<div id="' + this.ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            this.row.appendChild(div);
+        }
+        doc.appendChild(this.row);
     },
     key_play: function() {
         if (this.posY === -1) {
