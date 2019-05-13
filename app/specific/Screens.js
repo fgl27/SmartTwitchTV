@@ -190,11 +190,9 @@ function Screens_loadDataSuccess() {
     Screens_loadDataSuccessFinish();
 }
 
-function Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail) {
+function Screens_createCellBase(row_id, coloumn_id) {
 
     var id = row_id + '_' + coloumn_id;
-    Main_imgVectorPush(idArray[1] + id, thumbnail);
-    if (row_id < inUseObj.ColoumnsCount) Main_CacheImage(thumbnail); //try to pre cache first 3 rows
 
     Main_td = document.createElement('div');
     Main_td.style.cssText = inUseObj.ThumbCssText;
@@ -204,13 +202,14 @@ function Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail) {
 
 function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail);
+    var id = Screens_createCellBase(row_id, coloumn_id);
 
     Main_td.setAttribute('id', idArray[5] + id);
     Main_td.setAttribute(Main_DataAttribute, game_name);
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[1] + id + '" class="stream_img" src="' + thumbnail +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
         idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
         (views !== '' ? '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 100%; display: inline-block;">' + views + '</div>' : '') +
@@ -222,7 +221,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
 //TODO Reduce the number of vars here please
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id, idArray, thumbnail);
+    var id = Screens_createCellBase(row_id, coloumn_id);
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify([video_id,
@@ -240,7 +239,8 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     ]));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[1] + id + '" class="stream_img" src="' + thumbnail +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
         display_name + '</div><div id="' + idArray[7] + id +
@@ -258,13 +258,14 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
 
 function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id, idArray, valuesArray[0]);
+    var id = Screens_createCellBase(row_id, coloumn_id);
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
@@ -280,10 +281,8 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
-        else {
-            inUseObj.status = true;
-            Main_imgVectorLoad(inUseObj.img_404);
-        }
+        else inUseObj.status = true;
+
         //TODO improve this check
         if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
             if (Main_values.Play_WasPlaying) {
@@ -321,7 +320,6 @@ function Screens_loadDataSuccessFinish() {
         inUseObj.FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(inUseObj.img_404);
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
     }
 }
@@ -347,7 +345,6 @@ function Screens_addFocus(forceScroll) {
         Screens_loadDataPrepare();
         Screens_loadDataRequest();
     } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
-        Main_imgVectorRst();
         Main_ready(function() {
             inUseObj.loadDataSuccess();
         });
