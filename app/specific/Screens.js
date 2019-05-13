@@ -287,7 +287,7 @@ function Screens_loadDataSuccessFinish() {
         else {
             inUseObj.status = true;
             var doc = document.getElementById(inUseObj.table);
-            for (var i = 0; i < (inUseObj.visiblerows + 1); i++)
+            for (var i = 0; i < inUseObj.visiblerows; i++)
                 doc.appendChild(inUseObj.Cells[i]);
         }
 
@@ -364,14 +364,16 @@ function Screens_addFocus(forceScroll) {
 function Screens_addrow(forceScroll) {
     if (inUseObj.currY < inUseObj.posY) {
         if (inUseObj.posY > 1) {
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 2]);
-            document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 2)).remove();
+            if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
+                document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 1]);
+                document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 2)).remove();
+            }
         }
     } else if (inUseObj.currY > inUseObj.posY) {
         if (inUseObj.posY) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[inUseObj.posY - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            document.getElementById(inUseObj.ids[12] + (inUseObj.posY + 3)).remove();
+            if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) document.getElementById(inUseObj.ids[12] + (inUseObj.posY + 2)).remove();
         }
     }
 
@@ -385,7 +387,6 @@ function Screens_addrow(forceScroll) {
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if ((y < 2 && Main_YchangeAddFocus(y)) || forceScroll) {
-
         if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
         else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
             document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1);
