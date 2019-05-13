@@ -186,7 +186,10 @@ function Screens_loadDataSuccess() {
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.Cells.push(inUseObj.row);
                 inUseObj.row_id++;
-            } else if (inUseObj.data_cursor >= inUseObj.data.length) break;
+            } else if (inUseObj.data_cursor >= inUseObj.data.length) {
+                inUseObj.Cells.push(inUseObj.row);
+                break;
+            }
         }
     }
     inUseObj.emptyContent = !response_items && !inUseObj.status;
@@ -287,7 +290,7 @@ function Screens_loadDataSuccessFinish() {
         else {
             inUseObj.status = true;
             var doc = document.getElementById(inUseObj.table);
-            for (var i = 0; i < inUseObj.visiblerows; i++)
+            for (var i = 0; i < (inUseObj.Cells.length < inUseObj.visiblerows ? inUseObj.Cells.length: inUseObj.visiblerows); i++)
                 doc.appendChild(inUseObj.Cells[i]);
         }
 
