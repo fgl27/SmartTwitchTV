@@ -18,6 +18,7 @@ var Featured;
 var Base_obj = {
     posX: 0,
     posY: 0,
+    currY: 0,
     row_id: 0,
     coloumn_id: 0,
     dataEnded: false,
@@ -52,10 +53,11 @@ var Base_obj = {
 
 var Base_Live_obj = {
     ThumbSize: 32.65,
+    visiblerows: 3,
     ItemsLimit: Main_ItemsLimitVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Main_addFocusVideo,
+    addFocus: Screens_addFocusVideo,
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_LIVE_CHANNELS;
@@ -193,8 +195,9 @@ var Base_Clip_obj = {
     TopRowCreated: false,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Main_addFocusVideo,
+    addFocus: Screens_addFocusVideo,
     cursor: null,
+    visiblerows: 3,
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
@@ -202,7 +205,7 @@ var Base_Clip_obj = {
     },
     HasSwitches: true,
     SwitchesIcons: ['history', 'play-1'],
-    addSwitches: function(doc) {
+    addSwitches: function() {
         this.TopRowCreated = true;
         this.row = document.createElement('div');
         var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_CLIP, STR_SPACE + STR_SPACE + STR_PLAY_ALL];
@@ -218,7 +221,7 @@ var Base_Clip_obj = {
                 'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
             this.row.appendChild(div);
         }
-        doc.appendChild(this.row);
+        document.getElementById(this.table).appendChild(this.row);
     },
     key_play: function() {
         if (this.posY === -1) {
@@ -255,6 +258,7 @@ var Base_Clip_obj = {
             this.loadingData = false;
         }
     },
+    Cells: [],
     addCell: function(cell) {
         if (!this.idObject[cell.tracking_id]) {
             this.itemsCount++;
@@ -389,10 +393,11 @@ function ScreensObj_InitAGameClip() {
 
 var Base_Game_obj = {
     ThumbSize: 19.35,
+    visiblerows: 3,
     ItemsLimit: Main_ItemsLimitGame,
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Main_addFocusGame,
+    addFocus: Screens_addFocusGame,
     img_404: IMG_404_GAME,
     empty_str: function() {
         return STR_NO + STR_LIVE_GAMES;

@@ -92,11 +92,13 @@ function Screens_StartLoad() {
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
     inUseObj.idObject = {};
+    inUseObj.Cells = [];
     inUseObj.FirstLoad = true;
     inUseObj.itemsCount = 0;
     inUseObj.posX = 0;
     inUseObj.posY = 0;
     inUseObj.row_id = 0;
+    inUseObj.currY = 0;
     inUseObj.coloumn_id = 0;
     inUseObj.data = null;
     inUseObj.data_cursor = 0;
@@ -154,9 +156,7 @@ function Screens_loadDataSuccess() {
     if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
     else if (!inUseObj.loadingData) inUseObj.dataEnded = true;
 
-    var doc = document.getElementById(inUseObj.table);
-
-    if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) inUseObj.addSwitches(doc);
+    if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) inUseObj.addSwitches();
 
     if (response_items) {
 
@@ -182,10 +182,11 @@ function Screens_loadDataSuccess() {
                 if (inUseObj.data[inUseObj.data_cursor]) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
             }
 
-
-            doc.appendChild(inUseObj.row);
-            if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) inUseObj.row_id++;
-            else if (inUseObj.data_cursor >= inUseObj.data.length) break;
+            //doc.appendChild(inUseObj.row);
+            if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
+                inUseObj.Cells.push(inUseObj.row);
+                inUseObj.row_id++;
+            } else if (inUseObj.data_cursor >= inUseObj.data.length) break;
         }
     }
     inUseObj.emptyContent = !response_items && !inUseObj.status;
@@ -283,7 +284,12 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
-        else inUseObj.status = true;
+        else {
+            inUseObj.status = true;
+            var doc = document.getElementById(inUseObj.table);
+            for (var i = 0; i < (inUseObj.visiblerows + 1); i++)
+                doc.appendChild(inUseObj.Cells[i]);
+        }
 
         //TODO improve this check
         if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
@@ -340,7 +346,7 @@ function Screens_addFocus(forceScroll) {
         return;
     }
 
-    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, inUseObj.ColoumnsCount, inUseObj.itemsCount, forceScroll);
+    Screens_addrow(forceScroll);
 
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
@@ -353,6 +359,47 @@ function Screens_addFocus(forceScroll) {
     }
 
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+}
+
+function Screens_addrow(forceScroll) {
+    if (inUseObj.currY < inUseObj.posY) {
+        if (inUseObj.posY > 1) {
+            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 2]);
+            document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 2)).remove();
+        }
+    } else if (inUseObj.currY > inUseObj.posY) {
+        if (inUseObj.posY) {
+            var doc = document.getElementById(inUseObj.table);
+            doc.insertBefore(inUseObj.Cells[inUseObj.posY - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+            document.getElementById(inUseObj.ids[12] + (inUseObj.posY + 3)).remove();
+        }
+    }
+
+    inUseObj.currY = inUseObj.posY;
+
+    Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
+    Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+
+    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, forceScroll);
+}
+
+function Screens_addFocusVideo(y, x, idArray, forceScroll) {
+    if ((y < 2 && Main_YchangeAddFocus(y)) || forceScroll) {
+
+        if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
+        else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
+            document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1);
+
+    } else Main_handleKeyUp();
+}
+
+function Screens_addFocusGame(y, x, idArray, forceScroll) {
+    if ((!y && Main_YchangeAddFocus(y)) || forceScroll) {
+
+        Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
+            (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
+
+    } else Main_handleKeyUp();
 }
 
 function Screens_ChangeFocus(y, x) {
