@@ -187,7 +187,7 @@ function Screens_loadDataSuccess() {
                 inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 inUseObj.row_id++;
             } else if (inUseObj.data_cursor >= inUseObj.data.length) {
-                inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
+                if (this.dataEnded) inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 break;
             }
         }
@@ -489,13 +489,17 @@ function Screens_handleKeyDown(event) {
             Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
-            Screens_KeyLeftRight(1, 0);
+            if (inUseObj.dataEnded ||
+                inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
+                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) Screens_KeyLeftRight(1, 0);
+            else Screens_addFocus(true);
             break;
         case KEY_UP:
             Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
-            Screens_KeyUpDown(1);
+            if (inUseObj.dataEnded || (inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) Screens_KeyUpDown(1);
+            else Screens_addFocus(true);
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
