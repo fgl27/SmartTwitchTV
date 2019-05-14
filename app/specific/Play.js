@@ -961,8 +961,13 @@ function Play_hideChatBackgroundDialog() {
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
-        if (Main_Android) Android.play(true);
+
         Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
+
+        if (Main_Android) {
+             Android.play(true);
+        }
+
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
             window.clearInterval(Play_streamCheckId);

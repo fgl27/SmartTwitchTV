@@ -108,7 +108,6 @@ function PlayVod_Start() {
 function PlayVod_PosStart() {
     window.setTimeout(function() {
         Main_ShowElement('scene_channel_panel_bottom');
-        Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
         Main_ShowElement('progress_pause_holder');
     }, 1000);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
