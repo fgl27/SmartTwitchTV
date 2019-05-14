@@ -965,7 +965,7 @@ function Play_KeyPause(PlayVodClip) {
         Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
 
         if (Main_Android) {
-             Android.play(true);
+            Android.play(true);
         }
 
         if (PlayVodClip === 1) {
