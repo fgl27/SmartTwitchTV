@@ -194,6 +194,10 @@ function PlayClip_Resume() {
 
 function PlayClip_PlayerCheck() {
     if (Main_Android) PlayClip_currentTime = Android.gettime();
+
+    //The player can bug and not stop playing when it ends after a video has be pause
+    if ((PlayClip_currentTime / 1000) > PlayClip_DurationSeconds) Play_PannelEndStart(3);
+
     if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
         PlayClip_PlayerCheckCount++;
         if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {

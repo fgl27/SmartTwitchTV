@@ -964,10 +964,6 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
 
-        if (Main_Android) {
-            Android.play(true);
-        }
-
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
             window.clearInterval(Play_streamCheckId);
@@ -981,6 +977,12 @@ function Play_KeyPause(PlayVodClip) {
             window.clearInterval(PlayClip_streamCheckId);
             PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
+
+        //For some reason Android.play(true); can freez the app as if the function never returns even it be a void
+        //Let it at the botton and thecnicly all works
+        if (Main_Android) {
+            Android.play(true);
+        }
     } else {
         window.clearInterval(Play_streamCheckId);
         window.clearInterval(PlayVod_streamCheckId);
@@ -988,8 +990,8 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<i class="pause_button3d icon-play-1"></i>');
 
-        if (Main_Android) Android.play(false);
         Play_showPauseDialog();
+        if (Main_Android) Android.play(false);
     }
 }
 
@@ -1303,7 +1305,11 @@ function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
     if (PlayVodClip === 1) { //live
         window.clearInterval(Play_streamCheckId);
         Play_CheckHostStart();
-    } else Play_PlayEndStart(PlayVodClip);
+    } else {
+        Play_PlayEndStart(PlayVodClip);
+        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
+        if (Main_Android) Android.play(false);
+    }
 }
 
 function Play_PlayEndStart(PlayVodClip) {
