@@ -302,7 +302,7 @@
         }
 
         .stream_info {
-            white-space: nowrap;
+            white-space: pre;
             text-overflow: ellipsis;
             overflow: hidden;
             font-weight: normal;
@@ -884,7 +884,7 @@
             padding-left: 7px;
             padding-right: 7px;
             width: auto;
-            max-width: 100%;
+            max-width: 96%;
             background-color: rgba(0, 0, 0, 0.25);
         }
 
@@ -892,6 +892,13 @@
             display: inline-block;
             width: auto;
             max-width: 90%;
+        }
+
+        .pause_next_div {
+            width: 90%;
+            margin-left: 5%;
+            text-align: center;
+            margin-top: 0.5ch;
         }
 
         .progress_bar_div {
@@ -1429,8 +1436,8 @@
                     </div>
                     <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
                 </div>
-                <div style="text-align: center; margin-top: 0.5ch;">
-                    <div style="width: 38%; display: inline-block; text-align: right;">
+                <div id="pause_next_div" class="pause_next_div">
+                    <div style="width: 44%; display: inline-block; text-align: right;">
                         <div id="back_button" class="next_button" style="opacity: 0;">
                             <div id="back_button_text" class="next_text">
                                 <div id="back_button_text_name" class="stream_channel" style="text-align: right;"></div>
@@ -1442,7 +1449,7 @@
                     <div id="pause_button" class="pause_button">
                         <i class="pause_button3d icon-pause"></i>
                     </div>
-                    <div style="width: 38%; display: inline-block; text-align: left;">
+                    <div style="width: 44%; display: inline-block; text-align: left;">
                         <div id="next_button" class="next_button" style="opacity: 0;">
                             <i class="pause_button3d icon-next"></i>
                             <div id="next_button_text" class="next_text">
