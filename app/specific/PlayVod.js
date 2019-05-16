@@ -433,7 +433,11 @@ function PlayVod_PlayerCheck() {
     if (Main_Android) PlayVod_currentTime = Android.gettime();
 
     //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) Play_PannelEndStart(2);
+    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
+        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
+        if (Main_Android) Android.play(false);
+        Play_PannelEndStart(2);
+    }
 
     if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
         PlayVod_PlayerCheckCount++;
