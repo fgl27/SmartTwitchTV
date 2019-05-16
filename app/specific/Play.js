@@ -1307,8 +1307,6 @@ function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
         Play_CheckHostStart();
     } else {
         Play_PlayEndStart(PlayVodClip);
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_Android) Android.play(false);
     }
 }
 
