@@ -34,6 +34,8 @@ function Chat_Init() {
 
     Main_ready(function() {
         Chat_Id = (new Date()).getTime();
+        ChatLive_selectedChannel_id = Main_values.Main_selectedChannel_id;
+        ChatLive_selectedChannel = Main_values.Main_selectedChannel;
         ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess);
     });
 }
