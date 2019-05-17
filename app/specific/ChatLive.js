@@ -10,7 +10,10 @@ var ChatLive_loaded = false;
 var ChatLive_CheckId;
 var ChatLive_FixId;
 var ChatLive_LineAddCounter = 0;
-var extraEmotesDone = {};
+var extraEmotesDone = {
+    bbtv: {},
+    ffz: {}
+};
 var extraEmotes = {};
 //Variable initialization end
 
@@ -77,7 +80,8 @@ function ChatLive_loadBadgesChannelSuccess(responseText, id) {
         });
     });
 
-    if (!extraEmotesDone[Main_values.Play_selectedChannel_id]) ChatLive_loadEmotesChannel(id);
+    if (!extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id]) ChatLive_loadEmotesChannel(id);
+    else if (!extraEmotesDone.ffz[Main_values.Play_selectedChannel_id]) ChatLive_loadEmotesChannelffz(id);
     else if (ChatLive_Id === id) ChatLive_loadChat();
 }
 
@@ -99,8 +103,9 @@ function ChatLive_loadEmotesChannelRequest(id) {
             if (xmlHttp.status === 200) {
                 if (ChatLive_Id === id) ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText, id);
             } else if (xmlHttp.status === 404) {
-                extraEmotesDone[Main_values.Play_selectedChannel_id] = 1;
-                if (ChatLive_Id === id) ChatLive_loadChat();
+                extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id] = 1;
+                if (!extraEmotesDone.ffz[Main_values.Play_selectedChannel_id]) ChatLive_loadEmotesChannelffz(id);
+                else if (ChatLive_Id === id) ChatLive_loadChat();
             } else {
                 if (ChatLive_Id === id) ChatLive_loadEmotesChannelError(id);
             }
@@ -121,7 +126,54 @@ function ChatLive_loadEmotesChannelError(id) {
 function ChatLive_loadEmotesChannelSuccess(data, id) {
     ChatLive_loadEmotes(JSON.parse(data));
 
-    extraEmotesDone[Main_values.Play_selectedChannel_id] = 1;
+    extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id] = 1;
+
+    if (!extraEmotesDone.ffz[Main_values.Play_selectedChannel_id]) ChatLive_loadEmotesChannelffz(id);
+    else if (ChatLive_Id === id) ChatLive_loadChat();
+}
+
+function ChatLive_loadEmotesChannelffz(id) {
+    ChatLive_loadingDataTry = 0;
+    ChatLive_loadEmotesChannelffzRequest(id);
+}
+
+function ChatLive_loadEmotesChannelffzRequest(id) {
+    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(Main_values.Play_selectedChannel);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (ChatLive_Id === id) ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText, id);
+            } else if (xmlHttp.status === 404) {
+                extraEmotesDone.ffz[Main_values.Play_selectedChannel_id] = 1;
+                if (ChatLive_Id === id) ChatLive_loadChat();
+            } else {
+                if (ChatLive_Id === id) ChatLive_loadEmotesChannelffzError(id);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_loadEmotesChannelffzError(id) {
+    ChatLive_loadingDataTry++;
+    if (ChatLive_Id === id) {
+        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffzRequest(id);
+        else if (ChatLive_Id === id) ChatLive_loadChat();
+    }
+}
+
+function ChatLive_loadEmotesChannelffzSuccess(data, id) {
+    ChatLive_loadEmotesffz(JSON.parse(data));
+
+    extraEmotesDone.ffz[Main_values.Play_selectedChannel_id] = 1;
+
     if (ChatLive_Id === id) ChatLive_loadChat();
 }
 
@@ -132,6 +184,33 @@ function ChatLive_loadEmotes(data) {
             id: emote.id,
             '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
         };
+    });
+}
+
+function ChatLive_loadEmotesffz(data) {
+    Object.keys(data.sets).forEach(function(set) {
+        set = data.sets[set];
+        if (set.emoticons || Array.isArray(set.emoticons)) {
+
+            set.emoticons.forEach(function(emoticon) {
+
+                if (!emoticon.name || !emoticon.id) return;
+                if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
+
+                if (extraEmotes[emoticon.name]) return;
+
+                if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
+
+                if (typeof emoticon.urls[1] !== 'string') return;
+                if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
+                extraEmotes[emoticon.name] = {
+                    code: emoticon.name,
+                    id: emoticon.id,
+                    '3x': 'https:' + (emoticon.urls[4] || (emoticon.urls[2] || emoticon.urls[1].replace(/1$/, '2')))
+                };
+
+            });
+        }
     });
 }
 
