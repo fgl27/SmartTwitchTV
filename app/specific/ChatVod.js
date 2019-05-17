@@ -34,9 +34,8 @@ function Chat_Init() {
 
     Main_ready(function() {
         Chat_Id = (new Date()).getTime();
-        Chat_loadBadgesChannel(Chat_Id);
+        ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess);
     });
-
 }
 
 function Chat_loadBadgesGlobal() {
@@ -84,7 +83,7 @@ function Chat_loadEmotesError() {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    ChatLive_loadEmotes(JSON.parse(data));
+    ChatLive_loadEmotesbbtv(JSON.parse(data));
     Chat_loadEmotesffz();
 }
 
@@ -110,100 +109,20 @@ function Chat_loadEmotesSuccessffz(data) {
     Chat_LoadGlobal = true;
 }
 
-function Chat_loadBadgesChannel(id) {
-    Chat_loadingDataTry = 0;
-    Chat_loadBadgesChannelRequest(id);
-}
-
-function Chat_loadBadgesChannelRequest(id) {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Main_selectedChannel_id + '/display';
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (Chat_Id === id) Chat_loadBadgesChannelSuccess(xmlHttp.responseText, id);
-                return;
-            } else {
-                if (Chat_Id === id) Chat_loadBadgesChannelError(id);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function Chat_loadBadgesChannelError(id) {
-    Chat_loadingDataTry++;
-    if (Chat_Id === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesChannelRequest(id);
-        else {
-            Chat_loadBadgesChannelId = window.setTimeout(function() {
-                Chat_loadBadgesChannelRequest(id);
-            }, 1000);
-        }
-    }
-}
-
-function Chat_loadBadgesChannelSuccess(responseText, id) {
+function Chat_loadBadgesTransform(responseText) {
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
             tagCSS(badge.type, version.type, version.image_url_4x, Chat_div);
         });
     });
+}
 
+function Chat_loadBadgesChannelSuccess(responseText, id) {
+    Chat_loadBadgesTransform(responseText);
+
+    ChatLive_loadEmotesChannel();
+    ChatLive_loadEmotesChannelffz();
     if (Chat_Id === id) Chat_loadChat(id);
-
-    if (!extraEmotesDone[Main_values.Main_selectedChannel_id]) Chat_loadEmotesChannel(id);
-    else if (Chat_Id === id) Chat_loadChat(id);
-}
-
-function Chat_loadEmotesChannel(id) {
-    Chat_loadingDataTry = 0;
-    Chat_loadEmotesChannelRequest(id);
-}
-
-function Chat_loadEmotesChannelRequest(id) {
-    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(Main_values.Main_selectedChannel);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (Chat_Id === id) Chat_loadEmotesChannelSuccess(xmlHttp.responseText, id);
-            } else if (xmlHttp.status === 404) {
-                extraEmotesDone[Main_values.Main_selectedChannel_id] = 1;
-                if (Chat_Id === id) Chat_loadChat();
-            } else {
-                if (Chat_Id === id) Chat_loadEmotesChannelError(id);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function Chat_loadEmotesChannelError(id) {
-    Chat_loadingDataTry++;
-    if (Chat_Id === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesChannelRequest(id);
-        else if (Chat_Id === id) Chat_loadChat();
-    }
-}
-
-function Chat_loadEmotesChannelSuccess(data, id) {
-    ChatLive_loadEmotes(JSON.parse(data));
-
-    extraEmotesDone[Main_values.Main_selectedChannel_id] = 1;
-    if (Chat_Id === id) Chat_loadChat();
 }
 
 function Chat_loadChat(id) {
