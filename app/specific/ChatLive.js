@@ -104,7 +104,7 @@ function ChatLive_loadEmotesChannelRequest() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 404) {
+            } else if (xmlHttp.status === 404) { //not supported by this channel
                 extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
             } else {
                 ChatLive_loadEmotesChannelError();
@@ -122,7 +122,6 @@ function ChatLive_loadEmotesChannelError() {
 
 function ChatLive_loadEmotesChannelSuccess(data) {
     ChatLive_loadEmotesbbtv(JSON.parse(data));
-
     extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
 }
 
@@ -145,7 +144,7 @@ function ChatLive_loadEmotesChannelffzRequest() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 404) {
+            } else if (xmlHttp.status === 404) { //not supported by this channel
                 extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
             } else {
                 ChatLive_loadEmotesChannelffzError();
