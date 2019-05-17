@@ -15,6 +15,10 @@ var extraEmotesDone = {
     ffz: {}
 };
 var extraEmotes = {};
+
+var ChatLive_selectedChannel_id;
+var ChatLive_selectedChannel;
+
 //Variable initialization end
 
 function ChatLive_Init() { // jshint ignore:line
@@ -29,6 +33,8 @@ function ChatLive_Init() { // jshint ignore:line
 
     Main_ready(function() {
         ChatLive_Id = (new Date()).getTime();
+        ChatLive_selectedChannel_id = Main_values.Play_selectedChannel_id;
+        ChatLive_selectedChannel = Main_values.Play_selectedChannel;
         ChatLive_loadBadgesChannel(ChatLive_Id, ChatLive_loadBadgesChannelSuccess);
     });
 
@@ -40,7 +46,7 @@ function ChatLive_loadBadgesChannel(id, callbackSucess) {
 }
 
 function ChatLive_loadBadgesChannelRequest(id, callbackSucess) {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + Main_values.Play_selectedChannel_id + '/display';
+    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id + '/display';
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -80,14 +86,14 @@ function ChatLive_loadBadgesChannelSuccess(responseText, id) {
 }
 
 function ChatLive_loadEmotesChannel() {
-    if (!extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id]) {
+    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id]) {
         ChatLive_loadingDataTry = 0;
         ChatLive_loadEmotesChannelRequest();
     }
 }
 
 function ChatLive_loadEmotesChannelRequest() {
-    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(Main_values.Play_selectedChannel);
+    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel);
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -99,7 +105,7 @@ function ChatLive_loadEmotesChannelRequest() {
             if (xmlHttp.status === 200) {
                 ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText);
             } else if (xmlHttp.status === 404) {
-                extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id] = 1;
+                extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
             } else {
                 ChatLive_loadEmotesChannelError();
             }
@@ -117,18 +123,18 @@ function ChatLive_loadEmotesChannelError() {
 function ChatLive_loadEmotesChannelSuccess(data) {
     ChatLive_loadEmotesbbtv(JSON.parse(data));
 
-    extraEmotesDone.bbtv[Main_values.Play_selectedChannel_id] = 1;
+    extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
 }
 
 function ChatLive_loadEmotesChannelffz() {
-    if (!extraEmotesDone.ffz[Main_values.Play_selectedChannel_id]) {
+    if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id]) {
         ChatLive_loadingDataTry = 0;
         ChatLive_loadEmotesChannelffzRequest();
     }
 }
 
 function ChatLive_loadEmotesChannelffzRequest() {
-    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(Main_values.Play_selectedChannel);
+    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel);
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -140,7 +146,7 @@ function ChatLive_loadEmotesChannelffzRequest() {
             if (xmlHttp.status === 200) {
                 ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText);
             } else if (xmlHttp.status === 404) {
-                extraEmotesDone.ffz[Main_values.Play_selectedChannel_id] = 1;
+                extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
             } else {
                 ChatLive_loadEmotesChannelffzError();
             }
@@ -157,7 +163,7 @@ function ChatLive_loadEmotesChannelffzError() {
 
 function ChatLive_loadEmotesChannelffzSuccess(data) {
     ChatLive_loadEmotesffz(JSON.parse(data));
-    extraEmotesDone.ffz[Main_values.Play_selectedChannel_id] = 1;
+    extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
 }
 
 function ChatLive_loadEmotesbbtv(data) {
@@ -212,7 +218,7 @@ function ChatLive_loadChatRequest() {
         ChatLive_socket.send('PASS blah\r\n');
         ChatLive_socket.send('NICK justinfan12345\r\n');
         ChatLive_socket.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-        ChatLive_socket.send('JOIN #' + Main_values.Play_selectedChannel + '\r\n');
+        ChatLive_socket.send('JOIN #' + ChatLive_selectedChannel + '\r\n');
     };
 
     ChatLive_socket.onclose = function() {
