@@ -150,7 +150,8 @@ function Languages_init() {
 function Languages_exit() {
     document.body.removeEventListener("keydown", Languages_handleKeyDown);
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    document.getElementById('settings_scroll').style.top = (screen.height * 0.085) + "px";
+    Settings_ScrollTable();
+    //document.getElementById('settings_scroll').style.top = (screen.height * 0.085) + "px";
     Main_ShowElement('settings_main');
     Main_HideElement('settings_lang');
     Main_textContent('top_bar_featured', STR_FEATURED);
