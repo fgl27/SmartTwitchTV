@@ -32,6 +32,7 @@ var PlayClip_HasBack = false;
 var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
 var PlayClip_EnterPos = 0;
 var PlayClip_All = false;
+var PlayClip_All_Forced = true;
 //Variable initialization end
 
 function PlayClip_Start() {

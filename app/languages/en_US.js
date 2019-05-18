@@ -231,4 +231,5 @@ function en_USLang() {
     STR_PLAY_NEXT = "Play Next";
     STR_PLAY_NEXT_IN = "Playing next in ";
     STR_PLAY_ALL = "Play All";
+    STR_AUTO_PLAY_NEXT = "Auto Play next clip";
 }
