@@ -35,6 +35,9 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.Extractor;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
@@ -343,9 +346,17 @@ public class PlayerActivity extends Activity {
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
-                return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+                return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
+        }
+    }
+
+    //https://exoplayer.dev/shrinking.html
+    private class Mp4ExtractorsFactory implements ExtractorsFactory {
+        @Override
+        public Extractor[] createExtractors() {
+            return new Extractor[] {new Mp4Extractor()};
         }
     }
 
@@ -624,8 +635,8 @@ public class PlayerActivity extends Activity {
             urlConnection.setConnectTimeout(timeout);
 
             if (post) {
-               urlConnection.setRequestMethod("POST");
-               urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
             }
 
             int status = urlConnection.getResponseCode();
