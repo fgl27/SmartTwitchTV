@@ -325,6 +325,7 @@ function Settings_inputFocus(position) {
     Main_AddClass(key, 'settings_value_focus');
     Main_AddClass(key + '_div', 'settings_div_focus');
     Settings_Setarrows(position);
+    Settings_ScrollTable();
 }
 
 function Settings_RemoveinputFocus() {
@@ -425,6 +426,18 @@ function Settings_SetBuffers(whocall) {
 function Settings_SetClock() {
     var time = Settings_Obj_default("clock_offset");
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
+}
+
+function Settings_ScrollTable() {
+    var position = screen.height;
+
+    if (Settings_cursorY > 4) {
+        position = position * 0.09;
+        position += document.getElementById(Settings_value_keys[0]).offsetTop * -1;
+        document.getElementById('settings_scroll').style.top = position + "px";
+    } else position = position * 0.077;
+
+    document.getElementById('settings_scroll').style.top = position + "px";
 }
 
 function Settings_handleKeyDown(event) {
