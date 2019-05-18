@@ -1020,7 +1020,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     if (!Play_IsWarning) Play_HideWarningDialog();
     Play_HideBufferDialog();
     Play_CleanHideExit();
-    if (PlayVodClip === 3 && PlayClip_HasNext && PlayClip_All) {
+    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = -1;
     }
@@ -1060,7 +1060,7 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
-        ((PlayClip_HasNext && PlayClip_All) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
+        ((PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
     if (Play_isEndDialogVisible()) {
         Play_EndTextCounter--;
         Play_state = Play_STATE_PLAYING;
@@ -1076,7 +1076,7 @@ function Play_EndText(PlayVodClip) {
             if (PlayVodClip === 1) Play_shutdownStream();
             else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && PlayClip_All) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
 

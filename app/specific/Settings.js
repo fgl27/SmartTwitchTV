@@ -2,7 +2,7 @@
 var Settings_cursorY = 0;
 var Settings_value = {
     "restor_playback": { //restor_playback
-        "values": ["off", "on"],
+        "values": ["no", "yes"],
         "defaultValue": 2
     },
     "chat_font_size": { //chat_font_size
@@ -18,7 +18,11 @@ var Settings_value = {
         "defaultValue": 11
     },
     "force_disable_chat": { //force disable
-        "values": ["off", "on"],
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "clip_auto_play_next": { //force disable
+        "values": ["no", "yes"],
         "defaultValue": 2
     },
     "buffer_live": { //buffer_live
@@ -34,7 +38,7 @@ var Settings_value = {
         "defaultValue": 3
     },
     "videos_animation": { //videos_animation
-        "values": ["off", "on"],
+        "values": ["no", "yes"],
         "defaultValue": 2
     },
     "clock_offset": { //clock_offset
@@ -132,16 +136,23 @@ function Settings_SetSettings() {
     //Player restore playback
     key = "restor_playback";
     Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
 
     // Videos
     key = "videos_animation";
     Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
+
+    key = "clip_auto_play_next";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
+
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -249,7 +260,7 @@ function Settings_SetStrings() {
     //Player restore
     key = "restor_playback";
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     //Player chat font size
     key = "chat_font_size";
@@ -258,12 +269,16 @@ function Settings_SetStrings() {
     //Player restore
     key = "force_disable_chat";
     Settings_DivOptionChangeLang(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     // Videos
     key = "videos_animation";
     Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_YES, STR_NO];
+
+    key = "clip_auto_play_next";
+    Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
+    Settings_value[key].values = [STR_NO, STR_YES];
 
     key = "chat_brightness";
     Main_textContent(key + '_name', STR_CHAT_BRIGHTNESS);
@@ -285,6 +300,7 @@ function Settings_SetDefautls() {
     Settings_SetClock();
     Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
 }
 
@@ -351,6 +367,7 @@ function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
