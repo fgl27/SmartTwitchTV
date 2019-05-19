@@ -79,6 +79,7 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_SetTopOpacityId;
 var Main_updateclockId;
+var Main_closeId;
 var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods = [];
@@ -178,6 +179,10 @@ function Main_loadTranslations(language) {
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
             console.log('Main_isBrowser: ' + Main_isBrowser);
+        }
+        if (Main_Android) {
+            document.body.addEventListener("keydown", Main_BackKeyHoldDown, false);
+            document.body.addEventListener("keyup", Main_BackKeyHoldUp, false);
         }
 
         Settings_SetDefautls();
@@ -1593,4 +1598,22 @@ function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackS
     };
 
     xmlHttp.send(null);
+}
+
+function Main_BackKeyHoldDown(event) {
+    if (event.keyCode === KEY_RETURN) Main_SetBackKeykill();
+}
+
+function Main_BackKeyHoldUp(event) {
+    if (event.keyCode === KEY_RETURN) Main_UnSetBackKeykill();
+}
+
+function Main_SetBackKeykill() {
+    Main_closeId = window.setTimeout(function() {
+        Android.mclose(true);
+    }, 5000);
+}
+
+function Main_UnSetBackKeykill() {
+    window.clearTimeout(Main_closeId);
 }
