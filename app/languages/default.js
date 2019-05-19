@@ -51,6 +51,7 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_2 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_3 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_4 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_5 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
         STR_CONTROLS_MAIN_7 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +

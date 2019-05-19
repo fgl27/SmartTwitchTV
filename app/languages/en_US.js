@@ -93,6 +93,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side pannel click exit";
+    STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key for 5 seconds";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right";
     STR_CONTROLS_MAIN_7 = "Some screen will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
     STR_CONTROLS_MAIN_10 = "Start a search: from side pannel click search";
