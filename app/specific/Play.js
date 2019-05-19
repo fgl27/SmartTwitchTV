@@ -79,6 +79,7 @@ var Play_chat_container;
 var Play_IncrementView = '';
 var Play_ProgresBarrElm;
 var Play_DefaultjumpTimers = [];
+var Play_UserLiveFeedPressed = false;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
@@ -223,6 +224,7 @@ function Play_Start() {
     Main_textContent("stream_live_time", STR_SINCE + Play_created);
     Main_HideElement('progress_pause_holder');
 
+    Play_UserLiveFeedPressed = false;
     Play_EndSet(1);
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
@@ -1555,6 +1557,8 @@ function Play_handleKeyDown(e) {
                     if (doc === null) UserLiveFeed_ResetFeedId();
                     else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
                         Play_PreshutdownStream();
+                        Main_values.Play_isHost = false;
+                        Play_UserLiveFeedPressed = true;
                         Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                     } else UserLiveFeed_ResetFeedId();
                 } else Play_showPanel();
