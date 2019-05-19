@@ -895,11 +895,14 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
     Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
-    if (Main_values.Main_Go === Main_UserHost) {
+
+    Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost);
+
+    if (Main_values.Play_isHost) {
         Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-        Main_values.Play_isHost = true;
     } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+
     Main_values.Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_openStream();
