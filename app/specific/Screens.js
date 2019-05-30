@@ -12,6 +12,7 @@ function Screens_InitSecondaryScreens() {
     //Live screens
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
+    ScreensObj_InitAGame();
 
     //Clips screens
     ScreensObj_InitClip();
@@ -315,6 +316,7 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
 
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
+        if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();
         if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
         else {
             inUseObj.status = true;
@@ -456,14 +458,14 @@ function Screens_ChangeFocus(y, x) {
 }
 
 function Screens_addFocusFallow() {
-    if (inUseObj.posX > 1) inUseObj.posX = 0;
-    else if (inUseObj.posX < 0) inUseObj.posX = 1;
+    if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
+    else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
     Main_AddClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
 }
 
 function Screens_removeFocusFallow() {
-    if (inUseObj.posX > 1) inUseObj.posX = 0;
-    else if (inUseObj.posX < 0) inUseObj.posX = 1;
+    if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
+    else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
     Main_RemoveClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
 }
 
@@ -482,7 +484,7 @@ function Screens_KeyUpDown(y) {
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
         inUseObj.posY = -1;
-        if (inUseObj.posX > 1) inUseObj.posX = 1;
+        if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 1;
         Screens_addFocusFallow();
     } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1 && (Main_ThumbNull(0, inUseObj.posX, inUseObj.ids[0]))) {
         inUseObj.posY = 0;
@@ -543,4 +545,55 @@ function Screens_handleKeyDown(event) {
         default:
             break;
     }
+}
+
+function AGame_headerOptions() {
+    if (!inUseObj.posX) {
+        Main_values.Main_Go = Main_AGameVod;
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        AGame_headerOptionsExit();
+        Main_SwitchScreenAction();
+    } else if (inUseObj.posX === 1) {
+        Main_values.Main_Go = Main_AGameClip;
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        AGame_headerOptionsExit();
+        Main_SwitchScreenAction();
+    } else AGame_fallow();
+}
+
+function AGame_headerOptionsExit() {
+    if (inUseObj.status && inUseObj.posY === -1) {
+        Screens_removeFocusFallow();
+        inUseObj.posY = 0;
+        inUseObj.posX = 0;
+        Main_AddClass(inUseObj.ids[0] + '0_' + inUseObj.posX, Main_classThumb);
+    }
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    Main_HideElement(inUseObj.ids[10]);
+}
+
+function AGame_fallow() {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+        if (AGame_fallowing) AddCode_UnFallowGame();
+        else AddCode_FallowGame();
+    } else {
+        Main_showWarningDialog(STR_NOKEY_WARN);
+        window.setTimeout(function() {
+            if (inUseObj.emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else Main_HideWarningDialog();
+        }, 2000);
+    }
+}
+
+function AGame_Checkfallow() {
+    if (AddUser_UserIsSet()) AddCode_CheckFallowGame();
+    else {
+        AGame_fallowing = false;
+        AGame_setFallow();
+    }
+}
+
+function AGame_setFallow() {
+    if (AGame_fallowing) Main_innerHTML(inUseObj.ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FALLOWING);
+    else Main_innerHTML(inUseObj.ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FALLOW : STR_NOKEY));
 }
