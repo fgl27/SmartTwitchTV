@@ -366,12 +366,14 @@ function Vod_removeFocusFallow() {
 }
 
 function Vod_AnimateThumb(idArray, id) {
+    window.clearInterval(Vod_AnimateThumbId);
     if (!Vod_DoAnimateThumb) return;
     var div = document.getElementById(idArray[0] + id);
 
     // Only load the animation if it can be loaded
     // This prevent starting animating before it has loaded or animated a empty image
     Vod_newImg.onload = function() {
+        this.onload = null;
         Main_HideElement(idArray[1] + id);
         // background-size: 612px from  div.offsetWidth
         div.style.backgroundSize = "612px";
