@@ -25,6 +25,7 @@ function Screens_InitSecondaryScreens() {
 
     //Vod screens
     ScreensObj_InitVod();
+    ScreensObj_InitAGameVod();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -483,6 +484,10 @@ function Screens_KeyUpDown(y) {
     //TODO improve this
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+        if (inUseObj.HasAnimateThumb) {
+            window.clearInterval(this.AnimateThumbId);
+            Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+        }
         inUseObj.posY = -1;
         if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 1;
         Screens_addFocusFallow();

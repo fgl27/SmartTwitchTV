@@ -239,10 +239,8 @@ function Main_initWindows() {
         Main_SetStringsSecondary();
 
         ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
-        AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
         UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
 
-        AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
         UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
 
         PlayVod_RestoreVodIds();
@@ -601,8 +599,10 @@ function Main_SwitchScreenAction(removekey) {
     } else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
         Screens_init();
-    } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
-    else if (Main_values.Main_Go === Main_AGameClip) {
+    } else if (Main_values.Main_Go === Main_AGameVod) {
+        inUseObj = AGameVod;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_AGameClip) {
         inUseObj = AGameClip;
         Screens_init();
     } else if (Main_values.Main_Go === Main_Featured) {
@@ -641,7 +641,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
     else if (ExitCurrent === Main_Vod) Screens_exit();
     else if (ExitCurrent === Main_Clip) Screens_exit();
-    else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
+    else if (ExitCurrent === Main_AGameVod) Screens_exit();
     else if (ExitCurrent === Main_AGameClip) Screens_exit();
     else if (ExitCurrent === Main_Featured) Screens_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
@@ -1240,8 +1240,7 @@ function Main_CenterLables(event) {
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_AGameVod) {
-                    Main_values.Main_Go = Main_aGame;
-                    AGameVod_exit();
+                    Screens_BasicExit(Main_aGame);
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserLive) {
@@ -1411,8 +1410,10 @@ function Main_RemoveKeys() {
     } else if (Main_values.Main_Go === Main_usergames) {
         inUseObj = UserGames;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_AGameVod) document.body.removeEventListener("keydown", AGameVod_handleKeyDown);
-    else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_AGameVod) {
+        inUseObj = AGameVod;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
 }
 
 function Main_ReloadScreen() {
@@ -1457,8 +1458,10 @@ function Main_ReloadScreen() {
     } else if (Main_values.Main_Go === Main_ChannelClip) {
         inUseObj = ChannelClip;
         Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_StartLoad();
-    else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
+    } else if (Main_values.Main_Go === Main_AGameVod) {
+        inUseObj = AGameVod;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
     else if (Main_values.Main_Go === Main_UserHost) UserHost_StartLoad();
     else if (Main_values.Main_Go === Main_UserVod) UserVod_StartLoad();
 
