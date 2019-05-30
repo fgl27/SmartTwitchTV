@@ -69,7 +69,7 @@ var Base_Vod_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: function(y, x, idArray, forceScroll) {
-        this.AnimateThumb();
+        this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
     },
     img_404: IMG_404_VIDEO,
@@ -114,7 +114,7 @@ var Base_Vod_obj = {
     },
     AnimateThumbId: null,
     HasAnimateThumb: true,
-    AnimateThumb: function() {
+    AnimateThumb: function(screen) {
         window.clearInterval(this.AnimateThumbId);
         if (!Vod_DoAnimateThumb) return;
         var div = document.getElementById(this.ids[0] + this.posY + '_' + this.posX);
@@ -123,11 +123,11 @@ var Base_Vod_obj = {
         // This prevent starting animating before it has loaded or animated a empty image
         Vod_newImg.onload = function() {
             this.onload = null;
-            Main_HideElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+            Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
             // background-size: 612px from  div.offsetWidth
             div.style.backgroundSize = "612px";
             var frame = 0;
-            inUseObj.AnimateThumbId = window.setInterval(function() {
+            screen.AnimateThumbId = window.setInterval(function() {
                 // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
                 // But this img real height is 180 thus the quality is affected, higher resolution aren't available
                 div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
