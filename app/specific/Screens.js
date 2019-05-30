@@ -21,6 +21,9 @@ function Screens_InitSecondaryScreens() {
     //Games screens
     ScreensObj_InitGame();
     ScreensObj_InitUserGames();
+
+    //Vod screens
+    ScreensObj_InitVod();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -284,6 +287,32 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     return Main_td;
 }
 
+function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
+
+    var id = Screens_createCellBase(row_id, coloumn_id);
+
+    Main_td.setAttribute('id', idArray[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
+        (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
+        '><div><img id="' +
+        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
+        idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
+        valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
+        '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
+        valuesArray[3] + '</div><div id="' + idArray[6] + id +
+        '"class="stream_info">' + valuesArray[4] + '</div><div style="line-height: 12px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
+        valuesArray[2] + '</div><div id="' + idArray[5] + id +
+        '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
+        valuesArray[6] + '</div></div></div></div>';
+
+    return Main_td;
+}
+
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
@@ -420,6 +449,7 @@ function Screens_addFocusGame(y, x, idArray, forceScroll) {
 
 function Screens_ChangeFocus(y, x) {
     Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+    if (inUseObj.HasAnimateThumb) Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
     inUseObj.posY += y;
     inUseObj.posX = x;
     Screens_addFocus();
