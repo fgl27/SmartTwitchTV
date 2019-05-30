@@ -63,9 +63,9 @@ var Base_Vod_obj = {
     ItemsLimit: Main_ItemsLimitVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: function() {
+    addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb();
-        Screens_addFocusVideo();
+        Screens_addFocusVideo(y, x, idArray, forceScroll);
     },
     img_404: IMG_404_VIDEO,
     HasSwitches: true,
