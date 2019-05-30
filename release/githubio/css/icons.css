@@ -152,3 +152,6 @@
 .icon-back:before {
   content: "\46";
 }
+.icon-star:before {
+  content: "\47";
+}
