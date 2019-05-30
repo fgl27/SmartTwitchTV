@@ -157,6 +157,7 @@ function ScreensObj_InitVod() {
             this.SetPeriod();
         },
         label_exit: function() {
+            Main_textContent('top_bar_vod', STR_VIDEOS);
             Main_RemoveClass('top_bar_vod', 'icon_center_focus');
         },
         SetPeriod: function() {
