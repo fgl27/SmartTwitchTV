@@ -238,12 +238,10 @@ function Main_initWindows() {
 
         Main_SetStringsSecondary();
 
-        Vod_highlight = Main_getItemBool('Vod_highlight', false);
         ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
         AGameVod_highlight = Main_getItemBool('AGameVod_highlight', false);
         UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
 
-        Vod_periodNumber = Main_getItemInt('vod_periodNumber', 2);
         AGameVod_periodNumber = Main_getItemInt('AGameVod_periodNumber', 2);
         UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
 
@@ -595,8 +593,10 @@ function Main_SwitchScreenAction(removekey) {
         Screens_init();
     } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
-    else if (Main_values.Main_Go === Main_Vod) Vod_init();
-    else if (Main_values.Main_Go === Main_Clip) {
+    else if (Main_values.Main_Go === Main_Vod) {
+        inUseObj = Vod;
+        Screens_init();
+    } else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
         Screens_init();
     } else if (Main_values.Main_Go === Main_AGameVod) AGameVod_init();
@@ -637,7 +637,7 @@ function Main_ExitCurrent(ExitCurrent) {
     else if (ExitCurrent === Main_usergames) Screens_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
-    else if (ExitCurrent === Main_Vod) Vod_exit();
+    else if (ExitCurrent === Main_Vod) Screens_exit();
     else if (ExitCurrent === Main_Clip) Screens_exit();
     else if (ExitCurrent === Main_AGameVod) AGameVod_exit();
     else if (ExitCurrent === Main_AGameClip) Screens_exit();
@@ -1395,8 +1395,10 @@ function Main_RemoveKeys() {
     } else if (Main_values.Main_Go === Main_ChannelClip) {
         inUseObj = ChannelClip;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_Vod) document.body.removeEventListener("keydown", Vod_handleKeyDown);
-    else if (Main_values.Main_Go === Main_Clip) {
+    } else if (Main_values.Main_Go === Main_Vod) {
+        inUseObj = Vod;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    } else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     } else if (Main_values.Main_Go === Main_AGameClip) {
@@ -1437,8 +1439,10 @@ function Main_ReloadScreen() {
     } else if (Main_values.Main_Go === Main_usergames) {
         inUseObj = UserGames;
         if (!inUseObj.loadingData) inUseObj.key_refresh();
-    } else if (Main_values.Main_Go === Main_Vod) Vod_StartLoad();
-    else if (Main_values.Main_Go === Main_Clip) {
+    } else if (Main_values.Main_Go === Main_Vod) {
+        inUseObj = Vod;
+        Screens_StartLoad();
+    } else if (Main_values.Main_Go === Main_Clip) {
         inUseObj = Clip;
         Screens_StartLoad();
     } else if (Main_values.Main_Go === Main_AGameClip) {

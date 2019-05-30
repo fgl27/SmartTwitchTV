@@ -5,6 +5,7 @@ var ChannelClip_title = '';
 var ChannelClip_playUrl = '';
 var ChannelClip_createdAt = '';
 var ChannelClip_language = '';
+var Vod_DoAnimateThumb = 1;
 
 //Screens
 var Clip;
@@ -14,6 +15,7 @@ var Game;
 var UserGames;
 var Live;
 var Featured;
+var Vod;
 
 var Base_obj = {
     posX: 0,
@@ -54,6 +56,161 @@ var Base_obj = {
         }
     },
 };
+
+var Base_Vod_obj = {
+    ThumbSize: 32.65,
+    visiblerows: 3,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: function() {
+        this.AnimateThumb();
+        Screens_addFocusVideo();
+    },
+    img_404: IMG_404_VIDEO,
+    HasSwitches: true,
+    period: ['day', 'week', 'month', 'all'],
+    empty_str: function() {
+        return STR_NO + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    },
+    SwitchesIcons: ['movie-play', 'history'],
+    addSwitches: function() {
+        this.TopRowCreated = true;
+        this.row = document.createElement('div');
+        var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
+        var thumbfallow, div, i = 0;
+
+        for (i; i < SwitchesStrings.length; i++) {
+            thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+            div = document.createElement('div');
+            div.setAttribute('id', this.ids[8] + 'y_' + i);
+            div.className = 'stream_cell_period';
+            div.innerHTML = '<div id="' + this.ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            this.row.appendChild(div);
+        }
+        document.getElementById(this.table).appendChild(this.row);
+    },
+    key_play: function() {
+        if (this.posY === -1) {
+            if (this.posX === 0) {
+                this.highlight = !this.highlight;
+                this.SetPeriod();
+                Screens_StartLoad();
+                Main_setItem('Vod_highlight', this.highlight ? 'true' : 'false');
+            } else {
+                this.periodPos++;
+                if (this.periodPos > 4) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
+        } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    AnimateThumbId: null,
+    HasAnimateThumb: true,
+    AnimateThumb: function() {
+        window.clearInterval(this.AnimateThumbId);
+        if (!Vod_DoAnimateThumb) return;
+        var div = document.getElementById(this.ids[0] + this.posY + '_' + this.posX);
+
+        // Only load the animation if it can be loaded
+        // This prevent starting animating before it has loaded or animated a empty image
+        Vod_newImg.onload = function() {
+            this.onload = null;
+            Main_HideElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+            // background-size: 612px from  div.offsetWidth
+            div.style.backgroundSize = "612px";
+            var frame = 0;
+            inUseObj.AnimateThumbId = window.setInterval(function() {
+                // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
+                // But this img real height is 180 thus the quality is affected, higher resolution aren't available
+                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
+            }, 650);
+        };
+
+        Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+    }
+};
+
+function ScreensObj_InitVod() {
+    Vod = Screens_assign({
+        ids: Screens_ScreenIds('Vod'),
+        table: 'stream_table_vod',
+        screen: Main_Vod,
+        highlight: Main_getItemBool('Vod_highlight', false),
+        periodPos: Main_getItemInt('vod_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
+                '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 4;
+            Main_AddClass('top_bar_vod', 'icon_center_focus');
+            this.SetPeriod();
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_vod', 'icon_center_focus');
+        },
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_vod', STR_VIDEOS +
+                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
+
+            Main_setItem('vod_periodPos', this.periodPos);
+        },
+        concatenate: function(responseText) {
+            if (this.data) {
+
+                var tempObj = JSON.parse(responseText);
+
+                this.MaxOffset = tempObj._total;
+                this.data = this.data.concat(tempObj.vods);
+
+                this.offset = this.data.length;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+
+                this.MaxOffset = this.data._total;
+                this.data = this.data.vods;
+
+                this.offset = this.data.length;
+                if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+                this.loadDataSuccess();
+                this.loadingData = false;
+            }
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
+
+                this.itemsCount++;
+                this.idObject[cell._id] = 1;
+
+                this.row.appendChild(Screens_createCellVod(
+                    this.row_id,
+                    this.coloumn_id,
+                    [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                        cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                        twemoji.parse(cell.title) + STR_BR + STR_STARTED + STR_PLAYING + cell.game, Main_addCommas(cell.views) + STR_VIEWS,
+                        Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                        STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
+                    ]));
+
+                this.coloumn_id++;
+            }
+        },
+    }, Base_obj);
+
+    Vod = Screens_assign(Vod, Base_Vod_obj);
+    Vod.set_ThumbSize();
+}
 
 var Base_Live_obj = {
     ThumbSize: 32.65,
