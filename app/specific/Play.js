@@ -1239,7 +1239,6 @@ function Play_OpenGame(PlayVodClip) {
 
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
-    AGame_UserGames = false;
 
     Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
