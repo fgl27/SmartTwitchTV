@@ -235,12 +235,18 @@ function ScreensObj_InitAGameVod() {
                 '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
+        OldgameSelected: '',
         label_init: function() {
+            if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
+            if (this.OldgameSelected !== Main_values.Main_gameSelected) this.status = false;
+
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
             this.SetPeriod();
         },
         label_exit: function() {
+            this.OldgameSelected = Main_values.Main_gameSelected;
             Main_textContent('top_bar_game', STR_AGAME);
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
         },
