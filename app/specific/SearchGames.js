@@ -167,12 +167,12 @@ function SearchGames_handleKeyDown(event) {
                 SearchGames_removeFocus();
                 Main_CenterLablesStart(SearchGames_handleKeyDown);
             }
-            Main_SidePannelRestoreScreen();
+            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!SearchGames_cursorX) {
                 SearchGames_removeFocus();
-                Main_SidePannelStart(SearchGames_handleKeyDown, true);
+                Sidepannel_Start(SearchGames_handleKeyDown, true);
             } else if (Main_ThumbNull((SearchGames_cursorY), (SearchGames_cursorX - 1), SearchGames_ids[0])) {
                 SearchGames_removeFocus();
                 SearchGames_cursorX--;

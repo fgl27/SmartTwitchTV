@@ -281,12 +281,12 @@ function SearchLive_handleKeyDown(event) {
                 SearchLive_removeFocus();
                 Main_CenterLablesStart(SearchLive_handleKeyDown);
             }
-            Main_SidePannelRestoreScreen();
+            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!SearchLive_cursorX) {
                 SearchLive_removeFocus();
-                Main_SidePannelStart(SearchLive_handleKeyDown, true);
+                Sidepannel_Start(SearchLive_handleKeyDown, true);
             } else if (Main_ThumbNull((SearchLive_cursorY), (SearchLive_cursorX - 1), SearchLive_ids[0])) {
                 SearchLive_removeFocus();
                 SearchLive_cursorX--;

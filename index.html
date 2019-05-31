@@ -496,6 +496,48 @@
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
         }
 
+        div.side_panel_feed {
+            margin-top: 1%;
+            margin-bottom: 1%;
+            font-size: 150%;
+            font-weight: bold;
+            text-align: left;
+            width: 84%;
+            margin-left: 15%;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        div.side_panel_feed_top {
+            margin-top: 1%;
+            margin-bottom: 1%;
+            margin-left: 15%;
+            vertical-align: middle;
+            display: inline-block;
+            width: 84%;
+            font-size: 80%;
+            word-wrap: break-word;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        div.side_panel_feed_text {
+            vertical-align: middle;
+            padding-left: 1%;
+            padding-top: 1.5%;
+            display: inline-block;
+            width: 75%;
+            font-size: 45.5%;
+            color: #7B7B7B;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        div.side_panel_feed_text_focus {
+            color: #FFFFFF;
+        }
 
         div.playmaininfo {
             vertical-align: top;
@@ -579,6 +621,15 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
+        div.side_panel_dialog {
+            text-align: center;
+            margin-top: 5%;
+            margin-left: 20%;
+            width: 50%;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
         div.side_panel {
             position: absolute;
             border-radius: 15px;
@@ -587,12 +638,13 @@
             bottom: 0.1%;
             left: -1%;
             height: 91%;
-            width: 17%;
+            width: 20%;
             transition: 0.65s;
+            overflow: hidden;
         }
 
         div.side_panel_hide {
-            margin-left: -23.5%;
+            margin-left: -26.5%;
         }
 
         .side_panel_icons {
@@ -1102,6 +1154,7 @@
     <script src="app/specific/Main.js" defer></script>
     <script src="app/specific/Screens.js" defer></script>
     <script src="app/specific/ScreensObj.js" defer></script>
+    <script src="app/specific/Sidepannel.js" defer></script>
     <!-- this is here so release_maker can work don't remove jsend-->
 </head>
 
@@ -1455,78 +1508,109 @@
             <div id="user_feed_scroll" class="user_feed_scroll">
             </div>
         </div>
-        <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -23.5%;">
-            <div id="side_panel_0" class="side_panel_text side_panel_text_focus" style="margin-top: 10px;">
-                <div class="side_panel_icons">
-                    <i class="icon icon-search"></i>
-                </div>&nbsp;
-                <spam id="side_panel_search"></spam>
-            </div>
-            <div id="side_panel_1" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-settings"></i>
-                </div>&nbsp;
-                <spam id="side_panel_settings"></spam>
-            </div>
-            <div id="side_panel_2" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-info-circle"></i>
-                </div>&nbsp;
-                <spam id="side_panel_about"></spam>
-            </div>
-            <div id="side_panel_3" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-question-circle"></i>
-                </div>&nbsp;
-                <spam id="side_panel_controls"></spam>
-            </div>
-            <div id="side_panel_4" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-exit"></i>
-                </div>&nbsp;
-                <spam id="side_panel_exit"></spam>
-            </div>
-            <div id="side_panel_5" class="side_panel_text" style="margin-top: 50px;">
-                <div class="side_panel_icons">
-                    <i class="icon icon-play"></i>
-                </div>&nbsp;
-                <spam id="side_panel_live"></spam>
-            </div>
-            <div id="side_panel_6" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-users"></i>
-                </div>&nbsp;
-                <spam id="side_panel_user"></spam>
-            </div>
-            <div id="side_panel_7" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-star"></i>
-                </div>&nbsp;
-                <spam id="side_panel_featured"></spam>
-            </div>
-            <div id="side_panel_8" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-gamepad"></i>
-                </div>&nbsp;
-                <spam id="side_panel_games"></spam>
-            </div>
-            <div id="side_panel_9" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-movie-play"></i>
-                </div>&nbsp;
-                <spam id="side_panel_videos"></spam>
-            </div>
-            <div id="side_panel_10" class="side_panel_text">
-                <div class="side_panel_icons">
-                    <i class="icon icon-movie"></i>
+        <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -26.5%;">
+            <div id="side_panel_feed_holder">
+                <div id="side_panel_feed_1" class="side_panel_feed_top">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-arrow-circle-left"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_feed_settings"></spam>
                 </div>
-                <spam id="side_panel_clips"></spam>
+                <div id="side_panel_feed_2" class="side_panel_feed_top">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-arrow-circle-right"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_feed_refresh"></spam>
+                </div>
+                <div id="side_panel_feed" style="overflow: hidden;">
+                    <div id="side_panel_feed_scroll" style="margin-top: 0px;">
+                    </div>
+                </div>
+                <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
+                    <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+                </div>
             </div>
-            <div class="side_panel_return">
-                <div class="side_panel_icons">
-                    <i class="icon icon-arrow-circle-left"></i>
-                </div>&nbsp;
-                <spam id="side_panel_hide"></spam>
+            <div id="side_panel_etc" class="hide">
+                <div id="side_panel_0" class="side_panel_text side_panel_text_focus" style="margin-top: 10px;">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-search"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_search"></spam>
+                </div>
+                <div id="side_panel_1" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-settings"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_settings"></spam>
+                </div>
+                <div id="side_panel_2" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-info-circle"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_about"></spam>
+                </div>
+                <div id="side_panel_3" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-question-circle"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_controls"></spam>
+                </div>
+                <div id="side_panel_4" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-exit"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_exit"></spam>
+                </div>
+                <div id="side_panel_5" class="side_panel_text" style="margin-top: 18px;">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-play"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_live"></spam>
+                </div>
+                <div id="side_panel_6" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-users"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_user"></spam>
+                </div>
+                <div id="side_panel_7" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-star"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_featured"></spam>
+                </div>
+                <div id="side_panel_8" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-gamepad"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_games"></spam>
+                </div>
+                <div id="side_panel_9" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-movie-play"></i>
+                    </div>&nbsp;
+                    <spam id="side_panel_videos"></spam>
+                </div>
+                <div id="side_panel_10" class="side_panel_text">
+                    <div class="side_panel_icons">
+                        <i class="icon icon-movie"></i>
+                    </div>
+                    <spam id="side_panel_clips"></spam>
+                </div>
+                <div class="side_panel_return">
+                    <div>
+                        <div class="side_panel_icons">
+                            <i class="icon icon-arrow-circle-right"></i>
+                        </div>&nbsp;
+                        <spam id="side_panel_back"></spam>
+                    </div>
+                    <div>
+                        <div class="side_panel_icons">
+                            <i class="icon icon-arrow-circle-left"></i>
+                        </div>&nbsp;
+                        <spam id="side_panel_hide"></spam>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

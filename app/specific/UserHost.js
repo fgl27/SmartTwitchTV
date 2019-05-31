@@ -284,12 +284,12 @@ function UserHost_handleKeyDown(event) {
                 UserHost_removeFocus();
                 Main_CenterLablesStart(UserHost_handleKeyDown);
             }
-            Main_SidePannelRestoreScreen();
+            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!UserHost_cursorX) {
                 UserHost_removeFocus();
-                Main_SidePannelStart(UserHost_handleKeyDown, true);
+                Sidepannel_Start(UserHost_handleKeyDown, true);
             } else if (Main_ThumbNull((UserHost_cursorY), (UserHost_cursorX - 1), UserHost_ids[0])) {
                 UserHost_removeFocus();
                 UserHost_cursorX--;

@@ -3,10 +3,10 @@ function en_USLang() {
     Main_IsDayFirst = false;
 
     // this is the size of side pannel a ajust may be needed here so it can fit all words in the horizontal axis
-    document.getElementById("side_panel").style.width = "17%";
+    document.getElementById("side_panel").style.width = "20%";
 
     //Bellow are variable to translate
-    STR_REFRESH = "Refresh:";
+    STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
@@ -50,7 +50,7 @@ function en_USLang() {
     STR_VIEWS = " Views";
     STR_VIEWER = " Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
-    STR_EXIT_MESSAGE = "Do you wanna to exit Twitch?";
+    STR_EXIT_MESSAGE = "Do you wanna to exit SmartTV Twitch?";
     STR_EXIT = "Exit";
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
@@ -92,13 +92,13 @@ function en_USLang() {
     STR_CONTROLS_MAIN_1 = "This are the none players related controls, the player can show it's own controls.";
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
-    STR_CONTROLS_MAIN_4 = "Exit the application: from side pannel click exit";
+    STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key for 5 seconds";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right";
     STR_CONTROLS_MAIN_7 = "Some screen will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
-    STR_CONTROLS_MAIN_10 = "Start a search: from side pannel click search";
+    STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search";
     STR_CONTROLS_MAIN_11 = "After writing the search text press key Enter on the virtual keyboard then choose a search option";
-    STR_CONTROLS_MAIN_14 = "About this application: from side pannel click about";
+    STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client develop by a individual on his free time, for TV\'s that don't have access to a good official application, released for free to any one that wanna to use it.";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in a browser only!";
     STR_ABOUT_INFO_3 = "Developer information:";
@@ -120,7 +120,7 @@ function en_USLang() {
 
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
-    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause simbol (not available to Live streams)";
+    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol (not available to Live streams)";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
@@ -156,6 +156,7 @@ function en_USLang() {
     STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user ";
     STR_NOKEY = "No user";
     STR_NOKEY_WARN = "Set a user and a authentication key to be able to fallow/unfollow";
+    STR_NOKUSER_WARN = "Set a user first";
     STR_RESET = "Restart the";
     STR_CLIP = " Clip";
     STR_CHANNEL_CONT = "Channel content";
@@ -226,11 +227,14 @@ function en_USLang() {
     STR_LANG_ALL = "All";
     STR_NO_GAME = "Empty game fro this";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
-    STR_CHAT_DISABLE = "Chat is disabled, enable in side pannel settings";
+    STR_CHAT_DISABLE = "Chat is disabled, enable in side panel settings";
     STR_CLIP_FAIL = "This clip/video fail to load can't replay";
-    STR_CHAT_BRIGHTNESS = "Chat backgroung brightness ";
+    STR_CHAT_BRIGHTNESS = "Chat background brightness ";
     STR_PLAY_NEXT = "Play Next";
     STR_PLAY_NEXT_IN = "Playing next in ";
     STR_PLAY_ALL = "Play All";
     STR_AUTO_PLAY_NEXT = "Auto Play next clip";
+    STR_SIDE_PANEL_SETTINGS = "Settings, about, etc...";
+    STR_UP = " Press up";
+    STR_LIVE_FEED = "Live Feed";
 }

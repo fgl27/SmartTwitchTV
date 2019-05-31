@@ -85,10 +85,6 @@ var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "to
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
-var Main_SidePannelIsscreen = false;
-
-var Main_SidePannelPos = 0;
-var Main_SidePannelCallback;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -228,7 +224,6 @@ function Main_initWindows() {
         AddUser_RestoreUsers();
         if (AddUser_UserIsSet()) {
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
-            Main_updateUserFeed();
         }
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
@@ -269,11 +264,11 @@ function Main_SetStringsMain(isStarting) {
     Main_updateclock();
 
     //set top bar labels
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
     Main_innerHTML('label_update', '<div class="strokedextramini" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedextramini" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ' Press up');
+    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_UP);
 
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
@@ -310,6 +305,9 @@ function Main_SetStringsSecondary() {
     Main_textContent('side_panel_controls', STR_CONTROLS);
     Main_textContent('side_panel_exit', STR_EXIT);
 
+    Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
+    Main_textContent('side_panel_feed_refresh', STR_REFRESH);
+
     Main_textContent('side_panel_live', STR_LIVE);
     Main_textContent('side_panel_user', STR_USER);
     Main_textContent('side_panel_featured', STR_FEATURED);
@@ -317,6 +315,7 @@ function Main_SetStringsSecondary() {
     Main_textContent('side_panel_videos', STR_VIDEOS);
     Main_textContent('side_panel_clips', STR_CLIPS);
     Main_textContent('side_panel_hide', STR_HIDE);
+    Main_textContent('side_panel_back', STR_LIVE_FEED);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
@@ -407,10 +406,10 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    if (Main_SidePannelIsscreen) {
-        Main_SidePannelIsscreen = false;
+    if (Sidepannel_Isscreen) {
+        Sidepannel_Isscreen = false;
         Main_SwitchScreenAction();
-    } else Main_CenterLablesStart(Main_SidePannelCallback);
+    } else Main_CenterLablesStart(Sidepannel_Callback);
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -655,7 +654,7 @@ function Main_ExitCurrent(ExitCurrent) {
 }
 
 function Main_RestoreTopLabel() {
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_live', STR_LIVE);
@@ -1085,111 +1084,6 @@ function Main_updateUserFeed() {
     }
 }
 
-function Main_SidePannelAddFocus() {
-    Main_AddClass('side_panel_' + Main_SidePannelPos, 'side_panel_text_focus');
-}
-
-function Main_SidePannelRemoveFocus() {
-    Main_RemoveClass('side_panel_' + Main_SidePannelPos, 'side_panel_text_focus');
-}
-
-function Main_SidePannelKeyEnter() {
-    if (!Main_SidePannelPos) {
-        if (Main_values.Main_Go !== Main_Search) {
-            if (!Main_values.Search_isSearching &&
-                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
-                ChannelContent_SetChannelValue();
-            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
-            Main_ExitCurrent(Main_values.Main_Go);
-            Main_values.Main_Go = Main_Search;
-            Main_SwitchScreen();
-        } else document.body.addEventListener("keydown", Main_SidePannelCallback, false);
-    } else if (Main_SidePannelPos === 1) Main_showSettings();
-    else if (Main_SidePannelPos === 2) {
-        document.body.addEventListener("keydown", Main_SidePannelCallback, false);
-        Main_showAboutDialog();
-    } else if (Main_SidePannelPos === 3) {
-        document.body.addEventListener("keydown", Main_SidePannelCallback, false);
-        Main_showControlsDialog();
-    } else if (Main_SidePannelPos === 4) Main_showExitDialog(Main_SidePannelCallback);
-    else if (Main_SidePannelPos === 5) Main_SidePannelGo(Main_Live);
-    else if (Main_SidePannelPos === 6) Main_SidePannelGo(AddUser_IsUserSet() ? Main_Users : Main_addUser);
-    else if (Main_SidePannelPos === 7) Main_SidePannelGo(Main_Featured);
-    else if (Main_SidePannelPos === 8) Main_SidePannelGo(Main_games);
-    else if (Main_SidePannelPos === 9) Main_SidePannelGo(Main_Vod);
-    else if (Main_SidePannelPos === 10) Main_SidePannelGo(Main_Clip);
-    Main_SidePannelHide();
-}
-
-function Main_SidePannelRestoreScreen() {
-    if (Main_SidePannelIsscreen) {
-        Main_SidePannelIsscreen = false;
-        Main_SwitchScreenAction();
-    }
-}
-
-function Main_SidePannelGo(GoTo) {
-    if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Main_SidePannelCallback, false);
-    else {
-        Main_values.Main_Before = Main_values.Main_Go;
-        Main_values.Main_Go = GoTo;
-        Main_ExitCurrent(Main_values.Main_Before);
-        Main_SwitchScreen();
-    }
-}
-
-function Main_SidePannelStart(callback, Isscreen) {
-    Main_SidePannelCallback = callback;
-    Main_SidePannelIsscreen = Isscreen;
-    document.body.removeEventListener("keydown", Main_SidePannelCallback);
-    document.body.addEventListener("keydown", Main_SidePannelhandleKeyDown, false);
-    Main_RemoveClass('side_panel', 'side_panel_hide');
-}
-
-function Main_SidePannelHide() {
-    document.body.removeEventListener("keydown", Main_SidePannelhandleKeyDown);
-    Main_AddClass('side_panel', 'side_panel_hide');
-    Main_SidePannelRemoveFocus();
-    Main_SidePannelPos = 0;
-    Main_SidePannelAddFocus();
-}
-
-function Main_SidePannelhandleKeyDown(event) {
-    switch (event.keyCode) {
-        case KEY_RETURN:
-        case KEY_LEFT:
-        case KEY_RIGHT:
-            Main_SidePannelHide();
-            if (Main_SidePannelIsscreen) {
-                Main_SidePannelIsscreen = false;
-                Main_SwitchScreenAction();
-            } else {
-                document.body.addEventListener("keydown", Main_SidePannelCallback, false);
-                Main_CenterLablesChange();
-            }
-            break;
-        case KEY_UP:
-            if (Main_SidePannelPos) {
-                Main_SidePannelRemoveFocus();
-                Main_SidePannelPos--;
-                Main_SidePannelAddFocus();
-            }
-            break;
-        case KEY_DOWN:
-            if (Main_SidePannelPos < 10) {
-                Main_SidePannelRemoveFocus();
-                Main_SidePannelPos++;
-                Main_SidePannelAddFocus();
-            }
-            break;
-        case KEY_ENTER:
-            Main_SidePannelKeyEnter();
-            break;
-        default:
-            break;
-    }
-}
-
 function Main_ExitDialog(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
@@ -1321,7 +1215,7 @@ function Main_CenterLables(event) {
                     Main_SwitchScreenAction();
                 } else {
                     Main_CenterLablesClean();
-                    Main_SidePannelStart(Main_CenterLables);
+                    Sidepannel_Start(Main_CenterLables);
                 }
             }
             break;

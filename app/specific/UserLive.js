@@ -419,12 +419,12 @@ function UserLive_handleKeyDown(event) {
                 UserLive_removeFocus();
                 Main_CenterLablesStart(UserLive_handleKeyDown);
             }
-            Main_SidePannelRestoreScreen();
+            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!UserLive_cursorX) {
                 UserLive_removeFocus();
-                Main_SidePannelStart(UserLive_handleKeyDown, true);
+                Sidepannel_Start(UserLive_handleKeyDown, true);
             } else if (Main_ThumbNull((UserLive_cursorY), (UserLive_cursorX - 1), UserLive_ids[0])) {
                 UserLive_removeFocus();
                 UserLive_cursorX--;
