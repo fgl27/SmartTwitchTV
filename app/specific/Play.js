@@ -369,6 +369,7 @@ function Play_updateStreamInfoError() {
 
 function Play_LoadLogo(ImgObjet, link) {
     ImgObjet.onerror = function() {
+        this.onerror = null;
         this.src = IMG_404_LOGO; //img fail to load a predefined logo
         Play_LoadLogoSucess = false;
     };

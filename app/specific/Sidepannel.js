@@ -2,6 +2,7 @@ var Sidepannel_Isscreen = false;
 var Sidepannel_Pos = 0;
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Callback;
+var Sidepannel_UpdateThumbDoc;
 
 function Sidepannel_AddFocusEtc() {
     Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
@@ -14,6 +15,25 @@ function Sidepannel_RemoveFocusEtc() {
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
+    Sidepannel_UpdateThumb();
+}
+
+function Sidepannel_UpdateThumb() {
+    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
+
+    Sidepannel_UpdateThumbDoc.onerror = function() {
+        this.onerror = null;
+        this.src = IMG_404_VIDEO;
+    };
+    Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
+
+    Main_innerHTML('feed_thum_name', info[3]);
+    Main_innerHTML('feed_thum_quality', info[7]);
+    Main_innerHTML('feed_thum_title', info[4]);
+    Main_innerHTML('feed_thum_game', info[5]);
+    Main_innerHTML('feed_thum_views', info[6]);
+
+    Main_ShowElement('side_panel_feed_thumb');
 }
 
 function Sidepannel_RemoveFocusFeed() {
@@ -106,6 +126,7 @@ function Sidepannel_Hide() {
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
     Main_AddClass('side_panel', 'side_panel_hide');
+    Main_HideElement('side_panel_feed_thumb');
     Sidepannel_RemoveFocusEtc();
     Sidepannel_Pos = 0;
     Sidepannel_AddFocusEtc();
@@ -137,6 +158,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_LEFT:
             document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
             document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
+            Main_HideElement('side_panel_feed_thumb');
             Main_HideElement('side_panel_feed_holder');
             Main_ShowElement('side_panel_etc');
             break;
@@ -189,6 +211,7 @@ function Sidepannel_handleKeyDownEtc(event) {
                 document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
                 Main_HideElement('side_panel_etc');
                 Main_ShowElement('side_panel_feed_holder');
+                Main_ShowElement('side_panel_feed_thumb');
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 window.setTimeout(Main_HideWarningDialog, 2000);
