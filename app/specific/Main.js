@@ -261,6 +261,7 @@ function Main_initWindows() {
         Screens_init();
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         Main_ShowElement('topbar');
+        document.getElementById("scenefeed").style.display = 'block';
     });
 }
 
