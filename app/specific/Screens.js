@@ -527,6 +527,7 @@ function Screens_handleKeyDown(event) {
             break;
         case KEY_LEFT:
             if (!inUseObj.posX) {
+                if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
                 inUseObj.key_exit(true);
                 document.body.removeEventListener("keydown", Screens_handleKeyDown);
                 Main_SidePannelStart(Screens_handleKeyDown, true);
