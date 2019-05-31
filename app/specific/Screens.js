@@ -524,9 +524,10 @@ function Screens_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            inUseObj.key_exit();
+            if (!inUseObj.loadingData) inUseObj.key_exit();
             break;
         case KEY_LEFT:
+            if (inUseObj.loadingData) break;
             if (!inUseObj.posX) {
                 if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
                 inUseObj.key_exit(true);
