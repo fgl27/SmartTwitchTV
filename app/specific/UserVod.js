@@ -442,9 +442,16 @@ function UserVod_handleKeyDown(event) {
                 UserVod_removeFocus();
                 Main_CenterLablesStart(UserVod_handleKeyDown);
             }
+            Main_SidePannelRestoreScreen();
             break;
         case KEY_LEFT:
-            if (UserVod_cursorY === -1) {
+            if (!UserVod_cursorX) {
+                if (UserVod_cursorY === -1) {
+                    UserVod_cursorY = 0;
+                    UserVod_removeFocusFallow();
+                } else UserVod_removeFocus();
+                Main_SidePannelStart(UserVod_handleKeyDown, true);
+            } else if (UserVod_cursorY === -1) {
                 UserVod_removeFocusFallow();
                 UserVod_cursorX--;
                 if (UserVod_cursorX < 0) UserVod_cursorX = 1;
