@@ -153,7 +153,7 @@ function Users_addFocus() {
         if (Users_cursorY > 1) {
 
             if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
-                Main_ScrollTable(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1) + 500);
+                Main_ScrollTable(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1) + (screen.height * 0.42));
 
         } else Main_ScrollTable(Users_ids[5], ((screen.height / 100) * 7));
 
