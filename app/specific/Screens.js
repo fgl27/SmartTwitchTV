@@ -439,9 +439,10 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
-        if (inUseObj.posY < (inUseObj.Cells.length - 1))
+        if (inUseObj.posY < (inUseObj.Cells.length - 1)) {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
                 (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
+        }
 
     } else if (inUseObj.Cells.length - 1 === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
 
