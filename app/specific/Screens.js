@@ -275,7 +275,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] + Main_randomimg + 
+        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
