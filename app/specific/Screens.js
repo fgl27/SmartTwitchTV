@@ -192,7 +192,7 @@ function Screens_loadDataSuccess() {
                 inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 inUseObj.row_id++;
             } else if (inUseObj.data_cursor >= inUseObj.data.length) {
-                inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
+                if (inUseObj.row.innerHTML !== '') inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 break;
             }
         }
@@ -444,7 +444,7 @@ function Screens_addFocusGame(y, x, idArray, forceScroll) {
                 (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
         }
 
-    } else if (inUseObj.Cells.length - 1 === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
+    } else if ((inUseObj.Cells.length - 1) === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
 
         Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
             (document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1) + screen.height * 0.025);
