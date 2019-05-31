@@ -59,7 +59,7 @@ var Base_obj = {
             }
             if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
         }
-        Main_SidePannelRestoreScreen();
+        Sidepannel_RestoreScreen();
     },
 };
 

@@ -350,12 +350,12 @@ function ChannelVod_handleKeyDown(event) {
                 ChannelVod_removeFocus();
                 Main_CenterLablesStart(ChannelVod_handleKeyDown);
             }
-            Main_SidePannelRestoreScreen();
+            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!ChannelVod_cursorX) {
                 ChannelVod_removeFocus();
-                Main_SidePannelStart(ChannelVod_handleKeyDown, true);
+                Sidepannel_Start(ChannelVod_handleKeyDown, true);
             } else if (Main_ThumbNull((ChannelVod_cursorY), (ChannelVod_cursorX - 1), ChannelVod_ids[0])) {
                 ChannelVod_removeFocus();
                 ChannelVod_cursorX--;

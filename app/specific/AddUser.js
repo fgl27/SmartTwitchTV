@@ -215,6 +215,7 @@ function AddUser_UserMakeOne(Position) {
     Users_status = false;
     Users_init();
     AddUser_SaveUserArray();
+    Main_values.Users_Position = 0;
 }
 
 function AddUser_UserCodeExist(user) {
