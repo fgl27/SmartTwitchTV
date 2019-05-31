@@ -1209,10 +1209,11 @@ function Main_ExitDialog(event) {
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (Main_Android && Main_ExitCursor === 1) {
+            if (!Main_Android || !Main_ExitCursor) Main_HideExitDialog();
+            else if (Main_ExitCursor === 1) {
                 Main_HideExitDialog();
                 Android.mclose(false);
-            } else if (Main_Android && Main_ExitCursor === 2) Android.mclose(true);
+            } else if (Main_ExitCursor === 2) Android.mclose(true);
             break;
         default:
             break;
