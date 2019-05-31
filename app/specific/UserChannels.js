@@ -322,13 +322,18 @@ function UserChannels_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_ids[0])) {
-                    UserChannels_removeFocus();
-                    UserChannels_cursorY--;
-                    UserChannels_cursorX = UserChannels_cursorX - i;
-                    UserChannels_addFocus();
-                    break;
+            if (!UserChannels_cursorY) {
+                UserChannels_removeFocus();
+                Main_CenterLablesStart(UserChannels_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                    if (Main_ThumbNull((UserChannels_cursorY - 1), (UserChannels_cursorX - i), UserChannels_ids[0])) {
+                        UserChannels_removeFocus();
+                        UserChannels_cursorY--;
+                        UserChannels_cursorX = UserChannels_cursorX - i;
+                        UserChannels_addFocus();
+                        break;
+                    }
                 }
             }
             break;

@@ -535,7 +535,11 @@ function Screens_handleKeyDown(event) {
             else Screens_addFocus(true);
             break;
         case KEY_UP:
-            Screens_KeyUpDown(-1);
+            if (inUseObj.HasSwitches) {
+                if (inUseObj.posY === -1) inUseObj.key_exit();
+                else Screens_KeyUpDown(-1);
+            } else if (!inUseObj.posY) inUseObj.key_exit();
+            else Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
             if (inUseObj.dataEnded || (inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) Screens_KeyUpDown(1);

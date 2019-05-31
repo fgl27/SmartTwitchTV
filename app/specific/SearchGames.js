@@ -198,13 +198,18 @@ function SearchGames_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountGame; i++) {
-                if (Main_ThumbNull((SearchGames_cursorY - 1), (SearchGames_cursorX - i), SearchGames_ids[0])) {
-                    SearchGames_removeFocus();
-                    SearchGames_cursorY--;
-                    SearchGames_cursorX = SearchGames_cursorX - i;
-                    SearchGames_addFocus();
-                    break;
+            if (!SearchGames_cursorY) {
+                SearchGames_removeFocus();
+                Main_CenterLablesStart(SearchGames_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountGame; i++) {
+                    if (Main_ThumbNull((SearchGames_cursorY - 1), (SearchGames_cursorX - i), SearchGames_ids[0])) {
+                        SearchGames_removeFocus();
+                        SearchGames_cursorY--;
+                        SearchGames_cursorX = SearchGames_cursorX - i;
+                        SearchGames_addFocus();
+                        break;
+                    }
                 }
             }
             break;

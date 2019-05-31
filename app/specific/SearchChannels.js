@@ -308,13 +308,18 @@ function SearchChannels_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((SearchChannels_cursorY - 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
-                    SearchChannels_removeFocus();
-                    SearchChannels_cursorY--;
-                    SearchChannels_cursorX = SearchChannels_cursorX - i;
-                    SearchChannels_addFocus();
-                    break;
+            if (!SearchChannels_cursorY) {
+                SearchChannels_removeFocus();
+                Main_CenterLablesStart(SearchChannels_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                    if (Main_ThumbNull((SearchChannels_cursorY - 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
+                        SearchChannels_removeFocus();
+                        SearchChannels_cursorY--;
+                        SearchChannels_cursorX = SearchChannels_cursorX - i;
+                        SearchChannels_addFocus();
+                        break;
+                    }
                 }
             }
             break;

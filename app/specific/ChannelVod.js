@@ -381,10 +381,10 @@ function ChannelVod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            if (ChannelVod_cursorY === -1 && !ChannelVod_emptyContent) {
+            if (ChannelVod_cursorY === -1) {
+                ChannelVod_removeFocus();
                 ChannelVod_cursorY = 0;
-                ChannelVod_removeFocusFallow();
-                ChannelVod_addFocus();
+                Main_CenterLablesStart(ChannelVod_handleKeyDown);
             } else if (!ChannelVod_cursorY) {
                 ChannelVod_removeFocus();
                 ChannelVod_cursorY = -1;
