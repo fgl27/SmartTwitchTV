@@ -192,7 +192,7 @@ function Screens_loadDataSuccess() {
                 inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 inUseObj.row_id++;
             } else if (inUseObj.data_cursor >= inUseObj.data.length) {
-                if (this.dataEnded) inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
+                inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
                 break;
             }
         }
