@@ -494,10 +494,10 @@ function UserVod_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            if (UserVod_cursorY === -1 && !UserVod_emptyContent) {
+            if (UserVod_cursorY === -1) {
+                UserVod_removeFocus();
+                Main_CenterLablesStart(UserVod_handleKeyDown);
                 UserVod_cursorY = 0;
-                UserVod_removeFocusFallow();
-                UserVod_addFocus();
             } else if (!UserVod_cursorY) {
                 UserVod_removeFocus();
                 UserVod_cursorY = -1;

@@ -439,10 +439,21 @@ function ChannelContent_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
+            if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                Main_CenterLablesStart(ChannelContent_handleKeyDown);
+            } else {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorY = 0;
+                ChannelContent_addFocus();
+            }
+            break;
         case KEY_DOWN:
-            ChannelContent_removeFocus();
-            ChannelContent_cursorY = !ChannelContent_cursorY ? 1 : 0;
-            ChannelContent_addFocus();
+            if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorY = 1;
+                ChannelContent_addFocus();
+            }
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

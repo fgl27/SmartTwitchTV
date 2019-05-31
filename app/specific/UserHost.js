@@ -315,13 +315,18 @@ function UserHost_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((UserHost_cursorY - 1), (UserHost_cursorX - i), UserHost_ids[0])) {
-                    UserHost_removeFocus();
-                    UserHost_cursorY--;
-                    UserHost_cursorX = UserHost_cursorX - i;
-                    UserHost_addFocus();
-                    break;
+            if (!UserHost_cursorY) {
+                UserHost_removeFocus();
+                Main_CenterLablesStart(UserHost_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((UserHost_cursorY - 1), (UserHost_cursorX - i), UserHost_ids[0])) {
+                        UserHost_removeFocus();
+                        UserHost_cursorY--;
+                        UserHost_cursorX = UserHost_cursorX - i;
+                        UserHost_addFocus();
+                        break;
+                    }
                 }
             }
             break;

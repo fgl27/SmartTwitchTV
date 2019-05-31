@@ -312,13 +312,18 @@ function SearchLive_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((SearchLive_cursorY - 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
-                    SearchLive_removeFocus();
-                    SearchLive_cursorY--;
-                    SearchLive_cursorX = SearchLive_cursorX - i;
-                    SearchLive_addFocus();
-                    break;
+            if (!SearchLive_cursorY) {
+                SearchLive_removeFocus();
+                Main_CenterLablesStart(SearchLive_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((SearchLive_cursorY - 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
+                        SearchLive_removeFocus();
+                        SearchLive_cursorY--;
+                        SearchLive_cursorX = SearchLive_cursorX - i;
+                        SearchLive_addFocus();
+                        break;
+                    }
                 }
             }
             break;

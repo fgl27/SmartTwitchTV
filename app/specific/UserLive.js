@@ -450,13 +450,18 @@ function UserLive_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((UserLive_cursorY - 1), (UserLive_cursorX - i), UserLive_ids[0])) {
-                    UserLive_removeFocus();
-                    UserLive_cursorY--;
-                    UserLive_cursorX = UserLive_cursorX - i;
-                    UserLive_addFocus();
-                    break;
+            if (!UserLive_cursorY) {
+                UserLive_removeFocus();
+                Main_CenterLablesStart(UserLive_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((UserLive_cursorY - 1), (UserLive_cursorX - i), UserLive_ids[0])) {
+                        UserLive_removeFocus();
+                        UserLive_cursorY--;
+                        UserLive_cursorX = UserLive_cursorX - i;
+                        UserLive_addFocus();
+                        break;
+                    }
                 }
             }
             break;
