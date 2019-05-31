@@ -1015,6 +1015,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = -1;
     PlayVod_state = -1;
     PlayClip_state = -1;
+    UserLiveFeed_Hide();
     Play_hideChat();
     Play_hidePanel();
     PlayClip_hidePanel();
