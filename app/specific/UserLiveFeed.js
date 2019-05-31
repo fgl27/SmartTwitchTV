@@ -208,13 +208,10 @@ function UserLiveFeed_loadDataSuccess(responseText) {
             UserLiveFeed_idObject[id] = 1;
             if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
             doc.appendChild(UserLiveFeed_CreatFeed(i,
-                [stream.channel.name, id], UserLiveFeed_ids,
+                [stream.channel.name, id],
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game,
-                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
-                    STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                    stream.game
                 ]));
         }
     }
@@ -232,18 +229,18 @@ function UserLiveFeed_loadDataSuccessFinish() {
     });
 }
 
-function UserLiveFeed_CreatFeed(id, data, idArray, valuesArray) {
-    UserLiveFeed_imgVectorPush(idArray[1] + id, valuesArray[0]);
+function UserLiveFeed_CreatFeed(id, data, valuesArray) {
+    UserLiveFeed_imgVectorPush(UserLiveFeed_ids[1] + id, valuesArray[0]);
 
     Main_td = document.createElement('div');
-    Main_td.setAttribute('id', idArray[8] + id);
+    Main_td.setAttribute('id', UserLiveFeed_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
     Main_td.className = 'user_feed_thumb';
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip" >' +
-        '<div><img id="' + idArray[1] + id + '" class="stream_img"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text2">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' + '</div></div>';
+    Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
+        '<div><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img"></div>' +
+        '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
+        '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[2] + '</div>' + '</div></div>';
 
     return Main_td;
 }
