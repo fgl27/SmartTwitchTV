@@ -15,7 +15,7 @@ function Sidepannel_RemoveFocusEtc() {
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
-    Sidepannel_UpdateThumb();
+    if (document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1) Sidepannel_UpdateThumb();
 }
 
 function Sidepannel_UpdateThumb() {
@@ -86,6 +86,7 @@ function Sidepannel_Go(GoTo) {
 }
 
 function Sidepannel_Start(callback, Isscreen) {
+    Main_RemoveClass('side_panel', 'side_panel_hide');
     Sidepannel_Callback = callback;
     Sidepannel_Isscreen = Isscreen;
     document.body.removeEventListener("keydown", Sidepannel_Callback);
@@ -118,8 +119,6 @@ function Sidepannel_ShowFeed() {
         Main_ShowElement('side_panel_etc');
         document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
     }
-
-    Main_RemoveClass('side_panel', 'side_panel_hide');
 }
 
 function Sidepannel_Hide() {
