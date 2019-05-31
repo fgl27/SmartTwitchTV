@@ -210,7 +210,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 [stream.channel.logo,
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.display_name,
-                    stream.game
+                    stream.game, Main_addCommas(stream.viewers)
                 ]));
         }
     }
@@ -253,13 +253,17 @@ function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
     Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
         '<img id="' + UserLiveFeed_side_ids[1] + id +
         '" style="vertical-align: middle; display: inline-block; width: 16%;" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
-        '\'"><div id="' + UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"><div id="' +
+        UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
         UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] + '</div><div id="' +
         UserLiveFeed_side_ids[4] + id +
-        '" style="width: 90%; display: inline-block; font-size: 125%; font-weight: bold; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' +
-        valuesArray[2] + '</div><div style="width:9%; float: right; text-align: right; vertical-align: middle; display: inline-block"><i class="icon-' + ((valuesArray[1].indexOf(STR_NOT_LIVE) === -1) ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 90%; "></i></div><div id="' + UserLiveFeed_side_ids[5] + id + '" style="overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] + '</div></div></div>';
+        '" style="width: 74%; display: inline-block; font-size: 110%; font-weight: bold; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[2] +
+        '</div><div style="width:25%; float: right; text-align: right; vertical-align: middle; display: inline-block"><div  style="text-align: center;" ><i class="icon-' +
+        ((valuesArray[1].indexOf(STR_NOT_LIVE) === -1) ? 'circle" style="color: red;' : 'refresh" style="') +
+        ' font-size: 80%; "></i><div style="font-size: 85%;">' + valuesArray[4] + '</div></div></div><div id="' +
+        UserLiveFeed_side_ids[5] + id +
+        '" style="font-size: 90%; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] +
+        '</div></div></div>';
 
     return Main_td;
 }
