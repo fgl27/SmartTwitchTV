@@ -526,7 +526,11 @@ function Screens_handleKeyDown(event) {
             inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+            if (!inUseObj.posX) {
+                inUseObj.key_exit(true);
+                document.body.removeEventListener("keydown", Screens_handleKeyDown);
+                Main_SidePannelStart(Screens_handleKeyDown, true);
+            } else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
             if (inUseObj.dataEnded ||

@@ -85,6 +85,7 @@ var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "to
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
+var Main_SidePannelIsscreen = false;
 
 var Main_SidePannelPos = 0;
 var Main_SidePannelCallback;
@@ -405,7 +406,10 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    Main_CenterLablesStart(Main_SidePannelCallback);
+    if (Main_SidePannelIsscreen) {
+        Main_SidePannelIsscreen = false;
+        Main_SwitchScreenAction();
+    } else Main_CenterLablesStart(Main_SidePannelCallback);
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -1094,9 +1098,9 @@ function Main_SidePannelKeyEnter() {
             if (!Main_values.Search_isSearching &&
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                 ChannelContent_SetChannelValue();
-            Main_values.Main_BeforeSearch = Main_values.Main_Go;
+            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
+            Main_ExitCurrent(Main_values.Main_Go);
             Main_values.Main_Go = Main_Search;
-            Main_ExitCurrent(Main_values.Main_BeforeSearch);
             Main_SwitchScreen();
         } else document.body.addEventListener("keydown", Main_SidePannelCallback, false);
     } else if (Main_SidePannelPos === 1) Main_showSettings();
@@ -1116,6 +1120,13 @@ function Main_SidePannelKeyEnter() {
     Main_SidePannelHide();
 }
 
+function Main_SidePannelRestoreScreen() {
+    if (Main_SidePannelIsscreen) {
+        Main_SidePannelIsscreen = false;
+        Main_SwitchScreenAction();
+    }
+}
+
 function Main_SidePannelGo(GoTo) {
     if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Main_SidePannelCallback, false);
     else {
@@ -1126,8 +1137,9 @@ function Main_SidePannelGo(GoTo) {
     }
 }
 
-function Main_SidePannelStart(callback) {
+function Main_SidePannelStart(callback, Isscreen) {
     Main_SidePannelCallback = callback;
+    Main_SidePannelIsscreen = Isscreen;
     document.body.removeEventListener("keydown", Main_SidePannelCallback);
     document.body.addEventListener("keydown", Main_SidePannelhandleKeyDown, false);
     Main_RemoveClass('side_panel', 'side_panel_hide');
@@ -1145,9 +1157,15 @@ function Main_SidePannelhandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
         case KEY_LEFT:
-            document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+        case KEY_RIGHT:
             Main_SidePannelHide();
-            Main_CenterLablesChange();
+            if (Main_SidePannelIsscreen) {
+                Main_SidePannelIsscreen = false;
+                Main_SwitchScreenAction();
+            } else {
+                document.body.addEventListener("keydown", Main_SidePannelCallback, false);
+                Main_CenterLablesChange();
+            }
             break;
         case KEY_UP:
             if (Main_SidePannelPos) {
@@ -1191,8 +1209,8 @@ function Main_ExitDialog(event) {
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (!Main_ExitCursor) Main_HideExitDialog();
-            else if (Main_Android && Main_ExitCursor === 1) Android.mclose(false);
+            Main_HideExitDialog();
+            if (Main_Android && Main_ExitCursor === 1) Android.mclose(false);
             else if (Main_Android && Main_ExitCursor === 2) Android.mclose(true);
             break;
         default:

@@ -257,6 +257,7 @@ function Users_handleKeyDown(event) {
                 Users_removeFocus();
                 Main_CenterLablesStart(Users_handleKeyDown);
             }
+            Main_SidePannelRestoreScreen();
             break;
         case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {
@@ -265,6 +266,9 @@ function Users_handleKeyDown(event) {
                 Users_RemoveCursorSet();
                 Users_clearRemoveDialog();
                 Users_setRemoveDialog();
+            } else if (!Users_cursorX) {
+                Users_removeFocus();
+                Main_SidePannelStart(Users_handleKeyDown, true);
             } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX - 1), Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX--;

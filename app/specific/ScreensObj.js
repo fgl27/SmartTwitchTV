@@ -47,7 +47,7 @@ var Base_obj = {
     set_ThumbSize: function() {
         this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 3px;';
     },
-    key_exit: function() {
+    key_exit: function(CenterLables) {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
         else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
         else {
@@ -57,8 +57,9 @@ var Base_obj = {
                 Screens_removeFocusFallow();
                 this.posY = 0;
             }
-            Main_CenterLablesStart(Screens_handleKeyDown);
+            if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
         }
+        Main_SidePannelRestoreScreen();
     },
 };
 

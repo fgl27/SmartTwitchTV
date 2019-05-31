@@ -421,9 +421,13 @@ function ChannelContent_handleKeyDown(event) {
                 ChannelContent_removeFocus();
                 Main_CenterLablesStart(ChannelContent_handleKeyDown);
             }
+            Main_SidePannelRestoreScreen();
             break;
         case KEY_LEFT:
-            if (!ChannelContent_cursorY) {
+            if (!ChannelContent_cursorX) {
+                ChannelContent_removeFocus();
+                Main_SidePannelStart(ChannelContent_handleKeyDown, true);
+            } else if (!ChannelContent_cursorY) {
                 ChannelContent_removeFocus();
                 ChannelContent_cursorX--;
                 if (ChannelContent_cursorX < 0) ChannelContent_cursorX = (!ChannelContent_skipImg ? 2 : 1);

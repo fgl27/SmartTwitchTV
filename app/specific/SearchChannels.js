@@ -277,9 +277,13 @@ function SearchChannels_handleKeyDown(event) {
                 SearchChannels_removeFocus();
                 Main_CenterLablesStart(SearchChannels_handleKeyDown);
             }
+            Main_SidePannelRestoreScreen();
             break;
         case KEY_LEFT:
-            if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX - 1), SearchChannels_ids[0])) {
+            if (!SearchChannels_cursorX) {
+                SearchChannels_removeFocus();
+                Main_SidePannelStart(SearchChannels_handleKeyDown, true);
+            } else if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX - 1), SearchChannels_ids[0])) {
                 SearchChannels_removeFocus();
                 SearchChannels_cursorX--;
                 SearchChannels_addFocus();
