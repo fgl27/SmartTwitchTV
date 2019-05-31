@@ -487,70 +487,6 @@
             font-weight: bold;
         }
 
-        div.playsideinfo {
-            float: right;
-            padding-right: 0.5%;
-            padding-top: 1.5%;
-            color: #FFFFFF;
-            font-size: 85%;
-            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
-        }
-
-        div.side_panel_feed {
-            margin-top: 1%;
-            margin-bottom: 1%;
-            font-size: 150%;
-            font-weight: bold;
-            text-align: left;
-            width: 84%;
-            margin-left: 15%;
-            vertical-align: middle;
-            word-wrap: break-word;
-            overflow: hidden;
-        }
-
-        div.side_panel_feed_top {
-            margin-top: 1%;
-            margin-bottom: 1%;
-            margin-left: 15%;
-            vertical-align: middle;
-            display: inline-block;
-            width: 84%;
-            font-size: 80%;
-            word-wrap: break-word;
-            overflow: hidden;
-            color: #FFFFFF;
-        }
-
-        div.side_panel_feed_text {
-            vertical-align: middle;
-            padding-left: 1%;
-            padding-top: 1.5%;
-            display: inline-block;
-            width: 75%;
-            font-size: 45.5%;
-            color: #7B7B7B;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        div.side_panel_feed_text_focus {
-            color: #FFFFFF;
-        }
-
-        div.playmaininfo {
-            vertical-align: top;
-            padding-left: 1%;
-            padding-top: 1.5%;
-            display: inline-block;
-            width: 69%;
-            font-size: 100%;
-            color: #FFFFFF;
-            word-wrap: break-word;
-            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
-        }
-
         div.up,
         div.down {
             border-left: 6px solid transparent;
@@ -621,6 +557,71 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
+
+        div.playsideinfo {
+            float: right;
+            padding-right: 0.5%;
+            padding-top: 1.5%;
+            color: #FFFFFF;
+            font-size: 85%;
+            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
+        }
+
+        div.side_panel_feed {
+            margin-top: 1%;
+            margin-bottom: 1%;
+            font-size: 150%;
+            font-weight: bold;
+            text-align: left;
+            width: 90%;
+            margin-left: 15%;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        div.side_panel_feed_top {
+            margin-top: 1%;
+            margin-bottom: 1%;
+            margin-left: 15%;
+            vertical-align: middle;
+            display: inline-block;
+            width: 84%;
+            font-size: 80%;
+            word-wrap: break-word;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        div.side_panel_feed_text {
+            vertical-align: middle;
+            padding-left: 1%;
+            padding-top: 1.5%;
+            display: inline-block;
+            width: 75%;
+            font-size: 55.5%;
+            color: #7B7B7B;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        div.side_panel_feed_text_focus {
+            color: #FFFFFF;
+        }
+
+        div.playmaininfo {
+            vertical-align: top;
+            padding-left: 1%;
+            padding-top: 1.5%;
+            display: inline-block;
+            width: 69%;
+            font-size: 100%;
+            color: #FFFFFF;
+            word-wrap: break-word;
+            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
+        }
+
         div.side_panel_dialog {
             text-align: center;
             margin-top: 5%;
@@ -638,13 +639,13 @@
             bottom: 0.1%;
             left: -1%;
             height: 91%;
-            width: 20%;
+            width: 25%;
             transition: 0.65s;
             overflow: hidden;
         }
 
         div.side_panel_hide {
-            margin-left: -26.5%;
+            margin-left: -31.5%;
         }
 
         .side_panel_icons {
@@ -1508,7 +1509,7 @@
             <div id="user_feed_scroll" class="user_feed_scroll">
             </div>
         </div>
-        <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -26.5%;">
+        <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -31.5%;">
             <div id="side_panel_feed_holder">
                 <div id="side_panel_feed_1" class="side_panel_feed_top">
                     <div class="side_panel_icons">
@@ -1522,7 +1523,7 @@
                     </div>&nbsp;
                     <spam id="side_panel_feed_refresh"></spam>
                 </div>
-                <div id="side_panel_feed" style="overflow: hidden;">
+                <div id="side_panel_feed" style="overflow: hidden; margin-top: 5px;">
                     <div id="side_panel_feed_scroll" style="margin-top: 0px;">
                     </div>
                 </div>

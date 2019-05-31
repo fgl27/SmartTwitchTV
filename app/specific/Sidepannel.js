@@ -113,9 +113,9 @@ function Sidepannel_Hide() {
 
 function Sidepannel_Scroll() {
 
-    if (Sidepannel_PosFeed > 6) {
-        if (Sidepannel_PosFeed < (UserLiveFeed_itemsCount - 5)) {
-            var position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 6)).offsetTop * -1);
+    if (Sidepannel_PosFeed > 4) {
+        if (Sidepannel_PosFeed < (UserLiveFeed_itemsCount - 6)) {
+            var position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
             position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
             document.getElementById('side_panel_feed_scroll').style.marginTop = position + "px";
         }
