@@ -27,6 +27,7 @@ function UserLiveFeed_StartLoad() {
         } else UserLiveFeed_LastPos = null;
 
         Main_empty('user_feed_scroll');
+        Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_feed_scroll');
         UserLiveFeed_status = false;
@@ -206,7 +207,13 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 ]));
 
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
-                [stream.channel.name, id],
+                [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "800x450"),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game,
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
+                    STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                ],
                 [stream.channel.logo,
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.display_name,
@@ -245,6 +252,7 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
 }
 
 function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
+
     Main_td = document.createElement('div');
     Main_td.setAttribute('id', UserLiveFeed_side_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));

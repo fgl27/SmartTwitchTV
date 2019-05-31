@@ -257,6 +257,7 @@ function Main_initWindows() {
         Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
         Main_ShowElement('topbar');
         document.getElementById("scenefeed").style.display = 'block';
+        Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
     });
 }
 
