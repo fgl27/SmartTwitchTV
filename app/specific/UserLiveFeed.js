@@ -32,7 +32,6 @@ function UserLiveFeed_StartLoad() {
         Main_empty('side_panel_feed_scroll');
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "2.5px";
-        document.getElementById('user_feed').style.bottom = '0.1%';
         Main_ShowElement('dialog_loading_feed');
         Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_loadChannelOffsset = 0;
@@ -277,7 +276,7 @@ function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return Main_isElementShowing('user_feed');
+    return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -293,14 +292,13 @@ function UserLiveFeed_ShowFeed() {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
     if (hasuser) {
-        document.getElementById('user_feed').style.bottom = '0.1%';
-        Main_ShowElement('user_feed');
+        Main_RemoveClass('user_feed', 'user_feed_hide');
         UserLiveFeed_FeedAddFocus();
     }
 }
 
 function UserLiveFeed_Hide() {
-    Main_HideElement('user_feed');
+    Main_AddClass('user_feed', 'user_feed_hide');
 }
 
 function UserLiveFeed_ResetFeedId() {
@@ -356,15 +354,8 @@ function UserLiveFeed_FeedSetPos() {
 }
 
 function UserLiveFeed_FeedFindPos() {
-    //show the element outside of the screen and find the position
-    document.getElementById('user_feed').style.bottom = '-1000%';
-    Main_ShowElement('user_feed');
-
     var position = UserLiveFeed_FeedSetPos();
-
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
-    document.getElementById('user_feed').style.bottom = '0.1%';
-    Main_HideElement('user_feed');
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {
