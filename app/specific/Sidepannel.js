@@ -19,6 +19,10 @@ function Sidepannel_AddFocusFeed() {
     if (document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1) Sidepannel_UpdateThumb();
 }
 
+function Sidepannel_RemoveFocusFeed() {
+    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
+}
+
 function Sidepannel_UpdateThumb() {
     var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
 
@@ -39,7 +43,7 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_PreloadImgs() {
     var doc;
-    for (var i = 0; i < UserLiveFeed_itemsCount; i++) {
+    for (var i = 0; i < Sidepannel_GetSize(); i++) {
         doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
         if (doc !== null) {
             new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
@@ -47,8 +51,8 @@ function Sidepannel_PreloadImgs() {
     }
 }
 
-function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
+function Sidepannel_GetSize() {
+    return document.getElementsByClassName('side_panel_feed').length;
 }
 
 function Sidepannel_KeyEnter() {
@@ -145,14 +149,14 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-
+    var size = Sidepannel_GetSize();
     if (Sidepannel_PosFeed > 4) {
         var position;
-        if (Sidepannel_PosFeed < (UserLiveFeed_itemsCount - 6)) {
+        if (Sidepannel_PosFeed < (size - 6)) {
             position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
             position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
-        } else if (UserLiveFeed_itemsCount > 11) {
-            position = (document.getElementById(UserLiveFeed_side_ids[8] + (UserLiveFeed_itemsCount - 11)).offsetTop * -1);
+        } else if (size > 11) {
+            position = (document.getElementById(UserLiveFeed_side_ids[8] + (size - 11)).offsetTop * -1);
             position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
         }
 
@@ -196,7 +200,7 @@ function Sidepannel_handleKeyDown(event) {
             }
             break;
         case KEY_DOWN:
-            if (Sidepannel_PosFeed < (UserLiveFeed_itemsCount - 1) && !UserLiveFeed_loadingData) {
+            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
                 Sidepannel_AddFocusFeed();
