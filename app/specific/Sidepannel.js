@@ -37,6 +37,17 @@ function Sidepannel_UpdateThumb() {
     Main_ShowElement('side_panel_feed_thumb');
 }
 
+function Sidepannel_PreloadImgs() {
+    var preload = new Image(),
+        doc;
+    for (var i = 0; i < UserLiveFeed_itemsCount; i++) {
+        doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
+        if (doc !== null) {
+            preload.src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
+        }
+    }
+}
+
 function Sidepannel_RemoveFocusFeed() {
     Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
 }
@@ -110,8 +121,10 @@ function Sidepannel_ShowFeed() {
     if (hasuser) {
         if (Main_isElementShowing('side_panel_feed_holder')) {
             document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-            if (document.getElementById(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed) !== null)
+            if (document.getElementById(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed) !== null) {
+                Sidepannel_PreloadImgs();
                 Sidepannel_AddFocusFeed();
+            }
         } else {
             document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
         }
