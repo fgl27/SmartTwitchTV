@@ -127,14 +127,6 @@ var Main_randomimg = '?' + Math.random();
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
 
-//function vars
-var Main_loadImg = function(ImgObjet, Src, img_type) {
-    ImgObjet.onerror = function() {
-        this.onerror = null;
-        this.src = img_type; //img fail to load use predefined
-    };
-    ImgObjet.src = Src;
-};
 //Variable initialization end
 
 // this function will be called only once the first time the app startup

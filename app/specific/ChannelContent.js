@@ -17,8 +17,6 @@ var ChannelContent_responseText = null;
 var ChannelContent_selectedChannelViews = '';
 var ChannelContent_selectedChannelFallower = '';
 var ChannelContent_description = '';
-var ChannelContent_thumbnail = '';
-var ChannelContent_thumbnail_fallow = '';
 var ChannelContent_ChannelValue = {};
 var ChannelContent_ChannelValueIsset = false;
 var ChannelContent_offline_image = null;
@@ -60,7 +58,6 @@ function ChannelContent_StartLoad() {
     ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
     ChannelContent_status = false;
     ChannelContent_skipImg = false;
-    ChannelContent_thumbnail = '';
     ChannelContent_itemsCountOffset = 0;
     ChannelContent_itemsCount = 0;
     ChannelContent_cursorX = 0;
@@ -185,7 +182,8 @@ function ChannelContent_loadDataSuccess() {
     Main_td = document.createElement('tr');
     Main_td.className = 'follower_banner';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
-        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"></div>';
+        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"src="' + ChannelContent_profile_banner +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
     doc.appendChild(Main_td);
 
     if (ChannelContent_responseText !== null) {
@@ -239,14 +237,14 @@ function ChannelContent_loadDataSuccess() {
 
 //TODO revise this functions there is too many
 function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-    ChannelContent_thumbnail = preview_thumbnail.replace("{width}x{height}", Main_VideoSize);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', ChannelContent_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, channel_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"></div>' +
+        '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         '<i class="icon-circle" style="color: ' +
@@ -277,14 +275,14 @@ function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
 }
 
 function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
-    ChannelContent_thumbnail_fallow = preview_thumbnail;
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', ChannelContent_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
-        ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"></div>' +
+        ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"src="' + preview_thumbnail +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text_channel">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(ChannelContent_selectedChannelViews) +
@@ -309,11 +307,6 @@ function ChannelContent_setFallow() {
 function ChannelContent_loadDataSuccessFinish() {
     if (!ChannelContent_status) {
         ChannelContent_status = true;
-        if (ChannelContent_thumbnail !== '')
-            Main_loadImg(document.getElementById(ChannelContent_ids[1] + '0_0'),
-                ChannelContent_thumbnail, IMG_404_VIDEO);
-        Main_loadImg(document.getElementById(ChannelContent_ids[1] + 'x_0'), ChannelContent_profile_banner, IMG_404_BANNER);
-        Main_loadImg(document.getElementById(ChannelContent_ids[1] + '1_0'), ChannelContent_thumbnail_fallow, IMG_404_LOGO);
         ChannelContent_addFocus();
         Main_SaveValues();
         Main_ShowElement(ChannelContent_ids[10]);
