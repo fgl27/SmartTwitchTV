@@ -168,10 +168,6 @@ function Main_loadTranslations(language) {
             console.log('Main_isDebug: ' + Main_isDebug);
             console.log('Main_isBrowser: ' + Main_isBrowser);
         }
-        if (Main_Android) {
-            document.body.addEventListener("keydown", Main_BackKeyHoldDown, false);
-            document.body.addEventListener("keyup", Main_BackKeyHoldUp, false);
-        }
 
         Settings_SetDefautls();
         en_USLang();
@@ -1498,22 +1494,4 @@ function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackS
     };
 
     xmlHttp.send(null);
-}
-
-function Main_BackKeyHoldDown(event) {
-    if (event.keyCode === KEY_RETURN) Main_SetBackKeykill();
-}
-
-function Main_BackKeyHoldUp(event) {
-    if (event.keyCode === KEY_RETURN) Main_UnSetBackKeykill();
-}
-
-function Main_SetBackKeykill() {
-    Main_closeId = window.setTimeout(function() {
-        Android.mclose(true);
-    }, 5000);
-}
-
-function Main_UnSetBackKeykill() {
-    window.clearTimeout(Main_closeId);
 }
