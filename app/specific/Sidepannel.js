@@ -52,7 +52,7 @@ function Sidepannel_PreloadImgs() {
 }
 
 function Sidepannel_GetSize() {
-    return document.getElementsByClassName('side_panel_feed').length;
+    return document.getElementById('side_panel_feed_scroll').getElementsByClassName('side_panel_feed').length;
 }
 
 function Sidepannel_KeyEnter() {
