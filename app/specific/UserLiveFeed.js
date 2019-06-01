@@ -11,6 +11,7 @@ var UserLiveFeed_itemsCountOffset = 0;
 var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
 var UserLiveFeed_LastPos = null;
+var UserSidePannel_LastPos = null;
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
@@ -24,11 +25,18 @@ function UserLiveFeed_StartLoad() {
         if (UserLiveFeed_status) {
             if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
                 UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
-        } else UserLiveFeed_LastPos = null;
+
+            if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
+                UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[0];
+        } else {
+            UserSidePannel_LastPos = null;
+            UserLiveFeed_LastPos = null;
+        }
 
         Main_empty('user_feed_scroll');
         Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
+        Sidepannel_ScrollPos = 0;
         Main_empty('side_panel_feed_scroll');
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "2.5px";
@@ -205,6 +213,8 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                     stream.game
                 ]));
 
+
+            if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
                 [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "800x450"),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,

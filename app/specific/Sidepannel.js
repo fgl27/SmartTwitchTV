@@ -3,6 +3,7 @@ var Sidepannel_Pos = 0;
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
+var Sidepannel_ScrollPos = 0;
 
 function Sidepannel_AddFocusEtc() {
     Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
@@ -134,11 +135,22 @@ function Sidepannel_Hide() {
 function Sidepannel_Scroll() {
 
     if (Sidepannel_PosFeed > 4) {
+        var position;
         if (Sidepannel_PosFeed < (UserLiveFeed_itemsCount - 6)) {
-            var position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
+            position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
             position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
-            document.getElementById('side_panel_feed_scroll').style.marginTop = position + "px";
+        } else if (UserLiveFeed_itemsCount > 11) {
+            position = (document.getElementById(UserLiveFeed_side_ids[8] + (UserLiveFeed_itemsCount - 11)).offsetTop * -1);
+            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
         }
+
+        //Prevent flickering when not change position as we are at the botton but the position value changes by 1px
+        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)){
+            Sidepannel_ScrollPos = position;
+        }
+
+        document.getElementById('side_panel_feed_scroll').style.marginTop = Sidepannel_ScrollPos + "px";
+
     } else document.getElementById('side_panel_feed_scroll').style.marginTop = 0;
 }
 
