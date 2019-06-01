@@ -785,7 +785,7 @@ function Main_replaceVideo(id, data, valuesArray, ids) {
 
 function Main_VideoHtml(id, idArray, valuesArray) {
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+        '<img id="' + idArray[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
