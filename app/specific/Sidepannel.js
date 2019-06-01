@@ -16,7 +16,11 @@ function Sidepannel_RemoveFocusEtc() {
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
-    if (document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1) Sidepannel_UpdateThumb();
+    if (Sidepannel_isShowing()) Sidepannel_UpdateThumb();
+}
+
+function Sidepannel_isShowing() {
+    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
 }
 
 function Sidepannel_RemoveFocusFeed() {
