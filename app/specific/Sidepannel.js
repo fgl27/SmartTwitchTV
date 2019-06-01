@@ -38,12 +38,11 @@ function Sidepannel_UpdateThumb() {
 }
 
 function Sidepannel_PreloadImgs() {
-    var preload = new Image(),
-        doc;
+    var doc;
     for (var i = 0; i < UserLiveFeed_itemsCount; i++) {
         doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
         if (doc !== null) {
-            preload.src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
+            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
         }
     }
 }
