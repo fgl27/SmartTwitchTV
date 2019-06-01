@@ -364,6 +364,10 @@
             overflow: hidden;
         }
 
+        div.user_feed_hide {
+            bottom: -100%;
+        }
+
         div.user_feed_scroll {
             position: absolute;
             width: 100vw;
@@ -714,6 +718,13 @@
 
         div.dialogs {
             position: fixed;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        div.dialogs_feed {
             text-align: center;
             width: 100%;
             font-weight: bold;
@@ -1517,10 +1528,10 @@
         </div>
     </div>
     <div id="scenefeed" class="screen_size">
-        <div id="user_feed" class="user_feed hide">
-            <div id="icon_feed_refresh" class="dialogs" style="bottom: 22vh; text-align: left; margin-left: 1%;">
+        <div id="user_feed" class="user_feed user_feed_hide">
+            <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22vh; text-align: left; margin-left: 1%;">
             </div>
-            <div id="dialog_loading_feed" class="dialogs hide" style="bottom: 4%;">
+            <div id="dialog_loading_feed" class="dialogs_feed hide" style="bottom: 4%;">
                 <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
             </div>
             <div id="user_feed_scroll" class="user_feed_scroll">
