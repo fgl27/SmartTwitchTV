@@ -88,9 +88,11 @@
         div.screen_size,
         div.scroll_size,
         div.screens {
+            position: fixed;
             background-color: rgba(0, 0, 0, 0);
             width: 100vw;
             height: 100vh;
+            overflow: hidden;
         }
 
         div.scroll_size {
@@ -1516,7 +1518,7 @@
             </div>
         </div>
     </div>
-    <div id="scenefeed" class="screen_size" style="display: none;">
+    <div id="scenefeed" class="screen_size">
         <div id="user_feed" class="user_feed hide">
             <div id="icon_feed_refresh" class="dialogs" style="bottom: 22vh; text-align: left; margin-left: 1%;">
             </div>
