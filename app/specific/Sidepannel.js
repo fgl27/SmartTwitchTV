@@ -145,7 +145,7 @@ function Sidepannel_Scroll() {
         }
 
         //Prevent flickering when not change position as we are at the botton but the position value changes by 1px
-        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)){
+        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)) {
             Sidepannel_ScrollPos = position;
         }
 
