@@ -493,7 +493,7 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos < (UserLiveFeed_itemsCount - 1) && !UserLiveFeed_loadingData) {
+                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
