@@ -3,11 +3,8 @@ var UserLiveFeed_loadingDataTry = 0;
 var UserLiveFeed_loadingDataTimeout = 3500;
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_loadingDataTryMax = 5;
-var UserLiveFeed_itemsCount = 0;
 var UserLiveFeed_dataEnded = false;
 var UserLiveFeed_followerChannels = '';
-var UserLiveFeed_itemsCountOffset = 0;
-//var UserLiveFeed_MaxOffset = 0;
 var UserLiveFeed_idObject = {};
 var UserLiveFeed_status = false;
 var UserLiveFeed_LastPos = null;
@@ -43,10 +40,7 @@ function UserLiveFeed_StartLoad() {
         Main_ShowElement('dialog_loading_feed');
         Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_loadChannelOffsset = 0;
-        UserLiveFeed_itemsCount = 0;
         UserLiveFeed_followerChannels = '';
-        UserLiveFeed_itemsCountOffset = 0;
-        //UserLiveFeed_MaxOffset = 0;
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
 
@@ -89,7 +83,7 @@ function UserLiveFeed_loadDataError() {
         UserLiveFeed_loadChannels();
     } else {
         UserLiveFeed_loadingData = false;
-        if (!UserLiveFeed_itemsCount) {
+        if (!UserLiveFeed_GetSize()) {
             Main_HideElement('dialog_loading_feed');
             Main_HideElement('dialog_loading_side_feed');
             if (UserLiveFeed_isFeedShow()) {
@@ -195,8 +189,6 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
     if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
-    UserLiveFeed_itemsCount += response_items;
-
     var stream, id, doc = document.getElementById("user_feed_scroll"),
         docside = document.getElementById("side_panel_feed_scroll");
 
@@ -212,7 +204,6 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.game
                 ]));
-
 
             if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
@@ -244,6 +235,10 @@ function UserLiveFeed_loadDataSuccessFinish() {
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed();
     });
+}
+
+function UserLiveFeed_GetSize() {
+    return document.getElementById('user_feed_scroll').getElementsByClassName('user_feed_thumb').length;
 }
 
 function UserLiveFeed_CreatFeed(id, data, valuesArray) {
