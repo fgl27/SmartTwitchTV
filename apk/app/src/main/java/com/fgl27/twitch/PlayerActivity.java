@@ -250,30 +250,41 @@ public class PlayerActivity extends Activity {
         this.moveTaskToBack(true);
     }
 
+    //https://android-developers.googleblog.com/2009/12/back-and-other-hard-keys-three-stories.html
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
-                return true;
-            }
-
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            closeThis();
+            return true;
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyLongPress(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
-                return true;
-            }
-
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            // if the call key is being released, AND we are tracking
+            // it from an initial key down, AND it is not canceled,
+            // then handle it.
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
+            return true;
         }
         return super.onKeyUp(keyCode, event);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // this tells the framework to start tracking for
+            // a long press and eventual key up.  it will only
+            // do so if this is the first down (not a repeat).
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     public void munregisterReceiver() {
         try {
