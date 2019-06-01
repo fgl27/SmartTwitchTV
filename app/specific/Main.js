@@ -78,7 +78,6 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_SetTopOpacityId;
 var Main_updateclockId;
-var Main_closeId;
 var Main_ContentLang = "";
 var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods = [];
