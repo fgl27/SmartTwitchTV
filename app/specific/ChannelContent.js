@@ -185,7 +185,7 @@ function ChannelContent_loadDataSuccess() {
     Main_td = document.createElement('tr');
     Main_td.className = 'follower_banner';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
-        ChannelContent_ids[1] + 'x_0" class="stream_img_banner"></div>';
+        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"></div>';
     doc.appendChild(Main_td);
 
     if (ChannelContent_responseText !== null) {
@@ -246,7 +246,7 @@ function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_t
     Main_td.setAttribute(Main_DataAttribute, channel_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + ChannelContent_ids[1] + id + '" class="stream_img"></div>' +
+        '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         '<i class="icon-circle" style="color: ' +
@@ -284,7 +284,7 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
-        ChannelContent_ids[1] + id + '" class="stream_img_fallow"></div>' +
+        ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text_channel">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
         '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(ChannelContent_selectedChannelViews) +

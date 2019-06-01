@@ -219,7 +219,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
     Main_td.setAttribute(Main_DataAttribute, game_name);
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" src="' + thumbnail +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
         idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
@@ -250,7 +250,7 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     ]));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" src="' + thumbnail +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
@@ -275,7 +275,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
@@ -299,7 +299,7 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><div><img id="' +
-        idArray[1] + id + '" class="stream_img" src="' + valuesArray[0] +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +

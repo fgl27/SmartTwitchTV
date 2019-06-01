@@ -85,7 +85,6 @@ function UserLive_CheckToken() {
 }
 
 function UserLive_loadDataPrepare() {
-    Main_imgVectorRst();
     UserLive_loadingData = true;
     UserLive_loadingDataTry = 0;
     UserLive_loadingDataTimeout = 3500;
@@ -296,14 +295,12 @@ function UserLive_loadDataSuccessFinish() {
         } else {
             UserLive_status = true;
             UserLive_addFocus();
-            Main_imgVectorLoad(IMG_404_VIDEO);
             Main_SaveValues();
         }
         Main_ShowElement(UserLive_ids[10]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(IMG_404_VIDEO);
         if (UserLive_emptyCellVector.length > 0 && !UserLive_dataEnded) {
             UserLive_loadDataPrepare();
             UserLive_loadChannelsReplace();

@@ -75,7 +75,6 @@ function UserVod_StartLoad() {
 }
 
 function UserVod_loadDataPrepare() {
-    Main_imgVectorRst();
     UserVod_loadingData = true;
     UserVod_loadingDataTry = 0;
     UserVod_loadingDataTimeout = 3500;
@@ -256,14 +255,12 @@ function UserVod_loadDataSuccessFinish() {
         } else {
             UserVod_status = true;
             UserVod_addFocus();
-            Main_imgVectorLoad(IMG_404_VIDEO);
             Main_SaveValues();
         }
         Main_ShowElement(UserVod_ids[10]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(IMG_404_VIDEO);
         UserVod_addFocus(true);
     }
 

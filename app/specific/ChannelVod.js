@@ -79,7 +79,6 @@ function ChannelVod_StartLoad() {
 }
 
 function ChannelVod_loadDataPrepare() {
-    Main_imgVectorRst();
     ChannelVod_loadingData = true;
     ChannelVod_loadingDataTry = 0;
     ChannelVod_loadingDataTimeout = 3500;
@@ -211,7 +210,6 @@ function ChannelVod_loadDataSuccessFinish() {
             Main_showWarningDialog(STR_NO + (ChannelVod_highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_FOR_THIS + STR_CHANNEL);
         } else {
             ChannelVod_status = true;
-            Main_imgVectorLoad((ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO));
             ChannelVod_addFocus();
             Main_SaveValues();
         }
@@ -220,7 +218,6 @@ function ChannelVod_loadDataSuccessFinish() {
         Main_HideLoadDialog();
     } else {
         ChannelVod_addFocus(true);
-        Main_imgVectorLoad((ChannelContent_offline_image !== null ? ChannelContent_offline_image : IMG_404_VIDEO));
     }
 
     if (ChannelVod_emptyCellVector.length > 0 && !ChannelVod_dataEnded) {

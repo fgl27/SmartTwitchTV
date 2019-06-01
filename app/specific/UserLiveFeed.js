@@ -242,7 +242,7 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
     Main_td.className = 'user_feed_thumb';
     Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
-        '<div><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" src="' + valuesArray[0] +
+        '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
         '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
@@ -260,7 +260,7 @@ function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
 
     Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
         '<img id="' + UserLiveFeed_side_ids[1] + id +
-        '" style="vertical-align: middle; display: inline-block; width: 16%;" src="' + valuesArray[0] +
+        '" style="vertical-align: middle; display: inline-block; width: 16%;" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"><div id="' +
         UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
         UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] + '</div><div id="' +
