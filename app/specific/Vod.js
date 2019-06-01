@@ -27,12 +27,12 @@ function Vod_replaceVideo(id, vod_data, valuesArray, idArray) {
 }
 
 function Vod_VideoHtml(id, valuesArray, idArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
 
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><div><img id="' +
-        idArray[1] + id + '" class="stream_img"></div><div id="' +
+        idArray[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +

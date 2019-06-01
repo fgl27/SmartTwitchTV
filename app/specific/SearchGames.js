@@ -57,7 +57,6 @@ function SearchGames_StartLoad() {
 }
 
 function SearchGames_loadDataPrepare() {
-    Main_imgVectorRst();
     Main_FirstLoad = true;
     SearchGames_loadingDataTry = 0;
     SearchGames_loadingDataTimeout = 3500;
@@ -132,7 +131,6 @@ function SearchGames_loadDataSuccessFinish() {
         if (SearchGames_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
         else {
             SearchGames_Status = true;
-            Main_imgVectorLoad(IMG_404_VIDEO);
             SearchGames_addFocus();
             Main_SaveValues();
         }

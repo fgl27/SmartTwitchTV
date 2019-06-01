@@ -67,7 +67,6 @@ var Main_values = {
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
 var Main_CenterLablesInUse = false;
-var Main_imgVector = [];
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
@@ -706,25 +705,6 @@ function Main_empty(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
 }
 
-function Main_imgVectorLoad(img_type) {
-    var elem;
-    for (var i = 0; i < Main_imgVector.length; i++) {
-        elem = document.getElementById(Main_imgVector[i].id);
-        if (elem !== null) Main_loadImg(elem, Main_imgVector[i].src + Main_randomimg, img_type);
-    }
-}
-
-function Main_imgVectorRst() {
-    Main_imgVector = [];
-}
-
-function Main_imgVectorPush(id, src) {
-    Main_imgVector.push({
-        'id': id,
-        'src': src
-    });
-}
-
 function Main_YRst(y) {
     Main_cursorYAddFocus = y;
 }
@@ -776,9 +756,9 @@ function Main_replaceChannel(id, valuesArray, ids) {
 }
 
 function Main_ChannelHtml(id, idArray, valuesArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[2]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><img id="' + idArray[1] +
-        id + '" class="stream_img"></div>' +
+        id + '" alt="" class="stream_img"src="' + valuesArray[2] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div>';
 }
@@ -804,9 +784,9 @@ function Main_replaceVideo(id, data, valuesArray, ids) {
 }
 
 function Main_VideoHtml(id, idArray, valuesArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[0]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
+        '<img id="' + idArray[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
@@ -827,9 +807,9 @@ function Main_createCellGame(id, idArray, valuesArray) {
 }
 
 function Main_GameHtml(id, idArray, valuesArray) {
-    Main_imgVectorPush(idArray[1] + id, valuesArray[1]);
     return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game" >' +
-        '<img id="' + idArray[1] + id + '" class="stream_img"></div>' +
+        '<img id="' + idArray[1] + id + '" alt="" class="stream_img"src="' + valuesArray[1] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_GAME + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[0] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 100%; display: inline-block;">' +

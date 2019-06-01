@@ -72,7 +72,6 @@ function UserChannels_StartLoad() {
 }
 
 function UserChannels_loadDataPrepare() {
-    Main_imgVectorRst();
     UserChannels_loadingData = true;
     UserChannels_loadingDataTry = 0;
     UserChannels_loadingDataTimeout = 3500;
@@ -176,7 +175,6 @@ function UserChannels_loadDataSuccessFinish() {
             Main_CenterLablesStart(UserChannels_handleKeyDown);
         } else {
             UserChannels_Status = true;
-            Main_imgVectorLoad(IMG_404_LOGO);
             UserChannels_addFocus();
             Main_SaveValues();
         }
@@ -184,7 +182,6 @@ function UserChannels_loadDataSuccessFinish() {
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(IMG_404_LOGO);
         if (UserChannels_emptyCellVector.length > 0 && !UserChannels_dataEnded) {
             UserChannels_loadDataPrepare();
             UserChannels_loadDataReplace();

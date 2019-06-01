@@ -65,7 +65,6 @@ function SearchChannels_StartLoad() {
 }
 
 function SearchChannels_loadDataPrepare() {
-    Main_imgVectorRst();
     SearchChannels_loadingData = true;
     SearchChannels_loadingDataTry = 0;
     SearchChannels_loadingDataTimeout = 3500;
@@ -165,7 +164,6 @@ function SearchChannels_loadDataSuccessFinish() {
         if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
         else {
             SearchChannels_Status = true;
-            Main_imgVectorLoad(IMG_404_LOGO);
             SearchChannels_addFocus();
             Main_SaveValues();
         }
@@ -173,7 +171,6 @@ function SearchChannels_loadDataSuccessFinish() {
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(IMG_404_LOGO);
         if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
             SearchChannels_loadDataPrepare();
             SearchChannels_loadDataReplace();

@@ -67,7 +67,6 @@ function UserHost_StartLoad() {
 }
 
 function UserHost_loadDataPrepare() {
-    Main_imgVectorRst();
     UserHost_loadingData = true;
     UserHost_loadingDataTry = 0;
     UserHost_loadingDataTimeout = 3500;
@@ -167,14 +166,12 @@ function UserHost_loadDataSuccessFinish() {
         } else {
             UserHost_status = true;
             UserHost_addFocus();
-            Main_imgVectorLoad(IMG_404_VIDEO);
             Main_SaveValues();
         }
         Main_ShowElement(UserHost_ids[10]);
         Main_FirstLoad = false;
         Main_HideLoadDialog();
     } else {
-        Main_imgVectorLoad(IMG_404_VIDEO);
         if (UserHost_emptyCellVector.length > 0 && !UserHost_dataEnded) {
             UserHost_loadDataPrepare();
             UserHost_loadDataReplace();
