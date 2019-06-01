@@ -241,6 +241,7 @@ function UserLiveFeed_loadDataSuccessFinish() {
         Main_HideElement('dialog_loading_feed');
         Main_HideElement('dialog_loading_side_feed');
         UserLiveFeed_FeedAddFocus();
+        Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed();
     });
 }

@@ -4,7 +4,6 @@ var Main_isBrowser = false;
 var Main_isDebug = false;
 
 var Main_cursorYAddFocus = -1;
-var Main_newImg = new Image();
 
 var Main_Live = 1;
 var Main_addUser = 2;
@@ -229,11 +228,6 @@ function Main_initWindows() {
 
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
-
-        // pre load All img
-        Main_CacheImage(IMG_404_VIDEO);
-        Main_CacheImage(IMG_404_GAME);
-        Main_CacheImage(IMG_404_LOGO);
 
         document.addEventListener('visibilitychange', Main_Resume, false);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
@@ -706,10 +700,6 @@ function Main_YchangeAddFocus(y) {
     return position;
 }
 
-function Main_CacheImage(link) {
-    Main_newImg.src = link;
-}
-
 function Main_createEmptyCell(id) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', id);
@@ -751,7 +741,6 @@ function Main_ChannelHtml(id, idArray, valuesArray) {
 }
 
 function Main_createCellVideo(row_id, id, data, idArray, valuesArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_CacheImage(valuesArray[0]);
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', idArray[8] + id);

@@ -4,7 +4,6 @@ var Vod_newImg = new Image();
 //Variable initialization end
 
 function Vod_createCell(row_id, id, vod_data, valuesArray, idArray) {
-    if (row_id < Main_ColoumnsCountVideo) Main_CacheImage(valuesArray[0]); //try to pre cache first 3 rows
     return Vod_createCellVideo(vod_data, id, valuesArray, idArray);
 }
 

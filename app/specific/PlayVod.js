@@ -116,7 +116,7 @@ function PlayVod_PosStart() {
     Main_SaveValues();
 
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-    Main_CacheImage(Play_IncrementView);
+    new Image().src = Play_IncrementView;
 
     PlayVod_PlayerCheckCounter = 0;
     PlayVod_PlayerCheckCount = 0;
@@ -220,7 +220,7 @@ function PlayVod_updateVodInfoPannel(response) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
-    Main_CacheImage(response.increment_view_count_url);
+    new Image().src = response.increment_view_count_url;
 }
 
 function PlayVod_Resume() {
