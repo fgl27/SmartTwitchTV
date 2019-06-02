@@ -61,6 +61,7 @@ function Sidepannel_GetSize() {
 
 function Sidepannel_KeyEnter() {
     if (!Sidepannel_Pos) {
+        Sidepannel_Isscreen = false;
         if (Main_values.Main_Go !== Main_Search) {
             if (!Main_values.Search_isSearching &&
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
