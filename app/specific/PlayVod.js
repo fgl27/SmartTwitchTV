@@ -646,6 +646,7 @@ function PlayVod_jump() {
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
+    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
