@@ -70,8 +70,10 @@ function Sidepannel_KeyEnter() {
             Main_values.Main_Go = Main_Search;
             Main_SwitchScreen();
         } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    } else if (Sidepannel_Pos === 1) Main_showSettings();
-    else if (Sidepannel_Pos === 2) {
+    } else if (Sidepannel_Pos === 1) {
+        Sidepannel_Isscreen = false;
+        Main_showSettings();
+    } else if (Sidepannel_Pos === 2) {
         document.body.addEventListener("keydown", Sidepannel_Callback, false);
         Main_showAboutDialog();
     } else if (Sidepannel_Pos === 3) {
@@ -95,6 +97,7 @@ function Sidepannel_RestoreScreen() {
 }
 
 function Sidepannel_Go(GoTo) {
+    Sidepannel_Isscreen = false;
     if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
     else {
         Main_values.Main_Before = Main_values.Main_Go;
@@ -214,6 +217,7 @@ function Sidepannel_handleKeyDown(event) {
             Sidepannel_Hide();
             Main_values.Play_isHost = false;
             Play_UserLiveFeedPressed = true;
+            Sidepannel_Isscreen = false;
             Main_ready(function() {
                 Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
             });
