@@ -1034,7 +1034,7 @@ function Main_updateUserFeed() {
                 Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
                 UserLiveFeed_StartLoad();
             }
-        }, 5000);
+        }, 15000);
     }
 }
 
