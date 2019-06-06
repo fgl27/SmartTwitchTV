@@ -84,23 +84,28 @@ if [ $BAPP == 1 ]; then
 	./gradlew clean
 	echo -e "\n The above is just the cleaning build start now\n";
 	rm -rf app/build/outputs/apk/**
-	./gradlew build 2>&1 --warning-mode all | tee build_log.txt
+	if [ "$1" != 1 ]; then
+		./gradlew assembleDebug 2>&1 --warning-mode all | tee build_log.txt
+	else
+		./gradlew build 2>&1 --warning-mode all | tee build_log.txt
+	fi;
 fi;
 
 END2="$(date)";
 END=$(date +%s.%N);
 
-if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
+if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ] && [ ! -e ./app/build/outputs/apk/debug/app-debug.apk ]; then
 	echo -e "\n${bldred}App not build${txtrst}\n"
 	exit 1;
 else
-	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "$KEY_PASS" -keystore "$KEY_FOLDER" "$OUT_FOLDER"/app-release-unsigned.apk Felipe_Leon
-	"$ZIPALIGN_FOLDER" -v 4 "$OUT_FOLDER"/app-release-unsigned.apk "$OUT_FOLDER"/"$APP_FINAL_NAME"
-	cp "$OUT_FOLDER"/"$APP_FINAL_NAME" "$OUT_FOLDER"/isu"$(date +%s)".apk
-
+	if [ "$1" == 1 ]; then
+		jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "$KEY_PASS" -keystore "$KEY_FOLDER" "$OUT_FOLDER"/app-release-unsigned.apk Felipe_Leon
+		"$ZIPALIGN_FOLDER" -v 4 "$OUT_FOLDER"/app-release-unsigned.apk "$OUT_FOLDER"/"$APP_FINAL_NAME"
+		cp "$OUT_FOLDER"/"$APP_FINAL_NAME" "$OUT_FOLDER"/isu"$(date +%s)".apk
+	fi;
 	echo "$(./gradlew -q gradleUpdates | sed '/jacoco/d')" >> build_log.txt
 
-        ISSUES=$(grep issues build_log.txt | grep release)
+	ISSUES=$(grep issues build_log.txt | grep release)
 	if [ -n "$ISSUES" ]; then
 		NOISSUES=0;
 		contains "$ISSUES" ": 1 issues" && NOISSUES=1;
@@ -111,22 +116,22 @@ else
 		fi;
 	fi;
 
-        DEPRECATION=$(grep deprecation build_log.txt)
+	DEPRECATION=$(grep deprecation build_log.txt)
 	if [ -n "$DEPRECATION" ]; then
 		echo -e "\n${CYAN}Build deprecation:\n${NC}";
 		echo -e "${RED}$DEPRECATION${NC}";
 	fi;
 
-        UPDATEDEPENDENCIES=$(grep ' \-> ' build_log.txt)
+	UPDATEDEPENDENCIES=$(grep ' \-> ' build_log.txt)
 	if [ -n "$UPDATEDEPENDENCIES" ]; then
 		echo -e "\n${CYAN}Dependencies that need update:\n${NC}";
 		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";
 	fi;
 
-        GRADLEVERSION=$(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)
-        LASTGRADLEVERSION=$(grep 'current version' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
-        LASTRCGRADLEVERSION=$(grep 'release-candidat' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
-        NORC=1;
+	GRADLEVERSION=$(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)
+	LASTGRADLEVERSION=$(grep 'current version' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
+	LASTRCGRADLEVERSION=$(grep 'release-candidat' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
+	NORC=1;
 	contains "$LASTRCGRADLEVERSION" "null" && NORC=0;
 	if [ $NORC == 1 ]; then
 		if [ ! "$GRADLEVERSION" == "$LASTRCGRADLEVERSION" ]; then
@@ -137,8 +142,11 @@ else
 		echo -e "\n${CYAN}Gradlew need update:\n${NC}";
 		echo -e "\n${RED}Current $GRADLEVERSION latest $LASTGRADLEVERSION\n${NC}";
 	fi;
-
-	echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
+	if [ "$1" == 1 ]; then
+		echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
+	else
+		echo -e "\n${GREEN}App saved at "$FOLDER"/app/build/outputs/apk/debug/app-debug.apk";
+	fi;
 fi;
 
 echo -e "\n${YELLOW}*** Build END ***\n";
