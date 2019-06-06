@@ -311,8 +311,8 @@ public class PlayerActivity extends Activity {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        BUFFER_SIZE[mwhocall], //DEFAULT_MIN_BUFFER_MS
-                        100000, //DEFAULT_MAX_BUFFER_MS
+                        60000, //DEFAULT_MIN_BUFFER_MS
+                        120000, //DEFAULT_MAX_BUFFER_MS
                         BUFFER_SIZE[mwhocall], //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         BUFFER_SIZE[mwhocall] //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
