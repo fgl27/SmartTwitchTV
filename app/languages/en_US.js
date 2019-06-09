@@ -237,4 +237,7 @@ function en_USLang() {
     STR_SIDE_PANEL_SETTINGS = "Settings, about, etc...";
     STR_UP = " Press up";
     STR_LIVE_FEED = "Live Feed";
+    STR_END_DIALOG_SETTINGS = "End dialog";
+    STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that will take for the stream/video/clip end dialog take action";
+    STR_END_DIALOG_DISABLE = "Disable the timer";
 }
