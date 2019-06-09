@@ -1065,7 +1065,7 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
 
-    if (Play_EndTextCounter === -2) {//disable
+    if (Play_EndTextCounter === -2) { //disable
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
         PlayClip_state = PlayClip_STATE_PLAYING;
