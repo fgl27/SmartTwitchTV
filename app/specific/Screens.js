@@ -201,8 +201,9 @@ function Screens_loadDataSuccess() {
     Screens_loadDataSuccessFinish();
 }
 
-function Screens_createCellBase(row_id, coloumn_id) {
+function Screens_createCellBase(row_id, coloumn_id, thumbnail) {
 
+    if (row_id < inUseObj.visiblerows) new Image().src = thumbnail;
     var id = row_id + '_' + coloumn_id;
 
     Main_td = document.createElement('div');
@@ -213,7 +214,7 @@ function Screens_createCellBase(row_id, coloumn_id) {
 
 function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id);
+    var id = Screens_createCellBase(row_id, coloumn_id, thumbnail);
 
     Main_td.setAttribute('id', idArray[5] + id);
     Main_td.setAttribute(Main_DataAttribute, game_name);
@@ -232,7 +233,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
 //TODO Reduce the number of vars here please
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id);
+    var id = Screens_createCellBase(row_id, coloumn_id, thumbnail);
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify([video_id,
@@ -268,14 +269,14 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
 }
 
 function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
-
-    var id = Screens_createCellBase(row_id, coloumn_id);
+    var thumbnail = valuesArray[0] + Main_randomimg;
+    var id = Screens_createCellBase(row_id, coloumn_id, thumbnail);
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
@@ -291,7 +292,8 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
 
 function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id);
+    var id = Screens_createCellBase(row_id, coloumn_id, valuesArray[0]);
+    if (row_id < inUseObj.visiblerows) new Image().src = valuesArray[7];
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
