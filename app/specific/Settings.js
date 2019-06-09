@@ -37,6 +37,10 @@ var Settings_value = {
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 3
     },
+    "end_dialog_counter": { //end_dialog_counter
+        "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "defaultValue": 4
+    },
     "videos_animation": { //videos_animation
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -174,6 +178,13 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
 
+    // Chat size
+    key = "end_dialog_counter";
+    Settings_value_keys.push(key);
+    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+
     // Player buffer title/summary
     div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
         '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
@@ -257,6 +268,7 @@ function Settings_SetStrings() {
     key = "buffer_clip";
     Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
 
+
     //Player restore
     key = "restor_playback";
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
@@ -265,6 +277,11 @@ function Settings_SetStrings() {
     //Player chat font size
     key = "chat_font_size";
     Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
+
+    // Chat size
+    key = "end_dialog_counter";
+    Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
 
     //Player restore
     key = "force_disable_chat";
@@ -302,6 +319,7 @@ function Settings_SetDefautls() {
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
+    Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
 }
 
 function Settings_Obj_values(key) {
@@ -372,6 +390,7 @@ function Settings_SetDefault(position) {
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
+    else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "chat_brightness") {
         Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
         Play_ChatBackgroundChange(false);
@@ -433,7 +452,7 @@ function Settings_ScrollTable() {
 
     if (Settings_cursorY > 4) {
         position = position * 0.09;
-        position += document.getElementById(Settings_value_keys[0]).offsetTop * -1;
+        position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
         document.getElementById('settings_scroll').style.top = position + "px";
     } else position = position * 0.077;
 

@@ -63,6 +63,7 @@ var Play_loadingDataTimeout = 2000;
 var Play_Lang = '';
 var Play_Endcounter = 0;
 var Play_EndTextCounter = 3;
+var Play_EndSettingsCounter = 3;
 var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
@@ -1063,9 +1064,12 @@ function Play_EndText(PlayVodClip) {
     if (PlayVodClip === 1) Play_DialogEndText = Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE;
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
+
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
         ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
-    if (Play_isEndDialogVisible()) {
+
+    if (Play_EndTextCounter === -2) Play_EndTextClear();
+    else if (Play_isEndDialogVisible()) {
         Play_EndTextCounter--;
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
@@ -1319,7 +1323,8 @@ function Play_PlayEndStart(PlayVodClip) {
     window.clearInterval(PlayVod_streamCheckId);
 
     Play_PrepareshowEndDialog(PlayVodClip);
-    Play_EndTextCounter = 3;
+    Play_EndTextCounter = (!Play_EndSettingsCounter ? -2 : Play_EndSettingsCounter);
+
     Play_EndText(PlayVodClip);
     Play_showEndDialog();
 }
