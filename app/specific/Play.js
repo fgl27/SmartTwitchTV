@@ -1065,11 +1065,18 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
 
+    if (Play_EndTextCounter === -2) {//disable
+        Play_state = Play_STATE_PLAYING;
+        PlayVod_state = Play_STATE_PLAYING;
+        PlayClip_state = PlayClip_STATE_PLAYING;
+        Play_EndTextClear();
+        return;
+    }
+
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
         ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
 
-    if (Play_EndTextCounter === -2) Play_EndTextClear();
-    else if (Play_isEndDialogVisible()) {
+    if (Play_isEndDialogVisible()) {
         Play_EndTextCounter--;
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
