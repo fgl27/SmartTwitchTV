@@ -551,48 +551,32 @@ function Main_SwitchScreenAction(removekey) {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_CounterDialogRst();
-    if (Main_values.Main_Go === Main_Live) {
-        inUseObj = Live;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_addUser) AddUser_init();
-    else if (Main_values.Main_Go === Main_games) {
-        inUseObj = Game;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_aGame) {
-        inUseObj = AGame;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_Search) Search_init();
+    if (Main_values.Main_Go === Main_addUser) AddUser_init();
+    else if (Main_values.Main_Go === Main_Search) Search_init();
     else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
     else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
     else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
     else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
-    else if (Main_values.Main_Go === Main_ChannelClip) {
-        inUseObj = ChannelClip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_Users) Users_init();
+    else if (Main_values.Main_Go === Main_Users) Users_init();
     else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
     else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
-    else if (Main_values.Main_Go === Main_usergames) {
-        inUseObj = UserGames;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
+    else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
-    else if (Main_values.Main_Go === Main_Vod) {
-        inUseObj = Vod;
+    else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
+    else {
+        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
+        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
+        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
+        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
+        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
+        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
+
         Screens_init();
-    } else if (Main_values.Main_Go === Main_Clip) {
-        inUseObj = Clip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_AGameVod) {
-        inUseObj = AGameVod;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_AGameClip) {
-        inUseObj = AGameClip;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_Featured) {
-        inUseObj = Featured;
-        Screens_init();
-    } else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
+    }
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
     if (removekey) Main_RemoveKeys();
@@ -607,28 +591,19 @@ function Main_RestoreValues() {
 }
 
 function Main_ExitCurrent(ExitCurrent) {
-    if (ExitCurrent === Main_Live) Screens_exit();
-    else if (ExitCurrent === Main_addUser) AddUser_exit();
-    else if (ExitCurrent === Main_games) Screens_exit();
-    else if (ExitCurrent === Main_aGame) Screens_exit();
+    if (ExitCurrent === Main_addUser) AddUser_exit();
     else if (ExitCurrent === Main_Search) Search_exit();
     else if (ExitCurrent === Main_SearchGames) SearchGames_exit();
     else if (ExitCurrent === Main_SearchLive) SearchLive_exit();
     else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
     else if (ExitCurrent === Main_ChannelVod) ChannelVod_exit();
-    else if (ExitCurrent === Main_ChannelClip) Screens_exit();
     else if (ExitCurrent === Main_Users) Users_exit();
     else if (ExitCurrent === Main_UserLive) UserLive_exit();
     else if (ExitCurrent === Main_UserHost) UserHost_exit();
-    else if (ExitCurrent === Main_usergames) Screens_exit();
     else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
     else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
-    else if (ExitCurrent === Main_Vod) Screens_exit();
-    else if (ExitCurrent === Main_Clip) Screens_exit();
-    else if (ExitCurrent === Main_AGameVod) Screens_exit();
-    else if (ExitCurrent === Main_AGameClip) Screens_exit();
-    else if (ExitCurrent === Main_Featured) Screens_exit();
     else if (ExitCurrent === Main_UserVod) UserVod_exit();
+    else Screens_exit();
 
     if (Main_isElementShowing('settings_scroll')) Settings_exit();
 }
@@ -1243,17 +1218,8 @@ function Main_CenterLablesExit() {
 }
 
 function Main_RemoveKeys() {
-    if (Main_values.Main_Go === Main_Live) {
-        inUseObj = Live;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
-    else if (Main_values.Main_Go === Main_aGame) {
-        inUseObj = AGame;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_Featured) {
-        inUseObj = Featured;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
+
+    if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchGames) document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelVod) document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
@@ -1261,28 +1227,22 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserVod) document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
-    else if (Main_values.Main_Go === Main_games) {
-        inUseObj = Game;
+    else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
+    else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    else {
+        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
+        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
+        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
+        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
+        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
+        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
+        else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
+        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_ChannelClip) {
-        inUseObj = ChannelClip;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_Vod) {
-        inUseObj = Vod;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_Clip) {
-        inUseObj = Clip;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_AGameClip) {
-        inUseObj = AGameClip;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_usergames) {
-        inUseObj = UserGames;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_AGameVod) {
-        inUseObj = AGameVod;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    } else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
+    }
 }
 
 function Main_ReloadScreen() {
@@ -1293,46 +1253,33 @@ function Main_ReloadScreen() {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_CounterDialogRst();
-    if (Main_values.Main_Go === Main_Live) {
-        inUseObj = Live;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
-    else if (Main_values.Main_Go === Main_Featured) {
-        inUseObj = Featured;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_aGame) {
-        inUseObj = AGame;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
+
+    if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_StartLoad();
     else if (Main_values.Main_Go === Main_SearchLive) SearchLive_StartLoad();
     else if (Main_values.Main_Go === Main_SearchGames) SearchGames_StartLoad();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
-    else if (Main_values.Main_Go === Main_games) {
-        inUseObj = Game;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_usergames) {
-        inUseObj = UserGames;
-        if (!inUseObj.loadingData) inUseObj.key_refresh();
-    } else if (Main_values.Main_Go === Main_Vod) {
-        inUseObj = Vod;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_Clip) {
-        inUseObj = Clip;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_AGameClip) {
-        inUseObj = AGameClip;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_ChannelClip) {
-        inUseObj = ChannelClip;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_AGameVod) {
-        inUseObj = AGameVod;
-        Screens_StartLoad();
-    } else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
+    else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
     else if (Main_values.Main_Go === Main_UserHost) UserHost_StartLoad();
     else if (Main_values.Main_Go === Main_UserVod) UserVod_StartLoad();
+    else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
+    else if (Main_values.Main_Go === Main_usergames) {
+        inUseObj = UserGames;
+        if (!inUseObj.loadingData) inUseObj.key_refresh();
+    } else {
+        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
+        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
+        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
+        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
+        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
+        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
+        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+
+        Screens_StartLoad();
+    }
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
 }
