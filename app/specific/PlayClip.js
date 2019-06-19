@@ -362,6 +362,7 @@ function PlayClip_hidePanel() {
 function PlayClip_showPanel() {
     PlayClip_RefreshProgressBarr();
     Play_clock();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(PlayClip_RefreshProgressBarr, 1000);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();

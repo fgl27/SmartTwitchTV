@@ -528,6 +528,7 @@ function PlayVod_showPanel(autoHide) {
     PlayVod_RefreshProgressBarr();
     Play_clock();
     Play_CleanHideExit();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
     if (autoHide) {
         PlayVod_IconsBottonResetFocus();

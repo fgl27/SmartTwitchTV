@@ -839,6 +839,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Play_RefreshWatchingtime();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
     Play_clock();
     Play_CleanHideExit();
