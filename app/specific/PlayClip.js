@@ -431,6 +431,7 @@ function PlayClip_OpenVod() {
         Play_IconsResetFocus();
         Main_ready(PlayVod_Start);
     } else {
+        Play_clearHidePanel();
         Play_IsWarning = true;
         Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
         window.setTimeout(function() {
