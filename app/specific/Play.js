@@ -1240,6 +1240,7 @@ function Play_OpenSearch(PlayVodClip) {
 
 function Play_OpenGame(PlayVodClip) {
     if (Main_values.Play_gameSelected === '') {
+        Play_clearHidePanel();
         Play_IsWarning = true;
         Play_showWarningDialog(STR_NO_GAME);
         window.setTimeout(function() {
