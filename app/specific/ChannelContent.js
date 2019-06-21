@@ -253,7 +253,8 @@ function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_t
         '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         quality + '</div>' +
         '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + STR_PLAYING + stream_game + '</div>' +
+        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' +
+        (stream_game !== "" ? STR_PLAYING + stream_game : "") + '</div>' +
         '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info">' + viwers + '</div>' + '</div>';
 
     return Main_td;
@@ -369,7 +370,8 @@ function ChannelContent_keyEnter() {
                 Main_values.Play_selectedChannel_id = ChannelContent_TargetId;
             } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
 
-            Main_values.Play_gameSelected = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent.split(STR_PLAYING)[1];
+            var playing = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent;
+            Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
             Main_ready(Main_openStream);
         } else if (ChannelContent_cursorX === (1 - value)) Main_ready(ChannelVod_init);

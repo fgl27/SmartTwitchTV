@@ -251,7 +251,7 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
         '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
-        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[2] + '</div>' + '</div></div>';
+        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
 
     return Main_td;
 }

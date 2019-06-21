@@ -39,7 +39,7 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_name', info[3]);
     Main_innerHTML('feed_thum_quality', info[7]);
     Main_innerHTML('feed_thum_title', twemoji.parse(info[4]));
-    Main_innerHTML('feed_thum_game', info[5]);
+    Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
     Main_innerHTML('feed_thum_views', info[6]);
 
     Main_ShowElement('side_panel_feed_thumb');

@@ -743,7 +743,7 @@ function Main_VideoHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
 }
 
@@ -845,7 +845,9 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
     } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
 
-    Main_values.Play_gameSelected = document.getElementById(idsArray[5] + id).textContent.split(STR_PLAYING)[1];
+    var playing = document.getElementById(idsArray[5] + id).textContent;
+    Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_openStream();
 }
@@ -901,6 +903,9 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);
     ChannelVod_language = Main_values.ChannelVod_vodId[2];
     Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[3];
+
+    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
+
     Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
     Play_IncrementView = Main_values.ChannelVod_vodId[5];
     Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[0].substr(1);
