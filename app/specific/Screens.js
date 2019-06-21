@@ -233,7 +233,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
 function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
 
     var id = Screens_createCellBase(row_id, coloumn_id);
-
+    var playing = (title_game[2] !== "" ? title_game[1] + title_game[2] : "");
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify([video_id,
         duration,
@@ -246,9 +246,8 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
         vod_offset,
         title_game[0],
         language,
-        title_game[1] + title_game[2]
+        playing
     ]));
-
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
@@ -257,7 +256,7 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
         display_name + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + language +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
-        title_game[0] + STR_BR + title_game[1] + title_game[2] + '</div><div id="' + idArray[6] + id +
+        title_game[0] + STR_BR + playing + '</div><div id="' + idArray[6] + id +
         '"class="stream_info">' + views + STR_VIEWS + '</div><div  style="line-height: 12px;"><div id="' +
         idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
         created_at[0] + created_at[1] + '</div><div id="' + idArray[5] + id +
@@ -283,8 +282,8 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
         '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + STR_PLAYING + valuesArray[3] + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>';
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
+        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>';
 
     return Main_td;
 }
