@@ -1,11 +1,11 @@
 function en_USLang() {
-    // This is a false/true var change if in yours language day comes first eg (27/12/2010) day 27 month 12 year 2010
+    // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
     Main_IsDayFirst = false;
 
-    // this is the size of side pannel a ajust may be needed here so it can fit all words in the horizontal axis
+    // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
     document.getElementById("side_panel").style.width = "25%";
 
-    //Bellow are variable to translate
+    //Below are variables to translate
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -16,7 +16,7 @@ function en_USLang() {
     STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
     STR_SWITCH = "Switch screen";
     STR_SWITCH_USER = "Switch user screen";
-    STR_SWITCH_VOD = "Switch: Past Broadcast or Highlight";
+    STR_SWITCH_VOD = "Switch: Past Broadcasts or Highlights";
     STR_SWITCH_CLIP = "Switch: Period (24h, 7d, 30d, all)";
     STR_GO_TO = "Go to ";
     STR_USER = "User ";
@@ -24,25 +24,25 @@ function en_USLang() {
     STR_GAMES = "Games";
     STR_PLAYING = "Playing ";
     STR_FOR = " for ";
-    STR_WATCHING = "Watching time ";
+    STR_WATCHING = "Watch time ";
     STR_SINCE = "Since ";
     STR_AGAME = "A Game";
     STR_PLACEHOLDER_SEARCH = "Type your search...";
     STR_PLACEHOLDER_OAUTH = "Type your authentication key...";
-    STR_PLACEHOLDER_USER = "Type your user name...";
+    STR_PLACEHOLDER_USER = "Type your username...";
     STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
     STR_CHANNELS = "Channels";
     STR_CHANNEL = "Channel";
-    STR_GOBACK_START = "Back to previously screen: Back key";
+    STR_GOBACK_START = "Back to previous screen: Back key";
     STR_TWICE = " twice";
     STR_IS_OFFLINE = " has ended";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
-    STR_REFRESH_PROBLEM = "Connection failed, unable to load content hit refresh to try again";
+    STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
     STR_NO = "No";
     STR_FOR_THIS = " for this ";
     STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
-    STR_PAST_BROA = " Past Broadcast";
-    STR_PAST_HIGHL = " Highlight";
+    STR_PAST_BROA = " Past Broadcasts";
+    STR_PAST_HIGHL = " Highlights";
     STR_CLIPS = " Clips";
     STR_CONTENT = " Content";
     STR_STREAM_ON = "Streamed ";
@@ -50,7 +50,7 @@ function en_USLang() {
     STR_VIEWS = " Views";
     STR_VIEWER = " Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
-    STR_EXIT_MESSAGE = "Do you wanna to exit SmartTV Twitch?";
+    STR_EXIT_MESSAGE = "Do you want to exit SmartTV Twitch?";
     STR_EXIT = "Exit";
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
@@ -66,7 +66,7 @@ function en_USLang() {
     STR_USER_HOSTING = " hosting ";
     STR_USER_SET = " already set";
     STR_USER_MAKE_ONE = "Make First";
-    STR_USER_NUMBER_ONE = "First user can fallow (when providing a key) and see live channels feed outside of the user screen<br>";
+    STR_USER_NUMBER_ONE = "First user can follow (when providing a key) and see live channels feed outside of the user screen<br>";
     STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
     STR_CLIP_DAY = " (24h)";
     STR_CLIP_WEEK = " (7d)";
@@ -89,18 +89,18 @@ function en_USLang() {
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
-    STR_CONTROLS_MAIN_1 = "This are the none players related controls, the player can show it's own controls.";
+    STR_CONTROLS_MAIN_1 = "This are the non player related controls, the player can show it's own controls.";
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key for 5 seconds";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right";
-    STR_CONTROLS_MAIN_7 = "Some screen will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
+    STR_CONTROLS_MAIN_7 = "Some screens will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search";
     STR_CONTROLS_MAIN_11 = "After writing the search text press key Enter on the virtual keyboard then choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
-    STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client develop by a individual on his free time, for TV\'s that don't have access to a good official application, released for free to any one that wanna to use it.";
-    STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in a browser only!";
+    STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
+    STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
     STR_ABOUT_INFO_3 = "Developer information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
     STR_ABOUT_INFO_5 = "github.com/fgl27/SmartTwitchTV";
@@ -120,7 +120,7 @@ function en_USLang() {
 
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
-    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol (not available to Live streams)";
+    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol (not available for Live streams)";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
@@ -128,22 +128,22 @@ function en_USLang() {
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left";
     STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
-    STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Change video quality to the same will reset and sync it";
+    STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Changing video quality to the same will reset and sync it";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Force disable the chat";
-    STR_F_DISABLE_CHAT_SUMARRY = "with this the chat will not load content, this is useful on a stream with too many viewers were the chat can lag the app.";
+    STR_F_DISABLE_CHAT_SUMARRY = "with this the chat won\'t load the content, this is useful for streams with too many viewers where the chat can lag the app.";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
-    STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, fallow/unfallow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> In doubt read this link  <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> add key for';
+    STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> In doubt read this link  <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> add key for';
     STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
     STR_OAUTH_EXPLAIN2 = "Access the site link_link (using a computer or a smart phone)";
-    STR_OAUTH_EXPLAIN3 = "Click on the \"Authorize\" button it will take you to main Twitch.TV authentication site";
-    STR_OAUTH_EXPLAIN4 = "Login to Twitch.TV using the user name you are trying to add a key for";
+    STR_OAUTH_EXPLAIN3 = "Click the \"Authorize\" button which will take you to main Twitch.TV authentication site";
+    STR_OAUTH_EXPLAIN4 = "Login to Twitch.TV using the username you are trying to add a key for";
     STR_OAUTH_EXPLAIN5 = "Click on Authorize button of Twitch.TV site if you agree with the requested permissions";
-    STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, the key only has lower case letters and nubers.";
+    STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, the key only has lowercase letters and nubers.";
     STR_USER_CODE = " Add Authentication key";
     STR_USER_CODE_OK = "Key added OK";
-    STR_KEY_BAD = "Key test fail, it\'s needed to add new one";
+    STR_KEY_BAD = "Key test failed, new one needs to be added";
     STR_KEY_OK = "Key test return OK";
     STR_OAUTH_WRONG = "You try to add a key for user ";
     STR_OAUTH_WRONG2 = " but this key is for user ";
@@ -151,16 +151,16 @@ function en_USLang() {
     STR_FALLOW = " Follow";
     STR_IS_SUB_NOOAUTH = " And you have not set a authentication key the app can\'t check yours sub status.";
     STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
-    STR_IS_SUB_IS_SUB = " You are a sub of this channel but the app fail to authenticate contact the developer email in about";
+    STR_IS_SUB_IS_SUB = " You are a sub of this channel but the app failed to authenticate contact the developer\'s email in About";
     STR_OAUTH_FAIL = "Fail authentication check with the provider key, please check and try again";
-    STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user ";
+    STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
     STR_NOKEY = "No user";
-    STR_NOKEY_WARN = "Set a user and a authentication key to be able to fallow/unfollow";
+    STR_NOKEY_WARN = "Set user and an authentication key to be able to follow/unfollow";
     STR_NOKUSER_WARN = "Set a user first";
     STR_RESET = "Restart the";
     STR_CLIP = " Clip";
     STR_CHANNEL_CONT = "Channel content";
-    STR_NET_DOWN = "Network is disconnect, the application can't work without INTERNET";
+    STR_NET_DOWN = "Network is disconnected, the application can\'t work without INTERNET";
     STR_NET_UP = "Network connection reestablished";
     STR_FALLOWERS = " Followers";
     STR_CANT_FALLOW = ", Can\'t fallow or unfallow ";
@@ -184,39 +184,39 @@ function en_USLang() {
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
     STR_NO_BROADCAST = "No Broadcast";
-    STR_NO_BROADCAST_WARNING = "There is no Past Broadcast for this clip";
+    STR_NO_BROADCAST_WARNING = "There are no Past Broadcasts for this clip";
     STR_NO_CHAT = "And because of that no chat";
     STR_IS_NOW = " is now";
     STR_OPEN_HOST = "Open the Hosting";
     STR_SETTINGS_PLAYER = "Player related";
     STR_SETTINGS_BUFFER_SIZE = "Buffer size:";
-    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "A lower value here will make the player to start playing sooner, but it may cause re-buffer with will cause the player to pause to buffer.";
+    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "A lower value here will make the player start playing sooner, but it may cause re-buffering which will cause the player to pause to buffer.";
     STR_SETTINGS_BUFFER_LIVE = "Live streams buffer";
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips buffer";
     STR_SETTINGS_GENERAL = "General related";
     STR_SETTINGS_LANG = "Language";
     STR_LOADING_CHAT = "Chat: Connecting to chat server..." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
-    STR_VOD_HISTORY = "Play from the start or from where you stop watching last time?";
+    STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
     STR_CHAT_END = "Chat: The Chat has ended!";
     STR_TIME = ": Most recent";
     STR_VIWES = ": Most views";
-    STR_NOKEY_VIDEO_WARN = "Set a authentication key to be able to see fallowed videos";
+    STR_NOKEY_VIDEO_WARN = "Set an authentication key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
     STR_ENABLE = "Enable";
     STR_DISABLE = "Disable";
-    STR_RESTORE_PLAYBACK_WARN = "The app was closed willing playing, restoring playback";
+    STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app may be closed by the system to free memory. In this case the app saves what it was playing and restores the playback when reopened";
+    STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app might get closed by the system for more memory. In this case the app saves what it was playing and restores the playback when reopened";
     STR_CHAT_FONT = "Chat font size";
-    STR_CHAT_FONT_SUMARRY = "Change the chat lines font size, applies to text and emotes";
-    STR_VIDEOS_ANIMATION = "Videos animated thumbnails";
+    STR_CHAT_FONT_SUMARRY = "Change the chat\'s line font size (applies to text and emotes)";
+    STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key twice";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
-    STR_FORBIDDEN = "Forbidden content, this Live must be for Prime only subscribers or lock to Twitch official app only";
+    STR_FORBIDDEN = "Forbidden content, this Live content must be for Prime only subscribers or restrained to the official Twitch app";
     STR_JUMPING_STEP = "Jump step ";
     STR_SECONDS = " seconds";
     STR_MINUTES = " minutes";
@@ -225,10 +225,10 @@ function en_USLang() {
     STR_CONTENT_LANG = "Content language";
     STR_CONTENT_LANG_SUMARRY = "Press enter to change";
     STR_LANG_ALL = "All";
-    STR_NO_GAME = "No game for this";
-    STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during a buffering";
-    STR_CHAT_DISABLE = "Chat is disabled, enable in side panel settings";
-    STR_CLIP_FAIL = "This clip/video fail to load can't replay";
+    STR_NO_GAME = "No game from this";
+    STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
+    STR_CHAT_DISABLE = "Chat is disabled, enable it in side panel settings";
+    STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
     STR_CHAT_BRIGHTNESS = "Chat background brightness ";
     STR_PLAY_NEXT = "Play Next";
     STR_PLAY_NEXT_IN = "Playing next in ";
@@ -238,6 +238,6 @@ function en_USLang() {
     STR_UP = " Press up";
     STR_LIVE_FEED = "Live Feed";
     STR_END_DIALOG_SETTINGS = "End dialog";
-    STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that will take for the stream/video/clip end dialog take action";
+    STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
 }
