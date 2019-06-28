@@ -89,15 +89,13 @@ function en_USLang() {
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
-    STR_CONTROLS_MAIN_1 = "This are the non player related controls, the player can show it's own controls.";
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
-    STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key for 5 seconds";
+    STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it closes";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right";
-    STR_CONTROLS_MAIN_7 = "Some screens will change its internal content (channel past broadcast or clips for example) instead of changing to another screen";
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search";
-    STR_CONTROLS_MAIN_11 = "After writing the search text press key Enter on the virtual keyboard then choose a search option";
+    STR_CONTROLS_MAIN_11 = "After writing the search text press the Enter key on the virtual keyboard then choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
@@ -128,7 +126,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left";
     STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
-    STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Changing video quality to the same will reset and sync it";
+    STR_CONTROLS_PLAY_11 = "Force refresh the Chat (in case it freezes or doesn\'t load): Changing video quality to the same will reset and sync the chat";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Force disable the chat";
