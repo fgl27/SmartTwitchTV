@@ -147,13 +147,13 @@ function Sidepannel_ShowFeed() {
 }
 
 function Sidepannel_Hide() {
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     Sidepannel_RemoveFocusEtc();
     Sidepannel_Pos = 0;
     Sidepannel_AddFocusEtc();
+    document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
+    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
 }
 
 function Sidepannel_Scroll() {
@@ -215,12 +215,15 @@ function Sidepannel_handleKeyDown(event) {
             }
             break;
         case KEY_ENTER:
+            var doc = document.getElementById("side_panel");
+            doc.style.transition = 'none';
             Sidepannel_Hide();
             Main_values.Play_isHost = false;
             Play_UserLiveFeedPressed = true;
             Sidepannel_Isscreen = false;
             Main_ready(function() {
                 Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
+                doc.style.transition = '';
             });
             break;
         default:
