@@ -44,10 +44,8 @@ function UserLiveFeed_StartLoad() {
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
 
-        Main_ready(function() {
-            UserLiveFeed_loadDataPrepare();
-            UserLiveFeed_CheckToken();
-        });
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_CheckToken();
     }
 }
 
@@ -153,7 +151,7 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
             } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                 //Token has change or because is new or because it is invalid because user delete in twitch settings
                 // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_CheckToken, UserLiveFeed_CheckToken);
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
             } else {
                 UserLiveFeed_loadDataErrorLive();
             }
@@ -161,6 +159,11 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
     };
 
     xmlHttp.send(null);
+}
+
+function UserLiveFeed_loadDataRefreshTokenError() {
+    if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) UserLiveFeed_CheckToken();
+    else UserLiveFeed_loadDataErrorLive();
 }
 
 function UserLiveFeed_loadDataErrorLive() {

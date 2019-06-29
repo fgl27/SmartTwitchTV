@@ -154,10 +154,10 @@ function UserLive_loadChannelUserLive() {
     }
     theUrl += 'limit=' + Main_ItemsLimitVideo + '&offset=' + offset + '&stream_type=all';
 
-    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccess, UserLive_loadDataErrorLive, UserLive_CheckToken);
+    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccess, UserLive_loadDataErrorLive, UserLive_CheckToken, UserLive_loadDataTokenError);
 }
 
-function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, calbacktoken) {
+function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, calbacktoken, calbacktokenerror) {
     var xmlHttp;
 
     if (Main_Android && !UserLive_itemsCount) {
@@ -175,7 +175,7 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
         } else if (UserLive_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-            AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktoken);
+            AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktokenerror);
         } else {
             calbackError();
         }
@@ -200,7 +200,7 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
                 } else if (UserLive_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                     //Token has change or because is new or because it is invalid because user delete in twitch settings
                     // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                    AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktoken);
+                    AddCode_refreshTokens(Main_values.Users_Position, 0, calbacktoken, calbacktokenerror);
                 } else {
                     calbackError();
                 }
@@ -209,6 +209,11 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
 
         xmlHttp.send(null);
     }
+}
+
+function UserLive_loadDataTokenError() {
+    if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) UserLive_CheckToken();
+    else UserLive_loadDataErrorLive();
 }
 
 function UserLive_loadDataErrorLive() {
@@ -324,14 +329,17 @@ function UserLive_loadChannelsReplace() {
 
     var theUrl = 'https://api.twitch.tv/kraken/streams/';
 
+    UserLive_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+
     if (UserLive_token) {
         theUrl += 'followed?';
     } else {
+        UserLive_token = null;
         theUrl += '?channel=' + encodeURIComponent(UserLive_followerChannels) + '&';
     }
     theUrl += 'followed?limit=limit=' + Main_ItemsLimitReplace + '&offset=' + offset + '&stream_type=all';
 
-    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccessReplace, UserLive_loadDataErrorReplace, UserLive_loadChannelsReplace);
+    UserLive_loadChannelUserLiveGet(theUrl, UserLive_loadDataSuccessReplace, UserLive_loadDataErrorReplace, UserLive_loadChannelsReplace, UserLive_loadDataErrorReplace);
 }
 
 function UserLive_loadDataErrorReplace() {
