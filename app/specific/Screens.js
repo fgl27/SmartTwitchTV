@@ -387,9 +387,7 @@ function Screens_addFocus(forceScroll) {
         Screens_loadDataPrepare();
         Screens_loadDataRequest();
     } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
-        Main_ready(function() {
-            inUseObj.loadDataSuccess();
-        });
+        inUseObj.loadDataSuccess();
     }
 
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
