@@ -115,7 +115,7 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.26';
+var Main_stringVersion_Min = '.27';
 var Main_minversion = '070319';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_AndroidVersion = '';
@@ -169,9 +169,12 @@ function Main_loadTranslations(language) {
         }
 
         if (Main_Android) {
+            //TODO remove the try some day after the app update has be live for some time
             try {
                 Main_vp9supported = Android.misCodecSupported();
-            } catch (e) {}
+            } catch (e) {
+                Main_vp9supported = false;
+            }
         }
 
         Settings_SetDefautls();
