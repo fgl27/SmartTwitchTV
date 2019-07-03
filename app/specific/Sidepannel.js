@@ -16,7 +16,7 @@ function Sidepannel_RemoveFocusEtc() {
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
-    if (Sidepannel_isShowing()) Sidepannel_UpdateThumb();
+    Sidepannel_UpdateThumb();
 }
 
 function Sidepannel_isShowing() {
@@ -42,7 +42,7 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
     Main_innerHTML('feed_thum_views', info[6]);
 
-    Main_ShowElement('side_panel_feed_thumb');
+    if (Main_isElementShowing('side_panel_feed_holder')) Main_ShowElement('side_panel_feed_thumb');
 }
 
 function Sidepannel_PreloadImgs() {
