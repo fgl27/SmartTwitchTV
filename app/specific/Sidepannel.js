@@ -42,7 +42,7 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
     Main_innerHTML('feed_thum_views', info[6]);
 
-    if (Main_isElementShowing('side_panel_feed_holder')) Main_ShowElement('side_panel_feed_thumb');
+    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
 }
 
 function Sidepannel_PreloadImgs() {
