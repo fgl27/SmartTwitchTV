@@ -124,6 +124,7 @@ var Main_Android = 0;
 var Main_randomimg = '?' + Math.random();
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
+var Main_vp9supported = false;
 
 //Variable initialization end
 
@@ -165,6 +166,12 @@ function Main_loadTranslations(language) {
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
             console.log('Main_isBrowser: ' + Main_isBrowser);
+        }
+
+        if (Main_Android) {
+            try {
+                Main_vp9supported = Android.misCodecSupported();
+            } catch (e) {}
         }
 
         Settings_SetDefautls();

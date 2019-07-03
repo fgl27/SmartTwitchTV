@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.MediaCodecInfo;
+import android.media.MediaCodecList;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -388,9 +390,9 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
+        mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -518,6 +520,12 @@ public class PlayerActivity extends Activity {
         public void clearCookie() {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean misCodecSupported() {
+            return isCodecSupported("vp9");
         }
     }
 
@@ -683,5 +691,15 @@ public class PlayerActivity extends Activity {
             Log.w(TAG, "IOException ", e);
             return null;
         }
+    }
+
+    public boolean isCodecSupported(String name) {
+        MediaCodecList codecList = new MediaCodecList(MediaCodecList.REGULAR_CODECS);
+        MediaCodecInfo[] codecInfos = codecList.getCodecInfos();
+        for(int i=0; i< codecInfos.length; i++)
+            if (codecInfos[i].getName().contains(name) && !codecInfos[i].getName().contains("google"))
+                return true;
+
+        return false;
     }
 }
