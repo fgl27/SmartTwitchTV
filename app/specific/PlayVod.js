@@ -287,7 +287,7 @@ function PlayVod_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-            '&allow_source=true&allow_audi_only=true&allow_spectre=false';
+            '&allow_audi_only=true&reassignments_supported=true&allow_source=true';
     }
 
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);

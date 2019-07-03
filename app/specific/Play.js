@@ -393,7 +393,7 @@ function Play_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&allow_source=true&allow_audi_only=true&fast_bread=true&allow_spectre=false';
+            '&allow_audi_only=true&reassignments_supported=true&allow_source=true&fast_bread=true';
     }
     var xmlHttp;
     if (Main_Android) {
