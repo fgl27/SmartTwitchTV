@@ -118,7 +118,7 @@ function en_USLang() {
 
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
-    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol (not available for Live streams)";
+    STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
