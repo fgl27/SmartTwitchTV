@@ -60,7 +60,7 @@ function PlayClip_Start() {
         Chat_Init();
     } else Chat_NoVod();
     Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
-    Main_ShowElement('progress_pause_holder');
+    Main_ShowElement('progress_bar_div');
     PlayClip_SetOpenVod();
     Main_ShowElement('scene_channel_panel_bottom');
 

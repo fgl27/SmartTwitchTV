@@ -63,6 +63,7 @@ function PlayVod_Start() {
     Chat_title = STR_PAST_BROA + '.';
     Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
     Main_HideElement('progress_pause_holder');
+    Main_ShowElement('progress_bar_div');
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
