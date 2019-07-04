@@ -425,7 +425,8 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
-        Main_values.vodOffset = ChannelVod_vodOffset;
+        //TODO remove me the day they fix the time on they side
+        Main_values.vodOffset = ChannelVod_vodOffset + (ChannelVod_vodOffset > 85 ? -85 : 0);
         PlayClip_PreshutdownStream();
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Play_IconsResetFocus();
