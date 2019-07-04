@@ -196,6 +196,9 @@ function PlayVod_updateVodInfoError() {
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
 
+    //TODO add a warning about muted segments
+    //if (response.muted_segments) console.log(response.muted_segments);
+
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
         ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
