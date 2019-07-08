@@ -886,6 +886,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannel_id = ChannelClip_playUrl[6];
     Main_values.ChannelVod_vodId = ChannelClip_playUrl[7];
     ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
+
+    //TODO remove me the day they fix the time on they side
+    ChannelVod_vodOffset = ChannelVod_vodOffset + (ChannelVod_vodOffset > 85 ? -85 : 0);
     ChannelClip_title = ChannelClip_playUrl[9];
     ChannelClip_language = ChannelClip_playUrl[10];
     ChannelClip_game = ChannelClip_playUrl[11];
