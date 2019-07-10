@@ -555,38 +555,68 @@ function Main_SwitchScreen(removekey) {
     });
 }
 
+var Main_Switchobj = {
+    // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
+    //    [Main_Users]: Users_init
+};
+
+Main_Switchobj[Main_Users] = Users_init;
+Main_Switchobj[Main_addUser] = AddUser_init;
+Main_Switchobj[Main_Search] = Search_init;
+Main_Switchobj[Main_SearchGames] = SearchGames_init;
+Main_Switchobj[Main_SearchLive] = SearchLive_init;
+Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
+Main_Switchobj[Main_ChannelVod] = ChannelVod_init;
+Main_Switchobj[Main_UserLive] = UserLive_init;
+Main_Switchobj[Main_UserHost] = UserHost_init;
+Main_Switchobj[Main_UserChannels] = UserChannels_init;
+Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
+Main_Switchobj[Main_UserVod] = UserVod_init;
+Main_Switchobj[Main_Live] = function() {
+    inUseObj = Live;
+    Screens_init();
+};
+Main_Switchobj[Main_Featured] = function() {
+    inUseObj = Featured;
+    Screens_init();
+};
+Main_Switchobj[Main_AGameClip] = function() {
+    inUseObj = AGameClip;
+    Screens_init();
+};
+Main_Switchobj[Main_AGameVod] = function() {
+    inUseObj = AGameVod;
+    Screens_init();
+};
+Main_Switchobj[Main_Clip] = function() {
+    inUseObj = Clip;
+    Screens_init();
+};
+Main_Switchobj[Main_Vod] = function() {
+    inUseObj = Vod;
+    Screens_init();
+};
+Main_Switchobj[Main_ChannelClip] = function() {
+    inUseObj = ChannelClip;
+    Screens_init();
+};
+Main_Switchobj[Main_aGame] = function() {
+    inUseObj = AGame;
+    Screens_init();
+};
+Main_Switchobj[Main_games] = function() {
+    inUseObj = Game;
+    Screens_init();
+};
+
 function Main_SwitchScreenAction(removekey) {
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     Main_CounterDialogRst();
-    if (Main_values.Main_Go === Main_addUser) AddUser_init();
-    else if (Main_values.Main_Go === Main_Search) Search_init();
-    else if (Main_values.Main_Go === Main_SearchGames) SearchGames_init();
-    else if (Main_values.Main_Go === Main_SearchLive) SearchLive_init();
-    else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_init();
-    else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_init();
-    else if (Main_values.Main_Go === Main_Users) Users_init();
-    else if (Main_values.Main_Go === Main_UserLive) UserLive_init();
-    else if (Main_values.Main_Go === Main_UserHost) UserHost_init();
-    else if (Main_values.Main_Go === Main_UserChannels) UserChannels_init();
-    else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_init();
-    else if (Main_values.Main_Go === Main_UserVod) UserVod_init();
-    else {
-        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
-        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
-        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
-        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
-        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
-        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
-        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
-        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
-        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
-        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
 
-        Screens_init();
-    }
+    Main_Switchobj[Main_values.Main_Go]();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
     if (removekey) Main_RemoveKeys();
@@ -600,21 +630,34 @@ function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
 }
 
-function Main_ExitCurrent(ExitCurrent) {
-    if (ExitCurrent === Main_addUser) AddUser_exit();
-    else if (ExitCurrent === Main_Search) Search_exit();
-    else if (ExitCurrent === Main_SearchGames) SearchGames_exit();
-    else if (ExitCurrent === Main_SearchLive) SearchLive_exit();
-    else if (ExitCurrent === Main_ChannelContent) ChannelContent_exit();
-    else if (ExitCurrent === Main_ChannelVod) ChannelVod_exit();
-    else if (ExitCurrent === Main_Users) Users_exit();
-    else if (ExitCurrent === Main_UserLive) UserLive_exit();
-    else if (ExitCurrent === Main_UserHost) UserHost_exit();
-    else if (ExitCurrent === Main_UserChannels) UserChannels_exit();
-    else if (ExitCurrent === Main_SearchChannels) SearchChannels_exit();
-    else if (ExitCurrent === Main_UserVod) UserVod_exit();
-    else Screens_exit();
+var Main_ExitCurrentobj = {
+    // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
+    //    [Main_Users]: Users_exit
+};
+Main_ExitCurrentobj[Main_Users] = Users_exit;
+Main_ExitCurrentobj[Main_addUser] = AddUser_exit;
+Main_ExitCurrentobj[Main_Search] = Search_exit;
+Main_ExitCurrentobj[Main_SearchGames] = SearchGames_exit;
+Main_ExitCurrentobj[Main_SearchLive] = SearchLive_exit;
+Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
+Main_ExitCurrentobj[Main_ChannelVod] = ChannelVod_exit;
+Main_ExitCurrentobj[Main_UserLive] = UserLive_exit;
+Main_ExitCurrentobj[Main_UserHost] = UserHost_exit;
+Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
+Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
+Main_ExitCurrentobj[Main_UserVod] = UserVod_exit;
+Main_ExitCurrentobj[Main_Live] = Screens_exit;
+Main_ExitCurrentobj[Main_Featured] = Screens_exit;
+Main_ExitCurrentobj[Main_AGameClip] = Screens_exit;
+Main_ExitCurrentobj[Main_AGameVod] = Screens_exit;
+Main_ExitCurrentobj[Main_Clip] = Screens_exit;
+Main_ExitCurrentobj[Main_Vod] = Screens_exit;
+Main_ExitCurrentobj[Main_ChannelClip] = Screens_exit;
+Main_ExitCurrentobj[Main_aGame] = Screens_exit;
+Main_ExitCurrentobj[Main_games] = Screens_exit;
 
+function Main_ExitCurrent(ExitCurrent) {
+    Main_ExitCurrentobj[ExitCurrent]();
     if (Main_isElementShowing('settings_scroll')) Settings_exit();
 }
 
