@@ -127,20 +127,6 @@ else
 		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";
 	fi;
 
-	GRADLEVERSION=$(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)
-	LASTGRADLEVERSION=$(grep 'current version' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
-	LASTRCGRADLEVERSION=$(grep 'release-candidat' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
-	NORC=1;
-	contains "$LASTRCGRADLEVERSION" "null" && NORC=0;
-	if [ $NORC == 1 ]; then
-		if [ ! "$GRADLEVERSION" == "$LASTRCGRADLEVERSION" ]; then
-			echo -e "\n${CYAN}Gradlew RC need update:\n${NC}";
-			echo -e "\n${RED}current $GRADLEVERSION latest RC $LASTRCGRADLEVERSION\n${NC}";
-		fi;
-	elif [ ! "$GRADLEVERSION" == "$LASTGRADLEVERSION" ]; then
-		echo -e "\n${CYAN}Gradlew need update:\n${NC}";
-		echo -e "\n${RED}Current $GRADLEVERSION latest $LASTGRADLEVERSION\n${NC}";
-	fi;
 	if [ "$1" == 1 ]; then
 		echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
 	else
