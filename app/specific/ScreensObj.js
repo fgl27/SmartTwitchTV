@@ -284,11 +284,10 @@ function ScreensObj_InitChannelVod() {
         },
         concatenate: function(responseText) {
             if (this.data) {
-
                 var tempObj = JSON.parse(responseText);
                 if (tempObj.videos.length < Main_ItemsLimitMax) this.dataEnded = true;
 
-                this.data = this.data.concat(tempObj.vods);
+                this.data = this.data.concat(tempObj.videos);
                 this.offset = this.data.length;
 
                 this.loadingData = false;
