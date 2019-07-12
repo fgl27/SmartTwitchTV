@@ -230,9 +230,6 @@ function Main_initWindows() {
         Main_SetStringsSecondary();
 
         ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
-        UserVod_highlight = Main_getItemBool('UserVod_highlight', false);
-
-        UserVod_TypeNumber = Main_getItemInt('UserVod_TypeNumber', 1);
 
         PlayVod_RestoreVodIds();
 
@@ -571,7 +568,10 @@ Main_Switchobj[Main_UserLive] = UserLive_init;
 Main_Switchobj[Main_UserHost] = UserHost_init;
 Main_Switchobj[Main_UserChannels] = UserChannels_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
-Main_Switchobj[Main_UserVod] = UserVod_init;
+Main_Switchobj[Main_UserVod] = function() {
+    inUseObj = UserVod;
+    Screens_init();
+};
 Main_Switchobj[Main_Live] = function() {
     inUseObj = Live;
     Screens_init();
@@ -645,7 +645,7 @@ Main_ExitCurrentobj[Main_UserLive] = UserLive_exit;
 Main_ExitCurrentobj[Main_UserHost] = UserHost_exit;
 Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
-Main_ExitCurrentobj[Main_UserVod] = UserVod_exit;
+Main_ExitCurrentobj[Main_UserVod] = Screens_exit;
 Main_ExitCurrentobj[Main_Live] = Screens_exit;
 Main_ExitCurrentobj[Main_Featured] = Screens_exit;
 Main_ExitCurrentobj[Main_AGameClip] = Screens_exit;
@@ -1158,8 +1158,7 @@ function Main_CenterLables(event) {
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserVod) {
-                    Main_values.Main_Go = Main_Users;
-                    UserVod_exit();
+                    Screens_BasicExit(Main_Users);
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserChannels) {
@@ -1285,7 +1284,6 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_ChannelVod) document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
-    else if (Main_values.Main_Go === Main_UserVod) document.body.removeEventListener("keydown", UserVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
@@ -1300,6 +1298,7 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
         else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+        else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -1322,7 +1321,6 @@ function Main_ReloadScreen() {
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
     else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
     else if (Main_values.Main_Go === Main_UserHost) UserHost_StartLoad();
-    else if (Main_values.Main_Go === Main_UserVod) UserVod_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
     else if (Main_values.Main_Go === Main_usergames) {
         inUseObj = UserGames;
@@ -1337,6 +1335,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
         else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+        else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
 
         Screens_StartLoad();
     }
@@ -1406,6 +1405,8 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
 
     if (xmlHttp.status === 200) {
         callbackSucess(xmlHttp.responseText);
+    } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+        AddCode_refreshTokens(Main_values.Users_Position, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
     } else {
         calbackError();
     }
@@ -1429,7 +1430,8 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 callbackSucess(xmlHttp.responseText);
-                return;
+            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
             } else {
                 calbackError();
             }
