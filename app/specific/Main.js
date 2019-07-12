@@ -229,8 +229,6 @@ function Main_initWindows() {
 
         Main_SetStringsSecondary();
 
-        ChannelVod_highlight = Main_getItemBool('ChannelVod_highlight', false);
-
         PlayVod_RestoreVodIds();
 
         Main_SearchInput = document.getElementById("search_input");
@@ -563,11 +561,15 @@ Main_Switchobj[Main_Search] = Search_init;
 Main_Switchobj[Main_SearchGames] = SearchGames_init;
 Main_Switchobj[Main_SearchLive] = SearchLive_init;
 Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
-Main_Switchobj[Main_ChannelVod] = ChannelVod_init;
 Main_Switchobj[Main_UserLive] = UserLive_init;
 Main_Switchobj[Main_UserHost] = UserHost_init;
 Main_Switchobj[Main_UserChannels] = UserChannels_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
+
+Main_Switchobj[Main_ChannelVod] = function() {
+    inUseObj = ChannelVod;
+    Screens_init();
+};
 Main_Switchobj[Main_UserVod] = function() {
     inUseObj = UserVod;
     Screens_init();
@@ -640,11 +642,12 @@ Main_ExitCurrentobj[Main_Search] = Search_exit;
 Main_ExitCurrentobj[Main_SearchGames] = SearchGames_exit;
 Main_ExitCurrentobj[Main_SearchLive] = SearchLive_exit;
 Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
-Main_ExitCurrentobj[Main_ChannelVod] = ChannelVod_exit;
 Main_ExitCurrentobj[Main_UserLive] = UserLive_exit;
 Main_ExitCurrentobj[Main_UserHost] = UserHost_exit;
 Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
+
+Main_ExitCurrentobj[Main_ChannelVod] = Screens_exit;
 Main_ExitCurrentobj[Main_UserVod] = Screens_exit;
 Main_ExitCurrentobj[Main_Live] = Screens_exit;
 Main_ExitCurrentobj[Main_Featured] = Screens_exit;
@@ -1174,8 +1177,7 @@ function Main_CenterLables(event) {
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_ChannelVod) {
-                    Main_values.Main_Go = Main_ChannelContent;
-                    ChannelVod_exit();
+                    Screens_BasicExit(Main_ChannelContent);
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_SearchLive) {
@@ -1281,7 +1283,6 @@ function Main_RemoveKeys() {
     if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchGames) document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
-    else if (Main_values.Main_Go === Main_ChannelVod) document.body.removeEventListener("keydown", ChannelVod_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
@@ -1299,6 +1300,7 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
         else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
+        else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -1315,7 +1317,6 @@ function Main_ReloadScreen() {
 
     if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
     else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
-    else if (Main_values.Main_Go === Main_ChannelVod) ChannelVod_StartLoad();
     else if (Main_values.Main_Go === Main_SearchLive) SearchLive_StartLoad();
     else if (Main_values.Main_Go === Main_SearchGames) SearchGames_StartLoad();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
@@ -1336,6 +1337,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
         else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
+        else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
 
         Screens_StartLoad();
     }

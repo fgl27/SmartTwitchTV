@@ -374,8 +374,12 @@ function ChannelContent_keyEnter() {
             Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
             Main_ready(Main_openStream);
-        } else if (ChannelContent_cursorX === (1 - value)) Main_ready(ChannelVod_init);
-        else if (ChannelContent_cursorX === (2 - value)) {
+        } else if (ChannelContent_cursorX === (1 - value)) {
+            Main_ready(function() {
+                inUseObj = ChannelVod;
+                Screens_init();
+            });
+        } else if (ChannelContent_cursorX === (2 - value)) {
             inUseObj = ChannelClip;
             Main_ready(Screens_init);
         }

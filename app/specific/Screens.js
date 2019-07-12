@@ -27,6 +27,7 @@ function Screens_InitSecondaryScreens() {
     ScreensObj_InitVod();
     ScreensObj_InitAGameVod();
     ScreensObj_InitUserVod();
+    ScreensObj_InitChannelVod();
 }
 
 //TODO cleanup not used when finished migrate all
