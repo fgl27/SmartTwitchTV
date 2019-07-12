@@ -136,6 +136,51 @@ var Base_Vod_obj = {
         };
 
         Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+
+            var tempObj = JSON.parse(responseText);
+
+            this.MaxOffset = tempObj._total;
+            this.data = this.data.concat(tempObj.vods);
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            this.loadingData = false;
+        } else {
+            this.data = JSON.parse(responseText);
+
+            this.MaxOffset = this.data._total;
+            this.data = this.data.vods;
+
+            this.offset = this.data.length;
+            if (this.offset > this.MaxOffset) this.dataEnded = true;
+
+            this.loadDataSuccess();
+            this.loadingData = false;
+        }
+    },
+    addCell: function(cell) {
+        if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
+
+            this.itemsCount++;
+            this.idObject[cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellVod(
+                this.row_id,
+                this.coloumn_id,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
+                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
+                ]));
+
+            this.coloumn_id++;
+        }
     }
 };
 
@@ -168,52 +213,7 @@ function ScreensObj_InitVod() {
                 Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
 
             Main_setItem('vod_periodPos', this.periodPos);
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = tempObj._total;
-                this.data = this.data.concat(tempObj.vods);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.vods;
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
-        },
-        addCell: function(cell) {
-            if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
-
-                this.itemsCount++;
-                this.idObject[cell._id] = 1;
-
-                this.row.appendChild(Screens_createCellVod(
-                    this.row_id,
-                    this.coloumn_id,
-                    [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                        twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
-                        Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
-                        STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
-                    ]));
-
-                this.coloumn_id++;
-            }
-        },
+        }
     }, Base_obj);
 
     Vod = Screens_assign(Vod, Base_Vod_obj);
@@ -241,13 +241,13 @@ function ScreensObj_InitAGameVod() {
             if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
             if (this.OldgameSelected !== Main_values.Main_gameSelected) this.status = false;
+            this.OldgameSelected = Main_values.Main_gameSelected;
 
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
             this.SetPeriod();
         },
         label_exit: function() {
-            this.OldgameSelected = Main_values.Main_gameSelected;
             Main_textContent('top_bar_game', STR_AGAME);
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
         },
@@ -256,52 +256,7 @@ function ScreensObj_InitAGameVod() {
                 Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
 
             Main_setItem('AGameVod_periodPos', this.periodPos);
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = tempObj._total;
-                this.data = this.data.concat(tempObj.vods);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.vods;
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
-        },
-        addCell: function(cell) {
-            if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
-
-                this.itemsCount++;
-                this.idObject[cell._id] = 1;
-
-                this.row.appendChild(Screens_createCellVod(
-                    this.row_id,
-                    this.coloumn_id,
-                    [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                        twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
-                        Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
-                        STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
-                    ]));
-
-                this.coloumn_id++;
-            }
-        },
+        }
     }, Base_obj);
 
     AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
