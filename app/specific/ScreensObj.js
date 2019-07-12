@@ -1,10 +1,18 @@
 var Main_ItemsLimitMax = 100;
+
 var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
 var ChannelClip_playUrl = '';
 var ChannelClip_createdAt = '';
 var ChannelClip_language = '';
+
+var ChannelVod_vodOffset = 0;
+var ChannelVod_DurationSeconds = 0;
+var ChannelVod_language = '';
+var ChannelVod_createdAt = '';
+var ChannelVod_views = '';
+var ChannelVod_Duration = '';
 
 var Vod_DoAnimateThumb = 1;
 
@@ -22,6 +30,7 @@ var AGame;
 var Vod;
 var AGameVod;
 var UserVod;
+var ChannelVod;
 
 var Base_obj = {
     posX: 0,
@@ -98,6 +107,7 @@ var Base_Vod_obj = {
     },
     AnimateThumbId: null,
     HasAnimateThumb: true,
+    Vod_newImg: new Image(),
     AnimateThumb: function(screen) {
         window.clearInterval(this.AnimateThumbId);
         if (!Vod_DoAnimateThumb) return;
@@ -105,7 +115,7 @@ var Base_Vod_obj = {
 
         // Only load the animation if it can be loaded
         // This prevent starting animating before it has loaded or animated a empty image
-        Vod_newImg.onload = function() {
+        this.Vod_newImg.onload = function() {
             this.onload = null;
             Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
             // background-size: 612px from  div.offsetWidth
@@ -118,7 +128,7 @@ var Base_Vod_obj = {
             }, 650);
         };
 
-        Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+        this.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
     },
     addCell: function(cell) {
         if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
@@ -218,6 +228,86 @@ function ScreensObj_InitVod() {
 
     Vod = Screens_assign(Vod, Base_Vod_obj);
     Vod.set_ThumbSize();
+}
+
+function ScreensObj_InitChannelVod() {
+    ChannelVod = Screens_assign({
+        periodMaxPos: 4,
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('ChannelVod'),
+        table: 'stream_table_channel_vod',
+        screen: Main_ChannelVod,
+        highlightSTR: 'ChannelVod_highlight',
+        highlight: Main_getItemBool('ChannelVod_highlight', false),
+        periodPos: Main_getItemInt('ChannelVod_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/channels/',
+        set_url: function() {
+            this.url = this.base_url +
+                encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
+                '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + this.offset;
+        },
+        SwitchesIcons: ['movie-play'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        lastselectedChannel: '',
+        label_init: function() {
+            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            this.lastselectedChannel = Main_values.Main_selectedChannel;
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_cleanTopLabel();
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
+            this.SetPeriod();
+        },
+        SetPeriod: function() {
+            Main_textContent('top_bar_game', this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+        },
+        label_exit: function() {
+            Main_RestoreTopLabel();
+        },
+        concatenate: function(responseText) {
+            if (this.data) {
+
+                var tempObj = JSON.parse(responseText);
+                if (tempObj.videos.length < Main_ItemsLimitMax) this.dataEnded = true;
+
+                this.data = this.data.concat(tempObj.vods);
+                this.offset = this.data.length;
+
+                this.loadingData = false;
+            } else {
+                this.data = JSON.parse(responseText);
+
+                this.data = this.data.videos;
+
+                this.offset = this.data.length;
+                if (this.offset < Main_ItemsLimitMax) this.dataEnded = true;
+
+                this.loadDataSuccess();
+                this.loadingData = false;
+            }
+        }
+    }, Base_obj);
+
+    ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
+    ChannelVod.set_ThumbSize();
 }
 
 function ScreensObj_InitAGameVod() {
