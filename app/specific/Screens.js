@@ -26,6 +26,7 @@ function Screens_InitSecondaryScreens() {
     //Vod screens
     ScreensObj_InitVod();
     ScreensObj_InitAGameVod();
+    ScreensObj_InitUserVod();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -109,6 +110,10 @@ function Screens_StartLoad() {
     inUseObj.data_cursor = 0;
     inUseObj.dataEnded = false;
     Main_CounterDialogRst();
+    Screens_loadDataRequestStart();
+}
+
+function Screens_loadDataRequestStart() {
     Screens_loadDataPrepare();
     Screens_loadDataRequest();
 }
@@ -122,9 +127,9 @@ function Screens_loadDataPrepare() {
 function Screens_loadDataRequest() {
     inUseObj.set_url();
     if (Main_Android && !inUseObj.itemsCount)
-        BaseAndroidhttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError);
+        BaseAndroidhttpGet(inUseObj.url, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
     else
-        BasexmlHttpGet(inUseObj.url, inUseObj.loadingDataTimeout, 2, null, Screens_concatenate, Screens_loadDataError, false);
+        BasexmlHttpGet(inUseObj.url, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError, false);
 }
 
 function Screens_loadDataError() {
@@ -132,15 +137,17 @@ function Screens_loadDataError() {
     if (inUseObj.loadingDataTry < inUseObj.loadingDataTryMax) {
         inUseObj.loadingDataTimeout += 500;
         Screens_loadDataRequest();
-    } else {
-        inUseObj.loadingData = false;
-        if (!inUseObj.itemsCount) {
-            inUseObj.FirstLoad = false;
-            Main_HideLoadDialog();
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
-            inUseObj.key_exit();
-        } else inUseObj.dataEnded = true;
-    }
+    } else Screens_loadDatafail();
+}
+
+function Screens_loadDatafail() {
+    inUseObj.loadingData = false;
+    if (!inUseObj.itemsCount) {
+        inUseObj.FirstLoad = false;
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        inUseObj.key_exit();
+    } else inUseObj.dataEnded = true;
 }
 
 function Screens_concatenate(responseText) {
@@ -384,8 +391,7 @@ function Screens_addFocus(forceScroll) {
 
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-        Screens_loadDataPrepare();
-        Screens_loadDataRequest();
+        Screens_loadDataRequestStart();
     } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
         inUseObj.loadDataSuccess();
     }

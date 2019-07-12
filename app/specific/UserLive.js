@@ -166,7 +166,7 @@ function UserLive_loadChannelUserLiveGet(theUrl, callbackSucess, calbackError, c
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
-            UserVod_loadDataError();
+            calbackError();
             return;
         }
 
