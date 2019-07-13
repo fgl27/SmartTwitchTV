@@ -72,6 +72,25 @@ var Base_obj = {
         }
         Sidepannel_RestoreScreen();
     },
+    concatenate: function(responseText) {
+        if (this.data) {
+            responseText = JSON.parse(responseText);
+
+            this.data = this.data.concat(responseText[this.object]);
+            this.offset = this.data.length;
+
+            this.setMax(responseText);
+        } else {
+            responseText = JSON.parse(responseText);
+
+            this.data = responseText[this.object];
+            this.offset = this.data.length;
+
+            this.setMax(responseText);
+            this.loadDataSuccess();
+        }
+        this.loadingData = false;
+    }
 };
 
 var Base_Vod_obj = {
@@ -83,6 +102,9 @@ var Base_Vod_obj = {
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
+    },
+    setMax: function(tempObj) {
+        if (tempObj[this.object].length < Main_ItemsLimitMax) this.dataEnded = true;
     },
     img_404: IMG_404_VIDEO,
     HasSwitches: true,
@@ -156,6 +178,7 @@ function ScreensObj_InitVod() {
     Vod = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
+        object: 'vods',
         ids: Screens_ScreenIds('Vod'),
         table: 'stream_table_vod',
         screen: Main_Vod,
@@ -202,28 +225,6 @@ function ScreensObj_InitVod() {
 
             Main_setItem('vod_periodPos', this.periodPos);
         },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-                if (tempObj.vods.length < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.data = this.data.concat(tempObj.vods);
-                this.offset = this.data.length;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.data = this.data.vods;
-
-                this.offset = this.data.length;
-                if (this.offset < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
-        }
     }, Base_obj);
 
     Vod = Screens_assign(Vod, Base_Vod_obj);
@@ -234,6 +235,7 @@ function ScreensObj_InitChannelVod() {
     ChannelVod = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
+        object: 'videos',
         ids: Screens_ScreenIds('ChannelVod'),
         table: 'stream_table_channel_vod',
         screen: Main_ChannelVod,
@@ -281,27 +283,6 @@ function ScreensObj_InitChannelVod() {
         },
         label_exit: function() {
             Main_RestoreTopLabel();
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-                var tempObj = JSON.parse(responseText);
-                if (tempObj.videos.length < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.data = this.data.concat(tempObj.videos);
-                this.offset = this.data.length;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.data = this.data.videos;
-
-                this.offset = this.data.length;
-                if (this.offset < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
         }
     }, Base_obj);
 
@@ -313,6 +294,7 @@ function ScreensObj_InitAGameVod() {
     AGameVod = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
+        object: 'vods',
         ids: Screens_ScreenIds('AGameVod'),
         table: 'stream_table_a_game_vod',
         screen: Main_AGameVod,
@@ -365,28 +347,6 @@ function ScreensObj_InitAGameVod() {
                 Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
 
             Main_setItem('AGameVod_periodPos', this.periodPos);
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-                if (tempObj.vods.length < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.data = this.data.concat(tempObj.vods);
-                this.offset = this.data.length;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.data = this.data.vods;
-
-                this.offset = this.data.length;
-                if (this.offset < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
         }
     }, Base_obj);
 
@@ -398,6 +358,7 @@ function ScreensObj_InitUserVod() {
     UserVod = Screens_assign({
         periodMaxPos: 2,
         HeaderQuatity: 3,
+        object: 'videos',
         ids: Screens_ScreenIds('UserVod'),
         table: 'stream_table_user_vod',
         screen: Main_UserVod,
@@ -449,29 +410,6 @@ function ScreensObj_InitUserVod() {
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_TIME : STR_VIWES)));
 
             Main_setItem('UserVod_periodPos', this.periodPos);
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-                if (tempObj.videos.length < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.data = this.data.concat(tempObj.videos);
-
-                this.offset = this.data.length;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.data = this.data.videos;
-
-                this.offset = this.data.length;
-                if (this.offset < Main_ItemsLimitMax) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
         }
     }, Base_obj);
 
@@ -487,6 +425,10 @@ var Base_Live_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
     img_404: IMG_404_VIDEO,
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length > this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+    },
     empty_str: function() {
         return STR_NO + STR_LIVE_CHANNELS;
     }
@@ -498,6 +440,7 @@ function ScreensObj_InitLive() {
         ids: Screens_ScreenIds('Live'),
         table: 'stream_table_live',
         screen: Main_Live,
+        object: 'streams',
         base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -510,31 +453,6 @@ function ScreensObj_InitLive() {
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_live', 'icon_center_focus');
-        },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = tempObj._total;
-                this.data = this.data.concat(tempObj.streams);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.streams;
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
         },
         addCell: function(cell) {
             if (!this.idObject[cell.channel._id]) {
@@ -571,6 +489,7 @@ function ScreensObj_InitAGame() {
         ids: Screens_ScreenIds('AGame'),
         table: 'stream_table_a_game',
         screen: Main_aGame,
+        object: 'streams',
         base_url: 'https://api.twitch.tv/kraken/streams?game=',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -626,31 +545,6 @@ function ScreensObj_InitAGame() {
             }
             document.getElementById(this.table).appendChild(this.row);
         },
-        concatenate: function(responseText) {
-            if (this.data) {
-
-                var tempObj = JSON.parse(responseText);
-
-                this.MaxOffset = tempObj._total;
-                this.data = this.data.concat(tempObj.streams);
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadingData = false;
-            } else {
-                this.data = JSON.parse(responseText);
-
-                this.MaxOffset = this.data._total;
-                this.data = this.data.streams;
-
-                this.offset = this.data.length;
-                if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-                this.loadDataSuccess();
-                this.loadingData = false;
-            }
-        },
         addCell: function(cell) {
             if (!this.idObject[cell.channel._id]) {
 
@@ -701,14 +595,7 @@ function ScreensObj_InitFeatured() {
         label_exit: function() {
             Main_RemoveClass('top_bar_featured', 'icon_center_focus');
         },
-        concatenate: function(responseText) {
-            this.data = JSON.parse(responseText);
-            this.data = this.data.featured;
-            this.dataEnded = true;
-
-            this.loadDataSuccess();
-            this.loadingData = false;
-        },
+        object: 'featured',
         addCell: function(cell) {
             cell = cell.stream;
             if (!this.idObject[cell.channel._id]) {
@@ -749,6 +636,7 @@ var Base_Clip_obj = {
     addFocus: Screens_addFocusVideo,
     cursor: null,
     visiblerows: 3,
+    object: 'clips',
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
@@ -774,6 +662,10 @@ var Base_Clip_obj = {
         }
         document.getElementById(this.table).appendChild(this.row);
     },
+    setMax: function(tempObj) {
+        this.cursor = tempObj._cursor;
+        if (this.cursor === '') this.dataEnded = true;
+    },
     key_play: function() {
         if (this.posY === -1) {
             if (!this.loadingData) {
@@ -791,23 +683,6 @@ var Base_Clip_obj = {
                 }
             }
         } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
-    concatenate: function(responseText) {
-        if (this.data) {
-            var tempObj = JSON.parse(responseText);
-            this.cursor = tempObj._cursor;
-            if (this.cursor === '') this.dataEnded = true;
-            this.data = this.data.concat(tempObj.clips);
-            this.loadingData = false;
-        } else {
-            this.data = JSON.parse(responseText);
-            this.cursor = this.data._cursor;
-            if (this.cursor === '') this.dataEnded = true;
-
-            this.data = this.data.clips;
-            this.loadDataSuccess();
-            this.loadingData = false;
-        }
     },
     Cells: [],
     addCell: function(cell) {
@@ -954,32 +829,6 @@ var Base_Game_obj = {
     empty_str: function() {
         return STR_NO + STR_LIVE_GAMES;
     },
-    concatenate: function(responseText) {
-        if (this.data) {
-            var tempObj = JSON.parse(responseText);
-
-            this.MaxOffset = tempObj._total;
-            this.data = this.data.concat(this.screen === Main_usergames ? tempObj.follows : tempObj.top);
-
-            this.offset = this.data.length;
-            if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            this.loadingData = false;
-        } else {
-
-            this.data = JSON.parse(responseText);
-
-            this.MaxOffset = this.data._total;
-            this.data = this.screen === Main_usergames ? this.data.follows : this.data.top;
-
-            this.offset = this.data.length;
-            if (this.isLive) this.dataEnded = true;
-            else if (this.offset > this.MaxOffset) this.dataEnded = true;
-
-            this.loadDataSuccess();
-            this.loadingData = false;
-        }
-    },
     key_play: function() {
         Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
@@ -994,7 +843,10 @@ var Base_Game_obj = {
         Main_SwitchScreenAction();
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
     },
-
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length > this.MaxOffset) this.dataEnded = true;
+    },
     addCell: function(cell) {
         var hasLive = this.isLive || this.screen === Main_games;
         var game = hasLive ? cell.game : cell;
@@ -1020,6 +872,7 @@ function ScreensObj_InitGame() {
         ids: Screens_ScreenIds('Game'),
         table: 'stream_table_games',
         screen: Main_games,
+        object: 'top',
         base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -1045,6 +898,7 @@ function ScreensObj_InitUserGames() {
         screen: Main_usergames,
         isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
+        object: 'follows',
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
