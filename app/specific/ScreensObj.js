@@ -105,7 +105,7 @@ var Base_Vod_obj = {
         Screens_addFocusVideo(y, x, idArray, forceScroll);
     },
     setMax: function(tempObj) {
-        if (tempObj[this.object].length < Main_ItemsLimitMax) this.dataEnded = true;
+        if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
     },
     img_404: IMG_404_VIDEO,
     HasSwitches: true,
