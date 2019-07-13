@@ -32,6 +32,7 @@ var AGameVod;
 var UserVod;
 var ChannelVod;
 var UserHost;
+var UserLive;
 
 var Base_obj = {
     posX: 0,
@@ -485,6 +486,115 @@ function ScreensObj_InitLive() {
 
     Live = Screens_assign(Live, Base_Live_obj);
     Live.set_ThumbSize();
+}
+
+function ScreensObj_InitUserLive() {
+    UserLive = Screens_assign({
+        HeaderQuatity: 3,
+        ids: Screens_ScreenIds('UserLive'),
+        table: 'stream_table_user_live',
+        screen: Main_UserLive,
+        object: 'streams',
+        base_url: 'https://api.twitch.tv/kraken/streams/',
+        loadChannelOffsset: 0,
+        followerChannels: '',
+        followerChannelsDone: false,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
+            if (AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+                //User has added a key
+                this.HeaderQuatity = 3;
+                this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
+                this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
+                    this.offset + '&stream_type=all';
+            } else {
+                //User didn't added a key
+                this.HeaderQuatity = 2;
+                this.token = null;
+                if (this.followerChannelsDone) {
+                    //User fallowed channels list is done, load live channels
+                    this.url = this.base_url + '?channel=' + encodeURIComponent(this.followerChannels) + '&' +
+                        'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
+                } else {
+                    //User fallowed channels list is not done, load fallowed channels
+                    this.url = 'https://api.twitch.tv/kraken/users/' +
+                        encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+                        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
+                        '&sortby=created_at';
+                }
+            }
+            //this.url += 'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_AddClass('top_bar_user', 'icon_center_focus');
+
+            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
+
+            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
+        },
+        label_exit: function() {
+            Main_values.Users_Position = 0;
+            Main_RemoveClass('top_bar_user', 'icon_center_focus');
+            Main_textContent('top_bar_user', STR_USER);
+            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+        },
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    UserLive = Screens_assign(UserLive, Base_Live_obj);
+    UserLive.set_ThumbSize();
+
+    UserLive.concatenate = function(responseText) {
+        if (this.token || this.followerChannelsDone) {
+            //User has added a key or fallowed channels list is done, concatenate live channels
+            if (this.data) {
+                responseText = JSON.parse(responseText);
+
+                this.data = this.data.concat(responseText[this.object]);
+                this.offset = this.data.length;
+
+                this.setMax(responseText);
+            } else {
+                responseText = JSON.parse(responseText);
+
+                this.data = responseText[this.object];
+                this.offset = this.data.length;
+
+                this.setMax(responseText);
+                this.loadDataSuccess();
+            }
+            this.loadingData = false;
+        } else {
+            var response = JSON.parse(responseText).follows,
+                response_items = response.length;
+
+            if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
+                //User fallowed channels list is not done, load fallowed channels
+                var ChannelTemp = '',
+                    x = 0;
+
+                for (x; x < response_items; x++) {
+                    ChannelTemp = response[x].channel._id + ',';
+                    if (this.followerChannels.indexOf(ChannelTemp) === -1) this.followerChannels += ChannelTemp;
+                }
+
+                this.loadChannelOffsset += response_items;
+            } else { // end
+                //User fallowed channels list is done, load live channels
+                this.followerChannels = this.followerChannels.slice(0, -1);
+                this.followerChannelsDone = true;
+            }
+            Screens_loadDataRequest();
+        }
+    };
 }
 
 function ScreensObj_InitUserHost() {
