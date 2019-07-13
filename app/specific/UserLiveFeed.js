@@ -210,7 +210,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
             if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
-                [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "1280x720"),
+                [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "1600x900"),
                     Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
