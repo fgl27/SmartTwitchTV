@@ -13,7 +13,9 @@ function Screens_InitSecondaryScreens() {
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
     ScreensObj_InitAGame();
+    //Live user screens
     ScreensObj_InitUserHost();
+    ScreensObj_InitUserLive();
 
     //Clips screens
     ScreensObj_InitClip();
@@ -22,13 +24,15 @@ function Screens_InitSecondaryScreens() {
 
     //Games screens
     ScreensObj_InitGame();
+    //Games user screen
     ScreensObj_InitUserGames();
 
     //Vod screens
     ScreensObj_InitVod();
     ScreensObj_InitAGameVod();
-    ScreensObj_InitUserVod();
     ScreensObj_InitChannelVod();
+    //Vod user screen
+    ScreensObj_InitUserVod();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -107,6 +111,9 @@ function Screens_StartLoad() {
     inUseObj.posY = 0;
     inUseObj.row_id = 0;
     inUseObj.currY = 0;
+    inUseObj.loadChannelOffsset = 0;
+    inUseObj.followerChannels = '';
+    inUseObj.followerChannelsDone = false;
     inUseObj.coloumn_id = 0;
     inUseObj.data = null;
     inUseObj.data_cursor = 0;

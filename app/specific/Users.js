@@ -189,8 +189,10 @@ function Users_keyEnter() {
     }
 
     Main_ready(function() {
-        if (!Users_cursorX) UserLive_init();
-        else if (Users_cursorX === 1) {
+        if (!Users_cursorX) {
+            inUseObj = UserLive;
+            Screens_init();
+        } else if (Users_cursorX === 1) {
             inUseObj = UserHost;
             Screens_init();
         } else if (Users_cursorX === 2) {
