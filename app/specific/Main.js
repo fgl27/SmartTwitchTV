@@ -566,6 +566,11 @@ Main_Switchobj[Main_UserHost] = UserHost_init;
 Main_Switchobj[Main_UserChannels] = UserChannels_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
 
+Main_Switchobj[Main_usergames] = function() {
+    inUseObj = UserGames;
+    Screens_init();
+};
+
 Main_Switchobj[Main_ChannelVod] = function() {
     inUseObj = ChannelVod;
     Screens_init();
@@ -647,6 +652,7 @@ Main_ExitCurrentobj[Main_UserHost] = UserHost_exit;
 Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
 
+Main_ExitCurrentobj[Main_usergames] = Screens_exit;
 Main_ExitCurrentobj[Main_ChannelVod] = Screens_exit;
 Main_ExitCurrentobj[Main_UserVod] = Screens_exit;
 Main_ExitCurrentobj[Main_Live] = Screens_exit;
