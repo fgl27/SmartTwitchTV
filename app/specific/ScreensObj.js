@@ -31,6 +31,7 @@ var Vod;
 var AGameVod;
 var UserVod;
 var ChannelVod;
+var UserHost;
 
 var Base_obj = {
     posX: 0,
@@ -427,11 +428,34 @@ var Base_Live_obj = {
     img_404: IMG_404_VIDEO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
-        if (this.data.length > this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+        if (this.data.length > (this.MaxOffset - 1) || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
     },
     empty_str: function() {
         return STR_NO + STR_LIVE_CHANNELS;
-    }
+    },
+    addCell: function(cell) {
+        this.addCellTemp(cell);
+    },
+    addCellTemp: function(cell) {
+        if (!this.idObject[cell.channel._id]) {
+
+            this.itemsCount++;
+            this.idObject[cell.channel._id] = 1;
+
+            this.row.appendChild(Screens_createCellLive(
+                this.row_id,
+                this.coloumn_id,
+                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                    cell.channel.status, cell.game,
+                    STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
+                ]));
+
+            this.coloumn_id++;
+        }
+    },
 };
 
 function ScreensObj_InitLive() {
@@ -454,26 +478,6 @@ function ScreensObj_InitLive() {
         label_exit: function() {
             Main_RemoveClass('top_bar_live', 'icon_center_focus');
         },
-        addCell: function(cell) {
-            if (!this.idObject[cell.channel._id]) {
-
-                this.itemsCount++;
-                this.idObject[cell.channel._id] = 1;
-
-                this.row.appendChild(Screens_createCellLive(
-                    this.row_id,
-                    this.coloumn_id,
-                    [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
-                        cell.channel.status, cell.game,
-                        STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
-                    ]));
-
-                this.coloumn_id++;
-            }
-        },
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -481,6 +485,68 @@ function ScreensObj_InitLive() {
 
     Live = Screens_assign(Live, Base_Live_obj);
     Live.set_ThumbSize();
+}
+
+function ScreensObj_InitUserHost() {
+    UserHost = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('UserHost'),
+        table: 'stream_table_user_host',
+        screen: Main_UserHost,
+        object: 'hosts',
+        base_url: 'https://api.twitch.tv/api/users/',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url +
+                encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
+                '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_AddClass('top_bar_user', 'icon_center_focus');
+
+            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
+
+            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
+        },
+        label_exit: function() {
+            Main_values.Users_Position = 0;
+            Main_RemoveClass('top_bar_user', 'icon_center_focus');
+            Main_textContent('top_bar_user', STR_USER);
+            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+        },
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    UserHost = Screens_assign(UserHost, Base_Live_obj);
+    UserHost.set_ThumbSize();
+
+    UserHost.addCell = function(cell) {
+        if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
+
+            this.itemsCount++;
+            this.idObject[cell.target._id + '' + cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellLive(
+                this.row_id,
+                this.coloumn_id,
+                [cell.target.channel.name, cell.target._id, cell.target.title], this.ids,
+                [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
+                    cell.target.title, cell.target.meta_game,
+                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
+                    Main_addCommas(cell.target.viewers) + STR_VIEWER, ''
+                ]));
+
+            this.coloumn_id++;
+        }
+    };
 }
 
 function ScreensObj_InitAGame() {
@@ -545,31 +611,11 @@ function ScreensObj_InitAGame() {
             }
             document.getElementById(this.table).appendChild(this.row);
         },
-        addCell: function(cell) {
-            if (!this.idObject[cell.channel._id]) {
-
-                this.itemsCount++;
-                this.idObject[cell.channel._id] = 1;
-
-                this.row.appendChild(Screens_createCellLive(
-                    this.row_id,
-                    this.coloumn_id,
-                    [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
-                        cell.channel.status, cell.game,
-                        STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
-                    ]));
-
-                this.coloumn_id++;
-            }
-        },
         key_play: function() {
             if (this.posY !== -1) {
                 Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
             } else AGame_headerOptions();
-        }
+        },
     }, Base_obj);
 
     AGame = Screens_assign(AGame, Base_Live_obj);
@@ -596,27 +642,6 @@ function ScreensObj_InitFeatured() {
             Main_RemoveClass('top_bar_featured', 'icon_center_focus');
         },
         object: 'featured',
-        addCell: function(cell) {
-            cell = cell.stream;
-            if (!this.idObject[cell.channel._id]) {
-
-                this.itemsCount++;
-                this.idObject[cell.channel._id] = 1;
-
-                this.row.appendChild(Screens_createCellLive(
-                    this.row_id,
-                    this.coloumn_id,
-                    [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
-                        cell.channel.status, cell.game,
-                        STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
-                    ]));
-
-                this.coloumn_id++;
-            }
-        },
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -624,6 +649,11 @@ function ScreensObj_InitFeatured() {
 
     Featured = Screens_assign(Featured, Base_Live_obj);
     Featured.set_ThumbSize();
+
+    Featured.addCell = function(cell) {
+        cell = cell.stream;
+        this.addCellTemp(cell);
+    };
 }
 
 var Base_Clip_obj = {

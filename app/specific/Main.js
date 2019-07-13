@@ -557,14 +557,19 @@ var Main_Switchobj = {
 
 Main_Switchobj[Main_Users] = Users_init;
 Main_Switchobj[Main_addUser] = AddUser_init;
+Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
 Main_Switchobj[Main_Search] = Search_init;
+
 Main_Switchobj[Main_SearchGames] = SearchGames_init;
 Main_Switchobj[Main_SearchLive] = SearchLive_init;
-Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
 Main_Switchobj[Main_UserLive] = UserLive_init;
-Main_Switchobj[Main_UserHost] = UserHost_init;
 Main_Switchobj[Main_UserChannels] = UserChannels_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
+
+Main_Switchobj[Main_UserHost] = function() {
+    inUseObj = UserHost;
+    Screens_init();
+};
 
 Main_Switchobj[Main_usergames] = function() {
     inUseObj = UserGames;
@@ -648,10 +653,10 @@ Main_ExitCurrentobj[Main_SearchGames] = SearchGames_exit;
 Main_ExitCurrentobj[Main_SearchLive] = SearchLive_exit;
 Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
 Main_ExitCurrentobj[Main_UserLive] = UserLive_exit;
-Main_ExitCurrentobj[Main_UserHost] = UserHost_exit;
 Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
 
+Main_ExitCurrentobj[Main_UserHost] = Screens_exit;
 Main_ExitCurrentobj[Main_usergames] = Screens_exit;
 Main_ExitCurrentobj[Main_ChannelVod] = Screens_exit;
 Main_ExitCurrentobj[Main_UserVod] = Screens_exit;
@@ -1162,8 +1167,7 @@ function Main_CenterLables(event) {
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserHost) {
-                    Main_values.Main_Go = Main_Users;
-                    UserHost_exit();
+                    Screens_BasicExit(Main_Users);
                     Main_CenterLablesClean();
                     Main_SwitchScreenAction();
                 } else if (Main_values.Main_Go === Main_UserVod) {
@@ -1290,7 +1294,6 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_SearchGames) document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-    else if (Main_values.Main_Go === Main_UserHost) document.body.removeEventListener("keydown", UserHost_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_UserLive) document.body.removeEventListener("keydown", UserLive_handleKeyDown);
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
@@ -1307,6 +1310,7 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
         else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
+        else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -1327,7 +1331,6 @@ function Main_ReloadScreen() {
     else if (Main_values.Main_Go === Main_SearchGames) SearchGames_StartLoad();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
     else if (Main_values.Main_Go === Main_UserLive) UserLive_StartLoad();
-    else if (Main_values.Main_Go === Main_UserHost) UserHost_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
     else if (Main_values.Main_Go === Main_usergames) {
         inUseObj = UserGames;
@@ -1344,6 +1347,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
         else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
+        else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
 
         Screens_StartLoad();
     }
