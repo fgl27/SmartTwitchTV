@@ -524,7 +524,6 @@ function ScreensObj_InitUserLive() {
                         '&sortby=created_at';
                 }
             }
-            //this.url += 'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
         },
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 1;
