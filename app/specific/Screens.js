@@ -13,6 +13,7 @@ function Screens_InitSecondaryScreens() {
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
     ScreensObj_InitAGame();
+    ScreensObj_InitUserHost();
 
     //Clips screens
     ScreensObj_InitClip();

@@ -166,6 +166,7 @@ function Users_removeFocus() {
     Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
 }
 
+//TODO add a temp user for when going back and for from user to games or etc
 function Users_keyEnter() {
     Main_values.Users_Position = Users_cursorY;
 
@@ -189,8 +190,10 @@ function Users_keyEnter() {
 
     Main_ready(function() {
         if (!Users_cursorX) UserLive_init();
-        else if (Users_cursorX === 1) UserHost_init();
-        else if (Users_cursorX === 2) {
+        else if (Users_cursorX === 1) {
+            inUseObj = UserHost;
+            Screens_init();
+        } else if (Users_cursorX === 2) {
             inUseObj = UserGames;
             Screens_init();
         } else if (Users_cursorX === 3) {

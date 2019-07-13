@@ -71,7 +71,7 @@ function ChatLive_loadBadgesChannelError(id, callbackSucess) {
     ChatLive_loadingDataTry++;
     if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess);
     else {
-        ChatLive_loadBadgesChannelId = window.setTimeout(function() {
+        if (ChatLive_Id === id) ChatLive_loadBadgesChannelId = window.setTimeout(function() {
             ChatLive_loadBadgesChannelRequest(id, callbackSucess);
         }, 500);
     }
