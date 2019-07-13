@@ -428,7 +428,7 @@ var Base_Live_obj = {
     img_404: IMG_404_VIDEO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
-        if (this.data.length > (this.MaxOffset - 1) || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
     },
     empty_str: function() {
         return STR_NO + STR_LIVE_CHANNELS;
@@ -875,7 +875,7 @@ var Base_Game_obj = {
     },
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
-        if (this.data.length > this.MaxOffset) this.dataEnded = true;
+        if (this.data.length >= this.MaxOffset) this.dataEnded = true;
     },
     addCell: function(cell) {
         var hasLive = this.isLive || this.screen === Main_games;
