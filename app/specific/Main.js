@@ -1142,68 +1142,44 @@ function Main_CenterLables(event) {
                         Main_values.Main_Go = Main_values.Main_BeforeAgame;
                         Main_values.Main_BeforeAgame = Main_Live;
                     }
-                    Screens_BasicExit(Main_values.Main_Go);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
                 } else if (Main_values.Main_Go === Main_AGameClip) {
-                    Screens_BasicExit(Main_aGame);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
-                } else if (Main_values.Main_Go === Main_usergames) {
-                    Screens_BasicExit(Main_Users);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitchScreen(Main_aGame);
+                } else if (Main_values.Main_Go === Main_usergames ||
+                    Main_values.Main_Go === Main_UserHost || Main_values.Main_Go === Main_UserVod) {
+                    Main_CenterLablesCleanSwitchScreen(Main_Users);
                 } else if (Main_values.Main_Go === Main_ChannelClip) {
-                    Screens_BasicExit(Main_ChannelContent);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
                 } else if (Main_values.Main_Go === Main_AGameVod) {
-                    Screens_BasicExit(Main_aGame);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitchScreen(Main_aGame);
                 } else if (Main_values.Main_Go === Main_UserLive) {
                     Main_values.Main_Go = Main_Users;
                     UserLive_exit();
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
-                } else if (Main_values.Main_Go === Main_UserHost) {
-                    Screens_BasicExit(Main_Users);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
-                } else if (Main_values.Main_Go === Main_UserVod) {
-                    Screens_BasicExit(Main_Users);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_UserChannels) {
                     Main_values.Main_Go = Main_Users;
                     UserChannels_exit();
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_ChannelContent) {
                     Main_values.Main_Go = Main_values.Main_BeforeChannel;
                     Main_values.Main_BeforeChannel = Main_Live;
                     ChannelContent_exit();
                     Main_values.Main_selectedChannel_id = '';
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_ChannelVod) {
-                    Screens_BasicExit(Main_ChannelContent);
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
                 } else if (Main_values.Main_Go === Main_SearchLive) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                     SearchLive_exit();
                     Main_values.Search_isSearching = false;
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_SearchGames) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                     Main_values.Search_isSearching = false;
                     SearchGames_exit();
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_SearchChannels) {
 
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
@@ -1211,8 +1187,7 @@ function Main_CenterLables(event) {
                     if (Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
                     SearchChannels_exit();
                     Main_values.Search_isSearching = false;
-                    Main_CenterLablesClean();
-                    Main_SwitchScreenAction();
+                    Main_CenterLablesCleanSwitch();
                 } else {
                     Main_CenterLablesClean();
                     Sidepannel_Start(Main_CenterLables);
@@ -1253,6 +1228,16 @@ function Main_CenterLables(event) {
         default:
             break;
     }
+}
+
+function Main_CenterLablesCleanSwitchScreen(screen) {
+    Screens_BasicExit(screen);
+    Main_CenterLablesCleanSwitch();
+}
+
+function Main_CenterLablesCleanSwitch() {
+    Main_CenterLablesClean();
+    Main_SwitchScreenAction();
 }
 
 function Main_CenterLablesStart(callback) {
