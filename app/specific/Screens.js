@@ -360,11 +360,11 @@ function Screens_loadDataSuccessFinish() {
             } else {
                 if (Main_values.Never_run) Main_showControlsDialog();
                 Main_values.Never_run = false;
-                Screens_addFocus();
+                Screens_addFocus(true);
                 Main_SaveValues();
             }
         } else {
-            Screens_addFocus();
+            Screens_addFocus(true);
             Main_SaveValues();
         }
         Main_FirstRun = false;
@@ -444,7 +444,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
-        if (inUseObj.posY < (inUseObj.Cells.length - 1)) {
+        if (inUseObj.posY < (inUseObj.Cells.length - 1) || forceScroll) {
             Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
                 (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
         }
