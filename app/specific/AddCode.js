@@ -427,7 +427,7 @@ function AddCode_RequestCheckSubfail() {
     PlayVod_NotSub();
 }
 
-function AddCode_CheckTokenStart(position) {
+function AddCode_CheckTokenStart(position) { // jshint ignore:line
     AddCode_TimeoutReset10();
     AddCode_CheckToken(position, 0);
 }

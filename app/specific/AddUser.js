@@ -163,8 +163,8 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
         //Check and refresh all tokens at start
-        for (var i = 0; i < AddUser_UsernameArray.length; i++)
-            if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+        //for (var i = 0; i < AddUser_UsernameArray.length; i++)
+        //if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
     }
 }
 
