@@ -154,7 +154,7 @@ function Screens_loadDatafail() {
     if (!inUseObj.itemsCount) {
         inUseObj.FirstLoad = false;
         Main_HideLoadDialog();
-        //Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        Main_showWarningDialog(STR_REFRESH_PROBLEM);
         inUseObj.key_exit();
     } else inUseObj.dataEnded = true;
 }

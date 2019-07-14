@@ -457,7 +457,7 @@ function Main_showWarningDialog(text) {
 }
 
 function Main_HideWarningDialog() {
-    //Main_HideElement('dialog_warning');
+    Main_HideElement('dialog_warning');
 }
 
 function Main_showAboutDialog() {
@@ -1392,7 +1392,6 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
-        Main_showWarningDialog('calbackError ');
         calbackError();
         return;
     }
@@ -1401,10 +1400,8 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
         callbackSucess(xmlHttp.responseText);
     } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
         AddCode_refreshTokens(Main_values.Users_Position, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-        Main_showWarningDialog('expired ' + xmlHttp.status);
     } else {
         calbackError();
-        Main_showWarningDialog('fail ' + xmlHttp.status);
     }
 }
 
