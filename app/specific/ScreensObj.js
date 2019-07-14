@@ -338,11 +338,13 @@ function ScreensObj_InitAGameVod() {
 
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             this.SetPeriod();
         },
         label_exit: function() {
-            Main_textContent('top_bar_game', STR_AGAME);
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
+            Main_innerHTML('top_bar_game', STR_GAMES);
+            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
         },
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME +
