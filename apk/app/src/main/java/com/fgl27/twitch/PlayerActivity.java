@@ -661,6 +661,19 @@ public class PlayerActivity extends Activity {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
+                JSONObject ob = new JSONObject();
+                if (status == 401 || status == 403) {
+                    try {
+                        ob.put("status", status);
+                        ob.put("responseText", "expired");
+                        return ob.toString();
+                    } catch (JSONException e) {
+                        Log.w(TAG, "JSONException ", e);
+                        return null;
+                    }
+                }
+                //TODO findout what is crashing when the status is 401 or 403
+                //Logs on the box I have are empty need to test on emulator
                 final Charset responseCharset;
                 try {
                     responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
@@ -673,8 +686,6 @@ public class PlayerActivity extends Activity {
                 }
 
                 byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-
-                JSONObject ob = new JSONObject();
 
                 try {
                     ob.put("status", status);
