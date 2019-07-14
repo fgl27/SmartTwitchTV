@@ -331,24 +331,14 @@ function ScreensObj_InitAGameVod() {
         },
         OldgameSelected: '',
         label_init: function() {
-            if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-
-            if (this.OldgameSelected !== Main_values.Main_gameSelected) this.status = false;
-            this.OldgameSelected = Main_values.Main_gameSelected;
-
-            Main_values.Main_CenterLablesVectorPos = 3;
-            Main_AddClass('top_bar_game', 'icon_center_focus');
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            ScreensObj_TopLableAgameInit();
             this.SetPeriod();
         },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_game', 'icon_center_focus');
-            Main_innerHTML('top_bar_game', STR_GAMES);
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-        },
+        label_exit: ScreensObj_TopLableAgameExit,
         SetPeriod: function() {
             Main_innerHTML('top_bar_game', STR_AGAME +
-                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
+                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+                    Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
 
             Main_setItem('AGameVod_periodPos', this.periodPos);
         }
@@ -402,12 +392,7 @@ function ScreensObj_InitUserVod() {
             Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
             this.SetPeriod();
         },
-        label_exit: function() {
-            Main_values.Users_Position = 0;
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-            Main_textContent('top_bar_user', STR_USER);
-        },
+        label_exit: ScreensObj_TopLableUserExit,
         SetPeriod: function() {
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
                 AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
@@ -528,23 +513,11 @@ function ScreensObj_InitUserLive() {
             }
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_AddClass('top_bar_user', 'icon_center_focus');
-
-            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
-
-            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-
+            ScreensObj_TopLableUserInit();
             Main_innerHTML('top_bar_user', STR_USER +
                 Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
         },
-        label_exit: function() {
-            Main_values.Users_Position = 0;
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_textContent('top_bar_user', STR_USER);
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-        },
+        label_exit: ScreensObj_TopLableUserExit,
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -613,23 +586,11 @@ function ScreensObj_InitUserHost() {
                 '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_AddClass('top_bar_user', 'icon_center_focus');
-
-            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
-
-            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-
+            ScreensObj_TopLableUserInit();
             Main_innerHTML('top_bar_user', STR_USER +
                 Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
         },
-        label_exit: function() {
-            Main_values.Users_Position = 0;
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_textContent('top_bar_user', STR_USER);
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-        },
+        label_exit: ScreensObj_TopLableUserExit,
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -675,18 +636,11 @@ function ScreensObj_InitAGame() {
                 (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
         },
         label_init: function() {
-            if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-
-            Main_values.Main_CenterLablesVectorPos = 3;
-            Main_AddClass('top_bar_game', 'icon_center_focus');
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-
+            ScreensObj_TopLableAgameInit();
             //fix user label
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
             Main_textContent('top_bar_user', STR_USER);
-
-            if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected) this.status = false;
 
             if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                 Main_cleanTopLabel();
@@ -696,12 +650,7 @@ function ScreensObj_InitAGame() {
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
                 ': ' + Main_values.Main_gameSelected));
         },
-        label_exit: function() {
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-            Main_innerHTML('top_bar_game', STR_GAMES);
-            Main_RemoveClass('top_bar_game', 'icon_center_focus');
-        },
+        label_exit: ScreensObj_TopLableAgameExit,
         HasSwitches: true,
         SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
         addSwitches: function() {
@@ -940,18 +889,10 @@ function ScreensObj_InitAGameClip() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 3;
+            ScreensObj_TopLableAgameInit();
             this.SetPeriod();
-            Main_AddClass('top_bar_game', 'icon_center_focus');
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            if (this.gameSelected !== Main_values.Main_gameSelected) this.status = false;
-            this.gameSelected = Main_values.Main_gameSelected;
         },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_game', 'icon_center_focus');
-            Main_innerHTML('top_bar_game', STR_GAMES);
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-        },
+        label_exit: ScreensObj_TopLableAgameExit,
     }, Base_obj);
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
@@ -1060,26 +1001,48 @@ function ScreensObj_InitUserGames() {
 
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
+            ScreensObj_TopLableUserInit();
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_AddClass('top_bar_user', 'icon_center_focus');
-
-            if (this.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) this.status = false;
-
-            this.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
             Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
         },
-        label_exit: function() {
-            Main_values.Users_Position = 0;
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-            Main_textContent('top_bar_user', STR_USER);
-            Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-        },
+        label_exit: ScreensObj_TopLableUserExit,
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
     UserGames.set_ThumbSize();
+}
+
+function ScreensObj_TopLableAgameInit() {
+    Main_values.Main_CenterLablesVectorPos = 3;
+    if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    Main_AddClass('top_bar_game', 'icon_center_focus');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
+        inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
+    inUseObj.gameSelected = Main_values.Main_gameSelected;
+}
+
+function ScreensObj_TopLableAgameExit() {
+    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    inUseObj.gameSelected = Main_values.Main_gameSelected;
+    Main_RemoveClass('top_bar_game', 'icon_center_focus');
+    Main_innerHTML('top_bar_game', STR_GAMES);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+}
+
+function ScreensObj_TopLableUserInit() {
+    Main_values.Main_CenterLablesVectorPos = 1;
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_AddClass('top_bar_user', 'icon_center_focus');
+    if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
+    inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+}
+
+function ScreensObj_TopLableUserExit() {
+    Main_values.Users_Position = 0;
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_textContent('top_bar_user', STR_USER);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
 }
