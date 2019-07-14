@@ -11,14 +11,14 @@ import android.graphics.Color;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.fgl27.twitch.helpers.ResponseUtils;
 import com.fgl27.twitch.helpers.Streams;
-
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -661,40 +660,16 @@ public class PlayerActivity extends Activity {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                JSONObject ob = new JSONObject();
-                if (status == 401 || status == 403) {
-                    try {
-                        ob.put("status", status);
-                        ob.put("responseText", "expired");
-                        return ob.toString();
-                    } catch (JSONException e) {
-                        Log.w(TAG, "JSONException ", e);
-                        return null;
-                    }
-                }
+                if (status == 401 || status == 403) JsonObToString(status, "expired");
                 //TODO findout what is crashing when the status is 401 or 403
                 //Logs on the box I have are empty need to test on emulator
-                final Charset responseCharset;
-                try {
-                    responseCharset = ResponseUtils.responseCharset(urlConnection.getContentType());
-                } catch (UnsupportedCharsetException e) {
-                    Log.i(TAG, "Unsupported response charset", e);
-                    return null;
-                } catch (IllegalCharsetNameException e) {
-                    Log.i(TAG, "Illegal response charset", e);
-                    return null;
-                }
+                final Charset mresponseCharset;
+                mresponseCharset = responseCharset(urlConnection.getContentType());
 
-                byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-
-                try {
-                    ob.put("status", status);
-                    ob.put("responseText", new String(responseBytes, responseCharset));
-                    return ob.toString();
-                } catch (JSONException e) {
-                    Log.w(TAG, "JSONException ", e);
-                    return null;
-                }
+                if (mresponseCharset != null) {
+                    byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
+                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
+                } else return JsonObToString(status, "fail");
             } else {
                 return null;
             }
@@ -712,5 +687,29 @@ public class PlayerActivity extends Activity {
                 return true;
 
         return false;
+    }
+
+    public Charset responseCharset(String getContentType) {
+        try {
+            return ResponseUtils.responseCharset(getContentType);
+        } catch (UnsupportedCharsetException e) {
+            Log.i(TAG, "Unsupported response charset", e);
+            return null;
+        } catch (IllegalCharsetNameException e) {
+            Log.i(TAG, "Illegal response charset", e);
+            return null;
+        }
+    }
+
+    public String JsonObToString(int status, String responseText) {
+        JSONObject ob = new JSONObject();
+        try {
+            ob.put("status", status);
+            ob.put("responseText", responseText);
+            return ob.toString();
+        } catch (JSONException e) {
+            Log.w(TAG, "JSONException ", e);
+            return null;
+        }
     }
 }
