@@ -227,7 +227,9 @@
         }
 
         div.stream_thumbnail_channel {
+            width: 99%;
             padding-bottom: 100%;
+            background-repeat: no-repeat;
         }
 
         div.stream_thumbnail_focused {
@@ -1175,7 +1177,6 @@
     <script src="app/specific/SearchLive.js" defer></script>
     <script src="app/specific/SearchChannels.js" defer></script>
     <script src="app/specific/Users.js" defer></script>
-    <script src="app/specific/UserChannels.js" defer></script>
     <script src="app/specific/UserLiveFeed.js" defer></script>
     <script src="app/specific/Screens.js" defer></script>
     <script src="app/specific/Main.js" defer></script>
@@ -1242,8 +1243,8 @@
 
         <div id="screens_holder" class="screens">
             <!-- Channel screens-->
-            <div id="user_channels_scroll" class="screen_holder hide">
-                <table id="stream_table_user_channels" class="streams_tables"></table>
+            <div id="UserChannels_scroll" class="screen_holder hide">
+                <div id="stream_table_user_channels" class="streams_div"></div>
             </div>
             <div id="search_channel_scroll" class="screen_holder hide">
                 <table id="stream_table_search_channel" class="streams_tables"></table>

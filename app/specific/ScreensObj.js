@@ -33,6 +33,7 @@ var UserVod;
 var ChannelVod;
 var UserHost;
 var UserLive;
+var UserChannels;
 
 var Base_obj = {
     posX: 0,
@@ -99,7 +100,6 @@ var Base_Vod_obj = {
     ThumbSize: 32.65,
     visiblerows: 3,
     ItemsLimit: Main_ItemsLimitVideo,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
@@ -410,7 +410,6 @@ var Base_Live_obj = {
     ThumbSize: 32.65,
     visiblerows: 3,
     ItemsLimit: Main_ItemsLimitVideo,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
     img_404: IMG_404_VIDEO,
@@ -721,7 +720,6 @@ var Base_Clip_obj = {
     ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
     TopRowCreated: false,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
     cursor: null,
@@ -904,7 +902,6 @@ var Base_Game_obj = {
     ThumbSize: 19.35,
     visiblerows: 3,
     ItemsLimit: Main_ItemsLimitGame,
-    ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
     addFocus: Screens_addFocusGame,
     img_404: IMG_404_GAME,
@@ -1011,6 +1008,84 @@ function ScreensObj_InitUserGames() {
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
     UserGames.set_ThumbSize();
+}
+
+var Base_Channel_obj = {
+    ThumbSize: 16,
+    visiblerows: 3,
+    ItemsLimit: Main_ItemsLimitChannel,
+    ColoumnsCount: Main_ColoumnsCountChannel,
+    addFocus: Screens_addFocusVideo,
+    img_404: IMG_404_LOGO,
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+    },
+    empty_str: function() {
+        return STR_NO + STR_USER_CHANNEL;
+    },
+    addCell: function(cell) {
+        this.addCellTemp(cell);
+    },
+    addCellTemp: function(cell) {
+        if (!this.idObject[cell.channel._id]) {
+
+            this.itemsCount++;
+            this.idObject[cell.channel._id] = 1;
+
+            this.row.appendChild(Screens_createCellChannel(
+                this.row_id,
+                this.coloumn_id,
+                this.ids,
+                [cell.channel.name, cell.channel._id, cell.channel.logo, cell.channel.display_name]));
+
+            this.coloumn_id++;
+        }
+    },
+};
+
+function ScreensObj_InitUserChannels() {
+    UserChannels = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('UserChannels'),
+        table: 'stream_table_user_channels',
+        screen: Main_UserChannels,
+        object: 'follows',
+        base_url: 'https://api.twitch.tv/kraken/users/',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
+        },
+        label_init: function() {
+            ScreensObj_TopLableUserInit();
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+        key_play: function() {
+            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
+
+            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+
+            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
+            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
+            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
+            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_values.Main_BeforeChannel = Main_UserChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = true;
+            ChannelContent_UserChannels = true;
+            Screens_exit();
+            Main_SwitchScreen();
+        }
+    }, Base_obj);
+
+    UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
+    UserChannels.set_ThumbSize();
 }
 
 function ScreensObj_TopLableAgameInit() {
