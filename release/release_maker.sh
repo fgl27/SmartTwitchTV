@@ -199,7 +199,7 @@ fi;
 
 # Compress using cleancss
 if [ "$cancrass" == 1 ]; then
-	crass release/githubio/css/icons.css --optimize --O1 > release/githubio/css/icons.min.css
+	crass release/githubio/css/icons.css > release/githubio/css/icons.min.css
 fi;
 
 cd release/ || exit
