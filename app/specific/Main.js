@@ -84,7 +84,6 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 
 //The values of thumbnail and related for it screen type
-var Main_ReloadLimitOffsetGames = 1.35;
 var Main_ReloadLimitOffsetVideos = 1.5;
 
 var Main_ItemsLimitVideo = 45;
@@ -93,7 +92,6 @@ var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_Coloumn
 
 var Main_ItemsLimitGame = 45;
 var Main_ColoumnsCountGame = 5;
-var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
 
 var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
@@ -560,8 +558,12 @@ Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
 
 Main_Switchobj[Main_SearchGames] = SearchGames_init;
 Main_Switchobj[Main_SearchLive] = SearchLive_init;
-Main_Switchobj[Main_UserChannels] = UserChannels_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
+
+Main_Switchobj[Main_UserChannels] = function() {
+    inUseObj = UserChannels;
+    Screens_init();
+};
 
 Main_Switchobj[Main_UserLive] = function() {
     inUseObj = UserLive;
@@ -660,12 +662,13 @@ var Main_ExitCurrentobj = {
     //    [Main_Users]: Users_exit
 };
 Main_ExitCurrentobj[Main_Users] = Users_exit;
+Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
+
 Main_ExitCurrentobj[Main_SearchGames] = SearchGames_exit;
 Main_ExitCurrentobj[Main_SearchLive] = SearchLive_exit;
-Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
-Main_ExitCurrentobj[Main_UserChannels] = UserChannels_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
 
+Main_ExitCurrentobj[Main_UserChannels] = Screens_exit;
 Main_ExitCurrentobj[Main_UserLive] = Screens_exit;
 Main_ExitCurrentobj[Main_UserHost] = Screens_exit;
 Main_ExitCurrentobj[Main_usergames] = Screens_exit;
@@ -1158,16 +1161,12 @@ function Main_CenterLables(event) {
                     Main_CenterLablesCleanSwitchScreen(Main_aGame);
                 } else if (Main_values.Main_Go === Main_usergames ||
                     Main_values.Main_Go === Main_UserHost || Main_values.Main_Go === Main_UserVod ||
-                    Main_values.Main_Go === Main_UserLive) {
+                    Main_values.Main_Go === Main_UserLive || Main_values.Main_Go === Main_UserChannels) {
                     Main_CenterLablesCleanSwitchScreen(Main_Users);
                 } else if (Main_values.Main_Go === Main_ChannelClip) {
                     Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
                 } else if (Main_values.Main_Go === Main_AGameVod) {
                     Main_CenterLablesCleanSwitchScreen(Main_aGame);
-                } else if (Main_values.Main_Go === Main_UserChannels) {
-                    Main_values.Main_Go = Main_Users;
-                    UserChannels_exit();
-                    Main_CenterLablesCleanSwitch();
                 } else if (Main_values.Main_Go === Main_ChannelContent) {
                     Main_values.Main_Go = Main_values.Main_BeforeChannel;
                     Main_values.Main_BeforeChannel = Main_Live;
@@ -1284,7 +1283,6 @@ function Main_RemoveKeys() {
     else if (Main_values.Main_Go === Main_SearchGames) document.body.removeEventListener("keydown", SearchGames_handleKeyDown);
     else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-    else if (Main_values.Main_Go === Main_UserChannels) document.body.removeEventListener("keydown", UserChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else {
         if (Main_values.Main_Go === Main_Live) inUseObj = Live;
@@ -1301,7 +1299,8 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
         else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-
+         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
+    
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
 }
@@ -1315,8 +1314,7 @@ function Main_ReloadScreen() {
 
     Main_CounterDialogRst();
 
-    if (Main_values.Main_Go === Main_UserChannels) UserChannels_StartLoad();
-    else if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
+    if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_SearchLive) SearchLive_StartLoad();
     else if (Main_values.Main_Go === Main_SearchGames) SearchGames_StartLoad();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
@@ -1338,6 +1336,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
         else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
+         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
 
         Screens_StartLoad();
     }

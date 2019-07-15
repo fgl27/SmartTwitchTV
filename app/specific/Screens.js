@@ -33,6 +33,9 @@ function Screens_InitSecondaryScreens() {
     ScreensObj_InitChannelVod();
     //Vod user screen
     ScreensObj_InitUserVod();
+
+    //Channels screens
+    ScreensObj_InitUserChannels();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -43,7 +46,7 @@ function Screens_ScreenIds(base) {
         base + '_title',
         base + '_createdon',
         base + '_game',
-        base + '_viwers',
+        base + '_viewers',
         base + '_duration',
         base + '_cell',
         'cpempty_',
@@ -304,6 +307,23 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     return Main_td;
 }
 
+
+function Screens_createCellChannel(row_id, coloumn_id, idArray, valuesArray) {
+
+    var id = Screens_createCellBase(row_id, coloumn_id);
+
+    Main_td.setAttribute('id', idArray[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
+
+    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div><img id="' + idArray[1] +
+        id + '" alt="" class="stream_img"src="' + valuesArray[2] +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text2">' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div></div>';
+
+    return Main_td;
+}
+
 function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
 
     var id = Screens_createCellBase(row_id, coloumn_id);
@@ -401,7 +421,7 @@ function Screens_addFocus(forceScroll) {
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataRequestStart();
-    } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
+    } else if ((inUseObj.posY + inUseObj.ItemsLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
         inUseObj.loadDataSuccess();
     }
 

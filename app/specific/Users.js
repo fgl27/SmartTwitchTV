@@ -201,8 +201,10 @@ function Users_keyEnter() {
         } else if (Users_cursorX === 3) {
             inUseObj = UserVod;
             Screens_init();
-        } else if (Users_cursorX === 4) UserChannels_init();
-        else if (Users_cursorX === 5) {
+        } else if (Users_cursorX === 4) {
+            inUseObj = UserChannels;
+            Screens_init();
+        } else if (Users_cursorX === 5) {
             if (!Users_cursorY) {
                 Main_values.Main_Before = Main_Users;
                 AddUser_init();
