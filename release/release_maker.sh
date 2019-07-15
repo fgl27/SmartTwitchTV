@@ -98,13 +98,18 @@ else
 	exit;
 fi;
 
-# Exit if uglifyjs is not available
-cancrass=1;
-if ! which 'crass' >/dev/null  ; then
-	echo -e "\\n${bldred}can't run crass it's not installed";
-	echo -e "${bldred}To install crass read the release maker notes on the top\\n";
+# Check crass
+cancrass=0;
+if which 'crass' >/dev/null  ; then
+	# call this .sh and 1 "this.sh 1" to update uglify-js
+	if [ "$1" == 1 ]; then
+		npm install crass -g
+	fi;
+	cancrass=1;
+else
+	echo -e "\\n${bldred}can't run cancrass, as it's not installed";
+	echo -e "${bldred}To install cancrass read the release maker notes on the top\\n";
 	echo -e "${bldred}Release wil work but it can be more compressed using crass"
-	cancrass=0;
 fi;
 
 # this .sh folder used for cd back and for
