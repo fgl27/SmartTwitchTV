@@ -403,9 +403,9 @@ function Screens_loadDataSuccessFinish() {
             }
         } else {
             Main_ready(function() {
-            Screens_addFocus(true);
-            Main_SaveValues();
-            Screens_loadDataSuccessFinishEnd();
+                Screens_addFocus(true);
+                Main_SaveValues();
+                Screens_loadDataSuccessFinishEnd();
             });
         }
     } else {
