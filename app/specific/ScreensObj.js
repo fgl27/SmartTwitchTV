@@ -290,6 +290,38 @@ function ScreensObj_InitChannelVod() {
 
     ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
     ChannelVod.set_ThumbSize();
+
+    ChannelVod.addCell = function(cell) {
+
+            var thumbnail = cell.preview.template;
+            var thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
+
+            // video content can be null sometimes, in that case the preview will be 404_processing
+            // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
+            if (!this.row_id && !this.row_id && thumbnail_404) {
+                thumbnail_404 = false;
+                thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
+            }
+
+
+        if (!this.idObject[cell._id] && !thumbnail_404) {
+            this.itemsCount++;
+            this.idObject[cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellVod(
+                this.row_id,
+                this.coloumn_id,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [thumbnail.replace("{width}x{height}", Main_VideoSize),
+                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
+                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
+                ]));
+
+            this.coloumn_id++;
+        }
+    };
 }
 
 function ScreensObj_InitAGameVod() {
