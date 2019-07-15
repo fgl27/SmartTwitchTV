@@ -1,7 +1,7 @@
 #!/bin/bash
 #code compressor using uglifyjs, jshint, js-beautify, sed and cleancss, this .sh runs on linux shell base system
 
-#instalation of uglifyjs jshint, js-beautify and html-minifier has more then one step
+#installation of uglifyjs jshint, js-beautify and html-minifier has more then one step
 #1# Donwload npm/node and https://nodejs.org/en/
 # extract the download file then do the bellow on the terminal
 
@@ -197,7 +197,7 @@ if [ "$canuglifyjs" == 1 ]; then
 	js_comp_ugf "${js_folders[@]}";
 fi;
 
-# Compress using cleancss
+# Compress using crass, just compress no optimization is needed as it will cause css problems
 if [ "$cancrass" == 1 ]; then
 	crass release/githubio/css/icons.css > release/githubio/css/icons.min.css
 fi;
