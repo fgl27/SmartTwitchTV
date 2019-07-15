@@ -294,15 +294,15 @@ function ScreensObj_InitChannelVod() {
 
     ChannelVod.addCell = function(cell) {
 
-            var thumbnail = cell.preview.template;
-            var thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
+        var thumbnail = cell.preview.template;
+        var thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
 
-            // video content can be null sometimes, in that case the preview will be 404_processing
-            // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-            if (!this.row_id && !this.row_id && thumbnail_404) {
-                thumbnail_404 = false;
-                thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
-            }
+        // video content can be null sometimes, in that case the preview will be 404_processing
+        // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
+        if (!this.row_id && !this.row_id && thumbnail_404) {
+            thumbnail_404 = false;
+            thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
+        }
 
 
         if (!this.idObject[cell._id] && !thumbnail_404) {
@@ -1088,7 +1088,7 @@ function ScreensObj_InitUserChannels() {
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
-        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
+                '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
