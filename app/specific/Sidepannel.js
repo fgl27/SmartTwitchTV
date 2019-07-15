@@ -66,10 +66,7 @@ function Sidepannel_KeyEnter() {
             if (!Main_values.Search_isSearching &&
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                 ChannelContent_SetChannelValue();
-            if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
-            Main_ExitCurrent(Main_values.Main_Go);
-            Main_values.Main_Go = Main_Search;
-            Main_SwitchScreen();
+            Main_OpenSearch();
         } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
     } else if (Sidepannel_Pos === 1) {
         Sidepannel_Isscreen = false;

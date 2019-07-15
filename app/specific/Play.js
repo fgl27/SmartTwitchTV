@@ -1228,16 +1228,21 @@ function Play_OpenChannel(PlayVodClip) {
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
+//TODO improve this
 function Play_OpenSearch(PlayVodClip) {
-    if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
-    Main_ExitCurrent(Main_values.Main_Go);
-    Main_values.Main_Go = Main_Search;
-
     if (PlayVodClip === 1) {
         Play_hideChat();
-        Play_shutdownStream();
-    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
-    else if (PlayVodClip === 3) PlayClip_shutdownStream();
+        Play_PreshutdownStream();
+    } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
+    else if (PlayVodClip === 3) PlayClip_PreshutdownStream();
+
+    Main_values.Play_WasPlaying = 0;
+    PlayVod_ProgresBarrUpdate(0, 0);
+    Main_ShowElement('scene1');
+    Main_HideElement('scene2');
+    Main_updateclock();
+    document.body.addEventListener("keyup", Main_handleKeyUp, false);
+    Main_OpenSearch();
 }
 
 function Play_OpenGame(PlayVodClip) {
