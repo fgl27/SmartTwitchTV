@@ -100,7 +100,7 @@ fi;
 
 # Exit if uglifyjs is not available
 cancrass=1;
-if ! which 'cleancss' >/dev/null  ; then
+if ! which 'crass' >/dev/null  ; then
 	echo -e "\\n${bldred}can't run crass it's not installed";
 	echo -e "${bldred}To install crass read the release maker notes on the top\\n";
 	echo -e "${bldred}Release wil work but it can be more compressed using crass"
