@@ -84,6 +84,7 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 
 //The values of thumbnail and related for it screen type
+var Main_ReloadLimitOffsetGames = 1.35;
 var Main_ReloadLimitOffsetVideos = 1.5;
 
 var Main_ItemsLimitVideo = 45;
@@ -92,6 +93,7 @@ var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_Coloumn
 
 var Main_ItemsLimitGame = 45;
 var Main_ColoumnsCountGame = 5;
+var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
 
 var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
