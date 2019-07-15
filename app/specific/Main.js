@@ -1299,8 +1299,8 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
         else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
-    
+        else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
+
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
 }
@@ -1336,7 +1336,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
         else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
+        else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
 
         Screens_StartLoad();
     }

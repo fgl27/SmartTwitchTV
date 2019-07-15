@@ -433,7 +433,7 @@ function Screens_ThumbNotNull(thumbnail) {
 }
 
 function Screens_addrow(forceScroll) {
-    if (inUseObj.currY < inUseObj.posY) {// down
+    if (inUseObj.currY < inUseObj.posY) { // down
         if (inUseObj.posY > 1) {
             if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
                 document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 1]);
@@ -441,7 +441,7 @@ function Screens_addrow(forceScroll) {
                     document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 2)).remove();
             }
         }
-    } else if (inUseObj.currY > inUseObj.posY) {// up
+    } else if (inUseObj.currY > inUseObj.posY) { // up
         if (inUseObj.posY) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[inUseObj.posY - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
@@ -454,7 +454,7 @@ function Screens_addrow(forceScroll) {
 }
 
 function Screens_addrowChannel(forceScroll) {
-    if (inUseObj.currY < inUseObj.posY) {// down
+    if (inUseObj.currY < inUseObj.posY) { // down
         if (inUseObj.posY > 2) {
             if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
                 document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 1]);
@@ -462,7 +462,7 @@ function Screens_addrowChannel(forceScroll) {
                     document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 3)).remove();
             }
         }
-    } else if (inUseObj.currY > inUseObj.posY) {// Up
+    } else if (inUseObj.currY > inUseObj.posY) { // Up
         if (inUseObj.posY > 1) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[inUseObj.posY - 2], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
