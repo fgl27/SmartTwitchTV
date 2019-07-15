@@ -102,6 +102,7 @@ var Base_Vod_obj = {
     visiblerows: 3,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
@@ -442,6 +443,7 @@ function ScreensObj_InitUserVod() {
 var Base_Live_obj = {
     ThumbSize: 32.65,
     visiblerows: 3,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
@@ -753,6 +755,7 @@ var Base_Clip_obj = {
     ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
     TopRowCreated: false,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
     cursor: null,
@@ -934,6 +937,7 @@ var Base_Game_obj = {
     HeaderQuatity: 2,
     ThumbSize: 19.35,
     visiblerows: 3,
+    ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ItemsLimit: Main_ItemsLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
     addFocus: Screens_addFocusGame,
@@ -1049,6 +1053,7 @@ var Base_Channel_obj = {
     ItemsLimit: Main_ItemsLimitChannel,
     ColoumnsCount: Main_ColoumnsCountChannel,
     addFocus: Screens_addFocusChannel,
+    ItemsReloadLimit: Main_ItemsReloadLimitChannel,
     img_404: IMG_404_LOGO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;

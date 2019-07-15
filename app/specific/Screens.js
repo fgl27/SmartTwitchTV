@@ -421,7 +421,7 @@ function Screens_addFocus(forceScroll) {
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataRequestStart();
-    } else if ((inUseObj.posY + inUseObj.ItemsLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
+    } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
         inUseObj.loadDataSuccess();
     }
 
