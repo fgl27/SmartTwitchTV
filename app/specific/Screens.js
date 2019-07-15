@@ -372,34 +372,52 @@ function Screens_loadDataSuccessFinish() {
 
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
-                if (Main_values.Play_WasPlaying === 1) Main_openStream();
-                else Main_openVod();
+                Main_ready(function() {
+                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
+                    else Main_openVod();
 
-                Main_SwitchScreen(true);
-                window.setTimeout(function() {
-                    if (!Play_IsWarning) Play_HideWarningDialog();
-                }, 2000);
+                    Main_SwitchScreen(true);
+                    window.setTimeout(function() {
+                        if (!Play_IsWarning) Play_HideWarningDialog();
+                    }, 2000);
+                    Screens_loadDataSuccessFinishEnd();
+                });
             } else if (Main_GoBefore !== 1) {
-                Main_ExitCurrent(Main_values.Main_Go);
-                Main_values.Main_Go = Main_GoBefore;
-                Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-                Main_SwitchScreen();
+                Main_ready(function() {
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
+                    Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+                    window.clearTimeout(Main_SetTopOpacityId);
+                    Main_UnSetTopOpacity();
+                    Main_SwitchScreenAction();
+                    Screens_loadDataSuccessFinishEnd();
+                });
             } else {
-                if (Main_values.Never_run) Main_showControlsDialog();
-                Main_values.Never_run = false;
-                Screens_addFocus(true);
-                Main_SaveValues();
+                Main_ready(function() {
+                    if (Main_values.Never_run) Main_showControlsDialog();
+                    Main_values.Never_run = false;
+                    Screens_addFocus(true);
+                    Main_SaveValues();
+                    Screens_loadDataSuccessFinishEnd();
+                });
             }
         } else {
+            Main_ready(function() {
             Screens_addFocus(true);
             Main_SaveValues();
+            Screens_loadDataSuccessFinishEnd();
+            });
         }
-        Main_FirstRun = false;
-        inUseObj.FirstLoad = false;
-        Main_HideLoadDialog();
     } else {
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
     }
+}
+
+function Screens_loadDataSuccessFinishEnd() {
+    Main_FirstRun = false;
+    inUseObj.FirstLoad = false;
+    Main_HideLoadDialog();
+    Main_ShowElement('topbar');
 }
 
 function Screens_addFocus(forceScroll) {

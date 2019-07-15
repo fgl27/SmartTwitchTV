@@ -167,6 +167,7 @@ function Main_loadTranslations(language) {
             console.log('Main_isDebug: ' + Main_isDebug);
             console.log('Main_isBrowser: ' + Main_isBrowser);
         }
+        Main_showLoadDialog();
 
         if (Main_Android) {
             //TODO remove the try some day after the app update has be live for some time
@@ -238,10 +239,14 @@ function Main_initWindows() {
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
         inUseObj = Live;
-        Screens_init();
-        Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
-        Main_ShowElement('topbar');
-        Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
+        //Minor delay to let all properly load before starting to show the app
+        window.setTimeout(function() {
+            Main_ready(function() {
+                Screens_init();
+                Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
+                Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
+            });
+        }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1500 : 0);
     });
 }
 
