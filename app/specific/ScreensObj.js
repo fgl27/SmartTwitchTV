@@ -1044,7 +1044,7 @@ function ScreensObj_InitUserGames() {
 }
 
 var Base_Channel_obj = {
-    ThumbSize: 16.05,
+    ThumbSize: 16,
     visiblerows: 4,
     ItemsLimit: Main_ItemsLimitChannel,
     ColoumnsCount: Main_ColoumnsCountChannel,
