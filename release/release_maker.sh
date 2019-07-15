@@ -12,14 +12,8 @@
 # export NODEJS_HOME=/usr/lib/nodejs/node
 # export PATH=$NODEJS_HOME/bin:$PATH
 
-# now install uglifyjs jshint, js-beautify and html-minifier via terminal
-# npm install uglify-js jshint js-beautify html-minifier -g
-
-#installation of sed and cleancss is via more used apt-get
-
-#sudo apt-get install sed cleancss
-
-# there is a nodejs version of cleancss but the bin works well with bash
+# now install uglifyjs jshint, js-beautify, html-minifier and crass via terminal
+# npm install uglify-js jshint js-beautify html-minifier crass -g
 
 #exec this file or drag this .sh file to terminal to generate a released
 
@@ -105,13 +99,12 @@ else
 fi;
 
 # Exit if uglifyjs is not available
-cancleancss=1;
+cancrass=1;
 if ! which 'cleancss' >/dev/null  ; then
-	echo -e "\\n${bldred}can't run cleancss it's not installed";
-	echo -e "${bldred}Install using command:";
-	echo -e "${bldred}sudo apt-get install cleancss\\n";
-	echo -e "${bldred}Release wil work but it can be more compressed using cleancss"
-	cancleancss=0;
+	echo -e "\\n${bldred}can't run crass it's not installed";
+	echo -e "${bldred}To install crass read the release maker notes on the top\\n";
+	echo -e "${bldred}Release wil work but it can be more compressed using crass"
+	cancrass=0;
 fi;
 
 # this .sh folder used for cd back and for
@@ -205,8 +198,8 @@ if [ "$canuglifyjs" == 1 ]; then
 fi;
 
 # Compress using cleancss
-if [ "$cancleancss" == 1 ]; then
-	cleancss release/githubio/css/icons.css -o release/githubio/css/icons.min.css
+if [ "$cancrass" == 1 ]; then
+	crass release/githubio/css/icons.css --optimize --O1 > release/githubio/css/icons.min.css
 fi;
 
 cd release/ || exit
