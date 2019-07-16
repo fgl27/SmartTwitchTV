@@ -548,6 +548,12 @@ function ScreensObj_InitSearchLive() {
 
     SearchLive = Screens_assign(SearchLive, Base_Live_obj);
     SearchLive.set_ThumbSize();
+
+    SearchLive.setMax = function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined' ||
+            (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
+    };
 }
 
 function ScreensObj_InitUserLive() {
