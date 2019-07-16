@@ -393,7 +393,6 @@ function Screens_loadDataSuccessFinish() {
                     Screens_loadDataSuccessFinishEnd();
                 });
             } else {
-
                 Main_ready(function() {
                     if (Main_values.Never_run) Main_showControlsDialog();
                     Main_values.Never_run = false;
@@ -403,11 +402,11 @@ function Screens_loadDataSuccessFinish() {
                 });
             }
         } else {
-            Main_ready(function() {
+            //Main_ready(function() {
                 Screens_addFocus(true);
                 Main_SaveValues();
                 Screens_loadDataSuccessFinishEnd();
-            });
+            //});
         }
     } else {
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
