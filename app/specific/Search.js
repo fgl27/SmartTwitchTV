@@ -50,7 +50,10 @@ function Search_loadData() {
         else if (Search_cursorX === 1) {
             inUseObj = SearchGames;
             Screens_init();
-        } else if (Search_cursorX === 2) SearchLive_init();
+        } else if (Search_cursorX === 2) {
+            inUseObj = SearchLive;
+            Screens_init();
+        }
     });
 }
 

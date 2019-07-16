@@ -38,6 +38,7 @@ function Screens_InitSecondaryScreens() {
 
     //Search screen
     ScreensObj_InitSearchGames();
+    ScreensObj_InitSearchLive();
 }
 
 //TODO cleanup not used when finished migrate all
