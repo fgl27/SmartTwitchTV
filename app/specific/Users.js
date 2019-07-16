@@ -12,6 +12,7 @@ var Users_loadingData = true;
 
 function Users_init() {
     if (Main_newUsercode) {
+        Main_HideElement('topbar');
         Users_exit();
         AddCode_CheckNewCode(Main_newUsercode);
         return;
