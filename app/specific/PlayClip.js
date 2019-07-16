@@ -458,6 +458,11 @@ function PlayClip_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
+                //Android.setPlaybackSpeed(Play_Speed[Play_SpeedPos]);
+                //console.log(Play_Speed[Play_SpeedPos]);
+                //Play_SpeedPos++;
+                //if (Play_SpeedPos > (Play_Speed.length - 1)) Play_SpeedPos = 0;
+                //break;
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();

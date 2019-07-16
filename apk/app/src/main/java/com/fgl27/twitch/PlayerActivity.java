@@ -41,6 +41,7 @@ import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -500,6 +501,12 @@ public class PlayerActivity extends Activity {
         public boolean getPlaybackState() {
             if (player != null) return player.getPlayWhenReady();
             return false;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void setPlaybackSpeed(float value) {
+            if (player != null) player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
         }
 
         @SuppressWarnings("unused")//called by JS
