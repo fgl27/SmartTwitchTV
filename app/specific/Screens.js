@@ -1,6 +1,5 @@
 //Variable initialization
 var inUseObj = {};
-inUseObj.FirstLoad = false;
 
 //Initiate all Main screens obj and they properties
 function Screens_InitScreens() {
@@ -360,7 +359,7 @@ function Screens_loadDataSuccessFinish() {
             for (var i = 0; i < (inUseObj.Cells.length < inUseObj.visiblerows ? inUseObj.Cells.length : inUseObj.visiblerows); i++)
                 doc.appendChild(inUseObj.Cells[i]);
         }
-
+        inUseObj.FirstLoad = false;
         //TODO improve this check
         if (Main_FirstRun && inUseObj.status && Settings_value.restor_playback.defaultValue) {
             if (Main_values.Play_WasPlaying) {
@@ -394,6 +393,7 @@ function Screens_loadDataSuccessFinish() {
                     Screens_loadDataSuccessFinishEnd();
                 });
             } else {
+
                 Main_ready(function() {
                     if (Main_values.Never_run) Main_showControlsDialog();
                     Main_values.Never_run = false;
@@ -416,7 +416,6 @@ function Screens_loadDataSuccessFinish() {
 
 function Screens_loadDataSuccessFinishEnd() {
     Main_FirstRun = false;
-    inUseObj.FirstLoad = false;
     Main_HideLoadDialog();
     Main_ShowElement('topbar');
 }
