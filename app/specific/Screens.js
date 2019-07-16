@@ -383,6 +383,7 @@ function Screens_loadDataSuccessFinish() {
                     Screens_loadDataSuccessFinishEnd();
                 });
             } else if (Main_GoBefore !== 1) {
+                Main_HideElement(inUseObj.ids[10]);
                 Main_ready(function() {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
