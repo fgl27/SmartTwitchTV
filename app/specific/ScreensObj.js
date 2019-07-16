@@ -36,6 +36,7 @@ var UserLive;
 var UserChannels;
 var SearchGames;
 var SearchLive;
+var SearchChannels;
 
 var Base_obj = {
     posX: 0,
@@ -1140,20 +1141,17 @@ var Base_Channel_obj = {
     empty_str: function() {
         return STR_NO + STR_USER_CHANNEL;
     },
-    addCell: function(cell) {
-        this.addCellTemp(cell);
-    },
     addCellTemp: function(cell) {
-        if (!this.idObject[cell.channel._id]) {
+        if (!this.idObject[cell._id]) {
 
             this.itemsCount++;
-            this.idObject[cell.channel._id] = 1;
+            this.idObject[cell._id] = 1;
 
             this.row.appendChild(Screens_createCellChannel(
                 this.row_id,
                 this.coloumn_id,
                 this.ids,
-                [cell.channel.name, cell.channel._id, cell.channel.logo, cell.channel.display_name]));
+                [cell.name, cell._id, cell.logo, cell.display_name]));
 
             this.coloumn_id++;
         }
@@ -1197,6 +1195,10 @@ function ScreensObj_InitUserChannels() {
             ChannelContent_UserChannels = true;
             Screens_exit();
             Main_SwitchScreen();
+        },
+        addCell: function(cell) {
+            cell = cell.channel;
+            this.addCellTemp(cell);
         }
     }, Base_obj);
 
@@ -1204,6 +1206,60 @@ function ScreensObj_InitUserChannels() {
     UserChannels.set_ThumbSize();
 
     UserChannels.addrow = Screens_addrowChannel;
+}
+
+function ScreensObj_InitSearchChannels() {
+    SearchChannels = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('SearchChannels'),
+        table: 'stream_table_search_channel',
+        screen: Main_SearchChannels,
+        object: 'channels',
+        base_url: 'https://api.twitch.tv/kraken/search/channels?limit=' + Main_ItemsLimitMax + '&query=',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
+                '&offset=' + this.offset;
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_values.Search_isSearching = true;
+            Main_cleanTopLabel();
+            if (this.lastData !== Main_values.Search_data) this.status = false;
+            this.lastData = Main_values.Search_data;
+            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Main_values.Search_data + "'"));
+        },
+        label_exit: function() {
+            if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
+        },
+        key_play: function() {
+            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
+
+            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+
+            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
+            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
+            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
+            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_values.Main_BeforeChannel = Main_SearchChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = false;
+            ChannelContent_UserChannels = false;
+            Screens_exit();
+            Main_SwitchScreen();
+        },
+        addCell: function(cell) {
+            this.addCellTemp(cell);
+        }
+    }, Base_obj);
+
+    SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
+    SearchChannels.set_ThumbSize();
+
+    SearchChannels.addrow = Screens_addrowChannel;
 }
 
 function ScreensObj_TopLableAgameInit() {

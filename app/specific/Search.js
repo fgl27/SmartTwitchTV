@@ -46,8 +46,10 @@ function Search_exit() {
 function Search_loadData() {
     Search_exit();
     Main_ready(function() {
-        if (!Search_cursorX) SearchChannels_init();
-        else if (Search_cursorX === 1) {
+        if (!Search_cursorX) {
+            inUseObj = SearchChannels;
+            Screens_init();
+        } else if (Search_cursorX === 1) {
             inUseObj = SearchGames;
             Screens_init();
         } else if (Search_cursorX === 2) {
