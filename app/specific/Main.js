@@ -246,7 +246,7 @@ function Main_initWindows() {
                 Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
             });
-        }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1500 : 0);
+        }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1000 : 0);
     });
 }
 
