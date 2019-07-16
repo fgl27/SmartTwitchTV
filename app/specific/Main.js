@@ -563,8 +563,12 @@ var Main_Switchobj = {
 Main_Switchobj[Main_Users] = Users_init;
 Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
 
-Main_Switchobj[Main_SearchLive] = SearchLive_init;
 Main_Switchobj[Main_SearchChannels] = SearchChannels_init;
+
+Main_Switchobj[Main_SearchLive] = function() {
+    inUseObj = SearchLive;
+    Screens_init();
+};
 
 Main_Switchobj[Main_SearchGames] = function() {
     inUseObj = SearchGames;
@@ -675,9 +679,9 @@ var Main_ExitCurrentobj = {
 Main_ExitCurrentobj[Main_Users] = Users_exit;
 Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
 
-Main_ExitCurrentobj[Main_SearchLive] = SearchLive_exit;
 Main_ExitCurrentobj[Main_SearchChannels] = SearchChannels_exit;
 
+Main_ExitCurrentobj[Main_SearchLive] = Screens_exit;
 Main_ExitCurrentobj[Main_SearchGames] = Screens_exit;
 Main_ExitCurrentobj[Main_UserChannels] = Screens_exit;
 Main_ExitCurrentobj[Main_UserLive] = Screens_exit;
@@ -807,38 +811,6 @@ function Main_ChannelHtml(id, idArray, valuesArray) {
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div>';
 }
 
-function Main_createCellVideo(row_id, id, data, idArray, valuesArray) {
-
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = Main_VideoHtml(id, idArray, valuesArray);
-
-    return Main_td;
-}
-
-function Main_replaceVideo(id, data, valuesArray, ids) {
-    var ele = document.getElementById(id);
-    var splitedId = id.split(ids[9])[1];
-    ele.setAttribute(Main_DataAttribute, JSON.stringify(data));
-    ele.innerHTML = Main_VideoHtml(splitedId, ids, valuesArray);
-    ele.setAttribute('id', ids[8] + splitedId);
-}
-
-function Main_VideoHtml(id, idArray, valuesArray) {
-    return '<div id="' + idArray[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + idArray[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] + Main_randomimg +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
-        '<div id="' + idArray[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") + '</div>' +
-        '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div>' + '</div>';
-}
-
 //"handleKeyUp, keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
 //That can cause visual glitches and make the user lost sense on were the focus is
 //Or cause the app to keep moving up/down seconds after the key has be released
@@ -870,18 +842,6 @@ function Main_addFocusChannel(y, x, idArray, ColoumnsCount, itemsCount, forceScr
                     (document.getElementById(idArray[4] + y + '_' + x).offsetTop * -1) + (screen.height * 0.42));
             } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[6], screen.height * 0.07);
-
-    } else Main_handleKeyUp();
-}
-
-function Main_addFocusVideo(y, x, idArray, ColoumnsCount, itemsCount, forceScroll) {
-    Main_AddClass(idArray[0] + y + '_' + x, Main_classThumb);
-    Main_CounterDialog(x, y, ColoumnsCount, itemsCount);
-    if (Main_YchangeAddFocus(y) || forceScroll) {
-
-        if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
-        else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
-            document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1);
 
     } else Main_handleKeyUp();
 }
@@ -1156,9 +1116,8 @@ function Main_CenterLables(event) {
                 } else if (Main_values.Main_Go === Main_SearchLive) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                    SearchLive_exit();
                     Main_values.Search_isSearching = false;
-                    Main_CenterLablesCleanSwitch();
+                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
                 } else if (Main_values.Main_Go === Main_SearchGames) {
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
@@ -1256,8 +1215,7 @@ function Main_CenterLablesExit() {
 
 function Main_RemoveKeys() {
 
-    if (Main_values.Main_Go === Main_SearchLive) document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
-    else if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
+    if (Main_values.Main_Go === Main_SearchChannels) document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
     else if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
     else {
@@ -1277,6 +1235,7 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
+        else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -1292,7 +1251,6 @@ function Main_ReloadScreen() {
     Main_CounterDialogRst();
 
     if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
-    else if (Main_values.Main_Go === Main_SearchLive) SearchLive_StartLoad();
     else if (Main_values.Main_Go === Main_SearchChannels) SearchChannels_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
     else if (Main_values.Main_Go === Main_usergames) {
@@ -1314,6 +1272,7 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
+        else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
 
         Screens_StartLoad();
     }

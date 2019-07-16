@@ -35,6 +35,7 @@ var UserHost;
 var UserLive;
 var UserChannels;
 var SearchGames;
+var SearchLive;
 
 var Base_obj = {
     posX: 0,
@@ -512,6 +513,40 @@ function ScreensObj_InitLive() {
 
     Live = Screens_assign(Live, Base_Live_obj);
     Live.set_ThumbSize();
+}
+
+function ScreensObj_InitSearchLive() {
+    SearchLive = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('SearchLive'),
+        table: 'stream_table_search_live',
+        screen: Main_SearchLive,
+        object: 'streams',
+        base_url: 'https://api.twitch.tv/kraken/search/streams?limit=' + Main_ItemsLimitMax + '&query=',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
+                '&offset=' + this.offset;
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_values.Search_isSearching = true;
+            Main_cleanTopLabel();
+            if (this.lastData !== Main_values.Search_data) this.status = false;
+            this.lastData = Main_values.Search_data;
+            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Main_values.Search_data + "'"));
+        },
+        label_exit: function() {
+            Main_values.Search_isSearching = false;
+            if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
+        },
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    SearchLive = Screens_assign(SearchLive, Base_Live_obj);
+    SearchLive.set_ThumbSize();
 }
 
 function ScreensObj_InitUserLive() {
