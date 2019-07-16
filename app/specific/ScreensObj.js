@@ -81,17 +81,21 @@ var Base_obj = {
         if (this.data) {
             responseText = JSON.parse(responseText);
 
-            this.data = this.data.concat(responseText[this.object]);
-            this.offset = this.data.length;
+            if (responseText[this.object]) {
+                this.data = this.data.concat(responseText[this.object]);
+                this.offset = this.data.length;
+            }
 
             this.setMax(responseText);
         } else {
             responseText = JSON.parse(responseText);
 
             this.data = responseText[this.object];
-            this.offset = this.data.length;
+            if (this.data) {
+                this.offset = this.data.length;
+                this.setMax(responseText);
+            } else this.data = [];
 
-            this.setMax(responseText);
             this.loadDataSuccess();
         }
         this.loadingData = false;
@@ -567,15 +571,18 @@ function ScreensObj_InitUserLive() {
             if (this.data) {
                 responseText = JSON.parse(responseText);
 
-                this.data = this.data.concat(responseText[this.object]);
-                this.offset = this.data.length;
+                if (responseText[this.object]) {
+                    this.data = this.data.concat(responseText[this.object]);
+                    this.offset = this.data.length;
+                }
 
                 this.setMax(responseText);
             } else {
                 responseText = JSON.parse(responseText);
 
                 this.data = responseText[this.object];
-                this.offset = this.data.length;
+                if (this.data) this.offset = this.data.length;
+                else this.data = [];
 
                 this.setMax(responseText);
                 this.loadDataSuccess();
