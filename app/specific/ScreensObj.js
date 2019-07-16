@@ -34,6 +34,7 @@ var ChannelVod;
 var UserHost;
 var UserLive;
 var UserChannels;
+var SearchGames;
 
 var Base_obj = {
     posX: 0,
@@ -679,7 +680,7 @@ function ScreensObj_InitAGame() {
             if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                 Main_cleanTopLabel();
                 Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
-            }
+            } else Main_values.gameSelectedOld = null;
 
             Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
                 ': ' + Main_values.Main_gameSelected));
@@ -1045,6 +1046,40 @@ function ScreensObj_InitUserGames() {
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
     UserGames.set_ThumbSize();
+}
+
+function ScreensObj_InitSearchGames() {
+    SearchGames = Screens_assign({
+        ids: Screens_ScreenIds('SearchGames'),
+        table: 'stream_table_search_game',
+        screen: Main_SearchGames,
+        isLive: false,
+        OldUserName: '',
+        object: 'games',
+        lastData: '',
+        base_url: 'https://api.twitch.tv/kraken/search/games?query=',
+        set_url: function() {
+            this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
+        },
+        label_init: function() {
+            if (!Main_values.gameSelectedOld) Main_values.gameSelectedOld = Main_values.Main_gameSelected;
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_values.Search_isSearching = true;
+            Main_cleanTopLabel();
+            if (this.lastData !== Main_values.Search_data) this.status = false;
+            this.lastData = Main_values.Search_data;
+            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
+        },
+        label_exit: function() {
+            Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+            if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
+            Main_values.Games_return = false;
+        },
+    }, Base_obj);
+
+    SearchGames = Screens_assign(SearchGames, Base_Game_obj);
+    SearchGames.set_ThumbSize();
 }
 
 var Base_Channel_obj = {
