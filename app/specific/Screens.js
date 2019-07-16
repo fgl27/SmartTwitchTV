@@ -390,7 +390,11 @@ function Screens_loadDataSuccessFinish() {
                     window.clearTimeout(Main_SetTopOpacityId);
                     Main_UnSetTopOpacity();
                     Main_SwitchScreenAction();
-                    Screens_loadDataSuccessFinishEnd();
+                    if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
+                    else {
+                        Main_FirstRun = false;
+                        Main_HideLoadDialog();
+                    }
                 });
             } else {
                 Main_ready(function() {
