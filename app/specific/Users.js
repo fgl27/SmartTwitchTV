@@ -13,8 +13,10 @@ var Users_loadingData = true;
 function Users_init() {
     if (Main_newUsercode) {
         Main_HideElement('topbar');
-        Users_exit();
-        AddCode_CheckNewCode(Main_newUsercode);
+        Main_ready(function() {
+            Users_exit();
+            AddCode_CheckNewCode(Main_newUsercode);
+        });
         return;
     } else if (!AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_Live;
