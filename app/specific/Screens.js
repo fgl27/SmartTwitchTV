@@ -161,6 +161,7 @@ function Screens_loadDatafail() {
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
         inUseObj.key_exit();
+        Main_ShowElement('topbar');
     } else inUseObj.dataEnded = true;
 }
 
