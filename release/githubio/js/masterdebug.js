@@ -232,100 +232,7 @@ var STR_LIVE_FEED;
 var STR_NOKUSER_WARN;
 var STR_END_DIALOG_SETTINGS;
 var STR_END_DIALOG_SETTINGS_SUMMARY;
-var STR_END_DIALOG_DISABLE;// Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
-var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
-var STR_BR = "<br>";
-var STR_DOT = '<i class="icon-circle" style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  ";
-var STR_DIV_TITLE = '<div class="about_text_title">';
-var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
-var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
-var STR_CONTROL_KEY = '';
-var STR_SEARCH_KEY = '';
-var STR_ABOUT_KEY = '';
-var STR_SETTINGS_KEY = '';
-var STR_CONTROLS_MAIN_0 = '';
-var STR_ABOUT_INFO_HEADER = '';
-var STR_ABOUT_INFO_0 = '';
-var STR_CONTROLS_PLAY_0 = '';
-var STR_OAUTH_EXPLAIN = '';
-var STR_SPACE = '&nbsp;';
-
-// This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
-function DefaultLang() {
-    STR_CONTROL_KEY = STR_CONTROLS + " (C)";
-    STR_SEARCH_KEY = STR_SEARCH + " (D)";
-    STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
-    STR_ABOUT_KEY = STR_ABOUT + " (A)";
-    STR_SWITCH = STR_SWITCH + STR_KEY_UP_DOWN;
-    STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
-    STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE;
-    STR_GOBACK = STR_GOBACK_START + STR_TWICE;
-
-    STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
-        STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
-        STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR + STR_BR +
-        STR_DIV_TITLE + STR_CHAT + '</div>' +
-        STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_11;
-
-    STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
-        STR_DIV_TITLE + STR_GENERAL + '</div>' +
-        STR_BR +
-        STR_DIV_MIDLE_LEFT +
-        STR_DOT + STR_SIDE_PANEL + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_2 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_3 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_4 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_5 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
-        STR_SPACE + STR_SPACE + STR_SPACE + STR_CONTROLS_MAIN_11 + STR_BR +
-        STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' + STR_BR +
-        STR_CONTROLS_PLAY_0 + STR_BR + STR_BR +
-        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
-
-    STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
-    STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
-        (!Main_isBrowser ? '' : STR_BR + '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
-        STR_BR +
-        STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-        STR_ABOUT_EMAIL + STR_BR +
-        STR_BR +
-        STR_ABOUT_INFO_4 + STR_BR +
-        STR_ABOUT_INFO_5 + STR_BR +
-        STR_BR +
-        STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
-        STR_DIV_MIDLE_LEFT +
-        STR_ABOUT_INFO_14 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_11 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
-        STR_ABOUT_INFO_15 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
-        STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
-
-    STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">http://tiny.cc/twitchkeycode</div>') + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN3 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN4 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN5 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN6;
-}function en_USLang() {
+var STR_END_DIALOG_DISABLE;function en_USLang() {
     // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
     Main_IsDayFirst = false;
 
@@ -565,482 +472,1349 @@ function DefaultLang() {
     STR_END_DIALOG_SETTINGS = "End dialog";
     STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
+}// Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
+var STR_BR = "<br>";
+var STR_DOT = '<i class="icon-circle" style="font-size: 50%; vertical-align: middle; font-weight: bold;"></i>' + "  ";
+var STR_DIV_TITLE = '<div class="about_text_title">';
+var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
+var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
+var STR_CONTROL_KEY = '';
+var STR_SEARCH_KEY = '';
+var STR_ABOUT_KEY = '';
+var STR_SETTINGS_KEY = '';
+var STR_CONTROLS_MAIN_0 = '';
+var STR_ABOUT_INFO_HEADER = '';
+var STR_ABOUT_INFO_0 = '';
+var STR_CONTROLS_PLAY_0 = '';
+var STR_OAUTH_EXPLAIN = '';
+var STR_SPACE = '&nbsp;';
+
+// This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
+function DefaultLang() {
+    STR_CONTROL_KEY = STR_CONTROLS + " (C)";
+    STR_SEARCH_KEY = STR_SEARCH + " (D)";
+    STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
+    STR_ABOUT_KEY = STR_ABOUT + " (A)";
+    STR_SWITCH = STR_SWITCH + STR_KEY_UP_DOWN;
+    STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
+    STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE;
+    STR_GOBACK = STR_GOBACK_START + STR_TWICE;
+
+    STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
+        STR_DIV_MIDLE_LEFT +
+        STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
+        STR_DIV_MIDLE_LEFT +
+        STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR + STR_BR +
+        STR_DIV_TITLE + STR_CHAT + '</div>' +
+        STR_DIV_MIDLE_LEFT +
+        STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_11;
+
+    STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
+        STR_DIV_TITLE + STR_GENERAL + '</div>' +
+        STR_BR +
+        STR_DIV_MIDLE_LEFT +
+        STR_DOT + STR_SIDE_PANEL + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_2 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_3 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_4 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_5 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
+        STR_SPACE + STR_SPACE + STR_SPACE + STR_CONTROLS_MAIN_11 + STR_BR +
+        STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' + STR_BR +
+        STR_CONTROLS_PLAY_0 + STR_BR + STR_BR +
+        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
+    STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
+    STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
+        (!Main_isBrowser ? '' : STR_BR + '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+        STR_BR +
+        STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
+        STR_ABOUT_EMAIL + STR_BR +
+        STR_BR +
+        STR_ABOUT_INFO_4 + STR_BR +
+        STR_ABOUT_INFO_5 + STR_BR +
+        STR_BR +
+        STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
+        STR_DIV_MIDLE_LEFT +
+        STR_ABOUT_INFO_14 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_11 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
+        STR_ABOUT_INFO_15 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
+        STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
+        STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
+
+    STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-weight: bold;">http://tiny.cc/twitchkeycode</div>') + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN3 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN4 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN5 + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN6;
+}//Variable initialization
+var AddCode_loadingDataTry = 0;
+var AddCode_loadingDataTryMax = 5;
+var AddCode_loadingDataTimeout = 10000;
+var AddCode_Code = 0;
+var AddCode_IsFallowing = false;
+var AddCode_IsSub = false;
+var AddCode_PlayRequest = false;
+var AddCode_Channel_id = '';
+
+var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
+var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
+var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
+//Variable initialization end
+
+function AddCode_CheckNewCode(code) {
+    Main_values.Users_Position = Main_values.Users_AddcodePosition;
+    AddCode_Code = code;
+    AddCode_TimeoutReset10();
+    Main_showLoadDialog();
+    AddCode_requestTokens();
+}
+
+function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
+    var xmlHttp = new XMLHttpRequest();
+
+    var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
+        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
+        '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
+        '&redirect_uri=' + AddCode_redirect_uri;
+
+    xmlHttp.open("POST", url, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
+            } else {
+                if (JSON.parse(xmlHttp.responseText).message.indexOf('Invalid refresh token') !== -1) {
+                    AddCode_requestTokensFailRunning();
+                    if (callbackFuncNOK) callbackFuncNOK();
+                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
+    tryes++;
+    if (tryes < 5) AddCode_refreshTokens(position, tryes, callbackFuncOK, callbackFuncNOK);
+    else if (callbackFuncNOK) callbackFuncNOK();
+}
+
+function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
+    var response = JSON.parse(responseText);
+
+    if (AddCode_TokensCheckScope(response.scope)) {
+        AddUser_UsernameArray[position].access_token = response.access_token;
+        AddUser_UsernameArray[position].refresh_token = response.refresh_token;
+
+        AddUser_SaveUserArray();
+    } else AddCode_requestTokensFailRunning();
+
+    if (callbackFunc) callbackFunc();
+}
+
+//Check if has all scopes, in canse they change
+function AddCode_TokensCheckScope(scope) {
+    if (scope.indexOf("user_read") === -1) return false;
+    if (scope.indexOf("user_follows_edit") === -1) return false;
+    if (scope.indexOf("user_subscriptions") === -1) return false;
+
+    return true;
+}
+
+function AddCode_requestTokens() {
+
+    var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
+        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
+        '&code=' + encodeURIComponent(AddCode_Code) + '&redirect_uri=' + AddCode_redirect_uri;
+
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("POST", theUrl, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                AddCode_requestTokensSucess(xmlHttp.responseText);
+            } else AddCode_requestTokensError();
+            return;
+        }
+    };
+
+    xmlHttp.send(null);
+
+    //BasehttpPost(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_requestTokensSucess, AddCode_requestTokensError, false);
+}
+
+function AddCode_requestTokensError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_requestTokens();
+    } else AddCode_requestTokensFail();
+
+}
+
+function AddCode_requestTokensFail() {
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_OAUTH_FAIL);
+    window.setTimeout(function() {
+        Main_HideWarningDialog();
+        Main_newUsercode = 0;
+        Main_SaveValues();
+        Main_values.Main_Go = Main_Users;
+        window.location = AddCode_redirect_uri;
+    }, 4000);
+    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
+    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+    AddUser_SaveUserArray();
+}
+
+function AddCode_requestTokensFailRunning() {
+    //Token fail remove it and warn
+    Users_status = false;
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_OAUTH_FAIL);
+    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
+    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+    AddUser_SaveUserArray();
+    Main_SaveValues();
+    window.setTimeout(Main_HideWarningDialog, 4000);
+}
+
+function AddCode_requestTokensSucess(responseText) {
+    var response = JSON.parse(responseText);
+    AddUser_UsernameArray[Main_values.Users_Position].access_token = response.access_token;
+    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = response.refresh_token;
+    AddCode_TimeoutReset10();
+    AddCode_CheckOauthToken();
+}
+
+function AddCode_CheckOauthToken() {
+
+    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
+        AddUser_UsernameArray[Main_values.Users_Position].access_token;
+
+    BasehttpGet(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_CheckOauthTokenSucess, AddCode_CheckOauthTokenError);
+}
+
+function AddCode_CheckOauthTokenSucess(response) {
+    var token = JSON.parse(response).token;
+    if (token.user_name &&
+        token.user_name.indexOf(AddUser_UsernameArray[Main_values.Users_Position].name) !== -1) {
+        AddUser_SaveUserArray();
+        Main_newUsercode = 0;
+        Main_HideLoadDialog();
+        Users_status = false;
+        Main_values.Main_Go = Main_Users;
+        Main_SaveValues();
+        Main_showWarningDialog(STR_USER_CODE_OK);
+        if (Main_Android) {
+            //TODO remove the try after android app update has be releaased for some time
+            try {
+                Android.clearCookie();
+            } catch (e) {}
+        }
+        window.setTimeout(function() {
+            window.location = AddCode_redirect_uri;
+        }, 3000);
+    } else {
+        AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
+        AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+        Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_Position].name);
+        window.setTimeout(function() {
+            Main_HideWarningDialog();
+            Main_newUsercode = 0;
+            Main_SaveValues();
+            Main_values.Main_Go = Main_Users;
+            window.location = AddCode_redirect_uri;
+        }, 4000);
+    }
+    return;
+}
+
+function AddCode_CheckOauthTokenError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_CheckOauthToken();
+    } else AddCode_requestTokensFail();
+}
+
+function AddCode_CheckFallow() {
+    AddCode_TimeoutReset10();
+    AddCode_IsFallowing = false;
+    AddCode_RequestCheckFallow();
+}
+
+function AddCode_RequestCheckFallow() {
+    var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id;
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //yes
+                AddCode_RequestCheckFallowOK();
+            } else if (xmlHttp.status === 404) { //no
+                AddCode_RequestCheckFallowNOK(xmlHttp.responseText);
+            } else { // internet error
+                AddCode_RequestCheckFallowError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_RequestCheckFallowOK() {
+    AddCode_IsFallowing = true;
+    if (AddCode_PlayRequest) Play_setFallow();
+    else ChannelContent_setFallow();
+}
+
+function AddCode_RequestCheckFallowNOK(response) {
+    if ((JSON.parse(response).error + '').indexOf('Not Found') !== -1) {
+        AddCode_IsFallowing = false;
+        if (AddCode_PlayRequest) Play_setFallow();
+        else ChannelContent_setFallow();
+    } else AddCode_RequestCheckFallowError();
+}
+
+function AddCode_RequestCheckFallowError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_RequestCheckFallow();
+    } else {
+        if (AddCode_PlayRequest) Play_setFallow();
+        else ChannelContent_setFallow();
+    }
+}
+
+function AddCode_Fallow() {
+    AddCode_TimeoutReset10();
+    AddCode_FallowRequest();
+}
+
+function AddCode_FallowRequest() {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //success user now is fallowing the channel
+                AddCode_IsFallowing = true;
+                if (AddCode_PlayRequest) Play_setFallow();
+                else ChannelContent_setFallow();
+                return;
+            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_Fallow, null);
+            } else {
+                AddCode_FallowRequestError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_FallowRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_FallowRequest();
+    }
+}
+
+function AddCode_UnFallow() {
+    AddCode_TimeoutReset10();
+    AddCode_UnFallowRequest();
+}
+
+function AddCode_UnFallowRequest() {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 204) { //success user is now not fallowing the channel
+                AddCode_IsFallowing = false;
+                if (AddCode_PlayRequest) Play_setFallow();
+                else ChannelContent_setFallow();
+                return;
+            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_UnFallow, null);
+            } else {
+                AddCode_UnFallowRequestError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_UnFallowRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_UnFallowRequest();
+    }
+}
+
+function AddCode_CheckSub() {
+    AddCode_TimeoutReset10();
+    AddCode_IsSub = false;
+    AddCode_RequestCheckSub();
+}
+
+function AddCode_TimeoutReset10() {
+    AddCode_loadingDataTry = 0;
+    AddCode_loadingDataTimeout = 10000;
+}
+
+function AddCode_RequestCheckSub() {
+    var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/subscriptions/' + AddCode_Channel_id;
+    var xmlHttp;
+    if (Main_Android) {
+
+        xmlHttp = Android.mreadUrl(theUrl, AddCode_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            AddCode_RequestCheckSubError();
+            return;
+        }
+
+        if (xmlHttp.status === 200) {
+            AddCode_IsSub = true;
+            PlayVod_isSub();
+        } else if (xmlHttp.status === 422) {
+            AddCode_IsSub = false;
+            PlayVod_NotSub();
+        } else if (xmlHttp.status === 404) {
+            if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
+                AddCode_IsSub = false;
+                PlayVod_NotSub();
+                return;
+            } else AddCode_RequestCheckSubError();
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
+            AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
+        } else {
+            AddCode_RequestCheckSubError();
+        }
+
+    } else {
+
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) { //success yes user is a SUB
+                    AddCode_IsSub = true;
+                    PlayVod_isSub();
+                } else if (xmlHttp.status === 422) { //channel does not have a subscription program
+                    AddCode_IsSub = false;
+                    PlayVod_NotSub();
+                } else if (xmlHttp.status === 404) { //success no user is not a sub
+                    if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
+                        AddCode_IsSub = false;
+                        PlayVod_NotSub();
+                        return;
+                    } else AddCode_RequestCheckSubError();
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                    AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
+                } else { // internet error
+                    AddCode_RequestCheckSubError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function AddCode_RequestCheckSubError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_RequestCheckSub();
+    } else AddCode_RequestCheckSubfail();
+}
+
+function AddCode_RequestCheckSubfail() {
+    AddCode_IsSub = false;
+    PlayVod_NotSub();
+}
+
+function AddCode_CheckTokenStart(position) {
+    AddCode_TimeoutReset10();
+    AddCode_CheckToken(position, 0);
+}
+
+function AddCode_CheckToken(position, tryes) {
+    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
+        AddUser_UsernameArray[position].access_token;
+
+    var xmlHttp;
+
+    if (Main_Android) {
+
+        xmlHttp = Android.mreadUrl(theUrl, 3500, 0, null);
+
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            AddCode_CheckTokenError(position, tryes);
+            return;
+        }
+
+        if (xmlHttp.status === 200) {
+            AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+        } else if (xmlHttp.status === 400) { //token expired
+            AddCode_TimeoutReset10();
+            AddCode_refreshTokens(position, 0, null, null);
+        } else {
+            AddCode_CheckTokenError(position, tryes);
+        }
+
+    } else {
+
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+                } else if (xmlHttp.status === 400) { //token expired
+                    AddCode_TimeoutReset10();
+                    AddCode_refreshTokens(position, 0, null, null);
+                } else {
+                    AddCode_CheckTokenError(position, tryes);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function AddCode_CheckTokenSuccess(responseText, position) {
+    var token = JSON.parse(responseText);
+    if (!token.token.valid) {
+        AddCode_TimeoutReset10();
+        AddCode_refreshTokens(position, 0, null, null);
+    } else {
+        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
+    }
+}
+
+function AddCode_CheckTokenError(position, tryes) {
+    tryes++;
+    if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes);
+}
+
+function AddCode_FallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestFallowGame();
+}
+
+function AddCode_RequestFallowGame() {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("PUT", 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name +
+        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) +
+        '?oauth_token=' + AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //success we now fallow the game
+                AGame_fallowing = true;
+                AGame_setFallow();
+                return;
+            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_FallowGame, null);
+            } else { // internet error
+                AddCode_FallowGameRequestError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_FallowGameRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_RequestFallowGame();
+    }
+}
+
+function AddCode_UnFallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestUnFallowGame();
+}
+
+function AddCode_RequestUnFallowGame() {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("DELETE", 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name +
+        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
+        AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 204) { // success we now unfallow the game
+                AGame_fallowing = false;
+                AGame_setFallow();
+                return;
+            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_UnFallowGame, null);
+            } else { // internet error
+                AddCode_UnFallowGameRequestError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_UnFallowGameRequestError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_RequestUnFallowGame();
+    }
+}
+
+function AddCode_CheckFallowGame() {
+    AddCode_TimeoutReset10();
+    AddCode_RequestCheckFallowGame();
+}
+
+function AddCode_RequestCheckFallowGame() {
+    var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name + '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected);
+    var xmlHttp;
+    xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //success yes user fallows
+                AGame_fallowing = true;
+                AGame_setFallow();
+                return;
+            } else if (xmlHttp.status === 404) { //success no user doesnot fallows
+                AGame_fallowing = false;
+                AGame_setFallow();
+                return;
+            } else { // internet error
+                AddCode_CheckFallowGameError();
+                return;
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddCode_CheckFallowGameError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        AddCode_loadingDataTimeout += 500;
+        AddCode_RequestCheckFallowGame();
+    } else {
+        AGame_fallowing = false;
+        AGame_setFallow();
+    }
+}//Variable initialization
+var PlayClip_PlayerTime = 0;
+var PlayClip_streamCheckId = null;
+var PlayClip_PlayerCheckCount = 0;
+var PlayClip_IsJumping = false;
+var PlayClip_jumpCount = 0;
+var PlayClip_TimeToJump = 0;
+var PlayClip_isOn = false;
+var PlayClip_loadingDataTry = 0;
+var PlayClip_loadingDataTimeout = 2000;
+var PlayClip_loadingDataTryMax = 5;
+var PlayClip_quality = 'source';
+var PlayClip_qualityPlaying = PlayClip_quality;
+var PlayClip_qualityIndex = 0;
+var PlayClip_qualities = [];
+var PlayClip_playingUrl = '';
+var PlayClip_replay = false;
+var PlayClip_currentTime = 0;
+var PlayClip_state = 0;
+var PlayClip_STATE_PLAYING = 1;
+var PlayClip_HasVOD = false;
+var PlayClip_PlayerCheckCounter = 0;
+var PlayClip_PlayerCheckQualityChanged = false;
+var PlayClip_PlayerCheckRun = false;
+var PlayClip_Buffer = 2000;
+
+var PlayClip_jumpTimers = [0, 5];
+var PlayClip_DurationSeconds = 0;
+
+var PlayClip_HasNext = false;
+var PlayClip_HasBack = false;
+var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
+var PlayClip_EnterPos = 0;
+var PlayClip_All = false;
+var PlayClip_All_Forced = true;
+//Variable initialization end
+
+function PlayClip_Start() {
+    Play_showBufferDialog();
+    Play_HideEndDialog();
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+    Main_innerHTML("stream_info_title", ChannelClip_title);
+    Main_innerHTML("stream_info_game", ChannelClip_game + ' ' + ChannelClip_views + ' ' + ChannelClip_language);
+    Main_textContent("stream_live_icon", ChannelClip_createdAt);
+    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+    Play_DefaultjumpTimers = PlayClip_jumpTimers;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+    Main_replaceClassEmoji('stream_info_title');
+
+    Main_values.Play_isHost = false;
+
+    Main_textContent('progress_bar_current_time', Play_timeS(0));
+    Main_textContent("stream_live_time", '');
+    Main_textContent("stream_watching_time", '');
+    PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
+    Chat_title = STR_CLIP + '.';
+    if (PlayClip_HasVOD) {
+        Chat_offset = ChannelVod_vodOffset;
+        Chat_Init();
+    } else Chat_NoVod();
+    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
+    Main_ShowElement('progress_bar_div');
+    PlayClip_SetOpenVod();
+    Main_ShowElement('scene_channel_panel_bottom');
+
+    PlayClip_PlayerCheckCounter = 0;
+    PlayClip_PlayerCheckCount = 0;
+    window.clearInterval(PlayClip_streamCheckId);
+    PlayClip_PlayerCheckRun = false;
+    Play_PlayerPanelOffset = -13;
+    PlayClip_state = 0;
+    PlayClip_currentTime = 0;
+    PlayClip_qualityIndex = 2;
+    PlayClip_UpdateNext();
+    Play_EndSet(3);
+    Play_IsWarning = false;
+    Play_IconsResetFocus();
+
+    if (AddUser_UserIsSet()) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_CheckFallow();
+    } else Play_hideFallow();
+
+    document.addEventListener('visibilitychange', PlayClip_Resume, false);
+    PlayClip_IsJumping = false;
+    PlayClip_jumpCount = 0;
+    PlayClip_TimeToJump = 0;
+    PlayClip_isOn = true;
+
+    PlayClip_loadData();
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
+}
+
+function PlayClip_loadData() {
+    PlayClip_loadingDataTry = 0;
+    PlayClip_loadingDataTimeout = 2000;
+    PlayClip_loadDataRequest();
+}
+
+function PlayClip_loadDataRequest() {
+    var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
+
+    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError, true);
+}
+
+function PlayClip_loadDataError() {
+    PlayClip_loadingDataTry++;
+    if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
+        PlayClip_loadingDataTimeout += 250;
+        PlayClip_loadDataRequest();
+    } else {
+        Play_HideBufferDialog();
+        Play_PlayEndStart(3);
+    }
+}
+
+function PlayClip_QualityGenerate(response) {
+    PlayClip_qualities = [];
+
+    response = JSON.parse(response).quality_options;
+
+    for (var i = 0; i < response.length; i++) {
+
+        if (!PlayClip_qualities.length) {
+            PlayClip_qualities.push({
+                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' (source)',
+                'url': response[i].source
+            });
+        } else {
+            PlayClip_qualities.push({
+                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate),
+                'url': response[i].source
+            });
+        }
+    }
+
+    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_qualityChanged();
+}
+
+function PlayClip_FrameRate(value) {
+    if (value > 40) return 60;
+    else return '';
+}
+
+function PlayClip_qualityChanged() {
+    window.clearInterval(PlayClip_streamCheckId);
+    PlayClip_qualityIndex = 0;
+    PlayClip_playingUrl = PlayClip_qualities[0].url;
+    if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
+    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
+        if (PlayClip_qualities[i].id === PlayClip_quality) {
+            PlayClip_qualityIndex = i;
+            PlayClip_playingUrl = PlayClip_qualities[i].url;
+            break;
+        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
+            PlayClip_qualityIndex = i;
+            PlayClip_playingUrl = PlayClip_qualities[i].url;
+        }
+    }
+
+    PlayClip_qualityPlaying = PlayClip_quality;
+    if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
+    PlayClip_state = PlayClip_STATE_PLAYING;
+
+    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
+        PlayClip_replay ? -1 : Android.gettime());
+    PlayClip_replay = false;
+    PlayClip_onPlayer();
+}
+
+function PlayClip_onPlayer() {
+    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+
+    if (Main_Android) {
+        PlayClip_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 1 + (PlayClip_Buffer / 1000);
+        PlayClip_PlayerCheckQualityChanged = false;
+        window.clearInterval(PlayClip_streamCheckId);
+        PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+    }
+}
+
+function PlayClip_UpdateDuration(duration) {
+    PlayClip_DurationSeconds = duration / 1000;
+    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+    PlayClip_RefreshProgressBarr();
+}
+
+function PlayClip_Resume() {
+    if (document.hidden) PlayClip_shutdownStream();
+}
+
+function PlayClip_PlayerCheck() {
+    if (Main_Android) PlayClip_currentTime = Android.gettime();
+
+    //The player can bug and not stop playing when it ends after a video has be pause
+    if ((PlayClip_currentTime / 1000) > PlayClip_DurationSeconds) {
+        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
+        if (Main_Android) Android.play(false);
+        Play_PannelEndStart(3);
+    }
+
+    if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
+        PlayClip_PlayerCheckCount++;
+        if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {
+
+            //Don't change the first time only retry
+            if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;
+            else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
+
+            if (!navigator.onLine) Play_EndStart(false, 3);
+            else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
+            else {
+                PlayClip_qualityDisplay();
+                PlayClip_qualityChanged();
+                PlayClip_PlayerCheckRun = true;
+            }
+
+        } // else we try for too long let the listener onerror catch it
+    } else {
+        PlayClip_PlayerCheckCounter = 0;
+        PlayClip_PlayerCheckCount = 0;
+        PlayClip_PlayerCheckRun = false;
+
+    }
+
+    PlayClip_PlayerTime = PlayClip_currentTime;
+}
+
+function PlayClip_DropOneQuality(ConnectionDrop) {
+
+    if (!ConnectionDrop) {
+        if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) PlayClip_qualityIndex++;
+        else {
+            Play_EndStart(false, 3);
+            return;
+        }
+    }
+
+    PlayClip_PlayerCheckCounter = 0;
+    PlayClip_qualityDisplay();
+    PlayClip_qualityChanged();
+    PlayClip_PlayerCheckRun = true;
+}
+
+function PlayClip_shutdownStream() {
+    if (PlayClip_isOn) {
+        PlayClip_All = false;
+        PlayClip_PreshutdownStream();
+        Play_CleanHideExit();
+        Play_exitMain();
+    }
+}
+
+function PlayClip_PreshutdownStream() {
+    PlayClip_hidePanel();
+    PlayClip_qualities = [];
+    window.clearInterval(PlayClip_streamCheckId);
+    if (Main_Android) Android.stopVideo(3);
+    PlayClip_isOn = false;
+    Chat_Clear();
+    Play_ClearPlayer();
+    UserLiveFeed_Hide();
+    document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
+    document.removeEventListener('visibilitychange', PlayClip_Resume);
+    document.getElementById('scene2_pannel_0').style.display = 'none';
+    document.getElementById("quality_name").style.width = '25ch';
+    ChannelVod_vodOffset = 0;
+}
+
+function PlayClip_UpdateNext() {
+    var nextid = PlayClip_getIdNext(1, 0);
+    var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
+    var text;
+
+    PlayClip_HasNext = false;
+    PlayClip_HasBack = false;
+
+    if (nextid) {
+        PlayClip_HasNext = true;
+        text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
+        Main_textContent("next_button_text_name", text[4]);
+        Main_innerHTML("next_button_text_title", text[9]);
+
+        Main_textContent("end_next_button_text_name", text[4]);
+        Main_innerHTML("end_next_button_text_title", text[9]);
+
+        PlayClip_HideShowNext(0, 1);
+    } else PlayClip_HideShowNext(0, 0);
+
+    if (backid) {
+        PlayClip_HasBack = true;
+        text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+        Main_textContent("back_button_text_name", text[4]);
+        Main_innerHTML("back_button_text_title", text[9]);
+        PlayClip_HideShowNext(1, 1);
+    } else PlayClip_HideShowNext(1, 0);
+}
+
+function PlayClip_getIdNext(y, x) {
+    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
+        return inUseObj.posY + '_' + (inUseObj.posX + y);
+    else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
+        return (inUseObj.posY + y) + '_' + x;
+
+    return null;
+}
+
+function PlayClip_HideShowNext(which, val) {
+    document.getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
+}
+
+function PlayClip_Enter() {
+    if (!PlayClip_EnterPos) {
+        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
+            if (Play_isNotplaying()) Chat_Play(Chat_Id);
+            else Chat_Pause();
+        }
+        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+    } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
+    else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
+}
+
+function PlayClip_PlayNext() {
+    Screens_KeyLeftRight(1, 0);
+    PlayClip_PlayNextPreviously();
+}
+
+function PlayClip_PlayPreviously() {
+    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+    PlayClip_PlayNextPreviously();
+}
+
+function PlayClip_PlayNextPreviously() {
+    var doc = document.getElementById("scene_channel_panel");
+    doc.style.transition = 'none';
+    doc.style.opacity = "0";
+    Main_ready(function() {
+        PlayClip_PreshutdownStream();
+        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+        doc.style.transition = '';
+    });
+}
+
+function PlayClip_hidePanel() {
+    //return;
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
+    PlayVod_addToJump = 0;
+    Play_clearHidePanel();
+    PlayClip_quality = PlayClip_qualityPlaying;
+    document.getElementById("scene_channel_panel").style.opacity = "0";
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
+    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+    document.getElementById('progress_bar_steps').style.display = 'none';
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
+}
+
+function PlayClip_showPanel() {
+    PlayClip_RefreshProgressBarr();
+    Play_clock();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    PlayVod_RefreshProgressBarrID = window.setInterval(PlayClip_RefreshProgressBarr, 1000);
+    Play_CleanHideExit();
+    PlayVod_IconsBottonResetFocus();
+    PlayClip_qualityIndexReset();
+    PlayClip_qualityDisplay();
+    document.getElementById("scene_channel_panel").style.opacity = "1";
+    PlayClip_setHidePanel();
+}
+
+function PlayClip_RefreshProgressBarr() {
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
+}
+
+function PlayClip_qualityIndexReset() {
+    PlayClip_qualityIndex = 0;
+    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
+        if (PlayClip_qualities[i].id === PlayClip_quality) {
+            PlayClip_qualityIndex = i;
+            break;
+        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
+            PlayClip_qualityIndex = i;
+        }
+    }
+}
+
+function PlayClip_getQualitiesCount() {
+    return PlayClip_qualities.length;
+}
+
+function PlayClip_qualityDisplay() {
+    if (PlayClip_getQualitiesCount() === 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "0";
+        document.getElementById("quality_arrow_down").style.opacity = "0";
+    } else if (!PlayClip_qualityIndex) {
+        document.getElementById("quality_arrow_up").style.opacity = "0.2";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
+    } else if (PlayClip_qualityIndex === PlayClip_getQualitiesCount() - 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "0.2";
+    } else {
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
+    }
+
+    PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
+
+    if (PlayClip_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayClip_quality.replace("source", STR_SOURCE));
+    else Main_textContent("quality_name", PlayClip_quality);
+}
+
+function PlayClip_setHidePanel() {
+    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
+}
+
+function PlayClip_SetOpenVod() {
+    document.getElementById("quality_name").style.width = '16ch';
+    Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
+    document.getElementById('scene2_pannel_0').style.display = 'inline-block';
+}
+
+function PlayClip_OpenVod() {
+    if (PlayClip_HasVOD) {
+        Main_values.vodOffset = ChannelVod_vodOffset;
+        PlayClip_PreshutdownStream();
+        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+        Play_IconsResetFocus();
+        Main_ready(PlayVod_Start);
+    } else {
+        Play_clearHidePanel();
+        Play_IsWarning = true;
+        Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
+        window.setTimeout(function() {
+            Play_IsWarning = false;
+            Play_HideWarningDialog();
+        }, 2000);
+    }
+}
+
+function PlayClip_handleKeyDown(e) {
+    if (PlayClip_state !== PlayClip_STATE_PLAYING) {
+        switch (e.keyCode) {
+            case KEY_RETURN:
+                if (Play_ExitDialogVisible()) {
+                    Play_CleanHideExit();
+                    PlayClip_shutdownStream();
+                } else {
+                    Play_showExitDialog();
+                }
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (e.keyCode) {
+            case KEY_LEFT:
+                if (UserLiveFeed_isFeedShow()) {
+                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
+                        UserLiveFeed_FeedRemoveFocus();
+                        Play_FeedPos--;
+                        UserLiveFeed_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                    Play_ChatPositions++;
+                    Play_ChatPosition();
+                } else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
+                    if (PlayVod_PanelY === 2) {
+                        Play_IconsRemoveFocus();
+                        Play_Panelcounter++;
+                        if (Play_Panelcounter > 5) Play_Panelcounter = 0;
+                        Play_IconsAddFocus();
+                    } else if (!PlayVod_PanelY) {
+                        PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
+                    } else if (PlayVod_PanelY === 1) {
+                        if (PlayClip_EnterPos > -1) {
+                            PlayClip_EnterPos--;
+                            if (PlayClip_HasBack || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                            else PlayClip_EnterPos++;
+                        }
+                    }
+                    PlayClip_setHidePanel();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
+                    Play_Endcounter--;
+                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 3;
+                    Play_EndIconsAddFocus();
+                } else PlayClip_showPanel();
+                break;
+            case KEY_RIGHT:
+                if (UserLiveFeed_isFeedShow()) {
+                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
+                        UserLiveFeed_FeedRemoveFocus();
+                        Play_FeedPos++;
+                        UserLiveFeed_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                        Play_showChat();
+                        Play_ChatEnable = true;
+                    } else {
+                        Play_hideChat();
+                        Play_ChatEnable = false;
+                    }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+                } else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
+                    if (PlayVod_PanelY === 2) {
+                        Play_IconsRemoveFocus();
+                        Play_Panelcounter--;
+                        if (Play_Panelcounter < 0) Play_Panelcounter = 5;
+                        Play_IconsAddFocus();
+                    } else if (!PlayVod_PanelY) {
+                        PlayVod_jumpStart(1, PlayClip_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
+                    } else if (PlayVod_PanelY === 1) {
+                        if (PlayClip_EnterPos < 1) {
+                            PlayClip_EnterPos++;
+                            if (PlayClip_HasNext || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                            else PlayClip_EnterPos--;
+                        }
+                    }
+                    PlayClip_setHidePanel();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
+                    Play_Endcounter++;
+                    if (Play_Endcounter > 3) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+                    Play_EndIconsAddFocus();
+                } else PlayClip_showPanel();
+                break;
+            case KEY_UP:
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
+                else if (Play_isPanelShown()) {
+                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
+                        PlayClip_qualityIndex--;
+                        PlayClip_qualityDisplay();
+                    }
+                    Play_clearHidePanel();
+                    PlayClip_setHidePanel();
+                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
+                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
+                else PlayClip_showPanel();
+                break;
+            case KEY_DOWN:
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
+                else if (Play_isPanelShown()) {
+                    if (!PlayVod_PanelY) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
+                        PlayClip_qualityIndex++;
+                        PlayClip_qualityDisplay();
+                    }
+                    Play_clearHidePanel();
+                    PlayClip_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                else if (Play_isFullScreen && Play_isChatShown()) {
+                    Play_ChatSizeValue++;
+                    if (Play_ChatSizeValue > 4) {
+                        Play_ChatSizeValue = 1;
+                        Play_ChatPositionConvert(false);
+                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                    Play_ChatSize(true);
+                } else PlayClip_showPanel();
+                break;
+            case KEY_ENTER:
+                if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
+                else if (Play_isPanelShown()) {
+                    if (!PlayVod_PanelY) {
+                        Play_clearHidePanel();
+                        PlayClip_setHidePanel();
+                        if (PlayVod_addToJump) PlayVod_jump();
+                    } else if (PlayVod_PanelY === 1) PlayClip_Enter();
+                    else Play_BottomOptionsPressed(3);
+                } else if (UserLiveFeed_isFeedShow()) {
+                    PlayClip_PreshutdownStream();
+                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                } else PlayClip_showPanel();
+                break;
+            case KEY_RETURN:
+                if (Play_isPanelShown()) PlayClip_hidePanel();
+                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                else {
+                    if (Play_ExitDialogVisible()) {
+                        Play_CleanHideExit();
+                        PlayClip_shutdownStream();
+                    } else {
+                        Play_showExitDialog();
+                    }
+                }
+                break;
+            case KEY_PLAY:
+            case KEY_PAUSE:
+            case KEY_PLAYPAUSE:
+                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
+                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                    else Chat_Pause();
+                }
+                if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+                break;
+            default:
+                break;
+        }
+    }
 }var IMG_404_GAME = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeEAAAKgCAMAAACbeDVoAAAAM1BMVEU3NTZoZ2eura6enp4+PD1MS0vq6en09PQ0MjPy8vJ9fX1YV1jT09O7u7vf3t+NjY3GxsZnLAeWAAAI3UlEQVR4Ae3d7XabOrcGUPEBWguMzf1f7dltd3u6Q1rHNk5I3jn/NmPYo48lJC1JFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgf0+UoenatpuGEuUdRD8009S806cR/eWU9bs8d0M8/eOmZazfjcvUR3kuYmiz/m6Z46n5dmP9zdjJ+Ln6NusLuQ7labqxvpBdX3iaaayv6cpTxJT1FTlF4Sn6Jeur8vSErjqGP37c0hf2F/Op/tHY7d+Az/WPznMUdhbNWP8iT0M8rb/YGvXUT34Eb2VO8ayf01bmJQo7ikvWq9a+7KStV2UX5X0JuOZOfed8zvoGIn72tGUrs91xDizijx9kbWQ9NVEeMpzq1nOf/Mxjfbts+/KALuuWEfVz9ed6ixzvb8bzueZNHzUXHneut7pvbhzDmvVG2RceFEvWm41dH/dUkW6VeSo8Ji51a/+Mo+/O9S5tFB4xZ73TeMPugG37NaA+4ChrI5emRLkmytxmzXovo61HxFIfktldqwIN3Vgfcyrc7ZL1UTkuTf+Hptw3y5h1490exQxj3cV4Wi7N0JcSP5TSD81lOY1Zsz4ssyncJc51T3k+reuyLOt6OmfdUY594R6Xenz66QcMWT+NptyMONWjOa/rWF917gt3FP0P5dSU+Ec/nfXTu+jHeiCZXfkhonRp3eNx0dYjyUtc6V5OhZs0WQ8k27i2Uy8vhR2KwvPwU31Hm4FUPz5WKia6+rooP9V3tN0529WNXKLwVn0eKuE6lxeaupVD4a26eqyE+/JCX1+hEb/ZkMdKOMvGIytbxFIP1obLS/0jlWLmerSEh/LCUF81Fd5iPVzC09vKXnkuvEGTh0t4jfJfp7px/7KHmtLHJ5xTbE7K3VtjosnjJVzHeXOQ6s5GTJzrARPOcX7bSbksV9DkEROuWf89RBF9d9ugbMtT+BAJ5zLN8zytWX8a10vTXNYx679y/f4nS9bfjIW/mushEs5liJ8HEutPmfV3668/WVIjfqtYDpHw+HvBv71ab4ou6095KvzFkEdI+L9XKcWa1/YERJdWp9+mqx+e8HaBoz9fX71alZjepB/vr9UMzysHT3Wj+fP4IefyNrZ25AclfIrNGdfrC9CnO3bW2p01f0zCXVwd/7Xxlx/n2BfettrxQW14ur61tysvTfX/Xcp1VjuOlHC5MeExypuYKs3l7fqh7uUS19vwJsOLA8XXtXmMNryd7pyuFoxj2f4zL0TWeoix9Nhf61wyh7/u/82+bNHUbz5+LL3ppmO5etYwLvdUmCxJN/FS+SVemutuxuFaQTPHpvwm5nE7peb6BtWPWLXcbsYZ8uqvYDhf3Z1ZmI6TcNZxjmtbErKJ8kM0eX08TqwfmPBWLnOJiL5Zs/4ynk5j/SXX739S5iWvr3wSQx4q4Zp5/nEtU9YfzlMf/xgu5/pDfr/YYz1n3VJ+2Jrqxye8kb9fPR/lu+iXvH1xm1iPk/CVwCLadNvlzYbcM+Fc2hfW+kKu2z/4syVu+jluTxMz1V0Tvj4Xy/6GBZOxv/3Cza6waRX7JRx7Jrx9qEZ74z4C+nHPhHOTcDyW8PaWhxsXxmjy0G24Ly/0N5aZWeqR2/D1Wx6uHCYmxnroNnzXInoWfhny2G346i0PV5a1mPLYbXgqL0w3nZwg1vrMNvx4wpt9PetN+66JrDu34aF/Yd72of1/NPUvsrlr6F/4IYb6Vs0v9V2dh/983/G20zE09e3yu5r1fY3DHS8JuhR+6Orh5TiV76JMY972ChfiXD+DU9cMQ9Odsr7VGIVv+vo55J132jLXr2oufDPVr+pS2J4L//QMtTbW+lWdCt+M9avKvhRiqF/XUEphrl9XU9gczDSY/nLa+nW1UYilfl1rFGKt9UtPlzjXr+tcCv1Yv66xL1sODu8sx7W7TM089P8opfT/GOZmmrr1/PTPHgpzfZpx7aa5j3+UiPJClBIR/Tx161ifZi409Rny1E7Dt1yv+pb/MLWntOTxaRLO8/It3XKDiOib5Qmd9lSY6q5yXOYSJcqt+hJlbsfcO2EudUfZzVEeEXOXdUddoat7ybUpUR4TJUqz5AETlvDYDVH2EUM31n20hbbu4dz1UfYSEf3lvFPCtHu+4mxHfZsS3kO09WFjE2V/0YyHSFgbzqU8y5Ifn7C9tOMU5VliGo2lP3o+fJ6jPNF8so3nY9e01r48U5R+sab1gQnnUp5vyY9KWPUw2yhPF9FmvVc2haHeK7so7yEuWe81FPp8/EXfTxZT1rtk9qVwrnfJKUo5esTnUojT429yf747Iz5FIZYjBrxxyXtfoUh3xEHWRnR555IWzSED3ojORrw7DZ/kwFe0d06WGOuNloPec74xFu4Zap368iGiPxlovcMR8Rz78lH6MVWWbhfz5zkKNIzPPtPiQTw25SM1o8fwkwepl/jgR0rePuSn+UT/adGaDT/xLQB5+kzr6Fn4qf1MR+r7USf9rPct5fClv60KYk6f6vVQ5yj80uRn6vWiS1u0bhTr57qbalX8378Rj0M5jmHUhHcvPzRRDqRRdLhRXGsVXXym41bbHoeYPtkFkaf6N1MUXloP1yTufxSvha1+PPRMeGMa9dG36efxjjP+B6wkZjblVczn+pq2L8fUt/U157lEeQ1Rpk3GYztEOaoY2nGT7+Wv+dK056z/ynPb9FGOLPqXX/h6vgzNpW3b7tIMJcrxRRmaqWvb9sYvTET5JKIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF/F/wGK2iVvT89ySQAAAABJRU5ErkJggg==";
 
 var IMG_404_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAAASFBMVEVHcEw1NTXb29swMDB9fX1DQ0NeXl5RUVFtbW3m5ubT09Pg4ODKyso7Ozufn5+9vb2urq62traQkJClpaWJiYmYmJjCwsLq6uo9xg8yAAAAF3RSTlMACeoDbBxBLlX54PHUEZnCrbiFonuQyd/Z9QoAAAhdSURBVHgB7MGBAAAAAICg/akXqQIAAAAAYO7qJdtSEIbC8AKREB4icI57/jOtzm1Ur1ZdFRO/GfxxqzdbTFnJex9+eO9pLWZ5fbgpFFwf7cg2MeNvnGw+2uguUDFvfOaFQt+zZfwT27z3QOU9ezDkvtUy/gvb4+vIvCF+RMYvcRyqj7CGLTNO4ryFVWM9uZZwkdQcqatnXIqrnhusP/VX4+YUvAuL3yxuYze/CH/4FTergmdAPWKC2Enk9mkkTJKGF9fvd8ZEvHth+ZhO0AloQr7gE9BgPIQHPZ5fPhYPsp/ybH/IeFgOT66/QYBGD+UvLkEE+1me6PcVYlQ/Pd90hiDczdx+qhCm0sx+lyBOctPy1x0i7eucfh8hVPRT5s8Qi93t+WWDaFu5t58OCHeQ3Ndf/4cgJCiQwl39Dkp8bslfvlDju1zfbwYUGeby/h2q7BdfoDQo08ql/RXq1CK6f4Kj6N+/jA2YBqWa0f/9F/AvGFBsnO/vUK2f7XdQzp3rDwzlOJzpJwv1Ev2+f424EScb83HkaNOf9u5Ex3EQCQPwjznA+D7sev83XWnVGu1oZ9Jp8pcTNP4eIN2xOaqgCK0oyh6F7CJKunPbU/SDMdYaM/iY9u3sPi4cOERFHpO3ACx+Y30as6g4UCSJgnwEg78y4ciiIKFA7IRucgO+MbjpIwZCa3phW8Lbas76AT81CtmU8LQ0Cdn47gEgpzcXH6X3RgCbxw/5Tagajx+wM/v1F0hZmJb3pUCLRxG/vCktsr75jF0Ke7ypE8wfs2XvWuGZ+TOA/k5laq6fCYYsNF3Ai0J3eV44ftL3hw3dxeFQbLXa//urEtqI7y3vX43SW5dbLh0BHUjcheMgMQncQLMJS28ue9inAY2ZriqfGZrr465rY9NmwCM7v7NxpGv2ingPegbZfEnTXN/fAfTfzXrFH0mgS0LSef0GMEHBJCSrfhYUoCCoTwSOPAJ+7DjolIPANkJFbHXDwcSPgclG3TF6+vAGQGwCk8X/i0KyQM0iJEG/fWmwSUhGxTSoN1Bjer2Z0AnJDkW7kLjKhkD+MKj2ySdUTUIStdKAHap2pYTAfnoUyI8GrU6icVqosqeQBJ0ecEDZISSrSg+QBGVJZYE86O89scRWow+s7MdaQTAoq8bsukHdprBu5zshcVDnFBZHk7AkaLMa/+wmLBHqYkvvrybzWxUfv79mw14LkmygzmR6e3XCMuECi7A4elXUjAvM7Jopyy4K0Q8EuBmhb9mPVNcoLK1nl0UduMAhNIl9OniFPv7/OwvNjgvs5PJp29f3AKjJq+/q6wLUyDXIvzsISiAfjxlrewCO/HnXBELkJjuLVJwLEKaBU8ijqjLbC88J2Cw8zQBt1jTCkw11FpT2ohUhZjYQhSlBXRKmiCBMDuqcMCXyAz2g7hCmRH6gE9RN5Ca7C1PnocsOjTDtOIQqQFkQqgOzUO1QtgvVjEnqGgQW9v97ClUb1feFqHr0UlUfSMLVI0tVfWATroxGauoDvhGuBo2QOShyQtaglZr6wCRkLYStDaqpMBtaYZuhZhS2Fp2wtVExCGDr0AjdBiWr0DXIUk0T8I3QZWThG6tpAJLRC1/nwWd9J3w9JlGwKUXBfBNm0ZBAl0TDjFE05AFkQxYNI1ZRMYJsFBUrnOgIGh2Az6l9cj8odAA+hyBKNoUOwJcQW1Gy1nDPXcTQiRYHktCKktZz6wN0VgZiI1oaAyyipokg8FnU9BYYRU/v8TLfi54FwC6K+sj8/nwjf4Ql3wEbe/VbiIKo6tIn3/ObHqy0srSOess9f+3KZFG2WhSxqyjLBgBm0TZFFIiLaFsKSg6KNA4/5hpRdxRkmoWWSHj9dKlgu6FUe3g8zR+tFChdvz/lEt0R8ZR4NHKJbIqS7XLdGPGtOHZykfn6WyXbxXk84N3cymV2pU3ndhoffGIzJ2/xB9a7uZErBf6BdJFucfG7SxG6c3TBG4sv1vjgxrOTB9p979XW7md+C49ZvtH05zKP6zpuy9Q3zyRVJqy9TiGDE4pzj/hirT+F6Pz6ZBPGRlgctfKkGYPF/xpGodkG/DK4paX/4MkpLzqd17sjqHMqgUJvaBXISzJF8Wx5KuX3TD3cEeUFc8Df2L2TF7W7xZ8M7iTuYNue/vW/xFntmk6bet4G9qp3jWg6pVif8HcWxvWsrbsgJc6EJxiXpUh2Bt8Y9obQAwqDwewsnjOUvKneeTwhboQeUJQRjh7PM2n6aeMyeFI4GRUcidL6H7BhzD+4nNvieaZkrgmv/VDjOuDnhrQ18q1mTgN+KE4lm4K/c5ds9/i0Tg9eVzcdyaOA2dtXixd8V3CJcOlD2Kbcym/a5tzW5C1Khf7Vat6xYKenmB1icm5fj3E81t25FAeL1/j5xZL+oNz89e3ytFR8HOX0+Fg2dT9LBAuGwc1An/5m8l5aizfiw8X+lavgDvXCN33+lO8dhWeydnw+O5zynS6W1WOuqII/y2tYY/e43dTB9+VHmo4Hj82iFj7LI3PRsZzFoB6hK2gAj5tA9qiJK65i941q1e9ljoIp4NHqqENl7FQ6lv+xCSyoTuxK7wPeH7ea2oeBveR0jkOF7FL6i4/pwf2UFXgc2KeSI6oBdRpLBzPfPA6cauGb0sHMPQ6camH30nTWTg8Cp4qbwGlKxo+Aeo3F4eyqf3/g9RPBUXSjmUPNluLDzKG94JeS9bnyfG6vcg58sN+3l93m41C3pTyc9VkvCLi+DzSx7Mj2icpF+a82FT69EZUbmld2NGZxqN3ySjTrc0Ltjq8QuEz0qJ17aUXbonY2SRvwL0vi8E8LB/5txuKX2+12u91ut9vtdrvdbrfb7Xa7/Qf0wSAxhEqDGQAAAABJRU5ErkJggg==";
 
 var IMG_404_VIDEO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhAAAAEpBAMAAAAwswZCAAAAJ1BMVEU3NTbV1dU2NDXU1NTDwsOrq6t9fX1IR0dwb3DNzc2cm5xbWlqPj4+TNW2cAAAFhElEQVQYGe3AQYud5R0F8MPhzoxSN4d/buoUgcODtIFs+jCmaUqAuQ1RJJuZFAR3mUHE5TBqQFc3iUHcdVpQoZsE0GxjAcFdRPRz9b2ZmbTfoHKf80NERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERExK8VCRj4/pu3+7Wb3z4FTDQSoyGAhrvvSjt9p/ftd45oA8ZobBgPS6UuqaT5kmgwhtOI99Sl0pkLd4hGjIbAZ+ol9dJKV7+wJInRGB9rRypJpZUuzY9gjIaXTkqnuiZVkr4GMZyf9F9dz9XOM2MoBDa6ulZu/vLB+z8v9Fyfw8Q4GoC/qST1K5/DNLce7qg02SOMcTRuaKXePCZt2r57QyVpDsMYhYl9TepLwM1strl5opK0RwzEr0hd/S/HaECzG0x/qkm9ZoyDuKdS3z60TRiECeILqaT7GEf7w4mk+pdJ2IRNE758Q5OvQAxjo0r9wpEJm2ggCAMfdUlzGCOwDdxTL71lGyvGma2FpL4kRkCCXnRp+ylIwAZxhj9Iql0MwSQ2u6Q/22g0YOLcpa7SRWIINmaaPCII04Zxhnws6Q0MoQF+oNL2MWgQ/8v4pKtriSE0cl/Sn2DDvnzjiXGO/r2kuo0REG2rS9q1TWBD20vjDImF1K9iBCY2u6RDkEB7vff5Mc4RB5IuYgQkNiTVkU0AM0nXQRIGYH8o6YqNARgvl3SFhAHMJO3csk2CJje6+jZpY/35u6561Q0EMCup9ASECRgvSb0/bVh/BA4kXaWJyUxV0rUlCJPwliaHILH27MeSdg0YwEwrNT8GSQNcqPSIJtadwX1V7YEwgJl6SerXYRgE96W6DRprz15U6RnRDGBWmpR2bsEkgB8l/RUmBrBQ1aGNlZm6VFLVIzYYOOhVu2DD2iNOJN3BqZnOzWE24KCkfxAjsEq6j1MznSkBBvBA0h8NY92RPJF0B6dmWilJc9hoOJD0d2L9uXEh6RCnZnqudz1qNMGDLu0SxAAWJT3DqZkmXTt1iyQM/yj1XWP9kdyXdBunZpqU6jpgw8C+pD0YA/Bjde3i1EzPzY9IA7AXkh4Zxrpj44Gk3+LUTCvbSxgAiS1NDgli/fE7Sa8CNoGZ1KUnMCYNfklS/dvG2qPxclefG4DJmaR+iyBW3DZK/RpIjGCjtLNzZJjNr6t0HTZWTHyoXnOYWHsENlXSIQnbs9L8CMZzpA+qdLEBxtqzt3ov7ZpoxIa2lyBNrBgLSVdBE2uPwL56vwibxuUbTwgYxoTc7JL2CBLrjjDuSbV9BBiTRtAwJsQnpd6XJIy1Z2AmqT8iCJuwQeLUY0kXYDRiBJuavArAJs4QJF7S5CKG4UXv2n7KCc6ZJn+Q1HeJYTyQVG95ghdMby2kqiXGsdGl/sYRDeMMQX7UJc3RMApvnah33QKIF+zf3ChJX9kYBXFPKm0vDeJMg79QV+/3QYzCeEUrvzu2ca59Kqn0mhuGwYb9Lqm+hHGmbZ5IJe3BxjCIDUldevOoGbaBu4veJc0BG6MgiH2VVHXlczebWw+7ulTaA2yMZENSL/W6+csH7/+86L2rSnOCGIhN/KRJl0qTLqmkemYY4zAml/6pF7omvfQ12TAQT+CPpR1JvdQ1qdL8mMRISNjAZ12lKvWSVOoXljAaBmIQJP2epNK5C3cAYkwPe5WkrpKuLI1RkXff7ZJK2n7nyMawDHz/zdv92s1vn8LEsIyJG2iCjRiXbYBAA0xjWAZhAAZAgxiX2QgbhpuNcRGACcAgIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiLi/+Y/XKfZaw0ONrwAAAAASUVORK5CYII=";
 
-var IMG_404_BANNER = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";//Variable initialization
-var ChannelContent_cursorY = 0;
-var ChannelContent_cursorX = 0;
-var ChannelContent_dataEnded = false;
-var ChannelContent_itemsCount = 0;
-var ChannelContent_loadingDataTry = 0;
-var ChannelContent_loadingDataTryMax = 5;
-var ChannelContent_loadingDataTimeout = 3500;
-var ChannelContent_itemsCountOffset = 0;
-var ChannelContent_skipImg = false;
-var ChannelContent_UserChannels = false;
-var ChannelContent_TargetId;
-var ChannelContent_ids = ['cc_thumbdiv', 'cc_img', 'cc_infodiv', 'cc_name', 'cc_createdon', 'cc_game', 'cc_viwers', 'cc_duration', 'cc_cell', 'sccempty_', 'channel_content_scroll'];
-var ChannelContent_status = false;
-var ChannelContent_lastselectedChannel = '';
-var ChannelContent_responseText = null;
-var ChannelContent_selectedChannelViews = '';
-var ChannelContent_selectedChannelFallower = '';
-var ChannelContent_description = '';
-var ChannelContent_ChannelValue = {};
-var ChannelContent_ChannelValueIsset = false;
-var ChannelContent_offline_image = null;
-var ChannelContent_profile_banner = '';
-//Variable initialization end
-
-function ChannelContent_init() {
-    Main_values.Main_CenterLablesVectorPos = 1;
-    Main_values.Main_Go = Main_ChannelContent;
-    if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-    if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
-    Main_cleanTopLabel();
-    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
-    Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-    Main_textContent('top_bar_game', STR_CHANNEL_CONT);
-    document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
-    AddCode_PlayRequest = false;
-    if (ChannelContent_status) {
-        Main_YRst(ChannelContent_cursorY);
-        Main_ShowElement(ChannelContent_ids[10]);
-        ChannelContent_checkUser();
-        ChannelContent_addFocus();
-        Main_SaveValues();
-    } else ChannelContent_StartLoad();
-}
-
-function ChannelContent_exit() {
-    Main_RestoreTopLabel();
-    document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-    Main_HideElement(ChannelContent_ids[10]);
-}
-
-function ChannelContent_StartLoad() {
-    Main_empty('stream_table_channel_content');
-    Main_HideElement(ChannelContent_ids[10]);
-    ChannelContent_offline_image = null;
-    Main_showLoadDialog();
-    Main_HideWarningDialog();
-    ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
-    ChannelContent_status = false;
-    ChannelContent_skipImg = false;
-    ChannelContent_itemsCountOffset = 0;
-    ChannelContent_itemsCount = 0;
-    ChannelContent_cursorX = 0;
-    ChannelContent_cursorY = 0;
-    ChannelContent_dataEnded = false;
-    ChannelContent_TargetId = undefined;
-    ChannelContent_loadDataPrepare();
-    ChannelContent_loadDataRequest();
-}
-
-function ChannelContent_loadDataPrepare() {
-    Main_FirstLoad = true;
-    ChannelContent_loadingDataTry = 0;
-    ChannelContent_loadingDataTimeout = 3500;
-}
-
-function ChannelContent_loadDataRequest() {
-    var theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id);
-
-    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
-}
-
-function ChannelContent_loadDataRequestSuccess(response) {
-    if (JSON.parse(response).stream !== null) {
-        ChannelContent_responseText = response;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    } else if (!ChannelContent_TargetId) {
-        ChannelContent_loadDataPrepare();
-        ChannelContent_loadDataCheckHost();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
-}
-
-function ChannelContent_loadDataError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
-        ChannelContent_loadDataRequest();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
-}
-
-function ChannelContent_loadDataCheckHost() {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
-
-    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError, true);
-}
-
-function ChannelContent_loadDataCheckHostError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
-        ChannelContent_loadDataCheckHost();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
-}
-
-function ChannelContent_CheckHost(responseText) {
-    var response = JSON.parse(responseText);
-    ChannelContent_TargetId = response.hosts[0].target_id;
-    if (ChannelContent_TargetId !== undefined) {
-        ChannelContent_loadDataPrepare();
-        ChannelContent_loadDataRequest();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
-}
-
-function ChannelContent_GetStreamerInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/channels/' + Main_values.Main_selectedChannel_id;
-
-    BasehttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
-}
-
-function ChannelContent_GetStreamerInfoSuccess(responseText) {
-    var channel = JSON.parse(responseText);
-    ChannelContent_offline_image = channel.video_banner;
-    ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
-    ChannelContent_profile_banner = channel.profile_banner;
-    ChannelContent_selectedChannelViews = channel.views;
-    ChannelContent_selectedChannelFallower = channel.followers;
-    ChannelContent_description = channel.description;
-    Main_values.Main_selectedChannelLogo = channel.logo;
-    ChannelContent_loadDataSuccess();
-    return;
-}
-
-function ChannelContent_GetStreamerInfoError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
-        ChannelContent_GetStreamerInfo();
-    } else {
-        ChannelContent_offline_image = null;
-        ChannelContent_profile_banner = IMG_404_BANNER;
-        ChannelContent_selectedChannelViews = '';
-        ChannelContent_selectedChannelFallower = '';
-        ChannelContent_description = '';
-        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
-        ChannelContent_loadDataSuccess();
-    }
-}
-
-//TODO improve te looks of this screen
-function ChannelContent_loadDataSuccess() {
-    var row = document.createElement('tr'),
-        coloumn_id = 0,
-        doc = document.getElementById("stream_table_channel_content");
-
-    Main_td = document.createElement('tr');
-    Main_td.className = 'follower_banner';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
-        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"src="' + ChannelContent_profile_banner +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
-    doc.appendChild(Main_td);
-
-    if (ChannelContent_responseText !== null) {
-        var response = JSON.parse(ChannelContent_responseText);
-        if (response.stream !== null) {
-            var hosting = ChannelContent_TargetId !== undefined ? Main_values.Main_selectedChannelDisplayname +
-                STR_USER_HOSTING : '';
-            var stream = response.stream;
-            row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
-                twemoji.parse(stream.channel.status), stream.game,
-                Main_is_playlist(JSON.stringify(stream.stream_type)) +
-                hosting + stream.channel.display_name,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR +
-                Main_addCommas(stream.viewers) + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)));
-            coloumn_id++;
-        } else ChannelContent_skipImg = true;
-    } else ChannelContent_skipImg = true;
-
-    row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
-        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_PAST_BROA, 'movie-play'));
-    coloumn_id++;
-    row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
-        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_CLIPS, 'movie'));
-
-    if (coloumn_id < 2) {
-        coloumn_id++;
-        row.appendChild(Main_createEmptyCell(ChannelContent_ids[9] + '0_' + coloumn_id));
-    }
-
-    doc.appendChild(row);
-
-    row = document.createElement('tr');
-
-    row.appendChild(ChannelContent_createFallow('1_0',
-        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
-
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + 'x_x');
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] +
-        'x_x" class="stream_thumbnail_video" ><div id="' +
-        ChannelContent_ids[4] + 'x_x" class="stream_channel_info">' +
-        twemoji.parse(ChannelContent_description) + '</div></div>';
-    row.appendChild(Main_td);
-
-    doc.appendChild(row);
-
-    ChannelContent_loadDataSuccessFinish();
-}
-
-//TODO revise this functions there is too many
-function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
-
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, channel_name);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
-        '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
-        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
-        '<i class="icon-circle" style="color: ' +
-        (ChannelContent_TargetId !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
-        channel_display_name + '</div>' +
-        '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
-        quality + '</div>' +
-        '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
-        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' +
-        (stream_game !== "" ? STR_PLAYING + stream_game : "") + '</div>' +
-        '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info">' + viwers + '</div>' + '</div>';
-
-    return Main_td;
-}
-
-function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, user_name);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
-        ChannelContent_ids[1] + id +
-        '" class="stream_channel_content_icon"><i class="icon-' + icons + '"></i></div></div>' +
-        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="text-align: center">' + stream_type +
-        '</div></div>';
-
-    return Main_td;
-}
-
-function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, user_name);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
-        '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
-        ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"src="' + preview_thumbnail +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
-        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text_channel">' +
-        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
-        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(ChannelContent_selectedChannelViews) +
-        STR_VIEWS + '</div>' +
-        '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info" >' + Main_addCommas(ChannelContent_selectedChannelFallower) +
-        STR_FALLOWERS + '</div></div>';
-
-    return Main_td;
-}
-
-function ChannelContent_setFallow() {
-    if (AddCode_IsFallowing) {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 600%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
-        Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOWING);
-    } else {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 600%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
-        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOW);
-        else Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_CANT_FALLOW);
-    }
-}
-
-function ChannelContent_loadDataSuccessFinish() {
-    if (!ChannelContent_status) {
-        ChannelContent_status = true;
-        ChannelContent_addFocus();
-        Main_SaveValues();
-        Main_ShowElement(ChannelContent_ids[10]);
-        Main_HideLoadDialog();
-    }
-    ChannelContent_checkUser();
-    Main_FirstLoad = false;
-}
-
-function ChannelContent_checkUser() {
-    if (ChannelContent_UserChannels) ChannelContent_setFallow();
-    else if (AddUser_UserIsSet()) {
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_PlayRequest = false;
-        AddCode_CheckFallow();
-    } else {
-        AddCode_IsFallowing = false;
-        ChannelContent_setFallow();
-    }
-}
-
-function ChannelContent_addFocus() {
-    Main_AddClass(ChannelContent_ids[0] +
-        ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), Main_classThumb);
-    if (Main_CenterLablesInUse) ChannelContent_removeFocus();
-    Main_handleKeyUp();
-}
-
-function ChannelContent_removeFocus() {
-    Main_removeFocus(ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), ChannelContent_ids);
-}
-
-function ChannelContent_keyEnter() {
-    if (ChannelContent_cursorY) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-            AddCode_PlayRequest = false;
-            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-            if (AddCode_IsFallowing) AddCode_UnFallow();
-            else AddCode_Fallow();
-        } else {
-            Main_showWarningDialog(STR_NOKEY_WARN);
-            window.setTimeout(Main_HideWarningDialog, 2000);
-        }
-    } else {
-        document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-        Main_HideElement(ChannelContent_ids[10]);
-        var value = (!ChannelContent_skipImg ? 0 : 1);
-        if (ChannelContent_cursorX === (0 - value)) {
-
-            Main_values.Play_selectedChannel = document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
-                '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute);
-
-            Main_values.Play_selectedChannelDisplayname = document.getElementById(ChannelContent_ids[3] + ChannelContent_cursorY +
-                '_' + ChannelContent_cursorX).textContent;
-
-            if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
-                Main_values.Play_isHost = true;
-                Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname;
-                Main_values.Play_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
-                Main_values.Play_selectedChannel_id = ChannelContent_TargetId;
-            } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
-
-            var playing = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent;
-            Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
-
-            Main_ready(Main_openStream);
-        } else if (ChannelContent_cursorX === (1 - value)) {
-            Main_ready(function() {
-                inUseObj = ChannelVod;
-                Screens_init();
-            });
-        } else if (ChannelContent_cursorX === (2 - value)) {
-            inUseObj = ChannelClip;
-            Main_ready(Screens_init);
-        }
-    }
-}
-
-function ChannelContent_SetChannelValue() {
-    ChannelContent_ChannelValue = {
-        "Main_values.Main_selectedChannel_id": Main_values.Main_selectedChannel_id,
-        "Main_values.Main_selectedChannelLogo": Main_values.Main_selectedChannelLogo,
-        "Main_values.Main_selectedChannel": Main_values.Main_selectedChannel,
-        "Main_values.Main_selectedChannelDisplayname": Main_values.Main_selectedChannelDisplayname,
-        "ChannelContent_UserChannels": ChannelContent_UserChannels,
-        "Main_values.Main_BeforeChannel": Main_values.Main_BeforeChannel
-    };
-}
-
-function ChannelContent_RestoreChannelValue() {
-    Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel_id;
-    Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannelLogo;
-    Main_values.Main_selectedChannel = Main_values.Main_selectedChannel;
-    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname;
-    ChannelContent_UserChannels = ChannelContent_ChannelValue.ChannelContent_UserChannels;
-    Main_values.Main_BeforeChannel = Main_values.Main_BeforeChannel;
-    ChannelContent_ChannelValue = {};
-    ChannelContent_ChannelValueIsset = false;
-}
-
-function ChannelContent_handleKeyDown(event) {
-    if (Main_FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
-
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                ChannelContent_removeFocus();
-                Main_CenterLablesStart(ChannelContent_handleKeyDown);
-            }
-            Sidepannel_RestoreScreen();
-            break;
-        case KEY_LEFT:
-            if (!ChannelContent_cursorX) {
-                ChannelContent_removeFocus();
-                Sidepannel_Start(ChannelContent_handleKeyDown, true);
-            } else if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorX--;
-                if (ChannelContent_cursorX < 0) ChannelContent_cursorX = (!ChannelContent_skipImg ? 2 : 1);
-                ChannelContent_addFocus();
-            }
-            break;
-        case KEY_RIGHT:
-            if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorX++;
-                if (ChannelContent_cursorX > (!ChannelContent_skipImg ? 2 : 1)) ChannelContent_cursorX = 0;
-                ChannelContent_addFocus();
-            }
-            break;
-        case KEY_UP:
-            if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                Main_CenterLablesStart(ChannelContent_handleKeyDown);
-            } else {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 0;
-                ChannelContent_addFocus();
-            }
-            break;
-        case KEY_DOWN:
-            if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 1;
-                ChannelContent_addFocus();
-            }
-            break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_ENTER:
-            ChannelContent_keyEnter();
-            break;
-        default:
-            break;
-    }
-}// more keys at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
+var IMG_404_BANNER = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";// more keys at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
 var KEY_PAUSE = 51;
 var KEY_PLAY = 52;
 var KEY_PLAYPAUSE = 179;
@@ -1057,6 +1831,596 @@ var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guide
 var KEY_KEYBOARD_DONE = 13;
 var KEY_KEYBOARD_SPACE = 32;
 var KEY_KEYBOARD_DELETE_ALL = 46;//Variable initialization
+var AddUser_loadingDataTry = 0;
+var AddUser_loadingDataTryMax = 5;
+var AddUser_loadingDataTimeout = 3500;
+var AddUser_UsernameArray = [];
+var AddUser_Username = null;
+var AddUser_loadingData = false;
+var AddUser_keyBoardOn = false;
+//Variable initialization end
+
+function AddUser_init() {
+    Main_values.Main_Go = Main_addUser;
+    Main_AddClass('top_bar_user', 'icon_center_focus');
+    Main_HideWarningDialog();
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
+    Main_ShowElement('add_user_scroll');
+    AddUser_inputFocus();
+}
+
+function AddUser_exit() {
+    AddUser_RemoveinputFocus(false);
+    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_HideElement('add_user_scroll');
+}
+
+function AddUser_handleKeyDown(event) {
+    if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
+                else Main_values.Main_Go = Main_Live;
+                AddUser_exit();
+                Main_SwitchScreen();
+            }
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            AddUser_inputFocus();
+            break;
+        default:
+            break;
+    }
+}
+
+function AddUser_inputFocus() {
+    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+    document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
+
+    Main_AddUserInput.focus();
+    AddUser_keyBoardOn = true;
+}
+
+function AddUser_removeEventListener() {
+    if (Main_AddUserInput !== null) {
+        var elClone = Main_AddUserInput.cloneNode(true);
+        Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
+        Main_AddUserInput = document.getElementById("user_input");
+    }
+}
+
+function AddUser_RemoveinputFocus(EnaKeydown) {
+    Main_AddUserInput.blur();
+    AddUser_removeEventListener();
+    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
+    Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
+
+    if (EnaKeydown) document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
+    AddUser_keyBoardOn = false;
+}
+
+function AddUser_KeyboardEvent(event) {
+    if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
+
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
+                else Main_values.Main_Go = Main_Live;
+                AddUser_exit();
+                Main_SwitchScreen();
+            }
+            break;
+        case KEY_KEYBOARD_DELETE_ALL:
+            Main_AddUserInput.value = '';
+            break;
+        case KEY_KEYBOARD_DONE:
+        case KEY_DOWN:
+            if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
+
+                AddUser_Username = Main_AddUserInput.value;
+
+                if (!AddUser_UserCodeExist(AddUser_Username)) {
+                    AddUser_loadingDataTry = 0;
+                    AddUser_loadingDataTimeout = 3500;
+                    AddUser_loadingData = true;
+                    Main_HideElement('add_user_scroll');
+                    Main_showLoadDialog();
+                    AddUser_loadDataRequest();
+                } else {
+                    Main_HideLoadDialog();
+                    Main_showWarningDialog(STR_USER + AddUser_Username + STR_USER_SET);
+                    window.setTimeout(function() {
+                        Main_HideWarningDialog();
+                        AddUser_inputFocus();
+                    }, 1500);
+                }
+            } else AddUser_inputFocus();
+            break;
+        case KEY_KEYBOARD_BACKSPACE:
+            Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
+            break;
+        case KEY_KEYBOARD_SPACE:
+            Main_AddUserInput.value += ' ';
+            break;
+        default:
+            break;
+    }
+}
+
+function AddUser_loadDataRequest() {
+    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username);
+
+    BasehttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
+}
+
+function AddUser_loadDataRequestSuccess(response) {
+    if (JSON.parse(response)._total) {
+        Main_AddUserInput.value = '';
+        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+        AddUser_SaveNewUser(response);
+    } else AddUser_loadDataNoUser();
+}
+
+function AddUser_loadDataError() {
+    AddUser_loadingDataTry++;
+    if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
+        AddUser_loadingDataTimeout += 500;
+        AddUser_loadDataRequest();
+    } else AddUser_loadDataNoUser();
+}
+
+function AddUser_loadDataNoUser() {
+    AddUser_Username = null;
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_USER_ERROR);
+    window.setTimeout(function() {
+        AddUser_init();
+    }, 1000);
+    AddUser_loadingData = false;
+}
+
+function AddUser_RestoreUsers() {
+    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
+    if (AddUser_UsernameArray.length > 0) {
+        //Check and refresh all tokens at start
+        for (var i = 0; i < AddUser_UsernameArray.length; i++)
+            if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+    }
+}
+
+function AddUser_UserIsSet() {
+    return AddUser_UsernameArray.length > 0;
+}
+
+function AddUser_SaveNewUser(responseText) {
+    AddUser_Username = JSON.parse(responseText).users[0];
+    AddUser_UsernameArray.push({
+        'name': AddUser_Username.name,
+        'id': AddUser_Username._id,
+        'access_token': 0,
+        'refresh_token': 0
+    });
+
+    AddUser_SaveUserArray();
+    Users_status = false;
+    AddUser_exit();
+    Users_init();
+    AddUser_loadingData = false;
+}
+
+function AddUser_removeUser(Position) {
+
+    // remove the user
+    var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
+    if (index > -1) AddUser_UsernameArray.splice(index, 1);
+
+    // restart users and smarthub
+    if (AddUser_UsernameArray.length > 0) {
+        Users_status = false;
+        Users_init();
+    } else AddUser_init();
+
+    // reset localStorage usernames
+    AddUser_SaveUserArray();
+}
+
+function AddUser_SaveUserArray() {
+    Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
+}
+
+function AddUser_UserMakeOne(Position) {
+    AddUser_Username = AddUser_UsernameArray[0];
+    AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
+    AddUser_UsernameArray[Position] = AddUser_Username;
+    Users_status = false;
+    Users_init();
+    AddUser_SaveUserArray();
+    Main_values.Users_Position = 0;
+}
+
+function AddUser_UserCodeExist(user) {
+    return AddUser_UsernameArray.indexOf(user) !== -1;
+}
+
+function AddUser_IsUserSet() {
+    return AddUser_UsernameArray.length > 0;
+}//Variable initialization
+var ChatLive_loadingDataTry = 0;
+var ChatLive_loadingDataTryMax = 10;
+var ChatLive_loadEmotesChannelId;
+var ChatLive_hasEnded = false;
+var ChatLive_Id = 0;
+var ChatLive_loadBadgesChannelId;
+var ChatLive_socket = null;
+var ChatLive_loaded = false;
+var ChatLive_CheckId;
+var ChatLive_FixId;
+var ChatLive_LineAddCounter = 0;
+var extraEmotesDone = {
+    bbtv: {},
+    ffz: {}
+};
+var extraEmotes = {};
+
+var ChatLive_selectedChannel_id;
+var ChatLive_selectedChannel;
+
+//Variable initialization end
+
+function ChatLive_Init() { // jshint ignore:line
+    ChatLive_Clear();
+    if (!Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
+    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
+
+    ChatLive_loaded = false;
+
+    Main_ready(function() {
+        ChatLive_Id = (new Date()).getTime();
+        ChatLive_selectedChannel_id = Main_values.Play_selectedChannel_id;
+        ChatLive_selectedChannel = Main_values.Play_selectedChannel;
+        ChatLive_loadBadgesChannel(ChatLive_Id, ChatLive_loadBadgesChannelSuccess);
+    });
+
+}
+
+function ChatLive_loadBadgesChannel(id, callbackSucess) {
+    ChatLive_loadingDataTry = 0;
+    ChatLive_loadBadgesChannelRequest(id, callbackSucess);
+}
+
+function ChatLive_loadBadgesChannelRequest(id, callbackSucess) {
+    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id + '/display';
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText, id);
+                return;
+            } else {
+                ChatLive_loadBadgesChannelError(id, callbackSucess);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_loadBadgesChannelError(id, callbackSucess) {
+    ChatLive_loadingDataTry++;
+    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess);
+    else {
+        if (ChatLive_Id === id) ChatLive_loadBadgesChannelId = window.setTimeout(function() {
+            ChatLive_loadBadgesChannelRequest(id, callbackSucess);
+        }, 500);
+    }
+}
+
+function ChatLive_loadBadgesChannelSuccess(responseText, id) {
+    Chat_loadBadgesTransform(responseText);
+
+    ChatLive_loadEmotesChannel();
+    ChatLive_loadEmotesChannelffz();
+    if (ChatLive_Id === id) ChatLive_loadChat();
+}
+
+function ChatLive_loadEmotesChannel() {
+    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id]) {
+        ChatLive_loadingDataTry = 0;
+        ChatLive_loadEmotesChannelRequest();
+    }
+}
+
+function ChatLive_loadEmotesChannelRequest() {
+    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText);
+            } else if (xmlHttp.status === 404) { //not supported by this channel
+                extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
+            } else {
+                ChatLive_loadEmotesChannelError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_loadEmotesChannelError() {
+    ChatLive_loadingDataTry++;
+    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelRequest();
+}
+
+function ChatLive_loadEmotesChannelSuccess(data) {
+    ChatLive_loadEmotesbbtv(JSON.parse(data));
+    extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
+}
+
+function ChatLive_loadEmotesChannelffz() {
+    if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id]) {
+        ChatLive_loadingDataTry = 0;
+        ChatLive_loadEmotesChannelffzRequest();
+    }
+}
+
+function ChatLive_loadEmotesChannelffzRequest() {
+    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText);
+            } else if (xmlHttp.status === 404) { //not supported by this channel
+                extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
+            } else {
+                ChatLive_loadEmotesChannelffzError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_loadEmotesChannelffzError() {
+    ChatLive_loadingDataTry++;
+    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffzRequest();
+}
+
+function ChatLive_loadEmotesChannelffzSuccess(data) {
+    ChatLive_loadEmotesffz(JSON.parse(data));
+    extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
+}
+
+function ChatLive_loadEmotesbbtv(data) {
+    data.emotes.forEach(function(emote) {
+        extraEmotes[emote.code] = {
+            code: emote.code,
+            id: emote.id,
+            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+        };
+    });
+}
+
+function ChatLive_loadEmotesffz(data) {
+    Object.keys(data.sets).forEach(function(set) {
+        set = data.sets[set];
+        if (set.emoticons || Array.isArray(set.emoticons)) {
+
+            set.emoticons.forEach(function(emoticon) {
+
+                if (!emoticon.name || !emoticon.id) return;
+                if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
+
+                if (extraEmotes[emoticon.name]) return;
+
+                if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
+
+                if (typeof emoticon.urls[1] !== 'string') return;
+                if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
+                extraEmotes[emoticon.name] = {
+                    code: emoticon.name,
+                    id: emoticon.id,
+                    '3x': 'https:' + (emoticon.urls[4] || (emoticon.urls[2] || emoticon.urls[1].replace(/1$/, '2')))
+                };
+
+            });
+        }
+    });
+}
+
+function ChatLive_loadChat() {
+    ChatLive_CheckClear();
+    ChatLive_loadChatRequest();
+}
+
+function ChatLive_loadChatRequest() {
+
+    ChatLive_socket = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
+        reconnectInterval: 3000
+    });
+
+    ChatLive_socket.onopen = function() {
+        ChatLive_socket.send('PASS blah\r\n');
+        ChatLive_socket.send('NICK justinfan12345\r\n');
+        ChatLive_socket.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+        ChatLive_socket.send('JOIN #' + ChatLive_selectedChannel + '\r\n');
+    };
+
+    ChatLive_socket.onclose = function() {
+        ChatLive_hasEnded = true;
+    };
+
+    ChatLive_socket.onmessage = function(data) {
+
+        var message = window.parseIRC(data.data.trim());
+
+        if (!message.command) return;
+
+        switch (message.command) {
+            case "PING":
+                ChatLive_socket.send('PONG ' + message.params[0]);
+                break;
+            case "JOIN":
+                ChatLive_loaded = true;
+                var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
+                    Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
+                ChatLive_LineAdd(div);
+                break;
+            case "PRIVMSG":
+                ChatLive_loadChatSuccess(message);
+                break;
+            default:
+                break;
+        }
+    };
+
+    ChatLive_CheckId = window.setTimeout(ChatLive_Check, 5000);
+}
+
+function ChatLive_Check() {
+    if (!ChatLive_loaded) {
+        ChatLive_socket.close(1000);
+        ChatLive_loadChat();
+    } else ChatLive_FixId = window.setInterval(ChatLive_ChatFixPosition, 1000);
+}
+
+function ChatLive_CheckClear() {
+    window.clearTimeout(ChatLive_CheckId);
+}
+
+function ChatLive_loadChatSuccess(message) {
+    var div = '',
+        tags = message.tags;
+
+    //Add badges
+    if (tags.hasOwnProperty('badges')) {
+        if (typeof tags.badges === 'string') {
+            tags.badges.split(',').forEach(function(badge) {
+                badge = badge.split('/');
+
+                div += '<span class="' + badge[0] + '-' + badge[1] + ' tag"></span>';
+            });
+        }
+    }
+
+    //Add nick
+    if (tags.hasOwnProperty('display-name')) {
+        var nick = tags['display-name'];
+        if (typeof nick === 'string')
+            div += '<span class="nick" style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
+    }
+
+    //Add message
+    var mmessage = message.params[1];
+
+    if (/^\x01ACTION.*\x01$/.test(mmessage))
+        mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
+
+    var emotes = {};
+
+    if (tags.hasOwnProperty('emotes')) {
+        if (typeof tags.emotes === 'string') {
+
+            tags.emotes = tags.emotes.split('/');
+
+            tags.emotes.forEach(function(emote) {
+                emote = emote.split(':');
+
+                if (!emotes[emote[0]]) emotes[emote[0]] = [];
+
+                var replacements = emote[1].split(',');
+                replacements.forEach(function(replacement) {
+                    replacement = replacement.split('-');
+
+                    emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
+                });
+            });
+        }
+    }
+
+    div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
+
+    ChatLive_LineAdd(div);
+}
+
+function ChatLive_extraMessageTokenize(tokenizedMessage) {
+
+    for (var i = 0; i < tokenizedMessage.length; i++) {
+        if (typeof tokenizedMessage[i] === 'string') {
+            tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i]);
+        } else {
+            tokenizedMessage[i] = tokenizedMessage[i][0];
+        }
+    }
+
+    return twemoji.parse(tokenizedMessage.join(' '), true, true);
+}
+
+function ChatLive_LineAdd(message) {
+    var elem = document.createElement('div');
+    elem.className = 'chat_line';
+    elem.innerHTML = message;
+
+    Chat_div.appendChild(elem);
+    ChatLive_ChatFixPosition();
+    ChatLive_LineAddCounter++;
+    if (ChatLive_LineAddCounter > 100) {
+        ChatLive_LineAddCounter = 0;
+        Chat_Clean();
+    }
+}
+
+function ChatLive_ChatFixPosition() {
+    Chat_div.scrollTop = Chat_div.scrollHeight;
+}
+
+function ChatLive_ClearIds() {
+    ChatLive_CheckClear();
+    window.clearTimeout(ChatLive_loadBadgesChannelId);
+    window.clearTimeout(ChatLive_loadEmotesChannelId);
+    window.clearInterval(ChatLive_FixId);
+}
+
+function ChatLive_Clear() {
+    ChatLive_ClearIds();
+    if (ChatLive_socket) ChatLive_socket.close(1000);
+    ChatLive_Id = 0;
+    Main_empty('chat_box');
+    ChatLive_hasEnded = false;
+    ChatLive_loaded = false;
+}//Variable initialization
 var Main_isReleased = false;
 var Main_isBrowser = false;
 var Main_isDebug = false;
@@ -2520,1978 +3884,6 @@ function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackS
     };
 
     xmlHttp.send(null);
-}//Variable initialization
-var PlayVod_quality = 'source';
-var PlayVod_qualityPlaying = PlayVod_quality;
-
-var PlayVod_state = 0;
-
-var PlayVod_streamInfoTimerId = null;
-var PlayVod_tokenResponse = 0;
-var PlayVod_playlistResponse = 0;
-var PlayVod_playingTry = 0;
-
-var PlayVod_playingUrl = '';
-var PlayVod_qualities = [];
-var PlayVod_qualityIndex = 0;
-
-var PlayVod_loadingDataTry = 0;
-var PlayVod_loadingDataTryMax = 5;
-var PlayVod_isOn = false;
-var PlayVod_Buffer = 2000;
-
-var PlayVod_loadingInfoDataTry = 0;
-var PlayVod_loadingInfoDataTryMax = 5;
-var PlayVod_loadingInfoDataTimeout = 10000;
-
-var PlayVod_PlayerTime = 0;
-var PlayVod_streamCheckId = null;
-var PlayVod_PlayerCheckCount = 0;
-var PlayVod_PlayerCheckQualityChanged = false;
-var PlayVod_PlayerCheckCounter = 0;
-var PlayVod_PlayerCheckRun = false;
-
-var Play_jumping = false;
-var PlayVod_SizeClearID;
-var PlayVod_updateStreamInfId;
-var PlayVod_addToJump = 0;
-var PlayVod_IsJumping = false;
-var PlayVod_jumpCount = 0;
-var PlayVod_loadingDataTimeout = 2000;
-var PlayVod_qualitiesFound = false;
-var PlayVod_currentTime = 0;
-var PlayVod_VodIds = {};
-var PlayVod_VodPositions = 0;
-var PlayVod_PanelY = 0;
-var PlayVod_HasVodInfo = true;
-var PlayVod_ProgressBaroffset = 0;
-var PlayVod_StepsCount = 0;
-var PlayVod_TimeToJump = 0;
-var PlayVod_replay = false;
-var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
-
-var PlayVod_RefreshProgressBarrID;
-var PlayVod_SaveOffsetId;
-var PlayVod_WasSubChekd = false;
-//Variable initialization end
-
-function PlayVod_Start() {
-    Play_showBufferDialog();
-    Play_HideEndDialog();
-    PlayVod_currentTime = 0;
-    Main_textContent("stream_live_time", '');
-    Main_textContent("stream_watching_time", '');
-    Main_textContent('progress_bar_current_time', Play_timeS(0));
-    Chat_title = STR_PAST_BROA + '.';
-    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
-    Main_HideElement('progress_pause_holder');
-    Main_ShowElement('progress_bar_div');
-    PlayVod_StepsCount = 0;
-    Play_DefaultjumpTimers = PlayVod_jumpTimers;
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
-    PlayVod_state = Play_STATE_LOADING_TOKEN;
-    PlayClip_HasVOD = true;
-    ChannelVod_vodOffset = 0;
-    Main_values.Play_isHost = false;
-    PlayClip_HideShowNext(0, 0);
-    PlayClip_HideShowNext(1, 0);
-
-    if (Main_values.vodOffset) { // this is a vod comming from a clip
-        PlayVod_PrepareLoad();
-        PlayVod_updateVodInfo();
-    } else {
-        if (PlayVod_HasVodInfo && Main_values.Main_selectedChannel_id !== '') {
-            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
-            if (AddUser_UserIsSet()) {
-                AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-                AddCode_PlayRequest = true;
-                AddCode_CheckFallow();
-            } else Play_hideFallow();
-        } else {
-            PlayVod_PrepareLoad();
-            PlayVod_updateStreamerInfo();
-        }
-        Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
-        Main_innerHTML("stream_info_title", '');
-        Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
-        Main_textContent("stream_live_icon", ChannelVod_createdAt);
-
-        Main_replaceClassEmoji('stream_info_game');
-    }
-
-    if (PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] && !Main_values.vodOffset) {
-        Play_HideBufferDialog();
-        Play_showVodDialog();
-    } else {
-        PlayVod_PosStart();
-    }
-}
-
-function PlayVod_PosStart() {
-    window.setTimeout(function() {
-        Main_ShowElement('scene_channel_panel_bottom');
-        Main_ShowElement('progress_pause_holder');
-    }, 1000);
-    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
-
-    Main_values.Play_WasPlaying = 2;
-    Main_SaveValues();
-
-    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-    new Image().src = Play_IncrementView;
-
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_PlayerCheckCount = 0;
-    window.clearInterval(PlayVod_streamCheckId);
-    PlayVod_PlayerCheckRun = false;
-    Play_PlayerPanelOffset = -13;
-    PlayVod_qualitiesFound = false;
-    Play_IsWarning = false;
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
-    PlayVod_tokenResponse = 0;
-    PlayVod_playlistResponse = 0;
-    PlayVod_playingTry = 0;
-    document.addEventListener('visibilitychange', PlayVod_Resume, false);
-    Play_jumping = false;
-    PlayVod_isOn = true;
-    PlayVod_WasSubChekd = false;
-    PlayVod_loadData();
-    Play_EndSet(2);
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
-}
-
-function PlayVod_PrepareLoad() {
-    PlayVod_loadingInfoDataTry = 0;
-    PlayVod_loadingInfoDataTryMax = 5;
-    PlayVod_loadingInfoDataTimeout = 10000;
-}
-
-function PlayVod_updateStreamerInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateStreamerInfoValues, PlayVod_updateStreamerInfoError, false);
-}
-
-function PlayVod_updateStreamerInfoValues(musers) {
-    musers = JSON.parse(musers).users[0];
-    if (musers !== undefined) {
-        Main_values.Main_selectedChannelLogo = musers.logo;
-        Main_values.Main_selectedChannel_id = musers._id;
-        if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
-        if (AddUser_UserIsSet()) {
-            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-            AddCode_PlayRequest = true;
-            AddCode_CheckFallow();
-        } else Play_hideFallow();
-    } else {
-        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
-        Main_values.Main_selectedChannel_id = '';
-    }
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-
-}
-
-function PlayVod_updateStreamerInfoError() {
-    PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-        PlayVod_loadingInfoDataTimeout += 500;
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_updateStreamerInfo();
-        }, 750);
-    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamerInfo, 2500);
-}
-
-function PlayVod_updateVodInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError, false);
-}
-
-function PlayVod_updateVodInfoError() {
-    PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-        PlayVod_loadingInfoDataTimeout += 2000;
-        PlayVod_updateVodInfo();
-    }
-}
-
-function PlayVod_updateVodInfoPannel(response) {
-    response = JSON.parse(response);
-
-    //TODO add a warning about muted segments
-    //if (response.muted_segments) console.log(response.muted_segments);
-
-    Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
-    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
-        ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
-    Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
-
-    ChannelVod_DurationSeconds = parseInt(response.length);
-    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
-
-    PlayVod_currentTime = Main_values.vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-
-    Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
-    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
-
-    Main_values.Main_selectedChannelLogo = response.channel.logo;
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-
-    Main_values.Main_selectedChannel_id = response.channel._id;
-    Main_values.Main_selectedChannel = response.channel.name;
-
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
-    new Image().src = response.increment_view_count_url;
-}
-
-function PlayVod_Resume() {
-    if (document.hidden) {
-        if (Play_isEndDialogVisible()) {
-            Play_CleanHideExit();
-            Play_hideChat();
-            PlayVod_shutdownStream();
-        } else {
-            PlayVod_SaveOffset();
-            PlayVod_SaveVodIds();
-            Chat_Pause();
-            Play_ClearPlayer();
-            window.clearInterval(PlayVod_streamCheckId);
-            window.clearInterval(PlayVod_SaveOffsetId);
-        }
-    } else {
-        PlayVod_isOn = true;
-        Play_clearPause();
-        if (PlayVod_isOn) {
-            Play_showBufferDialog();
-            Play_ResumeAfterOnlineCounter = 0;
-
-            Play_ResumeAfterOnlineCounter = 0;
-            if (navigator.onLine) PlayVod_onPlayer();
-            else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
-
-            Chat_Play(Chat_Id);
-            Play_EndSet(2);
-            PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-        }
-    }
-}
-
-function PlayVod_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
-        window.clearInterval(Play_ResumeAfterOnlineId);
-        PlayVod_state = Play_STATE_LOADING_TOKEN;
-        PlayVod_loadData();
-    }
-    Play_ResumeAfterOnlineCounter++;
-}
-
-function PlayVod_SaveOffset() {
-    Main_values.vodOffset = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
-    Main_SaveValues();
-    Main_values.vodOffset = 0;
-}
-
-
-function PlayVod_loadData() {
-    PlayVod_loadingDataTry = 0;
-    PlayVod_loadingDataTimeout = 2000;
-    PlayVod_loadDataRequest();
-}
-
-function PlayVod_loadDataRequest() {
-    var theUrl;
-
-    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
-        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
-    } else {
-        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
-            '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-            '&allow_audio_only=true&reassignments_supported=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '');
-    }
-
-    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);
-}
-
-function PlayVod_loadDataError() {
-    if (PlayVod_isOn) {
-        var mjson;
-        if (PlayVod_tokenResponse.token) mjson = JSON.parse(PlayVod_tokenResponse.token);
-        if (mjson) {
-            if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
-                PlayVod_loadDataCheckSub();
-                return;
-            }
-        }
-
-        PlayVod_loadingDataTry++;
-        if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
-            PlayVod_loadingDataTimeout += 250;
-            PlayVod_loadDataRequest();
-        } else {
-            if (!Main_isBrowser) {
-                Play_HideBufferDialog();
-                Play_PlayEndStart(2);
-            } else PlayVod_loadDataSuccessFake();
-        }
-    }
-}
-
-//Browsers crash trying to get the streams link
-function PlayVod_loadDataSuccessFake() {
-    PlayVod_qualities = [{
-        'id': '1080p60(Source)',
-        'band': '(10.00Mbps)',
-        'url': 'http://fake'
-    }];
-    PlayVod_state = Play_STATE_PLAYING;
-    if (PlayVod_isOn) PlayVod_qualityChanged();
-}
-
-function PlayVod_loadDataSuccess(responseText) {
-    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
-        PlayVod_tokenResponse = JSON.parse(responseText);
-        PlayVod_state = Play_STATE_LOADING_PLAYLIST;
-        PlayVod_loadData();
-    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
-        PlayVod_playlistResponse = responseText;
-        PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
-        PlayVod_state = Play_STATE_PLAYING;
-        if (PlayVod_isOn) PlayVod_qualityChanged();
-    }
-}
-
-function PlayVod_loadDataCheckSub() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckSub();
-    } else {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 4000);
-    }
-}
-
-function PlayVod_NotSub() {
-    Play_HideBufferDialog();
-    Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
-    window.setTimeout(function() {
-        if (PlayVod_isOn) PlayVod_shutdownStream();
-    }, 4000);
-}
-
-function PlayVod_isSub() {
-    if (!PlayVod_WasSubChekd) {
-        // Do one more try before failing, because the access_token may be expired on the first treys
-        // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
-        // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
-        PlayVod_WasSubChekd = true;
-        PlayVod_state = Play_STATE_LOADING_TOKEN;
-        PlayVod_loadData();
-    } else {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 4000);
-    }
-}
-
-function PlayVod_qualityChanged() {
-    window.clearInterval(PlayVod_streamCheckId);
-    PlayVod_qualityIndex = 0;
-    PlayVod_playingUrl = PlayVod_qualities[0].url;
-    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
-    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
-        if (PlayVod_qualities[i].id === PlayVod_quality) {
-            PlayVod_qualityIndex = i;
-            PlayVod_playingUrl = PlayVod_qualities[i].url;
-            break;
-        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
-            PlayVod_qualityIndex = i;
-            PlayVod_playingUrl = PlayVod_qualities[i].url;
-        }
-    }
-
-    PlayVod_qualityPlaying = PlayVod_quality;
-    PlayVod_onPlayer();
-}
-
-function PlayVod_onPlayer() {
-    if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
-
-    if (Main_values.vodOffset) {
-        Chat_offset = Main_values.vodOffset;
-        Chat_Init();
-        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
-            PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
-        Main_values.vodOffset = 0;
-    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
-        PlayVod_replay ? -1 : Android.gettime());
-
-    PlayVod_replay = false;
-    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-
-    if (Main_Android) {
-        PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3 + (PlayVod_Buffer / 1000);
-        PlayVod_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayVod_streamCheckId);
-        PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-    }
-}
-
-function PlayVod_UpdateDuration(duration) {
-    ChannelVod_DurationSeconds = duration / 1000;
-    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
-    PlayVod_RefreshProgressBarr();
-}
-
-function PlayVod_PlayerCheck() {
-    if (Main_Android) PlayVod_currentTime = Android.gettime();
-
-    //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_Android) Android.play(false);
-        Play_PannelEndStart(2);
-    }
-
-    if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
-        PlayVod_PlayerCheckCount++;
-        if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
-
-            //Don't change the first time only retry
-            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) PlayVod_qualityIndex++;
-            else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
-
-            if (!navigator.onLine) Play_EndStart(false, 2);
-            else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
-            else {
-                PlayVod_qualityDisplay();
-                PlayVod_qualityChanged();
-                PlayVod_PlayerCheckRun = true;
-            }
-
-        } // else we try for too long let the listener onerror catch it
-    } else {
-        PlayVod_PlayerCheckCounter = 0;
-        PlayVod_PlayerCheckCount = 0;
-        PlayVod_PlayerCheckRun = false;
-    }
-
-    PlayVod_PlayerTime = PlayVod_currentTime;
-}
-
-function PlayVod_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) {
-        if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
-        else {
-            Play_EndStart(false, 2);
-            return;
-        }
-    }
-
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_qualityDisplay();
-    PlayVod_qualityChanged();
-    PlayVod_PlayerCheckRun = true;
-}
-
-function PlayVod_shutdownStream() {
-    if (PlayVod_isOn) {
-        PlayVod_qualities = [];
-        PlayVod_PreshutdownStream(true);
-        Play_exitMain();
-    }
-}
-
-function PlayVod_PreshutdownStream(saveOffset) {
-    if (saveOffset) PlayVod_SaveVodIds();
-    if (Main_Android) Android.stopVideo(2);
-    PlayVod_isOn = false;
-    window.clearInterval(PlayVod_SaveOffsetId);
-    window.clearInterval(PlayVod_updateStreamInfId);
-    Main_values.Play_WasPlaying = 0;
-    PlayVod_HasVodInfo = true;
-    Chat_Clear();
-    UserLiveFeed_Hide();
-    Play_ClearPlayer();
-    PlayVod_ClearVod();
-}
-
-function PlayVod_ClearVod() {
-    document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayVod_Resume);
-    Main_values.vodOffset = 0;
-    window.clearInterval(PlayVod_streamInfoTimerId);
-    window.clearInterval(PlayVod_streamCheckId);
-    ChannelVod_DurationSeconds = 0;
-}
-
-function PlayVod_hidePanel() {
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
-    PlayVod_addToJump = 0;
-    Play_clearHidePanel();
-    document.getElementById("scene_channel_panel").style.opacity = "0";
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
-    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
-    PlayVod_quality = PlayVod_qualityPlaying;
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-}
-
-function PlayVod_showPanel(autoHide) {
-    PlayVod_RefreshProgressBarr();
-    Play_clock();
-    Play_CleanHideExit();
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
-    if (autoHide) {
-        PlayVod_IconsBottonResetFocus();
-        PlayVod_qualityIndexReset();
-        PlayVod_qualityDisplay();
-        PlayVod_setHidePanel();
-    }
-    document.getElementById("scene_channel_panel").style.opacity = "1";
-}
-
-function PlayVod_RefreshProgressBarr() {
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
-}
-
-function PlayVod_IconsBottonResetFocus() {
-    PlayVod_PanelY = 1;
-    PlayClip_EnterPos = 0;
-    PlayVod_IconsBottonFocus();
-}
-
-function PlayVod_IconsBottonFocus() {
-    Main_RemoveClass('pause_button', 'progress_bar_div_focus');
-    Main_RemoveClass('next_button', 'progress_bar_div_focus');
-    Main_RemoveClass('back_button', 'progress_bar_div_focus');
-    Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
-
-    if (!PlayVod_PanelY) { //progress_bar
-        Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
-        Play_IconsRemoveFocus();
-        if (PlayVod_addToJump) {
-            PlayVod_jumpTime();
-            document.getElementById('progress_bar_steps').style.display = 'inline-block';
-        }
-    } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
-        if (!PlayClip_EnterPos) { //pause
-            Main_AddClass('pause_button', 'progress_bar_div_focus');
-        } else if (PlayClip_EnterPos === 1) { //next
-            Main_AddClass('next_button', 'progress_bar_div_focus');
-        } else if (PlayClip_EnterPos === -1) { //back
-            Main_AddClass('back_button', 'progress_bar_div_focus');
-        }
-
-        Play_IconsRemoveFocus();
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
-    } else if (PlayVod_PanelY === 2) { //botton icons
-        Play_IconsAddFocus();
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
-    }
-}
-
-function PlayVod_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayVod_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
-}
-
-function PlayVod_qualityIndexReset() {
-    PlayVod_qualityIndex = 0;
-    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
-        if (PlayVod_qualities[i].id === PlayVod_quality) {
-            PlayVod_qualityIndex = i;
-            break;
-        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
-            PlayVod_qualityIndex = i;
-        }
-    }
-}
-
-function PlayVod_qualityDisplay() {
-    if (PlayVod_getQualitiesCount() === 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "0";
-        document.getElementById("quality_arrow_down").style.opacity = "0";
-    } else if (!PlayVod_qualityIndex) {
-        document.getElementById("quality_arrow_up").style.opacity = "0.2";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
-    } else if (PlayVod_qualityIndex === PlayVod_getQualitiesCount() - 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "0.2";
-    } else {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
-    }
-
-    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-    if (PlayVod_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayVod_quality.replace("source", STR_SOURCE) + PlayVod_qualities[PlayVod_qualityIndex].band);
-    else Main_textContent("quality_name", PlayVod_quality + PlayVod_qualities[PlayVod_qualityIndex].band);
-}
-
-function PlayVod_getQualitiesCount() {
-    return PlayVod_qualities.length;
-}
-
-function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
-    Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
-    if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
-}
-
-function PlayVod_jump() {
-    Play_clearPause();
-    if (!Play_isEndDialogVisible()) {
-
-        PlayVod_PlayerCheckQualityChanged = false;
-        PlayClip_PlayerCheckQualityChanged = false;
-
-        if (PlayVod_isOn) {
-            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2,
-                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-            Chat_offset = PlayVod_TimeToJump;
-        } else {
-            Chat_offset = ChannelVod_vodOffset;
-            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,
-                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-        }
-
-        if (PlayClip_HasVOD) Chat_Init();
-    }
-    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
-    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
-    PlayVod_addToJump = 0;
-    PlayVod_TimeToJump = 0;
-}
-
-function PlayVod_SizeClear() {
-    PlayVod_jumpCount = 0;
-    PlayVod_StepsCount = 0;
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
-}
-
-function PlayVod_jumpSteps(duration_seconds) {
-    if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
-    if (Math.abs(duration_seconds) > 60)
-        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + (duration_seconds / 60) + STR_MINUTES);
-    else if (duration_seconds)
-        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + duration_seconds + STR_SECONDS);
-    else
-        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + Play_DefaultjumpTimers[1] + STR_SECONDS);
-}
-
-function PlayVod_jumpTime() {
-    Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
-}
-
-function PlayVod_jumpStart(multiplier, duration_seconds) {
-    var currentTime = Main_Android ? (Android.gettime() / 1000) : 0;
-
-    window.clearTimeout(PlayVod_SizeClearID);
-    PlayVod_IsJumping = true;
-
-    if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1) && (PlayVod_StepsCount++ % 6) === 0) PlayVod_jumpCount++;
-
-    PlayVod_addToJump += Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier;
-    PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
-
-    //hls jump/seek time in avplay is "10 base", jump/seek to 1:53:53 will jump to 1:53:50, round to show then
-    if (PlayVod_isOn) PlayVod_TimeToJump = Math.floor(PlayVod_TimeToJump / 10) * 10;
-
-    if (PlayVod_TimeToJump > duration_seconds) {
-        PlayVod_addToJump = duration_seconds - currentTime - Play_DefaultjumpTimers[1];
-        PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
-        PlayVod_jumpCount = 0;
-        PlayVod_StepsCount = 0;
-    } else if (PlayVod_TimeToJump < 0) {
-        PlayVod_addToJump = 0 - currentTime;
-        PlayVod_jumpCount = 0;
-        PlayVod_StepsCount = 0;
-        PlayVod_TimeToJump = 0;
-    }
-
-    PlayVod_jumpTime();
-    Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
-
-    PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
-}
-
-function PlayVod_SaveVodIds() {
-    var time = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
-
-    var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
-
-    if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
-
-        //delete before save to add this to the end, and prevent loose it in restorevodids
-        if (PlayVod_VodIds[vod_id]) delete PlayVod_VodIds[vod_id];
-
-        PlayVod_VodIds[vod_id] = time;
-        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
-
-    } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[vod_id]) {
-
-        //if ended or almost delete
-        delete PlayVod_VodIds[vod_id];
-
-        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
-    }
-}
-
-function PlayVod_RestoreVodIds() {
-    PlayVod_VodIds = Main_getItemJson('PlayVod_VodIds', {});
-
-    //Prevent too big obj in storage
-    var size = PlayVod_VodIdsSize();
-    if (size > 250) PlayVod_CleanVodIds(size - 250);
-}
-
-function PlayVod_VodIdsSize() {
-    var size = 0;
-    for (var key in PlayVod_VodIds) {
-        if (PlayVod_VodIds.hasOwnProperty(key)) size++;
-    }
-    return size;
-}
-
-function PlayVod_CleanVodIds(quantity) {
-    var position = 0;
-    for (var key in PlayVod_VodIds) {
-        if (position < quantity) delete PlayVod_VodIds[key];
-        else break;
-        position++;
-    }
-    Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
-}
-
-function Play_showVodDialog() {
-    Main_HideElement('scene_channel_panel_bottom');
-    PlayVod_showPanel(false);
-    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] * 1000));
-    Main_ShowElement('dialog_vod_start');
-}
-
-function Play_HideVodDialog() {
-    PlayVod_hidePanel();
-    Main_HideElement('dialog_vod_start');
-    PlayVod_IconsResetFocus();
-    window.setTimeout(function() {
-        Main_ShowElement('scene_channel_panel_bottom');
-    }, 1000);
-}
-
-function Play_isVodDialogShown() {
-    return Main_isElementShowing('dialog_vod_start');
-}
-
-function PlayVod_IconsResetFocus() {
-    PlayVod_IconsRemoveFocus();
-    PlayVod_VodPositions = 0;
-    PlayVod_IconsAddFocus();
-}
-
-function PlayVod_IconsAddFocus() {
-    Main_AddClass('dialog_vod_' + PlayVod_VodPositions, 'dialog_end_icons_focus');
-}
-
-function PlayVod_IconsRemoveFocus() {
-    Main_RemoveClass('dialog_vod_' + PlayVod_VodPositions, 'dialog_end_icons_focus');
-}
-
-function PlayVod_DialogPressed(fromStart) {
-    Play_HideVodDialog();
-    if (!fromStart) {
-        Main_values.vodOffset = PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
-        PlayVod_currentTime = Main_values.vodOffset * 1000;
-        PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-        PlayVod_PosStart();
-    } else {
-        delete PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
-        Main_values.vodOffset = 0;
-        PlayVod_Start();
-    }
-}
-
-function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
-        switch (e.keyCode) {
-            case KEY_RETURN:
-                if (Play_ExitDialogVisible()) {
-                    Play_CleanHideExit();
-                    PlayVod_shutdownStream();
-                } else {
-                    Play_showExitDialog();
-                }
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (e.keyCode) {
-            case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos--;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-                    Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter++;
-                        if (Play_Panelcounter > 5) Play_Panelcounter = 1;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    }
-                    PlayVod_setHidePanel();
-                } else if (Play_isVodDialogShown()) {
-                    PlayVod_IconsRemoveFocus();
-                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
-                    else PlayVod_VodPositions++;
-                    PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_Endcounter--;
-                    if (Play_Endcounter < 0) Play_Endcounter = 3;
-                    if (Play_Endcounter === 1) Play_Endcounter = 0;
-                    Play_EndIconsAddFocus();
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
-                break;
-            case KEY_RIGHT:
-                console.log(PlayVod_PanelY);
-                if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos++;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-                    Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter--;
-                        if (Play_Panelcounter < 1) Play_Panelcounter = 5;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    }
-                    PlayVod_setHidePanel();
-                } else if (Play_isVodDialogShown()) {
-                    PlayVod_IconsRemoveFocus();
-                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
-                    else PlayVod_VodPositions++;
-                    PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    if (Play_Endcounter === 1) Play_Endcounter = 2;
-                    Play_EndIconsAddFocus();
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
-                break;
-            case KEY_UP:
-                if (Play_isEndDialogVisible()) Play_EndTextClear();
-                else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_qualityIndex > 0 && Play_Panelcounter === 1) {
-                        PlayVod_qualityIndex--;
-                        PlayVod_qualityDisplay();
-                    }
-                    Play_clearHidePanel();
-                    PlayVod_setHidePanel();
-                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
-                else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
-                break;
-            case KEY_DOWN:
-                if (Play_isEndDialogVisible()) Play_EndTextClear();
-                else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
-                    if (!PlayVod_PanelY) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
-                        PlayVod_qualityIndex++;
-                        PlayVod_qualityDisplay();
-                    }
-                    Play_clearHidePanel();
-                    PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else if (Play_isFullScreen && Play_isChatShown()) {
-                    //Play_ChatBackground += 0.05;
-                    //if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
-                    //Play_ChatBackgroundChange(true);
-                    Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 4) {
-                        Play_ChatSizeValue = 1;
-                        Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
-                    Play_ChatSize(true);
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
-                break;
-            case KEY_ENTER:
-                if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
-                else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
-                else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY) {
-                        Play_clearHidePanel();
-                        PlayVod_setHidePanel();
-                        if (PlayVod_addToJump) PlayVod_jump();
-                    } else if (PlayVod_PanelY === 1) {
-                        if (Main_values.Play_ChatForceDisable) {
-                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                            else Chat_Pause();
-                        }
-                        if (!Play_isEndDialogVisible()) Play_KeyPause(2);
-                    } else Play_BottomOptionsPressed(2);
-                } else if (UserLiveFeed_isFeedShow()) {
-                    PlayVod_PreshutdownStream(true);
-                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-                } else PlayVod_showPanel(true);
-                break;
-            case KEY_RETURN:
-                Play_KeyReturn(true);
-                break;
-            case KEY_PLAY:
-            case KEY_PAUSE:
-            case KEY_PLAYPAUSE:
-                if (Main_values.Play_ChatForceDisable) {
-                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                    else Chat_Pause();
-                }
-                if (!Play_isEndDialogVisible()) Play_KeyPause(2);
-                break;
-            default:
-                break;
-        }
-    }
-}//Variable initialization
-var PlayClip_PlayerTime = 0;
-var PlayClip_streamCheckId = null;
-var PlayClip_PlayerCheckCount = 0;
-var PlayClip_IsJumping = false;
-var PlayClip_jumpCount = 0;
-var PlayClip_TimeToJump = 0;
-var PlayClip_isOn = false;
-var PlayClip_loadingDataTry = 0;
-var PlayClip_loadingDataTimeout = 2000;
-var PlayClip_loadingDataTryMax = 5;
-var PlayClip_quality = 'source';
-var PlayClip_qualityPlaying = PlayClip_quality;
-var PlayClip_qualityIndex = 0;
-var PlayClip_qualities = [];
-var PlayClip_playingUrl = '';
-var PlayClip_replay = false;
-var PlayClip_currentTime = 0;
-var PlayClip_state = 0;
-var PlayClip_STATE_PLAYING = 1;
-var PlayClip_HasVOD = false;
-var PlayClip_PlayerCheckCounter = 0;
-var PlayClip_PlayerCheckQualityChanged = false;
-var PlayClip_PlayerCheckRun = false;
-var PlayClip_Buffer = 2000;
-
-var PlayClip_jumpTimers = [0, 5];
-var PlayClip_DurationSeconds = 0;
-
-var PlayClip_HasNext = false;
-var PlayClip_HasBack = false;
-var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
-var PlayClip_EnterPos = 0;
-var PlayClip_All = false;
-var PlayClip_All_Forced = true;
-//Variable initialization end
-
-function PlayClip_Start() {
-    Play_showBufferDialog();
-    Play_HideEndDialog();
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
-    Main_innerHTML("stream_info_title", ChannelClip_title);
-    Main_innerHTML("stream_info_game", ChannelClip_game + ' ' + ChannelClip_views + ' ' + ChannelClip_language);
-    Main_textContent("stream_live_icon", ChannelClip_createdAt);
-    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
-    Play_DefaultjumpTimers = PlayClip_jumpTimers;
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
-    Main_replaceClassEmoji('stream_info_title');
-
-    Main_values.Play_isHost = false;
-
-    Main_textContent('progress_bar_current_time', Play_timeS(0));
-    Main_textContent("stream_live_time", '');
-    Main_textContent("stream_watching_time", '');
-    PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
-    Chat_title = STR_CLIP + '.';
-    if (PlayClip_HasVOD) {
-        Chat_offset = ChannelVod_vodOffset;
-        Chat_Init();
-    } else Chat_NoVod();
-    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
-    Main_ShowElement('progress_bar_div');
-    PlayClip_SetOpenVod();
-    Main_ShowElement('scene_channel_panel_bottom');
-
-    PlayClip_PlayerCheckCounter = 0;
-    PlayClip_PlayerCheckCount = 0;
-    window.clearInterval(PlayClip_streamCheckId);
-    PlayClip_PlayerCheckRun = false;
-    Play_PlayerPanelOffset = -13;
-    PlayClip_state = 0;
-    PlayClip_currentTime = 0;
-    PlayClip_qualityIndex = 2;
-    PlayClip_UpdateNext();
-    Play_EndSet(3);
-    Play_IsWarning = false;
-    Play_IconsResetFocus();
-
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
-
-    document.addEventListener('visibilitychange', PlayClip_Resume, false);
-    PlayClip_IsJumping = false;
-    PlayClip_jumpCount = 0;
-    PlayClip_TimeToJump = 0;
-    PlayClip_isOn = true;
-
-    PlayClip_loadData();
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
-}
-
-function PlayClip_loadData() {
-    PlayClip_loadingDataTry = 0;
-    PlayClip_loadingDataTimeout = 2000;
-    PlayClip_loadDataRequest();
-}
-
-function PlayClip_loadDataRequest() {
-    var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
-
-    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError, true);
-}
-
-function PlayClip_loadDataError() {
-    PlayClip_loadingDataTry++;
-    if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
-        PlayClip_loadingDataTimeout += 250;
-        PlayClip_loadDataRequest();
-    } else {
-        Play_HideBufferDialog();
-        Play_PlayEndStart(3);
-    }
-}
-
-function PlayClip_QualityGenerate(response) {
-    PlayClip_qualities = [];
-
-    response = JSON.parse(response).quality_options;
-
-    for (var i = 0; i < response.length; i++) {
-
-        if (!PlayClip_qualities.length) {
-            PlayClip_qualities.push({
-                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' (source)',
-                'url': response[i].source
-            });
-        } else {
-            PlayClip_qualities.push({
-                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate),
-                'url': response[i].source
-            });
-        }
-    }
-
-    PlayClip_state = PlayClip_STATE_PLAYING;
-    PlayClip_qualityChanged();
-}
-
-function PlayClip_FrameRate(value) {
-    if (value > 40) return 60;
-    else return '';
-}
-
-function PlayClip_qualityChanged() {
-    window.clearInterval(PlayClip_streamCheckId);
-    PlayClip_qualityIndex = 0;
-    PlayClip_playingUrl = PlayClip_qualities[0].url;
-    if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
-    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
-        if (PlayClip_qualities[i].id === PlayClip_quality) {
-            PlayClip_qualityIndex = i;
-            PlayClip_playingUrl = PlayClip_qualities[i].url;
-            break;
-        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
-            PlayClip_qualityIndex = i;
-            PlayClip_playingUrl = PlayClip_qualities[i].url;
-        }
-    }
-
-    PlayClip_qualityPlaying = PlayClip_quality;
-    if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
-    PlayClip_state = PlayClip_STATE_PLAYING;
-
-    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
-        PlayClip_replay ? -1 : Android.gettime());
-    PlayClip_replay = false;
-    PlayClip_onPlayer();
-}
-
-function PlayClip_onPlayer() {
-    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-
-    if (Main_Android) {
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 1 + (PlayClip_Buffer / 1000);
-        PlayClip_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayClip_streamCheckId);
-        PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
-    }
-}
-
-function PlayClip_UpdateDuration(duration) {
-    PlayClip_DurationSeconds = duration / 1000;
-    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
-    PlayClip_RefreshProgressBarr();
-}
-
-function PlayClip_Resume() {
-    if (document.hidden) PlayClip_shutdownStream();
-}
-
-function PlayClip_PlayerCheck() {
-    if (Main_Android) PlayClip_currentTime = Android.gettime();
-
-    //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayClip_currentTime / 1000) > PlayClip_DurationSeconds) {
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_Android) Android.play(false);
-        Play_PannelEndStart(3);
-    }
-
-    if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
-        PlayClip_PlayerCheckCount++;
-        if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {
-
-            //Don't change the first time only retry
-            if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;
-            else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
-
-            if (!navigator.onLine) Play_EndStart(false, 3);
-            else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
-            else {
-                PlayClip_qualityDisplay();
-                PlayClip_qualityChanged();
-                PlayClip_PlayerCheckRun = true;
-            }
-
-        } // else we try for too long let the listener onerror catch it
-    } else {
-        PlayClip_PlayerCheckCounter = 0;
-        PlayClip_PlayerCheckCount = 0;
-        PlayClip_PlayerCheckRun = false;
-
-    }
-
-    PlayClip_PlayerTime = PlayClip_currentTime;
-}
-
-function PlayClip_DropOneQuality(ConnectionDrop) {
-
-    if (!ConnectionDrop) {
-        if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) PlayClip_qualityIndex++;
-        else {
-            Play_EndStart(false, 3);
-            return;
-        }
-    }
-
-    PlayClip_PlayerCheckCounter = 0;
-    PlayClip_qualityDisplay();
-    PlayClip_qualityChanged();
-    PlayClip_PlayerCheckRun = true;
-}
-
-function PlayClip_shutdownStream() {
-    if (PlayClip_isOn) {
-        PlayClip_All = false;
-        PlayClip_PreshutdownStream();
-        Play_CleanHideExit();
-        Play_exitMain();
-    }
-}
-
-function PlayClip_PreshutdownStream() {
-    PlayClip_hidePanel();
-    PlayClip_qualities = [];
-    window.clearInterval(PlayClip_streamCheckId);
-    if (Main_Android) Android.stopVideo(3);
-    PlayClip_isOn = false;
-    Chat_Clear();
-    Play_ClearPlayer();
-    UserLiveFeed_Hide();
-    document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayClip_Resume);
-    document.getElementById('scene2_pannel_0').style.display = 'none';
-    document.getElementById("quality_name").style.width = '25ch';
-    ChannelVod_vodOffset = 0;
-}
-
-function PlayClip_UpdateNext() {
-    var nextid = PlayClip_getIdNext(1, 0);
-    var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
-    var text;
-
-    PlayClip_HasNext = false;
-    PlayClip_HasBack = false;
-
-    if (nextid) {
-        PlayClip_HasNext = true;
-        text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
-        Main_textContent("next_button_text_name", text[4]);
-        Main_innerHTML("next_button_text_title", text[9]);
-
-        Main_textContent("end_next_button_text_name", text[4]);
-        Main_innerHTML("end_next_button_text_title", text[9]);
-
-        PlayClip_HideShowNext(0, 1);
-    } else PlayClip_HideShowNext(0, 0);
-
-    if (backid) {
-        PlayClip_HasBack = true;
-        text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
-        Main_textContent("back_button_text_name", text[4]);
-        Main_innerHTML("back_button_text_title", text[9]);
-        PlayClip_HideShowNext(1, 1);
-    } else PlayClip_HideShowNext(1, 0);
-}
-
-function PlayClip_getIdNext(y, x) {
-    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
-        return inUseObj.posY + '_' + (inUseObj.posX + y);
-    else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
-        return (inUseObj.posY + y) + '_' + x;
-
-    return null;
-}
-
-function PlayClip_HideShowNext(which, val) {
-    document.getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
-}
-
-function PlayClip_Enter() {
-    if (!PlayClip_EnterPos) {
-        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
-            if (Play_isNotplaying()) Chat_Play(Chat_Id);
-            else Chat_Pause();
-        }
-        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
-    } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
-    else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
-}
-
-function PlayClip_PlayNext() {
-    Screens_KeyLeftRight(1, 0);
-    PlayClip_PlayNextPreviously();
-}
-
-function PlayClip_PlayPreviously() {
-    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-    PlayClip_PlayNextPreviously();
-}
-
-function PlayClip_PlayNextPreviously() {
-    var doc = document.getElementById("scene_channel_panel");
-    doc.style.transition = 'none';
-    doc.style.opacity = "0";
-    Main_ready(function() {
-        PlayClip_PreshutdownStream();
-        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
-        doc.style.transition = '';
-    });
-}
-
-function PlayClip_hidePanel() {
-    //return;
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
-    PlayVod_addToJump = 0;
-    Play_clearHidePanel();
-    PlayClip_quality = PlayClip_qualityPlaying;
-    document.getElementById("scene_channel_panel").style.opacity = "0";
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
-    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-}
-
-function PlayClip_showPanel() {
-    PlayClip_RefreshProgressBarr();
-    Play_clock();
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(PlayClip_RefreshProgressBarr, 1000);
-    Play_CleanHideExit();
-    PlayVod_IconsBottonResetFocus();
-    PlayClip_qualityIndexReset();
-    PlayClip_qualityDisplay();
-    document.getElementById("scene_channel_panel").style.opacity = "1";
-    PlayClip_setHidePanel();
-}
-
-function PlayClip_RefreshProgressBarr() {
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
-}
-
-function PlayClip_qualityIndexReset() {
-    PlayClip_qualityIndex = 0;
-    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
-        if (PlayClip_qualities[i].id === PlayClip_quality) {
-            PlayClip_qualityIndex = i;
-            break;
-        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
-            PlayClip_qualityIndex = i;
-        }
-    }
-}
-
-function PlayClip_getQualitiesCount() {
-    return PlayClip_qualities.length;
-}
-
-function PlayClip_qualityDisplay() {
-    if (PlayClip_getQualitiesCount() === 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "0";
-        document.getElementById("quality_arrow_down").style.opacity = "0";
-    } else if (!PlayClip_qualityIndex) {
-        document.getElementById("quality_arrow_up").style.opacity = "0.2";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
-    } else if (PlayClip_qualityIndex === PlayClip_getQualitiesCount() - 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "0.2";
-    } else {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
-    }
-
-    PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
-
-    if (PlayClip_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayClip_quality.replace("source", STR_SOURCE));
-    else Main_textContent("quality_name", PlayClip_quality);
-}
-
-function PlayClip_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
-}
-
-function PlayClip_SetOpenVod() {
-    document.getElementById("quality_name").style.width = '16ch';
-    Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
-    document.getElementById('scene2_pannel_0').style.display = 'inline-block';
-}
-
-function PlayClip_OpenVod() {
-    if (PlayClip_HasVOD) {
-        Main_values.vodOffset = ChannelVod_vodOffset;
-        PlayClip_PreshutdownStream();
-        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-        Play_IconsResetFocus();
-        Main_ready(PlayVod_Start);
-    } else {
-        Play_clearHidePanel();
-        Play_IsWarning = true;
-        Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
-        window.setTimeout(function() {
-            Play_IsWarning = false;
-            Play_HideWarningDialog();
-        }, 2000);
-    }
-}
-
-function PlayClip_handleKeyDown(e) {
-    if (PlayClip_state !== PlayClip_STATE_PLAYING) {
-        switch (e.keyCode) {
-            case KEY_RETURN:
-                if (Play_ExitDialogVisible()) {
-                    Play_CleanHideExit();
-                    PlayClip_shutdownStream();
-                } else {
-                    Play_showExitDialog();
-                }
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (e.keyCode) {
-            case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos--;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                } else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter++;
-                        if (Play_Panelcounter > 5) Play_Panelcounter = 0;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    } else if (PlayVod_PanelY === 1) {
-                        if (PlayClip_EnterPos > -1) {
-                            PlayClip_EnterPos--;
-                            if (PlayClip_HasBack || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
-                            else PlayClip_EnterPos++;
-                        }
-                    }
-                    PlayClip_setHidePanel();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_Endcounter--;
-                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 3;
-                    Play_EndIconsAddFocus();
-                } else PlayClip_showPanel();
-                break;
-            case KEY_RIGHT:
-                if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos++;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                } else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter--;
-                        if (Play_Panelcounter < 0) Play_Panelcounter = 5;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(1, PlayClip_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    } else if (PlayVod_PanelY === 1) {
-                        if (PlayClip_EnterPos < 1) {
-                            PlayClip_EnterPos++;
-                            if (PlayClip_HasNext || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
-                            else PlayClip_EnterPos--;
-                        }
-                    }
-                    PlayClip_setHidePanel();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
-                    Play_EndIconsAddFocus();
-                } else PlayClip_showPanel();
-                break;
-            case KEY_UP:
-                if (Play_isEndDialogVisible()) Play_EndTextClear();
-                else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
-                        PlayClip_qualityIndex--;
-                        PlayClip_qualityDisplay();
-                    }
-                    Play_clearHidePanel();
-                    PlayClip_setHidePanel();
-                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
-                else PlayClip_showPanel();
-                break;
-            case KEY_DOWN:
-                if (Play_isEndDialogVisible()) Play_EndTextClear();
-                else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
-                        PlayClip_qualityIndex++;
-                        PlayClip_qualityDisplay();
-                    }
-                    Play_clearHidePanel();
-                    PlayClip_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 4) {
-                        Play_ChatSizeValue = 1;
-                        Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
-                    Play_ChatSize(true);
-                } else PlayClip_showPanel();
-                break;
-            case KEY_ENTER:
-                if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
-                else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY) {
-                        Play_clearHidePanel();
-                        PlayClip_setHidePanel();
-                        if (PlayVod_addToJump) PlayVod_jump();
-                    } else if (PlayVod_PanelY === 1) PlayClip_Enter();
-                    else Play_BottomOptionsPressed(3);
-                } else if (UserLiveFeed_isFeedShow()) {
-                    PlayClip_PreshutdownStream();
-                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-                } else PlayClip_showPanel();
-                break;
-            case KEY_RETURN:
-                if (Play_isPanelShown()) PlayClip_hidePanel();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else {
-                    if (Play_ExitDialogVisible()) {
-                        Play_CleanHideExit();
-                        PlayClip_shutdownStream();
-                    } else {
-                        Play_showExitDialog();
-                    }
-                }
-                break;
-            case KEY_PLAY:
-            case KEY_PAUSE:
-            case KEY_PLAYPAUSE:
-                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
-                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                    else Chat_Pause();
-                }
-                if (!Play_isEndDialogVisible()) Play_KeyPause(3);
-                break;
-            default:
-                break;
-        }
-    }
-}//Variable initialization
-var ChatLive_loadingDataTry = 0;
-var ChatLive_loadingDataTryMax = 10;
-var ChatLive_loadEmotesChannelId;
-var ChatLive_hasEnded = false;
-var ChatLive_Id = 0;
-var ChatLive_loadBadgesChannelId;
-var ChatLive_socket = null;
-var ChatLive_loaded = false;
-var ChatLive_CheckId;
-var ChatLive_FixId;
-var ChatLive_LineAddCounter = 0;
-var extraEmotesDone = {
-    bbtv: {},
-    ffz: {}
-};
-var extraEmotes = {};
-
-var ChatLive_selectedChannel_id;
-var ChatLive_selectedChannel;
-
-//Variable initialization end
-
-function ChatLive_Init() { // jshint ignore:line
-    ChatLive_Clear();
-    if (!Main_values.Play_ChatForceDisable) {
-        Chat_Disable();
-        return;
-    }
-    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
-
-    ChatLive_loaded = false;
-
-    Main_ready(function() {
-        ChatLive_Id = (new Date()).getTime();
-        ChatLive_selectedChannel_id = Main_values.Play_selectedChannel_id;
-        ChatLive_selectedChannel = Main_values.Play_selectedChannel;
-        ChatLive_loadBadgesChannel(ChatLive_Id, ChatLive_loadBadgesChannelSuccess);
-    });
-
-}
-
-function ChatLive_loadBadgesChannel(id, callbackSucess) {
-    ChatLive_loadingDataTry = 0;
-    ChatLive_loadBadgesChannelRequest(id, callbackSucess);
-}
-
-function ChatLive_loadBadgesChannelRequest(id, callbackSucess) {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id + '/display';
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, id);
-                return;
-            } else {
-                ChatLive_loadBadgesChannelError(id, callbackSucess);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadBadgesChannelError(id, callbackSucess) {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess);
-    else {
-        if (ChatLive_Id === id) ChatLive_loadBadgesChannelId = window.setTimeout(function() {
-            ChatLive_loadBadgesChannelRequest(id, callbackSucess);
-        }, 500);
-    }
-}
-
-function ChatLive_loadBadgesChannelSuccess(responseText, id) {
-    Chat_loadBadgesTransform(responseText);
-
-    ChatLive_loadEmotesChannel();
-    ChatLive_loadEmotesChannelffz();
-    if (ChatLive_Id === id) ChatLive_loadChat();
-}
-
-function ChatLive_loadEmotesChannel() {
-    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id]) {
-        ChatLive_loadingDataTry = 0;
-        ChatLive_loadEmotesChannelRequest();
-    }
-}
-
-function ChatLive_loadEmotesChannelRequest() {
-    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 404) { //not supported by this channel
-                extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
-            } else {
-                ChatLive_loadEmotesChannelError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadEmotesChannelError() {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelRequest();
-}
-
-function ChatLive_loadEmotesChannelSuccess(data) {
-    ChatLive_loadEmotesbbtv(JSON.parse(data));
-    extraEmotesDone.bbtv[ChatLive_selectedChannel_id] = 1;
-}
-
-function ChatLive_loadEmotesChannelffz() {
-    if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id]) {
-        ChatLive_loadingDataTry = 0;
-        ChatLive_loadEmotesChannelffzRequest();
-    }
-}
-
-function ChatLive_loadEmotesChannelffzRequest() {
-    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText);
-            } else if (xmlHttp.status === 404) { //not supported by this channel
-                extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
-            } else {
-                ChatLive_loadEmotesChannelffzError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadEmotesChannelffzError() {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffzRequest();
-}
-
-function ChatLive_loadEmotesChannelffzSuccess(data) {
-    ChatLive_loadEmotesffz(JSON.parse(data));
-    extraEmotesDone.ffz[ChatLive_selectedChannel_id] = 1;
-}
-
-function ChatLive_loadEmotesbbtv(data) {
-    data.emotes.forEach(function(emote) {
-        extraEmotes[emote.code] = {
-            code: emote.code,
-            id: emote.id,
-            '3x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-        };
-    });
-}
-
-function ChatLive_loadEmotesffz(data) {
-    Object.keys(data.sets).forEach(function(set) {
-        set = data.sets[set];
-        if (set.emoticons || Array.isArray(set.emoticons)) {
-
-            set.emoticons.forEach(function(emoticon) {
-
-                if (!emoticon.name || !emoticon.id) return;
-                if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
-
-                if (extraEmotes[emoticon.name]) return;
-
-                if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
-
-                if (typeof emoticon.urls[1] !== 'string') return;
-                if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
-                extraEmotes[emoticon.name] = {
-                    code: emoticon.name,
-                    id: emoticon.id,
-                    '3x': 'https:' + (emoticon.urls[4] || (emoticon.urls[2] || emoticon.urls[1].replace(/1$/, '2')))
-                };
-
-            });
-        }
-    });
-}
-
-function ChatLive_loadChat() {
-    ChatLive_CheckClear();
-    ChatLive_loadChatRequest();
-}
-
-function ChatLive_loadChatRequest() {
-
-    ChatLive_socket = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-        reconnectInterval: 3000
-    });
-
-    ChatLive_socket.onopen = function() {
-        ChatLive_socket.send('PASS blah\r\n');
-        ChatLive_socket.send('NICK justinfan12345\r\n');
-        ChatLive_socket.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-        ChatLive_socket.send('JOIN #' + ChatLive_selectedChannel + '\r\n');
-    };
-
-    ChatLive_socket.onclose = function() {
-        ChatLive_hasEnded = true;
-    };
-
-    ChatLive_socket.onmessage = function(data) {
-
-        var message = window.parseIRC(data.data.trim());
-
-        if (!message.command) return;
-
-        switch (message.command) {
-            case "PING":
-                ChatLive_socket.send('PONG ' + message.params[0]);
-                break;
-            case "JOIN":
-                ChatLive_loaded = true;
-                var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
-                    Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
-                ChatLive_LineAdd(div);
-                break;
-            case "PRIVMSG":
-                ChatLive_loadChatSuccess(message);
-                break;
-            default:
-                break;
-        }
-    };
-
-    ChatLive_CheckId = window.setTimeout(ChatLive_Check, 5000);
-}
-
-function ChatLive_Check() {
-    if (!ChatLive_loaded) {
-        ChatLive_socket.close(1000);
-        ChatLive_loadChat();
-    } else ChatLive_FixId = window.setInterval(ChatLive_ChatFixPosition, 1000);
-}
-
-function ChatLive_CheckClear() {
-    window.clearTimeout(ChatLive_CheckId);
-}
-
-function ChatLive_loadChatSuccess(message) {
-    var div = '',
-        tags = message.tags;
-
-    //Add badges
-    if (tags.hasOwnProperty('badges')) {
-        if (typeof tags.badges === 'string') {
-            tags.badges.split(',').forEach(function(badge) {
-                badge = badge.split('/');
-
-                div += '<span class="' + badge[0] + '-' + badge[1] + ' tag"></span>';
-            });
-        }
-    }
-
-    //Add nick
-    if (tags.hasOwnProperty('display-name')) {
-        var nick = tags['display-name'];
-        if (typeof nick === 'string')
-            div += '<span class="nick" style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
-    }
-
-    //Add message
-    var mmessage = message.params[1];
-
-    if (/^\x01ACTION.*\x01$/.test(mmessage))
-        mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
-
-    var emotes = {};
-
-    if (tags.hasOwnProperty('emotes')) {
-        if (typeof tags.emotes === 'string') {
-
-            tags.emotes = tags.emotes.split('/');
-
-            tags.emotes.forEach(function(emote) {
-                emote = emote.split(':');
-
-                if (!emotes[emote[0]]) emotes[emote[0]] = [];
-
-                var replacements = emote[1].split(',');
-                replacements.forEach(function(replacement) {
-                    replacement = replacement.split('-');
-
-                    emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
-                });
-            });
-        }
-    }
-
-    div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
-
-    ChatLive_LineAdd(div);
-}
-
-function ChatLive_extraMessageTokenize(tokenizedMessage) {
-
-    for (var i = 0; i < tokenizedMessage.length; i++) {
-        if (typeof tokenizedMessage[i] === 'string') {
-            tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i]);
-        } else {
-            tokenizedMessage[i] = tokenizedMessage[i][0];
-        }
-    }
-
-    return twemoji.parse(tokenizedMessage.join(' '), true, true);
-}
-
-function ChatLive_LineAdd(message) {
-    var elem = document.createElement('div');
-    elem.className = 'chat_line';
-    elem.innerHTML = message;
-
-    Chat_div.appendChild(elem);
-    ChatLive_ChatFixPosition();
-    ChatLive_LineAddCounter++;
-    if (ChatLive_LineAddCounter > 100) {
-        ChatLive_LineAddCounter = 0;
-        Chat_Clean();
-    }
-}
-
-function ChatLive_ChatFixPosition() {
-    Chat_div.scrollTop = Chat_div.scrollHeight;
-}
-
-function ChatLive_ClearIds() {
-    ChatLive_CheckClear();
-    window.clearTimeout(ChatLive_loadBadgesChannelId);
-    window.clearTimeout(ChatLive_loadEmotesChannelId);
-    window.clearInterval(ChatLive_FixId);
-}
-
-function ChatLive_Clear() {
-    ChatLive_ClearIds();
-    if (ChatLive_socket) ChatLive_socket.close(1000);
-    ChatLive_Id = 0;
-    Main_empty('chat_box');
-    ChatLive_hasEnded = false;
-    ChatLive_loaded = false;
 }//Variable initialization
 var Play_ChatPositions = 0;
 var Play_ChatPositionConvertBefore = Play_ChatPositions;
@@ -6115,6 +5507,2282 @@ function Play_handleKeyDown(e) {
         }
     }
 }//Variable initialization
+var Settings_cursorY = 0;
+var Settings_value = {
+    "restor_playback": { //restor_playback
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "chat_font_size": { //chat_font_size
+        "values": ["60%", "80%", "100%", "120%", "140%"],
+        "defaultValue": 3
+    },
+    "chat_brightness": { //chat_font_size
+        "values": ["0%", "5%", "10%", "15%", "20%",
+            "25%", "30%", "35%", "40%", "45%",
+            "50%", "55%", "60%", "65%", "70%",
+            "75%", "80%", "85%", "90%", "95%", "100%"
+        ],
+        "defaultValue": 11
+    },
+    "force_disable_chat": { //force disable
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "clip_auto_play_next": { //force disable
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "buffer_live": { //buffer_live
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "defaultValue": 4
+    },
+    "buffer_vod": { //buffer_vod
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "defaultValue": 4
+    },
+    "buffer_clip": { //buffer_clip
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "defaultValue": 3
+    },
+    "end_dialog_counter": { //end_dialog_counter
+        "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "defaultValue": 4
+    },
+    "videos_animation": { //videos_animation
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "clock_offset": { //clock_offset
+        "values": Settings_GenerateClock(),
+        "defaultValue": 49
+    },
+    "content_lang": { //content_lang
+        "values": ["All"],
+        "set_values": [""],
+        "defaultValue": 1
+    }
+};
+
+function Settings_GenerateClock() {
+    var clock = [],
+        time = 43200,
+        i = 0;
+
+    for (i; i < 48; i++) {
+        clock.push("-" + Play_timeS(time));
+        time -= 900;
+    }
+
+    clock.push(Play_timeS(0));
+    time = 900;
+
+    for (i = 0; i < 48; i++) {
+        clock.push(Play_timeS(time));
+        time += 900;
+    }
+
+    return clock;
+}
+
+var Settings_value_keys = [];
+var Settings_positions_length = 0;
+//Variable initialization end
+
+function Settings_init() {
+    Main_UnSetTopOpacity();
+    Main_HideElement('label_side_panel');
+    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK_START);
+    document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+    Main_textContent('top_bar_user', STR_SETTINGS);
+    document.getElementById("top_lables").style.marginLeft = '14%';
+    document.getElementById('top_bar_live').style.display = 'none';
+    document.getElementById('top_bar_featured').style.display = 'none';
+    document.getElementById('top_bar_game').style.display = 'none';
+    document.getElementById('top_bar_vod').style.display = 'none';
+    document.getElementById('top_bar_clip').style.display = 'none';
+    Main_AddClass('top_bar_user', 'icon_center_focus');
+    Main_ShowElement('settings_scroll');
+    Settings_cursorY = 0;
+    Settings_inputFocus(Settings_cursorY);
+    Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
+}
+
+function Settings_exit() {
+    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_ShowElement('label_side_panel');
+    Settings_RemoveinputFocus();
+    Main_textContent('top_bar_user', STR_USER);
+    document.getElementById("top_lables").style.marginLeft = '18.5%';
+    document.getElementById('top_bar_live').style.display = 'inline-block';
+    document.getElementById('top_bar_featured').style.display = 'inline-block';
+    document.getElementById('top_bar_game').style.display = 'inline-block';
+    document.getElementById('top_bar_vod').style.display = 'inline-block';
+    document.getElementById('top_bar_clip').style.display = 'inline-block';
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_HideElement('settings_scroll');
+}
+
+// The order in Settings_SetSettings is the display order
+function Settings_SetSettings() {
+    var div = '',
+        key;
+
+    // General settings title
+    div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
+
+    // Content Language selection
+    key = "content_lang";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+
+    div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
+
+    // Clock offset
+    key = "clock_offset";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
+
+    //Player restore playback
+    key = "restor_playback";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+
+    // Videos
+    key = "videos_animation";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
+
+    key = "clip_auto_play_next";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
+
+
+    // Player settings title
+    div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
+
+    // Chat size
+    key = "chat_font_size";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
+
+    key = "chat_brightness";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_CHAT_BRIGHTNESS);
+
+    key = "force_disable_chat";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_YES, STR_NO];
+
+    div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
+
+    // Chat size
+    key = "end_dialog_counter";
+    Settings_value_keys.push(key);
+    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+
+    // Player buffer title/summary
+    div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
+        '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
+
+    // Player buffer live
+    key = "buffer_live";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
+
+    // Player buffer vod
+    key = "buffer_vod";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
+
+    // Player buffer clip
+    key = "buffer_clip";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
+
+    Main_innerHTML("settings_main", div);
+    Settings_positions_length = Settings_value_keys.length;
+    Languages_SetSettings();
+}
+
+function Settings_DivTitle(key, string) {
+    return '<div id="setting_title_' + key + '" class="settings_section">' + string + '</div>';
+}
+
+function Settings_DivOptionNoSummary(key, string) {
+    return '<div id="' + key + '_div" class="settings_div"><div id="' +
+        key + '_name" class="settings_name">' + string + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+}
+
+function Settings_DivOptionWithSummary(key, string_title, string_summary) {
+    return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
+        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div></div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+}
+
+function Settings_DivOptionChangeLang(key, string_title, string_summary) {
+    Main_innerHTML(key + '_name', string_title +
+        '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div>');
+}
+
+// The order in Settings_SetStrings doesnot matter
+function Settings_SetStrings() {
+    var key = '';
+
+    //General settings
+    Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
+
+    // Clock offset
+    key = "clock_offset";
+    Main_textContent(key + '_name', STR_CLOCK_OFFSET);
+
+    // Content Language selection
+    key = "content_lang";
+    Main_textContent(key + '_name', STR_CONTENT_LANG);
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+
+    //Player settings
+    Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
+
+    // Player buffer title/summary
+    Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
+    Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+
+    key = "buffer_live";
+    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_LIVE);
+    key = "buffer_vod";
+    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_VOD);
+    key = "buffer_clip";
+    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
+
+
+    //Player restore
+    key = "restor_playback";
+    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+    Settings_value[key].values = [STR_YES, STR_NO];
+
+    //Player chat font size
+    key = "chat_font_size";
+    Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
+
+    // Chat size
+    key = "end_dialog_counter";
+    Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+    //Player restore
+    key = "force_disable_chat";
+    Settings_DivOptionChangeLang(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
+    Settings_value[key].values = [STR_YES, STR_NO];
+
+    // Videos
+    key = "videos_animation";
+    Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
+    Settings_value[key].values = [STR_YES, STR_NO];
+
+    key = "clip_auto_play_next";
+    Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    key = "chat_brightness";
+    Main_textContent(key + '_name', STR_CHAT_BRIGHTNESS);
+
+    for (key in Settings_value)
+        if (Settings_value.hasOwnProperty(key))
+            Main_textContent(key, Settings_Obj_values(key));
+
+    Languages_SetLang();
+}
+
+function Settings_SetDefautls() {
+    for (var key in Settings_value) {
+        Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
+        Settings_value[key].defaultValue -= 1;
+        if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
+    }
+    Settings_SetBuffers(0);
+    Settings_SetClock();
+    Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
+    Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
+    Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
+}
+
+function Settings_Obj_values(key) {
+    return Settings_value[key].values[Settings_Obj_default(key)];
+}
+
+//function Settings_Obj_set_values(key) {
+//    return Settings_value[key].set_values[Settings_Obj_default(key)];
+//}
+
+function Settings_Obj_default(key) {
+    return Settings_value[key].defaultValue;
+}
+
+function Settings_Obj_length(key) {
+    return Settings_value[key].values.length - 1;
+}
+
+function Settings_inputFocus(position) {
+    var key = Settings_value_keys[Settings_cursorY];
+    Main_AddClass(key, 'settings_value_focus');
+    Main_AddClass(key + '_div', 'settings_div_focus');
+    Settings_Setarrows(position);
+    Settings_ScrollTable();
+}
+
+function Settings_RemoveinputFocus() {
+    var key = Settings_value_keys[Settings_cursorY];
+    document.getElementById(key + "arrow_left").style.opacity = "0";
+    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_RemoveClass(key, 'settings_value_focus');
+    Main_RemoveClass(key + '_div', 'settings_div_focus');
+}
+
+function Settings_ChangeSettigs(position) {
+    var key = Settings_value_keys[position];
+    Main_setItem(key, Settings_Obj_default(key) + 1);
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_Setarrows(position);
+    Settings_SetDefault(position);
+}
+
+function Settings_Setarrows(position) {
+    var key = Settings_value_keys[position];
+
+    if (!Settings_Obj_length(key)) return;
+
+    var currentValue = Settings_Obj_default(key);
+    var maxValue = Settings_Obj_length(key);
+
+    if (currentValue > 0 && currentValue < maxValue) {
+        document.getElementById(key + "arrow_left").style.opacity = "1";
+        document.getElementById(key + "arrow_right").style.opacity = "1";
+    } else if (currentValue === maxValue) {
+        document.getElementById(key + "arrow_left").style.opacity = "1";
+        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+    } else {
+        document.getElementById(key + "arrow_left").style.opacity = "0.2";
+        document.getElementById(key + "arrow_right").style.opacity = "1";
+    }
+}
+
+function Settings_SetDefault(position) {
+    position = Settings_value_keys[position];
+
+    if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
+    else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    else if (position === "buffer_live") Settings_SetBuffers(1);
+    else if (position === "buffer_vod") Settings_SetBuffers(2);
+    else if (position === "buffer_clip") Settings_SetBuffers(3);
+    else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
+    else if (position === "chat_brightness") {
+        Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
+        Play_ChatBackgroundChange(false);
+    } else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
+    else if (position === "chat_font_size") Play_SetChatFont();
+    else if (position === "clock_offset") {
+        Settings_SetClock();
+        Main_updateclock();
+    }
+}
+
+function Settings_SetBuffers(whocall) {
+    //TODO remove the try after android app update has be releaased for some time
+    try {
+        if (!whocall) {
+            Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
+            PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
+            PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
+            if (Main_Android) {
+                Android.SetBuffer(1, Play_Buffer);
+                Android.SetBuffer(2, PlayVod_Buffer);
+                Android.SetBuffer(3, PlayClip_Buffer);
+            }
+        } else if (whocall === 1) {
+            Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
+            if (Main_Android) Android.SetBuffer(1, Play_Buffer);
+        } else if (whocall === 2) {
+            PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
+            if (Main_Android) Android.SetBuffer(2, PlayVod_Buffer);
+        } else if (whocall === 3) {
+            PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
+            if (Main_Android) Android.SetBuffer(3, PlayClip_Buffer);
+        }
+    } catch (e) {}
+}
+
+//function Settings_CheckLang(lang) {
+//    if (lang.indexOf('en_') !== -1) Settings_value.general_lang.defaultValue = 0;
+//    else if (lang.indexOf('it_') !== -1) Settings_value.general_lang.defaultValue = 1;
+//    else if (lang.indexOf('pt_') !== -1) Settings_value.general_lang.defaultValue = 2;
+//}
+
+//function Settings_SetLang(lang) {
+//    if (lang.indexOf('en_') !== -1) en_USLang();
+//else if (lang.indexOf('it_') !== -1) it_ITLang();
+//else if (lang.indexOf('pt_') !== -1) pt_BRLang();
+//    DefaultLang();
+//    Main_SetStringsMain(false);
+//    Main_SetStringsSecondary();
+//}
+
+function Settings_SetClock() {
+    var time = Settings_Obj_default("clock_offset");
+    Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
+}
+
+function Settings_ScrollTable() {
+    var position = screen.height;
+
+    if (Settings_cursorY > 4) {
+        position = position * 0.09;
+        position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
+        document.getElementById('settings_scroll').style.top = position + "px";
+    } else position = position * 0.077;
+
+    document.getElementById('settings_scroll').style.top = position + "px";
+}
+
+function Settings_handleKeyDown(event) {
+    var key;
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                Settings_exit();
+                Main_SwitchScreen();
+            }
+            break;
+        case KEY_LEFT:
+            key = Settings_value_keys[Settings_cursorY];
+            if (Settings_Obj_default(key) > 0) {
+                Settings_value[key].defaultValue -= 1;
+                Settings_ChangeSettigs(Settings_cursorY);
+            }
+            break;
+        case KEY_RIGHT:
+            key = Settings_value_keys[Settings_cursorY];
+            if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
+                Settings_value[key].defaultValue += 1;
+                Settings_ChangeSettigs(Settings_cursorY);
+            }
+            break;
+        case KEY_UP:
+            if (Settings_cursorY > 0) {
+                Settings_RemoveinputFocus();
+                Settings_cursorY--;
+                Settings_inputFocus(Settings_cursorY);
+            }
+            break;
+        case KEY_DOWN:
+            if (Settings_cursorY < (Settings_positions_length - 1)) {
+                Settings_RemoveinputFocus();
+                Settings_cursorY++;
+                Settings_inputFocus(Settings_cursorY);
+            }
+            break;
+        case KEY_ENTER:
+            if (!Settings_cursorY) Languages_init();
+            break;
+        default:
+            break;
+    }
+}var Main_ItemsLimitMax = 100;
+
+var ChannelClip_game = '';
+var ChannelClip_views = '';
+var ChannelClip_title = '';
+var ChannelClip_playUrl = '';
+var ChannelClip_createdAt = '';
+var ChannelClip_language = '';
+
+var ChannelVod_vodOffset = 0;
+var ChannelVod_DurationSeconds = 0;
+var ChannelVod_language = '';
+var ChannelVod_createdAt = '';
+var ChannelVod_views = '';
+var ChannelVod_Duration = '';
+
+var Vod_DoAnimateThumb = 1;
+
+var AGame_fallowing = false;
+
+//Screens
+var Clip;
+var ChannelClip;
+var AGameClip;
+var Game;
+var UserGames;
+var Live;
+var Featured;
+var AGame;
+var Vod;
+var AGameVod;
+var UserVod;
+var ChannelVod;
+var UserHost;
+var UserLive;
+var UserChannels;
+var SearchGames;
+
+var Base_obj = {
+    posX: 0,
+    posY: 0,
+    currY: 0,
+    row_id: 0,
+    coloumn_id: 0,
+    dataEnded: false,
+    idObject: {},
+    loadingData: false,
+    itemsCount: 0,
+    loadingDataTryMax: 5,
+    loadingDataTimeout: 3500,
+    MaxOffset: 0,
+    offset: 0,
+    status: false,
+    emptyContent: false,
+    itemsCountCheck: false,
+    FirstLoad: false,
+    row: 0,
+    data: null,
+    token: null,
+    data_cursor: 0,
+    loadDataSuccess: Screens_loadDataSuccess,
+    addrow: Screens_addrow,
+    set_ThumbSize: function() {
+        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 3px;';
+    },
+    key_exit: function(CenterLables) {
+        if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+        else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+        else {
+            if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
+                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+            } else if (this.posY < 0) {
+                Screens_removeFocusFallow();
+                this.posY = 0;
+            }
+            if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
+        }
+        Sidepannel_RestoreScreen();
+    },
+    concatenate: function(responseText) {
+        if (this.data) {
+            responseText = JSON.parse(responseText);
+
+            if (responseText[this.object]) {
+                this.data = this.data.concat(responseText[this.object]);
+                this.offset = this.data.length;
+            }
+
+            this.setMax(responseText);
+        } else {
+            responseText = JSON.parse(responseText);
+
+            this.data = responseText[this.object];
+            if (this.data) {
+                this.offset = this.data.length;
+                this.setMax(responseText);
+            } else this.data = [];
+
+            this.loadDataSuccess();
+        }
+        this.loadingData = false;
+    }
+};
+
+var Base_Vod_obj = {
+    ThumbSize: 32.65,
+    visiblerows: 3,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    addFocus: function(y, x, idArray, forceScroll) {
+        this.AnimateThumb(this);
+        Screens_addFocusVideo(y, x, idArray, forceScroll);
+    },
+    setMax: function(tempObj) {
+        if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
+    },
+    img_404: IMG_404_VIDEO,
+    HasSwitches: true,
+    period: ['day', 'week', 'month', 'all'],
+    empty_str: function() {
+        return STR_NO + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+    },
+    key_play: function() {
+        if (this.posY === -1) {
+            if (this.posX === 0) {
+                this.highlight = !this.highlight;
+                this.SetPeriod();
+                Screens_StartLoad();
+                Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+            } else {
+                this.periodPos++;
+                if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
+                this.SetPeriod();
+                Screens_StartLoad();
+            }
+        } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    AnimateThumbId: null,
+    HasAnimateThumb: true,
+    Vod_newImg: new Image(),
+    AnimateThumb: function(screen) {
+        window.clearInterval(this.AnimateThumbId);
+        if (!Vod_DoAnimateThumb) return;
+        var div = document.getElementById(this.ids[0] + this.posY + '_' + this.posX);
+
+        // Only load the animation if it can be loaded
+        // This prevent starting animating before it has loaded or animated a empty image
+        this.Vod_newImg.onload = function() {
+            this.onload = null;
+            Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
+            // background-size: 612px from  div.offsetWidth
+            div.style.backgroundSize = "612px";
+            var frame = 0;
+            screen.AnimateThumbId = window.setInterval(function() {
+                // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
+                // But this img real height is 180 thus the quality is affected, higher resolution aren't available
+                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
+            }, 650);
+        };
+
+        this.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+    },
+    addCell: function(cell) {
+        if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
+
+            this.itemsCount++;
+            this.idObject[cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellVod(
+                this.row_id,
+                this.coloumn_id,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
+                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
+                ]));
+
+            this.coloumn_id++;
+        }
+    }
+};
+
+function ScreensObj_InitVod() {
+    Vod = Screens_assign({
+        periodMaxPos: 4,
+        HeaderQuatity: 2,
+        object: 'vods',
+        ids: Screens_ScreenIds('Vod'),
+        table: 'stream_table_vod',
+        screen: Main_Vod,
+        highlightSTR: 'Vod_highlight',
+        highlight: Main_getItemBool('Vod_highlight', false),
+        periodPos: Main_getItemInt('vod_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
+                '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        SwitchesIcons: ['movie-play', 'history'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 4;
+            Main_AddClass('top_bar_vod', 'icon_center_focus');
+            this.SetPeriod();
+        },
+        label_exit: function() {
+            Main_textContent('top_bar_vod', STR_VIDEOS);
+            Main_RemoveClass('top_bar_vod', 'icon_center_focus');
+        },
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_vod', STR_VIDEOS +
+                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
+
+            Main_setItem('vod_periodPos', this.periodPos);
+        },
+    }, Base_obj);
+
+    Vod = Screens_assign(Vod, Base_Vod_obj);
+    Vod.set_ThumbSize();
+}
+
+function ScreensObj_InitChannelVod() {
+    ChannelVod = Screens_assign({
+        periodMaxPos: 4,
+        HeaderQuatity: 2,
+        object: 'videos',
+        ids: Screens_ScreenIds('ChannelVod'),
+        table: 'stream_table_channel_vod',
+        screen: Main_ChannelVod,
+        highlightSTR: 'ChannelVod_highlight',
+        highlight: Main_getItemBool('ChannelVod_highlight', false),
+        periodPos: Main_getItemInt('ChannelVod_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/channels/',
+        set_url: function() {
+            this.url = this.base_url +
+                encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
+                '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + this.offset;
+        },
+        SwitchesIcons: ['movie-play'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        lastselectedChannel: '',
+        label_init: function() {
+            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            this.lastselectedChannel = Main_values.Main_selectedChannel;
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_cleanTopLabel();
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
+            this.SetPeriod();
+        },
+        SetPeriod: function() {
+            Main_textContent('top_bar_game', this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+        },
+        label_exit: function() {
+            Main_RestoreTopLabel();
+        }
+    }, Base_obj);
+
+    ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
+    ChannelVod.set_ThumbSize();
+
+    ChannelVod.addCell = function(cell) {
+
+        var thumbnail = cell.preview.template;
+        var thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
+
+        // video content can be null sometimes, in that case the preview will be 404_processing
+        // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
+        if (!this.row_id && !this.row_id && thumbnail_404) {
+            thumbnail_404 = false;
+            thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
+        }
+
+
+        if (!this.idObject[cell._id] && !thumbnail_404) {
+            this.itemsCount++;
+            this.idObject[cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellVod(
+                this.row_id,
+                this.coloumn_id,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [thumbnail.replace("{width}x{height}", Main_VideoSize),
+                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
+                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
+                ]));
+
+            this.coloumn_id++;
+        }
+    };
+}
+
+function ScreensObj_InitAGameVod() {
+    AGameVod = Screens_assign({
+        periodMaxPos: 4,
+        HeaderQuatity: 2,
+        object: 'vods',
+        ids: Screens_ScreenIds('AGameVod'),
+        table: 'stream_table_a_game_vod',
+        screen: Main_AGameVod,
+        highlightSTR: 'AGameVod_highlight',
+        highlight: Main_getItemBool('AGameVod_highlight', false),
+        periodPos: Main_getItemInt('AGameVod_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/videos/top?game=',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' +
+                Main_ItemsLimitMax + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
+                '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        SwitchesIcons: ['movie-play', 'history'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        OldgameSelected: '',
+        label_init: function() {
+            ScreensObj_TopLableAgameInit();
+            this.SetPeriod();
+        },
+        label_exit: ScreensObj_TopLableAgameExit,
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_game', STR_AGAME +
+                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+                    Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
+
+            Main_setItem('AGameVod_periodPos', this.periodPos);
+        }
+    }, Base_obj);
+
+    AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
+    AGameVod.set_ThumbSize();
+}
+
+function ScreensObj_InitUserVod() {
+    UserVod = Screens_assign({
+        periodMaxPos: 2,
+        HeaderQuatity: 3,
+        object: 'videos',
+        ids: Screens_ScreenIds('UserVod'),
+        table: 'stream_table_user_vod',
+        screen: Main_UserVod,
+        time: ['time', 'views'],
+        highlightSTR: 'UserVod_highlight',
+        highlight: Main_getItemBool('UserVod_highlight', false),
+        periodPos: Main_getItemInt('UserVod_periodPos', 1),
+        base_url: 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
+
+            this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
+                '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
+        },
+        SwitchesIcons: ['movie-play', 'history'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_TYPE];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_AddClass('top_bar_user', 'icon_center_focus');
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            this.SetPeriod();
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
+                AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
+                (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_TIME : STR_VIWES)));
+
+            Main_setItem('UserVod_periodPos', this.periodPos);
+        }
+    }, Base_obj);
+
+    UserVod = Screens_assign(UserVod, Base_Vod_obj);
+    UserVod.set_ThumbSize();
+}
+
+var Base_Live_obj = {
+    ThumbSize: 32.65,
+    visiblerows: 3,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Screens_addFocusVideo,
+    img_404: IMG_404_VIDEO,
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+    },
+    empty_str: function() {
+        return STR_NO + STR_LIVE_CHANNELS;
+    },
+    addCell: function(cell) {
+        this.addCellTemp(cell);
+    },
+    addCellTemp: function(cell) {
+        if (!this.idObject[cell.channel._id]) {
+
+            this.itemsCount++;
+            this.idObject[cell.channel._id] = 1;
+
+            this.row.appendChild(Screens_createCellLive(
+                this.row_id,
+                this.coloumn_id,
+                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                    cell.channel.status, cell.game,
+                    STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
+                ]));
+
+            this.coloumn_id++;
+        }
+    },
+};
+
+function ScreensObj_InitLive() {
+    Live = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('Live'),
+        table: 'stream_table_live',
+        screen: Main_Live,
+        object: 'streams',
+        base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + '&offset=' + this.offset +
+                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 0;
+            Main_AddClass('top_bar_live', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_live', 'icon_center_focus');
+        },
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    Live = Screens_assign(Live, Base_Live_obj);
+    Live.set_ThumbSize();
+}
+
+function ScreensObj_InitUserLive() {
+    UserLive = Screens_assign({
+        HeaderQuatity: 3,
+        ids: Screens_ScreenIds('UserLive'),
+        table: 'stream_table_user_live',
+        screen: Main_UserLive,
+        object: 'streams',
+        base_url: 'https://api.twitch.tv/kraken/streams/',
+        loadChannelOffsset: 0,
+        followerChannels: '',
+        followerChannelsDone: false,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
+            if (AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+                //User has added a key
+                this.HeaderQuatity = 3;
+                this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
+                this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
+                    this.offset + '&stream_type=all';
+            } else {
+                //User didn't added a key
+                this.HeaderQuatity = 2;
+                this.token = null;
+                if (this.followerChannelsDone) {
+                    //User fallowed channels list is done, load live channels
+                    this.url = this.base_url + '?channel=' + encodeURIComponent(this.followerChannels) + '&' +
+                        'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
+                } else {
+                    //User fallowed channels list is not done, load fallowed channels
+                    this.url = 'https://api.twitch.tv/kraken/users/' +
+                        encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+                        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
+                        '&sortby=created_at';
+                }
+            }
+        },
+        label_init: function() {
+            ScreensObj_TopLableUserInit();
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    UserLive = Screens_assign(UserLive, Base_Live_obj);
+    UserLive.set_ThumbSize();
+
+    UserLive.concatenate = function(responseText) {
+        if (this.token || this.followerChannelsDone) {
+            //User has added a key or fallowed channels list is done, concatenate live channels
+            if (this.data) {
+                responseText = JSON.parse(responseText);
+
+                if (responseText[this.object]) {
+                    this.data = this.data.concat(responseText[this.object]);
+                    this.offset = this.data.length;
+                }
+
+                this.setMax(responseText);
+            } else {
+                responseText = JSON.parse(responseText);
+
+                this.data = responseText[this.object];
+                if (this.data) this.offset = this.data.length;
+                else this.data = [];
+
+                this.setMax(responseText);
+                this.loadDataSuccess();
+            }
+            this.loadingData = false;
+        } else {
+            var response = JSON.parse(responseText).follows,
+                response_items = response.length;
+
+            if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
+                //User fallowed channels list is not done, load fallowed channels
+                var ChannelTemp = '',
+                    x = 0;
+
+                for (x; x < response_items; x++) {
+                    ChannelTemp = response[x].channel._id + ',';
+                    if (this.followerChannels.indexOf(ChannelTemp) === -1) this.followerChannels += ChannelTemp;
+                }
+
+                this.loadChannelOffsset += response_items;
+            } else { // end
+                //User fallowed channels list is done, load live channels
+                this.followerChannels = this.followerChannels.slice(0, -1);
+                this.followerChannelsDone = true;
+            }
+            Screens_loadDataRequest();
+        }
+    };
+}
+
+function ScreensObj_InitUserHost() {
+    UserHost = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('UserHost'),
+        table: 'stream_table_user_host',
+        screen: Main_UserHost,
+        object: 'hosts',
+        base_url: 'https://api.twitch.tv/api/users/',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url +
+                encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
+                '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+        },
+        label_init: function() {
+            ScreensObj_TopLableUserInit();
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    UserHost = Screens_assign(UserHost, Base_Live_obj);
+    UserHost.set_ThumbSize();
+
+    UserHost.addCell = function(cell) {
+        if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
+
+            this.itemsCount++;
+            this.idObject[cell.target._id + '' + cell._id] = 1;
+
+            this.row.appendChild(Screens_createCellLive(
+                this.row_id,
+                this.coloumn_id,
+                [cell.target.channel.name, cell.target._id, cell.target.title], this.ids,
+                [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
+                    cell.target.title, cell.target.meta_game,
+                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
+                    Main_addCommas(cell.target.viewers) + STR_VIEWER, ''
+                ]));
+
+            this.coloumn_id++;
+        }
+    };
+}
+
+function ScreensObj_InitAGame() {
+    AGame = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('AGame'),
+        table: 'stream_table_a_game',
+        screen: Main_aGame,
+        object: 'streams',
+        base_url: 'https://api.twitch.tv/kraken/streams?game=',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
+                '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
+                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
+        },
+        label_init: function() {
+            ScreensObj_TopLableAgameInit();
+            //fix user label
+            Main_RemoveClass('top_bar_user', 'icon_center_focus');
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Main_textContent('top_bar_user', STR_USER);
+
+            if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
+                Main_cleanTopLabel();
+                Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
+            } else Main_values.gameSelectedOld = null;
+
+            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
+                ': ' + Main_values.Main_gameSelected));
+        },
+        label_exit: ScreensObj_TopLableAgameExit,
+        HasSwitches: true,
+        SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
+        addSwitches: function() {
+            this.TopRowCreated = true;
+            this.row = document.createElement('div');
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_VIDEOS, STR_SPACE + STR_SPACE + STR_CLIPS, STR_SPACE + STR_SPACE + STR_FALLOW];
+            var thumbfallow, div, i = 0;
+
+            for (i; i < SwitchesStrings.length; i++) {
+                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+                div = document.createElement('div');
+                div.setAttribute('id', this.ids[8] + 'y_' + i);
+                div.className = 'stream_cell_period';
+                div.innerHTML = '<div id="' + this.ids[0] +
+                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+                this.row.appendChild(div);
+            }
+            document.getElementById(this.table).appendChild(this.row);
+        },
+        key_play: function() {
+            if (this.posY !== -1) {
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else AGame_headerOptions();
+        },
+    }, Base_obj);
+
+    AGame = Screens_assign(AGame, Base_Live_obj);
+    AGame.set_ThumbSize();
+}
+
+function ScreensObj_InitFeatured() {
+    Featured = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('Featured'),
+        table: 'stream_table_featured',
+        screen: Main_Featured,
+        base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.url = this.base_url + '&offset=' + this.offset +
+                (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+                    AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 2;
+            Main_AddClass('top_bar_featured', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_featured', 'icon_center_focus');
+        },
+        object: 'featured',
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        }
+    }, Base_obj);
+
+    Featured = Screens_assign(Featured, Base_Live_obj);
+    Featured.set_ThumbSize();
+
+    Featured.addCell = function(cell) {
+        cell = cell.stream;
+        this.addCellTemp(cell);
+    };
+}
+
+var Base_Clip_obj = {
+    HeaderQuatity: 2,
+    ThumbSize: 32.65,
+    ItemsLimit: Main_ItemsLimitVideo,
+    TopRowCreated: false,
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Screens_addFocusVideo,
+    cursor: null,
+    visiblerows: 3,
+    object: 'clips',
+    period: ['day', 'week', 'month', 'all'],
+    img_404: IMG_404_VIDEO,
+    empty_str: function() {
+        return STR_NO + STR_CLIPS;
+    },
+    HasSwitches: true,
+    SwitchesIcons: ['history', 'play-1'],
+    addSwitches: function() {
+        this.TopRowCreated = true;
+        this.row = document.createElement('div');
+        var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_CLIP, STR_SPACE + STR_SPACE + STR_PLAY_ALL];
+        var thumbfallow, div, i = 0;
+
+        for (i; i < SwitchesStrings.length; i++) {
+            thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
+            div = document.createElement('div');
+            div.setAttribute('id', this.ids[8] + 'y_' + i);
+            div.className = 'stream_cell_period';
+            div.innerHTML = '<div id="' + this.ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
+                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+            this.row.appendChild(div);
+        }
+        document.getElementById(this.table).appendChild(this.row);
+    },
+    setMax: function(tempObj) {
+        this.cursor = tempObj._cursor;
+        if (this.cursor === '') this.dataEnded = true;
+    },
+    key_play: function() {
+        if (this.posY === -1) {
+            if (!this.loadingData) {
+                if (!this.posX) {
+                    this.periodPos++;
+                    if (this.periodPos > 4) this.periodPos = 1;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                } else {
+                    PlayClip_All = true;
+                    Screens_removeFocusFallow();
+                    this.posX = 0;
+                    this.posY = 0;
+                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                }
+            }
+        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+    },
+    Cells: [],
+    addCell: function(cell) {
+        if (!this.idObject[cell.tracking_id]) {
+            this.itemsCount++;
+            this.idObject[cell.tracking_id] = 1;
+
+            this.row.appendChild(Screens_createCellClip(this.row_id,
+                this.coloumn_id,
+                this.ids,
+                cell.thumbnails.medium,
+                cell.broadcaster.display_name,
+                [STR_CREATED_AT,
+                    Main_videoCreatedAt(cell.created_at)
+                ],
+                [twemoji.parse(cell.title), STR_PLAYING, cell.game],
+                Main_addCommas(cell.views),
+                '[' + cell.language.toUpperCase() + ']',
+                cell.duration,
+                cell.slug,
+                cell.broadcaster.name,
+                cell.broadcaster.logo.replace("150x150", "300x300"),
+                cell.broadcaster.id,
+                (cell.vod !== null ? cell.vod.id : null),
+                (cell.vod !== null ? cell.vod.offset : null)));
+
+            this.coloumn_id++;
+        }
+    }
+};
+
+function ScreensObj_InitClip() {
+    Clip = Screens_assign({
+        ids: Screens_ScreenIds('Clip'),
+        table: 'stream_table_clip',
+        screen: Main_Clip,
+        periodPos: Main_getItemInt('Clip_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
+                (this.cursor ? '&cursor=' + this.cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
+            Main_setItem('Clip_periodPos', this.periodPos);
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 5;
+            this.SetPeriod();
+            Main_AddClass('top_bar_clip', 'icon_center_focus');
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+        },
+        label_exit: function() {
+            Main_RestoreTopLabel();
+            Main_RemoveClass('top_bar_clip', 'icon_center_focus');
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+        },
+    }, Base_obj);
+
+    Clip = Screens_assign(Clip, Base_Clip_obj);
+    Clip.set_ThumbSize();
+}
+
+function ScreensObj_InitChannelClip() {
+    ChannelClip = Screens_assign({
+        ids: Screens_ScreenIds('ChannelClip'),
+        table: 'stream_table_channel_clip',
+        screen: Main_ChannelClip,
+        periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel) +
+                '&limit=' + Main_ItemsLimitMax + '&period=' +
+                this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
+        },
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
+            Main_setItem('ChannelClip_periodPos', this.periodPos);
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 1;
+            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
+                ChannelContent_RestoreChannelValue();
+            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            Main_cleanTopLabel();
+            this.SetPeriod();
+            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
+            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+            this.lastselectedChannel = Main_values.Main_selectedChannel;
+        },
+        label_exit: Main_RestoreTopLabel,
+    }, Base_obj);
+
+    ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
+    ChannelClip.set_ThumbSize();
+}
+
+function ScreensObj_InitAGameClip() {
+    AGameClip = Screens_assign({
+        ids: Screens_ScreenIds('AGameClip'),
+        table: 'stream_table_a_game_clip',
+        screen: Main_AGameClip,
+        periodPos: Main_getItemInt('AGameClip_periodPos', 2),
+        base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
+        set_url: function() {
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
+                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        SetPeriod: function() {
+            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
+                Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
+            Main_setItem('AGameClip_periodPos', this.periodPos);
+        },
+        label_init: function() {
+            ScreensObj_TopLableAgameInit();
+            this.SetPeriod();
+        },
+        label_exit: ScreensObj_TopLableAgameExit,
+    }, Base_obj);
+
+    AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
+    AGameClip.set_ThumbSize();
+}
+
+var Base_Game_obj = {
+    HeaderQuatity: 2,
+    ThumbSize: 19.35,
+    visiblerows: 3,
+    ItemsReloadLimit: Main_ItemsReloadLimitGame,
+    ItemsLimit: Main_ItemsLimitGame,
+    ColoumnsCount: Main_ColoumnsCountGame,
+    addFocus: Screens_addFocusGame,
+    img_404: IMG_404_GAME,
+    empty_str: function() {
+        return STR_NO + STR_LIVE_GAMES;
+    },
+    key_play: function() {
+        Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_values.Main_BeforeAgame = this.screen;
+        Main_values.Main_Go = Main_aGame;
+        Main_values.Main_BeforeAgameisSet = true;
+
+        Main_addFocusVideoOffset = 0;
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_HideElement(this.ids[10]);
+
+        Main_SwitchScreenAction();
+        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+    },
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+    },
+    addCell: function(cell) {
+        var hasLive = this.isLive || this.screen === Main_games;
+        var game = hasLive ? cell.game : cell;
+        if (!this.idObject[game._id]) {
+
+            this.itemsCount++;
+            this.idObject[game._id] = 1;
+
+            this.row.appendChild(Screens_createCellGame(this.row_id,
+                this.coloumn_id,
+                this.ids,
+                game.box.template.replace("{width}x{height}", Main_GameSize),
+                game.name,
+                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
+
+            this.coloumn_id++;
+        }
+    }
+};
+
+function ScreensObj_InitGame() {
+    Game = Screens_assign({
+        ids: Screens_ScreenIds('Game'),
+        table: 'stream_table_games',
+        screen: Main_games,
+        object: 'top',
+        base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + '&offset=' + this.offset;
+        },
+        label_init: function() {
+            Main_values.Main_CenterLablesVectorPos = 3;
+            Main_AddClass('top_bar_game', 'icon_center_focus');
+        },
+        label_exit: function() {
+            Main_RemoveClass('top_bar_game', 'icon_center_focus');
+        },
+    }, Base_obj);
+
+    Game = Screens_assign(Game, Base_Game_obj);
+    Game.set_ThumbSize();
+}
+
+function ScreensObj_InitUserGames() {
+    UserGames = Screens_assign({
+        ids: Screens_ScreenIds('UserGames'),
+        table: 'stream_table_user_games',
+        screen: Main_usergames,
+        isLive: Main_getItemBool('user_Games_live', true),
+        OldUserName: '',
+        object: 'follows',
+        base_url: 'https://api.twitch.tv/api/users/',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) + '/follows/games';
+
+            if (this.isLive) this.url += '/live?limit=750';
+            else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+        },
+        key_refresh: function() {
+            this.isLive = !this.isLive;
+
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+
+            Screens_StartLoad();
+
+            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
+            if (Users_status) Users_resetGameCell();
+
+        },
+        label_init: function() {
+            ScreensObj_TopLableUserInit();
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
+
+            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+    }, Base_obj);
+
+    UserGames = Screens_assign(UserGames, Base_Game_obj);
+    UserGames.set_ThumbSize();
+}
+
+function ScreensObj_InitSearchGames() {
+    SearchGames = Screens_assign({
+        ids: Screens_ScreenIds('SearchGames'),
+        table: 'stream_table_search_game',
+        screen: Main_SearchGames,
+        isLive: false,
+        OldUserName: '',
+        object: 'games',
+        lastData: '',
+        base_url: 'https://api.twitch.tv/kraken/search/games?query=',
+        set_url: function() {
+            this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
+        },
+        label_init: function() {
+            if (!Main_values.gameSelectedOld) Main_values.gameSelectedOld = Main_values.Main_gameSelected;
+            Main_values.Main_CenterLablesVectorPos = 1;
+            Main_values.Search_isSearching = true;
+            Main_cleanTopLabel();
+            if (this.lastData !== Main_values.Search_data) this.status = false;
+            this.lastData = Main_values.Search_data;
+            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
+        },
+        label_exit: function() {
+            Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+            if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
+            Main_values.Games_return = false;
+        },
+    }, Base_obj);
+
+    SearchGames = Screens_assign(SearchGames, Base_Game_obj);
+    SearchGames.set_ThumbSize();
+    SearchGames.ItemsLimit = 100;
+}
+
+var Base_Channel_obj = {
+    ThumbSize: 16,
+    visiblerows: 4,
+    ItemsLimit: Main_ItemsLimitChannel,
+    ColoumnsCount: Main_ColoumnsCountChannel,
+    addFocus: Screens_addFocusChannel,
+    ItemsReloadLimit: Main_ItemsReloadLimitChannel,
+    img_404: IMG_404_LOGO,
+    setMax: function(tempObj) {
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+    },
+    empty_str: function() {
+        return STR_NO + STR_USER_CHANNEL;
+    },
+    addCell: function(cell) {
+        this.addCellTemp(cell);
+    },
+    addCellTemp: function(cell) {
+        if (!this.idObject[cell.channel._id]) {
+
+            this.itemsCount++;
+            this.idObject[cell.channel._id] = 1;
+
+            this.row.appendChild(Screens_createCellChannel(
+                this.row_id,
+                this.coloumn_id,
+                this.ids,
+                [cell.channel.name, cell.channel._id, cell.channel.logo, cell.channel.display_name]));
+
+            this.coloumn_id++;
+        }
+    },
+};
+
+function ScreensObj_InitUserChannels() {
+    UserChannels = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('UserChannels'),
+        table: 'stream_table_user_channels',
+        screen: Main_UserChannels,
+        object: 'follows',
+        base_url: 'https://api.twitch.tv/kraken/users/',
+        set_url: function() {
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+                '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
+        },
+        label_init: function() {
+            ScreensObj_TopLableUserInit();
+            Main_innerHTML('top_bar_user', STR_USER +
+                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
+        },
+        label_exit: ScreensObj_TopLableUserExit,
+        key_play: function() {
+            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
+
+            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+
+            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
+            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
+            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
+            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_values.Main_BeforeChannel = Main_UserChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = true;
+            ChannelContent_UserChannels = true;
+            Screens_exit();
+            Main_SwitchScreen();
+        }
+    }, Base_obj);
+
+    UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
+    UserChannels.set_ThumbSize();
+
+    UserChannels.addrow = Screens_addrowChannel;
+}
+
+function ScreensObj_TopLableAgameInit() {
+    Main_values.Main_CenterLablesVectorPos = 3;
+    if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    Main_AddClass('top_bar_game', 'icon_center_focus');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
+        inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
+    inUseObj.gameSelected = Main_values.Main_gameSelected;
+}
+
+function ScreensObj_TopLableAgameExit() {
+    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    inUseObj.gameSelected = Main_values.Main_gameSelected;
+    Main_RemoveClass('top_bar_game', 'icon_center_focus');
+    Main_innerHTML('top_bar_game', STR_GAMES);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+}
+
+function ScreensObj_TopLableUserInit() {
+    Main_values.Main_CenterLablesVectorPos = 1;
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_AddClass('top_bar_user', 'icon_center_focus');
+    if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
+    inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+}
+
+function ScreensObj_TopLableUserExit() {
+    Main_values.Users_Position = 0;
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_textContent('top_bar_user', STR_USER);
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+}var UserLiveFeed_loadingData = false;
+var UserLiveFeed_loadingDataTry = 0;
+var UserLiveFeed_loadingDataTimeout = 3500;
+var UserLiveFeed_loadChannelOffsset = 0;
+var UserLiveFeed_loadingDataTryMax = 5;
+var UserLiveFeed_dataEnded = false;
+var UserLiveFeed_followerChannels = '';
+var UserLiveFeed_idObject = {};
+var UserLiveFeed_status = false;
+var UserLiveFeed_LastPos = null;
+var UserSidePannel_LastPos = null;
+var UserLiveFeed_token = null;
+var UserLiveFeed_Feedid;
+var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
+
+var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
+
+function UserLiveFeed_StartLoad() {
+    if (AddUser_UserIsSet()) {
+        UserLiveFeed_clearHideFeed();
+
+        if (UserLiveFeed_status) {
+            if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
+                UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
+
+            if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
+                UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[0];
+        } else {
+            UserSidePannel_LastPos = null;
+            UserLiveFeed_LastPos = null;
+        }
+
+        Main_empty('user_feed_scroll');
+        Main_HideElement('side_panel_feed_thumb');
+        Sidepannel_PosFeed = 0;
+        Sidepannel_ScrollPos = 0;
+        Main_empty('side_panel_feed_scroll');
+        UserLiveFeed_status = false;
+        document.getElementById('user_feed_scroll').style.left = "2.5px";
+        Main_ShowElement('dialog_loading_feed');
+        Main_ShowElement('dialog_loading_side_feed');
+        UserLiveFeed_loadChannelOffsset = 0;
+        UserLiveFeed_followerChannels = '';
+        Play_FeedPos = 0;
+        UserLiveFeed_idObject = {};
+
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_CheckToken();
+    }
+}
+
+function UserLiveFeed_CheckToken() {
+    UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+    if (UserLiveFeed_token) {
+        UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
+        UserLiveFeed_loadChannelUserLive();
+    } else {
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_token = null;
+        UserLiveFeed_loadChannels();
+    }
+}
+
+function UserLiveFeed_loadDataPrepare() {
+    UserLiveFeed_loadingData = true;
+    UserLiveFeed_loadingDataTry = 0;
+    UserLiveFeed_loadingDataTimeout = 3500;
+}
+
+function UserLiveFeed_loadChannels() {
+    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at';
+
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
+}
+
+function UserLiveFeed_loadDataError() {
+    UserLiveFeed_loadingDataTry++;
+    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
+        UserLiveFeed_loadingDataTimeout += 500;
+        UserLiveFeed_loadChannels();
+    } else {
+        UserLiveFeed_loadingData = false;
+        if (!UserLiveFeed_GetSize()) {
+            Main_HideElement('dialog_loading_feed');
+            Main_HideElement('dialog_loading_side_feed');
+            if (UserLiveFeed_isFeedShow()) {
+                Play_showWarningDialog(STR_REFRESH_PROBLEM);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
+            }
+        } else {
+            UserLiveFeed_dataEnded = true;
+            UserLiveFeed_loadDataSuccessFinish();
+        }
+    }
+}
+
+function UserLiveFeed_loadChannelLive(responseText) {
+    var response = JSON.parse(responseText).follows,
+        response_items = response.length;
+
+    if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
+        var ChannelTemp = '',
+            x = 0;
+
+        for (x; x < response_items; x++) {
+            ChannelTemp = response[x].channel._id + ',';
+            if (UserLiveFeed_followerChannels.indexOf(ChannelTemp) === -1) UserLiveFeed_followerChannels += ChannelTemp;
+        }
+
+        UserLiveFeed_loadChannelOffsset += response_items;
+        UserLiveFeed_loadDataPrepare();
+        UserLiveFeed_loadChannels();
+    } else { // end
+        UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
+        UserLiveFeed_loadDataPrepare();
+        Main_ready(UserLiveFeed_loadChannelUserLive);
+    }
+}
+
+function UserLiveFeed_loadChannelUserLive() {
+    var theUrl = 'https://api.twitch.tv/kraken/streams/';
+
+    if (UserLiveFeed_token) {
+        theUrl += 'followed?';
+    } else {
+        theUrl += '?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&';
+    }
+    theUrl += 'limit=100&offset=0&stream_type=all';
+
+    UserLiveFeed_loadChannelUserLiveGet(theUrl);
+}
+
+function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                UserLiveFeed_loadDataSuccess(xmlHttp.responseText);
+            } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                //Token has change or because is new or because it is invalid because user delete in twitch settings
+                // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
+            } else {
+                UserLiveFeed_loadDataErrorLive();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function UserLiveFeed_loadDataRefreshTokenError() {
+    if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) UserLiveFeed_CheckToken();
+    else UserLiveFeed_loadDataErrorLive();
+}
+
+function UserLiveFeed_loadDataErrorLive() {
+    UserLiveFeed_loadingDataTry++;
+    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
+        UserLiveFeed_loadingDataTimeout += 500;
+        UserLiveFeed_loadChannelUserLive();
+    } else {
+        UserLiveFeed_loadingData = false;
+        Main_HideElement('dialog_loading_feed');
+        Main_HideElement('dialog_loading_side_feed');
+        if (UserLiveFeed_isFeedShow()) {
+            Play_showWarningDialog(STR_REFRESH_PROBLEM);
+            window.setTimeout(function() {
+                Play_HideWarningDialog();
+            }, 2000);
+        }
+    }
+}
+
+function UserLiveFeed_loadDataSuccess(responseText) {
+
+    var response = JSON.parse(responseText);
+    var response_items = response.streams.length;
+    //UserLiveFeed_MaxOffset = parseInt(response._total);
+
+    if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+
+    var stream, id, doc = document.getElementById("user_feed_scroll"),
+        docside = document.getElementById("side_panel_feed_scroll");
+
+    for (var i = 0; i < response_items; i++) {
+        stream = response.streams[i];
+        id = stream.channel._id;
+        if (!UserLiveFeed_idObject[id]) {
+            UserLiveFeed_idObject[id] = 1;
+            if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
+            doc.appendChild(UserLiveFeed_CreatFeed(i,
+                [stream.channel.name, id],
+                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.game
+                ]));
+
+            if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
+            docside.appendChild(UserLiveFeed_CreatSideFeed(i,
+                [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "1600x900"),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game,
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
+                    STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                ],
+                [stream.channel.logo,
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.display_name,
+                    stream.game, Main_addCommas(stream.viewers)
+                ]));
+        }
+    }
+
+    UserLiveFeed_loadDataSuccessFinish();
+}
+
+function UserLiveFeed_loadDataSuccessFinish() {
+    UserLiveFeed_loadingData = false;
+    UserLiveFeed_status = true;
+    Main_ready(function() {
+        Main_HideElement('dialog_loading_feed');
+        Main_HideElement('dialog_loading_side_feed');
+        UserLiveFeed_FeedAddFocus();
+        Sidepannel_PreloadImgs();
+        Sidepannel_AddFocusFeed();
+    });
+}
+
+function UserLiveFeed_GetSize() {
+    return document.getElementById('user_feed_scroll').getElementsByClassName('user_feed_thumb').length;
+}
+
+function UserLiveFeed_CreatFeed(id, data, valuesArray) {
+    Main_td = document.createElement('div');
+    Main_td.setAttribute('id', UserLiveFeed_ids[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    Main_td.className = 'user_feed_thumb';
+    Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
+        '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+        Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
+        '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
+        '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
+
+    return Main_td;
+}
+
+function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
+
+    Main_td = document.createElement('div');
+    Main_td.setAttribute('id', UserLiveFeed_side_ids[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    Main_td.className = 'side_panel_feed';
+
+    Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
+        '<img id="' + UserLiveFeed_side_ids[1] + id +
+        '" style="vertical-align: middle; display: inline-block; width: 16%;" alt="" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"><div id="' +
+        UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
+        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] + '</div><div id="' +
+        UserLiveFeed_side_ids[4] + id +
+        '" style="width: 74%; display: inline-block; font-size: 110%; font-weight: bold; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[2] +
+        '</div><div style="width:25%; float: right; text-align: right; vertical-align: middle; display: inline-block"><div  style="text-align: center;" ><i class="icon-' +
+        ((valuesArray[1].indexOf(STR_NOT_LIVE) === -1) ? 'circle" style="color: red;' : 'refresh" style="') +
+        ' font-size: 80%; "></i><div style="font-size: 85%;">' + valuesArray[4] + '</div></div></div><div id="' +
+        UserLiveFeed_side_ids[5] + id +
+        '" style="font-size: 90%; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] +
+        '</div></div></div>';
+
+    return Main_td;
+}
+
+function UserLiveFeed_isFeedShow() {
+    return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
+}
+
+function UserLiveFeed_ShowFeed() {
+    var hasuser = AddUser_UserIsSet();
+
+    if (hasuser) {
+        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
+        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+    }
+
+    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
+
+    if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+
+    if (hasuser) {
+        Main_RemoveClass('user_feed', 'user_feed_hide');
+        UserLiveFeed_FeedAddFocus();
+    }
+}
+
+function UserLiveFeed_Hide() {
+    Main_AddClass('user_feed', 'user_feed_hide');
+}
+
+function UserLiveFeed_ResetFeedId() {
+    UserLiveFeed_clearHideFeed();
+    UserLiveFeed_setHideFeed();
+}
+
+function UserLiveFeed_clearHideFeed() {
+    window.clearTimeout(UserLiveFeed_Feedid);
+}
+
+function UserLiveFeed_setHideFeed() {
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
+}
+
+function UserLiveFeed_FeedRefreshFocus() {
+    UserLiveFeed_clearHideFeed();
+    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+    else {
+        window.setTimeout(function() {
+            UserLiveFeed_loadingData = false;
+        }, 15000);
+    }
+}
+
+function UserLiveFeed_FeedAddFocus() {
+    UserLiveFeed_ResetFeedId();
+    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
+        Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+    else return;
+
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
+    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedFindPos();
+}
+
+function UserLiveFeed_FeedGetPos() {
+    var position = 0;
+
+    if (Play_FeedPos < 3) position = 2.5;
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
+    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
+    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
+
+    return position;
+}
+
+function UserLiveFeed_FeedSetPos() {
+    var position = UserLiveFeed_FeedGetPos();
+
+    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+}
+
+function UserLiveFeed_FeedFindPos() {
+    var position = UserLiveFeed_FeedSetPos();
+    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+}
+
+function UserLiveFeed_ThumbNull(y, thumbnail) {
+    return document.getElementById(thumbnail + y) !== null;
+}
+
+function UserLiveFeed_FeedRemoveFocus() {
+    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
+        Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+}//Variable initialization
+var Search_cursorY = 0;
+var Search_cursorX = 0;
+var Search_keyBoardOn = false;
+//Variable initialization end
+
+function Search_init() {
+    Main_HideWarningDialog();
+    Main_HideElement('label_refresh');
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_textContent('top_bar_user', STR_SEARCH);
+    document.getElementById("top_lables").style.marginLeft = '14%';
+    document.getElementById('top_bar_live').style.display = 'none';
+    document.getElementById('top_bar_featured').style.display = 'none';
+    document.getElementById('top_bar_game').style.display = 'none';
+    document.getElementById('top_bar_vod').style.display = 'none';
+    document.getElementById('top_bar_clip').style.display = 'none';
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
+    Main_AddClass('top_bar_user', 'icon_center_focus');
+    Main_ShowElement('search_scroll');
+    Search_cursorY = 0;
+    Search_cursorX = 0;
+    Search_refreshInputFocusTools();
+    Search_inputFocus();
+}
+
+function Search_exit() {
+    Search_RemoveinputFocus(false);
+    document.body.removeEventListener("keydown", Search_handleKeyDown);
+    Search_refreshInputFocusTools();
+    Main_values.Main_Go = Main_values.Main_BeforeSearch;
+    document.getElementById("top_lables").style.marginLeft = '18.5%';
+    Main_textContent('top_bar_user', STR_USER);
+    Main_RemoveClass('top_bar_user', 'icon_center_focus');
+    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_ShowElement('label_refresh');
+    document.getElementById('top_bar_live').style.display = 'inline-block';
+    document.getElementById('top_bar_featured').style.display = 'inline-block';
+    document.getElementById('top_bar_game').style.display = 'inline-block';
+    document.getElementById('top_bar_vod').style.display = 'inline-block';
+    document.getElementById('top_bar_clip').style.display = 'inline-block';
+    Main_SearchInput.value = '';
+    Main_HideElement('search_scroll');
+}
+
+function Search_loadData() {
+    Search_exit();
+    Main_ready(function() {
+        if (!Search_cursorX) SearchChannels_init();
+        else if (Search_cursorX === 1) {
+            inUseObj = SearchGames;
+            Screens_init();
+        } else if (Search_cursorX === 2) SearchLive_init();
+    });
+}
+
+function Search_refreshInputFocusTools() {
+    Main_RemoveClass('chanel_button', 'button_search_focused');
+    Main_RemoveClass('game_button', 'button_search_focused');
+    Main_RemoveClass('live_button', 'button_search_focused');
+
+    if (Search_cursorY) {
+        if (!Search_cursorX) Main_AddClass('chanel_button', 'button_search_focused');
+        else if (Search_cursorX === 1) Main_AddClass('game_button', 'button_search_focused');
+        else if (Search_cursorX === 2) Main_AddClass('live_button', 'button_search_focused');
+    }
+}
+
+function Search_handleKeyDown(event) {
+    if (Search_keyBoardOn) return;
+
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                Search_exit();
+                Main_SwitchScreen();
+            }
+            break;
+        case KEY_LEFT:
+            if (Search_cursorY === 1) {
+                Search_cursorX--;
+                if (Search_cursorX < 0) Search_cursorX = 2;
+                Search_refreshInputFocusTools();
+            }
+            break;
+        case KEY_RIGHT:
+            if (Search_cursorY === 1) {
+                Search_cursorX++;
+                if (Search_cursorX > 2) Search_cursorX = 0;
+                Search_refreshInputFocusTools();
+            }
+            break;
+        case KEY_UP:
+            if (Search_cursorY === 1) {
+                Search_cursorY = 0;
+                Search_refreshInputFocusTools();
+                Search_inputFocus();
+            }
+            break;
+        case KEY_DOWN:
+            if (!Search_cursorY) {
+                Search_RemoveinputFocus(false);
+                Search_cursorY = 1;
+                Search_refreshInputFocusTools();
+            } else if (Search_cursorY === 1) {
+                Search_cursorY = 0;
+                Search_refreshInputFocusTools();
+                Search_inputFocus();
+            }
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            if (!Search_cursorY) Search_inputFocus();
+            else {
+                if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
+                    Main_values.Search_data = Main_SearchInput.value;
+                    Main_SearchInput.value = '';
+                    Search_loadData();
+                } else {
+                    Main_showWarningDialog(STR_SEARCH_EMPTY);
+                    window.setTimeout(function() {
+                        Main_HideWarningDialog();
+                    }, 1000);
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+function Search_inputFocus() {
+    document.body.removeEventListener("keydown", Search_handleKeyDown);
+    document.body.addEventListener("keydown", Search_KeyboardEvent, false);
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
+    Main_SearchInput.focus();
+    Search_keyBoardOn = true;
+}
+
+function Search_RemoveinputFocus(EnaKeydown) {
+    Main_SearchInput.blur();
+    Search_removeEventListener();
+    document.body.removeEventListener("keydown", Search_KeyboardEvent);
+    Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
+
+    if (EnaKeydown) document.body.addEventListener("keydown", Search_handleKeyDown, false);
+    Search_keyBoardOn = false;
+}
+
+function Search_removeEventListener() {
+    if (Main_SearchInput !== null) {
+        var elClone = Main_SearchInput.cloneNode(true);
+        Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
+        Main_SearchInput = document.getElementById("search_input");
+    }
+}
+
+function Search_KeyboardEvent(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else {
+                Search_exit();
+                Main_SwitchScreen();
+            }
+            break;
+        case KEY_KEYBOARD_DELETE_ALL:
+            Main_SearchInput.value = '';
+            break;
+        case KEY_KEYBOARD_DONE:
+        case KEY_DOWN:
+            Search_RemoveinputFocus(true);
+            Search_cursorY = 1;
+            Search_refreshInputFocusTools();
+            break;
+        case KEY_KEYBOARD_BACKSPACE:
+            Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
+            break;
+        case KEY_KEYBOARD_SPACE:
+            Main_SearchInput.value += ' ';
+            break;
+        default:
+            break;
+    }
+}//Variable initialization
 var inUseObj = {};
 
 //Initiate all Main screens obj and they properties
@@ -6822,162 +8490,2927 @@ function AGame_Checkfallow() {
 function AGame_setFallow() {
     if (AGame_fallowing) Main_innerHTML(AGame.ids[3] + "y_2", '<i class="icon-heart" style="color: #00b300; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FALLOWING);
     else Main_innerHTML(AGame.ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FALLOW : STR_NOKEY));
-}var UserLiveFeed_loadingData = false;
-var UserLiveFeed_loadingDataTry = 0;
-var UserLiveFeed_loadingDataTimeout = 3500;
-var UserLiveFeed_loadChannelOffsset = 0;
-var UserLiveFeed_loadingDataTryMax = 5;
-var UserLiveFeed_dataEnded = false;
-var UserLiveFeed_followerChannels = '';
-var UserLiveFeed_idObject = {};
-var UserLiveFeed_status = false;
-var UserLiveFeed_LastPos = null;
-var UserSidePannel_LastPos = null;
-var UserLiveFeed_token = null;
-var UserLiveFeed_Feedid;
-var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
+}//Variable initialization
+var ChannelContent_cursorY = 0;
+var ChannelContent_cursorX = 0;
+var ChannelContent_dataEnded = false;
+var ChannelContent_itemsCount = 0;
+var ChannelContent_loadingDataTry = 0;
+var ChannelContent_loadingDataTryMax = 5;
+var ChannelContent_loadingDataTimeout = 3500;
+var ChannelContent_itemsCountOffset = 0;
+var ChannelContent_skipImg = false;
+var ChannelContent_UserChannels = false;
+var ChannelContent_TargetId;
+var ChannelContent_ids = ['cc_thumbdiv', 'cc_img', 'cc_infodiv', 'cc_name', 'cc_createdon', 'cc_game', 'cc_viwers', 'cc_duration', 'cc_cell', 'sccempty_', 'channel_content_scroll'];
+var ChannelContent_status = false;
+var ChannelContent_lastselectedChannel = '';
+var ChannelContent_responseText = null;
+var ChannelContent_selectedChannelViews = '';
+var ChannelContent_selectedChannelFallower = '';
+var ChannelContent_description = '';
+var ChannelContent_ChannelValue = {};
+var ChannelContent_ChannelValueIsset = false;
+var ChannelContent_offline_image = null;
+var ChannelContent_profile_banner = '';
+//Variable initialization end
 
-var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
+function ChannelContent_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
+    Main_values.Main_Go = Main_ChannelContent;
+    if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+    if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
+    Main_cleanTopLabel();
+    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
+    Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
+    Main_textContent('top_bar_game', STR_CHANNEL_CONT);
+    document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
+    AddCode_PlayRequest = false;
+    if (ChannelContent_status) {
+        Main_YRst(ChannelContent_cursorY);
+        Main_ShowElement(ChannelContent_ids[10]);
+        ChannelContent_checkUser();
+        ChannelContent_addFocus();
+        Main_SaveValues();
+    } else ChannelContent_StartLoad();
+}
 
-function UserLiveFeed_StartLoad() {
-    if (AddUser_UserIsSet()) {
-        UserLiveFeed_clearHideFeed();
+function ChannelContent_exit() {
+    Main_RestoreTopLabel();
+    document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+    Main_HideElement(ChannelContent_ids[10]);
+}
 
-        if (UserLiveFeed_status) {
-            if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-                UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
+function ChannelContent_StartLoad() {
+    Main_empty('stream_table_channel_content');
+    Main_HideElement(ChannelContent_ids[10]);
+    ChannelContent_offline_image = null;
+    Main_showLoadDialog();
+    Main_HideWarningDialog();
+    ChannelContent_lastselectedChannel = Main_values.Main_selectedChannel;
+    ChannelContent_status = false;
+    ChannelContent_skipImg = false;
+    ChannelContent_itemsCountOffset = 0;
+    ChannelContent_itemsCount = 0;
+    ChannelContent_cursorX = 0;
+    ChannelContent_cursorY = 0;
+    ChannelContent_dataEnded = false;
+    ChannelContent_TargetId = undefined;
+    ChannelContent_loadDataPrepare();
+    ChannelContent_loadDataRequest();
+}
 
-            if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-                UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[0];
+function ChannelContent_loadDataPrepare() {
+    Main_FirstLoad = true;
+    ChannelContent_loadingDataTry = 0;
+    ChannelContent_loadingDataTimeout = 3500;
+}
+
+function ChannelContent_loadDataRequest() {
+    var theUrl = 'https://api.twitch.tv/kraken/streams/' + encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id);
+
+    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+}
+
+function ChannelContent_loadDataRequestSuccess(response) {
+    if (JSON.parse(response).stream !== null) {
+        ChannelContent_responseText = response;
+        ChannelContent_loadDataPrepare();
+        ChannelContent_GetStreamerInfo();
+    } else if (!ChannelContent_TargetId) {
+        ChannelContent_loadDataPrepare();
+        ChannelContent_loadDataCheckHost();
+    } else {
+        ChannelContent_responseText = null;
+        ChannelContent_loadDataPrepare();
+        ChannelContent_GetStreamerInfo();
+    }
+}
+
+function ChannelContent_loadDataError() {
+    ChannelContent_loadingDataTry++;
+    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_loadDataRequest();
+    } else {
+        ChannelContent_responseText = null;
+        ChannelContent_loadDataPrepare();
+        ChannelContent_GetStreamerInfo();
+    }
+}
+
+function ChannelContent_loadDataCheckHost() {
+    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+
+    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError, true);
+}
+
+function ChannelContent_loadDataCheckHostError() {
+    ChannelContent_loadingDataTry++;
+    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_loadDataCheckHost();
+    } else {
+        ChannelContent_responseText = null;
+        ChannelContent_loadDataPrepare();
+        ChannelContent_GetStreamerInfo();
+    }
+}
+
+function ChannelContent_CheckHost(responseText) {
+    var response = JSON.parse(responseText);
+    ChannelContent_TargetId = response.hosts[0].target_id;
+    if (ChannelContent_TargetId !== undefined) {
+        ChannelContent_loadDataPrepare();
+        ChannelContent_loadDataRequest();
+    } else {
+        ChannelContent_responseText = null;
+        ChannelContent_loadDataPrepare();
+        ChannelContent_GetStreamerInfo();
+    }
+}
+
+function ChannelContent_GetStreamerInfo() {
+    var theUrl = 'https://api.twitch.tv/kraken/channels/' + Main_values.Main_selectedChannel_id;
+
+    BasehttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+}
+
+function ChannelContent_GetStreamerInfoSuccess(responseText) {
+    var channel = JSON.parse(responseText);
+    ChannelContent_offline_image = channel.video_banner;
+    ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
+    ChannelContent_profile_banner = channel.profile_banner;
+    ChannelContent_selectedChannelViews = channel.views;
+    ChannelContent_selectedChannelFallower = channel.followers;
+    ChannelContent_description = channel.description;
+    Main_values.Main_selectedChannelLogo = channel.logo;
+    ChannelContent_loadDataSuccess();
+    return;
+}
+
+function ChannelContent_GetStreamerInfoError() {
+    ChannelContent_loadingDataTry++;
+    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_GetStreamerInfo();
+    } else {
+        ChannelContent_offline_image = null;
+        ChannelContent_profile_banner = IMG_404_BANNER;
+        ChannelContent_selectedChannelViews = '';
+        ChannelContent_selectedChannelFallower = '';
+        ChannelContent_description = '';
+        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
+        ChannelContent_loadDataSuccess();
+    }
+}
+
+//TODO improve te looks of this screen
+function ChannelContent_loadDataSuccess() {
+    var row = document.createElement('tr'),
+        coloumn_id = 0,
+        doc = document.getElementById("stream_table_channel_content");
+
+    Main_td = document.createElement('tr');
+    Main_td.className = 'follower_banner';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
+        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"src="' + ChannelContent_profile_banner +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
+    doc.appendChild(Main_td);
+
+    if (ChannelContent_responseText !== null) {
+        var response = JSON.parse(ChannelContent_responseText);
+        if (response.stream !== null) {
+            var hosting = ChannelContent_TargetId !== undefined ? Main_values.Main_selectedChannelDisplayname +
+                STR_USER_HOSTING : '';
+            var stream = response.stream;
+            row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
+                twemoji.parse(stream.channel.status), stream.game,
+                Main_is_playlist(JSON.stringify(stream.stream_type)) +
+                hosting + stream.channel.display_name,
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR +
+                Main_addCommas(stream.viewers) + STR_VIEWER,
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)));
+            coloumn_id++;
+        } else ChannelContent_skipImg = true;
+    } else ChannelContent_skipImg = true;
+
+    row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_PAST_BROA, 'movie-play'));
+    coloumn_id++;
+    row.appendChild(ChannelContent_createChannelCell('0_' + coloumn_id,
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname + STR_CLIPS, 'movie'));
+
+    if (coloumn_id < 2) {
+        coloumn_id++;
+        row.appendChild(Main_createEmptyCell(ChannelContent_ids[9] + '0_' + coloumn_id));
+    }
+
+    doc.appendChild(row);
+
+    row = document.createElement('tr');
+
+    row.appendChild(ChannelContent_createFallow('1_0',
+        Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
+
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', ChannelContent_ids[8] + 'x_x');
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] +
+        'x_x" class="stream_thumbnail_video" ><div id="' +
+        ChannelContent_ids[4] + 'x_x" class="stream_channel_info">' +
+        twemoji.parse(ChannelContent_description) + '</div></div>';
+    row.appendChild(Main_td);
+
+    doc.appendChild(row);
+
+    ChannelContent_loadDataSuccessFinish();
+}
+
+//TODO revise this functions there is too many
+function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, channel_name);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
+        '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
+        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
+        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
+        '<i class="icon-circle" style="color: ' +
+        (ChannelContent_TargetId !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
+        channel_display_name + '</div>' +
+        '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
+        quality + '</div>' +
+        '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
+        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' +
+        (stream_game !== "" ? STR_PLAYING + stream_game : "") + '</div>' +
+        '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info">' + viwers + '</div>' + '</div>';
+
+    return Main_td;
+}
+
+function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, user_name);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
+        ChannelContent_ids[1] + id +
+        '" class="stream_channel_content_icon"><i class="icon-' + icons + '"></i></div></div>' +
+        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
+        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="text-align: center">' + stream_type +
+        '</div></div>';
+
+    return Main_td;
+}
+
+function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
+    Main_td = document.createElement('td');
+    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
+    Main_td.setAttribute(Main_DataAttribute, user_name);
+    Main_td.className = 'stream_cell';
+    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
+        '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
+        ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"src="' + preview_thumbnail +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
+        '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text_channel">' +
+        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel">' + stream_type + '</div>' +
+        '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' + Main_addCommas(ChannelContent_selectedChannelViews) +
+        STR_VIEWS + '</div>' +
+        '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info" >' + Main_addCommas(ChannelContent_selectedChannelFallower) +
+        STR_FALLOWERS + '</div></div>';
+
+    return Main_td;
+}
+
+function ChannelContent_setFallow() {
+    if (AddCode_IsFallowing) {
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 600%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
+        Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOWING);
+    } else {
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 600%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
+        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOW);
+        else Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_CANT_FALLOW);
+    }
+}
+
+function ChannelContent_loadDataSuccessFinish() {
+    if (!ChannelContent_status) {
+        ChannelContent_status = true;
+        ChannelContent_addFocus();
+        Main_SaveValues();
+        Main_ShowElement(ChannelContent_ids[10]);
+        Main_HideLoadDialog();
+    }
+    ChannelContent_checkUser();
+    Main_FirstLoad = false;
+}
+
+function ChannelContent_checkUser() {
+    if (ChannelContent_UserChannels) ChannelContent_setFallow();
+    else if (AddUser_UserIsSet()) {
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_PlayRequest = false;
+        AddCode_CheckFallow();
+    } else {
+        AddCode_IsFallowing = false;
+        ChannelContent_setFallow();
+    }
+}
+
+function ChannelContent_addFocus() {
+    Main_AddClass(ChannelContent_ids[0] +
+        ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), Main_classThumb);
+    if (Main_CenterLablesInUse) ChannelContent_removeFocus();
+    Main_handleKeyUp();
+}
+
+function ChannelContent_removeFocus() {
+    Main_removeFocus(ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), ChannelContent_ids);
+}
+
+function ChannelContent_keyEnter() {
+    if (ChannelContent_cursorY) {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+            AddCode_PlayRequest = false;
+            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+            if (AddCode_IsFallowing) AddCode_UnFallow();
+            else AddCode_Fallow();
         } else {
-            UserSidePannel_LastPos = null;
-            UserLiveFeed_LastPos = null;
+            Main_showWarningDialog(STR_NOKEY_WARN);
+            window.setTimeout(Main_HideWarningDialog, 2000);
         }
+    } else {
+        document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+        Main_HideElement(ChannelContent_ids[10]);
+        var value = (!ChannelContent_skipImg ? 0 : 1);
+        if (ChannelContent_cursorX === (0 - value)) {
 
-        Main_empty('user_feed_scroll');
-        Main_HideElement('side_panel_feed_thumb');
-        Sidepannel_PosFeed = 0;
-        Sidepannel_ScrollPos = 0;
-        Main_empty('side_panel_feed_scroll');
-        UserLiveFeed_status = false;
-        document.getElementById('user_feed_scroll').style.left = "2.5px";
-        Main_ShowElement('dialog_loading_feed');
-        Main_ShowElement('dialog_loading_side_feed');
-        UserLiveFeed_loadChannelOffsset = 0;
-        UserLiveFeed_followerChannels = '';
-        Play_FeedPos = 0;
-        UserLiveFeed_idObject = {};
+            Main_values.Play_selectedChannel = document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
+                '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute);
 
-        UserLiveFeed_loadDataPrepare();
-        UserLiveFeed_CheckToken();
+            Main_values.Play_selectedChannelDisplayname = document.getElementById(ChannelContent_ids[3] + ChannelContent_cursorY +
+                '_' + ChannelContent_cursorX).textContent;
+
+            if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
+                Main_values.Play_isHost = true;
+                Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname;
+                Main_values.Play_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
+                Main_values.Play_selectedChannel_id = ChannelContent_TargetId;
+            } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
+
+            var playing = document.getElementById(ChannelContent_ids[5] + ChannelContent_cursorY + '_' + ChannelContent_cursorX).textContent;
+            Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+
+            Main_ready(Main_openStream);
+        } else if (ChannelContent_cursorX === (1 - value)) {
+            Main_ready(function() {
+                inUseObj = ChannelVod;
+                Screens_init();
+            });
+        } else if (ChannelContent_cursorX === (2 - value)) {
+            inUseObj = ChannelClip;
+            Main_ready(Screens_init);
+        }
     }
 }
 
-function UserLiveFeed_CheckToken() {
-    UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
-    if (UserLiveFeed_token) {
-        UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
-        UserLiveFeed_loadChannelUserLive();
-    } else {
-        UserLiveFeed_loadDataPrepare();
-        UserLiveFeed_token = null;
-        UserLiveFeed_loadChannels();
-    }
+function ChannelContent_SetChannelValue() {
+    ChannelContent_ChannelValue = {
+        "Main_values.Main_selectedChannel_id": Main_values.Main_selectedChannel_id,
+        "Main_values.Main_selectedChannelLogo": Main_values.Main_selectedChannelLogo,
+        "Main_values.Main_selectedChannel": Main_values.Main_selectedChannel,
+        "Main_values.Main_selectedChannelDisplayname": Main_values.Main_selectedChannelDisplayname,
+        "ChannelContent_UserChannels": ChannelContent_UserChannels,
+        "Main_values.Main_BeforeChannel": Main_values.Main_BeforeChannel
+    };
 }
 
-function UserLiveFeed_loadDataPrepare() {
-    UserLiveFeed_loadingData = true;
-    UserLiveFeed_loadingDataTry = 0;
-    UserLiveFeed_loadingDataTimeout = 3500;
+function ChannelContent_RestoreChannelValue() {
+    Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel_id;
+    Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannelLogo;
+    Main_values.Main_selectedChannel = Main_values.Main_selectedChannel;
+    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname;
+    ChannelContent_UserChannels = ChannelContent_ChannelValue.ChannelContent_UserChannels;
+    Main_values.Main_BeforeChannel = Main_values.Main_BeforeChannel;
+    ChannelContent_ChannelValue = {};
+    ChannelContent_ChannelValueIsset = false;
 }
 
-function UserLiveFeed_loadChannels() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
-        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at';
+function ChannelContent_handleKeyDown(event) {
+    if (Main_FirstLoad || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
-}
-
-function UserLiveFeed_loadDataError() {
-    UserLiveFeed_loadingDataTry++;
-    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-        UserLiveFeed_loadingDataTimeout += 500;
-        UserLiveFeed_loadChannels();
-    } else {
-        UserLiveFeed_loadingData = false;
-        if (!UserLiveFeed_GetSize()) {
-            Main_HideElement('dialog_loading_feed');
-            Main_HideElement('dialog_loading_side_feed');
-            if (UserLiveFeed_isFeedShow()) {
-                Play_showWarningDialog(STR_REFRESH_PROBLEM);
-                window.setTimeout(function() {
-                    Play_HideWarningDialog();
-                }, 2000);
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                ChannelContent_removeFocus();
+                Main_CenterLablesStart(ChannelContent_handleKeyDown);
             }
-        } else {
-            UserLiveFeed_dataEnded = true;
-            UserLiveFeed_loadDataSuccessFinish();
-        }
+            Sidepannel_RestoreScreen();
+            break;
+        case KEY_LEFT:
+            if (!ChannelContent_cursorX) {
+                ChannelContent_removeFocus();
+                Sidepannel_Start(ChannelContent_handleKeyDown, true);
+            } else if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorX--;
+                if (ChannelContent_cursorX < 0) ChannelContent_cursorX = (!ChannelContent_skipImg ? 2 : 1);
+                ChannelContent_addFocus();
+            }
+            break;
+        case KEY_RIGHT:
+            if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorX++;
+                if (ChannelContent_cursorX > (!ChannelContent_skipImg ? 2 : 1)) ChannelContent_cursorX = 0;
+                ChannelContent_addFocus();
+            }
+            break;
+        case KEY_UP:
+            if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                Main_CenterLablesStart(ChannelContent_handleKeyDown);
+            } else {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorY = 0;
+                ChannelContent_addFocus();
+            }
+            break;
+        case KEY_DOWN:
+            if (!ChannelContent_cursorY) {
+                ChannelContent_removeFocus();
+                ChannelContent_cursorY = 1;
+                ChannelContent_addFocus();
+            }
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            ChannelContent_keyEnter();
+            break;
+        default:
+            break;
     }
+}//Variable initialization
+var SearchChannels_cursorY = 0;
+var SearchChannels_cursorX = 0;
+var SearchChannels_dataEnded = false;
+var SearchChannels_itemsCount = 0;
+var SearchChannels_idObject = {};
+var SearchChannels_emptyCellVector = [];
+var SearchChannels_loadingData = false;
+var SearchChannels_loadingDataTry = 0;
+var SearchChannels_loadingDataTryMax = 5;
+var SearchChannels_loadingDataTimeout = 3500;
+var SearchChannels_itemsCountOffset = 0;
+var SearchChannels_MaxOffset = 0;
+var SearchChannels_emptyContent = false;
+var SearchChannels_Status = false;
+var SearchChannels_lastData = '';
+var SearchChannels_itemsCountCheck = false;
+
+var SearchChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_', 'search_channel_scroll'];
+//Variable initialization end
+
+function SearchChannels_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
+    Main_values.Main_Go = Main_SearchChannels;
+    Main_values.isLastSChannels = true;
+    Main_values.Search_isSearching = true;
+    if (SearchChannels_lastData !== Main_values.Search_data) SearchChannels_Status = false;
+    Main_cleanTopLabel();
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Main_values.Search_data + "'"));
+    document.body.addEventListener("keydown", SearchChannels_handleKeyDown, false);
+    if (SearchChannels_Status) {
+        Main_YRst(SearchChannels_cursorY);
+        Main_ShowElement(SearchChannels_ids[6]);
+        SearchChannels_addFocus();
+        Main_SaveValues();
+    } else SearchChannels_StartLoad();
 }
 
-function UserLiveFeed_loadChannelLive(responseText) {
-    var response = JSON.parse(responseText).follows,
-        response_items = response.length;
-
-    if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-        var ChannelTemp = '',
-            x = 0;
-
-        for (x; x < response_items; x++) {
-            ChannelTemp = response[x].channel._id + ',';
-            if (UserLiveFeed_followerChannels.indexOf(ChannelTemp) === -1) UserLiveFeed_followerChannels += ChannelTemp;
-        }
-
-        UserLiveFeed_loadChannelOffsset += response_items;
-        UserLiveFeed_loadDataPrepare();
-        UserLiveFeed_loadChannels();
-    } else { // end
-        UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-        UserLiveFeed_loadDataPrepare();
-        Main_ready(UserLiveFeed_loadChannelUserLive);
-    }
+function SearchChannels_exit() {
+    Main_RestoreTopLabel();
+    document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
+    Main_HideElement(SearchChannels_ids[6]);
 }
 
-function UserLiveFeed_loadChannelUserLive() {
-    var theUrl = 'https://api.twitch.tv/kraken/streams/';
+function SearchChannels_StartLoad() {
+    Main_empty('stream_table_search_channel');
+    Main_HideElement(SearchChannels_ids[6]);
+    Main_showLoadDialog();
+    Main_HideWarningDialog();
+    SearchChannels_lastData = Main_values.Search_data;
+    SearchChannels_Status = false;
+    SearchChannels_itemsCountOffset = 0;
+    SearchChannels_MaxOffset = 0;
+    SearchChannels_idObject = {};
+    SearchChannels_emptyCellVector = [];
+    SearchChannels_itemsCountCheck = false;
+    SearchChannels_itemsCount = 0;
+    Main_FirstLoad = true;
+    SearchChannels_cursorX = 0;
+    SearchChannels_cursorY = 0;
+    SearchChannels_dataEnded = false;
+    Main_CounterDialogRst();
+    SearchChannels_loadDataPrepare();
+    SearchChannels_loadDataRequest();
+}
 
-    if (UserLiveFeed_token) {
-        theUrl += 'followed?';
+function SearchChannels_loadDataPrepare() {
+    SearchChannels_loadingData = true;
+    SearchChannels_loadingDataTry = 0;
+    SearchChannels_loadingDataTimeout = 3500;
+}
+
+function SearchChannels_loadDataRequest() {
+
+    var offset = SearchChannels_itemsCount + SearchChannels_itemsCountOffset;
+    if (offset && offset > (SearchChannels_MaxOffset - 1)) {
+        offset = SearchChannels_MaxOffset - Main_ItemsLimitChannel;
+        SearchChannels_dataEnded = true;
+    }
+
+    var theUrl = 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitChannel + '&offset=' + offset;
+
+    if (Main_Android && !SearchChannels_itemsCount)
+        BaseAndroidhttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError, false);
+}
+
+function SearchChannels_loadDataError() {
+    SearchChannels_loadingDataTry++;
+    if (SearchChannels_loadingDataTry < SearchChannels_loadingDataTryMax) {
+        SearchChannels_loadingDataTimeout += 500;
+        SearchChannels_loadDataRequest();
     } else {
-        theUrl += '?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&';
+        SearchChannels_loadingData = false;
+        if (!SearchChannels_itemsCount) {
+            Main_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            SearchChannels_dataEnded = true;
+            SearchChannels_loadDataSuccessFinish();
+        }
     }
-    theUrl += 'limit=100&offset=0&stream_type=all';
-
-    UserLiveFeed_loadChannelUserLiveGet(theUrl);
 }
 
-function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
+function SearchChannels_loadDataSuccess(responseText) {
+    var response = JSON.parse(responseText);
+    var response_items = response.channels.length;
+    SearchChannels_MaxOffset = parseInt(response._total);
+
+    if (response_items < Main_ItemsLimitChannel) SearchChannels_dataEnded = true;
+
+    var offset_itemsCount = SearchChannels_itemsCount;
+    SearchChannels_itemsCount += response_items;
+
+    SearchChannels_emptyContent = !SearchChannels_itemsCount;
+
+    var response_rows = response_items / Main_ColoumnsCountChannel;
+    if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
+
+    var coloumn_id, row_id, row, channels, id,
+        cursor = 0,
+        doc = document.getElementById('stream_table_search_channel');
+
+    for (var i = 0; i < response_rows; i++) {
+        row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
+        row = document.createElement('tr');
+
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
+            channels = response.channels[cursor];
+            id = channels._id;
+            if (SearchChannels_idObject[id]) coloumn_id--;
+            else {
+                SearchChannels_idObject[id] = 1;
+                row.appendChild(SearchChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, id, channels.logo, channels.display_name]));
+            }
+
+        }
+
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
+            if (SearchChannels_dataEnded && !SearchChannels_itemsCountCheck) {
+                SearchChannels_itemsCountCheck = true;
+                SearchChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
+            }
+            row.appendChild(Main_createEmptyCell(SearchChannels_ids[5] + row_id + '_' + coloumn_id));
+            SearchChannels_emptyCellVector.push(SearchChannels_ids[5] + row_id + '_' + coloumn_id);
+        }
+        doc.appendChild(row);
+    }
+
+    SearchChannels_loadDataSuccessFinish();
+}
+
+
+function SearchChannels_createCell(row_id, id, valuesArray) {
+    return Main_createCellChannel(id, SearchChannels_ids, valuesArray);
+}
+
+function SearchChannels_loadDataSuccessFinish() {
+    if (!SearchChannels_Status) {
+        if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else {
+            SearchChannels_Status = true;
+            SearchChannels_addFocus();
+            Main_SaveValues();
+        }
+        Main_ShowElement(SearchChannels_ids[6]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else {
+        if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
+            SearchChannels_loadDataPrepare();
+            SearchChannels_loadDataReplace();
+            return;
+        } else {
+            SearchChannels_addFocus(true);
+            SearchChannels_emptyCellVector = [];
+        }
+    }
+    SearchChannels_loadingData = false;
+}
+
+function SearchChannels_loadDataReplace() {
+    Main_SetItemsLimitReplace(SearchChannels_emptyCellVector.length);
+
+    var offset = SearchChannels_itemsCount + SearchChannels_itemsCountOffset;
+    if (offset && offset > (SearchChannels_MaxOffset - 1)) {
+        offset = SearchChannels_MaxOffset - Main_ItemsLimitReplace;
+        SearchChannels_dataEnded = true;
+    }
+
+    var theUrl = 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
+
+    BasehttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccessReplace, SearchChannels_loadDataErrorReplace);
+}
+
+function SearchChannels_loadDataErrorReplace() {
+    SearchChannels_loadingDataTry++;
+    if (SearchChannels_loadingDataTry < SearchChannels_loadingDataTryMax) {
+        SearchChannels_loadingDataTimeout += 500;
+        SearchChannels_loadDataReplace();
+    } else {
+        SearchChannels_dataEnded = true;
+        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
+        SearchChannels_emptyCellVector = [];
+        SearchChannels_loadDataSuccessFinish();
+    }
+}
+
+function SearchChannels_loadDataSuccessReplace(responseText) {
+    var response = JSON.parse(responseText),
+        response_items = response.channels.length,
+        channels, id, i = 0,
+        cursor = 0,
+        tempVector = [];
+
+    SearchChannels_MaxOffset = parseInt(response._total);
+
+    if (response_items < Main_ItemsLimitReplace) SearchChannels_dataEnded = true;
+
+    for (i; i < SearchChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+        channels = response.channels[cursor];
+        id = channels._id;
+        if (SearchChannels_idObject[id]) i--;
+        else {
+            SearchChannels_idObject[id] = 1;
+            Main_replaceChannel(SearchChannels_emptyCellVector[i], [channels.name, id, channels.logo, channels.display_name], SearchChannels_ids);
+
+            tempVector.push(i);
+        }
+    }
+
+    for (i = tempVector.length - 1; i > -1; i--) SearchChannels_emptyCellVector.splice(tempVector[i], 1);
+
+    SearchChannels_itemsCountOffset += cursor;
+    if (SearchChannels_dataEnded) {
+        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
+        SearchChannels_emptyCellVector = [];
+    }
+
+    SearchChannels_loadDataSuccessFinish();
+}
+
+function SearchChannels_addFocus(forceScroll) {
+    Main_addFocusChannel(SearchChannels_cursorY, SearchChannels_cursorX, SearchChannels_ids, Main_ColoumnsCountChannel, SearchChannels_itemsCount, forceScroll);
+
+    if (((SearchChannels_cursorY + Main_ItemsReloadLimitChannel) > (SearchChannels_itemsCount / Main_ColoumnsCountChannel)) &&
+        !SearchChannels_dataEnded && !SearchChannels_loadingData) {
+        SearchChannels_loadDataPrepare();
+        SearchChannels_loadDataRequest();
+    }
+    if (Main_CenterLablesInUse) SearchChannels_removeFocus();
+}
+
+function SearchChannels_removeFocus() {
+    if (SearchChannels_itemsCount) Main_removeFocus(SearchChannels_cursorY + '_' + SearchChannels_cursorX, SearchChannels_ids);
+}
+
+function SearchChannels_handleKeyDown(event) {
+    if (Main_FirstLoad || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
+
+    var i;
+
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                SearchChannels_removeFocus();
+                Main_CenterLablesStart(SearchChannels_handleKeyDown);
+            }
+            Sidepannel_RestoreScreen();
+            break;
+        case KEY_LEFT:
+            if (!SearchChannels_cursorX) {
+                SearchChannels_removeFocus();
+                Sidepannel_Start(SearchChannels_handleKeyDown, true);
+            } else if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX - 1), SearchChannels_ids[0])) {
+                SearchChannels_removeFocus();
+                SearchChannels_cursorX--;
+                SearchChannels_addFocus();
+            } else {
+                for (i = (Main_ColoumnsCountChannel - 1); i > -1; i--) {
+                    if (Main_ThumbNull((SearchChannels_cursorY - 1), i, SearchChannels_ids[0])) {
+                        SearchChannels_removeFocus();
+                        SearchChannels_cursorY--;
+                        SearchChannels_cursorX = i;
+                        SearchChannels_addFocus();
+                        break;
+                    }
+                }
+            }
+            break;
+        case KEY_RIGHT:
+            if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX + 1), SearchChannels_ids[0])) {
+                SearchChannels_removeFocus();
+                SearchChannels_cursorX++;
+                SearchChannels_addFocus();
+            } else if (Main_ThumbNull((SearchChannels_cursorY + 1), 0, SearchChannels_ids[0])) {
+                SearchChannels_removeFocus();
+                SearchChannels_cursorY++;
+                SearchChannels_cursorX = 0;
+                SearchChannels_addFocus();
+            }
+            break;
+        case KEY_UP:
+            if (!SearchChannels_cursorY) {
+                SearchChannels_removeFocus();
+                Main_CenterLablesStart(SearchChannels_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                    if (Main_ThumbNull((SearchChannels_cursorY - 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
+                        SearchChannels_removeFocus();
+                        SearchChannels_cursorY--;
+                        SearchChannels_cursorX = SearchChannels_cursorX - i;
+                        SearchChannels_addFocus();
+                        break;
+                    }
+                }
+            }
+            break;
+        case KEY_DOWN:
+            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
+                if (Main_ThumbNull((SearchChannels_cursorY + 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
+                    SearchChannels_removeFocus();
+                    SearchChannels_cursorY++;
+                    SearchChannels_cursorX = SearchChannels_cursorX - i;
+                    SearchChannels_addFocus();
+                    break;
+                }
+            }
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            Main_values.Main_selectedChannel = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute(Main_DataAttribute);
+            Main_values.Main_selectedChannel_id = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute('data-id');
+            Main_values.Main_selectedChannelDisplayname = document.getElementById(SearchChannels_ids[3] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).textContent;
+            document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
+            Main_values.Main_BeforeChannel = Main_SearchChannels;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = false;
+            ChannelContent_UserChannels = false;
+            Main_HideElement(SearchChannels_ids[6]);
+            Main_SwitchScreen();
+            break;
+        default:
+            break;
+    }
+}// The bellow are some function or adptations of function from
+// https://www.nightdev.com/kapchat/
+function extraEmoticonize(message, emote) {
+    return message.replace(emote.code, extraEmoteTemplate(emote));
+}
+
+function extraEmoteTemplate(emote) {
+    return '<img class="emoticon" alt="" src="' + emote['3x'] + '"/>';
+}
+
+function emoteTemplate(id) {
+    return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0"/>';
+}
+
+
+function mescape(message) {
+    return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function extraMessageTokenize(message) {
+    var tokenizedString = message.split(' ');
+
+    for (var i = 0; i < tokenizedString.length; i++) {
+        message = tokenizedString[i];
+
+        var test = message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
+        var emote = extraEmotes[test] || extraEmotes[message];
+
+        if (emote) {
+            message = extraEmoticonize(message, emote);
+        } else {
+            message = mescape(message);
+        }
+
+        tokenizedString[i] = message;
+    }
+
+    return tokenizedString.join(' ');
+}
+
+function emoticonize(message, emotes) {
+    if (!emotes) return [message];
+
+    var tokenizedMessage = [];
+
+    var emotesList = Object.keys(emotes);
+
+    var replacements = [];
+
+    emotesList.forEach(function(id) {
+        var emote = emotes[id];
+
+        for (var i = emote.length - 1; i >= 0; i--) {
+            replacements.push({
+                id: id,
+                first: emote[i][0],
+                last: emote[i][1]
+            });
+        }
+    });
+
+    replacements.sort(function(a, b) {
+        return b.first - a.first;
+    });
+
+    // Tokenizes each character into an array
+    // punycode deals with unicode symbols on surrogate pairs
+    // punycode is used in the replacements loop below as well
+    message = punycode.ucs2.decode(message);
+
+    replacements.forEach(function(replacement) {
+        // Unshift the end of the message (that doesn't contain the emote)
+        tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
+
+        // Unshift the emote HTML (but not as a string to allow us to process links and escape html still)
+        tokenizedMessage.unshift([emoteTemplate(replacement.id)]);
+
+        // Splice the unparsed piece of the message
+        message = message.slice(0, replacement.first);
+    });
+
+    // Unshift the remaining part of the message (that contains no emotes)
+    tokenizedMessage.unshift(punycode.ucs2.encode(message));
+
+    return tokenizedMessage;
+}
+
+function transformBadges(sets) {
+    return Object.keys(sets).map(function(b) {
+        var badge = sets[b];
+        badge.type = b;
+        badge.versions = Object.keys(sets[b].versions).map(function(v) {
+            var version = sets[b].versions[v];
+            version.type = v;
+            return version;
+        });
+        return badge;
+    });
+}
+
+function tagCSS(type, version, url, doc) {
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
+    if (doc) doc.appendChild(style);
+    else document.head.appendChild(style);
+}//Variable initialization
+var PlayVod_quality = 'source';
+var PlayVod_qualityPlaying = PlayVod_quality;
+
+var PlayVod_state = 0;
+
+var PlayVod_streamInfoTimerId = null;
+var PlayVod_tokenResponse = 0;
+var PlayVod_playlistResponse = 0;
+var PlayVod_playingTry = 0;
+
+var PlayVod_playingUrl = '';
+var PlayVod_qualities = [];
+var PlayVod_qualityIndex = 0;
+
+var PlayVod_loadingDataTry = 0;
+var PlayVod_loadingDataTryMax = 5;
+var PlayVod_isOn = false;
+var PlayVod_Buffer = 2000;
+
+var PlayVod_loadingInfoDataTry = 0;
+var PlayVod_loadingInfoDataTryMax = 5;
+var PlayVod_loadingInfoDataTimeout = 10000;
+
+var PlayVod_PlayerTime = 0;
+var PlayVod_streamCheckId = null;
+var PlayVod_PlayerCheckCount = 0;
+var PlayVod_PlayerCheckQualityChanged = false;
+var PlayVod_PlayerCheckCounter = 0;
+var PlayVod_PlayerCheckRun = false;
+
+var Play_jumping = false;
+var PlayVod_SizeClearID;
+var PlayVod_updateStreamInfId;
+var PlayVod_addToJump = 0;
+var PlayVod_IsJumping = false;
+var PlayVod_jumpCount = 0;
+var PlayVod_loadingDataTimeout = 2000;
+var PlayVod_qualitiesFound = false;
+var PlayVod_currentTime = 0;
+var PlayVod_VodIds = {};
+var PlayVod_VodPositions = 0;
+var PlayVod_PanelY = 0;
+var PlayVod_HasVodInfo = true;
+var PlayVod_ProgressBaroffset = 0;
+var PlayVod_StepsCount = 0;
+var PlayVod_TimeToJump = 0;
+var PlayVod_replay = false;
+var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
+
+var PlayVod_RefreshProgressBarrID;
+var PlayVod_SaveOffsetId;
+var PlayVod_WasSubChekd = false;
+//Variable initialization end
+
+function PlayVod_Start() {
+    Play_showBufferDialog();
+    Play_HideEndDialog();
+    PlayVod_currentTime = 0;
+    Main_textContent("stream_live_time", '');
+    Main_textContent("stream_watching_time", '');
+    Main_textContent('progress_bar_current_time', Play_timeS(0));
+    Chat_title = STR_PAST_BROA + '.';
+    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
+    Main_HideElement('progress_pause_holder');
+    Main_ShowElement('progress_bar_div');
+    PlayVod_StepsCount = 0;
+    Play_DefaultjumpTimers = PlayVod_jumpTimers;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+    PlayVod_state = Play_STATE_LOADING_TOKEN;
+    PlayClip_HasVOD = true;
+    ChannelVod_vodOffset = 0;
+    Main_values.Play_isHost = false;
+    PlayClip_HideShowNext(0, 0);
+    PlayClip_HideShowNext(1, 0);
+
+    if (Main_values.vodOffset) { // this is a vod comming from a clip
+        PlayVod_PrepareLoad();
+        PlayVod_updateVodInfo();
+    } else {
+        if (PlayVod_HasVodInfo && Main_values.Main_selectedChannel_id !== '') {
+            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
+            if (AddUser_UserIsSet()) {
+                AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+                AddCode_PlayRequest = true;
+                AddCode_CheckFallow();
+            } else Play_hideFallow();
+        } else {
+            PlayVod_PrepareLoad();
+            PlayVod_updateStreamerInfo();
+        }
+        Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("stream_info_title", '');
+        Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
+        Main_textContent("stream_live_icon", ChannelVod_createdAt);
+
+        Main_replaceClassEmoji('stream_info_game');
+    }
+
+    if (PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] && !Main_values.vodOffset) {
+        Play_HideBufferDialog();
+        Play_showVodDialog();
+    } else {
+        PlayVod_PosStart();
+    }
+}
+
+function PlayVod_PosStart() {
+    window.setTimeout(function() {
+        Main_ShowElement('scene_channel_panel_bottom');
+        Main_ShowElement('progress_pause_holder');
+    }, 1000);
+    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+
+    Main_values.Play_WasPlaying = 2;
+    Main_SaveValues();
+
+    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    new Image().src = Play_IncrementView;
+
+    PlayVod_PlayerCheckCounter = 0;
+    PlayVod_PlayerCheckCount = 0;
+    window.clearInterval(PlayVod_streamCheckId);
+    PlayVod_PlayerCheckRun = false;
+    Play_PlayerPanelOffset = -13;
+    PlayVod_qualitiesFound = false;
+    Play_IsWarning = false;
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
+    PlayVod_tokenResponse = 0;
+    PlayVod_playlistResponse = 0;
+    PlayVod_playingTry = 0;
+    document.addEventListener('visibilitychange', PlayVod_Resume, false);
+    Play_jumping = false;
+    PlayVod_isOn = true;
+    PlayVod_WasSubChekd = false;
+    PlayVod_loadData();
+    Play_EndSet(2);
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
+}
+
+function PlayVod_PrepareLoad() {
+    PlayVod_loadingInfoDataTry = 0;
+    PlayVod_loadingInfoDataTryMax = 5;
+    PlayVod_loadingInfoDataTimeout = 10000;
+}
+
+function PlayVod_updateStreamerInfo() {
+    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateStreamerInfoValues, PlayVod_updateStreamerInfoError, false);
+}
+
+function PlayVod_updateStreamerInfoValues(musers) {
+    musers = JSON.parse(musers).users[0];
+    if (musers !== undefined) {
+        Main_values.Main_selectedChannelLogo = musers.logo;
+        Main_values.Main_selectedChannel_id = musers._id;
+        if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
+        if (AddUser_UserIsSet()) {
+            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+            AddCode_PlayRequest = true;
+            AddCode_CheckFallow();
+        } else Play_hideFallow();
+    } else {
+        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
+        Main_values.Main_selectedChannel_id = '';
+    }
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+
+}
+
+function PlayVod_updateStreamerInfoError() {
+    PlayVod_loadingInfoDataTry++;
+    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+        PlayVod_loadingInfoDataTimeout += 500;
+        window.setTimeout(function() {
+            if (PlayVod_isOn) PlayVod_updateStreamerInfo();
+        }, 750);
+    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamerInfo, 2500);
+}
+
+function PlayVod_updateVodInfo() {
+    var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId;
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError, false);
+}
+
+function PlayVod_updateVodInfoError() {
+    PlayVod_loadingInfoDataTry++;
+    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+        PlayVod_loadingInfoDataTimeout += 2000;
+        PlayVod_updateVodInfo();
+    }
+}
+
+function PlayVod_updateVodInfoPannel(response) {
+    response = JSON.parse(response);
+
+    //TODO add a warning about muted segments
+    //if (response.muted_segments) console.log(response.muted_segments);
+
+    Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
+    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
+        ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
+    Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+
+    ChannelVod_DurationSeconds = parseInt(response.length);
+    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+
+    PlayVod_currentTime = Main_values.vodOffset * 1000;
+    PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
+
+    Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
+    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+
+    Main_values.Main_selectedChannelLogo = response.channel.logo;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+
+    Main_values.Main_selectedChannel_id = response.channel._id;
+    Main_values.Main_selectedChannel = response.channel.name;
+
+    if (AddUser_UserIsSet()) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_CheckFallow();
+    } else Play_hideFallow();
+    new Image().src = response.increment_view_count_url;
+}
+
+function PlayVod_Resume() {
+    if (document.hidden) {
+        if (Play_isEndDialogVisible()) {
+            Play_CleanHideExit();
+            Play_hideChat();
+            PlayVod_shutdownStream();
+        } else {
+            PlayVod_SaveOffset();
+            PlayVod_SaveVodIds();
+            Chat_Pause();
+            Play_ClearPlayer();
+            window.clearInterval(PlayVod_streamCheckId);
+            window.clearInterval(PlayVod_SaveOffsetId);
+        }
+    } else {
+        PlayVod_isOn = true;
+        Play_clearPause();
+        if (PlayVod_isOn) {
+            Play_showBufferDialog();
+            Play_ResumeAfterOnlineCounter = 0;
+
+            Play_ResumeAfterOnlineCounter = 0;
+            if (navigator.onLine) PlayVod_onPlayer();
+            else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
+
+            Chat_Play(Chat_Id);
+            Play_EndSet(2);
+            PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+        }
+    }
+}
+
+function PlayVod_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        PlayVod_state = Play_STATE_LOADING_TOKEN;
+        PlayVod_loadData();
+    }
+    Play_ResumeAfterOnlineCounter++;
+}
+
+function PlayVod_SaveOffset() {
+    Main_values.vodOffset = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
+    Main_SaveValues();
+    Main_values.vodOffset = 0;
+}
+
+
+function PlayVod_loadData() {
+    PlayVod_loadingDataTry = 0;
+    PlayVod_loadingDataTimeout = 2000;
+    PlayVod_loadDataRequest();
+}
+
+function PlayVod_loadDataRequest() {
+    var theUrl;
+
+    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
+        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+    } else {
+        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+            '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
+            '&allow_audio_only=true&reassignments_supported=true&allow_source=true' +
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '');
+    }
+
+    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);
+}
+
+function PlayVod_loadDataError() {
+    if (PlayVod_isOn) {
+        var mjson;
+        if (PlayVod_tokenResponse.token) mjson = JSON.parse(PlayVod_tokenResponse.token);
+        if (mjson) {
+            if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
+                PlayVod_loadDataCheckSub();
+                return;
+            }
+        }
+
+        PlayVod_loadingDataTry++;
+        if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
+            PlayVod_loadingDataTimeout += 250;
+            PlayVod_loadDataRequest();
+        } else {
+            if (!Main_isBrowser) {
+                Play_HideBufferDialog();
+                Play_PlayEndStart(2);
+            } else PlayVod_loadDataSuccessFake();
+        }
+    }
+}
+
+//Browsers crash trying to get the streams link
+function PlayVod_loadDataSuccessFake() {
+    PlayVod_qualities = [{
+        'id': '1080p60(Source)',
+        'band': '(10.00Mbps)',
+        'url': 'http://fake'
+    }];
+    PlayVod_state = Play_STATE_PLAYING;
+    if (PlayVod_isOn) PlayVod_qualityChanged();
+}
+
+function PlayVod_loadDataSuccess(responseText) {
+    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
+        PlayVod_tokenResponse = JSON.parse(responseText);
+        PlayVod_state = Play_STATE_LOADING_PLAYLIST;
+        PlayVod_loadData();
+    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
+        PlayVod_playlistResponse = responseText;
+        PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
+        PlayVod_state = Play_STATE_PLAYING;
+        if (PlayVod_isOn) PlayVod_qualityChanged();
+    }
+}
+
+function PlayVod_loadDataCheckSub() {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_CheckSub();
+    } else {
+        Play_HideBufferDialog();
+        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
+        window.setTimeout(function() {
+            if (PlayVod_isOn) PlayVod_shutdownStream();
+        }, 4000);
+    }
+}
+
+function PlayVod_NotSub() {
+    Play_HideBufferDialog();
+    Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
+    window.setTimeout(function() {
+        if (PlayVod_isOn) PlayVod_shutdownStream();
+    }, 4000);
+}
+
+function PlayVod_isSub() {
+    if (!PlayVod_WasSubChekd) {
+        // Do one more try before failing, because the access_token may be expired on the first treys
+        // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
+        // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
+        PlayVod_WasSubChekd = true;
+        PlayVod_state = Play_STATE_LOADING_TOKEN;
+        PlayVod_loadData();
+    } else {
+        Play_HideBufferDialog();
+        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
+        window.setTimeout(function() {
+            if (PlayVod_isOn) PlayVod_shutdownStream();
+        }, 4000);
+    }
+}
+
+function PlayVod_qualityChanged() {
+    window.clearInterval(PlayVod_streamCheckId);
+    PlayVod_qualityIndex = 0;
+    PlayVod_playingUrl = PlayVod_qualities[0].url;
+    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
+    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
+        if (PlayVod_qualities[i].id === PlayVod_quality) {
+            PlayVod_qualityIndex = i;
+            PlayVod_playingUrl = PlayVod_qualities[i].url;
+            break;
+        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
+            PlayVod_qualityIndex = i;
+            PlayVod_playingUrl = PlayVod_qualities[i].url;
+        }
+    }
+
+    PlayVod_qualityPlaying = PlayVod_quality;
+    PlayVod_onPlayer();
+}
+
+function PlayVod_onPlayer() {
+    if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
+
+    if (Main_values.vodOffset) {
+        Chat_offset = Main_values.vodOffset;
+        Chat_Init();
+        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
+            PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+        Main_values.vodOffset = 0;
+    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
+        PlayVod_replay ? -1 : Android.gettime());
+
+    PlayVod_replay = false;
+    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+
+    if (Main_Android) {
+        PlayVod_PlayerCheckCount = 0;
+        Play_PlayerCheckTimer = 3 + (PlayVod_Buffer / 1000);
+        PlayVod_PlayerCheckQualityChanged = false;
+        window.clearInterval(PlayVod_streamCheckId);
+        PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+    }
+}
+
+function PlayVod_UpdateDuration(duration) {
+    ChannelVod_DurationSeconds = duration / 1000;
+    Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
+    PlayVod_RefreshProgressBarr();
+}
+
+function PlayVod_PlayerCheck() {
+    if (Main_Android) PlayVod_currentTime = Android.gettime();
+
+    //The player can bug and not stop playing when it ends after a video has be pause
+    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
+        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
+        if (Main_Android) Android.play(false);
+        Play_PannelEndStart(2);
+    }
+
+    if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
+        PlayVod_PlayerCheckCount++;
+        if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
+
+            //Don't change the first time only retry
+            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) PlayVod_qualityIndex++;
+            else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
+
+            if (!navigator.onLine) Play_EndStart(false, 2);
+            else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
+            else {
+                PlayVod_qualityDisplay();
+                PlayVod_qualityChanged();
+                PlayVod_PlayerCheckRun = true;
+            }
+
+        } // else we try for too long let the listener onerror catch it
+    } else {
+        PlayVod_PlayerCheckCounter = 0;
+        PlayVod_PlayerCheckCount = 0;
+        PlayVod_PlayerCheckRun = false;
+    }
+
+    PlayVod_PlayerTime = PlayVod_currentTime;
+}
+
+function PlayVod_DropOneQuality(ConnectionDrop) {
+    if (!ConnectionDrop) {
+        if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
+        else {
+            Play_EndStart(false, 2);
+            return;
+        }
+    }
+
+    PlayVod_PlayerCheckCounter = 0;
+    PlayVod_qualityDisplay();
+    PlayVod_qualityChanged();
+    PlayVod_PlayerCheckRun = true;
+}
+
+function PlayVod_shutdownStream() {
+    if (PlayVod_isOn) {
+        PlayVod_qualities = [];
+        PlayVod_PreshutdownStream(true);
+        Play_exitMain();
+    }
+}
+
+function PlayVod_PreshutdownStream(saveOffset) {
+    if (saveOffset) PlayVod_SaveVodIds();
+    if (Main_Android) Android.stopVideo(2);
+    PlayVod_isOn = false;
+    window.clearInterval(PlayVod_SaveOffsetId);
+    window.clearInterval(PlayVod_updateStreamInfId);
+    Main_values.Play_WasPlaying = 0;
+    PlayVod_HasVodInfo = true;
+    Chat_Clear();
+    UserLiveFeed_Hide();
+    Play_ClearPlayer();
+    PlayVod_ClearVod();
+}
+
+function PlayVod_ClearVod() {
+    document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
+    document.removeEventListener('visibilitychange', PlayVod_Resume);
+    Main_values.vodOffset = 0;
+    window.clearInterval(PlayVod_streamInfoTimerId);
+    window.clearInterval(PlayVod_streamCheckId);
+    ChannelVod_DurationSeconds = 0;
+}
+
+function PlayVod_hidePanel() {
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
+    PlayVod_addToJump = 0;
+    Play_clearHidePanel();
+    document.getElementById("scene_channel_panel").style.opacity = "0";
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
+    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+    document.getElementById('progress_bar_steps').style.display = 'none';
+    PlayVod_quality = PlayVod_qualityPlaying;
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
+}
+
+function PlayVod_showPanel(autoHide) {
+    PlayVod_RefreshProgressBarr();
+    Play_clock();
+    Play_CleanHideExit();
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
+    if (autoHide) {
+        PlayVod_IconsBottonResetFocus();
+        PlayVod_qualityIndexReset();
+        PlayVod_qualityDisplay();
+        PlayVod_setHidePanel();
+    }
+    document.getElementById("scene_channel_panel").style.opacity = "1";
+}
+
+function PlayVod_RefreshProgressBarr() {
+    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
+}
+
+function PlayVod_IconsBottonResetFocus() {
+    PlayVod_PanelY = 1;
+    PlayClip_EnterPos = 0;
+    PlayVod_IconsBottonFocus();
+}
+
+function PlayVod_IconsBottonFocus() {
+    Main_RemoveClass('pause_button', 'progress_bar_div_focus');
+    Main_RemoveClass('next_button', 'progress_bar_div_focus');
+    Main_RemoveClass('back_button', 'progress_bar_div_focus');
+    Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+
+    if (!PlayVod_PanelY) { //progress_bar
+        Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
+        Play_IconsRemoveFocus();
+        if (PlayVod_addToJump) {
+            PlayVod_jumpTime();
+            document.getElementById('progress_bar_steps').style.display = 'inline-block';
+        }
+    } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+        if (!PlayClip_EnterPos) { //pause
+            Main_AddClass('pause_button', 'progress_bar_div_focus');
+        } else if (PlayClip_EnterPos === 1) { //next
+            Main_AddClass('next_button', 'progress_bar_div_focus');
+        } else if (PlayClip_EnterPos === -1) { //back
+            Main_AddClass('back_button', 'progress_bar_div_focus');
+        }
+
+        Play_IconsRemoveFocus();
+        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+        document.getElementById('progress_bar_steps').style.display = 'none';
+    } else if (PlayVod_PanelY === 2) { //botton icons
+        Play_IconsAddFocus();
+        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+        document.getElementById('progress_bar_steps').style.display = 'none';
+    }
+}
+
+function PlayVod_setHidePanel() {
+    Play_PanelHideID = window.setTimeout(PlayVod_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
+}
+
+function PlayVod_qualityIndexReset() {
+    PlayVod_qualityIndex = 0;
+    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
+        if (PlayVod_qualities[i].id === PlayVod_quality) {
+            PlayVod_qualityIndex = i;
+            break;
+        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
+            PlayVod_qualityIndex = i;
+        }
+    }
+}
+
+function PlayVod_qualityDisplay() {
+    if (PlayVod_getQualitiesCount() === 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "0";
+        document.getElementById("quality_arrow_down").style.opacity = "0";
+    } else if (!PlayVod_qualityIndex) {
+        document.getElementById("quality_arrow_up").style.opacity = "0.2";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
+    } else if (PlayVod_qualityIndex === PlayVod_getQualitiesCount() - 1) {
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "0.2";
+    } else {
+        document.getElementById("quality_arrow_up").style.opacity = "1";
+        document.getElementById("quality_arrow_down").style.opacity = "1";
+    }
+
+    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
+    if (PlayVod_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayVod_quality.replace("source", STR_SOURCE) + PlayVod_qualities[PlayVod_qualityIndex].band);
+    else Main_textContent("quality_name", PlayVod_quality + PlayVod_qualities[PlayVod_qualityIndex].band);
+}
+
+function PlayVod_getQualitiesCount() {
+    return PlayVod_qualities.length;
+}
+
+function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
+    Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
+    if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+}
+
+function PlayVod_jump() {
+    Play_clearPause();
+    if (!Play_isEndDialogVisible()) {
+
+        PlayVod_PlayerCheckQualityChanged = false;
+        PlayClip_PlayerCheckQualityChanged = false;
+
+        if (PlayVod_isOn) {
+            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2,
+                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+            Chat_offset = PlayVod_TimeToJump;
+        } else {
+            Chat_offset = ChannelVod_vodOffset;
+            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,
+                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+        }
+
+        if (PlayClip_HasVOD) Chat_Init();
+    }
+    Main_innerHTML('progress_bar_jump_to', STR_SPACE);
+    document.getElementById('progress_bar_steps').style.display = 'none';
+    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
+    PlayVod_addToJump = 0;
+    PlayVod_TimeToJump = 0;
+}
+
+function PlayVod_SizeClear() {
+    PlayVod_jumpCount = 0;
+    PlayVod_StepsCount = 0;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+}
+
+function PlayVod_jumpSteps(duration_seconds) {
+    if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
+    if (Math.abs(duration_seconds) > 60)
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + (duration_seconds / 60) + STR_MINUTES);
+    else if (duration_seconds)
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + duration_seconds + STR_SECONDS);
+    else
+        Main_textContent('progress_bar_steps', STR_JUMPING_STEP + Play_DefaultjumpTimers[1] + STR_SECONDS);
+}
+
+function PlayVod_jumpTime() {
+    Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
+}
+
+function PlayVod_jumpStart(multiplier, duration_seconds) {
+    var currentTime = Main_Android ? (Android.gettime() / 1000) : 0;
+
+    window.clearTimeout(PlayVod_SizeClearID);
+    PlayVod_IsJumping = true;
+
+    if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1) && (PlayVod_StepsCount++ % 6) === 0) PlayVod_jumpCount++;
+
+    PlayVod_addToJump += Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier;
+    PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
+
+    //hls jump/seek time in avplay is "10 base", jump/seek to 1:53:53 will jump to 1:53:50, round to show then
+    if (PlayVod_isOn) PlayVod_TimeToJump = Math.floor(PlayVod_TimeToJump / 10) * 10;
+
+    if (PlayVod_TimeToJump > duration_seconds) {
+        PlayVod_addToJump = duration_seconds - currentTime - Play_DefaultjumpTimers[1];
+        PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
+        PlayVod_jumpCount = 0;
+        PlayVod_StepsCount = 0;
+    } else if (PlayVod_TimeToJump < 0) {
+        PlayVod_addToJump = 0 - currentTime;
+        PlayVod_jumpCount = 0;
+        PlayVod_StepsCount = 0;
+        PlayVod_TimeToJump = 0;
+    }
+
+    PlayVod_jumpTime();
+    Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
+
+    PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
+}
+
+function PlayVod_SaveVodIds() {
+    var time = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
+
+    var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
+
+    if (time > 300 && time < (ChannelVod_DurationSeconds - 300)) { //time too small don't save
+
+        //delete before save to add this to the end, and prevent loose it in restorevodids
+        if (PlayVod_VodIds[vod_id]) delete PlayVod_VodIds[vod_id];
+
+        PlayVod_VodIds[vod_id] = time;
+        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+
+    } else if (time > (ChannelVod_DurationSeconds - 300) && PlayVod_VodIds[vod_id]) {
+
+        //if ended or almost delete
+        delete PlayVod_VodIds[vod_id];
+
+        Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+    }
+}
+
+function PlayVod_RestoreVodIds() {
+    PlayVod_VodIds = Main_getItemJson('PlayVod_VodIds', {});
+
+    //Prevent too big obj in storage
+    var size = PlayVod_VodIdsSize();
+    if (size > 250) PlayVod_CleanVodIds(size - 250);
+}
+
+function PlayVod_VodIdsSize() {
+    var size = 0;
+    for (var key in PlayVod_VodIds) {
+        if (PlayVod_VodIds.hasOwnProperty(key)) size++;
+    }
+    return size;
+}
+
+function PlayVod_CleanVodIds(quantity) {
+    var position = 0;
+    for (var key in PlayVod_VodIds) {
+        if (position < quantity) delete PlayVod_VodIds[key];
+        else break;
+        position++;
+    }
+    Main_setItem('PlayVod_VodIds', JSON.stringify(PlayVod_VodIds));
+}
+
+function Play_showVodDialog() {
+    Main_HideElement('scene_channel_panel_bottom');
+    PlayVod_showPanel(false);
+    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] * 1000));
+    Main_ShowElement('dialog_vod_start');
+}
+
+function Play_HideVodDialog() {
+    PlayVod_hidePanel();
+    Main_HideElement('dialog_vod_start');
+    PlayVod_IconsResetFocus();
+    window.setTimeout(function() {
+        Main_ShowElement('scene_channel_panel_bottom');
+    }, 1000);
+}
+
+function Play_isVodDialogShown() {
+    return Main_isElementShowing('dialog_vod_start');
+}
+
+function PlayVod_IconsResetFocus() {
+    PlayVod_IconsRemoveFocus();
+    PlayVod_VodPositions = 0;
+    PlayVod_IconsAddFocus();
+}
+
+function PlayVod_IconsAddFocus() {
+    Main_AddClass('dialog_vod_' + PlayVod_VodPositions, 'dialog_end_icons_focus');
+}
+
+function PlayVod_IconsRemoveFocus() {
+    Main_RemoveClass('dialog_vod_' + PlayVod_VodPositions, 'dialog_end_icons_focus');
+}
+
+function PlayVod_DialogPressed(fromStart) {
+    Play_HideVodDialog();
+    if (!fromStart) {
+        Main_values.vodOffset = PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
+        PlayVod_currentTime = Main_values.vodOffset * 1000;
+        PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
+        PlayVod_PosStart();
+    } else {
+        delete PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
+        Main_values.vodOffset = 0;
+        PlayVod_Start();
+    }
+}
+
+function PlayVod_handleKeyDown(e) {
+    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
+        switch (e.keyCode) {
+            case KEY_RETURN:
+                if (Play_ExitDialogVisible()) {
+                    Play_CleanHideExit();
+                    PlayVod_shutdownStream();
+                } else {
+                    Play_showExitDialog();
+                }
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (e.keyCode) {
+            case KEY_LEFT:
+                if (UserLiveFeed_isFeedShow()) {
+                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
+                        UserLiveFeed_FeedRemoveFocus();
+                        Play_FeedPos--;
+                        UserLiveFeed_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                    Play_ChatPositions++;
+                    Play_ChatPosition();
+                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    Play_clearHidePanel();
+                    if (PlayVod_PanelY === 2) {
+                        Play_IconsRemoveFocus();
+                        Play_Panelcounter++;
+                        if (Play_Panelcounter > 5) Play_Panelcounter = 1;
+                        Play_IconsAddFocus();
+                    } else if (!PlayVod_PanelY) {
+                        PlayVod_jumpStart(-1, ChannelVod_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
+                    }
+                    PlayVod_setHidePanel();
+                } else if (Play_isVodDialogShown()) {
+                    PlayVod_IconsRemoveFocus();
+                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
+                    else PlayVod_VodPositions++;
+                    PlayVod_IconsAddFocus();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
+                    Play_Endcounter--;
+                    if (Play_Endcounter < 0) Play_Endcounter = 3;
+                    if (Play_Endcounter === 1) Play_Endcounter = 0;
+                    Play_EndIconsAddFocus();
+                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                break;
+            case KEY_RIGHT:
+                console.log(PlayVod_PanelY);
+                if (UserLiveFeed_isFeedShow()) {
+                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
+                        UserLiveFeed_FeedRemoveFocus();
+                        Play_FeedPos++;
+                        UserLiveFeed_FeedAddFocus();
+                    }
+                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                        Play_showChat();
+                        Play_ChatEnable = true;
+                    } else {
+                        Play_hideChat();
+                        Play_ChatEnable = false;
+                    }
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    Play_clearHidePanel();
+                    if (PlayVod_PanelY === 2) {
+                        Play_IconsRemoveFocus();
+                        Play_Panelcounter--;
+                        if (Play_Panelcounter < 1) Play_Panelcounter = 5;
+                        Play_IconsAddFocus();
+                    } else if (!PlayVod_PanelY) {
+                        PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
+                        PlayVod_ProgressBaroffset = 2500;
+                    }
+                    PlayVod_setHidePanel();
+                } else if (Play_isVodDialogShown()) {
+                    PlayVod_IconsRemoveFocus();
+                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
+                    else PlayVod_VodPositions++;
+                    PlayVod_IconsAddFocus();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndTextClear();
+                    Play_EndIconsRemoveFocus();
+                    Play_Endcounter++;
+                    if (Play_Endcounter > 3) Play_Endcounter = 0;
+                    if (Play_Endcounter === 1) Play_Endcounter = 2;
+                    Play_EndIconsAddFocus();
+                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                break;
+            case KEY_UP:
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
+                else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_qualityIndex > 0 && Play_Panelcounter === 1) {
+                        PlayVod_qualityIndex--;
+                        PlayVod_qualityDisplay();
+                    }
+                    Play_clearHidePanel();
+                    PlayVod_setHidePanel();
+                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
+                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
+                else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                break;
+            case KEY_DOWN:
+                if (Play_isEndDialogVisible()) Play_EndTextClear();
+                else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    if (!PlayVod_PanelY) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_PanelY === 1) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
+                        PlayVod_qualityIndex++;
+                        PlayVod_qualityDisplay();
+                    }
+                    Play_clearHidePanel();
+                    PlayVod_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                else if (Play_isFullScreen && Play_isChatShown()) {
+                    //Play_ChatBackground += 0.05;
+                    //if (Play_ChatBackground > 1.05) Play_ChatBackground = 0.05;
+                    //Play_ChatBackgroundChange(true);
+                    Play_ChatSizeValue++;
+                    if (Play_ChatSizeValue > 4) {
+                        Play_ChatSizeValue = 1;
+                        Play_ChatPositionConvert(false);
+                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                    Play_ChatSize(true);
+                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                break;
+            case KEY_ENTER:
+                if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
+                else if (Play_isEndDialogVisible()) Play_EndDialogPressed(2);
+                else if (Play_isPanelShown()) {
+                    if (!PlayVod_PanelY) {
+                        Play_clearHidePanel();
+                        PlayVod_setHidePanel();
+                        if (PlayVod_addToJump) PlayVod_jump();
+                    } else if (PlayVod_PanelY === 1) {
+                        if (Main_values.Play_ChatForceDisable) {
+                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                            else Chat_Pause();
+                        }
+                        if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                    } else Play_BottomOptionsPressed(2);
+                } else if (UserLiveFeed_isFeedShow()) {
+                    PlayVod_PreshutdownStream(true);
+                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                } else PlayVod_showPanel(true);
+                break;
+            case KEY_RETURN:
+                Play_KeyReturn(true);
+                break;
+            case KEY_PLAY:
+            case KEY_PAUSE:
+            case KEY_PLAYPAUSE:
+                if (Main_values.Play_ChatForceDisable) {
+                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
+                    else Chat_Pause();
+                }
+                if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                break;
+            default:
+                break;
+        }
+    }
+}//Variable initialization
+var SearchLive_cursorY = 0;
+var SearchLive_cursorX = 0;
+var SearchLive_dataEnded = false;
+var SearchLive_itemsCount = 0;
+var SearchLive_idObject = {};
+var SearchLive_emptyCellVector = [];
+var SearchLive_loadingData = false;
+var SearchLive_loadingDataTry = 0;
+var SearchLive_loadingDataTryMax = 5;
+var SearchLive_loadingDataTimeout = 3500;
+var SearchLive_itemsCountOffset = 0;
+var SearchLive_MaxOffset = 0;
+var SearchLive_emptyContent = false;
+var SearchLive_Status = false;
+var SearchLive_itemsCountCheck = false;
+var SearchLive_lastData = '';
+
+var SearchLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', 'sl_streamtitle', 'sl_streamgame', 'sl_viwers', 'sl_quality', 'sl_cell', 'slempty_', 'search_live_scroll'];
+//Variable initialization end
+
+function SearchLive_init() {
+    Main_values.Main_CenterLablesVectorPos = 1;
+    Main_values.Main_Go = Main_SearchLive;
+    Main_values.Search_isSearching = true;
+    Main_cleanTopLabel();
+    if (SearchLive_lastData !== Main_values.Search_data) SearchLive_Status = false;
+    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Main_values.Search_data + "'"));
+    document.body.addEventListener("keydown", SearchLive_handleKeyDown, false);
+    if (SearchLive_Status) {
+        Main_YRst(SearchLive_cursorY);
+        Main_ShowElement(SearchLive_ids[10]);
+        SearchLive_addFocus();
+        Main_SaveValues();
+    } else SearchLive_StartLoad();
+}
+
+function SearchLive_exit() {
+    Main_RestoreTopLabel();
+    document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
+    Main_HideElement(SearchLive_ids[10]);
+}
+
+function SearchLive_StartLoad() {
+    Main_empty('stream_table_search_live');
+    Main_HideElement(SearchLive_ids[10]);
+    Main_showLoadDialog();
+    Main_HideWarningDialog();
+    SearchLive_lastData = Main_values.Search_data;
+    SearchLive_Status = false;
+    SearchLive_itemsCountOffset = 0;
+    SearchLive_MaxOffset = 0;
+    SearchLive_idObject = {};
+    SearchLive_emptyCellVector = [];
+    SearchLive_itemsCountCheck = false;
+    Main_FirstLoad = true;
+    SearchLive_itemsCount = 0;
+    SearchLive_cursorX = 0;
+    SearchLive_cursorY = 0;
+    SearchLive_dataEnded = false;
+    Main_CounterDialogRst();
+    SearchLive_loadDataPrepare();
+    SearchLive_loadDataRequest();
+}
+
+function SearchLive_loadDataPrepare() {
+    SearchLive_loadingData = true;
+    SearchLive_loadingDataTry = 0;
+    SearchLive_loadingDataTimeout = 3500;
+}
+
+function SearchLive_loadDataRequest() {
+
+    var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
+    if (offset && offset > (SearchLive_MaxOffset - 1)) {
+        offset = SearchLive_MaxOffset - Main_ItemsLimitVideo;
+        SearchLive_dataEnded = true;
+    }
+
+    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
+
+    if (Main_Android && !SearchLive_itemsCount)
+        BaseAndroidhttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError);
+    else
+        BasexmlHttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError, false);
+}
+
+function SearchLive_loadDataError() {
+    SearchLive_loadingDataTry++;
+    if (SearchLive_loadingDataTry < SearchLive_loadingDataTryMax) {
+        SearchLive_loadingDataTimeout += 500;
+        SearchLive_loadDataRequest();
+    } else {
+        SearchLive_loadingData = false;
+        if (!SearchLive_itemsCount) {
+            Main_FirstLoad = false;
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+        } else {
+            SearchLive_dataEnded = true;
+            SearchLive_loadDataSuccessFinish();
+        }
+    }
+}
+
+function SearchLive_loadDataSuccess(responseText) {
+    var response = JSON.parse(responseText);
+    var response_items = response.streams.length;
+    SearchLive_MaxOffset = parseInt(response._total);
+
+    if (response_items < Main_ItemsLimitVideo) SearchLive_dataEnded = true;
+
+    var offset_itemsCount = SearchLive_itemsCount;
+    SearchLive_itemsCount += response_items;
+
+    SearchLive_emptyContent = !SearchLive_itemsCount;
+
+    var response_rows = response_items / Main_ColoumnsCountVideo;
+    if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
+
+    var coloumn_id, row_id, row, stream, id,
+        cursor = 0,
+        doc = document.getElementById("stream_table_search_live");
+
+    for (var i = 0; i < response_rows; i++) {
+        row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
+        row = document.createElement('tr');
+
+        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
+            stream = response.streams[cursor];
+            id = stream.channel._id;
+            if (SearchLive_idObject[id]) coloumn_id--;
+            else {
+                SearchLive_idObject[id] = 1;
+                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
+                    [stream.channel.name, id], SearchLive_ids,
+                    [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                        Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                        stream.channel.status, stream.game,
+                        STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                        Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                    ]));
+            }
+        }
+
+        for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
+            if (SearchLive_dataEnded && !SearchLive_itemsCountCheck) {
+                SearchLive_itemsCountCheck = true;
+                SearchLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
+            }
+            row.appendChild(Main_createEmptyCell(SearchLive_ids[9] + row_id + '_' + coloumn_id));
+            SearchLive_emptyCellVector.push(SearchLive_ids[9] + row_id + '_' + coloumn_id);
+        }
+        doc.appendChild(row);
+    }
+
+    SearchLive_loadDataSuccessFinish();
+}
+
+function SearchLive_loadDataSuccessFinish() {
+    if (!SearchLive_Status) {
+        if (SearchLive_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
+        else {
+            SearchLive_Status = true;
+            SearchLive_addFocus();
+            Main_SaveValues();
+        }
+        Main_ShowElement(SearchLive_ids[10]);
+        Main_FirstLoad = false;
+        Main_HideLoadDialog();
+    } else {
+        if (SearchLive_emptyCellVector.length > 0 && !SearchLive_dataEnded) {
+            SearchLive_loadDataPrepare();
+            SearchLive_loadDataReplace();
+            return;
+        } else {
+            SearchLive_addFocus(true);
+            SearchLive_emptyCellVector = [];
+        }
+    }
+    SearchLive_loadingData = false;
+}
+
+function SearchLive_loadDataReplace() {
+
+    Main_SetItemsLimitReplace(SearchLive_emptyCellVector.length);
+
+    var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
+    if (offset && offset > (SearchLive_MaxOffset - 1)) {
+        offset = SearchLive_MaxOffset - Main_ItemsLimitReplace;
+        SearchLive_dataEnded = true;
+    }
+    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
+        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
+
+    BasehttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccessReplace, SearchLive_loadDataErrorReplace);
+}
+
+function SearchLive_loadDataErrorReplace() {
+    SearchLive_loadingDataTry++;
+    if (SearchLive_loadingDataTry < SearchLive_loadingDataTryMax) {
+        SearchLive_loadingDataTimeout += 500;
+        SearchLive_loadDataReplace();
+    } else {
+        SearchLive_dataEnded = true;
+        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
+        SearchLive_emptyCellVector = [];
+        SearchLive_loadDataSuccessFinish();
+    }
+}
+
+function SearchLive_loadDataSuccessReplace(responseText) {
+    var response = JSON.parse(responseText),
+        response_items = response.streams.length,
+        stream, id, i = 0,
+        cursor = 0,
+        tempVector = [];
+
+    SearchLive_MaxOffset = parseInt(response._total);
+
+    if (response_items < Main_ItemsLimitReplace) SearchLive_dataEnded = true;
+
+    for (i; i < SearchLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
+        stream = response.streams[cursor];
+        id = stream.channel._id;
+        if (SearchLive_idObject[id]) i--;
+        else {
+            SearchLive_idObject[id] = 1;
+            Main_replaceVideo(SearchLive_emptyCellVector[i], [stream.channel.name, id],
+                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.status, stream.game,
+                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                ], SearchLive_ids);
+
+            tempVector.push(i);
+        }
+    }
+
+    for (i = tempVector.length - 1; i > -1; i--) SearchLive_emptyCellVector.splice(tempVector[i], 1);
+
+    SearchLive_itemsCountOffset += cursor;
+    if (SearchLive_dataEnded) {
+        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
+        SearchLive_emptyCellVector = [];
+    }
+
+    SearchLive_loadDataSuccessFinish();
+}
+
+function SearchLive_addFocus(forceScroll) {
+    Main_addFocusVideo(SearchLive_cursorY, SearchLive_cursorX, SearchLive_ids, Main_ColoumnsCountVideo, SearchLive_itemsCount, forceScroll);
+
+    if (((SearchLive_cursorY + Main_ItemsReloadLimitVideo) > (SearchLive_itemsCount / Main_ColoumnsCountVideo)) &&
+        !SearchLive_dataEnded && !SearchLive_loadingData) {
+        SearchLive_loadDataPrepare();
+        SearchLive_loadDataRequest();
+    }
+    if (Main_CenterLablesInUse) SearchLive_removeFocus();
+}
+
+function SearchLive_removeFocus() {
+    if (SearchLive_itemsCount) Main_removeFocus(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids);
+}
+
+function SearchLive_handleKeyDown(event) {
+    if (Main_FirstLoad || Main_CantClick()) return;
+    else Main_keyClickDelayStart();
+    var i;
+
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            else {
+                SearchLive_removeFocus();
+                Main_CenterLablesStart(SearchLive_handleKeyDown);
+            }
+            Sidepannel_RestoreScreen();
+            break;
+        case KEY_LEFT:
+            if (!SearchLive_cursorX) {
+                SearchLive_removeFocus();
+                Sidepannel_Start(SearchLive_handleKeyDown, true);
+            } else if (Main_ThumbNull((SearchLive_cursorY), (SearchLive_cursorX - 1), SearchLive_ids[0])) {
+                SearchLive_removeFocus();
+                SearchLive_cursorX--;
+                SearchLive_addFocus();
+            } else {
+                for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
+                    if (Main_ThumbNull((SearchLive_cursorY - 1), i, SearchLive_ids[0])) {
+                        SearchLive_removeFocus();
+                        SearchLive_cursorY--;
+                        SearchLive_cursorX = i;
+                        SearchLive_addFocus();
+                        break;
+                    }
+                }
+            }
+            break;
+        case KEY_RIGHT:
+            if (Main_ThumbNull((SearchLive_cursorY), (SearchLive_cursorX + 1), SearchLive_ids[0])) {
+                SearchLive_removeFocus();
+                SearchLive_cursorX++;
+                SearchLive_addFocus();
+            } else if (Main_ThumbNull((SearchLive_cursorY + 1), 0, SearchLive_ids[0])) {
+                SearchLive_removeFocus();
+                SearchLive_cursorY++;
+                SearchLive_cursorX = 0;
+                SearchLive_addFocus();
+            }
+            break;
+        case KEY_UP:
+            if (!SearchLive_cursorY) {
+                SearchLive_removeFocus();
+                Main_CenterLablesStart(SearchLive_handleKeyDown);
+            } else {
+                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                    if (Main_ThumbNull((SearchLive_cursorY - 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
+                        SearchLive_removeFocus();
+                        SearchLive_cursorY--;
+                        SearchLive_cursorX = SearchLive_cursorX - i;
+                        SearchLive_addFocus();
+                        break;
+                    }
+                }
+            }
+            break;
+        case KEY_DOWN:
+            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
+                if (Main_ThumbNull((SearchLive_cursorY + 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
+                    SearchLive_removeFocus();
+                    SearchLive_cursorY++;
+                    SearchLive_cursorX = SearchLive_cursorX - i;
+                    SearchLive_addFocus();
+                    break;
+                }
+            }
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            Main_OpenLiveStream(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids, SearchLive_handleKeyDown);
+            break;
+        default:
+            break;
+    }
+}/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+// https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
+// https://cdnjs.com/libraries/punycode
+
+(function(root) {
+
+    /** Detect free variables */
+    var freeGlobal = typeof global === 'object' && global;
+    if (
+        freeGlobal.global === freeGlobal ||
+        freeGlobal.window === freeGlobal ||
+        freeGlobal.self === freeGlobal
+    ) {
+        root = freeGlobal;
+    }
+
+    /**
+     * The `punycode` object.
+     * @name punycode
+     * @type Object
+     */
+    var punycode,
+
+        /** Highest positive signed 32-bit float value */
+        maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+
+        /** Bootstring parameters */
+        base = 36,
+        tMin = 1,
+        tMax = 26,
+        skew = 38,
+        damp = 700,
+        initialBias = 72,
+        initialN = 128, // 0x80
+        delimiter = '-', // '\x2D'
+
+        /** Regular expressions */
+        regexPunycode = /^xn--/,
+        regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
+        regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
+
+        /** Error messages */
+        errors = {
+            'overflow': 'Overflow: input needs wider integers to process',
+            'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+            'invalid-input': 'Invalid input'
+        },
+
+        /** Convenience shortcuts */
+        baseMinusTMin = base - tMin,
+        floor = Math.floor,
+        stringFromCharCode = String.fromCharCode;
+
+    /*--------------------------------------------------------------------------*/
+
+    /**
+     * A generic error utility function.
+     * @private
+     * @param {String} type The error type.
+     * @returns {Error} Throws a `RangeError` with the applicable error message.
+     */
+    function error(type) {
+        throw new RangeError(errors[type]);
+    }
+
+    /**
+     * A generic `Array#map` utility function.
+     * @private
+     * @param {Array} array The array to iterate over.
+     * @param {Function} callback The function that gets called for every array
+     * item.
+     * @returns {Array} A new array of values returned by the callback function.
+     */
+    function map(array, fn) {
+        var length = array.length;
+        var result = [];
+        while (length--) {
+            result[length] = fn(array[length]);
+        }
+        return result;
+    }
+
+    /**
+     * A simple `Array#map`-like wrapper to work with domain name strings or email
+     * addresses.
+     * @private
+     * @param {String} domain The domain name or email address.
+     * @param {Function} callback The function that gets called for every
+     * character.
+     * @returns {Array} A new string of characters returned by the callback
+     * function.
+     */
+    function mapDomain(string, fn) {
+        var parts = string.split('@');
+        var result = '';
+        if (parts.length > 1) {
+            // In email addresses, only the domain name should be punycoded. Leave
+            // the local part (i.e. everything up to `@`) intact.
+            result = parts[0] + '@';
+            string = parts[1];
+        }
+        // Avoid `split(regex)` for IE8 compatibility. See #17.
+        string = string.replace(regexSeparators, '\x2E');
+        var labels = string.split('.');
+        var encoded = map(labels, fn).join('.');
+        return result + encoded;
+    }
+
+    /**
+     * Creates an array containing the numeric code points of each Unicode
+     * character in the string. While JavaScript uses UCS-2 internally,
+     * this function will convert a pair of surrogate halves (each of which
+     * UCS-2 exposes as separate characters) into a single code point,
+     * matching UTF-16.
+     * @see `punycode.ucs2.encode`
+     * @see <https://mathiasbynens.be/notes/javascript-encoding>
+     * @memberOf punycode.ucs2
+     * @name decode
+     * @param {String} string The Unicode input string (UCS-2).
+     * @returns {Array} The new array of code points.
+     */
+    function ucs2decode(string) {
+        var output = [],
+            counter = 0,
+            length = string.length,
+            value,
+            extra;
+        while (counter < length) {
+            value = string.charCodeAt(counter++);
+            if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+                // high surrogate, and there is a next character
+                extra = string.charCodeAt(counter++);
+                if ((extra & 0xFC00) === 0xDC00) { // low surrogate
+                    output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+                } else {
+                    // unmatched surrogate; only append this code unit, in case the next
+                    // code unit is the high surrogate of a surrogate pair
+                    output.push(value);
+                    counter--;
+                }
+            } else {
+                output.push(value);
+            }
+        }
+        return output;
+    }
+
+    /**
+     * Creates a string based on an array of numeric code points.
+     * @see `punycode.ucs2.decode`
+     * @memberOf punycode.ucs2
+     * @name encode
+     * @param {Array} codePoints The array of numeric code points.
+     * @returns {String} The new Unicode string (UCS-2).
+     */
+    function ucs2encode(array) {
+        return map(array, function(value) {
+            var output = '';
+            if (value > 0xFFFF) {
+                value -= 0x10000;
+                output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+                value = 0xDC00 | value & 0x3FF;
+            }
+            output += stringFromCharCode(value);
+            return output;
+        }).join('');
+    }
+
+    /**
+     * Converts a basic code point into a digit/integer.
+     * @see `digitToBasic()`
+     * @private
+     * @param {Number} codePoint The basic numeric code point value.
+     * @returns {Number} The numeric value of a basic code point (for use in
+     * representing integers) in the range `0` to `base - 1`, or `base` if
+     * the code point does not represent a value.
+     */
+    function basicToDigit(codePoint) {
+        if (codePoint - 48 < 10) {
+            return codePoint - 22;
+        }
+        if (codePoint - 65 < 26) {
+            return codePoint - 65;
+        }
+        if (codePoint - 97 < 26) {
+            return codePoint - 97;
+        }
+        return base;
+    }
+
+    /**
+     * Converts a digit/integer into a basic code point.
+     * @see `basicToDigit()`
+     * @private
+     * @param {Number} digit The numeric value of a basic code point.
+     * @returns {Number} The basic code point whose value (when used for
+     * representing integers) is `digit`, which needs to be in the range
+     * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
+     * used; else, the lowercase form is used. The behavior is undefined
+     * if `flag` is non-zero and `digit` has no uppercase form.
+     */
+    function digitToBasic(digit, flag) {
+        //  0..25 map to ASCII a..z or A..Z
+        // 26..35 map to ASCII 0..9
+        return digit + 22 + 75 * (digit < 26) - ((flag !== 0) << 5);
+    }
+
+    /**
+     * Bias adaptation function as per section 3.4 of RFC 3492.
+     * https://tools.ietf.org/html/rfc3492#section-3.4
+     * @private
+     */
+    function adapt(delta, numPoints, firstTime) {
+        var k = 0;
+        delta = firstTime ? floor(delta / damp) : delta >> 1;
+        delta += floor(delta / numPoints);
+        for ( /* no initialization */ ; delta > baseMinusTMin * tMax >> 1; k += base) {
+            delta = floor(delta / baseMinusTMin);
+        }
+        return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+    }
+
+    /**
+     * Converts a Punycode string of ASCII-only symbols to a string of Unicode
+     * symbols.
+     * @memberOf punycode
+     * @param {String} input The Punycode string of ASCII-only symbols.
+     * @returns {String} The resulting string of Unicode symbols.
+     */
+    function decode(input) {
+        // Don't use UCS-2
+        var output = [],
+            inputLength = input.length,
+            out,
+            i = 0,
+            n = initialN,
+            bias = initialBias,
+            basic,
+            j,
+            index,
+            oldi,
+            w,
+            k,
+            digit,
+            t,
+            /** Cached calculation results */
+            baseMinusT;
+
+        // Handle the basic code points: let `basic` be the number of input code
+        // points before the last delimiter, or `0` if there is none, then copy
+        // the first basic code points to the output.
+
+        basic = input.lastIndexOf(delimiter);
+        if (basic < 0) {
+            basic = 0;
+        }
+
+        for (j = 0; j < basic; ++j) {
+            // if it's not a basic code point
+            if (input.charCodeAt(j) >= 0x80) {
+                error('not-basic');
+            }
+            output.push(input.charCodeAt(j));
+        }
+
+        // Main decoding loop: start just after the last delimiter if any basic code
+        // points were copied; start at the beginning otherwise.
+
+        for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */ ) {
+
+            // `index` is the index of the next character to be consumed.
+            // Decode a generalized variable-length integer into `delta`,
+            // which gets added to `i`. The overflow checking is easier
+            // if we increase `i` as we go, then subtract off its starting
+            // value at the end to obtain `delta`.
+            for (oldi = i, w = 1, k = base; /* no condition */ ; k += base) {
+
+                if (index >= inputLength) {
+                    error('invalid-input');
+                }
+
+                digit = basicToDigit(input.charCodeAt(index++));
+
+                if (digit >= base || digit > floor((maxInt - i) / w)) {
+                    error('overflow');
+                }
+
+                i += digit * w;
+                t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+
+                if (digit < t) {
+                    break;
+                }
+
+                baseMinusT = base - t;
+                if (w > floor(maxInt / baseMinusT)) {
+                    error('overflow');
+                }
+
+                w *= baseMinusT;
+
+            }
+
+            out = output.length + 1;
+            bias = adapt(i - oldi, out, oldi === 0);
+
+            // `i` was supposed to wrap around from `out` to `0`,
+            // incrementing `n` each time, so we'll fix that now:
+            if (floor(i / out) > maxInt - n) {
+                error('overflow');
+            }
+
+            n += floor(i / out);
+            i %= out;
+
+            // Insert `n` at position `i` of the output
+            output.splice(i++, 0, n);
+
+        }
+
+        return ucs2encode(output);
+    }
+
+    /**
+     * Converts a string of Unicode symbols (e.g. a domain name label) to a
+     * Punycode string of ASCII-only symbols.
+     * @memberOf punycode
+     * @param {String} input The string of Unicode symbols.
+     * @returns {String} The resulting Punycode string of ASCII-only symbols.
+     */
+    function encode(input) {
+        var n,
+            delta,
+            handledCPCount,
+            basicLength,
+            bias,
+            j,
+            m,
+            q,
+            k,
+            t,
+            currentValue,
+            output = [],
+            /** `inputLength` will hold the number of code points in `input`. */
+            inputLength,
+            /** Cached calculation results */
+            handledCPCountPlusOne,
+            baseMinusT,
+            qMinusT;
+
+        // Convert the input in UCS-2 to Unicode
+        input = ucs2decode(input);
+
+        // Cache the length
+        inputLength = input.length;
+
+        // Initialize the state
+        n = initialN;
+        delta = 0;
+        bias = initialBias;
+
+        // Handle the basic code points
+        for (j = 0; j < inputLength; ++j) {
+            currentValue = input[j];
+            if (currentValue < 0x80) {
+                output.push(stringFromCharCode(currentValue));
+            }
+        }
+
+        handledCPCount = basicLength = output.length;
+
+        // `handledCPCount` is the number of code points that have been handled;
+        // `basicLength` is the number of basic code points.
+
+        // Finish the basic string - if it is not empty - with a delimiter
+        if (basicLength) {
+            output.push(delimiter);
+        }
+
+        // Main encoding loop:
+        while (handledCPCount < inputLength) {
+
+            // All non-basic code points < n have been handled already. Find the next
+            // larger one:
+            for (m = maxInt, j = 0; j < inputLength; ++j) {
+                currentValue = input[j];
+                if (currentValue >= n && currentValue < m) {
+                    m = currentValue;
+                }
+            }
+
+            // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+            // but guard against overflow
+            handledCPCountPlusOne = handledCPCount + 1;
+            if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+                error('overflow');
+            }
+
+            delta += (m - n) * handledCPCountPlusOne;
+            n = m;
+
+            for (j = 0; j < inputLength; ++j) {
+                currentValue = input[j];
+
+                if (currentValue < n && ++delta > maxInt) {
+                    error('overflow');
+                }
+
+                if (currentValue === n) {
+                    // Represent delta as a generalized variable-length integer
+                    for (q = delta, k = base; /* no condition */ ; k += base) {
+                        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+                        if (q < t) {
+                            break;
+                        }
+                        qMinusT = q - t;
+                        baseMinusT = base - t;
+                        output.push(
+                            stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
+                        );
+                        q = floor(qMinusT / baseMinusT);
+                    }
+
+                    output.push(stringFromCharCode(digitToBasic(q, 0)));
+                    bias = adapt(delta, handledCPCountPlusOne, handledCPCount === basicLength);
+                    delta = 0;
+                    ++handledCPCount;
+                }
+            }
+
+            ++delta;
+            ++n;
+
+        }
+        return output.join('');
+    }
+
+    /**
+     * Converts a Punycode string representing a domain name or an email address
+     * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
+     * it doesn't matter if you call it on a string that has already been
+     * converted to Unicode.
+     * @memberOf punycode
+     * @param {String} input The Punycoded domain name or email address to
+     * convert to Unicode.
+     * @returns {String} The Unicode representation of the given Punycode
+     * string.
+     */
+    function toUnicode(input) {
+        return mapDomain(input, function(string) {
+            return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
+        });
+    }
+
+    /**
+     * Converts a Unicode string representing a domain name or an email address to
+     * Punycode. Only the non-ASCII parts of the domain name will be converted,
+     * i.e. it doesn't matter if you call it with a domain that's already in
+     * ASCII.
+     * @memberOf punycode
+     * @param {String} input The domain name or email address to convert, as a
+     * Unicode string.
+     * @returns {String} The Punycode representation of the given domain name or
+     * email address.
+     */
+    function toASCII(input) {
+        return mapDomain(input, function(string) {
+            return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
+        });
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    /** Define the public API */
+    punycode = {
+        /**
+         * A string representing the current Punycode.js version number.
+         * @memberOf punycode
+         * @type String
+         */
+        'version': '1.4.1',
+        /**
+         * An object of methods to convert from JavaScript's internal character
+         * representation (UCS-2) to Unicode code points, and back.
+         * @see <https://mathiasbynens.be/notes/javascript-encoding>
+         * @memberOf punycode
+         * @type Object
+         */
+        'ucs2': {
+            'decode': ucs2decode,
+            'encode': ucs2encode
+        },
+        'decode': decode,
+        'encode': encode,
+        'toASCII': toASCII,
+        'toUnicode': toUnicode
+    };
+
+    /** Expose `punycode` */
+    root.punycode = punycode;
+
+}(this));//Variable initialization
+var Chat_LoadGlobal = false;
+var Chat_loadingDataTry = 0;
+var Chat_Messages = [];
+var Chat_MessagesNext = [];
+var Chat_loadingDataTryMax = 10;
+var Chat_addlinesId;
+var Chat_next = null;
+var Chat_loadChatId;
+var Chat_loadChatNextId;
+var Chat_offset = 0;
+var Chat_title = '';
+var defaultColors = ["fe2424", "fc5a24", "ff9020", "fEc723", "ffff1d", "bfff00", "c3ff12", "56fe1d", "1eff1e", "16ff51", "00ff80", "00ffbf", "00ffff", "1dc6ff", "158aff", "3367ff", "ff4dff", "ff4ad2", "ff62b1", "ff4272"];
+var defaultColorsLength = defaultColors.length;
+var Chat_div;
+var Chat_Position = 0;
+var Chat_hasEnded = false;
+var Chat_Id = 0;
+var Chat_loadBadgesChannelId;
+//Variable initialization end
+
+function Chat_Preinit() {
+    Chat_div = document.getElementById('chat_box');
+    Chat_loadBadgesGlobal();
+}
+
+function Chat_Init() {
+    Chat_Clear();
+    if (!Main_Android || !Main_values.Play_ChatForceDisable) {
+        Chat_Disable();
+        return;
+    }
+    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
+
+    Main_ready(function() {
+        Chat_Id = (new Date()).getTime();
+        ChatLive_selectedChannel_id = Main_values.Main_selectedChannel_id;
+        ChatLive_selectedChannel = Main_values.Main_selectedChannel;
+        ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess);
+    });
+}
+
+function Chat_loadBadgesGlobal() {
+    extraEmotes = {};
+    Chat_loadingDataTry = 0;
+    Chat_LoadGlobal = false;
+    Chat_loadBadgesGlobalRequest();
+}
+
+function Chat_loadBadgesGlobalRequest() {
+    var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError, false);
+}
+
+function Chat_loadBadgesGlobalError() {
+    Chat_loadingDataTry++;
+    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest();
+    else Chat_LoadGlobal = false;
+}
+
+function Chat_loadBadgesGlobalSuccess(responseText) {
+    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
+        badge.versions.forEach(function(version) {
+            tagCSS(badge.type, version.type, version.image_url_4x, null);
+        });
+    });
+
+    Chat_loadEmotes();
+}
+
+function Chat_loadEmotes() {
+    Chat_loadingDataTry = 0;
+    Chat_loadEmotesRequest();
+}
+
+function Chat_loadEmotesRequest() {
+    var theUrl = 'https://api.betterttv.net/2/emotes';
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError, false);
+}
+
+function Chat_loadEmotesError() {
+    Chat_loadingDataTry++;
+    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequest();
+    else Chat_LoadGlobal = false;
+}
+
+function Chat_loadEmotesSuccess(data) {
+    ChatLive_loadEmotesbbtv(JSON.parse(data));
+    Chat_loadEmotesffz();
+}
+
+function Chat_loadEmotesffz() {
+    Chat_loadingDataTry = 0;
+    Chat_loadEmotesRequestffz();
+}
+
+function Chat_loadEmotesRequestffz() {
+    var theUrl = 'https://api.frankerfacez.com/v1/set/global';
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz, false);
+}
+
+function Chat_loadEmotesErrorffz() {
+    Chat_loadingDataTry++;
+    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequestffz();
+    else Chat_LoadGlobal = false;
+}
+
+function Chat_loadEmotesSuccessffz(data) {
+    ChatLive_loadEmotesffz(JSON.parse(data));
+
+    Chat_LoadGlobal = true;
+}
+
+function Chat_loadBadgesTransform(responseText) {
+    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
+        badge.versions.forEach(function(version) {
+            tagCSS(badge.type, version.type, version.image_url_4x, Chat_div);
+        });
+    });
+}
+
+function Chat_loadBadgesChannelSuccess(responseText, id) {
+    Chat_loadBadgesTransform(responseText);
+
+    ChatLive_loadEmotesChannel();
+    ChatLive_loadEmotesChannelffz();
+    if (Chat_Id === id) Chat_loadChat(id);
+}
+
+function Chat_loadChat(id) {
+    Chat_loadingDataTry = 0;
+    if (Chat_Id === id) Chat_loadChatRequest(id);
+}
+
+function Chat_loadChatRequest(id) {
+    var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
+        '/comments?client_id=' + Main_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
     var xmlHttp = new XMLHttpRequest();
+
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
 
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
-
+    xmlHttp.timeout = 10000;
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                UserLiveFeed_loadDataSuccess(xmlHttp.responseText);
-            } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                //Token has change or because is new or because it is invalid because user delete in twitch settings
-                // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
+                if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                return;
             } else {
-                UserLiveFeed_loadDataErrorLive();
+                if (Chat_Id === id) Chat_loadChatError(id);
             }
         }
     };
@@ -6985,1692 +11418,541 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
     xmlHttp.send(null);
 }
 
-function UserLiveFeed_loadDataRefreshTokenError() {
-    if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) UserLiveFeed_CheckToken();
-    else UserLiveFeed_loadDataErrorLive();
-}
-
-function UserLiveFeed_loadDataErrorLive() {
-    UserLiveFeed_loadingDataTry++;
-    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-        UserLiveFeed_loadingDataTimeout += 500;
-        UserLiveFeed_loadChannelUserLive();
-    } else {
-        UserLiveFeed_loadingData = false;
-        Main_HideElement('dialog_loading_feed');
-        Main_HideElement('dialog_loading_side_feed');
-        if (UserLiveFeed_isFeedShow()) {
-            Play_showWarningDialog(STR_REFRESH_PROBLEM);
-            window.setTimeout(function() {
-                Play_HideWarningDialog();
-            }, 2000);
+function Chat_loadChatError(id) {
+    Chat_loadingDataTry++;
+    if (Chat_Id === id) {
+        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
+        else {
+            Chat_loadChatId = window.setTimeout(function() {
+                Chat_loadChatRequest(id);
+            }, 2500);
         }
     }
 }
 
-function UserLiveFeed_loadDataSuccess(responseText) {
+function Chat_loadChatSuccess(responseText, id) {
+    responseText = JSON.parse(responseText);
+    var div, mmessage, null_next = (Chat_next === null);
 
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    //UserLiveFeed_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
-
-    var stream, id, doc = document.getElementById("user_feed_scroll"),
-        docside = document.getElementById("side_panel_feed_scroll");
-
-    for (var i = 0; i < response_items; i++) {
-        stream = response.streams[i];
-        id = stream.channel._id;
-        if (!UserLiveFeed_idObject[id]) {
-            UserLiveFeed_idObject[id] = 1;
-            if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
-            doc.appendChild(UserLiveFeed_CreatFeed(i,
-                [stream.channel.name, id],
-                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.game
-                ]));
-
-            if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
-            docside.appendChild(UserLiveFeed_CreatSideFeed(i,
-                [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "1600x900"),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game,
-                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
-                    STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
-                ],
-                [stream.channel.logo,
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.display_name,
-                    stream.game, Main_addCommas(stream.viewers)
-                ]));
-        }
+    if (null_next) {
+        div = '&nbsp;';
+        div += '<span class="message">';
+        div += STR_BR + STR_LOADING_CHAT + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title;
+        div += '</span>';
+        Chat_MessageVector(div, 0);
     }
+    Chat_offset = 0;
+    Chat_next = responseText._next;
 
-    UserLiveFeed_loadDataSuccessFinish();
+    responseText.comments.forEach(function(comments) {
+        div = '';
+        mmessage = comments.message;
+
+        //Add badges
+        if (mmessage.hasOwnProperty('user_badges')) {
+            mmessage.user_badges.forEach(function(badges) {
+                div += '<span class="' + badges._id + '-' + badges.version + ' tag"></span>';
+            });
+        }
+
+        //Add nick
+        div += '<span class="nick" style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+
+        //Add mesage
+        div += '<span class="message">';
+        mmessage.fragments.forEach(function(fragments) {
+            if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/1.0" srcset="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/3.0 4x">';
+            else div += ChatLive_extraMessageTokenize([fragments.text]);
+        });
+
+        div += '</span>';
+        if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
+        else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
+    });
+    if (null_next && Chat_Id === id) {
+        Chat_Play(id);
+        if (Chat_next !== undefined) Chat_loadChatNext(id); //if (Chat_next === undefined) chat has ended
+    }
 }
 
-function UserLiveFeed_loadDataSuccessFinish() {
-    UserLiveFeed_loadingData = false;
-    UserLiveFeed_status = true;
-    Main_ready(function() {
-        Main_HideElement('dialog_loading_feed');
-        Main_HideElement('dialog_loading_side_feed');
-        UserLiveFeed_FeedAddFocus();
-        Sidepannel_PreloadImgs();
-        Sidepannel_AddFocusFeed();
+function Chat_MessageVector(message, time) {
+    Chat_Messages.push({
+        'time': time,
+        'message': message
     });
 }
 
-function UserLiveFeed_GetSize() {
-    return document.getElementById('user_feed_scroll').getElementsByClassName('user_feed_thumb').length;
+function Chat_MessageVectorNext(message, time) {
+    Chat_MessagesNext.push({
+        'time': time,
+        'message': message
+    });
 }
 
-function UserLiveFeed_CreatFeed(id, data, valuesArray) {
-    Main_td = document.createElement('div');
-    Main_td.setAttribute('id', UserLiveFeed_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
-    Main_td.className = 'user_feed_thumb';
-    Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
-        '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
-        Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
-        '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
-        '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' + valuesArray[1] + '</div>' +
-        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
-
-    return Main_td;
-}
-
-function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
-
-    Main_td = document.createElement('div');
-    Main_td.setAttribute('id', UserLiveFeed_side_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
-    Main_td.className = 'side_panel_feed';
-
-    Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
-        '<img id="' + UserLiveFeed_side_ids[1] + id +
-        '" style="vertical-align: middle; display: inline-block; width: 16%;" alt="" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"><div id="' +
-        UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
-        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] + '</div><div id="' +
-        UserLiveFeed_side_ids[4] + id +
-        '" style="width: 74%; display: inline-block; font-size: 110%; font-weight: bold; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[2] +
-        '</div><div style="width:25%; float: right; text-align: right; vertical-align: middle; display: inline-block"><div  style="text-align: center;" ><i class="icon-' +
-        ((valuesArray[1].indexOf(STR_NOT_LIVE) === -1) ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 80%; "></i><div style="font-size: 85%;">' + valuesArray[4] + '</div></div></div><div id="' +
-        UserLiveFeed_side_ids[5] + id +
-        '" style="font-size: 90%; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] +
-        '</div></div></div>';
-
-    return Main_td;
-}
-
-function UserLiveFeed_isFeedShow() {
-    return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
-}
-
-function UserLiveFeed_ShowFeed() {
-    var hasuser = AddUser_UserIsSet();
-
-    if (hasuser) {
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
-        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    }
-
-    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
-
-    if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-
-    if (hasuser) {
-        Main_RemoveClass('user_feed', 'user_feed_hide');
-        UserLiveFeed_FeedAddFocus();
+function Chat_Play(id) {
+    if (!Chat_hasEnded && Chat_Id === id) {
+        Chat_addlinesId = window.setInterval(function() {
+            Main_Addline(id);
+            Chat_div.scrollTop = Chat_div.scrollHeight;
+        }, 1000);
     }
 }
 
-function UserLiveFeed_Hide() {
-    Main_AddClass('user_feed', 'user_feed_hide');
-}
-
-function UserLiveFeed_ResetFeedId() {
-    UserLiveFeed_clearHideFeed();
-    UserLiveFeed_setHideFeed();
-}
-
-function UserLiveFeed_clearHideFeed() {
-    window.clearTimeout(UserLiveFeed_Feedid);
-}
-
-function UserLiveFeed_setHideFeed() {
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
-}
-
-function UserLiveFeed_FeedRefreshFocus() {
-    UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-    else {
-        window.setTimeout(function() {
-            UserLiveFeed_loadingData = false;
-        }, 15000);
+function Chat_Pause() {
+    if (!Chat_hasEnded) {
+        window.clearTimeout(Chat_loadBadgesChannelId);
+        window.clearTimeout(Chat_loadChatId);
+        window.clearTimeout(Chat_loadChatNextId);
+        window.clearInterval(Chat_addlinesId);
     }
 }
 
-function UserLiveFeed_FeedAddFocus() {
-    UserLiveFeed_ResetFeedId();
-    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-        Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
-    else return;
-
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
-    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedFindPos();
+function Chat_Clear() {
+    // on exit cleanup the div
+    Chat_Pause();
+    Chat_Id = 0;
+    Main_empty('chat_box');
+    Chat_hasEnded = false;
+    Chat_next = null;
+    Chat_Messages = [];
+    Chat_MessagesNext = [];
+    Chat_Position = 0;
 }
 
-function UserLiveFeed_FeedGetPos() {
-    var position = 0;
+function Main_Addline(id) {
+    var elem;
+    if (Chat_Position < (Chat_Messages.length - 1)) {
+        for (var i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+            if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
+                elem = document.createElement('div');
+                elem.className = 'chat_line';
+                elem.innerHTML = Chat_Messages[i].message;
 
-    if (Play_FeedPos < 3) position = 2.5;
-    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
-    else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
-    else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
-
-    return position;
-}
-
-function UserLiveFeed_FeedSetPos() {
-    var position = UserLiveFeed_FeedGetPos();
-
-    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
-}
-
-function UserLiveFeed_FeedFindPos() {
-    var position = UserLiveFeed_FeedSetPos();
-    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
-}
-
-function UserLiveFeed_ThumbNull(y, thumbnail) {
-    return document.getElementById(thumbnail + y) !== null;
-}
-
-function UserLiveFeed_FeedRemoveFocus() {
-    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-        Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
-}var Sidepannel_Isscreen = false;
-var Sidepannel_Pos = 0;
-var Sidepannel_PosFeed = 0;
-var Sidepannel_Callback;
-var Sidepannel_UpdateThumbDoc;
-var Sidepannel_ScrollPos = 0;
-
-function Sidepannel_AddFocusEtc() {
-    Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
-}
-
-function Sidepannel_RemoveFocusEtc() {
-    Main_RemoveClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
-}
-
-function Sidepannel_AddFocusFeed() {
-    Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    Sidepannel_Scroll();
-    Sidepannel_UpdateThumb();
-}
-
-function Sidepannel_isShowing() {
-    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
-}
-
-function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-}
-
-function Sidepannel_UpdateThumb() {
-    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
-
-    Sidepannel_UpdateThumbDoc.onerror = function() {
-        this.onerror = null;
-        this.src = IMG_404_VIDEO;
-    };
-    Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
-
-    Main_innerHTML('feed_thum_name', info[3]);
-    Main_innerHTML('feed_thum_quality', info[7]);
-    Main_innerHTML('feed_thum_title', twemoji.parse(info[4]));
-    Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
-    Main_innerHTML('feed_thum_views', info[6]);
-
-    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
-}
-
-function Sidepannel_PreloadImgs() {
-    var doc;
-    for (var i = 0; i < Sidepannel_GetSize(); i++) {
-        doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
-        if (doc !== null) {
-            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
-        }
-    }
-}
-
-function Sidepannel_GetSize() {
-    return document.getElementById('side_panel_feed_scroll').getElementsByClassName('side_panel_feed').length;
-}
-
-function Sidepannel_KeyEnter() {
-    if (!Sidepannel_Pos) {
-        Sidepannel_Isscreen = false;
-        if (Main_values.Main_Go !== Main_Search) {
-            if (!Main_values.Search_isSearching &&
-                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
-                ChannelContent_SetChannelValue();
-            Main_OpenSearch();
-        } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    } else if (Sidepannel_Pos === 1) {
-        Sidepannel_Isscreen = false;
-        Main_showSettings();
-    } else if (Sidepannel_Pos === 2) {
-        document.body.addEventListener("keydown", Sidepannel_Callback, false);
-        Main_showAboutDialog();
-    } else if (Sidepannel_Pos === 3) {
-        document.body.addEventListener("keydown", Sidepannel_Callback, false);
-        Main_showControlsDialog();
-    } else if (Sidepannel_Pos === 4) Main_showExitDialog(Sidepannel_Callback);
-    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_Live);
-    else if (Sidepannel_Pos === 6) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
-    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Featured);
-    else if (Sidepannel_Pos === 8) Sidepannel_Go(Main_games);
-    else if (Sidepannel_Pos === 9) Sidepannel_Go(Main_Vod);
-    else if (Sidepannel_Pos === 10) Sidepannel_Go(Main_Clip);
-    Sidepannel_Hide();
-}
-
-function Sidepannel_RestoreScreen() {
-    if (Sidepannel_Isscreen) {
-        Sidepannel_Isscreen = false;
-        Main_SwitchScreenAction();
-    }
-}
-
-function Sidepannel_Go(GoTo) {
-    Sidepannel_Isscreen = false;
-    if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    else {
-        Main_values.Main_Before = Main_values.Main_Go;
-        Main_values.Main_Go = GoTo;
-        Main_ExitCurrent(Main_values.Main_Before);
-        Main_SwitchScreen();
-    }
-}
-
-function Sidepannel_Start(callback, Isscreen) {
-    Main_RemoveClass('side_panel', 'side_panel_hide');
-    Sidepannel_Callback = callback;
-    Sidepannel_Isscreen = Isscreen;
-    document.body.removeEventListener("keydown", Sidepannel_Callback);
-    Sidepannel_ShowFeed();
-}
-
-
-function Sidepannel_ShowFeed() {
-    var hasuser = AddUser_UserIsSet();
-
-    if (hasuser) {
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
-        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    }
-
-    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
-
-    if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-
-    if (hasuser) {
-        if (Main_isElementShowing('side_panel_feed_holder')) {
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-            if (document.getElementById(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed) !== null) {
-                Sidepannel_PreloadImgs();
-                Sidepannel_AddFocusFeed();
+                Chat_div.appendChild(elem);
+            } else {
+                break;
             }
-        } else {
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
         }
     } else {
-        Main_HideElement('side_panel_feed_holder');
-        Main_ShowElement('side_panel_etc');
-        document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
-    }
-}
+        Chat_Pause();
+        if (Chat_next !== undefined) {
+            Chat_Messages = Chat_MessagesNext.slice();
+            Chat_Position = 0;
+            Chat_Play(id);
+            Chat_MessagesNext = [];
 
-function Sidepannel_Hide() {
-    Main_AddClass('side_panel', 'side_panel_hide');
-    Main_HideElement('side_panel_feed_thumb');
-    Sidepannel_RemoveFocusEtc();
-    Sidepannel_Pos = 0;
-    Sidepannel_AddFocusEtc();
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
-}
+            if (Chat_Id === id) Chat_loadChatNext(id);
+            Chat_Clean();
+        } else { //Chat has eneded
+            var div = '&nbsp;';
+            div += '<span class="message">';
+            div += STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR;
+            div += '</span>';
 
-function Sidepannel_Scroll() {
-    var size = Sidepannel_GetSize();
-    if (Sidepannel_PosFeed > 4) {
-        var position;
-        if (Sidepannel_PosFeed < (size - 6)) {
-            position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
-            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
-        } else if (size > 11) {
-            position = (document.getElementById(UserLiveFeed_side_ids[8] + (size - 11)).offsetTop * -1);
-            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
+            elem = document.createElement('div');
+            elem.className = 'chat_line';
+            elem.innerHTML = div;
+
+            Chat_div.appendChild(elem);
+
+            Chat_hasEnded = true;
+            Chat_div.scrollTop = Chat_div.scrollHeight;
+
+            //keep refreshing in case user changes chat size
+            window.clearInterval(Chat_addlinesId);
+            Chat_addlinesId = window.setInterval(function() {
+                Chat_div.scrollTop = Chat_div.scrollHeight;
+            }, 1000);
         }
+    }
+}
 
-        //Prevent flickering when not change position as we are at the botton but the position value changes by 1px
-        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)) {
-            Sidepannel_ScrollPos = position;
+function Chat_loadChatNext(id) {
+    Chat_loadingDataTry = 0;
+    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextRequest(id);
+}
+
+function Chat_loadChatNextRequest(id) {
+    var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
+        '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                return;
+            } else {
+                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
+            }
         }
+    };
 
-        document.getElementById('side_panel_feed_scroll').style.marginTop = Sidepannel_ScrollPos + "px";
-
-    } else document.getElementById('side_panel_feed_scroll').style.marginTop = 0;
+    xmlHttp.send(null);
 }
 
-function Sidepannel_handleKeyDown(event) {
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            Sidepannel_Hide();
-            if (Sidepannel_Isscreen) {
-                Sidepannel_Isscreen = false;
-                Main_SwitchScreenAction();
-            } else {
-                document.body.addEventListener("keydown", Sidepannel_Callback, false);
-                Main_CenterLablesChange();
-            }
-            break;
-        case KEY_LEFT:
-            document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
-            Main_HideElement('side_panel_feed_thumb');
-            Main_HideElement('side_panel_feed_holder');
-            Main_ShowElement('side_panel_etc');
-            break;
-        case KEY_RIGHT:
-            UserLiveFeed_FeedRefreshFocus();
-            break;
-        case KEY_UP:
-            if (Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
-                Sidepannel_RemoveFocusFeed();
-                Sidepannel_PosFeed--;
-                Sidepannel_AddFocusFeed();
-            }
-            break;
-        case KEY_DOWN:
-            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                Sidepannel_RemoveFocusFeed();
-                Sidepannel_PosFeed++;
-                Sidepannel_AddFocusFeed();
-            }
-            break;
-        case KEY_ENTER:
-            var doc = document.getElementById("side_panel");
-            doc.style.transition = 'none';
-            Sidepannel_Hide();
-            Main_values.Play_isHost = false;
-            Play_UserLiveFeedPressed = true;
-            Sidepannel_Isscreen = false;
-            Main_ready(function() {
-                Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                doc.style.transition = '';
-            });
-            break;
-        default:
-            break;
-    }
-}
-
-function Sidepannel_handleKeyDownEtc(event) {
-    switch (event.keyCode) {
-        case KEY_RETURN:
-        case KEY_LEFT:
-            Sidepannel_Hide();
-            if (Sidepannel_Isscreen) {
-                Sidepannel_Isscreen = false;
-                Main_SwitchScreenAction();
-            } else {
-                document.body.addEventListener("keydown", Sidepannel_Callback, false);
-                Main_CenterLablesChange();
-            }
-            break;
-        case KEY_RIGHT:
-            if (AddUser_UserIsSet()) {
-                document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
-                document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-                Main_HideElement('side_panel_etc');
-                Main_ShowElement('side_panel_feed_holder');
-                Main_ShowElement('side_panel_feed_thumb');
-            } else {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
-            }
-            break;
-        case KEY_UP:
-            if (Sidepannel_Pos) {
-                Sidepannel_RemoveFocusEtc();
-                Sidepannel_Pos--;
-                Sidepannel_AddFocusEtc();
-            }
-            break;
-        case KEY_DOWN:
-            if (Sidepannel_Pos < 10) {
-                Sidepannel_RemoveFocusEtc();
-                Sidepannel_Pos++;
-                Sidepannel_AddFocusEtc();
-            }
-            break;
-        case KEY_ENTER:
-            Sidepannel_KeyEnter();
-            break;
-        default:
-            break;
-    }
-}var Main_ItemsLimitMax = 100;
-
-var ChannelClip_game = '';
-var ChannelClip_views = '';
-var ChannelClip_title = '';
-var ChannelClip_playUrl = '';
-var ChannelClip_createdAt = '';
-var ChannelClip_language = '';
-
-var ChannelVod_vodOffset = 0;
-var ChannelVod_DurationSeconds = 0;
-var ChannelVod_language = '';
-var ChannelVod_createdAt = '';
-var ChannelVod_views = '';
-var ChannelVod_Duration = '';
-
-var Vod_DoAnimateThumb = 1;
-
-var AGame_fallowing = false;
-
-//Screens
-var Clip;
-var ChannelClip;
-var AGameClip;
-var Game;
-var UserGames;
-var Live;
-var Featured;
-var AGame;
-var Vod;
-var AGameVod;
-var UserVod;
-var ChannelVod;
-var UserHost;
-var UserLive;
-var UserChannels;
-var SearchGames;
-
-var Base_obj = {
-    posX: 0,
-    posY: 0,
-    currY: 0,
-    row_id: 0,
-    coloumn_id: 0,
-    dataEnded: false,
-    idObject: {},
-    loadingData: false,
-    itemsCount: 0,
-    loadingDataTryMax: 5,
-    loadingDataTimeout: 3500,
-    MaxOffset: 0,
-    offset: 0,
-    status: false,
-    emptyContent: false,
-    itemsCountCheck: false,
-    FirstLoad: false,
-    row: 0,
-    data: null,
-    token: null,
-    data_cursor: 0,
-    loadDataSuccess: Screens_loadDataSuccess,
-    addrow: Screens_addrow,
-    set_ThumbSize: function() {
-        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 3px;';
-    },
-    key_exit: function(CenterLables) {
-        if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-        else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+function Chat_loadChatNextError(id) {
+    Chat_loadingDataTry++;
+    if (Chat_Id === id) {
+        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
         else {
-            if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-            } else if (this.posY < 0) {
-                Screens_removeFocusFallow();
-                this.posY = 0;
-            }
-            if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
+            Chat_loadChatNextId = window.setTimeout(function() {
+                Chat_loadChatNextRequest(id);
+            }, 2500);
         }
-        Sidepannel_RestoreScreen();
-    },
-    concatenate: function(responseText) {
-        if (this.data) {
-            responseText = JSON.parse(responseText);
-
-            this.data = this.data.concat(responseText[this.object]);
-            this.offset = this.data.length;
-
-            this.setMax(responseText);
-        } else {
-            responseText = JSON.parse(responseText);
-
-            this.data = responseText[this.object];
-            this.offset = this.data.length;
-
-            this.setMax(responseText);
-            this.loadDataSuccess();
-        }
-        this.loadingData = false;
     }
-};
+}
 
-var Base_Vod_obj = {
-    ThumbSize: 32.65,
-    visiblerows: 3,
-    ItemsLimit: Main_ItemsLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    addFocus: function(y, x, idArray, forceScroll) {
-        this.AnimateThumb(this);
-        Screens_addFocusVideo(y, x, idArray, forceScroll);
-    },
-    setMax: function(tempObj) {
-        if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
-    },
-    img_404: IMG_404_VIDEO,
-    HasSwitches: true,
-    period: ['day', 'week', 'month', 'all'],
-    empty_str: function() {
-        return STR_NO + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-    },
-    key_play: function() {
-        if (this.posY === -1) {
-            if (this.posX === 0) {
-                this.highlight = !this.highlight;
-                this.SetPeriod();
-                Screens_StartLoad();
-                Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+function Chat_NoVod() {
+    Chat_Clear();
+    Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
+}
+
+function Chat_Disable() {
+    Chat_Clear();
+    Chat_SingleLine(STR_CHAT_DISABLE);
+}
+
+function Chat_SingleLine(Line) {
+    var div = '&nbsp;';
+    div += '<span class="message">';
+    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
+    div += Line;
+    div += '</span>';
+
+    var elem = document.createElement('div');
+    elem.className = 'chat_line';
+    elem.innerHTML = div;
+
+    Chat_div.appendChild(elem);
+}
+
+function Chat_Clean() {
+    //delete old lines out of view
+    var linesToDelete = document.getElementsByClassName("chat_line");
+    if ((linesToDelete.length - 100) > 0) {
+        for (var i = 0; i < (linesToDelete.length - 100); i++) {
+            linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
+        }
+    }
+    ChatLive_ChatFixPosition();
+}window.parseIRC = function(data) {
+    var message = {
+        raw: data,
+        tags: {},
+        prefix: null,
+        command: null,
+        params: []
+    };
+
+    // position and nextspace are used by the parser as a reference.
+    var position = 0;
+    var nextspace = 0;
+
+    // The first thing we check for is IRCv3.2 message tags.
+    // http://ircv3.atheme.org/specification/message-tags-3.2
+
+    if (data.charCodeAt(0) === 64) {
+        nextspace = data.indexOf(' ');
+
+        if (nextspace === -1) {
+            // Malformed IRC message.
+            return null;
+        }
+
+        // Tags are split by a semi colon.
+        var rawTags = data.slice(1, nextspace).split(';');
+
+        for (var i = 0; i < rawTags.length; i++) {
+            // Tags delimited by an equals sign are key=value tags.
+            // If there's no equals, we assign the tag a value of true.
+            var tag = rawTags[i];
+            var pair = tag.split('=');
+            message.tags[pair[0]] = pair[1] || true;
+        }
+
+        position = nextspace + 1;
+    }
+
+    // Skip any trailing whitespace.
+    while (data.charCodeAt(position) === 32) {
+        position++;
+    }
+
+    // Extract the message's prefix if present. Prefixes are prepended
+    // with a colon.
+
+    if (data.charCodeAt(position) === 58) {
+        nextspace = data.indexOf(' ', position);
+
+        // If there's nothing after the prefix, deem this message to be
+        // malformed.
+        if (nextspace === -1) {
+            // Malformed IRC message.
+            return null;
+        }
+
+        message.prefix = data.slice(position + 1, nextspace);
+        position = nextspace + 1;
+
+        // Skip any trailing whitespace.
+        while (data.charCodeAt(position) === 32) {
+            position++;
+        }
+    }
+
+    nextspace = data.indexOf(' ', position);
+
+    // If there's no more whitespace left, extract everything from the
+    // current position to the end of the string as the command.
+    if (nextspace === -1) {
+        if (data.length > position) {
+            message.command = data.slice(position);
+            return message;
+        }
+
+        return null;
+    }
+
+    // Else, the command is the current position up to the next space. After
+    // that, we expect some parameters.
+    message.command = data.slice(position, nextspace);
+
+    position = nextspace + 1;
+
+    // Skip any trailing whitespace.
+    while (data.charCodeAt(position) === 32) {
+        position++;
+    }
+
+    while (position < data.length) {
+        nextspace = data.indexOf(' ', position);
+
+        // If the character is a colon, we've got a trailing parameter.
+        // At this point, there are no extra params, so we push everything
+        // from after the colon to the end of the string, to the params array
+        // and break out of the loop.
+        if (data.charCodeAt(position) === 58) {
+            message.params.push(data.slice(position + 1));
+            break;
+        }
+
+        // If we still have some whitespace...
+        if (nextspace !== -1) {
+            // Push whatever's between the current position and the next
+            // space to the params array.
+            message.params.push(data.slice(position, nextspace));
+            position = nextspace + 1;
+
+            // Skip any trailing whitespace and continue looping.
+            while (data.charCodeAt(position) === 32) {
+                position++;
+            }
+
+            continue;
+        }
+
+        // If we don't have any more whitespace and the param isn't trailing,
+        // push everything remaining to the params array.
+        if (nextspace === -1) {
+            message.params.push(data.slice(position));
+            break;
+        }
+    }
+    return message;
+};// https://github.com/twitter/twemoji
+
+// This is a moded version of twemoji, I only need this from this file, check original in they github
+var twemoji = (function(
+    /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
+    /*
+        https://github.com/twitter/twemoji/blob/gh-pages/LICENSE
+      */
+
+    // WARNING:   this file is generated automatically via
+    //            `node twemoji-generator.js`
+    //            please update its `createTwemoji` function
+    //            at the bottom of the same file instead.
+
+) {
+    var
+        // the exported module object
+        twemoji = {
+
+            /**
+             * Main method/logic to generate either <img> tags or HTMLImage nodes.
+             *  "emojify" a generic text or DOM Element.
+             *
+             * @overloads
+             *
+             * String replacement for `innerHTML` or server side operations
+             *  twemoji.parse(string);
+             *  twemoji.parse(string, Function);
+             *  twemoji.parse(string, Object);
+             *
+             * HTMLElement tree parsing for safer operations over existing DOM
+             *  twemoji.parse(HTMLElement);
+             *  twemoji.parse(HTMLElement, Function);
+             *  twemoji.parse(HTMLElement, Object);
+             *
+             * @param   string|HTMLElement  the source to parse and enrich with emoji.
+             *
+             *          string              replace emoji matches with <img> tags.
+             *                              Mainly used to inject emoji via `innerHTML`
+             *                              It does **not** parse the string or validate it,
+             *                              it simply replaces found emoji with a tag.
+             *                              NOTE: be sure this won't affect security.
+             *
+             *          HTMLElement         walk through the DOM tree and find emoji
+             *                              that are inside **text node only** (nodeType === 3)
+             *                              Mainly used to put emoji in already generated DOM
+             *                              without compromising surrounding nodes and
+             *                              **avoiding** the usage of `innerHTML`.
+             *                              NOTE: Using DOM elements instead of strings should
+             *                              improve security without compromising too much
+             *                              performance compared with a less safe `innerHTML`.
+             *
+             * @param   Function|Object  [optional]
+             *                              either the callback that will be invoked or an object
+             *                              with all properties to use per each found emoji.
+             *
+             *          Function            if specified, this will be invoked per each emoji
+             *                              that has been found through the RegExp except
+             *                              those follwed by the invariant \uFE0E ("as text").
+             *                              Once invoked, parameters will be:
+             *
+             *                                iconId:string     the lower case HEX code point
+             *                                                  i.e. "1f4a9"
+             *
+             *                                options:Object    all info for this parsing operation
+             *
+             *                                variant:char      the optional \uFE0F ("as image")
+             *                                                  variant, in case this info
+             *                                                  is anyhow meaningful.
+             *                                                  By default this is ignored.
+             *
+             *                              If such callback will return a falsy value instead
+             *                              of a valid `src` to use for the image, nothing will
+             *                              actually change for that specific emoji.
+             *
+             *
+             *          Object              if specified, an object containing the following properties
+             *
+             *            callback   Function  the callback to invoke per each found emoji.
+             *            base       string    the base url, by default twemoji.base
+             *            ext        string    the image extension, by default twemoji.ext
+             *            size       string    the assets size, by default twemoji.size
+             *
+             * @example
+             *
+             *  twemoji.parse("I \u2764\uFE0F emoji!");
+             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/2764.gif"/> emoji!
+             *
+             *
+             *  twemoji.parse("I \u2764\uFE0F emoji!", function(iconId, options) {
+             *    return '/assets/' + iconId + '.gif';
+             *  });
+             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/2764.gif"/> emoji!
+             *
+             *
+             * twemoji.parse("I \u2764\uFE0F emoji!", {
+             *   size: 72,
+             *   callback: function(iconId, options) {
+             *     return '/assets/' + options.size + '/' + iconId + options.ext;
+             *   }
+             * });
+             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/72x72/2764.png"/> emoji!
+             *
+             */
+            parse: parse,
+
+            /**
+             * Given a string, invokes the callback argument
+             *  per each emoji found in such string.
+             * This is the most raw version used by
+             *  the .parse(string) method itself.
+             *
+             * @param   string    generic string to parse
+             * @param   Function  a generic callback that will be
+             *                    invoked to replace the content.
+             *                    This calback wil receive standard
+             *                    String.prototype.replace(str, callback)
+             *                    arguments such:
+             *  callback(
+             *    rawText,  // the emoji match
+             *  );
+             *
+             *                    and others commonly received via replace.
+             */
+            replace: replace
+        },
+
+        // RegExp based on emoji's official Unicode standards
+        // http://www.unicode.org/Public/UNIDATA/EmojiSources.txt
+        re = /(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddb0-\uddb3])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[\u0023\u002a\u0030-\u0039]\ufe0f?\u20e3|(?:[\u00a9\u00ae\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\udeeb\udeec\udef4-\udef9]|\ud83e[\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd40-\udd45\udd47-\udd70\udd73-\udd76\udd7a\udd7c-\udda2\uddb4\uddb7\uddc0-\uddc2\uddd0\uddde-\uddff]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,
+
+        // avoid runtime RegExp creation for not so smart,
+        // not JIT based, and old browsers / engines
+        UFE0Fg = /\uFE0F/g,
+
+        // avoid using a string literal like '\u200D' here because minifiers expand it inline
+        U200D = String.fromCharCode(0x200D);
+
+    return twemoji;
+
+
+    /////////////////////////
+    //  private functions  //
+    //     declaration     //
+    /////////////////////////
+
+    /**
+     * Used to both remove the possible variant
+     *  and to convert utf16 into code points.
+     *  If there is a zero-width-joiner (U+200D), leave the variants in.
+     * @param   string    the raw text of the emoji match
+     * @return  string    the code point
+     */
+    function grabTheRightIcon(rawText) {
+        var unicodeSurrogates = rawText.indexOf(U200D) < 0 ? rawText.replace(UFE0Fg, '') : rawText,
+            r = [],
+            c = 0,
+            p = 0,
+            i = 0;
+        while (i < unicodeSurrogates.length) {
+            c = unicodeSurrogates.charCodeAt(i++);
+            if (p) {
+                r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
+                p = 0;
+            } else if (0xD800 <= c && c <= 0xDBFF) {
+                p = c;
             } else {
-                this.periodPos++;
-                if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
+                r.push(c.toString(16));
             }
-        } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
-    AnimateThumbId: null,
-    HasAnimateThumb: true,
-    Vod_newImg: new Image(),
-    AnimateThumb: function(screen) {
-        window.clearInterval(this.AnimateThumbId);
-        if (!Vod_DoAnimateThumb) return;
-        var div = document.getElementById(this.ids[0] + this.posY + '_' + this.posX);
-
-        // Only load the animation if it can be loaded
-        // This prevent starting animating before it has loaded or animated a empty image
-        this.Vod_newImg.onload = function() {
-            this.onload = null;
-            Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
-            // background-size: 612px from  div.offsetWidth
-            div.style.backgroundSize = "612px";
-            var frame = 0;
-            screen.AnimateThumbId = window.setInterval(function() {
-                // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
-                // But this img real height is 180 thus the quality is affected, higher resolution aren't available
-                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
-            }, 650);
-        };
-
-        this.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
-    },
-    addCell: function(cell) {
-        if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
-
-            this.itemsCount++;
-            this.idObject[cell._id] = 1;
-
-            this.row.appendChild(Screens_createCellVod(
-                this.row_id,
-                this.coloumn_id,
-                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
-                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
-                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
-                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
-                ]));
-
-            this.coloumn_id++;
         }
+        return r.join('-');
     }
-};
 
-function ScreensObj_InitVod() {
-    Vod = Screens_assign({
-        periodMaxPos: 4,
-        HeaderQuatity: 2,
-        object: 'vods',
-        ids: Screens_ScreenIds('Vod'),
-        table: 'stream_table_vod',
-        screen: Main_Vod,
-        highlightSTR: 'Vod_highlight',
-        highlight: Main_getItemBool('Vod_highlight', false),
-        periodPos: Main_getItemInt('vod_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
-                '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
-        },
-        SwitchesIcons: ['movie-play', 'history'],
-        addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
-            var thumbfallow, div, i = 0;
+    function parse(str, dontremove, emoticon) {
+        //Twitch title may contain < or > with causes html problems
+        if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return replace(str, function(rawText) {
+            var iconId = grabTheRightIcon(rawText);
 
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 4;
-            Main_AddClass('top_bar_vod', 'icon_center_focus');
-            this.SetPeriod();
-        },
-        label_exit: function() {
-            Main_textContent('top_bar_vod', STR_VIDEOS);
-            Main_RemoveClass('top_bar_vod', 'icon_center_focus');
-        },
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_vod', STR_VIDEOS +
-                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
-
-            Main_setItem('vod_periodPos', this.periodPos);
-        },
-    }, Base_obj);
-
-    Vod = Screens_assign(Vod, Base_Vod_obj);
-    Vod.set_ThumbSize();
-}
-
-function ScreensObj_InitChannelVod() {
-    ChannelVod = Screens_assign({
-        periodMaxPos: 4,
-        HeaderQuatity: 2,
-        object: 'videos',
-        ids: Screens_ScreenIds('ChannelVod'),
-        table: 'stream_table_channel_vod',
-        screen: Main_ChannelVod,
-        highlightSTR: 'ChannelVod_highlight',
-        highlight: Main_getItemBool('ChannelVod_highlight', false),
-        periodPos: Main_getItemInt('ChannelVod_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/channels/',
-        set_url: function() {
-            this.url = this.base_url +
-                encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
-                '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + this.offset;
-        },
-        SwitchesIcons: ['movie-play'],
-        addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
-        },
-        lastselectedChannel: '',
-        label_init: function() {
-            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
-            this.lastselectedChannel = Main_values.Main_selectedChannel;
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_cleanTopLabel();
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-            this.SetPeriod();
-        },
-        SetPeriod: function() {
-            Main_textContent('top_bar_game', this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-        },
-        label_exit: function() {
-            Main_RestoreTopLabel();
-        }
-    }, Base_obj);
-
-    ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
-    ChannelVod.set_ThumbSize();
-
-    ChannelVod.addCell = function(cell) {
-
-        var thumbnail = cell.preview.template;
-        var thumbnail_404 = (thumbnail + '').indexOf('404_processing') !== -1;
-
-        // video content can be null sometimes, in that case the preview will be 404_processing
-        // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-        if (!this.row_id && !this.row_id && thumbnail_404) {
-            thumbnail_404 = false;
-            thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
-        }
-
-
-        if (!this.idObject[cell._id] && !thumbnail_404) {
-            this.itemsCount++;
-            this.idObject[cell._id] = 1;
-
-            this.row.appendChild(Screens_createCellVod(
-                this.row_id,
-                this.coloumn_id,
-                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
-                [thumbnail.replace("{width}x{height}", Main_VideoSize),
-                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
-                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
-                    STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
-                ]));
-
-            this.coloumn_id++;
-        }
-    };
-}
-
-function ScreensObj_InitAGameVod() {
-    AGameVod = Screens_assign({
-        periodMaxPos: 4,
-        HeaderQuatity: 2,
-        object: 'vods',
-        ids: Screens_ScreenIds('AGameVod'),
-        table: 'stream_table_a_game_vod',
-        screen: Main_AGameVod,
-        highlightSTR: 'AGameVod_highlight',
-        highlight: Main_getItemBool('AGameVod_highlight', false),
-        periodPos: Main_getItemInt('AGameVod_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/videos/top?game=',
-        set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' +
-                Main_ItemsLimitMax + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
-                '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
-        },
-        SwitchesIcons: ['movie-play', 'history'],
-        addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
-        },
-        OldgameSelected: '',
-        label_init: function() {
-            ScreensObj_TopLableAgameInit();
-            this.SetPeriod();
-        },
-        label_exit: ScreensObj_TopLableAgameExit,
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_AGAME +
-                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
-
-            Main_setItem('AGameVod_periodPos', this.periodPos);
-        }
-    }, Base_obj);
-
-    AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
-    AGameVod.set_ThumbSize();
-}
-
-function ScreensObj_InitUserVod() {
-    UserVod = Screens_assign({
-        periodMaxPos: 2,
-        HeaderQuatity: 3,
-        object: 'videos',
-        ids: Screens_ScreenIds('UserVod'),
-        table: 'stream_table_user_vod',
-        screen: Main_UserVod,
-        time: ['time', 'views'],
-        highlightSTR: 'UserVod_highlight',
-        highlight: Main_getItemBool('UserVod_highlight', false),
-        periodPos: Main_getItemInt('UserVod_periodPos', 1),
-        base_url: 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
-
-            this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
-                '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
-        },
-        SwitchesIcons: ['movie-play', 'history'],
-        addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_TYPE];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_AddClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            this.SetPeriod();
-        },
-        label_exit: ScreensObj_TopLableUserExit,
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
-                AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
-                (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_TIME : STR_VIWES)));
-
-            Main_setItem('UserVod_periodPos', this.periodPos);
-        }
-    }, Base_obj);
-
-    UserVod = Screens_assign(UserVod, Base_Vod_obj);
-    UserVod.set_ThumbSize();
-}
-
-var Base_Live_obj = {
-    ThumbSize: 32.65,
-    visiblerows: 3,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    ItemsLimit: Main_ItemsLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Screens_addFocusVideo,
-    img_404: IMG_404_VIDEO,
-    setMax: function(tempObj) {
-        this.MaxOffset = tempObj._total;
-        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
-    },
-    empty_str: function() {
-        return STR_NO + STR_LIVE_CHANNELS;
-    },
-    addCell: function(cell) {
-        this.addCellTemp(cell);
-    },
-    addCellTemp: function(cell) {
-        if (!this.idObject[cell.channel._id]) {
-
-            this.itemsCount++;
-            this.idObject[cell.channel._id] = 1;
-
-            this.row.appendChild(Screens_createCellLive(
-                this.row_id,
-                this.coloumn_id,
-                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
-                [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
-                    cell.channel.status, cell.game,
-                    STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
-                ]));
-
-            this.coloumn_id++;
-        }
-    },
-};
-
-function ScreensObj_InitLive() {
-    Live = Screens_assign({
-        HeaderQuatity: 2,
-        ids: Screens_ScreenIds('Live'),
-        table: 'stream_table_live',
-        screen: Main_Live,
-        object: 'streams',
-        base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + '&offset=' + this.offset +
-                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 0;
-            Main_AddClass('top_bar_live', 'icon_center_focus');
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_live', 'icon_center_focus');
-        },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        }
-    }, Base_obj);
-
-    Live = Screens_assign(Live, Base_Live_obj);
-    Live.set_ThumbSize();
-}
-
-function ScreensObj_InitUserLive() {
-    UserLive = Screens_assign({
-        HeaderQuatity: 3,
-        ids: Screens_ScreenIds('UserLive'),
-        table: 'stream_table_user_live',
-        screen: Main_UserLive,
-        object: 'streams',
-        base_url: 'https://api.twitch.tv/kraken/streams/',
-        loadChannelOffsset: 0,
-        followerChannels: '',
-        followerChannelsDone: false,
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-
-            if (AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-                //User has added a key
-                this.HeaderQuatity = 3;
-                this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
-                this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
-                    this.offset + '&stream_type=all';
-            } else {
-                //User didn't added a key
-                this.HeaderQuatity = 2;
-                this.token = null;
-                if (this.followerChannelsDone) {
-                    //User fallowed channels list is done, load live channels
-                    this.url = this.base_url + '?channel=' + encodeURIComponent(this.followerChannels) + '&' +
-                        'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
-                } else {
-                    //User fallowed channels list is not done, load fallowed channels
-                    this.url = 'https://api.twitch.tv/kraken/users/' +
-                        encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
-                        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
-                        '&sortby=created_at';
-                }
-            }
-        },
-        label_init: function() {
-            ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
-        },
-        label_exit: ScreensObj_TopLableUserExit,
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        }
-    }, Base_obj);
-
-    UserLive = Screens_assign(UserLive, Base_Live_obj);
-    UserLive.set_ThumbSize();
-
-    UserLive.concatenate = function(responseText) {
-        if (this.token || this.followerChannelsDone) {
-            //User has added a key or fallowed channels list is done, concatenate live channels
-            if (this.data) {
-                responseText = JSON.parse(responseText);
-
-                this.data = this.data.concat(responseText[this.object]);
-                this.offset = this.data.length;
-
-                this.setMax(responseText);
-            } else {
-                responseText = JSON.parse(responseText);
-
-                this.data = responseText[this.object];
-                this.offset = this.data.length;
-
-                this.setMax(responseText);
-                this.loadDataSuccess();
-            }
-            this.loadingData = false;
-        } else {
-            var response = JSON.parse(responseText).follows,
-                response_items = response.length;
-
-            if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-                //User fallowed channels list is not done, load fallowed channels
-                var ChannelTemp = '',
-                    x = 0;
-
-                for (x; x < response_items; x++) {
-                    ChannelTemp = response[x].channel._id + ',';
-                    if (this.followerChannels.indexOf(ChannelTemp) === -1) this.followerChannels += ChannelTemp;
-                }
-
-                this.loadChannelOffsset += response_items;
-            } else { // end
-                //User fallowed channels list is done, load live channels
-                this.followerChannels = this.followerChannels.slice(0, -1);
-                this.followerChannelsDone = true;
-            }
-            Screens_loadDataRequest();
-        }
-    };
-}
-
-function ScreensObj_InitUserHost() {
-    UserHost = Screens_assign({
-        HeaderQuatity: 2,
-        ids: Screens_ScreenIds('UserHost'),
-        table: 'stream_table_user_host',
-        screen: Main_UserHost,
-        object: 'hosts',
-        base_url: 'https://api.twitch.tv/api/users/',
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url +
-                encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
-                '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
-        },
-        label_init: function() {
-            ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
-        },
-        label_exit: ScreensObj_TopLableUserExit,
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        }
-    }, Base_obj);
-
-    UserHost = Screens_assign(UserHost, Base_Live_obj);
-    UserHost.set_ThumbSize();
-
-    UserHost.addCell = function(cell) {
-        if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
-
-            this.itemsCount++;
-            this.idObject[cell.target._id + '' + cell._id] = 1;
-
-            this.row.appendChild(Screens_createCellLive(
-                this.row_id,
-                this.coloumn_id,
-                [cell.target.channel.name, cell.target._id, cell.target.title], this.ids,
-                [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
-                    cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
-                    cell.target.title, cell.target.meta_game,
-                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
-                    Main_addCommas(cell.target.viewers) + STR_VIEWER, ''
-                ]));
-
-            this.coloumn_id++;
-        }
-    };
-}
-
-function ScreensObj_InitAGame() {
-    AGame = Screens_assign({
-        HeaderQuatity: 2,
-        ids: Screens_ScreenIds('AGame'),
-        table: 'stream_table_a_game',
-        screen: Main_aGame,
-        object: 'streams',
-        base_url: 'https://api.twitch.tv/kraken/streams?game=',
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
-                '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
-                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
-        },
-        label_init: function() {
-            ScreensObj_TopLableAgameInit();
-            //fix user label
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-            Main_textContent('top_bar_user', STR_USER);
-
-            if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
-                Main_cleanTopLabel();
-                Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
-            } else Main_values.gameSelectedOld = null;
-
-            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
-                ': ' + Main_values.Main_gameSelected));
-        },
-        label_exit: ScreensObj_TopLableAgameExit,
-        HasSwitches: true,
-        SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
-        addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_VIDEOS, STR_SPACE + STR_SPACE + STR_CLIPS, STR_SPACE + STR_SPACE + STR_FALLOW];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
-        },
-        key_play: function() {
-            if (this.posY !== -1) {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-            } else AGame_headerOptions();
-        },
-    }, Base_obj);
-
-    AGame = Screens_assign(AGame, Base_Live_obj);
-    AGame.set_ThumbSize();
-}
-
-function ScreensObj_InitFeatured() {
-    Featured = Screens_assign({
-        HeaderQuatity: 2,
-        ids: Screens_ScreenIds('Featured'),
-        table: 'stream_table_featured',
-        screen: Main_Featured,
-        base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            this.url = this.base_url + '&offset=' + this.offset +
-                (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-                    AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 2;
-            Main_AddClass('top_bar_featured', 'icon_center_focus');
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_featured', 'icon_center_focus');
-        },
-        object: 'featured',
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-        }
-    }, Base_obj);
-
-    Featured = Screens_assign(Featured, Base_Live_obj);
-    Featured.set_ThumbSize();
-
-    Featured.addCell = function(cell) {
-        cell = cell.stream;
-        this.addCellTemp(cell);
-    };
-}
-
-var Base_Clip_obj = {
-    HeaderQuatity: 2,
-    ThumbSize: 32.65,
-    ItemsLimit: Main_ItemsLimitVideo,
-    TopRowCreated: false,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Screens_addFocusVideo,
-    cursor: null,
-    visiblerows: 3,
-    object: 'clips',
-    period: ['day', 'week', 'month', 'all'],
-    img_404: IMG_404_VIDEO,
-    empty_str: function() {
-        return STR_NO + STR_CLIPS;
-    },
-    HasSwitches: true,
-    SwitchesIcons: ['history', 'play-1'],
-    addSwitches: function() {
-        this.TopRowCreated = true;
-        this.row = document.createElement('div');
-        var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_CLIP, STR_SPACE + STR_SPACE + STR_PLAY_ALL];
-        var thumbfallow, div, i = 0;
-
-        for (i; i < SwitchesStrings.length; i++) {
-            thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-            div = document.createElement('div');
-            div.setAttribute('id', this.ids[8] + 'y_' + i);
-            div.className = 'stream_cell_period';
-            div.innerHTML = '<div id="' + this.ids[0] +
-                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-            this.row.appendChild(div);
-        }
-        document.getElementById(this.table).appendChild(this.row);
-    },
-    setMax: function(tempObj) {
-        this.cursor = tempObj._cursor;
-        if (this.cursor === '') this.dataEnded = true;
-    },
-    key_play: function() {
-        if (this.posY === -1) {
-            if (!this.loadingData) {
-                if (!this.posX) {
-                    this.periodPos++;
-                    if (this.periodPos > 4) this.periodPos = 1;
-                    this.SetPeriod();
-                    Screens_StartLoad();
-                } else {
-                    PlayClip_All = true;
-                    Screens_removeFocusFallow();
-                    this.posX = 0;
-                    this.posY = 0;
-                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-                }
-            }
-        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
-    Cells: [],
-    addCell: function(cell) {
-        if (!this.idObject[cell.tracking_id]) {
-            this.itemsCount++;
-            this.idObject[cell.tracking_id] = 1;
-
-            this.row.appendChild(Screens_createCellClip(this.row_id,
-                this.coloumn_id,
-                this.ids,
-                cell.thumbnails.medium,
-                cell.broadcaster.display_name,
-                [STR_CREATED_AT,
-                    Main_videoCreatedAt(cell.created_at)
-                ],
-                [twemoji.parse(cell.title), STR_PLAYING, cell.game],
-                Main_addCommas(cell.views),
-                '[' + cell.language.toUpperCase() + ']',
-                cell.duration,
-                cell.slug,
-                cell.broadcaster.name,
-                cell.broadcaster.logo.replace("150x150", "300x300"),
-                cell.broadcaster.id,
-                (cell.vod !== null ? cell.vod.id : null),
-                (cell.vod !== null ? cell.vod.offset : null)));
-
-            this.coloumn_id++;
-        }
+            return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" alt="" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+        });
     }
-};
 
-function ScreensObj_InitClip() {
-    Clip = Screens_assign({
-        ids: Screens_ScreenIds('Clip'),
-        table: 'stream_table_clip',
-        screen: Main_Clip,
-        periodPos: Main_getItemInt('Clip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
-                (this.cursor ? '&cursor=' + this.cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
-        },
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
-            Main_setItem('Clip_periodPos', this.periodPos);
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 5;
-            this.SetPeriod();
-            Main_AddClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-        },
-        label_exit: function() {
-            Main_RestoreTopLabel();
-            Main_RemoveClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-        },
-    }, Base_obj);
-
-    Clip = Screens_assign(Clip, Base_Clip_obj);
-    Clip.set_ThumbSize();
-}
-
-function ScreensObj_InitChannelClip() {
-    ChannelClip = Screens_assign({
-        ids: Screens_ScreenIds('ChannelClip'),
-        table: 'stream_table_channel_clip',
-        screen: Main_ChannelClip,
-        periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
-        set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel) +
-                '&limit=' + Main_ItemsLimitMax + '&period=' +
-                this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
-        },
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
-            Main_setItem('ChannelClip_periodPos', this.periodPos);
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
-            if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
-                ChannelContent_RestoreChannelValue();
-            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
-            Main_cleanTopLabel();
-            this.SetPeriod();
-            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-            Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-            this.lastselectedChannel = Main_values.Main_selectedChannel;
-        },
-        label_exit: Main_RestoreTopLabel,
-    }, Base_obj);
-
-    ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
-    ChannelClip.set_ThumbSize();
-}
-
-function ScreensObj_InitAGameClip() {
-    AGameClip = Screens_assign({
-        ids: Screens_ScreenIds('AGameClip'),
-        table: 'stream_table_a_game_clip',
-        screen: Main_AGameClip,
-        periodPos: Main_getItemInt('AGameClip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
-        set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
-                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
-        },
-        SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
-                Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
-            Main_setItem('AGameClip_periodPos', this.periodPos);
-        },
-        label_init: function() {
-            ScreensObj_TopLableAgameInit();
-            this.SetPeriod();
-        },
-        label_exit: ScreensObj_TopLableAgameExit,
-    }, Base_obj);
-
-    AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
-    AGameClip.set_ThumbSize();
-}
-
-var Base_Game_obj = {
-    HeaderQuatity: 2,
-    ThumbSize: 19.35,
-    visiblerows: 3,
-    ItemsReloadLimit: Main_ItemsReloadLimitGame,
-    ItemsLimit: Main_ItemsLimitGame,
-    ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Screens_addFocusGame,
-    img_404: IMG_404_GAME,
-    empty_str: function() {
-        return STR_NO + STR_LIVE_GAMES;
-    },
-    key_play: function() {
-        Main_values.Main_gameSelected = document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute);
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_values.Main_BeforeAgame = this.screen;
-        Main_values.Main_Go = Main_aGame;
-        Main_values.Main_BeforeAgameisSet = true;
-
-        Main_addFocusVideoOffset = 0;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElement(this.ids[10]);
-
-        Main_SwitchScreenAction();
-        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-    },
-    setMax: function(tempObj) {
-        this.MaxOffset = tempObj._total;
-        if (this.data.length >= this.MaxOffset) this.dataEnded = true;
-    },
-    addCell: function(cell) {
-        var hasLive = this.isLive || this.screen === Main_games;
-        var game = hasLive ? cell.game : cell;
-        if (!this.idObject[game._id]) {
-
-            this.itemsCount++;
-            this.idObject[game._id] = 1;
-
-            this.row.appendChild(Screens_createCellGame(this.row_id,
-                this.coloumn_id,
-                this.ids,
-                game.box.template.replace("{width}x{height}", Main_GameSize),
-                game.name,
-                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER : ''));
-
-            this.coloumn_id++;
-        }
+    function replace(text, callback) {
+        return String(text).replace(re, callback);
     }
-};
 
-function ScreensObj_InitGame() {
-    Game = Screens_assign({
-        ids: Screens_ScreenIds('Game'),
-        table: 'stream_table_games',
-        screen: Main_games,
-        object: 'top',
-        base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + '&offset=' + this.offset;
-        },
-        label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 3;
-            Main_AddClass('top_bar_game', 'icon_center_focus');
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_game', 'icon_center_focus');
-        },
-    }, Base_obj);
-
-    Game = Screens_assign(Game, Base_Game_obj);
-    Game.set_ThumbSize();
-}
-
-function ScreensObj_InitUserGames() {
-    UserGames = Screens_assign({
-        ids: Screens_ScreenIds('UserGames'),
-        table: 'stream_table_user_games',
-        screen: Main_usergames,
-        isLive: Main_getItemBool('user_Games_live', true),
-        OldUserName: '',
-        object: 'follows',
-        base_url: 'https://api.twitch.tv/api/users/',
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) + '/follows/games';
-
-            if (this.isLive) this.url += '/live?limit=750';
-            else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
-        },
-        key_refresh: function() {
-            this.isLive = !this.isLive;
-
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
-
-            Screens_StartLoad();
-
-            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
-            if (Users_status) Users_resetGameCell();
-
-        },
-        label_init: function() {
-            ScreensObj_TopLableUserInit();
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
-
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
-        },
-        label_exit: ScreensObj_TopLableUserExit,
-    }, Base_obj);
-
-    UserGames = Screens_assign(UserGames, Base_Game_obj);
-    UserGames.set_ThumbSize();
-}
-
-function ScreensObj_InitSearchGames() {
-    SearchGames = Screens_assign({
-        ids: Screens_ScreenIds('SearchGames'),
-        table: 'stream_table_search_game',
-        screen: Main_SearchGames,
-        isLive: false,
-        OldUserName: '',
-        object: 'games',
-        lastData: '',
-        base_url: 'https://api.twitch.tv/kraken/search/games?query=',
-        set_url: function() {
-            this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
-        },
-        label_init: function() {
-            if (!Main_values.gameSelectedOld) Main_values.gameSelectedOld = Main_values.Main_gameSelected;
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_values.Search_isSearching = true;
-            Main_cleanTopLabel();
-            if (this.lastData !== Main_values.Search_data) this.status = false;
-            this.lastData = Main_values.Search_data;
-            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
-        },
-        label_exit: function() {
-            Main_values.Main_gameSelected = Main_values.gameSelectedOld;
-            if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
-            Main_values.Games_return = false;
-        },
-    }, Base_obj);
-
-    SearchGames = Screens_assign(SearchGames, Base_Game_obj);
-    SearchGames.set_ThumbSize();
-}
-
-var Base_Channel_obj = {
-    ThumbSize: 16,
-    visiblerows: 4,
-    ItemsLimit: Main_ItemsLimitChannel,
-    ColoumnsCount: Main_ColoumnsCountChannel,
-    addFocus: Screens_addFocusChannel,
-    ItemsReloadLimit: Main_ItemsReloadLimitChannel,
-    img_404: IMG_404_LOGO,
-    setMax: function(tempObj) {
-        this.MaxOffset = tempObj._total;
-        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
-    },
-    empty_str: function() {
-        return STR_NO + STR_USER_CHANNEL;
-    },
-    addCell: function(cell) {
-        this.addCellTemp(cell);
-    },
-    addCellTemp: function(cell) {
-        if (!this.idObject[cell.channel._id]) {
-
-            this.itemsCount++;
-            this.idObject[cell.channel._id] = 1;
-
-            this.row.appendChild(Screens_createCellChannel(
-                this.row_id,
-                this.coloumn_id,
-                this.ids,
-                [cell.channel.name, cell.channel._id, cell.channel.logo, cell.channel.display_name]));
-
-            this.coloumn_id++;
-        }
-    },
-};
-
-function ScreensObj_InitUserChannels() {
-    UserChannels = Screens_assign({
-        HeaderQuatity: 2,
-        ids: Screens_ScreenIds('UserChannels'),
-        table: 'stream_table_user_channels',
-        screen: Main_UserChannels,
-        object: 'follows',
-        base_url: 'https://api.twitch.tv/kraken/users/',
-        set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
-                '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
-        },
-        label_init: function() {
-            ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
-        },
-        label_exit: ScreensObj_TopLableUserExit,
-        key_play: function() {
-            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
-
-            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-
-            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_values.Main_BeforeChannel = Main_UserChannels;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFallowing = true;
-            ChannelContent_UserChannels = true;
-            Screens_exit();
-            Main_SwitchScreen();
-        }
-    }, Base_obj);
-
-    UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
-    UserChannels.set_ThumbSize();
-
-    UserChannels.addrow = Screens_addrowChannel;
-}
-
-function ScreensObj_TopLableAgameInit() {
-    Main_values.Main_CenterLablesVectorPos = 3;
-    if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    Main_AddClass('top_bar_game', 'icon_center_focus');
-    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-    if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-        inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
-    inUseObj.gameSelected = Main_values.Main_gameSelected;
-}
-
-function ScreensObj_TopLableAgameExit() {
-    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    inUseObj.gameSelected = Main_values.Main_gameSelected;
-    Main_RemoveClass('top_bar_game', 'icon_center_focus');
-    Main_innerHTML('top_bar_game', STR_GAMES);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-}
-
-function ScreensObj_TopLableUserInit() {
-    Main_values.Main_CenterLablesVectorPos = 1;
-    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-    if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
-    inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-}
-
-function ScreensObj_TopLableUserExit() {
-    Main_values.Users_Position = 0;
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_textContent('top_bar_user', STR_USER);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-}//Variable initialization
+}());//Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
 var Users_ColoumnsCount = 8;
@@ -9055,1840 +12337,6 @@ function Users_handleKeyDown(event) {
                     }
                 }
             } else Users_keyEnter();
-            break;
-        default:
-            break;
-    }
-}//Variable initialization
-var AddCode_loadingDataTry = 0;
-var AddCode_loadingDataTryMax = 5;
-var AddCode_loadingDataTimeout = 10000;
-var AddCode_Code = 0;
-var AddCode_IsFallowing = false;
-var AddCode_IsSub = false;
-var AddCode_PlayRequest = false;
-var AddCode_Channel_id = '';
-
-var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
-var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
-var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
-//Variable initialization end
-
-function AddCode_CheckNewCode(code) {
-    Main_values.Users_Position = Main_values.Users_AddcodePosition;
-    AddCode_Code = code;
-    AddCode_TimeoutReset10();
-    Main_showLoadDialog();
-    AddCode_requestTokens();
-}
-
-function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
-    var xmlHttp = new XMLHttpRequest();
-
-    var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
-        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-        '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
-        '&redirect_uri=' + AddCode_redirect_uri;
-
-    xmlHttp.open("POST", url, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
-            } else {
-                if (JSON.parse(xmlHttp.responseText).message.indexOf('Invalid refresh token') !== -1) {
-                    AddCode_requestTokensFailRunning();
-                    if (callbackFuncNOK) callbackFuncNOK();
-                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
-    tryes++;
-    if (tryes < 5) AddCode_refreshTokens(position, tryes, callbackFuncOK, callbackFuncNOK);
-    else if (callbackFuncNOK) callbackFuncNOK();
-}
-
-function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
-    var response = JSON.parse(responseText);
-
-    if (AddCode_TokensCheckScope(response.scope)) {
-        AddUser_UsernameArray[position].access_token = response.access_token;
-        AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-
-        AddUser_SaveUserArray();
-    } else AddCode_requestTokensFailRunning();
-
-    if (callbackFunc) callbackFunc();
-}
-
-//Check if has all scopes, in canse they change
-function AddCode_TokensCheckScope(scope) {
-    if (scope.indexOf("user_read") === -1) return false;
-    if (scope.indexOf("user_follows_edit") === -1) return false;
-    if (scope.indexOf("user_subscriptions") === -1) return false;
-
-    return true;
-}
-
-function AddCode_requestTokens() {
-
-    var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
-        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-        '&code=' + encodeURIComponent(AddCode_Code) + '&redirect_uri=' + AddCode_redirect_uri;
-
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("POST", theUrl, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                AddCode_requestTokensSucess(xmlHttp.responseText);
-            } else AddCode_requestTokensError();
-            return;
-        }
-    };
-
-    xmlHttp.send(null);
-
-    //BasehttpPost(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_requestTokensSucess, AddCode_requestTokensError, false);
-}
-
-function AddCode_requestTokensError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_requestTokens();
-    } else AddCode_requestTokensFail();
-
-}
-
-function AddCode_requestTokensFail() {
-    Main_HideLoadDialog();
-    Main_showWarningDialog(STR_OAUTH_FAIL);
-    window.setTimeout(function() {
-        Main_HideWarningDialog();
-        Main_newUsercode = 0;
-        Main_SaveValues();
-        Main_values.Main_Go = Main_Users;
-        window.location = AddCode_redirect_uri;
-    }, 4000);
-    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
-    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
-    AddUser_SaveUserArray();
-}
-
-function AddCode_requestTokensFailRunning() {
-    //Token fail remove it and warn
-    Users_status = false;
-    Main_HideLoadDialog();
-    Main_showWarningDialog(STR_OAUTH_FAIL);
-    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
-    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
-    AddUser_SaveUserArray();
-    Main_SaveValues();
-    window.setTimeout(Main_HideWarningDialog, 4000);
-}
-
-function AddCode_requestTokensSucess(responseText) {
-    var response = JSON.parse(responseText);
-    AddUser_UsernameArray[Main_values.Users_Position].access_token = response.access_token;
-    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = response.refresh_token;
-    AddCode_TimeoutReset10();
-    AddCode_CheckOauthToken();
-}
-
-function AddCode_CheckOauthToken() {
-
-    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
-        AddUser_UsernameArray[Main_values.Users_Position].access_token;
-
-    BasehttpGet(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_CheckOauthTokenSucess, AddCode_CheckOauthTokenError);
-}
-
-function AddCode_CheckOauthTokenSucess(response) {
-    var token = JSON.parse(response).token;
-    if (token.user_name &&
-        token.user_name.indexOf(AddUser_UsernameArray[Main_values.Users_Position].name) !== -1) {
-        AddUser_SaveUserArray();
-        Main_newUsercode = 0;
-        Main_HideLoadDialog();
-        Users_status = false;
-        Main_values.Main_Go = Main_Users;
-        Main_SaveValues();
-        Main_showWarningDialog(STR_USER_CODE_OK);
-        if (Main_Android) {
-            //TODO remove the try after android app update has be releaased for some time
-            try {
-                Android.clearCookie();
-            } catch (e) {}
-        }
-        window.setTimeout(function() {
-            window.location = AddCode_redirect_uri;
-        }, 3000);
-    } else {
-        AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
-        AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
-        Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_Position].name);
-        window.setTimeout(function() {
-            Main_HideWarningDialog();
-            Main_newUsercode = 0;
-            Main_SaveValues();
-            Main_values.Main_Go = Main_Users;
-            window.location = AddCode_redirect_uri;
-        }, 4000);
-    }
-    return;
-}
-
-function AddCode_CheckOauthTokenError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_CheckOauthToken();
-    } else AddCode_requestTokensFail();
-}
-
-function AddCode_CheckFallow() {
-    AddCode_TimeoutReset10();
-    AddCode_IsFallowing = false;
-    AddCode_RequestCheckFallow();
-}
-
-function AddCode_RequestCheckFallow() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id;
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //yes
-                AddCode_RequestCheckFallowOK();
-            } else if (xmlHttp.status === 404) { //no
-                AddCode_RequestCheckFallowNOK(xmlHttp.responseText);
-            } else { // internet error
-                AddCode_RequestCheckFallowError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_RequestCheckFallowOK() {
-    AddCode_IsFallowing = true;
-    if (AddCode_PlayRequest) Play_setFallow();
-    else ChannelContent_setFallow();
-}
-
-function AddCode_RequestCheckFallowNOK(response) {
-    if ((JSON.parse(response).error + '').indexOf('Not Found') !== -1) {
-        AddCode_IsFallowing = false;
-        if (AddCode_PlayRequest) Play_setFallow();
-        else ChannelContent_setFallow();
-    } else AddCode_RequestCheckFallowError();
-}
-
-function AddCode_RequestCheckFallowError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_RequestCheckFallow();
-    } else {
-        if (AddCode_PlayRequest) Play_setFallow();
-        else ChannelContent_setFallow();
-    }
-}
-
-function AddCode_Fallow() {
-    AddCode_TimeoutReset10();
-    AddCode_FallowRequest();
-}
-
-function AddCode_FallowRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("PUT", 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success user now is fallowing the channel
-                AddCode_IsFallowing = true;
-                if (AddCode_PlayRequest) Play_setFallow();
-                else ChannelContent_setFallow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_Fallow, null);
-            } else {
-                AddCode_FallowRequestError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_FallowRequestError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_FallowRequest();
-    }
-}
-
-function AddCode_UnFallow() {
-    AddCode_TimeoutReset10();
-    AddCode_UnFallowRequest();
-}
-
-function AddCode_UnFallowRequest() {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("DELETE", 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/follows/channels/' + AddCode_Channel_id, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 204) { //success user is now not fallowing the channel
-                AddCode_IsFallowing = false;
-                if (AddCode_PlayRequest) Play_setFallow();
-                else ChannelContent_setFallow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_UnFallow, null);
-            } else {
-                AddCode_UnFallowRequestError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_UnFallowRequestError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_UnFallowRequest();
-    }
-}
-
-function AddCode_CheckSub() {
-    AddCode_TimeoutReset10();
-    AddCode_IsSub = false;
-    AddCode_RequestCheckSub();
-}
-
-function AddCode_TimeoutReset10() {
-    AddCode_loadingDataTry = 0;
-    AddCode_loadingDataTimeout = 10000;
-}
-
-function AddCode_RequestCheckSub() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/subscriptions/' + AddCode_Channel_id;
-    var xmlHttp;
-    if (Main_Android) {
-
-        xmlHttp = Android.mreadUrl(theUrl, AddCode_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            AddCode_RequestCheckSubError();
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            AddCode_IsSub = true;
-            PlayVod_isSub();
-        } else if (xmlHttp.status === 422) {
-            AddCode_IsSub = false;
-            PlayVod_NotSub();
-        } else if (xmlHttp.status === 404) {
-            if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                AddCode_IsSub = false;
-                PlayVod_NotSub();
-                return;
-            } else AddCode_RequestCheckSubError();
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
-            AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-        } else {
-            AddCode_RequestCheckSubError();
-        }
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader('Authorization', 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) { //success yes user is a SUB
-                    AddCode_IsSub = true;
-                    PlayVod_isSub();
-                } else if (xmlHttp.status === 422) { //channel does not have a subscription program
-                    AddCode_IsSub = false;
-                    PlayVod_NotSub();
-                } else if (xmlHttp.status === 404) { //success no user is not a sub
-                    if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                        AddCode_IsSub = false;
-                        PlayVod_NotSub();
-                        return;
-                    } else AddCode_RequestCheckSubError();
-                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                    AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-                } else { // internet error
-                    AddCode_RequestCheckSubError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-}
-
-function AddCode_RequestCheckSubError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_RequestCheckSub();
-    } else AddCode_RequestCheckSubfail();
-}
-
-function AddCode_RequestCheckSubfail() {
-    AddCode_IsSub = false;
-    PlayVod_NotSub();
-}
-
-function AddCode_CheckTokenStart(position) {
-    AddCode_TimeoutReset10();
-    AddCode_CheckToken(position, 0);
-}
-
-function AddCode_CheckToken(position, tryes) {
-    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
-        AddUser_UsernameArray[position].access_token;
-
-    var xmlHttp;
-
-    if (Main_Android) {
-
-        xmlHttp = Android.mreadUrl(theUrl, 3500, 0, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            AddCode_CheckTokenError(position, tryes);
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-        } else if (xmlHttp.status === 400) { //token expired
-            AddCode_TimeoutReset10();
-            AddCode_refreshTokens(position, 0, null, null);
-        } else {
-            AddCode_CheckTokenError(position, tryes);
-        }
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-                } else if (xmlHttp.status === 400) { //token expired
-                    AddCode_TimeoutReset10();
-                    AddCode_refreshTokens(position, 0, null, null);
-                } else {
-                    AddCode_CheckTokenError(position, tryes);
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-}
-
-function AddCode_CheckTokenSuccess(responseText, position) {
-    var token = JSON.parse(responseText);
-    if (!token.token.valid) {
-        AddCode_TimeoutReset10();
-        AddCode_refreshTokens(position, 0, null, null);
-    } else {
-        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
-    }
-}
-
-function AddCode_CheckTokenError(position, tryes) {
-    tryes++;
-    if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes);
-}
-
-function AddCode_FallowGame() {
-    AddCode_TimeoutReset10();
-    AddCode_RequestFallowGame();
-}
-
-function AddCode_RequestFallowGame() {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("PUT", 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name +
-        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) +
-        '?oauth_token=' + AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success we now fallow the game
-                AGame_fallowing = true;
-                AGame_setFallow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_FallowGame, null);
-            } else { // internet error
-                AddCode_FallowGameRequestError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_FallowGameRequestError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_RequestFallowGame();
-    }
-}
-
-function AddCode_UnFallowGame() {
-    AddCode_TimeoutReset10();
-    AddCode_RequestUnFallowGame();
-}
-
-function AddCode_RequestUnFallowGame() {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("DELETE", 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name +
-        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
-        AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 204) { // success we now unfallow the game
-                AGame_fallowing = false;
-                AGame_setFallow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_UnFallowGame, null);
-            } else { // internet error
-                AddCode_UnFallowGameRequestError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_UnFallowGameRequestError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_RequestUnFallowGame();
-    }
-}
-
-function AddCode_CheckFallowGame() {
-    AddCode_TimeoutReset10();
-    AddCode_RequestCheckFallowGame();
-}
-
-function AddCode_RequestCheckFallowGame() {
-    var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[Main_values.Users_Position].name + '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected);
-    var xmlHttp;
-    xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success yes user fallows
-                AGame_fallowing = true;
-                AGame_setFallow();
-                return;
-            } else if (xmlHttp.status === 404) { //success no user doesnot fallows
-                AGame_fallowing = false;
-                AGame_setFallow();
-                return;
-            } else { // internet error
-                AddCode_CheckFallowGameError();
-                return;
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function AddCode_CheckFallowGameError() {
-    AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
-        AddCode_loadingDataTimeout += 500;
-        AddCode_RequestCheckFallowGame();
-    } else {
-        AGame_fallowing = false;
-        AGame_setFallow();
-    }
-}//Variable initialization
-var AddUser_loadingDataTry = 0;
-var AddUser_loadingDataTryMax = 5;
-var AddUser_loadingDataTimeout = 3500;
-var AddUser_UsernameArray = [];
-var AddUser_Username = null;
-var AddUser_loadingData = false;
-var AddUser_keyBoardOn = false;
-//Variable initialization end
-
-function AddUser_init() {
-    Main_values.Main_Go = Main_addUser;
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_HideWarningDialog();
-    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
-    Main_ShowElement('add_user_scroll');
-    AddUser_inputFocus();
-}
-
-function AddUser_exit() {
-    AddUser_RemoveinputFocus(false);
-    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_HideElement('add_user_scroll');
-}
-
-function AddUser_handleKeyDown(event) {
-    if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else {
-                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                else Main_values.Main_Go = Main_Live;
-                AddUser_exit();
-                Main_SwitchScreen();
-            }
-            break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_ENTER:
-            AddUser_inputFocus();
-            break;
-        default:
-            break;
-    }
-}
-
-function AddUser_inputFocus() {
-    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-    document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
-    Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
-
-    Main_AddUserInput.focus();
-    AddUser_keyBoardOn = true;
-}
-
-function AddUser_removeEventListener() {
-    if (Main_AddUserInput !== null) {
-        var elClone = Main_AddUserInput.cloneNode(true);
-        Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
-        Main_AddUserInput = document.getElementById("user_input");
-    }
-}
-
-function AddUser_RemoveinputFocus(EnaKeydown) {
-    Main_AddUserInput.blur();
-    AddUser_removeEventListener();
-    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
-    Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
-
-    if (EnaKeydown) document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
-    AddUser_keyBoardOn = false;
-}
-
-function AddUser_KeyboardEvent(event) {
-    if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
-
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else {
-                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                else Main_values.Main_Go = Main_Live;
-                AddUser_exit();
-                Main_SwitchScreen();
-            }
-            break;
-        case KEY_KEYBOARD_DELETE_ALL:
-            Main_AddUserInput.value = '';
-            break;
-        case KEY_KEYBOARD_DONE:
-        case KEY_DOWN:
-            if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-
-                AddUser_Username = Main_AddUserInput.value;
-
-                if (!AddUser_UserCodeExist(AddUser_Username)) {
-                    AddUser_loadingDataTry = 0;
-                    AddUser_loadingDataTimeout = 3500;
-                    AddUser_loadingData = true;
-                    Main_HideElement('add_user_scroll');
-                    Main_showLoadDialog();
-                    AddUser_loadDataRequest();
-                } else {
-                    Main_HideLoadDialog();
-                    Main_showWarningDialog(STR_USER + AddUser_Username + STR_USER_SET);
-                    window.setTimeout(function() {
-                        Main_HideWarningDialog();
-                        AddUser_inputFocus();
-                    }, 1500);
-                }
-            } else AddUser_inputFocus();
-            break;
-        case KEY_KEYBOARD_BACKSPACE:
-            Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
-            break;
-        case KEY_KEYBOARD_SPACE:
-            Main_AddUserInput.value += ' ';
-            break;
-        default:
-            break;
-    }
-}
-
-function AddUser_loadDataRequest() {
-    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_Username);
-
-    BasehttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
-}
-
-function AddUser_loadDataRequestSuccess(response) {
-    if (JSON.parse(response)._total) {
-        Main_AddUserInput.value = '';
-        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-        AddUser_SaveNewUser(response);
-    } else AddUser_loadDataNoUser();
-}
-
-function AddUser_loadDataError() {
-    AddUser_loadingDataTry++;
-    if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
-        AddUser_loadingDataTimeout += 500;
-        AddUser_loadDataRequest();
-    } else AddUser_loadDataNoUser();
-}
-
-function AddUser_loadDataNoUser() {
-    AddUser_Username = null;
-    Main_HideLoadDialog();
-    Main_showWarningDialog(STR_USER_ERROR);
-    window.setTimeout(function() {
-        AddUser_init();
-    }, 1000);
-    AddUser_loadingData = false;
-}
-
-function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
-    if (AddUser_UsernameArray.length > 0) {
-        //Check and refresh all tokens at start
-        for (var i = 0; i < AddUser_UsernameArray.length; i++)
-            if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
-    }
-}
-
-function AddUser_UserIsSet() {
-    return AddUser_UsernameArray.length > 0;
-}
-
-function AddUser_SaveNewUser(responseText) {
-    AddUser_Username = JSON.parse(responseText).users[0];
-    AddUser_UsernameArray.push({
-        'name': AddUser_Username.name,
-        'id': AddUser_Username._id,
-        'access_token': 0,
-        'refresh_token': 0
-    });
-
-    AddUser_SaveUserArray();
-    Users_status = false;
-    AddUser_exit();
-    Users_init();
-    AddUser_loadingData = false;
-}
-
-function AddUser_removeUser(Position) {
-
-    // remove the user
-    var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
-    if (index > -1) AddUser_UsernameArray.splice(index, 1);
-
-    // restart users and smarthub
-    if (AddUser_UsernameArray.length > 0) {
-        Users_status = false;
-        Users_init();
-    } else AddUser_init();
-
-    // reset localStorage usernames
-    AddUser_SaveUserArray();
-}
-
-function AddUser_SaveUserArray() {
-    Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
-}
-
-function AddUser_UserMakeOne(Position) {
-    AddUser_Username = AddUser_UsernameArray[0];
-    AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
-    AddUser_UsernameArray[Position] = AddUser_Username;
-    Users_status = false;
-    Users_init();
-    AddUser_SaveUserArray();
-    Main_values.Users_Position = 0;
-}
-
-function AddUser_UserCodeExist(user) {
-    return AddUser_UsernameArray.indexOf(user) !== -1;
-}
-
-function AddUser_IsUserSet() {
-    return AddUser_UsernameArray.length > 0;
-}window.parseIRC = function(data) {
-    var message = {
-        raw: data,
-        tags: {},
-        prefix: null,
-        command: null,
-        params: []
-    };
-
-    // position and nextspace are used by the parser as a reference.
-    var position = 0;
-    var nextspace = 0;
-
-    // The first thing we check for is IRCv3.2 message tags.
-    // http://ircv3.atheme.org/specification/message-tags-3.2
-
-    if (data.charCodeAt(0) === 64) {
-        nextspace = data.indexOf(' ');
-
-        if (nextspace === -1) {
-            // Malformed IRC message.
-            return null;
-        }
-
-        // Tags are split by a semi colon.
-        var rawTags = data.slice(1, nextspace).split(';');
-
-        for (var i = 0; i < rawTags.length; i++) {
-            // Tags delimited by an equals sign are key=value tags.
-            // If there's no equals, we assign the tag a value of true.
-            var tag = rawTags[i];
-            var pair = tag.split('=');
-            message.tags[pair[0]] = pair[1] || true;
-        }
-
-        position = nextspace + 1;
-    }
-
-    // Skip any trailing whitespace.
-    while (data.charCodeAt(position) === 32) {
-        position++;
-    }
-
-    // Extract the message's prefix if present. Prefixes are prepended
-    // with a colon.
-
-    if (data.charCodeAt(position) === 58) {
-        nextspace = data.indexOf(' ', position);
-
-        // If there's nothing after the prefix, deem this message to be
-        // malformed.
-        if (nextspace === -1) {
-            // Malformed IRC message.
-            return null;
-        }
-
-        message.prefix = data.slice(position + 1, nextspace);
-        position = nextspace + 1;
-
-        // Skip any trailing whitespace.
-        while (data.charCodeAt(position) === 32) {
-            position++;
-        }
-    }
-
-    nextspace = data.indexOf(' ', position);
-
-    // If there's no more whitespace left, extract everything from the
-    // current position to the end of the string as the command.
-    if (nextspace === -1) {
-        if (data.length > position) {
-            message.command = data.slice(position);
-            return message;
-        }
-
-        return null;
-    }
-
-    // Else, the command is the current position up to the next space. After
-    // that, we expect some parameters.
-    message.command = data.slice(position, nextspace);
-
-    position = nextspace + 1;
-
-    // Skip any trailing whitespace.
-    while (data.charCodeAt(position) === 32) {
-        position++;
-    }
-
-    while (position < data.length) {
-        nextspace = data.indexOf(' ', position);
-
-        // If the character is a colon, we've got a trailing parameter.
-        // At this point, there are no extra params, so we push everything
-        // from after the colon to the end of the string, to the params array
-        // and break out of the loop.
-        if (data.charCodeAt(position) === 58) {
-            message.params.push(data.slice(position + 1));
-            break;
-        }
-
-        // If we still have some whitespace...
-        if (nextspace !== -1) {
-            // Push whatever's between the current position and the next
-            // space to the params array.
-            message.params.push(data.slice(position, nextspace));
-            position = nextspace + 1;
-
-            // Skip any trailing whitespace and continue looping.
-            while (data.charCodeAt(position) === 32) {
-                position++;
-            }
-
-            continue;
-        }
-
-        // If we don't have any more whitespace and the param isn't trailing,
-        // push everything remaining to the params array.
-        if (nextspace === -1) {
-            message.params.push(data.slice(position));
-            break;
-        }
-    }
-    return message;
-};//Variable initialization
-var Settings_cursorY = 0;
-var Settings_value = {
-    "restor_playback": { //restor_playback
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "chat_font_size": { //chat_font_size
-        "values": ["60%", "80%", "100%", "120%", "140%"],
-        "defaultValue": 3
-    },
-    "chat_brightness": { //chat_font_size
-        "values": ["0%", "5%", "10%", "15%", "20%",
-            "25%", "30%", "35%", "40%", "45%",
-            "50%", "55%", "60%", "65%", "70%",
-            "75%", "80%", "85%", "90%", "95%", "100%"
-        ],
-        "defaultValue": 11
-    },
-    "force_disable_chat": { //force disable
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "clip_auto_play_next": { //force disable
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "buffer_live": { //buffer_live
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
-    "buffer_vod": { //buffer_vod
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
-    "buffer_clip": { //buffer_clip
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 3
-    },
-    "end_dialog_counter": { //end_dialog_counter
-        "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 4
-    },
-    "videos_animation": { //videos_animation
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "clock_offset": { //clock_offset
-        "values": Settings_GenerateClock(),
-        "defaultValue": 49
-    },
-    "content_lang": { //content_lang
-        "values": ["All"],
-        "set_values": [""],
-        "defaultValue": 1
-    }
-};
-
-function Settings_GenerateClock() {
-    var clock = [],
-        time = 43200,
-        i = 0;
-
-    for (i; i < 48; i++) {
-        clock.push("-" + Play_timeS(time));
-        time -= 900;
-    }
-
-    clock.push(Play_timeS(0));
-    time = 900;
-
-    for (i = 0; i < 48; i++) {
-        clock.push(Play_timeS(time));
-        time += 900;
-    }
-
-    return clock;
-}
-
-var Settings_value_keys = [];
-var Settings_positions_length = 0;
-//Variable initialization end
-
-function Settings_init() {
-    Main_UnSetTopOpacity();
-    Main_HideElement('label_side_panel');
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK_START);
-    document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    Main_textContent('top_bar_user', STR_SETTINGS);
-    document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('top_bar_live').style.display = 'none';
-    document.getElementById('top_bar_featured').style.display = 'none';
-    document.getElementById('top_bar_game').style.display = 'none';
-    document.getElementById('top_bar_vod').style.display = 'none';
-    document.getElementById('top_bar_clip').style.display = 'none';
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_ShowElement('settings_scroll');
-    Settings_cursorY = 0;
-    Settings_inputFocus(Settings_cursorY);
-    Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
-}
-
-function Settings_exit() {
-    document.body.removeEventListener("keydown", Settings_handleKeyDown);
-    Main_ShowElement('label_side_panel');
-    Settings_RemoveinputFocus();
-    Main_textContent('top_bar_user', STR_USER);
-    document.getElementById("top_lables").style.marginLeft = '18.5%';
-    document.getElementById('top_bar_live').style.display = 'inline-block';
-    document.getElementById('top_bar_featured').style.display = 'inline-block';
-    document.getElementById('top_bar_game').style.display = 'inline-block';
-    document.getElementById('top_bar_vod').style.display = 'inline-block';
-    document.getElementById('top_bar_clip').style.display = 'inline-block';
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_HideElement('settings_scroll');
-}
-
-// The order in Settings_SetSettings is the display order
-function Settings_SetSettings() {
-    var div = '',
-        key;
-
-    // General settings title
-    div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
-
-    // Content Language selection
-    key = "content_lang";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
-
-    div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
-
-    // Clock offset
-    key = "clock_offset";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
-
-    //Player restore playback
-    key = "restor_playback";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
-
-    // Videos
-    key = "videos_animation";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
-
-    key = "clip_auto_play_next";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
-
-
-    // Player settings title
-    div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
-
-    // Chat size
-    key = "chat_font_size";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
-
-    key = "chat_brightness";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_CHAT_BRIGHTNESS);
-
-    key = "force_disable_chat";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
-
-    // Chat size
-    key = "end_dialog_counter";
-    Settings_value_keys.push(key);
-    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
-    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-
-    // Player buffer title/summary
-    div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
-        '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
-
-    // Player buffer live
-    key = "buffer_live";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
-
-    // Player buffer vod
-    key = "buffer_vod";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
-
-    // Player buffer clip
-    key = "buffer_clip";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
-
-    Main_innerHTML("settings_main", div);
-    Settings_positions_length = Settings_value_keys.length;
-    Languages_SetSettings();
-}
-
-function Settings_DivTitle(key, string) {
-    return '<div id="setting_title_' + key + '" class="settings_section">' + string + '</div>';
-}
-
-function Settings_DivOptionNoSummary(key, string) {
-    return '<div id="' + key + '_div" class="settings_div"><div id="' +
-        key + '_name" class="settings_name">' + string + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
-}
-
-function Settings_DivOptionWithSummary(key, string_title, string_summary) {
-    return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
-        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div></div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
-}
-
-function Settings_DivOptionChangeLang(key, string_title, string_summary) {
-    Main_innerHTML(key + '_name', string_title +
-        '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div>');
-}
-
-// The order in Settings_SetStrings doesnot matter
-function Settings_SetStrings() {
-    var key = '';
-
-    //General settings
-    Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
-
-    // Clock offset
-    key = "clock_offset";
-    Main_textContent(key + '_name', STR_CLOCK_OFFSET);
-
-    // Content Language selection
-    key = "content_lang";
-    Main_textContent(key + '_name', STR_CONTENT_LANG);
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
-
-    //Player settings
-    Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-    // Player buffer title/summary
-    Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
-    Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-    key = "buffer_live";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_LIVE);
-    key = "buffer_vod";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_VOD);
-    key = "buffer_clip";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
-
-
-    //Player restore
-    key = "restor_playback";
-    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    //Player chat font size
-    key = "chat_font_size";
-    Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
-
-    // Chat size
-    key = "end_dialog_counter";
-    Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
-    //Player restore
-    key = "force_disable_chat";
-    Settings_DivOptionChangeLang(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    // Videos
-    key = "videos_animation";
-    Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    key = "clip_auto_play_next";
-    Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    key = "chat_brightness";
-    Main_textContent(key + '_name', STR_CHAT_BRIGHTNESS);
-
-    for (key in Settings_value)
-        if (Settings_value.hasOwnProperty(key))
-            Main_textContent(key, Settings_Obj_values(key));
-
-    Languages_SetLang();
-}
-
-function Settings_SetDefautls() {
-    for (var key in Settings_value) {
-        Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
-        Settings_value[key].defaultValue -= 1;
-        if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
-    }
-    Settings_SetBuffers(0);
-    Settings_SetClock();
-    Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
-    Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
-    Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-}
-
-function Settings_Obj_values(key) {
-    return Settings_value[key].values[Settings_Obj_default(key)];
-}
-
-//function Settings_Obj_set_values(key) {
-//    return Settings_value[key].set_values[Settings_Obj_default(key)];
-//}
-
-function Settings_Obj_default(key) {
-    return Settings_value[key].defaultValue;
-}
-
-function Settings_Obj_length(key) {
-    return Settings_value[key].values.length - 1;
-}
-
-function Settings_inputFocus(position) {
-    var key = Settings_value_keys[Settings_cursorY];
-    Main_AddClass(key, 'settings_value_focus');
-    Main_AddClass(key + '_div', 'settings_div_focus');
-    Settings_Setarrows(position);
-    Settings_ScrollTable();
-}
-
-function Settings_RemoveinputFocus() {
-    var key = Settings_value_keys[Settings_cursorY];
-    document.getElementById(key + "arrow_left").style.opacity = "0";
-    document.getElementById(key + "arrow_right").style.opacity = "0";
-    Main_RemoveClass(key, 'settings_value_focus');
-    Main_RemoveClass(key + '_div', 'settings_div_focus');
-}
-
-function Settings_ChangeSettigs(position) {
-    var key = Settings_value_keys[position];
-    Main_setItem(key, Settings_Obj_default(key) + 1);
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_Setarrows(position);
-    Settings_SetDefault(position);
-}
-
-function Settings_Setarrows(position) {
-    var key = Settings_value_keys[position];
-
-    if (!Settings_Obj_length(key)) return;
-
-    var currentValue = Settings_Obj_default(key);
-    var maxValue = Settings_Obj_length(key);
-
-    if (currentValue > 0 && currentValue < maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
-    } else if (currentValue === maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "0.2";
-    } else {
-        document.getElementById(key + "arrow_left").style.opacity = "0.2";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
-    }
-}
-
-function Settings_SetDefault(position) {
-    position = Settings_value_keys[position];
-
-    if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    else if (position === "buffer_live") Settings_SetBuffers(1);
-    else if (position === "buffer_vod") Settings_SetBuffers(2);
-    else if (position === "buffer_clip") Settings_SetBuffers(3);
-    else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-    else if (position === "chat_brightness") {
-        Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
-        Play_ChatBackgroundChange(false);
-    } else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
-    else if (position === "chat_font_size") Play_SetChatFont();
-    else if (position === "clock_offset") {
-        Settings_SetClock();
-        Main_updateclock();
-    }
-}
-
-function Settings_SetBuffers(whocall) {
-    //TODO remove the try after android app update has be releaased for some time
-    try {
-        if (!whocall) {
-            Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-            PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-            PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_Android) {
-                Android.SetBuffer(1, Play_Buffer);
-                Android.SetBuffer(2, PlayVod_Buffer);
-                Android.SetBuffer(3, PlayClip_Buffer);
-            }
-        } else if (whocall === 1) {
-            Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-            if (Main_Android) Android.SetBuffer(1, Play_Buffer);
-        } else if (whocall === 2) {
-            PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-            if (Main_Android) Android.SetBuffer(2, PlayVod_Buffer);
-        } else if (whocall === 3) {
-            PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_Android) Android.SetBuffer(3, PlayClip_Buffer);
-        }
-    } catch (e) {}
-}
-
-//function Settings_CheckLang(lang) {
-//    if (lang.indexOf('en_') !== -1) Settings_value.general_lang.defaultValue = 0;
-//    else if (lang.indexOf('it_') !== -1) Settings_value.general_lang.defaultValue = 1;
-//    else if (lang.indexOf('pt_') !== -1) Settings_value.general_lang.defaultValue = 2;
-//}
-
-//function Settings_SetLang(lang) {
-//    if (lang.indexOf('en_') !== -1) en_USLang();
-//else if (lang.indexOf('it_') !== -1) it_ITLang();
-//else if (lang.indexOf('pt_') !== -1) pt_BRLang();
-//    DefaultLang();
-//    Main_SetStringsMain(false);
-//    Main_SetStringsSecondary();
-//}
-
-function Settings_SetClock() {
-    var time = Settings_Obj_default("clock_offset");
-    Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
-}
-
-function Settings_ScrollTable() {
-    var position = screen.height;
-
-    if (Settings_cursorY > 4) {
-        position = position * 0.09;
-        position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
-        document.getElementById('settings_scroll').style.top = position + "px";
-    } else position = position * 0.077;
-
-    document.getElementById('settings_scroll').style.top = position + "px";
-}
-
-function Settings_handleKeyDown(event) {
-    var key;
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else {
-                Settings_exit();
-                Main_SwitchScreen();
-            }
-            break;
-        case KEY_LEFT:
-            key = Settings_value_keys[Settings_cursorY];
-            if (Settings_Obj_default(key) > 0) {
-                Settings_value[key].defaultValue -= 1;
-                Settings_ChangeSettigs(Settings_cursorY);
-            }
-            break;
-        case KEY_RIGHT:
-            key = Settings_value_keys[Settings_cursorY];
-            if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
-                Settings_value[key].defaultValue += 1;
-                Settings_ChangeSettigs(Settings_cursorY);
-            }
-            break;
-        case KEY_UP:
-            if (Settings_cursorY > 0) {
-                Settings_RemoveinputFocus();
-                Settings_cursorY--;
-                Settings_inputFocus(Settings_cursorY);
-            }
-            break;
-        case KEY_DOWN:
-            if (Settings_cursorY < (Settings_positions_length - 1)) {
-                Settings_RemoveinputFocus();
-                Settings_cursorY++;
-                Settings_inputFocus(Settings_cursorY);
-            }
-            break;
-        case KEY_ENTER:
-            if (!Settings_cursorY) Languages_init();
-            break;
-        default:
-            break;
-    }
-}//Variable initialization
-var SearchChannels_cursorY = 0;
-var SearchChannels_cursorX = 0;
-var SearchChannels_dataEnded = false;
-var SearchChannels_itemsCount = 0;
-var SearchChannels_idObject = {};
-var SearchChannels_emptyCellVector = [];
-var SearchChannels_loadingData = false;
-var SearchChannels_loadingDataTry = 0;
-var SearchChannels_loadingDataTryMax = 5;
-var SearchChannels_loadingDataTimeout = 3500;
-var SearchChannels_itemsCountOffset = 0;
-var SearchChannels_MaxOffset = 0;
-var SearchChannels_emptyContent = false;
-var SearchChannels_Status = false;
-var SearchChannels_lastData = '';
-var SearchChannels_itemsCountCheck = false;
-
-var SearchChannels_ids = ['sc_thumbdiv', 'sc_img', 'sc_infodiv', 'sc_displayname', 'sc_cell', 'scempty_', 'search_channel_scroll'];
-//Variable initialization end
-
-function SearchChannels_init() {
-    Main_values.Main_CenterLablesVectorPos = 1;
-    Main_values.Main_Go = Main_SearchChannels;
-    Main_values.isLastSChannels = true;
-    Main_values.Search_isSearching = true;
-    if (SearchChannels_lastData !== Main_values.Search_data) SearchChannels_Status = false;
-    Main_cleanTopLabel();
-    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Main_values.Search_data + "'"));
-    document.body.addEventListener("keydown", SearchChannels_handleKeyDown, false);
-    if (SearchChannels_Status) {
-        Main_YRst(SearchChannels_cursorY);
-        Main_ShowElement(SearchChannels_ids[6]);
-        SearchChannels_addFocus();
-        Main_SaveValues();
-    } else SearchChannels_StartLoad();
-}
-
-function SearchChannels_exit() {
-    Main_RestoreTopLabel();
-    document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
-    Main_HideElement(SearchChannels_ids[6]);
-}
-
-function SearchChannels_StartLoad() {
-    Main_empty('stream_table_search_channel');
-    Main_HideElement(SearchChannels_ids[6]);
-    Main_showLoadDialog();
-    Main_HideWarningDialog();
-    SearchChannels_lastData = Main_values.Search_data;
-    SearchChannels_Status = false;
-    SearchChannels_itemsCountOffset = 0;
-    SearchChannels_MaxOffset = 0;
-    SearchChannels_idObject = {};
-    SearchChannels_emptyCellVector = [];
-    SearchChannels_itemsCountCheck = false;
-    SearchChannels_itemsCount = 0;
-    Main_FirstLoad = true;
-    SearchChannels_cursorX = 0;
-    SearchChannels_cursorY = 0;
-    SearchChannels_dataEnded = false;
-    Main_CounterDialogRst();
-    SearchChannels_loadDataPrepare();
-    SearchChannels_loadDataRequest();
-}
-
-function SearchChannels_loadDataPrepare() {
-    SearchChannels_loadingData = true;
-    SearchChannels_loadingDataTry = 0;
-    SearchChannels_loadingDataTimeout = 3500;
-}
-
-function SearchChannels_loadDataRequest() {
-
-    var offset = SearchChannels_itemsCount + SearchChannels_itemsCountOffset;
-    if (offset && offset > (SearchChannels_MaxOffset - 1)) {
-        offset = SearchChannels_MaxOffset - Main_ItemsLimitChannel;
-        SearchChannels_dataEnded = true;
-    }
-
-    var theUrl = 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitChannel + '&offset=' + offset;
-
-    if (Main_Android && !SearchChannels_itemsCount)
-        BaseAndroidhttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError);
-    else
-        BasexmlHttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccess, SearchChannels_loadDataError, false);
-}
-
-function SearchChannels_loadDataError() {
-    SearchChannels_loadingDataTry++;
-    if (SearchChannels_loadingDataTry < SearchChannels_loadingDataTryMax) {
-        SearchChannels_loadingDataTimeout += 500;
-        SearchChannels_loadDataRequest();
-    } else {
-        SearchChannels_loadingData = false;
-        if (!SearchChannels_itemsCount) {
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
-        } else {
-            SearchChannels_dataEnded = true;
-            SearchChannels_loadDataSuccessFinish();
-        }
-    }
-}
-
-function SearchChannels_loadDataSuccess(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.channels.length;
-    SearchChannels_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitChannel) SearchChannels_dataEnded = true;
-
-    var offset_itemsCount = SearchChannels_itemsCount;
-    SearchChannels_itemsCount += response_items;
-
-    SearchChannels_emptyContent = !SearchChannels_itemsCount;
-
-    var response_rows = response_items / Main_ColoumnsCountChannel;
-    if (response_items % Main_ColoumnsCountChannel > 0) response_rows++;
-
-    var coloumn_id, row_id, row, channels, id,
-        cursor = 0,
-        doc = document.getElementById('stream_table_search_channel');
-
-    for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main_ColoumnsCountChannel + i;
-        row = document.createElement('tr');
-
-        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountChannel && cursor < response_items; coloumn_id++, cursor++) {
-            channels = response.channels[cursor];
-            id = channels._id;
-            if (SearchChannels_idObject[id]) coloumn_id--;
-            else {
-                SearchChannels_idObject[id] = 1;
-                row.appendChild(SearchChannels_createCell(row_id, row_id + '_' + coloumn_id, [channels.name, id, channels.logo, channels.display_name]));
-            }
-
-        }
-
-        for (coloumn_id; coloumn_id < Main_ColoumnsCountChannel; coloumn_id++) {
-            if (SearchChannels_dataEnded && !SearchChannels_itemsCountCheck) {
-                SearchChannels_itemsCountCheck = true;
-                SearchChannels_itemsCount = (row_id * Main_ColoumnsCountChannel) + coloumn_id;
-            }
-            row.appendChild(Main_createEmptyCell(SearchChannels_ids[5] + row_id + '_' + coloumn_id));
-            SearchChannels_emptyCellVector.push(SearchChannels_ids[5] + row_id + '_' + coloumn_id);
-        }
-        doc.appendChild(row);
-    }
-
-    SearchChannels_loadDataSuccessFinish();
-}
-
-
-function SearchChannels_createCell(row_id, id, valuesArray) {
-    return Main_createCellChannel(id, SearchChannels_ids, valuesArray);
-}
-
-function SearchChannels_loadDataSuccessFinish() {
-    if (!SearchChannels_Status) {
-        if (SearchChannels_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-        else {
-            SearchChannels_Status = true;
-            SearchChannels_addFocus();
-            Main_SaveValues();
-        }
-        Main_ShowElement(SearchChannels_ids[6]);
-        Main_FirstLoad = false;
-        Main_HideLoadDialog();
-    } else {
-        if (SearchChannels_emptyCellVector.length > 0 && !SearchChannels_dataEnded) {
-            SearchChannels_loadDataPrepare();
-            SearchChannels_loadDataReplace();
-            return;
-        } else {
-            SearchChannels_addFocus(true);
-            SearchChannels_emptyCellVector = [];
-        }
-    }
-    SearchChannels_loadingData = false;
-}
-
-function SearchChannels_loadDataReplace() {
-    Main_SetItemsLimitReplace(SearchChannels_emptyCellVector.length);
-
-    var offset = SearchChannels_itemsCount + SearchChannels_itemsCountOffset;
-    if (offset && offset > (SearchChannels_MaxOffset - 1)) {
-        offset = SearchChannels_MaxOffset - Main_ItemsLimitReplace;
-        SearchChannels_dataEnded = true;
-    }
-
-    var theUrl = 'https://api.twitch.tv/kraken/search/channels?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
-
-    BasehttpGet(theUrl, SearchChannels_loadingDataTimeout, 2, null, SearchChannels_loadDataSuccessReplace, SearchChannels_loadDataErrorReplace);
-}
-
-function SearchChannels_loadDataErrorReplace() {
-    SearchChannels_loadingDataTry++;
-    if (SearchChannels_loadingDataTry < SearchChannels_loadingDataTryMax) {
-        SearchChannels_loadingDataTimeout += 500;
-        SearchChannels_loadDataReplace();
-    } else {
-        SearchChannels_dataEnded = true;
-        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
-        SearchChannels_emptyCellVector = [];
-        SearchChannels_loadDataSuccessFinish();
-    }
-}
-
-function SearchChannels_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText),
-        response_items = response.channels.length,
-        channels, id, i = 0,
-        cursor = 0,
-        tempVector = [];
-
-    SearchChannels_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitReplace) SearchChannels_dataEnded = true;
-
-    for (i; i < SearchChannels_emptyCellVector.length && cursor < response_items; i++, cursor++) {
-        channels = response.channels[cursor];
-        id = channels._id;
-        if (SearchChannels_idObject[id]) i--;
-        else {
-            SearchChannels_idObject[id] = 1;
-            Main_replaceChannel(SearchChannels_emptyCellVector[i], [channels.name, id, channels.logo, channels.display_name], SearchChannels_ids);
-
-            tempVector.push(i);
-        }
-    }
-
-    for (i = tempVector.length - 1; i > -1; i--) SearchChannels_emptyCellVector.splice(tempVector[i], 1);
-
-    SearchChannels_itemsCountOffset += cursor;
-    if (SearchChannels_dataEnded) {
-        SearchChannels_itemsCount -= SearchChannels_emptyCellVector.length;
-        SearchChannels_emptyCellVector = [];
-    }
-
-    SearchChannels_loadDataSuccessFinish();
-}
-
-function SearchChannels_addFocus(forceScroll) {
-    Main_addFocusChannel(SearchChannels_cursorY, SearchChannels_cursorX, SearchChannels_ids, Main_ColoumnsCountChannel, SearchChannels_itemsCount, forceScroll);
-
-    if (((SearchChannels_cursorY + Main_ItemsReloadLimitChannel) > (SearchChannels_itemsCount / Main_ColoumnsCountChannel)) &&
-        !SearchChannels_dataEnded && !SearchChannels_loadingData) {
-        SearchChannels_loadDataPrepare();
-        SearchChannels_loadDataRequest();
-    }
-    if (Main_CenterLablesInUse) SearchChannels_removeFocus();
-}
-
-function SearchChannels_removeFocus() {
-    if (SearchChannels_itemsCount) Main_removeFocus(SearchChannels_cursorY + '_' + SearchChannels_cursorX, SearchChannels_ids);
-}
-
-function SearchChannels_handleKeyDown(event) {
-    if (Main_FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
-
-    var i;
-
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                SearchChannels_removeFocus();
-                Main_CenterLablesStart(SearchChannels_handleKeyDown);
-            }
-            Sidepannel_RestoreScreen();
-            break;
-        case KEY_LEFT:
-            if (!SearchChannels_cursorX) {
-                SearchChannels_removeFocus();
-                Sidepannel_Start(SearchChannels_handleKeyDown, true);
-            } else if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX - 1), SearchChannels_ids[0])) {
-                SearchChannels_removeFocus();
-                SearchChannels_cursorX--;
-                SearchChannels_addFocus();
-            } else {
-                for (i = (Main_ColoumnsCountChannel - 1); i > -1; i--) {
-                    if (Main_ThumbNull((SearchChannels_cursorY - 1), i, SearchChannels_ids[0])) {
-                        SearchChannels_removeFocus();
-                        SearchChannels_cursorY--;
-                        SearchChannels_cursorX = i;
-                        SearchChannels_addFocus();
-                        break;
-                    }
-                }
-            }
-            break;
-        case KEY_RIGHT:
-            if (Main_ThumbNull((SearchChannels_cursorY), (SearchChannels_cursorX + 1), SearchChannels_ids[0])) {
-                SearchChannels_removeFocus();
-                SearchChannels_cursorX++;
-                SearchChannels_addFocus();
-            } else if (Main_ThumbNull((SearchChannels_cursorY + 1), 0, SearchChannels_ids[0])) {
-                SearchChannels_removeFocus();
-                SearchChannels_cursorY++;
-                SearchChannels_cursorX = 0;
-                SearchChannels_addFocus();
-            }
-            break;
-        case KEY_UP:
-            if (!SearchChannels_cursorY) {
-                SearchChannels_removeFocus();
-                Main_CenterLablesStart(SearchChannels_handleKeyDown);
-            } else {
-                for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                    if (Main_ThumbNull((SearchChannels_cursorY - 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
-                        SearchChannels_removeFocus();
-                        SearchChannels_cursorY--;
-                        SearchChannels_cursorX = SearchChannels_cursorX - i;
-                        SearchChannels_addFocus();
-                        break;
-                    }
-                }
-            }
-            break;
-        case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountChannel; i++) {
-                if (Main_ThumbNull((SearchChannels_cursorY + 1), (SearchChannels_cursorX - i), SearchChannels_ids[0])) {
-                    SearchChannels_removeFocus();
-                    SearchChannels_cursorY++;
-                    SearchChannels_cursorX = SearchChannels_cursorX - i;
-                    SearchChannels_addFocus();
-                    break;
-                }
-            }
-            break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_ENTER:
-            Main_values.Main_selectedChannel = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute(Main_DataAttribute);
-            Main_values.Main_selectedChannel_id = document.getElementById(SearchChannels_ids[4] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).getAttribute('data-id');
-            Main_values.Main_selectedChannelDisplayname = document.getElementById(SearchChannels_ids[3] + SearchChannels_cursorY + '_' + SearchChannels_cursorX).textContent;
-            document.body.removeEventListener("keydown", SearchChannels_handleKeyDown);
-            Main_values.Main_BeforeChannel = Main_SearchChannels;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFallowing = false;
-            ChannelContent_UserChannels = false;
-            Main_HideElement(SearchChannels_ids[6]);
-            Main_SwitchScreen();
             break;
         default:
             break;
@@ -11598,1719 +13046,279 @@ function Languages_handleKeyDown(event) {
         default:
             break;
     }
-}//Variable initialization
-var Chat_LoadGlobal = false;
-var Chat_loadingDataTry = 0;
-var Chat_Messages = [];
-var Chat_MessagesNext = [];
-var Chat_loadingDataTryMax = 10;
-var Chat_addlinesId;
-var Chat_next = null;
-var Chat_loadChatId;
-var Chat_loadChatNextId;
-var Chat_offset = 0;
-var Chat_title = '';
-var defaultColors = ["fe2424", "fc5a24", "ff9020", "fEc723", "ffff1d", "bfff00", "c3ff12", "56fe1d", "1eff1e", "16ff51", "00ff80", "00ffbf", "00ffff", "1dc6ff", "158aff", "3367ff", "ff4dff", "ff4ad2", "ff62b1", "ff4272"];
-var defaultColorsLength = defaultColors.length;
-var Chat_div;
-var Chat_Position = 0;
-var Chat_hasEnded = false;
-var Chat_Id = 0;
-var Chat_loadBadgesChannelId;
-//Variable initialization end
+}var Sidepannel_Isscreen = false;
+var Sidepannel_Pos = 0;
+var Sidepannel_PosFeed = 0;
+var Sidepannel_Callback;
+var Sidepannel_UpdateThumbDoc;
+var Sidepannel_ScrollPos = 0;
 
-function Chat_Preinit() {
-    Chat_div = document.getElementById('chat_box');
-    Chat_loadBadgesGlobal();
+function Sidepannel_AddFocusEtc() {
+    Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
 }
 
-function Chat_Init() {
-    Chat_Clear();
-    if (!Main_Android || !Main_values.Play_ChatForceDisable) {
-        Chat_Disable();
-        return;
-    }
-    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
-
-    Main_ready(function() {
-        Chat_Id = (new Date()).getTime();
-        ChatLive_selectedChannel_id = Main_values.Main_selectedChannel_id;
-        ChatLive_selectedChannel = Main_values.Main_selectedChannel;
-        ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess);
-    });
+function Sidepannel_RemoveFocusEtc() {
+    Main_RemoveClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
 }
 
-function Chat_loadBadgesGlobal() {
-    extraEmotes = {};
-    Chat_loadingDataTry = 0;
-    Chat_LoadGlobal = false;
-    Chat_loadBadgesGlobalRequest();
+function Sidepannel_AddFocusFeed() {
+    Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
+    Sidepannel_Scroll();
+    Sidepannel_UpdateThumb();
 }
 
-function Chat_loadBadgesGlobalRequest() {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError, false);
+function Sidepannel_isShowing() {
+    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
 }
 
-function Chat_loadBadgesGlobalError() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest();
-    else Chat_LoadGlobal = false;
+function Sidepannel_RemoveFocusFeed() {
+    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
 }
 
-function Chat_loadBadgesGlobalSuccess(responseText) {
-    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
-        badge.versions.forEach(function(version) {
-            tagCSS(badge.type, version.type, version.image_url_4x, null);
-        });
-    });
+function Sidepannel_UpdateThumb() {
+    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
 
-    Chat_loadEmotes();
-}
-
-function Chat_loadEmotes() {
-    Chat_loadingDataTry = 0;
-    Chat_loadEmotesRequest();
-}
-
-function Chat_loadEmotesRequest() {
-    var theUrl = 'https://api.betterttv.net/2/emotes';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError, false);
-}
-
-function Chat_loadEmotesError() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequest();
-    else Chat_LoadGlobal = false;
-}
-
-function Chat_loadEmotesSuccess(data) {
-    ChatLive_loadEmotesbbtv(JSON.parse(data));
-    Chat_loadEmotesffz();
-}
-
-function Chat_loadEmotesffz() {
-    Chat_loadingDataTry = 0;
-    Chat_loadEmotesRequestffz();
-}
-
-function Chat_loadEmotesRequestffz() {
-    var theUrl = 'https://api.frankerfacez.com/v1/set/global';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz, false);
-}
-
-function Chat_loadEmotesErrorffz() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequestffz();
-    else Chat_LoadGlobal = false;
-}
-
-function Chat_loadEmotesSuccessffz(data) {
-    ChatLive_loadEmotesffz(JSON.parse(data));
-
-    Chat_LoadGlobal = true;
-}
-
-function Chat_loadBadgesTransform(responseText) {
-    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
-        badge.versions.forEach(function(version) {
-            tagCSS(badge.type, version.type, version.image_url_4x, Chat_div);
-        });
-    });
-}
-
-function Chat_loadBadgesChannelSuccess(responseText, id) {
-    Chat_loadBadgesTransform(responseText);
-
-    ChatLive_loadEmotesChannel();
-    ChatLive_loadEmotesChannelffz();
-    if (Chat_Id === id) Chat_loadChat(id);
-}
-
-function Chat_loadChat(id) {
-    Chat_loadingDataTry = 0;
-    if (Chat_Id === id) Chat_loadChatRequest(id);
-}
-
-function Chat_loadChatRequest(id) {
-    var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-        '/comments?client_id=' + Main_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                return;
-            } else {
-                if (Chat_Id === id) Chat_loadChatError(id);
-            }
-        }
+    Sidepannel_UpdateThumbDoc.onerror = function() {
+        this.onerror = null;
+        this.src = IMG_404_VIDEO;
     };
+    Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
 
-    xmlHttp.send(null);
+    Main_innerHTML('feed_thum_name', info[3]);
+    Main_innerHTML('feed_thum_quality', info[7]);
+    Main_innerHTML('feed_thum_title', twemoji.parse(info[4]));
+    Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
+    Main_innerHTML('feed_thum_views', info[6]);
+
+    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
 }
 
-function Chat_loadChatError(id) {
-    Chat_loadingDataTry++;
-    if (Chat_Id === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
-        else {
-            Chat_loadChatId = window.setTimeout(function() {
-                Chat_loadChatRequest(id);
-            }, 2500);
+function Sidepannel_PreloadImgs() {
+    var doc;
+    for (var i = 0; i < Sidepannel_GetSize(); i++) {
+        doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
+        if (doc !== null) {
+            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
         }
     }
 }
 
-function Chat_loadChatSuccess(responseText, id) {
-    responseText = JSON.parse(responseText);
-    var div, mmessage, null_next = (Chat_next === null);
+function Sidepannel_GetSize() {
+    return document.getElementById('side_panel_feed_scroll').getElementsByClassName('side_panel_feed').length;
+}
 
-    if (null_next) {
-        div = '&nbsp;';
-        div += '<span class="message">';
-        div += STR_BR + STR_LOADING_CHAT + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title;
-        div += '</span>';
-        Chat_MessageVector(div, 0);
-    }
-    Chat_offset = 0;
-    Chat_next = responseText._next;
+function Sidepannel_KeyEnter() {
+    if (!Sidepannel_Pos) {
+        Sidepannel_Isscreen = false;
+        if (Main_values.Main_Go !== Main_Search) {
+            if (!Main_values.Search_isSearching &&
+                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
+                ChannelContent_SetChannelValue();
+            Main_OpenSearch();
+        } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
+    } else if (Sidepannel_Pos === 1) {
+        Sidepannel_Isscreen = false;
+        Main_showSettings();
+    } else if (Sidepannel_Pos === 2) {
+        document.body.addEventListener("keydown", Sidepannel_Callback, false);
+        Main_showAboutDialog();
+    } else if (Sidepannel_Pos === 3) {
+        document.body.addEventListener("keydown", Sidepannel_Callback, false);
+        Main_showControlsDialog();
+    } else if (Sidepannel_Pos === 4) Main_showExitDialog(Sidepannel_Callback);
+    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_Live);
+    else if (Sidepannel_Pos === 6) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
+    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Featured);
+    else if (Sidepannel_Pos === 8) Sidepannel_Go(Main_games);
+    else if (Sidepannel_Pos === 9) Sidepannel_Go(Main_Vod);
+    else if (Sidepannel_Pos === 10) Sidepannel_Go(Main_Clip);
+    Sidepannel_Hide();
+}
 
-    responseText.comments.forEach(function(comments) {
-        div = '';
-        mmessage = comments.message;
-
-        //Add badges
-        if (mmessage.hasOwnProperty('user_badges')) {
-            mmessage.user_badges.forEach(function(badges) {
-                div += '<span class="' + badges._id + '-' + badges.version + ' tag"></span>';
-            });
-        }
-
-        //Add nick
-        div += '<span class="nick" style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
-
-        //Add mesage
-        div += '<span class="message">';
-        mmessage.fragments.forEach(function(fragments) {
-            if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/1.0" srcset="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0 2x, https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/3.0 4x">';
-            else div += ChatLive_extraMessageTokenize([fragments.text]);
-        });
-
-        div += '</span>';
-        if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
-        else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
-    });
-    if (null_next && Chat_Id === id) {
-        Chat_Play(id);
-        if (Chat_next !== undefined) Chat_loadChatNext(id); //if (Chat_next === undefined) chat has ended
+function Sidepannel_RestoreScreen() {
+    if (Sidepannel_Isscreen) {
+        Sidepannel_Isscreen = false;
+        Main_SwitchScreenAction();
     }
 }
 
-function Chat_MessageVector(message, time) {
-    Chat_Messages.push({
-        'time': time,
-        'message': message
-    });
-}
-
-function Chat_MessageVectorNext(message, time) {
-    Chat_MessagesNext.push({
-        'time': time,
-        'message': message
-    });
-}
-
-function Chat_Play(id) {
-    if (!Chat_hasEnded && Chat_Id === id) {
-        Chat_addlinesId = window.setInterval(function() {
-            Main_Addline(id);
-            Chat_div.scrollTop = Chat_div.scrollHeight;
-        }, 1000);
+function Sidepannel_Go(GoTo) {
+    Sidepannel_Isscreen = false;
+    if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
+    else {
+        Main_values.Main_Before = Main_values.Main_Go;
+        Main_values.Main_Go = GoTo;
+        Main_ExitCurrent(Main_values.Main_Before);
+        Main_SwitchScreen();
     }
 }
 
-function Chat_Pause() {
-    if (!Chat_hasEnded) {
-        window.clearTimeout(Chat_loadBadgesChannelId);
-        window.clearTimeout(Chat_loadChatId);
-        window.clearTimeout(Chat_loadChatNextId);
-        window.clearInterval(Chat_addlinesId);
+function Sidepannel_Start(callback, Isscreen) {
+    Main_RemoveClass('side_panel', 'side_panel_hide');
+    Sidepannel_Callback = callback;
+    Sidepannel_Isscreen = Isscreen;
+    document.body.removeEventListener("keydown", Sidepannel_Callback);
+    Sidepannel_ShowFeed();
+}
+
+
+function Sidepannel_ShowFeed() {
+    var hasuser = AddUser_UserIsSet();
+
+    if (hasuser) {
+        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
+        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
     }
-}
 
-function Chat_Clear() {
-    // on exit cleanup the div
-    Chat_Pause();
-    Chat_Id = 0;
-    Main_empty('chat_box');
-    Chat_hasEnded = false;
-    Chat_next = null;
-    Chat_Messages = [];
-    Chat_MessagesNext = [];
-    Chat_Position = 0;
-}
+    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
 
-function Main_Addline(id) {
-    var elem;
-    if (Chat_Position < (Chat_Messages.length - 1)) {
-        for (var i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
-            if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
-                elem = document.createElement('div');
-                elem.className = 'chat_line';
-                elem.innerHTML = Chat_Messages[i].message;
+    if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
-                Chat_div.appendChild(elem);
-            } else {
-                break;
+    if (hasuser) {
+        if (Main_isElementShowing('side_panel_feed_holder')) {
+            document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
+            if (document.getElementById(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed) !== null) {
+                Sidepannel_PreloadImgs();
+                Sidepannel_AddFocusFeed();
             }
-        }
-    } else {
-        Chat_Pause();
-        if (Chat_next !== undefined) {
-            Chat_Messages = Chat_MessagesNext.slice();
-            Chat_Position = 0;
-            Chat_Play(id);
-            Chat_MessagesNext = [];
-
-            if (Chat_Id === id) Chat_loadChatNext(id);
-            Chat_Clean();
-        } else { //Chat has eneded
-            var div = '&nbsp;';
-            div += '<span class="message">';
-            div += STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR;
-            div += '</span>';
-
-            elem = document.createElement('div');
-            elem.className = 'chat_line';
-            elem.innerHTML = div;
-
-            Chat_div.appendChild(elem);
-
-            Chat_hasEnded = true;
-            Chat_div.scrollTop = Chat_div.scrollHeight;
-
-            //keep refreshing in case user changes chat size
-            window.clearInterval(Chat_addlinesId);
-            Chat_addlinesId = window.setInterval(function() {
-                Chat_div.scrollTop = Chat_div.scrollHeight;
-            }, 1000);
-        }
-    }
-}
-
-function Chat_loadChatNext(id) {
-    Chat_loadingDataTry = 0;
-    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextRequest(id);
-}
-
-function Chat_loadChatNextRequest(id) {
-    var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-        '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                return;
-            } else {
-                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function Chat_loadChatNextError(id) {
-    Chat_loadingDataTry++;
-    if (Chat_Id === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
-        else {
-            Chat_loadChatNextId = window.setTimeout(function() {
-                Chat_loadChatNextRequest(id);
-            }, 2500);
-        }
-    }
-}
-
-function Chat_NoVod() {
-    Chat_Clear();
-    Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
-}
-
-function Chat_Disable() {
-    Chat_Clear();
-    Chat_SingleLine(STR_CHAT_DISABLE);
-}
-
-function Chat_SingleLine(Line) {
-    var div = '&nbsp;';
-    div += '<span class="message">';
-    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
-    div += Line;
-    div += '</span>';
-
-    var elem = document.createElement('div');
-    elem.className = 'chat_line';
-    elem.innerHTML = div;
-
-    Chat_div.appendChild(elem);
-}
-
-function Chat_Clean() {
-    //delete old lines out of view
-    var linesToDelete = document.getElementsByClassName("chat_line");
-    if ((linesToDelete.length - 100) > 0) {
-        for (var i = 0; i < (linesToDelete.length - 100); i++) {
-            linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
-        }
-    }
-    ChatLive_ChatFixPosition();
-}/*! https://mths.be/punycode v1.4.1 by @mathias */
-
-// https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
-// https://cdnjs.com/libraries/punycode
-
-(function(root) {
-
-    /** Detect free variables */
-    var freeGlobal = typeof global === 'object' && global;
-    if (
-        freeGlobal.global === freeGlobal ||
-        freeGlobal.window === freeGlobal ||
-        freeGlobal.self === freeGlobal
-    ) {
-        root = freeGlobal;
-    }
-
-    /**
-     * The `punycode` object.
-     * @name punycode
-     * @type Object
-     */
-    var punycode,
-
-        /** Highest positive signed 32-bit float value */
-        maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
-
-        /** Bootstring parameters */
-        base = 36,
-        tMin = 1,
-        tMax = 26,
-        skew = 38,
-        damp = 700,
-        initialBias = 72,
-        initialN = 128, // 0x80
-        delimiter = '-', // '\x2D'
-
-        /** Regular expressions */
-        regexPunycode = /^xn--/,
-        regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
-        regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
-
-        /** Error messages */
-        errors = {
-            'overflow': 'Overflow: input needs wider integers to process',
-            'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-            'invalid-input': 'Invalid input'
-        },
-
-        /** Convenience shortcuts */
-        baseMinusTMin = base - tMin,
-        floor = Math.floor,
-        stringFromCharCode = String.fromCharCode;
-
-    /*--------------------------------------------------------------------------*/
-
-    /**
-     * A generic error utility function.
-     * @private
-     * @param {String} type The error type.
-     * @returns {Error} Throws a `RangeError` with the applicable error message.
-     */
-    function error(type) {
-        throw new RangeError(errors[type]);
-    }
-
-    /**
-     * A generic `Array#map` utility function.
-     * @private
-     * @param {Array} array The array to iterate over.
-     * @param {Function} callback The function that gets called for every array
-     * item.
-     * @returns {Array} A new array of values returned by the callback function.
-     */
-    function map(array, fn) {
-        var length = array.length;
-        var result = [];
-        while (length--) {
-            result[length] = fn(array[length]);
-        }
-        return result;
-    }
-
-    /**
-     * A simple `Array#map`-like wrapper to work with domain name strings or email
-     * addresses.
-     * @private
-     * @param {String} domain The domain name or email address.
-     * @param {Function} callback The function that gets called for every
-     * character.
-     * @returns {Array} A new string of characters returned by the callback
-     * function.
-     */
-    function mapDomain(string, fn) {
-        var parts = string.split('@');
-        var result = '';
-        if (parts.length > 1) {
-            // In email addresses, only the domain name should be punycoded. Leave
-            // the local part (i.e. everything up to `@`) intact.
-            result = parts[0] + '@';
-            string = parts[1];
-        }
-        // Avoid `split(regex)` for IE8 compatibility. See #17.
-        string = string.replace(regexSeparators, '\x2E');
-        var labels = string.split('.');
-        var encoded = map(labels, fn).join('.');
-        return result + encoded;
-    }
-
-    /**
-     * Creates an array containing the numeric code points of each Unicode
-     * character in the string. While JavaScript uses UCS-2 internally,
-     * this function will convert a pair of surrogate halves (each of which
-     * UCS-2 exposes as separate characters) into a single code point,
-     * matching UTF-16.
-     * @see `punycode.ucs2.encode`
-     * @see <https://mathiasbynens.be/notes/javascript-encoding>
-     * @memberOf punycode.ucs2
-     * @name decode
-     * @param {String} string The Unicode input string (UCS-2).
-     * @returns {Array} The new array of code points.
-     */
-    function ucs2decode(string) {
-        var output = [],
-            counter = 0,
-            length = string.length,
-            value,
-            extra;
-        while (counter < length) {
-            value = string.charCodeAt(counter++);
-            if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-                // high surrogate, and there is a next character
-                extra = string.charCodeAt(counter++);
-                if ((extra & 0xFC00) === 0xDC00) { // low surrogate
-                    output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-                } else {
-                    // unmatched surrogate; only append this code unit, in case the next
-                    // code unit is the high surrogate of a surrogate pair
-                    output.push(value);
-                    counter--;
-                }
-            } else {
-                output.push(value);
-            }
-        }
-        return output;
-    }
-
-    /**
-     * Creates a string based on an array of numeric code points.
-     * @see `punycode.ucs2.decode`
-     * @memberOf punycode.ucs2
-     * @name encode
-     * @param {Array} codePoints The array of numeric code points.
-     * @returns {String} The new Unicode string (UCS-2).
-     */
-    function ucs2encode(array) {
-        return map(array, function(value) {
-            var output = '';
-            if (value > 0xFFFF) {
-                value -= 0x10000;
-                output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-                value = 0xDC00 | value & 0x3FF;
-            }
-            output += stringFromCharCode(value);
-            return output;
-        }).join('');
-    }
-
-    /**
-     * Converts a basic code point into a digit/integer.
-     * @see `digitToBasic()`
-     * @private
-     * @param {Number} codePoint The basic numeric code point value.
-     * @returns {Number} The numeric value of a basic code point (for use in
-     * representing integers) in the range `0` to `base - 1`, or `base` if
-     * the code point does not represent a value.
-     */
-    function basicToDigit(codePoint) {
-        if (codePoint - 48 < 10) {
-            return codePoint - 22;
-        }
-        if (codePoint - 65 < 26) {
-            return codePoint - 65;
-        }
-        if (codePoint - 97 < 26) {
-            return codePoint - 97;
-        }
-        return base;
-    }
-
-    /**
-     * Converts a digit/integer into a basic code point.
-     * @see `basicToDigit()`
-     * @private
-     * @param {Number} digit The numeric value of a basic code point.
-     * @returns {Number} The basic code point whose value (when used for
-     * representing integers) is `digit`, which needs to be in the range
-     * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
-     * used; else, the lowercase form is used. The behavior is undefined
-     * if `flag` is non-zero and `digit` has no uppercase form.
-     */
-    function digitToBasic(digit, flag) {
-        //  0..25 map to ASCII a..z or A..Z
-        // 26..35 map to ASCII 0..9
-        return digit + 22 + 75 * (digit < 26) - ((flag !== 0) << 5);
-    }
-
-    /**
-     * Bias adaptation function as per section 3.4 of RFC 3492.
-     * https://tools.ietf.org/html/rfc3492#section-3.4
-     * @private
-     */
-    function adapt(delta, numPoints, firstTime) {
-        var k = 0;
-        delta = firstTime ? floor(delta / damp) : delta >> 1;
-        delta += floor(delta / numPoints);
-        for ( /* no initialization */ ; delta > baseMinusTMin * tMax >> 1; k += base) {
-            delta = floor(delta / baseMinusTMin);
-        }
-        return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-    }
-
-    /**
-     * Converts a Punycode string of ASCII-only symbols to a string of Unicode
-     * symbols.
-     * @memberOf punycode
-     * @param {String} input The Punycode string of ASCII-only symbols.
-     * @returns {String} The resulting string of Unicode symbols.
-     */
-    function decode(input) {
-        // Don't use UCS-2
-        var output = [],
-            inputLength = input.length,
-            out,
-            i = 0,
-            n = initialN,
-            bias = initialBias,
-            basic,
-            j,
-            index,
-            oldi,
-            w,
-            k,
-            digit,
-            t,
-            /** Cached calculation results */
-            baseMinusT;
-
-        // Handle the basic code points: let `basic` be the number of input code
-        // points before the last delimiter, or `0` if there is none, then copy
-        // the first basic code points to the output.
-
-        basic = input.lastIndexOf(delimiter);
-        if (basic < 0) {
-            basic = 0;
-        }
-
-        for (j = 0; j < basic; ++j) {
-            // if it's not a basic code point
-            if (input.charCodeAt(j) >= 0x80) {
-                error('not-basic');
-            }
-            output.push(input.charCodeAt(j));
-        }
-
-        // Main decoding loop: start just after the last delimiter if any basic code
-        // points were copied; start at the beginning otherwise.
-
-        for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */ ) {
-
-            // `index` is the index of the next character to be consumed.
-            // Decode a generalized variable-length integer into `delta`,
-            // which gets added to `i`. The overflow checking is easier
-            // if we increase `i` as we go, then subtract off its starting
-            // value at the end to obtain `delta`.
-            for (oldi = i, w = 1, k = base; /* no condition */ ; k += base) {
-
-                if (index >= inputLength) {
-                    error('invalid-input');
-                }
-
-                digit = basicToDigit(input.charCodeAt(index++));
-
-                if (digit >= base || digit > floor((maxInt - i) / w)) {
-                    error('overflow');
-                }
-
-                i += digit * w;
-                t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-
-                if (digit < t) {
-                    break;
-                }
-
-                baseMinusT = base - t;
-                if (w > floor(maxInt / baseMinusT)) {
-                    error('overflow');
-                }
-
-                w *= baseMinusT;
-
-            }
-
-            out = output.length + 1;
-            bias = adapt(i - oldi, out, oldi === 0);
-
-            // `i` was supposed to wrap around from `out` to `0`,
-            // incrementing `n` each time, so we'll fix that now:
-            if (floor(i / out) > maxInt - n) {
-                error('overflow');
-            }
-
-            n += floor(i / out);
-            i %= out;
-
-            // Insert `n` at position `i` of the output
-            output.splice(i++, 0, n);
-
-        }
-
-        return ucs2encode(output);
-    }
-
-    /**
-     * Converts a string of Unicode symbols (e.g. a domain name label) to a
-     * Punycode string of ASCII-only symbols.
-     * @memberOf punycode
-     * @param {String} input The string of Unicode symbols.
-     * @returns {String} The resulting Punycode string of ASCII-only symbols.
-     */
-    function encode(input) {
-        var n,
-            delta,
-            handledCPCount,
-            basicLength,
-            bias,
-            j,
-            m,
-            q,
-            k,
-            t,
-            currentValue,
-            output = [],
-            /** `inputLength` will hold the number of code points in `input`. */
-            inputLength,
-            /** Cached calculation results */
-            handledCPCountPlusOne,
-            baseMinusT,
-            qMinusT;
-
-        // Convert the input in UCS-2 to Unicode
-        input = ucs2decode(input);
-
-        // Cache the length
-        inputLength = input.length;
-
-        // Initialize the state
-        n = initialN;
-        delta = 0;
-        bias = initialBias;
-
-        // Handle the basic code points
-        for (j = 0; j < inputLength; ++j) {
-            currentValue = input[j];
-            if (currentValue < 0x80) {
-                output.push(stringFromCharCode(currentValue));
-            }
-        }
-
-        handledCPCount = basicLength = output.length;
-
-        // `handledCPCount` is the number of code points that have been handled;
-        // `basicLength` is the number of basic code points.
-
-        // Finish the basic string - if it is not empty - with a delimiter
-        if (basicLength) {
-            output.push(delimiter);
-        }
-
-        // Main encoding loop:
-        while (handledCPCount < inputLength) {
-
-            // All non-basic code points < n have been handled already. Find the next
-            // larger one:
-            for (m = maxInt, j = 0; j < inputLength; ++j) {
-                currentValue = input[j];
-                if (currentValue >= n && currentValue < m) {
-                    m = currentValue;
-                }
-            }
-
-            // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-            // but guard against overflow
-            handledCPCountPlusOne = handledCPCount + 1;
-            if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-                error('overflow');
-            }
-
-            delta += (m - n) * handledCPCountPlusOne;
-            n = m;
-
-            for (j = 0; j < inputLength; ++j) {
-                currentValue = input[j];
-
-                if (currentValue < n && ++delta > maxInt) {
-                    error('overflow');
-                }
-
-                if (currentValue === n) {
-                    // Represent delta as a generalized variable-length integer
-                    for (q = delta, k = base; /* no condition */ ; k += base) {
-                        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-                        if (q < t) {
-                            break;
-                        }
-                        qMinusT = q - t;
-                        baseMinusT = base - t;
-                        output.push(
-                            stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-                        );
-                        q = floor(qMinusT / baseMinusT);
-                    }
-
-                    output.push(stringFromCharCode(digitToBasic(q, 0)));
-                    bias = adapt(delta, handledCPCountPlusOne, handledCPCount === basicLength);
-                    delta = 0;
-                    ++handledCPCount;
-                }
-            }
-
-            ++delta;
-            ++n;
-
-        }
-        return output.join('');
-    }
-
-    /**
-     * Converts a Punycode string representing a domain name or an email address
-     * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
-     * it doesn't matter if you call it on a string that has already been
-     * converted to Unicode.
-     * @memberOf punycode
-     * @param {String} input The Punycoded domain name or email address to
-     * convert to Unicode.
-     * @returns {String} The Unicode representation of the given Punycode
-     * string.
-     */
-    function toUnicode(input) {
-        return mapDomain(input, function(string) {
-            return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
-        });
-    }
-
-    /**
-     * Converts a Unicode string representing a domain name or an email address to
-     * Punycode. Only the non-ASCII parts of the domain name will be converted,
-     * i.e. it doesn't matter if you call it with a domain that's already in
-     * ASCII.
-     * @memberOf punycode
-     * @param {String} input The domain name or email address to convert, as a
-     * Unicode string.
-     * @returns {String} The Punycode representation of the given domain name or
-     * email address.
-     */
-    function toASCII(input) {
-        return mapDomain(input, function(string) {
-            return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
-        });
-    }
-
-    /*--------------------------------------------------------------------------*/
-
-    /** Define the public API */
-    punycode = {
-        /**
-         * A string representing the current Punycode.js version number.
-         * @memberOf punycode
-         * @type String
-         */
-        'version': '1.4.1',
-        /**
-         * An object of methods to convert from JavaScript's internal character
-         * representation (UCS-2) to Unicode code points, and back.
-         * @see <https://mathiasbynens.be/notes/javascript-encoding>
-         * @memberOf punycode
-         * @type Object
-         */
-        'ucs2': {
-            'decode': ucs2decode,
-            'encode': ucs2encode
-        },
-        'decode': decode,
-        'encode': encode,
-        'toASCII': toASCII,
-        'toUnicode': toUnicode
-    };
-
-    /** Expose `punycode` */
-    root.punycode = punycode;
-
-}(this));// https://github.com/twitter/twemoji
-
-// This is a moded version of twemoji, I only need this from this file, check original in they github
-var twemoji = (function(
-    /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
-    /*
-        https://github.com/twitter/twemoji/blob/gh-pages/LICENSE
-      */
-
-    // WARNING:   this file is generated automatically via
-    //            `node twemoji-generator.js`
-    //            please update its `createTwemoji` function
-    //            at the bottom of the same file instead.
-
-) {
-    var
-        // the exported module object
-        twemoji = {
-
-            /**
-             * Main method/logic to generate either <img> tags or HTMLImage nodes.
-             *  "emojify" a generic text or DOM Element.
-             *
-             * @overloads
-             *
-             * String replacement for `innerHTML` or server side operations
-             *  twemoji.parse(string);
-             *  twemoji.parse(string, Function);
-             *  twemoji.parse(string, Object);
-             *
-             * HTMLElement tree parsing for safer operations over existing DOM
-             *  twemoji.parse(HTMLElement);
-             *  twemoji.parse(HTMLElement, Function);
-             *  twemoji.parse(HTMLElement, Object);
-             *
-             * @param   string|HTMLElement  the source to parse and enrich with emoji.
-             *
-             *          string              replace emoji matches with <img> tags.
-             *                              Mainly used to inject emoji via `innerHTML`
-             *                              It does **not** parse the string or validate it,
-             *                              it simply replaces found emoji with a tag.
-             *                              NOTE: be sure this won't affect security.
-             *
-             *          HTMLElement         walk through the DOM tree and find emoji
-             *                              that are inside **text node only** (nodeType === 3)
-             *                              Mainly used to put emoji in already generated DOM
-             *                              without compromising surrounding nodes and
-             *                              **avoiding** the usage of `innerHTML`.
-             *                              NOTE: Using DOM elements instead of strings should
-             *                              improve security without compromising too much
-             *                              performance compared with a less safe `innerHTML`.
-             *
-             * @param   Function|Object  [optional]
-             *                              either the callback that will be invoked or an object
-             *                              with all properties to use per each found emoji.
-             *
-             *          Function            if specified, this will be invoked per each emoji
-             *                              that has been found through the RegExp except
-             *                              those follwed by the invariant \uFE0E ("as text").
-             *                              Once invoked, parameters will be:
-             *
-             *                                iconId:string     the lower case HEX code point
-             *                                                  i.e. "1f4a9"
-             *
-             *                                options:Object    all info for this parsing operation
-             *
-             *                                variant:char      the optional \uFE0F ("as image")
-             *                                                  variant, in case this info
-             *                                                  is anyhow meaningful.
-             *                                                  By default this is ignored.
-             *
-             *                              If such callback will return a falsy value instead
-             *                              of a valid `src` to use for the image, nothing will
-             *                              actually change for that specific emoji.
-             *
-             *
-             *          Object              if specified, an object containing the following properties
-             *
-             *            callback   Function  the callback to invoke per each found emoji.
-             *            base       string    the base url, by default twemoji.base
-             *            ext        string    the image extension, by default twemoji.ext
-             *            size       string    the assets size, by default twemoji.size
-             *
-             * @example
-             *
-             *  twemoji.parse("I \u2764\uFE0F emoji!");
-             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/2764.gif"/> emoji!
-             *
-             *
-             *  twemoji.parse("I \u2764\uFE0F emoji!", function(iconId, options) {
-             *    return '/assets/' + iconId + '.gif';
-             *  });
-             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/2764.gif"/> emoji!
-             *
-             *
-             * twemoji.parse("I \u2764\uFE0F emoji!", {
-             *   size: 72,
-             *   callback: function(iconId, options) {
-             *     return '/assets/' + options.size + '/' + iconId + options.ext;
-             *   }
-             * });
-             *  // I <img class="emoji" draggable="false" alt="❤️" src="/assets/72x72/2764.png"/> emoji!
-             *
-             */
-            parse: parse,
-
-            /**
-             * Given a string, invokes the callback argument
-             *  per each emoji found in such string.
-             * This is the most raw version used by
-             *  the .parse(string) method itself.
-             *
-             * @param   string    generic string to parse
-             * @param   Function  a generic callback that will be
-             *                    invoked to replace the content.
-             *                    This calback wil receive standard
-             *                    String.prototype.replace(str, callback)
-             *                    arguments such:
-             *  callback(
-             *    rawText,  // the emoji match
-             *  );
-             *
-             *                    and others commonly received via replace.
-             */
-            replace: replace
-        },
-
-        // RegExp based on emoji's official Unicode standards
-        // http://www.unicode.org/Public/UNIDATA/EmojiSources.txt
-        re = /(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddb0-\uddb3])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[\u0023\u002a\u0030-\u0039]\ufe0f?\u20e3|(?:[\u00a9\u00ae\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\udeeb\udeec\udef4-\udef9]|\ud83e[\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd40-\udd45\udd47-\udd70\udd73-\udd76\udd7a\udd7c-\udda2\uddb4\uddb7\uddc0-\uddc2\uddd0\uddde-\uddff]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,
-
-        // avoid runtime RegExp creation for not so smart,
-        // not JIT based, and old browsers / engines
-        UFE0Fg = /\uFE0F/g,
-
-        // avoid using a string literal like '\u200D' here because minifiers expand it inline
-        U200D = String.fromCharCode(0x200D);
-
-    return twemoji;
-
-
-    /////////////////////////
-    //  private functions  //
-    //     declaration     //
-    /////////////////////////
-
-    /**
-     * Used to both remove the possible variant
-     *  and to convert utf16 into code points.
-     *  If there is a zero-width-joiner (U+200D), leave the variants in.
-     * @param   string    the raw text of the emoji match
-     * @return  string    the code point
-     */
-    function grabTheRightIcon(rawText) {
-        var unicodeSurrogates = rawText.indexOf(U200D) < 0 ? rawText.replace(UFE0Fg, '') : rawText,
-            r = [],
-            c = 0,
-            p = 0,
-            i = 0;
-        while (i < unicodeSurrogates.length) {
-            c = unicodeSurrogates.charCodeAt(i++);
-            if (p) {
-                r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
-                p = 0;
-            } else if (0xD800 <= c && c <= 0xDBFF) {
-                p = c;
-            } else {
-                r.push(c.toString(16));
-            }
-        }
-        return r.join('-');
-    }
-
-    function parse(str, dontremove, emoticon) {
-        //Twitch title may contain < or > with causes html problems
-        if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return replace(str, function(rawText) {
-            var iconId = grabTheRightIcon(rawText);
-
-            return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" alt="" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
-        });
-    }
-
-    function replace(text, callback) {
-        return String(text).replace(re, callback);
-    }
-
-}());//Variable initialization
-var SearchLive_cursorY = 0;
-var SearchLive_cursorX = 0;
-var SearchLive_dataEnded = false;
-var SearchLive_itemsCount = 0;
-var SearchLive_idObject = {};
-var SearchLive_emptyCellVector = [];
-var SearchLive_loadingData = false;
-var SearchLive_loadingDataTry = 0;
-var SearchLive_loadingDataTryMax = 5;
-var SearchLive_loadingDataTimeout = 3500;
-var SearchLive_itemsCountOffset = 0;
-var SearchLive_MaxOffset = 0;
-var SearchLive_emptyContent = false;
-var SearchLive_Status = false;
-var SearchLive_itemsCountCheck = false;
-var SearchLive_lastData = '';
-
-var SearchLive_ids = ['sl_thumbdiv', 'sl_img', 'sl_infodiv', 'sl_displayname', 'sl_streamtitle', 'sl_streamgame', 'sl_viwers', 'sl_quality', 'sl_cell', 'slempty_', 'search_live_scroll'];
-//Variable initialization end
-
-function SearchLive_init() {
-    Main_values.Main_CenterLablesVectorPos = 1;
-    Main_values.Main_Go = Main_SearchLive;
-    Main_values.Search_isSearching = true;
-    Main_cleanTopLabel();
-    if (SearchLive_lastData !== Main_values.Search_data) SearchLive_Status = false;
-    Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Main_values.Search_data + "'"));
-    document.body.addEventListener("keydown", SearchLive_handleKeyDown, false);
-    if (SearchLive_Status) {
-        Main_YRst(SearchLive_cursorY);
-        Main_ShowElement(SearchLive_ids[10]);
-        SearchLive_addFocus();
-        Main_SaveValues();
-    } else SearchLive_StartLoad();
-}
-
-function SearchLive_exit() {
-    Main_RestoreTopLabel();
-    document.body.removeEventListener("keydown", SearchLive_handleKeyDown);
-    Main_HideElement(SearchLive_ids[10]);
-}
-
-function SearchLive_StartLoad() {
-    Main_empty('stream_table_search_live');
-    Main_HideElement(SearchLive_ids[10]);
-    Main_showLoadDialog();
-    Main_HideWarningDialog();
-    SearchLive_lastData = Main_values.Search_data;
-    SearchLive_Status = false;
-    SearchLive_itemsCountOffset = 0;
-    SearchLive_MaxOffset = 0;
-    SearchLive_idObject = {};
-    SearchLive_emptyCellVector = [];
-    SearchLive_itemsCountCheck = false;
-    Main_FirstLoad = true;
-    SearchLive_itemsCount = 0;
-    SearchLive_cursorX = 0;
-    SearchLive_cursorY = 0;
-    SearchLive_dataEnded = false;
-    Main_CounterDialogRst();
-    SearchLive_loadDataPrepare();
-    SearchLive_loadDataRequest();
-}
-
-function SearchLive_loadDataPrepare() {
-    SearchLive_loadingData = true;
-    SearchLive_loadingDataTry = 0;
-    SearchLive_loadingDataTimeout = 3500;
-}
-
-function SearchLive_loadDataRequest() {
-
-    var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
-    if (offset && offset > (SearchLive_MaxOffset - 1)) {
-        offset = SearchLive_MaxOffset - Main_ItemsLimitVideo;
-        SearchLive_dataEnded = true;
-    }
-
-    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitVideo + '&offset=' + offset;
-
-    if (Main_Android && !SearchLive_itemsCount)
-        BaseAndroidhttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError);
-    else
-        BasexmlHttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccess, SearchLive_loadDataError, false);
-}
-
-function SearchLive_loadDataError() {
-    SearchLive_loadingDataTry++;
-    if (SearchLive_loadingDataTry < SearchLive_loadingDataTryMax) {
-        SearchLive_loadingDataTimeout += 500;
-        SearchLive_loadDataRequest();
-    } else {
-        SearchLive_loadingData = false;
-        if (!SearchLive_itemsCount) {
-            Main_FirstLoad = false;
-            Main_HideLoadDialog();
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
         } else {
-            SearchLive_dataEnded = true;
-            SearchLive_loadDataSuccessFinish();
+            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
         }
-    }
-}
-
-function SearchLive_loadDataSuccess(responseText) {
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    SearchLive_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitVideo) SearchLive_dataEnded = true;
-
-    var offset_itemsCount = SearchLive_itemsCount;
-    SearchLive_itemsCount += response_items;
-
-    SearchLive_emptyContent = !SearchLive_itemsCount;
-
-    var response_rows = response_items / Main_ColoumnsCountVideo;
-    if (response_items % Main_ColoumnsCountVideo > 0) response_rows++;
-
-    var coloumn_id, row_id, row, stream, id,
-        cursor = 0,
-        doc = document.getElementById("stream_table_search_live");
-
-    for (var i = 0; i < response_rows; i++) {
-        row_id = offset_itemsCount / Main_ColoumnsCountVideo + i;
-        row = document.createElement('tr');
-
-        for (coloumn_id = 0; coloumn_id < Main_ColoumnsCountVideo && cursor < response_items; coloumn_id++, cursor++) {
-            stream = response.streams[cursor];
-            id = stream.channel._id;
-            if (SearchLive_idObject[id]) coloumn_id--;
-            else {
-                SearchLive_idObject[id] = 1;
-                row.appendChild(Main_createCellVideo(row_id, row_id + '_' + coloumn_id,
-                    [stream.channel.name, id], SearchLive_ids,
-                    [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                        Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                        stream.channel.status, stream.game,
-                        STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                        Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
-                    ]));
-            }
-        }
-
-        for (coloumn_id; coloumn_id < Main_ColoumnsCountVideo; coloumn_id++) {
-            if (SearchLive_dataEnded && !SearchLive_itemsCountCheck) {
-                SearchLive_itemsCountCheck = true;
-                SearchLive_itemsCount = (row_id * Main_ColoumnsCountVideo) + coloumn_id;
-            }
-            row.appendChild(Main_createEmptyCell(SearchLive_ids[9] + row_id + '_' + coloumn_id));
-            SearchLive_emptyCellVector.push(SearchLive_ids[9] + row_id + '_' + coloumn_id);
-        }
-        doc.appendChild(row);
-    }
-
-    SearchLive_loadDataSuccessFinish();
-}
-
-function SearchLive_loadDataSuccessFinish() {
-    if (!SearchLive_Status) {
-        if (SearchLive_emptyContent) Main_showWarningDialog(STR_SEARCH_RESULT_EMPTY);
-        else {
-            SearchLive_Status = true;
-            SearchLive_addFocus();
-            Main_SaveValues();
-        }
-        Main_ShowElement(SearchLive_ids[10]);
-        Main_FirstLoad = false;
-        Main_HideLoadDialog();
     } else {
-        if (SearchLive_emptyCellVector.length > 0 && !SearchLive_dataEnded) {
-            SearchLive_loadDataPrepare();
-            SearchLive_loadDataReplace();
-            return;
-        } else {
-            SearchLive_addFocus(true);
-            SearchLive_emptyCellVector = [];
+        Main_HideElement('side_panel_feed_holder');
+        Main_ShowElement('side_panel_etc');
+        document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
+    }
+}
+
+function Sidepannel_Hide() {
+    Main_AddClass('side_panel', 'side_panel_hide');
+    Main_HideElement('side_panel_feed_thumb');
+    Sidepannel_RemoveFocusEtc();
+    Sidepannel_Pos = 0;
+    Sidepannel_AddFocusEtc();
+    document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
+    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
+}
+
+function Sidepannel_Scroll() {
+    var size = Sidepannel_GetSize();
+    if (Sidepannel_PosFeed > 4) {
+        var position;
+        if (Sidepannel_PosFeed < (size - 6)) {
+            position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
+            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
+        } else if (size > 11) {
+            position = (document.getElementById(UserLiveFeed_side_ids[8] + (size - 11)).offsetTop * -1);
+            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
         }
-    }
-    SearchLive_loadingData = false;
-}
 
-function SearchLive_loadDataReplace() {
-
-    Main_SetItemsLimitReplace(SearchLive_emptyCellVector.length);
-
-    var offset = SearchLive_itemsCount + SearchLive_itemsCountOffset;
-    if (offset && offset > (SearchLive_MaxOffset - 1)) {
-        offset = SearchLive_MaxOffset - Main_ItemsLimitReplace;
-        SearchLive_dataEnded = true;
-    }
-    var theUrl = 'https://api.twitch.tv/kraken/search/streams?query=' + encodeURIComponent(Main_values.Search_data) +
-        '&limit=' + Main_ItemsLimitReplace + '&offset=' + offset;
-
-    BasehttpGet(theUrl, SearchLive_loadingDataTimeout, 2, null, SearchLive_loadDataSuccessReplace, SearchLive_loadDataErrorReplace);
-}
-
-function SearchLive_loadDataErrorReplace() {
-    SearchLive_loadingDataTry++;
-    if (SearchLive_loadingDataTry < SearchLive_loadingDataTryMax) {
-        SearchLive_loadingDataTimeout += 500;
-        SearchLive_loadDataReplace();
-    } else {
-        SearchLive_dataEnded = true;
-        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
-        SearchLive_emptyCellVector = [];
-        SearchLive_loadDataSuccessFinish();
-    }
-}
-
-function SearchLive_loadDataSuccessReplace(responseText) {
-    var response = JSON.parse(responseText),
-        response_items = response.streams.length,
-        stream, id, i = 0,
-        cursor = 0,
-        tempVector = [];
-
-    SearchLive_MaxOffset = parseInt(response._total);
-
-    if (response_items < Main_ItemsLimitReplace) SearchLive_dataEnded = true;
-
-    for (i; i < SearchLive_emptyCellVector.length && cursor < response_items; i++, cursor++) {
-        stream = response.streams[cursor];
-        id = stream.channel._id;
-        if (SearchLive_idObject[id]) i--;
-        else {
-            SearchLive_idObject[id] = 1;
-            Main_replaceVideo(SearchLive_emptyCellVector[i], [stream.channel.name, id],
-                [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
-                    stream.channel.status, stream.game,
-                    STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
-                ], SearchLive_ids);
-
-            tempVector.push(i);
+        //Prevent flickering when not change position as we are at the botton but the position value changes by 1px
+        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)) {
+            Sidepannel_ScrollPos = position;
         }
-    }
 
-    for (i = tempVector.length - 1; i > -1; i--) SearchLive_emptyCellVector.splice(tempVector[i], 1);
+        document.getElementById('side_panel_feed_scroll').style.marginTop = Sidepannel_ScrollPos + "px";
 
-    SearchLive_itemsCountOffset += cursor;
-    if (SearchLive_dataEnded) {
-        SearchLive_itemsCount -= SearchLive_emptyCellVector.length;
-        SearchLive_emptyCellVector = [];
-    }
-
-    SearchLive_loadDataSuccessFinish();
+    } else document.getElementById('side_panel_feed_scroll').style.marginTop = 0;
 }
 
-function SearchLive_addFocus(forceScroll) {
-    Main_addFocusVideo(SearchLive_cursorY, SearchLive_cursorX, SearchLive_ids, Main_ColoumnsCountVideo, SearchLive_itemsCount, forceScroll);
-
-    if (((SearchLive_cursorY + Main_ItemsReloadLimitVideo) > (SearchLive_itemsCount / Main_ColoumnsCountVideo)) &&
-        !SearchLive_dataEnded && !SearchLive_loadingData) {
-        SearchLive_loadDataPrepare();
-        SearchLive_loadDataRequest();
-    }
-    if (Main_CenterLablesInUse) SearchLive_removeFocus();
-}
-
-function SearchLive_removeFocus() {
-    if (SearchLive_itemsCount) Main_removeFocus(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids);
-}
-
-function SearchLive_handleKeyDown(event) {
-    if (Main_FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
-    var i;
-
+function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                SearchLive_removeFocus();
-                Main_CenterLablesStart(SearchLive_handleKeyDown);
-            }
-            Sidepannel_RestoreScreen();
-            break;
-        case KEY_LEFT:
-            if (!SearchLive_cursorX) {
-                SearchLive_removeFocus();
-                Sidepannel_Start(SearchLive_handleKeyDown, true);
-            } else if (Main_ThumbNull((SearchLive_cursorY), (SearchLive_cursorX - 1), SearchLive_ids[0])) {
-                SearchLive_removeFocus();
-                SearchLive_cursorX--;
-                SearchLive_addFocus();
+            Sidepannel_Hide();
+            if (Sidepannel_Isscreen) {
+                Sidepannel_Isscreen = false;
+                Main_SwitchScreenAction();
             } else {
-                for (i = (Main_ColoumnsCountVideo - 1); i > -1; i--) {
-                    if (Main_ThumbNull((SearchLive_cursorY - 1), i, SearchLive_ids[0])) {
-                        SearchLive_removeFocus();
-                        SearchLive_cursorY--;
-                        SearchLive_cursorX = i;
-                        SearchLive_addFocus();
-                        break;
-                    }
-                }
-            }
-            break;
-        case KEY_RIGHT:
-            if (Main_ThumbNull((SearchLive_cursorY), (SearchLive_cursorX + 1), SearchLive_ids[0])) {
-                SearchLive_removeFocus();
-                SearchLive_cursorX++;
-                SearchLive_addFocus();
-            } else if (Main_ThumbNull((SearchLive_cursorY + 1), 0, SearchLive_ids[0])) {
-                SearchLive_removeFocus();
-                SearchLive_cursorY++;
-                SearchLive_cursorX = 0;
-                SearchLive_addFocus();
-            }
-            break;
-        case KEY_UP:
-            if (!SearchLive_cursorY) {
-                SearchLive_removeFocus();
-                Main_CenterLablesStart(SearchLive_handleKeyDown);
-            } else {
-                for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                    if (Main_ThumbNull((SearchLive_cursorY - 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
-                        SearchLive_removeFocus();
-                        SearchLive_cursorY--;
-                        SearchLive_cursorX = SearchLive_cursorX - i;
-                        SearchLive_addFocus();
-                        break;
-                    }
-                }
-            }
-            break;
-        case KEY_DOWN:
-            for (i = 0; i < Main_ColoumnsCountVideo; i++) {
-                if (Main_ThumbNull((SearchLive_cursorY + 1), (SearchLive_cursorX - i), SearchLive_ids[0])) {
-                    SearchLive_removeFocus();
-                    SearchLive_cursorY++;
-                    SearchLive_cursorX = SearchLive_cursorX - i;
-                    SearchLive_addFocus();
-                    break;
-                }
-            }
-            break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_ENTER:
-            Main_OpenLiveStream(SearchLive_cursorY + '_' + SearchLive_cursorX, SearchLive_ids, SearchLive_handleKeyDown);
-            break;
-        default:
-            break;
-    }
-}//Variable initialization
-var Search_cursorY = 0;
-var Search_cursorX = 0;
-var Search_keyBoardOn = false;
-//Variable initialization end
-
-function Search_init() {
-    Main_HideWarningDialog();
-    Main_HideElement('label_refresh');
-    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_textContent('top_bar_user', STR_SEARCH);
-    document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('top_bar_live').style.display = 'none';
-    document.getElementById('top_bar_featured').style.display = 'none';
-    document.getElementById('top_bar_game').style.display = 'none';
-    document.getElementById('top_bar_vod').style.display = 'none';
-    document.getElementById('top_bar_clip').style.display = 'none';
-    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_ShowElement('search_scroll');
-    Search_cursorY = 0;
-    Search_cursorX = 0;
-    Search_refreshInputFocusTools();
-    Search_inputFocus();
-}
-
-function Search_exit() {
-    Search_RemoveinputFocus(false);
-    document.body.removeEventListener("keydown", Search_handleKeyDown);
-    Search_refreshInputFocusTools();
-    Main_values.Main_Go = Main_values.Main_BeforeSearch;
-    document.getElementById("top_lables").style.marginLeft = '18.5%';
-    Main_textContent('top_bar_user', STR_USER);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_ShowElement('label_refresh');
-    document.getElementById('top_bar_live').style.display = 'inline-block';
-    document.getElementById('top_bar_featured').style.display = 'inline-block';
-    document.getElementById('top_bar_game').style.display = 'inline-block';
-    document.getElementById('top_bar_vod').style.display = 'inline-block';
-    document.getElementById('top_bar_clip').style.display = 'inline-block';
-    Main_SearchInput.value = '';
-    Main_HideElement('search_scroll');
-}
-
-function Search_loadData() {
-    Search_exit();
-    Main_ready(function() {
-        if (!Search_cursorX) SearchChannels_init();
-        else if (Search_cursorX === 1) {
-            inUseObj = SearchGames;
-            Screens_init();
-        } else if (Search_cursorX === 2) SearchLive_init();
-    });
-}
-
-function Search_refreshInputFocusTools() {
-    Main_RemoveClass('chanel_button', 'button_search_focused');
-    Main_RemoveClass('game_button', 'button_search_focused');
-    Main_RemoveClass('live_button', 'button_search_focused');
-
-    if (Search_cursorY) {
-        if (!Search_cursorX) Main_AddClass('chanel_button', 'button_search_focused');
-        else if (Search_cursorX === 1) Main_AddClass('game_button', 'button_search_focused');
-        else if (Search_cursorX === 2) Main_AddClass('live_button', 'button_search_focused');
-    }
-}
-
-function Search_handleKeyDown(event) {
-    if (Search_keyBoardOn) return;
-
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else {
-                Search_exit();
-                Main_SwitchScreen();
+                document.body.addEventListener("keydown", Sidepannel_Callback, false);
+                Main_CenterLablesChange();
             }
             break;
         case KEY_LEFT:
-            if (Search_cursorY === 1) {
-                Search_cursorX--;
-                if (Search_cursorX < 0) Search_cursorX = 2;
-                Search_refreshInputFocusTools();
+            document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
+            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
+            Main_HideElement('side_panel_feed_thumb');
+            Main_HideElement('side_panel_feed_holder');
+            Main_ShowElement('side_panel_etc');
+            break;
+        case KEY_RIGHT:
+            UserLiveFeed_FeedRefreshFocus();
+            break;
+        case KEY_UP:
+            if (Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
+                Sidepannel_RemoveFocusFeed();
+                Sidepannel_PosFeed--;
+                Sidepannel_AddFocusFeed();
+            }
+            break;
+        case KEY_DOWN:
+            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
+                Sidepannel_RemoveFocusFeed();
+                Sidepannel_PosFeed++;
+                Sidepannel_AddFocusFeed();
+            }
+            break;
+        case KEY_ENTER:
+            var doc = document.getElementById("side_panel");
+            doc.style.transition = 'none';
+            Sidepannel_Hide();
+            Main_values.Play_isHost = false;
+            Play_UserLiveFeedPressed = true;
+            Sidepannel_Isscreen = false;
+            Main_ready(function() {
+                Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
+                doc.style.transition = '';
+            });
+            break;
+        default:
+            break;
+    }
+}
+
+function Sidepannel_handleKeyDownEtc(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+        case KEY_LEFT:
+            Sidepannel_Hide();
+            if (Sidepannel_Isscreen) {
+                Sidepannel_Isscreen = false;
+                Main_SwitchScreenAction();
+            } else {
+                document.body.addEventListener("keydown", Sidepannel_Callback, false);
+                Main_CenterLablesChange();
             }
             break;
         case KEY_RIGHT:
-            if (Search_cursorY === 1) {
-                Search_cursorX++;
-                if (Search_cursorX > 2) Search_cursorX = 0;
-                Search_refreshInputFocusTools();
+            if (AddUser_UserIsSet()) {
+                document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
+                document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
+                Main_HideElement('side_panel_etc');
+                Main_ShowElement('side_panel_feed_holder');
+                Main_ShowElement('side_panel_feed_thumb');
+            } else {
+                Main_showWarningDialog(STR_NOKUSER_WARN);
+                window.setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         case KEY_UP:
-            if (Search_cursorY === 1) {
-                Search_cursorY = 0;
-                Search_refreshInputFocusTools();
-                Search_inputFocus();
+            if (Sidepannel_Pos) {
+                Sidepannel_RemoveFocusEtc();
+                Sidepannel_Pos--;
+                Sidepannel_AddFocusEtc();
             }
             break;
         case KEY_DOWN:
-            if (!Search_cursorY) {
-                Search_RemoveinputFocus(false);
-                Search_cursorY = 1;
-                Search_refreshInputFocusTools();
-            } else if (Search_cursorY === 1) {
-                Search_cursorY = 0;
-                Search_refreshInputFocusTools();
-                Search_inputFocus();
+            if (Sidepannel_Pos < 10) {
+                Sidepannel_RemoveFocusEtc();
+                Sidepannel_Pos++;
+                Sidepannel_AddFocusEtc();
             }
             break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!Search_cursorY) Search_inputFocus();
-            else {
-                if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
-                    Main_values.Search_data = Main_SearchInput.value;
-                    Main_SearchInput.value = '';
-                    Search_loadData();
-                } else {
-                    Main_showWarningDialog(STR_SEARCH_EMPTY);
-                    window.setTimeout(function() {
-                        Main_HideWarningDialog();
-                    }, 1000);
-                }
-            }
+            Sidepannel_KeyEnter();
             break;
         default:
             break;
     }
-}
-
-function Search_inputFocus() {
-    document.body.removeEventListener("keydown", Search_handleKeyDown);
-    document.body.addEventListener("keydown", Search_KeyboardEvent, false);
-    Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    Main_SearchInput.focus();
-    Search_keyBoardOn = true;
-}
-
-function Search_RemoveinputFocus(EnaKeydown) {
-    Main_SearchInput.blur();
-    Search_removeEventListener();
-    document.body.removeEventListener("keydown", Search_KeyboardEvent);
-    Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
-
-    if (EnaKeydown) document.body.addEventListener("keydown", Search_handleKeyDown, false);
-    Search_keyBoardOn = false;
-}
-
-function Search_removeEventListener() {
-    if (Main_SearchInput !== null) {
-        var elClone = Main_SearchInput.cloneNode(true);
-        Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
-        Main_SearchInput = document.getElementById("search_input");
-    }
-}
-
-function Search_KeyboardEvent(event) {
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else {
-                Search_exit();
-                Main_SwitchScreen();
-            }
-            break;
-        case KEY_KEYBOARD_DELETE_ALL:
-            Main_SearchInput.value = '';
-            break;
-        case KEY_KEYBOARD_DONE:
-        case KEY_DOWN:
-            Search_RemoveinputFocus(true);
-            Search_cursorY = 1;
-            Search_refreshInputFocusTools();
-            break;
-        case KEY_KEYBOARD_BACKSPACE:
-            Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
-            break;
-        case KEY_KEYBOARD_SPACE:
-            Main_SearchInput.value += ' ';
-            break;
-        default:
-            break;
-    }
-}// The bellow are some function or adptations of function from
-// https://www.nightdev.com/kapchat/
-function extraEmoticonize(message, emote) {
-    return message.replace(emote.code, extraEmoteTemplate(emote));
-}
-
-function extraEmoteTemplate(emote) {
-    return '<img class="emoticon" alt="" src="' + emote['3x'] + '"/>';
-}
-
-function emoteTemplate(id) {
-    return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0"/>';
-}
-
-
-function mescape(message) {
-    return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function extraMessageTokenize(message) {
-    var tokenizedString = message.split(' ');
-
-    for (var i = 0; i < tokenizedString.length; i++) {
-        message = tokenizedString[i];
-
-        var test = message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
-        var emote = extraEmotes[test] || extraEmotes[message];
-
-        if (emote) {
-            message = extraEmoticonize(message, emote);
-        } else {
-            message = mescape(message);
-        }
-
-        tokenizedString[i] = message;
-    }
-
-    return tokenizedString.join(' ');
-}
-
-function emoticonize(message, emotes) {
-    if (!emotes) return [message];
-
-    var tokenizedMessage = [];
-
-    var emotesList = Object.keys(emotes);
-
-    var replacements = [];
-
-    emotesList.forEach(function(id) {
-        var emote = emotes[id];
-
-        for (var i = emote.length - 1; i >= 0; i--) {
-            replacements.push({
-                id: id,
-                first: emote[i][0],
-                last: emote[i][1]
-            });
-        }
-    });
-
-    replacements.sort(function(a, b) {
-        return b.first - a.first;
-    });
-
-    // Tokenizes each character into an array
-    // punycode deals with unicode symbols on surrogate pairs
-    // punycode is used in the replacements loop below as well
-    message = punycode.ucs2.decode(message);
-
-    replacements.forEach(function(replacement) {
-        // Unshift the end of the message (that doesn't contain the emote)
-        tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
-
-        // Unshift the emote HTML (but not as a string to allow us to process links and escape html still)
-        tokenizedMessage.unshift([emoteTemplate(replacement.id)]);
-
-        // Splice the unparsed piece of the message
-        message = message.slice(0, replacement.first);
-    });
-
-    // Unshift the remaining part of the message (that contains no emotes)
-    tokenizedMessage.unshift(punycode.ucs2.encode(message));
-
-    return tokenizedMessage;
-}
-
-function transformBadges(sets) {
-    return Object.keys(sets).map(function(b) {
-        var badge = sets[b];
-        badge.type = b;
-        badge.versions = Object.keys(sets[b].versions).map(function(v) {
-            var version = sets[b].versions[v];
-            version.type = v;
-            return version;
-        });
-        return badge;
-    });
-}
-
-function tagCSS(type, version, url, doc) {
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
-    if (doc) doc.appendChild(style);
-    else document.head.appendChild(style);
 }
