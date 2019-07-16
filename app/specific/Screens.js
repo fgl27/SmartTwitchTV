@@ -35,6 +35,9 @@ function Screens_InitSecondaryScreens() {
 
     //Channels screens
     ScreensObj_InitUserChannels();
+
+    //Search screen
+    ScreensObj_InitSearchGames();
 }
 
 //TODO cleanup not used when finished migrate all
