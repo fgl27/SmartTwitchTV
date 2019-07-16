@@ -1080,6 +1080,7 @@ function ScreensObj_InitSearchGames() {
 
     SearchGames = Screens_assign(SearchGames, Base_Game_obj);
     SearchGames.set_ThumbSize();
+    SearchGames.ItemsLimit = 100;
 }
 
 var Base_Channel_obj = {
