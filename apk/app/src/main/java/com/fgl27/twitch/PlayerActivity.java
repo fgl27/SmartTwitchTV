@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,6 +25,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.Extractor;
@@ -41,7 +44,6 @@ import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -101,6 +103,10 @@ public class PlayerActivity extends Activity {
     public boolean alredystarted;
     private boolean loadingcanshow;
     public int mwhocall = 1;
+    private int heightDefault = 0;
+    private int mwidthDefault = 0;
+    private int heightChat = 0;
+    private int mwidthChat = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +190,19 @@ public class PlayerActivity extends Activity {
         loadingcanshow = false;
         spinner.setVisibility(View.GONE);
         spinner.clearAnimation();
+    }
+
+    private void updatesize(boolean sizechat) {
+        if (heightDefault == 0) {
+            heightDefault = simpleExoPlayerView.getHeight();
+            mwidthDefault = simpleExoPlayerView.getWidth();
+
+            heightChat = (int)(heightDefault * 0.75);
+            mwidthChat = (int)(mwidthDefault * 0.75);
+        }
+
+        if (sizechat) simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
+        else simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
     }
 
     private void showLoading(boolean runnow) {
@@ -293,6 +312,7 @@ public class PlayerActivity extends Activity {
             this.unregisterReceiver(initializePlayerReceiver);
             this.unregisterReceiver(showBufferReceiver);
             this.unregisterReceiver(closeReceiver);
+            this.unregisterReceiver(playersize);
         } catch (IllegalArgumentException ignored) {}
     }
 
@@ -301,6 +321,7 @@ public class PlayerActivity extends Activity {
             this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
             this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
             this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
+            this.registerReceiver(playersize, new IntentFilter("playersize"));
         } catch (NullPointerException ignored) {}
     }
 
@@ -446,6 +467,15 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void mupdatesize(boolean sizechat) {
+            final Intent NewIntent = new Intent();
+            NewIntent.setAction("playersize");
+            NewIntent.putExtra("sizechat", sizechat);
+            mwebContext.sendBroadcast(NewIntent);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
             PlayerActivity.url = videoAddress;
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
@@ -557,6 +587,14 @@ public class PlayerActivity extends Activity {
                 if (mResumePosition < 0) mResumePosition = 0;
             }
             initializePlayer();
+        }
+    };
+
+    private final BroadcastReceiver playersize = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean sizechat = intent.getBooleanExtra("sizechat", false);
+            updatesize(sizechat);
         }
     };
 

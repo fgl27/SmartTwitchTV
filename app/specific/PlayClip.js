@@ -462,6 +462,7 @@ function PlayClip_handleKeyDown(e) {
                 //console.log(Play_Speed[Play_SpeedPos]);
                 //Play_SpeedPos++;
                 //if (Play_SpeedPos > (Play_Speed.length - 1)) Play_SpeedPos = 0;
+                //Android.mupdatesize(true);
                 //break;
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos && !UserLiveFeed_loadingData) {
@@ -499,6 +500,8 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_RIGHT:
+                //Android.mupdatesize(false);
+                //break;
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
