@@ -155,3 +155,18 @@
 .icon-star:before {
   content: "\47";
 }
+.icon-speedometer:before {
+  content: "\48";
+}
+.icon-chat:before {
+  content: "\49";
+}
+.icon-squares:before {
+  content: "\4a";
+}
+.icon-resize-up:before {
+  content: "\4d";
+}
+.icon-resize-down:before {
+  content: "\4e";
+}
