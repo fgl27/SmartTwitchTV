@@ -146,8 +146,8 @@ var Play_ChatSizeVal = [{
 var Play_ChatFont = 1;
 var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
 
-var Play_Speed = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
-var Play_SpeedPos = 3;
+var Play_Speed = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]; // jshint ignore:line
+var Play_SpeedPos = 3; // jshint ignore:line
 //Variable initialization end
 
 function Play_PreStart() {
