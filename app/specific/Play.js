@@ -1767,8 +1767,10 @@ function Play_MakeControls() {
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('extra_button_' + this.position, '(' +
-                    (Play_isChatShown() ? STR_YES : STR_NO) + ')');
+                var string = (Play_isChatShown() ? STR_YES : STR_NO);
+                if (!Play_isFullScreen) string = STR_CHAT_SIDE;
+
+                Main_textContent('extra_button_' + this.position, '(' + string + ')');
             },
         },
         8: { //chat side
@@ -1786,8 +1788,8 @@ function Play_MakeControls() {
             },
             setLable: function() {
                 Main_textContent('extra_button_' + this.position, '(' + (Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE) + ')');
-                if (!Play_isFullScreen) Main_textContent('extra_button_' + (this.position - 1), '(' + STR_CHAT_SIDE + ')');
-                else Main_textContent('extra_button_' + (this.position - 1), '(' + (Play_ChatEnable ? STR_YES : STR_NO) + ')');
+
+                Play_controls[this.position - 1].setLable();
             },
             setIcon: function() {
                 Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
