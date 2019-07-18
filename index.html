@@ -4,13 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="release/githubio/css/icons.css">
+    <link rel="stylesheet" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css">
     <title>SmartTV Twitch</title>
     <link rel='shortcut icon' type='image/x-icon' href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
     <style>
         body,
         html {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.5);
             font-family: 'Roboto';
             margin: auto;
             overflow: hidden;
@@ -22,7 +22,7 @@
         div.side_panel_return,
         div.side_panel_return,
         div.side_panel_text_focus,
-        .pause_button3d {
+        .extra_button3d {
             text-shadow: -2px 0 0 #000000,
                 1px -1px 0 #000000,
                 1px 1px 0 #000000,
@@ -51,6 +51,27 @@
                 -2px 4px 0 #000000,
                 -2px 5px 0 #000004,
                 -2px 6px 0 #000000;
+        }
+
+        .pause_button3d {
+            text-shadow: -2px 0 0 #000000,
+                1px -1px 0 #000000,
+                1px 1px 0 #000000,
+                0 1px 0 #000000,
+                -1px 0 0 #000000,
+                -1px 1px 0 #000000,
+                0 -1px 0 #000000,
+                0 0.75px 0 #777777,
+                0 1.5px 0 #666666,
+                0 2.25px 0 #555555,
+                0 4px 0 #000000,
+                0 5px 0 #000000,
+                2px 2px 0 #000000,
+                2px 3px 0 #000000,
+                -2px 2px 0 #000000,
+                -2px 3px 0 #000000,
+                -1px 4px 0 #000000,
+                1px 4px 0 #000000;
         }
 
         div.icon_center_label,
@@ -511,16 +532,6 @@
             border-top: 8px solid white;
         }
 
-        div.scene_channel_panel_bottom {
-            z-index: -100;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: auto;
-            text-align: center;
-            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040));
-        }
-
         div.scene_channel_panel {
             position: fixed;
             z-index: 2;
@@ -543,6 +554,13 @@
 
         div.quality_name {
             width: 28ch;
+        }
+
+        .arrows_text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #FFFFFF;
+            font-size: 100%;
         }
 
         div.playbotton {
@@ -754,11 +772,6 @@
             color: #FFFFFF;
         }
 
-        .pause_button3d {
-            color: #FFFFFF;
-            font-size: 180%;
-        }
-
         div.buffertext {
             display: flex;
             font-weight: bold;
@@ -956,23 +969,77 @@
             background-color: rgba(255, 255, 255, 0.4);
         }
 
+        .controls_holder {
+            z-index: -100;
+            position: absolute;
+            bottom: 0.5ch;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.040));
+        }
+
         .progress_pause_holder {
-            bottom: 4.5ch;
+            bottom: 9.5ch;
             position: absolute;
             width: 100%;
             justify-content: center;
         }
 
         .next_button,
+        .extra_button,
         .pause_button {
             display: inline-block;
             width: 5%;
             padding-top: 5px;
             padding-bottom: 5px;
-            height: 35px;
             text-align: center;
             border-radius: 15px;
             border: 2px solid rgba(0, 0, 0, 0);
+        }
+
+        .controls_button_holder {
+            display: inline-block;
+            width: 6.75%;
+        }
+
+        .controls_button {
+            display: inline-block;
+            width: 3ch;
+            padding: 5px;
+            height: 25px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0);
+            position: relative;
+        }
+
+        .extra_button_text {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .extra_button_text_holder {
+            font-size: 85%;
+            color: #FFFFFF;
+            white-space: nowrap;
+        }
+
+        .pause_button3d {
+            color: #FFFFFF;
+            font-size: 120%;
+        }
+
+        .extra_button {
+            transform: translateY(20%);
+        }
+
+        .extra_button3d {
+            text-align: center;
+            color: #FFFFFF;
+            font-size: 115%;
         }
 
         .next_button {
@@ -981,24 +1048,26 @@
             width: auto;
             max-width: 96%;
             background-color: rgba(0, 0, 0, 0.25);
+            transform: translateY(9%);
         }
 
         .next_text {
             display: inline-block;
             width: auto;
             max-width: 90%;
+            font-size: 90%;
+            transform: translateY(9%);
         }
 
         .pause_next_div {
-            width: 90%;
-            margin-left: 5%;
             text-align: center;
-            margin-top: 0.5ch;
+            width: 95%;
+            margin-left: 2.5%;
         }
 
         .progress_bar_div {
-            width: 90%;
-            margin-left: 5%;
+            width: 95%;
+            margin-left: 2.5%;
             height: 40px;
             text-align: center;
             border-radius: 15px;
@@ -1184,7 +1253,7 @@
 </head>
 
 <body>
-    <div id="scene1" class="screen_size" style="background-color: rgba(0, 0, 0, 1);">
+    <div id="scene1" class="screen_size" style="background-color: rgba(255, 255, 255, 0.5);">
         <div id="topbar" class="topbar hide">
             <div class="top_clock">
                 <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
@@ -1360,6 +1429,7 @@
                     </div>
                     <div id="stream_live_time" style="display: inline-block"></div>
                     <div id="stream_watching_time"></div>
+                    <div id="stream_quality"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div class="playmaininfo">
@@ -1368,57 +1438,7 @@
                     <div id="stream_info_game"></div>
                 </div>
             </div>
-            <div id="scene_channel_panel_bottom" class="scene_channel_panel_bottom">
-                <!-- search-->
-                <div id="scene2_pannel_5" class="playbotton">
-                    <div id="ic_search" class="playbotton_icons">
-                        <i class="icon-search strokicon"></i>
-                    </div>
-                    <div id="scene2_search_text" class="strokedextramini playbottontext"></div>
-                </div>
-                <!-- channel content-->
-                <div id="scene2_pannel_4" class="playbotton">
-                    <div id="channel_icon" class="playbotton_icons">
-                        <i class="icon-filmstrip strokicon"></i>
-                    </div>
-                    <div id="scene2_channel_text" class="strokedextramini playbottontext"></div>
-                </div>
-                <!-- game content-->
-                <div id="scene2_pannel_3" class="playbotton">
-                    <div id="game_icon" class="playbotton_icons" style="overflow: hidden; max-height: 43px;">
-                        <div style="display:flex;">
-                            <i class="icon-gamepad strokicon"></i>
-                        </div>
-                    </div>
-                    <div id="scene2_game_text" class="strokedextramini playbottontext"></div>
-                </div>
-                <!-- fallow-->
-                <div id="scene2_pannel_2" class="playbotton">
-                    <div id="fallow_heart" class="playbotton_icons">
-                        <i class="icon-heart-o strokicon"></i>
-                    </div>
-                    <div id="fallow_text" class="strokedextramini playbottontext"></div>
-                </div>
-                <!-- quality-->
-                <div id="scene2_pannel_1" class="playbotton playbotton_focus">
-                    <div id="quality_video" class="playbotton_icons">
-                        <i class="icon-videocamera strokicon"></i>
-                    </div>
-                    <div id="quality_arrows" style="display: inline-block; vertical-align: middle;">&nbsp;
-                        <div style="display: inline-block;">
-                            <div id="quality_arrow_up" class="up"></div>
-                            <div id="quality_arrow_down" class="down"></div>
-                        </div>&nbsp;&nbsp;
-                    </div>
-                    <div id="quality_name" class="strokedextramini quality_name"></div>
-                </div>
-                <!-- open vod-->
-                <div id="scene2_pannel_0" class="playbotton" style="display:none;">
-                    <div id="open_vod_icon" class="playbotton_icons">
-                        <i class="icon-play strokicon"></i>
-                    </div>&nbsp;
-                    <div id="open_vod_text" class="strokedextramini playbottontext"></div>
-                </div>
+            <div id="controls_holder" class="controls_holder">
             </div>
             <div id="progress_pause_holder" class="progress_pause_holder">
                 <div id="progress_bar_div" class="progress_bar_div">

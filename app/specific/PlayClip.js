@@ -59,10 +59,10 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
-    Main_innerHTML('pause_button', '<i class="pause_button3d icon-pause"></i>');
+    Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElement('progress_bar_div');
     PlayClip_SetOpenVod();
-    Main_ShowElement('scene_channel_panel_bottom');
+    Main_ShowElement('controls_holder');
 
     PlayClip_PlayerCheckCounter = 0;
     PlayClip_PlayerCheckCount = 0;
@@ -164,6 +164,7 @@ function PlayClip_qualityChanged() {
     PlayClip_qualityPlaying = PlayClip_quality;
     if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_SetHtmlQuality('stream_quality');
 
     if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
         PlayClip_replay ? -1 : Android.gettime());
@@ -173,6 +174,8 @@ function PlayClip_qualityChanged() {
 
 function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+
+    Play_SetFullScreen(Play_isFullScreen);
 
     if (Main_Android) {
         PlayClip_PlayerCheckCount = 0;
@@ -266,8 +269,6 @@ function PlayClip_PreshutdownStream() {
     UserLiveFeed_Hide();
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip_Resume);
-    document.getElementById('scene2_pannel_0').style.display = 'none';
-    document.getElementById("quality_name").style.width = '25ch';
     ChannelVod_vodOffset = 0;
 }
 
@@ -394,23 +395,29 @@ function PlayClip_getQualitiesCount() {
 
 function PlayClip_qualityDisplay() {
     if (PlayClip_getQualitiesCount() === 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "0";
-        document.getElementById("quality_arrow_down").style.opacity = "0";
+        document.getElementById("control_arrow_up_" + 6).style.opacity = "0";
+        document.getElementById("control_arrow_down" + 6).style.opacity = "0";
     } else if (!PlayClip_qualityIndex) {
-        document.getElementById("quality_arrow_up").style.opacity = "0.2";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
+        document.getElementById("control_arrow_up_" + 6).style.opacity = "0.2";
+        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
     } else if (PlayClip_qualityIndex === PlayClip_getQualitiesCount() - 1) {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "0.2";
+        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_down" + 6).style.opacity = "0.2";
     } else {
-        document.getElementById("quality_arrow_up").style.opacity = "1";
-        document.getElementById("quality_arrow_down").style.opacity = "1";
+        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
     }
 
+    PlayClip_SetHtmlQuality('controls_name_' + 6);
+}
+
+function PlayClip_SetHtmlQuality(element) {
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
-    if (PlayClip_quality.indexOf('source') !== -1) Main_textContent("quality_name", PlayClip_quality.replace("source", STR_SOURCE));
-    else Main_textContent("quality_name", PlayClip_quality);
+    var quality_string = PlayClip_quality;
+    if (PlayClip_quality.indexOf('source') !== -1) quality_string = quality_string.replace("source", STR_SOURCE);
+
+    Main_textContent(element, PlayClip_quality);
 }
 
 function PlayClip_setHidePanel() {
@@ -418,9 +425,7 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_SetOpenVod() {
-    document.getElementById("quality_name").style.width = '16ch';
-    Main_textContent("open_vod_text", (PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST));
-    document.getElementById('scene2_pannel_0').style.display = 'inline-block';
+    document.getElementById('controls_' + 3).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
 }
 
 function PlayClip_OpenVod() {
@@ -458,12 +463,6 @@ function PlayClip_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                //Android.setPlaybackSpeed(Play_Speed[Play_SpeedPos]);
-                //console.log(Play_Speed[Play_SpeedPos]);
-                //Play_SpeedPos++;
-                //if (Play_SpeedPos > (Play_Speed.length - 1)) Play_SpeedPos = 0;
-                //Android.mupdatesize(true);
-                //break;
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
@@ -475,12 +474,8 @@ function PlayClip_handleKeyDown(e) {
                     Play_ChatPosition();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter++;
-                        if (Play_Panelcounter > 5) Play_Panelcounter = 0;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, -1);
+                    else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     } else if (PlayVod_PanelY === 1) {
@@ -500,8 +495,6 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_RIGHT:
-                //Android.mupdatesize(false);
-                //break;
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
@@ -519,12 +512,8 @@ function PlayClip_handleKeyDown(e) {
                     Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) {
-                        Play_IconsRemoveFocus();
-                        Play_Panelcounter--;
-                        if (Play_Panelcounter < 0) Play_Panelcounter = 5;
-                        Play_IconsAddFocus();
-                    } else if (!PlayVod_PanelY) {
+                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, 1);
+                    else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, PlayClip_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     } else if (PlayVod_PanelY === 1) {
@@ -546,17 +535,11 @@ function PlayClip_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY === 2 && Play_Panelcounter !== 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex > 0 && Play_Panelcounter === 1) {
-                        PlayClip_qualityIndex--;
-                        PlayClip_qualityDisplay();
-                    }
                     Play_clearHidePanel();
+                    if (PlayVod_PanelY < 2) {
+                        PlayVod_PanelY--;
+                        PlayVod_IconsBottonFocus();
+                    } else Play_BottomUpDown(3, 1);
                     PlayClip_setHidePanel();
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
@@ -565,17 +548,11 @@ function PlayClip_handleKeyDown(e) {
             case KEY_DOWN:
                 if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (Play_isPanelShown()) {
-                    if (!PlayVod_PanelY) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayVod_PanelY === 1) {
-                        PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
-                    } else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1 && Play_Panelcounter === 1) {
-                        PlayClip_qualityIndex++;
-                        PlayClip_qualityDisplay();
-                    }
                     Play_clearHidePanel();
+                    if (PlayVod_PanelY < 2) {
+                        PlayVod_PanelY++;
+                        PlayVod_IconsBottonFocus();
+                    } else Play_BottomUpDown(3, -1);
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown()) {

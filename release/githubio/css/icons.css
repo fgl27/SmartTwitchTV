@@ -170,3 +170,18 @@
 .icon-resize-down:before {
   content: "\4e";
 }
+.icon-chat-stop:before {
+  content: "\4b";
+}
+.icon-chat-brig:before {
+  content: "\4f";
+}
+.icon-chat-pos:before {
+  content: "\50";
+}
+.icon-chat-size:before {
+  content: "\51";
+}
+.icon-chat-font:before {
+  content: "\52";
+}

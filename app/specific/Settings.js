@@ -9,7 +9,7 @@ var Settings_value = {
         "values": ["60%", "80%", "100%", "120%", "140%"],
         "defaultValue": 3
     },
-    "chat_brightness": { //chat_font_size
+    "chat_brightness": { //chat_brightness
         "values": ["0%", "5%", "10%", "15%", "20%",
             "25%", "30%", "35%", "40%", "45%",
             "50%", "55%", "60%", "65%", "70%",
@@ -21,7 +21,7 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "clip_auto_play_next": { //force disable
+    "clip_auto_play_next": { //clip_auto_play_next
         "values": ["no", "yes"],
         "defaultValue": 2
     },
