@@ -114,7 +114,7 @@ var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '1.0';
 var Main_stringVersion_Min = '.31';
-var Main_minversion = '071619';
+var Main_minversion = '071819';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_AndroidVersion = '';
 var Main_ClockOffset = 0;
