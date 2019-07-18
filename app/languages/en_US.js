@@ -130,7 +130,6 @@ function en_USLang() {
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Chat force disable";
-    STR_F_DISABLE_CHAT_SUMARRY = "with this the chat won\'t load the content, this is useful for streams with too many viewers where the chat can lag the app.";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
     STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> In doubt read this link  <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> add key for';
     STR_OAUTH_EXPLAIN1 = " below, fallowing this steps:";
@@ -209,7 +208,6 @@ function en_USLang() {
     STR_RESTORE_PLAYBACK = "Restore playback";
     STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app might get closed by the system for more memory. In this case the app saves what it was playing and restores the playback when reopened";
     STR_CHAT_FONT = "Chat font size";
-    STR_CHAT_FONT_SUMARRY = "Change the chat\'s line font size (applies to text and emotes)";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key twice";
     STR_SIZE = "Size ";

@@ -1910,6 +1910,7 @@ function Play_MakeControls() {
                 else Chat_Init();
 
                 this.setLable();
+                Main_SaveValues();
             },
             setLable: function() {
                 Main_textContent('extra_button_' + this.position, '(' +
