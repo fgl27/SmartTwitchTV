@@ -872,7 +872,6 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_RIGHT:
-                console.log(PlayVod_PanelY);
                 if (UserLiveFeed_isFeedShow()) {
                     if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
@@ -890,7 +889,7 @@ function PlayVod_handleKeyDown(e) {
                     Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
-                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
+                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, ChannelVod_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
