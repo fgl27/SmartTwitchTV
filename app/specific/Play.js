@@ -904,6 +904,7 @@ function Play_getQualitiesCount() {
 }
 
 function Play_ChatSize(showDialog) {
+    if (Play_ChatSizeValue > 3) Play_ChatSizeValue = 3;
     Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue].containerHeight + '%';
     document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
     Play_ChatPosition();
