@@ -1513,7 +1513,9 @@ function Play_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY--;
-                        PlayVod_IconsBottonFocus();
+                        if (PlayVod_PanelY < 1) {
+                            PlayVod_PanelY = 1;
+                        } else PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(1, 1);
                     Play_setHidePanel();
                 } else if (!UserLiveFeed_isFeedShow() && AddUser_UserIsSet()) UserLiveFeed_ShowFeed();

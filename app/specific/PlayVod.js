@@ -562,6 +562,10 @@ function PlayVod_IconsBottonResetFocus() {
 }
 
 function PlayVod_IconsBottonFocus() {
+    if (PlayVod_PanelY < 0) {
+        PlayVod_PanelY = 0;
+        return;
+    }
     Main_RemoveClass('pause_button', 'progress_bar_div_focus');
     Main_RemoveClass('next_button', 'progress_bar_div_focus');
     Main_RemoveClass('back_button', 'progress_bar_div_focus');
@@ -916,7 +920,7 @@ function PlayVod_handleKeyDown(e) {
                 else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
-                        PlayVod_PanelY++;
+                        PlayVod_PanelY--;
                         PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(2, 1);
                     PlayVod_setHidePanel();
