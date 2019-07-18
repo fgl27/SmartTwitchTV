@@ -67,6 +67,7 @@ function PlayVod_Start() {
 
     //past broadcast
     document.getElementById('controls_' + 3).style.display = 'none';
+    Play_CurrentSpeed = 3;
 
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
@@ -544,6 +545,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
+        Play_ResetSpeed();
         PlayVod_setHidePanel();
     }
     document.getElementById("scene_channel_panel").style.opacity = "1";
