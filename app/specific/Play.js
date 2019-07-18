@@ -163,7 +163,11 @@ function Play_PreStart() {
     Play_SetChatFont();
 }
 
-function Play_SetFullScreen(isfull) { // jshint ignore:line
+var Play_isFullScreenold = true;
+function Play_SetFullScreen(isfull) {
+    if (Play_isFullScreenold === Play_isFullScreen) return;
+    Play_isFullScreenold = Play_isFullScreen;
+
     if (isfull) {
         if (Play_ChatPositionsBF !== undefined) {
             Play_ChatPositions = Play_ChatPositionsBF;
