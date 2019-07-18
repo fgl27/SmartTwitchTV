@@ -129,7 +129,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): Press Pause\\Play button twice or change the video quality to the same will reset and re-sync the chat";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
-    STR_F_DISABLE_CHAT = "Force disable the chat";
+    STR_F_DISABLE_CHAT = "Chat force disable";
     STR_F_DISABLE_CHAT_SUMARRY = "with this the chat won\'t load the content, this is useful for streams with too many viewers where the chat can lag the app.";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
     STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> In doubt read this link  <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> add key for';
@@ -227,7 +227,7 @@ function en_USLang() {
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
     STR_CHAT_DISABLE = "Chat is disabled, enable it in side panel settings";
     STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
-    STR_CHAT_BRIGHTNESS = "Chat background brightness ";
+    STR_CHAT_BRIGHTNESS = "Chat background brightness";
     STR_PLAY_NEXT = "Play Next";
     STR_PLAY_NEXT_IN = "Playing next in ";
     STR_PLAY_ALL = "Play All";
@@ -238,4 +238,13 @@ function en_USLang() {
     STR_END_DIALOG_SETTINGS = "End dialog";
     STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
+    STR_CHAT = "Chat Show";
+    STR_CHAT_SIZE = "Chat size";
+    STR_CHAT_POS = "Chat position";
+    STR_CHAT_VIDEO_MODE = "Video mode";
+    STR_CHAT_SIDE_FULL = "Full screen";
+    STR_CHAT_SIDE = "Smaller screen and chat";
+    STR_SPEED = "Speed";
+    STR_QUALITY = "Quality";
+    STR_NORMAL = "Normal";
 }

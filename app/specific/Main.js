@@ -59,7 +59,9 @@ var Main_values = {
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
     "Never_run": true,
-    "Main_CenterLablesVectorPos": 0
+    "Main_CenterLablesVectorPos": 0,
+    "Chat_font_size": 3,
+    "ChatBackground": 10,
 };
 
 var Main_LastClickFinish = true;
@@ -156,7 +158,7 @@ function Main_loadTranslations(language) {
         } catch (e) {
             Main_AndroidVersion = '1.0.0';
             Main_Android = 0;
-            document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
+            document.body.style.backgroundColor = "rgba(255, 255, 255, 1)";
             Main_isDebug = true;
             Main_isBrowser = true;
             console.log('Main_isReleased: ' + Main_isReleased);
@@ -220,6 +222,8 @@ function Main_initWindows() {
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
 
+        Play_MakeControls();
+
         document.getElementById("side_panel").style.marginLeft = '';
 
         Main_checkVersion();
@@ -241,6 +245,7 @@ function Main_initWindows() {
                 Screens_init();
                 Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
+                Play_SetControls();
             });
         }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1000 : 0);
     });
@@ -262,10 +267,6 @@ function Main_SetStringsMain(isStarting) {
     Main_textContent('top_bar_game', STR_GAMES);
     Main_textContent('top_bar_vod', STR_VIDEOS);
     Main_textContent('top_bar_clip', STR_CLIPS);
-
-    Main_innerHTML("scene2_search_text", STR_SPACE + STR_SEARCH);
-    Main_innerHTML("scene2_channel_text", STR_SPACE + STR_CHANNEL_CONT);
-    Main_innerHTML("scene2_game_text", STR_SPACE + STR_GAME_CONT);
 
     Main_textContent("dialog_end_next_text", STR_PLAY_NEXT);
     Main_textContent("dialog_end_replay_text", STR_REPLAY);
@@ -1228,7 +1229,9 @@ function Main_setItem(item, value) {
 }
 
 function Main_getItemInt(item, default_value) {
-    return parseInt(localStorage.getItem(item)) || default_value;
+    var value = parseInt(localStorage.getItem(item));
+    if (value || value === 0) return value;
+    return default_value;
 }
 
 function Main_getItemJson(item, default_value) {
