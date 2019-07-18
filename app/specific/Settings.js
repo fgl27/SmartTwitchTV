@@ -294,7 +294,7 @@ function Settings_inputFocus(position) {
     Main_AddClass(key, 'settings_value_focus');
     Main_AddClass(key + '_div', 'settings_div_focus');
     Settings_Setarrows(position);
-    Settings_ScrollTable();
+    //Settings_ScrollTable();
 }
 
 function Settings_RemoveinputFocus() {
@@ -393,8 +393,7 @@ function Settings_SetClock() {
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
-function Settings_ScrollTable() {
-    return;
+function Settings_ScrollTable() { // jshint ignore:line
     var position = screen.height;
 
     if (Settings_cursorY > 4) {
