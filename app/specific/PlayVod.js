@@ -424,6 +424,7 @@ function PlayVod_onPlayer() {
 
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    Play_SetFullScreen(Play_isFullScreen);
 
     if (Main_Android) {
         PlayVod_PlayerCheckCount = 0;

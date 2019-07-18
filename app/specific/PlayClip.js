@@ -175,7 +175,6 @@ function PlayClip_qualityChanged() {
 
 function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
-
     Play_SetFullScreen(Play_isFullScreen);
 
     if (Main_Android) {
