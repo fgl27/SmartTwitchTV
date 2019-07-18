@@ -49,6 +49,7 @@ function PlayClip_Start() {
     Main_replaceClassEmoji('stream_info_title');
 
     Main_values.Play_isHost = false;
+    Play_CurrentSpeed = 3;
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_textContent("stream_live_time", '');
@@ -368,6 +369,7 @@ function PlayClip_showPanel() {
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
+    Play_ResetSpeed();
     PlayClip_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
     PlayClip_setHidePanel();

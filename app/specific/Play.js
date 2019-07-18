@@ -15,6 +15,7 @@ var Play_isHost = false;
 var Play_FeedOldUserName = '';
 var Play_FeedPos = 0;
 var Play_Buffer = 2000;
+var Play_CurrentSpeed = 3;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -213,6 +214,7 @@ function Play_Start() {
 
     //past broadcast
     document.getElementById('controls_' + 3).style.display = 'none';
+    Play_CurrentSpeed = 3;
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
@@ -862,6 +864,7 @@ function Play_showPanel() {
     //Play_IconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay();
+    Play_ResetSpeed();
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
@@ -1659,6 +1662,7 @@ function Play_MakeControls() {
             defaultValue: 3,
             opacity: 0,
             enterKey: function() {
+                Play_CurrentSpeed = this.defaultValue;
                 try {
                     Android.setPlaybackSpeed(this.values[this.defaultValue]);
                 } catch (e) {}
@@ -2045,4 +2049,10 @@ function Play_SetControls() {
 
 function Play_SetControlsArrows(key) {
     return '<div id="controls_arrows_' + key + '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' + key + '" class="up"></div><div id="control_arrow_down' + key + '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key + '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
+}
+
+function Play_ResetSpeed() {
+    Play_controls[5].defaultValue = Play_CurrentSpeed;
+    Play_controls[5].bottomArrows();
+    Play_controls[5].setLable();
 }
