@@ -889,10 +889,13 @@ function Play_showChat() {
     Play_ChatPosition();
     Play_ChatBackgroundChange(false);
     Main_ShowElement('chat_container');
+
+    Play_controls[7].setLable();
 }
 
 function Play_hideChat() {
     Main_HideElement('chat_container');
+    Play_controls[7].setLable();
 }
 
 function Play_isChatShown() {
@@ -1456,6 +1459,8 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
+                    Play_controls[9].defaultValue = Play_ChatPositions;
+                    Play_controls[9].setLable();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
@@ -1523,11 +1528,15 @@ function Play_handleKeyDown(e) {
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown()) {
                     Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 4) {
-                        Play_ChatSizeValue = 1;
+                    if (Play_ChatSizeValue > 3) {
+                        Play_ChatSizeValue = 0;
                         Play_ChatPositionConvert(false);
                     } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
                     Play_ChatSize(true);
+
+                    Play_controls[10].defaultValue = Play_ChatSizeValue;
+                    Play_controls[10].bottomArrows();
+                    Play_controls[10].setLable();
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
@@ -1749,7 +1758,7 @@ function Play_MakeControls() {
             },
             setLable: function() {
                 Main_textContent('extra_button_' + this.position, '(' +
-                    (Play_ChatEnable ? STR_YES : STR_NO) + ')');
+                    (Play_isChatShown() ? STR_YES : STR_NO) + ')');
             },
         },
         8: { //chat side
