@@ -411,9 +411,9 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         //To load page from assets
-        mwebview.loadUrl("file:///android_asset/index.html");
+        //mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 

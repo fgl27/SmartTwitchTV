@@ -187,7 +187,7 @@ function Play_SetFullScreen(isfull) { // jshint ignore:line
 
     //TODO remove the try some day after the app update has be live for some time
     try {
-        Android.mupdatesize(Play_isFullScreen);
+        Android.mupdatesize(!Play_isFullScreen);
     } catch (e) {}
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
@@ -1535,10 +1535,12 @@ function Play_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(1);
                 else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
                         if (Main_values.Play_ChatForceDisable && Play_isNotplaying()) Play_loadChat();
                         if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     } else Play_BottomOptionsPressed(1);
+                    Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
                     if (doc === null) UserLiveFeed_ResetFeedId();
@@ -1925,7 +1927,7 @@ function Play_IconsAddFocus() {
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "1";
 
     //TODO improve hardcoded 7
-    if (Play_controls[Play_Panelcounter].isChat && !Play_isChatShown())
+    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen))
         document.getElementById('controls_button_text_' + 7).style.opacity = "1";
     else if (Play_Panelcounter !== 7 && !Play_controls[Play_Panelcounter].isChat)
         document.getElementById('controls_button_text_' + 7).style.opacity = "0";

@@ -567,12 +567,12 @@ function PlayClip_handleKeyDown(e) {
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(3);
                 else if (Play_isPanelShown()) {
+                    Play_clearHidePanel();
                     if (!PlayVod_PanelY) {
-                        Play_clearHidePanel();
-                        PlayClip_setHidePanel();
                         if (PlayVod_addToJump) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) PlayClip_Enter();
                     else Play_BottomOptionsPressed(3);
+                    PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     PlayClip_PreshutdownStream();
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);

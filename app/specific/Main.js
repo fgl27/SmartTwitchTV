@@ -158,7 +158,7 @@ function Main_loadTranslations(language) {
         } catch (e) {
             Main_AndroidVersion = '1.0.0';
             Main_Android = 0;
-            document.body.style.backgroundColor = "rgba(255, 255, 255, 1)";
+            document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
             Main_isDebug = true;
             Main_isBrowser = true;
             console.log('Main_isReleased: ' + Main_isReleased);
