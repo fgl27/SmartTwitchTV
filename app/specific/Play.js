@@ -164,6 +164,7 @@ function Play_PreStart() {
 }
 
 var Play_isFullScreenold = true;
+
 function Play_SetFullScreen(isfull) {
     if (Play_isFullScreenold === Play_isFullScreen) return;
     Play_isFullScreenold = Play_isFullScreen;
