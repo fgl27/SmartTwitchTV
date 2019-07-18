@@ -216,19 +216,22 @@ function Main_initWindows() {
         Chat_Preinit();
         Play_PreStart();
         AddUser_RestoreUsers();
+
         if (AddUser_UserIsSet()) {
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
         }
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitSecondaryScreens();
 
-        Play_MakeControls();
-
         document.getElementById("side_panel").style.marginLeft = '';
 
         Main_checkVersion();
 
         Main_SetStringsSecondary();
+
+        Play_MakeControls();
+        Play_SetControls();
+        Play_SetFullScreen(Play_isFullScreen);
 
         PlayVod_RestoreVodIds();
 
@@ -245,7 +248,6 @@ function Main_initWindows() {
                 Screens_init();
                 Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
-                Play_SetControls();
             });
         }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1000 : 0);
     });

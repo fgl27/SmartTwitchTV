@@ -176,7 +176,6 @@ function Play_SetFullScreen(isfull) { // jshint ignore:line
         Play_ChatPositionsBF = Play_ChatPositions;
         Play_ChatEnableBF = Play_ChatEnable;
         Play_ChatSizeValueBF = Play_ChatSizeValue;
-        // Chat is 25% of the screen, resize to 75% and center left
         Play_ChatPositions = 0;
         Play_showChat();
         Play_ChatEnable = true;
@@ -571,7 +570,6 @@ function Play_qualityChanged() {
         }
     }
 
-    Play_SetFullScreen(Play_isFullScreen);
     Play_qualityPlaying = Play_quality;
     Play_SetHtmlQuality('stream_quality');
 
@@ -595,6 +593,7 @@ function Play_SetHtmlQuality(element) {
 function Play_onPlayer() {
     Play_ChatLoadStarted = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
     Play_loadChat();
 
@@ -1536,7 +1535,7 @@ function Play_handleKeyDown(e) {
                     if (Play_ChatSizeValue > 3) {
                         Play_ChatSizeValue = 0;
                         Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 4) Play_ChatPositionConvert(true);
+                    } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
                     Play_ChatSize(true);
 
                     Play_controls[10].defaultValue = Play_ChatSizeValue;
