@@ -1655,7 +1655,7 @@ function Play_MakeControls() {
         5: { //speed
             icons: "speedometer",
             string: STR_SPEED,
-            values: [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0],
+            values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
             defaultValue: 3,
             opacity: 0,
             enterKey: function() {
@@ -1674,7 +1674,7 @@ function Play_MakeControls() {
             },
             setLable: function() {
                 Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] +
-                    (this.values[this.defaultValue] === 1.0 ? 'x (' + STR_NORMAL + ')' : 'x'));
+                    (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -2038,8 +2038,8 @@ function Play_SetControls() {
         doc.appendChild(div);
         Play_controlsSize++;
         Play_controls[key].position = key;
-        if (Play_controls[key].setLable) Play_controls[key].setLable();
         if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
+        if (Play_controls[key].setLable) Play_controls[key].setLable();
     }
 }
 
