@@ -5,22 +5,6 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "chat_font_size": { //chat_font_size
-        "values": ["60%", "80%", "100%", "120%", "140%"],
-        "defaultValue": 3
-    },
-    "chat_brightness": { //chat_brightness
-        "values": ["0%", "5%", "10%", "15%", "20%",
-            "25%", "30%", "35%", "40%", "45%",
-            "50%", "55%", "60%", "65%", "70%",
-            "75%", "80%", "85%", "90%", "95%", "100%"
-        ],
-        "defaultValue": 11
-    },
-    "force_disable_chat": { //force disable
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
     "clip_auto_play_next": { //clip_auto_play_next
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -157,26 +141,8 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
 
-
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
-
-    // Chat size
-    key = "chat_font_size";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionWithSummary(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
-
-    key = "chat_brightness";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_CHAT_BRIGHTNESS);
-
-    key = "force_disable_chat";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    div += Settings_DivOptionWithSummary(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
 
     // Chat size
     key = "end_dialog_counter";
@@ -268,25 +234,15 @@ function Settings_SetStrings() {
     key = "buffer_clip";
     Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
 
-
     //Player restore
     key = "restor_playback";
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
-    //Player chat font size
-    key = "chat_font_size";
-    Settings_DivOptionChangeLang(key, STR_CHAT_FONT, STR_CHAT_FONT_SUMARRY);
-
     // Chat size
     key = "end_dialog_counter";
     Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
     Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
-    //Player restore
-    key = "force_disable_chat";
-    Settings_DivOptionChangeLang(key, STR_F_DISABLE_CHAT, STR_F_DISABLE_CHAT_SUMARRY);
-    Settings_value[key].values = [STR_YES, STR_NO];
 
     // Videos
     key = "videos_animation";
@@ -296,9 +252,6 @@ function Settings_SetStrings() {
     key = "clip_auto_play_next";
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
-
-    key = "chat_brightness";
-    Main_textContent(key + '_name', STR_CHAT_BRIGHTNESS);
 
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
@@ -315,10 +268,8 @@ function Settings_SetDefautls() {
     }
     Settings_SetBuffers(0);
     Settings_SetClock();
-    Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
 }
 
@@ -391,11 +342,6 @@ function Settings_SetDefault(position) {
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-    else if (position === "chat_brightness") {
-        Play_ChatBackground = (Settings_Obj_default("chat_brightness") * 0.05).toFixed(2);
-        Play_ChatBackgroundChange(false);
-    } else if (position === "force_disable_chat") Main_values.Play_ChatForceDisable = Settings_Obj_default("force_disable_chat");
-    else if (position === "chat_font_size") Play_SetChatFont();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -448,6 +394,7 @@ function Settings_SetClock() {
 }
 
 function Settings_ScrollTable() {
+    return;
     var position = screen.height;
 
     if (Settings_cursorY > 4) {
