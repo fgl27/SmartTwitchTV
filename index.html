@@ -556,13 +556,6 @@
             width: 28ch;
         }
 
-        .arrows_text {
-            display: inline-block;
-            vertical-align: middle;
-            color: #FFFFFF;
-            font-size: 100%;
-        }
-
         div.playbotton {
             display: inline-block;
             box-sizing: border-box;
@@ -980,7 +973,7 @@
         }
 
         .progress_pause_holder {
-            bottom: 9ch;
+            bottom: 8.9ch;
             position: absolute;
             width: 100%;
             justify-content: center;
@@ -1016,15 +1009,23 @@
 
         .extra_button_text {
             width: 100vw;
+            height: 1.5ch;
             position: relative;
             left: 50%;
-            transform: translateX(-50%);
+            /* translateX(-50%) but as scale(0.8) it because 0.5/0.8 = 0.625 */
+            transform: scale(0.8) translateX(-62.5%);
         }
 
         .extra_button_text_holder {
-            font-size: 85%;
+            font-size: 100%;
             color: #FFFFFF;
             white-space: nowrap;
+        }
+
+        .arrows_text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #FFFFFF;
         }
 
         .pause_button3d {
@@ -1055,8 +1056,8 @@
             display: inline-block;
             width: auto;
             max-width: 90%;
-            font-size: 90%;
-            transform: translateY(9%);
+            font-size: 100%;
+            transform: translateY(15%);
         }
 
         .pause_next_div {
