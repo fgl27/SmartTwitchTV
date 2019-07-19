@@ -378,7 +378,8 @@ public class PlayerActivity extends Activity {
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
             case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+                return new HlsMediaSource.Factory(dataSourceFactory)
+                        .setAllowChunklessPreparation(true).createMediaSource(uri);
             case C.TYPE_OTHER:
                 return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
             default:
