@@ -1958,6 +1958,8 @@ function Play_IconsAddFocus() {
 function Play_IconsRemoveFocus() {
     Main_RemoveClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
+    //in case chat is disable and the warning is showing because some chat option was selected
+    document.getElementById('controls_button_text_' + 7).style.opacity = "0";
 }
 
 
