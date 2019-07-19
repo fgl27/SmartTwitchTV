@@ -45,6 +45,7 @@ import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -93,6 +94,9 @@ public class PlayerActivity extends Activity {
     private long mResumePosition;
 
     public static String url;
+    public static String[] urls;
+    private Uri[] uris;
+    private MediaSource mediaSource;
 
     private ImageView spinner;
     private Animation rotation;
@@ -159,7 +163,17 @@ public class PlayerActivity extends Activity {
                 player.seekTo(mResumePosition);
             }
 
-            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
+            uris = new Uri[urls.length];
+            for (int i = 0; i < urls.length; i++)
+                uris[i] = Uri.parse(urls[i]);
+
+            MediaSource[] mediaSources = new MediaSource[uris.length];
+            for (int i = 0; i < uris.length; i++)
+                mediaSources[i] = buildMediaSource(uris[i]);
+
+            mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
+            player.prepare(mediaSource, false, true);
+
             player.setPlayWhenReady(true);
             player.addListener(PlayerEvent());
         } else {
@@ -482,14 +496,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            PlayerActivity.url = videoAddress;
+            PlayerActivity.urls = videoAddress.split(",");
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            PlayerActivity.url = videoAddress;
+            PlayerActivity.urls = videoAddress.split(",");
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
         }
 

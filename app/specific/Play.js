@@ -515,11 +515,14 @@ function Play_loadDataSuccess(responseText) {
     }
 }
 
+var Play_qualitiesAuto;
+
 function Play_extractQualities(input) {
     var Band,
         result = [],
         TempId = '',
         tempCount = 1;
+    Play_qualitiesAuto = [];
 
     var streams = Play_extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
@@ -532,12 +535,14 @@ function Play_extractQualities(input) {
                 'band': Band,
                 'url': streams[i].split("\n")[2]
             });
+            Play_qualitiesAuto.push(result[i].url);
         } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' (source)') {
             result.push({
                 'id': TempId,
                 'band': Band,
                 'url': streams[i].split("\n")[2]
             });
+            Play_qualitiesAuto.push(result[i].url);
         } else tempCount++;
     }
 
@@ -580,7 +585,8 @@ function Play_qualityChanged() {
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    if (Main_Android && Play_isOn) Android.startVideo(Play_playingUrl, 1);
+    if (Main_Android && Play_isOn) Android.startVideo(Play_playingUrl, 1); //Play_qualitiesAuto.join(',')
+
     Play_onPlayer();
 }
 
@@ -729,6 +735,8 @@ function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
 function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
+        Play_qualities = [];
+        Play_qualitiesAuto = [];
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
     }

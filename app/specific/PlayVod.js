@@ -495,6 +495,7 @@ function PlayVod_DropOneQuality(ConnectionDrop) {
 function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
         PlayVod_qualities = [];
+        Play_qualitiesAuto = [];
         PlayVod_PreshutdownStream(true);
         Play_exitMain();
     }
