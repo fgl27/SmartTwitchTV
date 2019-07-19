@@ -79,7 +79,7 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
-    private static int[] BUFFER_SIZE = {6000,6000,6000,6000};//Default, live, vod, clips
+    private static int[] BUFFER_SIZE = {6000, 6000, 6000, 6000};//Default, live, vod, clips
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -116,7 +116,7 @@ public class PlayerActivity extends Activity {
             setContentView(R.layout.activity_player);
             url = "file:///android_asset/temp.mp4";
 
-            BANDWIDTH_METER =  new DefaultBandwidthMeter.Builder(this).build();
+            BANDWIDTH_METER = new DefaultBandwidthMeter.Builder(this).build();
             dataSourceFactory =
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
@@ -197,12 +197,14 @@ public class PlayerActivity extends Activity {
             heightDefault = simpleExoPlayerView.getHeight();
             mwidthDefault = simpleExoPlayerView.getWidth();
 
-            heightChat = (int)(heightDefault * 0.75);
-            mwidthChat = (int)(mwidthDefault * 0.75);
+            heightChat = (int) (heightDefault * 0.75);
+            mwidthChat = (int) (mwidthDefault * 0.75);
         }
 
-        if (sizechat) simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
-        else simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
+        if (sizechat)
+            simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
+        else
+            simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
     }
 
     private void showLoading(boolean runnow) {
@@ -296,7 +298,7 @@ public class PlayerActivity extends Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // this tells the framework to start tracking for
             // a long press and eventual key up.  it will only
@@ -313,7 +315,8 @@ public class PlayerActivity extends Activity {
             this.unregisterReceiver(showBufferReceiver);
             this.unregisterReceiver(closeReceiver);
             this.unregisterReceiver(playersize);
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     public void mregisterReceiver() {
@@ -322,7 +325,8 @@ public class PlayerActivity extends Activity {
             this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
             this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
             this.registerReceiver(playersize, new IntentFilter("playersize"));
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     /**
@@ -391,7 +395,7 @@ public class PlayerActivity extends Activity {
     private class Mp4ExtractorsFactory implements ExtractorsFactory {
         @Override
         public Extractor[] createExtractors() {
-            return new Extractor[] {new Mp4Extractor()};
+            return new Extractor[]{new Mp4Extractor()};
         }
     }
 
@@ -631,7 +635,8 @@ public class PlayerActivity extends Activity {
                             break;
                         case Player.STATE_READY:
                             hideLoading();
-                            if (player != null) mwebview.loadUrl("javascript:Play_UpdateDuration(" + mwhocall + "," + player.getDuration() + ")");
+                            if (player != null)
+                                mwebview.loadUrl("javascript:Play_UpdateDuration(" + mwhocall + "," + player.getDuration() + ")");
                             break;
                         case Player.STATE_ENDED:
                             //Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
@@ -728,7 +733,7 @@ public class PlayerActivity extends Activity {
     public boolean isCodecSupported(String name) {
         MediaCodecList codecList = new MediaCodecList(MediaCodecList.REGULAR_CODECS);
         MediaCodecInfo[] codecInfos = codecList.getCodecInfos();
-        for(int i=0; i< codecInfos.length; i++)
+        for (int i = 0; i < codecInfos.length; i++)
             if (codecInfos[i].getName().contains(name) && !codecInfos[i].getName().contains("google"))
                 return true;
 
