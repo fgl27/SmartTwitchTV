@@ -375,6 +375,7 @@ function PlayClip_showPanel() {
     Play_ResetSpeed();
     PlayClip_qualityDisplay();
     document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_clearHidePanel();
     PlayClip_setHidePanel();
 }
 

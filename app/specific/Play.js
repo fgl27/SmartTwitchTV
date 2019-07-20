@@ -914,6 +914,7 @@ function Play_showPanel() {
     Play_clock();
     Play_CleanHideExit();
     document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_clearHidePanel();
     Play_setHidePanel();
 }
 
