@@ -28,7 +28,7 @@
     <style>
         body,
         html {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.5);
             font-family: 'Roboto';
             margin: auto;
             overflow: hidden;
@@ -596,14 +596,24 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
+        div.playsideinfotext {
+            word-wrap: break-word;
+        }
 
         div.playsideinfo {
+            max-width: 32%;
+            width: auto;
             float: right;
             padding-right: 0.5%;
             padding-top: 1.5%;
             color: #FFFFFF;
-            font-size: 85%;
+            font-size: 75%;
             text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
+        }
+
+        div.playerinfo {
+            width: 100%;
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.055));
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
@@ -661,8 +671,8 @@
             padding-left: 1%;
             padding-top: 1.5%;
             display: inline-block;
-            width: 69%;
-            font-size: 100%;
+            width: 57%;
+            font-size: 90%;
             color: #FFFFFF;
             word-wrap: break-word;
             text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
@@ -987,7 +997,7 @@
             width: 100%;
             height: auto;
             text-align: center;
-            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.03));
+            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.055));
         }
 
         .progress_pause_holder {
@@ -1441,14 +1451,14 @@
             </div>
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
-            <div style="width: 100%; background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.04));">
+            <div class="playerinfo">
                 <div class="playsideinfo">
-                    <div id="stream_clock"></div>
-                    <div id="stream_live_icon" style="display: inline-block; margin-right: 5px;">
+                    <div id="stream_clock" class="playsideinfotext"></div>
+                    <div id="stream_live_icon" class="playsideinfotext" style="display: inline-block; margin-right: 5px;">
                     </div>
-                    <div id="stream_live_time" style="display: inline-block"></div>
-                    <div id="stream_watching_time"></div>
-                    <div id="stream_quality"></div>
+                    <div id="stream_live_time" class="playsideinfotext" style="display: inline-block"></div>
+                    <div id="stream_watching_time" class="playsideinfotext"></div>
+                    <div id="stream_quality" class="playsideinfotext"></div>
                 </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div class="playmaininfo">
