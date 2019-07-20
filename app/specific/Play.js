@@ -649,7 +649,7 @@ function Play_onPlayer() {
 
     if (Main_Android) {
         Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 1 + (Play_Buffer / 1000);
+        Play_PlayerCheckTimer = 1 + ((Play_Buffer / 1000) * 2);
         Play_PlayerCheckQualityChanged = false;
         window.clearInterval(Play_streamCheckId);
         Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
@@ -672,8 +672,10 @@ function Play_PlayerCheck() {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
 
-            //Don't change the first time only retry
-            if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun && (Play_qualityIndex < Play_getQualitiesCount() - 1)) Play_qualityIndex++;
+            //Don't change the first time only retry, and don't change if in Auto mode
+            if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun &&
+                (Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_qualityPlaying.indexOf("Auto") === -1))
+                Play_qualityIndex++;
             else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
 
             if (!navigator.onLine) Play_EndStart(false, 1);

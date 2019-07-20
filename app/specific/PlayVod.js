@@ -451,7 +451,7 @@ function PlayVod_onPlayer() {
 
     if (Main_Android) {
         PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3 + (PlayVod_Buffer / 1000);
+        Play_PlayerCheckTimer = 3 + ((PlayVod_Buffer / 1000) * 2);
         PlayVod_PlayerCheckQualityChanged = false;
         window.clearInterval(PlayVod_streamCheckId);
         PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
@@ -478,8 +478,10 @@ function PlayVod_PlayerCheck() {
         PlayVod_PlayerCheckCount++;
         if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
 
-            //Don't change the first time only retry
-            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) PlayVod_qualityIndex++;
+            //Don't change the first time only retry, and don't change if in Auto mode
+            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun &&
+                (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_quality.indexOf("Auto") === -1))
+                PlayVod_qualityIndex++;
             else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
 
             if (!navigator.onLine) Play_EndStart(false, 2);
