@@ -423,7 +423,11 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) {
-                if (!state) Android.SetAuto(theUrl);
+                if (!state) {
+                    try {
+                        Android.SetAuto(theUrl);
+                    } catch (e) {}
+                }
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
@@ -611,8 +615,13 @@ function Play_qualityChanged() {
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_Android && Play_isOn) {
-        if (Play_quality.indexOf("Auto") !== -1) Android.StartAuto(1, 1);
-        else Android.startVideo(Play_playingUrl, 1); //Play_qualitiesAuto.join(',')
+        if (Play_quality.indexOf("Auto") !== -1) {
+            try {
+                Android.StartAuto(1, 1);
+            } catch (e) {
+                Android.startVideo(Play_playingUrl, 1);
+            }
+        } else Android.startVideo(Play_playingUrl, 1);
     }
 
     Play_onPlayer();
@@ -925,7 +934,10 @@ function Play_RefreshWatchingtime() {
 
     if (Play_qualityPlaying.indexOf("Auto") !== -1) {
         try {
-            var value = Android.getVideoQuality();
+            var value = null;
+            try {
+                value = Android.getVideoQuality();
+            } catch (e) {}
             if (value !== null) Play_getVideoQuality(value);
             else Play_SetHtmlQuality('stream_quality', true);
         } catch (e) {
