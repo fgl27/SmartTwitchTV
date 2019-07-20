@@ -80,6 +80,7 @@ public class PlayerActivity extends Activity {
     private static final String AUTHORIZATION = "Authorization";
 
     private static int[] BUFFER_SIZE = {6000, 6000, 6000, 6000};//Default, live, vod, clips
+    private static String[] codecNames = {"avc", "vp9", "mp4a"};
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -611,7 +612,7 @@ public class PlayerActivity extends Activity {
             String codec = "";
             if (player != null) {
                 codec = mgetCodec(player);
-                return codec != null ? " | " + mgetCodec(player) : "";
+                return codec != null ? codec : "";
             }
             else return codec;
         }
@@ -825,10 +826,6 @@ public class PlayerActivity extends Activity {
         return format.height + "p," + band + "," +  mgetCodec(format.codecs);
     }
 
-    public static final String CODEC_SHORT_AVC = "avc";
-    public static final String CODEC_SHORT_VP9 = "vp9";
-    public static final String CODEC_SHORT_MP4A = "mp4a";
-
     public String mgetCodec(SimpleExoPlayer player) {
         Format format = player.getVideoFormat();
 
@@ -840,8 +837,6 @@ public class PlayerActivity extends Activity {
     }
 
     public String mgetCodec(String codec) {
-        String[] codecNames = {CODEC_SHORT_AVC, CODEC_SHORT_VP9, CODEC_SHORT_MP4A};
-
         for (String codecName : codecNames) {
             if (codec.contains(codecName)) {
                 return codecName;
