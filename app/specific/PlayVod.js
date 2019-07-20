@@ -298,7 +298,7 @@ function PlayVod_loadDataRequest() {
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_audio_only=true&reassignments_supported=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '');
-        if (Main_Android) Android.SetAuto(theUrl);
+        if (Main_Android) Android.SetAuto(theUrl.replace("allow_audio_only=true", "allow_audio_only=false"));
     }
 
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);

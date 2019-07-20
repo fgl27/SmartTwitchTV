@@ -422,7 +422,7 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) {
-                if (!state) Android.SetAuto(theUrl);
+                if (!state) Android.SetAuto(theUrl.replace("allow_audio_only=true", "allow_audio_only=false"));
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
