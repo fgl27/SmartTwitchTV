@@ -36,6 +36,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -511,14 +512,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetAuto(String url) {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            Toast.makeText(mwebContext, "SetAuto", Toast.LENGTH_SHORT).show();
             TempmediaSourceAuto = buildMediaSource(Uri.parse(url));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            Toast.makeText(mwebContext, "StartAuto", Toast.LENGTH_SHORT).show();
             mediaSourceAuto = TempmediaSourceAuto;
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
         }
@@ -597,6 +596,24 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public boolean misCodecSupported() {
             return isCodecSupported("vp9");
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getVideoQuality() {
+            if (player != null) return mgetVideoQuality(player);
+            else return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getCodec() {
+            String codec = "";
+            if (player != null) {
+                codec = mgetCodec(player);
+                return codec != null ? " | " + mgetCodec(player) : "";
+            }
+            else return codec;
         }
     }
 
@@ -792,5 +809,45 @@ public class PlayerActivity extends Activity {
             Log.w(TAG, "JSONException ", e);
             return null;
         }
+    }
+
+    public String mgetVideoQuality(SimpleExoPlayer player) {
+        Format format = player.getVideoFormat();
+
+        if (format == null) {
+            return null;
+        }
+        int band = (format.bitrate / 1000000);
+        //Below doesnot provide all values use a simple workaround to get and show correct values
+        //return format.height + "p" + (format.frameRate == Format.NO_VALUE ? "" : Math.round(format.frameRate)) +
+        //    "<br>" + String.format("%.2f", band) + "Mbps" + mgetCodec(format.codecs);
+
+        return format.height + "p," + band + "," +  mgetCodec(format.codecs);
+    }
+
+    public static final String CODEC_SHORT_AVC = "avc";
+    public static final String CODEC_SHORT_VP9 = "vp9";
+    public static final String CODEC_SHORT_MP4A = "mp4a";
+
+    public String mgetCodec(SimpleExoPlayer player) {
+        Format format = player.getVideoFormat();
+
+        if (format == null) {
+            return null;
+        }
+
+        return mgetCodec(format.codecs);
+    }
+
+    public String mgetCodec(String codec) {
+        String[] codecNames = {CODEC_SHORT_AVC, CODEC_SHORT_VP9, CODEC_SHORT_MP4A};
+
+        for (String codecName : codecNames) {
+            if (codec.contains(codecName)) {
+                return codecName;
+            }
+        }
+
+        return codec;
     }
 }
