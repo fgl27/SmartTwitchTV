@@ -298,6 +298,7 @@ function PlayVod_loadDataRequest() {
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&allow_audio_only=true&reassignments_supported=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '');
+        if (Main_Android) Android.SetAuto(theUrl);
     }
 
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);
@@ -416,11 +417,20 @@ function PlayVod_onPlayer() {
     if (Main_values.vodOffset) {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
-        if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
-            PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+        if (Main_Android && PlayVod_isOn) {
+            if (PlayVod_quality.indexOf("Auto") !== -1) 
+                Android.StartAuto(2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+            else 
+                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+        }
+
         Main_values.vodOffset = 0;
-    } else if (Main_Android && PlayVod_isOn) Android.startVideoOffset(PlayVod_playingUrl, 2,
-        PlayVod_replay ? -1 : Android.gettime());
+    } else if (Main_Android && PlayVod_isOn){
+            if (PlayVod_quality.indexOf("Auto") !== -1) 
+                Android.StartAuto(2, PlayVod_replay ? -1 : Android.gettime());
+            else
+                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : Android.gettime());
+    }
 
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -660,9 +670,14 @@ function PlayVod_jump() {
         PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
-            if (Main_Android) Android.startVideoOffset(PlayVod_playingUrl, 2,
-                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-            Chat_offset = PlayVod_TimeToJump;
+            if (Main_Android) {
+                if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2,
+                    (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                else Android.startVideoOffset(PlayVod_playingUrl, 2,
+                    (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                Chat_offset = PlayVod_TimeToJump;
+            }
+
         } else {
             Chat_offset = ChannelVod_vodOffset;
             if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,

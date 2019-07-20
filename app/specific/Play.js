@@ -398,9 +398,9 @@ function Play_loadData() {
 }
 
 function Play_loadDataRequest() {
-    var theUrl;
+    var theUrl, state = Play_state === Play_STATE_LOADING_TOKEN;
 
-    if (Play_state === Play_STATE_LOADING_TOKEN) {
+    if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token?platform=_' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
@@ -421,7 +421,10 @@ function Play_loadDataRequest() {
         }
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
-            if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
+            if (Play_isOn) {
+                if (!state) Android.SetAuto(theUrl);
+                Play_loadDataSuccess(xmlHttp.responseText);
+            }
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_ForbiddenLive();
         } else if (xmlHttp.status === 404) { //off line
@@ -522,27 +525,32 @@ function Play_extractQualities(input) {
         result = [],
         TempId = '',
         tempCount = 1;
-    Play_qualitiesAuto = [];
+    //Play_qualitiesAuto = [];
 
     var streams = Play_extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
         TempId = streams[i].split('NAME="')[1].split('"')[0];
         Band = Play_extractBand(streams[i].split('BANDWIDTH=')[1].split(',')[0]);
         if (!result.length) {
+            result.push({
+                'id': 'Auto',
+                'band': '',
+                'url': ''
+            });
             if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
             result.push({
                 'id': TempId,
                 'band': Band,
                 'url': streams[i].split("\n")[2]
             });
-            Play_qualitiesAuto.push(result[i].url);
+            //Play_qualitiesAuto.push(result[i].url);
         } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' (source)') {
             result.push({
                 'id': TempId,
                 'band': Band,
                 'url': streams[i].split("\n")[2]
             });
-            Play_qualitiesAuto.push(result[i].url);
+            //Play_qualitiesAuto.push(result[i].url);
         } else tempCount++;
     }
 
@@ -569,6 +577,7 @@ function Play_qualityChanged() {
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
+
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_qualities[i].id === Play_quality) {
             Play_qualityIndex = i;
@@ -585,7 +594,11 @@ function Play_qualityChanged() {
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
-    if (Main_Android && Play_isOn) Android.startVideo(Play_playingUrl, 1); //Play_qualitiesAuto.join(',')
+
+    if (Main_Android && Play_isOn) {
+        if (Play_quality.indexOf("Auto") !== -1) Android.StartAuto(1, 1);
+        else Android.startVideo(Play_playingUrl, 1); //Play_qualitiesAuto.join(',')
+    }
 
     Play_onPlayer();
 }
