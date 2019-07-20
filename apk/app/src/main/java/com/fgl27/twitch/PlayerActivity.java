@@ -48,9 +48,7 @@ import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -97,6 +95,8 @@ public class PlayerActivity extends Activity {
     public static String[] urls;
     private Uri[] uris;
     private MediaSource mediaSource;
+    private MediaSource mediaSourceAuto = null;
+    private MediaSource TempmediaSourceAuto;
 
     private ImageView spinner;
     private Animation rotation;
@@ -163,16 +163,18 @@ public class PlayerActivity extends Activity {
                 player.seekTo(mResumePosition);
             }
 
-            uris = new Uri[urls.length];
-            for (int i = 0; i < urls.length; i++)
-                uris[i] = Uri.parse(urls[i]);
+            if (mediaSourceAuto == null) {
+                uris = new Uri[urls.length];
+                for (int i = 0; i < urls.length; i++)
+                    uris[i] = Uri.parse(urls[i]);
 
-            MediaSource[] mediaSources = new MediaSource[uris.length];
-            for (int i = 0; i < uris.length; i++)
-                mediaSources[i] = buildMediaSource(uris[i]);
+                MediaSource[] mediaSources = new MediaSource[uris.length];
+                for (int i = 0; i < uris.length; i++)
+                    mediaSources[i] = buildMediaSource(uris[i]);
 
-            mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
-            player.prepare(mediaSource, false, true);
+                mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
+                player.prepare(mediaSource, false, true);
+            } else player.prepare(mediaSourceAuto, false, true);
 
             player.setPlayWhenReady(true);
             player.addListener(PlayerEvent());
@@ -391,10 +393,6 @@ public class PlayerActivity extends Activity {
     private MediaSource buildMediaSource(Uri uri) {
         @C.ContentType int type = Util.inferContentType(uri);
         switch (type) {
-            case C.TYPE_DASH:
-                return new DashMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
-            case C.TYPE_SS:
-                return new SsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(dataSourceFactory)
                         .setAllowChunklessPreparation(true).createMediaSource(uri);
@@ -496,6 +494,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
+            mediaSourceAuto = null;
             PlayerActivity.urls = videoAddress.split(",");
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
         }
@@ -503,7 +502,24 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
+            mediaSourceAuto = null;
             PlayerActivity.urls = videoAddress.split(",");
+            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAuto(String url) {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            Toast.makeText(mwebContext, "SetAuto", Toast.LENGTH_SHORT).show();
+            TempmediaSourceAuto = buildMediaSource(Uri.parse(url));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartAuto(int whocall, long position) {
+            Toast.makeText(mwebContext, "StartAuto", Toast.LENGTH_SHORT).show();
+            mediaSourceAuto = TempmediaSourceAuto;
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
         }
 
