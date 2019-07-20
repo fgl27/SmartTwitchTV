@@ -700,6 +700,17 @@ public class PlayerActivity extends Activity {
                 }
             }
 
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+                int sourceIndex = player.getCurrentWindowIndex();
+                Toast.makeText(PlayerActivity.this, "Video Ended onPositionDiscontinuity sourceIndex = " +
+                        sourceIndex + " reason " + reason, Toast.LENGTH_SHORT).show();
+                PlayerActivity.url = "file:///android_asset/temp.mp4";
+                SendBroadcast("initializePlayerReceiver", PlayerActivity.this, false, mwhocall, 0);
+                mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+            }
+
             @Override
             public void onPlayerError(ExoPlaybackException e) {
                 String errorString = null;
