@@ -498,7 +498,7 @@ function Play_ForbiddenLive() {
 function Play_loadDataSuccessFake() {
     Play_qualities = [{
         'id': '1080p60(Source)',
-        'band': '(10.00Mbps)',
+        'band': '10.00Mbps',
         'url': 'http://fake'
     }];
     Play_state = Play_STATE_PLAYING;
@@ -559,7 +559,7 @@ function Play_extractQualities(input) {
 
 function Play_extractBand(input) {
     input = parseInt(input);
-    return input > 0 ? ' (' + parseFloat(input / 1000000).toFixed(2) + 'Mbps)' : '';
+    return input > 0 ? '' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
 }
 
 function Play_extractStreamDeclarations(input) {
@@ -590,7 +590,7 @@ function Play_qualityChanged() {
     }
 
     Play_qualityPlaying = Play_quality;
-    Play_SetHtmlQuality('stream_quality');
+    Play_SetTopHtmlQuality('stream_quality');
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
@@ -608,10 +608,30 @@ function Play_SetHtmlQuality(element) {
 
     var quality_string = '';
 
-    if (Play_quality.indexOf('source') !== -1) quality_string = Play_quality.replace("source", STR_SOURCE) + Play_qualities[Play_qualityIndex].band;
-    else quality_string = Play_quality + Play_qualities[Play_qualityIndex].band;
+    if (Play_quality.indexOf('source') !== -1) quality_string = Play_quality.replace("source", STR_SOURCE);
+    else quality_string = Play_quality;
+
+    quality_string += Play_quality.indexOf('Auto') === -1 ? " (" + Play_qualities[Play_qualityIndex].band + ")" : "";
 
     Main_textContent(element, quality_string);
+}
+
+function Play_SetTopHtmlQuality(element) {
+    Play_quality = Play_qualities[Play_qualityIndex].id;
+
+    var quality_string = '';
+
+    if (Play_quality.indexOf('source') !== -1)
+        quality_string = Play_quality.replace("source", STR_SOURCE) + "<br>" + Play_qualities[Play_qualityIndex].band;
+    else quality_string = Play_quality + "<br>" + Play_qualities[Play_qualityIndex].band;
+
+    var codec = '';
+    try {
+        codec = Android.getCodec();
+        if (codec === null) codec = '';
+    } catch (e) {}
+
+    Main_innerHTML(element, quality_string + codec);
 }
 
 function Play_onPlayer() {
@@ -890,6 +910,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Play_ResetSpeed();
+    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetTopHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
@@ -901,7 +922,33 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
-    Main_textContent("stream_live_time", STR_SINCE + (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
+    Main_textContent("stream_live_time", STR_SINCE +
+        (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
+
+    if (Play_qualityPlaying.indexOf("Auto") !== -1) {
+        try {
+            var value = Android.getVideoQuality();
+            if (value !== null) Play_getVideoQuality(value);
+            else Play_SetTopHtmlQuality('stream_quality');
+        } catch (e) {
+            Play_SetTopHtmlQuality('stream_quality');
+        }
+    }
+}
+
+function Play_getVideoQuality(value) {
+    value = value.split(',');
+    var result = '';
+
+    for (var i = 0; i < Play_getQualitiesCount(); i++) {
+        if ((Play_qualities[i].id).indexOf(value[0]) !== -1 &&
+            (Play_qualities[i].band.charAt(0)).indexOf(value[1]) !== -1) {
+            result = (Play_qualities[i].id).replace("source", STR_SOURCE) + "<br>" +
+                Play_qualities[i].band + " | " + value[2];
+        }
+    }
+
+    Main_innerHTML("stream_quality", "Auto | " + result);
 }
 
 function Play_clearHidePanel() {

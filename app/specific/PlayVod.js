@@ -407,7 +407,7 @@ function PlayVod_qualityChanged() {
     }
 
     PlayVod_qualityPlaying = PlayVod_quality;
-    PlayVod_SetHtmlQuality('stream_quality');
+    PlayVod_SetTopHtmlQuality('stream_quality');
     PlayVod_onPlayer();
 }
 
@@ -418,18 +418,18 @@ function PlayVod_onPlayer() {
         Chat_offset = Main_values.vodOffset;
         Chat_Init();
         if (Main_Android && PlayVod_isOn) {
-            if (PlayVod_quality.indexOf("Auto") !== -1) 
+            if (PlayVod_quality.indexOf("Auto") !== -1)
                 Android.StartAuto(2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
-            else 
+            else
                 Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
         }
 
         Main_values.vodOffset = 0;
-    } else if (Main_Android && PlayVod_isOn){
-            if (PlayVod_quality.indexOf("Auto") !== -1) 
-                Android.StartAuto(2, PlayVod_replay ? -1 : Android.gettime());
-            else
-                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : Android.gettime());
+    } else if (Main_Android && PlayVod_isOn) {
+        if (PlayVod_quality.indexOf("Auto") !== -1)
+            Android.StartAuto(2, PlayVod_replay ? -1 : Android.gettime());
+        else
+            Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : Android.gettime());
     }
 
     PlayVod_replay = false;
@@ -557,6 +557,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
+        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetTopHtmlQuality('stream_quality');
         Play_ResetSpeed();
         PlayVod_setHidePanel();
     }
@@ -565,6 +566,31 @@ function PlayVod_showPanel(autoHide) {
 
 function PlayVod_RefreshProgressBarr() {
     if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
+
+    if (PlayVod_qualityPlaying.indexOf("Auto") !== -1) {
+        try {
+            var value = Android.getVideoQuality();
+            if (value !== null) PlayVod_getVideoQuality(value);
+            else PlayVod_SetTopHtmlQuality('stream_quality');
+        } catch (e) {
+            PlayVod_SetTopHtmlQuality('stream_quality');
+        }
+    }
+}
+
+function PlayVod_getVideoQuality(value) {
+    value = value.split(',');
+    var result = '';
+
+    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
+        if ((PlayVod_qualities[i].id).indexOf(value[0]) !== -1 &&
+            (PlayVod_qualities[i].band.charAt(0)).indexOf(value[1]) !== -1) {
+            result = (PlayVod_qualities[i].id).replace("source", STR_SOURCE) + "<br>" +
+                PlayVod_qualities[i].band + " | " + value[2];
+        }
+    }
+
+    Main_innerHTML("stream_quality", "Auto | " + result);
 }
 
 function PlayVod_IconsBottonResetFocus() {
@@ -651,6 +677,23 @@ function PlayVod_SetHtmlQuality(element) {
     else quality_string = PlayVod_quality + PlayVod_qualities[PlayVod_qualityIndex].band;
 
     Main_textContent(element, quality_string);
+}
+
+function PlayVod_SetTopHtmlQuality(element) {
+    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
+
+    var quality_string = '';
+    if (PlayVod_quality.indexOf('source') !== -1) quality_string = PlayVod_quality.replace("source", STR_SOURCE) +
+        "<br>" + PlayVod_qualities[PlayVod_qualityIndex].band;
+    else quality_string = PlayVod_quality + "<br>" + PlayVod_qualities[PlayVod_qualityIndex].band;
+
+    var codec = '';
+    try {
+        codec = Android.getCodec();
+        if (codec === null) codec = '';
+    } catch (e) {}
+
+    Main_innerHTML(element, quality_string + codec);
 }
 
 function PlayVod_getQualitiesCount() {
