@@ -407,9 +407,10 @@ function Play_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&allow_audio_only=true&reassignments_supported=true&allow_source=true&fast_bread=true' +
+            '&playlist_include_framerate=true&reassignments_supported=true&allow_source=true&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '');
     }
+
     var xmlHttp;
     if (Main_Android) {
 
@@ -422,7 +423,7 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) {
-                if (!state) Android.SetAuto(theUrl.replace("allow_audio_only=true", "allow_audio_only=false"));
+                if (!state) Android.SetAuto(theUrl);
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
@@ -499,6 +500,7 @@ function Play_loadDataSuccessFake() {
     Play_qualities = [{
         'id': '1080p60(Source)',
         'band': '10.00Mbps',
+        'codec': 'avc',
         'url': 'http://fake'
     }];
     Play_state = Play_STATE_PLAYING;
@@ -522,6 +524,7 @@ var Play_qualitiesAuto;
 
 function Play_extractQualities(input) {
     var Band,
+        codec,
         result = [],
         TempId = '',
         tempCount = 1;
@@ -531,23 +534,28 @@ function Play_extractQualities(input) {
     for (var i = 0; i < streams.length; i++) {
         TempId = streams[i].split('NAME="')[1].split('"')[0];
         Band = Play_extractBand(streams[i].split('BANDWIDTH=')[1].split(',')[0]);
+        codec = Play_extractCodec(streams[i].split('CODECS="')[1].split('.')[0]);
         if (!result.length) {
             result.push({
                 'id': 'Auto',
-                'band': '',
+                'band': 0,
+                'codec': 'avc',
                 'url': ''
             });
-            if (TempId.indexOf('ource') === -1) TempId = TempId + ' (source)';
+            if (TempId.indexOf('ource') === -1) TempId = TempId + ' | source';
+            else TempId = TempId.replace('(', ' | ').replace(')', '');
             result.push({
                 'id': TempId,
                 'band': Band,
+                'codec': codec,
                 'url': streams[i].split("\n")[2]
             });
             //Play_qualitiesAuto.push(result[i].url);
-        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' (source)') {
+        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' | source') {
             result.push({
                 'id': TempId,
                 'band': Band,
+                'codec': codec,
                 'url': streams[i].split("\n")[2]
             });
             //Play_qualitiesAuto.push(result[i].url);
@@ -559,7 +567,14 @@ function Play_extractQualities(input) {
 
 function Play_extractBand(input) {
     input = parseInt(input);
-    return input > 0 ? '' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
+    return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
+}
+
+function Play_extractCodec(input) {
+    if (input.indexOf('avc') !== -1) return ' | avc';
+    else if (input.indexOf('vp9') !== -1) return ' | vp9';
+    else if (input.indexOf('mp4') !== -1) return ' | mp4';
+    return '';
 }
 
 function Play_extractStreamDeclarations(input) {
@@ -590,7 +605,7 @@ function Play_qualityChanged() {
     }
 
     Play_qualityPlaying = Play_quality;
-    Play_SetTopHtmlQuality('stream_quality');
+    Play_SetHtmlQuality('stream_quality', true);
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
@@ -611,27 +626,9 @@ function Play_SetHtmlQuality(element) {
     if (Play_quality.indexOf('source') !== -1) quality_string = Play_quality.replace("source", STR_SOURCE);
     else quality_string = Play_quality;
 
-    quality_string += Play_quality.indexOf('Auto') === -1 ? " (" + Play_qualities[Play_qualityIndex].band + ")" : "";
+    quality_string += Play_quality.indexOf('Auto') === -1 ? Play_qualities[Play_qualityIndex].band + Play_qualities[Play_qualityIndex].codec : "";
 
     Main_textContent(element, quality_string);
-}
-
-function Play_SetTopHtmlQuality(element) {
-    Play_quality = Play_qualities[Play_qualityIndex].id;
-
-    var quality_string = '';
-
-    if (Play_quality.indexOf('source') !== -1)
-        quality_string = Play_quality.replace("source", STR_SOURCE) + "<br>" + Play_qualities[Play_qualityIndex].band;
-    else quality_string = Play_quality + "<br>" + Play_qualities[Play_qualityIndex].band;
-
-    var codec = '';
-    try {
-        codec = Android.getCodec();
-        if (codec === null) codec = '';
-    } catch (e) {}
-
-    Main_innerHTML(element, quality_string + codec);
 }
 
 function Play_onPlayer() {
@@ -910,7 +907,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     Play_ResetSpeed();
-    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetTopHtmlQuality('stream_quality');
+    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality', true);
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
@@ -929,26 +926,21 @@ function Play_RefreshWatchingtime() {
         try {
             var value = Android.getVideoQuality();
             if (value !== null) Play_getVideoQuality(value);
-            else Play_SetTopHtmlQuality('stream_quality');
+            else Play_SetHtmlQuality('stream_quality', true);
         } catch (e) {
-            Play_SetTopHtmlQuality('stream_quality');
+            Play_SetHtmlQuality('stream_quality', true);
         }
     }
 }
 
 function Play_getVideoQuality(value) {
     value = value.split(',');
-    var result = '';
 
-    for (var i = 0; i < Play_getQualitiesCount(); i++) {
-        if ((Play_qualities[i].id).indexOf(value[0]) !== -1 &&
-            (Play_qualities[i].band.charAt(0)).indexOf(value[1]) !== -1) {
-            result = (Play_qualities[i].id).replace("source", STR_SOURCE) + "<br>" +
-                Play_qualities[i].band + " | " + value[2];
-        }
+    for (var i = 0; i < value.length; i++) {
+        value[i] = (value[i] !== null && value[i] !== 'null') ? value[i] : '';
     }
 
-    Main_innerHTML("stream_quality", "Auto | " + result);
+    Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);
 }
 
 function Play_clearHidePanel() {
@@ -1761,7 +1753,7 @@ function Play_MakeControls() {
         6: { //quality
             icons: "videocamera",
             string: STR_QUALITY,
-            values: ['1080p60(Source) 10.00Mbps'],
+            values: ['1080p60 | Source | 10.00Mbps'],
             defaultValue: 0,
             opacity: 0,
             enterKey: function(PlayVodClip) {

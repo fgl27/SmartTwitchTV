@@ -296,9 +296,9 @@ function PlayVod_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-            '&allow_audio_only=true&reassignments_supported=true&allow_source=true' +
+            '&playlist_include_framerate=true&reassignments_supported=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '');
-        if (Main_Android) Android.SetAuto(theUrl.replace("allow_audio_only=true", "allow_audio_only=false"));
+        if (Main_Android) Android.SetAuto(theUrl);
     }
 
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, true);
@@ -407,7 +407,7 @@ function PlayVod_qualityChanged() {
     }
 
     PlayVod_qualityPlaying = PlayVod_quality;
-    PlayVod_SetTopHtmlQuality('stream_quality');
+    PlayVod_SetHtmlQuality('stream_quality', true);
     PlayVod_onPlayer();
 }
 
@@ -557,7 +557,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
-        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetTopHtmlQuality('stream_quality');
+        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality', true);
         Play_ResetSpeed();
         PlayVod_setHidePanel();
     }
@@ -570,27 +570,13 @@ function PlayVod_RefreshProgressBarr() {
     if (PlayVod_qualityPlaying.indexOf("Auto") !== -1) {
         try {
             var value = Android.getVideoQuality();
-            if (value !== null) PlayVod_getVideoQuality(value);
-            else PlayVod_SetTopHtmlQuality('stream_quality');
+            if (value !== null) Play_getVideoQuality(value);
+            else PlayVod_SetHtmlQuality('stream_quality', true);
         } catch (e) {
-            PlayVod_SetTopHtmlQuality('stream_quality');
+            PlayVod_SetHtmlQuality('stream_quality', true);
+
         }
     }
-}
-
-function PlayVod_getVideoQuality(value) {
-    value = value.split(',');
-    var result = '';
-
-    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
-        if ((PlayVod_qualities[i].id).indexOf(value[0]) !== -1 &&
-            (PlayVod_qualities[i].band.charAt(0)).indexOf(value[1]) !== -1) {
-            result = (PlayVod_qualities[i].id).replace("source", STR_SOURCE) + "<br>" +
-                PlayVod_qualities[i].band + " | " + value[2];
-        }
-    }
-
-    Main_innerHTML("stream_quality", "Auto | " + result);
 }
 
 function PlayVod_IconsBottonResetFocus() {
@@ -673,27 +659,12 @@ function PlayVod_SetHtmlQuality(element) {
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
     var quality_string = '';
-    if (PlayVod_quality.indexOf('source') !== -1) quality_string = PlayVod_quality.replace("source", STR_SOURCE) + PlayVod_qualities[PlayVod_qualityIndex].band;
-    else quality_string = PlayVod_quality + PlayVod_qualities[PlayVod_qualityIndex].band;
+    if (PlayVod_quality.indexOf('source') !== -1) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+    else quality_string = PlayVod_quality;
+
+    quality_string += PlayVod_quality.indexOf('Auto') === -1 ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
 
     Main_textContent(element, quality_string);
-}
-
-function PlayVod_SetTopHtmlQuality(element) {
-    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-
-    var quality_string = '';
-    if (PlayVod_quality.indexOf('source') !== -1) quality_string = PlayVod_quality.replace("source", STR_SOURCE) +
-        "<br>" + PlayVod_qualities[PlayVod_qualityIndex].band;
-    else quality_string = PlayVod_quality + "<br>" + PlayVod_qualities[PlayVod_qualityIndex].band;
-
-    var codec = '';
-    try {
-        codec = Android.getCodec();
-        if (codec === null) codec = '';
-    } catch (e) {}
-
-    Main_innerHTML(element, quality_string + codec);
 }
 
 function PlayVod_getQualitiesCount() {

@@ -127,13 +127,13 @@ function PlayClip_QualityGenerate(response) {
 
         if (!PlayClip_qualities.length) {
             PlayClip_qualities.push({
-                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' (source)',
+                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' | source | mp4',
                 'url': response[i].source
             });
             Play_qualitiesAuto.push(response[i].source);
         } else {
             PlayClip_qualities.push({
-                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate),
+                'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' | mp4',
                 'url': response[i].source
             });
             Play_qualitiesAuto.push(response[i].source);

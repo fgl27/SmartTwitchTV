@@ -416,9 +416,9 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         //To load page from assets
-        mwebview.loadUrl("file:///android_asset/index.html");
+        //mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -590,17 +590,6 @@ public class PlayerActivity extends Activity {
         public String getVideoQuality() {
             if (player != null) return mgetVideoQuality(player);
             else return null;
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String getCodec() {
-            String codec = "";
-            if (player != null) {
-                codec = mgetCodec(player);
-                return codec != null ? codec : "";
-            }
-            else return codec;
         }
     }
 
@@ -807,22 +796,8 @@ public class PlayerActivity extends Activity {
         if (format == null) {
             return null;
         }
-        int band = (format.bitrate / 1000000);
-        //Below doesnot provide all values use a simple workaround to get and show correct values
-        //return format.height + "p" + (format.frameRate == Format.NO_VALUE ? "" : Math.round(format.frameRate)) +
-        //    "<br>" + String.format("%.2f", band) + "Mbps" + mgetCodec(format.codecs);
 
-        return format.height + "p," + band + "," +  mgetCodec(format.codecs);
-    }
-
-    public String mgetCodec(SimpleExoPlayer player) {
-        Format format = player.getVideoFormat();
-
-        if (format == null) {
-            return null;
-        }
-
-        return mgetCodec(format.codecs);
+        return format.height + "p," + (format.frameRate == Format.NO_VALUE ? "," : Math.round(format.frameRate) + ",") + format.bitrate + "," +  mgetCodec(format.codecs);
     }
 
     public String mgetCodec(String codec) {
