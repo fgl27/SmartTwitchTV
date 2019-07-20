@@ -746,9 +746,11 @@ public class PlayerActivity extends Activity {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                if (status == 401 || status == 403) JsonObToString(status, "expired");
+                if (status == 401 || status == 403 || status == 404) return JsonObToString(status, "expired_or_offline");
+
                 //TODO findout what is crashing when the status is 401 or 403
-                //Logs on the box I have are empty need to test on emulator
+                // probably null mresponseCharset resolved bellow
+
                 final Charset mresponseCharset;
                 mresponseCharset = responseCharset(urlConnection.getContentType());
 
