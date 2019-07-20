@@ -5,7 +5,7 @@ var Play_PlayerPanelOffset = -5;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 2;
 var Play_PanelHideID = null;
-var Play_quality = "source";
+var Play_quality = "Auto";
 var Play_qualityPlaying = Play_quality;
 var Play_isFullScreen = true;
 var Play_ChatPositionsBF;

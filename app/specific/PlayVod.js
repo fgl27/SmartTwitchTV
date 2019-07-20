@@ -1,5 +1,5 @@
 //Variable initialization
-var PlayVod_quality = 'source';
+var PlayVod_quality = 'Auto';
 var PlayVod_qualityPlaying = PlayVod_quality;
 
 var PlayVod_state = 0;
