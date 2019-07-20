@@ -46,10 +46,10 @@ import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -94,9 +94,6 @@ public class PlayerActivity extends Activity {
     private long mResumePosition;
 
     public static String url;
-    public static String[] urls;
-    private Uri[] uris;
-    private MediaSource mediaSource;
     private MediaSource mediaSourceAuto = null;
     private MediaSource TempmediaSourceAuto;
 
@@ -148,7 +145,7 @@ public class PlayerActivity extends Activity {
         if (shouldAutoPlay) {
             showLoading(true);
 
-            trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
 
             player = ExoPlayerFactory.newSimpleInstance(
@@ -165,18 +162,7 @@ public class PlayerActivity extends Activity {
                 player.seekTo(mResumePosition);
             }
 
-            if (mediaSourceAuto == null) {
-                uris = new Uri[urls.length];
-                for (int i = 0; i < urls.length; i++)
-                    uris[i] = Uri.parse(urls[i]);
-
-                MediaSource[] mediaSources = new MediaSource[uris.length];
-                for (int i = 0; i < uris.length; i++)
-                    mediaSources[i] = buildMediaSource(uris[i]);
-
-                mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
-                player.prepare(mediaSource, false, true);
-            } else player.prepare(mediaSourceAuto, false, true);
+            player.prepare(mediaSourceAuto != null ? mediaSourceAuto : buildMediaSource(Uri.parse(url)), false, true);
 
             player.setPlayWhenReady(true);
             player.addListener(PlayerEvent());
@@ -348,7 +334,7 @@ public class PlayerActivity extends Activity {
     }
 
     /**
-     * Increase player's min/max buffer size to 60 secs
+     * Increase player's min/max buffer sizes
      *
      * @return load control
      */
@@ -430,9 +416,9 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
+        mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -497,7 +483,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
             mediaSourceAuto = null;
-            PlayerActivity.urls = videoAddress.split(",");
+            PlayerActivity.url = videoAddress;
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
         }
 
@@ -505,7 +491,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
             mediaSourceAuto = null;
-            PlayerActivity.urls = videoAddress.split(",");
+            PlayerActivity.url = videoAddress;
             SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
         }
 
@@ -631,14 +617,17 @@ public class PlayerActivity extends Activity {
     private final BroadcastReceiver initializePlayerReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
             mwhocall = intent.getIntExtra("whocall", 1);
             long mPosition = intent.getLongExtra("position", 0);
+
             if (mPosition != 0) {
                 mResumeWindow = 1;
                 mResumePosition = mPosition;
                 if (mResumePosition < 0) mResumePosition = 0;
             }
+
             initializePlayer();
         }
     };
@@ -672,7 +661,6 @@ public class PlayerActivity extends Activity {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                //Log.d(TAG, "on player state changed---" + playWhenReady + "--------" + playbackState + "-----get buffer position-----" + player.getBufferedPosition() + "------get real position-----" + player.getCurrentPosition());
                 if (playWhenReady) {
                     switch (playbackState) {
                         case Player.STATE_IDLE:
@@ -684,11 +672,10 @@ public class PlayerActivity extends Activity {
                         case Player.STATE_READY:
                             hideLoading();
                             if (player != null)
-                                mwebview.loadUrl("javascript:Play_UpdateDuration(" + mwhocall + "," + player.getDuration() + ")");
+                                mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                                        mwhocall + "," + player.getDuration() + ")");
                             break;
                         case Player.STATE_ENDED:
-                            //Toast.makeText(PlayerActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Video Ended");
                             hideLoading();
                             mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
                             break;
@@ -698,17 +685,6 @@ public class PlayerActivity extends Activity {
                 } else {
                     hideLoading();
                 }
-            }
-
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-                int sourceIndex = player.getCurrentWindowIndex();
-                Toast.makeText(PlayerActivity.this, "Video Ended onPositionDiscontinuity sourceIndex = " +
-                        sourceIndex + " reason " + reason, Toast.LENGTH_SHORT).show();
-                PlayerActivity.url = "file:///android_asset/temp.mp4";
-                SendBroadcast("initializePlayerReceiver", PlayerActivity.this, false, mwhocall, 0);
-                mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
             }
 
             @Override
