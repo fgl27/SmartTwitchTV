@@ -254,7 +254,7 @@ function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbna
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
-        '<i class="icon-' + icon + '" style="vertical-align: middle; color: ' + color + '; font-size: 90%; aria-hidden="true"></i> ' + channel_display_name + '</div>' +
+        '<i class="icon-' + icon + ' live_icon" style="color: ' + color + ';"></i> ' + channel_display_name + '</div>' +
         '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         quality + '</div>' +
         '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +

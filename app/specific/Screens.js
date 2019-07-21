@@ -302,8 +302,8 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
-        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + '" style="vertical-align: middle; color: ' + (data[2] ? '#FFFFFF' : valuesArray[1].indexOf(STR_USER_HOSTING) !== -1 ? '#FED000' : 'red') +
-        '; font-size: 90%; aria-hidden="true"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' + (data[2] ? '#FFFFFF' : valuesArray[1].indexOf(STR_USER_HOSTING) !== -1 ? '#FED000' : 'red') +
+        ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
