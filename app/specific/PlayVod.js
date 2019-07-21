@@ -840,6 +840,7 @@ function PlayVod_CleanVodIds(quantity) {
 function Play_showVodDialog() {
     Main_HideElement('controls_holder');
     PlayVod_showPanel(false);
+    Main_textContent('stream_quality', '');
     Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] * 1000));
     Main_ShowElement('dialog_vod_start');
 }
