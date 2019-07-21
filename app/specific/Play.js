@@ -522,10 +522,10 @@ function Play_ForbiddenLive() {
 //Browsers crash trying to get the streams link
 function Play_loadDataSuccessFake() {
     Play_qualities = [{
-        'id': '1080p60(Source)',
-        'band': '10.00Mbps',
-        'codec': 'avc',
-        'url': 'http://fake'
+        'id': '1080p60 | Source',
+        'band': '| 10.00Mbps',
+        'codec': ' | avc',
+        'url': 'https://fake'
     }];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
@@ -648,6 +648,8 @@ function Play_qualityChanged() {
 }
 
 function Play_SetHtmlQuality(element) {
+    if(!Play_qualities[Play_qualityIndex].hasOwnProperty('id')) return;
+
     Play_quality = Play_qualities[Play_qualityIndex].id;
 
     var quality_string = '';

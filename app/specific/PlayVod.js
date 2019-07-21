@@ -675,6 +675,8 @@ function PlayVod_qualityDisplay() {
 }
 
 function PlayVod_SetHtmlQuality(element) {
+    if(!PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
+
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
     var quality_string = '';
