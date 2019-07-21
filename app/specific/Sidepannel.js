@@ -28,7 +28,7 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_UpdateThumb() {
-    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
+    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute('side_panel_data'));
 
     Sidepannel_UpdateThumbDoc.onerror = function() {
         this.onerror = null;

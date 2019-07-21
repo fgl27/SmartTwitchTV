@@ -474,9 +474,9 @@ var Base_Live_obj = {
             this.row.appendChild(Screens_createCellLive(
                 this.row_id,
                 this.coloumn_id,
-                [cell.channel.name, cell.channel._id, cell.channel.status], this.ids,
+                [cell.channel.name, cell.channel._id, Main_is_rerun(cell.stream_type)], this.ids,
                 [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(cell.stream_type)) + cell.channel.display_name,
+                    cell.channel.display_name,
                     cell.channel.status, cell.game,
                     STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) + STR_VIEWER,
                     Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
@@ -692,7 +692,7 @@ function ScreensObj_InitUserHost() {
             this.row.appendChild(Screens_createCellLive(
                 this.row_id,
                 this.coloumn_id,
-                [cell.target.channel.name, cell.target._id, cell.target.title], this.ids,
+                [cell.target.channel.name, cell.target._id, false], this.ids,
                 [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
                     cell.target.title, cell.target.meta_game,

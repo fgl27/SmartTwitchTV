@@ -204,21 +204,22 @@ function UserLiveFeed_loadDataSuccess(responseText) {
             doc.appendChild(UserLiveFeed_CreatFeed(i,
                 [stream.channel.name, id],
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.display_name,
                     stream.game
                 ]));
 
             if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
+                [stream.channel.name, id, Main_is_rerun(stream.stream_type)],
                 [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", "1600x900"),
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.display_name,
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
                     STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
                     Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
                 ],
                 [stream.channel.logo,
-                    Main_is_playlist(JSON.stringify(stream.stream_type)) + stream.channel.display_name,
+                    stream.channel.display_name,
                     stream.channel.display_name,
                     stream.game, Main_addCommas(stream.viewers)
                 ]));
@@ -248,6 +249,7 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
     Main_td = document.createElement('div');
     Main_td.setAttribute('id', UserLiveFeed_ids[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
     Main_td.className = 'user_feed_thumb';
     Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
         '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
@@ -259,11 +261,12 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
     return Main_td;
 }
 
-function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
+function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
 
     Main_td = document.createElement('div');
     Main_td.setAttribute('id', UserLiveFeed_side_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(jsondata));
+    Main_td.setAttribute('side_panel_data', JSON.stringify(data));
     Main_td.className = 'side_panel_feed';
 
     Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
@@ -275,7 +278,7 @@ function UserLiveFeed_CreatSideFeed(id, data, valuesArray) {
         UserLiveFeed_side_ids[4] + id +
         '" style="width: 74%; display: inline-block; font-size: 110%; font-weight: bold; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[2] +
         '</div><div style="width:25%; float: right; text-align: right; vertical-align: middle; display: inline-block"><div  style="text-align: center;" ><i class="icon-' +
-        ((valuesArray[1].indexOf(STR_NOT_LIVE) === -1) ? 'circle" style="color: red;' : 'refresh" style="') +
+        (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
         ' font-size: 80%; "></i><div style="font-size: 85%;">' + valuesArray[4] + '</div></div></div><div id="' +
         UserLiveFeed_side_ids[5] + id +
         '" style="font-size: 90%; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] +
