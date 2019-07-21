@@ -460,7 +460,7 @@ function Play_loadDataRequest() {
 
     } else {
         xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", proxyurl + theUrl, true);
+        xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
 
