@@ -29,7 +29,6 @@ function ChannelContent_init() {
     if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
-    Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannelDisplayname.replace(STR_NOT_LIVE, '');
     Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
     Main_textContent('top_bar_game', STR_CHANNEL_CONT);
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
@@ -192,13 +191,13 @@ function ChannelContent_loadDataSuccess() {
             var hosting = ChannelContent_TargetId !== undefined ? Main_values.Main_selectedChannelDisplayname +
                 STR_USER_HOSTING : '';
             var stream = response.stream;
-            row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.preview.template,
+            row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.channel._id, stream.preview.template,
                 twemoji.parse(stream.channel.status), stream.game,
-                Main_is_playlist(JSON.stringify(stream.stream_type)) +
                 hosting + stream.channel.display_name,
                 STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR +
                 Main_addCommas(stream.viewers) + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)));
+                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language),
+                Main_is_rerun(stream.stream_type)));
             coloumn_id++;
         } else ChannelContent_skipImg = true;
     } else ChannelContent_skipImg = true;
@@ -222,7 +221,7 @@ function ChannelContent_loadDataSuccess() {
         Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
 
     Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + 'x_x');
+    Main_td.setAttribute('id', 'stream_cell_x_x');
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] +
         'x_x" class="stream_thumbnail_video" ><div id="' +
@@ -236,20 +235,26 @@ function ChannelContent_loadDataSuccess() {
 }
 
 //TODO revise this functions there is too many
-function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality) {
+function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, rerun) {
+
+    var icon = 'circle';
+    var color = (ChannelContent_TargetId !== undefined ? '#FED000' : 'red');
+    if (rerun) {
+        color = '#FFFFFF';
+        icon = 'refresh';
+    }
 
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, channel_name);
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify([channel_name, channel_id, rerun]));
+
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
-        '<i class="icon-circle" style="color: ' +
-        (ChannelContent_TargetId !== undefined ? '#FED000' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + STR_SPACE +
-        channel_display_name + '</div>' +
+        '<i class="icon-' + icon + '" style="vertical-align: middle; color: ' + color + '; font-size: 90%; aria-hidden="true"></i> ' + channel_display_name + '</div>' +
         '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
         quality + '</div>' +
         '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
@@ -262,8 +267,7 @@ function ChannelContent_createCell(id, channel_name, preview_thumbnail, stream_t
 
 function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
     Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, user_name);
+    Main_td.setAttribute('id', 'channel_' + id);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
         ChannelContent_ids[1] + id +
@@ -277,8 +281,7 @@ function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
 
 function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
     Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, user_name);
+    Main_td.setAttribute('id', 'fallow_' + id);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
@@ -357,8 +360,11 @@ function ChannelContent_keyEnter() {
         var value = (!ChannelContent_skipImg ? 0 : 1);
         if (ChannelContent_cursorX === (0 - value)) {
 
-            Main_values.Play_selectedChannel = document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
-                '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute);
+            Main_values.Play_selectedChannel = JSON.parse(document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
+                '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute));
+            console.log(Main_values.Play_selectedChannel);
+            Main_values.IsRerun = Main_values.Play_selectedChannel[2];
+            Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
 
             Main_values.Play_selectedChannelDisplayname = document.getElementById(ChannelContent_ids[3] + ChannelContent_cursorY +
                 '_' + ChannelContent_cursorX).textContent;

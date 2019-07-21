@@ -55,7 +55,7 @@ function en_USLang() {
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
     STR_CANCEL = "Cancel";
-    STR_NOT_LIVE = "Not Live | ";
+    STR_NOT_LIVE = "Rerun";
     STR_LIVE_CHANNELS = " Channels Live";
     STR_LIVE_HOSTS = " Hosts Live";
     STR_LIVE_GAMES = " Games Live";

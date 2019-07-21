@@ -62,6 +62,7 @@ var Main_values = {
     "Main_CenterLablesVectorPos": 0,
     "Chat_font_size": 3,
     "ChatBackground": 10,
+    "IsRerun": false,
 };
 
 var Main_LastClickFinish = true;
@@ -507,8 +508,8 @@ function Main_videoqualitylang(video_height, average_fps, language) {
     return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
 }
 
-function Main_is_playlist(content) {
-    return (content.indexOf('live') !== -1) ? '' : STR_NOT_LIVE;
+function Main_is_rerun(content) {
+    return ((content + '').indexOf('live') === -1);
 }
 
 function Main_ThumbNull(y, x, thumbnail) {
@@ -802,7 +803,9 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+
     Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
+    Main_values.IsRerun = Main_values.Play_selectedChannel[2];
     Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
