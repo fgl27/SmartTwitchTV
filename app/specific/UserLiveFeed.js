@@ -216,7 +216,8 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                     stream.channel.status, stream.game,
                     STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' +
                     STR_FOR + Main_addCommas(stream.viewers) + STR_VIEWER,
-                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language)
+                    Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language),
+                    Main_is_rerun(stream.stream_type)
                 ],
                 [stream.channel.logo,
                     stream.channel.display_name,

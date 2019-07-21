@@ -36,7 +36,7 @@ function Sidepannel_UpdateThumb() {
     };
     Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
 
-    Main_innerHTML('feed_thum_name', info[3]);
+    Main_innerHTML('feed_thum_name', '<i class="icon-' + (info[8] ? 'refresh' : 'circle') + '" style="vertical-align: middle; color: ' + (info[8] ? '#FFFFFF' : 'red') + '; font-size: 90%; aria-hidden="true"></i> ' + info[3]);
     Main_innerHTML('feed_thum_quality', info[7]);
     Main_innerHTML('feed_thum_title', twemoji.parse(info[4]));
     Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
