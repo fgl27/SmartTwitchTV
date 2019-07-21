@@ -418,6 +418,8 @@ function PlayClip_qualityDisplay() {
 }
 
 function PlayClip_SetHtmlQuality(element) {
+    if(!PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
+
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
     var quality_string = PlayClip_quality;
