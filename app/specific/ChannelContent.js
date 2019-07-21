@@ -181,7 +181,7 @@ function ChannelContent_loadDataSuccess() {
     Main_td = document.createElement('tr');
     Main_td.className = 'follower_banner';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
-        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner"src="' + ChannelContent_profile_banner +
+        ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner" src="' + ChannelContent_profile_banner +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
     doc.appendChild(Main_td);
 
@@ -362,7 +362,7 @@ function ChannelContent_keyEnter() {
 
             Main_values.Play_selectedChannel = JSON.parse(document.getElementById(ChannelContent_ids[8] + ChannelContent_cursorY +
                 '_' + ChannelContent_cursorX).getAttribute(Main_DataAttribute));
-            console.log(Main_values.Play_selectedChannel);
+
             Main_values.IsRerun = Main_values.Play_selectedChannel[2];
             Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
 
