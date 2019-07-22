@@ -863,7 +863,7 @@ function Play_ClearPlay() {
 }
 
 function Play_hideFallow() {
-    Play_controls[4].setLable(STR_SPACE + STR_NOKEY);
+    Play_controls[Play_controlsFallow].setLable(STR_SPACE + STR_NOKEY);
     AddCode_IsFallowing = false;
 }
 
@@ -1011,12 +1011,12 @@ function Play_showChat() {
     Play_ChatBackgroundChange(false);
     Main_ShowElement('chat_container');
 
-    Play_controls[7].setLable();
+    Play_controls[Play_controlsChat].setLable();
 }
 
 function Play_hideChat() {
     Main_HideElement('chat_container');
-    Play_controls[7].setLable();
+    Play_controls[Play_controlsChat].setLable();
 }
 
 function Play_isChatShown() {
@@ -1523,7 +1523,7 @@ function Play_UpdateDuration(mwhocall, duration) { // jshint ignore:line
 }
 
 function Play_setFallow() {
-    Play_controls[4].setLable(AddCode_IsFallowing ? STR_FALLOWING : STR_FALLOW, AddCode_IsFallowing);
+    Play_controls[Play_controlsFallow].setLable(AddCode_IsFallowing ? STR_FALLOWING : STR_FALLOW, AddCode_IsFallowing);
 }
 
 function Play_KeyReturn(is_vod) {
@@ -1580,8 +1580,8 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
-                    Play_controls[9].defaultValue = Play_ChatPositions;
-                    Play_controls[9].setLable();
+                    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+                    Play_controls[Play_controlsChatPos].setLable();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
@@ -1657,9 +1657,9 @@ function Play_handleKeyDown(e) {
                     } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
                     Play_ChatSize(true);
 
-                    Play_controls[10].defaultValue = Play_ChatSizeValue;
-                    Play_controls[10].bottomArrows();
-                    Play_controls[10].setLable();
+                    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
+                    Play_controls[Play_controlsChatSize].bottomArrows();
+                    Play_controls[Play_controlsChatSize].setLable();
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else {
                     Play_showPanel();
@@ -1699,361 +1699,389 @@ function Play_handleKeyDown(e) {
     }
 }
 
-var Play_controls;
+var Play_controls = {};
 var Play_controlsSize = -1;
 
+var Play_controlsSearch = 0;
+var Play_controlsChanelCont = 1;
+var Play_controlsGameCont = 2;
+var Play_controlsOpenVod = 3;
+var Play_controlsFallow = 4;
+var Play_controlsSpeed = 5;
+var Play_controlsQuality = 6;
+var Play_controlsChat = 7;
+var Play_controlsChatSide = 8;
+var Play_controlsChatPos = 9;
+var Play_controlsChatSize = 10;
+var Play_controlsChatBright = 11;
+var Play_controlsChatFont = 12;
+var Play_controlsChatForceDis = 13;
+
 function Play_MakeControls() {
-    Play_controls = {
-        0: { //Search
-            icons: "search",
-            string: STR_SEARCH,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
-                Play_ForceHidePannel();
-                Play_OpenSearch(PlayVodClip);
-                Play_ForceHidePannelReset();
-            },
+
+    Play_controls[Play_controlsSearch] = { //Search
+        icons: "search",
+        string: STR_SEARCH,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Play_ForceHidePannel();
+            Play_OpenSearch(PlayVodClip);
+            Play_ForceHidePannelReset();
         },
-        1: { //channel content
-            icons: "filmstrip",
-            string: STR_CHANNEL_CONT,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
-                Play_ForceHidePannel();
-                Play_OpenChannel(PlayVodClip);
-                Play_ForceHidePannelReset();
-            },
+    };
+
+    Play_controls[Play_controlsChanelCont] = { //channel content
+        icons: "filmstrip",
+        string: STR_CHANNEL_CONT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Play_ForceHidePannel();
+            Play_OpenChannel(PlayVodClip);
+            Play_ForceHidePannelReset();
         },
-        2: { //game content
-            icons: "gamepad",
-            string: STR_GAME_CONT,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
-                Play_ForceHidePannel();
-                Play_OpenGame(PlayVodClip);
-                Play_ForceHidePannelReset();
-            },
+    };
+
+    Play_controls[Play_controlsGameCont] = { //game content
+        icons: "gamepad",
+        string: STR_GAME_CONT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Play_ForceHidePannel();
+            Play_OpenGame(PlayVodClip);
+            Play_ForceHidePannelReset();
         },
-        3: { //open vod
-            icons: "movie-play",
-            string: STR_OPEN_BROADCAST,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function() {
-                Play_ForceHidePannel();
-                PlayClip_OpenVod();
-                Play_ForceHidePannelReset();
-            },
+    };
+
+    Play_controls[Play_controlsOpenVod] = { //open vod
+        icons: "movie-play",
+        string: STR_OPEN_BROADCAST,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function() {
+            Play_ForceHidePannel();
+            PlayClip_OpenVod();
+            Play_ForceHidePannelReset();
         },
-        4: { //fallowing
-            icons: "heart-o",
-            string: STR_FALLOW,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
+    };
 
-                AddCode_Channel_id = (PlayVodClip === 1 ? Main_values.Play_selectedChannel_id : Main_values.Main_selectedChannel_id);
-                Play_FallowUnfallow();
 
-                Play_Resetpanel(PlayVodClip);
-            },
-            setLable: function(string, AddCode_IsFallowing) {
-                Main_textContent('extra_button_text' + this.position, string);
-                this.setIcon(AddCode_IsFallowing);
-            },
-            setIcon: function(AddCode_IsFallowing) {
-                Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
-                    (AddCode_IsFallowing ? "heart" : "heart-o") +
-                    '" style="color: #' + (AddCode_IsFallowing ? "00b300" : "FFFFFF") + ';" ></i>');
-            },
+    Play_controls[Play_controlsFallow] = { //fallowing
+        icons: "heart-o",
+        string: STR_FALLOW,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+
+            AddCode_Channel_id = (PlayVodClip === 1 ? Main_values.Play_selectedChannel_id : Main_values.Main_selectedChannel_id);
+            Play_FallowUnfallow();
+
+            Play_Resetpanel(PlayVodClip);
         },
-        5: { //speed
-            icons: "speedometer",
-            string: STR_SPEED,
-            values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-            defaultValue: 3,
-            opacity: 0,
-            enterKey: function() {
-                Play_CurrentSpeed = this.defaultValue;
-                try {
-                    Android.setPlaybackSpeed(this.values[this.defaultValue]);
-                } catch (e) {}
-            },
-            updown: function(adder) {
-                this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1))
-                    this.defaultValue = (this.values.length - 1);
-                this.bottomArrows();
-                this.setLable();
-            },
-            setLable: function() {
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] +
-                    (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
+        setLable: function(string, AddCode_IsFallowing) {
+            Main_textContent('extra_button_text' + this.position, string);
+            this.setIcon(AddCode_IsFallowing);
         },
-        6: { //quality
-            icons: "videocamera",
-            string: STR_QUALITY,
-            values: ['1080p60 | Source | 10.00Mbps'],
-            defaultValue: 0,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
-
-                if (PlayVodClip === 1) {
-                    Play_qualityChanged();
-                    Play_hidePanel();
-                } else if (PlayVodClip === 2) {
-                    PlayVod_PlayerCheckQualityChanged = false;
-                    PlayVod_qualityChanged();
-                    PlayVod_hidePanel();
-                } else if (PlayVodClip === 3) {
-                    PlayClip_PlayerCheckQualityChanged = false;
-                    PlayClip_qualityChanged();
-                    PlayClip_hidePanel();
-                }
-                Play_clearPause();
-            },
-            updown: function(adder, PlayVodClip) {
-
-                if (PlayVodClip === 1) {
-                    //TODO fix this reversed logic
-                    Play_qualityIndex += adder * -1;
-
-                    if (Play_qualityIndex > (Play_getQualitiesCount() - 1))
-                        Play_qualityIndex = (Play_getQualitiesCount() - 1);
-                    else if (Play_qualityIndex < 0)
-                        Play_qualityIndex = 0;
-
-                    Play_qualityDisplay();
-                } else if (PlayVodClip === 2) {
-                    //TODO fix this reversed logic
-                    PlayVod_qualityIndex += adder * -1;
-
-                    if (PlayVod_qualityIndex > (PlayVod_getQualitiesCount() - 1))
-                        PlayVod_qualityIndex = (PlayVod_getQualitiesCount() - 1);
-                    else if (PlayVod_qualityIndex < 0)
-                        PlayVod_qualityIndex = 0;
-
-                    PlayVod_qualityDisplay();
-                } else if (PlayVodClip === 3) {
-                    //TODO fix this reversed logic
-                    PlayClip_qualityIndex += adder * -1;
-
-                    if (PlayClip_qualityIndex > (PlayClip_getQualitiesCount() - 1))
-                        PlayClip_qualityIndex = (PlayClip_getQualitiesCount() - 1);
-                    else if (PlayClip_qualityIndex < 0)
-                        PlayClip_qualityIndex = 0;
-
-                    PlayClip_qualityDisplay();
-                }
-
-            },
+        setIcon: function(AddCode_IsFallowing) {
+            Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
+                (AddCode_IsFallowing ? "heart" : "heart-o") +
+                '" style="color: #' + (AddCode_IsFallowing ? "00b300" : "FFFFFF") + ';" ></i>');
         },
-        7: { //chat enable disable
-            icons: "chat",
-            string: STR_CHAT,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function() {
-                if (!Play_isFullScreen) return;
-                if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                    Play_showChat();
-                    Play_ChatEnable = true;
-                } else {
-                    Play_hideChat();
-                    Play_ChatEnable = false;
-                }
-                Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-                this.setLable();
-            },
-            setLable: function() {
-                var string = (Play_isChatShown() ? STR_YES : STR_NO);
-                if (!Play_isFullScreen) string = STR_CHAT_SIDE;
+    };
 
-                Main_textContent('extra_button_' + this.position, '(' + string + ')');
-            },
+    Play_controls[Play_controlsSpeed] = { //speed
+        icons: "speedometer",
+        string: STR_SPEED,
+        values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+        defaultValue: 3,
+        opacity: 0,
+        enterKey: function() {
+            Play_CurrentSpeed = this.defaultValue;
+            try {
+                Android.setPlaybackSpeed(this.values[this.defaultValue]);
+            } catch (e) {}
         },
-        8: { //chat side
-            icons: Play_isFullScreen ? "resize-down" : "resize-up",
-            string: STR_CHAT_VIDEO_MODE,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function() {
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-
-                this.setLable();
-                this.setIcon();
-            },
-            setLable: function() {
-                Main_textContent('extra_button_' + this.position, '(' + (Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE) + ')');
-
-                Play_controls[this.position - 1].setLable();
-            },
-            setIcon: function() {
-                Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
-                    (Play_isFullScreen ? "resize-down" : "resize-up") + '" ></i>');
-            },
+        updown: function(adder) {
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1))
+                this.defaultValue = (this.values.length - 1);
+            this.bottomArrows();
+            this.setLable();
         },
-        9: { //chat position
-            icons: "chat-pos",
-            string: STR_CHAT_POS,
-            values: [1, 2, 3, 4, 5, 6, 7, 8],
-            defaultValue: Play_ChatPositions,
-            opacity: 0,
-            isChat: true,
-            updown: function(adder) {
-                if (!Play_isChatShown() || !Play_isFullScreen) return;
-                this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = (this.values.length - 1);
-                else if (this.defaultValue > (this.values.length - 1))
-                    this.defaultValue = 0;
-
-                Play_ChatPositions += adder;
-
-                Play_ChatPosition();
-
-                this.defaultValue = Play_ChatPositions;
-
-                this.setLable();
-            },
-            setLable: function() {
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue]);
-            },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] +
+                (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
         },
-        10: { //chat size
-            icons: "chat-size",
-            string: STR_CHAT_SIZE,
-            values: ["12.5%", "25%", "50%", "100%"],
-            defaultValue: Play_ChatSizeValue,
-            opacity: 0,
-            isChat: true,
-            updown: function(adder) {
-                if (!Play_isChatShown() || !Play_isFullScreen) return;
-                this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1)) {
-                    this.defaultValue = (this.values.length - 1);
-                    return;
-                }
-                this.bottomArrows();
-                Play_ChatSizeValue = this.defaultValue;
-
-                if (Play_ChatSizeValue === 2 && adder === -1) {
-                    Play_ChatPositionConvert(false);
-                } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
-
-                Play_ChatSize(true);
-
-                Play_controls[Play_Panelcounter - 1].defaultValue = Play_ChatPositions;
-                this.setLable();
-            },
-            setLable: function() {
-                Main_textContent('controls_name_' + (this.position - 1),
-                    Play_controls[(this.position - 1)].values[Play_controls[(this.position - 1)].defaultValue]);
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
         },
-        11: { //chat_brightness
-            icons: "chat-brig",
-            string: STR_CHAT_BRIGHTNESS,
-            values: ["0%", "5%", "10%", "15%", "20%",
-                "25%", "30%", "35%", "40%", "45%",
-                "50%", "55%", "60%", "65%", "70%",
-                "75%", "80%", "85%", "90%", "95%", "100%"
-            ],
-            defaultValue: Main_values.ChatBackground,
-            opacity: 0,
-            isChat: true,
-            updown: function(adder) {
-                if (!Play_isChatShown() || !Play_isFullScreen) return;
-                this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
-                Main_values.ChatBackground = this.defaultValue;
+    };
 
-                Play_ChatBackground = (this.defaultValue * 0.05).toFixed(2);
-                Play_ChatBackgroundChange(false);
+    Play_controls[Play_controlsQuality] = { //quality
+        icons: "videocamera",
+        string: STR_QUALITY,
+        values: ['1080p60 | Source | 10.00Mbps'],
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
 
-                this.setLable();
-                this.bottomArrows();
-                Main_SaveValues();
-            },
-            setLable: function() {
-                Main_textContent('controls_name_' + this.position,
-                    this.values[this.defaultValue]);
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
+            if (PlayVodClip === 1) {
+                Play_qualityChanged();
+                Play_hidePanel();
+            } else if (PlayVodClip === 2) {
+                PlayVod_PlayerCheckQualityChanged = false;
+                PlayVod_qualityChanged();
+                PlayVod_hidePanel();
+            } else if (PlayVodClip === 3) {
+                PlayClip_PlayerCheckQualityChanged = false;
+                PlayClip_qualityChanged();
+                PlayClip_hidePanel();
+            }
+            Play_clearPause();
         },
-        12: { //Chat font size
-            icons: "chat-font",
-            string: STR_CHAT_FONT,
-            values: ["60%", "80%", "100%", "120%", "140%"],
-            defaultValue: Main_values.Chat_font_size,
-            opacity: 0,
-            isChat: true,
-            updown: function(adder) {
-                if (!Play_isChatShown()) return;
-                this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
-                Main_values.Chat_font_size = this.defaultValue;
+        updown: function(adder, PlayVodClip) {
 
-                Play_SetChatFont();
-                this.setLable();
-                this.bottomArrows();
-                Main_SaveValues();
-            },
-            setLable: function() {
-                Main_textContent('controls_name_' + this.position,
-                    this.values[this.defaultValue]);
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
+            if (PlayVodClip === 1) {
+                //TODO fix this reversed logic
+                Play_qualityIndex += adder * -1;
+
+                if (Play_qualityIndex > (Play_getQualitiesCount() - 1))
+                    Play_qualityIndex = (Play_getQualitiesCount() - 1);
+                else if (Play_qualityIndex < 0)
+                    Play_qualityIndex = 0;
+
+                Play_qualityDisplay();
+            } else if (PlayVodClip === 2) {
+                //TODO fix this reversed logic
+                PlayVod_qualityIndex += adder * -1;
+
+                if (PlayVod_qualityIndex > (PlayVod_getQualitiesCount() - 1))
+                    PlayVod_qualityIndex = (PlayVod_getQualitiesCount() - 1);
+                else if (PlayVod_qualityIndex < 0)
+                    PlayVod_qualityIndex = 0;
+
+                PlayVod_qualityDisplay();
+            } else if (PlayVodClip === 3) {
+                //TODO fix this reversed logic
+                PlayClip_qualityIndex += adder * -1;
+
+                if (PlayClip_qualityIndex > (PlayClip_getQualitiesCount() - 1))
+                    PlayClip_qualityIndex = (PlayClip_getQualitiesCount() - 1);
+                else if (PlayClip_qualityIndex < 0)
+                    PlayClip_qualityIndex = 0;
+
+                PlayClip_qualityDisplay();
+            }
+
         },
-        13: { //force disable chat
-            icons: "chat-stop",
-            string: STR_F_DISABLE_CHAT,
-            values: null,
-            defaultValue: null,
-            opacity: 0,
-            enterKey: function(PlayVodClip) {
-                Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+    };
 
-                if (PlayVodClip === 1) ChatLive_Init();
-                else Chat_Init();
+    Play_controls[Play_controlsChat] = { //chat enable disable
+        icons: "chat",
+        string: STR_CHAT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function() {
+            if (!Play_isFullScreen) return;
+            if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                Play_showChat();
+                Play_ChatEnable = true;
+            } else {
+                Play_hideChat();
+                Play_ChatEnable = false;
+            }
+            Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+            this.setLable();
+        },
+        setLable: function() {
+            var string = (Play_isChatShown() ? STR_YES : STR_NO);
+            if (!Play_isFullScreen) string = STR_CHAT_SIDE;
 
-                this.setLable();
-                Main_SaveValues();
-            },
-            setLable: function() {
-                Main_textContent('extra_button_' + this.position, '(' +
-                    (!Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
-            },
+            Main_textContent('extra_button_' + this.position, '(' + string + ')');
+        },
+    };
+
+    Play_controls[Play_controlsChatSide] = { //chat side
+        icons: Play_isFullScreen ? "resize-down" : "resize-up",
+        string: STR_CHAT_VIDEO_MODE,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function() {
+            Play_isFullScreen = !Play_isFullScreen;
+            Play_SetFullScreen(Play_isFullScreen);
+
+            this.setLable();
+            this.setIcon();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, '(' + (Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE) + ')');
+
+            Play_controls[Play_controlsChat].setLable();
+        },
+        setIcon: function() {
+            Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
+                (Play_isFullScreen ? "resize-down" : "resize-up") + '" ></i>');
+        },
+    };
+
+    Play_controls[Play_controlsChatPos] = { //chat position
+        icons: "chat-pos",
+        string: STR_CHAT_POS,
+        values: [1, 2, 3, 4, 5, 6, 7, 8],
+        defaultValue: Play_ChatPositions,
+        opacity: 0,
+        isChat: true,
+        updown: function(adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = (this.values.length - 1);
+            else if (this.defaultValue > (this.values.length - 1))
+                this.defaultValue = 0;
+
+            Play_ChatPositions += adder;
+
+            Play_ChatPosition();
+
+            this.defaultValue = Play_ChatPositions;
+
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue]);
+        },
+    };
+
+    Play_controls[Play_controlsChatSize] = { //chat size
+        icons: "chat-size",
+        string: STR_CHAT_SIZE,
+        values: ["12.5%", "25%", "50%", "100%"],
+        defaultValue: Play_ChatSizeValue,
+        opacity: 0,
+        isChat: true,
+        updown: function(adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) {
+                this.defaultValue = (this.values.length - 1);
+                return;
+            }
+            this.bottomArrows();
+            Play_ChatSizeValue = this.defaultValue;
+
+            if (Play_ChatSizeValue === 2 && adder === -1) {
+                Play_ChatPositionConvert(false);
+            } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
+
+            Play_ChatSize(true);
+
+            Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + (this.position - 1),
+                Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsChatBright] = { //chat_brightness
+        icons: "chat-brig",
+        string: STR_CHAT_BRIGHTNESS,
+        values: ["0%", "5%", "10%", "15%", "20%",
+            "25%", "30%", "35%", "40%", "45%",
+            "50%", "55%", "60%", "65%", "70%",
+            "75%", "80%", "85%", "90%", "95%", "100%"
+        ],
+        defaultValue: Main_values.ChatBackground,
+        opacity: 0,
+        isChat: true,
+        updown: function(adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            Main_values.ChatBackground = this.defaultValue;
+
+            Play_ChatBackground = (this.defaultValue * 0.05).toFixed(2);
+            Play_ChatBackgroundChange(false);
+
+            this.setLable();
+            this.bottomArrows();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                this.values[this.defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsChatFont] = { //Chat font size
+        icons: "chat-font",
+        string: STR_CHAT_FONT,
+        values: ["60%", "80%", "100%", "120%", "140%"],
+        defaultValue: Main_values.Chat_font_size,
+        opacity: 0,
+        isChat: true,
+        updown: function(adder) {
+            if (!Play_isChatShown()) return;
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            Main_values.Chat_font_size = this.defaultValue;
+
+            Play_SetChatFont();
+            this.setLable();
+            this.bottomArrows();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                this.values[this.defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsChatForceDis] = { //force disable chat
+        icons: "chat-stop",
+        string: STR_F_DISABLE_CHAT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+
+            if (PlayVodClip === 1) ChatLive_Init();
+            else Chat_Init();
+
+            this.setLable();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, '(' +
+                (!Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 }
@@ -2176,7 +2204,7 @@ function Play_SetControlsArrows(key) {
 }
 
 function Play_ResetSpeed() {
-    Play_controls[5].defaultValue = Play_CurrentSpeed;
-    Play_controls[5].bottomArrows();
-    Play_controls[5].setLable();
+    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
+    Play_controls[Play_controlsSpeed].bottomArrows();
+    Play_controls[Play_controlsSpeed].setLable();
 }
