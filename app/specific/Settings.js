@@ -432,7 +432,7 @@ function Settings_ScrollTable() { // jshint ignore:line
     var position = screen.height;
 
     if (Settings_cursorY > 5) {
-        position = position * 0.09;
+        position = position * 0.11;
         position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
         document.getElementById('settings_scroll').style.top = position + "px";
     } else position = position * 0.077;
