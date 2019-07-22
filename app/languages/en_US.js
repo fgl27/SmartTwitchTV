@@ -248,4 +248,10 @@ function en_USLang() {
     STR_AUTO = "Auto";
     STR_DEF_QUALITY = "Default player quality";
     STR_DEF_QUALITY_SUMARRY = "Default player starting quality, after the user change the quality that becames default for that section, a section ends when the apps is closed";
+    STR_VERY_LOW = "Very low";
+    STR_LOW = "Low";
+    STR_HIGH = "High";
+    STR_VERY_HIGH = "Very high";
+    STR_THUMB_RESOLUTION = "Thumbnails quality";
+    STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail will look bad on high resolution TV";
 }

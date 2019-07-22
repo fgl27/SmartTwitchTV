@@ -107,8 +107,6 @@ var Main_AcceptHeader = 'Accept';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
 var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
-var Main_VideoSize = "800x450"; // default size 640x360
-var Main_GameSize = "544x760"; // default size 272x380
 
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
@@ -1372,4 +1370,17 @@ function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackS
     };
 
     xmlHttp.send(null);
+}
+
+var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
+var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
+var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
+var Main_SidePannelSize = "1280x720";
+var Main_VideoSize = "640x360";
+var Main_GameSize = "340x475";
+
+function Main_SetThumb() {
+    Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
+    Main_GameSize = Main_GameSizeAll[Settings_value.thumb_quality.defaultValue];
+    Main_SidePannelSize = Main_SidePannelSizeAll[Settings_value.thumb_quality.defaultValue];
 }

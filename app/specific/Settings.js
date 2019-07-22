@@ -29,6 +29,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "thumb_quality": { //thumbnail quality
+        "values": ["very-low", "low", "normal", "high", "very-high"],
+        "defaultValue": 3
+    },
     "default_quality": { //default player quality Auto or source
         "values": ["Auto", "source"],
         "defaultValue": 1
@@ -119,11 +123,12 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
 
-    // Clock offset
-    key = "clock_offset";
+    //thumb qualityes
+    key = "thumb_quality";
     Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
-    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
+    div += Settings_DivOptionWithSummary(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
 
     //Player restore playback
     key = "restor_playback";
@@ -144,6 +149,12 @@ function Settings_SetSettings() {
     Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
+
+    // Clock offset
+    key = "clock_offset";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -250,6 +261,11 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
+    //Thumb quality
+    key = "thumb_quality";
+    Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+    Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+
     //Player restore
     key = "default_quality";
     Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
@@ -284,6 +300,7 @@ function Settings_SetDefautls() {
     }
     Settings_SetBuffers(0);
     Settings_SetClock();
+    Main_SetThumb();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -359,6 +376,7 @@ function Settings_SetDefault(position) {
     else if (position === "buffer_clip") Settings_SetBuffers(3);
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
+    else if (position === "thumb_quality") Main_SetThumb();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
