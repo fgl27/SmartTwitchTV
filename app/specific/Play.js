@@ -158,9 +158,19 @@ function Play_PreStart() {
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
 
+    Play_SetQuality();
+
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
+}
+
+function Play_SetQuality() {
+    Play_quality = Settings_Obj_values('default_quality');
+    Play_qualityPlaying = Play_quality;
+    PlayVod_quality = Play_quality;
+    PlayVod_qualityPlaying = PlayVod_quality;
+
 }
 
 var Play_isFullScreenold = true;
@@ -522,11 +532,18 @@ function Play_ForbiddenLive() {
 //Browsers crash trying to get the streams link
 function Play_loadDataSuccessFake() {
     Play_qualities = [{
-        'id': '1080p60 | Source',
-        'band': '| 10.00Mbps',
-        'codec': ' | avc',
-        'url': 'https://fake'
-    }];
+            'id': 'Auto',
+            'band': 0,
+            'codec': 'avc',
+            'url': ''
+        },
+        {
+            'id': '1080p60 | Source',
+            'band': '| 10.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://fake'
+        },
+    ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
 }
