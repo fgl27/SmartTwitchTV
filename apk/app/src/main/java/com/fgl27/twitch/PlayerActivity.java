@@ -183,7 +183,10 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    // Send position = -1 to indicate that the video must start from 0
+    // this applyes to start a live, vod or clip from 0
     private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
+
         mediaSourceAuto = mediaSource;
         PlayerActivity.url = videoAddress;
         shouldAutoPlay = mshouldAutoPlay;
@@ -191,9 +194,8 @@ public class PlayerActivity extends Activity {
 
         if (position != 0) {
             mResumeWindow = 1;
-            mResumePosition = position;
-            if (mResumePosition < 0) mResumePosition = 0;
-        } else mResumePosition = 0;
+            mResumePosition = position < 0 ? 0 : position;
+        }
 
         initializePlayer();
     }
@@ -477,7 +479,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, 0, true));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1, true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -502,7 +504,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, "file:///android_asset/temp.mp4", mwhocall, 0, false));
+            myHandler.post(() -> PreinitializePlayer(null, "file:///android_asset/temp.mp4", mwhocall, -1, false));
         }
 
         @SuppressWarnings("unused")//called by JS
