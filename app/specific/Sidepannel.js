@@ -50,7 +50,7 @@ function Sidepannel_PreloadImgs() {
     for (var i = 0; i < Sidepannel_GetSize(); i++) {
         doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
         if (doc !== null) {
-            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[2] + Main_randomimg;
+            new Image().src = JSON.parse(doc.getAttribute('side_panel_data'))[2] + Main_randomimg;
         }
     }
 }
