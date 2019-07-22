@@ -467,7 +467,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
-            Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show();
+            myHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
         }
 
         @SuppressWarnings("unused")//called by JS
