@@ -327,7 +327,7 @@ function Settings_inputFocus(position) {
     Main_AddClass(key, 'settings_value_focus');
     Main_AddClass(key + '_div', 'settings_div_focus');
     Settings_Setarrows(position);
-    //Settings_ScrollTable();
+    Settings_ScrollTable();
 }
 
 function Settings_RemoveinputFocus() {
@@ -431,9 +431,9 @@ function Settings_SetClock() {
 function Settings_ScrollTable() { // jshint ignore:line
     var position = screen.height;
 
-    if (Settings_cursorY > 4) {
+    if (Settings_cursorY > 5) {
         position = position * 0.09;
-        position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
+        position += document.getElementById(Settings_value_keys[0]).offsetTop * -1;
         document.getElementById('settings_scroll').style.top = position + "px";
     } else position = position * 0.077;
 
