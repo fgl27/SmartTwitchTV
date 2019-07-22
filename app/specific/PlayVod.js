@@ -915,8 +915,8 @@ function PlayVod_handleKeyDown(e) {
                 } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
-                    Play_controls[9].defaultValue = Play_ChatPositions;
-                    Play_controls[9].setLable();
+                    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+                    Play_controls[Play_controlsChatPos].setLable();
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
@@ -1007,9 +1007,9 @@ function PlayVod_handleKeyDown(e) {
                         Play_ChatPositionConvert(false);
                     } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
                     Play_ChatSize(true);
-                    Play_controls[10].defaultValue = Play_ChatSizeValue;
-                    Play_controls[10].bottomArrows();
-                    Play_controls[10].setLable();
+                    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
+                    Play_controls[Play_controlsChatSize].bottomArrows();
+                    Play_controls[Play_controlsChatSize].setLable();
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
