@@ -355,12 +355,15 @@ function Chat_NoVod() {
 function Chat_Disable() {
     Chat_Clear();
     Chat_SingleLine(STR_CHAT_DISABLE);
+    Main_ready(function() {
+        Chat_div.scrollTop = Chat_div.scrollHeight;
+    });
 }
 
 function Chat_SingleLine(Line) {
     var div = '&nbsp;';
     div += '<span class="message">';
-    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
+    div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;
     div += Line;
     div += '</span>';
 
