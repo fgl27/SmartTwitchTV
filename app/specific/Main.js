@@ -112,7 +112,7 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.33';
+var Main_stringVersion_Min = '.34';
 var Main_minversion = '072219';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_AndroidVersion = '';
