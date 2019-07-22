@@ -3,10 +3,7 @@
 package com.fgl27.twitch;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
@@ -113,6 +110,8 @@ public class PlayerActivity extends Activity {
     private int heightChat = 0;
     private int mwidthChat = 0;
 
+    public Handler myHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +119,8 @@ public class PlayerActivity extends Activity {
             onCreateReady = true;
             setContentView(R.layout.activity_player);
             url = "file:///android_asset/temp.mp4";
+
+            myHandler = new Handler(Looper.getMainLooper());
 
             BANDWIDTH_METER = new DefaultBandwidthMeter.Builder(this).build();
             dataSourceFactory =
@@ -182,6 +183,21 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
+        mediaSourceAuto = mediaSource;
+        PlayerActivity.url = videoAddress;
+        shouldAutoPlay = mshouldAutoPlay;
+        mwhocall = whocall;
+
+        if (position != 0) {
+            mResumeWindow = 1;
+            mResumePosition = position;
+            if (mResumePosition < 0) mResumePosition = 0;
+        } else mResumePosition = 0;
+
+        initializePlayer();
+    }
+
     private void releasePlayer() {
         if (player != null) {
             shouldAutoPlay = player.getPlayWhenReady();
@@ -217,7 +233,7 @@ public class PlayerActivity extends Activity {
         if (runnow) showLoading();
         else {
             //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            myHandler.postDelayed(() -> {
                 if (loadingcanshow) showLoading();
             }, 650);
         }
@@ -235,7 +251,6 @@ public class PlayerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mregisterReceiver();
         if (player == null && shouldAutoPlay && mwebview != null && alredystarted) {
             mwebview.loadUrl("javascript:Play_CheckResume()");
         }
@@ -246,14 +261,12 @@ public class PlayerActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        munregisterReceiver();
     }
 
     //This function is called when home key is pressed
     @Override
     public void onStop() {
         super.onStop();
-        munregisterReceiver();
         updateResumePosition();
         releasePlayer();
     }
@@ -268,7 +281,6 @@ public class PlayerActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         releasePlayer();
-        munregisterReceiver();
     }
 
     private void closeThis() {
@@ -313,26 +325,6 @@ public class PlayerActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    public void munregisterReceiver() {
-        try {
-            this.unregisterReceiver(initializePlayerReceiver);
-            this.unregisterReceiver(showBufferReceiver);
-            this.unregisterReceiver(closeReceiver);
-            this.unregisterReceiver(playersize);
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    public void mregisterReceiver() {
-        try {
-            this.registerReceiver(initializePlayerReceiver, new IntentFilter("initializePlayerReceiver"));
-            this.registerReceiver(showBufferReceiver, new IntentFilter("showBufferReceiver"));
-            this.registerReceiver(closeReceiver, new IntentFilter("closeReceiver"));
-            this.registerReceiver(playersize, new IntentFilter("playersize"));
-        } catch (NullPointerException ignored) {
-        }
     }
 
     /**
@@ -452,19 +444,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mshowLoading(boolean show) {
-            final Intent NewIntent = new Intent();
-            NewIntent.setAction("showBufferReceiver");
-            NewIntent.putExtra("show", show);
-            mwebContext.sendBroadcast(NewIntent);
+            myHandler.post(() -> {
+                if (show) showLoading(true);
+                else hideLoading();
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mclose(boolean close) {
-            final Intent NewIntent = new Intent();
-            NewIntent.setAction("closeReceiver");
-            NewIntent.putExtra("close", close);
-            mwebContext.sendBroadcast(NewIntent);
+            myHandler.post(() -> {
+                if (close) closeThis();
+                else minimizeThis();
+            });
         }
 
         /**
@@ -479,26 +471,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesize(boolean sizechat) {
-            final Intent NewIntent = new Intent();
-            NewIntent.setAction("playersize");
-            NewIntent.putExtra("sizechat", sizechat);
-            mwebContext.sendBroadcast(NewIntent);
+            myHandler.post(() -> updatesize(sizechat));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            mediaSourceAuto = null;
-            PlayerActivity.url = videoAddress;
-            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, 0);
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, 0, true));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            mediaSourceAuto = null;
-            PlayerActivity.url = videoAddress;
-            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position, true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -511,15 +496,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            mediaSourceAuto = TempmediaSourceAuto;
-            SendBroadcast("initializePlayerReceiver", mwebContext, true, whocall, position);
+            myHandler.post(() -> PreinitializePlayer(TempmediaSourceAuto, "", whocall, position, true));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            PlayerActivity.url = "file:///android_asset/temp.mp4";
-            SendBroadcast("initializePlayerReceiver", mwebContext, false, whocall, 0);
+            myHandler.post(() -> PreinitializePlayer(null, "file:///android_asset/temp.mp4", mwhocall, 0, false));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -598,58 +581,6 @@ public class PlayerActivity extends Activity {
             else return null;
         }
     }
-
-    public static void SendBroadcast(String action, Context context, boolean shouldAutoPlay,
-                                     int whocall, long position) {
-        final Intent NewIntent = new Intent();
-        NewIntent.setAction(action);
-        NewIntent.putExtra("shouldAutoPlay", shouldAutoPlay);
-        NewIntent.putExtra("whocall", whocall);
-        NewIntent.putExtra("position", position);
-        context.sendBroadcast(NewIntent);
-    }
-
-    private final BroadcastReceiver initializePlayerReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            shouldAutoPlay = intent.getBooleanExtra("shouldAutoPlay", false);
-            mwhocall = intent.getIntExtra("whocall", 1);
-            long mPosition = intent.getLongExtra("position", 0);
-
-            if (mPosition != 0) {
-                mResumeWindow = 1;
-                mResumePosition = mPosition;
-                if (mResumePosition < 0) mResumePosition = 0;
-            }
-
-            initializePlayer();
-        }
-    };
-
-    private final BroadcastReceiver playersize = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean sizechat = intent.getBooleanExtra("sizechat", false);
-            updatesize(sizechat);
-        }
-    };
-
-    private final BroadcastReceiver showBufferReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getBooleanExtra("show", false)) showLoading(true);
-            else hideLoading();
-        }
-    };
-
-    private final BroadcastReceiver closeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getBooleanExtra("close", false)) closeThis();
-            else minimizeThis();
-        }
-    };
 
     public Player.EventListener PlayerEvent() {
         return new Player.EventListener() {
