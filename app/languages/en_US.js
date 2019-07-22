@@ -246,8 +246,8 @@ function en_USLang() {
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
-    STR_DEF_QUALITY = "Default player quality";
-    STR_DEF_QUALITY_SUMARRY = "Default player starting quality, after the user change the quality that becames default for that section, a section ends when the apps is closed";
+    STR_DEF_QUALITY = "Default player start quality";
+    STR_DEF_QUALITY_SUMARRY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
