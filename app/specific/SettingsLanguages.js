@@ -248,8 +248,8 @@ function Languages_RemoveinputFocus() {
 
 function Languages_ScrollTable() {
 
-    document.getElementById('settings_scroll').scrollTop = 
-    (Languages_cursorY > 7) ? document.getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
+    document.getElementById('settings_scroll').scrollTop =
+        (Languages_cursorY > 7) ? document.getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
 }
 
 function Languages_ChangeSettigs(position) {
