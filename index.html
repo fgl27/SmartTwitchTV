@@ -147,19 +147,30 @@
         }
 
         div.screen_holder,
-        div.screen_holder_games,
-        div.screen_holder_settings {
+        div.screen_holder_games {
             width: 100vw;
-            position: fixed;
+            position: absolute;
             top: 7%;
+            overflow: hidden;
         }
 
         div.screen_holder_games {
             top: 2.5%;
         }
 
-        div.screen_holder_settings {
+        div.settings_holder {
+            position: fixed;
             top: 8.5%;
+            width: 100%;
+            height: 91.5%;
+            overflow: hidden;
+        }
+
+        div.screen_holder_settings {
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
 
         div.scroll {
@@ -1299,12 +1310,14 @@
             <div id="user_scroll" class="screen_holder hide">
                 <table id="stream_table_user" class="streams_tables"></table>
             </div>
-            <div id="settings_scroll" class="screen_holder_settings hide">
-                <div id="settings_main" class="settings_main">
-                    <!-- Settings_SetSettings()-->
-                </div>
-                <div id="settings_lang" class="settings_main hide">
-                    <!-- Settings_SetLang()-->
+            <div class="settings_holder">
+                <div id="settings_scroll" class="screen_holder_settings hide">
+                    <div id="settings_main" class="settings_main">
+                        <!-- Settings_SetSettings()-->
+                    </div>
+                    <div id="settings_lang" class="settings_main hide">
+                        <!-- Settings_SetLang()-->
+                    </div>
                 </div>
             </div>
 

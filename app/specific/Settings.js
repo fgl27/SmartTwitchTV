@@ -428,16 +428,10 @@ function Settings_SetClock() {
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
-function Settings_ScrollTable() { // jshint ignore:line
-    var position = screen.height;
+function Settings_ScrollTable() {
+    var doc = document.getElementById('settings_scroll');
 
-    if (Settings_cursorY > 5) {
-        position = position * 0.11;
-        position += document.getElementById(Settings_value_keys[1]).offsetTop * -1;
-        document.getElementById('settings_scroll').style.top = position + "px";
-    } else position = position * 0.077;
-
-    document.getElementById('settings_scroll').style.top = position + "px";
+    doc.scrollTop = (Settings_cursorY > 5) ? doc.scrollHeight : 0;
 }
 
 function Settings_handleKeyDown(event) {
