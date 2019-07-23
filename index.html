@@ -149,9 +149,8 @@
         div.screen_holder,
         div.screen_holder_games {
             width: 100vw;
-            position: absolute;
+            position: fixed;
             top: 7%;
-            overflow: hidden;
         }
 
         div.screen_holder_games {
@@ -604,10 +603,18 @@
             vertical-align: middle;
             display: inline-block;
             width: 84%;
-            font-size: 80%;
+            font-size: 90%;
             word-wrap: break-word;
             overflow: hidden;
             color: #FFFFFF;
+        }
+
+        div.side_panel_feed_scroll {
+            width: 100%;
+            height: 90%;
+            bottom: 1%;
+            position: absolute;
+            overflow: hidden;
         }
 
         div.side_panel_feed_text {
@@ -1554,8 +1561,8 @@
                     </div>&nbsp;
                     <span id="side_panel_feed_refresh"></span>
                 </div>
-                <div id="side_panel_feed" style="overflow: hidden; margin-top: 5px;">
-                    <div id="side_panel_feed_scroll">
+                <div id="side_panel_feed">
+                    <div id="side_panel_feed_scroll" class="side_panel_feed_scroll">
                     </div>
                 </div>
                 <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
