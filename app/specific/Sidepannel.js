@@ -3,7 +3,6 @@ var Sidepannel_Pos = 0;
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
-var Sidepannel_ScrollPos = 0;
 
 function Sidepannel_AddFocusEtc() {
     Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
@@ -154,8 +153,9 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    document.getElementById('side_panel_feed_scroll').scrollTop = Sidepannel_PosFeed > 4 ?
-        document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop : 0;
+    document.getElementById('side_panel_feed_scroll').scrollTop =
+        document.getElementById(UserLiveFeed_side_ids[8] +
+            (Sidepannel_PosFeed > 5 ? (Sidepannel_PosFeed - 5) : 0)).offsetTop;
 }
 
 function Sidepannel_handleKeyDown(event) {

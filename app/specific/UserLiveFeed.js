@@ -33,7 +33,6 @@ function UserLiveFeed_StartLoad() {
         Main_empty('user_feed_scroll');
         Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
-        Sidepannel_ScrollPos = 0;
         Main_empty('side_panel_feed_scroll');
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "2.5px";
