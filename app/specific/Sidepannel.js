@@ -154,25 +154,8 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    var size = Sidepannel_GetSize();
-    if (Sidepannel_PosFeed > 4) {
-        var position;
-        if (Sidepannel_PosFeed < (size - 6)) {
-            position = (document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop * -1);
-            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
-        } else if (size > 11) {
-            position = (document.getElementById(UserLiveFeed_side_ids[8] + (size - 11)).offsetTop * -1);
-            position += document.getElementById(UserLiveFeed_side_ids[8] + 0).offsetTop;
-        }
-
-        //Prevent flickering when not change position as we are at the botton but the position value changes by 1px
-        if (position > (Sidepannel_ScrollPos + 5) || position < (Sidepannel_ScrollPos - 5)) {
-            Sidepannel_ScrollPos = position;
-        }
-
-        document.getElementById('side_panel_feed_scroll').style.marginTop = Sidepannel_ScrollPos + "px";
-
-    } else document.getElementById('side_panel_feed_scroll').style.marginTop = 0;
+    document.getElementById('side_panel_feed_scroll').scrollTop = Sidepannel_PosFeed > 4 ?
+        document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - 4)).offsetTop : 0;
 }
 
 function Sidepannel_handleKeyDown(event) {
