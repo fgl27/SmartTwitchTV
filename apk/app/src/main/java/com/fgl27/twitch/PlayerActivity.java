@@ -78,8 +78,8 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
-    private static int[] BUFFER_SIZE = {6000, 6000, 6000, 6000};//Default, live, vod, clips
-    private static String[] codecNames = {"avc", "vp9", "mp4a"};
+    private static final int[] BUFFER_SIZE = {6000, 6000, 6000, 6000};//Default, live, vod, clips
+    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -100,7 +100,6 @@ public class PlayerActivity extends Activity {
     private Animation rotation;
 
     public WebView mwebview;
-    public Context mcontext;
     public boolean onCreateReady;
     public boolean alredystarted;
     private boolean loadingcanshow;
@@ -135,7 +134,6 @@ public class PlayerActivity extends Activity {
             simpleExoPlayerView = findViewById(R.id.player_view);
             shouldAutoPlay = false;
 
-            mcontext = this;
             initializeWebview();
         }
     }
@@ -434,7 +432,7 @@ public class PlayerActivity extends Activity {
     }
 
     public class WebAppInterface {
-        Context mwebContext;
+        final Context mwebContext;
 
         /**
          * Instantiate the interface and set the context
