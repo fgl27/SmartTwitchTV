@@ -89,7 +89,7 @@ public class PlayerActivity extends Activity {
     private DefaultTrackSelector trackSelector;
     private boolean shouldAutoPlay;
 
-    private int mResumeWindow;
+    //private int mResumeWindow;
     private long mResumePosition;
 
     public static String url;
@@ -159,7 +159,8 @@ public class PlayerActivity extends Activity {
 
             simpleExoPlayerView.setPlayer(player);
 
-            if (mResumeWindow != C.INDEX_UNSET) {
+           //We are sekking from js or the updateResumePosition() saved the postion onStop
+            if (mResumePosition > 0 && mwhocall > 1) {
                 player.seekTo(mResumePosition);
             }
 
@@ -181,19 +182,14 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    // Send position = -1 to indicate that the video must start from 0
-    // this applyes to start a live, vod or clip from 0
     private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
 
         mediaSourceAuto = mediaSource;
         PlayerActivity.url = videoAddress;
         shouldAutoPlay = mshouldAutoPlay;
         mwhocall = whocall;
-
-        if (position != 0) {
-            mResumeWindow = 1;
-            mResumePosition = position < 0 ? 0 : position;
-        }
+        //We are sekking from js
+        if (position > 0) mResumePosition = position;
 
         initializePlayer();
     }
@@ -359,7 +355,7 @@ public class PlayerActivity extends Activity {
     }
 
     protected void clearResumePosition() {
-        mResumeWindow = C.INDEX_UNSET;
+        //mResumeWindow = C.INDEX_UNSET;
         mResumePosition = C.TIME_UNSET;
     }
 
@@ -368,7 +364,7 @@ public class PlayerActivity extends Activity {
             return;
         }
 
-        mResumeWindow = player.getCurrentWindowIndex();
+        //mResumeWindow = player.getCurrentWindowIndex();
         mResumePosition = player.isCurrentWindowSeekable() ? Math.max(0, player.getCurrentPosition()) : C.TIME_UNSET;
     }
 
