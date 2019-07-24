@@ -229,7 +229,7 @@ function Chat_MessageVectorNext(message, time) {
 }
 
 function Chat_Play(id) {
-    if (!Chat_hasEnded && Chat_Id === id) {
+    if (!Chat_hasEnded && Chat_Id === id && Main_values.Play_ChatForceDisable) {
         Chat_addlinesId = window.setInterval(function() {
             Main_Addline(id);
             Chat_div.scrollTop = Chat_div.scrollHeight;

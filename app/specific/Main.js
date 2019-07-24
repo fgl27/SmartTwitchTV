@@ -897,7 +897,6 @@ function Main_openVod() {
     Play_hideChat();
     Play_clearPause();
     Play_CleanHideExit();
-    PlayVod_HasVodInfo = false;
     if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedFindPos();
     Main_ready(PlayVod_Start);
 }

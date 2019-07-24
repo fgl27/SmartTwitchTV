@@ -503,6 +503,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public long getsavedtime() {
+            return mResumePosition;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public long gettime() {
             if (PlayerActivity.player != null) return PlayerActivity.player.getCurrentPosition();
             return 0;
