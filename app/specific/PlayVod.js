@@ -41,7 +41,6 @@ var PlayVod_currentTime = 0;
 var PlayVod_VodIds = {};
 var PlayVod_VodPositions = 0;
 var PlayVod_PanelY = 0;
-var PlayVod_HasVodInfo = true;
 var PlayVod_ProgressBaroffset = 0;
 var PlayVod_StepsCount = 0;
 var PlayVod_TimeToJump = 0;
@@ -79,22 +78,12 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
-    if (Main_values.vodOffset) { // this is a vod comming from a clip
+    if (Main_values.vodOffset) { // this is a vod comming from a clip or from restore playback
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (PlayVod_HasVodInfo && Main_values.Main_selectedChannel_id !== '') {
-            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-            if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
-            if (AddUser_UserIsSet()) {
-                AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-                AddCode_PlayRequest = true;
-                AddCode_CheckFallow();
-            } else Play_hideFallow();
-        } else {
-            PlayVod_PrepareLoad();
-            PlayVod_updateStreamerInfo();
-        }
+        PlayVod_PrepareLoad();
+        PlayVod_updateStreamerInfo();
         Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", '');
         Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
@@ -161,7 +150,10 @@ function PlayVod_updateStreamerInfoValues(musers) {
     if (musers !== undefined) {
         Main_values.Main_selectedChannelLogo = musers.logo;
         Main_values.Main_selectedChannel_id = musers._id;
+
+        //The chat init will happens after user click on vod dialog
         if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
+
         if (AddUser_UserIsSet()) {
             AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             AddCode_PlayRequest = true;
@@ -241,7 +233,6 @@ function PlayVod_Resume() {
         } else {
             PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
-            Chat_Pause();
             Play_ClearPlayer();
             window.clearInterval(PlayVod_streamCheckId);
             window.clearInterval(PlayVod_SaveOffsetId);
@@ -254,10 +245,15 @@ function PlayVod_Resume() {
             Play_ResumeAfterOnlineCounter = 0;
 
             Play_ResumeAfterOnlineCounter = 0;
-            if (navigator.onLine) PlayVod_onPlayer();
+
+            //Get the time from android as it can save it more reliably
+            try {
+                Main_values.vodOffset = Android.getsavedtime() / 1000;
+            } catch (e) {}
+            if (navigator.onLine) PlayVod_ResumeAfterOnline();
+
             else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
 
-            Chat_Play(Chat_Id);
             Play_EndSet(2);
             PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
         }
@@ -418,31 +414,15 @@ function PlayVod_qualityChanged() {
 function PlayVod_onPlayer() {
     if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
 
-    if (Main_values.vodOffset) {
-        Chat_offset = Main_values.vodOffset;
-        Chat_Init();
-        if (Main_Android && PlayVod_isOn) {
-            if (PlayVod_quality.indexOf("Auto") !== -1) {
-                try {
-                    Android.StartAuto(2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
-                } catch (e) {
-                    Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
-                }
-
-            } else
-                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : (Main_values.vodOffset * 1000));
+    if (Main_Android) {
+        if (Main_values.vodOffset) {
+            Chat_offset = Main_values.vodOffset;
+            Chat_Init();
+            PlayVod_onPlayerStartPlay(Main_values.vodOffset * 1000);
+            Main_values.vodOffset = 0;
+        } else {
+            PlayVod_onPlayerStartPlay(Android.gettime());
         }
-
-        Main_values.vodOffset = 0;
-    } else if (Main_Android && PlayVod_isOn) {
-        if (PlayVod_quality.indexOf("Auto") !== -1) {
-            try {
-                Android.StartAuto(2, PlayVod_replay ? -1 : Android.gettime());
-            } catch (e) {
-                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : Android.gettime());
-            }
-        } else
-            Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : Android.gettime());
     }
 
     PlayVod_replay = false;
@@ -455,6 +435,20 @@ function PlayVod_onPlayer() {
         PlayVod_PlayerCheckQualityChanged = false;
         window.clearInterval(PlayVod_streamCheckId);
         PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
+    }
+}
+
+function PlayVod_onPlayerStartPlay(time) {
+    if (PlayVod_isOn) {
+        if (PlayVod_quality.indexOf("Auto") !== -1) {
+            try {
+                Android.StartAuto(2, PlayVod_replay ? -1 : time);
+            } catch (e) {
+                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
+            }
+
+        } else
+            Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
     }
 }
 
@@ -533,7 +527,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
-    PlayVod_HasVodInfo = true;
     Chat_Clear();
     UserLiveFeed_Hide();
     Play_ClearPlayer();

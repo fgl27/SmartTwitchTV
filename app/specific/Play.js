@@ -273,7 +273,6 @@ function Play_Start() {
     Play_tokenResponse = 0;
     Play_playlistResponse = 0;
     Play_playingTry = 0;
-    Play_state = Play_STATE_LOADING_TOKEN;
     Play_isOn = true;
     Play_Playing = false;
     document.addEventListener('visibilitychange', Play_Resume, false);
@@ -320,7 +319,7 @@ function Play_Resume() {
             else Play_updateStreamInfo();
             Play_state = Play_STATE_LOADING_TOKEN;
             Play_ResumeAfterOnlineCounter = 0;
-            if (navigator.onLine) Play_loadData();
+            if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
             Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
         }
@@ -330,6 +329,7 @@ function Play_Resume() {
 function Play_ResumeAfterOnline() {
     if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
+        Play_state = Play_STATE_LOADING_TOKEN;
         Play_loadData();
     }
     Play_ResumeAfterOnlineCounter++;
