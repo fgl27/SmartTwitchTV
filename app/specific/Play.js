@@ -317,7 +317,6 @@ function Play_Resume() {
             Play_RestoreFromResume = true;
             if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
             else Play_updateStreamInfo();
-            Play_state = Play_STATE_LOADING_TOKEN;
             Play_ResumeAfterOnlineCounter = 0;
             if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
