@@ -275,6 +275,7 @@ function Play_Start() {
     Play_playingTry = 0;
     Play_isOn = true;
     Play_Playing = false;
+    Play_state = Play_STATE_LOADING_TOKEN;
     document.addEventListener('visibilitychange', Play_Resume, false);
     Play_updateStreamInfoStart();
     Play_loadData();
