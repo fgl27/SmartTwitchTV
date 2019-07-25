@@ -390,20 +390,20 @@ function Settings_SetBuffers(whocall) {
             Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
             PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
             PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_Android) {
+            if (Main_IsNotBrowser) {
                 Android.SetBuffer(1, Play_Buffer);
                 Android.SetBuffer(2, PlayVod_Buffer);
                 Android.SetBuffer(3, PlayClip_Buffer);
             }
         } else if (whocall === 1) {
             Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-            if (Main_Android) Android.SetBuffer(1, Play_Buffer);
+            if (Main_IsNotBrowser) Android.SetBuffer(1, Play_Buffer);
         } else if (whocall === 2) {
             PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-            if (Main_Android) Android.SetBuffer(2, PlayVod_Buffer);
+            if (Main_IsNotBrowser) Android.SetBuffer(2, PlayVod_Buffer);
         } else if (whocall === 3) {
             PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_Android) Android.SetBuffer(3, PlayClip_Buffer);
+            if (Main_IsNotBrowser) Android.SetBuffer(3, PlayClip_Buffer);
         }
     } catch (e) {}
 }

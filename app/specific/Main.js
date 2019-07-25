@@ -1,6 +1,5 @@
 //Variable initialization
 var Main_isReleased = false;
-var Main_isBrowser = false;
 var Main_isDebug = false;
 
 var Main_cursorYAddFocus = -1;
@@ -115,9 +114,9 @@ var Main_stringVersion = '1.0';
 var Main_stringVersion_Min = '.35';
 var Main_minversion = '072419';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
-var Main_AndroidVersion = '';
+var Main_IsNotBrowserVersion = '';
 var Main_ClockOffset = 0;
-var Main_Android = 0;
+var Main_IsNotBrowser = 0;
 var Main_randomimg = '?' + Math.random();
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
@@ -152,21 +151,20 @@ function Main_loadTranslations(language) {
 
     Main_ready(function() {
         try {
-            Main_Android = Android.getAndroid();
-            Main_AndroidVersion = Android.getversion();
+            Main_IsNotBrowser = Android.getAndroid();
+            Main_IsNotBrowserVersion = Android.getversion();
         } catch (e) {
-            Main_AndroidVersion = '1.0.0';
-            Main_Android = 0;
+            Main_IsNotBrowserVersion = '1.0.0';
+            Main_IsNotBrowser = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
             Main_isDebug = true;
-            Main_isBrowser = true;
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
-            console.log('Main_isBrowser: ' + Main_isBrowser);
+            console.log('Main_isBrowser: ' + !Main_IsNotBrowser);
         }
         Main_showLoadDialog();
 
-        if (Main_Android) {
+        if (Main_IsNotBrowser) {
             //TODO remove the try some day after the app update has be live for some time
             try {
                 Main_vp9supported = Android.misCodecSupported();
@@ -248,7 +246,7 @@ function Main_initWindows() {
                 Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
             });
-        }, (Main_Android && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1000 : 0);
+        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 1000 : 0);
     });
 }
 
@@ -369,12 +367,12 @@ function Main_replaceClassEmoji(div) {
 
 function Main_showLoadDialog() {
     Main_YRst(-1);
-    if (Main_Android) Android.mshowLoading(true);
+    if (Main_IsNotBrowser) Android.mshowLoading(true);
     else Main_ShowElement('dialog_loading');
 }
 
 function Main_HideLoadDialog() {
-    if (Main_Android) Android.mshowLoading(false);
+    if (Main_IsNotBrowser) Android.mshowLoading(false);
     else Main_HideElement('dialog_loading');
 }
 
@@ -732,9 +730,9 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 
 function Main_checkVersion() {
     //TODO remove the try after android app update has be releaased for some time
-    if (Main_Android) {
-        Main_versionTag = "Android: " + Main_AndroidVersion + ' Web: ' + Main_minversion;
-        if (Main_needUpdate(Main_AndroidVersion)) Main_ShowElement('label_update');
+    if (Main_IsNotBrowser) {
+        Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion;
+        if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
@@ -1007,7 +1005,7 @@ function Main_ExitDialog(event) {
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (!Main_Android || !Main_ExitCursor) Main_HideExitDialog();
+            if (!Main_IsNotBrowser || !Main_ExitCursor) Main_HideExitDialog();
             else if (Main_ExitCursor === 1) {
                 Main_HideExitDialog();
                 Android.mclose(false);
@@ -1270,7 +1268,7 @@ function processCode(pageUrl) {
 
 //Basic XMLHttpRequest thatonly returns error or 200 status
 function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
-    if (Main_Android) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
 }
 
@@ -1323,7 +1321,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
 //Duplicated (BasehttpPost === BasehttpGet minus the post part ) as the android side may not be there and is not needed yet
 function BasehttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) { // jshint ignore:line
-    if (Main_Android) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    if (Main_IsNotBrowser) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
 }
 
