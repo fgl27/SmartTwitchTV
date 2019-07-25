@@ -165,7 +165,7 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_values.Main_Go = Main_Users;
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
-        if (Main_Android) {
+        if (Main_IsNotBrowser) {
             //TODO remove the try after android app update has be releaased for some time
             try {
                 Android.clearCookie();
@@ -349,7 +349,7 @@ function AddCode_TimeoutReset10() {
 function AddCode_RequestCheckSub() {
     var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[Main_values.Users_Position].id + '/subscriptions/' + AddCode_Channel_id;
     var xmlHttp;
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
 
         xmlHttp = Android.mreadUrl(theUrl, AddCode_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
 
@@ -438,7 +438,7 @@ function AddCode_CheckToken(position, tryes) {
 
     var xmlHttp;
 
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
 
         xmlHttp = Android.mreadUrl(theUrl, 3500, 0, null);
 

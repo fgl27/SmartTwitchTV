@@ -270,7 +270,7 @@ function PlayVod_ResumeAfterOnline() {
 }
 
 function PlayVod_SaveOffset() {
-    Main_values.vodOffset = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
+    Main_values.vodOffset = Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0;
     Main_SaveValues();
     Main_values.vodOffset = 0;
 }
@@ -294,7 +294,7 @@ function PlayVod_loadDataRequest() {
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
             '&playlist_include_framerate=true&reassignments_supported=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '');
-        if (Main_Android) {
+        if (Main_IsNotBrowser) {
             try {
                 Android.SetAuto(theUrl);
             } catch (e) {}
@@ -320,7 +320,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadingDataTimeout += 250;
             PlayVod_loadDataRequest();
         } else {
-            if (!Main_isBrowser) {
+            if (Main_IsNotBrowser) {
                 Play_HideBufferDialog();
                 Play_PlayEndStart(2);
             } else PlayVod_loadDataSuccessFake();
@@ -414,7 +414,7 @@ function PlayVod_qualityChanged() {
 function PlayVod_onPlayer() {
     if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
 
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
         if (Main_values.vodOffset) {
             Chat_offset = Main_values.vodOffset;
             Chat_Init();
@@ -429,7 +429,7 @@ function PlayVod_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
 
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
         PlayVod_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 3 + ((PlayVod_Buffer / 1000) * 2);
         PlayVod_PlayerCheckQualityChanged = false;
@@ -459,12 +459,12 @@ function PlayVod_UpdateDuration(duration) {
 }
 
 function PlayVod_PlayerCheck() {
-    if (Main_Android) PlayVod_currentTime = Android.gettime();
+    if (Main_IsNotBrowser) PlayVod_currentTime = Android.gettime();
 
     //The player can bug and not stop playing when it ends after a video has be pause
     if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
         //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_Android) Android.play(false);
+        if (Main_IsNotBrowser) Android.play(false);
         Play_PannelEndStart(2);
     }
 
@@ -522,7 +522,7 @@ function PlayVod_shutdownStream() {
 
 function PlayVod_PreshutdownStream(saveOffset) {
     if (saveOffset) PlayVod_SaveVodIds();
-    if (Main_Android) Android.stopVideo(2);
+    if (Main_IsNotBrowser) Android.stopVideo(2);
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
     window.clearInterval(PlayVod_updateStreamInfId);
@@ -548,7 +548,7 @@ function PlayVod_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_quality = PlayVod_qualityPlaying;
@@ -574,7 +574,7 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_RefreshProgressBarr(show) {
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 
     if (PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
         try {
@@ -698,7 +698,7 @@ function PlayVod_jump() {
         PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
-            if (Main_Android) {
+            if (Main_IsNotBrowser) {
                 if (PlayVod_quality.indexOf("Auto") !== -1) {
                     try {
                         Android.StartAuto(2,
@@ -714,7 +714,7 @@ function PlayVod_jump() {
 
         } else {
             Chat_offset = ChannelVod_vodOffset;
-            if (Main_Android) Android.startVideoOffset(PlayClip_playingUrl, 3,
+            if (Main_IsNotBrowser) Android.startVideoOffset(PlayClip_playingUrl, 3,
                 (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
         }
 
@@ -750,7 +750,7 @@ function PlayVod_jumpTime() {
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
-    var currentTime = Main_Android ? (Android.gettime() / 1000) : 0;
+    var currentTime = Main_IsNotBrowser ? (Android.gettime() / 1000) : 0;
 
     window.clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;
@@ -783,7 +783,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds() {
-    var time = Main_Android ? (parseInt(Android.gettime() / 1000)) : 0;
+    var time = Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0;
 
     var vod_id = '#' + Main_values.ChannelVod_vodId; // prevent only numeric key, that makes the obj be shorted
 

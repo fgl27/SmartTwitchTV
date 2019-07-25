@@ -442,7 +442,7 @@ function Play_loadDataRequest() {
     }
 
     var xmlHttp;
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
 
         xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
@@ -483,11 +483,11 @@ function Play_loadDataRequest() {
                     if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
                 } else if (xmlHttp.status === 403) { //forbidden access
                     Play_loadDataErrorLog(xmlHttp);
-                    if (!Main_isBrowser) Play_ForbiddenLive();
+                    if (Main_IsNotBrowser) Play_ForbiddenLive();
                     else Play_loadDataSuccessFake();
                 } else if (xmlHttp.status === 404) { //off line
                     Play_loadDataErrorLog(xmlHttp);
-                    if (!Main_isBrowser) Play_CheckHostStart();
+                    if (Main_IsNotBrowser) Play_CheckHostStart();
                     else Play_loadDataSuccessFake();
                 } else {
                     Play_loadDataErrorLog(xmlHttp);
@@ -515,7 +515,7 @@ function Play_loadDataError() {
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
         } else {
-            if (!Main_isBrowser) Play_CheckHostStart();
+            if (Main_IsNotBrowser) Play_CheckHostStart();
             else Play_loadDataSuccessFake();
         }
     }
@@ -651,7 +651,7 @@ function Play_qualityChanged() {
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
-    if (Main_Android && Play_isOn) {
+    if (Main_IsNotBrowser && Play_isOn) {
         if (Play_quality.indexOf("Auto") !== -1) {
             try {
                 Android.StartAuto(1, 1);
@@ -686,7 +686,7 @@ function Play_onPlayer() {
     Play_Playing = true;
     Play_loadChat();
 
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
         Play_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 1 + ((Play_Buffer / 1000) * 2);
         Play_PlayerCheckQualityChanged = false;
@@ -706,7 +706,7 @@ function Play_loadChat() {
 
 function Play_PlayerCheck() {
     var updatetime = !Play_isNotplaying();
-    if (Main_Android) Play_currentTime = Android.gettime();
+    if (Main_IsNotBrowser) Play_currentTime = Android.gettime();
     if (Play_isOn && Play_PlayerTime === Play_currentTime && updatetime) {
         Play_PlayerCheckCount++;
         if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
@@ -775,7 +775,7 @@ function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
 }
 
 function Play_isNotplaying() {
-    if (Main_Android) return !Android.getPlaybackState();
+    if (Main_IsNotBrowser) return !Android.getPlaybackState();
     else return false;
 }
 
@@ -823,7 +823,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
-    if (Main_Android) Android.stopVideo(1);
+    if (Main_IsNotBrowser) Android.stopVideo(1);
     Play_isOn = false;
     UserLiveFeed_Hide();
     Chat_Clear();
@@ -868,12 +868,12 @@ function Play_hideFallow() {
 }
 
 function Play_showBufferDialog() {
-    if (Main_Android) Android.mshowLoading(true);
+    if (Main_IsNotBrowser) Android.mshowLoading(true);
     else Main_ShowElement('dialog_loading_play');
 }
 
 function Play_HideBufferDialog() {
-    if (Main_Android) Android.mshowLoading(false);
+    if (Main_IsNotBrowser) Android.mshowLoading(false);
     else Main_HideElement('dialog_loading_play');
 }
 
@@ -1102,7 +1102,7 @@ function Play_KeyPause(PlayVodClip) {
 
         //For some reason Android.play(true); can freez the app as if the function never returns even it be a void
         //Let it at the botton and thecnicly all works
-        if (Main_Android) {
+        if (Main_IsNotBrowser) {
             Android.play(true);
         }
     } else {
@@ -1113,7 +1113,7 @@ function Play_KeyPause(PlayVodClip) {
         Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-play-1"></i> </div>');
 
         Play_showPauseDialog();
-        if (Main_Android) Android.play(false);
+        if (Main_IsNotBrowser) Android.play(false);
     }
 }
 

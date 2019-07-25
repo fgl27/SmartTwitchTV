@@ -170,7 +170,7 @@ function PlayClip_qualityChanged() {
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_SetHtmlQuality('stream_quality');
 
-    if (Main_Android && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
+    if (Main_IsNotBrowser && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
         PlayClip_replay ? -1 : Android.gettime());
     PlayClip_replay = false;
     PlayClip_onPlayer();
@@ -180,7 +180,7 @@ function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
 
-    if (Main_Android) {
+    if (Main_IsNotBrowser) {
         PlayClip_PlayerCheckCount = 0;
         Play_PlayerCheckTimer = 1 + ((PlayClip_Buffer / 1000) * 2);
         PlayClip_PlayerCheckQualityChanged = false;
@@ -200,12 +200,12 @@ function PlayClip_Resume() {
 }
 
 function PlayClip_PlayerCheck() {
-    if (Main_Android) PlayClip_currentTime = Android.gettime();
+    if (Main_IsNotBrowser) PlayClip_currentTime = Android.gettime();
 
     //The player can bug and not stop playing when it ends after a video has be pause
     if ((PlayClip_currentTime / 1000) > PlayClip_DurationSeconds) {
         //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_Android) Android.play(false);
+        if (Main_IsNotBrowser) Android.play(false);
         Play_PannelEndStart(3);
     }
 
@@ -266,7 +266,7 @@ function PlayClip_PreshutdownStream() {
     PlayClip_qualities = [];
     Play_qualitiesAuto = [];
     window.clearInterval(PlayClip_streamCheckId);
-    if (Main_Android) Android.stopVideo(3);
+    if (Main_IsNotBrowser) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
@@ -358,7 +358,7 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     window.clearInterval(PlayVod_RefreshProgressBarrID);
@@ -380,7 +380,7 @@ function PlayClip_showPanel() {
 }
 
 function PlayClip_RefreshProgressBarr() {
-    if (Main_Android) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_qualityIndexReset() {
