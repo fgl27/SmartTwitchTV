@@ -39,7 +39,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
                 AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
             } else {
                 if (JSON.parse(xmlHttp.responseText).message.indexOf('Invalid refresh token') !== -1) {
-                    AddCode_requestTokensFailRunning();
+                    AddCode_requestTokensFailRunning(position);
                     if (callbackFuncNOK) callbackFuncNOK();
                 } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
             }
@@ -63,7 +63,7 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
 
         AddUser_SaveUserArray();
-    } else AddCode_requestTokensFailRunning();
+    } else AddCode_requestTokensFailRunning(position);
 
     if (callbackFunc) callbackFunc();
 }
@@ -126,13 +126,13 @@ function AddCode_requestTokensFail() {
     AddUser_SaveUserArray();
 }
 
-function AddCode_requestTokensFailRunning() {
+function AddCode_requestTokensFailRunning(position) {
     //Token fail remove it and warn
     Users_status = false;
     Main_HideLoadDialog();
     Main_showWarningDialog(STR_OAUTH_FAIL);
-    AddUser_UsernameArray[Main_values.Users_Position].access_token = 0;
-    AddUser_UsernameArray[Main_values.Users_Position].refresh_token = 0;
+    AddUser_UsernameArray[position].access_token = 0;
+    AddUser_UsernameArray[position].refresh_token = 0;
     AddUser_SaveUserArray();
     Main_SaveValues();
     window.setTimeout(Main_HideWarningDialog, 4000);
@@ -488,7 +488,7 @@ function AddCode_CheckTokenSuccess(responseText, position) {
         AddCode_TimeoutReset10();
         AddCode_refreshTokens(position, 0, null, null);
     } else {
-        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning();
+        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning(position);
     }
 }
 
