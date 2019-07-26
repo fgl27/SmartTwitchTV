@@ -510,6 +510,7 @@ function AddCode_RequestFallowGame() {
         '?oauth_token=' + AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
@@ -550,6 +551,7 @@ function AddCode_RequestUnFallowGame() {
         AddUser_UsernameArray[Main_values.Users_Position].access_token, true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
@@ -590,6 +592,7 @@ function AddCode_RequestCheckFallowGame() {
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = 10000;
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
