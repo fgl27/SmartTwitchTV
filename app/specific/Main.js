@@ -111,8 +111,8 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.35';
-var Main_minversion = '072419';
+var Main_stringVersion_Min = '.36';
+var Main_minversion = '072619';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_ClockOffset = 0;
