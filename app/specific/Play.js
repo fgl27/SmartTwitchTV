@@ -560,15 +560,12 @@ function Play_loadDataSuccess(responseText) {
     }
 }
 
-var Play_qualitiesAuto;
-
 function Play_extractQualities(input) {
     var Band,
         codec,
         result = [],
         TempId = '',
         tempCount = 1;
-    //Play_qualitiesAuto = [];
 
     var streams = Play_extractStreamDeclarations(input);
     for (var i = 0; i < streams.length; i++) {
@@ -590,7 +587,6 @@ function Play_extractQualities(input) {
                 'codec': codec,
                 'url': streams[i].split("\n")[2]
             });
-            //Play_qualitiesAuto.push(result[i].url);
         } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' | source') {
             result.push({
                 'id': TempId,
@@ -598,7 +594,6 @@ function Play_extractQualities(input) {
                 'codec': codec,
                 'url': streams[i].split("\n")[2]
             });
-            //Play_qualitiesAuto.push(result[i].url);
         } else tempCount++;
     }
 
@@ -814,7 +809,6 @@ function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream();
         Play_qualities = [];
-        Play_qualitiesAuto = [];
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
     }
@@ -861,7 +855,7 @@ function Play_ClearPlay() {
 }
 
 function Play_hideFallow() {
-    Play_controls[Play_controlsFallow].setLable(STR_SPACE + STR_NOKEY);
+    Play_controls[Play_controlsFallow].setLable(STR_NOKEY);
     AddCode_IsFallowing = false;
 }
 

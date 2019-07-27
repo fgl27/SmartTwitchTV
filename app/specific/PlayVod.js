@@ -244,14 +244,11 @@ function PlayVod_Resume() {
             Play_showBufferDialog();
             Play_ResumeAfterOnlineCounter = 0;
 
-            Play_ResumeAfterOnlineCounter = 0;
-
             //Get the time from android as it can save it more reliably
             try {
                 Main_values.vodOffset = Android.getsavedtime() / 1000;
             } catch (e) {}
             if (navigator.onLine) PlayVod_ResumeAfterOnline();
-
             else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
 
             Play_EndSet(2);
@@ -270,9 +267,12 @@ function PlayVod_ResumeAfterOnline() {
 }
 
 function PlayVod_SaveOffset() {
-    Main_values.vodOffset = Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0;
-    Main_SaveValues();
-    Main_values.vodOffset = 0;
+    //Prevent setting it to 0 before it was used
+    if (!Main_values.vodOffset) {
+        Main_values.vodOffset = Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0;
+        Main_SaveValues();
+        Main_values.vodOffset = 0;
+    }
 }
 
 
@@ -514,7 +514,6 @@ function PlayVod_DropOneQuality(ConnectionDrop) {
 function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
         PlayVod_qualities = [];
-        Play_qualitiesAuto = [];
         PlayVod_PreshutdownStream(true);
         Play_exitMain();
     }

@@ -119,7 +119,6 @@ function PlayClip_loadDataError() {
 
 function PlayClip_QualityGenerate(response) {
     PlayClip_qualities = [];
-    Play_qualitiesAuto = [];
 
     response = JSON.parse(response).quality_options;
 
@@ -130,13 +129,11 @@ function PlayClip_QualityGenerate(response) {
                 'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' | source | mp4',
                 'url': response[i].source
             });
-            Play_qualitiesAuto.push(response[i].source);
         } else {
             PlayClip_qualities.push({
                 'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frame_rate) + ' | mp4',
                 'url': response[i].source
             });
-            Play_qualitiesAuto.push(response[i].source);
         }
     }
 
@@ -264,7 +261,6 @@ function PlayClip_shutdownStream() {
 function PlayClip_PreshutdownStream() {
     PlayClip_hidePanel();
     PlayClip_qualities = [];
-    Play_qualitiesAuto = [];
     window.clearInterval(PlayClip_streamCheckId);
     if (Main_IsNotBrowser) Android.stopVideo(3);
     PlayClip_isOn = false;
