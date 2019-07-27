@@ -65,7 +65,7 @@ function PlayVod_Start() {
     Main_ShowElement('progress_bar_div');
 
     //past broadcast
-    document.getElementById('controls_' + 3).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     Play_CurrentSpeed = 3;
 
     PlayVod_StepsCount = 0;
@@ -651,20 +651,20 @@ function PlayVod_qualityIndexReset() {
 
 function PlayVod_qualityDisplay() {
     if (PlayVod_getQualitiesCount() === 1) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "0";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "0";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0";
     } else if (!PlayVod_qualityIndex) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "0.2";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0.2";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
     } else if (PlayVod_qualityIndex === PlayVod_getQualitiesCount() - 1) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "0.2";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0.2";
     } else {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
     }
 
-    PlayVod_SetHtmlQuality('controls_name_' + 6);
+    PlayVod_SetHtmlQuality('controls_name_' + Play_controlsQuality);
 }
 
 function PlayVod_SetHtmlQuality(element) {
