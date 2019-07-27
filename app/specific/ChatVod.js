@@ -25,9 +25,8 @@ function Chat_Preinit() {
 }
 
 function Chat_Init() {
-    console.log(Main_values.Play_ChatForceDisable);
     Chat_Clear();
-    if (!Main_IsNotBrowser || !Main_values.Play_ChatForceDisable) {
+    if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }
@@ -229,7 +228,7 @@ function Chat_MessageVectorNext(message, time) {
 }
 
 function Chat_Play(id) {
-    if (!Chat_hasEnded && Chat_Id === id && Main_values.Play_ChatForceDisable) {
+    if (!Chat_hasEnded && Chat_Id === id && !Main_values.Play_ChatForceDisable) {
         Chat_addlinesId = window.setInterval(function() {
             Main_Addline(id);
             Chat_div.scrollTop = Chat_div.scrollHeight;

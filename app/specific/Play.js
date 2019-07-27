@@ -73,7 +73,6 @@ var Play_watching_time = 0;
 var Play_TargetHost = '';
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
-var Play_ChatLoadStarted = false;
 var Play_PlayerCheckTimer = 7;
 var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
@@ -680,7 +679,6 @@ function Play_SetHtmlQuality(element) {
 }
 
 function Play_onPlayer() {
-    Play_ChatLoadStarted = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
@@ -696,7 +694,7 @@ function Play_onPlayer() {
 }
 
 function Play_loadChat() {
-    if (!Main_values.Play_ChatForceDisable) {
+    if (Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }
@@ -1670,7 +1668,7 @@ function Play_handleKeyDown(e) {
                 else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
-                        if (Main_values.Play_ChatForceDisable && Play_isNotplaying()) Play_loadChat();
+                        if (!Main_values.Play_ChatForceDisable && Play_isNotplaying()) Play_loadChat();
                         if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
@@ -2081,7 +2079,7 @@ function Play_MakeControls() {
         },
         setLable: function() {
             Main_textContent('extra_button_' + this.position, '(' +
-                (!Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
+                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 }

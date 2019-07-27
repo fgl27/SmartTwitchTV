@@ -320,7 +320,7 @@ function PlayClip_HideShowNext(which, val) {
 
 function PlayClip_Enter() {
     if (!PlayClip_EnterPos) {
-        if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
+        if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
             if (Play_isNotplaying()) Chat_Play(Chat_Id);
             else Chat_Pause();
         }
@@ -606,7 +606,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
+                if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
