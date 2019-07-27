@@ -1013,7 +1013,7 @@ function PlayVod_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         if (PlayVod_addToJump) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (Main_values.Play_ChatForceDisable) {
+                        if (!Main_values.Play_ChatForceDisable) {
                             if (Play_isNotplaying()) Chat_Play(Chat_Id);
                             else Chat_Pause();
                         }
@@ -1031,7 +1031,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
-                if (Main_values.Play_ChatForceDisable) {
+                if (!Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }
