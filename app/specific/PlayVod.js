@@ -78,7 +78,7 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
-    if (Main_values.vodOffset) { // this is a vod comming from a clip or from restore playback
+    if (Main_values.vodOffset) { // this is a vod coming from a clip or from restore playback
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
