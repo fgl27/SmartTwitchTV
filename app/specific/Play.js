@@ -235,7 +235,7 @@ function Play_Start() {
     else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
     //past broadcast
-    document.getElementById('controls_' + 3).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     Play_CurrentSpeed = 3;
 
     PlayClip_HideShowNext(0, 0);
@@ -1394,20 +1394,20 @@ function Play_FallowUnfallow() {
 //TODO improve this position base
 function Play_qualityDisplay() {
     if (Play_getQualitiesCount() === 1) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "0";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "0";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0";
     } else if (!Play_qualityIndex) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "0.2";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0.2";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
     } else if (Play_qualityIndex === Play_getQualitiesCount() - 1) {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "0.2";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0.2";
     } else {
-        document.getElementById("control_arrow_up_" + 6).style.opacity = "1";
-        document.getElementById("control_arrow_down" + 6).style.opacity = "1";
+        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
+        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
     }
 
-    Play_SetHtmlQuality('controls_name_' + 6);
+    Play_SetHtmlQuality('controls_name_' + Play_controlsQuality);
 }
 
 function Play_qualityIndexReset() {
@@ -1990,7 +1990,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + (this.position - 1),
+            Main_textContent('controls_name_' + Play_controlsChatPos,
                 Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
         },
         bottomArrows: function() {
@@ -2088,18 +2088,17 @@ function Play_IconsAddFocus() {
     Main_AddClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "1";
 
-    //TODO improve hardcoded 7
     if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen))
-        document.getElementById('controls_button_text_' + 7).style.opacity = "1";
-    else if (Play_Panelcounter !== 7 && !Play_controls[Play_Panelcounter].isChat)
-        document.getElementById('controls_button_text_' + 7).style.opacity = "0";
+        document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "1";
+    else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat)
+        document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
 }
 
 function Play_IconsRemoveFocus() {
     Main_RemoveClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
-    document.getElementById('controls_button_text_' + 7).style.opacity = "0";
+    document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
 }
 
 
