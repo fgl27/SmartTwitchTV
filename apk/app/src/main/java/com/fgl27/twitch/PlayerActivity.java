@@ -48,12 +48,10 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -84,7 +82,6 @@ public class PlayerActivity extends Activity {
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
-    private DefaultBandwidthMeter BANDWIDTH_METER;
 
     private DefaultTrackSelector trackSelector;
     private boolean shouldAutoPlay;
@@ -121,7 +118,6 @@ public class PlayerActivity extends Activity {
 
             myHandler = new Handler(Looper.getMainLooper());
 
-            BANDWIDTH_METER = new DefaultBandwidthMeter.Builder(this).build();
             dataSourceFactory =
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
@@ -146,35 +142,34 @@ public class PlayerActivity extends Activity {
         if (shouldAutoPlay) {
             showLoading(true);
 
-            trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
+
+            trackSelector = new DefaultTrackSelector();
             trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
 
             player = ExoPlayerFactory.newSimpleInstance(
                     this,
                     new DefaultRenderersFactory(this),
                     trackSelector,
-                    getLoadControl(),
-                    null,
-                    BANDWIDTH_METER);
+                    getLoadControl());
 
             simpleExoPlayerView.setPlayer(player);
 
-           //We are sekking from js or the updateResumePosition() saved the postion onStop
+            player.addListener(PlayerEvent());
+            player.setPlayWhenReady(true);
+
+            //We are sekking from js or the updateResumePosition() saved the postion onStop
             if (mResumePosition > 0 && mwhocall > 1) {
                 player.seekTo(mResumePosition);
             }
 
             player.prepare(mediaSourceAuto != null ? mediaSourceAuto : buildMediaSource(Uri.parse(url)), false, true);
-
-            player.setPlayWhenReady(true);
-            player.addListener(PlayerEvent());
         } else {
             //Reset player background to a empty black screen
             player = ExoPlayerFactory.newSimpleInstance(this);
             simpleExoPlayerView.setPlayer(player);
 
-            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
             player.setPlayWhenReady(false);
+            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
 
             releasePlayer();
             clearResumePosition();
