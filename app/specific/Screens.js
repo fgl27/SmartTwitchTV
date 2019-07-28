@@ -276,7 +276,7 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
         idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
+        idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         display_name + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + language +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
@@ -343,7 +343,7 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block; font-size: 85%;">' +
+        idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
