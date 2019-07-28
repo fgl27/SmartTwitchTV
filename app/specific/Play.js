@@ -1092,8 +1092,8 @@ function Play_KeyPause(PlayVodClip) {
             PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
         }
 
-        //For some reason Android.play(true); can freez the app as if the function never returns even it be a void
-        //Let it at the botton and thecnicly all works
+        //For some reason Android.play(true); can freeze the app as if the function never returns even it be a void
+        //Let it at the bottom and technically all works
         if (Main_IsNotBrowser) {
             Android.play(true);
         }
@@ -1104,8 +1104,8 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-play-1"></i> </div>');
 
-        Play_showPauseDialog();
         if (Main_IsNotBrowser) Android.play(false);
+        Play_showPauseDialog();
     }
 }
 
