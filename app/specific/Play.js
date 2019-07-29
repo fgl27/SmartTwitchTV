@@ -2161,9 +2161,9 @@ function Play_SetControls() {
             '"><i class="pause_button3d icon-' + Play_controls[key].icons +
             '" ></i></div></div><div id="controls_button_text_' + key +
             '" class="extra_button_text_holder" style="opacity: ' + Play_controls[key].opacity +
-            ';"><div id="extra_button_text' + key + '" class="extra_button_text strokedextramini" >' +
+            ';"><div id="extra_button_text' + key + '" class="extra_button_text strokedeline" >' +
             Play_controls[key].string + '</div><div id="extra_button_' + key +
-            '" class="extra_button_text strokedextramini" >' +
+            '" class="extra_button_text strokedeline" >' +
             (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
 
         doc.appendChild(div);
