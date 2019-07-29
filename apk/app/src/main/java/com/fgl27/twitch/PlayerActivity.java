@@ -693,10 +693,8 @@ public class PlayerActivity extends Activity {
     }
 
     public boolean isCodecSupported(String name) {
-        MediaCodecList codecList = new MediaCodecList(MediaCodecList.REGULAR_CODECS);
-        MediaCodecInfo[] codecInfos = codecList.getCodecInfos();
-        for (int i = 0; i < codecInfos.length; i++)
-            if (codecInfos[i].getName().contains(name) && !codecInfos[i].getName().contains("google"))
+        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos())
+            if (codec.getName().contains(name) && !codec.getName().contains("google"))
                 return true;
 
         return false;
