@@ -1276,10 +1276,10 @@ function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
         inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
     inUseObj.gameSelected = Main_values.Main_gameSelected;
+    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 }
 
 function ScreensObj_TopLableAgameExit() {
-    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     inUseObj.gameSelected = Main_values.Main_gameSelected;
     Main_RemoveClass('top_bar_game', 'icon_center_focus');
     Main_innerHTML('top_bar_game', STR_GAMES);
