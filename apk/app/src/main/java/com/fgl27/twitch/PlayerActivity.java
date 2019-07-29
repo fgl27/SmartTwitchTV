@@ -76,7 +76,7 @@ public class PlayerActivity extends Activity {
 
     private static final String AUTHORIZATION = "Authorization";
 
-    private static final int[] BUFFER_SIZE = {6000, 6000, 6000, 6000};//Default, live, vod, clips
+    public static int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     private static final String[] codecNames = {"avc", "vp9", "mp4a"};
 
     private PlayerView simpleExoPlayerView;
@@ -332,6 +332,8 @@ public class PlayerActivity extends Activity {
                         BUFFER_SIZE[mwhocall], //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         BUFFER_SIZE[mwhocall] //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
+                .setTargetBufferBytes(C.LENGTH_UNSET)
+                .setPrioritizeTimeOverSizeThresholds(true)
                 .createDefaultLoadControl();
     }
 
