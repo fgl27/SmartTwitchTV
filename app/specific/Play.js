@@ -1075,6 +1075,7 @@ function Play_hideChatBackgroundDialog() {
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
         Play_clearPause();
+        Play_HideBufferDialog();
 
         Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-pause"></i> </div>');
 
@@ -1098,6 +1099,7 @@ function Play_KeyPause(PlayVodClip) {
             Android.play(true);
         }
     } else {
+        Play_HideBufferDialog();
         window.clearInterval(Play_streamCheckId);
         window.clearInterval(PlayVod_streamCheckId);
         window.clearInterval(PlayClip_streamCheckId);
