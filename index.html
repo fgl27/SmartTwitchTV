@@ -977,6 +977,11 @@
             border: 2px solid rgba(0, 0, 0, 0);
         }
 
+        .pause_button {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
         .controls_button_holder {
             display: inline-block;
             width: 6.75%;
@@ -1033,7 +1038,6 @@
             width: auto;
             max-width: 90%;
             font-size: 100%;
-            transform: translateY(15%);
         }
 
         .pause_next_div {
@@ -1446,7 +1450,9 @@
                         </div>
                     </div>
                     <div id="pause_button" class="pause_button">
-                        <i class="pause_button3d icon-pause"></i>
+                        <div style="transform: translateY(10%);">
+                            <i class="pause_button3d icon-pause"></i>
+                        </div>
                     </div>
                     <div style="width: 44%; display: inline-block; text-align: left;">
                         <div id="next_button" class="next_button" style="opacity: 0;">
