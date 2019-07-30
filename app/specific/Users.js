@@ -384,6 +384,13 @@ function Users_handleKeyDown(event) {
                 }
             } else Users_keyEnter();
             break;
+        case KEY_PG_DOWN:
+        case KEY_PG_UP:
+            Screens_SwitchScreen(event);
+            break;
+        case KEY_REFRESH:
+            Main_ReloadScreen();
+            break;
         default:
             break;
     }

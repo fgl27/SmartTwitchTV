@@ -640,7 +640,8 @@ function Main_SwitchScreenAction(removekey) {
 
     Main_CounterDialogRst();
 
-    Main_Switchobj[Main_values.Main_Go]();
+    if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
+    else Main_Switchobj[1]();
 
     Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
     if (removekey) Main_RemoveKeys();
@@ -692,7 +693,7 @@ Main_ExitCurrentobj[Main_aGame] = Screens_exit;
 Main_ExitCurrentobj[Main_games] = Screens_exit;
 
 function Main_ExitCurrent(ExitCurrent) {
-    Main_ExitCurrentobj[ExitCurrent]();
+    if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
     if (Main_isElementShowing('settings_scroll')) Settings_exit();
 }
 
@@ -1081,22 +1082,18 @@ function Main_CenterLables(event) {
                 }
             }
             break;
+        case KEY_PG_UP:
         case KEY_RIGHT:
-            if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
-                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
-                Main_values.Main_Go === Main_SearchLive || Main_values.Main_Go === Main_SearchGames ||
-                Main_values.Main_Go === Main_SearchChannels) break;
+            if (Main_ForbidenScreens()) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos++;
             if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
             Main_CenterLablesChange();
             Main_CenterLablesExit();
             break;
+        case KEY_PG_DOWN:
         case KEY_LEFT:
-            if (Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
-                Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
-                Main_values.Main_Go === Main_SearchLive || Main_values.Main_Go === Main_SearchGames ||
-                Main_values.Main_Go === Main_SearchChannels) break;
+            if (Main_ForbidenScreens()) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos--;
             if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
@@ -1110,11 +1107,19 @@ function Main_CenterLables(event) {
             Main_SwitchScreenAction();
             break;
         case KEY_ENTER:
+        case KEY_REFRESH:
             Main_ReloadScreen();
             break;
         default:
             break;
     }
+}
+
+function Main_ForbidenScreens() {
+    return Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
+        Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
+        Main_values.Main_Go === Main_SearchLive || Main_values.Main_Go === Main_SearchGames ||
+        Main_values.Main_Go === Main_SearchChannels;
 }
 
 function Main_CenterLablesCleanSwitchScreen(screen) {

@@ -470,6 +470,9 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_ENTER:
             ChannelContent_keyEnter();
             break;
+        case KEY_REFRESH:
+            Main_ReloadScreen();
+            break;
         default:
             break;
     }
