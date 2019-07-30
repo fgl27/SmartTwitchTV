@@ -656,9 +656,23 @@ function Screens_handleKeyDown(event) {
         case KEY_ENTER:
             inUseObj.key_play();
             break;
+        case KEY_PG_DOWN:
+        case KEY_PG_UP:
+            Screens_SwitchScreen(event);
+            break;
+        case KEY_REFRESH:
+            Main_ReloadScreen();
+            break;
         default:
             break;
     }
+}
+
+function Screens_SwitchScreen(event) {
+    if (Main_ForbidenScreens()) return;
+    Main_keyClickDelay();
+    document.body.addEventListener("keydown", Main_CenterLables, false);
+    Main_CenterLables(event);
 }
 
 function AGame_headerOptions() {
