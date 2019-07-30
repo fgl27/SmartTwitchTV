@@ -1,3 +1,4 @@
+//Spacing for reease maker not trow erros frm jshint
 var UserLiveFeed_loadingData = false;
 var UserLiveFeed_loadingDataTry = 0;
 var UserLiveFeed_loadingDataTimeout = 3500;

@@ -1,3 +1,4 @@
+//Spacing for reease maker not trow erros frm jshint
 window.parseIRC = function(data) {
     var message = {
         raw: data,

@@ -1,8 +1,8 @@
+// https://github.com/verlok/lazyload
+
 (function(global, factory) {
     global.LazyLoad = factory();
 })(this, function() {
-    'use strict';
-
     var runningOnBrowser = typeof window !== "undefined";
     var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent);
     var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
