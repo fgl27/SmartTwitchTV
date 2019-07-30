@@ -1,3 +1,4 @@
+//Spacing for reease maker not trow erros frm jshint
 function en_USLang() {
     // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
     Main_IsDayFirst = false;

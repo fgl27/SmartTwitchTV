@@ -1,3 +1,4 @@
+//Spacing for reease maker not trow erros frm jshint
 var Sidepannel_Isscreen = false;
 var Sidepannel_Pos = 0;
 var Sidepannel_PosFeed = 0;
